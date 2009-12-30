@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: ups.xml 1567 2008-11-22 07:51:32Z soeren_nb $ -->
+	<name>UPS Shipping Module</name>
+	<author><![CDATA[Sören Eberhardt-Biermann & others]]></author>
+	<creationdate>October 2004</creationdate>
+	<copyright><![CDATA[JMart Project]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail>n/a</authoremail>
+	<authorurl>http://joomlacode.org/gf/project/jmart/</authorurl>
+	<version>1.1</version>
+	<description>The UPS&#174; Shipping module.</description>
+
+	<element>ups</element>
+  	<install>	
+		<files>
+			<filename>ups.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params>
+		<param type="text" name="UPS_ACCESS_CODE" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN" default="Xxxxx" />
+		<param type="text" name="UPS_USER_ID" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN" default="userid" />
+		
+		<param type="password" name="UPS_PASSWORD" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN"  />
+			
+		<param name="UPS_PICKUP_TYPE" label="PHPSHOP_UPS_PICKUP_METHOD" type="list" default="01" description="PHPSHOP_UPS_PICKUP_METHOD_TOOLTIP">
+            <option value="01">Daily Pickup</option>
+            <option value="03">Customer Counter</option>
+            <option value="06">One Time Pickup</option>
+            <option value="07">On Call Air Pickup</option>
+            <option value="19">Letter Center</option>
+            <option value="20">Air Service Center</option>
+          </param>
+
+		<param name="UPS_PACKAGE_TYPE" label="PHPSHOP_UPS_PACKAGE_TYPE" type="list" default="02" description="PHPSHOP_UPS_PACKAGE_TYPE_TOOLTIP">
+            <option value="01">UPS Letter</option>
+            <option value="02">Package</option>
+            <option value="03">UPS Tube</option>
+            <option value="04">UPS Pak</option>
+            <option value="21">UPS Express Box</option>
+            <option value="24">UPS 25Kg Box</option>
+            <option value="25">UPS 10Kg Box</option>
+          </param>
+		  
+		<param name="UPS_RESIDENTIAL" label="PHPSHOP_UPS_TYPE_RESIDENTIAL" type="radio" default="yes" description="PHPSHOP_UPS_RESIDENTIAL_TOOLTIP">
+            <option value="yes">PHPSHOP_UPS_RESIDENTIAL</option>
+			<option value="no">PHPSHOP_UPS_COMMERCIAL</option>
+		</param>
+	  
+		<param label="PHPSHOP_UPS_HANDLING_FEE" type="text" name="UPS_HANDLING_FEE" 
+			description="PHPSHOP_UPS_HANDLING_FEE_TOOLTIP" default="0.00" />
+	  
+		<param name="UPS_TAX_CLASS" label="PHPSHOP_UPS_TAX_CLASS" description="PHPSHOP_UPS_TAX_CLASS_TOOLTIP"
+			type="table_data_list" table="#__{vm}_tax_rate" valuefield="tax_rate_id" textfield="tax_rate" orderfield="tax_rate" />
+			
+		<param label="Ship From Zip Code" type="text" name="OVERRIDE_SOURCE_ZIP" 
+			description="Enter a zip code to override the Vendor ship from zip code" />
+	
+		<param label="Show Delivery Days Quote?" type="radio" name="SHOW_DELIVERY_DAYS_QUOTE" default="1"
+			description="Enable the Quote-to-Delivery Note next to each Shipping Method that shows the days.">
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		
+		<param label="Show Delivery ETA Quote?" type="radio" name="SHOW_DELIVERY_ETA_QUOTE" default="1"
+			description="Enable the Quote-to-Delivery Note next to each Shipping Method that shows the ETA, or Estimated Time of Arrival.">
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		
+		<param label="Show Delivery Warning?" type="radio" name="SHOW_DELIVERY_WARNING" default="1"
+			description="Enable the Quote-to-Delivery Warning under each Shipping Method that shows the message from the shipper.">
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="@spacer" type="spacer" default="Enable each UPS shipping method you would like to offer to customers. Then enter a  in percent. (ex. 12.50%)" />
+		
+		<param type="checkbox" name="UPS_Next_Day_Air" value="01" label="UPS Next Day Air" />
+		<param type="text" name="UPS_Next_Day_Air_FSC" label="UPS Next Day Air - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+		
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_2nd_Day_Air" value="02" label="UPS 2nd Day Air" />
+		<param type="text" name="UPS_2nd_Day_Air_FSC" label="UPS 2nd Day Air - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Ground" value="03" label="UPS Ground" />
+		<param type="text" name="UPS_Ground_FSC" label="UPS Ground - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Worldwide_Express_SM" value="07" label="UPS Worldwide Express SM" />
+		<param type="text" name="UPS_Worldwide_Express_SM_FSC" label="UPS Worldwide Express SM - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+		
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Worldwide_Expedited_SM" value="08" label="UPS Worldwide Expedited SM" />
+		<param type="text" name="UPS_Worldwide_Expedited_SM_FSC" label="UPS Worldwide Expedited SM - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+			
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Standard" value="11" label="UPS Standard" default="11" />
+		<param type="text" name="UPS_Standard_FSC" label="UPS Standard - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_3_Day_Select" value="12" label="UPS 3 Day Select" />
+		<param type="text" name="UPS_3_Day_Select_FSC" label="UPS 3 Day Select  - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Next_Day_Air_Saver" value="13" label="UPS Next Day Air Saver" />
+		<param type="text" name="UPS_Next_Day_Air_Saver_FSC" label="UPS Next Day Air Saver - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+		
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Next_Day_Air_Early_AM" value="14" label="UPS Next Day Air Early A.M." />
+		<param type="text" name="UPS_Next_Day_Air_Early_AM_FSC" label="UPS Next Day Air Early A.M.- Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Worldwide_Express_Plus_SM" value="54" label="UPS Worldwide Express Plus SM" />
+		<param type="text" name="UPS_Worldwide_Express_Plus_SM_FSC" label="UPS Worldwide Express Plus SM - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_2nd_Day_Air_AM" value="59" label="UPS 2nd Day Air A.M." />
+		<param type="text" name="UPS_2nd_Day_Air_AM_FSC" label="UPS 2nd Day Air A.M. - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />			  
+
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="UPS_Saver" value="65" label="UPS Express Saver" />
+		<param type="text" name="UPS_Saver_FSC" label="UPS Express Saver - Fuel Surcharge Rate" description="A percent of the base charge for each method is added for extra fuel charges (ex. 12.50%). Leave blank or zero to remove the surcharge." default="0" />			  			  
+			  
+		<param name="@spacer" type="spacer" />
+		<param type="checkbox" name="na" value="64" label="n/a" />
+		
+	</params>
+</install>

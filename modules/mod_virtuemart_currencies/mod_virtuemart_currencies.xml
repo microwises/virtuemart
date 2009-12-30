@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Currency Selector</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2006-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>Shows a list of currencies, so your customers can select a currency for the prices.</description>
+	<files>
+		<filename module="mod_virtuemart_currencies">mod_virtuemart_currencies.php</filename>
+	</files>
+	<params>
+		<param name="text_before" type="textarea" cols="40" rows="3"
+			default="" label="Pre-text"
+			description="This is the Text or HTML that is displayed at the beginning of the Module" />
+		<param name="product_currency" type="text" default=""
+			label="The currencies to display:"
+			description="The selected currencies are shown in the module so the customer can select one of those currencies." />
+		<param name="cache" type="radio" default="0"
+			label="Enable Cache"
+			description="Select whether to cache the content of this module">
+			<option value="0"><![CDATA[
+	<script src="../components/com_virtuemart/js/mootools/mootools-release-1.11.js"type="text/javascript"></script>
+	<script type="text/javascript">
+	function getCList() {
+		for (var i = 0; i < document.adminForm.elements.length; i++) {
+			if( document.adminForm.elements[i].name == 'params[product_currency]' ) {
+				var listField = document.adminForm.elements[i];
+			}
+		}
+		return listField;
+	}
+window.addEvent('domready', function() {
+		var listField = getCList();
+		
+		new Ajax('index3.php', {
+			method: 'get',
+			data: { option: 'com_virtuemart', page:'product.ajax_tools', task:'getcurrencylist', no_html:1,product_currency: listField.value, selectSize: '10', multiple:'1', elementName: 'params%5Bproduct_currency%5D' },
+			update: getCList().parentNode
+		}).request();
+		var jpane = $E("div.jpane-slider");
+		if( jpane ) { jpane.setStyle("height", "auto" );jpane.setStyle("overflow", "auto" ); }
+	}
+);
+function makeCurrencyList( o ) {
+		var listField = getCList();
+		//listField.parentNode.innerHTML = o.responseText;
+	}
+	document.adminForm.onsubmit = function() {
+		var listField = getCList();
+		var currencies = '';
+		for (var i = 0; i < listField.options.length; i++) {
+			if( listField.options[i].selected ) {
+				currencies += listField.options[i].value + ',';
+			}
+		}
+		listField.parentNode.innerHTML = '<input type="text" name="params[product_currency]" value="' + currencies + '" />';
+	}
+	</script>
+	]]>No
+			</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="class_sfx" type="text" default=""
+			label="Menu Class Suffix"
+			description="A suffix to be applied to the css class of the menu items" />
+	</params>
+</install>

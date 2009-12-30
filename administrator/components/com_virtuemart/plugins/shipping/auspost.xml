@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: auspost.xml 1567 2008-11-22 07:51:32Z soeren_nb $-->
+	<name>Australia Post</name>
+	<author><![CDATA[Ben Wilson]]></author>
+	<creationdate>January 2006</creationdate>
+	<copyright><![CDATA[diversionware]]></copyright>
+	<license>LGPL</license>
+	<authoremail>ben@diversionware.com.au</authoremail>
+	<authorurl>http://diversionware.com.au/</authorurl>
+	<version>1.0.4</version>
+	<description>Australia Post Shipping Module</description>
+	<element>auspost</element>
+  	<install>	
+		<files>
+			<filename>auspost.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params description="&lt;img src=&quot;http://drc.edeliver.com.au/bt_aphome.gif&quot; alt=&quot;AusPost Logo&quot; /&gt;">
+		<param type="text" name="Handling_Fee" label="Packing and Handling Fee" description="This is your fee for packaging and handling, and is added to the delivery costs returned by auspost"
+			default="0.00" />
+		<param name="AUSPOST_TAX_CLASS" label="PHPSHOP_UPS_TAX_CLASS" description="PHPSHOP_UPS_TAX_CLASS_TOOLTIP"
+		type="table_data_list" table="#__{vm}_tax_rate" valuefield="tax_rate_id" textfield="tax_rate" orderfield="tax_rate" />
+	</params>
+</install>
+

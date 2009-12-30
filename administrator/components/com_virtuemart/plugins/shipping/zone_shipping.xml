@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: zone_shipping.xml 1567 2008-11-22 07:51:32Z soeren_nb $ -->
+	<name>Zone Shipping Module</name>
+	<author><![CDATA[Zephware.com]]></author>
+	<creationdate>August 2004</creationdate>
+	<copyright><![CDATA[Zephware]]></copyright>
+	<license>LGPL</license>
+	<authoremail>n/a</authoremail>
+	<authorurl>http://www.zephware.com</authorurl>
+	<version>1.1</version>
+	<description>The Zone Shipping module.</description>
+
+	<element>zone_shipping</element>
+  	<install>	
+		<files>
+			<filename>zone_shipping.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	
+</install>

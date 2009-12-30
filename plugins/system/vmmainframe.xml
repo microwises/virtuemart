@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="system">
+	<name>System - VM Mainframe</name>
+	<author>VirtueMart Development Team</author>
+	<creationDate>September 2008</creationDate>
+	<copyright>Copyright (C) 2008 VirtueMart Development Team. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>soeren|-@-|virtuemart.net</authorEmail>
+	<authorUrl>www.virtuemart.net</authorUrl>
+	<version>1.0</version>
+	<description>Renders VirtueMart CSS and JS on non-VirtueMart Pages</description>
+	<files>
+		<filename plugin="vmmainframe">vmmainframe.php</filename>
+	</files>
+</install>

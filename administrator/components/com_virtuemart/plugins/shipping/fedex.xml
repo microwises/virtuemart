@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: fedex.xml 1567 2008-11-22 07:51:32Z soeren_nb $-->
+	<name>FedEx Shipping</name>
+	<author><![CDATA[Jay Powers / Soeren Eberhardt / Greg Perkins]]></author>
+	<creationdate>2004 Vermonster LLC</creationdate>
+	<copyright><![CDATA[Shade Tree Software]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail>jay@vermonster.com</authoremail>
+	<authorurl>http://www.vermonster.com/</authorurl>
+	<version>1.02</version>
+	<description>The FedEx shipping module.</description>
+
+	<element>fedex</element>
+  	<install>	
+		<files>
+			<filename>fedex.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params>
+		<param type="spacer" name="@spacer" default="JM_FEDEX_ACCOUNT_SETTINGS" />
+		<param label="JM_FEDEX_ACCOUNT_NUMBER" type="text" name="FEDEX_ACCOUNT_NUMBER" />
+		<param label="JM_FEDEX_METER_NUMBER" type="text" name="FEDEX_METER_NUMBER" description="JM_FEDEX_METER_NUMBER_TIP" />
+		<param label="JM_FEDEX_URI" type="text" name="FEDEX_URI" description="JM_FEDEX_URI_TIP" />
+		
+		<param type="spacer" name="@spacer" default="JM_FEDEX_TAXES_FEES" />
+		<param name="FEDEX_TAX_CLASS" label="JM_FEDEX_TAX_CLASS" description="JM_FEDEX_TAX_CLASS_TOOLTIP"
+			type="table_data_list" table="#__{vm}_tax_rate" valuefield="tax_rate_id" textfield="tax_rate" orderfield="tax_rate" />
+		<param label="JM_FEDEX_HANDLING_FEE" type="text" name="FEDEX_HANDLINGFEE" description="JM_FEDEX_HANDLING_FEE_TOOLTIP" />
+		
+		<param type="spacer" name="@spacer" default="JM_FEDEX_ADDITIONAL_SETTINGS" />
+		
+		<param label="JM_FEDEX_SERVICES" type="list" name="FEDEX_SERVICES" multiselect="1">
+			<option value="d01" >FedEx Priority Overnight</option>
+			<option value="d03" >FedEx 2Day</option>
+			<option value="d05" >FedEx Standard Overnight</option>
+			<option value="d06" >FedEx First Overnight</option>
+			<option value="d20" >FedEx Express Saver</option>
+			<option value="d70" >FedEx 1Day Freight</option>
+			<option value="d80" >FedEx 2Day Freight</option>
+			<option value="d83" >FedEx 3Day Freight</option>
+			<option value="d90" >FedEx Home Delivery</option>
+			<option value="d92" >FedEx Ground</option>
+			<option value="i01" >FedEx International Priority</option>
+			<option value="i03" >FedEx International Economy</option>
+			<option value="i06" >FedEx International First</option>
+			<option value="i57" >FedEx Europe First</option>
+			<option value="i70" >FedEx International Priority Freight</option>
+			<option value="i86" >FedEx International Economy Freight</option>
+			<option value="i92" >FedEx International Ground</option>
+		</param>
+		
+		<param name="FEDEX_SIGNATURE_OPTION" label="JM_FEDEX_SIGNATURE_OPTION" type="list" default="1">
+            <option value="1">JM_FEDEX_SIGNATURE_OPTION_1</option>
+            <option value="2">JM_FEDEX_SIGNATURE_OPTION_2</option>
+            <option value="3">JM_FEDEX_SIGNATURE_OPTION_3</option>
+            <option value="4">JM_FEDEX_SIGNATURE_OPTION_4</option>
+          </param>
+		  <param name="FEDEX_SORT_ORDER" label="JM_FEDEX_SORT_ORDER" type="list" default="DESC">
+            <option value="ASC">JM_FEDEX_SORT_ASC</option>
+            <option value="DESC">JM_FEDEX_SORT_DESC</option>
+          </param>
+	</params>
+</install>

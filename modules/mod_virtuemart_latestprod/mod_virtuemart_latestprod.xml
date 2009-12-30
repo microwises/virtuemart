@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Latest Products</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>Shows the latest products from VirtueMart.</description>
+	<files>
+		<filename module="mod_virtuemart_latestprod">mod_virtuemart_latestprod.php</filename>
+	</files>
+	<params>
+		<param name="max_items" type="text" default="2"
+			label="Number of displayed products"
+			description="This defines the number of products which will be displayed in the module." />
+		<param name="show_price" type="list" default="1"
+			label="Show Product Price?"
+			description="Defines wether the product price is displayed or not.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="show_addtocart" type="list" default="1"
+			label="Show Add-To-Cart Link?"
+			description="Defines wether the Add-To-Cart Link is displayed or not.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="display_style" type="list" default="vertical"
+			label="Diplay Style"
+			description="Here you can decide wether the products are shown in a horizontal or vertical list">
+			<option value="horizontal">Horizontal (1 Row)</option>
+			<option value="vertical">Vertical (1 Column)</option>
+			<option value="table">Table (X rows and Y columns)</option>
+		</param>
+		<param name="products_per_row" type="text" default="4"
+			label="Products per row"
+			description="Only when Table is selected: The Number of columns per row in the table for the product snapshots." />
+		<param name="category_id" type="text" default=""
+			label="Category ID"
+			description="Here you can set a category_id so that only products from this special Category are displayed. Just leave blank if you want to display from all categories." />
+		<param name="cache" type="radio" default="0"
+			label="Enable Cache"
+			description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="class_sfx" type="text" default=""
+			label="Menu Class Suffix"
+			description="A suffix to be applied to the css class of the menu items" />
+	</params>
+</install>

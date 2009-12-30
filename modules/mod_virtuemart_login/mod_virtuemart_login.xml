@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Login</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>greg|at|virtuemart.net</authorEmail>
+	<authorUrl>www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2007-2008 Greg Perkins. All rights reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>
+		This module provides login/logout functionality for VirtueMart .
+	</description>
+	<files>
+		<filename module="mod_virtuemart_login">mod_virtuemart_login.php</filename>
+	</files>
+	<params>
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module; this allows individual module styling." />
+		<param name="pretext" type="textarea" cols="30" rows="5"
+			default="" label="Pre-text"
+			description="This is the text or HTML that is displayed above the Login form." />
+		<param name="posttext" type="textarea" cols="30" rows="5"
+			label="Post-text"
+			description="This is the text or HTML that is displayed below the Login form." />
+		<param name="login" type="list" default="home"
+			label="Login redirection"
+			description="The page the user is redirected to after login.">
+			<option value="home">Joomla! Home Page</option>
+			<option value="vmhome">VirtueMart Home Page</option>
+			<option value="samepage">
+				Page from which the user logged in
+			</option>
+		</param>
+		<param name="logout" type="list" default="home"
+			label="Logout redirection"
+			description="The page the user is redirected to after logout.">
+			<option value="home">Joomla! Home Page</option>
+			<option value="vmhome">VirtueMart Home Page</option>
+			<option value="samepage">
+				Page from which the user logged out
+			</option>
+		</param>
+		<param name="greeting" type="radio" default="1" label="Greeting"
+			description="Show/Hide the simple greeting text.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="name" type="list" default="0" label="Name/Username"
+			description="Show the username or name in the greeting.">
+			<option value="0">Username</option>
+			<option value="1">Name</option>
+		</param>
+		<param name="accountlink" type="radio" default="1"
+			label="Account Maintenance Link"
+			description="Show/Hide the Account Maintenance link.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+	</params>
+</install>

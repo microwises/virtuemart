@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: usps.xml 1567 2008-11-22 07:51:32Z soeren_nb $ -->
+	<name>USPS Shipping Module</name>
+	<author><![CDATA[Corey Koltz]]></author>
+	<creationdate>June 2007</creationdate>
+	<copyright><![CDATA[JMart Project]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail>n/a</authoremail>
+	<authorurl>http://www.usps.com/</authorurl>
+	<version>3.0 (2007/06/21)</version>
+	<description>The USPS&#174; Shipping module.</description>
+
+	<element>usps</element>
+  	<install>	
+		<files>
+			<filename>usps.php</filename>
+		</files>
+		<languages>
+			<language>english.php</language>
+		</languages>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params>
+		<param type="text" name="USPS_USERNAME" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME" description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_USERNAME_TOOLTIP" default="Xxxxx" />
+		<param type="password" name="USPS_PASSWORD" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD" description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PASSWORD_TOOLTIP" />
+		
+		<param type="text" name="USPS_SERVER" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_SERVER_TOOLTIP" default="Production.ShippingAPIs.com" />
+		<param type="text" name="USPS_PATH" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP" default="/ShippingAPI.dll" />
+
+		<param name="USPS_PACKAGESIZE" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE" 
+				description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE_TOOLTIP" type="list" default="REGULAR">
+            <option value="REGULAR">Regular</option>
+            <option value="LARGE">Large</option>
+            <option value="OVERSIZE">Oversize</option>
+          </param>
+		<param name="USPS_TAX_CLASS" label="PHPSHOP_UPS_TAX_CLASS" description="PHPSHOP_UPS_TAX_CLASS_TOOLTIP"
+			type="table_data_list" table="#__{vm}_tax_rate" valuefield="tax_rate_id" textfield="tax_rate" orderfield="tax_rate" />
+
+		<param label="PHPSHOP_USPS_HANDLING_FEE" type="text" name="USPS_HANDLINGFEE" description="PHPSHOP_USPS_HANDLING_FEE_TOOLTIP" />
+		
+		<param type="spacer" name="@spacer" />
+		
+		<param type="text" name="USPS_PADDING" label="PHPSHOP_USPS_PADDING" 
+			description="PHPSHOP_USPS_PADDING_TOOLTIP" default="15%" />
+
+		<param type="text" name="USPS_INTLLBRATE" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLLBRATE_TOOLTIP" default="0" />
+
+		<param type="text" name="USPS_INTLHANDLINGFEE" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP" default="0" />
+
+		<param type="text" name="USPS_INTLHANDLINGFEE" label="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE" 
+			description="PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_INTLHANDLINGFEE_TOOLTIP" default="0" />
+	
+		<param name="USPS_MACHINABLE" label="_JM_LANG_USPS_MACHINABLE" type="radio" default="0" description="_JM_LANG_USPS_MACHINABLE_TOOLTIP">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="USPS_SHOW_DELIVERY_QUOTE" label="_JM_LANG_USPS_QUOTE" type="radio" default="0" description="_JM_LANG_USPS_QUOTE_TOOLTIP">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+	
+		<param name="@spacer" type="spacer" default="_JM_LANG_USPS_SHIP" />
+		
+	<!-- added for new shipping rate V2 code ... Domestic Shipping-->
+	
+		<param name="USPS_SHIP1" label="_JM_LANG_USPS_SHIP1" type="radio" default="1" description="_JM_LANG_USPS_SHIP1">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP2" label="_JM_LANG_USPS_SHIP2" type="radio" default="0" description="_JM_LANG_USPS_SHIP2">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP3" label="_JM_LANG_USPS_SHIP3" type="radio" default="1" description="_JM_LANG_USPS_SHIP3">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP4" label="_JM_LANG_USPS_SHIP4" type="radio" default="0" description="_JM_LANG_USPS_SHIP4">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP5" label="_JM_LANG_USPS_SHIP5" type="radio" default="0" description="_JM_LANG_USPS_SHIP5">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP6" label="_JM_LANG_USPS_SHIP6" type="radio" default="1" description="_JM_LANG_USPS_SHIP6">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP7" label="_JM_LANG_USPS_SHIP7" type="radio" default="1" description="_JM_LANG_USPS_SHIP7">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP8" label="_JM_LANG_USPS_SHIP8" type="radio" default="0" description="_JM_LANG_USPS_SHIP8">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP9" label="_JM_LANG_USPS_SHIP9" type="radio" default="0" description="_JM_LANG_USPS_SHIP9">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>	
+		<param name="USPS_SHIP10" label="_JM_LANG_USPS_SHIP10" type="radio" default="0" description="_JM_LANG_USPS_SHIP10">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		
+		<param name="@spacer" type="spacer" default="_JM_LANG_USPS_INTL" />
+	
+		<!-- added for new shipping rate V2 code ... International Shipping -->
+		<param name="USPS_INTL1" label="_JM_LANG_USPS_INTL1" type="radio" default="1" description="_JM_LANG_USPS_INTL1">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL2" label="_JM_LANG_USPS_INTL2" type="radio" default="0" description="_JM_LANG_USPS_INTL2">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL3" label="_JM_LANG_USPS_INTL3" type="radio" default="1" description="_JM_LANG_USPS_INTL3">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL4" label="_JM_LANG_USPS_INTL4" type="radio" default="0" description="_JM_LANG_USPS_INTL4">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL5" label="_JM_LANG_USPS_INTL5" type="radio" default="1" description="_JM_LANG_USPS_INTL5">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL6" label="_JM_LANG_USPS_INTL6" type="radio" default="0" description="_JM_LANG_USPS_INTL6">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL7" label="_JM_LANG_USPS_INTL7" type="radio" default="0" description="_JM_LANG_USPS_INTL7">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		<param name="USPS_INTL8" label="_JM_LANG_USPS_INTL8" type="radio" default="0" description="_JM_LANG_USPS_INTL8">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+	</params>
+</install>

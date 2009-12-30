@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<install version="1.5" type="plugin" group="content">
+	<name>VirtueMart Product Snapshot</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>Show Product Snapshots in Content (Let's you add/edit snapshots of products in your VirtueMart. Enter multiple products by separating them with a |.)</description>
+	<files>
+		<filename plugin="vmproductsnapshots">vmproductsnapshots.php</filename>
+	</files>
+	<params>
+		<param name="enabled" type="radio" default="1"
+			label="Enable Plugin" description="Enable this plugin.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="showname" type="radio" default="n"
+			label="Show product name?"
+			description="Defines whether or not to show the name of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showimage" type="radio" default="n"
+			label="Show product thumbnail?"
+			description="Defines whether or not to show the thumbnail of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showdesc" type="radio" default="n"
+			label="Show product short description?"
+			description="Defines whether or not to show the short description of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="showprice" type="radio" default="n"
+			label="Show product price?"
+			description="Defines whether or not to show the price of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="quantity" type="text" default="1"
+			label="How many to add to cart?"
+			description="Used when showaddtocart equals y" />
+		<param name="showaddtocart" type="radio" default="n"
+			label="Show 'add to cart' link?"
+			description="Defines whether or not to show the price of the product">
+			<option value="n">No</option>
+			<option value="y">Yes</option>
+		</param>
+		<param name="displayeach" type="radio" default="h"
+			label="Display orientation for product info"
+			description="Defines the orientation of the display of product name, image etc for each product">
+			<option value="h">Horizontal</option>
+			<option value="v">Vertical</option>
+		</param>
+		<param name="displaylist" type="radio" default="v"
+			label="Display orientation for each product"
+			description="Defines the orientation of the display each product. Only applies if there is more than one product in the snapshot (for multiple products enter the ids separated by |)">
+			<option value="h">Horizontal</option>
+			<option value="v">Vertical</option>
+		</param>
+	</params>
+</install>

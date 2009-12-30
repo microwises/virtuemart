@@ -1,0 +1,35 @@
+<install type="payment" version="1.2.0">	
+	<name>Paymate</name>
+	<author><![CDATA[JMart Project]]></author>
+	<creationdate>2005</creationdate>
+	<copyright><![CDATA[2005 JMart Project]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail></authoremail>
+	<authorurl>http://paymate.com</authorurl>
+	<version>1.0</version>
+	<description><![CDATA[<a href="http://paymate.com" target="_blank">Paymate</a> is an Australian online payment company.]]></description>
+
+	<!-- Payment Method Type Codes:
+	N: no processing (=manual processing like "purchase order" or "Cash on Delivery")
+	P: PayPal-like (Shows HTML Code to the customer - you may use a <form> to redirect the customer to the Payment Gateway (used for PayPal, Worldpay, 2Checkout etc))
+	C: Credit Card (only collect the CC data, manual processing)
+	Y: Automatic Credit Card Processor (authorize.net, eWay)
+	-->
+	<type>P</type>
+	<is_creditcard>0</is_creditcard>
+	<element>paymate</element>
+  	<install>	
+		<files>
+			<filename>paymate.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params>
+		<param type="text" name="PAYMATE_USERNAME" label="PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME"
+             default="username" description="PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN" />
+	</params>
+</install>

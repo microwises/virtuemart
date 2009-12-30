@@ -1,0 +1,190 @@
+/**
+* This file holds styles for the frontend administration
+* (most of the were copied from the default backend template in J! 1.0.x)
+* This file is not to be included in the frontend main site (index.php), but in the
+* "frontend without modules and stuff" - index2.php
+*/
+table#toolbar {
+	margin-right: 10px;
+	margin-bottom: 10px;
+	float: right;
+
+}
+
+table#toolbar a.toolbar {
+	color : #808080;
+	text-decoration : none;
+	display: block;
+	border: 1px solid #DDD;
+	width: 55px;
+	height: 85%;
+	padding: 2px 1px 2px 1px;
+}
+table#toolbar a.toolbar:hover {
+	color : #C64934;
+	border: 1px solid #c24733;
+	background-color: #f1e8e6;
+	padding: 3px 0px 1px 2px;
+}
+table#toolbar a.toolbar:active {
+	color : #FF9900;
+}
+.pagenav {
+	font-size : 10px;
+}
+a.pagenav {
+	color : #808080;
+	font-size : 10px;
+	text-decoration : underline;
+}
+a.pagenav:hover {
+	color : #FFF;
+	font-size : 10px;
+}
+a.pagenav:active {
+	color : #333;
+	font-size : 10px;
+}
+.sectionname {
+	color : #FF9900;
+	font-family : Arial, Helvetica, sans-serif;
+	font-size : 18px;
+	font-weight: bold;
+}
+
+#cpanel { 
+	text-align: center; 
+	vertical-align: middle; 
+}
+
+#cpanel div.icon   { 
+	margin: 3px; 
+}
+#cpanel div.icon a { 
+	display: block; 
+	height: 93px !important;
+	height: 95px; 
+	width: 108px !important;
+	width: 110px; 
+	vertical-align: middle; 
+	text-decoration : none;
+	border: 1px solid #DDD;
+	padding: 2px 5px 1px 5px;
+}
+
+#cpanel div.icon a:link    { 
+	color : #808080; 
+}
+#cpanel div.icon a:hover   { 
+	color : #333; 
+	background-color: #f1e8e6;  
+	border: 1px solid #c24733;
+	padding: 3px 4px 0px 6px; 
+}
+#cpanel div.icon a:active  { 
+	color : #808080; 
+}
+#cpanel div.icon a:visited { 
+	color : #808080; 
+}
+
+#cpanel div.iconimage { 
+	padding-top: 13px; 
+}
+/* standard list style table */
+table.adminlist {
+	background-color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #ddd;
+	border-spacing: 0px;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.adminlist th {
+	margin: 0px;
+	padding: 6px 4px 2px 4px;
+	height: 25px;
+	background: url(../images/background.jpg);
+	background-repeat: repeat;
+	font-size: 11px;
+	color: #000;
+}
+table.adminlist th.title {
+	text-align: left;
+}
+
+table.adminlist th a:link, table.adminlist th a:visited {
+	color: #c64934;
+	text-decoration: none;
+}
+
+table.adminlist th a:hover {
+	text-decoration: underline;
+}
+
+table.adminlist tr.row0 {
+	background-color: #F9F9F9;
+}
+table.adminlist tr.row1 {
+	background-color: #FFF;
+}
+table.adminlist td {
+	border-bottom: 1px solid #e5e5e5;
+	padding: 4px;
+}
+table.adminlist tr.row0:hover {
+	background-color: #f1f1f1;
+}
+table.adminlist tr.row1:hover {
+	background-color: #f1f1f1;
+}
+table.adminlist td.options {
+	background-color: #ffffff;
+	font-size: 8px;
+}
+select.options, input.options {
+	font-size: 8px;
+	font-weight: normal;
+	border: 1px solid #999999;
+}
+/* standard form style table */
+table.adminform {
+	background-color: #f9f9f9;
+	border: solid 1px #d5d5d5;
+	width: 100%;
+	padding: 10px;
+	border-collapse: collapse;
+}
+table.adminform tr.row0 {
+	background-color: #f9f9f9;
+}
+table.adminform tr.row1 {
+	background-color: #eeeeee;
+}
+table.adminform th {
+	font-size: 11px;
+	padding-top: 6px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	text-align: left;
+	height: 25px;
+	background: url(../images/background.jpg);
+	color: #000;
+	background-repeat: repeat;
+}
+table.adminform td {
+	padding: 3px;
+	text-align: left;
+}
+table.adminform td.editor {
+	font-size: 9px;
+} 
+
+iframe.hidden {
+	visibility: hidden;
+	width:0px;
+	height:0px;
+}

@@ -1,0 +1,142 @@
+#content-box {
+	background: url(../images/j_border.png) 0 0 repeat-y;
+}
+
+#content-box2 {
+	background: url(../images/j_border.png) 100% 0 repeat-y;
+}
+
+#content-box3 {
+	background: url(../images/j_border.png) 100% 0 repeat-y;
+}
+
+#content-pad {
+	padding: 0;
+}
+
+#content-pad2 {
+	padding: 0;
+}
+
+.spacer {
+	height: 10px;
+	overflow: hidden;
+}
+
+.content-area {
+	float: right;
+	width: 80%;
+
+}
+
+.content-area-full {
+	clear: both;
+	float: none;
+	width: 100%;
+}
+
+.content-area .content-pad .content-pad2 {
+	padding-left: 10px;
+}
+
+.content-area-full .content-pad .content-pad2 {
+	padding: 0;
+}
+.section-smenu {
+	background: #F7F7F7;
+}
+
+.title-smenu, .title-smenu-down {
+	margin: 0;
+	border: 1px solid #ccc;
+	background: 5px 50% no-repeat;
+	padding: 4px;
+	text-indent: 15px;
+	margin-bottom: 1px;
+	color: #666;
+	cursor: pointer;
+	font-size: 10px;
+}
+.title-smenu {
+ background-image: url(../images/j_arrow.gif) ;
+ background-color: #EBEBEB;
+}
+.title-smenu-down {
+	color: black;
+ 	background-image: url(../images/j_arrow_down.gif) ;
+ 	background-color: #D2D2D2;
+ 	border: 1px solid #333;
+}
+div.status-divider {
+	clear:left;
+	height: 1px !important;
+	height: 3px;
+	overflow: hidden;
+}
+.sidemenu-box {
+	background: #F7F7F7;
+	float: left;
+	width: 200px;
+}
+.sidemenu-box2 {
+	background: #F7F7F7;
+	float: left;
+	width: 100%;
+}
+
+.sidemenu-pad {
+	padding: 0;
+	margin-bottom: 0 !Important;
+}
+
+.element-box {
+	background: #fff;
+}
+
+.element-pad {
+	padding: 10px;
+}
+
+.extra-padding {
+	padding: 10px;
+}
+
+.sidemenu-box ul {
+	margin: 0;
+	padding: 0;
+}
+
+.sidemenu-box ul li {
+	list-style: none;
+	padding-left: 24px;
+	line-height: 20px;
+	background-position: 2px 2px;
+}
+
+.sidemenu-box ul li.divider {
+	background: none;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #eee;
+	height: 2px;
+	overflow: hidden;
+	margin: 5px 0;
+}
+
+.sidemenu-box li a {
+	color: #666;
+	font-weight: bold;
+}
+
+.sidemenu-box li a:hover {
+	color: #0B55C4;
+	text-decoration: none;
+}
+
+.sidemenu-box h2 {
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0;
+	padding: 0 5px;
+	color: #0B55C4;
+	margin-bottom: 5px;
+}

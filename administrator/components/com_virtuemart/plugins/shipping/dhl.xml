@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: dhl.xml 1567 2008-11-22 07:51:32Z soeren_nb $-->
+	<name>DHL Shipping</name>
+	<author><![CDATA[Mike Durian]]></author>
+	<creationdate>January 2006</creationdate>
+	<copyright><![CDATA[Shade Tree Software]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail>durian@shadetreesoftware.com</authoremail>
+	<authorurl>http://prodiag-hd.com/</authorurl>
+	<version>1.0</version>
+	<description>The DHL Shipping module.</description>
+
+	<element>dhl</element>	
+  	<install>	
+		<files>
+			<filename>dhl.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	<params>
+		<param type="text" name="DHL_ID" label="PHPSHOP_SHIPPING_METHOD_DHL_ID" description="PHPSHOP_SHIPPING_METHOD_DHL_ID_TOOLTIP" default="Xxxxx" />
+		<param type="password" name="DHL_PASSWORD" label="PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_PASSWORD_TOOLTIP" />
+			
+		<param type="text" name="DHL_DOMESTIC_SHIPPING_KEY" label="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_SHIPPING_KEY_TOOLTIP" default="A long hex value" />
+		<param type="text" name="DHL_INTERNATIONAL_SHIPPING_KEY" label="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_SHIPPING_KEY_TOOLTIP" default="A long hex value" />	
+			
+		<param type="text" name="DHL_ACCOUNT_NUMBER" label="PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_ACCOUNT_NUMBER_TOOLTIP" default="Account Number" />	
+
+		<param type="text" name="DHL_TOO_LATE" label="PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP" default="1600" />	
+		<param name="DEBUG" label="PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE" type="radio" default="0" description="PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="DHL_EXPRESS_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="DHL_NEXT_AFTERNOON_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		
+		<param name="DHL_SECOND_DAY_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="DHL_GROUND_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+
+		<param name="DHL_1030_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+	
+		<param name="DHL_SATURDAY_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+	
+		<param name="DHL_INTERNATIONAL_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED" type="radio" default="TRUE" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED_TOOLTIP">
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
+		</param>
+		
+		<param name="DHL_DOMESTIC_PACKAGE" label="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE" type="radio" default="P" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE_TOOLTIP">
+            <option value="L">PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER</option>
+			<option value="P">PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_PACKAGE</option>
+		</param>
+		
+		<param name="DHL_INTERNATIONAL_PACKAGE" label="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE" type="radio" default="O" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_PACKAGE_TOOLTIP">
+            <option value="L">PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_LETTER</option>
+			<option value="P">PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_DHL_PACKAGE</option>
+			<option value="O">PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_OTHER</option>
+		</param>
+
+		<param type="text" name="DHL_CONTENT_DESC" label="PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_CONTENT_DESC_TOOLTIP" default="Write Something..." />	
+
+		<param type="text" name="DHL_PACKAGE_WEIGHT" label="PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_PACKAGE_WEIGHT_TOOLTIP" default="1.0" />	
+
+		<param name="DHL_DUTY_SHOPPER_GROUP" label="PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP" description="PHPSHOP_SHIPPING_METHOD_DHL_DUTY_SHOPPER_GROUP_TOOLTIP"
+		type="table_data_list" table="#__{vm}_shopper_group" valuefield="shopper_group_id" textfield="shopper_group_name" orderfield="default" sorting="DESC" />
+		
+		<param name="DHL_ADDITIONAL_PROTECTION" label="PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION" type="radio" default="P" 
+				description="PHPSHOP_SHIPPING_METHOD_DHL_ADDITIONAL_PROTECTION_TOOLTIP">
+            <option value="AP">PHPSHOP_SHIPPING_METHOD_DHL_ASSET_PROTECTION</option>
+			<option value="NR">PHPSHOP_SHIPPING_METHOD_DHL_NOT_REQUIRED</option>
+		</param>
+	
+			
+		<param name="DHL_INSURANCE_SHOPPER_GROUP" label="PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP" description="PHPSHOP_SHIPPING_METHOD_DHL_INSURANCE_SHOPPER_GROUP_TOOLTIP"
+		type="table_data_list" table="#__{vm}_shopper_group" valuefield="shopper_group_id" textfield="shopper_group_name" orderfield="default" sorting="DESC" />
+		
+		<param type="text" name="DHL_INSURANCE_RATE_DOMESTIC_FLAT" label="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_INSURANCE_TOOLTIP" default="100.00" />	
+	
+		<param type="text" name="DHL_INSURANCE_RATE_INTERNATIONAL" label="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_INSURANCE_TOOLTIP" default="9.07" />	
+			
+		<param name="DHL_TAX_CLASS" label="PHPSHOP_UPS_TAX_CLASS" description="PHPSHOP_UPS_TAX_CLASS_TOOLTIP"
+		type="table_data_list" table="#__{vm}_tax_rate" valuefield="tax_rate_id" textfield="tax_rate" orderfield="tax_rate" />
+	
+		<param name="@spacer" type="spacer" />		
+
+		<param type="text" name="DHL_HANDLING_FEE" label="PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE" 
+			description="PHPSHOP_SHIPPING_METHOD_DHL_HANDLING_FEE_TOOLTIP" default="2.50" />
+
+	</params>
+</install>
+

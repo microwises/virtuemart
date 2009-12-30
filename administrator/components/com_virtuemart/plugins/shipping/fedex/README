@@ -1,0 +1,76 @@
+README
+$Id: README 1510 2008-08-08 19:11:42Z soeren_nb $
+
+This PHP library provides an interface to FedEx's Ship Manager Direct API.  Using this
+class you will be able to send and receive data to any of FedEx's Ship Manager Direct API
+transaction types.  If you are looking for an easy way to track, ship, rate ... with FedEx
+using PHP you have come to the right place.  If you are looking for a Perl version
+we have that also on CPAN.
+http://search.cpan.org/search?query=DirectConnect&mode=modules
+
+This library is an alternative to using the FedEx Ship Manager API ATOM product.
+The main advantage is you will no longer need to install the JRE dependant API
+provided by FedEx.  Instead, data is POST(ed) directly to the FedEx
+transaction servers via the Internet.
+
+When using this module please keep in mind FedEx will occasionally change some of the
+transaction codes for their API.  This should not break existing code, but it is a good idea
+to check out changes when possible.  I document all the changes in a "CHANGES" log.
+
+To submit a transaction to FedEx's API server you must be registered with FedEx.  You also
+must have a valid FedEx Account Number.  Once you are registered and have
+an account you must send a subscribe() request to FedEx containing your FedEx account number
+and contact information.  This request will provide you with a meter number.  The meter number
+will be used to send live shipping transactions to FedEx.
+There is an example of the subscribe() request below. 
+
+FedEx has two API servers a live one for real transaction and a beta
+for testing.  I will no longer be able to distribute the addresses of FedEx's APIs.
+You should register with FedEx to obtain this information.  http://www.fedex.com/globaldeveloper/shipapi/
+
+If you are looking for consulting services relating to this module please contact Vermonster LLC
+http://www.vermonster.com/contact/.  We can help ease the integration process and get up and
+running quickly.
+
+Tracking request do not require Account#/Meter#
+
+You will need to subscribe to each server you intend to use.  FedEx will also require you
+to send a batch of defined data to their live server in order to become certified for live
+label creation.
+
+Please refer to the FedEx documentation at http://www.fedex.com/globaldeveloper/shipapi/
+Here you will find more information about using the FedEx API.
+
+Here is a sample Subscription Transaction
+
+    #new object with account#
+    $fed = new FedExDC('#########');
+
+    $aRet = $fed->subscribe(
+    array(
+        1 => 'unique12345',
+        4003 => 'John Doe',
+        4008 => '123 Main St',
+        4011 => 'Boston',
+        4012 => 'MA',
+        4013 => '02116',
+        4014 => 'US',
+        4015 => '6175551111',
+    ));
+
+    print_r($aRet);
+
+This call will return a FedEx Meter number so you can use the FedEx API.  The meter number
+will be referenced in field 498.  $aRet[498];  Or you can use the lookup function and pass a
+field name:
+# pass field name
+echo $fed->lookup('meter_number');
+
+Questions, Comments
+
+Jay Powers
+jay@vermonster.com
+
+Vermonster LLC
+312 Stuart St.
+Boston, MA 02116

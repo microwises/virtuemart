@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Module</name>
+	<creationDate>April 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>
+		Shows VirtueMart categories, the shopping cart, a product search field,
+		an administration link, an account maintenance link and a link
+		to the download page.
+	</description>
+	<files>
+		<filename module="mod_virtuemart">mod_virtuemart.php</filename>
+		<filename>JSCookTree.js</filename>
+		<filename>vm_JSCook.php</filename>
+		<filename>vm_dtree.php</filename>
+		<filename>vm_tigratree.php</filename>
+		<filename>vm_transmenu.php</filename>
+		<filename>ThemeNavy/close.gif</filename>
+		<filename>ThemeNavy/index.html</filename>
+		<filename>ThemeNavy/open.gif</filename>
+		<filename>ThemeNavy/theme.css</filename>
+		<filename>ThemeNavy/theme.js</filename>
+		<filename>ThemeXP/darrow.png</filename>
+		<filename>ThemeXP/folder1.gif</filename>
+		<filename>ThemeXP/folder2.gif</filename>
+		<filename>ThemeXP/folderopen1.gif</filename>
+		<filename>ThemeXP/folderopen2.gif</filename>
+		<filename>ThemeXP/home.gif</filename>
+		<filename>ThemeXP/index.html</filename>
+		<filename>ThemeXP/join.gif</filename>
+		<filename>ThemeXP/joinbottom.gif</filename>
+		<filename>ThemeXP/line.gif</filename>
+		<filename>ThemeXP/minus.gif</filename>
+		<filename>ThemeXP/minusbottom.gif</filename>
+		<filename>ThemeXP/page.gif</filename>
+		<filename>ThemeXP/plus.gif</filename>
+		<filename>ThemeXP/plusbottom.gif</filename>
+		<filename>ThemeXP/spacer.gif</filename>
+		<filename>ThemeXP/theme.css</filename>
+		<filename>ThemeXP/theme.js</filename>
+		<filename>dtree/dtree.css</filename>
+		<filename>dtree/dtree.js</filename>
+		<filename>dtree/img/base.gif</filename>
+		<filename>dtree/img/cd.gif</filename>
+		<filename>dtree/img/empty.gif</filename>
+		<filename>dtree/img/folder.gif</filename>
+		<filename>dtree/img/folderopen.gif</filename>
+		<filename>dtree/img/globe.gif</filename>
+		<filename>dtree/img/imgfolder.gif</filename>
+		<filename>dtree/img/index.html</filename>
+		<filename>dtree/img/join.gif</filename>
+		<filename>dtree/img/joinbottom.gif</filename>
+		<filename>dtree/img/line.gif</filename>
+		<filename>dtree/img/minus.gif</filename>
+		<filename>dtree/img/minusbottom.gif</filename>
+		<filename>dtree/img/musicfolder.gif</filename>
+		<filename>dtree/img/nolines_minus.gif</filename>
+		<filename>dtree/img/nolines_plus.gif</filename>
+		<filename>dtree/img/page.gif</filename>
+		<filename>dtree/img/plus.gif</filename>
+		<filename>dtree/img/plusbottom.gif</filename>
+		<filename>dtree/img/question.gif</filename>
+		<filename>dtree/img/trash.gif</filename>
+		<filename>dtree/index.html</filename>
+		<filename>tigratree/icons/base.gif</filename>
+		<filename>tigratree/icons/empty.gif</filename>
+		<filename>tigratree/icons/folder.gif</filename>
+		<filename>tigratree/icons/folderopen.gif</filename>
+		<filename>tigratree/icons/index.html</filename>
+		<filename>tigratree/icons/join.gif</filename>
+		<filename>tigratree/icons/joinbottom.gif</filename>
+		<filename>tigratree/icons/line.gif</filename>
+		<filename>tigratree/icons/minus.gif</filename>
+		<filename>tigratree/icons/minusbottom.gif</filename>
+		<filename>tigratree/icons/page.gif</filename>
+		<filename>tigratree/icons/plus.gif</filename>
+		<filename>tigratree/icons/plusbottom.gif</filename>
+		<filename>tigratree/index.html</filename>
+		<filename>tigratree/tree.js</filename>
+		<filename>tigratree/tree_tpl.js.php</filename>
+		<filename>vm_transmenu/Shop_Menu.php</filename>
+		<filename>vm_transmenu/img/arrow.gif</filename>
+		<filename>vm_transmenu/img/arrow.png</filename>
+		<filename>vm_transmenu/img/grey-40.png</filename>
+		<filename>vm_transmenu/img/menu_bg.png</filename>
+		<filename>vm_transmenu/img/tabarrow.gif</filename>
+		<filename>vm_transmenu/img/tabarrow.png</filename>
+		<filename>vm_transmenu/img/white-90.png</filename>
+		<filename>vm_transmenu/img/x.gif</filename>
+		<filename>vm_transmenu/transmenu.js</filename>
+		<filename>vm_transmenu/transmenu.php</filename>
+		<filename>vm_transmenu/transmenuh.css</filename>
+		<filename>vm_transmenu/transmenuv.css</filename>
+
+	</files>
+	<params>
+		<param name="class_sfx" type="text" default=""
+			label="Menu Class Suffix"
+			description="A suffix to be applied to the css class of the menu items" />
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="pretext" type="text" default="" label="Pre-text"
+			description="This is the Text or HTML that is displayed above the category listing" />
+		<param name="show_login_form" type="radio" default="no"
+			label="Show a Login Form for the customers?"
+			description="Defines wether a Login Module is displayed or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_categories" type="radio" default="yes"
+			label="Show the Product Categories?"
+			description="Defines wether the Product Categories are displayed in the Module or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_listall" type="radio" default="yes"
+			label="Show List All - link?"
+			description="Defines wether a link to list all products is displayed or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_adminlink" type="radio" default="yes"
+			label="Show Administrator Link?"
+			description="Defines wether the administrator link is displayed under the product browser.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_accountlink" type="radio" default="yes"
+			label="Show Account Link?"
+			description="Defines wether the account link is displayed under the product browser.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="useGreyBox_accountlink" type="radio" default="0"
+			label="Open the Account Maintenance in a GreyBox?"
+			description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="show_minicart" type="radio" default="yes"
+			label="Show Mini Cart?"
+			description="Defines wether the mini cart with a link to the cart and the actual total $ is displayed or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="useGreyBox_cartlink" type="radio" default="0"
+			label="Open the Cart in a GreyBox?"
+			description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="show_productsearch" type="radio" default="yes"
+			label="Show Product Search Field?"
+			description="Defines wether a product search field is displayed or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_product_parameter_search" type="radio"
+			default="no" label="Show Product Parameter Search Field?"
+			description="Shows a link to the Product Parameter Search Form (advanced search!).">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="menutype" type="list" default="links"
+			label="Category display type"
+			description="You can set the display type to *links* to have the default display type: a link list. If you set it to *dTree*, the categories will be displayed in a dTree structure.">
+			<option value="links">Link List</option>
+			<option value="tigratree">TigraTree</option>
+			<option value="jscook">JSCook</option>
+			<option value="transmenu">TransMenu</option>
+			<option value="dtree">dTree</option>
+		</param>
+		<param name="jscook_type" type="list" default="menu"
+			label="JSCook Type"
+			description="The Style for Displaying the categories: Menu or Tree">
+			<option value="menu">Menu</option>
+			<option value="tree">Tree</option>
+		</param>
+		<param name="jscookMenu_style" type="text" default="ThemeOffice"
+			label="JSCookMenu Style"
+			description="The Style for the JSCookMenu. Only fill in when you have selected JSCookMenu as Display Style" />
+		<param name="menu_orientation" type="list" default="hbr"
+			label="JSCookMenu Orientation"
+			description="If you choose JSCookMenu: Either let it display horizontal or vertical!">
+			<option value="hbr">Horizontal</option>
+			<option value="vbr">Vertical</option>
+		</param>
+		<param name="jscookTree_style" type="text" default="ThemeXP"
+			label="JSCookTree Style"
+			description="The Style for the JSCookTree. Only fill in when you have selected JSCookTree as Display Style" />
+		<param name="root_label" type="text" default="Shop"
+			label="Label of the dTree Root"
+			description="Whatever you fill in here: it will be displayed in the root of the dTree." />
+	</params>
+</install>

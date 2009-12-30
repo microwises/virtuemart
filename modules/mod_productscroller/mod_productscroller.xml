@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Product Scroller</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2005-2008 Soeren Eberhardt-Biermann. All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>Displays a product scroller.</description>
+	<files>
+		<filename module="mod_productscroller">mod_productscroller.php</filename>
+	</files>
+	<params>
+		<param name="pretext" type="text" default="" label="Pre-Text"
+			description="This text will be displayed just above the Scroller." />
+		<param name="NumberOfProducts" type="text" default="5"
+			label="Number of Products"
+			description="The Number of Products that are member of the Scrollshow" />
+		<param name="featuredProducts" type="radio" default="no"
+			label="Featured Products Only"
+			description="Display only products that are featured (marked special)">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="ScrollSortMethod" type="radio" default="random"
+			label="In which Order the products shall be displayed?"
+			description="Defines the display order of the products.">
+			<option value="newest">Newest</option>
+			<option value="oldest">Oldest</option>
+			<option value="random">Random</option>
+		</param>
+		<param name="show_product_name" type="radio" default="yes"
+			label="Show Product Name?"
+			description="Defines wether the Name of the shown Product is displayed or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_addtocart" type="radio" default="yes"
+			label="Show Add-To-Cart Link?"
+			description="Defines wether an Add-To-Cart Link is shown under the Product Image or not.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="show_price" type="radio" default="yes"
+			label="Show Prices?"
+			description="Show or Hide the prices for the displayed Products">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="ScrollHeight" type="text" default="125"
+			label="Scroll Height" description="Adjusts the scroll height." />
+		<param name="ScrollWidth" type="text" default="150"
+			label="Scroll Width" description="Adjusts the scroll width." />
+		<param name="ScrollBehavior" type="list" default="scroll"
+			label="Scroll Behavior"
+			description="This should be left at scroll, unless you have a good reason to change it. The other options are there for completeness.">
+			<option value="scroll">Scroll</option>
+			<option value="slide">Slide</option>
+			<option value="alternate">Alternate</option>
+		</param>
+		<param name="ScrollDirection" type="list" default="up"
+			label="Scroll Direction"
+			description="Adjusts the scroll direction.">
+			<option value="up">Scroll Up</option>
+			<option value="down">Scroll Down</option>
+			<option value="left">Scroll Left</option>
+			<option value="right">Scroll Right</option>
+		</param>
+		<param name="ScrollAmount" type="list" default="scroll"
+			label="Scroll Amount"
+			description="Controls the amount of lines the scroller jumps.">
+			<option value="1">1 line</option>
+			<option value="2">2 lines</option>
+			<option value="3">3 lines</option>
+			<option value="4">4 lines</option>
+			<option value="5">5 lines</option>
+		</param>
+		<param name="ScrollDelay" type="text" default="80"
+			label="Scroll Delay"
+			description="Controls the speed of the scroller. The lower the number the faster the Scroller scrolls." />
+		<param name="ScrollAlign" type="list" default="left"
+			label="Scroll Align"
+			description="Align the table position of your content items.">
+			<option value="left">Left Align</option>
+			<option value="right">Right Align</option>
+			<option value="center">Center Align</option>
+			<option value="justify">Justify Align</option>
+		</param>
+		<param name="ScrollSpaceChar" type="text" default="&amp;nbsp;"
+			label="Scroll SpaceChar"
+			description="The HTML space character to use when scrolling left or right. Default is: space character [&amp;nbsp;]" />
+		<param name="ScrollSpaceCharTimes" type="list" default="5"
+			label="Scroll SpaceChar Times"
+			description="The amount of times to display the Scroll SpaceChar.">
+			<option value="1">1 time</option>
+			<option value="2">2 times</option>
+			<option value="3">3 times</option>
+			<option value="4">4 times</option>
+			<option value="5">5 times</option>
+			<option value="6">6 times</option>
+			<option value="7">7 times</option>
+			<option value="8">8 times</option>
+			<option value="9">9 times</option>
+			<option value="10">10 times</option>
+		</param>
+		<param name="ScrollLineChar" type="list" default="&lt;br /&gt;"
+			label="Scroll LineChar"
+			description="The HTML line character to use when scrolling up or down. Default is: break [br] ">
+			<option value="&lt;br /&gt;">HTML Break</option>
+			<option value="&lt;hr /&gt;">HTML Horizontal Rule</option>
+		</param>
+		<param name="ScrollLineCharTimes" type="list" default="2"
+			label="Scroll LineChar Times"
+			description="The amount of times to display the Scroll LineChar.">
+			<option value="1">1 time</option>
+			<option value="2">2 times</option>
+			<option value="3">3 times</option>
+			<option value="4">4 times</option>
+			<option value="5">5 times</option>
+			<option value="6">6 times</option>
+			<option value="7">7 times</option>
+			<option value="8">8 times</option>
+			<option value="9">9 times</option>
+			<option value="10">10 times</option>
+		</param>
+		<param name="ScrollCSSOverride" type="list" default="no"
+			label="Override CSS"
+			description="Overrides your sites basic default CSS elements and enables the mammemters below. This must be set to yes to use the setting below.">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="ScrollTextAlign" type="list" default="left"
+			label="Scroll Text Align"
+			description="Align the text output of your content items.">
+			<option value="left">Left Align</option>
+			<option value="right">Right Align</option>
+			<option value="center">Center Align</option>
+			<option value="justify">Justify Align</option>
+		</param>
+		<param name="ScrollTextWeight" type="list" default="normal"
+			label="Scroll Text Weight" description="Adjusts the text weight.">
+			<option value="normal">Normal</option>
+			<option value="bold">Bold</option>
+			<option value="bolder">Bolder</option>
+			<option value="lighter">Lighter</option>
+		</param>
+		<param name="ScrollTextSize" type="list" default="10"
+			label="Scroll Text Size"
+			description="Adjusts the text size and is measured in pixels.">
+			<option value="7">7 px</option>
+			<option value="8">8 px</option>
+			<option value="9">9 px</option>
+			<option value="10">10 px</option>
+			<option value="11">11 px</option>
+			<option value="12">12 px</option>
+			<option value="13">13 px</option>
+			<option value="14">14 px</option>
+			<option value="15">15 px</option>
+			<option value="16">16 px</option>
+			<option value="17">17 px</option>
+			<option value="18">18 px</option>
+		</param>
+		<param name="ScrollTextColor" type="text" default="#000000"
+			label="Scroll Text Color"
+			description="The text color hex value attribute (including the # [pound sign] ) or the IE color name." />
+		<param name="ScrollBGColor" type="text" default="transparent"
+			label="Scroll BackGround Color"
+			description="The background color hex value attribute (including the # [pound sign] ) or the IE color name." />
+		<param name="ScrollMargin" type="list" default="2"
+			label="Scroll Margin"
+			description="Adjusts the clear area around your text and is measured in pixels.">
+			<option value="0">0 px</option>
+			<option value="1">1 px</option>
+			<option value="2">2 px</option>
+			<option value="3">3 px</option>
+			<option value="4">4 px</option>
+			<option value="5">5 px</option>
+			<option value="6">6 px</option>
+			<option value="7">7 px</option>
+			<option value="8">8 px</option>
+			<option value="9">9 px</option>
+			<option value="10">10 px</option>
+			<option value="11">11 px</option>
+			<option value="12">12 px</option>
+			<option value="13">13 px</option>
+			<option value="14">14 px</option>
+			<option value="15">15 px</option>
+			<option value="20">20 px</option>
+			<option value="25">25 px</option>
+		</param>
+		<param name="cache" type="radio" default="0"
+			label="Enable Cache"
+			description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="class_sfx" type="text" default=""
+			label="Menu Class Suffix"
+			description="A suffix to be applied to the css class of the menu items" />
+	</params>
+</install>

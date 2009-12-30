@@ -1,0 +1,35 @@
+.cbOverlay {
+	background-color: #000;
+}
+
+.cbContainer {
+	padding:5px;
+	background-color:white;
+	border: 2px solid gray;
+}
+.cbBox h3 {
+	font-size:1.4em;
+	margin-top:0px;
+	padding-top: 3px;
+	vertical-align: middle;
+	text-align:center;
+	background-color:#ccc;
+	background-image: url( header-background.png );
+}
+.cbBox p {
+	margin:3px;
+}
+.cbBox, .cbButtons {
+	text-align:center;
+}
+.cbButton {
+	margin: 3px;
+}
+.cbCloseButton {
+	background: url( close.gif ) no-repeat;
+	width: 16px; height: 16px;
+	position:absolute;
+	top: 9px;
+	right:5px;
+	cursor: pointer;
+}

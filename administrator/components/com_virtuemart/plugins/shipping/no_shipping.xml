@@ -1,0 +1,24 @@
+<install type="shipping" version="1.2.0">	
+	<!-- $Id: no_shipping.xml 1549 2008-10-14 19:11:47Z soeren_nb $-->
+	<name>Free Shipping - Shipping Module</name>
+	<author><![CDATA[soeren]]></author>
+	<creationdate>JAugust 2004</creationdate>
+	<copyright><![CDATA[soeren]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail>n/a</authoremail>
+	<authorurl>http://joomlacode.org/gf/project/jmart/</authorurl>
+	<version>1.0</version>
+	<description>Allows to offer free shipping.</description>
+	
+  	<install>	
+		<files>
+			<filename>no_shipping.php</filename>
+		</files>
+		<!--<queries>
+			<query></query>
+			<query></query>
+			<query></query>
+		</queries>-->
+	</install>	
+	
+</install>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="search">
+	<name>Virtuemart Extended Search Plugin</name>
+	<author>Alejandro Kurczyn</author>
+	<copyright>(c) 2007 Alejandro Kurczyn</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>akurczyn@gmail.com</authorEmail>
+	<version>1.5</version>
+	<description><![CDATA[An extended search plugin for Virtuemart component.
+If you find this plugin useful, please donate to the Author (https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akurczyn%40gmail%2ecom&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=MX&bn=PP%2dDonationsBF&charset=UTF%2d8).
+Tank you!
+	]]></description>
+	<files>
+		<filename plugin="vmxsearch.plugin">vmxsearch.plugin.php</filename>
+	</files>
+	<params>
+		<param name="density_flag" type="radio" default="1" label="Keyword density" description="Enables results based on keyword density (overrides Joomla sort).">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="name_flag" type="radio" default="1" label="Product Names" description="Enable search on product name.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="sku_flag" type="radio" default="1" label="Product SKUs" description="Enable search on product SKU.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="desc_flag" type="radio" default="1" label="Product Descriptions" description="Enable search on product description.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="sdesc_flag" type="radio" default="1" label="Product Short descriptions" description="Enable search on product short description.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="url_flag" type="radio" default="1" label="Product URLs" description="Enable search on product URL.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="review_flag" type="radio" default="1" label="Product reviews" description="Enable search on product reviews.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="manufacturer_flag" type="radio" default="1" label="Manufacturer names" description="Enable search on manufacturer names.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="category_flag" type="radio" default="1" label="Category names" description="Enable search on category names.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="parent_filter" type="list" default="both" label="Parent/Child filter" description="Restrict search to Parent, Child or both product types.">
+			<option value="both">Both</option>
+			<option value="parent">Parent only</option>
+			<option value="child">Child only</option>
+		</param>
+
+	</params>
+</install>
