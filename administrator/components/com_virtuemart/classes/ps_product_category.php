@@ -272,12 +272,12 @@ class ps_product_category extends vmAbstractObject {
 
 			$list_order = intval($db->f("list_order"))+1;
 
-			if (empty($d["category_publish"])) {
-				$d["category_publish"] = "N";
+			if (empty($d["published"])) {
+				$d["published"] = "0";
 			}
 			$fields = array('vendor_id' => $vendor_id,
 										'category_name' => vmGet( $d, 'category_name' ),
-										'category_publish' => vmGet( $d, 'category_publish' ),
+										'published' => vmGet( $d, 'published' ),
 										'category_description' => vmGet( $d, 'category_description', '', VMREQUEST_ALLOWHTML ),
 										'category_browsepage' => vmGet( $d, 'category_browsepage' ),
 										'products_per_row' => vmRequest::getInt( 'products_per_row' ),
@@ -343,12 +343,12 @@ class ps_product_category extends vmAbstractObject {
 			if (!vmImageTools::process_images($d)) {
 				return false;
 			}
-			if (empty($d["category_publish"])) {
-				$d["category_publish"] = "N";
+			if (empty($d["published"])) {
+				$d["published"] = "0";
 			}
 			$fields = array(
 										'category_name' => vmGet( $d, 'category_name' ),
-										'category_publish' => vmGet( $d, 'category_publish' ),
+										'published' => vmGet( $d, 'published' ),
 										'category_description' => vmGet( $d, 'category_description', '', VMREQUEST_ALLOWHTML ),
 										'category_browsepage' => vmGet( $d, 'category_browsepage' ),
 										'products_per_row' => vmRequest::getInt( 'products_per_row' ),
@@ -556,10 +556,10 @@ class ps_product_category extends vmAbstractObject {
 		if( empty( $GLOBALS['category_info']['category_tree'])) {
 
 			// Get only published categories
-			$query  = "SELECT category_id, category_description, category_name,category_child_id as cid, category_parent_id as pid,list_order, category_publish, category_shared
+			$query  = "SELECT category_id, category_description, category_name,category_child_id as cid, category_parent_id as pid,list_order, published, category_shared
 						FROM #__{vm}_category, #__{vm}_category_xref WHERE ";
 			if( $only_published ) {
-				$query .= "#__{vm}_category.category_publish='Y' AND ";
+				$query .= "#__{vm}_category.published='1' AND ";
 			}
 			
 			$query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
@@ -587,7 +587,7 @@ class ps_product_category extends vmAbstractObject {
 				$categories[$db->f("cid")]["category_name"] = $db->f("category_name");
 				$categories[$db->f("cid")]["category_description"] = $db->f("category_description");
 				$categories[$db->f("cid")]["list_order"] = $db->f("list_order");
-				$categories[$db->f("cid")]["category_publish"] = $db->f("category_publish");
+				$categories[$db->f("cid")]["published"] = $db->f("published");
 				$categories[$db->f("cid")]["category_shared"] = $db->f("category_shared");
 			}
 
@@ -863,7 +863,7 @@ class ps_product_category extends vmAbstractObject {
 			echo "\">[ ".JText::_('VM_SHOW')." ]</a>\n</td>\n";
 			//echo "<td>". $db->f("list_order")."</td>";
 			echo "<td>";
-			if ($db->f("category_publish")=='N') {
+			if ($db->f("published")=='0') {
 				echo "<img src=\"". $mosConfig_live_site ."/administrator/images/publish_x.png\" border=\"0\" />";
 			}
 			else {
@@ -1007,8 +1007,8 @@ class ps_product_category extends vmAbstractObject {
 		$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_id' ";
 		$q .= "AND #__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
 //		$q .= "AND #__{vm}_category.vendor_id='$vendor_id' ";
-		$q .= "AND #__{vm}_category.category_publish='Y' ";
-		$q .= "ORDER BY #__{vm}_category.list_order, #__{vm}_category.category_name ASC";
+		$q .= "AND #__{vm}_category.published='1' ";
+		$q .= "ORDER BY #__{vm}_category.ordering, #__{vm}_category.category_name ASC";
 		$db->setQuery($q);
 		$db->query();
 
@@ -1056,7 +1056,7 @@ class ps_product_category extends vmAbstractObject {
 		$q .= "WHERE #__{vm}_category_xref.category_parent_id='$category_id' ";
 		$q .= "AND #__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
 //		$q .= "AND #__{vm}_category.vendor_id='$hVendor_id' ";
-		$q .= "AND #__{vm}_category.category_publish='Y' ";
+		$q .= "AND #__{vm}_category.publish='1' ";
 		$q .= "ORDER BY #__{vm}_category.list_order, #__{vm}_category.category_name ASC";
 		$db->setQuery($q);
 		$db->query();

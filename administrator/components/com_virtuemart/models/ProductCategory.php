@@ -30,7 +30,7 @@ class VirtueMartModelProductCategory extends JModel
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
 		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__vm_category`.`category_publish` = "Y" ';
+		$query .= 'AND `#__vm_category`.`published` = "1" ';
 		$query .= 'ORDER BY `#__vm_category`.`list_order`, `#__vm_category`.`category_name` ASC';
 		
 		$childList = $this->_getList( $query );

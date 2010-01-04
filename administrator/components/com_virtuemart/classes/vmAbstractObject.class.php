@@ -397,7 +397,7 @@ class vmAbstractObject {
 		}
 		elseif( !empty($d['category_id'])) {
 			$table_name = "#__{vm}_category";
-			$publish_field_name = 'category_publish';
+			$publish_field_name = 'published';
 			$field_name = 'category_id';
 		}
 		elseif( !empty($d['category_child_id'])) {

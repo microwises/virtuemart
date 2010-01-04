@@ -61,7 +61,7 @@ $mainframe->appendPathWay( JText::_('VM_ADVANCED_SEARCH') );
               // Show only top level categories and categories that are
               // being published
               $q = "SELECT category_id,category_name FROM #__{vm}_category ";
-              $q .= "WHERE category_publish='Y' ";
+              $q .= "WHERE published='1' ";
               $q .= "ORDER BY category_name ASC";
               $db->query($q);
               while ($db->next_record()) {   ?> 

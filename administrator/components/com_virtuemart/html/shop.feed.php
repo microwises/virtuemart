@@ -277,7 +277,7 @@ function getProducts( &$feed_info ) {
 					AND cx.product_id = p.product_id";
 	if( $feed_info['category_id'] > 0 ) {
 		$q_products .= "\nAND c.category_id = {$feed_info['category_id']}";
-		$q_products .= "\nAND c.category_publish = 'Y' ";
+		$q_products .= "\nAND c.published = '1' ";
 	}
 	$q_products .= "\nORDER BY $orderby DESC ";
 	$q_products .= "\nLIMIT 0, ".$feed_info['product_number'];

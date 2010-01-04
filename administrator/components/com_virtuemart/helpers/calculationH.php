@@ -15,18 +15,18 @@ defined('_JEXEC') or die();
 
 class calculationHelper{
 	
-	private $_rules;
-	private $_rulesEff;
 	private $_db;
 	private $_shopperGroupId;
 	private $_cats;
+	private $_now ;
+	private $_nullDate;
 	
 	public $productVendorId;
 	public $productCurrency;
 
-	public $basePrice;		//simular to costprice
-	public $salesPrice;
-	public $discountedPrice;
+	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
+	public $salesPrice;		//end Price in the product currency
+	public $discountedPrice;  //amount of effecting discount
 	public $salesPriceCurrency;
 	public $discount_info;
 	
@@ -39,6 +39,10 @@ class calculationHelper{
 	 */
 	function getProductPrices($product_id){
 
+		$jnow		=& JFactory::getDate();
+		$this -> _now			= $jnow->toMySQL();
+		$this -> _nullDate		= $this->_db->getNullDate();
+		
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$product_id.'" ');
 
 		$row=$this->_db->loadRow();
@@ -64,27 +68,21 @@ class calculationHelper{
 
 //		echo 'Produkt Baseprice: '.$this->basePrice.'  and currency: '.$this->productCurrency.' `user_id`="'.$my->id.'"<br />';
 		$this->basePrice = $this->convertCurrencyToShopDefault($this->basePrice, $this->productCurrency);
-//		echo 'Produkt Baseprice: '.$this->basePrice.'  and currency: '.$this->vendorCurrency.'<br />';
-		$this->gatherEffectingRulesForProductPrice('DBTax');
-		
-//		if($this -> _rulesEff){
-//			$discount_info['amount'] = $value;
-//		}
-		
-		$unroundeddiscountedPrice = $this -> executeCalculation($this -> roundInternal($this -> basePrice));
+		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
+		$this->basePriceWithTax = $this -> executeCalculation($taxRules, $this->basePrice);
+
+		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');		
+		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($this -> basePrice));	
 		$this -> discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-		$this -> discount_info['amount'] = $this->roundDisplay($this->basePrice - $this->discountedPrice);
+
+		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $this -> discountedPrice);	
 		
-		$this->gatherEffectingRulesForProductPrice('Tax');
+		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
-		$unroundedSalesPrice = $this -> executeCalculation($unroundeddiscountedPrice);
-		
-//		$this->salesPriceCurrency = $this->roundDisplay($unroundedSalesPrice);		
-		
-		$this->gatherEffectingRulesForProductPrice('DATax');
-		
-		$unroundedSalesPrice = $this -> executeCalculation($unroundedSalesPrice);
+		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
 		$this->salesPrice = $this->roundDisplay($unroundedSalesPrice);
+		
+		$this -> discount_info['amount'] = $this->roundDisplay($this->basePriceWithTax - $this->salesPrice);
 	}
 	
 	function convertCurrencyToShopDefault($value,$currency){
@@ -97,17 +95,15 @@ class calculationHelper{
 		return $value;
 	}
 
-	function executeCalculation($salesPrice){
-//		echo 'Exe: '.$salesPrice;
-		$rulesEffSorted = $this -> record_sort($this -> _rulesEff, 'ordering');
+	function executeCalculation($rules, $salesPrice){
+		if(empty($rules))return $salesPrice;
+		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
 				$salesPrice = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$salesPrice);
 				echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$salesPrice.'<br />';
 			}
 		}
-		unset($this -> _rulesEff);
-//		echo '<br />return: '.$salesPrice;
 		return $salesPrice;
 	}
 	
@@ -125,67 +121,41 @@ class calculationHelper{
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
+		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
+		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
+		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
+		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
+
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
-$this->_db->setQuery( 'SELECT * FROM #__vm_calc WHERE (`calc_kind`="'.$entrypoint.'" AND `published`="1" AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" ))'); // )');
-//$this->_db->setQuery( 'SELECT * FROM #__vm_calc WHERE (`calc_kind`="'.$entrypoint.'" AND `published`="1" AND `calc_vendor_id`="'.$this->productVendorId.'")'); // )');
-		$this -> _rules = $this->_db->loadAssocList();
+		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+		'`calc_kind`="'.$entrypoint.'" ' .
+		' AND `published`="1" ' .
+		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' )'.
+		$cats . $shoppergrps . $countries . $states ;
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
 
-		foreach($this -> _rules as $rule){
-
-			//Categories normal Tax or Discount
-			$addCalc = $this->testRulePartEffecting($rule,$this->_cats,'calc_categories');
-			
-			//Discount
-			$addDisc = $this->testRuleTimeEffecting();
-			
-			//Shoppergroups
-			$addShopper=true;
-			$addShopper = $this->testRulePartEffecting($rule,$this->_shopperGroupId,'calc_shopper');
-			//Just add whatever condition here
-			
-			//Country
-			//Todo for duty, get address of loggedUser.
-			//$this->testRulePartEffecting($rule,'calc_country');
-			//$this->testRulePartEffecting($rule,'calc_state');
-			
-			if($addCalc && $addDisc && $addShopper){
-//				echo '<br /> Add rule '.$rule['calc_name'];
-				$this->_rulesEff[] = $rule;
-			}
+		foreach($rules as $rule){
+			echo '<br /> Add rule '.$rule['calc_name'];
 		}
-//		echo '<br />';
+		return $rules;
 	}
 
-	/*
-	 * Can test the tablefields Category, Country, State
-	 *  If the the data is 0 false is returned
-	 */
-	 
-	function testRulePartEffecting($rule,$data,$field){
-		if(isset($rule[$field])){
-			if(is_array($rule[$field])){
-				$intersect = array_intersect($rule[$field],$data);
-				if($intersect){
-					return true;
-				}else{
-					return false;
-				}
-			}else{
-				return true;
+	function writeRulePartEffectingQuery($data,$field){
+		$q='';
+		if(!empty($data)){
+			$q = ' AND ( ';
+			foreach ($data as $id){
+				$q = $q . '`'.$field.'`="'.$id.'" OR';
 			}
-		}else{
-			return true;
+			$q = $q . '`'.$field.'`="0" )';
 		}
-		
+		return $q;
 	}
 	
-	//Test for time window
-	function testRuleTimeEffecting(){
-		
-		return true;
-	}
-
 	/**
 	 * This functions interprets the String that is entered in the calc_value_mathop field
 	 * The first char is the signum of the function. The more this function can be enhanced
@@ -250,23 +220,19 @@ $this->_db->setQuery( 'SELECT * FROM #__vm_calc WHERE (`calc_kind`="'.$entrypoin
 	 * 
 	 */
 	 
-	function record_sort($records, $field, $reverse=false){
-		
+	function record_sort($records, $field, $reverse=false){	
 		if(is_array($records)){
 			$hash = array();
 	   
 		    foreach($records as $record){
 		        $hash[$record[$field]] = $record;
 		    }
-		   
 		    ($reverse)? krsort($hash) : ksort($hash);
 		    $records = array();
 		    foreach($hash as $record){
 		        $records []= $record;
 		    }
 		}
-
-	   
 	    return $records;
 	}
 	

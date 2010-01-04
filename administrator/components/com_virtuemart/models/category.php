@@ -11,8 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'vendorHelper.php');
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'permissions.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorHelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 /**
  * Model for product categories
@@ -100,7 +100,7 @@ class VirtueMartModelCategory extends JModel
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
 		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__vm_category`.`category_publish` = "Y" ';
+		$query .= 'AND `#__vm_category`.`published` = "1" ';
 		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
 		
 		$childList = $this->_getList( $query );

@@ -35,7 +35,7 @@ if ($category_id) {
     $db->next_record();
 } 
 elseif (empty($vars["error"])) {
-    $default["category_publish"] = "Y";
+    $default["published"] = "1";
     $default["category_shared"] = "Y";
     $default["category_flypage"] = FLYPAGE;
     $default["category_browsepage"] = CATEGORY_TEMPLATE;
@@ -50,11 +50,11 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
     <tr> 
       <td width="21%" nowrap><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_PUBLISH') ?>:</div></td>
       <td width="79%"><?php 
-        if ($db->sf("category_publish")=="Y") { 
-          echo "<input type=\"checkbox\" name=\"category_publish\" value=\"Y\" checked=\"checked\" />";
+        if ($db->sf("published")=="1") { 
+          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" checked=\"checked\" />";
         } 
         else {
-          echo "<input type=\"checkbox\" name=\"category_publish\" value=\"Y\" />";
+          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" />";
         }
       ?> 
       </td>

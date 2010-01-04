@@ -118,13 +118,13 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 					
 	// Publish / Unpublish
 	$tmp_cell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_category_list&category_id=".$categories[$row_list[$n]]["category_child_id"]."&func=changePublishState" );
-	if ($categories[$row_list[$n]]["category_publish"]=='N') {
+	if ($categories[$row_list[$n]]["published"]=='0') {
 		$tmp_cell .= "&task=publish\">";
 	} 
 	else { 
 		$tmp_cell .= "&task=unpublish\">";
 	}
-	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $categories[$row_list[$n]]["category_publish"] );
+	$tmp_cell .= vmCommonHTML::getYesNoIcon ( $categories[$row_list[$n]]["published"] );
 	$tmp_cell .= "</a>";
 	$listObj->addCell( $tmp_cell );
 

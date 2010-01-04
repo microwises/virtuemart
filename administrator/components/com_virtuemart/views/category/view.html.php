@@ -24,7 +24,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 class VirtuemartViewCategory extends JView {
 	
 	function display($tpl = null) {	
-		$model = $this->getModel();        
+		$model = $this->getModel();
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
