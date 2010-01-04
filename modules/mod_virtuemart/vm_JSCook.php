@@ -28,7 +28,7 @@ class vmCategoryTree {
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
-		. "WHERE a.category_publish='Y' AND "
+		. "WHERE a.published='1' AND "
 		. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
 		. "ORDER BY category_parent_id, list_order, category_name ASC";
 		$db->query( $query );
@@ -66,7 +66,7 @@ class vmCategoryMenu {
 		$level++;
 		$query = "SELECT category_name, category_id, category_child_id "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
-		. "WHERE a.category_publish='Y' AND "
+		. "WHERE a.published='1' AND "
 		. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
 		. "ORDER BY category_parent_id, list_order, category_name ASC";
 		$db = new ps_DB();

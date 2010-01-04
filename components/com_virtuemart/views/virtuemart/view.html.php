@@ -13,12 +13,15 @@ class VirtueMartViewVirtueMart extends JView
 	
 	function display($tpl = null)
 	{	  	    
-//	    $vendorModel =& $this->getModel('vendor'); 	    
+	
+ 	//	$vendorModel =& $this->getModel('vendor'); 	    
 		$categoryModel =& $this->getModel('category');
 		$productModel =& $this->getModel('product');
 	
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorHelper.php');
 	    $vendorId = JRequest::getInt('vendorid', 1);
-//	    $vendor =& $vendorModel->getVendor($vendorId); 	    
+	    $vendorModel = new Vendor;
+	    $vendor =& $vendorModel->getVendor($vendorId); 	    
 	    $this->assignRef('vendor',	$vendor);
 	    
 	    $categoryId = JRequest::getInt('catid', 0);

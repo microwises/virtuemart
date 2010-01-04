@@ -22,13 +22,13 @@ if(!empty($discount_info["amount"])) {
 }
 ?>
 <?php
-if( !empty( $price_info["product_price_id"] )) { ?>
+//if( !empty( $price_info["product_price_id"] )) { ?>
 	<span class="productPrice">
-		<?php echo $CURRENCY_DISPLAY->getFullValue($base_price) ?>
-		<?php echo $text_including_tax; echo $text_excluding_tax; ?>
+
+		<?php echo $CURRENCY_DISPLAY->getFullValue($text_including_tax); if(isset($text_excluding_tax))echo ' '.$CURRENCY_DISPLAY->getFullValue($text_excluding_tax); ?>
 	</span>
 <?php
-}
+//}
 echo $price_table;
 ?>
 

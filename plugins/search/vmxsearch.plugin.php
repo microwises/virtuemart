@@ -158,8 +158,8 @@ function vmExtendedSearch( $text, $phrase = '', $ordering = '' ) {
 						#__vm_product_category_xref cx, #__vm_category c
 						WHERE ($where)" . "\n AND cx.product_id = p.product_id
 							AND cx.category_id = c.category_id $parent_where
-							AND c.category_publish='Y'
-							AND p.product_publish='Y'
+							AND c.published='1'
+							AND p.published='1'
 					$oos_where
 					ORDER BY $order" ;
 	//echo "\n-QUERY:\n$query\n";

@@ -58,7 +58,7 @@ $ps_product_category = new ps_product_category();
 	
 	// select menu items from database
 	$query  = "SELECT category_id,category_parent_id,category_name FROM #__{vm}_category, #__{vm}_category_xref ";
-	$query .= "WHERE #__{vm}_category.category_publish='Y' AND ";
+	$query .= "WHERE #__{vm}_category.published='1' AND ";
 	$query .= "#__{vm}_category.category_id=#__{vm}_category_xref.category_child_id ";
 	$query .= "ORDER BY category_parent_id, list_order, category_name ASC";
 

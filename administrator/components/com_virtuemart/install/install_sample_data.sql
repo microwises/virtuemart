@@ -150,7 +150,8 @@ INSERT INTO `#__vm_tax_rate` (`tax_rate_id`, `vendor_id`, `tax_state`, `tax_coun
 --  Dumping data for `jos_vm_calc`
 --
 
-INSERT INTO `jos_vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_qualify`, `calc_affected`, `calc_value`, `calc_value_mathop`, `calc_vis_shopper`, `calc_vis_vendor`, `calc_kind`, `calc_start_date`, `calc_end_date`, `calc_amount_cond`, `calc_amount_dimunit`, `calc_location`, `published`) VALUES
-(1, '1', 'First rule', 'The first rule is easy, discount for all Outdoortools', NULL, NULL, '30', '%', 1, 1, 'Discount', '2009-12-02', '2009-12-10', 4, NULL, 'some country_id', 1),
-(2, '1', 'Second rule, wares coupon', 'Ah coupon that is substracted before the tax is calculated', NULL, NULL, '50', '-', 1, 1, 'Coupon', '2009-12-07', '2010-12-07', NULL, NULL, NULL, 1);
+INSERT INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_categories`, `calc_shopper`, `calc_country`, `calc_state`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `modified`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
+(1, 1, 'Tax 9.25%', 'A simpel tax for all products regardless the category', 'Tax', '+%', '9.25', 'EUR', 2, '0', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 1),
+(3, 1, 'Duty for Electronic', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', '30', '6', 1, '2', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 0, 0),
+(2, 1, 'Discount for all Hand Tools', 'Ah Discount for all Hand Tools', 'DATax', '-', '2', 'EUR', 0, '1', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 0);
 

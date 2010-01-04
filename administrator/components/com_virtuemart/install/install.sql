@@ -45,29 +45,32 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_calc` (
-  `calc_id` int(11) NOT NULL auto_increment,
-  `calc_vendor_id` text NOT NULL COMMENT 'Belongs to vendor, if no vendor => for all',
+  `calc_id` int(11) NOT NULL,
+  `calc_vendor_id` int(4) NOT NULL COMMENT 'Belongs to vendor',
   `calc_name` text NOT NULL COMMENT 'Name of the rule',
   `calc_descr` text COMMENT 'Description',
   `calc_kind` text COMMENT 'Discount/Tax/Margin/Commission',
   `calc_value_mathop` text COMMENT 'the mathematical operation like (+,-,+%,-%)',
   `calc_value` text COMMENT 'The Amount',
+  `calc_currency` char(3) NOT NULL default '0' COMMENT 'Currency of the Rule',
+  `ordering` tinyint(2) NOT NULL,
   `calc_categories` text COMMENT 'Affected Categories Ids',
+  `calc_shopper` text COMMENT 'Ids of the shoppergroups',
   `calc_country` text COMMENT 'Affected Country Ids',
   `calc_state` text COMMENT 'Affected State Ids',
-  `calc_shopper_published` tinyint(1) default NULL COMMENT 'Visible for Shoppers',
-  `calc_vendor_published` tinyint(1) default NULL COMMENT 'Visible for Vendors',
-  `calc_start_date` date default NULL COMMENT 'Startdate if nothing is set = permanent',
-  `calc_end_date` date default NULL COMMENT 'Enddate if nothing is set = permanent',
-  `calc_mdate` date default NULL COMMENT 'modified date',
+  `calc_shopper_published` enum('0','1') NOT NULL COMMENT 'Visible for Shoppers',
+  `calc_vendor_published` enum('0','1') NOT NULL COMMENT 'Visible for Vendors',
+  `publish_up` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
+  `publish_down` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Enddate if nothing is set = permanent',
+  `modified` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'modified date',
   `calc_qualify` text COMMENT 'qualifying productId''s',
   `calc_affected` text COMMENT 'affected productId''s',
   `calc_amount_cond` float default NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text COMMENT 'The dimension, kg, m, €',
-  `published` tinyint(1) NOT NULL default '0',
+  `published` enum('0','1') NOT NULL,
+  `shared` enum('0','1') NOT NULL COMMENT 'Affects all vendors',
   PRIMARY KEY  (`calc_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 --
 -- Table structure for table `#__vm_cart`
@@ -92,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
   `category_description` text,
   `category_thumb_image` varchar(255) default NULL,
   `category_full_image` varchar(255) default NULL,
-  `published` tinyint(1) default 1,
+  `published` enum('0','1') NOT NULL default 1,
   `cdate` int(11) default NULL,
   `mdate` int(11) default NULL,
   `category_browsepage` varchar(255) NOT NULL default 'browse_1',
@@ -152,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_country` (
   `country_name` varchar(64) default NULL,
   `country_3_code` char(3) default NULL,
   `country_2_code` char(2) default NULL,
-  `published` tinyint(1) NOT NULL default '1',  
+  `published` enum('0','1') NOT NULL default '1',  
   PRIMARY KEY  (`country_id`),
   KEY `idx_country_name` (`country_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Country records' AUTO_INCREMENT=245 ;
@@ -237,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_url` varchar(255) NOT NULL DEFAULT '',
   `mf_thumb_image` varchar(255) DEFAULT NULL,
   `mf_full_image` varchar(255) DEFAULT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `published` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products';
 
@@ -251,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
   `mf_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `published` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`mf_category_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=10 ;
@@ -499,7 +502,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
   `element` varchar(100) NOT NULL default '',
   `folder` varchar(100) NOT NULL default '',
   `ordering` int(11) NOT NULL default '0',
-  `published` tinyint(3) NOT NULL default '0',
+  `published` enum('0','1') NOT NULL default '0',
   `iscore` tinyint(3) NOT NULL default '0',
   `vendor_id` tinyint(3) NOT NULL default '1',
   `shopper_group_id` int(10) unsigned NOT NULL,
@@ -915,7 +918,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
   `state_name` varchar(64) default NULL,
   `state_3_code` char(3) default NULL,
   `state_2_code` char(2) default NULL,
-  `published` tinyint(1) NOT NULL default '1',
+  `published` enum('0','1') NOT NULL default '1',
   PRIMARY KEY  (`state_id`),
   UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`country_id`,`state_2_code`),
@@ -959,7 +962,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
   `rows` int(11) default NULL,
   `value` varchar(50) default NULL,
   `default` int(11) default NULL,
-  `published` tinyint(1) NOT NULL default '1',
+  `published` enum('0','1') NOT NULL default '1',
   `registration` tinyint(1) NOT NULL default '0',
   `shipping` tinyint(1) NOT NULL default '0',
   `account` tinyint(1) NOT NULL default '1',

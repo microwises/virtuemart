@@ -88,7 +88,7 @@ class vmTigraTreeMenu {
 		$level++;
 		$query = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
-		 . "WHERE a.category_publish='Y' AND "
+		 . "WHERE a.published='1' AND "
 		 . " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
 		 . "ORDER BY category_parent_id, list_order, category_name ASC";
 		$db->query( $query );

@@ -262,7 +262,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 		}
 		$query .= "\nJOIN #__{vm}_category as c ON pc.category_id=c.category_id";
 		
-		$query .= "\n WHERE p.product_publish = 'Y' AND c.category_publish = 'Y' AND product_parent_id=0 ";
+		$query .= "\n WHERE p.product_publish = 'Y' AND c.published = '1' AND product_parent_id=0 ";
 		if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 			$query .= " AND product_in_stock > 0 ";
 		}
