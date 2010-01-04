@@ -32,16 +32,16 @@ class VirtuemartControllerManufacturer extends JController
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
 	    
-		$document =& JFactory::getDocument();				
+		$document = JFactory::getDocument();				
 		$viewType	= $document->getType();
-		$view =& $this->getView('manufacturer', $viewType);		
+		$view = $this->getView('manufacturer', $viewType);		
 
 		// Push a model into the view					
-		$model =& $this->getModel('manufacturer');
+		$model = $this->getModel('manufacturer');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}			
-		$model1 =& $this->getModel('manufacturerCategory');
+		$model1 = $this->getModel('manufacturerCategory');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}			

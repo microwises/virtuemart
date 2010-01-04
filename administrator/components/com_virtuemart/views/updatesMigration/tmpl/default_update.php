@@ -12,6 +12,22 @@ $linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMi
 $linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
 $linkDoNothing =JROUTE::_('index2.php');
 ?>
+<script language="javascript" type="text/javascript">
+    <!--
+    function uploadSubmit() {
+	var form = document.adminForm;
+
+	// do field validation
+	if (form.update_package.value == ""){
+	    alert("<?php echo JText::_('No update package selected!', true ); ?>" );
+	}
+	else {
+	    form.task.value = 'upload';
+	    form.submit();
+	}
+    }
+    //-->
+</script>
 <br />
 <table class="admintable">
     <tr>
@@ -30,8 +46,8 @@ $linkDoNothing =JROUTE::_('index2.php');
 		echo "<h1 style='display:inline'>" . $this->latestVersion . "</h1>";
 	    }
 	    else {?>
-		<a href="<?php echo $checkLatestVerisonLink; ?>">
-		    &nbsp;[<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>]</a>
+	    <a href="<?php echo $checkLatestVerisonLink; ?>">
+		&nbsp;[<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>]</a>
 		<?php
 	    }
 	    ?>
@@ -39,7 +55,7 @@ $linkDoNothing =JROUTE::_('index2.php');
 	    if ($this->latestVersion) {
 		if (version_compare($this->latestVersion, VmConfig::getInstalledVersion(), '>') == 1) {
 		    ?>
-		    <input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
+	    <input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
 		    <?php
 		}
 		else {
@@ -53,12 +69,8 @@ $linkDoNothing =JROUTE::_('index2.php');
     <tr>
 	<td class="key"><?php echo JText::_('VM_UPDATE_CHECK_ULUPDATE'); ?></td>
 	<td>
-	    <input type="file" name="uploaded_package" class="inputbox" size="50" />
-	    <input type="submit" value="Upload File &amp; Install" />
+	    <input type="file" id="update_package" name="update_package" class="inputbox" size="50" />
+	    <input type="submit" value="Upload File &amp; Install" onclick="uploadSubmit()"/>
 	</td>
     </tr>
 </table>
-
-<input type="hidden" name="controller" value="updatesMigration" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="updatesMigration" />

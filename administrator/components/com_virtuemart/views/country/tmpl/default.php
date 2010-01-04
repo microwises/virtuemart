@@ -33,7 +33,7 @@ AdminMenuHelper::startAdminArea();
 	    <?php
 	    $k = 0;
 	    for ($i=0, $n=count( $this->countries ); $i < $n; $i++) {
-		$row =& $this->countries[$i];
+		$row = $this->countries[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->country_id);
 		$published = JHTML::_('grid.published', $row, $i);

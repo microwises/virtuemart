@@ -88,6 +88,27 @@ class VirtuemartControllerUpdatesMigration extends JController {
      *
      * @author RickG
      */
+    function upload() {
+	$data = JRequest::get('post');
+	if ($_FILES['update_package']['tmp_name'] <> '') {
+	    $model = $this->getModel('updatesMigration');
+	    if (!$model->uploadAndInstallUpdate($_FILES['update_package']['tmp_name'])) {
+		$msg = $model->getError();
+	    }
+	    $this->setRedirect('index.php?option=com_virtuemart', $msg);
+	}
+	else {
+	    $msg = JText::_('No package selected to upload!');
+	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+	}
+    }
+
+
+    /**
+     * Install sample data into the database
+     *
+     * @author RickG
+     */
     function deleteVmTables() {
 	$model = $this->getModel('updatesMigration');
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall.sql';
@@ -111,6 +132,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	$this -> installer -> populateVmDatabase("delete_data.sql");
 	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
     }
+
 
     function deleteRestorable() {
 	$this -> installer -> populateVmDatabase("delete_restoreable.sql");
