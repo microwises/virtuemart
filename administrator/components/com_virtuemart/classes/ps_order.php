@@ -437,7 +437,7 @@ class ps_order {
 		
 		if ( @file_exists( $datei ) ){
 			// Check if this is a request for a special range of the file (=Resume Download)
-			$range_request = vmConnector::http_rangeRequest( filesize($datei), false );
+			$range_request = VmConnection::http_rangeRequest( filesize($datei), false );
 			if( $range_request[0] == 0 ) {
 				// this is not a request to resume a download,
 				$download_count = true;
@@ -508,7 +508,7 @@ class ps_order {
 		// dump anything in the buffer
 		while( @ob_end_clean() );
 
-		vmConnector::sendFile( $datei, $mime_type, basename($file_name) );
+		VmConnection::sendFile( $datei, $mime_type, basename($file_name) );
 		
 		if( $unlink ) {
 			// remove the temporarily downloaded remote file

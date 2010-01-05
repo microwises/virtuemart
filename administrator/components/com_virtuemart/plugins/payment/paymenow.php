@@ -64,7 +64,7 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-        $results = vmConnector::handleCommunication("https://trans.atsbank.com/cgi-bin/trans.cgi", $poststring);
+        $results = VmConnection::handleCommunication("https://trans.atsbank.com/cgi-bin/trans.cgi", $poststring);
         
         if (stristr($results, "Accepted")) {
             #Clean up the cart, send out the emails, and display thankyyou page.

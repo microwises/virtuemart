@@ -172,7 +172,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		
 		$host = 'secure.authorize.net';
 				
-		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
+		$result = VmConnection::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -373,7 +373,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		
 		$host = 'secure.authorize.net';
 		
-		$result = vmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
+		$result = VmConnection::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('We\'re sorry, but an error has occured when we tried to communicate with the authorize.net server. Please try again later, thank you.' );

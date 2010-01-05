@@ -254,7 +254,7 @@ class VmConnection {
 		// send headers
 		header("Content-Type: $mime");
 		
-		list($start,$len) = vmConnector::http_rangeRequest(filesize($file));
+		list($start,$len) = VmConnection::http_rangeRequest(filesize($file));
 		
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');

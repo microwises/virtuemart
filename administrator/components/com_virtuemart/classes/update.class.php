@@ -35,7 +35,7 @@ class vmUpdate {
 		}
 		$VMVERSION =& new vmVersion();
 		$url = "http://virtuemart.orgindex2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
-		$result = vmConnector::handleCommunication($url);
+		$result = VmConnection::handleCommunication($url);
 		if( $result !== false ) {
 			// Cache the result for later use
 			$_SESSION['vmLatestVersion'] = $result;
@@ -59,7 +59,7 @@ class vmUpdate {
 			$VMVERSION =& new vmVersion();
 			// This URL should return a string - the direct URL to the matching patch package
 			$url = "http://virtuemart.org/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
-			$result = vmConnector::handleCommunication($url);
+			$result = VmConnection::handleCommunication($url);
 			if( !empty( $result )
 			 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://virtuemart.org', $result, 21)===0)
 			 ) {
@@ -74,7 +74,7 @@ class vmUpdate {
 	
 				} else {
 					// If not, store it on this server
-					$patch_package = vmConnector::handleCommunication($result);
+					$patch_package = VmConnection::handleCommunication($result);
 					if( !file_put_contents($mosConfig_cachepath.'/'.$filename, $patch_package )) {
 						$vmLogger->err( JText::_('VM_UPDATE_ERR_STORE_FAILED') );
 						return false;

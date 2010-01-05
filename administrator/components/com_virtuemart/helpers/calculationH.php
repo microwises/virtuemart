@@ -24,32 +24,68 @@ class calculationHelper{
 	public $productVendorId;
 	public $productCurrency;
 
-	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
-	public $salesPrice;		//end Price in the product currency
-	public $discountedPrice;  //amount of effecting discount
-	public $salesPriceCurrency;
-	public $discount_info;
+//	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
+//	public $salesPrice;		//end Price in the product currency
+//	public $discountedPrice;  //amount of effecting discount
+//	public $salesPriceCurrency;
+//	public $discountAmount;
 	
 	function __construct(){
 		$this->_db = &JFactory::getDBO();
+		$jnow		=& JFactory::getDate();
+		$this -> _now			= $jnow->toMySQL();
+		$this -> _nullDate		= $this->_db->getNullDate();
+	}
+	
+	function getCheckoutPrices($productIds){
+		$pricesPerId = array();
+		$prices = array();
+		$resultWithTax=0.0;
+		foreach ($productIds as $productId){
+//			echo '$productId '.$productId;
+			if (!array_key_exists($productId,$pricesPerId)){
+				$pricesPerId[$productId] = $this -> getProductPrices($productId);
+				echo '$productId Calculated '.$productId;
+			}
+			$prices[] = $pricesPerId[$productId];
+			$resultWithTax = $resultWithTax + $pricesPerId[$productId]['salesPrice'];
+		}
+//		echo print_r($prices);
+		echo '<br />';
+		for ($x = 0; $x < sizeof($prices); ++$x){
+			echo "key: ".key($prices)."  value: ".current($prices)."<br />";
+			$steps = current($prices);
+			for ($y = 0; $y < sizeof($steps); ++$y){
+				echo "   key: ".key($steps)."  value: ".current($steps)."<br />";
+				next($steps);
+			}
+			next($prices);
+		}
+		echo '<br />';
+		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
+		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
+		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
+		
+		$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $resultWithTax));
+		$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $discountBeforeTax));
+		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $discountWithTax));
+		echo '$discountBeforeTax: '.$discountBeforeTax.'<br />';
+		echo '$discountWithTax: '.$discountWithTax.'<br />';
+		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
 	}
 	
 	/** function to start the calculation, here it is the product
 	 * 
 	 */
-	function getProductPrices($product_id){
+	function getProductPrices($productId){
 
-		$jnow		=& JFactory::getDate();
-		$this -> _now			= $jnow->toMySQL();
-		$this -> _nullDate		= $this->_db->getNullDate();
-		
-		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$product_id.'" ');
+		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
 		$row=$this->_db->loadRow();
-		$this->basePrice = $row[0];
+		$basePrice = $row[0];
 		$this->productCurrency=$row[1];
 		
-		$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$product_id.'" ');
+		$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
 		$single = $this->_db->loadResult();
 		$this->productVendorId = $single;
 
@@ -57,7 +93,7 @@ class calculationHelper{
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
 				
-		$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$product_id.'" ');
+		$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
 		$this->_cats=$this->_db->loadResultArray();
 
 		$user = JFactory::getUser();
@@ -65,46 +101,54 @@ class calculationHelper{
 			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$my->id.'" ');
 			$this->_shopperGroupId=$this->_db->loadResultArray();			
 		}
-
-//		echo 'Produkt Baseprice: '.$this->basePrice.'  and currency: '.$this->productCurrency.' `user_id`="'.$my->id.'"<br />';
-		$this->basePrice = $this->convertCurrencyToShopDefault($this->basePrice, $this->productCurrency);
+		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
-		$this->basePriceWithTax = $this -> executeCalculation($taxRules, $this->basePrice);
-
-		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');		
-		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($this -> basePrice));	
-		$this -> discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-
-		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $this -> discountedPrice);	
-		
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
+		$basePriceShopCurrency = $this->convertCurrencyToShopDefault($this->productCurrency, $basePrice);		
+		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
+			
+		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency));	
+		$discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
+
+		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
 		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
-		$this->salesPrice = $this->roundDisplay($unroundedSalesPrice);
+		$salesPrice = $this->roundDisplay($unroundedSalesPrice);
+
+		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
+		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));
 		
-		$this -> discount_info['amount'] = $this->roundDisplay($this->basePriceWithTax - $this->salesPrice);
+		$prices = array(
+				'basePrice'  => $basePriceShopCurrency,
+				'basePriceWithTax' => $basePriceWithTax,
+				'discountedPrice'   => $discountedPrice,
+				'priceWithoutTax'   => $priceWithoutTax,
+				'discountAmount'   => $discountAmount,
+				'salesPrice'   => $salesPrice
+				);
+		return $prices;
 	}
 	
-	function convertCurrencyToShopDefault($value,$currency){
+	function convertCurrencyToShopDefault($currency, $price){
 		if(empty($currency)){
-			return $value;
+			return $price;
 		}
 //		if(!strcmp($this->vendorCurrency, $currency)){
-			$value = $GLOBALS['CURRENCY']->convert( $value, $currency,$this->vendorCurrency);
+			$price = $GLOBALS['CURRENCY']->convert( $price, $currency,$this->vendorCurrency);
 //		}
-		return $value;
+		return $price;
 	}
 
-	function executeCalculation($rules, $salesPrice){
-		if(empty($rules))return $salesPrice;
+	function executeCalculation($rules, $price){
+		if(empty($rules))return $price;
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
-				$salesPrice = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$salesPrice);
-				echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$salesPrice.'<br />';
+				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$price);
+//				echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price.'<br />';
 			}
 		}
-		return $salesPrice;
+		return $price;
 	}
 	
 	
@@ -119,6 +163,32 @@ class calculationHelper{
 	 * DATax (Discount on money)
 	 * Duty
 	 */
+	function gatherEffectingRulesForBill($entrypoint){
+
+//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
+		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
+		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
+		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
+
+		//Test if calculation affects the current entry point
+		//shared rules counting for every vendor seems to be not necessary
+		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+		'`calc_kind`="'.$entrypoint.'" ' .
+		' AND `published`="1" ' .
+		' AND (`calc_vendor_id`="'.$this->cartVendorId.'" OR `shared`="1" )'.
+		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' )'.
+		$shoppergrps . $countries . $states ;
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
+
+		//Just for developing
+//		foreach($rules as $rule){
+//			echo '<br /> Add rule '.$rule['calc_name'];
+//		}
+		return $rules;
+	}
+
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
 		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
@@ -138,12 +208,13 @@ class calculationHelper{
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 
+		//Just for developing
 		foreach($rules as $rule){
-			echo '<br /> Add rule '.$rule['calc_name'];
+//			echo '<br /> Add rule '.$rule['calc_name'];
 		}
 		return $rules;
 	}
-
+	
 	function writeRulePartEffectingQuery($data,$field){
 		$q='';
 		if(!empty($data)){
@@ -163,30 +234,30 @@ class calculationHelper{
 	 * progressive, nonprogressive and so on.
 	 * 
 	 */
-	function interpreteMathOp($mathop,$value,$currency, $salesPrice){
+	function interpreteMathOp($mathop,$value,$currency, $price){
 
 		$sign = substr($mathop,0,1);
 		if(!strcmp($sign,'+')){
 			if(strlen($mathop)>1){
 				$second = substr($mathop,1,2);
 				if(strcmp($sign,"%")){
-					return $salesPrice * (1+$value/100.0);
+					return $price * (1+$value/100.0);
 				}
 			} else {
 
-				$value = $this->convertCurrencyToShopDefault($value, $currency);
-				return $salesPrice + $value ;
+				$value = $this->convertCurrencyToShopDefault($currency, $value);
+				return $price + $value ;
 			}
 			
 		}else if(!strcmp($sign,'-')){
 			if(strlen($mathop)>1){
 				$second = substr($mathop,1,2);
 				if(strcmp($sign,"%")){
-					return $salesPrice * (1-$value/100.0);
+					return $price * (1-$value/100.0);
 				}
 			} else {
-				$value = $this->convertCurrencyToShopDefault($value, $currency);
-				return $salesPrice - $value ;
+				$value = $this->convertCurrencyToShopDefault($currency, $value);
+				return $price - $value ;
 			}			
 		}
 	

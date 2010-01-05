@@ -40,7 +40,7 @@ switch( $task ) {
 			}
 			
 		}
-		vmConnector::sendHeaderAndContent( 200, ps_html::selectList( 'function_method', $function, $method_array ) );
+		VmConnection::sendHeaderAndContent( 200, ps_html::selectList( 'function_method', $function, $method_array ) );
 		break;
 	case 'checkforupdate':
 		require_once( CLASSPATH.'update.class.php');
@@ -50,9 +50,9 @@ switch( $task ) {
 			// Convert a String like "1.1.1" => "1.11", so we can use it as float in Javascript
 			$version_as_float = substr($result, 0, 3 ) . substr( $result, 4 );
 			$version_as_json = '{version_string:"'.$result.'",version:"'.$version_as_float.'"}';
-			vmConnector::sendHeaderAndContent('200', $version_as_json );
+			VmConnection::sendHeaderAndContent('200', $version_as_json );
 		} else {
-			vmConnector::sendHeaderAndContent('200', 'Connection Failed' );
+			VmConnection::sendHeaderAndContent('200', 'Connection Failed' );
 		}
 		
 	default: die;

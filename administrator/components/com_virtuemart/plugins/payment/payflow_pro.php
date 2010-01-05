@@ -145,7 +145,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 	
-		$result = vmConnector::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
+		$result = VmConnection::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -318,7 +318,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 	
-		$result = vmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
+		$result = VmConnection::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -493,7 +493,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 			
-		$result = vmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
+		$result = VmConnection::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );

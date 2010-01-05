@@ -2312,14 +2312,15 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 
 			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationH.php');
 			$calculator = new calculationHelper();
-			$calculator -> getProductPrices($product_id);
-			$discount_info = $calculator -> discount_info;
-			$text_including_tax = $calculator ->salesPrice;
+			$priceData = $calculator -> getCheckoutPrices(array('1','1','2','3'));
+			$priceData = $calculator -> getProductPrices($product_id);
+			$discount_info['amount'] = $priceData['discountAmount'];
+			$text_including_tax = $priceData['salesPrice'];
 			
-			if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $text_excluding_tax = $calculator -> discountedPrice; //ct
-//			$text_excluding_tax = $calculator -> discountedPrice;
-			$undiscounted_price = $calculator ->basePriceWithTax;  //With Tax?
-			$base_price = $calculator ->basePrice;
+//			if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $text_excluding_tax = $priceData['priceWithoutTax']; //ct
+			$text_excluding_tax = $priceData['priceWithoutTax'];
+			$undiscounted_price = $priceData['basePriceWithTax'];  //With Tax?
+			$base_price = $priceData['basePrice'];
 			//Hmm for what is this needed?
 //			$html, $price_info, $base_price_info
 //			// Get the Price according to the quantity in the Cart
@@ -2330,12 +2331,13 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		
 		$tpl->set( 'discount_info', $discount_info );
 		$tpl->set( 'text_including_tax', $text_including_tax );
-		if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $tpl->set( 'text_excluding_tax', $text_excluding_tax ); //ct
-//		$tpl->set( 'text_excluding_tax', $text_excluding_tax );
+//		if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $tpl->set( 'text_excluding_tax', $text_excluding_tax ); //ct
+		$tpl->set( 'text_excluding_tax', $text_excluding_tax );
 		$tpl->set( 'undiscounted_price', @$undiscounted_price );
 		$tpl->set( 'base_price', $base_price );
         $tpl->set( 'price_table', $html);
 
+		
 		return $tpl->fetch( 'common/price.tpl.php');
 
 	}

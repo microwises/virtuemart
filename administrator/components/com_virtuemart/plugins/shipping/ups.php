@@ -163,7 +163,7 @@ class plgShippingUps extends vmShippingPlugin {
 
 			$error = false;
 
-			$xmlResult = vmConnector::handleCommunication($upsURL, $xmlPost );
+			$xmlResult = VmConnection::handleCommunication($upsURL, $xmlPost );
 
 			if( !$xmlResult) {
 				$vmLogger->err( JText::_('VM_INTERNAL_ERROR',false)." UPS.com" );

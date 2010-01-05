@@ -729,7 +729,7 @@ class ps_product_files extends vmAbstractObject {
 		if( $filename ) {
 			require_once( CLASSPATH.'connectionTools.class.php');
 			
-			vmConnector::sendFile( $filename, $dbf->f("file_mimetype"));
+			VmConnection::sendFile( $filename, $dbf->f("file_mimetype"));
 
 			$GLOBALS['vm_mainframe']->close(true);
 		}
@@ -839,7 +839,7 @@ class ps_product_files extends vmAbstractObject {
 					return false;
 				}
 				
-				vmConnector::handleCommunication($url, '', array(), $handle );
+				VmConnection::handleCommunication($url, '', array(), $handle );
 				fclose($handle);
 				
 				return $tmp_file;

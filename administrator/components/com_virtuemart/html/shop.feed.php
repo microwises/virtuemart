@@ -19,7 +19,7 @@
 require_once( CLASSPATH.'connectionTools.class.php');
 
 if( VM_FEED_ENABLED == '') {
-	vmConnector::sendHeaderAndContent( 403, 'This Feed is currently not available.', '');
+	VmConnection::sendHeaderAndContent( 403, 'This Feed is currently not available.', '');
 	exit();
 }
 
