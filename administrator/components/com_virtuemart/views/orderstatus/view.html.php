@@ -9,7 +9,6 @@
  */
 
 jimport( 'joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 
 /**
  * HTML View class for maintaining the list of order types
@@ -23,6 +22,10 @@ class VirtuemartViewOrderstatus extends JView
 	function display($tpl = null)
 	{
 		global $mainframe, $option;
+
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
+
 		$model = $this->getModel();
 		$orderStatus = $model->getOrderStatus();
 

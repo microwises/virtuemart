@@ -2310,7 +2310,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		}
 		} else{
 
-			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationH.php');
+			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 			$calculator = new calculationHelper();
 			$priceData = $calculator -> getCheckoutPrices(array('1','1','2','3'));
 			$priceData = $calculator -> getProductPrices($product_id);

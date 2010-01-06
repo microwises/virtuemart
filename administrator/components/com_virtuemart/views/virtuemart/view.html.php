@@ -5,8 +5,6 @@
 
 jimport( 'joomla.application.component.view');
 jimport('joomla.html.pane');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -18,6 +16,10 @@ class VirtuemartViewVirtuemart extends JView
 	
 	function display($tpl = null)
 	{		
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
+		$this->loadHelper('image');
+		
 		$model =& $this->getModel();
 	
 		$nbrCustomers = $model->getTotalCustomers();			

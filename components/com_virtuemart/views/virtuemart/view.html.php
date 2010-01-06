@@ -17,8 +17,9 @@ class VirtueMartViewVirtueMart extends JView
  	//	$vendorModel =& $this->getModel('vendor'); 	    
 		$categoryModel =& $this->getModel('category');
 		$productModel =& $this->getModel('product');
-	
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorHelper.php');
+
+		$this->loadHelper('vendorHelper');
+		
 	    $vendorId = JRequest::getInt('vendorid', 1);
 	    $vendorModel = new Vendor;
 	    $vendor =& $vendorModel->getVendor($vendorId); 	    

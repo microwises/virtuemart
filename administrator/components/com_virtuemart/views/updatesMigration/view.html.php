@@ -9,7 +9,6 @@
  */
 
 jimport( 'joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 
 /**
  * HTML View class for maintaining the Installation. Updating of the files and imports of the database should be done here
@@ -21,7 +20,8 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 class VirtuemartViewUpdatesMigration extends JView
 {	
     function display($tpl = null) {
-	$latestVersion = JRequest::getVar('latestverison', '');
+	$this->loadHelper('adminMenu');
+    $latestVersion = JRequest::getVar('latestverison', '');
 
 	JToolBarHelper::title('Updating and data migration', 'vm_config_48');
 

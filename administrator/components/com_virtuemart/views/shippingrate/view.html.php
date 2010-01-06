@@ -9,7 +9,6 @@
  */
 
 jimport( 'joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 
 /**
  * HTML View class for maintaining the list of shipping rates
@@ -21,6 +20,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 class VirtuemartViewShippingRate extends JView {
 	
 	function display($tpl = null) {	
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
+		
 		$model = $this->getModel();
         $shippingRate = $model->getShippingRate();
         

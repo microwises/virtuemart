@@ -9,7 +9,6 @@
  */
 
 jimport( 'joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 
 /**
  * HTML View class for maintaining the list of countries
@@ -21,46 +20,49 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 class VirtuemartViewCountry extends JView {
 
     function display($tpl = null) {
-	$model = $this->getModel();
-	$zoneModel = $this->getModel('ShippingZone');
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
 
-	$country = $model->getCountry();
+		$model = $this->getModel();
+		$zoneModel = $this->getModel('ShippingZone');
 
-	$layoutName = JRequest::getVar('layout', 'default');
-	$isNew = ($country->country_id < 1);
+		$country = $model->getCountry();
 
-	if ($layoutName == 'edit') {
-	    if ($isNew) {
-		JToolBarHelper::title(  JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
-		JToolBarHelper::divider();
-		JToolBarHelper::save();
-		JToolBarHelper::cancel();
-	    }
-	    else {
-		JToolBarHelper::title( JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
-		JToolBarHelper::divider();
-		JToolBarHelper::save();
-		JToolBarHelper::cancel('cancel', 'Close');
-	    }
+		$layoutName = JRequest::getVar('layout', 'default');
+		$isNew = ($country->country_id < 1);
 
-	    $this->assignRef('country',	$country);
-	    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
-	}
-	else {
-	    JToolBarHelper::title( JText::_( 'VM_COUNTRY_LIST_LBL' ), 'vm_countries_48' );
-	    JToolBarHelper::publishList();
-	    JToolBarHelper::unpublishList();
-	    JToolBarHelper::deleteList('', 'remove', 'Delete');
-	    JToolBarHelper::editListX();
-	    JToolBarHelper::addNewX();
+		if ($layoutName == 'edit') {
+		    if ($isNew) {
+				JToolBarHelper::title(  JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::divider();
+				JToolBarHelper::save();
+				JToolBarHelper::cancel();
+		    }
+		    else {
+				JToolBarHelper::title( JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::divider();
+				JToolBarHelper::save();
+				JToolBarHelper::cancel('cancel', 'Close');
+		    }
 
-	    $pagination = $model->getPagination();
-	    $this->assignRef('pagination',	$pagination);
+		    $this->assignRef('country',	$country);
+		    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
+		}
+		else {
+			JToolBarHelper::title( JText::_( 'VM_COUNTRY_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
+			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::editListX();
+			JToolBarHelper::addNewX();
 
-	    $countries = $model->getCountries();
-	    $this->assignRef('countries',	$countries);
-	}
-	parent::display($tpl);
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination',	$pagination);
+
+			$countries = $model->getCountries();
+			$this->assignRef('countries',	$countries);
+		}
+		parent::display($tpl);
     }
 
 }

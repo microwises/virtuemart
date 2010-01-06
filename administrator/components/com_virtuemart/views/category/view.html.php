@@ -11,9 +11,6 @@
 jimport( 'joomla.application.component.view');
 jimport('joomla.html.pane');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-
 /**
  * HTML View class for maintaining the list of categories
  *
@@ -24,6 +21,11 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 class VirtuemartViewCategory extends JView {
 	
 	function display($tpl = null) {	
+		
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
+		$this->loadHelper('image');
+
 		$model = $this->getModel();
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();

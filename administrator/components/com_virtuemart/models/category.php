@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorHelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorhelper.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 /**
