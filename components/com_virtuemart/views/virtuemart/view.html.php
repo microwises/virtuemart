@@ -8,42 +8,40 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php')
 /**
  * Default HTML View class for the VirtueMart Component
  */
-class VirtueMartViewVirtueMart extends JView
-{
+class VirtueMartViewVirtueMart extends JView {
 	
-	function display($tpl = null)
-	{	  	    
+	public function display($tpl = null) {	  	    
 	
- 	//	$vendorModel =& $this->getModel('vendor'); 	    
-		$categoryModel =& $this->getModel('category');
-		$productModel =& $this->getModel('product');
+		$categoryModel = $this->getModel('productcategory');
+		$productModel = $this->getModel('product');
 
-		$this->loadHelper('vendorHelper');
-		
 	    $vendorId = JRequest::getInt('vendorid', 1);
-	    $vendorModel = new Vendor;
-	    $vendor =& $vendorModel->getVendor($vendorId); 	    
-	    $this->assignRef('vendor',	$vendor);
+	    /* MULTI-X
+	    * $this->loadHelper('vendorHelper');
+	    * $vendorModel = new Vendor;
+	    * $vendor = $vendorModel->getVendor($vendorId); 	    
+	    * $this->assignRef('vendor',	$vendor);
+	    */
 	    
 	    $categoryId = JRequest::getInt('catid', 0);
-        $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);	
+        $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
         $this->assignRef('categories',	$categoryChildren);
         
-        $featuredProducts = $productModel->getFeaturedProducts($vendorId, '', 5);	
-        $this->assignRef('featuredProducts', $featuredProducts);        
+        /* Load the recent viewed products */
+        $this->assignRef('recentProducts', $productModel->getRecentProducts());
+        
+        if (Vmconfig::getVar('showFeatured', 1)) {
+			$featuredProducts = $productModel->getFeaturedProducts($vendorId, '', 5);	
+			$this->assignRef('featuredProducts', $featuredProducts);
+		}
 		
-		//parent::display($tpl);
-		$this->useVirtuemartFrontend();
+		if (Vmconfig::getVar('showlatest', 1)) {
+			$latestProducts = $productModel->getLatestProducts($vendorId, 5);
+			$this->assignRef('latestProducts', $latestProducts);
+		}
+		
+		parent::display($tpl);
 
 	}
-	
-	
-	function useVirtuemartFrontend()
-	{
-//		echo('In the Frontend the JPATH_COMPONENT is: '.JPATH_COMPONENT);
-	    include(JPATH_COMPONENT.DS.'virtuemart.php');
-	    
-	 }
 }
-
 ?>

@@ -30,6 +30,7 @@ class ShopFunctions {
 	/**
 	* Initialise the mailer object to start sending mails
 	* @author RolandD
+	* @todo Add vendor data
 	*/
 	public function loadMailer() {
 		$mainframe = JFactory::getApplication();
@@ -150,7 +151,7 @@ class ShopFunctions {
 	/**
 	 * Creates structured option fields for all categories
 	 *
-	 * TODO: Connect to vendor data
+	 * @todo: Connect to vendor data
 	 * 
 	 * @param int $categoryId A single category to be pre-selected
 	 * @param int $cid Internally used for recursion

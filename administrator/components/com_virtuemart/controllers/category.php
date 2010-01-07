@@ -88,7 +88,7 @@ class VirtuemartControllerCategory extends JController
 	 */	
 	public function save()
 	{
-		$categoryModel =& $this->getModel('category');		
+		$categoryModel = $this->getModel('category');		
 		$cmd = JRequest::getCmd('task');
 		
 		if ($id = $categoryModel->store()) {

@@ -286,10 +286,10 @@ class VirtueMartModelProduct extends JModel {
 	 * @param int $nbrReturnProducts Number of products to return
 	 * @return object List of featured products
 	 */    
-    function getFeaturedProducts($vendorId, $categoryId='', $nbrReturnProducts) {
+    public function getFeaturedProducts($vendorId, $categoryId='', $nbrReturnProducts) {
 		$db = JFactory::getDBO();         
 	    
-        if ( $categoryId ) {
+        if ($categoryId) {
 	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` '; 
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
@@ -298,7 +298,7 @@ class VirtueMartModelProduct extends JModel {
             $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
 	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
 	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
-	        if( CHECK_STOCK && SHOW_OUT_OF_STOCK_PRODUCTS != '1') {
+	        if (Vmconfig::getVar('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
@@ -309,7 +309,7 @@ class VirtueMartModelProduct extends JModel {
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
 	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
 	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
-	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != '1') {
+	        if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
@@ -982,6 +982,136 @@ class VirtueMartModelProduct extends JModel {
 			else return false;
 		}
 		else return false;
+    }
+    
+    /**
+    * Add a product to the recent products list
+    * @author RolandD
+    */
+    public function addRecentProduct($product_id, $category_id, $maxviewed) {
+    	$session = JFactory::getSession();
+		$recentproducts = $session->get("recentproducts", null);
+		if (empty($recentproducts)) $recentproducts['idx'] = 0;
+		
+    	//Check to see if we alread have recent
+    	if ($recentproducts['idx'] !=0) {
+    		for($i=0; $i < $recentproducts['idx']; $i++){
+    			//Check if it already exists and remove and reorder array
+    			if ($recentproducts[$i]['product_id'] == $product_id) {
+    				for($k=$i; $k < $recentproducts['idx']-1; $k++){
+    					$recentproducts[$k] = $recentproducts[$k+1];
+    				}
+    				array_pop($recentproducts);
+    				$recentproducts['idx']--;
+    			}
+    		}
+    	}
+    	// add product to recently viewed
+    	$recentproducts[$recentproducts['idx']]['product_id'] = $product_id;
+    	$recentproducts[$recentproducts['idx']]['category_id'] = $category_id;
+    	$recentproducts['idx']++;
+    	//Check to see if we have reached are limit and remove first item
+    	if($recentproducts['idx'] > $maxviewed+1) {
+    		for($k=0; $k < $recentproducts['idx']-1;$k++){
+    			$recentproducts[$k] = $recentproducts[$k+1];
+    		}
+    		array_pop($recentproducts);
+    		$recentproducts['idx']--;
+    	}
+    	$session->set("recentproducts", $recentproducts);
+    }
+    
+    /**
+    * Load a list of recent products
+    * @author RolandD
+    * @todo Should we setup a session initiator and include the recent products?
+    *
+    * @param  int $product_id the ID of the product currently being viewed, don't want it in the list
+    * @param  int $maxitems the number of items to retrieve
+	* @return boolean true if there are recent products, false if there are no recent products 
+    */
+    public function getRecentProducts($product_id=null, $maxitems=5) {
+    	if ($maxitems == 0) return;
+    	
+    	$db = JFactory::getDBO();
+    	$session = JFactory::getSession();
+		$recentproducts = $session->get("recentproducts", null);
+		if (empty($recentproducts)) $recentproducts['idx'] = 0;
+		
+		$k=0;
+		$recent = array();
+		$safeHtmlFilter = JFilterInput::getInstance();
+		// Iterate through loop backwards (newest to oldest)
+		for($i = $recentproducts['idx']-1; $i >= 0; $i--) {
+			//Check if on current product and don't display
+			if($recentproducts[$i]['product_id'] == $product_id){
+				continue;
+			}
+			// If we have not reached max products add the next product
+			if ($k < $maxitems) {
+				$prod_id = $recentproducts[$i]['product_id'];
+				$category_id = $recentproducts[$i]['category_id'];
+				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc,product_thumb_image ";
+				$q .= "FROM #__vm_product as p,#__vm_category as c,#__vm_product_category_xref as cx ";
+				$q .= "WHERE p.product_id = '".$prod_id."' ";
+				$q .= "AND c.category_id = '".$category_id."' ";
+				$q .= "AND p.product_id = cx.product_id ";
+				$q .= "AND c.category_id=cx.category_id ";
+				$q .= "AND p.product_publish='1' ";
+				$q .= "AND c.published='1' ";
+				$q .= "LIMIT 0,1";
+				$db->setQuery($q);
+				echo 'File '.__FILE__.' Line '.__LINE__.' :: pass<br />';
+				echo $db->getQuery();
+				$product = $db->loadObject();
+				
+				if ($db->getAffectedRows() > 0) {
+					$recent[$k]['product_s_desc'] = $product->product_s_desc;
+					$flypage = $product->category_flypage;
+					if (empty($flypage)) $flypage = Vmconfig::getVar('flypage');
+					
+					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
+					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
+					$recent[$k]['product_name'] = $safeHtmlFilter->clean($product->product_name);
+					$recent[$k]['category_name'] = $product->category_name;
+					$recent[$k]['product_thumb_image'] = $product->product_thumb_image;
+				}
+				$k++;
+			}
+		}
+		
+		$session->set("recentproducts", $recent);
+		
+		if($k == 0) return false;
+		else return true;
+    }
+    
+    /**
+    * Retrieves a list of the newest products added to the system.
+    * Selection is based on the cdate (creation date) value
+    *
+    * @author RolandD
+    * @todo creation date should be a config option
+    * @param int $vendorId the ID of the vendor
+    * @param int $nbrReturnProducts the number of products to return
+    * @return an array of objects with product details
+    */
+    public function getLatestProducts($vendorId = 1, $nbrReturnProducts = 5) {
+    	$db = JFactory::getDBO();         
+	    
+		$query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
+		$query .= 'FROM `#__vm_product` WHERE ';
+		$query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
+		$query .= 'AND `#__vm_product`.`product_publish` = "Y" ';
+		$query .= 'AND `#__vm_product`.`cdate` > '.(time()-(60*60*24*7));
+		if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
+			$query .= ' AND `product_in_stock` > 0 ';
+		}
+		$query .= ' ORDER BY RAND() LIMIT 0, '.$nbrReturnProducts;
+        
+        $db->setQuery($query);
+		$result = $db->loadObjectList();
+		return $result;
     }
 }
 ?>

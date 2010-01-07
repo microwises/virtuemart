@@ -53,8 +53,7 @@ class VirtueMartModelCategory extends JModel
      * @author RickG
      */
 	
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         
         // Get the pagination request variables
@@ -91,8 +90,7 @@ class VirtueMartModelCategory extends JModel
 	 * @param int $category_id Category id to check for child categories
 	 * @return object List of objects containing the child categories
 	 */
-	public function getChildCategoryList($vendorId, $category_id) 
-	{		
+	public function getChildCategoryList($vendorId, $category_id) {		
 		$db = JFactory::getDBO();
 
 		$query = 'SELECT `category_id`, `category_thumb_image`, `category_child_id`, `category_name` ';
