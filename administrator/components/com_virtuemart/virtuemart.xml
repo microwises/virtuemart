@@ -36,6 +36,7 @@
 		<filename>index.html</filename>
 		
 		<folder>assets</folder>
+		<folder>controllers</folder>
 		<folder>js</folder>
 		<folder>models</folder>
 		<folder>shop_image</folder>
