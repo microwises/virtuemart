@@ -57,7 +57,7 @@ class ShopFunctions {
 	*/
 	public function renderCountryList( $countryId = 0 ){
 		
-		$countryModel = self::_getModel('country');
+		$countryModel = self::getModel('country');
 				
 		$countries = $countryModel->getCountries(false, true);
 		
@@ -84,7 +84,7 @@ class ShopFunctions {
 	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = ''){
 		
 		$document = JFactory::getDocument();
-		$stateModel = self::_getModel('state');
+		$stateModel = self::getModel('state');
 		$states = array();
 		
 		if( $countryId ){
@@ -117,7 +117,7 @@ class ShopFunctions {
 	 */
 	public function countProductsByCategory( $categoryId = 0 ) 
 	{
-		$categoryModel = self::_getModel('category');
+		$categoryModel = self::getModel('category');
         return $categoryModel->countProducts($categoryId);
     } 
 	
@@ -135,7 +135,7 @@ class ShopFunctions {
 	 */
 	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null ) 
 	{
-		$categoryModel = self::_getModel('category');
+		$categoryModel = self::getModel('category');
 		
 		$categories = $categoryModel->getCategoryTree($onlyPublished, $withParentId, (int)$parentId);
 		
@@ -166,7 +166,7 @@ class ShopFunctions {
 		static $categoryTree = '';
 		$vendor_id = 1;
 
-		$categoryModel = self::_getModel('category');
+		$categoryModel = self::getModel('category');
 		$level++;
 
 		/*
@@ -211,9 +211,8 @@ class ShopFunctions {
 				}
 				else{
 					$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">'."\n";
-					$categoryTree .= str_repeat('.  ', ($level-1) );
+					$categoryTree .= str_repeat(' - ', ($level-1) );
 					
-					if($level > 1) $categoryTree .= '|- ';
 
 					$categoryTree .= $category->category_name .'</option>';
 				}
@@ -235,7 +234,7 @@ class ShopFunctions {
 	* @param string $name Model name
 	* @return JModel Instance any model
 	*/
-	private function _getModel($name = ''){
+	public function getModel($name = ''){
 		
 		$name = strtolower($name);
 		$className = ucfirst($name);
@@ -243,19 +242,18 @@ class ShopFunctions {
 		//retrieving country model
 		if( !class_exists('VirtueMartModel'.$className) ){
 			
-			$modelPath = JPATH_COMPONENT_ADMINISTRATOR.DS."models".DS.$name.".php";
+			$modelPath = JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS."models".DS.$name.".php";
 			
 			if( file_exists($modelPath) ){
 				require_once( $modelPath );
 			}
 			else{
 				JError::raiseWarning( 0, 'Model '. $name .' not found.' );
-				return '';
+				return false;
 			}
 		}
 		
 		$className = 'VirtueMartModel'.$className;
-		
 		//instancing the object
 		$model = new $className();
 		return $model;
@@ -715,4 +713,3 @@ class ShopFunctions {
 		return $valid;
 	}
 }
-?>

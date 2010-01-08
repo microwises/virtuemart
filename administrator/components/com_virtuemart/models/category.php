@@ -11,8 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorhelper.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'vendorhelper.php');
+require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
 
 /**
  * Model for product categories
