@@ -7,7 +7,7 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RickG
+ * @author RickG, RolandD
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 defined('_JEXEC') or die();
@@ -20,10 +20,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'classes' . DS. "class.img2thu
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RickG
+ * @author RickG, RolandD
  */
-class ImageHelper
-{
+class ImageHelper {
 	/**
 	 * Display an image icon for the given image and create a link to the given link.
 	 *
@@ -31,8 +30,7 @@ class ImageHelper
 	 * @param string $image Name of the image file to display
 	 * @param string $text Text to use for the image alt text and to display under the image.
 	 */
-	function displayImageButton($link, $image, $text) 
-	{
+	public function displayImageButton($link, $image, $text) {
 		$button = '<a title="' . $text . '" href="' . $link . '">';
 		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, $text, NULL, $text);
 		$button .= '<br />' . $text.'</a>';
@@ -47,8 +45,7 @@ class ImageHelper
 	 * @param string $image Name of the image file to display
 	 * @param string $text Text to use for the image alt text.
 	 */
-	function displayImage($image, $text) 
-	{
+	public function displayImage($image, $text)  {
 		$imageHtml  = '<div style="float:left;"><div class="icon">';
 		$imageHtml .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
 		$imageHtml .= '</div></div>';
@@ -68,8 +65,7 @@ class ImageHelper
 	 * @param integer $thumbHeight Height the returned image should be. 
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 */
-	function displayShopImage($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
-	{
+	public function displayShopImage($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
 		echo ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
@@ -85,15 +81,14 @@ class ImageHelper
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 * @return string <img> tag containing the image as the src attribute.  Needs only to be echo'd.
 	 */	
-	function getShopImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
-	{
+	function getShopImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
 		return ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
 	/**
 	 * Generate the <img> html code for a given image and a given image size.
 	 *
-	 * @author RickG
+	 * @author RickG, RolandD
 	 * @param string $image Filename of the image.  No path.
 	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
@@ -103,8 +98,7 @@ class ImageHelper
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 * @return string <img> tage containing the image as the src attribute.  Needs only to be echo'd.
 	 */
-	function generateImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
-	{
+	function generateImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
 		// Process image arguments
 		$border="";
 		if( strpos( $imageArgs, "border=" )===false ) {
@@ -124,12 +118,12 @@ class ImageHelper
 					$newImageHeight = $thumbHeight;
 				}
 				else {
-					$newImageWidth = PSHOP_IMG_WIDTH;
-					$newImageHeight = PSHOP_IMG_HEIGHT;
+					$newImageWidth = Vmconfig::getVar('pshop_img_width', 90);
+					$newImageHeight = Vmconfig::getVar('pshop_img_height', 90);
 				}
 				
 				// Dynamic image resizing will happen
-				if (PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
+				if (Vmconfig::getVar('pshop_img_resize_enable') == '1' || $resize==1) {
 					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
 					if (!strpos($imageArgs, "height=")) {
 						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootFolder, '', $newImageWidth, $newImageHeight));
@@ -146,12 +140,12 @@ class ImageHelper
 					}
 					if ($resize) {
 						if ($height < $width) {
-							$newImageWidth = round($width / ($height / PSHOP_IMG_HEIGHT));
-							$newImageHeight = PSHOP_IMG_HEIGHT;
+							$newImageWidth = round($width / ($height / Vmconfig::getVar('pshop_img_height', 90)));
+							$newImageHeight = Vmconfig::getVar('pshop_img_height', 90);
 						} 
 						else {
-							$newImageHeight = round($height / ($width / PSHOP_IMG_WIDTH));
-							$newImageWidth = PSHOP_IMG_WIDTH;
+							$newImageHeight = round($height / ($width / Vmconfig::getVar('pshop_img_width', 90)));
+							$newImageWidth = Vmconfig::getVar('pshop_img_width', 90);
 						}
 						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
 					}
@@ -159,7 +153,7 @@ class ImageHelper
 			}
 		}
 		else {
-			$url = VM_THEMEURL.'images/'.NO_IMAGE;
+			$url = Vmconfig::getVar('vm_themeurl').'images/'.Vmconfig::getVar('no_image');
 		}
 		
 		return JHTML::image($url, '');
@@ -172,15 +166,14 @@ class ImageHelper
 	 *
 	 * Resized images are currently held in the shop image directory in a resized folder found under the $imageRootFolder.
 	 *
-	 * @author RickG
+	 * @author RickG, RolandD
 	 * @param string $imageFilename Filename of the image.  No path included.
 	 * @param string $imageRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.
 	 * @param integer $width Width the resized image should be 
 	 * @param integer $height Height the resized image should be
 	 * @return string URL to the resized image or 'No Imgae'
 	 */
-	function createResizedImage($imageFilename, $imageRootFolder, $width, $height) 
-	{
+	function createResizedImage($imageFilename, $imageRootFolder, $width, $height) {
 		$maxsize = false;
 		$bgred = 255;
 		$bggreen = 255;
@@ -215,7 +208,7 @@ class ImageHelper
 			}				
 		}
 		else {
-			return VM_THEMEURL.'images/'.NO_IMAGE;
+			return Vmconfig::getVar('vm_themeurl').'images/'.Vmconfig::getVar('no_image');
 		}
 	}
 	
@@ -224,6 +217,7 @@ class ImageHelper
 	 * Returns the filename of an image's resized copy in the /resized folder
 	 *
 	 * @author RickG
+	 * @todo Do we really want to add the width and height to the filename?
 	 * @param string $filename Filename of the image we are looking for.
 	 * @param string $imageRootFolder Folder under the shop image location that contains this image.  For example, 'products'.
 	 * @param string $ext Image extension we ar elooking for,  If none we will use what is on the $filename.
@@ -239,10 +233,10 @@ class ImageHelper
 		}
 		
 		if ($width == 0) {
-			$width = PSHOP_IMG_WIDTH;
+			$width = Vmconfig::getVar('pshop_img_width', 90);
 		}
 		if ($height == 0) {
-			$height = PSHOP_IMG_HEIGHT;
+			$height = Vmconfig::getVar('pshop_img_height', 90);
 		}
 		
 		$resizedFilename = $fileinfo['filename'].'_'.$width.'x'.$height.'.'.$fileinfo['extension'];

@@ -1,6 +1,5 @@
 <?php
-// Important: Must be includeable from outside the Mambo Framework!
-// if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
 * @version $Id: class.img2thumb.php 1755 2009-05-01 22:45:17Z rolandd $

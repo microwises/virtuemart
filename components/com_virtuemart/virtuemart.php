@@ -19,10 +19,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /* Require the base controller */
 require_once(JPATH_COMPONENT.DS.'controller.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 
 /* Load the permissions */
 Permissions::doAuthentication();

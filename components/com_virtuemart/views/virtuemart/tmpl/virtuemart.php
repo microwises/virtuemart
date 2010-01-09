@@ -24,7 +24,7 @@ foreach ($this->categories as $category) {
 // Show Featured Products
 if (Vmconfig::getVar('showFeatured', 1)) {
     /* Load template edit featuredproduct.tpl.php to edit layout */
-    echo 'load featured products template';
+    echo $this->loadTemplate('featuredproducts');
 }
 // Show Latest Products
 if (Vmconfig::getVar('showlatest', 1)) {

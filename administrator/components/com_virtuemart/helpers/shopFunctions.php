@@ -712,4 +712,44 @@ class ShopFunctions {
 		$valid = preg_match( '/^[\w\.\-]+@\w+[\w\.\-]*?\.\w{1,4}$/', $email );
 		return $valid;
 	}
+	
+	/**
+	 * This is a very time consuming function.
+	 * It fetches the category flypage for a specific product id
+	 *
+	 * @todo Check how the function can be optimized
+	 *
+	 * @param int $product_id
+	 * @return string The flypage value for that product
+	 */
+	function getFlypage($product_id) {
+		$session = JFactory::getSession();
+		$product_sess = $session->get("product_sess", null);
+		if (empty($product_sess[$product_id]['flypage'])) {
+			$db = JFactory::getDBO();
+			$productParentId = (int)$product_id;
+			do {
+				$q = "SELECT `#__vm_product`.`product_parent_id` AS product_parent_id, `#__vm_category`.`category_flypage`
+						FROM `#__vm_product`
+						LEFT JOIN `#__vm_product_category_xref` 
+						ON `#__vm_product_category_xref`.`product_id` = `#__vm_product`.`product_id`
+						LEFT JOIN `#__vm_category` 
+						ON `#__vm_product_category_xref`.`category_id` = `#__vm_category`.`category_id`
+						WHERE `#__vm_product`.`product_id`=".$productParentId;
+				$db->setQuery($q);
+				$product = $db->loadObject();
+				$productParentId = $product->product_parent_id;
+			}
+			while ($product->product_parent_id && !$product->category_flypage);
+
+			if ($product->category_flypage) {
+				$product_sess[$product_id]['flypage'] = $product->category_flypage;
+			} 
+			else {
+				$product_sess[$product_id]['flypage'] = Vmconfig::getVar('flypage');
+			}
+			$session->set('product_sess', $product_sess);
+		}
+		return $product_sess[$product_id]['flypage'];
+	}
 }

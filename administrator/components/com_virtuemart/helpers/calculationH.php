@@ -37,7 +37,12 @@ class calculationHelper{
 		$this -> _nullDate		= $this->_db->getNullDate();
 	}
 	
-	function getCheckoutPrices($productIds){
+	/**
+	* Calcualte the checkout price
+	*
+	* @param array $productIds An array or product IDs to calculate the checkout price for
+	*/
+	public function getCheckoutPrices($productIds) {
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
@@ -74,10 +79,13 @@ class calculationHelper{
 		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
 	}
 	
-	/** function to start the calculation, here it is the product
-	 * 
-	 */
-	function getProductPrices($productId){
+	/** 
+	* function to start the calculation, here it is the product
+	* 
+	* @param integer The ID of the product to get the price for
+	* @return array containing the different price details
+	*/
+	public function getProductPrices($productId){
 
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
@@ -97,9 +105,9 @@ class calculationHelper{
 		$this->_cats=$this->_db->loadResultArray();
 
 		$user = JFactory::getUser();
-		if(isset($user->id)){
-			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$my->id.'" ');
-			$this->_shopperGroupId=$this->_db->loadResultArray();			
+		if (isset($user->id)){
+			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id` = "'.$user->id.'" ');
+			$this->_shopperGroupId = $this->_db->loadResultArray();			
 		}
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
@@ -129,7 +137,16 @@ class calculationHelper{
 		return $prices;
 	}
 	
-	function convertCurrencyToShopDefault($currency, $price){
+	/**
+	* Converts a price to the vendor currency
+	*
+	* @todo make it work :)
+	* @param string $currency The name of the target currency
+	* @param float $price The value to be converted
+	* @return float The converted value
+	*/
+	public function convertCurrencyToShopDefault($currency, $price){
+		return $price;
 		if(empty($currency)){
 			return $price;
 		}
@@ -193,8 +210,9 @@ class calculationHelper{
 
 		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
 		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
-		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
-		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
+		/** @todo make this work for products */
+		//$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
+		//$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
@@ -204,7 +222,8 @@ class calculationHelper{
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' )'.
-		$cats . $shoppergrps . $countries . $states ;
+		// $cats . $shoppergrps . $countries . $states ;
+		$cats . $shoppergrps ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 

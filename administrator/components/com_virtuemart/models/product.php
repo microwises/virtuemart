@@ -317,6 +317,21 @@ class VirtueMartModelProduct extends JModel {
         $db->setQuery($query);
 		$result = $db->loadObjectList();
 		
+		/* Add some extra info */
+		foreach ($result as $featured) {
+			/* Flypage */
+			$featured->flypage = shopFunctions::getFlypage($featured->product_id);
+			
+			/* Product price */
+			$price = "";
+			if (Vmconfig::getVar('show_prices') == '1') {
+				/* Loads the product price details */
+				$calculator = new calculationHelper();
+				$price = $calculator->getProductPrices($featured->product_id);
+			}
+			$featured->product_price = $price;
+		}
+		
 		return $result;
     }
     
