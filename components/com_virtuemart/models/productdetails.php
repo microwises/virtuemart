@@ -118,7 +118,8 @@ class VirtueMartModelProductdetails extends JModel {
 		
 		/* Get the neighbours */
 		$neighbours['next'] = current($products);
-		prev($products);
+		if (!$neighbours['next']) end($products);
+		else prev($products);
 		$neighbours['previous'] = prev($products);
 		
 		return $neighbours;
