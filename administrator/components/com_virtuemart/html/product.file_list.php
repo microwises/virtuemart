@@ -20,7 +20,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 */
 /* ROLANDD: MVC TEST START */
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'files.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'files.php');
 $productfiles = new VirtuemartModelFiles();
 /* Handle any publish/unpublish */
 switch (JRequest::getVar('task')) {
@@ -31,7 +31,7 @@ switch (JRequest::getVar('task')) {
 }
 $productfiles->getProductFilesList();
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product_files'.DS.'tmpl'.DS.'product_files.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.'product_files'.DS.'tmpl'.DS.'product_files.php');
 
 /* ROLANDD: MVC TEST END */
 if (0) {

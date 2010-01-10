@@ -20,15 +20,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // Quickfix by Harry Patterson: 
 global $mosConfig_absolute_path;
 $mosConfig_absolute_path=JPATH_ROOT.DS;
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 // Require the base controller
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'controller.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controller.php');
 
 // Require specific controller if requested
 if ($controllername = JRequest::getVar('controller')) {
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require_once $path;
 	}
@@ -38,7 +38,7 @@ if ($controllername = JRequest::getVar('controller')) {
 }
 // Try to find a controller with the same name as the view
 else if ($controllername = JRequest::getVar('view')) {
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require_once $path;
 	}

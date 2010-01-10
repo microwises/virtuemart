@@ -156,8 +156,8 @@ if( vmShouldDebug() ) {   /*@MWM1: Log/Debug enhancements */
 	$database->_debug = 1;
 }
 
-//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendor_helper.php');
-//We cant use JPATH_COMPONENT_ADMINISTRATOR here, because this file is used during the installationscript
+//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
+//We cant use JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' here, because this file is used during the installationscript
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
 
 global $hVendor;

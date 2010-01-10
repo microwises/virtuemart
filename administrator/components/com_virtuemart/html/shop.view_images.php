@@ -16,7 +16,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 
 $pop = JRequest::getVar( "pop", 0 );
 $flypage = JRequest::getVar( "flypage", FLYPAGE);

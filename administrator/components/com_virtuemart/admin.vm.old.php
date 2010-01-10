@@ -115,7 +115,7 @@ $vm_mainframe->addScript( JURI::root().'components/'.VM_COMPONENT_NAME.'/js/func
 if( $no_menu != 1 && $vmLayout != 'extended' ) {
 	echo '<table style="width:100%;table-layout:fixed;"><tr><td style="vertical-align:top;">';
 //	include(ADMINPATH.'header.php');
-	include(JPATH_COMPONENT_ADMINISTRATOR.DS.'header.php');
+	include(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'header.php');
 	echo '</td>';
 }
 

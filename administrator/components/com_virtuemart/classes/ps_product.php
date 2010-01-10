@@ -1412,7 +1412,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		}
 */
 	//	return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.' '.$border );
-	//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+	//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 	//return ImageHelper::showImageInImgTag($image, $path_appendix, $args="", $resize, $thumb_width, $thumb_height, $overide);
 
 	//}

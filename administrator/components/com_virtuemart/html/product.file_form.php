@@ -16,7 +16,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 /* ROLANDD: MVC TEST START */
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product_files.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product_files.php');
 $productfiles = new VirtuemartModelProduct_Files();
 $productfile = $productfiles->getImageDetails();
 
@@ -25,7 +25,7 @@ $product_id= JRequest::getInt('product_id');
 $option = JRequest::getVar('option', 'com_virtuemart');
 $selected_type = array( "selected=\"selected\"", '', '', '', '','' );
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product_files'.DS.'tmpl'.DS.'product_files_edit.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.'product_files'.DS.'tmpl'.DS.'product_files_edit.php');
 
 /* ROLANDD: MVC TEST END */
 if (0) {

@@ -106,7 +106,7 @@ class convertECB {
 			}
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
-//				require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'connectionTools.class.php');
+//				require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS.'connectionTools.class.php');
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 				$contents = VmConnector::handleCommunication( $curr_filename );
 				$this->last_updated = date('Ymd');

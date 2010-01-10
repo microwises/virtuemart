@@ -17,11 +17,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 /* ROLANDD: MVC TEST START */
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
 $productlist = new VirtueMartModelProduct();
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product_files.php');
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'productreviews.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product_files.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'productreviews.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 
 /* Handle any publish/unpublish */
 switch (JRequest::getVar('task')) {
@@ -32,7 +32,7 @@ switch (JRequest::getVar('task')) {
 }
 $productlist->getProductList();
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl'.DS.'product.php');
+require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.'product'.DS.'tmpl'.DS.'product.php');
 
 /* ROLANDD: MVC TEST END */
 if (0) {

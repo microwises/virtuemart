@@ -75,7 +75,7 @@ class VmConfig
 	{
 		// Get the installed version from the XML file
 		$xmlParser = JFactory::getXMLParser('Simple');
-		$xmlParser->loadFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.xml');
+		$xmlParser->loadFile(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.xml');
 		$version = $xmlParser->document->getElementByPath('version')->data();
 		if ($includeDevStatus) {
 			$version .= ' ' . $xmlParser->document->getElementByPath('version')->attributes('status');
