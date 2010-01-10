@@ -46,7 +46,7 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
    function process_payment($order_number, $order_total, &$d) {
         global $vmLogger;
         
-        require_once( CLASSPATH.'connectionTools.class.php');
+        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
         $vars = array(
              "action" => "ns_quicksale_cc",
              "ecxid"  => $this->params->get('PN_LOGIN'),
@@ -64,7 +64,7 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
 		
-        $results = VmConnection::handleCommunication("https://trans.atsbank.com/cgi-bin/trans.cgi", $poststring);
+        $results = VmConnector::handleCommunication("https://trans.atsbank.com/cgi-bin/trans.cgi", $poststring);
         
         if (stristr($results, "Accepted")) {
             #Clean up the cart, send out the emails, and display thankyyou page.

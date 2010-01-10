@@ -16,10 +16,10 @@
 *
 * http://virtuemart.org
 */
-require_once( CLASSPATH.'connectionTools.class.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 if( VM_FEED_ENABLED == '') {
-	VmConnection::sendHeaderAndContent( 403, 'This Feed is currently not available.', '');
+	VmConnector::sendHeaderAndContent( 403, 'This Feed is currently not available.', '');
 	exit();
 }
 

@@ -59,7 +59,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		// Get the Configuration File for authorize.net
 		
 		// connector class
-		require_once(CLASSPATH ."connectionTools.class.php");
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 		// Get user billing information
 		require_once(CLASSPATH ."ps_user.php");
@@ -172,7 +172,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		
 		$host = 'secure.authorize.net';
 				
-		$result = VmConnection::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
+		$result = VmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -239,7 +239,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		$database = new ps_DB();
 
-		require_once(CLASSPATH ."connectionTools.class.php");
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 		
 		/*CERTIFICATION
 		Visa Test Account           4007000000027
@@ -373,7 +373,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 		
 		$host = 'secure.authorize.net';
 		
-		$result = VmConnection::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
+		$result = VmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
 		
 		if( !$result ) {
 			$vmLogger->err('We\'re sorry, but an error has occured when we tried to communicate with the authorize.net server. Please try again later, thank you.' );

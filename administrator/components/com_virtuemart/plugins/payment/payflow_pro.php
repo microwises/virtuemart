@@ -57,7 +57,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$ps_checkout = new ps_checkout;
 
 		// connector class
-		require_once(CLASSPATH."connectionTools.class.php");
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 		// Get the Password securely from the database
 		$transactionkey = $this->get_passkey();
@@ -145,7 +145,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 	
-		$result = VmConnection::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
+		$result = VmConnector::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -208,7 +208,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		$database = new ps_DB();
 
-		require_once(CLASSPATH."connectionTools.class.php");
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 		
 		if( empty($d['order_number'])) {
 			$vmLogger->err("Error: No Order Number provided.");
@@ -318,7 +318,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 	
-		$result = VmConnection::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
+		$result = VmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );
@@ -383,7 +383,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		$database = new ps_DB();
 
-		require_once(ADMINPATH."plugins/connectionTools.class.php");
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 		
 		if( empty($d['order_number'])) {
 			$vmLogger->err("Error: No Order Number provided.");
@@ -493,7 +493,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
 			
-		$result = VmConnection::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
+		$result = VmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
 		
 		if( !$result ) {
 			$vmLogger->err('The transaction could not be completed.' );

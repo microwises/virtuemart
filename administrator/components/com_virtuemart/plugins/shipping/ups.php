@@ -159,11 +159,11 @@ class plgShippingUps extends vmShippingPlugin {
 
 			// echo htmlentities( $xmlPost );
 			$upsURL = "https://www.ups.com:443/ups.app/xml/Rate";
-			require_once( CLASSPATH.'connectionTools.class.php');
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 			$error = false;
 
-			$xmlResult = VmConnection::handleCommunication($upsURL, $xmlPost );
+			$xmlResult = VmConnector::handleCommunication($upsURL, $xmlPost );
 
 			if( !$xmlResult) {
 				$vmLogger->err( JText::_('VM_INTERNAL_ERROR',false)." UPS.com" );

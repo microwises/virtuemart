@@ -16,13 +16,13 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-/**
+/** OBSOLETE 
  * Provides general tools to handle connections (http, headers, ... )
  * 
  * @author soeren
  * @since VirtueMart 1.1.0
  */
-class VmConnection {
+class VmConnector {
 
 	var $handle = null;
 
@@ -254,7 +254,7 @@ class VmConnection {
 		// send headers
 		header("Content-Type: $mime");
 		
-		list($start,$len) = VmConnection::http_rangeRequest(filesize($file));
+		list($start,$len) = VmConnector::http_rangeRequest(filesize($file));
 		
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');

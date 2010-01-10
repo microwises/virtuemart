@@ -431,13 +431,13 @@ class ps_order {
 			return false;
 			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
-		require_once(CLASSPATH.'connectionTools.class.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 		
 		$download_count = true;
 		
 		if ( @file_exists( $datei ) ){
 			// Check if this is a request for a special range of the file (=Resume Download)
-			$range_request = VmConnection::http_rangeRequest( filesize($datei), false );
+			$range_request = VmConnector::http_rangeRequest( filesize($datei), false );
 			if( $range_request[0] == 0 ) {
 				// this is not a request to resume a download,
 				$download_count = true;
@@ -508,7 +508,7 @@ class ps_order {
 		// dump anything in the buffer
 		while( @ob_end_clean() );
 
-		VmConnection::sendFile( $datei, $mime_type, basename($file_name) );
+		VmConnector::sendFile( $datei, $mime_type, basename($file_name) );
 		
 		if( $unlink ) {
 			// remove the temporarily downloaded remote file

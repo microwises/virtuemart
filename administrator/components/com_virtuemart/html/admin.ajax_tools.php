@@ -18,7 +18,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 $task = strtolower( JRequest::getVar( 'task' ));
 $option = strtolower( JRequest::getVar( 'option' ));
-require_once( CLASSPATH.'connectionTools.class.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 switch( $task ) {
 	case 'get_class_methods':
@@ -40,7 +40,7 @@ switch( $task ) {
 			}
 			
 		}
-		VmConnection::sendHeaderAndContent( 200, ps_html::selectList( 'function_method', $function, $method_array ) );
+		VmConnector::sendHeaderAndContent( 200, ps_html::selectList( 'function_method', $function, $method_array ) );
 		break;
 	case 'checkforupdate':
 		require_once( CLASSPATH.'update.class.php');
@@ -50,9 +50,9 @@ switch( $task ) {
 			// Convert a String like "1.1.1" => "1.11", so we can use it as float in Javascript
 			$version_as_float = substr($result, 0, 3 ) . substr( $result, 4 );
 			$version_as_json = '{version_string:"'.$result.'",version:"'.$version_as_float.'"}';
-			VmConnection::sendHeaderAndContent('200', $version_as_json );
+			VmConnector::sendHeaderAndContent('200', $version_as_json );
 		} else {
-			VmConnection::sendHeaderAndContent('200', 'Connection Failed' );
+			VmConnector::sendHeaderAndContent('200', 'Connection Failed' );
 		}
 		
 	default: die;

@@ -19,13 +19,13 @@ global $ps_product;
 $task = strtolower( JRequest::getVar(  'task' ));
 $option = strtolower( JRequest::getVar(  'option' ));
 $product_id = intval( JRequest::getVar(  'product_id' ));
-require_once( CLASSPATH.'connectionTools.class.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 switch( $task ) {
 	case 'getshoppergroups':
 		include_class('shopper');
 		$shopper_group_id = intval( JRequest::getVar(  'shopper_group_id', 5 ));
-		VmConnection::sendHeaderAndContent( 200, $ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id) );
+		VmConnector::sendHeaderAndContent( 200, $ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id) );
 		break;
 
 	case 'getpriceforshoppergroup':
@@ -37,7 +37,7 @@ switch( $task ) {
 		if( $formatPrice ) {
 			$price['product_price'] = '<span class="editable" onclick="getPriceForm(this);">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'].'</span>';
 		}
-		VmConnection::sendHeaderAndContent( 200, @$price['product_price'] );
+		VmConnector::sendHeaderAndContent( 200, @$price['product_price'] );
 		break;
 
 	case 'getcurrencylist':
@@ -52,7 +52,7 @@ switch( $task ) {
 		$elementName = urldecode( JRequest::getVar(  'elementName', 'product_currency'));
 		$multiple = intval( JRequest::getVar(  'multiple', 0 ) );
 		if( $multiple ) { $multiple = 'multiple="multiple"'; } else { $multiple = ''; }
-		VmConnection::sendHeaderAndContent( 200, ps_html::getCurrencyList( $elementName, $currency_code, 'currency_code', '', $selectSize, $multiple ) );
+		VmConnector::sendHeaderAndContent( 200, ps_html::getCurrencyList( $elementName, $currency_code, 'currency_code', '', $selectSize, $multiple ) );
 		break;
 
 	case 'getpriceform':
@@ -78,7 +78,7 @@ switch( $task ) {
 		$content .= '<input type="hidden" name="vmtoken" value="'.vmSpoofValue($sess->getSessionId()).'" />';
 		$content .= '<input type="hidden" name="option" value="'.$option.'" />';
 		$content .= '</form>';
-		VmConnection::sendHeaderAndContent( 200, $content );
+		VmConnector::sendHeaderAndContent( 200, $content );
 		break;
 
 	case 'getproducts':

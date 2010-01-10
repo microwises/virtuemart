@@ -263,8 +263,8 @@ else {
 		// Load requested PAGE
 		if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
 			if( $only_page) {
-				require_once( CLASSPATH . 'connectionTools.class.php' );
-				VmConnection::sendHeaderAndContent( 200 );
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+				VmConnector::sendHeaderAndContent( 200 );
 				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger ); /*@MWM1: Log/Debug enhancements*/
 				include( PAGEPATH.$modulename.".".$pagename.".php" );
 				// Exit gracefully

@@ -727,9 +727,9 @@ class ps_product_files extends vmAbstractObject {
 		}
 
 		if( $filename ) {
-			require_once( CLASSPATH.'connectionTools.class.php');
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 			
-			VmConnection::sendFile( $filename, $dbf->f("file_mimetype"));
+			VmConnector::sendFile( $filename, $dbf->f("file_mimetype"));
 
 			$GLOBALS['vm_mainframe']->close(true);
 		}
@@ -831,7 +831,7 @@ class ps_product_files extends vmAbstractObject {
 			@ini_set( "allow_url_fopen");
 			$remote_fetching = ini_get( "allow_url_fopen");
 			if( $remote_fetching ) {
-				require_once(CLASSPATH.'connectionTools.class.php');
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 				
 				$tmp_file = tempnam(IMAGEPATH."/product/", "FOO");
 				$handle = fopen($tmp_file, "wb");
@@ -839,7 +839,7 @@ class ps_product_files extends vmAbstractObject {
 					return false;
 				}
 				
-				VmConnection::handleCommunication($url, '', array(), $handle );
+				VmConnector::handleCommunication($url, '', array(), $handle );
 				fclose($handle);
 				
 				return $tmp_file;
