@@ -1,8 +1,8 @@
 <?php
 
 jimport( 'joomla.application.component.view');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'CategoryUtils.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'libraries'.DS.'CategoryUtils.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'libraries'.DS.'ProductUtils.php');
 
 
 /**

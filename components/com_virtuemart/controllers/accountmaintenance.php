@@ -59,7 +59,7 @@ class VirtueMartControllerAccountmaintenance extends JController
 			/* Load the model object */
 			$model = $this->getModel('accountmaintenance');
 			/* Add model path */
-			JController::addModelPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
+			JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models');
 			$userfields_model = $this->getModel('userfields');
 			JRequest::setVar('userfields_model', $userfields_model);
 			

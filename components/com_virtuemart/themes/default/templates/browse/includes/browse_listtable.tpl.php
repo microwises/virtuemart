@@ -1,6 +1,6 @@
 <?php if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 mm_showMyFileName(__FILE__); 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 
 echo $buttons_header; // The PDF, Email and Print buttons 
 echo $browsepage_header; // The heading, the category description 

@@ -20,7 +20,7 @@ class VirtueMartViewProductdetails extends JView {
 		$task = JRequest::getCmd('task');
 		
 		/* Set the helper path */
-		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
+		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
 		
 		/* Load helpers */
 		$this->loadHelper('image');

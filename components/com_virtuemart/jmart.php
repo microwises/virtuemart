@@ -18,12 +18,12 @@ defined('_JEXEC') or die('Restricted access');
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
 //Include the VirtueMart configuration file
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php')) {
-    $errorMsg = '<h3>The configuration file for VirtueMart is missing!</h3>It should be here: <strong>'.JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php</strong>';
+if (!file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php')) {
+    $errorMsg = '<h3>The configuration file for VirtueMart is missing!</h3>It should be here: <strong>'.JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php</strong>';
     die( $errorMsg);
 }
 //else {
-//   require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
+//   require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 //}
 
 

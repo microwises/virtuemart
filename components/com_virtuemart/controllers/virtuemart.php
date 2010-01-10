@@ -27,7 +27,7 @@ class VirtueMartControllerVirtuemart extends JController
 		$view = $this->getView(JRequest::getVar('view', 'virtuemart'), 'html');
 		
 		// Push a model into the view		
-		$this->addModelPath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models');
+		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 		/* Vendor functions */
 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ));
 		/* Category functions */
