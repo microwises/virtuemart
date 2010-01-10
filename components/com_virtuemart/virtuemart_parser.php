@@ -226,8 +226,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$class = $db->f('function_class');
 			if( file_exists( CLASSPATH."$class.php" ) ) {
 				if( $ajax_request ) {
-					require_once( CLASSPATH . 'connectionTools.class.php' );
-					vmConnector::sendHeaderAndContent( 200 );
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+					VmConnector::sendHeaderAndContent( 200 );
 				}
 				// Load class definition file
 				require_once( CLASSPATH."$class.php" );

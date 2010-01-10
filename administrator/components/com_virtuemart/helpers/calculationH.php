@@ -20,6 +20,7 @@ class calculationHelper{
 	private $_cats;
 	private $_now ;
 	private $_nullDate;
+	private $_currency;
 	
 	public $productVendorId;
 	public $productCurrency;
@@ -35,14 +36,10 @@ class calculationHelper{
 		$jnow		=& JFactory::getDate();
 		$this -> _now			= $jnow->toMySQL();
 		$this -> _nullDate		= $this->_db->getNullDate();
+		$this -> _currency 		= JRequest::getVar('currency');
 	}
 	
-	/**
-	* Calcualte the checkout price
-	*
-	* @param array $productIds An array or product IDs to calculate the checkout price for
-	*/
-	public function getCheckoutPrices($productIds) {
+	function getCheckoutPrices($productIds,$cartVendorId=1){
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
@@ -50,10 +47,11 @@ class calculationHelper{
 //			echo '$productId '.$productId;
 			if (!array_key_exists($productId,$pricesPerId)){
 				$pricesPerId[$productId] = $this -> getProductPrices($productId);
-				echo '$productId Calculated '.$productId;
+//				echo '$productId Calculated '.$productId;
 			}
 			$prices[] = $pricesPerId[$productId];
 			$resultWithTax = $resultWithTax + $pricesPerId[$productId]['salesPrice'];
+			$resultWithOutTax = $resultWithOutTax + $pricesPerId[$productId]['basePrice'];
 		}
 //		echo print_r($prices);
 		echo '<br />';
@@ -68,28 +66,28 @@ class calculationHelper{
 		}
 		echo '<br />';
 		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
+		$cBRules = $this->gatherEffectingRulesForCoupon();
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
+		$cBRules = $this->gatherEffectingRulesForCoupon();
 		
 		$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $resultWithTax));
 		$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $discountBeforeTax));
 		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $discountWithTax));
+		echo '$basePrice: '.$resultWithTax.'<br />';
 		echo '$discountBeforeTax: '.$discountBeforeTax.'<br />';
 		echo '$discountWithTax: '.$discountWithTax.'<br />';
 		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
 	}
 	
-	/** 
-	* function to start the calculation, here it is the product
-	* 
-	* @param integer The ID of the product to get the price for
-	* @return array containing the different price details
-	*/
-	public function getProductPrices($productId){
+	/** function to start the calculation, here it is the product
+	 * 
+	 */
+	function getProductPrices($productId,$catIds=0){
 
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
-		$row = $this->_db->loadRow();
+		$row=$this->_db->loadRow();
 		$basePrice = $row[0];
 		$this->productCurrency=$row[1];
 		
@@ -101,13 +99,17 @@ class calculationHelper{
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
 				
-		$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
-		$this->_cats=$this->_db->loadResultArray();
+		if(empty($catIds)){
+			$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
+			$this->_cats=$this->_db->loadResultArray();
+		}else{
+			$this->_cats=$catIds;
+		}
 
 		$user = JFactory::getUser();
-		if (isset($user->id)){
-			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id` = "'.$user->id.'" ');
-			$this->_shopperGroupId = $this->_db->loadResultArray();			
+		if(isset($user->id)){
+			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$my->id.'" ');
+			$this->_shopperGroupId=$this->_db->loadResultArray();			
 		}
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
@@ -127,31 +129,25 @@ class calculationHelper{
 		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));
 		
 		$prices = array(
-				'basePrice'  => $basePriceShopCurrency,
-				'basePriceWithTax' => $basePriceWithTax,
-				'discountedPrice'   => $discountedPrice,
-				'priceWithoutTax'   => $priceWithoutTax,
-				'discountAmount'   => $discountAmount,
-				'salesPrice'   => $salesPrice
+				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
+				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
+				'discountedPrice'   => $discountedPrice, //before Tax
+				'priceWithoutTax'   => $priceWithoutTax, //price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
+				'discountAmount'   => $discountAmount, //The "you save X money"
+				'salesPrice'   => $salesPrice 		//The endprice, with all kind of discounts and Tax
 				);
 		return $prices;
 	}
 	
-	/**
-	* Converts a price to the vendor currency
-	*
-	* @todo make it work :)
-	* @param string $currency The name of the target currency
-	* @param float $price The value to be converted
-	* @return float The converted value
-	*/
-	public function convertCurrencyToShopDefault($currency, $price){
-		return $price;
+	function convertCurrencyToShopDefault($currency, $price){
 		if(empty($currency)){
 			return $price;
 		}
+		if(empty($this ->_currency)){
+			$this -> _currency 		= JRequest::getVar('currency');
+		}
 //		if(!strcmp($this->vendorCurrency, $currency)){
-			$price = $GLOBALS['CURRENCY']->convert( $price, $currency,$this->vendorCurrency);
+			$price = $this ->_currency->convert( $price, $currency,$this->vendorCurrency);
 //		}
 		return $price;
 	}
@@ -169,18 +165,19 @@ class calculationHelper{
 	}
 	
 	
-	
-	/**
-	 * Gatheres the rules which affects
-	 * The entrypoint how it should behave. Valid values should be 
-	 * 
-	 * Profit (Commission is a profit rule that is shared, maybe we remove shared and make a new entrypoint called profit)
-	 * DBTax (Discount for wares, coupons)
-	 * Tax
-	 * DATax (Discount on money)
-	 * Duty
-	 */
-	function gatherEffectingRulesForBill($entrypoint){
+	function gatherEffectingRulesForCoupon($code=0){
+		if (empty($code)) return;
+		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
+		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
+			$couponCodesQuery .
+			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
+			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
+		return $rules;
+	}
+
+	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
 
 //		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
 		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
@@ -190,29 +187,39 @@ class calculationHelper{
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__vm_calc WHERE ' .
-		'`calc_kind`="'.$entrypoint.'" ' .
-		' AND `published`="1" ' .
-		' AND (`calc_vendor_id`="'.$this->cartVendorId.'" OR `shared`="1" )'.
-		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' )'.
-		$shoppergrps . $countries . $states ;
+			'`calc_kind`="'.$entrypoint.'" ' .
+			' AND `published`="1" ' .
+			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
+			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) AND'.
+			$shoppergrps .' AND '. $countries .' AND '. $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-
+		if (empty($rules)) return;
+		echo ' query: '.$q;
 		//Just for developing
-//		foreach($rules as $rule){
-//			echo '<br /> Add rule '.$rule['calc_name'];
-//		}
+		foreach($rules as $rule){
+			echo '<br /> Add rule '.$rule['calc_name'].' query: '.$q;
+		}
 		return $rules;
 	}
 
+	/**
+	 * Gatheres the rules which affects
+	 * The entrypoint how it should behave. Valid values should be 
+	 * 
+	 * Profit (Commission is a profit rule that is shared, maybe we remove shared and make a new entrypoint called profit)
+	 * DBTax (Discount for wares, coupons)
+	 * Tax
+	 * DATax (Discount on money)
+	 * Duty
+	 */ 
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
 		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
 		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
-		/** @todo make this work for products */
-		//$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
-		//$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
+		$countries = ''; //$this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
+		$states = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
@@ -221,15 +228,15 @@ class calculationHelper{
 		' AND `published`="1" ' .
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' )'.
-		// $cats . $shoppergrps . $countries . $states ;
-		$cats . $shoppergrps ;
+		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) AND '.
+		$cats .' AND '. $shoppergrps .' AND '. $countries .' AND '. $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-
+		if (empty($rules)) return;
+		echo ' query: '.$q;
 		//Just for developing
 		foreach($rules as $rule){
-//			echo '<br /> Add rule '.$rule['calc_name'];
+			echo '<br /> Entrypoint: '.$entrypoint.' Add rule '.$rule['calc_name'];
 		}
 		return $rules;
 	}
@@ -237,7 +244,7 @@ class calculationHelper{
 	function writeRulePartEffectingQuery($data,$field){
 		$q='';
 		if(!empty($data)){
-			$q = ' AND ( ';
+			$q = ' (';
 			foreach ($data as $id){
 				$q = $q . '`'.$field.'`="'.$id.'" OR';
 			}

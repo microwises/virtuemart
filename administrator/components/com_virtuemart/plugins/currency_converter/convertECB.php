@@ -101,12 +101,14 @@ class convertECB {
 			  
 			if( !is_writable( $store_path )) {
 			  $this->archive = false;
-			  $vmLogger->debug( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
+			  //todo
+//			  $vmLogger->debug( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 			}
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
-				require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'connectionTools.class.php');
-				$contents = VmConnection::handleCommunication( $curr_filename );
+//				require_once( JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'connectionTools.class.php');
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+				$contents = VmConnector::handleCommunication( $curr_filename );
 				$this->last_updated = date('Ymd');
 			}
 			else {
@@ -122,10 +124,11 @@ class convertECB {
 				$contents = str_replace ("<Cube currency='USD'", " <Cube currency='EUR' rate='1'/> <Cube currency='USD'", $contents);
 				
 				/* XML Parsing */
-				require_once( $mosConfig_absolute_path. '/includes/domit/xml_domit_lite_include.php' );
+				require_once( JPATH_ROOT.DS.'includes'.DS.'domit'.DS.'xml_domit_lite_include.php' );
 				$xmlDoc =& new DOMIT_Lite_Document();
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
-					$vmLogger->err( 'Failed to parse the Currency Converter XML document.');
+					//todo
+//					$vmLogger->err( 'Failed to parse the Currency Converter XML document.');
 					$GLOBALS['product_currency'] = $vendor_currency;
 					return $amountA;
 				}
@@ -141,7 +144,8 @@ class convertECB {
 			}
 			else {
 				$GLOBALS['converter_array'] = -1;
-				$vmLogger->err( 'Failed to retrieve the Currency Converter XML document.');
+				//todo
+//				$vmLogger->err( 'Failed to retrieve the Currency Converter XML document.');
 				$GLOBALS['product_currency'] = $vendor_currency;
 				return $amountA;
 			}
@@ -150,6 +154,7 @@ class convertECB {
 		$valB = isset( $GLOBALS['converter_array'][$currB] ) ? $GLOBALS['converter_array'][$currB] : 1;
 		
 		$val = $amountA * $valB / $valA;
+		//todo
 		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
 		
 		return $val;

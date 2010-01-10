@@ -175,12 +175,13 @@ class VmConnector {
 		}
 	    }
 	    if(!$fp) {
-		//error tell us
-		$vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
-		return false;
+			//error tell us
+			JError::raiseNotice(1, 'Possible server error! - '.$errstr .'('.$errno.')\n' );
+//			$vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
+			return false;
 	    }
 	    else {
-		$vmLogger->debug( 'Connection opened to '.$urlParts['host']);
+			JError::raiseNOtice(1, 'Connection opened to '.$urlParts['host']);
 	    }
 	    if( $postData ) {
 		$vmLogger->debug('Now posting the variables.' );

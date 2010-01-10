@@ -36,6 +36,21 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
    require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
 }
 
+if (Vmconfig::getVar('show_prices') == '1') {
+	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+	if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
+		if( class_exists( $module_filename )) {
+			JRequest::setVar('currency',  new $module_filename());
+		}
+	}
+	else {
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+		JRequest::setVar('currency',  new convertECB());
+	}	
+}
+
 /* Create the controller */
 $classname   = 'VirtuemartController'.$controller;
 $controller = new $classname();
@@ -249,7 +264,7 @@ else {
 		if( file_exists( PAGEPATH.$modulename.".".$pagename.".php" )) {
 			if( $only_page) {
 				require_once( CLASSPATH . 'connectionTools.class.php' );
-				vmConnector::sendHeaderAndContent( 200 );
+				VmConnection::sendHeaderAndContent( 200 );
 				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger ); /*@MWM1: Log/Debug enhancements*/
 				include( PAGEPATH.$modulename.".".$pagename.".php" );
 				// Exit gracefully
