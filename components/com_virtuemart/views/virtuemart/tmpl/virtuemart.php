@@ -1,6 +1,7 @@
 <?php if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <?php
+/** @todo Add vendor description */
 //echo $this->vendor_store_desc."<br />";
 echo "<br /><h4>".JText::_('VM_CATEGORIES')."</h4>";
 foreach ($this->categories as $category) {
@@ -12,24 +13,12 @@ foreach ($this->categories as $category) {
 
 ?>
 <div class="vmRecent">
-	<?php
-	if ($this->recentProducts) {
-		echo 'load recent products template';
-		//return $tpl->fetch( 'common/recent.tpl.php' );
-	}
-	
-	?>
+	<?php if ($this->recentProducts) echo $this->loadTemplate('recentproducts'); ?>
 </div>
 <?php
-// Show Featured Products
-if (Vmconfig::getVar('showFeatured', 1)) {
-    /* Load template edit featuredproduct.tpl.php to edit layout */
-    echo $this->loadTemplate('featuredproducts');
-}
-// Show Latest Products
-if (Vmconfig::getVar('showlatest', 1)) {
-    /* latestproducts(random, no_of_products,month_based,category_based) no_of_products 0 = all else numeric amount
-    edit latestproduct.tpl.php to edit layout */
-    echo 'load latest products template';
-}
+/* Show Featured Products */
+if (Vmconfig::getVar('showFeatured', 1) && !empty($this->featuredProducts)) echo $this->loadTemplate('featuredproducts');
+
+/* Show Latest Products */
+if (Vmconfig::getVar('showlatest', 1) && !empty($this->latestProducts)) echo $this->loadTemplate('latestproducts');
 ?>

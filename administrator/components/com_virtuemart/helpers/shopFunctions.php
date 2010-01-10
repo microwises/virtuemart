@@ -752,4 +752,68 @@ class ShopFunctions {
 		}
 		return $product_sess[$product_id]['flypage'];
 	}
+	
+	/**
+	 * Creates the Quantity Input Boxes/Radio Buttons/Lists for Products
+	 *
+	 * @param object $product The product details
+	 * @param string $child
+	 * @param string $use_parent
+	 * @return string
+	 */
+	function getQuantityBoxOptions($product, $child = false, $use_parent = 'N') {
+		$session = JFactory::getSession();
+		$cart = $session->get("cart", null);
+		
+		if ($child == 'Y') {
+			//We have a child list so get the current quantity;
+			$quantity = 0 ;
+			for ($i = 0 ; $i < $cart["idx"] ; $i ++ ) {
+				if ($cart[$i]["product_id"] == $product->product_id) {
+					$quantity = $cart[$i]["quantity"];
+				}
+			}
+		} 
+		else {
+			$quantity = JRequest::getInt('quantity', 1);
+		}
+		
+		// Detremine which style to use
+		if ($use_parent == 'Y' && $product->parent_product_id !=0) $id = $product->parent_product_id;
+		else $id = $product->product_id ;
+		
+		//Get style to use
+		extract($product->quantity_options);
+		
+		//Start output of quantity
+		//Check for incompatabilities and reset to normal
+		$display_type = null;
+		if (Vmconfig::getVar('check_stock') == '1' && ! $product->product_in_stock ) {
+			$display_type = 'hide' ;
+		}
+		if (empty($display_type) 
+			|| ($display_type == "hide" && $child == 'Y') 
+			|| ($display_type == "radio" && $child == 'YM') 
+			|| ($display_type == "radio" && !$child) ) {
+				$display_type = "none" ;
+		}
+		
+		?><pre><?php
+		print_r($quantity_options);
+		?></pre><?php
+		exit;
+		
+		$tpl->set( 'prod_id', $prod_id ) ;
+		$tpl->set( 'quantity', $quantity ) ;
+		$tpl->set( 'display_type', $display_type ) ;
+		$tpl->set( 'child', $child ) ;
+		$tpl->set( 'quantity_options', $quantity_options ) ;
+		
+		//Determine if label to be used
+		$html = $tpl->fetch( 'product_details/includes/quantity_box_general.tpl.php' ) ;
+		
+		return $html ;
+	
+	}
 }
+?>

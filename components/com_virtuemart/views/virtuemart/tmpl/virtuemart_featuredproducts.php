@@ -1,5 +1,5 @@
 <?php if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 
 $iCol = 1;
 //Number of featured products to show per row
@@ -7,11 +7,8 @@ $featured_per_row = 2;
 //Set the cell width
 $cellwidth = intval( (100 / $featured_per_row) - 2 );
 
-if( empty( $this->featuredProducts )) {
-	return; // Do nothing, if there are no Featured!
-}
 echo "<h3>".JText::_('VM_FEATURED_PRODUCT')."</h3>";
-foreach( $this->featuredProducts as $featured ) {
+foreach ($this->featuredProducts as $featured) {
 	?>
 	<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
 		<?php
@@ -28,7 +25,9 @@ foreach( $this->featuredProducts as $featured ) {
             <?php } ?>
             <?php echo $featured->product_s_desc; ?><br />
             
-            <?php //echo $featured->form_addtocart; 
+            <?php 
+				JRequest::setVar('product', $featured);
+            	echo $this->loadTemplate('addtocart_form'); 
             ?>
 	</div>
 	<?php

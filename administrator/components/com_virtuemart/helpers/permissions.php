@@ -183,14 +183,13 @@ class Permissions {
 	 * @example $perm->check( 'admin', 'storeadmin' );
 	 * 			returns true when the user is admin or storeadmin
 	 */
-	function check($perms) {
-
-		$auth = $_SESSION["auth"];
-		
+	public function check($perms) {
+		/* Set the authorization for use */
+		$auth = JRequest::getVar('auth');
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
 		if ($perms == "none") {
-			return True;
+			return true;
 		}
 		else {
 			$p1 = explode(",", $auth['perms']);
@@ -198,14 +197,14 @@ class Permissions {
 			while (list($key1, $value1) = each($p1)) {
 				while (list($key2, $value2) = each($p2)) {
 					if ($value1 == $value2) {
-						return True;
+						return true;
 					}
 				}
 			}
 		}
-		return False;
-
+		return false;
 	}
+	
 	/**
 	 * Checks if the user has higher permissions than $perm
 	 *

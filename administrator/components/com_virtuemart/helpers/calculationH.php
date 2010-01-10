@@ -89,7 +89,7 @@ class calculationHelper{
 
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
-		$row=$this->_db->loadRow();
+		$row = $this->_db->loadRow();
 		$basePrice = $row[0];
 		$this->productCurrency=$row[1];
 		

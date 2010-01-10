@@ -252,6 +252,10 @@ class VirtueMartModelProduct extends JModel {
     
     /**
     * Check if the product has any children
+    *
+    * @author RolandD
+    * @param int $product_id Product ID
+    * @return bool True if there are child products, false if there are no child products 
     */
     public function checkChildProducts($product_id) {
      	$db = JFactory::getDBO();
@@ -260,6 +264,41 @@ class VirtueMartModelProduct extends JModel {
      	if ($db->loadResult() == 'Y') return true;
      	else if ($db->loadResult() == 'N') return false;
     }
+    
+    /**
+	 * Function to quickly check whether a product has attributes or not
+	 *
+	 * @author RolandD
+	 * @param int $pid The id of the product to check
+	 * @return boolean True when the product has attributes, false when not
+	 */
+	function checkAttributes($pid, $checkSimpleAttributes=false ) {
+		if (is_array($pid) || empty($pid)) return false;
+		
+		$pid = intval($pid);
+		$db = JFactory::getDBO();
+		$product_info = JRequest::getVar('product_info', false);
+		
+		if (!$product_info || empty($product_info[$pid]["product_has_attributes"] )) {
+			$db->setQuery("SELECT `product_id` FROM `#__vm_product_attribute_sku` WHERE `product_id`=".$pid);
+			$product_id = $db->loadResult();
+			
+			if ($product_id) $product_info[$pid]["product_has_attributes"] = true;
+			else if($checkSimpleAttributes) {
+				$db->setQuery("SELECT `attribute`,`custom_attribute` FROM `#__vm_product` WHERE `product_id`=".$pid);
+				$attributes = $db->loadObject();
+				if ($attributes->attribute || $attributes->custom_attribute) {
+					$product_info[$pid]["product_has_attributes"] = true;
+				}
+				else {
+					$product_info[$pid]["product_has_attributes"] = false;
+				}
+			}
+			else $product_info[$pid]["product_has_attributes"] = false;
+		}
+		JRequest::setVar('product_info', $product_info);
+		return $product_info[$pid]["product_has_attributes"];
+	}
     
     /**
     * Set the publish/unpublish state
@@ -282,33 +321,41 @@ class VirtueMartModelProduct extends JModel {
     /**
 	 * Retrieve a list of featured products from the database.
 	 *
+	 * @param string $group Specifies what kind of products need to be loaded (featured or latest)
 	 * @param int $categoryId Id of the category to lookup, null for all categories
 	 * @param int $nbrReturnProducts Number of products to return
-	 * @return object List of featured products
+	 * @return object List of  products
 	 */    
-    public function getFeaturedProducts($vendorId, $categoryId='', $nbrReturnProducts) {
+    public function getGroupProducts($group, $vendorId, $categoryId='', $nbrReturnProducts) {
 		$db = JFactory::getDBO();         
-	    
+	    switch ($group) {
+			case 'featured':
+				$filter = 'AND `#__vm_product`.`product_special`="Y" ';
+				break;
+			case 'latest':
+				$filter = 'AND `#__vm_product`.`cdate` > '.(time()-(60*60*24*7)).' ';
+				break;
+		}
         if ($categoryId) {
-	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` '; 
+	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url`, `quantity_options` '; 
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
 	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
 	        $query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
             $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
 	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
-	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
+	        $query .= $filter;
 	        if (Vmconfig::getVar('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
         }
         else {
-	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
+	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url`, `quantity_options` ';
 	        $query .= 'FROM `#__vm_product` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
 	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
-	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
+	        $query .= $filter;
 	        if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
@@ -330,6 +377,12 @@ class VirtueMartModelProduct extends JModel {
 				$price = $calculator->getProductPrices($featured->product_id);
 			}
 			$featured->product_price = $price;
+			
+			/* Child products */
+			$featured->haschildren = $this->checkChildProducts($featured->product_id);
+			
+			/* Attributes */
+			$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
 		}
 		
 		return $result;
@@ -614,7 +667,8 @@ class VirtueMartModelProduct extends JModel {
 		/* Get the child options */
 		if ($product_data->product_parent_id != 0) {
 			$product_data->child_options = null;
-        } else {
+        } 
+        else {
 			$product_data->child_options = $this->getYesOrNo('display_use_parent').","
 										.JRequest::getVar('product_list', 'N').","
 										.$this->getYesOrNo('display_headers').","
@@ -632,6 +686,9 @@ class VirtueMartModelProduct extends JModel {
         			.JRequest::getInt('quantity_start').","
         			.JRequest::getInt('quantity_end').","
         			.JRequest::getInt('quantity_step');
+        			
+        /* Set the product packaging */
+        $product_data->product_packaging = (($data["product_box"] << 16) | ($data["product_packaging"]&0xFFFF));
         			
         /* Store the product */
 		$product_data->store();
@@ -1055,7 +1112,6 @@ class VirtueMartModelProduct extends JModel {
 		
 		$k=0;
 		$recent = array();
-		$safeHtmlFilter = JFilterInput::getInstance();
 		// Iterate through loop backwards (newest to oldest)
 		for($i = $recentproducts['idx']-1; $i >= 0; $i--) {
 			//Check if on current product and don't display
@@ -1076,8 +1132,6 @@ class VirtueMartModelProduct extends JModel {
 				$q .= "AND c.published='1' ";
 				$q .= "LIMIT 0,1";
 				$db->setQuery($q);
-				echo 'File '.__FILE__.' Line '.__LINE__.' :: pass<br />';
-				echo $db->getQuery();
 				$product = $db->loadObject();
 				
 				if ($db->getAffectedRows() > 0) {
@@ -1087,7 +1141,7 @@ class VirtueMartModelProduct extends JModel {
 					
 					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
 					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
-					$recent[$k]['product_name'] = $safeHtmlFilter->clean($product->product_name);
+					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
 					$recent[$k]['category_name'] = $product->category_name;
 					$recent[$k]['product_thumb_image'] = $product->product_thumb_image;
 				}
@@ -1099,34 +1153,6 @@ class VirtueMartModelProduct extends JModel {
 		
 		if($k == 0) return false;
 		else return true;
-    }
-    
-    /**
-    * Retrieves a list of the newest products added to the system.
-    * Selection is based on the cdate (creation date) value
-    *
-    * @author RolandD
-    * @todo creation date should be a config option
-    * @param int $vendorId the ID of the vendor
-    * @param int $nbrReturnProducts the number of products to return
-    * @return an array of objects with product details
-    */
-    public function getLatestProducts($vendorId = 1, $nbrReturnProducts = 5) {
-    	$db = JFactory::getDBO();         
-	    
-		$query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
-		$query .= 'FROM `#__vm_product` WHERE ';
-		$query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
-		$query .= 'AND `#__vm_product`.`product_publish` = "Y" ';
-		$query .= 'AND `#__vm_product`.`cdate` > '.(time()-(60*60*24*7));
-		if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
-			$query .= ' AND `product_in_stock` > 0 ';
-		}
-		$query .= ' ORDER BY RAND() LIMIT 0, '.$nbrReturnProducts;
-        
-        $db->setQuery($query);
-		$result = $db->loadObjectList();
-		return $result;
     }
 }
 ?>
