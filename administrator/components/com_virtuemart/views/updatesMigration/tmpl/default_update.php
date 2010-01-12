@@ -12,22 +12,6 @@ $linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMi
 $linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
 $linkDoNothing =JROUTE::_('index2.php');
 ?>
-<script language="javascript" type="text/javascript">
-    <!--
-    function uploadSubmit() {
-	var form = document.adminForm;
-
-	// do field validation
-	if (form.install_package.value == ""){
-	    alert("<?php echo JText::_('No update package selected!', true ); ?>" );
-	}
-	else {
-	    form.task.value = 'upload';
-	    form.submit();
-	}
-    }
-    //-->
-</script>
 <br />
 <table class="admintable">
     <tr>
@@ -60,17 +44,10 @@ $linkDoNothing =JROUTE::_('index2.php');
 		}
 		else {
 		    // need something in the lanuage file here
-		    echo '&nbsp;&nbsp;' . JText::_('VM_UPDATE_CHECK_NOUPDATES');
+		    echo '&nbsp;&nbsp;' . JText::_('VM_UPDATE_NONEWVERSION');
 		}
 	    }
 	    ?>
-	</td>
-    </tr>
-    <tr>
-	<td class="key"><?php echo JText::_('VM_UPDATE_CHECK_ULUPDATE'); ?></td>
-	<td>
-	    <input type="file" id="install_package" name="install_package" class="inputbox" size="50" />
-	    <input type="submit" value="Upload File &amp; Install" onclick="uploadSubmit()"/>
 	</td>
     </tr>
 </table>

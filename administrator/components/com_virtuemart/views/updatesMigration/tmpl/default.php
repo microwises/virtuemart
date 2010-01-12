@@ -10,11 +10,11 @@ jimport('joomla.html.pane');
 $pane = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('VM_UPDATE_CHECK_UPDATE_TAB'), 'update_panel');
+echo $pane->startPanel(JText::_('VM_UPDATE_VERSION_TAB'), 'update_panel');
 echo $this->loadTemplate('update');
 echo $pane->endPanel();
 
-echo $pane->startPanel(JText::_('VM_UPDATE_CHECK_UPDATE_TAB'), 'update_panel');
+echo $pane->startPanel(JText::_('VM_UPDATE_TOOLS_TAB'), 'update_panel');
 echo $this->loadTemplate('tools');
 echo $pane->endPanel();
 

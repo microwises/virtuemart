@@ -82,50 +82,6 @@ class VirtuemartControllerUpdatesMigration extends JController {
 
 
     /**
-     * Install sample data into the database
-     *
-     * @author RickG
-     */
-    function upload() {
-	$updateFile = JRequest::getVar('install_package', null, 'files', 'array');
-	$model = $this->getModel('updatesMigration');
-	if (!$model->uploadAndInstallUpdate($updateFile['tmp_name'])) {
-	    $msg = $model->getError();
-	}
-
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
-
-	/*
-	require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'installer.php');
-	$installer = VmInstaller::getInstaller();
-	if (!$installer) {
-	    $msg = $installer->getError();
-	}
-	else {
-	    $fileToUpload = JRequest::getVar('install_package', null, 'files', 'array');
-	    if (!$installer->uploadAndInstall($fileToUpload)) {
-		$msg = $installer->getError();
-	    }
-	}
-
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
-*/
-	/*$data = JRequest::get('post');
-	if ($_FILES['update_package']['tmp_name'] <> '') {
-	    $model = $this->getModel('updatesMigration');
-	    if (!$model->uploadAndInstallUpdate($_FILES['update_package']['tmp_name'])) {
-		$msg = $model->getError();
-	    }
-	    $this->setRedirect('index.php?option=com_virtuemart', $msg);
-	}
-	else {
-	    $msg = JText::_('No package selected to upload!');
-	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
-	}*/
-    }
-
-
-    /**
      * Remove all the Virtuemart tables from the database.
      *
      * @author RickG
