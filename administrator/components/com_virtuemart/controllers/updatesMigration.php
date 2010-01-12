@@ -136,7 +136,18 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
 	}
 	else {
-	    $this->setRedirect('index.php');
+	    $this->setRedirect('index.php?option=com_installer');
+	}
+    }
+
+
+    function deleteVmData() {
+	$model = $this->getModel('updatesMigration');
+	if (!$model->removeAllVMData()) {
+	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+	}
+	else {
+	    $this->setRedirect('index.php?option=com_virtuemart');
 	}
     }
     

@@ -348,6 +348,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
+    /**
+     * Delete all Virtuemart tables.
+     *
+     * @return True if successful, false otherwise
+     */
     function removeAllVMTables() {
 	$db = JFactory::getDBO();
 	$config = JFactory::getConfig();
@@ -359,6 +364,29 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($tables as $table) {
 	    $db->setQuery('DROP TABLE ' . $table);
+	    $db->query();
+	}
+
+	return true;
+    }
+
+
+    /**
+     * Remove all the data from all Virutmeart tables.
+     *
+     * @return boolean True if successful, false otherwise.
+     */
+    function removeAllVMData() {
+	$db = JFactory::getDBO();
+	$config = JFactory::getConfig();
+	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
+	if (!$tables = $db->loadResultArray()) {
+	    $this->setError = $db->getErrorMsg();
+	    return false;
+	}
+
+	foreach ($tables as $table) {
+	    $db->setQuery('DELETE FROM ' . $table);
 	    $db->query();
 	}
 
