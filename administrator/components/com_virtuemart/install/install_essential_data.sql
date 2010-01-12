@@ -234,7 +234,7 @@ INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, 
 -- Dumping data for table `#__vm_module`
 --
 
-INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `module_publish`, `is_admin`, `list_order`) VALUES
+INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'admin', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n\r\n<p>Only used for the following:</p>\r\n<OL>\r\n\r\n<LI>User Maintenance</LI>\r\n<LI>Module Maintenance</LI>\r\n<LI>Function Maintenance</LI>\r\n</OL>\r\n', 'admin', 'Y', '1', 1),
 (2, 'product', '<p>Here you can adminster your online catalog of products.  The Product Administrator allows you to create product categories, create new products, edit product attributes, and add product items for each attribute value.</p>', 'storeadmin,admin', 'Y', '1', 4),
 (3, 'vendor', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n<p>Here you can manage the vendors on the VirtueMart system.</p>', 'admin', 'Y', '1', 6),
