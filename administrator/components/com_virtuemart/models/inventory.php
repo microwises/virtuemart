@@ -75,7 +75,7 @@ class VirtueMartModelInventory extends JModel {
      				`product_sku`,
      				`product_in_stock`,
      				`product_weight`,
-     				IF (`product_publish` = 'Y', 1, 0) AS `published`,
+     				`published`,
      				`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);

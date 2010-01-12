@@ -34,7 +34,7 @@ else {
 $mod = array();
 
 
-$q = "SELECT module_name,module_perms from #__{vm}_module WHERE module_publish='Y' ";
+$q = "SELECT module_name,module_perms from #__{vm}_module WHERE published='1' ";
 $q .= "AND module_name <> 'checkout' ORDER BY list_order ASC";
 
 //$db = &JFactory::getDBO();
@@ -161,7 +161,7 @@ function getAdminMenu($filter_by_module_id=0) {
 		
 		$menuArr = array();
 		        
-		$filter[] = "jmmod.module_publish='Y'";
+		$filter[] = "jmmod.published='1'";
 		$filter[] = "item.published='1'";
 		$filter[] = "jmmod.is_admin='1'";
 		$filter[] = "FIND_IN_SET('".$auth['perms']."', module_perms )>0";

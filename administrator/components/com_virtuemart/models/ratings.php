@@ -162,7 +162,7 @@ class VirtueMartModelRatings extends JModel {
      	if (is_array($cid)) {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
-			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
+			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 			$q = "UPDATE #__vm_product_reviews 
 				SET published = ".$db->Quote($state)." 
 				WHERE review_id IN (".$cids.")";

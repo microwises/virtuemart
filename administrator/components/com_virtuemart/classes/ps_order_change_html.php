@@ -528,7 +528,7 @@ class ps_order_change_html {
 
 		$query_list_products = "SELECT DISTINCT `product_name`,`products_per_row`,`category_browsepage`,`category_flypage`";
 		$query_list_products .= ",`#__{vm}_product`.`product_id`,`#__{vm}_category`.`category_id`,`product_full_image`,`product_thumb_image`";
-		$query_list_products .= ",`product_s_desc`,`product_parent_id`,`product_publish`,`product_in_stock`,`product_sku`";
+		$query_list_products .= ",`product_s_desc`,`product_parent_id`,`published`,`product_in_stock`,`product_sku`";
 		$query_list_products .= " FROM (`#__{vm}_product`, `#__{vm}_category`, `#__{vm}_product_category_xref`";
 		$query_list_products .= ",`#__{vm}_shopper_group`) LEFT JOIN `#__{vm}_product_price` ON";
 		$query_list_products .= " `#__{vm}_product`.`product_id` = `#__{vm}_product_price`.`product_id`";

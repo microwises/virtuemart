@@ -7,11 +7,11 @@ AdminMenuHelper::startAdminArea();
 	<tr> 
       <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_PUBLISH') ?>:</td>
       <td width="62%"><?php 
-        if ($this->producttype->product_type_publish=="Y") { 
-          echo "<input type=\"checkbox\" name=\"product_type_publish\" value=\"Y\" checked=\"checked\" />";
+        if ($this->producttype->product_type_publish=="1") { 
+          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" checked=\"checked\" />";
         } 
         else {
-          echo "<input type=\"checkbox\" name=\"product_type_publish\" value=\"Y\" />";
+          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" />";
         }
       ?> 
       </td>

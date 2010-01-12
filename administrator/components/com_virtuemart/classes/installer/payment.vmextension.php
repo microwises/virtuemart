@@ -88,7 +88,7 @@ class vmInstallerPayment {
 								'element' => $info['element'],
 								'folder' => $type,
 								'ordering' => '1',
-								'published' => 'N',
+								'published' => '0',
 								'type' => $info['payment_type'],
 								'is_creditcard' => ($info['payment_type']=='C' || $info['payment_type']=='A') ? '1' : '0',
 								'vendor_id' => $_SESSION['ps_vendor_id'],

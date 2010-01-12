@@ -212,6 +212,8 @@ class VirtuemartViewProduct extends JView {
 			default:
 				switch ($task) {
 					case 'publish':
+						$this->get('Publish');
+						break;
 					case 'unpublish':
 						$this->get('Publish');
 						break;
@@ -230,12 +232,16 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Get the list of products */
 				$productlist = $this->get('ProductList');
-				
-				
+
+
 				/* Get the category tree */
-				$category_tree = ShopFunctions::categoryListTree( JRequest::getInt('category_id') );
-				$this->assignRef('category_tree', $category_tree);
-				
+				$categoryId = JRequest::getInt('category_id');
+				if(!empty($categoryId)){
+					$category_tree = ShopFunctions::categoryListTree( $categoryId );
+					$this->assignRef('category_tree', $category_tree);
+				}
+
+
 				/* Check for child products if it is a parent item */
 				if (JRequest::getInt('product_parent_id', 0) == 0) {
 					foreach ($productlist as $product_id => $product) {

@@ -104,14 +104,14 @@ class ps_product_type {
 			$db->query( $q );
 			$db->next_record();
 			$list_order = intval($db->f("list_order"))+1;
-			if ($d["product_type_publish"] != "Y") {
-				$d["product_type_publish"] = "N";
+			if ($d["published"] != "1") {
+				$d["published"] = "0";
 			}
 			
 			$fields = array( 'product_type_id' => $product_type_id,
 										'product_type_name' => vmGet($d, 'product_type_name' ),
 										'product_type_description' => vmGet($d, 'product_type_description'),
-										'product_type_publish' => vmGet($d, 'product_type_publish'),
+										'published' => vmGet($d, 'published'),
 										'product_type_browsepage' => vmGet($d, 'product_type_browsepage'),
 										'product_type_flypage' => vmGet($d, 'product_type_flypage'),
 										'product_type_list_order' => $list_order
@@ -154,13 +154,13 @@ class ps_product_type {
 		$db = new ps_DB;
 
 		if ($this->validate_update($d)) {
-			if (empty($d["product_type_publish"])) {
-				$d["product_type_publish"] = "N";
+			if (empty($d["published"])) {
+				$d["published"] = "0";
 			}
 			$fields = array( 
 										'product_type_name' => vmGet($d, 'product_type_name' ),
 										'product_type_description' => vmGet($d, 'product_type_description'),
-										'product_type_publish' => vmGet($d, 'product_type_publish'),
+										'published' => vmGet($d, 'published'),
 										'product_type_browsepage' => vmGet($d, 'product_type_browsepage'),
 										'product_type_flypage' => vmGet($d, 'product_type_flypage'),
 										'product_type_list_order' => vmRequest::getInt('list_order')
@@ -721,7 +721,7 @@ class ps_product_type {
         
 		$q  = "SELECT * FROM #__{vm}_product_product_type_xref ";
 		$q .= "LEFT JOIN #__{vm}_product_type USING (product_type_id) ";
-		$q .= "WHERE product_id='$product_id' AND product_type_publish='Y' ";
+		$q .= "WHERE product_id='$product_id' AND published='1' ";
 		$q .= "ORDER BY product_type_list_order";
 		$dbag->query( $q );
 		$q  = "SELECT * FROM #__{vm}_product_type_parameter ";

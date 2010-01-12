@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_shopper` text COMMENT 'Ids of the shoppergroups',
   `calc_country` text COMMENT 'Affected Country Ids',
   `calc_state` text COMMENT 'Affected State Ids',
-  `calc_shopper_published` enum('0','1') NOT NULL COMMENT 'Visible for Shoppers',
-  `calc_vendor_published` enum('0','1') NOT NULL COMMENT 'Visible for Vendors',
+  `calc_shopper_published` tinyint(1) NOT NULL default '1' COMMENT 'Visible for Shoppers',
+  `calc_vendor_published` tinyint(1) NOT NULL default '1' COMMENT 'Visible for Vendors',
   `publish_up` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
   `publish_down` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Enddate if nothing is set = permanent',
   `modified` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'modified date',
@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_affected` text COMMENT 'affected productId''s',
   `calc_amount_cond` float default NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text COMMENT 'The dimension, kg, m, €',
-  `published` enum('0','1') NOT NULL,
-  `shared` enum('0','1') NOT NULL COMMENT 'Affects all vendors',
+  `published` tinyint(1) NOT NULL default '1',
+  `shared` tinyint(1) NOT NULL default '1' COMMENT 'Affects all vendors',
   PRIMARY KEY  (`calc_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
   `category_description` text,
   `category_thumb_image` varchar(255) default NULL,
   `category_full_image` varchar(255) default NULL,
-  `published` enum('0','1') NOT NULL default 1,
+  `published` tinyint(1) NOT NULL default '1',
   `cdate` int(11) default NULL,
   `mdate` int(11) default NULL,
   `category_browsepage` varchar(255) NOT NULL default 'browse_1',
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_country` (
   `country_name` varchar(64) default NULL,
   `country_3_code` char(3) default NULL,
   `country_2_code` char(2) default NULL,
-  `published` enum('0','1') NOT NULL default '1',  
+  `published` tinyint(1) NOT NULL default '1',  
   PRIMARY KEY  (`country_id`),
   KEY `idx_country_name` (`country_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Country records' AUTO_INCREMENT=245 ;
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_url` varchar(255) NOT NULL DEFAULT '',
   `mf_thumb_image` varchar(255) DEFAULT NULL,
   `mf_full_image` varchar(255) DEFAULT NULL,
-  `published` enum('0','1') NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products';
 
@@ -254,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
   `mf_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
-  `published` enum('0','1') NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY (`mf_category_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=10 ;
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
   `depends` text NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
   `icon_class` varchar(255) NOT NULL,
   `ordering` tinyint(4) NOT NULL,
-  `published` enum('0','1') NOT NULL,
+  `published` tinyint(1) NOT NULL default '1',
   `tooltip` text NOT NULL,
   `view` varchar(255) default NULL,
   `task` varchar(255) default NULL,
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_module` (
   `module_name` varchar(255) default NULL,
   `module_description` text,
   `module_perms` varchar(255) default NULL,
-  `module_publish` char(1) default NULL,
+  `published` tinyint(1) NOT NULL default '1',
   `is_admin` enum('0','1') NOT NULL,
   `list_order` int(11) default NULL,
   PRIMARY KEY  (`module_id`),
@@ -478,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `ordering` int(11) default NULL,
   `type` char(1) default NULL,
   `is_creditcard` tinyint(1) NOT NULL default '0',
-  `published` char(1) NOT NULL default 'N',
+  `published` tinyint(1) NOT NULL default '0',
   `accepted_creditcards` varchar(128) NOT NULL default '',
   `extra_info` text NOT NULL,
   `secret_key` blob NOT NULL,
@@ -502,7 +502,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
   `element` varchar(100) NOT NULL default '',
   `folder` varchar(100) NOT NULL default '',
   `ordering` int(11) NOT NULL default '0',
-  `published` enum('0','1') NOT NULL default '0',
+  `published` tinyint(1) NOT NULL default '0',
   `iscore` tinyint(3) NOT NULL default '0',
   `vendor_id` tinyint(3) NOT NULL default '1',
   `shopper_group_id` int(10) unsigned NOT NULL,
@@ -528,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   `product_desc` text,
   `product_thumb_image` varchar(255) default NULL,
   `product_full_image` varchar(255) default NULL,
-  `product_publish` char(1) default NULL,
+  `published` tinyint(1) NOT NULL default '1',
   `product_weight` decimal(10,4) default NULL,
   `product_weight_uom` varchar(32) default 'pounds.',
   `product_length` decimal(10,4) default NULL,
@@ -749,7 +749,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
   `user_rating` tinyint(1) NOT NULL default '0',
   `review_ok` int(11) NOT NULL default '0',
   `review_votes` int(11) NOT NULL default '0',
-  `published` char(1) NOT NULL default 'Y',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`review_id`),
   UNIQUE KEY `product_id` (`product_id`,`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -764,7 +764,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
   `product_type_id` int(11) NOT NULL auto_increment,
   `product_type_name` varchar(255) NOT NULL default '',
   `product_type_description` text,
-  `product_type_publish` char(1) default NULL,
+  `published` tinyint(1) NOT NULL default '1',
   `product_type_browsepage` varchar(255) default NULL,
   `product_type_flypage` varchar(255) default NULL,
   `product_type_list_order` int(11) default NULL,
@@ -918,7 +918,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
   `state_name` varchar(64) default NULL,
   `state_3_code` char(3) default NULL,
   `state_2_code` char(2) default NULL,
-  `published` enum('0','1') NOT NULL default '1',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`state_id`),
   UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`country_id`,`state_2_code`),
@@ -962,7 +962,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
   `rows` int(11) default NULL,
   `value` varchar(50) default NULL,
   `default` int(11) default NULL,
-  `published` enum('0','1') NOT NULL default '1',
+  `published` tinyint(1) NOT NULL default '1',
   `registration` tinyint(1) NOT NULL default '0',
   `shipping` tinyint(1) NOT NULL default '0',
   `account` tinyint(1) NOT NULL default '1',

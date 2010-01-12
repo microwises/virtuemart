@@ -392,7 +392,7 @@ class vmAbstractObject {
 		$has_vendor = true;
 		if( !empty($d['product_id']) && empty( $d['review_id'] ) && empty( $d['file_id'] ) ) {
 			$table_name = '#__{vm}_product';
-			$publish_field_name = 'product_publish';
+			$publish_field_name = 'published';
 			$field_name = 'product_id';
 		}
 		elseif( !empty($d['category_id'])) {
@@ -481,12 +481,12 @@ class vmAbstractObject {
 		global $vmLogger;
 		
 		$db = new ps_DB();
-		if( $field_name == 'id' || $field_name == 'fieldid' || $field_name == 'file_id' || $field_name == 'user_id') {
+//		if( $field_name == 'id' || $field_name == 'fieldid' || $field_name == 'file_id' || $field_name == 'user_id') {
 			$value = ($task == 'unpublish') ? '0' : '1';
-		}
-		else {
-			$value = ($task == 'unpublish') ? 'N' : 'Y';
-		}
+//		}
+//		else {
+//			$value = ($task == 'unpublish') ? 'N' : 'Y';
+//		}
 		
 		if( !is_array( $itemId )) {
 			$set[] = $itemId;

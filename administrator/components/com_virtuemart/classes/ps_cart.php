@@ -49,7 +49,7 @@ class ps_cart {
 					$products_in_cart[$_SESSION['savedcart'][$i]['product_id']] = (int)$_SESSION['savedcart'][$i]['product_id'];
 				}
 				if( !empty( $products_in_cart )) {
-					$db->query('SELECT `product_id` FROM #__{vm}_product WHERE `product_id` IN('.implode(',', $products_in_cart ).') AND product_publish=\'Y\'' );
+					$db->query('SELECT `product_id` FROM #__{vm}_product WHERE `product_id` IN('.implode(',', $products_in_cart ).') AND published=\'1\'' );
 					while( $db->next_record() ) {
 						unset( $products_in_cart[$db->f('product_id')] );
 					}

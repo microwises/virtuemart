@@ -57,7 +57,6 @@ class VirtueMartModelProduct extends JModel {
 			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$this->getProductListFilter();
 			$db->setQuery($q);
 			$fields = $db->loadObjectList('product_id');
-			
 			$this->_total = count($fields);
         }
         
@@ -175,8 +174,7 @@ class VirtueMartModelProduct extends JModel {
      				#__vm_product_category_xref.`product_list`,
      				`mf_name`,
      				#__vm_manufacturer.`manufacturer_id`,
-     				`product_publish`,
-     				IF (`product_publish` = 'Y', 1, 0) AS `published`,
+     				#__vm_product.`published`,
      				`product_price`
      				".$this->getProductListQuery().$this->getProductListFilter()."
 			";
@@ -308,10 +306,10 @@ class VirtueMartModelProduct extends JModel {
      	if (is_array($cid)) {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
-			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
+			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 			$q = "UPDATE #__vm_product 
-				SET product_publish = ".$db->Quote($state)." 
-				WHERE product_id IN (".$cids.")";
+				SET `published` = ".$db->Quote($state)." 
+				WHERE `product_id` IN (".$cids.")";
 			$db->setQuery($q);
 			if ($db->query()) return true;
 			else return false;
@@ -326,7 +324,7 @@ class VirtueMartModelProduct extends JModel {
 	 * @param int $nbrReturnProducts Number of products to return
 	 * @return object List of  products
 	 */    
-    public function getGroupProducts($group, $vendorId, $categoryId='', $nbrReturnProducts) {
+    public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts) {
 		$db = JFactory::getDBO();         
 	    switch ($group) {
 			case 'featured':
@@ -343,7 +341,7 @@ class VirtueMartModelProduct extends JModel {
 	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
 	        $query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
             $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
-	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
+	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
 	        if (Vmconfig::getVar('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
@@ -354,7 +352,7 @@ class VirtueMartModelProduct extends JModel {
 	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url`, `quantity_options` ';
 	        $query .= 'FROM `#__vm_product` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
-	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
+	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
 	        if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
@@ -363,7 +361,12 @@ class VirtueMartModelProduct extends JModel {
         }
         $db->setQuery($query);
 		$result = $db->loadObjectList();
-		
+
+		//No product in the result, that comes normally from that there is no product or no product published, we assume published
+		if(!isset($result)){
+			JError::raiseNotice(1, 'No products published $query '.$query );
+//			return $result;
+		}
 		/* Add some extra info */
 		foreach ($result as $featured) {
 			/* Flypage */
@@ -1128,7 +1131,7 @@ class VirtueMartModelProduct extends JModel {
 				$q .= "AND c.category_id = '".$category_id."' ";
 				$q .= "AND p.product_id = cx.product_id ";
 				$q .= "AND c.category_id=cx.category_id ";
-				$q .= "AND p.product_publish='1' ";
+				$q .= "AND p.published='1' ";
 				$q .= "AND c.published='1' ";
 				$q .= "LIMIT 0,1";
 				$db->setQuery($q);

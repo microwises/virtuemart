@@ -50,7 +50,7 @@ if( !empty( $category_id ) ) {
 if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 	$q .= " AND product_in_stock > 0 ";
 }
-$q .= "AND #__{vm}_product.product_publish='Y' ";
+$q .= "AND #__{vm}_product.published='1' ";
 $q .= "ORDER BY #__{vm}_product.product_id DESC ";
 $q .= "LIMIT 0, $max_items ";
 $db->query($q);

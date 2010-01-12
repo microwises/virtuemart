@@ -20,7 +20,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 $q  = "SELECT * FROM #__{vm}_product_type ";
 $q .= "WHERE product_type_id='$product_type_id' ";
-$q .= "AND product_type_publish='Y'";
+$q .= "AND published='1'";
 $db->query($q);
 
 $browsepage = $db->f("product_type_browsepage");

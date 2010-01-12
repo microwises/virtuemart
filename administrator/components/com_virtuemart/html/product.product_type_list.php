@@ -103,7 +103,7 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
       //$listObj->addCell( $db->f("list_order"));
 
-	$listObj->addCell( vmCommonHTML::getYesNoIcon( $db->f("product_type_publish") ) );
+	$listObj->addCell( vmCommonHTML::getYesNoIcon( $db->f("published") ) );
 	
 //      echo "<a href=\"javascript: void(0);\" onClick=\"return listItemTask('cb$i','orderdown')\">";
 //      echo "Down</a>";	

@@ -10,9 +10,9 @@
 					</td>
 					<td width="79%">
 						<?php
-							$checked = '';
-							if (strtoupper($this->product->product_publish) == "Y") $checked = 'checked="checked"';
-							echo '<input type="checkbox" name="product_publish" value="Y" '.$checked.' />';
+							$checked = '';//todo roland please checkt this
+							if (strtoupper($this->product->published) == "1") $checked = 'checked="checked"';
+							echo '<input type="checkbox" name="published" value="1" '.$checked.' />';
 						?> 
 					</td>
 				</tr>

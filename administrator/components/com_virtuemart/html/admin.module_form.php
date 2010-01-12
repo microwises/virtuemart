@@ -50,7 +50,7 @@ $formObj->startForm();
     <tr> 
       <td width="24%" align="right" ><?php echo JText::_('VM_MODULE_FORM_MENU') ?>:</td>
       <td width="76%">
-      	<?php echo ps_html::yesNoSelectList('module_publish', $db->f('module_publish'), 'Y', 'N') ?> 
+      	<?php echo ps_html::yesNoSelectList('published', $db->f('published'), '1', '0') ?> 
       </td>
     </tr>
     <tr> 

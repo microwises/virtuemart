@@ -69,7 +69,7 @@ class VirtueMartModelProducttypes extends JModel {
      	$this->getPagination();
      	
      	/* Build the query */
-     	$q = "SELECT *, p.product_type_id, IF(product_type_publish = 'Y', 1, 0) AS published ".$this->getProductTypesListQuery().$this->getProductTypesFilter();
+     	$q = "SELECT *, p.product_type_id, published ".$this->getProductTypesListQuery().$this->getProductTypesFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_type_id');
     }
@@ -202,7 +202,7 @@ class VirtueMartModelProducttypes extends JModel {
 			$product_type_data->product_type_list_order = $db->loadResult();
 			
 			/* Check publish state */
-			if ($product_type_data->product_type_publish != "Y") $product_type_data->product_type_publish = "N";
+			if ($product_type_data->product_type_publish != "1") $product_type_data->product_type_publish = "0";
 		}
 		
 		/* Store the product type */
@@ -266,7 +266,7 @@ class VirtueMartModelProducttypes extends JModel {
     		ON p.product_id = x.product_id
     		WHERE x.product_type_id = ".$product_type_id."
     		AND p.product_parent_id = 0 
-    		ORDER BY product_publish DESC, product_name";
+    		ORDER BY published DESC, product_name";
 		$db->setQuery($count);
 		return $db->loadResult();
     }

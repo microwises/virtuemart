@@ -75,7 +75,7 @@ class VirtueMartModelProductspecial extends JModel {
      				`product_sku`,
      				`product_special`,
      				IF (`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,
-     				IF (`product_publish` = 'Y', 1, 0) AS `published`,
+     				`published`,
      				`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);

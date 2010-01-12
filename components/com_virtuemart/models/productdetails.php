@@ -48,12 +48,12 @@ class VirtueMartModelProductdetails extends JModel {
 			
 			/* Load the price */
 			$prices = "";
-			if (Vmconfig::getVar('show_prices') == '1') {
+//			if (Vmconfig::getVar('show_prices') == '1') {
 				/* Loads the product price details */
 				$calculator = new calculationHelper();
 				//the function getProductPrices returns an array, therefore $prices not $price
 				$prices = $calculator->getProductPrices($product->product_id,$product->categories);
-			}
+//			}
 			//The prices calculated in the calculator are dynamical calculated and mostly not senseful to save in a tabel
 			//Maybe I just lern another php thing, please explain me this Roland, do you just add to the Object the data product_price? (why underscore btw)
 			//you may take a look at ps_product line 2313 to see how it is used

@@ -129,7 +129,7 @@ class ps_communication {
 
 		$db = new ps_DB;
 		$product_id = (int)$d["product_id"];
-		$q='SELECT * FROM #__{vm}_product WHERE product_id='.$product_id.' AND product_publish=\'Y\'';
+		$q='SELECT * FROM #__{vm}_product WHERE product_id='.$product_id.' AND published=\'1\'';
 		$db->query($q);
 		if ( !$db->next_record() ) {
 			$vmLogger->err( JText::_('NOT_AUTH',false) );

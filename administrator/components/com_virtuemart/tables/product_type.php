@@ -22,7 +22,7 @@ class TableProduct_type extends JTable {
 	/** @var string Description */
 	var $product_type_description = null;
 	/** @var int Published */
-	var $product_type_publish = null;
+	var $published = null;
 	/** @var string Name of the browsepage */
 	var $product_type_browsepage = null;
 	/** @var string Name of the flypage to use */

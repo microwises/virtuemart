@@ -1003,14 +1003,14 @@ class ps_order_edit {
 		
 		$query_list_products = "SELECT DISTINCT `product_name`,`products_per_row`,`category_browsepage`,`category_flypage`";
 		$query_list_products .= ",`#__{vm}_product`.`product_id`,`#__{vm}_category`.`category_id`,`product_full_image`,`product_thumb_image`";
-		$query_list_products .= ",`product_s_desc`,`product_parent_id`,`product_publish`,`product_in_stock`,`product_sku`";
+		$query_list_products .= ",`product_s_desc`,`product_parent_id`,`published`,`product_in_stock`,`product_sku`";
 		$query_list_products .= " FROM (`#__{vm}_product`, `#__{vm}_category`, `#__{vm}_product_category_xref`";
 		$query_list_products .= ",`#__{vm}_shopper_group`) LEFT JOIN `#__{vm}_product_price` ON";
 		$query_list_products .= " `#__{vm}_product`.`product_id` = `#__{vm}_product_price`.`product_id`";
 		$query_list_products .= " WHERE `#__{vm}_product_category_xref`.`category_id`=`#__{vm}_category`.`category_id`";
 		$query_list_products .= " AND `#__{vm}_product`.`product_id`=`#__{vm}_product_category_xref`.`product_id`";
 		$query_list_products .= " AND `#__{vm}_product`.`product_parent_id`='0'";
-		$query_list_products .= " AND `product_publish`='Y'";
+		$query_list_products .= " AND `published`='1'";
 		$query_list_products .= " AND (( `#__{vm}_shopper_group`.`shopper_group_id`=`#__{vm}_product_price`.`shopper_group_id` )";
 		$query_list_products .= " OR (`#__{vm}_product_price`.`product_id` IS NULL))";
 		$query_list_products .= " GROUP BY `#__{vm}_product`.`product_sku` ORDER BY `#__{vm}_product`.`product_name`";
@@ -1365,7 +1365,7 @@ class ps_order_edit {
 
 		// Get list of children
 		if ($fils) {
-			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'";
+			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND published='1'";
 		}
 		else {
 			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -1373,7 +1373,7 @@ class ps_order_edit {
 			$db->query();
 			$db->next_record();
 			$product_parent_id = $db->f("product_parent_id");
-			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_parent_id' AND product_publish='Y'";
+			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_parent_id' AND published='1'";
 		}
 		
 		$db->setQuery($q);

@@ -22,7 +22,7 @@ $db->query( "ALTER TABLE `#__{vm}_manufacturer` ADD `mf_thumb_image` VARCHAR( 25
 ADD `mf_full_image` VARCHAR( 255 ) default NULL");
 
 # define modules as administrator-relevant or not
-$db->query( "ALTER TABLE `#__{vm}_module` ADD `is_admin` ENUM( '0', '1' ) NOT NULL AFTER `module_publish`");
+$db->query( "ALTER TABLE `#__{vm}_module` ADD `is_admin` ENUM( '0', '1' ) NOT NULL AFTER `published`");
 
 $db->query( "UPDATE `#__{vm}_module` SET `is_admin` = '1' 
 	WHERE FIND_IN_SET( `module_name` , 'admin,product,vendor,shopper,order,store,tax,repotbasic, zone,shipping,manufacturer,help,coupon' ) >0 ");

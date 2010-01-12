@@ -83,7 +83,7 @@ $tabs->startPane($paneid);
     $q .= "product_parent_id=''";
     $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
     $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-    $q .= "AND #__{vm}_product.product_publish='Y' ";
+    $q .= "AND #__{vm}_product.published='1' ";
     $q .= "ORDER BY #__{vm}_product.product_id DESC ";
     $q .= "LIMIT $max_items ";
     $db->query($q);
@@ -144,7 +144,7 @@ if ($show_topten == '1') {
         <?php
         $list  = "SELECT #__{vm}_product.product_id, product_parent_id,product_name, #__{vm}_category.category_id, category_flypage ";
 		$list .= "FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE ";
-		$q = "#__{vm}_product.product_publish='Y' AND ";
+		$q = "#__{vm}_product.published='1' AND ";
 		$q .= "#__{vm}_product_category_xref.product_id = #__{vm}_product.product_id AND ";
 		$q .= "#__{vm}_product_category_xref.category_id = #__{vm}_category.category_id AND ";
         $q .= "#__{vm}_product.product_sales>0 ";
@@ -211,7 +211,7 @@ if ($show_special == '1') {
           $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') ";
           $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
           $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-          $q .= "AND #__{vm}_product.product_publish='Y' ";
+          $q .= "AND #__{vm}_product.published='1' ";
           $q .= "AND #__{vm}_product.product_special='Y' ";
           $q .= "ORDER BY product_name DESC ";
         //  $q .= "LIMIT $max_items ";
@@ -266,7 +266,7 @@ if ($show_random == '1') {
     $q .= "product_parent_id=''";
     $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id ";
     $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id ";
-    $q .= "AND #__{vm}_product.product_publish='Y' ";
+    $q .= "AND #__{vm}_product.published='1' ";
     $q .= "ORDER BY product_name DESC";
     $db->query($q);
     

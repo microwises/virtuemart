@@ -37,7 +37,7 @@ $num_topsellers = $params->get ('num_topsellers', 10);
 
 $list  = "SELECT p.product_id, p.product_sales as sales, p.product_parent_id, p.product_name, c.category_id, c.category_flypage ";
 $list .= "FROM #__{vm}_product p, #__{vm}_product_category_xref pc, #__{vm}_category c WHERE ";
-$q = "p.product_publish='Y' AND ";
+$q = "p.published='1' AND ";
 $q .= "pc.product_id = p.product_id AND ";
 $q .= "pc.category_id = c.category_id AND ";
 $q .= "p.product_sales > 0 ";

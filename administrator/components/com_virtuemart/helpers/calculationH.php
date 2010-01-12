@@ -59,12 +59,12 @@ class calculationHelper{
 	 * 							'basePriceWithTax'	basePrice with Tax
 	 * 							'discountedPrice'	before Tax
 	 * 							'priceWithoutTax'	price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
-	 * 							'discountAmount'	he "you save X money"
+	 * 							'discountAmount'	the "you save X money"
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
 	function getProductPrices($productId,$catIds=0){
-
+		
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
 		$row=$this->_db->loadRow();
@@ -185,8 +185,6 @@ class calculationHelper{
 	/**
 	 * Function to execute the calculation of the gathered rules Ids.
 	 * 
-	 * 
-	 * 
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @param 		$rules 		The Ids of the products
@@ -203,6 +201,86 @@ class calculationHelper{
 			}
 		}
 		return $price;
+	}
+
+
+
+	/**
+	 * Gatheres the rules which affects the product.
+	 * 
+	 * 
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param	$entrypoint The entrypoint how it should behave. Valid values should be 
+	 * 						Profit (Commission is a profit rule that is shared, maybe we remove shared and make a new entrypoint called profit)
+	 * 						DBTax (Discount for wares, coupons)
+	 * 						Tax
+	 * 						DATax (Discount on money)
+	 * 						Duty
+	 * @return	$rules The rules that effects the product as Ids
+	 */ 
+	function gatherEffectingRulesForProductPrice($entrypoint){
+
+		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
+		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
+		$countries = ''; //$this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
+		$states = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
+
+		//Test if calculation affects the current entry point
+		//shared rules counting for every vendor seems to be not necessary
+		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+		'`calc_kind`="'.$entrypoint.'" ' .
+		' AND `published`="1" ' .
+		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) '.
+		$cats . $shoppergrps . $countries . $states ;
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
+		JError::raiseNOtice(1, 'query '.$q);
+		if (empty($rules)) return;
+		//Just for developing
+//		foreach($rules as $rule){
+//			echo '<br /> Entrypoint: '.$entrypoint.' Add rule '.$rule['calc_name'];
+//		}
+		return $rules;
+	}
+	
+	/**
+	 * Gathers the effecting rules for the calculation of the bill
+	 * 
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param	$entrypoint
+	 * @param	$cartVendorId
+	 * @return $rules The rules that effects the Bill as Ids
+	 */
+	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
+
+//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
+		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
+		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
+		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
+
+		//Test if calculation affects the current entry point
+		//shared rules counting for every vendor seems to be not necessary
+		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+			'`calc_kind`="'.$entrypoint.'" ' .
+			' AND `published`="1" ' .
+			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
+			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) '.
+			$shoppergrps .  $countries . $states ;
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
+//		echo ' query: '.$q;
+
+//		if (empty($rules)) return;	
+		//Just for developing
+//		foreach($rules as $rule){
+//			echo '<br /> Add rule '.$rule['calc_name'].' query: '.$q;
+//		}
+		return $rules;
 	}
 	
 	/**
@@ -224,83 +302,6 @@ class calculationHelper{
 		$rules = $this->_db->loadAssocList();
 		return $rules;
 	}
-
-	/**
-	 * Gathers the effecting rules for the calculation of the bill
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param	$entrypoint
-	 * @param	$cartVendorId
-	 * @return $rules The rules that effects the Bill as Ids
-	 */
-	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
-
-//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
-		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
-		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
-		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
-
-		//Test if calculation affects the current entry point
-		//shared rules counting for every vendor seems to be not necessary
-		$q= 'SELECT * FROM #__vm_calc WHERE ' .
-			'`calc_kind`="'.$entrypoint.'" ' .
-			' AND `published`="1" ' .
-			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
-			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) AND'.
-			$shoppergrps .' AND '. $countries .' AND '. $states ;
-		$this->_db->setQuery($q);
-		$rules = $this->_db->loadAssocList();
-		if (empty($rules)) return;
-		echo ' query: '.$q;
-		//Just for developing
-		foreach($rules as $rule){
-			echo '<br /> Add rule '.$rule['calc_name'].' query: '.$q;
-		}
-		return $rules;
-	}
-
-	/**
-	 * Gatheres the rules which affects the product.
-	 * 
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param	$entrypoint The entrypoint how it should behave. Valid values should be 
-	 * 						Profit (Commission is a profit rule that is shared, maybe we remove shared and make a new entrypoint called profit)
-	 * 						DBTax (Discount for wares, coupons)
-	 * 						Tax
-	 * 						DATax (Discount on money)
-	 * 						Duty
-	 * @return	$rules The rules that effects the product as Ids
-	 */ 
-	function gatherEffectingRulesForProductPrice($entrypoint){
-
-		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories');
-		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper');
-		$countries = ''; //$this -> writeRulePartEffectingQuery($this->_countries,'calc_country');
-		$states = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state');
-
-		//Test if calculation affects the current entry point
-		//shared rules counting for every vendor seems to be not necessary
-		$q= 'SELECT * FROM #__vm_calc WHERE ' .
-		'`calc_kind`="'.$entrypoint.'" ' .
-		' AND `published`="1" ' .
-		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
-		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) AND '.
-		$cats .' AND '. $shoppergrps .' AND '. $countries .' AND '. $states ;
-		$this->_db->setQuery($q);
-		$rules = $this->_db->loadAssocList();
-		if (empty($rules)) return;
-		echo ' query: '.$q;
-		//Just for developing
-		foreach($rules as $rule){
-			echo '<br /> Entrypoint: '.$entrypoint.' Add rule '.$rule['calc_name'];
-		}
-		return $rules;
-	}
 	
 	/**
 	 * This function just writes the query for gatherEffectingRulesForProductPrice
@@ -313,10 +314,14 @@ class calculationHelper{
 	 * @param $field	the name of the field in the db, for exampel calc_categories to write a rule that asks for the field calc_categories
 	 * @return $q		The query
 	 */
-	function writeRulePartEffectingQuery($data,$field){
+	function writeRulePartEffectingQuery($data,$field,$setAnd=0){
 		$q='';
 		if(!empty($data)){
-			$q = ' (';
+			if($setAnd){
+				$q = ' AND (';		
+			}else{
+				$q = ' (';
+			}
 			foreach ($data as $id){
 				$q = $q . '`'.$field.'`="'.$id.'" OR';
 			}

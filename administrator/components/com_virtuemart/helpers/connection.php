@@ -181,7 +181,8 @@ class VmConnector {
 			return false;
 	    }
 	    else {
-			JError::raiseNOtice(1, 'Connection opened to '.$urlParts['host']);
+	    	//Would be interesting to set this only for debug
+//			JError::raiseNOtice(1, 'Connection opened to '.$urlParts['host']);
 	    }
 	    if( $postData ) {
 		$vmLogger->debug('Now posting the variables.' );

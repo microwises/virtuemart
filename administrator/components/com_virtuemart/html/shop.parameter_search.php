@@ -36,7 +36,7 @@ $vm_mainframe->vmAppendPathway($pathway);
 		
 <?php
 	$q  = "SELECT * FROM #__{vm}_product_type ";
-	$q .= "WHERE product_type_publish='Y' ";
+	$q .= "WHERE published='1' ";
 	$q .= "ORDER BY product_type_list_order";
 	$db->query($q);
 	echo '<table width="100%" border="0" cellpadding="2" cellspacing="0">';

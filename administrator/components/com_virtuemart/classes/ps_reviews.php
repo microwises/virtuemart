@@ -96,9 +96,9 @@ class ps_reviews {
 		$dbc = new ps_DB;
 		$showall = JRequest::getVar(  'showall', 0);
 		$q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews 
-					WHERE product_id='$product_id' AND published='Y' ORDER BY `time` DESC ";
+					WHERE product_id='$product_id' AND published='1' ORDER BY `time` DESC ";
 		$count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews 
-						WHERE product_id='$product_id' AND published='Y'";
+						WHERE product_id='$product_id' AND published='1'";
 
 		if( $limit > 0 ) {
 			$q .= " LIMIT ".intval($limit);
@@ -267,7 +267,7 @@ class ps_reviews {
 			}
 			if ($commented==false) {
 				$comment= nl2br(htmlspecialchars(vmGet($d, 'comment' )));
-				$published = VM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
+				$published = VM_REVIEWS_AUTOPUBLISH ? '1' : '0';
 				$time = time() + $mosConfig_offset*60*60;
 				$fields = array('product_id' => $d['product_id'], 
 											'userid' => $userid,

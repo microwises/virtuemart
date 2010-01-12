@@ -170,7 +170,7 @@ class AdminMenuHelper
 	    $db		= JFactory::getDBO();
 	    $menuArr = array();
 		        
-	    $filter[] = "jmmod.module_publish='Y'";
+	    $filter[] = "jmmod.published='1'";
 	    $filter[] = "item.published='1'";
 	    $filter[] = "jmmod.is_admin='1'";
 	    if( !empty($moduleId)) {

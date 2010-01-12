@@ -637,7 +637,7 @@ VALUES
 
 # 10.04.2006
 $db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `review_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;");
-$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `published` CHAR( 1 ) NOT NULL DEFAULT 'Y';");
+$db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD `published` TINYINT( 1 ) NOT NULL DEFAULT '1';");
 $db->query( "ALTER TABLE `#__{vm}_product_reviews` ADD UNIQUE ( `product_id` , `userid` ); ");
 
 $db->query( "ALTER TABLE `#__{vm}_product_votes` ADD PRIMARY KEY ( `product_id` )");

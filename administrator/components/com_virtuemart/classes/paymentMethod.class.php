@@ -432,7 +432,7 @@ class vmPaymentMethod extends vmAbstractObject {
 
 		$q = "SELECT id,discount, discount_is_percentage, name from #__{vm}_payment_method WHERE ";
 		$q .= "(type='$selector') AND ";
-		$q .= "published='Y' AND ";
+		$q .= "published='1' AND ";
 //		$q .= "vendor_id='$vendor_id' AND ";
 
 		if ($auth["shopper_group_id"] == $default_shopper_group_id) {
@@ -448,7 +448,7 @@ class vmPaymentMethod extends vmAbstractObject {
 		// Start radio list
 		while ($db->next_record()) {
 			$has_result = true;
-//			echo "<input type=\"radio\" name=\"payment_method_id\" id=\"".$db->f("name")."\" value=\"".$db->f("id")."\" ";
+//			todo has the type='Y" something todo with published and must be changed to 1?
 			echo "<input type=\"radio\" name=\"payment_method_id\" id=\"".$db->f("name")."\" value=\"".$db->f("id")."\" ";
 			if( $selector == "' OR type='Y" ) {
 				echo "onchange=\"javascript: changeCreditCardList();\" ";

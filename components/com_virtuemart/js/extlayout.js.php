@@ -194,7 +194,7 @@ else {
 		
 		$menuArr = array();
 		        
-		$filter[] = "vmmod.module_publish='Y'";
+		$filter[] = "vmmod.published='1'";
 		$filter[] = "item.published='1'";
 		$filter[] = "vmmod.is_admin='1'";
 		$filter[] = "FIND_IN_SET('".$auth['perms']."', module_perms )>0";

@@ -138,7 +138,7 @@ class ps_module {
 		$fields = array( 'module_name' => vmGet( $d, 'module_name' ),
 			            'module_perms' => vmGet( $d, 'module_perms' ),
 						'module_description' => vmGet( $d, 'module_description' ),
-						'module_publish' => vmGet( $d, 'module_publish'),
+						'published' => vmGet( $d, 'published'),
 						'list_order' => vmRequest::getInt('list_order')
 					);
 			
@@ -175,7 +175,7 @@ class ps_module {
 		$fields = array( 'module_name' => vmGet( $d, 'module_name' ),
 			            'module_perms' => vmGet( $d, 'module_perms' ),
 						'module_description' => vmGet( $d, 'module_description' ),
-						'module_publish' => vmGet( $d, 'module_publish'),
+						'published' => vmGet( $d, 'published'),
 						'list_order' => vmRequest::getInt('list_order')
 					);
 			

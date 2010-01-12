@@ -69,8 +69,7 @@ if ( $category_id ) {
 		$q .= "AND #__{vm}_category.category_id='$category_id' \n";
 	}
 	// END - MultiCategory Display - deneb
-	$q .= "AND #__{vm}_product.product_publish='Y' \n";
-	$q .= "AND #__{vm}_product.product_special='Y' \n";
+	$q .= "AND #__{vm}_product.published='1' \n";
 	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		$q .= " AND product_in_stock > 0 \n";
 	}
@@ -79,7 +78,7 @@ if ( $category_id ) {
 else {
 	$q  = "SELECT DISTINCT product_sku FROM #__{vm}_product WHERE ";
 	$q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
-	$q .= "AND #__{vm}_product.product_publish='Y' ";
+	$q .= "AND #__{vm}_product.published='1' ";
 	$q .= "AND #__{vm}_product.product_special='Y' ";
 	if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != "1") {
 		$q .= " AND product_in_stock > 0 ";
