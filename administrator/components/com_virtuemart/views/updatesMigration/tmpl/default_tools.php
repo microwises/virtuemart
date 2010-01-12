@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 	<td align="center">
 	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmData'); ?>">
-		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </a>
 	    <br />
 	    Remove Virtuemart Data
@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
 	<td align="center">
 	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmTables'); ?>">
-		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </a>
 	    <br />
 	    Remove all Virtuemart Tables
