@@ -14,6 +14,10 @@ echo $pane->startPanel(JText::_('VM_UPDATE_CHECK_UPDATE_TAB'), 'update_panel');
 echo $this->loadTemplate('update');
 echo $pane->endPanel();
 
+echo $pane->startPanel(JText::_('VM_UPDATE_CHECK_UPDATE_TAB'), 'update_panel');
+echo $this->loadTemplate('tools');
+echo $pane->endPanel();
+
 echo $pane->endPane();
 ?>
 

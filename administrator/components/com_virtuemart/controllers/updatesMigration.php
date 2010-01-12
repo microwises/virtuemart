@@ -20,8 +20,6 @@ jimport('joomla.application.component.controller');
  * @author Max Milbers
  */
 
-global $vmInstaller;
-
 class VirtuemartControllerUpdatesMigration extends JController {
 
     private $installer;
@@ -34,12 +32,12 @@ class VirtuemartControllerUpdatesMigration extends JController {
     function __construct() {
 	parent::__construct();
 
-	$document =& JFactory::getDocument();
-	$viewType	= $document->getType();
-	$view =& $this->getView('updatesMigration', $viewType);
+	$document = JFactory::getDocument();
+	$viewType = $document->getType();
+	$view = $this->getView('updatesMigration', $viewType);
 
 	// Push a model into the view
-	$model =& $this->getModel('updatesMigration');
+	$model = $this->getModel('updatesMigration');
 	if (!JError::isError($model)) {
 	    $view->setModel($model, true);
 	}
@@ -89,7 +87,30 @@ class VirtuemartControllerUpdatesMigration extends JController {
      * @author RickG
      */
     function upload() {
-	$data = JRequest::get('post');
+	$updateFile = JRequest::getVar('install_package', null, 'files', 'array');
+	$model = $this->getModel('updatesMigration');
+	if (!$model->uploadAndInstallUpdate($updateFile['tmp_name'])) {
+	    $msg = $model->getError();
+	}
+
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+
+	/*
+	require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'installer.php');
+	$installer = VmInstaller::getInstaller();
+	if (!$installer) {
+	    $msg = $installer->getError();
+	}
+	else {
+	    $fileToUpload = JRequest::getVar('install_package', null, 'files', 'array');
+	    if (!$installer->uploadAndInstall($fileToUpload)) {
+		$msg = $installer->getError();
+	    }
+	}
+
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+*/
+	/*$data = JRequest::get('post');
 	if ($_FILES['update_package']['tmp_name'] <> '') {
 	    $model = $this->getModel('updatesMigration');
 	    if (!$model->uploadAndInstallUpdate($_FILES['update_package']['tmp_name'])) {
@@ -100,32 +121,25 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	else {
 	    $msg = JText::_('No package selected to upload!');
 	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
-	}
+	}*/
     }
 
 
     /**
-     * Install sample data into the database
+     * Remove all the Virtuemart tables from the database.
      *
      * @author RickG
      */
     function deleteVmTables() {
 	$model = $this->getModel('updatesMigration');
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall.sql';
-	$model->execSQLFile($filename);
+	if (!$model->removeAllVMTables()) {
+	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+	}
+	else {
+	    $this->setRedirect('index.php');
+	}
     }
-
-    /*
-	function updateVMTables10to11(){
-		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
-		parent::display();
-	}
-
-	function updateVMTables11to15(){
-		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql");
-		parent::display();
-	}
-    */
+    
 
     function deleteAll() {
 	$this -> installer -> populateVmDatabase("delete_essential.sql");

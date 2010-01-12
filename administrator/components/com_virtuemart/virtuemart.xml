@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
-<install type="component" version="1.5.0">
+<install type="component" method="upgrade" version="1.6.0">
 	<name>VirtueMart</name>
 	<creationDate>May 2009</creationDate>
 	<author>The VirtueMart Development Team</author>
@@ -8,84 +8,16 @@
 	<authorUrl>http://www.virtuemart.net</authorUrl>
 	<copyright>	Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version status="alpha">1.5.0</version>
+	<version status="alpha">1.6.0</version>
 	<description>Online-Shop / Complete E-Commerce system for Joomla 1.5</description>
-
-	<!-- Custom installer -->
-	<installfile>install/install.virtuemart.php</installfile>
-	
-	<!-- Custom uninstaller -->
-	<uninstallfile>install/uninstall.virtuemart.php</uninstallfile>
-	
-	<!-- SQL queries -->
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">install/install.sql</file>
-		</sql>
-	</install>
 	
 	<!-- Site Main File Copy Section -->
 	<files folder="components/com_virtuemart">
-		<filename>controller.php</filename>
-		<filename>fetchscript.php</filename>
-		<filename>jmart.php</filename>
-		<filename>router.php</filename>
-		<filename>show_image_in_imgtag.php</filename>
-		<filename>virtuemart.php</filename>
-		<filename>virtuemart_parser.php</filename>
-		<filename>index.html</filename>
-		
-		<folder>assets</folder>
-		<folder>controllers</folder>
-		<folder>js</folder>
-		<folder>models</folder>
-		<folder>shop_image</folder>
-		<folder>themes</folder>
-		<folder>views</folder>	
+		<filename>rick.php</filename>
 	</files>
 	
-	<!-- Language files -->
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
-	</languages>
-	
 	<administration>
-		<!-- Administration Menu Section -->
- 		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
-		<!-- Administration Main File Copy Section -->
-		<files folder="administrator/components/com_virtuemart">
-			<filename>admin.virtuemart.php</filename>
-			<filename>admin.vm.old.php</filename>
-			<filename>compat.joomla1.5.php</filename>
-			<filename>controller.php</filename>
-			<filename>COPYRIGHT.php</filename>
-			<filename>global.php</filename>
-			<filename>header.php</filename>
-			<filename>index.html</filename>					
-			<filename>virtuemart.cfg.php</filename>
-			<filename>pear.php</filename>				
-			<filename>toolbar.html.php</filename>
-			<filename>toolbar.php</filename>
-			<filename>version.php</filename>
-			
-			<folder>assets</folder>
-			<folder>classes</folder>
-			<folder>controllers</folder>
-			<folder>helpers</folder>
-			<folder>html</folder>
-			<folder>install</folder>
-   			<folder>libraries</folder>			
-			<folder>models</folder>
-			<folder>plugins</folder>
-			<folder>tables</folder>	    		
-   			<folder>views</folder>
-
-		</files>
-		
-		<!-- Language files -->
-		<languages folder="administrator/language">
-			<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
-		</languages>
+		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 	</administration>
 	
 </install>

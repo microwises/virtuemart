@@ -286,9 +286,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
-
-
-
     /**
      * Parse a sql file executing each sql statement found.
      *
@@ -297,12 +294,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function execSQLFile($sqlfile) {
 	// Check that sql files exists before reading. Otherwise raise error for rollback
 	if ( !file_exists($sqlfile) ) {
-	    return false;
-	}
-	$buffer = file_get_contents($sqlfile);
-
-	// Graceful exit and rollback if read not successful
-	if ( $buffer == false ) {
+	    $this->setError('No SQL file provided!');
 	    return false;
 	}
 
@@ -311,9 +303,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$queries = JInstallerHelper::splitSql($buffer);
 
 	if (count($queries) == 0) {
-	    // No queries to process
-	    return 0;
+	    $this->setError('SQL file has no queries!');
+	    return false;
 	}
+	
 	$db = JFactory::getDBO();
 	// Process each query in the $queries array (split out of sql file).
 	foreach ($queries as $query) {
@@ -331,17 +324,44 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
-    function uploadAndInstallUpdate($uploadFile) {
+    function uploadAndInstallUpdate($packageName) {
+	if (!$packageName) {
+	    $this->_error = 'No package name provided!';
+	    return false;
+	}
+
 	jimport('joomla.filesystem.file');
 	jimport('joomla.filesystem.archive');
 	
 	$config = JFactory::getConfig();
-	$destn = $config->getValue('config.tmp_path').DS.basename($uploadFile);
-	if (!JFile::upload($uploadFile, $destn)) {
+	$destn = $config->getValue('config.tmp_path').DS.basename($packageName);
+
+	if (!JFile::upload($packageName, $destn)) {
 	    $this->setError('Error uploading update package!');
 	    return false;
 	}
-	
+
+	jimport('joomla.installer.installer');
+	$jinstaller = JInstaller::getInstance();
+	die($destn);
+	$jinstaller->install($destn);
+    }
+
+
+    function removeAllVMTables() {
+	$db = JFactory::getDBO();
+	$config = JFactory::getConfig();
+	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
+	if (!$tables = $db->loadResultArray()) {
+	    $this->setError = $db->getErrorMsg();
+	    return false;
+	}
+
+	foreach ($tables as $table) {
+	    $db->setQuery('DROP TABLE ' . $table);
+	    $db->query();
+	}
+
 	return true;
     }
 }

@@ -18,7 +18,7 @@ $linkDoNothing =JROUTE::_('index2.php');
 	var form = document.adminForm;
 
 	// do field validation
-	if (form.update_package.value == ""){
+	if (form.install_package.value == ""){
 	    alert("<?php echo JText::_('No update package selected!', true ); ?>" );
 	}
 	else {
@@ -69,7 +69,7 @@ $linkDoNothing =JROUTE::_('index2.php');
     <tr>
 	<td class="key"><?php echo JText::_('VM_UPDATE_CHECK_ULUPDATE'); ?></td>
 	<td>
-	    <input type="file" id="update_package" name="update_package" class="inputbox" size="50" />
+	    <input type="file" id="install_package" name="install_package" class="inputbox" size="50" />
 	    <input type="submit" value="Upload File &amp; Install" onclick="uploadSubmit()"/>
 	</td>
     </tr>
