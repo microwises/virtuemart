@@ -11,10 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_SHOP_OFFLINE',false); ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('shop_is_offline')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="shop_is_offline" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('shop_is_offline', $this->config->get('shop_is_offline')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -29,10 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('use_as_catalog')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="use_as_catalog" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('use_as_catalog', $this->config->get('use_as_catalog')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -41,10 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>"/>
 	    </td>
 	    <td valign="top">
-		<?php
-		$checked = '';
-		if ($this->config->get('show_out_of_stock_products')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="show_out_of_stock_products" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('show_out_of_stock_products', $this->config->get('show_out_of_stock_products')); ?>
 	    </td>
 	</tr>
 
@@ -65,6 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 		    }
 		    ?>
 		</select>
+		fix
 	    </td>
 	</tr>
 	<tr>
@@ -88,10 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 		<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('enable_content_plugins')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="content_plugins_enable" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('content_plugins_enable', $this->config->get('content_plugins_enable')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -100,10 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 		<label for="conf_PSHOP_COUPONS_ENABLE"><?php echo JText::_('VM_COUPONS_ENABLE') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('coupons_enable')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="coupons_enable" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('coupons_enable', $this->config->get('coupons_enable')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -112,10 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 		<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('VM_ADMIN_CFG_REVIEW') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('allow_reviews')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="allow_reviews" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('allow_reviews', $this->config->get('allow_reviews')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -124,10 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 		<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('VM_REVIEWS_AUTOPUBLISH') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('reviews_autopublish')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="reviews_autopublish" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('reviews_autopublish', $this->config->get('reviews_autopublish')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -154,10 +134,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('agree_to_tos_onorder')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="agree_to_tos_onorder" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('agree_to_tos_onorder', $this->config->get('agree_to_tos_onorder')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -166,10 +143,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('oncheckout_show_legal_info')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="oncheckout_show_legal_info" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -207,6 +181,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		echo JHTML::_('Select.genericlist', $this->moduleList, 'modules_force_https', 'size=4 multiple', 'module_id', 'module_name', $this->config->get('modules_force_https'));
 		?>
+		fix
 	    </td>
 	</tr>
 
@@ -216,10 +191,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_GENERALLY_PREVENT_HTTPS') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('generally_prevent_https')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="generally_prevent_https" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('generally_prevent_https', $this->config->get('generally_prevent_https')); ?>
 	    </td>
 	</tr>
 	<?php
@@ -234,7 +206,7 @@ defined('_JEXEC') or die('Restricted access');
 		$options = array();
 		$options[] = JHTML::_('select.option', 'ENCODE', JText::_('ENCODE (insecure)'));
 		$options[] = JHTML::_('select.option', 'AES_ENCRYPT', JText::_('AES_ENCRYPT (strong security)'));
-		echo JHTML::_('Select.genericlist', $options, 'encrypt_function', 'size=1');
+		echo JHTML::_('Select.genericlist', $options, 'encrypt_function', 'size=1', 'value', 'text', $this->config->get('encrypt_function'));
 		?>
 	    </td>
 	</tr>
@@ -254,10 +226,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_STORE_CREDITCARD_DATA'); ?>&nbsp;&nbsp;
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('store_creditcard_data')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="store_creditcard_data" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('store_creditcard_data', $this->config->get('store_creditcard_data')); ?>
 	    </td>
 	</tr>
 	<?php
@@ -268,10 +237,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <?php echo JText::_('VM_ADMIN_CFG_FRONTENDAMDIN') ?>
 	    </td>
 	    <td>
-		    <?php
-		    $checked = '';
-		    if ($this->config->get('allow_frontendadmin_for_nonbackenders')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="allow_frontendadmin_for_nonbackenders" value="1" <?php echo $checked; ?> />
+		    <?php echo VmHTML::checkbox('allow_frontendadmin_for_nonbackenders', $this->config->get('allow_frontendadmin_for_nonbackenders')); ?>
 	    </td>
 	</tr>
 	    <?php

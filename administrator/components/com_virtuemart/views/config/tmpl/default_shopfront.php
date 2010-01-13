@@ -40,10 +40,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <?php echo JText::_('VM_ADMIN_CFG_PDF_BUTTON') ?>
 			</td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('pdf_button_enable')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="pdf_button_enable" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('pdf_button_enable', $this->config->get('pdf_button_enable')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -52,10 +49,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND') ?></label>
 			</td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('show_emailfriend')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_emailfriend" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('show_emailfriend', $this->config->get('show_emailfriend')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -63,10 +57,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>" />
 			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('VM_ADMIN_SHOW_PRINTICON') ?></label></td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('show_printicon')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_printicon" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -75,10 +66,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP') ?>
 			</td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('show_top_pagenav')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_top_pagenav" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -87,22 +75,21 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
 			</td>
 			<td>
-			    <?php echo JHTML::_('Select.genericlist', $orderByFields, 'browse_orderby_field', 'size=1'); ?>
+			    <?php echo JHTML::_('Select.genericlist', $orderByFields, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field')); ?>
 			</td>
 		    </tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>" />
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?>
+			    fix
 			</td>
 			<td>
 			    <?php
 			    for ($i=0, $n=count($orderByFields); $i < $n; $i++) {
 				$field = $orderByFields[$i];
-				$checked = '';
-				if (in_array($field->value, $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-				<?php echo $field->text.'<br />';
+				echo VmHTML::checkbox('browse_orderby_fields[]', in_array($field->value, $orderByFieldsArray));
+				echo $field->text.'<br />';
 			    } ?>
 			</td>
 		    </tr>
@@ -111,10 +98,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>"/>
 			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?></td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('show_products_in_category')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_products_in_category" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('show_products_in_category', $this->config->get('show_products_in_category')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -124,12 +108,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image', 'size=1');
-			    //$images = vmReadDirectory(VM_THEMEPATH.'images', '\.png$|\.bmp$|\.jpg$|\.jpeg$|\.gif$|\.ico$');
-			    //foreach( $images as $image ) {
-			    //		$imageArr[basename($image)] = $image;
-			    //	}
-			    //echo ps_html::selectList('conf_NO_IMAGE', NO_IMAGE, $imageArr );
+			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image', 'size=1', 'value', 'text', $this->config->get('no_image'));
 			    ?>
 			</td>
 		    </tr>
@@ -139,10 +118,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION') ?>
 			</td>
 			<td>
-			    <?php
-			    $checked = '';
-			    if ($this->config->get('show_footer')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_footer" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('show_footer', $this->config->get('show_footer')); ?>
 			</td>
 		    </tr>
 		</table>
@@ -160,11 +136,12 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->themelist, 'theme', 'size=1');
+			    echo JHTML::_('Select.genericlist', $this->themelist, 'theme', 'size=1', 'value', 'text', $this->config->get('theme'));
 			    $link = JROUTE::_('index.php?option=com_virtuemart&page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL));
 			    $text = JText::_('VM_CONFIG');
 			    ?>
 			    <a href="<?php echo $link; ?>"><?php echo $text; ?></a>
+			    fix
 			</td>
 		    </tr>
 		    <tr>
@@ -183,7 +160,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->templatelist, 'category_template', 'size=1');
+			    echo JHTML::_('Select.genericlist', $this->templatelist, 'category_template', 'size=1', 'value', 'text', $this->config->get('category_template'));
 			    ?>
 			</td>
 		    </tr>
@@ -194,7 +171,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->flypagelist, 'flypage', 'size=1');
+			    echo JHTML::_('Select.genericlist', $this->flypagelist, 'flypage', 'size=1', 'value', 'text', $this->config->get('flypage'));
 			    ?>
 			</td>
 		    </tr>
@@ -207,10 +184,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
 			</td>
 			<td>
-				<?php
-				$checked = '';
-				if ($this->config->get('img_resize_enable')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="img_resize_enable" value="1" <?php echo $checked; ?> />
+			    <?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
 			</td>
 		    </tr>
 		    <tr>

@@ -20,10 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_DEBUG') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('debug')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="debug" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('debug', $this->config->get('debug')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -32,10 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('debug_ip_enabled')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="debug_ip_enabled" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('debug_ip_enabled', $this->config->get('debug_ip_enabled')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -53,10 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>"/>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('enable_cookie_check')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_cookie_check" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('enable_cookie_check', $this->config->get('enable_cookie_check')); ?>
 	    </td>
 	</tr>
     </table>
@@ -77,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 		$options[] = JHTML::_('select.option', 'SILENT_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION'));
 		$options[] = JHTML::_('select.option', 'OPTIONAL_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION'));
 		$options[] = JHTML::_('select.option', 'NO_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION'));
-		echo JHTML::_('Select.genericlist', $options, 'registration_type', 'size=1');
+		echo JHTML::_('Select.genericlist', $options, 'registration_type', 'size=1', 'value', 'text', $this->config->get('registration_type'));
 		?>
 	    </td>
 	</tr>
@@ -87,10 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('show_remember_me_box')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="show_remember_me_box" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('show_remember_me_box', $this->config->get('show_remember_me_box')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -137,6 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	    <td>
 		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php JText::_($this->config->get('proxy_url')); ?>" />
+		fix
 	    </td>
 	</tr>
 	<tr>
@@ -179,10 +168,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED') ?>
             </td>
             <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('enable_logfile')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_logfile" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('enable_logfile', $this->config->get('enable_logfile')); ?>
             </td>
         </tr>
         <tr>

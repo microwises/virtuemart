@@ -23,6 +23,7 @@ class VirtuemartViewConfig extends JView
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
+		$this->loadHelper('html');
 
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');

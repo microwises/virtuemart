@@ -161,7 +161,7 @@ INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `func
 --
 
 INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
-(10, 1, 0, 'VM_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', '', '', ''),
+(10, 1, 0, 'VM_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', '', 'config', ''),
 (20, 1, 0, 'VM_USERS', 'page=admin.user_list', '', 'vmicon vmicon-16-user', 4, '1', '', '', ''),
 (30, 1, 0, 'VM_USERGROUP_LBL', 'page=admin.usergroup_list', '', 'vmicon vmicon-16-user', 6, '1', '', '', ''),
 (40, 1, 0, 'VM_MANAGE_USER_FIELDS', 'page=admin.user_field_list', '', 'vmicon vmicon-16-content', 8, '1', '', '', ''),

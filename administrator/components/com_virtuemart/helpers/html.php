@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
 /**
  * HTML Helper
  *
- * @package		VirtueMart
+ * @package VirtueMart
  * @subpackage Helpers
  * @author RickG
  */
