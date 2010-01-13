@@ -42,8 +42,9 @@ class AdminMenuHelper
 		
 		//loading from public site
 		$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
-		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/VMAdmin.js'); 		 		
-		?>	
+		$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/vm.js');	
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
+	?>	
 		<div class="vm-block vm-main-container">
 			<a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('Close')?>"><?php echo JText::_('Close')?></a>
 			<div class="vm-block vm-layout-left">
@@ -79,10 +80,6 @@ class AdminMenuHelper
     {
         $document	= JFactory::getDocument();
         $moduleId   = JRequest::getInt('module_id', 0);     
-
-        $document->addScriptDeclaration('
-        		VMAdmin.util.buildAdminMenu();
-        ');
        
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
        

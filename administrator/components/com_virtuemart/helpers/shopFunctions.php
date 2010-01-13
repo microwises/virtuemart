@@ -101,7 +101,7 @@ class ShopFunctions {
 			'class' => 'dependent['. $dependentField .']'
 		);
 		
-		$document->addScriptDeclaration('VMAdmin.util.countryStateList();');
+		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
 		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id', $attribs, 'state_id', 'state_name', $stateId, 'state_id');
 		return $listHTML;

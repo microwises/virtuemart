@@ -33,7 +33,7 @@ class VirtueMartViewStore extends JView {
 	    $this->setLayout('edit');
 	}
 
-        $store = $model->getStore();
+    $store = $model->getStore();
 	$isNew = ($store->vendor_id < 1);
 
 	if ($this->getLayout() == 'edit') {
