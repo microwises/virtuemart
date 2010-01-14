@@ -11,10 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_ENABLE_CHECKOUTBAR') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('show_checkout_bar')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="show_checkout_bar" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('show_checkout_bar', $this->config->get('show_checkout_bar')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -23,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_MAX_VENDOR_PRO_CART') ?>
 	    </td>
 	    <td>
-		<input type="text" name="max_vendor_pro_cart" class="inputbox" value=<?php echo MAX_VENDOR_PRO_CART; ?> />
+		<input type="text" name="max_vendor_pro_cart" class="inputbox" value=<?php echo $this->config->get('max_vendor_pro_cart'); ?> />
 	    </td>
 	</tr>
 	<tr>

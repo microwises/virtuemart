@@ -124,8 +124,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL') ?>
 	    </td>
 	    <td>
-		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php JText::_($this->config->get('proxy_url')); ?>" />
-		fix
+		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_url')); ?>" />
 	    </td>
 	</tr>
 	<tr>

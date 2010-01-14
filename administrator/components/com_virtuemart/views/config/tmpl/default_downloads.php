@@ -11,10 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('enable_downloads')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_downloads" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('enable_downloads', $this->config->get('enable_downloads')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -39,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT') ?></td>
 	    <td valign="top">
-		<input size="40" type="text" name="conf_DOWNLOADROOT" class="inputbox" value="<?php echo $this->config->get('download_root'); ?>" />
+		<input size="40" type="text" name="download_root" class="inputbox" value="<?php echo $this->config->get('download_root'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -65,10 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('downloadable_products_keep_stocklevel')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="downloadable_products_keep_stocklevel" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('downloadable_products_keep_stocklevel', $this->config->get('downloadable_products_keep_stocklevel')); ?>
 	    </td>
 	</tr>
     </table>

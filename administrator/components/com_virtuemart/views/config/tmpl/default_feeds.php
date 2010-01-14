@@ -12,10 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 		<label for="conf_VM_FEED_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE') ?></label>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_enabled')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_enabled" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_enabled', $this->config->get('feed_enabled')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -24,12 +21,9 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_cache')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_cache" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_cache', $this->config->get('feed_cache')); ?>
 		<br />
-		<input type="text" size="10" value="<?php echo defined($this->config->get('feed_cachetime')) ? $this->config->get('feed_cachetime') : 1800  ?>" name="feed_cachetime" id="feed_cachetime" />
+		<input type="text" size="10" value="<?php echo $this->config->get('feed_cachetime', '1800'); ?>" name="feed_cachetime" id="feed_cachetime" />
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHETIME') ?>
 	    </td>
 	</tr>
@@ -57,10 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWIMAGES') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_show_images')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_show_images" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_show_images', $this->config->get('feed_show_images')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -69,10 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWPRICES') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_show_prices')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_show_prices" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_show_prices', $this->config->get('feed_show_prices')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -81,10 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWDESC') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_show_description')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_show_description" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_show_description', $this->config->get('feed_show_description')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -107,10 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_LIMITTEXT') ?>
 	    </td>
 	    <td>
-		<?php
-		$checked = '';
-		if ($this->config->get('feed_limittext')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="feed_limittext" value="1" <?php echo $checked; ?> />
+		<?php echo VmHTML::checkbox('feed_limittext', $this->config->get('feed_limittext')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -119,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH') ?>
 	    </td>
 	    <td>
-		<input type="text" size="10" value="<?php echo defined($this->config->get('feed_max_text_length')) ? $this->config->get('feed_max_text_length') : 500  ?>" name="feed_max_text_length" id="feed_max_text_length" />
+		<input type="text" size="10" value="<?php echo $this->config->get('feed_max_text_length', '500'); ?>" name="feed_max_text_length" id="feed_max_text_length" />
 	    </td>
 	</tr>
     </table>

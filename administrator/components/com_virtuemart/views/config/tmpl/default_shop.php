@@ -45,18 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_CFG_CURRENCY_MODULE') ?>
 	    </td>
 	    <td>
-		<select id="conf__VM_CURRENCY_CONVERTER_MODULE" name="conf__VM_CURRENCY_CONVERTER_MODULE" class="inputbox">
-		    <?php
-		    //$files = vmReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
-		    foreach ($files as $file) {
-			$file_info = pathinfo($file);
-			$filename = $file_info['basename'];
-			$checked = ($filename == @VM_CURRENCY_CONVERTER_MODULE.'.php') ? 'selected="selected"' : "";
-			echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
-		    }
-		    ?>
-		</select>
-		fix
+		<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', $this->config->get('currency_converter_module')); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -179,9 +168,8 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	    <td>
 		<?php
-		echo JHTML::_('Select.genericlist', $this->moduleList, 'modules_force_https', 'size=4 multiple', 'module_id', 'module_name', $this->config->get('modules_force_https'));
+		echo JHTML::_('Select.genericlist', $this->moduleList, 'modules_force_https[]', 'size=4 multiple', 'module_id', 'module_name', $this->config->get('modules_force_https'));
 		?>
-		fix
 	    </td>
 	</tr>
 

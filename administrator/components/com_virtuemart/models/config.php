@@ -123,6 +123,31 @@ class VirtueMartModelConfig extends JModel
 
 
     /**
+     * Retrieve a list of currency converter modules from the plugins directory.
+     *
+     * @author RickG
+     * @return object List of theme objects
+     */
+    function getCurrencyConverterList() {
+	$dir = JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter';
+	$result = '';
+
+	if ($handle = opendir($dir)) {
+	    while (false !== ($file = readdir($handle))) {
+		if ($file != "." && $file != ".." && $file != '.svn') {
+		    $info = pathinfo($file);
+		    if ((filetype($dir.DS.$file) == 'file') && ($info['extension'] == 'php')) {
+			$result[] = JHTML::_('select.option', $file, JText::_($file));
+		    }
+		}
+	    }
+	}
+
+	return $result;
+    }
+
+
+    /**
      * Retrieve a list of possible order statuses.
      *
      * @author RickG

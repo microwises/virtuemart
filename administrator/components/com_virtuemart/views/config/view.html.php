@@ -49,6 +49,8 @@ class VirtuemartViewConfig extends JView
 		$this->assignRef('noimagelist', $noimagelist);		
 		$orderStatusList = $model->getOrderStatusList();
 		$this->assignRef('orderStatusList', $orderStatusList);
+		$currConverterList = $model->getCurrencyConverterList();
+		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();
 		$this->assignRef('moduleList', $moduleList);
 		$contentLinks = $model->getContentLinks();
