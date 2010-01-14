@@ -53,7 +53,11 @@ class VmConfig
 				$params = new JParameter($config);
 				$value = $params->get($key);				
 			}
-
+			else {
+			    $params = new JParameter('');
+			    $value = '';
+			}
+			
 			if ($value == '') {
 			    $params->set($key, $default);
 			    $value = $default;
