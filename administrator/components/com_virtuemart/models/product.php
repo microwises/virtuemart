@@ -343,7 +343,7 @@ class VirtueMartModelProduct extends JModel {
             $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
-	        if (Vmconfig::getVar('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
+	        if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
@@ -354,7 +354,7 @@ class VirtueMartModelProduct extends JModel {
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
-	        if (Vmconfig::getVar('check_stock') && Vmconfig::getVar('pshop_show_out_of_stock_products') != '1') {
+	        if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
@@ -374,7 +374,7 @@ class VirtueMartModelProduct extends JModel {
 			
 			/* Product price */
 			$price = "";
-			if (Vmconfig::getVar('show_prices') == '1') {
+			if (VmConfig::get('show_prices') == '1') {
 				/* Loads the product price details */
 				$calculator = new calculationHelper();
 				$price = $calculator->getProductPrices($featured->product_id);
@@ -1140,7 +1140,7 @@ class VirtueMartModelProduct extends JModel {
 				if ($db->getAffectedRows() > 0) {
 					$recent[$k]['product_s_desc'] = $product->product_s_desc;
 					$flypage = $product->category_flypage;
-					if (empty($flypage)) $flypage = Vmconfig::getVar('flypage');
+					if (empty($flypage)) $flypage = VmConfig::get('flypage');
 					
 					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
 					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);

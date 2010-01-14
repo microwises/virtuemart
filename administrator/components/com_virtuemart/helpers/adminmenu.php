@@ -61,7 +61,7 @@ class AdminMenuHelper
      */	
 	function endAdminArea()
 	{	
-		if (VmConfig::getVar('debug') == '1') {
+		if (VmConfig::get('debug') == '1') {
 			include(PAGEPATH."shop.debug.php");
 		}
 		?>

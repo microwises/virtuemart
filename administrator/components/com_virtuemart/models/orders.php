@@ -108,7 +108,7 @@ class VirtueMartModelOrders extends JModel {
 		$order['items'] = $db->loadObjectList();
 		
 		/* Payment details */
-		$q  = "SELECT *, ".Vmconfig::getVar('vm_decrypt_function')."(order_payment_number,'".Vmconfig::getVar('encode_key')."') AS account_number
+		$q  = "SELECT *, ".VmConfig::get('vm_decrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
 			FROM #__vm_payment_method, #__vm_order_payment 
 			WHERE #__vm_order_payment.order_id=".$order_id."
 			AND #__vm_payment_method.payment_method_id = #__vm_order_payment.payment_method_id";
@@ -250,8 +250,8 @@ class VirtueMartModelOrders extends JModel {
 	* @author RolandD
 	* @todo Modify payment plugins to use J! registry
 	* @todo Add order status dependencies triggers
-	* @todo Check if config has this value Vmconfig::getVar('check_stock')
-	* @todo Check download ID sending if config has this value Vmconfig::getVar('downloads_enable')
+	* @todo Check if config has this value VmConfig::get('check_stock')
+	* @todo Check download ID sending if config has this value VmConfig::get('downloads_enable')
 	* @todo Clean up order payments
 	*/
 	public function updateStatus() {
@@ -340,7 +340,7 @@ class VirtueMartModelOrders extends JModel {
 					/* Update stock level */
 					$update_stock_status = array('X', 'R');
 					if (in_array($new_status, $update_stock_status)
-						&& Vmconfig::getVar('check_stock')) {
+						&& VmConfig::get('check_stock')) {
 						/* Get the order items and update the stock level */
 						$q = "SELECT product_id, product_quantity 
 							FROM #__vm_order_item 
@@ -375,7 +375,7 @@ class VirtueMartModelOrders extends JModel {
 					}
 					
 					/* Send a download ID */
-					//if (Vmconfig::getVar('enable_downloads') == '1') $this->mailDownloadId($order_id);
+					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($order_id);
 					
 					/* Check if the customer needs to be informed */
 					if (array_key_exists($order_id, $notify)) $this->notifyCustomer($order, $order_history);
@@ -395,13 +395,13 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	function mailDownloadId($order_id){
 		$mainframe = JFactory::getApplication();
-		$url = Vmconfig::getVar('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
+		$url = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 		
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT order_status FROM #__vm_orders WHERE order_id='.$order_id);
 		$order_status = $db->loadResult();
 		
-		if ($order_status == Vmconfig::getVar('enable_download_status')) {
+		if ($order_status == VmConfig::get('enable_download_status')) {
 			$q = "SELECT order_id,user_id,download_id,file_name 
 				FROM #__vm_product_download 
 				WHERE order_id = '".$order_id."'";
@@ -430,12 +430,12 @@ class VirtueMartModelOrders extends JModel {
 					. "\n".$url."&download_id=".$download->download_id."\n\n";
 				}
 
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_3',false).Vmconfig::getVar('download_max')."\n";
-				$expire = ((Vmconfig::getVar('download_expire') / 60) / 60) / 24;
+				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_3',false).VmConfig::get('download_max')."\n";
+				$expire = ((VmConfig::get('download_expire') / 60) / 60) / 24;
 				$message .= str_replace("{expire}", $expire, JText::_('VM_DOWNLOADS_SEND_MSG_4',false));
 				$message .= "\n\n____________________________________________________________\n";
 				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_5',false)."\n";
-				$message .= $dbv->f("vendor_name") . " \n" .Vmconfig::getVar('url')."\n\n".$dbv->f("email") . "\n";
+				$message .= $dbv->f("vendor_name") . " \n" .VmConfig::get('url')."\n\n".$dbv->f("email") . "\n";
 				$message .= "____________________________________________________________\n";
 				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_6',false) . $dbv->f("vendor_name");
 
@@ -454,7 +454,7 @@ class VirtueMartModelOrders extends JModel {
 				}
 			} 
 		}
-		else if ($order_status == Vmconfig::getVar('disable_download_status')) {
+		else if ($order_status == VmConfig::get('disable_download_status')) {
 			$q = "DELETE FROM #__vm_product_download WHERE order_id=".$order_id;
 			$db->setQuery($q);
 			$db->query();
@@ -472,7 +472,7 @@ class VirtueMartModelOrders extends JModel {
 	function notifyCustomer($order, $order_history) {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		//$url = Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&page=account.order_details&order_id=".$order->order_id.'&Itemid='.$sess->getShopItemid();
+		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&order_id=".$order->order_id.'&Itemid='.$sess->getShopItemid();
 		$url = 'url';
 		
 		/* Get the list of comments to include */
@@ -509,14 +509,14 @@ class VirtueMartModelOrders extends JModel {
 		$message .= "____________________________________________________________\n\n";
 		$message .= $user->order_status_name;
 
-		if (Vmconfig::getVar('vm_registration_type') != 'NO_REGISTRATION' ) {
+		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' ) {
 			$message .= "\n____________________________________________________________\n\n";
 			$message .= JText::_('VM_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
 			$message .= $url;
 		}
 		$message .= "\n\n____________________________________________________________\n";
 		$message .= $vendor->vendor_name . " \n";
-		$message .= Vmconfig::getVar('url')."\n";
+		$message .= VmConfig::get('url')."\n";
 		$message .= $vendor->email;
 
 		$mailer = shopFunctions::loadMailer();

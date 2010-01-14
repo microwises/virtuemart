@@ -488,7 +488,7 @@ class VirtueMartModelCategory extends JModel
      */
     public function getTemplateList( $section = 'browse' ) {
 		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.$section;
+		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.$section;
 		$result = '';
 	
 		if ($handle = opendir($dir)) {

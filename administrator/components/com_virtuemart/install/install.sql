@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
 --
 CREATE TABLE IF NOT EXISTS `#__vm_config` (
 	`config_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`type` varchar(10) NOT NULL,
 	`config` TEXT NULL,
 	PRIMARY KEY (`config_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings';

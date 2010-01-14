@@ -216,7 +216,7 @@ class VirtueMartModelRatings extends JModel {
 		$ratings_data->bind($data);
 		
 		/* Check if ratings are auto-published */
-		if (VmConfig::getVar('autopublish_reviews') == 1) $data['published'] = 1;
+		if (VmConfig::get('autopublish_reviews') == 1) $data['published'] = 1;
 		
 		/* Fix the published field */
 		$ratings_data->published = ($data['published'] == 1) ? 'Y' : 'N';

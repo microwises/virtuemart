@@ -21,7 +21,7 @@ class VmConfig
 	 */
 	function loadConfig() {  
 		$db = JFactory::getDBO();
-		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
+		$query = "SELECT `config` FROM `#__vm_config` WHERE `type` = 'system'";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 	
@@ -37,7 +37,7 @@ class VmConfig
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */	
-	function getVar($key = '', $default='')
+	function get($key = '', $default='')
 	{
 		$value = '';
 		if ($key) {

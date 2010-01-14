@@ -114,14 +114,14 @@
 			}
 			// Do we need to set up the proxy?
 			if( !empty($proxyURL) ) {
-				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VmConfig::getVar('proxy_port') );
+				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VmConfig::get('proxy_port') );
 				//curl_setopt($CR, CURLOPT_HTTPPROXYTUNNEL, true);
 				curl_setopt($CR, CURLOPT_PROXY, $proxyURL['host'] );
-				curl_setopt($CR, CURLOPT_PROXYPORT, VmConfig::getVar('proxy_port') );
+				curl_setopt($CR, CURLOPT_PROXYPORT, VmConfig::get('proxy_port') );
 				// Check if the proxy needs authentication
-				if ( trim(VmConfig::getVar('proxy_user')) != '') {
+				if ( trim(VmConfig::get('proxy_user')) != '') {
 					$vmLogger->debug( 'Using proxy authentication!' );
-					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass') );
+					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VmConfig::get('proxy_user').':'.VmConfig::get('proxy_pass') );
 				}
 			}
 
@@ -159,7 +159,7 @@
 					else {
 						$protocol = 'http';
 					}
-					$fp = fsockopen("$protocol://".$proxyURL['host'], VmConfig::getVar('proxy_port'), $errno, $errstr, $timeout = 30);
+					$fp = fsockopen("$protocol://".$proxyURL['host'], VmConfig::get('proxy_port'), $errno, $errstr, $timeout = 30);
 				}
 				else {
 					// If we have something to post we need to write into a socket
@@ -175,7 +175,7 @@
 			else {
 				if( !empty( $proxyURL )) {
 					// Do a read-only fopen transaction
-					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VmConfig::getVar('proxy_port'), 'rb' );
+					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VmConfig::get('proxy_port'), 'rb' );
 				}
 				else {
 					// Do a read-only fopen transaction
@@ -197,8 +197,8 @@
 					fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
 
-					if( trim( VmConfig::getVar('proxy_user') )!= '') {
-						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass') ) . "\r\n\r\n");
+					if( trim( VmConfig::get('proxy_user') )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::get('proxy_user').':'.VmConfig::get('proxy_pass') ) . "\r\n\r\n");
 					}
 				}
 				else {
@@ -214,8 +214,8 @@
 				if( !empty( $proxyURL )) {
 					fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
-					if( trim( VmConfig::getVar('proxy_user') )!= '') {
-						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass')) . "\r\n\r\n");
+					if( trim( VmConfig::get('proxy_user') )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::get('proxy_user').':'.VmConfig::get('proxy_pass')) . "\r\n\r\n");
 					}
 				}
 				else {

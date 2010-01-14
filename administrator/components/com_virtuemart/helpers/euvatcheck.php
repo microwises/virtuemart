@@ -31,25 +31,25 @@ class VmEUVatCheck {
 		require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'libraries'.DS.'nusoap'.DS.'nusoap.php');
 		
 		/* Check for proxy settings */
-		if (Vmconfig::getVar('vm_proxy_url') != '') {
-			if (!stristr(Vmconfig::getVar('vm_proxy_url'), 'http')) {
-				$proxyURL['host'] = Vmconfig::getVar('vm_proxy_url');
+		if (VmConfig::get('vm_proxy_url') != '') {
+			if (!stristr(VmConfig::get('vm_proxy_url'), 'http')) {
+				$proxyURL['host'] = VmConfig::get('vm_proxy_url');
 				$proxyURL['scheme'] = 'http';
 			} 
-			else $proxyURL = parse_url(Vmconfig::getVar('vm_proxy_url'));
+			else $proxyURL = parse_url(VmConfig::get('vm_proxy_url'));
 		}
 		else $proxyURL = '';
 		
 		/* Use the proxy and initialise the client */
 		if( !empty($proxyURL) ) {
-			//$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.Vmconfig::getVar('vm_proxy_port') );
+			//$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VmConfig::get('vm_proxy_port') );
 			/* Proxy without authentication */
-			$this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], Vmconfig::getVar('vm_proxy_port'));
+			$this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], VmConfig::get('vm_proxy_port'));
 			
 			/* proxy with authentication */
-			if  (Vmconfig::getVar('vm_proxy_user') != '') {
+			if  (VmConfig::get('vm_proxy_user') != '') {
                //$vmLogger->debug( 'Using proxy authentication!' );
-			   $this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], Vmconfig::getVar('vm_proxy_port'), Vmconfig::getVar('vm_proxy_user'), Vmconfig::getVar('vm_proxy_pass'));
+			   $this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], VmConfig::get('vm_proxy_port'), VmConfig::get('vm_proxy_user'), VmConfig::get('vm_proxy_pass'));
             }
 
 		}

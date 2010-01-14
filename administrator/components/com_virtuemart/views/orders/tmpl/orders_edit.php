@@ -32,7 +32,7 @@ $payment = $this->order['payment'];
 					<td><?php $orderbt->ip_address; ?></td>
 				</tr>
 				<?php 
-				if (Vmconfig::getVar('pshop_coupons_enable') == '1') { ?>
+				if (VmConfig::get('pshop_coupons_enable') == '1') { ?>
 					<tr>
 						<td><strong><?php echo JText::_('VM_COUPON_COUPON_HEADER') ?>:</strong></td>
 						<td><?php echo $orderbt->coupon_code; ?></td>
@@ -190,7 +190,7 @@ $payment = $this->order['payment'];
 				</tr>
 				<?php
 				/* COUPON DISCOUNT */
-				if (Vmconfig::getVar('payment_discount_before') == '1') {
+				if (VmConfig::get('payment_discount_before') == '1') {
 					if ($orderbt->order_discount != 0) {
 						?>
 						<tr>
@@ -230,7 +230,7 @@ $payment = $this->order['payment'];
 					<td width="5%" align="right" style="padding-right: 5px;"><?php echo $orderbt->order_shipping_tax; ?></td>
 				</tr>
 				<?php
-				if (Vmconfig::getVar('payment_discount_before') != '1') {
+				if (VmConfig::get('payment_discount_before') != '1') {
 					if ($orderbt->order_discount != 0) {
 						?>
 						<tr> 

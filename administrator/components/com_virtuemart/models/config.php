@@ -54,7 +54,7 @@ class VirtueMartModelConfig extends JModel
      */
     function getTemplateList() {
 	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'browse';
+	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'browse';
 	$result = '';
 
 	if ($handle = opendir($dir)) {
@@ -80,7 +80,7 @@ class VirtueMartModelConfig extends JModel
      */
     function getFlypageList() {
 	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'product_details';
+	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
 	$result = '';
 
 	if ($handle = opendir($dir)) {
@@ -105,7 +105,7 @@ class VirtueMartModelConfig extends JModel
      */
     function getNoImageList() {
 	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::getVar('theme').DS.'images';
+	$dir .= DS.VmConfig::get('theme').DS.'images';
 	$result = '';
 
 	if ($handle = opendir($dir)) {

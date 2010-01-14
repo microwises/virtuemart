@@ -609,7 +609,7 @@ class ShopFunctions {
 	            }
             ";
        	$optional_check = '';
-		if (Vmconfig::getVar('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
+		if (VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
 			$optional_check = '&& form.register_account.checked';
 		}
 	    // We have skipped email in the first loop above!
@@ -746,7 +746,7 @@ class ShopFunctions {
 				$product_sess[$product_id]['flypage'] = $product->category_flypage;
 			} 
 			else {
-				$product_sess[$product_id]['flypage'] = Vmconfig::getVar('flypage');
+				$product_sess[$product_id]['flypage'] = VmConfig::get('flypage');
 			}
 			$session->set('product_sess', $product_sess);
 		}
@@ -788,7 +788,7 @@ class ShopFunctions {
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
 		$display_type = null;
-		if (Vmconfig::getVar('check_stock') == '1' && ! $product->product_in_stock ) {
+		if (VmConfig::get('check_stock') == '1' && ! $product->product_in_stock ) {
 			$display_type = 'hide' ;
 		}
 		if (empty($display_type) 

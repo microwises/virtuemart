@@ -60,8 +60,8 @@ class Permissions {
 		$db = JFactory::getDBO();
 		/* If the registration type is neither "no registration" nor "optional registration", 
 			there *must* be a related Joomla! user, we can join */
-		if (Vmconfig::getVar('vm_registration_type') != 'NO_REGISTRATION' 
-			&& Vmconfig::getVar('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
+		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
+			&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
 			$q  = "SELECT COUNT(user_id) AS num_rows 
 				FROM `#__vm_user_info`, `#__users` 
 				WHERE `id`=`user_id`
@@ -91,7 +91,7 @@ class Permissions {
 		$vmUser = JFactory::getUser();
 		$auth = array();
 		
-		if (Vmconfig::getVar('vm_price_access_level') != '') {
+		if (VmConfig::get('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */
 			$auth['show_prices']  = $vmUser->authorize( 'virtuemart', 'prices' );	
 		}
@@ -109,8 +109,8 @@ class Permissions {
 				$auth["username"] = $vmUser->username;
 			} 
 			else if(!empty($auth['user_id']) 
-					&& Vmconfig::getVar('vm_registration_type') != 'NO_REGISTRATION' 
-					&& Vmconfig::getVar('vm_registration_type') != 'OPTIONAL_REGISTRATION') 
+					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
+					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') 
 			{
 				$auth["user_id"] = 0;
 				$auth["username"] = "demo";
@@ -274,7 +274,7 @@ class Permissions {
 	*/
 	function prepareACL() {
 		// The basic ACL integration in Mambo/Joomla is not awesome
-		$child_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, Vmconfig::getVar('vm_price_access_level'));
+		$child_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, VmConfig::get('vm_price_access_level'));
 		?><pre><?php
 		print_r($child_groups);
 		?></pre><?php

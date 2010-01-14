@@ -118,12 +118,12 @@ class ImageHelper {
 					$newImageHeight = $thumbHeight;
 				}
 				else {
-					$newImageWidth = Vmconfig::getVar('pshop_img_width', 90);
-					$newImageHeight = Vmconfig::getVar('pshop_img_height', 90);
+					$newImageWidth = VmConfig::get('pshop_img_width', 90);
+					$newImageHeight = VmConfig::get('pshop_img_height', 90);
 				}
 				
 				// Dynamic image resizing will happen
-				if (Vmconfig::getVar('pshop_img_resize_enable') == '1' || $resize==1) {
+				if (VmConfig::get('pshop_img_resize_enable') == '1' || $resize==1) {
 					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
 					if (!strpos($imageArgs, "height=")) {
 						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootFolder, '', $newImageWidth, $newImageHeight));
@@ -140,12 +140,12 @@ class ImageHelper {
 					}
 					if ($resize) {
 						if ($height < $width) {
-							$newImageWidth = round($width / ($height / Vmconfig::getVar('pshop_img_height', 90)));
-							$newImageHeight = Vmconfig::getVar('pshop_img_height', 90);
+							$newImageWidth = round($width / ($height / VmConfig::get('pshop_img_height', 90)));
+							$newImageHeight = VmConfig::get('pshop_img_height', 90);
 						} 
 						else {
-							$newImageHeight = round($height / ($width / Vmconfig::getVar('pshop_img_width', 90)));
-							$newImageWidth = Vmconfig::getVar('pshop_img_width', 90);
+							$newImageHeight = round($height / ($width / VmConfig::get('pshop_img_width', 90)));
+							$newImageWidth = VmConfig::get('pshop_img_width', 90);
 						}
 						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
 					}
@@ -153,7 +153,7 @@ class ImageHelper {
 			}
 		}
 		else {
-			$url = Vmconfig::getVar('vm_themeurl').'images/'.Vmconfig::getVar('no_image');
+			$url = VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
 		}
 		
 		return JHTML::image($url, '');
@@ -208,7 +208,7 @@ class ImageHelper {
 			}				
 		}
 		else {
-			return Vmconfig::getVar('vm_themeurl').'images/'.Vmconfig::getVar('no_image');
+			return VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
 		}
 	}
 	
@@ -233,10 +233,10 @@ class ImageHelper {
 		}
 		
 		if ($width == 0) {
-			$width = Vmconfig::getVar('pshop_img_width', 90);
+			$width = VmConfig::get('pshop_img_width', 90);
 		}
 		if ($height == 0) {
-			$height = Vmconfig::getVar('pshop_img_height', 90);
+			$height = VmConfig::get('pshop_img_height', 90);
 		}
 		
 		$resizedFilename = $fileinfo['filename'].'_'.$width.'x'.$height.'.'.$fileinfo['extension'];

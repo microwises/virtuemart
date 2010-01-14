@@ -104,8 +104,8 @@ function submitbutton(pressbutton) {
 		return;
 	}
 	else {
-		if (document.adminForm.counter.value > <?php echo VmConfig::getVar('comment_max_length'); ?>) alert('<?php echo JText::_('COMMENT_MAX_LENGTH_PASSED'); ?>');
-		else if (document.adminForm.counter.value < <?php echo VmConfig::getVar('comment_min_length'); ?>) alert('<?php echo JText::_('COMMENT_MIN_LENGTH_PASSED'); ?>');
+		if (document.adminForm.counter.value > <?php echo VmConfig::get('comment_max_length'); ?>) alert('<?php echo JText::_('COMMENT_MAX_LENGTH_PASSED'); ?>');
+		else if (document.adminForm.counter.value < <?php echo VmConfig::get('comment_min_length'); ?>) alert('<?php echo JText::_('COMMENT_MIN_LENGTH_PASSED'); ?>');
 		else submitform( pressbutton );
 		return;
 	}
