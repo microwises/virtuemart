@@ -15,7 +15,7 @@ class VirtueMartControllerVirtuemart extends JController
     
 	function __construct() {
 		parent::__construct();
-		if (Vmconfig::getVar('vm_is_offline') == '1') {
+		if (VmConfig::get('vm_is_offline') == '1') {
 		    JRequest::setVar( 'layout', 'offline' );	
 	    }
 	    else {

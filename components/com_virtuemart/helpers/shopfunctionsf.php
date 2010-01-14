@@ -37,7 +37,7 @@ class shopFunctionsF {
 	 * @param boolean $use_icon
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
-		if (Vmconfig::getVar('pshop_pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+		if (VmConfig::get('pshop_pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
 				$text = self::ImageCheck( 'pdf_button.png', '/images/M_images/', NULL, NULL, JText::_('CMN_PDF'), JText::_('CMN_PDF') );
@@ -55,7 +55,7 @@ class shopFunctionsF {
 	 * @param boolean $use_icon
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
-		if (Vmconfig::getVar('vm_show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
+		if (VmConfig::get('vm_show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
 			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
 			if ( $use_icon ) {
 				$text = self::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, JText::_('CMN_EMAIL'), JText::_('CMN_EMAIL') );
@@ -68,7 +68,7 @@ class shopFunctionsF {
 
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
-		if (Vmconfig::getVar('vm_show_printicon', 1) == '1') {
+		if (VmConfig::get('vm_show_printicon', 1) == '1') {
 			if( !$link ) {
 				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
 				$link = 'index2.php?'.$query_string.'&amp;pop=1&amp;tmpl=component';

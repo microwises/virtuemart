@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
     	</a>
     </span>
     <span style="margin-left:10px;">
-    <a href="<?php echo Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance"; ?>">
+    <a href="<?php echo VmConfig::get('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance"; ?>">
     		<img src="administrator/images/back_f2.png" alt="<?php echo JText::_('BACK') ?>" border="0" />
     	</a>
     </span>
@@ -39,7 +39,7 @@ foreach ($this->fields['details'] as $field) {
 	/* A delimiter marks the beginning of a new fieldset and the end of a previous fieldset */
 	if ($field->type == 'delimiter') {
 		if ($delimiter > 0) echo "</fieldset>\n";
-		if (Vmconfig::getVar('vm_registration_type') == 'SILENT_REGISTRATION' && $field->title == JText::_('VM_ORDER_PRINT_CUST_INFO_LBL')) continue;
+		if (VmConfig::get('vm_registration_type') == 'SILENT_REGISTRATION' && $field->title == JText::_('VM_ORDER_PRINT_CUST_INFO_LBL')) continue;
 		echo '<fieldset><legend class="sectiontableheader">'.$field->title.'</legend>';
 		$delimiter++;
 		continue;
@@ -63,7 +63,7 @@ foreach ($this->fields['details'] as $field) {
 		document.write(\' ('.JText::_('VM_STORE_FORM_TOS') .')</a>\');
 		//]]></script>';
 	}
-	if( $field->name == 'username' && Vmconfig::getVar('vm_registration_type') == 'OPTIONAL_REGISTRATION' ) {
+	if( $field->name == 'username' && VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION' ) {
 		echo '<div class="formLabel">
 			<input type="checkbox" id="register_account" name="register_account" value="1" class="inputbox" onchange="showFields( this.checked, new Array(\'username\', \'password\', \'password2\') );if( this.checked ) { document.adminForm.remember.value=\'yes\'; } else { document.adminForm.remember.value=\'yes\'; }" checked="checked" />
 			</div>
@@ -199,7 +199,7 @@ if( $delimiter > 0) {
 	echo "</fieldset>\n";
 }
 echo '</div>';
-if (Vmconfig::getVar('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
+if (VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
 	echo '<script type="text/javascript">
 	//<![CDATA[
    function showFields( show, fields ) {

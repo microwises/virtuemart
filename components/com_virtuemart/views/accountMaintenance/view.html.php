@@ -42,7 +42,7 @@ class VirtueMartViewAccountmaintenance extends JView {
 				
 				/* Handle NO_REGISTRATION */
 				$skip_fields = array();
-				if (Vmconfig::getVar('vm_registration_type') == 'NO_REGISTRATION' ) {
+				if (VmConfig::get('vm_registration_type') == 'NO_REGISTRATION' ) {
 					// global $default;
 					// $default['email'] = $db->f('email');
 					$skip_fields = array( 'username', 'password', 'password2' );

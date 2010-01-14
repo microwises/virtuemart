@@ -52,14 +52,14 @@ class VirtueMartModelAccountmaintenance extends JModel {
 //		}
         
 		$accountFields = shopFunctions::getUserFields('account', false, '', true);
-		if (Vmconfig::getVar('vm_registration_type') == 'SILENT_REGISTRATION' 
-			|| Vmconfig::getVar('vm_registration_type') == 'NO_REGISTRATION' 
-			|| (Vmconfig::getVar('vm_registration_type') == 'OPTIONAL_REGISTRATION' && empty($post['register_account'] ))) {
+		if (VmConfig::get('vm_registration_type') == 'SILENT_REGISTRATION' 
+			|| VmConfig::get('vm_registration_type') == 'NO_REGISTRATION' 
+			|| (VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION' && empty($post['register_account'] ))) {
 				$skipFields = array( 'username', 'password', 'password2');
 		}
         if ($my->id > 0 
-        	|| (Vmconfig::getVar('vm_registration_type') != 'NORMAL_REGISTRATION' 
-        	&& Vmconfig::getVar('vm_registration_type') != 'OPTIONAL_REGISTRATION')) {
+        	|| (VmConfig::get('vm_registration_type') != 'NORMAL_REGISTRATION' 
+        	&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION')) {
             	$skipFields = array( 'username', 'password', 'password2');
         }
 		if ($my->id) $skipFields[] = 'email';
@@ -80,7 +80,7 @@ class VirtueMartModelAccountmaintenance extends JModel {
 					$post[$name] = JRequest::getInt('birthday_selector_year')
 													.'-'.JRequest::getInt('birthday_selector_month')
 													.'-'.JRequest::getInt('birthday_selector_day');
-					$min_age = Vmconfig::getVar('minimum_age', 18);
+					$min_age = VmConfig::get('minimum_age', 18);
 					$min_date = (date('Y') - $min_age).'-'.date('n').'-'.date('j');
 					
 					/* Age check */

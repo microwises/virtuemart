@@ -6,7 +6,7 @@ $call_for_pricing = false;
 if ($product->product_price['salesPrice'] == JText::_('CALL_FOR_PRICING')) $call_for_pricing = true;
 $button_lbl = JText::_('VM_CART_ADD_TO');
 $button_cls = 'addtocart_button';
-if (Vmconfig::getVar('check_stock') == '1' 
+if (VmConfig::get('check_stock') == '1' 
 	&& !$product->product_in_stock 
 	&& !$product->haschildren 
 	&& !$product->hasattributes
@@ -33,7 +33,7 @@ else $notify = false;
 
 /* Make the form */
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&flypage='.$product->flypage); ?>" method="post" name="addtocart" id="addtocart<?php echo $product->product_id ?>" class="addtocart_form" <?php if( Vmconfig::getVar('useAjaxCartActions', 1) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&flypage='.$product->flypage); ?>" method="post" name="addtocart" id="addtocart<?php echo $product->product_id ?>" class="addtocart_form" <?php if( VmConfig::get('useAjaxCartActions', 1) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 	<?php if(!$notify) { echo shopFunctions::showQuantityBox($product); } ?>
 	<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl	?>" title="<?php echo $button_lbl ?>" />
     <input type="hidden" name="category_id" value="<?php echo  JRequest::getInt('category_id'); ?>" />

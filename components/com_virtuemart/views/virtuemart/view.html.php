@@ -30,12 +30,12 @@ class VirtueMartViewVirtueMart extends JView {
         /* Load the recent viewed products */
         $this->assignRef('recentProducts', $productModel->getRecentProducts());
         
-        if (Vmconfig::getVar('showFeatured', 1)) {
+        if (VmConfig::get('showFeatured', 1)) {
 			$featuredProducts = $productModel->getGroupProducts('featured', $vendorId, '', 5);	
 			$this->assignRef('featuredProducts', $featuredProducts);
 		}
 		
-		if (Vmconfig::getVar('showlatest', 1)) {
+		if (VmConfig::get('showlatest', 1)) {
 			$latestProducts = $productModel->getGroupProducts('latest', $vendorId, '', 5);
 			$this->assignRef('latestProducts', $latestProducts);
 		}

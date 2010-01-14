@@ -12,21 +12,21 @@ if ($this->auth['is_registered_customer']) {
     <tr>
       <td>
       <strong>
-      	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling"), 
+      	<?php echo JHTML::_('link', JRoute::_(VmConfig::get('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling"), 
       				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/identity.png', JText::_('VM_ACCOUNT_TITLE'), array('align' => 'middle')).' '.JText::_('VM_ACC_ACCOUNT_INFO')); ?>
        </strong>
        <br /><?php echo JText::_('VM_ACC_UPD_BILL') ?>
       </td>
     </tr>
     <?php
-    if (Vmconfig::getVar('no_shipto') != '1') {
+    if (VmConfig::get('no_shipto') != '1') {
 	?>
 		<tr><td>&nbsp;</td></tr>
 		
 		<tr>
 		  <td><hr />
 		  <strong>
-		  	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping"), 
+		  	<?php echo JHTML::_('link', JRoute::_(VmConfig::get('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping"), 
 		  				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/web.png', JText::_('VM_ACC_SHIP_INFO'), array('align' => 'middle')).' '.JText::_('VM_ACC_SHIP_INFO')); ?>
 		  </strong>
                         <br />

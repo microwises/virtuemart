@@ -41,7 +41,7 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
    require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
 }
 
-if (Vmconfig::getVar('show_prices') == '1') {
+if (VmConfig::get('show_prices') == '1') {
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 	if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
 		$module_filename = VM_CURRENCY_CONVERTER_MODULE;

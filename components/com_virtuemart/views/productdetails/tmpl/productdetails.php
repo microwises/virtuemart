@@ -15,7 +15,7 @@ else { ?>
 		<?php echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
 	</div>
 	<?php
-	if (Vmconfig::getVar('product_navigation', 1)) {
+	if (VmConfig::get('product_navigation', 1)) {
 		if (!empty($this->product->neighbours['previous'])) {
 			$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['previous']['product_id'].'&flypage='.JRequest::getVar('flypage').'&category_id='.$this->product->category_id);
 			echo JHTML::_('link', $prev_link, $this->product->neighbours['previous']['product_name'], array('class' => 'previous_page'));
@@ -80,8 +80,8 @@ else { ?>
 			<td valign="top" align="left">
 				<?php
 				/** @todo format price */
-				if (Vmconfig::getVar('show_prices') == '1') {
-					if( $this->product->product_unit && Vmconfig::getVar('vm_price_show_packaging_pricelabel')) {
+				if (VmConfig::get('show_prices') == '1') {
+					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					}
 					else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";

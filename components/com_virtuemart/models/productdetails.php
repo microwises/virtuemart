@@ -48,7 +48,7 @@ class VirtueMartModelProductdetails extends JModel {
 			
 			/* Load the price */
 			$prices = "";
-//			if (Vmconfig::getVar('show_prices') == '1') {
+//			if (VmConfig::get('show_prices') == '1') {
 				/* Loads the product price details */
 				$calculator = new calculationHelper();
 				//the function getProductPrices returns an array, therefore $prices not $price

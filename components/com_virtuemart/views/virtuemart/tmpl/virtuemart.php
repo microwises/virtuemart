@@ -17,8 +17,8 @@ foreach ($this->categories as $category) {
 </div>
 <?php
 /* Show Featured Products */
-if (Vmconfig::getVar('showFeatured', 1) && !empty($this->featuredProducts)) echo $this->loadTemplate('featuredproducts');
+if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) echo $this->loadTemplate('featuredproducts');
 
 /* Show Latest Products */
-if (Vmconfig::getVar('showlatest', 1) && !empty($this->latestProducts)) echo $this->loadTemplate('latestproducts');
+if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) echo $this->loadTemplate('latestproducts');
 ?>
