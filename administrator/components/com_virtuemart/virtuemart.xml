@@ -38,6 +38,7 @@
 		<folder>assets</folder>
 		<folder>controllers</folder>
 		<folder>js</folder>
+		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>shop_image</folder>
 		<folder>themes</folder>
