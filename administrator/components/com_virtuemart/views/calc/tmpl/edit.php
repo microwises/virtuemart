@@ -75,10 +75,11 @@ AdminMenuHelper::startAdminArea();
 				<label for="title">
 					<?php echo JText::_('Affected Categories'); ?>:
 				</label>
-			</td>			<td>
-			<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
-				<?php echo $this->category_tree; ?>
-			</select>
+			</td>			
+			<td>
+					<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
+						<?php echo $this->category_tree; ?>
+					</select>
 			</td>
 		</tr>		
 		<tr>

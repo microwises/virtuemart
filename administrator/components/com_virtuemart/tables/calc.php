@@ -36,7 +36,7 @@ class TableCalc extends JTable
 	var $calc_value       		 	= '';
 	var $calc_currency				= '';
 	var $ordering					= 0;
-	/** @var string Calculation value of the mathop */
+	/** @var array affecting Categories of the rule */
 	var $calc_categories			= array();
 	
 	var $calc_shopper_published		= 0;	
