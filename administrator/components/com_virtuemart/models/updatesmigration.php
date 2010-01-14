@@ -300,7 +300,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	// Create an array of queries from the sql file
 	jimport('joomla.installer.helper');
-	$queries = JInstallerHelper::splitSql($sqlfile);
+	$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
 
 	if (count($queries) == 0) {
 	    $this->setError('SQL file has no queries!');
