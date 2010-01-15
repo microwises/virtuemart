@@ -82,6 +82,34 @@ class VirtuemartControllerUpdatesMigration extends JController {
 
 
     /**
+     * Install sample data into the database
+     *
+     * @author RickG
+     */
+    function userSync() {
+	$model = $this->getModel('updatesMigration');
+	$model->integrateJoomlaUsers();
+
+	$msg = JText::_('Users Syncronized!');
+	$this->setRedirect('index.php?option=com_virtuemart', $msg);
+    }
+
+
+    /**
+     * Install sample data into the database
+     *
+     * @author RickG
+     */
+    function restoreSystemDefaults() {
+	$model = $this->getModel('updatesMigration');
+	$model->restoreSystemDefaults();
+
+	$msg = JText::_('System defaults restored!');
+	$this->setRedirect('index.php?option=com_virtuemart', $msg);
+    }
+
+
+    /**
      * Remove all the Virtuemart tables from the database.
      *
      * @author RickG

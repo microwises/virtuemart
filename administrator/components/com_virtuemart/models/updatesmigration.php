@@ -55,13 +55,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$row = $db->loadObjectList();
 
 	foreach ($row as $user) {
-	    $query = "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('" . $user->id . "', '1', '5', '')";
+	    $query = "INSERT IGNORE INTO `#__vm_shopper_vendor_xref` VALUES ('" . $user->id . "', '1', '5', '')";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_shopper_vendor_xref FAILED' );
 	    }
 
-	    $query = "INSERT INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
+	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
@@ -286,6 +286,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
+    function restoreSystemDefaults() {
+	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
+	$this->execSQLFile($filename);
+	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_required_data.sql';
+	$this->execSQLFile($filename);
+	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
+	$this->execSQLFile($filename);
+	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
+	$this->execSQLFile($filename);
+    }
+
+
     /**
      * Parse a sql file executing each sql statement found.
      *
@@ -377,18 +389,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @return boolean True if successful, false otherwise.
      */
     function removeAllVMData() {
-	$db = JFactory::getDBO();
-	$config = JFactory::getConfig();
-	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
-	if (!$tables = $db->loadResultArray()) {
-	    $this->setError = $db->getErrorMsg();
-	    return false;
-	}
-
-	foreach ($tables as $table) {
-	    $db->setQuery('DELETE FROM ' . $table);
-	    $db->query();
-	}
+	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
+	$this->execSQLFile($filename);
 
 	return true;
     }

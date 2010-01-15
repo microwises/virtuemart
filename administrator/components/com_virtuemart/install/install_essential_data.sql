@@ -1,4 +1,4 @@
--- VirtueMart table data SQL script
+ -- VirtueMart table data SQL script
 -- This will insert all essential data into the VirtueMart tables
 
 

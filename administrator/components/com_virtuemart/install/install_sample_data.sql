@@ -1,5 +1,15 @@
 -- VirtueMart table data SQL script
 -- This will insert all required data into the VirtueMart tables
+
+--
+--  Dumping data for `jos_vm_calc`
+--
+
+INSERT INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_categories`, `calc_shopper`, `calc_country`, `calc_state`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `modified`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
+(1, 1, 'Tax 9.25%', 'A simpel tax for all products regardless the category', 'Tax', '+%', '9.25', 'EUR', 2, '0', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 1),
+(3, 1, 'Duty for Electronic', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', '30', '6', 1, '2', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 0, 0),
+(2, 1, 'Discount for all Hand Tools', 'Ah Discount for all Hand Tools', 'DATax', '-', '2', 'EUR', 0, '1', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 0);
+
 --
 -- Dumping data for table `#__vm_category`
 --
@@ -144,14 +154,4 @@ INSERT INTO `#__vm_product_price` (`product_price_id`, `product_id`, `product_pr
 
 INSERT INTO `#__vm_tax_rate` (`tax_rate_id`, `vendor_id`, `tax_state`, `tax_country`, `mdate`, `tax_rate`) VALUES
 (2, 1, 'CA', 'USA', 964565926, '0.0925');
-
-
---
---  Dumping data for `jos_vm_calc`
---
-
-INSERT INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_categories`, `calc_shopper`, `calc_country`, `calc_state`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `modified`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
-(1, 1, 'Tax 9.25%', 'A simpel tax for all products regardless the category', 'Tax', '+%', '9.25', 'EUR', 2, '0', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 1),
-(3, 1, 'Duty for Electronic', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', '30', '6', 1, '2', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 0, 0),
-(2, 1, 'Discount for all Hand Tools', 'Ah Discount for all Hand Tools', 'DATax', '-', '2', 'EUR', 0, '1', '0', NULL, NULL, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL, 1, 0);
 
