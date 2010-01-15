@@ -196,7 +196,7 @@ class ShopFunctions {
 			if ($childId != $cid) {
 				
 				$selected = ($childId == $categoryId) ? "selected=\"selected\"" : "";
-				if( $selected == "" && isset($selectedCategories[$childId]) && $selectedCategories[$childId] == 1) {
+				if( $selected == "" && in_array($childId, $selectedCategories)) {
 					$selected = "selected=\"selected\"";
 				}
 				
