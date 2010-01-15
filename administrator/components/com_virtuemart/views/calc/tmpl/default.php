@@ -83,16 +83,9 @@ AdminMenuHelper::startAdminArea();
 			$row = $this->calcs[$i];
 			$checked = JHTML::_('grid.id', $i, $row->calc_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$calc_vis_shopper = $this->model->published($row, $i, calc_shopper_published);
-			$calc_vis_vendor = $this->model->published($row, $i, calc_vendor_published);
-			$calc_shared = $this->model->published($row, $i, shared);
-//			$calc_vis_vendor = JHTML::_('grid.published', $row, $i,'tick.png','publish_x.png','cal_vendor');
-
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=calc&task=edit&cid[]=' . $row->calc_id);
-			//$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=calc&calc_id=' . $row->calc_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=calc&task=remove&cid[]=' . $row->calc_id);
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
 					<?php echo $row->calc_id; ?>
 				</td>			            
@@ -129,10 +122,14 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calc_categories); ?>
 				</td>
 				<td align="center">
-					<?php echo $calc_vis_shopper; ?>
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+						<img src="images/<?php echo ( $row->calc_shopper_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_shopper_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+					</a>
 				</td>
 				<td align="center">
-					<?php echo $calc_vis_vendor; ?>
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+						<img src="images/<?php echo ( $row->calc_vendor_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_vendor_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+					</a>
 				</td>
 
 				<td>
@@ -176,6 +173,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="view" value="calc" />	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
             
             

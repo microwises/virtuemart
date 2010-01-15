@@ -312,7 +312,7 @@ class VirtueMartModelCategory extends JModel
      * @param  int $movement movement number
 	 * @return bool
 	 */
-	function orderCategory($id, $movement){
+	public function orderCategory($id, $movement){
 		//retrieving the category table object
 		//and loading data
 		$row = $this->getTable();
@@ -385,7 +385,7 @@ class VirtueMartModelCategory extends JModel
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the publishing was successful, false otherwise.      
      */ 	 
-	function publish($publishId = false){
+	public function publish($publishId = false){
 		$table = $this->getTable();
 		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
 	
@@ -407,7 +407,7 @@ class VirtueMartModelCategory extends JModel
      * @param boolean $share True is the ids should be shared, false otherwise
      * @return int 1 is the sharing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
      */ 	 
-	function share($categories){
+	public function share($categories){
 				
 		foreach ($categories as $id){
 			
@@ -443,7 +443,7 @@ class VirtueMartModelCategory extends JModel
      *
      * @author RickG, jseros
      */ 
-	function getCategory(){	 
+	public function getCategory(){	 
      
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable();
@@ -469,7 +469,7 @@ class VirtueMartModelCategory extends JModel
      * @param int $categoryId Child category id
      * @return JTable parent category data
      */ 
-	function getParentCategory( $categoryId = 0 ){	 
+	public function getParentCategory( $categoryId = 0 ){	 
 		$data = $this->getRelationInfo( $categoryId );
 		$parentId = isset($data->category_parent_id) ? $data->category_parent_id : 0;
 		

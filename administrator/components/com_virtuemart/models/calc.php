@@ -23,15 +23,15 @@ jimport( 'joomla.application.component.model');
 class VirtueMartModelCalc extends JModel
 {    
 	/** @var array Array of Primary keys */
-    var $_cid; 
+    private $_cid; 
 	/** @var integer Primary key */
-    var $_id;          
+    private $_id;          
 	/** @var objectlist Calculation rule  data */
-    var $_data;        
+    private $_data;        
 	/** @var integer Total number of calculation rules in the database */
-	var $_total;      
+	private $_total;      
 	/** @var pagination Pagination for calculation rules list */
-	var $_pagination;    
+	private $_pagination;    
     
     
     /**
@@ -41,10 +41,10 @@ class VirtueMartModelCalc extends JModel
      *
      * @author RickG 
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-    	echo 'ModelCalc <br />';        
+		
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -66,7 +66,7 @@ class VirtueMartModelCalc extends JModel
      *
      * @author RickG
      */        
-    function setId($id)
+    public function setId($id)
     {
         $this->_id = $id;
         $this->_data = null;
@@ -79,7 +79,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG
      * @return JPagination Pagination for the current list of countries
 	 */
-    function getPagination()
+    public function getPagination()
     {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
@@ -95,7 +95,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG	 
 	 * @return int Total number of countries in the database
 	 */
-	function _getTotal() 
+	public function _getTotal() 
 	{
     	if (empty($this->_total)) {
 			$query = 'SELECT `calc_id` FROM `#__vm_calc`';	  		
@@ -110,7 +110,7 @@ class VirtueMartModelCalc extends JModel
      *
      * @author RickG
      */ 
-	function getCalc()
+	public function getCalc()
 	{	
 		$db = JFactory::getDBO();  
      
@@ -124,7 +124,6 @@ class VirtueMartModelCalc extends JModel
    			$this->_id = 0;
    			$this->_data = null;
   		}
-
   		return $this->_data;		
 	}    
     
@@ -136,7 +135,7 @@ class VirtueMartModelCalc extends JModel
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	function getCalcs($onlyPublished=false, $noLimit=false)
+	public function getCalcs($onlyPublished=false, $noLimit=false)
 	{		
 		$query = 'SELECT * FROM `#__vm_calc` ';
 		if ($onlyPublished) { 
@@ -159,14 +158,14 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers     
      * 
      */ 
-	function published( &$row, $i, $variable='published' )
+	public function published( $row, $i, $variable = 'published' )
 	{
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
-		$img 	= $row-> $variable ? $imgY : $imgX;
-		$task 	= $row-> $variable ? 'unpublish' : 'publish';
-		$alt 	= $row-> $variable ? JText::_( 'Published' ) : JText::_( 'Unpublished' );
-		$action = $row-> $variable ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
+		$img 	= $row->$variable ? $imgY : $imgX;
+		$task 	= $row->$variable ? 'unpublish' : 'publish';
+		$alt 	= $row->$variable ? JText::_( 'Published' ) : JText::_( 'Unpublished' );
+		$action = $row->$variable ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
 
 		$href = '
 		<a title="'. $action .'">
@@ -182,7 +181,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
-    function store() 
+    public function store() 
 	{
 		$table = $this->getTable('calc');
 
@@ -216,7 +215,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
-	function delete() 
+	public function delete() 
 	{
 		$calcIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('calc');
@@ -244,11 +243,11 @@ class VirtueMartModelCalc extends JModel
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
-	function publish($publishId = false) 
+	public function publish($publishId = false) 
 	{
 		$table = $this->getTable('calc');
 		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
-		echo print_r($calcIds);
+		
         if (!$table->publish($calcIds, $publishId)) {
 			$this->setError($table->getError());
 			return false;        		
@@ -257,5 +256,81 @@ class VirtueMartModelCalc extends JModel
 		return true;		
 	}	
 
+	
+	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author jseros
+     * 
+     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
+     */ 	 
+	public function shopperPublish($categories){
+				
+		foreach ($categories as $id){
+			
+			$quotedId = $this->_db->Quote($id);
+			$query = 'SELECT calc_shopper_published 
+					  FROM #__vm_calc
+					  WHERE calc_id = '. $quotedId;
+			
+			$this->_db->setQuery($query);
+			$calc = $this->_db->loadObject();
+			
+			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
+			
+			$query = 'UPDATE #__vm_calc
+					  SET calc_shopper_published = '.$publish.'
+					  WHERE calc_id = '.$quotedId;
+			
+			$this->_db->setQuery($query);
+			
+			if( !$this->_db->query() ){
+				$this->setError( $this->_db->getErrorMsg() );
+				return false;
+			}
+			
+		}
+        
+		return ($publish ? 1 : -1);		
+	}
+	
+	
+	
+	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author jseros
+     * 
+     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
+     */ 	 
+	public function vendorPublish($categories){
+				
+		foreach ($categories as $id){
+			
+			$quotedId = $this->_db->Quote($id);
+			$query = 'SELECT calc_vendor_published 
+					  FROM #__vm_calc
+					  WHERE calc_id = '. $quotedId;
+			
+			$this->_db->setQuery($query);
+			$calc = $this->_db->loadObject();
+			
+			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
+			
+			$query = 'UPDATE #__vm_calc
+					  SET calc_vendor_published = '.$publish.'
+					  WHERE calc_id = '.$quotedId;
+			
+			$this->_db->setQuery($query);
+			
+			if( !$this->_db->query() ){
+				$this->setError( $this->_db->getErrorMsg() );
+				return false;
+			}
+			
+		}
+        
+		return ($publish ? 1 : -1);		
+	}
+	
 }
-?>

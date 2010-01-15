@@ -28,7 +28,6 @@ class VirtuemartViewCalc extends JView {
 
         $calc = $model->getCalc();
         
-        
         $layoutName = JRequest::getVar('layout', 'default');
         $isNew = ($calc->calc_id < 1);
 		
@@ -52,7 +51,6 @@ class VirtuemartViewCalc extends JView {
 			/* Load some common models */
 			$categoryModel = $this->getModel('category');
 //			$this->assignRef('categoryModel',	$categoryModel);
-			
 			$category_tree= null;
 
 			/* Get the category tree */
