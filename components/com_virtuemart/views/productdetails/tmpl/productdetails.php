@@ -107,21 +107,42 @@ else { ?>
 			</td>
 		</tr>
 		<tr>
-			<td ><?php echo $ask_seller ?></td>
+		<td ><?php
+				$url = JRoute::_('index.php?view=productdetails&task=askquestion&flypage='.JRequest::getVar('flypage').'&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
+				echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'button'));  
+			?></td>
 		</tr>
 		<tr>
 			<td rowspan="1" colspan="2">
 				<hr style="width: 100%; height: 2px;" />
-				<?php echo $product_description ?>
-				<br/><span style="font-style: italic;"><?php echo $file_list ?></span>
+				<?php /** @todo Test if content plugins modify the product description */ ?>
+				<?php echo $this->product->product_desc; ?>
+				<br />
+				<span style="font-style: italic;">
+					<?php
+					foreach ($this->product->files as $fkey => $file) {
+						if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
+						else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
+						
+						/* Show pdf in a new Window, other file types will be offered as download */
+						$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
+						$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
+						echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
+					}
+					?>
+				</span>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<hr style="width: 100%; height: 2px;" />
-				<?php  
-				/* Load related products */
-				echo $related_products ?>
+				<?php
+					if (is_array($this->product->related)) {
+						foreach ($this->product->related as $rkey => $related) {
+							JRequest::setVar('related', $related);
+							echo $this->loadTemplate('relatedproducts');
+						}
+					}
+					?>	
 				<br />
 			</td>
 		</tr>
