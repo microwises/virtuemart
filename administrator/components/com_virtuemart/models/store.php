@@ -144,7 +144,13 @@ class VirtueMartModelStore extends JModel {
 	    $vendorTable->load((int)$this->_id);
 	    $this->_data = $vendorTable;
 	    // Convert ; seperated string into array
-	    $this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);
+	    if ($this->_data->vendor_accepted_currencies) {
+		$this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);
+	    }
+	    else{
+		$this->_data->vendor_accepted_currencies = array();
+	    }
+
 
 	    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
 	    $query .= "WHERE vendor_id = '". $this->_id ."'";

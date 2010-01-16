@@ -21,11 +21,12 @@ class VmConfig
 	 */
 	function loadConfig() {  
 		$db = JFactory::getDBO();
-		$query = "SELECT `config` FROM `#__vm_config` WHERE `type` = 'system'";
+		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = '1'";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 	
 		$session = JFactory::getSession();
+		$session->clear("vmconfig");
 		$session->set("vmconfig", $config);
 	}
 	

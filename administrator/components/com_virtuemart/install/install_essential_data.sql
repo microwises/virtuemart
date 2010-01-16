@@ -5,8 +5,8 @@
 --
 -- Dumping data for table `#__vm_config`
 --
-INSERT INTO `#__vm_config` (`config_id`, `type`, `config`) VALUES
-(1, 'system', 'shop_is_offline=0\r\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\r\nuse_as_catalog=0\r\nshow_prices=1\r\nprice_access_level_enabled=0\r\nprice_access_level=\r\nshow_prices_with_tax=0\r\nshow_excluding_tax_note=0\r\nshow_including_tax_note=0\r\nshow_price_for_packaging=0\r\nenable_content_plugins=0\r\nenable_coupons=1\r\nenable_reviews=0\r\nautopublish_reviews=0\r\ncomment_min_length=100\r\ncomment_max_length=2000\r\nvirtual_tax=1\r\ntax_mode=0\r\nenable_multiple_taxrates=0\r\nsubtract_payment_before_discount=0\r\nregistration_type=NORMAL_REGISTRATION\r\nshow_remember_me_box=0\r\nagree_tos_onorder=0\r\noncheckout_show_legal_info=0\r\noncheckout_legalinfo_shorttext=ReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\r\nshow_out_of_stock_products=0\r\nenable_cookie_check=1\r\nmail_format=0\r\ndebug=0\r\ndebug_by_ip=0\r\ndebug_ip_address=\r\nenable_logfile=0\r\nlogfile_name=\r\nlogfile_level=PEAR_LOG_WARNING\r\nlogfile_format=%{timestamp}%{ident}[%{priority}][%{remoteip}][%{username}]%{message}\r\nurl=http://\r\nsecureurl=https://\r\ngenerally_prevent_https=1\r\nencrypt_function=ENCODE\r\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\r\nstore_creditcard_data=0\r\nerrorpage=shop.error\r\nproxy_url=\r\nproxy_port=\r\nproxy_user=\r\nproxy_pass=\r\nallow_frontendadminfor_nonbackenders=\r\ntableprefix=vm\r\nhomepage=shop.index\r\nenable_pdf_button=1\r\nbrowse_orderby_field=product_list\r\nbrowse_orderby_fields=1|1|1\r\nshow_emailfriend=1\r\nshow_print_button=1\r\nshow_top_pagenav=1\r\nshow_products_in_category=0\r\nshow_footer=1\r\ntheme=default\r\nproducts_per_row=1\r\nno_image=add-to-cart.gif\r\ncategory_template=managed\r\nflypage=flypage-ask.tpl.php\r\nimg_width=90\r\nimg_height=90\r\nimg_resize_enable=0\r\nshow_checkout_bar=1\r\nmax_vendor_pro_Cart=1\r\ncheckout_steps=final_basket,shipping_addr,shipping_method,payment_method,final_confirmation\r\ncheckout_steps_order=1,2,3,4,5\r\ncheckout_steps_enabled=1,1,1,1,1\r\nenable_downloads=0\r\nenable_download_status=C\r\ndisable_download_status=X\r\ndownload_root=D:\\\r\ndownload_max=3\r\ndownload_expire=432000\r\ndownloadable_products_keep_stocklevel=0\r\nfeed_enabled=1\r\nfeed_cache=1\r\nfeed_cachetime=1800\r\nfeed_title=Latest Products from {storename}\r\nfeed_category_title={storename} - Latest Products from Category: {catname}\r\nfeed_show_images=1\r\nfeed_show_prices=1\r\nfeed_show_description=1\r\nfeed_limittext=1\r\nfeed_max_text_length=500\r\nfeed_description_type=product_s_desc\r\nconf_PRODUCTS_PER_ROW=1\r\nconf_PSHOP_IMG_WIDTH=90\r\nconf_PSHOP_IMG_HEIGHT=90\r\nconf_ENCODE_KEY=bcd54d81dae74e9ae31c53cb4e6a6040\r\nconf_VM_TABLEPREFIX=\r\nconf_HOMEPAGE=shop.index\r\nconf_ERRORPAGE=shop.error\r\nconf_VM_PROXY_URL=\r\nconf_VM_PROXY_PORT=\r\nconf_VM_PROXY_USER=\r\nconf_VM_PROXY_PASS=\r\nmax_vendor_pro_cart=1\r\nVM_CHECKOUT_MODULES=Array|Array|Array|Array\r\nconf_DOWNLOADROOT=D:\\\r\nproduct_s_desc=product_s_desc\r\ntask=save\r\noption=com_virtuemart\r\nview=config\r\n\r\n');
+INSERT INTO `#__vm_config` (`config_id`, `config`) VALUES
+(1, 'shop_is_offline=0\r\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\r\nuse_as_catalog=0\r\nshow_prices=1\r\nprice_access_level_enabled=0\r\nprice_access_level=\r\nshow_prices_with_tax=0\r\nshow_excluding_tax_note=0\r\nshow_including_tax_note=0\r\nshow_price_for_packaging=0\r\nenable_content_plugins=0\r\nenable_coupons=1\r\nenable_reviews=0\r\nautopublish_reviews=0\r\ncomment_min_length=100\r\ncomment_max_length=2000\r\nvirtual_tax=1\r\ntax_mode=0\r\nenable_multiple_taxrates=0\r\nsubtract_payment_before_discount=0\r\nregistration_type=NORMAL_REGISTRATION\r\nshow_remember_me_box=0\r\nagree_tos_onorder=0\r\noncheckout_show_legal_info=0\r\noncheckout_legalinfo_shorttext=ReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\r\nshow_out_of_stock_products=0\r\nenable_cookie_check=1\r\nmail_format=0\r\ndebug=0\r\ndebug_by_ip=0\r\ndebug_ip_address=\r\nenable_logfile=0\r\nlogfile_name=\r\nlogfile_level=PEAR_LOG_WARNING\r\nlogfile_format=%{timestamp}%{ident}[%{priority}][%{remoteip}][%{username}]%{message}\r\nurl=http://\r\nsecureurl=https://\r\ngenerally_prevent_https=1\r\nencrypt_function=ENCODE\r\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\r\nstore_creditcard_data=0\r\nerrorpage=shop.error\r\nproxy_url=\r\nproxy_port=\r\nproxy_user=\r\nproxy_pass=\r\nallow_frontendadminfor_nonbackenders=\r\ntableprefix=vm\r\nhomepage=shop.index\r\nenable_pdf_button=1\r\nbrowse_orderby_field=product_list\r\nbrowse_orderby_fields=1|1|1\r\nshow_emailfriend=1\r\nshow_print_button=1\r\nshow_top_pagenav=1\r\nshow_products_in_category=0\r\nshow_footer=1\r\ntheme=default\r\nproducts_per_row=1\r\nno_image=add-to-cart.gif\r\ncategory_template=managed\r\nflypage=flypage-ask.tpl.php\r\nimg_width=90\r\nimg_height=90\r\nimg_resize_enable=0\r\nshow_checkout_bar=1\r\nmax_vendor_pro_Cart=1\r\ncheckout_steps=final_basket,shipping_addr,shipping_method,payment_method,final_confirmation\r\ncheckout_steps_order=1,2,3,4,5\r\ncheckout_steps_enabled=1,1,1,1,1\r\nenable_downloads=0\r\nenable_download_status=C\r\ndisable_download_status=X\r\ndownload_root=D:\\\r\ndownload_max=3\r\ndownload_expire=432000\r\ndownloadable_products_keep_stocklevel=0\r\nfeed_enabled=1\r\nfeed_cache=1\r\nfeed_cachetime=1800\r\nfeed_title=Latest Products from {storename}\r\nfeed_category_title={storename} - Latest Products from Category: {catname}\r\nfeed_show_images=1\r\nfeed_show_prices=1\r\nfeed_show_description=1\r\nfeed_limittext=1\r\nfeed_max_text_length=500\r\nfeed_description_type=product_s_desc\r\nconf_PRODUCTS_PER_ROW=1\r\nconf_PSHOP_IMG_WIDTH=90\r\nconf_PSHOP_IMG_HEIGHT=90\r\nconf_ENCODE_KEY=bcd54d81dae74e9ae31c53cb4e6a6040\r\nconf_VM_TABLEPREFIX=\r\nconf_HOMEPAGE=shop.index\r\nconf_ERRORPAGE=shop.error\r\nconf_VM_PROXY_URL=\r\nconf_VM_PROXY_PORT=\r\nconf_VM_PROXY_USER=\r\nconf_VM_PROXY_PASS=\r\nmax_vendor_pro_cart=1\r\nVM_CHECKOUT_MODULES=Array|Array|Array|Array\r\nconf_DOWNLOADROOT=D:\\\r\nproduct_s_desc=product_s_desc\r\ntask=save\r\noption=com_virtuemart\r\nview=config\r\n\r\n');
 
 
 --
@@ -160,75 +160,60 @@ INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `func
 -- Dumping data for table `#__vm_menu_admin`
 --
 
-INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
-(10, 1, 0, 'VM_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', '', 'config', ''),
-(20, 1, 0, 'VM_USERS', 'page=admin.user_list', '', 'vmicon vmicon-16-user', 4, '1', '', '', ''),
-(30, 1, 0, 'VM_USERGROUP_LBL', 'page=admin.usergroup_list', '', 'vmicon vmicon-16-user', 6, '1', '', '', ''),
-(40, 1, 0, 'VM_MANAGE_USER_FIELDS', 'page=admin.user_field_list', '', 'vmicon vmicon-16-content', 8, '1', '', '', ''),
-(50, 1, 0, 'VM_COUNTRY_LIST_MNU', 'page=admin.country_list', '', 'vmicon vmicon-16-content', 10, '1', '', 'country', ''),
-(60, 1, 0, 'VM_CURRENCY_LIST_MNU', 'page=admin.curr_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'currency', ''),
-(70, 1, 0, 'VM_MODULE_LIST_MNU', 'page=admin.module_list', '', 'vmicon vmicon-16-content', 14, '1', '', '', ''),
-(80, 1, 0, 'VM_CHECK_UPDATES_MNU', 'page=admin.update_check', '', 'vmicon vmicon-16-content', 16, '1', '', 'updatesMigration', ''),
-(90, 8, 0, 'VM_STATISTIC_SUMMARY', 'page=store.index', '', 'vmicon vmicon-16-info', 2, '1', '', 'virtuemart', ''),
-(100, 8, 0, 'VM_STORE_FORM_MNU', 'page=store.store_form', '', 'vmicon vmicon-16-config', 4, '1', '', 'store', ''),
-(105, 8, 0, 'VM_CALCULATOR', '', '', 'vmicon vmicon-16-content', 5, '1', 'calc', '', ''),
-(110, 8, 0, 'VM_PAYMENT_METHOD_LIST_MNU', 'page=store.payment_method_list', '', 'vmicon vmicon-16-content', 6, '1', '', '', ''),
-(120, 8, 0, 'VM_PAYMENT_METHOD_FORM_MNU', 'page=store.payment_method_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', '', ''),
-(130, 8, 0, 'VM_SHIPPING_MODULE_LIST_LBL', 'page=store.shipping_module_list', '', 'vmicon vmicon-16-content', 10, '1', '', '', ''),
-(140, 8, 0, 'VM_CREDITCARD_LIST_LBL', 'page=store.creditcard_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'creditcard', ''),
-(150, 8, 0, 'VM_CREDITCARD_FORM_LBL', 'page=store.creditcard_form', '', 'vmicon vmicon-16-editadd', 14, '1', '', 'creditcard', 'add'),
-(180, 2, 0, 'CSVIMPROVED_TITLE', 'http://www.csvimproved.com/', '', 'vmicon vmicon-16-import', 2, '1', 'CSVIMPROVED_NEEDINSTALL', '', ''),
-(190, 2, 0, 'VM_PRODUCT_LIST_MNU', 'page=product.product_list', '', 'vmicon vmicon-16-content', 4, '1', '', 'product', 'product'),
-(200, 2, 0, 'VM_PRODUCT_FORM_MNU', 'page=product.product_form', '', 'vmicon vmicon-16-editadd', 6, '1', '', 'product','add'),
-(210, 2, 0, 'VM_PRODUCT_INVENTORY_MNU', 'page=product.product_inventory', '', 'vmicon vmicon-16-install', 8, '1', '', 'inventory', 'inventory'),
-(220, 2, 0, 'VM_SPECIAL_PRODUCTS', 'page=product.specialprod', '', 'vmicon vmicon-16-content', 10, '1', '', 'productSpecial', 'productSpecial'),
-(240, 2, 0, 'VM_REVIEWS', 'page=product.review_list', '', 'vmicon vmicon-16-content', 14, '1', '', 'ratings', 'ratings'),
-(250, 2, 0, 'VM_PRODUCT_DISCOUNT_LIST_LBL', 'page=product.product_discount_list', '', 'vmicon vmicon-16-content', 16, '1', '', 'discounts', 'discounts'),
-(260, 2, 0, 'VM_PRODUCT_DISCOUNT_FORM_MNU', 'page=product.product_discount_form', '', 'vmicon vmicon-16-editadd', 18, '1', '', 'discounts', 'add'),
-(270, 2, 0, 'VM_PRODUCT_TYPE_LIST_LBL', 'page=product.product_type_list', '', 'vmicon vmicon-16-content', 20, '1', '', '', ''),
-(280, 2, 0, 'VM_PRODUCT_PRODUCT_TYPE_FORM_MNU', 'page=product.product_type_form', '', 'vmicon vmicon-16-editadd', 22, '1', '', '', ''),
-(290, 2, 0, 'VM_CATEGORY_LIST_MNU', 'page=product.product_category_list', '', 'vmicon vmicon-16-content', 24, '1', '', 'category', ''),
-(300, 2, 0, 'VM_CATEGORY_FORM_MNU', 'page=product.product_category_form', '', 'vmicon vmicon-16-editadd', 26, '1', '', 'category', 'add'),
-(310, 4, 0, 'VM_SHOPPER_GROUP_LIST_MNU', 'page=shopper.shopper_group_list', '', 'vmicon vmicon-16-content', 2, '1', '', '', ''),
-(320, 4, 0, 'VM_SHOPPER_GROUP_FORM_MNU', 'page=shopper.shopper_group_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', '', ''),
-(330, 5, 0, 'VM_ORDER_LIST_MNU', 'page=order.order_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'orders', 'orders'),
-(340, 5, 0, 'VM_ORDER_STATUS_LIST_MNU', 'page=order.order_status_list', '', 'vmicon vmicon-16-orderstatus', 4, '1', '', 'orderStatus', ''),
-(350, 5, 0, 'VM_ORDER_STATUS_FORM_MNU', 'page=order.order_status_form', '', 'vmicon vmicon-16-orderstatus', 6, '1', '', 'orderStatus', 'edit'),
-(400, 12, 0, 'VM_REPORTBASIC_MOD', 'page=reportbasic.index', '', 'vmicon vmicon-16-info', 2, '1', '', '', ''),
-(410, 11, 0, 'VM_TAX_LIST_MNU', 'page=tax.tax_list', '', 'vmicon vmicon-16-content', 2, '1', '', '', ''),
-(420, 11, 0, 'VM_TAX_FORM_MNU', 'page=tax.tax_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', '', ''),
-(430, 12839, 0, 'VM_CARRIER_LIST_MNU', 'page=shipping.carrier_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'shippingcarrier', ''),
-(440, 12839, 0, 'VM_CARRIER_FORM_MNU', 'page=shipping.carrier_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'shippingcarrier', 'add'),
-(450, 12839, 0, 'VM_RATE_LIST_MNU', 'page=shipping.rate_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'shippingrate', ''),
-(460, 12839, 0, 'VM_RATE_FORM_MNU', 'page=shipping.rate_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'shippingrate', 'add'),
-(470, 12843, 0, 'VM_COUPON_LIST', 'page=coupon.coupon_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'coupon', ''),
-(480, 12843, 0, 'VM_COUPON_NEW_HEADER', 'page=coupon.coupon_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'coupon', 'add'),
-(490, 99, 0, 'VM_MANUFACTURER_LIST_MNU', 'page=manufacturer.manufacturer_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'manufacturer', ''),
-(500, 99, 0, 'VM_MANUFACTURER_FORM_MNU', 'page=manufacturer.manufacturer_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'manufacturer','add'),
-(510, 99, 0, 'VM_MANUFACTURER_CAT_LIST_MNU', 'page=manufacturer.manufacturer_category_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'manufacturerCategory', ''),
-(520, 99, 0, 'VM_MANUFACTURER_CAT_FORM_MNU', 'page=manufacturer.manufacturer_category_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'manufacturerCategory', 'add'),
-(530, 12842, 0, 'VM_ABOUT', 'page=help.about', '', 'vmicon vmicon-16-info', 2, '1', '', '', ''),
-(540, 12842, 0, 'VM_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, '1', '', '', ''),
-(550, 12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, '1', '', '', ''),
-(560, 2, 0, 'VM_PRODUCT_FILES_LIST_MNU', 'page=product.file_list', '', 'vmicon vmicon-16-content', 28, '1', '', 'media', 'media'),
-(570, 1, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes'),
-(580, 1, 0, '-', '', '', '', 11, '1', '', '', ''),
-(590, 1, 0, '-', '', '', '', 13, '1', '', '', ''),
-(600, 1, 0, '-', '', '', '', 15, '1', '', '', ''),
-(610, 2, 0, '-', '', '', '', 7, '1', '', '', ''),
-(620, 2, 0, '-', '', '', '', 3, '1', '', '', ''),
-(630, 2, 0, '-', '', '', '', 9, '1', '', '', ''),
-(640, 2, 0, '-', '', '', '', 11, '1', '', '', ''),
-(650, 2, 0, '-', '', '', '', 15, '1', '', '', ''),
-(660, 8, 0, '-', '', '', '', 3, '1', '', '', ''),
-(670, 8, 0, '-', '', '', '', 9, '1', '', '', ''),
-(680, 8, 0, '-', '', '', '', 11, '1', '', '', ''),
-(690, 8, 0, '-', '', '', '', 15, '1', '', '', ''),
-(700, 8, 0, '-', '', '', '', 5, '1', '', '', ''),
-(710, 2, 0, '-', '', '', '', 19, '1', '', '', ''),
-(720, 2, 0, '-', '', '', '', 23, '1', '', '', ''),
-(730, 1, 0, 'Extension Manager', 'page=admin.extension_list', '', 'vmicon vmicon-16-content', 15, '1', '', '', ''),
-(740, 1, 0, 'Plugin List', 'page=admin.plugin_list', '', 'vmicon vmicon-16-content', 16, '1', '', '', '');
+INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
+(1, 0, 'VM_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', '', 'config', ''),
+(1, 0, 'VM_USERS', 'page=admin.user_list', '', 'vmicon vmicon-16-user', 4, '1', '', '', ''),
+(1, 0, 'VM_USERGROUP_LBL', 'page=admin.usergroup_list', '', 'vmicon vmicon-16-user', 6, '1', '', '', ''),
+(1, 0, 'VM_MANAGE_USER_FIELDS', 'page=admin.user_field_list', '', 'vmicon vmicon-16-content', 8, '1', '', '', ''),
+(1, 0, 'VM_COUNTRY_LIST_MNU', 'page=admin.country_list', '', 'vmicon vmicon-16-content', 10, '1', '', 'country', ''),
+(1, 0, 'VM_CURRENCY_LIST_MNU', 'page=admin.curr_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'currency', ''),
+(1, 0, 'VM_MODULE_LIST_MNU', 'page=admin.module_list', '', 'vmicon vmicon-16-content', 14, '1', '', '', ''),
+(1, 0, 'VM_CHECK_UPDATES_MNU', 'page=admin.update_check', '', 'vmicon vmicon-16-content', 16, '1', '', 'updatesMigration', ''),
+(8, 0, 'VM_STATISTIC_SUMMARY', 'page=store.index', '', 'vmicon vmicon-16-info', 2, '1', '', 'virtuemart', ''),
+(8, 0, 'VM_STORE_FORM_MNU', 'page=store.store_form', '', 'vmicon vmicon-16-config', 4, '1', '', 'store', ''),
+(8, 0, 'VM_CALCULATOR', '', '', 'vmicon vmicon-16-content', 5, '1', 'calc', '', ''),
+(8, 0, 'VM_PAYMENT_METHOD_LIST_MNU', 'page=store.payment_method_list', '', 'vmicon vmicon-16-content', 6, '1', '', '', ''),
+(8, 0, 'VM_PAYMENT_METHOD_FORM_MNU', 'page=store.payment_method_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', '', ''),
+(8, 0, 'VM_SHIPPING_MODULE_LIST_LBL', 'page=store.shipping_module_list', '', 'vmicon vmicon-16-content', 10, '1', '', '', ''),
+(8, 0, 'VM_CREDITCARD_LIST_LBL', 'page=store.creditcard_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'creditcard', ''),
+(8, 0, 'VM_CREDITCARD_FORM_LBL', 'page=store.creditcard_form', '', 'vmicon vmicon-16-editadd', 14, '1', '', 'creditcard', 'add'),
+(2, 0, 'CSVIMPROVED_TITLE', 'http://www.csvimproved.com/', '', 'vmicon vmicon-16-import', 2, '1', 'CSVIMPROVED_NEEDINSTALL', '', ''),
+(2, 0, 'VM_PRODUCT_LIST_MNU', 'page=product.product_list', '', 'vmicon vmicon-16-content', 4, '1', '', 'product', 'product'),
+(2, 0, 'VM_PRODUCT_FORM_MNU', 'page=product.product_form', '', 'vmicon vmicon-16-editadd', 6, '1', '', 'product','add'),
+(2, 0, 'VM_PRODUCT_INVENTORY_MNU', 'page=product.product_inventory', '', 'vmicon vmicon-16-install', 8, '1', '', 'inventory', 'inventory'),
+(2, 0, 'VM_SPECIAL_PRODUCTS', 'page=product.specialprod', '', 'vmicon vmicon-16-content', 10, '1', '', 'productSpecial', 'productSpecial'),
+(2, 0, 'VM_REVIEWS', 'page=product.review_list', '', 'vmicon vmicon-16-content', 14, '1', '', 'ratings', 'ratings'),
+(2, 0, 'VM_PRODUCT_DISCOUNT_LIST_LBL', 'page=product.product_discount_list', '', 'vmicon vmicon-16-content', 16, '1', '', 'discounts', 'discounts'),
+(2, 0, 'VM_PRODUCT_DISCOUNT_FORM_MNU', 'page=product.product_discount_form', '', 'vmicon vmicon-16-editadd', 18, '1', '', 'discounts', 'add'),
+(2, 0, 'VM_PRODUCT_TYPE_LIST_LBL', 'page=product.product_type_list', '', 'vmicon vmicon-16-content', 20, '1', '', '', ''),
+(2, 0, 'VM_PRODUCT_PRODUCT_TYPE_FORM_MNU', 'page=product.product_type_form', '', 'vmicon vmicon-16-editadd', 22, '1', '', '', ''),
+(2, 0, 'VM_CATEGORY_LIST_MNU', 'page=product.product_category_list', '', 'vmicon vmicon-16-content', 24, '1', '', 'category', ''),
+(2, 0, 'VM_CATEGORY_FORM_MNU', 'page=product.product_category_form', '', 'vmicon vmicon-16-editadd', 26, '1', '', 'category', 'add'),
+(4, 0, 'VM_SHOPPER_GROUP_LIST_MNU', 'page=shopper.shopper_group_list', '', 'vmicon vmicon-16-content', 2, '1', '', '', ''),
+(4, 0, 'VM_SHOPPER_GROUP_FORM_MNU', 'page=shopper.shopper_group_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', '', ''),
+(5, 0, 'VM_ORDER_LIST_MNU', 'page=order.order_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'orders', 'orders'),
+(5, 0, 'VM_ORDER_STATUS_LIST_MNU', 'page=order.order_status_list', '', 'vmicon vmicon-16-orderstatus', 4, '1', '', 'orderStatus', ''),
+(5, 0, 'VM_ORDER_STATUS_FORM_MNU', 'page=order.order_status_form', '', 'vmicon vmicon-16-orderstatus', 6, '1', '', 'orderStatus', 'edit'),
+(12, 0, 'VM_REPORTBASIC_MOD', 'page=reportbasic.index', '', 'vmicon vmicon-16-info', 2, '1', '', '', ''),
+(11, 0, 'VM_TAX_LIST_MNU', 'page=tax.tax_list', '', 'vmicon vmicon-16-content', 2, '1', '', '', ''),
+(11, 0, 'VM_TAX_FORM_MNU', 'page=tax.tax_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', '', ''),
+(12839, 0, 'VM_CARRIER_LIST_MNU', 'page=shipping.carrier_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'shippingcarrier', ''),
+(12839, 0, 'VM_CARRIER_FORM_MNU', 'page=shipping.carrier_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'shippingcarrier', 'add'),
+(12839, 0, 'VM_RATE_LIST_MNU', 'page=shipping.rate_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'shippingrate', ''),
+(12839, 0, 'VM_RATE_FORM_MNU', 'page=shipping.rate_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'shippingrate', 'add'),
+(12843, 0, 'VM_COUPON_LIST', 'page=coupon.coupon_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'coupon', ''),
+(12843, 0, 'VM_COUPON_NEW_HEADER', 'page=coupon.coupon_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'coupon', 'add'),
+(99, 0, 'VM_MANUFACTURER_LIST_MNU', 'page=manufacturer.manufacturer_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'manufacturer', ''),
+(99, 0, 'VM_MANUFACTURER_FORM_MNU', 'page=manufacturer.manufacturer_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'manufacturer','add'),
+(99, 0, 'VM_MANUFACTURER_CAT_LIST_MNU', 'page=manufacturer.manufacturer_category_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'manufacturerCategory', ''),
+(99, 0, 'VM_MANUFACTURER_CAT_FORM_MNU', 'page=manufacturer.manufacturer_category_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'manufacturerCategory', 'add'),
+(12842, 0, 'VM_ABOUT', 'page=help.about', '', 'vmicon vmicon-16-info', 2, '1', '', '', ''),
+(12842, 0, 'VM_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, '1', '', '', ''),
+(12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, '1', '', '', ''),
+(2, 0, 'VM_PRODUCT_FILES_LIST_MNU', 'page=product.file_list', '', 'vmicon vmicon-16-content', 28, '1', '', 'media', 'media'),
+(1, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes'),
+(1, 0, 'Extension Manager', 'page=admin.extension_list', '', 'vmicon vmicon-16-content', 15, '1', '', '', ''),
+(1, 0, 'Plugin List', 'page=admin.plugin_list', '', 'vmicon vmicon-16-content', 16, '1', '', '', '');
 
 --
 -- Dumping data for table `#__vm_module`
@@ -306,9 +291,6 @@ INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `pub
 (9, 'UPS Shipping Module', 'ups', 'shipping', 6, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
 (10, 'USPS Shipping Module', 'usps', 'shipping', 7, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
 (11, 'Zone Shipping Module', 'zone_shipping', 'shipping', 10, 0, 1, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-
-
-
 
 
 --

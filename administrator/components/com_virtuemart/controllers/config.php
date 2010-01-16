@@ -92,7 +92,7 @@ class VirtuemartControllerConfig extends JController
 	{
 		$model = $this->getModel('config');		
 		$data = JRequest::get('post');				
-//die(print_r($data));
+
 		if ($model->store($data)) {
 			$msg = JText::_('Config saved!');
 			// Load the newly saved values into the session.

@@ -18,15 +18,6 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_HOMEPAGE_EXPLAIN'); ?>"/>
-			    <?php echo JText::_('VM_ADMIN_CFG_HOMEPAGE') ?>
-			</td>
-			<td>
-			    <input type="text" name="homepage" class="inputbox" value="<?php echo JText::_($this->config->get('homepage')); ?>" />
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>"/>
 			    <?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE') ?>
 			</td>
@@ -184,7 +175,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
+				<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
 			</td>
 		    </tr>
 		    <tr>
