@@ -35,6 +35,7 @@ Permissions::doAuthentication();
 $document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm.js');
+$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
