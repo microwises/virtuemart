@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: debug.php 10457 2008-06-27 05:52:12Z eddieajau $
+* @version		$Id$
 * @package		VirtueMart
 * @copyright	Copyright (C) 2008 soeren - All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

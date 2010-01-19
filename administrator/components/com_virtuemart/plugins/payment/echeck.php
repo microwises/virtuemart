@@ -3,7 +3,7 @@
  * The ps_echeck class, containing the payment processing code
  *  for eCheck.net transactions with authorize.net 
  *
- * @version $Id: echeck.php 1760 2009-05-03 22:58:57Z Aravot $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

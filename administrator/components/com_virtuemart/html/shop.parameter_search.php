@@ -3,7 +3,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 * Advanced Attributes search for phpShop
 * @author Zdenek Dvorak (zdenek.dvorak@seznam.cz)
-* @version $Id: shop.parameter_search.php 1760 2009-05-03 22:58:57Z Aravot $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

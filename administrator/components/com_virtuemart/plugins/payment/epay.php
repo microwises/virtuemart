@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id: ps_epay.php,v 1.4 2005/05/17 20:31:31 soeren_nb Exp $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage Payment
  * @copyright (C) 2007-2008 Thomas Knudsen

@@ -1,12 +1,25 @@
 <?php
 /**
-* @package		VirtueMart
-* @license		GNU/GPL, see LICENSE.php
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage
+* @author
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
 */
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 /**
@@ -15,35 +28,35 @@ jimport( 'joomla.application.component.model');
  * @package		VirtueMart
  */
 class VirtueMartModelMedia extends JModel {
-    
+
 	/* Private variables */
 	private $_total;
 	private $_pagination;
 	/** @var object Contains all image related information */
 	private $_productfile;
-	
+
 	/**
 	 * Constructor for product files
 	 */
 	function __construct() {
 		parent::__construct();
-		
+
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
-		
+
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-		
+
 		/* Get the file ID */
 		$this->_productfile->file_id = JRequest::getInt('file_id', null);
 		$this->_productfile->product_id = JRequest::getInt('product_id', null);
-	}  
-	
+	}
+
 	/**
 	 * Loads the pagination
 	 */
@@ -54,7 +67,7 @@ class VirtueMartModelMedia extends JModel {
 		}
 		return $this->_pagination;
 	}
-    
+
 	/**
 	 * Gets the total number of products
 	 */
@@ -67,30 +80,30 @@ class VirtueMartModelMedia extends JModel {
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
-        
+
         return $this->_total;
     }
-    
+
      /**
      * Select the products to list on the product list page
      */
     public function getProductFilesList() {
     	$db = JFactory::getDBO();
-    	
+
     	/* Pagination */
      	$this->getPagination();
-    	
+
      	/* Get the files from the product files table */
     	$db->setQuery($this->getImageQuery('product_files'));
     	$productfileslist = $db->loadObjectList();
-    	
+
     	/* Get the files from the product table */
     	$db->setQuery($this->getImageQuery('product'));
     	$productlist = $db->loadObjectList();
-    	
+
     	return array_merge($productfileslist, $productlist);
     }
-	
+
     /**
 	 * Returns the number of files AND images which are assigned to $pid
 	 *
@@ -105,29 +118,29 @@ class VirtueMartModelMedia extends JModel {
 			case 'images': $type_sql = 'AND file_is_image=1'; break;
 			default: $type_sql = ''; break;
 		}
-		$q = "SELECT COUNT(file_id) AS files 
-			FROM #__vm_product_files 
+		$q = "SELECT COUNT(file_id) AS files
+			FROM #__vm_product_files
 			WHERE file_product_id=".intval($pid).' '.$type_sql;
 		$db->setQuery($q);
 		$files = $db->loadResult();
-		
-		$q = "SELECT IF (LENGTH(`product_full_image`) = 0, 
-					IF (LENGTH(`product_thumb_image`) = 0, '0', '1'), 
-					IF (LENGTH(`product_thumb_image`) = 0, '1', '2')) 
-					AS cnt 
-				FROM `#__vm_product` 
+
+		$q = "SELECT IF (LENGTH(`product_full_image`) = 0,
+					IF (LENGTH(`product_thumb_image`) = 0, '0', '1'),
+					IF (LENGTH(`product_thumb_image`) = 0, '1', '2'))
+					AS cnt
+				FROM `#__vm_product`
 				WHERE product_id=".intval($pid);
 		$db->setQuery($q);
 		$files += $db->loadResult();
-		
+
 		return $files;
 	}
-	
+
 	/**
 	 * Set the different roles available for a file
 	 */
 	public function getProductFilesRoles() {
-	 	return array( 
+	 	return array(
 	 			'isDownloadable' => IMAGEURL.'ps_image/downloadable.gif',
 				'isImage' => IMAGEURL.'ps_image/image.gif',
 				'isProductImage' => IMAGEURL.'ps_image/image.png',
@@ -135,7 +148,7 @@ class VirtueMartModelMedia extends JModel {
 				'isRemoteFile' => IMAGEURL.'ps_image/url.gif'
 		);
 	}
-	
+
 	/**
 	 * Get the image details to edit  them
 	 */
@@ -152,7 +165,7 @@ class VirtueMartModelMedia extends JModel {
 			$this->_productfile->file_title = null;
 			$this->_productfile->product_thumb_image = null;
 			$this->_productfile->isdownloadable = null;
-			
+
 			/* Get some product details */
 			$row = $this->getTable('product');
 			$row->load(JRequest::getInt('product_id'));
@@ -171,7 +184,7 @@ class VirtueMartModelMedia extends JModel {
 		}
     	return $this->_productfile;
 	}
-	
+
 	/**
 	 * Query for retrieving images
 	 */
@@ -181,48 +194,48 @@ class VirtueMartModelMedia extends JModel {
 	 	 		if (JRequest::getInt('product_id', false)) $filter = ' WHERE file_product_id = '.JRequest::getInt('product_id');
 	 	 		else $filter = '';
 	 	 		if (JRequest::getInt('file_id', false)) $filter .= ' AND file_id = '.JRequest::getInt('file_id');
-	 	 		$q = "SELECT file_id, 
-							file_is_image, 
-							file_product_id, 
-							file_extension, 
-							file_url, 
-							file_published AS published, 
+	 	 		$q = "SELECT file_id,
+							file_is_image,
+							file_product_id,
+							file_extension,
+							file_url,
+							file_published AS published,
 							file_name,
 							file_title,
 							NULL AS product_thumb_image,
 							IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
 							IF (file_is_image = 1, 'isImage', 'isFile') AS file_role,
 							product_name
-					FROM #__vm_product_files 
+					FROM #__vm_product_files
 					LEFT JOIN #__vm_product_attribute
-					ON #__vm_product_files.file_title = #__vm_product_attribute.attribute_value 
+					ON #__vm_product_files.file_title = #__vm_product_attribute.attribute_value
 					LEFT JOIN #__vm_product
-					ON #__vm_product_files.file_product_id = #__vm_product.product_id ".$filter; 
+					ON #__vm_product_files.file_product_id = #__vm_product.product_id ".$filter;
 				$q .= " ORDER BY file_is_image DESC";
 				break;
 			case 'product':
 			default:
 				if (JRequest::getInt('product_id', false)) $filter = ' AND product_id = '.JRequest::getInt('product_id');
 				else $filter = '';
-				$q = "SELECT 'isProductImage' AS file_role, 
-							NULL AS file_id, 
-							'1' AS file_is_image, 
-							product_id AS file_product_id, 
-							'1' AS published, 
-							product_full_image AS file_name, 
+				$q = "SELECT 'isProductImage' AS file_role,
+							NULL AS file_id,
+							'1' AS file_is_image,
+							product_id AS file_product_id,
+							'1' AS published,
+							product_full_image AS file_name,
 							'' AS file_title,
 							product_thumb_image,
-							'0' AS isdownloadable, 
+							'0' AS isdownloadable,
 							product_name,
-							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url, 
+							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url,
 							SUBSTRING(product_full_image, -3, 3) AS file_extension
-					FROM #__vm_product 
+					FROM #__vm_product
 					WHERE LENGTH(product_full_image) > 0 ".$filter;
 				break;
 		 }
 		 return $q;
 	 }
-	
+
 	/**
 	 * This function finds out what kind of media file it is
 	 * product_images -> new media
@@ -239,9 +252,9 @@ class VirtueMartModelMedia extends JModel {
 			$this->_productfile->file_id = JRequest::getInt('file_id', null);
 			$this->_productfile->product_id = JRequest::getInt('product_id', null);
 			$isProductDownload = $this->isProductDownloadFile($this->_productfile->file_id, $this->_productfile->product_id);
-			$q = "SELECT file_name,file_url,file_is_image,file_published,file_title 
-				  FROM #__vm_product_files 
-				  WHERE file_id='".$this->_productfile->file_id."'"; 
+			$q = "SELECT file_name,file_url,file_is_image,file_published,file_title
+				  FROM #__vm_product_files
+				  WHERE file_id='".$this->_productfile->file_id."'";
 			$db->setQuery($q);
 			$pfile = $db->loadObject();
 			if ($db->getAffectedRows() > 0) {
@@ -257,9 +270,9 @@ class VirtueMartModelMedia extends JModel {
 				}
 			}
 		}
-	 	
+
 	}
-	
+
 	/**
 	 * Checks if a file is a restricted downloadable product file
 	 * a user must pay for
@@ -278,7 +291,7 @@ class VirtueMartModelMedia extends JModel {
 		if($db->getAffectedRows() > 0) return true;
 		else return false;
 	}
-	
+
 	/**
 	 * Get the list of files from the DOWNLOADROOT
 	 */
@@ -298,7 +311,7 @@ class VirtueMartModelMedia extends JModel {
 		}
 		else return JText::_('NO_VALID_DOWNLOADROOT_SET');
 	}
-	
+
 	/**
 	 * Save a media item
 	 */
@@ -311,13 +324,13 @@ class VirtueMartModelMedia extends JModel {
 		$file_type = JRequest::getVar('file_type');
 		$this->_productfile->file_url = JRequest::getVar('file_url');
 		$this->_productfile->file_title = JRequest::getVar('file_title');
-		
+
 		/* Validate the file */
 		if (!$this->validateAdd()) return false;
-		
+
 		/* Set if the file is to be published */
 		$row->file_published = JRequest::getInt("file_published", 0);
-		
+
 		// Do we have an uploaded file?
 		if (!empty($files['file_upload']['name'])) {
 			if(!$this->handleFileUpload()) {
@@ -327,7 +340,7 @@ class VirtueMartModelMedia extends JModel {
 		else {
 			// No file uploaded, but specified by URL
 			$this->_productfile->file_is_image = stristr( $file_type, "image" ) ? '1' : '0';
-			
+
 			if (!empty($this->_productfile->file_url)) {
 				$this->_productfile->file_name = '';
 			} else {
@@ -340,16 +353,16 @@ class VirtueMartModelMedia extends JModel {
 			$this->_productfile->file_image_thumb_height = "";
 			$this->_productfile->file_image_thumb_width = "";
 		}
-		
+
 		/* Store image data*/
 		if( $file_type == 'product_images' ||  $file_type == 'product_full_image' ||  $file_type == 'product_thumb_image') {
 			/* Get the table data */
 			$product_row = $this->getTable('product');
 			$product_row->load(JRequest::getInt("product_id"));
-			
+
 			$filename = str_replace( IMAGEPATH.'product'.DS, '', $this->_productfile->file_name);
 			$fullimage = str_replace( IMAGEPATH.'product'.DS, '', $this->_productfile->file_name);
-			
+
 			if ($file_type == 'product_images' || $file_type == 'product_full_image' ) {
 				$this->_productfile->product_full_image = $fullimage;
 			}
@@ -395,15 +408,15 @@ class VirtueMartModelMedia extends JModel {
 			if( $row->store() !== false ) {
 				$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ADDED'));
 				JRequest::setVar('file_id', $row->file_id);
-			} 
+			}
 			else {
 				return false;
 			}
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=media&product_id='.JRequest::getInt("product_id"));
-		
+
 	}
-	
+
 	/**
 	 * Checks if a file can be added or not
 	 *
@@ -412,19 +425,19 @@ class VirtueMartModelMedia extends JModel {
 	function validateAdd() {
 		$mainframe = JFactory::getApplication('site');
 		$files = JRequest::get('files');
-		
+
 		/* Check if there is any file specified */
 		if (empty($files["file_upload"]["name"]) && is_null(JRequest::getVar('file_url')) && is_null(JRequest::getVar('downloadable_file'))) {
 			$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_PROVIDE'), 'error');
 			return False;
 		}
-		
+
 		/* Check if we have a product ID */
 		if (!JRequest::getInt("product_id", false)) {
 			$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_ID'), 'error');
 			return false;
 		}
-		
+
 		/* Handling uploaded file */
 		if (!empty($files["file_upload"]["name"])) {
 			$db = JFactory::getDBO();
@@ -438,7 +451,7 @@ class VirtueMartModelMedia extends JModel {
 		return true;
 
 	}
-	
+
 	/**
 	 * This function handles the file upload
 	 * and image resizing when necessary
@@ -449,7 +462,7 @@ class VirtueMartModelMedia extends JModel {
 		$mainframe = JFactory::getApplication('site');
 		$files = JRequest::get('files');
 		require_once(CLASSPATH.'imageTools.class.php' );
-		
+
 		/* Get the filename */
 		if ($this->_productfile->fileexists) {
 			$mainframe->enqueueMessage(JText::_('VM_UPLOADED_FILE_NAME_EXISTS').' '.basename($files['file_upload']['name']), 'error');
@@ -459,14 +472,14 @@ class VirtueMartModelMedia extends JModel {
 		$this->_productfile->file_name = $files['file_upload']['name'];
 		$fileinfo = pathinfo($files['file_upload']['name']);
 		$this->_productfile->file_extension = $fileinfo["extension"];
-		
-		
+
+
 		// This plays a role when a file is added from the ps_product class
 		// on adding and updating a downloadable product
 		if (JRequest::getVar('file_type') == 'downloadable_file' ) {
 			$this->_productfile->file_title = $this->_productfile->file_name;
 		}
-		
+
 		switch( JRequest::getVar("upload_dir")) {
 			case "IMAGEPATH":
 				$uploaddir = IMAGEPATH."product".DS;
@@ -480,7 +493,7 @@ class VirtueMartModelMedia extends JModel {
 					$mainframe->enqueueMessage(JText::_('VM_FILES_PATH_ERROR'), 'error');
 					return false;
 				}
-				
+
 				if( substr( $uploaddir, strlen($uploaddir)-1, 1) != '/') {
 					$uploaddir .= DS;
 				}
@@ -496,7 +509,7 @@ class VirtueMartModelMedia extends JModel {
 			$mainframe->enqueueMessage(JText::_('VM_FILES_UPLOAD_FAILURE'), 'error');
 			return false;
 		}
-		
+
 		switch (JRequest::getVar('file_type')) {
 			case 'image':
 			case 'product_images':
@@ -520,14 +533,14 @@ class VirtueMartModelMedia extends JModel {
 						$ss_str_wh_in = '_'.$height.'x'.$width.'.';
 						$ss_str_wh_out = '_'.$this->_productfile->file_image_thumb_height.'x'.$this->_productfile->file_image_thumb_width.'.';
 						$ss_new_fileout = str_replace($ss_str_wh_in, $ss_str_wh_out, $this->_productfile->fileout);
-						
+
 						if (!file_exists($ss_new_fileout)) {
 							rename($this->_productfile->fileout, $ss_new_fileout);
 						}
 						else {
 							$mainframe->enqueueMessage(JText::_('VM_FILES_UPLOAD_EXISTS').' '.$ss_new_fileout, 'notice');
 						}
-						
+
 						$this->_productfile->fileout = str_replace($ss_str_wh_in, $ss_str_wh_out, $this->_productfile->fileout);
 						*/
 					}
@@ -539,21 +552,21 @@ class VirtueMartModelMedia extends JModel {
 					$fullimg = getimagesize( $tmp_filename );
 					$this->_productfile->file_image_width = $fullimg[0];
 					$this->_productfile->file_image_height = $fullimg[1];
-					
+
 				}
 				if( !empty($d["file_resize_fullimage"])) {
 					// Resize the full image!
 					$height = JRequest::getInt('fullimage_height');
 					$width = JRequest::getInt('fullimage_width');
-					
+
 					vmImageTools::resizeImage( $uploaddir.$this->_productfile->file_name, $uploaddir.$this->_productfile->file_name, $width, $height );
-					
+
 					$fullimg = getimagesize($uploaddir.$this->_productfile->file_name);
 					$this->_productfile->file_image_width = $fullimg[0];
 					$this->_productfile->file_image_height = $fullimg[1];
 				}
 				break;
-		
+
 			default:
 				### File Upload ###
 				$this->_productfile->file_is_image = "0";
@@ -565,7 +578,7 @@ class VirtueMartModelMedia extends JModel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Checks if a file was correctly uploaded.
 	 *
@@ -603,11 +616,11 @@ class VirtueMartModelMedia extends JModel {
 					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 			}
-			
+
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Moves an uploaded file $_FILES[$fieldname] to $storefilename
 	 *
@@ -626,7 +639,7 @@ class VirtueMartModelMedia extends JModel {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Resizes an image
 	 *
@@ -643,11 +656,11 @@ class VirtueMartModelMedia extends JModel {
 		$to_file_thumb = basename( $fileName, '.'.$pathinfo['extension']).".".$pathinfo['extension'];
 		$fileout = IMAGEPATH.$section.DS.'resized'.DS.$to_file_thumb;
 		vmImageTools::ResizeImage( $fileName, $fileout, $height, $width );
-		
+
 		return $fileout;
-			
+
 	}
-	
+
 	/**
 	 * Delete an image file
 	 */
@@ -673,7 +686,7 @@ class VirtueMartModelMedia extends JModel {
 		if ($productid) $url .= '&product_id='.$productid;
 		$mainframe->redirect($url);
 	}
-	
+
 	/**
 	 * Publish/unpublish a media item
 	 */

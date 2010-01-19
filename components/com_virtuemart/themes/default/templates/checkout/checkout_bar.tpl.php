@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: checkout_bar.tpl.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.

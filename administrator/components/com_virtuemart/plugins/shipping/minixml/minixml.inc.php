@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @version $Id: minixml.inc.php 1510 2008-08-08 19:11:42Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.

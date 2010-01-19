@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: sql.update.VM-1.1.x_to_VM.1.2.php 1697 2009-03-13 17:52:08Z Milbo $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright	Copyright (C) 2008 Greg Perkins. 2009 The VirtueMart Development Team.All rights reserved.

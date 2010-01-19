@@ -3,7 +3,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
  *
- * @version $Id: auspost.php 1760 2009-05-03 22:58:57Z Aravot $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage shipping
  * @copyright Copyright (C) 2006 Ben Wilson. All rights reserved.

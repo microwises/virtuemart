@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+$Id$
 
 NuSOAP - Web Services Toolkit for PHP
 
@@ -80,7 +80,7 @@ $GLOBALS['_transient']['static']['nusoap_base']->globalDebugLevel = 9;
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class nusoap_base {
@@ -989,7 +989,7 @@ function usleepWindows($usec)
 * Mainly used for returning faults from deployed functions
 * in a server instance.
 * @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access public
 */
 class nusoap_fault extends nusoap_base {
@@ -1077,7 +1077,7 @@ class soap_fault extends nusoap_fault {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class nusoap_xmlschema extends nusoap_base  {
@@ -2014,7 +2014,7 @@ class XMLSchema extends nusoap_xmlschema {
 * xsd:anyType and user-defined types.
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class soapval extends nusoap_base {
@@ -2116,7 +2116,7 @@ class soapval extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access public
 */
 class soap_transport_http extends nusoap_base {
@@ -3419,7 +3419,7 @@ class soap_transport_http extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class nusoap_server extends nusoap_base {
@@ -4488,7 +4488,7 @@ class soap_server extends nusoap_server {
 * 
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access public 
 */
 class wsdl extends nusoap_base {
@@ -6389,7 +6389,7 @@ class wsdl extends nusoap_base {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class nusoap_parser extends nusoap_base {
@@ -7036,7 +7036,7 @@ class soap_parser extends nusoap_parser {
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: nusoap.php,v 1.114 2007/11/06 15:17:46 snichol Exp $
+* @version  $Id$
 * @access   public
 */
 class nusoap_client extends nusoap_base  {

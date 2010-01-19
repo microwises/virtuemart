@@ -1,7 +1,7 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
- * @version $Id: order.label_signature.php 1755 2009-05-01 22:45:17Z rolandd $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage html
  */

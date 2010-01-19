@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: account.shipto.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
+* @version $Id$
 * @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.

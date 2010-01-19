@@ -4,7 +4,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file lists all shipping modules. It's in a file that's not called shipping_module_list
 * because we currently can't add or remove shipping modules automatically!
 *
-* @version $Id: store.shipping_module_list.php 1553 2008-10-23 13:44:05Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2008 soeren - All rights reserved.

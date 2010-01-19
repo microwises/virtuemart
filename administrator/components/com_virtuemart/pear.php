@@ -6,7 +6,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * @author Tomas V.V.Cox <cox@idecnet.com>
 *
 *
-* @version $Id: PEAR.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -39,7 +39,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 // |          Tomas V.V.Cox <cox@idecnet.com>                           |
 // +--------------------------------------------------------------------+
 //
-// $Id: PEAR.php 1755 2009-05-01 22:45:17Z rolandd $
+// $Id$
 //
 
 define('PEAR_ERROR_RETURN',     1);

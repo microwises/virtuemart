@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * It is located here, because this provides an easy way to include it using the standard VirtueMart Call
 * and allows to keep the current Session.
 *
-* @version $Id: compat.joomla1.5.php 1133 2008-01-08 20:40:56Z gregdev $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

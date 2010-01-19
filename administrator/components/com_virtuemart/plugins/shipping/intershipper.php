@@ -3,7 +3,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
  *
- * @version $Id: intershipper.php 1624 2009-02-04 19:28:48Z Milbo $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage shipping
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

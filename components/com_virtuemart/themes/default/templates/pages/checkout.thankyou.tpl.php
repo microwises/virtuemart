@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * It is used to thank the customer for her/his order and show a link 
  * to the order details.
 *
-* @version $Id: checkout.thankyou.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
+* @version $Id$
 * @package VirtueMart
 * @subpackage themes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

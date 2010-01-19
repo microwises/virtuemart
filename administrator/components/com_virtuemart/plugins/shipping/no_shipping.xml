@@ -1,5 +1,5 @@
 <install type="shipping" version="1.2.0">	
-	<!-- $Id: no_shipping.xml 1549 2008-10-14 19:11:47Z soeren_nb $-->
+	<!-- $Id$-->
 	<name>Free Shipping - Shipping Module</name>
 	<author><![CDATA[soeren]]></author>
 	<creationdate>JAugust 2004</creationdate>

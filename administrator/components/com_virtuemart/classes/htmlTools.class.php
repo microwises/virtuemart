@@ -3,7 +3,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 * This file contains functions and classes for common html tasks
 *
-* @version $Id: htmlTools.class.php 1786 2009-05-13 13:21:59Z macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

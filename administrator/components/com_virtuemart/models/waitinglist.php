@@ -1,29 +1,35 @@
 <?php
-if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: zw_waiting_list.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
-* @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* Description
+*
+* @package	VirtueMart
+* @subpackage Product
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
-*
-* http://virtuemart.org
+* @version $Id$
 */
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+// Load the model framework
+jimport( 'joomla.application.component.model');
+
 /**
-* This class is meant to manage Waiting Lists
-* @copyright (C) devcompany.com  All rights reserved.
-* @license MPL
-*/
+* Model for VirtueMart Product Files
+*
+* @package	VirtueMart
+* @author RolandD
+*/  
 class VirtueMartModelWaitingList extends JModel {
-	
-	
+
 	/**
 	* Load the customers on the waitinglist
 	*/
@@ -35,7 +41,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
-	
+
 	/**
 	* Notify customers product is back in stock
 	* @author RolandD
@@ -49,25 +55,25 @@ class VirtueMartModelWaitingList extends JModel {
 		else {
 			$mainframe = Jfactory::getApplication('site');
 			$db = JFactory::getDBO();
-			
+
 			$q = "SELECT * FROM #__vm_waiting_list ";
 			$q .= "WHERE notified = '0' AND product_id = ".$product_id;
 			$db->setQuery($q);
 			$waiting_users = $db->loadObjectList();
-			
+
 			/* Load the product details */
 			$q = "SELECT product_name FROM #__vm_product WHERE product_id = ".$product_id;
 			$db->setQuery($q);
 			$product_name = $db->loadResult();
-			
+
 			foreach ($waiting_users as $key => $waiting_user) {
 				/* Lets make the e-mail up from the info we have */
 				$notice_subject = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
-				
+
 				/* Now get the url information */
 				$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
 				$notice_body = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
-				
+
 				/* Get the mailer start */
 				$mailer = shopFunctions::loadMailer();
 				//by Max Milbers
@@ -78,10 +84,10 @@ class VirtueMartModelWaitingList extends JModel {
 				$mailer->AddAddress($waiting_user->notify_email);
 				$mailer->setBody($notice_body);
 				$mailer->setSubject($notice_subject);
-				
+
 				/* Send the mail */
 				if (!$mailer->Send()) {
-					
+
 				}
 				else {
 					/* Clear the mail details */
@@ -92,7 +98,7 @@ class VirtueMartModelWaitingList extends JModel {
 			return true;
 		}
 	}
-	
+
 	/**
 	* Updates the waitinglist
 	* @author RolandD
@@ -107,7 +113,7 @@ class VirtueMartModelWaitingList extends JModel {
 		if ($db->query()) return true;
 		else return false;
 	}
-	
+
 	/*
 	** VALIDATION FUNCTIONS
 	**
@@ -116,7 +122,7 @@ class VirtueMartModelWaitingList extends JModel {
 	function validate_add(&$d) {
 		global $vmLogger;
 		$db = new ps_DB;
-		
+
 		$q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
 		$q .= "notify_email='" . $d["notify_email"] . "' AND ";
 		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
@@ -202,7 +208,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$db->query($q);
 		$db->next_record();
 		return True;
-		
+
 	}
 	/**************************************************************************
 	* name: notify_list()
@@ -213,13 +219,13 @@ class VirtueMartModelWaitingList extends JModel {
 	**************************************************************************/
 	function notify_list($product_id) {
 		global $sess,  $mosConfig_fromname;
-		
+
 		$option = JRequest::getVar(  'option' );
-		
+
 		if (!$product_id) {
 			return False;
 		}
-		
+
 		//by Max Milbers
 		$from_email = ps_vendor::get_vendor_fields(1,array("email"),"");
 
@@ -237,11 +243,11 @@ class VirtueMartModelWaitingList extends JModel {
 
 			// lets make the e-mail up from the info we have
 			$notice_subject = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
-			
+
 			// now get the url information
 			$url = URL . "index.php?page=shop.product_details&flypage=shop.flypage&product_id=$product_id&option=$option&Itemid=".$sess->getShopItemid();
 			$notice_body = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
-			
+
 			// send the e-mail
 			$shopper_email = $db->f("notify_email");
 			vmMail($from_email, $mosConfig_fromname, $shopper_email, $notice_subject, $notice_body, "");

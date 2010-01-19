@@ -4,7 +4,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file provides compatibility for VirtueMart on Joomla! 1.0.x and Joomla! 1.5
 *
 *
-* @version $Id: compat.joomla1.5.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.

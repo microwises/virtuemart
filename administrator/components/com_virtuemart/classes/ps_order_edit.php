@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: ps_order_edit.php 1760 2009-05-03 22:58:57Z Aravot $
+* @version $Id$
 * @author nfischer
 * @copyright Copyright (C) 2006 Ingemar F�llman. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL

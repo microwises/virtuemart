@@ -11,7 +11,7 @@
 /**
 *	This class provides Functions to get simple answers for a user and/or vendor	
 *
-* @version $Id: Vendor.php 90 2009-06-018 22:45:17Z Max Milbers $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2009 Virtuemart, since 2009 VirtueMart Dev Team - All rights reserved.

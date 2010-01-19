@@ -1,6 +1,6 @@
 <?php 
 /**
-* @version $Id: checkout.epay_result.php,v 1.4 2005/05/22 09:21:15 soeren_nb Exp $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright (C) 2007-2008 Thomas Knudsen

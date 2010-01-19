@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install type="shipping" version="1.2.0">	
-	<!-- $Id: fedex.xml 1567 2008-11-22 07:51:32Z soeren_nb $-->
+	<!-- $Id$-->
 	<name>FedEx Shipping</name>
 	<author><![CDATA[Jay Powers / Soeren Eberhardt / Greg Perkins]]></author>
 	<creationdate>2004 Vermonster LLC</creationdate>

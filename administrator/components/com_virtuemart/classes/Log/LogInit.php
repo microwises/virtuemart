@@ -69,7 +69,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  *     $GLOBALS['vmFileLogger']        //The file logger
  *
  *
- * @version $Id: LogInit.php 1755 2009-05-01 22:45:17Z rolandd $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage Log
  * @author Mike Mills (mike@MikeMillsConsulting.com)

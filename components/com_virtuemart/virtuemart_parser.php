@@ -4,7 +4,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file prepares the VirtueMart framework
 * It should be included whenever a VirtueMart function is needed
 *
-* @version $Id: virtuemart_parser.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

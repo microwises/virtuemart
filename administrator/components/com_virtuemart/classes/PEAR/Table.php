@@ -28,7 +28,7 @@
  * @author     Bertrand Mansion <bmansion@mamasam.com>
  * @copyright  2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Table.php 617 2007-01-04 19:43:08Z soeren_nb $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/HTML_Table
  */
 

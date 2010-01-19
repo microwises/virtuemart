@@ -2,7 +2,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 /**
 * ONLY for fallback reasons,.. if a View is not provided yet
-* @version $Id: admin.virtuemart.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package JMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

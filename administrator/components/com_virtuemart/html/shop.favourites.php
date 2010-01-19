@@ -2,7 +2,7 @@
 if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: shop.cart.php 1095 2007-12-19 20:19:16Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.

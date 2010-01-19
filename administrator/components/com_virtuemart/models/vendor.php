@@ -1,12 +1,25 @@
 <?php
 /**
-* @package		VirtueMart
-* @license		GNU/GPL, see LICENSE.php
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage
+* @author
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
 */
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 
@@ -15,30 +28,30 @@ jimport( 'joomla.application.component.model');
 *
 * @package		VirtueMart
 */
-class VirtueMartModelVendor extends JModel
-{
+class VirtueMartModelVendor extends JModel {
+
     /**
     * Vendor Id
     *
     * @var $_id;
     */
     var $_id;
-    
+
     /**
     * Vendor detail record
     *
     * @var object;
     */
-    var $_vendor;    
-    
-    
+    var $_vendor;
+
+
     /**
     * Constructor for the Vendor model.
     */
     function __construct()
     {
         parent::__construct();
-        
+
         $cid = JRequest::getVar('cid', false, 'DEFAULT', 'array');
         if ($cid) {
             $id = $cid[0];
@@ -46,27 +59,27 @@ class VirtueMartModelVendor extends JModel
         else {
             $id = JRequest::getInt('id', 1);
         }
-        
+
         $this->setId($id);
     }
-    
-    
+
+
     /**
     * Resets the Vendor ID and data
-    */        
-    function setId($id=1) 
+    */
+    function setId($id=1)
     {
         $this->_id = $id;
         $this->_vendor = null;
     }
-    
-    
+
+
     /**
 	* Retrieve the vendor details from the database.
-	* 
+	*
 	* @return object Vendor details
 	*/
-	function getVendor($vendId=1) 
+	function getVendor($vendId=1)
 	{
         if (!$this->_vendor) {
         	//The DB should get with the ps_vendor.php
@@ -76,15 +89,15 @@ class VirtueMartModelVendor extends JModel
             $query = 'SELECT * FROM `#__vm_vendor` ';
             $query .=  'WHERE `vendor_id`=' . $vendId;
             $db->setQuery($query);
-            
+
             $this->_vendor = $db->loadObject();
         }
-        return $this->_vendor;   
+        return $this->_vendor;
 	}
-	
+
 	/**
 	* Retrieve a list of vendors
-	* 
+	*
 	* @author: RolandD
 	* @return object List of vendors
 	*/
@@ -94,10 +107,10 @@ class VirtueMartModelVendor extends JModel
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
-	
+
 	/**
-	* Retrieve the user ID by vendor ID 
-	* 
+	* Retrieve the user ID by vendor ID
+	*
 	* @author jseros
 	* @param $vendId The vendor ID
 	* @return user ID by vendor
@@ -106,43 +119,43 @@ class VirtueMartModelVendor extends JModel
 		$sql = "SELECT user_id
    				FROM #__vm_auth_user_vendor
   				WHERE vendor_id = ". $this->_db->Quote((int)$vendId) ."";
-   				
+
    		$this->_db->setQuery($sql);
    		$result = $this->_db->loadObject();
-   		
+
    		return (isset($result->user_id) ? $result->user_id : 0);
 	}
-	
-	
+
+
 	/**
 	 * Bind the post data to the vendor table and save it
      *
-     * @author RickG	
-     * @return boolean True is the save was successful, false otherwise. 
+     * @author RickG
+     * @return boolean True is the save was successful, false otherwise.
 	 */
-    function store($data) 
+    function store($data)
 	{
-		$table = $this->getTable('vendor');	
-	
+		$table = $this->getTable('vendor');
+
 		// Bind the form fields to the unser info table
-		if (!$table->bind($data)) {		    
+		if (!$table->bind($data)) {
 			$this->setError($table->getError());
-			return false;	
+			return false;
 		}
 
 		// Make sure the user info record is valid
 		if (!$table->check()) {
 			$this->setError($table->getError());
-			return false;	
+			return false;
 		}
-		
+
 		// Save the user info record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
-			return false;	
-		}		
-		
+			return false;
+		}
+
 		return true;
-	}	
+	}
 }
 ?>

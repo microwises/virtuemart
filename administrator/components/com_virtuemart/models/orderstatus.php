@@ -1,16 +1,25 @@
 <?php
 /**
- * Data module for the order status
- *
- * @package	VirtueMart
- * @subpackage OrderStatus
- * @author Oscar van Eijk
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Data module for the order status
+*
+* @package	VirtueMart
+* @subpackage OrderStatus
+* @author Oscar van Eijk
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 /**
@@ -20,8 +29,8 @@ jimport( 'joomla.application.component.model');
  * @subpackage OrderStatus
  * @author Oscar van Eijk
  */
-class VirtueMartModelOrderstatus extends JModel
-{    
+class VirtueMartModelOrderstatus extends JModel {
+
 	/** @var integer Primary key */
 	var $_id;
 	/** @var objectlist order status data */
@@ -43,7 +52,7 @@ class VirtueMartModelOrderstatus extends JModel
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');		
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');
 
 		// Set the state pagination variables
 		$this->setState('limit', $limit);
@@ -56,8 +65,8 @@ class VirtueMartModelOrderstatus extends JModel
 
 	/**
 	 * Resets the order status id and data
-	 */        
-	function setId($id) 
+	 */
+	function setId($id)
 	{
 		$this->_id = $id;
 		$this->_data = null;
@@ -65,10 +74,10 @@ class VirtueMartModelOrderstatus extends JModel
 
 	/**
 	 * Loads the pagination for the currency table
-	 * 
-	 * @return JPagination Pagination for the current list of order statuses 
+	 *
+	 * @return JPagination Pagination for the current list of order statuses
 	 */
-	function getPagination() 
+	function getPagination()
 	{
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
@@ -82,7 +91,7 @@ class VirtueMartModelOrderstatus extends JModel
 	 *
 	 * @return int Total number of currencies in the database
 	 */
-	function _getTotal() 
+	function _getTotal()
 	{
 		if (empty($this->_total)) {
 			$query = 'SELECT `order_status_id` FROM `#__vm_order_status`';
@@ -91,11 +100,11 @@ class VirtueMartModelOrderstatus extends JModel
 		return $this->_total;
 	}
 
-	/** 
+	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
-	 */ 
+	 */
 	function getOrderStatus()
-	{		
+	{
 		$db = JFactory::getDBO();
 
 		if (empty($this->_data)) {
@@ -115,9 +124,9 @@ class VirtueMartModelOrderstatus extends JModel
 	/**
 	 * Bind the post data to the order status table and save it
 	 *
-	 * @return boolean True is the save was successful, false otherwise. 
+	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store() 
+	function store()
 	{
 		$table =& $this->getTable('order_status');
 
@@ -159,7 +168,7 @@ class VirtueMartModelOrderstatus extends JModel
 		}
 
 		return true;
-	}	
+	}
 
 
 	/**
@@ -167,7 +176,7 @@ class VirtueMartModelOrderstatus extends JModel
 	 *
 	 * @return boolean True is the delete was successful, false otherwise.
 	 */
-	function delete() 
+	function delete()
 	{
 		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
 		$table =& $this->getTable('order_status');
@@ -183,11 +192,11 @@ class VirtueMartModelOrderstatus extends JModel
 
 	/**
 	 * Retrieve a list of order statuses from the database.
-	 * 
+	 *
 	 * @return object List of order status objects
 	 */
 	function getOrderStatusList()
-	{		
+	{
 		$query = 'SELECT * FROM `#__vm_order_status` ';
 		$query .= $this->_getOrdering();
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
@@ -196,7 +205,7 @@ class VirtueMartModelOrderstatus extends JModel
 
 	/**
 	 * Get the SQL Ordering statement
-	 * 
+	 *
 	 * @return string text to add to the SQL statement
 	 */
 	function _getOrdering()
@@ -211,7 +220,7 @@ class VirtueMartModelOrderstatus extends JModel
 
 	/**
 	 * Change the ordering of an Order status
-	 * 
+	 *
 	 * @return boolean True on success
 	 */
 	function move($direction)
@@ -258,4 +267,4 @@ class VirtueMartModelOrderstatus extends JModel
 
 }
 
-//No Closing tag 
+//No Closing tag

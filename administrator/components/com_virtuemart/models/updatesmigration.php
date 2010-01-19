@@ -1,16 +1,25 @@
 <?php
 /**
- * Data module for updates and migrations
- *
- * @package	VirtueMart
- * @subpackage updatesMigration
- * @author Max Milbers, RickG
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Data module for updates and migrations
+*
+* @package	VirtueMart
+* @subpackage updatesMigration
+* @author Max Milbers, RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
@@ -23,6 +32,7 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
  * @author Max Milbers, RickG
  */
 class VirtueMartModelUpdatesMigration extends JModel {
+
     /**
      * Checks the VirtueMart Server for the latest available Version of VirtueMart
      *
@@ -149,13 +159,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	# insert the user <=> group relationship
 	$db = JFactory::getDBO();
 	$db->setQuery("INSERT INTO `#__vm_auth_user_group`
-				SELECT user_id, 
-					CASE `perms` 
+				SELECT user_id,
+					CASE `perms`
 					    WHEN 'admin' THEN 0
 					    WHEN 'storeadmin' THEN 1
 					    WHEN 'shopper' THEN 2
 					    WHEN 'demo' THEN 3
-					    ELSE 2 
+					    ELSE 2
 					END
 				FROM #__vm_user_info
 				WHERE address_type='BT' ");
@@ -318,7 +328,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    $this->setError('SQL file has no queries!');
 	    return false;
 	}
-	
+
 	$db = JFactory::getDBO();
 	// Process each query in the $queries array (split out of sql file).
 	foreach ($queries as $query) {
@@ -344,7 +354,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	jimport('joomla.filesystem.file');
 	jimport('joomla.filesystem.archive');
-	
+
 	$config = JFactory::getConfig();
 	$destn = $config->getValue('config.tmp_path').DS.basename($packageName);
 

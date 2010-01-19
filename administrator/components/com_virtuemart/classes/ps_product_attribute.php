@@ -3,7 +3,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
  *
- * @version $Id: ps_product_attribute.php 1776 2009-05-12 22:13:21Z macallf $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

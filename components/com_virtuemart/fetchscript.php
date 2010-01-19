@@ -9,7 +9,7 @@
 * file[INDEX] (filename only)
 * where INDEX is the actual number of the file to be included, so you can include multiple scripts at a time
 * 
-* @version $Id: fetchscript.php 1510 2008-08-08 19:11:42Z soeren_nb $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2006-2007 soeren - All rights reserved.

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: $
+ * $Id$
  * VirtueMart Extended Search Bot (based on work from Soeren Eberhardt & Pietro Gallo)
  * @version 1.5 
  * 

@@ -1,27 +1,36 @@
 <?php
 /**
- * Data module for user fields
- *
- * @package	VirtueMart
- * @subpackage Userfields
- * @author RolandD 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Data module for user fields
+*
+* @package	VirtueMart
+* @subpackage Userfields
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 /**
  * Model class for user fields
  *
  * @package	VirtueMart
- * @subpackage Userfields 
- * @author RolandD  
+ * @subpackage Userfields
+ * @author RolandD
  */
 class VirtueMartModelUserfields extends JModel {
-	
+
 	/**
 	* Prepare a user field for database update
 	*/
@@ -34,12 +43,12 @@ class VirtueMartModelUserfields extends JModel {
 					$oValuesArr[0] = str_replace(array('mailto:','http://','https://'),'', $value);
 					$oValuesArr[1] = str_replace(array('mailto:','http://','https://'),'', $post[$fieldName."Text"]);
 					$value = implode("|*|",$oValuesArr);
-				} 
+				}
 				else {
 					$value = str_replace(array('mailto:','http://','https://'),'', $value);
 				}
 				break;
-			case 'email': 
+			case 'email':
 				$value = str_replace(array('mailto:','http://','https://'),'', $value);
 				break;
 			case 'multiselect':

@@ -2,7 +2,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 /**
 *
-* @version $Id: admin.virtuemart.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) VirtueMart Team - All rights reserved.

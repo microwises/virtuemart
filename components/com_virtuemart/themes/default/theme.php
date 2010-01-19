@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * It allows you to declare additional functions and classes
 * that may be used in your templates 
 *
-* @version $Id: theme.php 1772 2009-05-11 23:27:27Z macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage themes
 * @copyright Copyright (C) 2006-2008 soeren - All rights reserved.

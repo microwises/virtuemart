@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *  Code updated to work with multiple shipping options and
 *  updated for May 2007 changes by USPS.
 *
-* @version $Id: usps.php 1760 2009-05-03 22:58:57Z Aravot $ 
+* @version $Id$ 
 * @author Corey Koltz
 * @author  Soeren Eberhardt-Biermann
 * @package VirtueMart

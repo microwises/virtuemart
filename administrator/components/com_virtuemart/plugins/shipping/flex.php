@@ -3,7 +3,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
  *
- * @version $Id: flex.php 1556 2008-10-24 07:40:51Z soeren_nb $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage shipping
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

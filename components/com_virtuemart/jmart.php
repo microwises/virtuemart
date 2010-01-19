@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: registration.php 6290 2007-01-16 04:06:06Z Jinx $
+* @version		$Id$
 * @package		Joomla
 * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php

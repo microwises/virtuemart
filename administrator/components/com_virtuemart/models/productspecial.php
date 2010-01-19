@@ -1,12 +1,25 @@
 <?php
 /**
-* @package		VirtueMart
-* @license		GNU/GPL, see LICENSE.php
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage
+* @author
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
 */
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 /**
@@ -16,25 +29,25 @@ jimport( 'joomla.application.component.model');
  * @author RolandD
  */
 class VirtueMartModelProductspecial extends JModel {
-    
+
 	var $_total;
 	var $_pagination;
-	
+
 	function __construct() {
 		parent::__construct();
-		
+
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
-		
+
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
-	
+
 	/**
 	 * Loads the pagination
 	 */
@@ -45,7 +58,7 @@ class VirtueMartModelProductspecial extends JModel {
 		}
 		return $this->_pagination;
 	}
-    
+
 	/**
 	 * Gets the total number of products
 	 */
@@ -56,10 +69,10 @@ class VirtueMartModelProductspecial extends JModel {
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
-        
+
         return $this->_total;
     }
-    
+
     /**
      * Select the products to list on the product list page
      */
@@ -67,7 +80,7 @@ class VirtueMartModelProductspecial extends JModel {
      	$db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
-     	
+
      	/* Build the query */
      	$q = "SELECT #__vm_product.`product_id`,
      				#__vm_product.`product_parent_id`,
@@ -81,7 +94,7 @@ class VirtueMartModelProductspecial extends JModel {
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_id');
     }
-    
+
     /**
     * List of tables to include for the product query
     * @author RolandD
@@ -95,7 +108,7 @@ class VirtueMartModelProductspecial extends JModel {
 			LEFT JOIN #__vm_product_discount
 			ON #__vm_product.product_discount_id = #__vm_product_discount.discount_id';
     }
-    
+
     /**
     * Collect the filters for the query
     * @author RolandD
@@ -106,7 +119,7 @@ class VirtueMartModelProductspecial extends JModel {
 		if ($filter_order == '') $filter_order = 'product_name';
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
-		
+
     	/* Check some filters */
      	$filters = array();
      	if (JRequest::getVar('filter_productspecial', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_productspecial').'%');
@@ -123,10 +136,10 @@ class VirtueMartModelProductspecial extends JModel {
 					break;
      		}
      	}
-     	
+
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
      	else $filter = '';
-     	
+
      	return $filter.' ORDER BY '.$filter_order." ".$filter_order_Dir;
     }
 }

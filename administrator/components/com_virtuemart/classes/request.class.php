@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: request.class.php 1755 2009-05-01 22:45:17Z rolandd $
+ * @version		$Id$
  * @package		VirtueMart
  * @subpackage	core
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.

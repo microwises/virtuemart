@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: eway.php 1760 2009-05-03 22:58:57Z Aravot $
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
@@ -110,7 +110,7 @@ class plgPaymentEway extends vmPaymentPlugin {
   *
   * (c) Copyright Matthew Horoschun, CanPrint Communications 2005.
   *
-  * $Id: eway.php 1760 2009-05-03 22:58:57Z Aravot $
+  * $Id$
   *
   * Date:    2005-04-18
   * Version: 2.0

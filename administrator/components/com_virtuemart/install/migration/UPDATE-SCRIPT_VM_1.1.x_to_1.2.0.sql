@@ -1,7 +1,7 @@
 #############################################
 # SQL update script for upgrading 
 # from VirtueMart 1.1.x to VirtueMart 1.2.0
-# $Id: UPDATE-SCRIPT_VM_1.1.x_to_1.2.0.sql 1661 2009-02-25 20:54:24Z soeren_nb $
+# $Id$
 #############################################
 UPDATE `jos_components` SET `params` = 'RELEASE=1.2.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';
 

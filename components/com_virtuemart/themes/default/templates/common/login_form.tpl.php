@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: login_form.tpl.php 1768 2009-05-11 22:24:39Z macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2008 soeren - All rights reserved.

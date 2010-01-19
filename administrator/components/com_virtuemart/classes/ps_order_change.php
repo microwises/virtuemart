@@ -3,7 +3,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
  *
- * @version $Id: $
+ * @version $Id$
  * @author nfischer & kaltokri
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  *

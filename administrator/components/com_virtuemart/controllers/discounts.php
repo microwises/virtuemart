@@ -5,7 +5,7 @@
  * @package VirtueMart
  * @author RolandD
  * @link http://virtuemart.org
- * @version $Id: product.php 186 2009-09-10 14:12:18Z rolandd $
+ * @version $Id$
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );

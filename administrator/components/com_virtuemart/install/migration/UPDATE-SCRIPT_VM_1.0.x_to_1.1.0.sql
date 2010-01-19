@@ -1,7 +1,7 @@
 #############################################
 # SQL update script for upgrading 
 # from VirtueMart 1.0.x to VirtueMart 1.1.0
-# $Id: UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql 1402 2008-05-24 11:20:57Z thepisu $
+# $Id$
 #############################################
  
 

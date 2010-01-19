@@ -1,7 +1,7 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* @version $Id: global.php 1768 2009-05-11 22:24:39Z macallf $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - 2009 Virtuemart Team All rights reserved.

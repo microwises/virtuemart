@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: daemon.php 1755 2009-05-01 22:45:17Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage Log
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -16,7 +16,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-// $Id: daemon.php 1755 2009-05-01 22:45:17Z rolandd $
+// $Id$
 
 /**
  * The vmLog_daemon class is a concrete implementation of the Log::

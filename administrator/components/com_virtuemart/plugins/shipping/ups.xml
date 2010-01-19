@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install type="shipping" version="1.2.0">	
-	<!-- $Id: ups.xml 1567 2008-11-22 07:51:32Z soeren_nb $ -->
+	<!-- $Id$ -->
 	<name>UPS Shipping Module</name>
 	<author><![CDATA[Sören Eberhardt-Biermann & others]]></author>
 	<creationdate>October 2004</creationdate>

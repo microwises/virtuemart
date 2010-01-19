@@ -15,7 +15,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * place to put everything.
  *
  *
- * @version $Id: DebugUtil.php 1755 2009-05-01 22:45:17Z rolandd $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage classes
  * @author Mike Mills (mike@MikeMillsConsulting.com)
