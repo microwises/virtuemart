@@ -1,15 +1,23 @@
 <?php
 /**
- * Orders table
- *
- * @package	VirtueMart
- * @subpackage Orders
- * @author RolandD
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Orders table
+*
+* @package	VirtueMart
+* @subpackage Orders
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Orders table class
@@ -19,6 +27,7 @@ defined('_JEXEC') or die();
  * @author RolandD
  */
 class TableOrders extends JTable {
+
 	/** @var int Primary key */
 	var $order_id = 0;
 	/** @var int User ID */
@@ -61,7 +70,7 @@ class TableOrders extends JTable {
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
-	
+
 
 	/**
 	 * @param $db Class constructor; connect to the database

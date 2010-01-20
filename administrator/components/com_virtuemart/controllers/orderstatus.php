@@ -1,15 +1,25 @@
 <?php
 /**
- * Order status controller
- *
- * @package	VirtueMart
- * @subpackage OrderStatus
- * @author Oscar van Eijk
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Order status controller
+*
+* @package	VirtueMart
+* @subpackage OrderStatus
+* @author Oscar van Eijk
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
+// Load the controller framework
 jimport('joomla.application.component.controller');
 
 /**
@@ -19,12 +29,13 @@ jimport('joomla.application.component.controller');
  * @subpackage OrderStatus
  * @author     Oscar van Eijk
  */
-class VirtuemartControllerOrderstatus extends JController
-{
+class VirtuemartControllerOrderstatus extends JController {
+
 	/**
 	 * Method to display the view
 	 *
 	 * @access public
+	 * @author
 	 */
 	function __construct()
 	{
@@ -68,7 +79,7 @@ class VirtuemartControllerOrderstatus extends JController
 		$viewType = $document->getType();
 		$view =& $this->getView('orderstatus', $viewType);
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-		
+
 		parent::display();
 	}
 
@@ -97,7 +108,7 @@ class VirtuemartControllerOrderstatus extends JController
 
 	/**
 	 * Handle the remove task
-	 */	
+	 */
 	function remove()
 	{
 		$model = $this->getModel('orderstatus');

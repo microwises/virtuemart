@@ -1,24 +1,33 @@
 <?php
 /**
- * User Info Table
- *
- * @package	VirtueMart
- * @subpackage User
- * @author RickG 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* User Info Table
+*
+* @package	VirtueMart
+* @subpackage User
+* @author 	RickG, RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * User Info table class
  * The class is is used to manage the user_info table.
  *
- * @author 	RickG, RolandD
  * @package	VirtueMart
+ * @author 	RickG, RolandD
  */
 class TableUser_info extends JTable {
+
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -48,24 +57,24 @@ class TableUser_info extends JTable {
 			$this->setProperties($customfields);
 		}
 	}
-	
+
 	/**
 	* Stores/Updates a tax rate
 	*
 	*/
 	public function store() {
 		$k = $this->check();
-		
+
 		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
 		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-		
+
 		if (!$ret){
 			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
 			return false;
 		}
 		else return true;
 	}
-	
+
 	/**
 	* Validates the user info record fields.
 	*
@@ -74,7 +83,7 @@ class TableUser_info extends JTable {
 	*/
 	public function check() {
 		$db = JFactory::getDBO();
-		
+
 		/* Check if a record exists */
 		$q = "SELECT user_info_id
 			FROM #__vm_user_info
@@ -93,9 +102,9 @@ class TableUser_info extends JTable {
 			return false;
 		}
 	}
-	
-	
-	
+
+
+
 
 }
 ?>

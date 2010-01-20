@@ -1,15 +1,23 @@
 <?php
 /**
- * Product table
- *
- * @package	VirtueMart
- * @subpackage Category
- * @author jseros
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Product table
+*
+* @package	VirtueMart
+* @subpackage Category
+* @author jseros
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Category table class
@@ -19,8 +27,8 @@ defined('_JEXEC') or die();
  * @subpackage Category
  * @author jseros
  */
-class TableCategory extends JTable
-{
+class TableCategory extends JTable {
+
 	/** @var int Primary key */
 	var $category_id	= null;
 	/** @var integer Product id */
@@ -63,18 +71,18 @@ class TableCategory extends JTable
 	var $metarobot	= '';
 	/** @var string Meta author */
 	var $metaauthor	= '';
-	
-	
+
+
 	/**
 	 * Class contructor
-	 * 
+	 *
 	 * @author jseros
 	 * @param $db A database connector object
 	 */
 	public function __construct($db) {
 		parent::__construct('#__vm_category', 'category_id', $db);
 	}
-	
+
 	/**
 	 * Overwrite method
 	 *
@@ -96,7 +104,7 @@ class TableCategory extends JTable
 		$sql = "SELECT ".$this->_tbl_key.", ordering FROM ".$this->_tbl." c
 				LEFT JOIN #__vm_category_xref cx
 				ON c.category_id = cx.category_child_id";
-		
+
 		$condition = 'cx.category_parent_id = '. $this->_db->Quote($parent_id);
 		$where = ($where ? ' AND '.$condition : $condition);
 
@@ -194,7 +202,7 @@ class TableCategory extends JTable
 		. ' WHERE c.ordering >= 0' . ( $where ? ' AND '. $where : '' )
 		. ' AND cx.category_parent_id = '. $parent_id
 		. ' ORDER BY c.ordering'.$order2;
-		
+
 		$this->_db->setQuery( $query );
 		if (!($orders = $this->_db->loadObjectList()))
 		{

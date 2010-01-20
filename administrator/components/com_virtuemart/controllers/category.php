@@ -1,15 +1,25 @@
 <?php
 /**
- * Category controller
- *
- * @package	VirtueMart
- * @subpackage Category
- * @author RickG, jseros 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Category controller
+*
+* @package	VirtueMart
+* @subpackage Category
+* @author RickG, jseros
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
+// Load the controller framework
 jimport('joomla.application.component.controller');
 
 /**
@@ -17,108 +27,109 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage Category
- * @author jseros 
+ * @author jseros
  */
-class VirtuemartControllerCategory extends JController
-{
+class VirtuemartControllerCategory extends JController {
+
 	/**
 	 * Contructor
 	 *
 	 * @access	public
+	 * @author
 	 */
 	public function __construct() {
 		parent::__construct();
-		
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );			
-	    $this->registerTask( 'apply',  'save' );	
-		
-		$document = JFactory::getDocument();				
-		$viewType	= $document->getType();
-		$view = $this->getView('category', $viewType);		
 
-		// Pushing default model					
+		// Register Extra tasks
+		$this->registerTask( 'add',  'edit' );
+	    $this->registerTask( 'apply',  'save' );
+
+		$document = JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view = $this->getView('category', $viewType);
+
+		// Pushing default model
 		$categoryModel = $this->getModel('category');
 		if (!JError::isError($categoryModel)) {
 			$view->setModel($categoryModel, true);
-		}			
+		}
 	}
-	
+
 	/**
 	 * Display any category view
 	 *
 	 * @author RickG, jseros
 	 */
-	public function display() {			
+	public function display() {
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the edit task
 	 *
      * @author RickG
 	 */
 	public function edit()
-	{				
+	{
 		JRequest::setVar('controller', 'category');
 		JRequest::setVar('view', 'category');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);		
-		
+		JRequest::setVar('hidemenu', 1);
+
 		parent::display();
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the cancel task
 	 *
 	 * @author RickG
 	 */
 	public function cancel()
-	{		
+	{
 		$this->setRedirect('index.php?option=com_virtuemart&view=category');
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the save task
 	 *
-	 * @author RickG, jseros 
-	 */	
+	 * @author RickG, jseros
+	 */
 	public function save()
 	{
-		$categoryModel = $this->getModel('category');		
+		$categoryModel = $this->getModel('category');
 		$cmd = JRequest::getCmd('task');
-		
+
 		if ($id = $categoryModel->store()) {
 			$msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
 		}
 		else {
 			$msg = JText::_($categoryModel->getError());
 		}
-		
+
 		if($cmd == 'apply'){
 			$redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
 		}
 		else{
 			$redirection = 'index.php?option=com_virtuemart&view=category';
 		}
-		
+
 		$this->setRedirect($redirection, $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the remove task
 	 *
-	 * @author RickG, jseros	 
-	 */		
+	 * @author RickG, jseros
+	 */
 	public function remove()
 	{
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$mainframe = JFactory::getApplication();
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		$msg = '';
@@ -130,25 +141,25 @@ class VirtuemartControllerCategory extends JController
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 			return;
 		}
-		
+
 		$categoryModel = $this->getModel('category');
-		
+
 		if (!$categoryModel->delete($cid)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
 		}
 		else {
 			$msg = JText::_( 'VM_CATEGORY_DELETED_SUCCESS');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author RickG, jseros	 
-	 */		
+	 * @author RickG, jseros
+	 */
 	public function publish()
 	{
 		$categoryModel = $this->getModel('category');
@@ -158,16 +169,16 @@ class VirtuemartControllerCategory extends JController
 		else{
 			$msg = JText::_('VM_CATEGORY_PUBLISHED_SUCCESS');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author RickG, jseros	 
-	 */		
+	 * @author RickG, jseros
+	 */
 	public function unpublish()
 	{
 		$categoryModel = $this->getModel('category');
@@ -177,17 +188,17 @@ class VirtuemartControllerCategory extends JController
 		else{
 			$msg = JText::_('VM_CATEGORY_UNPUBLISHED_SUCCESS');
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Handle the shared/unshared action
 	 *
-	 * @author jseros	 
-	 */	
+	 * @author jseros
+	 */
 	public function toggleShared()
 	{
 		$mainframe = JFactory::getApplication();
@@ -207,22 +218,22 @@ class VirtuemartControllerCategory extends JController
 
 		$categoryModel = $this->getModel('category');
 		$status = $categoryModel->share($cid);
-		
+
 		if( $status == 1 ){
 			$msg = JText::_('VM_CATEGORY_SHARED_SUCCESS');
 		}
 		elseif( $status == -1 ){
 			$msg = JText::_('VM_CATEGORY_UNSHARED_SUCCESS');
 		}
-		
+
 		$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg);
 	}
-	
-	
+
+
 	/**
 	* Save the category order
-	* 
-	* @author jseros	
+	*
+	* @author jseros
 	*/
 	public function orderUp()
 	{
@@ -243,21 +254,21 @@ class VirtuemartControllerCategory extends JController
 
 		//getting the model
 		$model = $this->getModel('category');
-		
+
 		if ($model->orderCategory($id, -1)) {
 			$msg = JText::_( 'Item Moved Up' );
 		} else {
 			$msg = $model->getError();
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg );
 	}
 
-	
+
 	/**
 	* Save the category order
-	* 
-	* @author jseros	
+	*
+	* @author jseros
 	*/
 	public function orderDown()
 	{
@@ -278,17 +289,17 @@ class VirtuemartControllerCategory extends JController
 
 		//getting the model
 		$model = $this->getModel('category');
-		
+
 		if ($model->orderCategory($id, 1)) {
 			$msg = JText::_( 'Item Moved Down' );
 		} else {
 			$msg = $model->getError();
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg );
 	}
-	
-	
+
+
 	/**
 	* Save the categories order
 	*/
@@ -301,7 +312,7 @@ class VirtuemartControllerCategory extends JController
 		JArrayHelper::toInteger($cid);
 
 		$model = $this->getModel('category');
-		
+
 		if ($model->setOrder($cid)) {
 			$msg = JText::_( 'New ordering saved' );
 		} else {
@@ -309,5 +320,5 @@ class VirtuemartControllerCategory extends JController
 		}
 		$this->setRedirect('index.php?option=com_virtuemart&view=category', $msg );
 	}
-	
+
 }

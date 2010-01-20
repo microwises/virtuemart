@@ -1,31 +1,39 @@
 <?php
 /**
- * Currency table
- *
- * @package	VirtueMart
- * @subpackage Currency
- * @author RickG 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Currency table
+*
+* @package	VirtueMart
+* @subpackage Currency
+* @author RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Currency table class
  * The class is is used to manage the currencies in the shop.
  *
- * @author RickG
  * @package		VirtueMart
+ * @author RickG
  */
-class TableCurrency extends JTable
-{
+class TableCurrency extends JTable {
+
 	/** @var int Primary key */
 	var $currency_id				= 0;
 	/** @var string Currency name*/
-	var $currency_name           	= '';	
+	var $currency_name           	= '';
 	/** @var char Currency code */
-	var $currency_code         		= '';				
+	var $currency_code         		= '';
 
 
 	/**
@@ -44,7 +52,7 @@ class TableCurrency extends JTable
 	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
+	function check()
 	{
         if (!$this->currency_name) {
 			$this->setError(JText::_('Currency records must contain a currency name.'));
@@ -57,22 +65,22 @@ class TableCurrency extends JTable
 
 		if (($this->currency_name) && ($this->currency_id == 0)) {
 		    $db =& JFactory::getDBO();
-		    
+
 			$q = 'SELECT count(*) FROM `#__vm_currency` ';
 			$q .= 'WHERE `currency_name`="' .  $this->currency_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
 				$this->setError(JText::_('The given currency name already exists.'));
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }
 ?>

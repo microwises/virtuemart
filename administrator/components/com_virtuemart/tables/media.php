@@ -1,25 +1,33 @@
 <?php
 /**
- * Country table
- *
- * @package	VirtueMart
- * @subpackage Media
- * @author RolandD 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Country table
+*
+* @package	VirtueMart
+* @subpackage Media
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Country table class
  * The class is is used to manage the countries in the shop.
  *
- * @author RolandD
  * @package		VirtueMart
+ * @author RolandD
  */
-class TableMedia extends JTable
-{
+class TableMedia extends JTable {
+
 	/** @var int Primary key */
 	var $file_id				= 0;
 	/** @var integer Product id */
@@ -48,8 +56,8 @@ class TableMedia extends JTable
 	var $file_image_thumb_height = 0;
 	/** @var int File thumbnail image width */
 	var $file_image_thumb_width	= 0;
-	
-	
+
+
 	/**
 	 * @author RolandD
 	 * @param $db A database connector object
@@ -57,14 +65,14 @@ class TableMedia extends JTable
 	function __construct(&$db) {
 		parent::__construct('#__vm_product_files', 'file_id', $db);
 	}
-	
+
 	/**
 	 * Validates the country record fields.
 	 *
 	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
+	function check()
 	{
         if (!$this->country_name) {
 			$this->setError(JText::_('Country records must contain a contry name.'));
@@ -81,22 +89,22 @@ class TableMedia extends JTable
 
 		if (($this->country_name) && ($this->country_id == 0)) {
 		    $db =& JFactory::getDBO();
-		    
+
 			$q = 'SELECT count(*) FROM `#__vm_country` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
 				$this->setError(JText::_('The given country name already exists.'));
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }
 ?>

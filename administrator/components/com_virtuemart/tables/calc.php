@@ -1,35 +1,43 @@
 <?php
 /**
- * Calc table ( for calculations)
- *
- * @package	VirtueMart
- * @subpackage Calculation tool
- * @author Max Milbers 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Calc table ( for calculations)
+*
+* @package	VirtueMart
+* @subpackage Calculation tool
+* @author Max Milbers
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Calculator table class
  * The class is is used to manage the calculation in the shop.
  *
- * @author Max Milbers
  * @package		VirtueMart
+ * @author Max Milbers
  */
-class TableCalc extends JTable
-{
+class TableCalc extends JTable {
+
 	/** @var int Primary key */
 	var $calc_id					= 0;
 	/** @var string VendorID of the rule creator */
 	var $calc_vendor_id				= 0;
 	/** @var string Calculation name */
-	var $calc_name           		= '';	
+	var $calc_name           		= '';
 	/** @var string Calculation description */
-	var $calc_descr           		= '';	
+	var $calc_descr           		= '';
 	/** @var string Calculation kind */
-	var $calc_kind           		= '';	
+	var $calc_kind           		= '';
    	/** @var string Calculation mathematical Operation */
 	var $calc_value_mathop       	= '';
 	/** @var string Calculation value of the mathop */
@@ -38,14 +46,14 @@ class TableCalc extends JTable
 	var $ordering					= 0;
 	/** @var array affecting Categories of the rule */
 	var $calc_categories			= array();
-	
-	var $calc_shopper_published		= 0;	
-	var $calc_vendor_published		= 0;	
+
+	var $calc_shopper_published		= 0;
+	var $calc_vendor_published		= 0;
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
-	
+
 
     /** @var int Published or unpublished */
-	var $published 		        = 0;	
+	var $published 		        = 0;
 
 
 	/**
@@ -65,7 +73,7 @@ class TableCalc extends JTable
 	 * @author Max Milbers
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
+	function check()
 	{
         if (!$this->calc_name) {
 			$this->setError(JText::_('Calculation rules records must contain a Rules name.'));
@@ -74,22 +82,22 @@ class TableCalc extends JTable
 
 		if (($this->calc_name) && ($this->calc_id == 0)) {
 		    $db =& JFactory::getDBO();
-		    
+
 			$q = 'SELECT count(*) FROM `#__vm_calc` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
 				$this->setError(JText::_('The given calculation rule name already exists.'));
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }
 ?>

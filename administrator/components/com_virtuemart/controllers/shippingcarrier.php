@@ -1,15 +1,25 @@
 <?php
 /**
- * Shipping Carrier controller
- *
- * @package	VirtueMart
- * @subpackage ShippingCarrier
- * @author RickG 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Shipping Carrier controller
+*
+* @package	VirtueMart
+* @subpackage ShippingCarrier
+* @author RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
+// Load the controller framework
 jimport('joomla.application.component.controller');
 
 /**
@@ -17,10 +27,10 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage ShippingCarrier
- * @author RickG 
+ * @author RickG
  */
-class VirtuemartControllerShippingCarrier extends JController
-{
+class VirtuemartControllerShippingCarrier extends JController {
+
 	/**
 	 * Method to display the view
 	 *
@@ -28,47 +38,47 @@ class VirtuemartControllerShippingCarrier extends JController
 	 */
 	function __construct() {
 		parent::__construct();
-		
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );			
-	    
-		$document =& JFactory::getDocument();				
-		$viewType	= $document->getType();
-		$view =& $this->getView('shippingcarrier', $viewType);		
 
-		// Push a model into the view					
+		// Register Extra tasks
+		$this->registerTask( 'add',  'edit' );
+
+		$document =& JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view =& $this->getView('shippingcarrier', $viewType);
+
+		// Push a model into the view
 		$model =& $this->getModel('shippingcarrier');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
-		}					
+		}
 	}
-	
+
 	/**
 	 * Display the shipping carrier view
 	 *
-	 * @author RickG	 
+	 * @author RickG
 	 */
-	function display() {			
+	function display() {
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the edit task
 	 *
      * @author RickG
 	 */
 	function edit()
-	{				
+	{
 		JRequest::setVar('controller', 'shippingcarrier');
 		JRequest::setVar('view', 'shippingcarrier');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);		
-		
+		JRequest::setVar('hidemenu', 1);
+
 		parent::display();
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the cancel task
 	 *
@@ -77,34 +87,34 @@ class VirtuemartControllerShippingCarrier extends JController
 	function cancel()
 	{
 		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier');
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the save task
 	 *
-	 * @author RickG	 
-	 */	
+	 * @author RickG
+	 */
 	function save()
 	{
-		$model =& $this->getModel('shippingcarrier');		
-		
+		$model =& $this->getModel('shippingcarrier');
+
 		if ($model->store()) {
 			$msg = JText::_('Shipping Carrier saved!');
 		}
 		else {
 			$msg = JText::_($model->getError());
 		}
-		
+
 		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the remove task
 	 *
-	 * @author RickG	 
-	 */		
+	 * @author RickG
+	 */
 	function remove()
 	{
 		$model = $this->getModel('shippingcarrier');
@@ -114,8 +124,8 @@ class VirtuemartControllerShippingCarrier extends JController
 		else {
 			$msg = JText::_( 'Shipping carriers deleted!');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);
-	}		
+	}
 }
 ?>

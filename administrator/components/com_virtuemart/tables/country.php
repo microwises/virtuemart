@@ -1,37 +1,45 @@
 <?php
 /**
- * Country table
- *
- * @package	VirtueMart
- * @subpackage Country
- * @author RickG 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Country table
+*
+* @package	VirtueMart
+* @subpackage Country
+* @author RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Country table class
  * The class is is used to manage the countries in the shop.
  *
- * @author RickG
  * @package		VirtueMart
+ * @author RickG
  */
-class TableCountry extends JTable
-{
+class TableCountry extends JTable {
+
 	/** @var int Primary key */
 	var $country_id				= 0;
 	/** @var integer Zone id */
 	var $zone_id           		= 0;
 	/** @var string Country name */
-	var $country_name           = '';	
+	var $country_name           = '';
 	/** @var char 3 character country code */
-	var $country_3_code         = '';				
+	var $country_3_code         = '';
     /** @var char 2 character country code */
 	var $country_2_code         = '';
     /** @var int Published or unpublished */
-	var $published 		        = 1;	
+	var $published 		        = 1;
 
 
 	/**
@@ -50,7 +58,7 @@ class TableCountry extends JTable
 	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
+	function check()
 	{
         if (!$this->country_name) {
 			$this->setError(JText::_('Country records must contain a contry name.'));
@@ -67,22 +75,22 @@ class TableCountry extends JTable
 
 		if (($this->country_name) && ($this->country_id == 0)) {
 		    $db =& JFactory::getDBO();
-		    
+
 			$q = 'SELECT count(*) FROM `#__vm_country` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
 				$this->setError(JText::_('The given country name already exists.'));
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }
 ?>

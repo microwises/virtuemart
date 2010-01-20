@@ -1,15 +1,25 @@
 <?php
 /**
- * updatesMigration controller
- *
- * @package	VirtueMart
- * @subpackage updatesMigration
- * @author Max Milbers, RickG
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* updatesMigration controller
+*
+* @package	VirtueMart
+* @subpackage updatesMigration
+* @author Max Milbers, RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
+// Load the controller framework
 jimport('joomla.application.component.controller');
 
 /**
@@ -19,7 +29,6 @@ jimport('joomla.application.component.controller');
  * @subpackage updatesMigration
  * @author Max Milbers
  */
-
 class VirtuemartControllerUpdatesMigration extends JController {
 
     private $installer;
@@ -134,7 +143,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	    $this->setRedirect('index.php?option=com_virtuemart');
 	}
     }
-    
+
 
     function deleteAll() {
 	$this -> installer -> populateVmDatabase("delete_essential.sql");

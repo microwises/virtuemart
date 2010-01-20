@@ -1,15 +1,25 @@
 <?php
 /**
- * Manufacturer category controller
- *
- * @package	VirtueMart
- * @subpackage Manufacturer Category
- * @author vhv_alex
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Manufacturer category controller
+*
+* @package	VirtueMart
+* @subpackage Manufacturer Category
+* @author vhv_alex
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
-defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
+// Load the controller framework
 jimport('joomla.application.component.controller');
 
 /**
@@ -17,56 +27,58 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage Manufacturer
+ * @author
  */
-class VirtuemartControllerManufacturerCategory extends JController
-{
+class VirtuemartControllerManufacturerCategory extends JController {
+
 	/**
 	 * Method to display the view
 	 *
 	 * @access	public
+	 * @author
 	 */
 	function __construct() {
 		parent::__construct();
-		
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );			
-	    
-		$document =& JFactory::getDocument();				
-		$viewType	= $document->getType();
-		$view =& $this->getView('manufacturerCategory', $viewType);		
 
-		// Push a model into the view					
+		// Register Extra tasks
+		$this->registerTask( 'add',  'edit' );
+
+		$document =& JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view =& $this->getView('manufacturerCategory', $viewType);
+
+		// Push a model into the view
 		$model =& $this->getModel('manufacturerCategory');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
-		}			
-	
+		}
+
 	}
-	
+
 	/**
 	 * Display the country view
 	 *
 	 */
-	function display() {			
+	function display() {
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the edit task
 	 *
 	 */
 	function edit()
-	{				
+	{
 		JRequest::setVar('controller', 'manufacturerCategory');
 		JRequest::setVar('view', 'manufacturerCategory');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);		
-		
+		JRequest::setVar('hidemenu', 1);
+
 		parent::display();
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the cnacel task
 	 *
@@ -74,32 +86,32 @@ class VirtuemartControllerManufacturerCategory extends JController
 	function cancel()
 	{
 		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturerCategory');
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the save task
 	 *
-	 */	
+	 */
 	function save()
 	{
-		$model =& $this->getModel('manufacturerCategory');		
-		
+		$model =& $this->getModel('manufacturerCategory');
+
 		if ($model->store()) {
 			$msg = JText::_('VM_MANUFACTURER_CATEGORY_SAVED');
 		}
 		else {
 			$msg = JText::_($model->getError());
 		}
-		
+
 		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the remove task
 	 *
-	 */		
+	 */
 	function remove()
 	{
 		$model = $this->getModel('manufacturerCategory');
@@ -109,38 +121,38 @@ class VirtuemartControllerManufacturerCategory extends JController
 		else {
 			$msg = JText::_( 'VM_MANUFACTURER_DELETE_SUCCESS');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 */		
+	 */
 	function publish()
 	{
 		$model = $this->getModel('manufacturerCategory');
 		if (!$model->publish(true)) {
 			$msg = JText::_('VM_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 */		
+	 */
 	function unpublish()
 	{
 		$model = $this->getModel('manufacturerCategory');
 		if (!$model->publish(false)) {
 			$msg = JText::_('VM_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
 		}
-	
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
-	}	
+	}
 }
 ?>

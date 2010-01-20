@@ -1,15 +1,23 @@
 <?php
 /**
- * Product table
- *
- * @package	VirtueMart
- * @subpackage Product
- * @author RolandD
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Product table
+*
+* @package	VirtueMart
+* @subpackage Product
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Product table class
@@ -18,8 +26,8 @@ defined('_JEXEC') or die();
  * @package	VirtueMart
  * @author RolandD
  */
-class TableProduct_price extends JTable
-{
+class TableProduct_price extends JTable {
+
 	/** @var int Primary key */
 	var $product_price_id = 0;
 	/** @var int Product id */
@@ -38,7 +46,7 @@ class TableProduct_price extends JTable
 	var $price_quantity_start = null;
 	/** @var int Price quantity end */
 	var $price_quantity_end = null;
-	
+
 	/**
 	 * @author RolandD
 	 * @param $db A database connector object
