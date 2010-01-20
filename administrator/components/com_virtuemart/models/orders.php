@@ -121,10 +121,10 @@ class VirtueMartModelOrders extends JModel {
 		$order['items'] = $db->loadObjectList();
 
 		/* Payment details */
-		$q  = "SELECT *, ".VmConfig::get('vm_decrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
+		$q  = "SELECT *, ".VmConfig::get('encrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
 			FROM #__vm_payment_method, #__vm_order_payment
 			WHERE #__vm_order_payment.order_id=".$order_id."
-			AND #__vm_payment_method.payment_method_id = #__vm_order_payment.payment_method_id";
+			AND #__vm_payment_method.id = #__vm_order_payment.payment_method_id";
 		$db->setQuery($q);
 		$order['payment'] = $db->loadObject();
 

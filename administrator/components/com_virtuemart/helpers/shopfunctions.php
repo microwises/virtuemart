@@ -291,7 +291,7 @@ class ShopFunctions {
 			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
 		}
 		if ($exclude_skipfields ) {
-			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', $fields['skipfields'])."') = 0 ";
+			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', $skipfields)."') = 0 ";
 		}
 		$q .= "\n ORDER BY f.ordering";
 		
