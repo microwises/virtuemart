@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Manufacturer category
-
+ * @author
  */
 class VirtueMartModelManufacturerCategory extends JModel {
 

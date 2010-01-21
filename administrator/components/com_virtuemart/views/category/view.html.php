@@ -1,13 +1,25 @@
 <?php
 /**
- * category View
- *
- * @package	VirtueMart
- * @subpackage Category
- * @author RickG, jseros
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Category View
+*
+* @package	VirtueMart
+* @subpackage Category
+* @author RickG, jseros
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+// Load the view framework
 jimport( 'joomla.application.component.view');
 jimport('joomla.html.pane');
 
@@ -19,9 +31,9 @@ jimport('joomla.html.pane');
  * @author RickG, jseros
  */
 class VirtuemartViewCategory extends JView {
-	
-	function display($tpl = null) {	
-		
+
+	function display($tpl = null) {
+
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
@@ -31,19 +43,19 @@ class VirtuemartViewCategory extends JView {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $category = $model->getCategory();
-        
+
         // loading the ShopFunctions and Image Helpers
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('image');
-        
+
         $isNew = ($category->category_id < 1);
-		
+
 		if ($layoutName == 'edit') {
 			if ( $isNew ) {
 				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
 				JToolBarHelper::save();
 				JToolBarHelper::apply();
-				JToolBarHelper::cancel();				
+				JToolBarHelper::cancel();
 			}
 			else {
 				JToolBarHelper::title( JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
@@ -54,13 +66,13 @@ class VirtuemartViewCategory extends JView {
 				$relationInfo = $model->getRelationInfo( $category->category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
-			
-			
+
+
 			$parent = $model->getParentCategory( $category->category_id );
 			$flypages = $model->getTemplateList('product_details');
 			$browsePages = $model->getTemplateList('browse');
-			
-			
+
+
 			$this->assignRef('parent', $parent);
 			$this->assignRef('flypageList', $flypages);
 			$this->assignRef('browsePageList', $browsePages);
@@ -75,27 +87,27 @@ class VirtuemartViewCategory extends JView {
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_SHARE'), true);
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_UNSHARE'), true);
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			
+
 			$categories = $model->getCategoryTree(false);
         	$categoriesSorted = $model->sortCategoryTree($categories);
-			
-			$pagination = $model->getPagination();			
-			
+
+			$pagination = $model->getPagination();
+
 			$lists = array();
 			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
-			
-			$this->assignRef('pagination',	$pagination);			
+
+			$this->assignRef('pagination',	$pagination);
 			$this->assignRef('categories', $categoriesSorted['categories']);
 			$this->assignRef('depthList', $categoriesSorted['depth_list']);
 			$this->assignRef('rowList',	$categoriesSorted['row_list']);
 			$this->assignRef('idList', $categoriesSorted['id_list']);
 			$this->assignRef('lists', $lists);
-		}			
-		
-		
+		}
+
+
 		parent::display($tpl);
 	}
-	
+
 }
 ?>

@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author
+* @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
 *
 * @package	VirtueMart
 * @author RolandD
-*/  
+*/
 class VirtueMartModelProductFiles extends JModel {
 
 	/* Private variables */

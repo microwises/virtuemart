@@ -1,10 +1,25 @@
 <?php
 /**
- * @package		VirtueMart
- * @subpackage 	Config
- * @author 		RickG 
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage Config
+* @author RickG
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
 */
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+// Load the view framework
 jimport( 'joomla.application.component.view');
 jimport('joomla.html.pane');
 
@@ -13,13 +28,12 @@ jimport('joomla.html.pane');
  *
  * @package		VirtueMart
  * @subpackage 	Config
- * @author 		RickG 
+ * @author 		RickG
  */
-class VirtuemartViewConfig extends JView
-{
-	
-	function display($tpl = null)
-	{
+class VirtuemartViewConfig extends JView {
+
+	function display($tpl = null) {
+
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
@@ -33,10 +47,10 @@ class VirtuemartViewConfig extends JView
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::cancel('cancel', 'Close');
-	
+
 		$config = $model->getConfig();
-		$this->assignRef('config', $config);			
-	
+		$this->assignRef('config', $config);
+
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
 		$themelist = $model->getThemeList();
@@ -44,9 +58,9 @@ class VirtuemartViewConfig extends JView
 		$templatelist = $model->getTemplateList();
 		$this->assignRef('templatelist', $templatelist);
 		$flypagelist = $model->getFlypageList();
-		$this->assignRef('flypagelist', $flypagelist);	
+		$this->assignRef('flypagelist', $flypagelist);
 		$noimagelist = $model->getNoImageList();
-		$this->assignRef('noimagelist', $noimagelist);		
+		$this->assignRef('noimagelist', $noimagelist);
 		$orderStatusList = $model->getOrderStatusList();
 		$this->assignRef('orderStatusList', $orderStatusList);
 		$currConverterList = $model->getCurrencyConverterList();
@@ -57,7 +71,7 @@ class VirtuemartViewConfig extends JView
 		$this->assignRef('contentLinks', $contentLinks);
 		$aclGroups = $usermodel->getAclGroupIndentedTree();
 		$this->assignRef('aclGroups', $aclGroups);
-	
+
 		parent::display($tpl);
 	}
 }

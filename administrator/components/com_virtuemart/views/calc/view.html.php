@@ -1,13 +1,25 @@
 <?php
 /**
- * Country View
- *
- * @package	VirtueMart
- * @subpackage Country
- * @author RickG
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Calculation View
+*
+* @package	VirtueMart
+* @subpackage Calculation
+* @author RickG, Max Milbers
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+// Load the view framework
 jimport( 'joomla.application.component.view');
 
 /**
@@ -15,10 +27,10 @@ jimport( 'joomla.application.component.view');
  *
  * @package	VirtueMart
  * @subpackage Calculation tool
- * @author Max Milbers 
+ * @author Max Milbers
  */
 class VirtuemartViewCalc extends JView {
-	
+
 	function display($tpl = null) {
 
 		// Load the helper(s)
@@ -27,10 +39,10 @@ class VirtuemartViewCalc extends JView {
 		$model = $this->getModel('calc');
 
         $calc = $model->getCalc();
-        
+
         $layoutName = JRequest::getVar('layout', 'default');
         $isNew = ($calc->calc_id < 1);
-		
+
 		if ($layoutName == 'edit') {
 			$this->assignRef('calc',	$calc);
 			if ($isNew) {
@@ -67,13 +79,13 @@ class VirtuemartViewCalc extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();	
-			
-			$pagination = $model->getPagination();			
-			$this->assignRef('pagination',	$pagination);	
-			
+			JToolBarHelper::addNewX();
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination',	$pagination);
+
 			$calcs = $model->getCalcs();
-			$this->assignRef('calcs',	$calcs);	
+			$this->assignRef('calcs',	$calcs);
 		}
 		require_once(CLASSPATH. 'ps_perm.php' );
 		$perm = new ps_perm();
@@ -82,10 +94,10 @@ class VirtuemartViewCalc extends JView {
 		$this->assignRef('model',	$model);
 
 //		$this->assignRef('calc_categories', $calc->calc_categories);
-	
-		
+
+
 		parent::display($tpl);
 	}
-	
+
 }
 ?>

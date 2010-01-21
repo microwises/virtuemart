@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Category
-* @author
+* @author jseros, RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -119,7 +119,7 @@ class VirtueMartModelCategory extends JModel {
 	/**
 	* Return an array containing category information
 	*
-	* @author VirtueMart Development Team
+	* @author
 	*
 	* @param boolean $onlyPublished Show only published categories?
 	* @param boolean $withParentId Keep in mind $parentId param?
@@ -180,7 +180,7 @@ class VirtueMartModelCategory extends JModel {
 	/**
 	 * Sorts an array with categories so the order of the categories is the same as in a tree.
 	 *
-	 * @author VirtueMart Development Team, jseros
+	 * @author jseros
 	 *
 	 * @param array $categoryArr
 	 * @return associative array ordering categories

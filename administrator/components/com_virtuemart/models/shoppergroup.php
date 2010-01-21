@@ -1,16 +1,25 @@
 <?php
 /**
- * Data model for shopper group
- *
- * @package	VirtueMart
- * @subpackage ShopperGroup
- * @author Markus Öhler
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
- */
+*
+* Data model for shopper group
+*
+* @package	VirtueMart
+* @subpackage ShopperGroup
+* @author Markus Öhler
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id: $
+*/
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load the model framework
 jimport( 'joomla.application.component.model');
 
 /**
@@ -86,14 +95,14 @@ class VirtueMartModelShopperGroup extends JModel {
      * @return int Total number of countries in the database
      */
     function _getTotal() {
-    	
+
 	    if (empty($this->_total)) {
 	    	$db = JFactory::getDBO();
-	      $query = 'SELECT ' . $db->nameQuote('shopper_group_id') 
+	      $query = 'SELECT ' . $db->nameQuote('shopper_group_id')
 	        . ' FROM ' . $db->nameQuote('#__vm_shopper_group');
 	      $this->_total = $this->_getListCount($query);
 	    }
-	    
+
 	    return $this->_total;
     }
 
@@ -105,12 +114,12 @@ class VirtueMartModelShopperGroup extends JModel {
      */
     function getShopperGroup() {
 	    $db = JFactory::getDBO();
-	    
+
 	    // TODO-MOE: This should not be necessary - however for some reason
 	    // it does not pick up the cid parameter using $this->_id
 	    // !! NEED TO FIGURE OUT WHAT I'M DOING WRONG !!
       $idArray = JRequest::getVar('cid', 0, '', 'array');
-      
+
 	    if (empty($_data)) {
 	      $this->_data = $this->getTable();
 	      $this->_data->load((int) $idArray[0]);
@@ -192,10 +201,10 @@ class VirtueMartModelShopperGroup extends JModel {
 	    $query = 'SELECT * FROM '
 	      . $db->nameQuote('#__vm_shopper_group')
 	      . 'ORDER BY '
-	      . $db->nameQuote('vendor_id') 
+	      . $db->nameQuote('vendor_id')
 	      . ','
 	      . $db->nameQuote('shopper_group_name');
-	      
+
 	    if ($noLimit) {
 	      $this->_data = $this->_getList($query);
 	    } else {

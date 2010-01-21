@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Country
-* @author RickG
+* @author RickG, Max Milbers, jseros
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage State
- * @author RickG and Max Milbers
+ * @author RickG, Max Milbers
  */
 class VirtueMartModelState extends JModel {
 
@@ -255,7 +255,7 @@ class VirtueMartModelState extends JModel {
 	/**
 	 * Retireve a list of countries from the database.
 	 *
-     * @author RickG and Max Milbers
+     * @author RickG, Max Milbers
 	 * @return object List of state objects
 	 */
 	public function getStates($countryId)
