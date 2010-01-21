@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Product
-* @author RolandD
+* @author RolandD, mwattier, pablo
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
 *
 * @package	VirtueMart
 * @author RolandD
-*/  
+*/
 class VirtueMartModelWaitingList extends JModel {
 
 	/**
@@ -164,14 +164,14 @@ class VirtueMartModelWaitingList extends JModel {
 		return True;
 	}
 
+	/**
+	* Creates a new waiting list entry
+	*
+	* @author mwattier
+	* @param $product_id
+	* @return
+	*/
 
-	/**************************************************************************
-	* name: add()
-	* created by: mwattier
-	* description: creates a new waiting list entry
-	* parameters:
-	* returns:
-	**************************************************************************/
 	function add(&$d) {
 		global $auth;
 		$db = new ps_DB;
@@ -190,13 +190,14 @@ class VirtueMartModelWaitingList extends JModel {
 
 	}
 
-	/**************************************************************************
-	* name: delete()
-	* created by: pablo
-	* description: Should delete a category and and categories under it.
-	* parameters:
-	* returns:
-	**************************************************************************/
+	/**
+	* Should delete a category and add categories under it.
+	*
+	* @author pablo
+	* @param $product_id
+	* @return
+	*/
+
 	function delete(&$d) {
 		$db = new ps_DB;
 
@@ -210,13 +211,15 @@ class VirtueMartModelWaitingList extends JModel {
 		return True;
 
 	}
-	/**************************************************************************
-	* name: notify_list()
-	* created by:
-	* description: Will notify all people who have not been notified
-	* parameters: takes the $product_id
-	* returns: true
-	**************************************************************************/
+
+	/**
+	* Will notify all people who have not been notified
+	*
+	* @author
+	* @param string $product_id the ID of the product
+	* @return true
+	*/
+
 	function notify_list($product_id) {
 		global $sess,  $mosConfig_fromname;
 
