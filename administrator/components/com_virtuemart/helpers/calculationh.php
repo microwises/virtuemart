@@ -97,17 +97,24 @@ class calculationHelper{
 		
 		$basePriceShopCurrency = $this->convertCurrencyToShopDefault($this->productCurrency, $basePrice);		
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
-			
+		echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
+		echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
+		
+		
 		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency));	
 		$discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-
+		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
+		echo '<br /> $discountedPrice. '.$discountedPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
+		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
+		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
 		$salesPrice = $this->roundDisplay($unroundedSalesPrice);
-
+		echo '<br /> $salesPrice. '.$salesPrice;
 		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
-		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));
-		
+		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
+		echo '<br /> $discountAmount. '.$discountAmount;
+		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
 		$prices = array(
 				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
 				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
@@ -116,6 +123,9 @@ class calculationHelper{
 				'discountAmount'   => $discountAmount, //The "you save X money"
 				'salesPrice'   => $salesPrice 		//The endprice, with all kind of discounts and Tax
 				);
+//				echo '<br />';
+//				echo print_r($prices);
+//				echo '<br />';
 		return $prices;
 	}
 	
@@ -170,7 +180,7 @@ class calculationHelper{
 		$cBRules = $this->gatherEffectingRulesForCoupon();
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
-		$cBRules = $this->gatherEffectingRulesForCoupon();
+//		$cBRules = $this->gatherEffectingRulesForCoupon();
 		
 		$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $resultWithTax));
 		$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $discountBeforeTax));
@@ -180,6 +190,7 @@ class calculationHelper{
 		echo '$discountBeforeTax: '.$discountBeforeTax.'<br />';
 		echo '$discountWithTax: '.$discountWithTax.'<br />';
 		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
+		
 	}
 
 	/**
@@ -221,11 +232,14 @@ class calculationHelper{
 	 */ 
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
-		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
+//		$model = $this->getModel('calc');
+//        $calc = $model->getCalc();
+
+//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
+//		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
 		$countries = ''; //$this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
 		$states = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
-
+		$shopperGroup = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__vm_calc WHERE ' .
@@ -233,17 +247,34 @@ class calculationHelper{
 		' AND `published`="1" ' .
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) '.
-		$cats . $shoppergrps . $countries . $states ;
+		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
+
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-		JError::raiseNOtice(1, 'query '.$q);
-		if (empty($rules)) return;
-		//Just for developing
-//		foreach($rules as $rule){
-//			echo '<br /> Entrypoint: '.$entrypoint.' Add rule '.$rule['calc_name'];
-//		}
-		return $rules;
+
+		$testedRules= array();
+		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
+		foreach($rules as $rule){
+//			echo '<br/ >rule '.$rule["calc_id"];
+			$q= 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$this->_db->setQuery($q);
+			$cats = $this->_db->loadResultArray();
+//			echo '<br/ >Categories'. sizeof($cats);
+			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$this->_db->setQuery($q);
+			$shoppergrps = $this->_db->loadResultArray();
+//			echo '<br/ >calc_shopper_group '. sizeof($shoppergrps);
+////			echo '<br/ >rule '.$rule["calc_id"].' '.$rule['calc_name'].' the cats '.print_r($cats).' groups '.print_r($shoppergrps);
+//			echo '<br/ >Cats Test '.$this->testRulePartEffecting($cats,$this->_cats);
+//			echo '<br/ >Shoppergrps Test '.$this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
+			if($this->testRulePartEffecting($cats,$this->_cats) && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId)){
+				echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
+				$testedRules[]=$rule;
+			}
+		}
+
+//		return $rules;
+		return $testedRules;
 	}
 	
 	/**
@@ -405,6 +436,41 @@ class calculationHelper{
 	 */
 	function roundDisplay($value){
 		return round($value,2);
+	}
+	
+		
+	/**
+	 * Can test the tablefields Category, Country, State
+	 *  If the the data is 0 false is returned
+	 */
+	 
+	function testRulePartEffecting($rule,$data){
+		
+		if(empty ($rule)) return true;
+		if(empty ($data)) return true;
+		
+		if (!is_array($rule)) $rule = array($rule);
+		if (!is_array($data)) $data = array($data);
+		$intersect = array_intersect($rule,$data);
+		if($intersect){
+			return true;
+		}else{
+			return false;
+		}
+//		if(isset($rule)){
+//			if(is_array($rule)){
+//				$intersect = array_intersect($rule,$data);
+//				if($intersect){
+//					return true;
+//				}else{
+//					return false;
+//				}
+//			}else{
+//				return true;
+//			}
+//		}else{
+//			return true;
+//		}
 	}
 	
 	/** Sorts indexed 2D array by a specified sub array key

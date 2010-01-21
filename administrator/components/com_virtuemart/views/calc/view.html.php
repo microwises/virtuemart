@@ -1,11 +1,11 @@
 <?php
 /**
 *
-* Calculation View
+* Calc View
 *
 * @package	VirtueMart
-* @subpackage Calculation
-* @author RickG, Max Milbers
+* @subpackage Calculation tool
+* @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -16,33 +16,21 @@
 * @version $Id$
 */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-// Load the view framework
 jimport( 'joomla.application.component.view');
 
-/**
- * HTML View class for maintaining the list of countries
- *
- * @package	VirtueMart
- * @subpackage Calculation tool
- * @author Max Milbers
- */
 class VirtuemartViewCalc extends JView {
-
+	
 	function display($tpl = null) {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel('calc');
-
         $calc = $model->getCalc();
-
+        
         $layoutName = JRequest::getVar('layout', 'default');
         $isNew = ($calc->calc_id < 1);
-
+		
 		if ($layoutName == 'edit') {
 			$this->assignRef('calc',	$calc);
 			if ($isNew) {
@@ -62,16 +50,28 @@ class VirtuemartViewCalc extends JView {
 
 			/* Load some common models */
 			$categoryModel = $this->getModel('category');
-//			$this->assignRef('categoryModel',	$categoryModel);
 			$category_tree= null;
-
+			if (!is_array($calc->calc_categories)) $calc->calc_categories = array($calc->calc_categories);
+			$categories = $calc->calc_categories;
+			foreach ($categories as $value) {
+				$categories[$value]  = 1;
+			}
 			/* Get the category tree */
-//			if (isset($calc->calc_categories)) $category_tree = ShopFunctions::categoryListTree('', 0, 0, $calc->calc_categories);
-//			else $category_tree = ShopFunctions::categoryListTree();
-			$test[] = 1;$test[] = 2;
-			$category_tree = ShopFunctions::categoryListTree(0, 0, 0, $test);
-
+			if (isset($calc->calc_categories)) $category_tree = ShopFunctions::categoryListTree('', 0, 0, $categories);
+			else $category_tree = ShopFunctions::categoryListTree();
 			$this->assignRef('category_tree', $category_tree);
+			
+			$shopper_tree= null;
+			if (!is_array($calc->calc_shopper_groups)) $calc->calc_shopper_groups = array($calc->calc_shopper_groups);
+			$calc_shopper_groups = $calc->calc_shopper_groups;
+			foreach ($calc_shopper_groups as $value) {
+				$calc_shopper_groups[$value]  = 1;
+			}
+			/* Get the category tree */
+			if (isset($calc->calc_shopper_groups)) $shopper_tree = ShopFunctions::renderShopperGroupList($calc_shopper_groups,1);
+			else $shopper_tree = ShopFunctions::shopperListTree();
+			$this->assignRef('shopper_tree', $shopper_tree);
+			
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CALC_LIST_LBL' ), 'vm_countries_48' );
@@ -79,13 +79,14 @@ class VirtuemartViewCalc extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
+			JToolBarHelper::addNewX();	
+			
+			$pagination = $model->getPagination();			
+			$this->assignRef('pagination',	$pagination);	
+			
 			$calcs = $model->getCalcs();
-			$this->assignRef('calcs',	$calcs);
+			$this->assignRef('calcs',	$calcs);	
+			
 		}
 		require_once(CLASSPATH. 'ps_perm.php' );
 		$perm = new ps_perm();
@@ -93,11 +94,14 @@ class VirtuemartViewCalc extends JView {
 		$this->assignRef('perm',	$perm);
 		$this->assignRef('model',	$model);
 
+		//@todo should be depended by loggedVendor
+		$vendorId=1;
+		$this->assignRef('vendorId', $vendorId);
 //		$this->assignRef('calc_categories', $calc->calc_categories);
-
-
+	
+		
 		parent::display($tpl);
 	}
-
+	
 }
 ?>

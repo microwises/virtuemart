@@ -77,11 +77,39 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>			
 			<td>
-					<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
-						<?php echo $this->category_tree; ?>
-					</select>
+				<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
+					<?php echo $this->category_tree; ?>
+				</select>
 			</td>
-		</tr>		
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('Affected Shoppergroups'); ?>:
+				</label>
+			</td>			
+			<td>
+
+					<?php echo $this->shopper_tree; ?>
+				
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
+			</td>
+			<td>
+				<?php echo ShopFunctions::renderCountryList($this->store->userInfo->country,1);?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+		    	<?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
+			</td>
+			<td>
+		    	<?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country, 'country_id','',1);?>
+			</td>
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -112,6 +140,8 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="calc" />
+	<input type="hidden" name="calc_vendor_id" value="<?php echo $this->vendorId; ?>" />
+
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?> 

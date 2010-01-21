@@ -44,7 +44,10 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_CATEGORY' ); ?>
-			</th>			
+			</th>
+			<th width="20">
+				<?php echo JText::_( 'VM_CALC_SHOPPER_GROUPS' ); ?>
+			</th>
 			<th width="10">
 				<?php echo JText::_( 'VM_CALC_VIS_SHOPPER' ); ?>
 			</th>
@@ -119,16 +122,19 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calc_currency); ?>
 				</td>				
 				<td>
-					<?php echo JText::_($row->calc_categories); ?>
+					<?php echo JText::_($row->calcCategoriesList); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->calc_shopper_groups); ?>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
-						<img src="images/<?php echo ( $row->calc_shopper_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_shopper_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+						<img src="images/<?php echo ( $row->calc_shopper_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
 					</a>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
-						<img src="images/<?php echo ( $row->calc_vendor_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_vendor_published == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+						<img src="images/<?php echo ( $row->calc_vendor_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
 					</a>
 				</td>
 

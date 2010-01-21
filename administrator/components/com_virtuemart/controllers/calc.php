@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Calc
-* @author RickG, jseros
+* @author Max Milbers, jseros
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,27 +23,26 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 /**
- * Calc Rules Controller
+ * Calculator Controller
  *
  * @package    VirtueMart
- * @subpackage Calc
- * @author jseros
+ * @subpackage Calculation tool
+ * @author Max Milbers
  */
-class VirtuemartControllerCalc extends JController {
-
+class VirtuemartControllerCalc extends JController
+{
 	/**
-	 * Contructor
+	 * Method to display the view
 	 *
 	 * @access	public
-	 * @author
 	 */
 	public function __construct() {
 		parent::__construct();
-
+		echo 'ControllerCalc start  ';
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
-
+		$document =& JFactory::getDocument();				
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('calc', $viewType);
@@ -53,52 +52,56 @@ class VirtuemartControllerCalc extends JController {
 		if (!JError::isError($calcModel)) {
 			$view->setModel($calcModel, true);
 		}
-	}
+		/* Product category functions */
+		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
+		echo 'ControllerCalc end<br />';
+	}
+	
 	/**
-	 * Display any calc view
+	 * Display the calculator view
 	 *
-	 * @author RickG, jseros
+	 * @author RickG	 
 	 */
 	public function display() {
 		parent::display();
 	}
-
-
+	
+	
 	/**
 	 * Handle the edit task
 	 *
-     * @author RickG
+     * @author Max Milbers
 	 */
 	public function edit()
-	{
+	{				
 		JRequest::setVar('controller', 'calc');
 		JRequest::setVar('view', 'calc');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
+		JRequest::setVar('hidemenu', 1);		
+		
 		parent::display();
-	}
-
-
+	}		
+	
+	
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */
 	public function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=calc');
-	}
-
-
+		$msg = JText::_('Operation Canceled!!');
+		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
+	}	
+	
+	
 	/**
 	 * Handle the save task
 	 *
-	 * @author RickG, jseros
-	 */
-	public function save()
-	{
+	 * @author Max Milbers, Jseros	 
+	 */	
+	public function save(){
 		$calcModel = $this->getModel('calc');
 		$cmd = JRequest::getCmd('task');
 
@@ -117,14 +120,12 @@ class VirtuemartControllerCalc extends JController {
 		}
 
 		$this->setRedirect($redirection, $msg);
-	}
-
-
+}
 	/**
 	 * Handle the remove task
 	 *
-	 * @author RickG, jseros
-	 */
+	 * @author Max Milbers, Jseros	 
+	 */		
 	public function remove()
 	{
 		// Check token
@@ -153,13 +154,13 @@ class VirtuemartControllerCalc extends JController {
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
 	}
-
-
+	
+	
 	/**
 	 * Handle the publish task
 	 *
-	 * @author RickG, jseros
-	 */
+	 * @author Jseros, Max Milbers	 
+	 */		
 	public function publish()
 	{
 		$calcModel = $this->getModel('calc');
@@ -172,14 +173,14 @@ class VirtuemartControllerCalc extends JController {
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
 	}
-
-
+	
+	
 	/**
 	 * Handle the publish task
 	 *
-	 * @author RickG, jseros
-	 */
-	public function unpublish()
+	 * @author Max Milbers, Jseros	 
+	 */		
+	function unpublish()
 	{
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(false)) {
@@ -357,3 +358,4 @@ class VirtuemartControllerCalc extends JController {
 	}
 
 }
+?>

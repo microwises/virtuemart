@@ -47,6 +47,34 @@ class ShopFunctions {
 		return $mailer;
 	}
 	
+		/**
+	 * Creates a Drop Down list of available Shopper Groups
+	 *
+	 * @author Max Milbers
+	 * @param string $name
+	 * @param int $shopper_group_id
+	 * @param string $extra
+	 * @return string
+	 */
+	public function renderShopperGroupList($shopper_group_id='0', $multiple) {
+		
+		$shopperModel = self::getModel('shoppergroup');
+	
+		$shoppergrps = $shopperModel->getShopperGroups(true);
+		
+		$emptyOption = new stdClass();
+		$emptyOption->shopper_id = '';
+		$emptyOption->shopper_group_name = '-- '.JText::_('Select').' --';
+
+		array_unshift($shoppergrps, $emptyOption);
+		if($multiple){
+			$multiple = 'multiple="multiple"';
+		}else{
+			$multiple = '';
+		}
+		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, 'shopper_group_id[]', $multiple, 'shopper_group_id', 'shopper_group_name', $shopper_group_id , 'shopper_group_id');
+		return $listHTML;
+	}
 	
 	/**
 	* Render a simple country list
@@ -55,7 +83,7 @@ class ShopFunctions {
 	* @param int $countryId Selected country id
 	* @return string HTML containing the <select />
 	*/
-	public function renderCountryList( $countryId = 0 ){
+	public function renderCountryList( $countryId = 0 , $multiple=0){
 		
 		$countryModel = self::getModel('country');
 				
@@ -66,8 +94,12 @@ class ShopFunctions {
 		$emptyOption->country_name = '-- '.JText::_('Select').' --';
 		
 		array_unshift($countries, $emptyOption);
-
-		$listHTML = JHTML::_('Select.genericlist', $countries, 'country_id', '', 'country_id', 'country_name', $countryId , 'country_id');
+		if($multiple){
+			$multiple = 'multiple="multiple"';
+		}else{
+			$multiple = '';
+		}
+		$listHTML = JHTML::_('Select.genericlist', $countries, 'country_id[]', $multiple, 'country_id', 'country_name', $countryId , 'country_id');
 		return $listHTML;
 	}
 	
@@ -81,21 +113,30 @@ class ShopFunctions {
 	* @param string $dependentField Parent <select /> ID attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = ''){
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple=0){
 		
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		$states = array();
-		
-		if( $countryId ){
-			$states = $stateModel->getFullStates( $countryId );
-		}
+
+//		if( $countryId ){
+//			if (!is_array($countryId)) $countryId = array($countryId);
+//			foreach ($countryId as $country){
+//				JError::raiseNotice(1,'die CountryId '.$country);
+//				$states = array_merge($states, $stateModel->getFullStates( $country ));
+//			}
+//		}
 		
 		$emptyOption = new stdClass();
 		$emptyOption->state_id = '';
 		$emptyOption->state_name = '-- '.JText::_('Select').' --';
 			
-		array_unshift($states, $emptyOption);
+		array_unshift($states, $emptyOption);			
+		if($multiple){
+			$multiple = 'multiple="multiple"';
+		}else{
+			$multiple = '';
+		}
 		
 		$attribs = array(
 			'class' => 'dependent['. $dependentField .']'
@@ -103,7 +144,7 @@ class ShopFunctions {
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
-		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id', $attribs, 'state_id', 'state_name', $stateId, 'state_id');
+		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id',  $attribs, 'state_id', 'state_name', $stateId, 'state_id');
 		return $listHTML;
 	}
 	
