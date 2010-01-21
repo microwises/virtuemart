@@ -16,7 +16,18 @@
 * @version $Id$
 */
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+// Load the view framework
 jimport( 'joomla.application.component.view');
+
+/**
+ * Description
+ *
+ * @package		VirtueMart
+ * @author
+ */
 
 class VirtuemartViewCalc extends JView {
 	
