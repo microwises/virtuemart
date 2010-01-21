@@ -1,4 +1,23 @@
-<?php defined('_JEXEC') or die('Restricted access');?>
+<?php
+/**
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage 
+* @author
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
+ 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');?>
 <h2><?php echo JText::_('PRODUCT_WAITING_LIST_USERLIST');?>:</h2>
 <input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
 <input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> 
