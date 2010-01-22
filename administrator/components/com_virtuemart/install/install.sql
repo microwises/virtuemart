@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
 
 CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_id` int(11) NOT NULL,
-  `calc_vendor_id` int(4) NOT NULL COMMENT 'Belongs to vendor',
+  `calc_vendor_id` int(4) NOT NULL COMMENT 'Belongs to vendor, if no vendor => for all',
   `calc_name` text NOT NULL COMMENT 'Name of the rule',
   `calc_descr` text COMMENT 'Description',
   `calc_kind` text COMMENT 'Discount/Tax/Margin/Commission',
@@ -54,12 +54,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_value` text COMMENT 'The Amount',
   `calc_currency` char(3) NOT NULL default '0' COMMENT 'Currency of the Rule',
   `ordering` tinyint(2) NOT NULL,
-  `calc_categories` text COMMENT 'Affected Categories Ids',
-  `calc_shopper` text COMMENT 'Ids of the shoppergroups',
   `calc_country` text COMMENT 'Affected Country Ids',
   `calc_state` text COMMENT 'Affected State Ids',
-  `calc_shopper_published` tinyint(1) NOT NULL default '1' COMMENT 'Visible for Shoppers',
-  `calc_vendor_published` tinyint(1) NOT NULL default '1' COMMENT 'Visible for Vendors',
+  `calc_shopper_published` tinyint(1) default NULL COMMENT 'Visible for Shoppers',
+  `calc_vendor_published` tinyint(1) default NULL COMMENT 'Visible for Vendors',
   `publish_up` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
   `publish_down` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Enddate if nothing is set = permanent',
   `modified` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'modified date',
@@ -67,10 +65,35 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_affected` text COMMENT 'affected productId''s',
   `calc_amount_cond` float default NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text COMMENT 'The dimension, kg, m, €',
-  `published` tinyint(1) NOT NULL default '1',
-  `shared` tinyint(1) NOT NULL default '1' COMMENT 'Affects all vendors',
+  `published` tinyint(1) NOT NULL default '0',
+  `shared` tinyint(1) NOT NULL default '0' COMMENT 'Affects all vendors',
   PRIMARY KEY  (`calc_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+--
+-- Tabellenstruktur für Tabelle `jos_vm_calc_category_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `calc_rule_id` int(11) NOT NULL default '0',
+  `calc_category` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+
+
+--
+-- Tabellenstruktur für Tabelle `jos_vm_calc_shoppergroup_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_calc_shoppergroup_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `calc_rule_id` int(11) NOT NULL default '0',
+  `calc_shopper_group` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
 
 --
 -- Table structure for table `#__vm_cart`

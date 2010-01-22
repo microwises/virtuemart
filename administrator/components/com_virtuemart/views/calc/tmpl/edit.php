@@ -148,6 +148,28 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_published', 'class="inputbox"', $this->calc->calc_vendor_published); ?>
 			</td>
 		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('start Date'); ?>:
+				</label>
+			</td>
+			<td>			
+				<?php $startDate = JFactory::getDate($this->calc->publish_up);
+				echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT); ?>
+			</td>
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('end Date'); ?>:
+				</label>
+			</td>
+			<td>			
+				<?php $endDate = JFactory::getDate($this->calc->publish_down);
+				echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
+			</td>
+		</tr>
 	</table>
 	</fieldset>
 	<?php print_r($this->calc);?>

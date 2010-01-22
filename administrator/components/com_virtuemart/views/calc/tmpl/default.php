@@ -143,7 +143,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calcCategoriesList); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_shopper_groups); ?>
+					<?php echo JText::_($row->calcShoppersList); ?>
 				</td>
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
@@ -157,10 +157,12 @@ AdminMenuHelper::startAdminArea();
 				</td>
 
 				<td>
-					<?php echo JText::_($row->calc_start_date); ?>
+					<?php $startDate = JFactory::getDate($row->publish_up);
+					echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_end_date); ?>
+					<?php $endDate = JFactory::getDate($row->publish_down);
+					echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
 				</td>
 				<td>
 					<?php echo JText::_($row->calc_amount_cond); ?>

@@ -108,9 +108,7 @@ class VirtuemartViewCalc extends JView {
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
-//		$this->assignRef('calc_categories', $calc->calc_categories);
-	
-		
+
 		parent::display($tpl);
 	}
 	

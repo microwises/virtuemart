@@ -161,12 +161,12 @@ class VirtueMartModelCalc extends JModel
 		}
 
 		$db = JFactory::getDBO();
-		//not sure if this is even needed
+
 		foreach ($this->_data as $data){
-			/* Add the product categories */
+			/* Write the first 5 categories in the list */
 			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
-			$calcCategories = $data->calc_categories = $db->loadResultArray();
+			$calcCategories = $db->loadResultArray();
 			if(isset($calcCategories)){
 				$calcCategoriesList='';
 				$i=0;
@@ -178,9 +178,26 @@ class VirtueMartModelCalc extends JModel
 					$i++;
 					if($i>4) break;
 				}
-				$data->calcCategoriesList = $calcCategoriesList;
+				$data->calcCategoriesList = substr($calcCategoriesList,0,-2);
 			}
 			
+			/* Write the first 5 shoppergroups in the list */
+			$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
+			$db->setQuery($q);
+			$calcShoppers = $db->loadResultArray();
+			if(isset($calcShoppers)){
+				$calcShoppersList='';
+				$i=0;
+				foreach ($calcShoppers as $value) {
+					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
+					$db->setQuery($q);
+					$shopperName = $db->loadResult();
+					$calcShoppersList .= $shopperName. ', ';
+					$i++;
+					if($i>4) break;
+				}
+				$data->calcShoppersList = substr($calcShoppersList,0,-2);
+			}
 		}
 //		echo (print_r($this->_data).'<br /><br />');
 		
@@ -222,6 +239,15 @@ class VirtueMartModelCalc extends JModel
 
 		$data = JRequest::get('post');		
 		
+		// Convert selected dates to MySQL format for storing.
+		$startDate = JFactory::getDate($data['publish_up']);
+		$data['publish_up'] = $startDate->toMySQL();
+		$expireDate = JFactory::getDate($data['publish_down']);
+		$data['publish_down'] = $expireDate->toMySQL();
+		
+		$modified = JFactory::getDate();
+		$data['modified']=$modified->toFormat(VM_DATE_FORMAT);
+		echo 'heyhoooo '.$data['modified'];
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());

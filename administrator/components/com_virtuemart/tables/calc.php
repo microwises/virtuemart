@@ -55,6 +55,12 @@ class TableCalc extends JTable
 	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
 	var $calc_vendor_published		= 0;
+	/** @var string start date */
+	var $publish_up;
+	/** @var string end date */
+	var $publish_down;
+	/** @var string modified date */
+	var $modified;
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
