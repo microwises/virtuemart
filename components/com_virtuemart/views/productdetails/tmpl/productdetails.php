@@ -1,4 +1,23 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php
+/**
+* Show the product details page
+*
+* @package	VirtueMart
+* @subpackage 
+* @author RolandD
+* @todo handle child products
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+*/
+ 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
 /* Let's see if we found the product */
 if (!$this->product) {
 	echo JText::_('VM_PRODUCT_NOT_FOUND');
@@ -60,8 +79,13 @@ else { ?>
 			<div><?php echo ImageHelper::displayShopImage($this->product->product_full_image, 'product'); ?></div>
 			</td>
 			<td valign="top">
-				<div style="text-align: center;">
-					<span style="font-style: italic;"></span><?php echo $addtocart ?><span style="font-style: italic;"></span></div>
+				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
+					<div style="text-align: center;">
+						<?php
+							echo $this->loadTemplate('addtocart');
+						?>
+					</div>
+				<?php } ?>
 			</td>
 		</tr>
 		<tr>
@@ -142,8 +166,7 @@ else { ?>
 							echo $this->loadTemplate('relatedproducts');
 						}
 					}
-					?>	
-				<br />
+				?>	
 			</td>
 		</tr>
 		<tr>
@@ -151,16 +174,29 @@ else { ?>
 				<div style="text-align: center;">
 				</div>
 				<?php
-				/* Child products */
-				// $navigation_childlist = $tpl->fetch( 'common/categoryChildlist.tpl.php');
-				echo $navigation_childlist ?><br />
+				/* Child categories */
+				if ($this->category->haschildren && !empty($this->category->children)) {
+					echo $this->loadTemplate('categorychildlist');
+				}
+				?>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2"><?php echo $product_reviewform ?><br /></td>
+			<td colspan="2">
+				<?php echo $this->loadTemplate('reviews');?>
+			</td>
 		</tr>
 		<tr>
-			<td colspan="3"><div style="text-align: center;"><?php echo $vendor_link ?><br /></div><br /></td>
+			<td colspan="3">
+				<div style="text-align: center;">
+					<?php 
+						$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
+						$text = JText::_('VM_VENDOR_FORM_INFO_LBL');
+						echo shopFunctionsF::vmPopupLink( $link, $text ); 
+					?><br />
+				</div>
+				<br />
+			</td>
 		</tr>
 	</table>
 <?php } ?>

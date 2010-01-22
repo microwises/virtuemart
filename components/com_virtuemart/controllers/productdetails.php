@@ -23,7 +23,10 @@ class VirtueMartControllerProductdetails extends JController {
 		$view = $this->getView('productdetails', 'html');
 		
 		/* Add the default model */
-		$view->setModel( $this->getModel( 'productdetails', 'VirtuemartModel' ), true );
+		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		
+		/* Add the category model */
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		
 		/* Set the layout */
 		$view->setLayout('productdetails');

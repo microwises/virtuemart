@@ -14,16 +14,27 @@ jimport( 'joomla.application.component.view' );
 */
 class VirtueMartViewProductdetails extends JView {
 	
+	/**
+	* Collect all data to show on the template
+	*
+	* @author RolandD
+	*/
 	function display($tpl = null) {
 		$mainframe = JFactory::getApplication();
-		$pathway	= $mainframe->getPathway();
+		$pathway = $mainframe->getPathway();
 		$task = JRequest::getCmd('task');
+		
+		/* Load the authorizations */
+		$auth = JRequest::getVar('auth');
+		$this->assignRef('auth', $auth);
 		
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
 		
 		/* Load helpers */
 		$this->loadHelper('image');
+		$this->loadHelper('vendorhelper');
+		$this->loadHelper('addtocart');
 		
 		/* Set the titles */
 		$mainframe->setPageTitle(JText::_('VM_PRODUCT_DETAILS'));
@@ -35,11 +46,26 @@ class VirtueMartViewProductdetails extends JView {
 		$this->assignRef('product', $product);
 		$pathway->addItem($product->product_name);
 		
-		/* Load the authorizations */
-		$auth = JRequest::getVar('auth');
-		$this->assignRef('auth', $auth);
+		/* Load the category */
+		$category_model = $this->getModel('category');
+		/* Get the category ID */
+		$category_id = JRequest::getInt('category_id');
+		if ($category_id == 0) {
+			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0]; 
+		}
+		$category = $category_model->getCategory($category_id);
+		$this->assignRef('category', $category);
+		
+		/* Load the reviews */
+		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {
+			$model = $this->getModel();
+			/* Show all reviews available */
+			$product_reviews = $model->getProductReviews($product->product_id);
+			$this->assignRef('product_reviews', $product_reviews);
+		}
 		
 		/* Check for editing access */
+		/** @todo build edit page */
 		if (Permissions::check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('VM_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
@@ -49,6 +75,13 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		$this->assignRef('edit_link', $edit_link);
 		
+		/* Load the user details */
+		$this->assignRef('user', JFactory::getUser());
+		
+		/* More reviews link */
+		$uri = JURI::getInstance();
+		$uri->setVar('showall', 1);
+		$this->assignRef('more_reviews', $uri->toString());
 		
 		/* Display it all */
 		parent::display($tpl); 

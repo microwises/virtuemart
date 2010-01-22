@@ -25,6 +25,8 @@ class VirtueMartModelVirtueMart extends JModel {
      * This function shouldnt be used, it exist already in ps_vendor
      * creates a bulleted of the childen of this category if they exist
      *
+     * @todo Find out how to use the vendorHelper
+     *
      * @param int $category_id
      * @return string The HTML code
      */
