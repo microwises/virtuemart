@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Description
+* View class for the product 
 *
 * @package	VirtueMart
 * @subpackage
@@ -90,10 +90,11 @@ class VirtuemartViewProduct extends JView {
 				$vendor_model = $this->getModel('vendor');
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
+				
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
-				$lists['manufacturers'] = JHTML::_('select.genericlist',   $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
+				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
 
 				/* Load the attribute names */
 				$product->attribute_names = $this->get('ProductAttributeNames');
@@ -120,57 +121,23 @@ class VirtuemartViewProduct extends JView {
 				$related_products = $product_model->getRelatedProducts($product->product_id);
 				if (!$related_products) $related_products = array();
 				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
-
-				/* Get the parent settings */
-				$product->desc_width = '20%';
-				$product->attrib_width = '10%';
-				$product->display_use_parent_disabled = false;
-				if($product->product_parent_id !=0) {
-					$product->display_use_parent_disabled = true;
-				}
-				if (is_null($product->child_options)) {
-					$product->child_options = 'N,N,N,N,N,Y,20%,10%,,`#__{vm}_product`.`product_sku`';
-				}
-				list($product->display_use_parent,
-					$product->product_list,
-					$product->display_header,
-					$product->product_list_child,
-					$product->product_list_type,
-					$product->display_desc,
-					$product->desc_width,
-					$product->attrib_width,
-					$product->child_class_sfx,
-					$product->child_order_by) = explode(',', $product->child_options);
-				/* Get the quantity types */
-				if (is_null($product->quantity_options)) {
-					$product->quantity_options = 'none,0,0,1';
-				}
-				list($product->display_type,
-					$product->quantity_start,
-					$product->quantity_end,
-					$product->quantity_step) = explode(',', $product->quantity_options);
-
-				/* Set some default values */
-				if (is_null($product->desc_width)) $product->desc_width = '20%';
-				if (is_null($product->attrib_width)) $product->attrib_width = '10%';
-				if (is_null($product->display_type)) $product->display_type = 'none';
-				if (is_null($product->quantity_start)) $product->quantity_start = 0;
-				if (is_null($product->quantity_end)) $product->quantity_end = 0;
-				if (is_null($product->quantity_step)) $product->quantity_step = 1;
-
+				
 				/* Load waiting list */
 				if ($product->product_id) {
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-
+				
+				/* Load the list of template files */
+				$files = $this->get('TemplatesList');
+				$lists['detailspage'] = JHTML::_('select.genericlist', $files, 'detailspage', '', 'value', 'text', $product->detailspage);
+				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
 					$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
 					$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
 					$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
-					$display_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
 					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
@@ -203,7 +170,6 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('status_label', $status_label);
 				$this->assignRef('dim_weight_label', $dim_weight_label);
 				$this->assignRef('images_label', $images_label);
-				$this->assignRef('display_label', $display_label);
 				$this->assignRef('delete_message', $delete_message);
 
 				/* Toolbar */

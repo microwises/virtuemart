@@ -39,9 +39,6 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jque
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL'), 'product_dimensions' );
 		echo $this->loadTemplate('dimensions');
 	echo $this->pane->endPanel();
-	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_ITEM_DISPLAY_LBL'), 'product_display' );
-		echo $this->loadTemplate('display');
-	echo $this->pane->endPanel();
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL'), 'product_images' );
 		echo $this->loadTemplate('images');
 	echo $this->pane->endPanel();

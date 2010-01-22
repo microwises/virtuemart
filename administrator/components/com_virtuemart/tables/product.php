@@ -93,12 +93,6 @@ class TableProduct extends JTable {
 	/** @var int File thumbnail image width */
 	var $product_packaging	= null;
 	/** @var int File thumbnail image width */
-	var $child_options	= null;
-	/** @var int File thumbnail image width */
-	var $quantity_options	= null;
-	/** @var int File thumbnail image width */
-	var $child_option_ids	= null;
-	/** @var int File thumbnail image width */
 	var $product_order_levels	= null;
 	/** @var string Internal note for product */
 	var $intnotes = null;
@@ -110,6 +104,10 @@ class TableProduct extends JTable {
 	var $metarobot	= null;
 	/** @var string Meta author */
 	var $metaauthor	= null;
+	/** @var string Name of the details page to use for showing product details in the front end */
+	var $detailspage = 'productdetails';
+	/** @var float Product purchase price */
+	var $purchase_price = null;
 
 
 	/**

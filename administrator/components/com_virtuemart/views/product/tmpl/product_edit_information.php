@@ -5,7 +5,8 @@
 *
 * @package	VirtueMart
 * @subpackage 
-* @author
+* @author RolandD
+* @todo Price update calculations
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -19,7 +20,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
 <table class="adminform">
-<tr><th>TODO: Price update calculations</th></tr>
 	<tr>
 		<td valign="top">
 			<table width="100%" border="0">
@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('VM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->manufacturers;?>
+					<?php echo $this->lists['manufacturers'];?>
 				</td>
 			</tr>
 			<?php if (!$this->product->product_parent_id) { ?>
@@ -87,11 +87,27 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</select>
 				</td>
 			</tr>
+			<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('VM_PRODUCT_DETAILS_PAGE') ?>:</div>
+				</td>
+				<td width="79%">
+					<?php echo $this->lists['detailspage'];?>
+				</td>
+			</tr>
 			<?php } ?>
 		</table>
 	</td>
 	<td>
 		<table class="adminform">
+			<tr class="row1">
+				<td width="29%">
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PURCHASE_PRICE') ?>:</div>
+				</td>
+				<td width="71%">
+					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->purchase_price; ?>" />
+				</td>
+			</tr>
 			<tr class="row0">
 				<td width="29%" >
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?>:</div>

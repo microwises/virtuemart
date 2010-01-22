@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Manufacturer
-* @author vhv_alex
+* @author RolandD, vhv_alex
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,121 +23,78 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model class for manufacturer
+ * Model class for VirtueMart Manufacturers
  *
- * @package	VirtueMart
+ * @package VirtueMart
  * @subpackage Manufacturer
- * @author vhv_alex
+ * @author RolandD
+ * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the product_list with the ordering column
  */
 class VirtueMartModelManufacturer extends JModel {
-
-	/** @var integer Primary key */
-    var $_id;
-	/** @var objectlist Manufacturer data */
-    var $_data;
-	/** @var integer Total number of manufacturers in the database */
+    
 	var $_total;
-	/** @var pagination Pagination for manufacturer list */
 	var $_pagination;
-
-
-    /**
-     * Constructor for the manufacturer model.
-     *
-     * The manufacturer id is read and detmimined if it is an array of ids or just one single id.
-     *
-     */
-    function __construct()
-    {
-        parent::__construct();
-
+	
+	function __construct() {
+		parent::__construct();
+		
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
+		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
+		
+		// In case limit has been changed, adjust limitstart accordingly
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-
-        // Get the country id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-    }
-
-
-    /**
-     * Resets the country id and data
-     *
-     */
-    function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-
+	}  
+	
 	/**
-	 * Loads the pagination for the manufacturer table
-	 *
-     * @return JPagination Pagination for the current list of manufacturers
+	 * Loads the pagination
 	 */
-    function getPagination()
-    {
-		if (empty($this->_pagination)) {
+    public function getPagination() {
+		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
-
-
+    
 	/**
-	 * Gets the total number of manufacturers
-	 *
-	 * @return int Total number of manufacturers in the database
+	 * Gets the total number of products
 	 */
-	function _getTotal()
-	{
+	private function getTotal() {
     	if (empty($this->_total)) {
-			$query = 'SELECT `manufacturer_id` FROM `#__vm_manufacturer`';
-			$this->_total = $this->_getListCount($query);
+    		$db = JFactory::getDBO();
+    		$filter = '';
+            if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__vm_manufacturer.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
+			$q = "SELECT COUNT(*) 
+				FROM #__vm_manufacturer ".
+				$filter;
+			$db->setQuery($q);
+			$this->_total = $db->loadResult();
         }
+        
         return $this->_total;
     }
-
-
+	
     /**
-     * Retrieve the detail record for the current $id if the data has not already been loaded.
-     *
+     * Load a single manufacturer
      */
-	function getManufacturer()
-	{
-		$db = JFactory::getDBO();
-
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
-   			$this->_data->load((int)$this->_id);
-  		}
-
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-   			$this->_data = null;
-  		}
-
-  		return $this->_data;
-	}
-
-
-
-	/**
+     public function getManufacturer() {
+     	 
+     	 $row = $this->getTable();
+     	 $row->load(JRequest::getInt('manufacturer_id', 0));
+     	 return $row;
+     }
+     
+     /**
 	 * Bind the post data to the manufacturer table and save it
      *
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    function store()
-	{
+    function store() {
 		$table = $this->getTable('manufacturer');
 
 		$data = JRequest::get('post');
@@ -169,8 +126,7 @@ class VirtueMartModelManufacturer extends JModel {
      *
      * @return boolean True is the delete was successful, false otherwise.
      */
-	function delete()
-	{
+	public function delete() {
 		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('manufacturer');
 
@@ -183,36 +139,64 @@ class VirtueMartModelManufacturer extends JModel {
 
     	return true;
 	}
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+    
+    /**
+     * Select the products to list on the product list page
      */
-	function publish($publishId = false)
-	{
-		$table = $this->getTable('manufacturer');
-		$manufacturerIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-
-        if (!$table->publish($manufacturerIds, $publishId)) {
-			$this->setError($table->getError());
-			return false;
-        }
-
-		return true;
+    public function getManufacturerList() {
+     	$db = JFactory::getDBO();
+     	/* Pagination */
+     	$this->getPagination();
+     	
+     	/* Build the query */
+     	$q = "SELECT 
+			";
+     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     	return $db->loadObjectList('product_id');
+    }
+    
+    /**
+     * Returns a dropdown menu with manufacturers
+     * @author RolandD
+	 * @return object List of manufacturer to build filter select box
+	 */
+	function getManufacturerDropDown() {
+		$db = JFactory::getDBO();
+		$query = "SELECT manufacturer_id AS value, mf_name AS text, '' AS disable
+				FROM #__vm_manufacturer";
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_( 'Select manufacturer' ) .' -' ));
+		return $options;
 	}
-
-
-	/**
+    
+    /**
+    * Set the publish/unpublish state
+    * @return bool true if manufacturers are published or false if manufacturers are not published
+    */
+    public function getPublish() {
+     	$cid = JRequest::getVar('cid', false);
+     	if (is_array($cid)) {
+     		$db = JFactory::getDBO();
+     		$cids = implode( ',', $cid );
+			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
+			$q = "UPDATE #__vm_manufacturer 
+				SET product_publish = ".$db->Quote($state)." 
+				WHERE product_id IN (".$cids.")";
+			$db->setQuery($q);
+			if ($db->query()) return true;
+			else return false;
+		}
+    }
+    
+    /**
 	 * Retireve a list of countries from the database.
 	 *
      * @param string $onlyPuiblished True to only retreive the publish countries, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of manufacturer objects
 	 */
-	function getManufacturers($onlyPublished=false, $noLimit=false)
-	{
+	function getManufacturers($onlyPublished=false, $noLimit=false) {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$option	= 'com_virtuemart';
@@ -246,28 +230,6 @@ class VirtueMartModelManufacturer extends JModel {
 		}
 
 		return $this->_data;
-	}
-	/**
-	 * Build manufacturer filter
-	 *
-	 * @return object List of manufacturer to build filter select box
-	 */
-	function getManufacturerDropDown()
-	{
-		$db = JFactory::getDBO();
-		$query = 'SELECT manufacturer_id as value, mf_name as text'
-				.' FROM #__vm_manufacturer';
-		$db->setQuery($query);
-
-		$options[] = JHTML::_('select.option',  '0', '- '. JText::_( 'Select manufacturer' ) .' -' );
-
-		$options = array_merge($options, $db->loadObjectList());
-
-
-		return $options;
-
-
-
 	}
 
 }

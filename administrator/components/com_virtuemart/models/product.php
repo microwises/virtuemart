@@ -680,29 +680,6 @@ class VirtueMartModelProduct extends JModel {
 		/* Get the attribute */
 		$product_data->attribute = $this->formatAttributeX();
 
-		/* Get the child options */
-		if ($product_data->product_parent_id != 0) {
-			$product_data->child_options = null;
-        }
-        else {
-			$product_data->child_options = $this->getYesOrNo('display_use_parent').","
-										.JRequest::getVar('product_list', 'N').","
-										.$this->getYesOrNo('display_headers').","
-										.$this->getYesOrNo('product_list_child').","
-										.$this->getYesOrNo('product_list_type').","
-										.$this->getYesOrNo('display_desc').","
-										.JRequest::getVar('desc_width').","
-										.JRequest::getVar('attrib_width').","
-										.JRequest::getVar('child_class_sfx').","
-										.JRequest::getVar('child_order_by');
-        }
-
-        /* Get the quantity options */
-        $product_data->quantity_options = JRequest::getVar('quantity_box', 'none').","
-        			.JRequest::getInt('quantity_start').","
-        			.JRequest::getInt('quantity_end').","
-        			.JRequest::getInt('quantity_step');
-
         /* Set the product packaging */
         $product_data->product_packaging = (($data["product_box"] << 16) | ($data["product_packaging"]&0xFFFF));
 
@@ -734,8 +711,6 @@ class VirtueMartModelProduct extends JModel {
 				$q .= 'attribute_value='.$db->Quote($data['attribute_'.$attribute->attribute_id]);
 				$q .= ' WHERE attribute_id = '.$attribute->attribute_id;
 				$db->setQuery($q);
-				echo $db->getQuery();
-				echo '<br />';
 				$db->query();
 
 			}
@@ -764,13 +739,13 @@ class VirtueMartModelProduct extends JModel {
 		/* Update related products */
 		if (array_key_exists('related_products', $data)) {
 			/* Insert Pipe separated Related Product IDs */
-			$q  = "REPLACE INTO #__vm_product_relations (product_id, related_products)";
+			$q = "REPLACE INTO #__vm_product_relations (product_id, related_products)";
 			$q .= " VALUES( '".$product_data->product_id."', '".implode('|', $data['related_products'])."') ";
 			$db->setQuery($q);
 			$db->query();
 		}
-		else{
-			$q  = "DELETE FROM #__vm_product_relations WHERE product_id='".$product_data->product_id."'";
+		else {
+			$q = "DELETE FROM #__vm_product_relations WHERE product_id='".$product_data->product_id."'";
 			$db->setQuery($q);
 			$db->query();
 		}
@@ -823,25 +798,6 @@ class VirtueMartModelProduct extends JModel {
 		// otherwise you would get an empty first attribute
 		$attribute_string = substr( $attribute_string, 1 ) ;
 		return trim( $attribute_string ) ;
-	}
-
-	/**
-	 * Fetches and returns a given filtered variable.
-	 * The variable can have the value "Y" or "N", nothing else
-	 *
-	 * See getVar() for more in-depth documentation on the parameters.
-	 *
-	 * @static
-	 * @param	string	$name		Variable name
-	 * @param	string	$default	Default value if the variable does not exist
-	 * @param	string	$hash		Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-	 * @return	string	Requested variable
-	 * @since	1.1
-	 * @todo move to a generic file
-	 */
-	function getYesOrNo($name, $default = 'N', $hash = 'default') {
-		$yes_or_no = strtoupper( JRequest::getVar($name, $default, $hash, 'none'));
-		return $yes_or_no == 'Y' ? 'Y' : 'N';
 	}
 
 	/**
@@ -1170,5 +1126,27 @@ class VirtueMartModelProduct extends JModel {
 		if($k == 0) return false;
 		else return true;
     }
+    
+   	/**
+	* Function Description 
+	* 
+	* @author RolandD 
+	* @todo
+	* @see 
+	* @access public
+	* @return array list of files
+	*/
+	public function getTemplatesList() {
+		jimport('joomla.filesystem.folder');
+		$path = JPATH_COMPONENT_SITE.DS.'views'.DS.'productdetails'.DS.'tmpl';
+		$files = JFolder::files($path, '.', false, false, array('index.html'));
+		$options = array();
+		foreach ($files AS $file) {
+			$file = str_ireplace('.php', '', $file);
+			$options[] = JHTML::_('select.option',  $file, $file);
+		}
+		return $options;
+	}
+
 }
 ?>

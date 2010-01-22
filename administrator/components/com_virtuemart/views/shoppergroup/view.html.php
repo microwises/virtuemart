@@ -39,9 +39,8 @@ class VirtuemartViewShopperGroup extends JView {
 		//$vendorModel = $this->getModel('Vendor');
 
 		$shoppergroup = $model->getShopperGroup();
-
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($shoppergroup->shoppergroup_id < 1);
+		$isNew = ($shoppergroup->shopper_group_id < 1);
 
 		if ($layoutName == 'edit') {
 		  if ($isNew) {
