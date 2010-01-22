@@ -25,7 +25,7 @@ AdminMenuHelper::startAdminArea();
 	<tr> 
       <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_PUBLISH') ?>:</td>
       <td width="62%"><?php 
-        if ($this->producttype->product_type_publish=="1") { 
+        if ($this->producttype->published=="1") { 
           echo "<input type=\"checkbox\" name=\"published\" value=\"1\" checked=\"checked\" />";
         } 
         else {
