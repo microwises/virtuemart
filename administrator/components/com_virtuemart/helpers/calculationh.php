@@ -495,4 +495,23 @@ class calculationHelper{
 	    return $records;
 	}
 	
+	/**
+	 * Calculate a price for a variant
+	 *
+	 * Variant values can be in the following format
+	 * - +x.xx
+	 * - -x.xx
+	 * - =x.xx
+	 * 
+	 * @author 
+	 * @todo Calculate the price
+	 * @param int $product_id the product ID the attribute price should be calculated for
+	 * @param string $variant_value the value of the variant
+	 * @return array The adjusted price information
+	 */
+	function getVariantPrice($product_id, $variant_value) {
+		$clean_price = substr($variant_value, 1);
+		return array('basePrice' => $clean_price);
+	}
+	
 }
