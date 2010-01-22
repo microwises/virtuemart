@@ -531,7 +531,7 @@ class Vendor {
 		$usertable= false;
 		$user_id = self::getUserIdByVendorId($vendor_id);
 		if (empty($user_id)) {
-				$GLOBALS['vmLogger']->err( 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
+				//$GLOBALS['vmLogger']->err( 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
 				return;
 		}
 		else{

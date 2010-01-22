@@ -193,59 +193,6 @@ class VirtueMartModelCountry extends JModel {
 	return true;
     }
 
-
-    /**
-     * Delete all record ids selected
-     *
-     * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-    function delete() {
-	$countryIds = JRequest::getVar('cid',  0, '', 'array');
-	$table = $this->getTable('country');
-
-	foreach($countryIds as $countryId) {
-	    if ($this->deleteCountryStates($countryId)) {
-		if (!$table->delete($countryId)) {
-		    $this->setError($table->getError());
-		    return false;
-		}
-	    }
-	    else {
-		$this->setError('Could not remove country states!');
-		return false;
-	    }
-	}
-
-	return true;
-    }
-
-
-    /**
-     * Delete all state records for a given country id.
-     *
-     * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-    function deleteCountryStates($countryId = '') {
-	if ($countryId) {
-	    $db = JFactory::getDBO();
-
-	    $query = 'DELETE FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
-	    $db->setQuery($query);
-	    if ($db->query()) {
-		return true;
-	    }
-	    else {
-		return false;
-	    }
-	}
-	else {
-	    return false;
-	}
-    }
-
-
     /**
      * Publish/Unpublish all the ids selected
      *

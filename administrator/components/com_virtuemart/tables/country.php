@@ -74,7 +74,7 @@ class TableCountry extends JTable {
 		}
 
 		if (($this->country_name) && ($this->country_id == 0)) {
-		    $db =& JFactory::getDBO();
+		    $db = JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__vm_country` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';

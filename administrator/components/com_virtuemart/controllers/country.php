@@ -43,16 +43,16 @@ class VirtuemartControllerCountry extends JController {
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('country', $viewType);
+		$view = $this->getView('country', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('country');
+		$model = $this->getModel('country');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		$model1 =& $this->getModel('ShippingZone');
+		$model1 = $this->getModel('ShippingZone');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}
@@ -102,7 +102,7 @@ class VirtuemartControllerCountry extends JController {
 	 */
 	function save()
 	{
-		$model =& $this->getModel('country');
+		$model = $this->getModel('country');
 
 		if ($model->store()) {
 			$msg = JText::_('Country saved!');
@@ -113,26 +113,6 @@ class VirtuemartControllerCountry extends JController {
 
 		$this->setRedirect('index.php?option=com_virtuemart&view=country', $msg);
 	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('country');
-		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more countries could not be deleted!');
-		}
-		else {
-			$msg = JText::_( 'Countries Deleted!');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
-	}
-
 
 	/**
 	 * Handle the publish task
