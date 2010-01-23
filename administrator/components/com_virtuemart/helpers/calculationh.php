@@ -88,7 +88,7 @@ class calculationHelper{
 
 		$user = JFactory::getUser();
 		if(isset($user->id)){
-			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$my->id.'" ');
+			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
 			$this->_shopperGroupId=$this->_db->loadResultArray();			
 		}
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');

@@ -501,6 +501,9 @@ class Vendor {
 						WHERE `user_id`=' .$value;
 				}						
 				break;
+			case 'product':
+				$q = 'SELECT vendor_id FROM #__vm_product WHERE product_id='.$value;
+				break;
 		}
 		$db->setQuery($q);
 		$vendor_id = $db->loadResult();
