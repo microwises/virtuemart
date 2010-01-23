@@ -457,7 +457,7 @@ class VirtueMartModelProductdetails extends JModel {
 	*/
 	public function getVotes($product_id) {
 		$result = array();
-		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {
+		if (VmConfig::get('pshop_allow_reviews', 0) == '1') {
 			$db = JFactory::getDBO();
 			
 			$q = "SELECT `votes`, `allvotes`, `rating` 

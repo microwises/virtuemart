@@ -38,15 +38,17 @@ foreach ($this->products as $product) {
 		?>
 	</div>
 	
-	<!-- The "Average Customer Rating: xxxxX (2 votes) " Part -->
-	<div class="browseRatingContainer">
-		<span class="contentpagetitle"><?php echo JText::_('VM_CUSTOMER_RATING') ?>:</span>
-		<br />
-		<?php
-		$img_url = JURI::root().'/components/com_virtuemart/shop_image/reviews/'.$product->votes->rating.'.gif';
-		echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
-		echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
-	</div>
+	<!-- The "Average Customer Rating" Part -->
+	<?php if (VmConfig::get('pshop_allow_reviews') == 1) { ?>
+		<div class="browseRatingContainer">
+			<span class="contentpagetitle"><?php echo JText::_('VM_CUSTOMER_RATING') ?>:</span>
+			<br />
+			<?php
+			$img_url = JURI::root().'/components/com_virtuemart/shop_image/reviews/'.$product->votes->rating.'.gif';
+			echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
+			echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
+		</div>
+	<?php } ?>
 	<div class="browseProductDescription">
 		<?php echo $product->product_s_desc.'<br />';
 			echo JHTML::link($product->link, JText::_('PRODUCT_DETAILS'), array('title' => $product->product_name));
