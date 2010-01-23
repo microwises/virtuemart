@@ -18,7 +18,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
  * The class is is used to manage product repository.
- * @package virtuemart
+ * @package VirtueMart
  * @author pablo, jep, gday, soeren
  *
  */

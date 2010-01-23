@@ -304,7 +304,7 @@ class listFactory {
 * // and finally close the form:
 * $formObj->finishForm( $funcname, $modulename.'.country_list' );
 *
-* @package virtuemart
+* @package VirtueMart
 * @subpackage Core
 * @author soeren
 */
