@@ -30,7 +30,7 @@ foreach ($this->product->variants as $variant_name => $variant) {
 }
 /* Display the quantity box */
 ?>
-<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>': </label>
+<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
 <input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $this->product->product_id;?>" name="quantity[]" value="1" />
 <input type="button" class="quantity_box_button quantity_box_button_up" onclick="var qty_el = document.getElementById('quantity<?php echo $this->product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" />
 <input type="button" class="quantity_box_button quantity_box_button_down" onclick="var qty_el = document.getElementById('quantity<?php echo $this->product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;" />
