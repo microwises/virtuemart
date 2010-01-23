@@ -1,9 +1,9 @@
 <?php
 /**
 *
-* Default data model for Product details
-*
-* @package	VirtueMart
+ * Default data model for Product details
+ *
+ * @package     VirtueMart
 * @subpackage 
 * @author RolandD
 * @link http://www.virtuemart.net
@@ -105,6 +105,11 @@ class VirtueMartModelProductdetails extends JModel {
 				// $product->attributes = $this->getAttributes($product);
 			}
 			
+			/* Get stock indicator */
+			$product->stock = $this->getStockIndicator($product);
+			
+			/* Get the votes */
+			$product->votes = $this->getVotes($product_id);
 			
 			return $product;
 		}
@@ -384,6 +389,84 @@ class VirtueMartModelProductdetails extends JModel {
 			}
 		}
 		return $variants;
+	}
+	
+	/**
+	* Get the products in a given category
+	*
+	* @author RolandD
+	* @access public
+	* @param int $category_id the category ID where to get the products for
+	* @return array containing product objects 
+	*/
+	public function getProductsInCategory($category_id) {
+		$db = JFactory::getDBO();
+		/* Get a list of product ID's */
+		$q = "SELECT product_id 
+			FROM #__vm_product_category_xref
+			WHERE category_id = ".$category_id;
+		$db->setQuery($q);
+		$product_ids = $db->loadResultArray();
+		
+		/* Collect the product data */
+		$products = array();
+		foreach ($product_ids as $product_id) {
+			$products[] = $this->getProduct($product_id);
+		}
+		return $products;
+	}
+	
+	/**
+	* Get the stock level for a given product
+	*
+	* @author RolandD
+	* @access public
+	* @param object $product the product to get stocklevel for
+	* @return array containing product objects 
+	*/
+	public function getStockIndicator($product) {
+    	$db = JFactory::getDBO();
+	    
+    	/* Assign class to indicator */ 
+    	$stock_level = $product->product_in_stock;
+    	$reorder_level = $product->low_stock_notification;
+		$level = 'normalstock';
+		$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
+		if ($stock_level <= $reorder_level) {
+			$level = 'lowstock';
+			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_LOW_TIP');
+		}
+		if ($stock_level == 0) {
+			$level = 'nostock';
+			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_OUT_TIP');
+		}    	
+    	$stock = new Stdclass();
+    	$stock->stock_tip = $stock_tip;
+    	$stock->stock_level = $level;
+    	return $stock;
+    }
+    
+    /**
+	* Get the votes for a given product
+	*
+	* @author RolandD
+	* @todo Figure out how this really is supposed to work
+	* @access public
+	* @param int $product_id the product ID to get reviews for
+	* @return array containing review data
+	*/
+	public function getVotes($product_id) {
+		$result = array();
+		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {
+			$db = JFactory::getDBO();
+			
+			$q = "SELECT `votes`, `allvotes`, `rating` 
+				FROM `#__vm_product_votes`
+				WHERE `product_id` = ".$product_id;
+			$db->setQuery($q);
+			$result = $db->loadObject();
+		}
+		return $result;
 	}
 }
 ?>

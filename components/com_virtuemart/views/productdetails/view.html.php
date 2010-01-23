@@ -3,7 +3,7 @@
 *
 * Product details view
 *
-* @package	VirtueMart
+* @package VirtueMart
 * @subpackage 
 * @author RolandD
 * @link http://www.virtuemart.net
@@ -95,6 +95,9 @@ class VirtueMartViewProductdetails extends JView {
 		$uri = JURI::getInstance();
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
+		
+		/* Use the template the user wants */
+		parent::setLayout($product->detailspage);
 		
 		/* Display it all */
 		parent::display($tpl); 

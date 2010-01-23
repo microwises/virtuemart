@@ -3,7 +3,7 @@
 *
 * Description
 *
-* @package	VirtueMart
+ * @package		VirtueMart
 * @subpackage 
 * @author
 * @link http://www.virtuemart.net
@@ -14,8 +14,8 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * @version $Id$
-*/
- 
+ */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -43,12 +43,15 @@ class VirtueMartControllerVirtuemart extends JController
 	function Virtuemart() {
 		$view = $this->getView(JRequest::getVar('view', 'virtuemart'), 'html');
 		
-		// Push a model into the view		
+		/* Load the backend models */
+		/* Push a model into the view */		
 		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
+		/* Category functions */
+		$view->setModel( $this->getModel( 'category', 'VirtuemartModel' ));
+		
 		/* Vendor functions */
 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ));
-		/* Category functions */
-		$view->setModel( $this->getModel( 'productcategory', 'VirtuemartModel' ));
+		
 		/* Product functions */
 		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
 		

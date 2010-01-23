@@ -17,6 +17,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 /* Going for a new look :) */
 
+/* Add VirtueMart to the breadcrumb */
+$pathway = $mainframe->getPathway();
+/** @todo Fix this to take the name of the menu entry */
+$pathway->addItem(JText::_('MY_SHOP'), JURI::root().'index.php?option=com_virtuemart');
+
 /* Require the base controller */
 require_once(JPATH_COMPONENT.DS.'controller.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -24,6 +29,8 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 
 /* Front-end helpers */
 require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -62,7 +69,7 @@ $classname   = 'VirtuemartController'.$controller;
 $controller = new $classname();
 
 /* Perform the Request task */
-$controller->execute(JRequest::getVar('task', JRequest::getVar('view')));
+$controller->execute(JRequest::getVar('task', JRequest::getVar('view', 'virtuemart')));
 
 /* Redirect if set by the controller */
 $controller->redirect();

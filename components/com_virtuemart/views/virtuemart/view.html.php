@@ -27,12 +27,13 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'librari
 
 /**
  * Default HTML View class for the VirtueMart Component
+* @todo Find out how to use the front-end models instead of the backend models
  */
 class VirtueMartViewVirtueMart extends JView {
 	
 	public function display($tpl = null) {	  	    
 	
-		$categoryModel = $this->getModel('productcategory');
+		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
 
 	    $vendorId = JRequest::getInt('vendorid', 1);
