@@ -9,7 +9,7 @@ $items = $this->order['items'];
 $payment = $this->order['payment'];
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-    <table class="adminlist">
+    <table width="100%">
 	<tr>
 	    <td valign="top">
 		<table class="admintable" width="100%">
@@ -50,6 +50,7 @@ $payment = $this->order['payment'];
 			<th><?php echo JText::_('VM_ORDER_LIST_STATUS') ?></th>
 			<th><?php echo JText::_('VM_COMMENT') ?></th>
 		    </tr>
+		    </thead>
 		    <?php
 		    foreach ($history as $orderbt_event ) {
 			echo "<tr>";
@@ -65,7 +66,6 @@ $payment = $this->order['payment'];
 			echo "</tr>\n";
 		    }
 		    ?>
-		    </thead>
 		</table>
 	    </td>
 	</tr>
@@ -127,7 +127,7 @@ $payment = $this->order['payment'];
 	</tr>
     </table>
 
-    <table class="adminlist">
+    <table width="100%">
 	<tr>
 	    <td colspan="2">
 		<table class="adminlist">
@@ -143,6 +143,7 @@ $payment = $this->order['payment'];
 			<th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
 			<th class="title" width="22%"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES') ?></th>
 		    </tr>
+		    </thead>
 		    <?php
 		    foreach ($items as $item) { ?>
 		    <tr valign="top">
@@ -156,7 +157,6 @@ $payment = $this->order['payment'];
 			<td><div align="right"><?php echo $item->intnotes; ?></div></td>
 		    </tr>
 			<?php } ?>
-		    </thead>
 		</table>
 		<table  class="adminlist">
 		    <tr>
@@ -254,41 +254,46 @@ $payment = $this->order['payment'];
 	</tr>
     </table>
     &nbsp;
-    <table class="adminlist">
+    <table width="100%">
 	<tr>
-	    <td valign="top" width="300">
-		<table class="adminlist">
+	    <td valign="top">
+		<table class="admintable">
 		    <thead>
 		    <tr>
-			<th><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></th>
+			<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></td>
 		    </tr>
+		    </thead>
 		    <tr>
+			<td class="key">
+			    <?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>:
+			</td>
 			<td align="left">
 			    <?php
 			    if  ($orderbt->ship_method_id) {
 				$details = explode( "|", $orderbt->ship_method_id);
 			    }
-			    ?>
-			    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </strong>
-			    <?php  echo $details[1]; ?>&nbsp;
+			    echo $details[1]; ?>
 			</td>
 		    </tr>
 		    <tr>
-			<td align="left">
-			    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </strong>
+			<td class="key">
+			    <?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>:
+			</td>
+			<td>
 			    <?php echo $details[2]; ?>
 			</td>
 		    </tr>
 		    <tr>
+			<td class="key">
+			    <?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>:
+			</td>
 			<td align="left">
-			    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </strong>
 			    <?php echo $details[3]; ?>
 			</td>
 		    </tr>
-		    </thead>
 		</table>
 	    </td>
-	    <td valign="top" width="*">
+	    <td valign="top">
 		<table class="adminlist">
 		    <thead>
 		    <tr>
@@ -297,11 +302,8 @@ $payment = $this->order['payment'];
 			<th width="30%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
 			<th width="17%"><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?></th>
 		    </tr>
+		    </thead>
 		    <tr>
-			<td width="13%">
-			    <?php // $ps_order_change_html->html_change_payment($payment->id)
-			    ?>
-			</td>
 			<td width="40%"><?php $payment->order_payment_name;?></td>
 			<td width="30%">
 			    <?php
@@ -319,7 +321,6 @@ $payment = $this->order['payment'];
 		    <tr>
 			<td colspan="4"><?php if($payment->order_payment_log) echo $payment->order_payment_log; else echo "./."; ?></td>
 		    </tr>
-		    </thead>
 		</table>
 	    </td>
 	</tr>
@@ -331,13 +332,13 @@ $payment = $this->order['payment'];
 		    <tr>
 			<th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 		    </tr>
+		    </thead>
 		    <tr>
 			<td valign="top" align="center" width="50%">
 			    <?php //$ps_order_change_html->html_change_customer_note();
 			    ?>
 			</td>
 		    </tr>
-		    </thead>
 		</table>
 	    </td>
 	</tr>
