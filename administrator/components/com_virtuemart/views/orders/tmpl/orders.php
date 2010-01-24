@@ -43,7 +43,7 @@ AdminMenuHelper::startAdminArea();
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_ID', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PRINT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PAYMENT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PRINT_PAYMENT_LBL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_CDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_MDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -61,12 +61,12 @@ AdminMenuHelper::startAdminArea();
 		foreach ($this->orderslist as $key => $order) {
 		    $checked = JHTML::_('grid.id', $i , $order->order_id);
 		    ?>
-	    <tr class="<?php echo "row$k"; ?>">
-		<!-- Checkbox -->
-		<td><?php echo $checked; ?></td>
-		<!-- Order id -->
+		    <tr class="<?php echo "row$k"; ?>">
+		    <!-- Checkbox -->
+		    <td><?php echo $checked; ?></td>
+		    <!-- Order id -->
 			<?php
-			$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
+			$link = 'index.php?option='.$option.'&view=orders&task=view&order_id='.$order->order_id;
 			?>
 		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('EDIT').' '.$order->order_id)); ?></td>
 		<!-- Name -->
@@ -126,10 +126,7 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
     <input type="hidden" name="task" value="orders" />
     <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="pshop_mode" value="admin" />
-    <input type="hidden" name="page" value="product.product_list" />
     <input type="hidden" name="view" value="orders" />
-    <input type="hidden" name="func" value="" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>

@@ -48,7 +48,6 @@ class VirtuemartViewOrders extends JView {
 	    case 'edit':
 	    /* Get the data */
 		$order = $this->get('Order');
-
 		$userfields = shopFunctions::getUserFields('registration', false, '', true, true );
 		$shippingfields = shopFunctions::getUserFields('shipping', false, '', true, true );
 
@@ -62,9 +61,30 @@ class VirtuemartViewOrders extends JView {
 
 		/* Toolbar */
 		JToolBarHelper::title(JText::_( 'VM_ORDER_EDIT_LBL' ), 'vm_orders_48');
-		JToolBarHelper::save('updateorder', JText::_('VM_UPDATE_ORDER'));
+		JToolBarHelper::save();
+		JToolBarHelper::cancel();
+		break;
+	    case 'view':
+		$this->setLayout('orders_view');
+
+	    /* Get the data */
+		$order = $this->get('Order');
+		$userfields = shopFunctions::getUserFields('registration', false, '', true, true );
+		$shippingfields = shopFunctions::getUserFields('shipping', false, '', true, true );
+
+		/* Assign the data */
+		$this->assignRef('order', $order);
+		$this->assignRef('userfields', $userfields);
+		$this->assignRef('shippingfields', $shippingfields);
+
+		/* Toolbar */
+		JToolBarHelper::title(JText::_('VM_ORDER_VIEW_LBL'), 'vm_orders_48');
+		JToolBarHelper::custom('edit', 'edit', 'Edit', 'Edit', false, false);
+		JToolBarHelper::cancel();
 		break;
 	    default:
+		$this->setLayout('orders');
+
 	    /* Get the data */
 		$orderslist = $this->get('OrdersList');
 

@@ -63,7 +63,7 @@ class VirtuemartControllerOrders extends JController {
 	/**
 	* Shows the order details
 	*/
-	public function Edit() {
+	public function edit() {
 		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -148,9 +148,12 @@ class VirtuemartControllerOrders extends JController {
 		$model = $this->getModel('orders');
 		$result = $model->updateStatus();
 
-		if ($result['updated'] > 0) $mainframe->enqueueMessage(str_replace('{X}', $result['updated'], JText::_('ORDER_UPDATED_SUCCESSFULLY')));
-		if ($result['error'] > 0) $mainframe->enqueueMessage(str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY')), 'error');
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders');
+		if ($result['updated'] > 0) 
+		    $msg = str_replace('{X}', $result['updated'], JText::_('ORDER_UPDATED_SUCCESSFULLY'));
+		if ($result['error'] > 0) 
+		    $msg - str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY'));
+
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 	}
 }
 ?>
