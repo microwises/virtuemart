@@ -1,9 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
 AdminMenuHelper::startAdminArea();
-$orderbt = $this->order['details']['BT'];
-
-$orderst = (array_key_exists('ST', $this->order['details'])) ? $this->order['details']['ST'] : $orderbt;
 $history = $this->order['history'];
 $items = $this->order['items'];
 $payment = $this->order['payment'];
@@ -18,25 +15,25 @@ $payment = $this->order['payment'];
 		    </tr>
 		    <tr>
 			<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
-			<td><?php printf("%08d", $orderbt->order_id);?></td>
+			<td><?php printf("%08d", $this->orderbt->order_id);?></td>
 		    </tr>
 		    <tr>
 			<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-			<td><?php echo date('Y-m-d H:i:s', $orderbt->cdate);?></td>
+			<td><?php echo date('Y-m-d H:i:s', $this->orderbt->cdate);?></td>
 		    </tr>
 		    <tr>
 			<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
-			<td><?php echo $orderbt->order_status_name; ?></td>
+			<td><?php echo $this->orderbt->order_status_name; ?></td>
 		    </tr>
 		    <tr>
 			<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
-			<td><?php $orderbt->ip_address; ?></td>
+			<td><?php $this->orderbt->ip_address; ?></td>
 		    </tr>
 		    <?php
 		    if (VmConfig::get('enable_coupons') == '1') { ?>
 		    <tr>
 			<td class="key"><strong><?php echo JText::_('VM_COUPON_COUPON_HEADER') ?>:</strong></td>
-			<td><?php echo $orderbt->coupon_code; ?></td>
+			<td><?php echo $this->orderbt->coupon_code; ?></td>
 		    </tr>
 			<?php } ?>
 		</table>
@@ -44,25 +41,25 @@ $payment = $this->order['payment'];
 	    <td valign="top">
 		<table class="adminlist">
 		    <thead>
-		    <tr>
-			<th><?php echo JText::_('VM_ORDER_HISTORY_DATE_ADDED') ?></th>
-			<th><?php echo JText::_('VM_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
-			<th><?php echo JText::_('VM_ORDER_LIST_STATUS') ?></th>
-			<th><?php echo JText::_('VM_COMMENT') ?></th>
-		    </tr>
+			<tr>
+			    <th><?php echo JText::_('VM_ORDER_HISTORY_DATE_ADDED') ?></th>
+			    <th><?php echo JText::_('VM_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
+			    <th><?php echo JText::_('VM_ORDER_LIST_STATUS') ?></th>
+			    <th><?php echo JText::_('VM_COMMENT') ?></th>
+			</tr>
 		    </thead>
 		    <?php
-		    foreach ($history as $orderbt_event ) {
+		    foreach ($history as $this->orderbt_event ) {
 			echo "<tr>";
-			echo "<td>".$orderbt_event->date_added."</td>\n";
-			if ($orderbt_event->customer_notified == 1) {
+			echo "<td>".$this->orderbt_event->date_added."</td>\n";
+			if ($this->orderbt_event->customer_notified == 1) {
 			    echo '<td align="center">Yes</td>';
 			}
 			else {
 			    echo '<td align="center">No</td>';
 			}
-			echo '<td align="center">'.$orderbt_event->order_status_code.'</td>';
-			echo "<td>".$orderbt_event->comments."</td>\n";
+			echo '<td align="center">'.$this->orderbt_event->order_status_code.'</td>';
+			echo "<td>".$this->orderbt_event->comments."</td>\n";
 			echo "</tr>\n";
 		    }
 		    ?>
@@ -75,25 +72,25 @@ $payment = $this->order['payment'];
 	<tr>
 	    <td width="50%" valign="top">
 		<table class="admintable" width="100%">
-		<thead>
-		<tr>
-		    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></td>
-		</tr>
-		</thead>
+		    <thead>
+			<tr>
+			    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></td>
+			</tr>
+		    </thead>
 		    <?php
 		    foreach ($this->userfields['details'] as $field ) {
 			if ($field->type == 'captcha') continue;
 			?>
-			<tr>
+		    <tr>
 			<td class="key">&nbsp;<?php echo JText::_($field->title) ? JText::_($field->title) : $field->title ?>:</td>
 			<td><?php
 				$fieldvalue = $field->name;
-				if (empty($fieldvalue) || empty($orderbt->$fieldvalue))
+				if (empty($fieldvalue) || empty($this->orderbt->$fieldvalue))
 				    echo "&nbsp;";
-				else echo $orderbt->$fieldvalue;
+				else echo $this->orderbt->$fieldvalue;
 				?>
 			</td>
-			</tr>
+		    </tr>
 			<?php
 		    }
 		    ?>
@@ -101,21 +98,21 @@ $payment = $this->order['payment'];
 	    </td>
 	    <td width="50%" valign="top">
 		<table class="admintable" width="100%">
-		<thead>
-		<tr>
-		    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></td>
-		</tr>
-		</thead>
-		<?php
+		    <thead>
+			<tr>
+			    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></td>
+			</tr>
+		    </thead>
+		    <?php
 		    foreach ($this->shippingfields['details'] as $field ) {
 			?>
 		    <tr>
 			<td class="key">&nbsp;<?php echo JText::_($field->title) ? JText::_($field->title) : $field->title ?>:</td>
 			<td><?php
 				$fieldvalue = $field->name;
-				if (empty($fieldvalue) || empty($orderst->$fieldvalue))
+				if (empty($fieldvalue) || empty($this->orderst->$fieldvalue))
 				    echo "&nbsp;";
-				else echo $orderst->$fieldvalue;
+				else echo $this->orderst->$fieldvalue;
 				?>
 			</td>
 		    </tr>
@@ -132,17 +129,17 @@ $payment = $this->order['payment'];
 	    <td colspan="2">
 		<table class="adminlist">
 		    <thead>
-		    <tr>
-			    <!-- <th class="title" width="5%" align="left"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th> -->
-			<th class="title" width="50" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
-			<th class="title" width="*" align="left"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
-			<th class="title" width="10%" align="left"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
-			<th class="title" width="10%"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
-			<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
-			<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?></th>
-			<th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
-			<th class="title" width="22%"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES') ?></th>
-		    </tr>
+			<tr>
+				<!-- <th class="title" width="5%" align="left"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th> -->
+			    <th class="title" width="50" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
+			    <th class="title" width="*" align="left"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
+			    <th class="title" width="10%" align="left"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
+			    <th class="title" width="10%"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
+			    <th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
+			    <th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?></th>
+			    <th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
+			    <th class="title" width="22%"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES') ?></th>
+			</tr>
 		    </thead>
 		    <?php
 		    foreach ($items as $item) { ?>
@@ -161,32 +158,32 @@ $payment = $this->order['payment'];
 		<table  class="adminlist">
 		    <tr>
 			<td align="right" colspan="7"><div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $orderbt->order_subtotal; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_subtotal; ?></td>
 		    </tr>
 		    <?php
 		    /* COUPON DISCOUNT */
 		    if (VmConfig::get('payment_discount_before') == '1') {
-			if ($orderbt->order_discount != 0) {
+			if ($this->orderbt->order_discount != 0) {
 			    ?>
 		    <tr>
 			<td align="right" colspan="7"><strong>
 					<?php
-					if ($orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+					if ($this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
 					else echo JText::_('VM_FEE');
 					?>:</strong></td>
 			<td width="5%" align="right" style="padding-right: 5px;"><?php
-				    if ($orderbt->order_discount > 0 ) echo "-" . $orderbt->order_discount;
-				    elseif ($orderbt->order_discount < 0 )  echo "+" . $ordert->order_discount; ?>
+				    if ($this->orderbt->order_discount > 0 ) echo "-" . $this->orderbt->order_discount;
+				    elseif ($this->orderbt->order_discount < 0 )  echo "+" . $ordert->order_discount; ?>
 			</td>
 		    </tr>
 			    <?php
 			}
-			if ($orderbt->coupon_discount > 0 || $orderbt->coupon_discount < 0) {
+			if ($this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 			    ?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
 			<td  width="5%" align="right" style="padding-right: 5px;"><?php
-				    echo "- ".$orderbt->coupon_discount; ?>
+				    echo "- ".$this->orderbt->coupon_discount; ?>
 			</td>
 		    </tr>
 			    <?php
@@ -194,39 +191,39 @@ $payment = $this->order['payment'];
 		    }?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $orderbt->order_tax; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_tax; ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $orderbt->order_shipping; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_shipping; ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $orderbt->order_shipping_tax; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_shipping_tax; ?></td>
 		    </tr>
 		    <?php
 		    if (VmConfig::get('payment_discount_before') != '1') {
-			if ($orderbt->order_discount != 0) {
+			if ($this->orderbt->order_discount != 0) {
 			    ?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php
-					if( $orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+					if( $this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
 					else echo JText::_('VM_FEE');
 					?>:</strong>
 			</td>
 			<td width="5%" align="right" style="padding-right: 5px;"><?php
-				    if ($orderbt->order_discount > 0 )
-					echo "-" . $orderbt->order_discount;
-				    elseif ($orderbt->order_discount < 0 ) echo "+".$orderbt->order_discount; ?>
+				    if ($this->orderbt->order_discount > 0 )
+					echo "-" . $this->orderbt->order_discount;
+				    elseif ($this->orderbt->order_discount < 0 ) echo "+".$this->orderbt->order_discount; ?>
 			</td>
 		    </tr>
 			    <?php
 			}
-			if( $orderbt->coupon_discount > 0 || $orderbt->coupon_discount < 0) {
+			if( $this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 			    ?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$orderbt->coupon_discount; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->orderbt->coupon_discount; ?></td>
 		    </tr>
 			    <?php
 			}
@@ -235,7 +232,7 @@ $payment = $this->order['payment'];
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_CART_TOTAL') ?>:</strong></td>
 			<td width="5%" align="right" style="padding-right: 5px;">
-			    <strong><?php echo $orderbt->order_total; ?></strong>
+			    <strong><?php echo $this->orderbt->order_total; ?></strong>
 			</td>
 		    </tr>
 		    <?php
@@ -259,9 +256,9 @@ $payment = $this->order['payment'];
 	    <td valign="top">
 		<table class="admintable">
 		    <thead>
-		    <tr>
-			<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></td>
-		    </tr>
+			<tr>
+			    <td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></td>
+			</tr>
 		    </thead>
 		    <tr>
 			<td class="key">
@@ -269,8 +266,8 @@ $payment = $this->order['payment'];
 			</td>
 			<td align="left">
 			    <?php
-			    if  ($orderbt->ship_method_id) {
-				$details = explode( "|", $orderbt->ship_method_id);
+			    if  ($this->orderbt->ship_method_id) {
+				$details = explode( "|", $this->orderbt->ship_method_id);
 			    }
 			    echo $details[1]; ?>
 			</td>
@@ -296,12 +293,12 @@ $payment = $this->order['payment'];
 	    <td valign="top">
 		<table class="adminlist">
 		    <thead>
-		    <tr>
-			<th width="13%"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?></th>
-			<th width="40%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NAME') ?></th>
-			<th width="30%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
-			<th width="17%"><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?></th>
-		    </tr>
+			<tr>
+			    <th width="13%"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?></th>
+			    <th width="40%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NAME') ?></th>
+			    <th width="30%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
+			    <th width="17%"><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?></th>
+			</tr>
 		    </thead>
 		    <tr>
 			<td width="40%"><?php $payment->order_payment_name;?></td>
@@ -329,9 +326,9 @@ $payment = $this->order['payment'];
 	    <td valign="top" width="30%" colspan="2">
 		<table class="adminlist">
 		    <thead>
-		    <tr>
-			<th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
-		    </tr>
+			<tr>
+			    <th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+			</tr>
 		    </thead>
 		    <tr>
 			<td valign="top" align="center" width="50%">
@@ -347,6 +344,6 @@ $payment = $this->order['payment'];
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="orders" />
     <input type="hidden" name="task" value="" />
-    <input type="hidden" name="order_id" value="<?php echo $orderbt->order_id; ?>">
+    <input type="hidden" name="order_id" value="<?php echo $this->orderbt->order_id; ?>">
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

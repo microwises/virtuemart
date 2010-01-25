@@ -88,6 +88,11 @@ $payment = $this->order['payment'];
 			    <input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" />
 			</td>
 		    </tr>
+		    <tr>
+			<td colspan="2" align="center">
+			    <input type="submit" name="include_comment" id="include_comment" value="Save Comment" />
+			</td>
+		    </tr>
 		</table>
 		<?php
 		echo $pane->endPanel();
