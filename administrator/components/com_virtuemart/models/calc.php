@@ -161,8 +161,10 @@ class VirtueMartModelCalc extends JModel
 		}
 
 		$db = JFactory::getDBO();
-
+		$config =& JFactory::getConfig();
+		$tzoffset = $config->getValue('config.offset');
 		foreach ($this->_data as $data){
+
 			/* Write the first 5 categories in the list */
 			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
@@ -246,8 +248,8 @@ class VirtueMartModelCalc extends JModel
 		$data['publish_down'] = $expireDate->toMySQL();
 		
 		$modified = JFactory::getDate();
-		$data['modified']=$modified->toFormat(VM_DATE_FORMAT);
-		echo 'heyhoooo '.$data['modified'];
+		$data['modified']=$modified->toMySQL();
+
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());

@@ -34,7 +34,9 @@ foreach ($this->featuredProducts as $featured) {
 		echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
 		?>
 			<h4><?php echo $featured->product_name; ?></h4></a>
-			<?php echo $featured->product_price['salesPrice']; ?><br />
+			<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['salesPrice']); ?><br />
+			<span class="product-Old-Price">
+			<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['basePriceWithTax']); ?></span>
             <?php
 			if ($featured->product_thumb_image) {
 				echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$featured->flypage.'&product_id='.$featured->product_id), 

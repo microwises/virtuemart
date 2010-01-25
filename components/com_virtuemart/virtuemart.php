@@ -29,8 +29,10 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
 
 /* Front-end helpers */
 require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -49,7 +51,7 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
    require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
 }
 
-if (VmConfig::get('show_prices') == '1') {
+//if (VmConfig::get('show_prices') == '1') {
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 	if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
 		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
@@ -62,7 +64,25 @@ if (VmConfig::get('show_prices') == '1') {
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
 		JRequest::setVar('currency',  new convertECB());
 	}	
+//}
+
+//if (VmConfig::get('show_prices') == '1') {
+$mainvendor = 1;
+$db = Vendor::getVendorFields($mainvendor,array('vendor_currency', 'vendor_currency_display_style','vendor_accepted_currencies'));
+if(!empty($db)){
+	$vendorCurrency = $_SESSION['vendor_currency'] = $db->vendor_currency;;
 }
+
+// see /classes/currency_convert.php
+//vmSetGlobalCurrency();
+Vendor::vmSetGlobalCurrency( $db->vendor_accepted_currencies,$vendorCurrency); //@todo,... maybe necessary to take a look at this
+$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
+//$GLOBALS['CURRENCY_DISPLAY'] = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
+
+//}
+//End Currency
 
 /* Create the controller */
 $classname   = 'VirtuemartController'.$controller;

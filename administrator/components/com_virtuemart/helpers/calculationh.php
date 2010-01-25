@@ -65,6 +65,7 @@ class calculationHelper{
 	 */
 	function getProductPrices($productId,$catIds=0){
 		
+//		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
 		$row=$this->_db->loadRow();
@@ -97,24 +98,24 @@ class calculationHelper{
 		
 		$basePriceShopCurrency = $this->convertCurrencyToShopDefault($this->productCurrency, $basePrice);		
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
-		echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
-		echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
+//		echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
+//		echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
 		
 		
 		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency));	
 		$discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
-		echo '<br /> $discountedPrice. '.$discountedPrice;
+//		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
+//		echo '<br /> $discountedPrice. '.$discountedPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
-		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
+//		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
-		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
+//		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
 		$salesPrice = $this->roundDisplay($unroundedSalesPrice);
-		echo '<br /> $salesPrice. '.$salesPrice;
+//		echo '<br /> $salesPrice. '.$salesPrice;
 		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
-		echo '<br /> $discountAmount. '.$discountAmount;
-		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
+//		echo '<br /> $discountAmount. '.$discountAmount;
+//		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
 		$prices = array(
 				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
 				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
@@ -126,6 +127,7 @@ class calculationHelper{
 //				echo '<br />';
 //				echo print_r($prices);
 //				echo '<br />';
+//		Console::logSpeed('getProductPrices DONE: ');
 		return $prices;
 	}
 	
@@ -268,7 +270,7 @@ class calculationHelper{
 //			echo '<br/ >Cats Test '.$this->testRulePartEffecting($cats,$this->_cats);
 //			echo '<br/ >Shoppergrps Test '.$this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
 			if($this->testRulePartEffecting($cats,$this->_cats) && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId)){
-				echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
+//				echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
 				$testedRules[]=$rule;
 			}
 		}

@@ -84,26 +84,28 @@ var VM = (function($){
 		 * @author jseros
 		 */
 		countryStateList: function(){
-			//Performace issue
+			//Performance issue
 			var successCallBack = (function(statesCombo, countryId){
 				return function(states){
 					var options = '',
 					statesC = $(statesCombo),
 					statesCache = VMCache.get('states');
-					
+
 					if( !statesCache[countryId] ){
 						statesCache = statesCache.constructor === Array ? statesCache : [];						
 						statesCache[countryId] = states;
 						VMCache.set('states', statesCache); //store into the cache object	
 					}
-									
-					statesC.empty().removeAttr('disabled');
-									
+
+					//statesC.empty().removeAttr('disabled');
+					statesC.removeAttr('disabled');
+
 					for(var i = 0, j = states.length; i < j; i++){
 						options += '<option value="'+ states[i].state_id +'">'+ states[i].state_name +'</option>';
 					}
-									
-					statesC.append(	options );					
+
+					statesC.append(	options );
+
 				};
 			});
 						
@@ -116,21 +118,25 @@ var VM = (function($){
 							
 				if( params && params[1]){					
 					$('#'+ params[1]).change(function(){
+					
 						var countryId = $(this).val(),
 						statesCache = VMCache.get('states'); //shortchut to [[this]] and scope solution
+						for (var i = 0; i < countryId.length; i++) {
 						
 						//use cache solution to speed up the process
-						if( statesCache[countryId] ){
-							successCallBack(that, countryId)( statesCache[countryId] );
-						}
-						else{
-							$(that).attr('disabled', 'disabled');
-											
-							$.ajax({
-								url: VMConfig.get('countryStateURL') + countryId,
-								dataType: 'json',
-								success: successCallBack(that, countryId)
-							});
+							if( statesCache[countryId[i]] ){
+								
+								successCallBack(that, countryId[i])( statesCache[countryId] );
+							}
+							else{
+								$(that).attr('disabled', 'disabled');
+												
+								$.ajax({
+									url: VMConfig.get('countryStateURL') + countryId,
+									dataType: 'json',
+									success: successCallBack(that, countryId)
+								});
+							}
 						}
 					});
 				}

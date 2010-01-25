@@ -86,8 +86,7 @@ class Vendor {
 			$vendorId = Vendor::getVendorIdByUserId($userId,$ownerOnly);
 			return $vendorId;
 		}else{
-			echo('$user_id empty, no logged User');
-			$GLOBALS['vmLogger']->err('$user_id empty, no logged User');
+			JError::raiseNotice(1,'$user_id empty, no user logged in');
 			return 0;
 		}
 		
@@ -281,7 +280,7 @@ class Vendor {
 //			$user_id = $db->f('user_id');
 			return $this->db->loadResult();
 		}else{
-			$GLOBALS['vmLogger']->err('Error in DB $order_id '.$order_id.' dont have a user_id');
+			JError::raiseNotice(1,'Error in DB $order_id '.$order_id.' dont have a user_id');
 			return 0;
 		}
 	}
@@ -331,7 +330,11 @@ class Vendor {
 	}
 
 	/**
-	* @param string The vendor_currency_display_code
+	 * 
+	 * Gives back the formate of the vendor, gets $style if none is set, with the vendorId.
+	 * When no param is set, you get the format of the mainvendor
+	 * @param int 		$vendorId Id of hte vendor
+	 * @param string 	$style The vendor_currency_display_code
 	*   FORMAT: 
     1: id, 
     2: CurrencySymbol, 
@@ -363,8 +366,11 @@ class Vendor {
     	EXAMPLE: ||&euro;|2|,||1|8
 	* @return string
 	*/
-	function get_currency_display_style( $style ) {
-	
+	function get_currency_display_style( $vendorId=1, $style=0 ) {
+		
+		if(empty($style)){
+			$db = Vendor::getVendorFields($vendorId,array('vendor_currency_display_style'));	
+		}
 		$array = explode( "|", $style );
 		$display = Array();
 		$display["id"] = @$array[0];
@@ -378,6 +384,38 @@ class Vendor {
 	}	
 	
 	/**
+	 * This function creates the superglobal variable $product_currency
+	 * This variable is used for currency conversion
+	 * @todo must be rewritten
+	 *
+	 */
+	function vmSetGlobalCurrency($vendor_accepted_currencies, $vendor_currency){
+	//	global $vendor_accepted_currencies, $vendor_currency, $vmLogger;
+	
+		if( !defined('_VM_IS_BACKEND') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
+			if( isset( $_REQUEST['product_currency']) ) {
+				$GLOBALS['product_currency'] = $_SESSION['product_currency'] = JRequest::getVar('product_currency' );
+			}
+		}
+		$GLOBALS['product_currency'] = JRequest::getVar( 'product_currency', $vendor_currency);
+			
+		// Check if the selected currency is accepted! (the vendor currency is always accepted)
+		if( $GLOBALS['product_currency'] != $vendor_currency ) {
+			if( empty( $vendor_accepted_currencies )) {
+				$vendor_accepted_currencies = $vendor_currency;
+			}
+			$page = JRequest::getVar('page');
+			$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
+			if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
+					&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {
+				// Fallback to global vendor currency (as set in the store form)
+	//			$vmLogger->warning( 'The Currency you had selected ('.$GLOBALS['product_currency'].') is not accepted for Checkout.');
+				$GLOBALS['product_currency'] = $vendor_currency;
+			}
+		}
+	}
+	
+	/**
 	 * 
 	 * MUST-TODO , functions calls need to be rewritten !!!
 	 * mosttime $vendor_id is set to 1;
@@ -389,7 +427,7 @@ class Vendor {
 	function formatted_store_address( $use_html=false, $vendor_id ) {
 		
 		if(empty($vendor_id)){
-			$GLOBALS['vmLogger']->err( 'formatted_store_address no vendor_id given' );
+			JError::raiseNotice(1,'formatted_store_address no vendor_id given' );
 			return;
 		}
 		
@@ -534,11 +572,11 @@ class Vendor {
 		$usertable= false;
 		$user_id = self::getUserIdByVendorId($vendor_id);
 		if (empty($user_id)) {
-				//$GLOBALS['vmLogger']->err( 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
+				//JError::raiseNotice(1, 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
 				return;
 		}
 		else{
-			// $GLOBALS['vmLogger']->debug( 'get_vendor_details user_id for vendor_id found' );
+			// JError::raiseNotice(1, 'get_vendor_details user_id for vendor_id found' );
 		}
 		if (empty($fields)) {
 			$fieldstring = '*';
@@ -571,7 +609,7 @@ class Vendor {
 			foreach($fields as $field){
 					if(!in_array($field, $allowedStrings)){
 						echo $field;
-						//$GLOBALS['vmLogger']->err( 'get_vendor_fields: field not known: '.$field );	
+						//JError::raiseNotice(1, 'get_vendor_fields: field not known: '.$field );	
 						return;
 					}
 					else {
@@ -589,7 +627,7 @@ class Vendor {
 				/* Check the fields string */
 				$fieldstring = '`'. implode( '`,`', $fields ) . '`';
 				if(empty($fieldstring)) {
-					$GLOBALS['vmLogger']->err( 'get_vendor_fields implode returns empty String: '.$fields[0] );
+					JError::raiseNotice(1, 'get_vendor_fields implode returns empty String: '.$fields[0] );
 					return;
 				}
 			}

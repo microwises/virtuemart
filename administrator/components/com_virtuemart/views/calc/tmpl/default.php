@@ -155,14 +155,23 @@ AdminMenuHelper::startAdminArea();
 						<img src="images/<?php echo ( $row->calc_vendor_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
 					</a>
 				</td>
-
 				<td>
-					<?php $startDate = JFactory::getDate($row->publish_up);
-					echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT); ?>
+					<?php 
+					$publish_up ='';
+					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
+						$date =& JFactory::getDate($row->publish_up, $tzoffset);
+						$publish_up = $date->toMySQL();
+					}
+					echo $publish_up?>
 				</td>
 				<td>
-					<?php $endDate = JFactory::getDate($row->publish_down);
-					echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
+					<?php 
+					$publish_down ='';
+					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
+						$date =& JFactory::getDate($row->publish_up, $tzoffset);
+						$publish_down = $date->toMySQL();
+					}
+					echo $publish_down?>
 				</td>
 				<td>
 					<?php echo JText::_($row->calc_amount_cond); ?>
