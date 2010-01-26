@@ -39,8 +39,19 @@ class VirtuemartControllerOrders extends JController {
 	function __construct() {
 		parent::__construct();
 
-		/* Redirect templates to templates as this is the standard call */
-		//$this->registerTask('edit','orders');
+
+		// Register Extra tasks
+		$this->registerTask( 'add',  'edit' );
+
+		$document = JFactory::getDocument();
+		$viewType   = $document->getType();
+		$view = $this->getView('orders', $viewType);
+
+		// Push a model into the view
+		$model = $this->getModel('orders');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
 	}
 
 	/**
@@ -154,6 +165,51 @@ class VirtuemartControllerOrders extends JController {
 		    $msg - str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
+	}
+
+
+	/**
+	 * Display the order item details for editing
+	 */
+	public function editOrderItem() {
+	    JRequest::setVar('layout', 'edit_orderitem');
+	    JRequest::setVar('hidemenu', 1);
+
+	    parent::display();
+	}
+
+
+	/**
+	* Save the given order item
+	*/
+	public function saveOrderItem() {
+	    $orderId = JRequest::getVar('order_id', '');
+	    $model = $this->getModel('orders');
+	    $msg = '';
+
+	    if (!$model->saveOrderLineItem()) {
+		$msg = $model->getError();
+	    }
+
+	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $orderId;
+	    $this->setRedirect($editLink, $msg);
+	}
+
+
+	/**
+	* Removes the given order item
+	*/
+	public function removeOrderItem() {
+	    $model = $this->getModel('orders');
+	    $msg = '';
+	    $orderId = JRequest::getVar('orderId', '');
+	    $orderLineItem = JRequest::getVar('orderLineId', '');
+	    if (!$model->removeOrderLineItem($orderId, $orderLineItem)) {
+		$msg = $model->getError();
+	    }
+
+	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $orderId;
+	    $this->setRedirect($editLink, $msg);
 	}
 }
 ?>

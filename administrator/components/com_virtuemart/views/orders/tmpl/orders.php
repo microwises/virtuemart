@@ -66,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 		    <td><?php echo $checked; ?></td>
 		    <!-- Order id -->
 			<?php
-			$link = 'index.php?option='.$option.'&view=orders&task=view&order_id='.$order->order_id;
+			$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
 			?>
 		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('EDIT').' '.$order->order_id)); ?></td>
 		<!-- Name -->
