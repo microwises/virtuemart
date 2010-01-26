@@ -186,7 +186,14 @@ $payment = $this->order['payment'];
 		</table>
 		<table  class="adminlist">
 		    <tr>
-			<td align="right" colspan="7">
+			<td align="left" colspan="6">
+			    <?php $editLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
+			    <a href="<?php echo $editLineLink; ?>" class="modal">				
+				<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "New Item"); ?>
+				New Item
+			    </a>
+			</td>
+			<td align="right">
 			    <div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
 			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_subtotal; ?></td>
 		    </tr>

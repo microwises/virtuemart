@@ -564,17 +564,16 @@ class VirtueMartModelOrders extends JModel {
      * @return object Object containing the order item details.
      */
     function getOrderLineDetails($orderId, $orderLineId) {
-	if (!isset($orderId) || !isset($orderLineId)) {
-	    return false;
+	$table = $this->getTable('order_item');
+	if ($table->load($orderLineId)) {
+	    return $table;
 	}
-
-	$db = JFactory::getDBO();
-	$query = 'SELECT * FROM `#__vm_order_item`';
-	$query .= ' WHERE `order_item_id`=' . $orderLineId;
-	$query .= ' AND `order_id`=' . $orderId;
-	$db->setQuery($query);
-
-	return $db->loadObject();
+	else {
+	    $table->reset();
+	    $table->cdate = JFactory::getDate()->toMySql();
+	    $table->order_id = $orderId;
+	    return $table;
+	}
     }
 
 
