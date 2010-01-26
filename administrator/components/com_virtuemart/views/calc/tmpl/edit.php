@@ -23,7 +23,7 @@ AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
-
+<?php echo print_r($this->entryPoints) ?>
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Calculation Rule Details' ); ?></legend>
@@ -65,7 +65,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="calc_kind" id="calc_kind" size="12" value="<?php echo $this->calc->calc_kind; ?>" />
+				<?php echo $this->entryPointsList; ?>
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="calc_value_mathop" id="calc_value_mathop" size="4" value="<?php echo $this->calc->calc_value_mathop; ?>" />
+				<?php echo $this->mathOpList; ?>
 			</td>
 		</tr>
 		<tr>
@@ -107,9 +107,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>			
 			<td>
-
-					<?php echo $this->shopper_tree; ?>
-				
+				<?php echo $this->shopper_tree; ?>
 			</td>
 		</tr>
 		<tr>
@@ -172,7 +170,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 	</table>
 	</fieldset>
-	<?php print_r($this->calc);?>
+	<?php //print_r($this->calc);?>
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />

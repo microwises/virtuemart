@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
 
 
 --
--- Table structure for Tabelle `jos_vm_calc`
---
+-- Table structure for table `#__vm_calc`
+-- 
 
 CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_id` int(11) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
 
 
 --
--- Tabellenstruktur für Tabelle `jos_vm_calc_category_xref`
+-- Table structure for table `#__vm_calc_category_xref`
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
@@ -80,11 +80,11 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
   `calc_rule_id` int(11) NOT NULL default '0',
   `calc_category` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 --
--- Tabellenstruktur für Tabelle `jos_vm_calc_shoppergroup_xref`
+-- Table structure for table `#__vm_calc_shoppergroup_xref`
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_calc_shoppergroup_xref` (
@@ -92,8 +92,33 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_shoppergroup_xref` (
   `calc_rule_id` int(11) NOT NULL default '0',
   `calc_shopper_group` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
+--
+-- Table structure for table `#__vm_calc_country_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_calc_country_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `calc_rule_id` int(11) NOT NULL default '0',
+  `calc_country` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+--
+-- Table structure for table `#__vm_calc_state_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_calc_state_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `calc_rule_id` int(11) NOT NULL default '0',
+  `calc_state` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 
+
+--- End Calculator ------------------------------------------------
 
 --
 -- Table structure for table `#__vm_cart`

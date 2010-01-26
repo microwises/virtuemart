@@ -88,6 +88,9 @@ AdminMenuHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_LOCATION' ); ?>
 			</th>
+			<th width="20">
+				<?php echo JText::_( 'VM_CALC_LOCATION' ); ?>
+			</th>
 			<th width="10">
 				<?php echo JText::_( 'PUBLISHED' ); ?>
 			</th>
@@ -180,7 +183,10 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calc_amount_dimunit); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_location); ?>
+					<?php echo JText::_($row->calc_countriesList); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->calc_statesList); ?>
 				</td>
 				<td align="center">
 					<?php echo $published; ?>

@@ -57,32 +57,55 @@ class VirtuemartViewCalc extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
+			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
+			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
+			
+			
 			$this->loadHelper('shopFunctions');
 
-			/* Load some common models */
-			$categoryModel = $this->getModel('category');
+			/* Get the category tree */
 			$category_tree= null;
-			if (!is_array($calc->calc_categories)) $calc->calc_categories = array($calc->calc_categories);
-			$categories = $calc->calc_categories;
-			foreach ($categories as $value) {
-				$categories[$value]  = 1;
+			if (isset($calc->calc_categories)){
+				$calc_categories = self::prepareTreeSelection($calc->calc_categories);
+				$category_tree = ShopFunctions::categoryListTree(0, 0, 0, $calc_categories);
+			}else{
+				 $category_tree = ShopFunctions::categoryListTree();
 			}
-			/* Get the category tree */
-			if (isset($calc->calc_categories)) $category_tree = ShopFunctions::categoryListTree('', 0, 0, $categories);
-			else $category_tree = ShopFunctions::categoryListTree();
 			$this->assignRef('category_tree', $category_tree);
+
 			
+			/* Get the shoppergroup tree */
 			$shopper_tree= null;
-			if (!is_array($calc->calc_shopper_groups)) $calc->calc_shopper_groups = array($calc->calc_shopper_groups);
-			$calc_shopper_groups = $calc->calc_shopper_groups;
-			foreach ($calc_shopper_groups as $value) {
-				$calc_shopper_groups[$value]  = 1;
+			if (isset($calc->calc_shopper_groups)){
+				$calc_shopper_groups = self::prepareTreeSelection($calc->calc_shopper_groups);
+				$shopper_tree = ShopFunctions::renderShopperGroupList($calc_shopper_groups,1);
+			}else{
+				$shopper_tree = ShopFunctions::shopperListTree();
 			}
-			/* Get the category tree */
-			if (isset($calc->calc_shopper_groups)) $shopper_tree = ShopFunctions::renderShopperGroupList($calc_shopper_groups,1);
-			else $shopper_tree = ShopFunctions::shopperListTree();
 			$this->assignRef('shopper_tree', $shopper_tree);
-			
+
+
+			/* Get the country tree */
+			$country_tree= null;
+			if (isset($calc->calc_countries)){
+				$calc_countries = self::prepareTreeSelection($calc->calc_countries);
+				$country_tree = ShopFunctions::renderCountryList($calc_countries,1);
+			}else{
+				$country_tree = ShopFunctions::renderCountryList();
+			}
+			$this->assignRef('country_tree', $country_tree);
+
+
+			/* Get the states tree */
+			$states_tree= null;
+			if (isset($calc->calc_states)){
+				$calc_states = self::prepareTreeSelection($calc->calc_states);
+				$states_tree = ShopFunctions::renderStateList($calc_states,1);
+			}else{
+				$states_tree = ShopFunctions::renderStateList();
+			}
+			$this->assignRef('states_tree', $states_tree);
+
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CALC_LIST_LBL' ), 'vm_countries_48' );
@@ -111,6 +134,85 @@ class VirtuemartViewCalc extends JView {
 
 		parent::display($tpl);
 	}
+	
+	/**
+	 * Prepares the selection for the TreeLists
+	 * 
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param $value the selected values, may be single data or array
+	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
+	 */
+	function prepareTreeSelection($values){
+		if (!is_array($values)) $values = array($values);
+		foreach ($values as $value) {
+			$values[$value]  = 1;
+		}
+		return $values;
+	}
+	
+	/**
+	 * Builds a list to choose the Entrypoints
+	 * When you want to add extra Entrypoints, look in helpers/calculationh.php for mor information
+	 * 
+	 * This does not use the normal joomla function as it needs too much data that is not necessary,
+	 * Maybe this will be moved to the helper
+	 * 
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param 	$selected 	the selected values, may be single data or array
+	 * @return 	$list 		list of the Entrypoints  
+	 */
+	 
+	function renderEntryPointsList($selected){
+
+		//Entrypoints array
+
+		$selected = self::prepareTreeSelection($selected);
+		//MathOp array
+		$entryPoints = array(
+		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAX')),
+		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAX')),
+		'2' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAX')),
+		'3' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAXBILL')),
+		'4' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAXBILL')),
+		'5' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAXBILL')),
+		
+		);
+
+		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
+		return $listHTML;
+
+	}
+
+	/**
+	 * Builds a list to choose the mathematical operations
+	 * When you want to add extra operations, look in helpers/calculationh.php for more information
+	 * 
+	 * This does not use the normal joomla function as it needs too much data that is not necessary,
+	 * Maybe this will be moved to the helper
+	 * 
+	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author 		Max Milbers
+	 * @param 	$selected 	the selected values, may be single data or array
+	 * @return 	$list 		list of the Entrypoints  
+	 */
+	 
+	function renderMathOpList($selected){
+		$selected = self::prepareTreeSelection($selected);
+		//MathOp array
+		$mathOps = array(
+		'0' => array('calc_value_mathop' => '+', 'calc_value_mathop_name' => '+'),
+		'1' => array('calc_value_mathop' => '-', 'calc_value_mathop_name' => '-'),
+		'2' => array('calc_value_mathop' => '%+', 'calc_value_mathop_name' => '%+'),
+		'3' => array('calc_value_mathop' => '%-', 'calc_value_mathop_name' => '%-')
+		);
+
+		$listHTML = JHTML::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );
+		return $listHTML;
+	}
+
+
 	
 }
 ?>
