@@ -170,7 +170,6 @@ var VM = (function($){
 						country = 0,
 						countriesSend = [],
 						cStack = [];
-						for (var i = 0; i < countryId.length; i++) {
 						
 						countries = countries.push ? countries : [countries];
 					
