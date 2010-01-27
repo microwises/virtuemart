@@ -27,14 +27,24 @@ jimport( 'joomla.application.component.view');
  *
  * @package	VirtueMart
  * @subpackage State
- * @author RolandD
+ * @author RolandD, jseros
  */
 class VirtuemartViewState extends JView {
 
-	function display($tpl = null, $countryId = 0) {
+	function display($tpl = null) {
+
 
 		$stateModel = $this->getModel('state');
-		$states = $stateModel->getFullStates($countryId);
+		$states = array();
+		
+		//retrieving countries id
+		$countries = JRequest::getString('country_id');
+		$countries = explode(',', $countries);
+		
+		foreach($countries as $country){
+			$states[$country] = $stateModel->getFullStates( JFilterInput::clean($country, 'INTEGER') );
+		}
+		
 		echo json_encode($states);
 	}
 }

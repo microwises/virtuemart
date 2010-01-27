@@ -173,9 +173,6 @@ class VirtuemartControllerState extends JController {
 	 */
 	function getList() {
 
-		//retrieving country id
-		$countryId = JRequest::getInt('country_id');
-
 		/* Create the view object. */
 		$view = $this->getView('state', 'json');
 
@@ -183,7 +180,7 @@ class VirtuemartControllerState extends JController {
 		$view->setModel( $this->getModel( 'state', 'VirtueMartModel' ), true );
 
 		/* Now display the view. */
-		$view->display(null, $countryId);
+		$view->display(null);
 	}
 }
-?>
+

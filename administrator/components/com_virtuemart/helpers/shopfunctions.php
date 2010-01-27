@@ -83,23 +83,26 @@ class ShopFunctions {
 	* @param int $countryId Selected country id
 	* @return string HTML containing the <select />
 	*/
-	public function renderCountryList( $countryId = 0 , $multiple=0){
+	public function renderCountryList( $countryId = 0 , $multiple = false ){
 		
 		$countryModel = self::getModel('country');
-				
 		$countries = $countryModel->getCountries(false, true);
-		
-		$emptyOption = new stdClass();
-		$emptyOption->country_id = '';
-		$emptyOption->country_name = '-- '.JText::_('Select').' --';
-		
-		array_unshift($countries, $emptyOption);
+		$attrs = '';
+		$name = 'country_id';
+
 		if($multiple){
-			$multiple = 'multiple="multiple"';
-		}else{
-			$multiple = '';
+			$attrs .= 'multiple="multiple"';
+			$name .= '[]';
 		}
-		$listHTML = JHTML::_('Select.genericlist', $countries, 'country_id[]', $multiple, 'country_id', 'country_name', $countryId , 'country_id');
+		else{
+			$emptyOption = new stdClass();
+			$emptyOption->country_id = '';
+			$emptyOption->country_name = '[ '.JText::_('Select').' ]';
+			
+			array_unshift($countries, $emptyOption);
+		}
+		
+		$listHTML = JHTML::_('Select.genericlist', $countries, $name, $attrs, 'country_id', 'country_name', $countryId , 'country_id');
 		return $listHTML;
 	}
 	
@@ -113,34 +116,27 @@ class ShopFunctions {
 	* @param string $dependentField Parent <select /> ID attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple=0){
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false){
 		
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		$states = array();
-
-//		if( $countryId ){
-//			if (!is_array($countryId)) $countryId = array($countryId);
-//			foreach ($countryId as $country){
-//				JError::raiseNotice(1,'die CountryId '.$country);
-//				$states = array_merge($states, $stateModel->getFullStates( $country ));
-//			}
-//		}
+		$attribs = array();
+		$name = 'state_id';
 		
-		$emptyOption = new stdClass();
-		$emptyOption->state_id = '';
-		$emptyOption->state_name = '-- '.JText::_('Select').' --';
-			
-		array_unshift($states, $emptyOption);			
 		if($multiple){
-			$multiple = 'multiple="multiple"';
-		}else{
-			$multiple = '';
+			$attribs['multiple'] .= 'multiple';
+			$name .= '[]';
+		}
+		else{
+			$emptyOption = new stdClass();
+			$emptyOption->state_id = '';
+			$emptyOption->state_name = '[ '.JText::_('Select').' ]';
+				
+			array_unshift($states, $emptyOption);
 		}
 		
-		$attribs = array(
-			'class' => 'dependent['. $dependentField .']'
-		);
+		$attribs['class'] = 'dependent['. $dependentField .']';
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
