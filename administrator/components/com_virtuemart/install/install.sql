@@ -116,9 +116,9 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_state_xref` (
   `calc_rule_id` int(11) NOT NULL default '0',
   `calc_state` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
---- End Calculator ------------------------------------------------
+-- End Calculator ------------------------------------------------
 
 --
 -- Table structure for table `#__vm_cart`
