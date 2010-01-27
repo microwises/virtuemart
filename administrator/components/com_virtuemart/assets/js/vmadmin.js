@@ -13,6 +13,7 @@
 
  jQuery(document).ready(function(){
 	VM.buildMenu();
+	VM.handleShowElements('click');
  });
  
  
@@ -155,6 +156,36 @@
 			}
 					
 			return this;
+		},
+		
+		handleShowElements: function(e){
+			$( VMConfig.get('showElementSelector') ).each(function(){
+				this.className = this.className || '';
+				
+				var params = VMConfig.get('showElementExpr').exec( this.className ),
+				that = this,
+				pos = $(this).position(),
+				height = $(this).height();
+							
+				if( params && params[1]){
+					$(this).bind(e, function(){
+						$('#'+params[1]).css({
+							top: (pos.top + height) + 'px',
+							left: pos.left + 'px'
+						}).toggle().focus();
+						alert(1);
+						return false;
+					});
+				}
+				
+				return true;
+			});
+			
+			$(document).click(function(){
+				$('.vm-showable').hide();
+			});
+			
+			return true;
 		}
 	});
 
@@ -191,7 +222,11 @@
 				
 		layoutLeftSelector: '.vm-layout-left',
 				
-		layoutRightSelector: '.vm-layout-right'	
+		layoutRightSelector: '.vm-layout-right',
+		
+		showElementSelector: 'a[class*=show_element]',
+				
+		showElementExpr: /show_element\[(.*)\]/i
 	});
 	
 })(jQuery);

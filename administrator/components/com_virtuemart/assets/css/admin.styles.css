@@ -95,3 +95,7 @@
 #vm-close-menu.vm-close-menu-show{
 	background: url(../images/hide.gif) no-repeat;
 }
+
+.vm-absolute{
+	position: absolute;
+}

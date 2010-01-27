@@ -91,8 +91,8 @@ AdminMenuHelper::startAdminArea();
 			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
 			    echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
 			    echo '<br />';
-			    echo JHTML::_('link', 'index.php', JText::_('ADD_COMMENT'), array('onClick' => 'jQuery(\'#order_comment_'.$order->order_id.'\').toggle().focus(); return false;"'));
-			    echo '<textarea style="display: none;" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
+			    echo JHTML::_('link', '#', JText::_('ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->order_id.']'));
+			    echo '<textarea class="element-hidden vm-absolute vm-showable" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
 			    ?>
 		</td>
 		<!-- Update -->
