@@ -173,7 +173,6 @@
 							top: (pos.top + height) + 'px',
 							left: pos.left + 'px'
 						}).toggle().focus();
-						alert(1);
 						return false;
 					});
 				}
