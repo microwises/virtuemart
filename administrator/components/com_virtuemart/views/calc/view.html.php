@@ -204,8 +204,8 @@ class VirtuemartViewCalc extends JView {
 		$mathOps = array(
 		'0' => array('calc_value_mathop' => '+', 'calc_value_mathop_name' => '+'),
 		'1' => array('calc_value_mathop' => '-', 'calc_value_mathop_name' => '-'),
-		'2' => array('calc_value_mathop' => '%+', 'calc_value_mathop_name' => '%+'),
-		'3' => array('calc_value_mathop' => '%-', 'calc_value_mathop_name' => '%-')
+		'2' => array('calc_value_mathop' => '+%', 'calc_value_mathop_name' => '%+'),
+		'3' => array('calc_value_mathop' => '-%', 'calc_value_mathop_name' => '%-')
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );

@@ -21,7 +21,7 @@ class calculationHelper{
 	private $_now ;
 	private $_nullDate;
 	private $_currency;
-	
+	private $_debug;
 	public $productVendorId;
 	public $productCurrency;
 
@@ -42,6 +42,7 @@ class calculationHelper{
 		$this -> _now			= $jnow->toMySQL();
 		$this -> _nullDate		= $this->_db->getNullDate();
 		$this -> _currency 		= JRequest::getVar('currency');
+		$this -> _debug = true;
 	}
 	
 	/** function to start the calculation, here it is for the product
@@ -98,24 +99,24 @@ class calculationHelper{
 		
 		$basePriceShopCurrency = $this->convertCurrencyToShopDefault($this->productCurrency, $basePrice);		
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
-//		echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
-//		echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
+		if($this -> _debug)echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
+		if($this -> _debug)echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
 		
 		
 		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency));	
 		$discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-//		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
-//		echo '<br /> $discountedPrice. '.$discountedPrice;
+if($this -> _debug)		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
+if($this -> _debug)		echo '<br /> $discountedPrice. '.$discountedPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
-//		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
+if($this -> _debug)		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
 		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
-//		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
+if($this -> _debug)		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
 		$salesPrice = $this->roundDisplay($unroundedSalesPrice);
-//		echo '<br /> $salesPrice. '.$salesPrice;
+if($this -> _debug)		echo '<br /> $salesPrice. '.$salesPrice;
 		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
-//		echo '<br /> $discountAmount. '.$discountAmount;
-//		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
+if($this -> _debug)		echo '<br /> $discountAmount. '.$discountAmount;
+if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
 		$prices = array(
 				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
 				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
@@ -210,7 +211,7 @@ class calculationHelper{
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
 				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$price);
-//				echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price.'<br />';
+if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price.'<br />';
 			}
 		}
 		return $price;
@@ -270,7 +271,7 @@ class calculationHelper{
 //			echo '<br/ >Cats Test '.$this->testRulePartEffecting($cats,$this->_cats);
 //			echo '<br/ >Shoppergrps Test '.$this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
 			if($this->testRulePartEffecting($cats,$this->_cats) && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId)){
-//				echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
+if ($this -> _debug	)			echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
 				$testedRules[]=$rule;
 			}
 		}
@@ -395,6 +396,7 @@ class calculationHelper{
 			if(strlen($mathop)>1){
 				$second = substr($mathop,1,2);
 				if(strcmp($sign,"%")){
+					if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
 					return $price * (1-$value/100.0);
 				}
 			} else {

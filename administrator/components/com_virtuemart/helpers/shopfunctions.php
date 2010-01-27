@@ -205,6 +205,7 @@ class ShopFunctions {
 		
 		//$vendor_id = $hVendor->getLoggedVendor();
 		static $categoryTree = '';
+		if($level==0)$categoryTree .= '<option value="0">-- '.JText::_('Select').' --</option>';
 		$vendor_id = 1;
 
 		$categoryModel = self::getModel('category');
@@ -236,8 +237,12 @@ class ShopFunctions {
 			
 			if ($childId != $cid) {
 				
-				$selected = ($childId == $categoryId) ? "selected=\"selected\"" : "";
-				if( $selected == "" && in_array($childId, $selectedCategories)) {
+				//I dont know who did this construction, but it always selected the first category
+//				$selected = ($childId == $categoryId) ? "selected=\"selected\"" : "";
+//				if( $selected == "" && in_array($childId, $selectedCategories)) {
+//					$selected = "selected=\"selected\"";
+//				}
+				if(in_array($childId, $selectedCategories)){
 					$selected = "selected=\"selected\"";
 				}
 				

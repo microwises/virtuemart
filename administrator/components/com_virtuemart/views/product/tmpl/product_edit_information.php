@@ -104,8 +104,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PURCHASE_PRICE') ?>:</div>
 				</td>
-				<td width="71%">
+				<td width="31%">
 					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->purchase_price; ?>" />
+				</td>
+				<td width="40%">
+					<?php echo $this->currencies; ?>
 				</td>
 			</tr>
 			<tr class="row0">
@@ -121,9 +124,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<input type="hidden" name="price_quantity_start" value="<?php echo $this->product->price_quantity_start; ?>" />
 								<input type="hidden" name="price_quantity_end" value="<?php echo $this->product->price_quantity_end; ?>" />
 							</td>
-							<td>
-								<?php echo $this->currencies; ?>
-							</td>
+
 							<td>
 								<input type="hidden" name="shopper_group_id" value="<?php echo $this->product->shopper_group_id ?>" />
 							</td>
