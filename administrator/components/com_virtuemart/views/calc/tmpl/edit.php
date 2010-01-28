@@ -23,7 +23,7 @@ AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
-<?php echo print_r($this->entryPoints) ?>
+<?php //echo print_r($this->c) ?>
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Calculation Rule Details' ); ?></legend>
@@ -168,6 +168,26 @@ AdminMenuHelper::startAdminArea();
 				echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
 			</td>
 		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('VM_CALC_AMOUNT_COND'); ?>:
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_cond; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+				<?php echo JText::_('VM_CALC_AMOUNT_DIMUNIT'); ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
+			</td>
+		</tr>	
 	</table>
 	</fieldset>
 	<?php //print_r($this->calc);?>

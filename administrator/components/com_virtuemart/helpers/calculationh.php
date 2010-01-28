@@ -42,7 +42,7 @@ class calculationHelper{
 		$this -> _now			= $jnow->toMySQL();
 		$this -> _nullDate		= $this->_db->getNullDate();
 		$this -> _currency 		= JRequest::getVar('currency');
-		$this -> _debug = true;
+		$this -> _debug = false;
 	}
 	
 	/** function to start the calculation, here it is for the product
@@ -235,14 +235,9 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 */ 
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-//		$model = $this->getModel('calc');
-//        $calc = $model->getCalc();
-
-//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
-//		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
-		$countries = ''; //$this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
-		$states = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
-		$shopperGroup = ''; // $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
+		$countries = '';
+		$states = '';
+		$shopperGroup = '';
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__vm_calc WHERE ' .
@@ -258,25 +253,34 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 		$testedRules= array();
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach($rules as $rule){
-//			echo '<br/ >rule '.$rule["calc_id"];
+
 			$q= 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$cats = $this->_db->loadResultArray();
-//			echo '<br/ >Categories'. sizeof($cats);
+
 			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
+			
 //			echo '<br/ >calc_shopper_group '. sizeof($shoppergrps);
 ////			echo '<br/ >rule '.$rule["calc_id"].' '.$rule['calc_name'].' the cats '.print_r($cats).' groups '.print_r($shoppergrps);
 //			echo '<br/ >Cats Test '.$this->testRulePartEffecting($cats,$this->_cats);
 //			echo '<br/ >Shoppergrps Test '.$this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
-			if($this->testRulePartEffecting($cats,$this->_cats) && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId)){
-if ($this -> _debug	)			echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
+
+			$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);		
+			if(isset($this->_shopperGroupId)){
+				$hitsShopper = $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
+			}else{
+				$hitsShopper = 1;
+			}
+			//This does not work, can someone explain me why?
+//			if( $this->testRulePartEffecting($cats,$this->_cats && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId) ){
+			if( $hitsCategory && $hitsShopper ){
+				if ($this -> _debug	) echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
 				$testedRules[]=$rule;
 			}
 		}
 
-//		return $rules;
 		return $testedRules;
 	}
 	
@@ -450,8 +454,8 @@ if ($this -> _debug	)			echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
 	 
 	function testRulePartEffecting($rule,$data){
 		
-		if(empty ($rule)) return true;
-		if(empty ($data)) return true;
+		if(!isset ($rule)) return true;
+		if(!isset ($data)) return true;
 		
 		if (!is_array($rule)) $rule = array($rule);
 		if (!is_array($data)) $data = array($data);

@@ -72,7 +72,6 @@ AdminMenuHelper::startAdminArea();
 			<th width="10">
 				<?php echo JText::_( 'VM_CALC_VIS_VENDOR' ); ?>
 			</th>
-
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_START_DATE' ); ?>
 			</th>
@@ -86,10 +85,10 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_( 'VM_CALC_AMOUNT_DIMUNIT' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_CALC_LOCATION' ); ?>
+				<?php echo JText::_( 'VM_CALC_COUNTRIES' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_CALC_LOCATION' ); ?>
+				<?php echo JText::_( 'VM_CALC_STATES' ); ?>
 			</th>
 			<th width="10">
 				<?php echo JText::_( 'PUBLISHED' ); ?>
@@ -171,7 +170,7 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_down ='';
 					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
-						$date =& JFactory::getDate($row->publish_up, $tzoffset);
+						$date =& JFactory::getDate($row->publish_down, $tzoffset);
 						$publish_down = $date->toMySQL();
 					}
 					echo $publish_down?>
@@ -183,10 +182,10 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calc_amount_dimunit); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_countriesList); ?>
+					<?php echo JText::_($row->calcCountriesList); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_statesList); ?>
+					<?php echo JText::_($row->calcStatesList); ?>
 				</td>
 				<td align="center">
 					<?php echo $published; ?>
@@ -201,7 +200,7 @@ AdminMenuHelper::startAdminArea();
 		?>
 		<tfoot>
 			<tr>
-				<td colspan="17">
+				<td colspan="21">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>

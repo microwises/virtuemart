@@ -906,31 +906,31 @@ function vmSpoofValue($alt=NULL) {
  * This variable is used for currency conversion
  *
  */
-function vmSetGlobalCurrency($vendor_accepted_currencies, $vendor_currency){
-//	global $vendor_accepted_currencies, $vendor_currency, $vmLogger;
-
-	if( !defined('_VM_IS_BACKEND') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
-		if( isset( $_REQUEST['product_currency']) ) {
-			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = JRequest::getVar('product_currency' );
-		}
-	}
-	$GLOBALS['product_currency'] = JRequest::getVar( 'product_currency', $vendor_currency);
-		
-	// Check if the selected currency is accepted! (the vendor currency is always accepted)
-	if( $GLOBALS['product_currency'] != $vendor_currency ) {
-		if( empty( $vendor_accepted_currencies )) {
-			$vendor_accepted_currencies = $vendor_currency;
-		}
-		$page = JRequest::getVar('page');
-		$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
-		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
-				&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {
-			// Fallback to global vendor currency (as set in the store form)
-//			$vmLogger->warning( 'The Currency you had selected ('.$GLOBALS['product_currency'].') is not accepted for Checkout.');
-			$GLOBALS['product_currency'] = $vendor_currency;
-		}
-	}
-}
+//function vmSetGlobalCurrency($vendor_accepted_currencies, $vendor_currency){
+////	global $vendor_accepted_currencies, $vendor_currency, $vmLogger;
+//
+//	if( !defined('_VM_IS_BACKEND') && empty( $_REQUEST['ajax_request']) && empty($_REQUEST['pshop_mode'])) {
+//		if( isset( $_REQUEST['product_currency']) ) {
+//			$GLOBALS['product_currency'] = $_SESSION['product_currency'] = JRequest::getVar('product_currency' );
+//		}
+//	}
+//	$GLOBALS['product_currency'] = JRequest::getVar( 'product_currency', $vendor_currency);
+//		
+//	// Check if the selected currency is accepted! (the vendor currency is always accepted)
+//	if( $GLOBALS['product_currency'] != $vendor_currency ) {
+//		if( empty( $vendor_accepted_currencies )) {
+//			$vendor_accepted_currencies = $vendor_currency;
+//		}
+//		$page = JRequest::getVar('page');
+//		$acceptedCurrencies = explode(',', $vendor_accepted_currencies );
+//		if( !in_array( $GLOBALS['product_currency'], $acceptedCurrencies) 
+//				&& (stristr( $page, 'checkout.') || stristr( $page, 'account.') || stristr( $page, 'shop.cart')) ) {
+//			// Fallback to global vendor currency (as set in the store form)
+////			$vmLogger->warning( 'The Currency you had selected ('.$GLOBALS['product_currency'].') is not accepted for Checkout.');
+//			$GLOBALS['product_currency'] = $vendor_currency;
+//		}
+//	}
+//}
 
 function vmIsJoomla( $version='', $operator='=', $compare_minor_versions=true) {
 	global $_VERSION;

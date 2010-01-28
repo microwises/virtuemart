@@ -56,11 +56,11 @@ class ShopFunctions {
 	 * @param string $extra
 	 * @return string
 	 */
-	public function renderShopperGroupList($shopper_group_id='0', $multiple) {
+	public function renderShopperGroupList($shopper_group_id='0', $multiple = false) {
 		
 		$shopperModel = self::getModel('shoppergroup');
-	
 		$shoppergrps = $shopperModel->getShopperGroups(true);
+		$nameD = $name = 'shopper_group_id';
 		
 		$emptyOption = new stdClass();
 		$emptyOption->shopper_id = '';
@@ -69,10 +69,11 @@ class ShopFunctions {
 		array_unshift($shoppergrps, $emptyOption);
 		if($multiple){
 			$multiple = 'multiple="multiple"';
+			$nameD .= '[]';
 		}else{
 			$multiple = '';
 		}
-		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, 'shopper_group_id[]', $multiple, 'shopper_group_id', 'shopper_group_name', $shopper_group_id , 'shopper_group_id');
+		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $multiple, $name, 'shopper_group_name', $shopper_group_id , $name);
 		return $listHTML;
 	}
 	
@@ -94,13 +95,12 @@ class ShopFunctions {
 			$attrs .= 'multiple="multiple"';
 			$name .= '[]';
 		}
-		else{
+//		else{  //Selecting no Country is also possible for the multiselect
 			$emptyOption = new stdClass();
 			$emptyOption->country_id = '';
-			$emptyOption->country_name = '[ '.JText::_('Select').' ]';
-			
+			$emptyOption->country_name = '-- '.JText::_('Select').' --';
 			array_unshift($countries, $emptyOption);
-		}
+//		}
 		
 		$listHTML = JHTML::_('Select.genericlist', $countries, $name, $attrs, 'country_id', 'country_name', $countryId , 'country_id');
 		return $listHTML;
@@ -140,7 +140,7 @@ class ShopFunctions {
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
-		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id',  $attribs, 'state_id', 'state_name', $stateId, 'state_id');
+		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id[]',  $attribs, 'state_id', 'state_name', $stateId, 'state_id');
 		return $listHTML;
 	}
 	
@@ -201,7 +201,9 @@ class ShopFunctions {
 		
 		//$vendor_id = $hVendor->getLoggedVendor();
 		static $categoryTree = '';
-		if($level==0)$categoryTree .= '<option value="0">-- '.JText::_('Select').' --</option>';
+		if($level==0){
+			$categoryTree .= '<option value="">-- '.JText::_('Select').' --</option>';
+		}	
 		$vendor_id = 1;
 
 		$categoryModel = self::getModel('category');
@@ -226,11 +228,12 @@ class ShopFunctions {
 		$records = $db->loadObjectList();*/
 		
 		$records = $categoryModel->getCategoryTree(true, true, $cid);
-		
+		$selected="";
 		foreach ($records as $key => $category) {
 			
 			$childId = $category->category_child_id;
 			
+//			echo print_r($selectedCategories).'   Die ChildId '.$childId.' <br /> ';
 			if ($childId != $cid) {
 				
 				//I dont know who did this construction, but it always selected the first category
@@ -238,9 +241,7 @@ class ShopFunctions {
 //				if( $selected == "" && in_array($childId, $selectedCategories)) {
 //					$selected = "selected=\"selected\"";
 //				}
-				if(in_array($childId, $selectedCategories)){
-					$selected = "selected=\"selected\"";
-				}
+				if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
 				
 				$disabled = '';
 				if( in_array( $childId, $disabledFields )) {
@@ -254,7 +255,6 @@ class ShopFunctions {
 				else{
 					$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">'."\n";
 					$categoryTree .= str_repeat(' - ', ($level-1) );
-					
 
 					$categoryTree .= $category->category_name .'</option>';
 				}

@@ -69,12 +69,12 @@
 
 .vm-layout-left{
 	float: left;
-	width: 23%;
+	width: 220px;
 }
 
 .vm-layout-right{
-	float: right;
-	width: 77%;
+
+	width: auto;
 }
 
 .vm-replace-content{

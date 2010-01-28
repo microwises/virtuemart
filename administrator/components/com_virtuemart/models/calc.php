@@ -136,12 +136,12 @@ class VirtueMartModelCalc extends JModel
 		$this->_data->calc_shopper_groups = $db->loadResultArray();
 
 		/* Add the calculation rule countries */
-		$q = 'SELECT `calc_countries` FROM #__vm_calc_countries_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `calc_country` FROM #__vm_calc_countries_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->calc_countries = $db->loadResultArray();
 		
 		/* Add the calculation rule states */
-		$q = 'SELECT `calc_states` FROM #__vm_calc_states_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
+		$q = 'SELECT `calc_state` FROM #__vm_calc_states_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->calc_states = $db->loadResultArray();
 				
@@ -211,62 +211,44 @@ class VirtueMartModelCalc extends JModel
 				$data->calcShoppersList = substr($calcShoppersList,0,-2);
 			}
 			
-			/* Write the first 5 shoppergroups in the list */
-			$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-			$db->setQuery($q);
-			$calcShoppers = $db->loadResultArray();
-			if(isset($calcShoppers)){
-				$calcShoppersList='';
-				$i=0;
-				foreach ($calcShoppers as $value) {
-					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
-					$db->setQuery($q);
-					$shopperName = $db->loadResult();
-					$calcShoppersList .= $shopperName. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->calcShoppersList = substr($calcShoppersList,0,-2);
-			}
-			
 			/* Write the first 5 countries in the list */
-			$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
+			$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
 			$calcShoppers = $db->loadResultArray();
 			if(isset($calcShoppers)){
 				$calcShoppersList='';
 				$i=0;
 				foreach ($calcShoppers as $value) {
-					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
+					$q = 'SELECT country_name FROM #__vm_country WHERE country_id = "'.$value.'"';
 					$db->setQuery($q);
 					$shopperName = $db->loadResult();
 					$calcShoppersList .= $shopperName. ', ';
 					$i++;
 					if($i>4) break;
 				}
-				$data->calcShoppersList = substr($calcShoppersList,0,-2);
+				$data->calcCountriesList = substr($calcShoppersList,0,-2);
 			}
 			
 			/* Write the first 5 states in the list */
-			$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
+			$q = 'SELECT `calc_state` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
 			$calcShoppers = $db->loadResultArray();
 			if(isset($calcShoppers)){
 				$calcShoppersList='';
 				$i=0;
 				foreach ($calcShoppers as $value) {
-					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
+					$q = 'SELECT state_name FROM #__vm_state WHERE state_id = "'.$value.'"';
 					$db->setQuery($q);
 					$shopperName = $db->loadResult();
 					$calcShoppersList .= $shopperName. ', ';
 					$i++;
 					if($i>4) break;
 				}
-				$data->calcShoppersList = substr($calcShoppersList,0,-2);
+				$data->calcStatesList = substr($calcShoppersList,0,-2);
 			}
+
 		}
 //		echo (print_r($this->_data).'<br /><br />');
-		
 		return $this->_data;
 	}
 	
@@ -331,45 +313,31 @@ class VirtueMartModelCalc extends JModel
 			$this->setError($table->getError());
 			return false;
 		}
-		
-		$db = JFactory::getDBO();
-		
-		/* Store categories */
-		/* Delete old category links */
-		$q  = 'DELETE FROM `#__vm_calc_category_xref` ';
-		$q .= 'WHERE `calc_rule_id` = "'.$data["calc_id"].'" ';
-		$db->setQuery($q);
-		$db->Query();
-
-		/* Store the new categories */
-		foreach( $data["calc_categories"] as $category_id ) {
-			$q  = 'INSERT INTO `#__vm_calc_category_xref` ';
-			$q .= '(calc_rule_id,calc_category) ';
-			$q .= 'VALUES ("'.$data["calc_id"].'","'. $category_id . '")';
-			$db->setQuery($q); 
-			$db->query();
-		}
-		
-		/* Store Shoppergroups */
-		/* Delete old shoppergroup links */
-		$q  = 'DELETE FROM `#__vm_calc_shoppergroup_xref` ';
-		$q .= 'WHERE `calc_rule_id` = "'.$data["calc_id"].'" ';
-		$db->setQuery($q);
-		$db->Query();
-
-		/* Store the new categories */
-		foreach( $data["shopper_group_id"] as $shoppergrp_id ) {
-			$q  = 'INSERT INTO `#__vm_calc_shoppergroup_xref` ';
-			$q .= '(calc_rule_id,calc_shopper_group) ';
-			$q .= 'VALUES ("'.$data['calc_id'].'","'. $shoppergrp_id . '")';
-			$db->setQuery($q); 
-			$db->query();
-		}
+//		echo print_r($data) ; die;
+		self::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category',$data["calc_id"],$data["calc_categories"]);
+		self::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group',$data["calc_id"],$data["shopper_group_id"]);
+		self::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country',$data["calc_id"],$data["country_id"]);
+		self::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state',$data["calc_id"],$data["state_id"]);
 		
 		return true;
 	}	
 
+	private function storeArrayData($table,$fieldId,$fieldData,$id,$data){
+		$db = JFactory::getDBO();
+		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
+		$db->setQuery($q);
+		$db->Query();
 
+		/* Store the new categories */
+		foreach( $data as $category_id ) {
+			$q  = 'INSERT INTO `'.$table.'` ';
+			$q .= '('.$fieldId.','.$fieldData.') ';
+			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
+			$db->setQuery($q); 
+			$db->query();
+		}
+	}
+	
 	/**
 	 * Delete all record ids selected
      *

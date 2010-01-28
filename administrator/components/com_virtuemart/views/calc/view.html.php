@@ -37,13 +37,14 @@ class VirtuemartViewCalc extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel('calc');
-        $calc = $model->getCalc();
-        
-        $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($calc->calc_id < 1);
-		
+
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
+			
+			$calc = $model->getCalc();
 			$this->assignRef('calc',	$calc);
+			
+			$isNew = ($calc->calc_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
 				JToolBarHelper::divider();
@@ -66,7 +67,8 @@ class VirtuemartViewCalc extends JView {
 			/* Get the category tree */
 			$category_tree= null;
 			if (isset($calc->calc_categories)){
-				$calc_categories = self::prepareTreeSelection($calc->calc_categories);
+//				$calc_categories = self::prepareTreeSelection($calc->calc_categories);
+				$calc_categories = $calc->calc_categories;
 				$category_tree = ShopFunctions::categoryListTree(0, 0, 0, $calc_categories);
 			}else{
 				 $category_tree = ShopFunctions::categoryListTree();
@@ -144,6 +146,9 @@ class VirtuemartViewCalc extends JView {
 	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
 	 */
 	function prepareTreeSelection($values){
+		if (!isset($values)){
+			return;
+		}
 		if (!is_array($values)) $values = array($values);
 		foreach ($values as $value) {
 			$values[$value]  = 1;

@@ -38,7 +38,7 @@ class VirtuemartControllerCalc extends JController
 	 */
 	public function __construct() {
 		parent::__construct();
-		echo 'ControllerCalc start  ';
+
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
@@ -55,7 +55,6 @@ class VirtuemartControllerCalc extends JController
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
-		echo 'ControllerCalc end<br />';
 	}
 	
 	/**
