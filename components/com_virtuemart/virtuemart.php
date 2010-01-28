@@ -68,17 +68,15 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
 
 //if (VmConfig::get('show_prices') == '1') {
 $mainvendor = 1;
-$db = Vendor::getVendorFields($mainvendor,array('vendor_currency', 'vendor_currency_display_style','vendor_accepted_currencies'));
+$db = Vendor::getVendorFields($mainvendor,array('vendor_currency_display_style'));
 if(!empty($db)){
-	$vendorCurrency = $_SESSION['vendor_currency'] = $db->vendor_currency;;
+	$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
+	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+	JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
 }
 
 // see /classes/currency_convert.php
-//vmSetGlobalCurrency();
-Vendor::vmSetGlobalCurrency( $db->vendor_accepted_currencies,$vendorCurrency); //@todo,... maybe necessary to take a look at this
-$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
+//Vendor::vmSetGlobalCurrency( $db->vendor_accepted_currencies,$vendorCurrency); //@todo,... maybe necessary to take a look at this
 //$GLOBALS['CURRENCY_DISPLAY'] = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
 
 //}
