@@ -121,8 +121,7 @@
 			
 			if(typeof hide !== 'undefined'){
 				if(hide){
-					leftPanel.css('width', '0');
-					rightPanel.css('width', '99%');
+					leftPanel.css('width', '0px');
 					$(closerSel).addClass( VMConfig.get('menuHandlerClass') );
 				}
 				return true;
@@ -131,11 +130,9 @@
 			if( !Cookie.get( VMConfig.get('menuStateCookie') ) ){
 				if(animation){
 					leftPanel.animate({ width: '0', opacity: 0}, VMConfig.get('menuToggleSpeed') );
-					rightPanel.animate({ width: '99%'}, VMConfig.get('menuToggleSpeed') );
 				}
 				else{
 					leftPanel.css('width', '0px');
-					rightPanel.css('width', '99%');
 				}
 					
 				$(closerSel).addClass( VMConfig.get('menuHandlerClass') );
@@ -143,12 +140,10 @@
 			}
 			else{			
 				if(animation){
-					rightPanel.animate({ width: '77%'}, VMConfig.get('menuToggleSpeed') );
-					leftPanel.animate({ width: '23%', opacity: 1}, VMConfig.get('menuToggleSpeed') );
+					leftPanel.animate({ width: '220px', opacity: 1}, VMConfig.get('menuToggleSpeed') );
 				}
 				else{
-					rightPanel.css('width', '77%');
-					leftPanel.css('width', '23%');
+					leftPanel.css('width', '220px');
 				}
 						
 				$(closerSel).removeClass( VMConfig.get('menuHandlerClass') );
