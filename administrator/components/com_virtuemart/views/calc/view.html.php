@@ -37,7 +37,18 @@ class VirtuemartViewCalc extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel('calc');
+		
+		require_once(CLASSPATH. 'ps_perm.php' );
+		$perm = new ps_perm();
+		$perm->check( 'admin' );
+		$this->assignRef('perm',	$perm);
+		$this->assignRef('model',	$model);
 
+		//@todo should be depended by loggedVendor
+		$vendorId=1;
+		$this->assignRef('vendorId', $vendorId);
+		
+		
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			
@@ -65,48 +76,25 @@ class VirtuemartViewCalc extends JView {
 			$this->loadHelper('shopFunctions');
 
 			/* Get the category tree */
-			$category_tree= null;
+			$categoryTree= null;
 			if (isset($calc->calc_categories)){
-//				$calc_categories = self::prepareTreeSelection($calc->calc_categories);
 				$calc_categories = $calc->calc_categories;
-				$category_tree = ShopFunctions::categoryListTree(0, 0, 0, $calc_categories);
+				$categoryTree = ShopFunctions::categoryListTree(0, 0, 0, $calc_categories);
 			}else{
-				 $category_tree = ShopFunctions::categoryListTree();
+				 $categoryTree = ShopFunctions::categoryListTree();
 			}
-			$this->assignRef('category_tree', $category_tree);
+			$this->assignRef('categoryTree', $categoryTree);
 
 			
 			/* Get the shoppergroup tree */
-			$shopper_tree= null;
-			if (isset($calc->calc_shopper_groups)){
-				$calc_shopper_groups = self::prepareTreeSelection($calc->calc_shopper_groups);
-				$shopper_tree = ShopFunctions::renderShopperGroupList($calc_shopper_groups,1);
-			}else{
-				$shopper_tree = ShopFunctions::shopperListTree();
-			}
-			$this->assignRef('shopper_tree', $shopper_tree);
-
-
-			/* Get the country tree */
-			$country_tree= null;
-			if (isset($calc->calc_countries)){
-				$calc_countries = self::prepareTreeSelection($calc->calc_countries);
-				$country_tree = ShopFunctions::renderCountryList($calc_countries,1);
-			}else{
-				$country_tree = ShopFunctions::renderCountryList();
-			}
-			$this->assignRef('country_tree', $country_tree);
-
-
-			/* Get the states tree */
-			$states_tree= null;
-			if (isset($calc->calc_states)){
-				$calc_states = self::prepareTreeSelection($calc->calc_states);
-				$states_tree = ShopFunctions::renderStateList($calc_states,1);
-			}else{
-				$states_tree = ShopFunctions::renderStateList();
-			}
-			$this->assignRef('states_tree', $states_tree);
+			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->calc_shopper_groups,True);
+			$this->assignRef('shopperGroupList', $shopperGroupList);
+			echo'also alte methode: '.$calc->calc_countries;
+			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
+			$this->assignRef('countriesList', $countriesList);
+			
+			$statesList = ShopFunctions::renderStateList($calc->states, $calc->calc_countries, 'country_id',True);
+			$this->assignRef('statesList', $statesList);			
 
         }
         else {
@@ -121,18 +109,9 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('pagination',	$pagination);	
 			
 			$calcs = $model->getCalcs();
-			$this->assignRef('calcs',	$calcs);	
+			$this->assignRef('calcs',	$calcs);
 			
 		}
-		require_once(CLASSPATH. 'ps_perm.php' );
-		$perm = new ps_perm();
-		$perm->check( 'admin' );
-		$this->assignRef('perm',	$perm);
-		$this->assignRef('model',	$model);
-
-		//@todo should be depended by loggedVendor
-		$vendorId=1;
-		$this->assignRef('vendorId', $vendorId);
 
 		parent::display($tpl);
 	}

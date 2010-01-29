@@ -161,7 +161,7 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_up ='';
 					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
-						$date =& JFactory::getDate($row->publish_up, $tzoffset);
+						$date =& JFactory::getDate($row->publish_up, $this->calcs->tzoffset);
 						$publish_up = $date->toMySQL();
 					}
 					echo $publish_up?>
@@ -170,7 +170,7 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_down ='';
 					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
-						$date =& JFactory::getDate($row->publish_down, $tzoffset);
+						$date =& JFactory::getDate($row->publish_down, $this->calcs->tzoffset);
 						$publish_down = $date->toMySQL();
 					}
 					echo $publish_down?>
@@ -191,7 +191,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $published; ?>
 				</td>
 				<td align="center">
-					<?php echo $calc_shared ?>
+					<?php echo $row->shared; ?>
 				</td>				        																														
 			</tr>
 			<?php

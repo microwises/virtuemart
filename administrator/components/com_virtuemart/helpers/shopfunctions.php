@@ -60,20 +60,20 @@ class ShopFunctions {
 		
 		$shopperModel = self::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(true);
+		$attrs = '';
 		$nameD = $name = 'shopper_group_id';
 		
 		$emptyOption = new stdClass();
 		$emptyOption->shopper_id = '';
 		$emptyOption->shopper_group_name = '-- '.JText::_('Select').' --';
-
 		array_unshift($shoppergrps, $emptyOption);
+		
 		if($multiple){
-			$multiple = 'multiple="multiple"';
+			$attrs = 'multiple="multiple"';
 			$nameD .= '[]';
-		}else{
-			$multiple = '';
 		}
-		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $multiple, $name, 'shopper_group_name', $shopper_group_id , $name);
+		
+		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopper_group_id , $name);
 		return $listHTML;
 	}
 	
@@ -89,20 +89,20 @@ class ShopFunctions {
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(false, true);
 		$attrs = '';
-		$name = 'country_id';
+		$nameD = $name = 'country_id';
 
+		//Selecting no Country is also possible for the multiselect
+		$emptyOption = new stdClass();
+		$emptyOption->country_id = '';
+		$emptyOption->country_name = '-- '.JText::_('Select').' --';
+		array_unshift($countries, $emptyOption);
+		
 		if($multiple){
 			$attrs .= 'multiple="multiple"';
-			$name .= '[]';
+			$nameD .= '[]';
 		}
-//		else{  //Selecting no Country is also possible for the multiselect
-			$emptyOption = new stdClass();
-			$emptyOption->country_id = '';
-			$emptyOption->country_name = '-- '.JText::_('Select').' --';
-			array_unshift($countries, $emptyOption);
-//		}
-		
-		$listHTML = JHTML::_('Select.genericlist', $countries, $name, $attrs, 'country_id', 'country_name', $countryId , 'country_id');
+
+		$listHTML = JHTML::_('Select.genericlist', $countries, $nameD, $attrs, $name, 'country_name', $countryId , $name);
 		return $listHTML;
 	}
 	
@@ -122,68 +122,26 @@ class ShopFunctions {
 		$stateModel = self::getModel('state');
 		$states = array();
 		$attribs = array();
-		$name = 'state_id';
+		$nameD = $name = 'state_id';
 		
+		$emptyOption = new stdClass();
+		$emptyOption->state_id = '';
+		$emptyOption->state_name = '-- '.JText::_('Select').' --';
+		array_unshift($states, $emptyOption);
+			
 		if($multiple){
+//			$attrs .= 'multiple="multiple"';
 			$attribs['multiple'] .= 'multiple';
-			$name .= '[]';
+			$nameD .= '[]';
 		}
-		else{
-			$emptyOption = new stdClass();
-			$emptyOption->state_id = '';
-			$emptyOption->state_name = '[ '.JText::_('Select').' ]';
-				
-			array_unshift($states, $emptyOption);
-		}
-		
+	
 		$attribs['class'] = 'dependent['. $dependentField .']';
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
-		$listHTML = JHTML::_('Select.genericlist', $states, 'state_id[]',  $attribs, 'state_id', 'state_name', $stateId, 'state_id');
+		$listHTML = JHTML::_('Select.genericlist', $states, $nameD,  $attribs, $name, 'state_name', $stateId, 'state_id');
 		return $listHTML;
 	}
-	
-	
-	/**
-	 * Gets the total number of product for category
-	 *
-     * @author jseros
-     * @param int $categoryId Own category id
-	 * @return int Total number of products
-	 */
-	public function countProductsByCategory( $categoryId = 0 ) 
-	{
-		$categoryModel = self::getModel('category');
-        return $categoryModel->countProducts($categoryId);
-    } 
-	
-	
-	/**
-	 * Print a select-list with enumerated categories
-	 *
-     * @author jseros
-     * 	 
-	 * @param boolean $onlyPublished Show only published categories?
-	 * @param boolean $withParentId Keep in mind $parentId param?
-	 * @param integer $parentId Show only its childs
-	 * @param string $attribs HTML attributes for the list
-	 * @return string <Select /> HTML
-	 */
-	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null ) 
-	{
-		$categoryModel = self::getModel('category');
-		
-		$categories = $categoryModel->getCategoryTree($onlyPublished, $withParentId, (int)$parentId);
-		
-		foreach($categories as $index => $cat){
-			$cat->category_name = $cat->ordering .'. '. $cat->category_name;
-			$categories[$index] = $cat;
-		}
-		
-		return JHTML::_('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
-    } 
-
 	
 	/**
 	 * Creates structured option fields for all categories
@@ -265,8 +223,47 @@ class ShopFunctions {
 		
 		return $categoryTree;
 	}
+
     
-    
+   	/**
+	 * Gets the total number of product for category
+	 *
+     * @author jseros
+     * @param int $categoryId Own category id
+	 * @return int Total number of products
+	 */
+	public function countProductsByCategory( $categoryId = 0 ) 
+	{
+		$categoryModel = self::getModel('category');
+        return $categoryModel->countProducts($categoryId);
+    } 
+
+
+	/**
+	 * Print a select-list with enumerated categories
+	 *
+     * @author jseros
+     * 	 
+	 * @param boolean $onlyPublished Show only published categories?
+	 * @param boolean $withParentId Keep in mind $parentId param?
+	 * @param integer $parentId Show only its childs
+	 * @param string $attribs HTML attributes for the list
+	 * @return string <Select /> HTML
+	 */
+	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null ) 
+	{
+		$categoryModel = self::getModel('category');
+		
+		$categories = $categoryModel->getCategoryTree($onlyPublished, $withParentId, (int)$parentId);
+		
+		foreach($categories as $index => $cat){
+			$cat->category_name = $cat->ordering .'. '. $cat->category_name;
+			$categories[$index] = $cat;
+		}
+		
+		return JHTML::_('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
+    }
+
 	/**
 	* Return model instance. This is a DRY solution!
 	* 

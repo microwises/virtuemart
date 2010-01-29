@@ -96,7 +96,7 @@ AdminMenuHelper::startAdminArea();
 			</td>			
 			<td>
 				<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
-					<?php echo $this->category_tree; ?>
+					<?php echo $this->categoryTree; ?>
 				</select>
 			</td>
 		</tr>
@@ -107,7 +107,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>			
 			<td>
-				<?php echo $this->shopper_tree; ?>
+				<?php echo $this->shopperGroupList ?>
 			</td>
 		</tr>
 		<tr>
@@ -115,7 +115,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
 			</td>
 			<td>
-				<?php echo ShopFunctions::renderCountryList($this->store->userInfo->country,1);?>
+				<?php echo $this->countriesList?>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +123,7 @@ AdminMenuHelper::startAdminArea();
 		    	<?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
 			</td>
 			<td>
-		    	<?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country, 'country_id','',1);?>
+		    	<?php echo $this->statesList?>
 			</td>
 		</tr>
 		<tr>

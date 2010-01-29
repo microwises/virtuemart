@@ -136,12 +136,12 @@ class VirtueMartModelCalc extends JModel
 		$this->_data->calc_shopper_groups = $db->loadResultArray();
 
 		/* Add the calculation rule countries */
-		$q = 'SELECT `calc_country` FROM #__vm_calc_countries_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->calc_countries = $db->loadResultArray();
 		
 		/* Add the calculation rule states */
-		$q = 'SELECT `calc_state` FROM #__vm_calc_states_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
+		$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->calc_states = $db->loadResultArray();
 				
@@ -173,8 +173,10 @@ class VirtueMartModelCalc extends JModel
 		$db = JFactory::getDBO();
 		$config =& JFactory::getConfig();
 		$tzoffset = $config->getValue('config.offset');
+//		$this->_data['tzoffset'] = $config->getValue('config.offset');
 		foreach ($this->_data as $data){
 
+			$data->tzoffset=$tzoffset;
 			/* Write the first 5 categories in the list */
 			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
