@@ -114,7 +114,7 @@ class TableProduct extends JTable {
 	 * @author RolandD
 	 * @param $db A database connector object
 	 */
-	function __construct(&$db) {
+	function __construct($db) {
 		parent::__construct('#__vm_product', 'product_id', $db);
 	}
 }

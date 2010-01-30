@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Description
+* Main product information
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage Product
 * @author RolandD
 * @todo Price update calculations
 * @link http://www.virtuemart.net
@@ -28,11 +28,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('VM_PRODUCT_FORM_PUBLISH') ?>:</div>
 					</td>
 					<td width="79%">
-						<?php
-							$checked = '';//todo roland please checkt this
-							if (strtoupper($this->product->published) == "1") $checked = 'checked="checked"';
-							echo '<input type="checkbox" name="published" value="1" '.$checked.' />';
-						?> 
+						<?php echo JHTMLSelect::booleanlist('published', null, $this->product->published); ?> 
 					</td>
 				</tr>
 				<tr class="row1">
@@ -100,15 +96,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</td>
 	<td>
 		<table class="adminform">
+			<tr class="row0">
+				<td width="29%">
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_CURRENCY') ?>:</div>
+				</td>
+				<td width="71%">
+					<?php echo $this->currencies; ?>
+				</td>
+			</tr>
 			<tr class="row1">
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PURCHASE_PRICE') ?>:</div>
 				</td>
-				<td width="31%">
+				<td width="71%">
 					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->purchase_price; ?>" />
-				</td>
-				<td width="40%">
-					<?php echo $this->currencies; ?>
 				</td>
 			</tr>
 			<tr class="row0">
@@ -179,66 +180,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row1">
 				<td colspan="2">&nbsp;</td>
 			</tr>
-			<tr class="row1">
-				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_S_DESC') ?>:</div>
-				</td>
-				<td width="71%"  valign="top">
-					<textarea class="inputbox" name="product_s_desc" id="short_desc" cols="35" rows="6" ><?php echo $this->product->product_s_desc; ?></textarea>
-				</td>
-			</tr>
 		</table>
 	</td>
-	</tr>
-</table>
-<table class="adminform">
-	<tr class="row1">
-		<td valign="top" width="20%"><div style="font-weight:bold;">
-			<?php echo JText::_('VM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
-		</td>
-		<td width="60%">
-			<?php
-			echo $this->editor->display('product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
-			?>
-		</td>
-		<td valign="top">
-			<fieldset>
-				<legend><?php echo JText::_('VM_META_INFORMATION') ?></legend>		
-				<table valign="top">
-					<tr>
-						<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
-						<td valign="top">
-							<textarea class="inputbox" name="metadesc" id="meta_desc" cols="30" rows="6"><?php echo $this->product->metadesc; ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div>
-						</td>
-						<td valign="top">
-							<textarea class="inputbox" name="metakeyword" id="meta_keyword" cols="30" rows="6"><?php echo $this->product->metakey; ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_ROBOTS'); ?>: </div>
-						</td>
-						<td valign="top">
-							<input type="text" class="inputbox" size="20" name="metarobot" value="<?php echo $this->product->metarobot ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_AUTHOR'); ?>: </div>
-						</td>
-						<td valign="top">
-							<input type="text" class="inputbox" size="20" name="metaauthor" value="<?php echo $this->product->metaauthor ?>" />
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-		</td>
 	</tr>
 </table>
 <script type="text/javascript">

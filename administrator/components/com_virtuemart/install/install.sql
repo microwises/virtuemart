@@ -607,6 +607,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   `metarobot` text NOT NULL,
   `metaauthor` text NOT NULL,
   `purchase_price` decimal(15,5) NOT NULL default '0.00',
+  `detailspage` VARCHAR(255) NOT NULL DEFAULT 'productdetails',
   PRIMARY KEY  (`product_id`),
   KEY `idx_product_vendor_id` (`vendor_id`),
   KEY `idx_product_product_parent_id` (`product_parent_id`),

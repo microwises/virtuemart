@@ -1,11 +1,11 @@
 <?php
 /**
 *
-* Description
+* Handle the product variants
 *
 * @package	VirtueMart
-* @subpackage 
-* @author
+* @subpackage Product
+* @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php

@@ -30,6 +30,9 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jque
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'product_information' );
 		echo $this->loadTemplate('information');
 	echo $this->pane->endPanel();
+	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_DESCRIPTION'), 'product_description' );
+		echo $this->loadTemplate('description');
+	echo $this->pane->endPanel();
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_STATUS_LBL'), 'product_status' );
 		echo $this->loadTemplate('status');
 	echo $this->pane->endPanel();
@@ -47,7 +50,10 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jque
 			echo $this->loadTemplate('waitinglist');
 		echo $this->pane->endPanel();
 	}
-	echo $this->pane->endPane(); 
+	echo $this->pane->startPanel( JText::_('VM_META_INFORMATION'), 'product_metadata' );
+		echo $this->loadTemplate('metadata');
+	echo $this->pane->endPanel();
+	echo $this->pane->endPane();
 
 ?>
 <!-- Hidden Fields -->
