@@ -539,16 +539,18 @@ class VirtueMartModelCategory extends JModel {
     /**
 	 * Bind the post data to the category table and save it
      *
-     * @author jseros
+     * @author jseros, RolandD
      * @return int category id stored
 	 */
-    public function store()
-	{
+    public function store() {
 		jimport('joomla.filesystem.file');
 
 		$table = $this->getTable();
 		$data = JRequest::get('post');
-
+		
+		/* Vendor */
+		$data['vendor_id'] = 1;
+		
 		//normalize data
 		$data['category_flypage'] = 'shop.'.$data['category_flypage'];
 		$data['category_flypage'] = str_replace('.tpl', '', $data['category_flypage']);

@@ -36,17 +36,14 @@ class VirtuemartViewCategory extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 		$this->loadHelper('image');
-
+		
 		$model = $this->getModel();
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $category = $model->getCategory();
-
-        // loading the ShopFunctions and Image Helpers
-		$this->loadHelper('shopFunctions');
-		$this->loadHelper('image');
 
         $isNew = ($category->category_id < 1);
 
@@ -71,12 +68,13 @@ class VirtuemartViewCategory extends JView {
 			$parent = $model->getParentCategory( $category->category_id );
 			$flypages = $model->getTemplateList('product_details');
 			$browsePages = $model->getTemplateList('browse');
-
+			$categorylist = ShopFunctions::categoryListTree(array($parent->category_id));
 
 			$this->assignRef('parent', $parent);
 			$this->assignRef('flypageList', $flypages);
 			$this->assignRef('browsePageList', $browsePages);
 			$this->assignRef('category', $category);
+			$this->assignRef('categorylist', $categorylist);
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CATEGORY_LIST_LBL' ), 'vm_categories_48' );
@@ -84,8 +82,11 @@ class VirtuemartViewCategory extends JView {
 			JToolBarHelper::editListX();
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
+			/**
+			* Commented out for future use
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_SHARE'), true);
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_UNSHARE'), true);
+			*/
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
 			$categories = $model->getCategoryTree(false);

@@ -47,6 +47,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 				<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>			
 			</td>
 		</tr>
+		<!-- Commented out for future use
 		<tr>
 			<td class="key">
 				<label for="shared">
@@ -59,7 +60,8 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 					echo JHTML::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
 				?>			
 			</td>
-		</tr>		
+		</tr>
+		-->		
 		<tr>
 			<td class="key">
 				<label for="category_name">
@@ -107,7 +109,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 										<td>
 											<select name="category_parent_id" id="category_parent_id" class="inputbox">
 												<option value=""><?php echo JText::_('VM_CATEGORY_FORM_TOP_LEVEL'); ?></option>
-												<?php echo ShopFunctions::categoryListTree($this->parent->category_id);?>
+												<?php echo $this->categorylist;?>
 											</select>
 										</td>
 									</tr>

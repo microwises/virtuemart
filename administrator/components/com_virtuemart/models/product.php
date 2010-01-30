@@ -348,7 +348,7 @@ class VirtueMartModelProduct extends JModel {
 				break;
 		}
         if ($categoryId) {
-	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url`, `quantity_options` ';
+	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
 	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
@@ -362,7 +362,7 @@ class VirtueMartModelProduct extends JModel {
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
         }
         else {
-	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url`, `quantity_options` ';
+	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
 	        $query .= 'FROM `#__vm_product` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
@@ -374,31 +374,29 @@ class VirtueMartModelProduct extends JModel {
         }
         $db->setQuery($query);
 		$result = $db->loadObjectList();
-
-		//No product in the result, that comes normally from that there is no product or no product published, we assume published
-		if(!isset($result)){
-			JError::raiseNotice(1, 'No products published $query '.$query );
-//			return $result;
-		}
-		/* Add some extra info */
-		foreach ($result as $featured) {
-			/* Flypage */
-			$featured->flypage = shopFunctions::getFlypage($featured->product_id);
-
-			/* Product price */
-			$price = "";
-			if (VmConfig::get('show_prices') == '1') {
-				/* Loads the product price details */
-				$calculator = new calculationHelper();
-				$price = $calculator->getProductPrices($featured->product_id);
+		
+		/* Check if we have any products */
+		if($result) {
+			/* Add some extra info */
+			foreach ($result as $featured) {
+				/* Flypage */
+				$featured->flypage = shopFunctions::getFlypage($featured->product_id);
+	
+				/* Product price */
+				$price = "";
+				if (VmConfig::get('show_prices') == '1') {
+					/* Loads the product price details */
+					$calculator = new calculationHelper();
+					$price = $calculator->getProductPrices($featured->product_id);
+				}
+				$featured->product_price = $price;
+	
+				/* Child products */
+				$featured->haschildren = $this->checkChildProducts($featured->product_id);
+	
+				/* Attributes */
+				$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
 			}
-			$featured->product_price = $price;
-
-			/* Child products */
-			$featured->haschildren = $this->checkChildProducts($featured->product_id);
-
-			/* Attributes */
-			$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
 		}
 
 		return $result;

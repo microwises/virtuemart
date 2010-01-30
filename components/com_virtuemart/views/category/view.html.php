@@ -27,6 +27,8 @@ jimport('joomla.application.component.view');
 *
 * @package VirtueMart
 * @author RolandD
+* @todo set meta data
+* @todo add full path to breadcrumb
 */
 class VirtuemartViewCategory extends JView {
 	
@@ -34,8 +36,11 @@ class VirtuemartViewCategory extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		
-		/* Set the titles */
-		$mainframe->setPageTitle(JText::_('VM_CATEGORY_DETAILS'));
+		/* Set the helper path */
+		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
+		
+		/* Load helpers */
+		$this->loadHelper('image');
 		
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('productdetails');
@@ -46,6 +51,9 @@ class VirtuemartViewCategory extends JView {
 	    /* Add the category name to the pathway */
 		$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
+	    
+	    /* Set the titles */
+		$mainframe->setPageTitle($category->category_name);
 	    
 	    /* Load the products in the given category */
 	    $products = $productModel->getProductsInCategory($categoryId);

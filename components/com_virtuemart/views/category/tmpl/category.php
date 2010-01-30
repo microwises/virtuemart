@@ -19,7 +19,57 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-/* Process all products */
+
+/* Show child categories */
+if ($this->category->haschildren) {
+	?>
+	<table width="100%" cellspacing="0" cellpadding="0">
+	<?php
+	$iCol = 1;
+	$categories_per_row = 2;
+	$cellwidth = 25;
+	foreach ($this->category->children as $category ) {
+		if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
+			echo "<tr>\n";
+		}
+		?>
+		<td align="center" width="<?php echo $cellwidth ?>%" >
+			<br />
+			<?php
+				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id);
+				$cattext = ''; 
+				if ($category->category_thumb_image) {
+					$cattext .= ImageHelper::getShopImageHtml('resized/'.$category->category_thumb_image, 'category', 'alt="'.$category->category_name.'"', false);
+					$cattext .= "<br /><br/>\n";
+				}
+				$cattext .= $category->category_name;
+				$cattext .= ' ('.$category->number_of_products.')';
+				echo JHTML::link($caturl, $cattext);
+				?>
+			 <br/>
+		</td>
+		
+		
+		<?php
+		// Do we need to close the current row now?
+		if ($iCol == $categories_per_row) { // If the number of products per row has been reached
+			echo "</tr>\n";
+			$iCol = 1;
+		}
+		else {
+			$iCol++;
+		}
+	}
+	// Do we need a final closing row tag?
+	if ($iCol != 1) {
+		echo "</tr>\n";
+	}
+	?>
+	</table>
+<?php
+}
+
+/* Process all products in the category*/
 foreach ($this->products as $product) {
 	?>
 	<div class="browseProductContainer">

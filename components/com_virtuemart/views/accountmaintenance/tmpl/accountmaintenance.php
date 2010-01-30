@@ -30,7 +30,8 @@ if ($this->auth['is_registered_customer']) {
     <tr>
       <td>
       <strong>
-      	<?php echo JHTML::_('link', JRoute::_(VmConfig::get('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling"), 
+      	<?php
+      		echo JHTML::_('link', JRoute::_(VmConfig::get('secureurl', JURI::root()).'index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling'), 
       				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/identity.png', JText::_('VM_ACCOUNT_TITLE'), array('align' => 'middle')).' '.JText::_('VM_ACC_ACCOUNT_INFO')); ?>
        </strong>
        <br /><?php echo JText::_('VM_ACC_UPD_BILL') ?>

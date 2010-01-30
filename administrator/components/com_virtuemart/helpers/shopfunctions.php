@@ -147,14 +147,13 @@ class ShopFunctions {
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
-	 * 
-	 * @param int $categoryId A single category to be pre-selected
+	 * @author RolandD
+	 * @param array $selectedCategories All category IDs that will be pre-selected
 	 * @param int $cid Internally used for recursion
 	 * @param int $level Internally used for recursion
-	 * @param array $selectedCategories All category IDs that will be pre-selected
 	 * @return string $category_tree HTML: Category tree list
 	 */
-	public function categoryListTree($categoryId = 0, $cid = 0, $level = 0, $selectedCategories = array(), $disabledFields=array()) {
+	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 		//global $perm, $hVendor;
 		
 		//$vendor_id = $hVendor->getLoggedVendor();
@@ -167,24 +166,6 @@ class ShopFunctions {
 		$categoryModel = self::getModel('category');
 		$level++;
 
-		/*
-		$q = "SELECT category_id, category_child_id, category_name 
-			  FROM #__vm_category, #__vm_category_xref
-			  WHERE #__vm_category_xref.category_parent_id = ". $cid."
-			  AND #__vm_category.category_id=#__vm_category_xref.category_child_id ";
-		
-		if (!$perm->check("admin")) {
-			//This shows for the admin everything, but for normal vendors only their own AND shared categories by Max Milbers
-			$q .= "AND (#__vm_category.vendor_id = '$vendor_id' OR #__vm_category_xref.category_shared = 'Y') ";
-			
-		}
-		$GLOBALS['vmLogger']->debug('$hVendor_id='.$vendor_id);
-		
-		
-		$q .= "ORDER BY #__vm_category.ordering, #__vm_category.category_name ASC";
-		$db->setQuery($q);   
-		$records = $db->loadObjectList();*/
-		
 		$records = $categoryModel->getCategoryTree(true, true, $cid);
 		$selected="";
 		foreach ($records as $key => $category) {
@@ -193,12 +174,6 @@ class ShopFunctions {
 			
 //			echo print_r($selectedCategories).'   Die ChildId '.$childId.' <br /> ';
 			if ($childId != $cid) {
-				
-				//I dont know who did this construction, but it always selected the first category
-//				$selected = ($childId == $categoryId) ? "selected=\"selected\"" : "";
-//				if( $selected == "" && in_array($childId, $selectedCategories)) {
-//					$selected = "selected=\"selected\"";
-//				}
 				if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
 				
 				$disabled = '';
@@ -218,7 +193,7 @@ class ShopFunctions {
 				}
 			}
 			
-			self::categoryListTree($categoryId, $childId, $level, $selectedCategories, $disabledFields);
+			self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
 		}
 		
 		return $categoryTree;

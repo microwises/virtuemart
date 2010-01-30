@@ -1,11 +1,11 @@
 <?php
 /**
 *
-* Description
+* Lists all the categories in the shop
 *
 * @package	VirtueMart
 * @subpackage Category
-* @author RickG, jseros
+* @author RickG, jseros, RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -53,16 +53,15 @@ if( $this->pagination->limit < $nrows ){
 			<th width="5%">
 				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
+			<!-- Commented out for future use
 			<th width="5%">
 				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SHARED', 'cx.category_shared', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
-			</th>	
+			</th>
+			-->
 			<th width="13%">
 				<?php echo JHTML::_('grid.sort', 'ORDER', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
-			<th width="3%">
-				<?php echo JHTML::_('grid.sort', 'ID', 'c.category_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
-			</th>							
 		</tr>
 		</thead>
 		<tbody>
@@ -110,19 +109,18 @@ if( $this->pagination->limit < $nrows ){
 				<td align="center">
 					<?php echo $published;?>
 				</td>
+				<!-- Commented out for future use
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShared')" title="<?php echo ( $row->category_shared == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
 						<img src="images/<?php echo ( $row->category_shared) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->category_shared == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
 					</a>
 				</td>
+				-->
 				<td align="center" class="order">
 					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', 'Move Up'); ?></span>
 					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', 'Move Down'); ?></span>
 					<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
-				<td align="center">
-					<?php echo $row->category_id;?>
-				</td>				        																														
 			</tr>
 		<?php
 			$k = 1 - $k;

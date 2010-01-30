@@ -64,7 +64,7 @@ class VirtuemartViewProduct extends JView {
 				$product = $this->get('Product');
 
 				/* Get the category tree */
-				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree('', 0, 0, $product->categories);
+				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
@@ -222,7 +222,7 @@ class VirtuemartViewProduct extends JView {
 				/* Get the category tree */
 				$categoryId = JRequest::getInt('category_id');
 				if(!empty($categoryId)){
-					$category_tree = ShopFunctions::categoryListTree( $categoryId );
+					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 					$this->assignRef('category_tree', $category_tree);
 				}
 

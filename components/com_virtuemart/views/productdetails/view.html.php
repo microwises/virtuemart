@@ -24,6 +24,10 @@ jimport( 'joomla.application.component.view' );
 
 /**
 * Product details
+*
+* @package VirtueMart
+* @author RolandD
+* @todo Add full path to breadcrumb
 */
 class VirtueMartViewProductdetails extends JView {
 	

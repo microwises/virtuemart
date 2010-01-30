@@ -95,26 +95,20 @@ class VirtuemartControllerCategory extends JController {
 	/**
 	 * Handle the save task
 	 *
-	 * @author RickG, jseros
+	 * @author RickG, jseros, RolandD
 	 */
-	public function save()
-	{
+	public function save() {
 		$categoryModel = $this->getModel('category');
 		$cmd = JRequest::getCmd('task');
+		
+		/* Load the image helper */
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+		
+		if ($id = $categoryModel->store()) $msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
+		else $msg = JText::_($categoryModel->getError());
 
-		if ($id = $categoryModel->store()) {
-			$msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
-		}
-		else {
-			$msg = JText::_($categoryModel->getError());
-		}
-
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
-		}
-		else{
-			$redirection = 'index.php?option=com_virtuemart&view=category';
-		}
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=category';
 
 		$this->setRedirect($redirection, $msg);
 	}

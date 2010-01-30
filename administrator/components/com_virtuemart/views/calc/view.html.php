@@ -79,7 +79,7 @@ class VirtuemartViewCalc extends JView {
 			$categoryTree= null;
 			if (isset($calc->calc_categories)){
 				$calc_categories = $calc->calc_categories;
-				$categoryTree = ShopFunctions::categoryListTree(0, 0, 0, $calc_categories);
+				$categoryTree = ShopFunctions::categoryListTree($calc_categories);
 			}else{
 				 $categoryTree = ShopFunctions::categoryListTree();
 			}

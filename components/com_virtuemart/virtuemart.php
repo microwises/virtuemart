@@ -40,11 +40,14 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'sho
 /* Load the permissions */
 Permissions::doAuthentication();
 
-/* Loading jQuery and VM scripts. Please feel free to move these lines to better location*/
+/* Loading jQuery and VM scripts. */
 $document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm.js');
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');
+
+/* Loading stylesheets */
+$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
