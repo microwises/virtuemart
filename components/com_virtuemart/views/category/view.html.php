@@ -37,7 +37,6 @@ class VirtuemartViewCategory extends JView {
 		/* Set the titles */
 		$mainframe->setPageTitle(JText::_('VM_CATEGORY_DETAILS'));
 		
-		
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('productdetails');
 	    $categoryId = JRequest::getInt('category_id', 0);

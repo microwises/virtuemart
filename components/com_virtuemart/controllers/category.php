@@ -38,6 +38,8 @@ class VirtueMartControllerCategory extends JController {
     */
     public function __construct() {
      	 parent::__construct();
+     	 
+     	 $this->registerTask('browse','category');
    	}
 
 	/**
