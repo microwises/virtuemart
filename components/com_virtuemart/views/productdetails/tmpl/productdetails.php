@@ -82,6 +82,7 @@ else { ?>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
+					<form action="index.php" method="post" name="addtocart" id="addtocartproduct">
 					<div style="text-align: center;">
 						<?php
 							/* Show the variants */
@@ -91,14 +92,14 @@ else { ?>
 									if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
 									$options[] = JHTML::_('select.option', $variant_name.'_'.$name, $name);
 								}
-								echo $variant_name.JHTML::_('select.genericlist', $options, $variant_name);
+								if (!empty($options)) echo $variant_name.JHTML::_('select.genericlist', $options, $variant_name);
 							}
 							/* Display the quantity box */
 							?>
 							<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
 							<input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $this->product->product_id;?>" name="quantity[]" value="1" />
-							<input type="button" class="quantity_box_button quantity_box_button_up" onclick="var qty_el = document.getElementById('quantity<?php echo $this->product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" />
-							<input type="button" class="quantity_box_button quantity_box_button_down" onclick="var qty_el = document.getElementById('quantity<?php echo $this->product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;" />
+							<input type="button" class="quantity_box_button quantity_box_button_up" onClick="add(<?php echo $this->product->product_id;?>); return false;" />
+							<input type="button" class="quantity_box_button quantity_box_button_down" onClick="minus(<?php echo $this->product->product_id;?>); return false;" />
 							<?php
 							
 							/* Add the button */
@@ -112,14 +113,15 @@ else { ?>
 							?>
 							<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							
-							<?php /** @todo Complete form */ ?>
-							<!--
-							<input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" />
-							<input type="hidden" name="category_id" value="<?php echo $category_id ?>" />
-							<input type="hidden" name="func" value="cartAdd" />
-							<input type="hidden" name="option" value="<?php echo $option ?>" />
-							-->
-					</div>
+							<input type="hidden" name="option" value="com_virtuemart" />
+							<input type="hidden" name="view" value="cart" />
+							<input type="hidden" name="task" value="add" />
+							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
+							<?php /** @todo Handle the manufacturer view */ ?> 
+							<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
+							<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
+						</div>
+					</form>
 				<?php } ?>
 			</td>
 		</tr>
@@ -230,17 +232,12 @@ else { ?>
 										if( !empty($addtocart_link) ) {
 											?>
 											<br />
-											<form action="<?php echo  $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart">
+											<form action="index.php" method="post" name="addtocart" id="addtocart">
 											<input type="hidden" name="option" value="com_virtuemart" />
-											<input type="hidden" name="page" value="shop.cart" />
-											<input type="hidden" name="Itemid" value="<?php echo ps_session::getShopItemid(); ?>" />
+											<input type="hidden" name="view" value="cart" />
 											<input type="hidden" name="func" value="cartAdd" />
-											<input type="hidden" name="prod_id" value="<?php echo $product_id; ?>" />
 											<input type="hidden" name="product_id" value="<?php echo $product_id ?>" />
 											<input type="hidden" name="quantity" value="1" />
-											<input type="hidden" name="set_price[]" value="" />
-											<input type="hidden" name="adjust_price[]" value="" />
-											<input type="hidden" name="master_product[]" value="" />
 											<input type="submit" class="addtocart_button_module" value="<?php echo JText::_('VM_CART_ADD_TO') ?>" title="<?php echo JText::_('VM_CART_ADD_TO') ?>" />
 											</form>
 											<br />
@@ -472,3 +469,17 @@ else { ?>
 		</tr>
 	</table>
 <?php } ?>
+<script type="text/javascript">
+function add(nr) {
+	var currentVal = parseInt(jQuery('#quantity'+nr).val());
+	if (currentVal != NaN) {
+		jQuery('#quantity'+nr).val(currentVal + 1);
+	}
+};
+function minus(nr) {
+	var currentVal = parseInt(jQuery('#quantity'+nr).val());
+	if (currentVal != NaN) {
+		jQuery('#quantity'+nr).val(currentVal - 1);
+	}
+};
+</script>

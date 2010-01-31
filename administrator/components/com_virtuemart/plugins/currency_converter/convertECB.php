@@ -125,7 +125,7 @@ class convertECB {
 				
 				/* XML Parsing */
 				require_once( JPATH_ROOT.DS.'includes'.DS.'domit'.DS.'xml_domit_lite_include.php' );
-				$xmlDoc =& new DOMIT_Lite_Document();
+				$xmlDoc = new DOMIT_Lite_Document();
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
 					//todo
 //					$vmLogger->err( 'Failed to parse the Currency Converter XML document.');
