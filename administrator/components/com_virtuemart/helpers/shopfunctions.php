@@ -47,34 +47,28 @@ class ShopFunctions {
 		return $mailer;
 	}
 	
-		/**
-	 * Creates a Drop Down list of available Shopper Groups
-	 *
-	 * @author Max Milbers
-	 * @param string $name
-	 * @param int $shopper_group_id
-	 * @param string $extra
-	 * @return string
-	 */
+	/**
+	* Creates a Drop Down list of available Shopper Groups
+	*
+	* @author Max Milbers, RolandD
+	* @access public
+	* @param int $shopper_group_id the shopper group to pre-select
+	* @param bool $multiple if the select list should allow multiple selections 
+	* @return string HTML select option list
+	*/
 	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
-		
 		$shopperModel = self::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(true);
 		$attrs = '';
-		$nameD = $name = 'shopper_group_id';
-		
-		$emptyOption = new stdClass();
-		$emptyOption->shopper_id = '';
-		$emptyOption->shopper_group_name = '-- '.JText::_('Select').' --';
+		$name = 'shopper_group_id';
+		$emptyOption = JHTMLSelect::option('', '-- '.JText::_('Select').' --', 'shopper_group_id', 'shopper_group_name');
 		array_unshift($shoppergrps, $emptyOption);
 		
-		if($multiple){
+		if ($multiple){
 			$attrs = 'multiple="multiple"';
-			$nameD .= '[]';
+			$name .= '[]';
 		}
-//		echo 'Wasn hier wieder los '.$shopperGroupId;die;
-//		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopperGroupId , $name);
-		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopperGroupId );
+		$listHTML = JHTMLSelect::genericlist($shoppergrps, $name, $attrs, 'shopper_group_id', 'shopper_group_name', $shopperGroupId );
 		return $listHTML;
 	}
 	
