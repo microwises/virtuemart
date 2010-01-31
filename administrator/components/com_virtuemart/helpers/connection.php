@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
  *
- * @version $Id:connectionTools.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
+ * @version $Id:connection.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
  * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -62,15 +62,16 @@ class VmConnector {
      * @return mixed
      */
     function handleCommunication( $url, $postData='', $headers=array(), $fileToSaveData=null ) {
-	global $vmLogger;
+//	global $vmLogger;
 
 	$urlParts = parse_url( $url );
 	if( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
 	if( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
 
-	if( isset( $urlParts['query'] )) $urlParts['query'] = '?'.$urlParts['query'];
-	if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
-
+	if( isset( $urlParts['query'] )){
+		 $urlParts['query'] = '?'.$urlParts['query'];
+		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
+	}
 	// Check proxy
 	if( trim( @VM_PROXY_URL ) != '') {
 	    if( !stristr(VM_PROXY_URL, 'http')) {
@@ -177,12 +178,11 @@ class VmConnector {
 	    if(!$fp) {
 			//error tell us
 			JError::raiseNotice(1, 'Possible server error! - '.$errstr .'('.$errno.')\n' );
-//			$vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
 			return false;
 	    }
 	    else {
 	    	//Would be interesting to set this only for debug
-//			JError::raiseNOtice(1, 'Connection opened to '.$urlParts['host']);
+//			JError::raiseNotice(1, 'Connection opened to '.$urlParts['host']);
 	    }
 	    if( $postData ) {
 		$vmLogger->debug('Now posting the variables.' );
@@ -229,7 +229,7 @@ class VmConnector {
 
 	    // If didnt get content-lenght, something is wrong, return false.
 	    if ( trim($data) == '' ) {
-		$vmLogger->err('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
+		JError::raiseWarning('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 		return false;
 	    }
 	    $result = trim( $data );

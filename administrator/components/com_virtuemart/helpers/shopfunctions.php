@@ -56,7 +56,7 @@ class ShopFunctions {
 	 * @param string $extra
 	 * @return string
 	 */
-	public function renderShopperGroupList($shopper_group_id='0', $multiple = false) {
+	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
 		
 		$shopperModel = self::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(true);
@@ -72,8 +72,9 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple"';
 			$nameD .= '[]';
 		}
-		
-		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopper_group_id , $name);
+//		echo 'Wasn hier wieder los '.$shopperGroupId;die;
+//		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopperGroupId , $name);
+		$listHTML = JHTML::_('Select.genericlist', $shoppergrps, $nameD, $attrs,  $name, 'shopper_group_name', $shopperGroupId );
 		return $listHTML;
 	}
 	
@@ -130,8 +131,7 @@ class ShopFunctions {
 		array_unshift($states, $emptyOption);
 			
 		if($multiple){
-//			$attrs .= 'multiple="multiple"';
-			$attribs['multiple'] .= 'multiple';
+			$attribs['multiple'] = 'multiple';
 			$nameD .= '[]';
 		}
 	
@@ -139,7 +139,7 @@ class ShopFunctions {
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
-		$listHTML = JHTML::_('Select.genericlist', $states, $nameD,  $attribs, $name, 'state_name', $stateId, 'state_id');
+		$listHTML = JHTML::_('Select.genericlist', $states, $nameD,  $attribs, $name, 'state_name', $stateId, $name);
 		return $listHTML;
 	}
 	
@@ -147,11 +147,11 @@ class ShopFunctions {
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
-	 * @author RolandD
-	 * @param array $selectedCategories All category IDs that will be pre-selected
-	 * @param int $cid Internally used for recursion
-	 * @param int $level Internally used for recursion
-	 * @return string $category_tree HTML: Category tree list
+	 * @author RolandD, Max Milbers, jseros
+	 * @param array 	$selectedCategories All category IDs that will be pre-selected
+	 * @param int 		$cid 		Internally used for recursion
+	 * @param int 		$level 		Internally used for recursion
+	 * @return string 	$category_tree HTML: Category tree list
 	 */
 	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 		//global $perm, $hVendor;
@@ -171,8 +171,7 @@ class ShopFunctions {
 		foreach ($records as $key => $category) {
 			
 			$childId = $category->category_child_id;
-			
-//			echo print_r($selectedCategories).'   Die ChildId '.$childId.' <br /> ';
+
 			if ($childId != $cid) {
 				if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
 				

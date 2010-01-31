@@ -232,7 +232,7 @@ class VirtueMartModelCalc extends JModel
 			}
 			
 			/* Write the first 5 states in the list */
-			$q = 'SELECT `calc_state` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
+			$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
 			$calcShoppers = $db->loadResultArray();
 			if(isset($calcShoppers)){

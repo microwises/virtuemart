@@ -214,10 +214,10 @@ class VirtueMartModelCountry extends JModel {
 
 
     /**
-     * Retireve a list of countries from the database.
+     * Retrieve a list of countries from the database.
      *
      * @author RickG
-     * @param string $onlyPuiblished True to only retreive the publish countries, false otherwise
+     * @param string $onlyPublished True to only retrieve the publish countries, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of country objects
      */

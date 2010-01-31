@@ -38,7 +38,7 @@ AdminMenuHelper::startAdminArea();
 			<th width="60">
 				<?php echo JText::_( 'VM_CALC_LIST_NAME' ); ?>
 			</th>
-			<?php if($this ->perm->check( 'admin' )){ ?>
+			<?php if(Permissions::check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
 			</th><?php }?>						
@@ -118,7 +118,7 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php if($this ->perm->check( 'admin' )){?>				
+				<?php if(Permissions::check( 'admin' )){?>				
 				<td align="left">
 					<?php echo JText::_($row->calc_vendor_id); ?>
 				</td>
@@ -161,7 +161,7 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_up ='';
 					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
-						$date =& JFactory::getDate($row->publish_up, $this->calcs->tzoffset);
+						$date = JFactory::getDate($row->publish_up, $row->tzoffset);
 						$publish_up = $date->toMySQL();
 					}
 					echo $publish_up?>
@@ -170,7 +170,7 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_down ='';
 					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
-						$date =& JFactory::getDate($row->publish_down, $this->calcs->tzoffset);
+						$date = JFactory::getDate($row->publish_down, $row->tzoffset);
 						$publish_down = $date->toMySQL();
 					}
 					echo $publish_down?>

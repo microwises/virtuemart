@@ -164,8 +164,8 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>			
-				<?php $endDate = JFactory::getDate($this->calc->publish_down);
-				echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
+				<?php //$endDate = JFactory::getDate($this->calc->publish_down);
+				//echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
 			</td>
 		</tr>
 		<tr>

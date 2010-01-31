@@ -22,6 +22,7 @@ class calculationHelper{
 	private $_nullDate;
 	private $_currency;
 	private $_debug;
+	private $_amount;
 	public $productVendorId;
 	public $productCurrency;
 
@@ -64,7 +65,7 @@ class calculationHelper{
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
-	function getProductPrices($productId,$catIds=0){
+	function getProductPrices($productId,$catIds=0,$amount=0){
 		
 //		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
@@ -92,6 +93,10 @@ class calculationHelper{
 		if(isset($user->id)){
 			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
 			$this->_shopperGroupId=$this->_db->loadResultArray();			
+		}
+		
+		if(!empty($amount)){
+			$this->_amount;
 		}
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
@@ -246,6 +251,10 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
+		if(!empty($this->_amount)){
+			$q .=' AND (`calc_amount_cond` <= "'.$this->_amount.'" OR calc_amount_cond="0" )';
+		}
+//		' AND ( calc_amount_cond = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
@@ -273,6 +282,11 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 			}else{
 				$hitsShopper = 1;
 			}
+			$hitsAmount = 1;
+			if(!empty($this->_amount)){
+				//Test 
+			}
+			
 			//This does not work, can someone explain me why?
 //			if( $this->testRulePartEffecting($cats,$this->_cats && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId) ){
 			if( $hitsCategory && $hitsShopper ){

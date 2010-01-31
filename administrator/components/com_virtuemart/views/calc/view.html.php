@@ -38,11 +38,11 @@ class VirtuemartViewCalc extends JView {
 
 		$model = $this->getModel('calc');
 		
-		require_once(CLASSPATH. 'ps_perm.php' );
-		$perm = new ps_perm();
-		$perm->check( 'admin' );
-		$this->assignRef('perm',	$perm);
-		$this->assignRef('model',	$model);
+//		require_once(CLASSPATH. 'ps_perm.php' );
+//		$perm = new ps_perm();
+//		$perm->check( 'admin' );
+//		$this->assignRef('perm',	$perm);
+//		$this->assignRef('model',	$model);
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
@@ -89,11 +89,11 @@ class VirtuemartViewCalc extends JView {
 			/* Get the shoppergroup tree */
 			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->calc_shopper_groups,True);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
-			echo'also alte methode: '.$calc->calc_countries;
+
 			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
 			
-			$statesList = ShopFunctions::renderStateList($calc->states, $calc->calc_countries, 'country_id',True);
+			$statesList = ShopFunctions::renderStateList($calc->calc_states, $calc->calc_countries, 'country_id',True);
 			$this->assignRef('statesList', $statesList);			
 
         }

@@ -49,13 +49,17 @@ class convertECB {
 			$currA = $vendor_currency;
 		}
 		if( !$currB ) {
-			$currB = $GLOBALS['product_currency'];
+//			$currB = $GLOBALS['product_currency'];
+			$currB = $vendor_currency;
 		}
 		// If both currency codes match, do nothing
 		if( $currA == $currB ) {		
 			return $amountA;
 		}
-		if( $GLOBALS['converter_array'] == '') {
+		
+		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
+//		$globalCurrencyConverter=array();
+		if( empty($globalCurrencyConverter)) {
 			setlocale(LC_TIME, "en-GB");
 			$now = time() + 3600; // Time in ECB (Germany) is GMT + 1 hour (3600 seconds)
 			if (date("I")) {
@@ -140,18 +144,19 @@ class convertECB {
 					$currency[$currNode->getAttribute("currency")] = $currNode->getAttribute("rate");
 					unset( $currNode );
 				}
-				$GLOBALS['converter_array'] = $currency;
+				$globalCurrencyConverter = $currency;
 			}
 			else {
-				$GLOBALS['converter_array'] = -1;
+				$globalCurrencyConverter = -1;
 				//todo
 //				$vmLogger->err( 'Failed to retrieve the Currency Converter XML document.');
-				$GLOBALS['product_currency'] = $vendor_currency;
+//				$GLOBALS['product_currency'] = $vendor_currency;
 				return $amountA;
 			}
+			JRequest::setVar('globalCurrencyConverter',$globalCurrencyConverter);
 		}
-		$valA = isset( $GLOBALS['converter_array'][$currA] ) ? $GLOBALS['converter_array'][$currA] : 1;
-		$valB = isset( $GLOBALS['converter_array'][$currB] ) ? $GLOBALS['converter_array'][$currB] : 1;
+		$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
+		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
 		
 		$val = $amountA * $valB / $valA;
 		//todo
