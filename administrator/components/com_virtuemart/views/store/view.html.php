@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author RickG, jseros
+ * @author RickG, jseros, Max Milbers
  */
 class VirtueMartViewStore extends JView {
 
@@ -75,10 +75,10 @@ class VirtueMartViewStore extends JView {
 	    $editor = JFactory::getEditor();
 	    $this->assignRef('editor', $editor);
 	    
-	    $countriesList = ShopFunctions::renderCountryList($store->userInfo->country_id);
+	    $countriesList = ShopFunctions::renderCountryList($store->userInfo->country);
 		$this->assignRef('countriesList', $countriesList);
 		
-		$statesList = ShopFunctions::renderStateList($store->userInfo->state_id, $store->userInfo->country_id, 'country_id');
+		$statesList = ShopFunctions::renderStateList($store->userInfo->state, $store->userInfo->country, 'country_id');
 		$this->assignRef('statesList', $statesList);
 	}
 	else {
