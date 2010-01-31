@@ -99,6 +99,9 @@ class VirtueMartModelProductdetails extends JModel {
 			/* Load the variants */
 			$product->variants = $this->getVariants($product);
 			
+			/* Load the attributes */
+			$product->attributes = $this->getAttributes($product);
+			
 			/* Handle some child product data */
 			if ($product->product_parent_id > 0) {
 				/* Get the attributes */
@@ -467,6 +470,49 @@ class VirtueMartModelProductdetails extends JModel {
 			$result = $db->loadObject();
 		}
 		return $result;
+	}
+	
+	/**
+	 * Function to create a DB object that holds all information
+	 * from the attribute tables about item $item_id AND/OR product $product_id
+	 *
+	 * @author RolandD
+	 * @param int $product The product object
+	 * @param string $attribute_name The name of the attribute to filter
+	 * @return array list of attribute objects
+	 */
+	function getAttributes($product, $attribute_name = '') {
+		$db = JFactory::getDBO();
+		$attributes = array();
+		if ($product->product_id && $product->product_parent_id) {
+			$q  = "SELECT * FROM #__vm_product_attribute, #__vm_product_attribute_sku ";
+			$q .= "WHERE #__vm}_product_attribute.product_id = ".$product->product_id." ";
+			$q .= "AND #__vm}_product_attribute_sku.product_id = ".$product->product_parent_id." ";
+			if ($attribute_name) {
+				$q .= "AND #__vm_product_attribute.attribute_name = ".$db->Quote($attribute_name)." ";
+			}
+			$q .= "AND #__vm_product_attribute.attribute_name = #__vm_product_attribute_sku.attribute_name ";
+			$q .= "ORDER BY attribute_list, #__vm_product_attribute.attribute_name";
+		} 
+		elseif ($product->product_id) {
+			$q  = "SELECT * FROM #__vm_product_attribute ";
+			$q .= "WHERE product_id = ".$product->product_id." ";
+			if ($attribute_name) {
+				$q .= "AND attribute_name = ".$db->Quote($attribute_name)." ";
+			}
+		} 
+		elseif ($product->product_parent_id) {
+			$q  = "SELECT * FROM #__vm_product_attribute_sku ";
+			$q .= "WHERE product_id = ".$product->product_parent_id." ";
+			if ($attribute_name) {
+				$q .= "AND #__vm_product_attribute.attribute_name = ".$db->Quote($attribute_name)." ";
+			}
+			$q .= "ORDER BY attribute_list,attribute_name";
+		} 
+
+		$db->setQuery($q); 
+		$attributes = $db->loadObjectList();
+		return $attributes;
 	}
 }
 ?>

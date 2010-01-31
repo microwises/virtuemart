@@ -73,7 +73,7 @@ class VirtueMartControllerCart extends JController {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
 		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
-		
+		$this->getModel('productdetails');
 		$model = $this->getModel('cart');
 		$msgtype = '';
 		if ($model->add()) $msg = JText::_('PRODUCT_ADDED_SUCCESSFULLY');
