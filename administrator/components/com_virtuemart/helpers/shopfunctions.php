@@ -60,44 +60,42 @@ class ShopFunctions {
 		$shopperModel = self::getModel('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups(true);
 		$attrs = '';
-		$name = 'shopper_group_id';
-		$emptyOption = JHTMLSelect::option('', '-- '.JText::_('Select').' --', 'shopper_group_id', 'shopper_group_name');
+		$name = 'shopper_group_name';
+		$idA = $id = 'shopper_group_id';
+
+		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
-		
+			
 		if ($multiple){
 			$attrs = 'multiple="multiple"';
-			$name .= '[]';
+			$idA .= '[]';
 		}
-		$listHTML = JHTMLSelect::genericlist($shoppergrps, $name, $attrs, 'shopper_group_id', 'shopper_group_name', $shopperGroupId );
+		$listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId );
 		return $listHTML;
 	}
 	
 	/**
 	* Render a simple country list
-	* @author jseros
+	* @author jseros, Max Milbers
 	* 
 	* @param int $countryId Selected country id
 	* @return string HTML containing the <select />
 	*/
 	public function renderCountryList( $countryId = 0 , $multiple = false ){
-		
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(false, true);
 		$attrs = '';
-		$nameD = $name = 'country_id';
+		$name = 'country_name';
+		$idA = $id = 'country_id';
 
-		//Selecting no Country is also possible for the multiselect
-		$emptyOption = new stdClass();
-		$emptyOption->country_id = '';
-		$emptyOption->country_name = '-- '.JText::_('Select').' --';
+		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($countries, $emptyOption);
 		
 		if($multiple){
 			$attrs .= 'multiple="multiple"';
-			$nameD .= '[]';
+			$idA .= '[]';
 		}
-
-		$listHTML = JHTML::_('Select.genericlist', $countries, $nameD, $attrs, $name, 'country_name', $countryId , $name);
+		$listHTML = JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 		return $listHTML;
 	}
 	
@@ -111,29 +109,27 @@ class ShopFunctions {
 	* @param string $dependentField Parent <select /> ID attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false){
-		
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false){	
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		$states = array();
-		$attribs = array();
-		$nameD = $name = 'state_id';
+		$attrs = array();
+		$name = 'state_name';
+		$idA = $id = 'state_id';
 		
-		$emptyOption = new stdClass();
-		$emptyOption->state_id = '';
-		$emptyOption->state_name = '-- '.JText::_('Select').' --';
+		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($states, $emptyOption);
 			
 		if($multiple){
-			$attribs['multiple'] = 'multiple';
-			$nameD .= '[]';
+			$attrs['multiple'] = 'multiple';
+			$idA .= '[]';
 		}
 	
-		$attribs['class'] = 'dependent['. $dependentField .']';
+		$attrs['class'] = 'dependent['. $dependentField .']';
 		
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 		
-		$listHTML = JHTML::_('Select.genericlist', $states, $nameD,  $attribs, $name, 'state_name', $stateId, $name);
+		$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
 		return $listHTML;
 	}
 	
@@ -148,9 +144,7 @@ class ShopFunctions {
 	 * @return string 	$category_tree HTML: Category tree list
 	 */
 	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
-		//global $perm, $hVendor;
-		
-		//$vendor_id = $hVendor->getLoggedVendor();
+
 		static $categoryTree = '';
 		if($level==0){
 			$categoryTree .= '<option value="">-- '.JText::_('Select').' --</option>';
@@ -173,8 +167,7 @@ class ShopFunctions {
 				if( in_array( $childId, $disabledFields )) {
 					$disabled = 'disabled="disabled"';
 				}
-				
-				
+
 				if( $disabled != '' && stristr($_SERVER['HTTP_USER_AGENT'], 'msie') ) {
 					//IE7 suffers from a bug, which makes disabled option fields selectable
 				}

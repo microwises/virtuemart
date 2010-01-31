@@ -65,7 +65,8 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			} else {
 				$url = JURI::base();
 			}
-			$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
+//			$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= substr_replace($url, '', -1, 1);
+			$mosConfig_live_site = $GLOBALS['mosConfig_live_site']		= JURI::base();
 			$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
 			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
 			

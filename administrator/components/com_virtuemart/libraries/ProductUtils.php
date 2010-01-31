@@ -54,7 +54,7 @@ class ProductUtils
 			// local image file
 			else {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
-					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
+					$url = JURI::base()."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 					if( !strpos( $args, "height=" )) {
 						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix, '', $thumb_width, $thumb_height ) );
 						$width = $arr[0]; $height = $arr[1];
@@ -63,9 +63,9 @@ class ProductUtils
 				else {
 					$url = IMAGEURL.$path_appendix.'/'.$image;
 					if( file_exists($image)) {
-						$url = str_replace( $mosConfig_absolute_path, $mosConfig_live_site, $image );
+						$url = str_replace( $mosConfig_absolute_path, JURI::base(), $image );
 					} elseif( file_exists($mosConfig_absolute_path.'/'.$image)) {
-						$url = $mosConfig_live_site.'/'.$image;
+						$url = JURI::base().'/'.$image;
 					}
 					
 					if( !strpos( $args, "height=" ) ) {

@@ -163,8 +163,7 @@ class TOOLBAR_virtuemart {
 	* not responsible for lists!
 	*/
     function FORMS_MENU_SAVE_CANCEL() {     
-        global $vm_mainframe, $mosConfig_live_site, $mosConfig_lang, 
-        		$page, $limitstart,	$vmIcons;
+        global $page, $limitstart;
 		$no_menu = (int)$_REQUEST['no_menu'];
 		//$bar=& JToolBar::getInstance( 'toolbar' );
 		//$bar = & vmToolBar::getInstance('virtuemart');		
@@ -373,7 +372,7 @@ var submitbutton = function(pressbutton){
 	* usually when page= *.*_list
 	*/
     function LISTS_MENU_NEW() {
-        global $page, $mosConfig_live_site, $limitstart;
+        global $page,  $limitstart;
         
         TOOLBAR_virtuemart::TITLE($page);
 		//$bar = & vmToolBar::getInstance('virtuemart');
@@ -429,7 +428,7 @@ var submitbutton = function(pressbutton){
 	* like the product list
 	*/
 	function LISTS_SPECIAL_TASKS( $page ) {
-		global $mosConfig_live_site, $product_id;
+		global $product_id;
 		
 		//$bar = & vmToolBar::getInstance('virtuemart');
 		TOOLBAR_virtuemart::TITLE($page);

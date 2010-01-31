@@ -35,8 +35,7 @@ class plgPaymentEpay extends vmPaymentPlugin {
 	}
 	
 	function showPaymentForm( &$db, $user, $dbbt ) {
-		global  $mosConfig_live_site ;
-		
+
 		echo JText::_( 'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' ) ;
 		?>
 <script type="text/javascript" src="http://www.epay.dk/js/standardwindow.js"></script>
@@ -76,16 +75,16 @@ function printCard(cardId) {
 	<input type="hidden" name="ordretext" value="" />
 <?php
 		if( $this->params->get('EPAY_CALLBACK') == "1" ) {
-			echo '<input type="hidden" name="callbackurl" value="' . $mosConfig_live_site . '/index.php?page=checkout.epay_result&accept=1&sessionid=' . $sessionid . '&option=com_virtuemart&Itemid=1" />' ;
+			echo '<input type="hidden" name="callbackurl" value="' . JURI::base() . '/index.php?page=checkout.epay_result&accept=1&sessionid=' . $sessionid . '&option=com_virtuemart&Itemid=1" />' ;
 		}
 		?>
 <input type="hidden" name="accepturl"
 	value="<?php
-		echo $mosConfig_live_site ?>/index.php?page=checkout.epay_result&accept=1&sessionid=<?php
+		echo JURI::base() ?>/index.php?page=checkout.epay_result&accept=1&sessionid=<?php
 		echo $sessionid ?>&option=com_virtuemart&Itemid=1" />
 <input type="hidden" name="declineurl"
 	value="<?php
-		echo $mosConfig_live_site ?>/index.php?page=checkout.epay_result&accept=0&sessionid=<?php
+		echo JURI::base() ?>/index.php?page=checkout.epay_result&accept=0&sessionid=<?php
 		echo $sessionid ?>&option=com_virtuemart&Itemid=1" />
 <input type="hidden" name="group" value="<?php
 		echo $this->params->get('EPAY_GROUP') ?>" /> <input

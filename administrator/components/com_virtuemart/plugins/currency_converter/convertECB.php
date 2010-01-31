@@ -41,15 +41,12 @@ class convertECB {
 	 * @return mixed The converted amount when successful, false on failure
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
-		global $mosConfig_cachepath, $mosConfig_live_site, $mosConfig_absolute_path,
-				$mosConfig_offset, $vendor_currency, $vmLogger;
-	
-		// global $vendor_currency is DEFAULT!
+
+		global $vendor_currency; //is DEFAULT!
 		if( !$currA ) {
 			$currA = $vendor_currency;
 		}
 		if( !$currB ) {
-//			$currB = $GLOBALS['product_currency'];
 			$currB = $vendor_currency;
 		}
 		// If both currency codes match, do nothing
@@ -58,7 +55,6 @@ class convertECB {
 		}
 		
 		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
-//		$globalCurrencyConverter=array();
 		if( empty($globalCurrencyConverter)) {
 			setlocale(LC_TIME, "en-GB");
 			$now = time() + 3600; // Time in ECB (Germany) is GMT + 1 hour (3600 seconds)
@@ -69,11 +65,11 @@ class convertECB {
 			$date_now_local = gmdate('Ymd', $now);
 			$time_now_local = gmdate('Hi', $now);
 			$time_ecb_update = '1415';
-			if( is_writable($mosConfig_cachepath) ) {
-				$store_path = $mosConfig_cachepath;
+			if( is_writable(JPATH_BASE.DS.'cache') ) {
+				$store_path = JPATH_BASE.DS.'cache';
 			}
 			else {
-				$store_path = $mosConfig_absolute_path."/media";
+				$store_path = JPATH_SITE.DS.'media';
 			}
 			  
 			$archivefile_name = $store_path.'/daily.xml';
@@ -105,13 +101,13 @@ class convertECB {
 			  
 			if( !is_writable( $store_path )) {
 			  $this->archive = false;
-			  //todo
-//			  $vmLogger->debug( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
+			  JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 			}
+//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
-//				require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS.'connectionTools.class.php');
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+//				JError::raiseNotice(1, "Updating currency " );
 				$contents = VmConnector::handleCommunication( $curr_filename );
 				$this->last_updated = date('Ymd');
 			}
@@ -132,7 +128,7 @@ class convertECB {
 				$xmlDoc = new DOMIT_Lite_Document();
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
 					//todo
-//					$vmLogger->err( 'Failed to parse the Currency Converter XML document.');
+					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
 					$GLOBALS['product_currency'] = $vendor_currency;
 					return $amountA;
 				}
@@ -148,8 +144,7 @@ class convertECB {
 			}
 			else {
 				$globalCurrencyConverter = -1;
-				//todo
-//				$vmLogger->err( 'Failed to retrieve the Currency Converter XML document.');
+				JError::raiseWarning(1, 'Failed to retrieve the Currency Converter XML document.');
 //				$GLOBALS['product_currency'] = $vendor_currency;
 				return $amountA;
 			}

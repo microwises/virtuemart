@@ -82,7 +82,7 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
 				</td>
 				<td>
-				    <?php echo ShopFunctions::renderCountryList($this->store->userInfo->country_id);?>
+				    <?php echo $this->countriesList;?>
 				</td>
 			    </tr>
 			    <tr>
@@ -90,7 +90,7 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
 				</td>
 				<td>
-				    <?php echo ShopFunctions::renderStateList($this->store->userInfo->state_id, $this->store->userInfo->country_id, 'country_id');?>
+				    <?php echo $this->statesList;?>
 				</td>
 			    </tr>
 			</table>

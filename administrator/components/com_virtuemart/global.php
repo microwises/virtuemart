@@ -179,7 +179,7 @@ if(!empty($db)){
 
 
 // see /classes/currency_convert.php
-vmSetGlobalCurrency();
+//vmSetGlobalCurrency();
 
 $currency_display = $hVendor -> get_currency_display_style( $vendor_currency_display_style );
 //if( $GLOBALS['product_currency'] != $vendor_currency ) {

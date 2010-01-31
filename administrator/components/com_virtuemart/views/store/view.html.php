@@ -74,6 +74,12 @@ class VirtueMartViewStore extends JView {
 	    //singleton instance of editor
 	    $editor = JFactory::getEditor();
 	    $this->assignRef('editor', $editor);
+	    
+	    $countriesList = ShopFunctions::renderCountryList($store->userInfo->country_id);
+		$this->assignRef('countriesList', $countriesList);
+		
+		$statesList = ShopFunctions::renderStateList($store->userInfo->state_id, $store->userInfo->country_id, 'country_id');
+		$this->assignRef('statesList', $statesList);
 	}
 	else {
 

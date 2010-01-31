@@ -81,7 +81,7 @@ class shopFunctionsF {
 	}
 
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
-		global  $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
+		global  $cur_template, $Itemid;
 		if (VmConfig::get('vm_show_printicon', 1) == '1') {
 			if( !$link ) {
 				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
@@ -137,8 +137,7 @@ class shopFunctionsF {
 	* load the default or use no image
 	*/
 	function ImageCheck( $file, $directory='/images/M_images/', $param=NULL, $param_directory='/images/M_images/', $alt=NULL, $name=NULL, $type=1, $align='middle', $title=NULL, $admin=NULL ) {
-		global $mosConfig_absolute_path, $mosConfig_live_site, $mainframe;
-
+		global $mainframe;
 		$cur_template = $mainframe->getTemplate();
 
 		$name 	= ( $name 	? ' name="'. $name .'"' 	: '' );
@@ -154,18 +153,18 @@ class shopFunctionsF {
 		}
 
 		if ( $param ) {
-			$image = $mosConfig_live_site. $param_directory . $param;
+			$image = JURI::base(). $param_directory . $param;
 			if ( $type ) {
 				$image = '<img src="'. $image .'" '. $alt . $name . $align .' border="0" />';
 			}
 		} else if ( $param == -1 ) {
 			$image = '';
 		} else {
-			if ( file_exists( $mosConfig_absolute_path . $path . $file ) ) {
-				$image = $mosConfig_live_site . $path . $file;
+			if ( file_exists( JPATH_SITE . $path . $file ) ) {
+				$image = JURI::base() . $path . $file;
 			} else {
 				// outputs only path to image
-				$image = $mosConfig_live_site. $directory . $file;
+				$image = JURI::base(). $directory . $file;
 			}
 
 			// outputs actual html <img> tag

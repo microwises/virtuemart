@@ -15,9 +15,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * http://virtuemart.org
 */
-global $mosConfig_live_site;
 
-define('FEDEX_REQUEST_REFERER', $mosConfig_live_site);
+define('FEDEX_REQUEST_REFERER', JURI::base());
 define('FEDEX_REQUEST_TIMEOUT', 20);
 define('FEDEX_IMG_DIR', '/tmp/');
 

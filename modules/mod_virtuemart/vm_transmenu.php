@@ -15,8 +15,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $mosConfig_live_site, $mosConfig_absolute_path;
 
 if( vmIsJoomla('1.5')) {
-	$live_module_dir = $mosConfig_live_site.'/modules/mod_virtuemart';
-	$absolute_module_dir = $mosConfig_absolute_path.'/modules/mod_virtuemart';
+	$live_module_dir = JURI::base().'/modules/mod_virtuemart';
+	$absolute_module_dir = JURI::base().'/modules/mod_virtuemart';
 } else {
 	$live_module_dir = $mosConfig_live_site.'/modules';
 	$absolute_module_dir = $mosConfig_absolute_path.'/modules';
