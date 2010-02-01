@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	    &nbsp;
 	</td>
     </tr>
-    <tr><td colspan="4"</td></tr>
+    <tr><td colspan="4"></td></tr>
     <tr>
 	<td align="center">
 	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=restoreSystemDefaults'); ?>">
