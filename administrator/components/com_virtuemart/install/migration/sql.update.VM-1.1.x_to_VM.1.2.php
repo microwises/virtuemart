@@ -153,21 +153,21 @@ $db->query("INSERT INTO `#__{vm}_function` VALUES(195, 1, 'uninstallExtension', 
 $db->query("INSERT INTO `#__{vm}_function` VALUES(196, 1, 'installExtension', 'installer.class', 'install', 'Installs an Extension', 'admin')");
 $db->query("INSERT INTO `#__{vm}_function` VALUES(197, 1, 'pluginUpdate', 'pluginEntity.class', 'update', 'Updates a VM Plugin and saves all new parameter settings.', 'storeadmin,admin')");
 	
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_class` `element` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount` `discount` DECIMAL( 12, 2 ) NULL DEFAULT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_is_percent` `discount_is_percentage` TINYINT( 1 ) NOT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_max_amount` `discount_max_amount` DECIMAL( 10, 2 ) NOT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_min_amount` `discount_min_amount` DECIMAL( 10, 2 ) NOT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `list_order` `ordering` INT( 11 ) NULL DEFAULT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` DROP `short_code`");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `enable_processor` `type` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_enabled` `published` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N'");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_extrainfo` `extra_info` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
-$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_passkey` `secret_key` BLOB NOT NULL");
-$db->query("ALTER TABLE `#__{vm}_payment_method` ADD `params` TEXT NOT NULL");
-$db->query("UPDATE `#__{vm}_payment_method` SET `element`='payment' WHERE `element`=''");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_class` `element` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount` `discount` DECIMAL( 12, 2 ) NULL DEFAULT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_is_percent` `discount_is_percentage` TINYINT( 1 ) NOT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_max_amount` `discount_max_amount` DECIMAL( 10, 2 ) NOT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_method_discount_min_amount` `discount_min_amount` DECIMAL( 10, 2 ) NOT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `list_order` `ordering` INT( 11 ) NULL DEFAULT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` DROP `short_code`");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `enable_processor` `type` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_enabled` `published` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N'");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_extrainfo` `extra_info` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` CHANGE `payment_passkey` `secret_key` BLOB NOT NULL");
+//$db->query("ALTER TABLE `#__{vm}_payment_method` ADD `params` TEXT NOT NULL");
+//$db->query("UPDATE `#__{vm}_payment_method` SET `element`='payment' WHERE `element`=''");
 
 $db->query( "CREATE TABLE `#__{vm}_plugins` (
   `id` int(11) NOT NULL auto_increment,
@@ -262,3 +262,19 @@ $db->query("
 $db->query("
  ALTER TABLE `#__vm_user_info`  CHANGE COLUMN `state` `state_id` VARCHAR(32) NOT NULL DEFAULT '' AFTER `city`,  CHANGE COLUMN `country` `country_id` VARCHAR(32) NOT NULL DEFAULT 'US' AFTER `state_id`;  
  ");
+ 
+/* contains not anything, need some work @todo is WIP*/
+$db->query("
+ ALTER TABLE `jos_vm_payment_method` 
+ 	CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, 
+ 	CHANGE `vendor_id` `paym_vendor_id` INT(11) NULL DEFAULT NULL,
+ 	CHANGE `name` `paym_name` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+ 	CHANGE `element` `paym_element` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, 
+ 	CHANGE `shopper_group_id` `paym_shopper_group_id` INT(11) NULL DEFAULT NULL, 
+ 	CHANGE `type` `paym_type` CHAR(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+ 	CHANGE `is_creditcard` `paym_is_creditcard` TINYINT(1) NOT NULL DEFAULT '0',
+ 	CHANGE `extra_info` `paym_extra_info` TEXT NOT NULL DEFAULT '',
+ 	CHANGE `secret_key` `paym_secret_key` BLOB NOT NULL ,
+ 	CHANGE `params` `paym_params` TEXT NOT NULL ,
+
+		");
