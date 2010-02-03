@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Order status controller
+* Userfields controller
 *
 * @package	VirtueMart
-* @subpackage OrderStatus
+* @subpackage Userfields
 * @author Oscar van Eijk
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -26,10 +26,10 @@ jimport('joomla.application.component.controller');
  * Controller class for the Order status
  *
  * @package    VirtueMart
- * @subpackage OrderStatus
+ * @subpackage Userfields
  * @author     Oscar van Eijk
  */
-class VirtuemartControllerOrderstatus extends JController {
+class VirtuemartControllerUserfields extends JController {
 
 	/**
 	 * Method to display the view
@@ -46,10 +46,10 @@ class VirtuemartControllerOrderstatus extends JController {
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('orderstatus', $viewType);
+		$view =& $this->getView('userfields', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('orderstatus');
+		$model =& $this->getModel('userfields');
 
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
@@ -57,11 +57,10 @@ class VirtuemartControllerOrderstatus extends JController {
 	}
 
 	/**
-	 * Display the order status view
+	 * Display the userfields view
 	 */
 	function display()
 	{
-//		JRequest::setVar( 'view', 'orderstatus');
 		parent::display();
 	}
 
@@ -70,14 +69,14 @@ class VirtuemartControllerOrderstatus extends JController {
 	 */
 	function edit()
 	{
-		JRequest::setVar('controller', 'orderstatus');
-		JRequest::setVar('view', 'orderstatus');
+		JRequest::setVar('controller', 'userfields');
+		JRequest::setVar('view', 'userfields');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemainmenu', 1);
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('orderstatus', $viewType);
+		$view =& $this->getView('userfields', $viewType);
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
 		parent::display();
@@ -88,7 +87,7 @@ class VirtuemartControllerOrderstatus extends JController {
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus');
+		$this->setRedirect('index.php?option=com_virtuemart&view=userfields');
 	}
 
 	/**
@@ -96,14 +95,14 @@ class VirtuemartControllerOrderstatus extends JController {
 	 */
 	function save()
 	{
-		$model =& $this->getModel('orderstatus');
+		$model =& $this->getModel('userfields');
 
 		if ($model->store()) {
-			$msg = JText::_('Order status saved!');
+			$msg = JText::_('Userfield saved!');
 		} else {
 			$msg = JText::_($model->getError());
 		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
 	/**
@@ -111,7 +110,7 @@ class VirtuemartControllerOrderstatus extends JController {
 	 */
 	function remove()
 	{
-		$model = $this->getModel('orderstatus');
+		$model = $this->getModel('userfields');
 		if (!$model->delete()) {
 			$msg = JText::_('Error: One or more order statuses could not be deleted!');
 		} else {
@@ -123,24 +122,24 @@ class VirtuemartControllerOrderstatus extends JController {
 
 	function orderup()
 	{
-		$model = $this->getModel('orderstatus');
+		$model = $this->getModel('userfields');
 		if (!$model->move(-1)) {
 			$msg = JText::_($model->getError());
 		} else {
 			$msg = '';
 		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
 	function orderdown()
 	{
-		$model = $this->getModel('orderstatus');
+		$model = $this->getModel('userfields');
 		if (!$model->move(1)) {
 			$msg = JText::_($model->getError());
 		} else {
 			$msg = '';
 		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
 	function saveorder()
@@ -150,11 +149,87 @@ class VirtuemartControllerOrderstatus extends JController {
 		JArrayHelper::toInteger($cid);
 		JArrayHelper::toInteger($order);
 
-		$model = $this->getModel('orderstatus');
+		$model = $this->getModel('userfields');
 		$model->saveorder($cid, $order);
 
 		$msg = 'New ordering saved';
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
+	}
+
+	function unpublish()
+	{
+		self::toggle('published', 0);
+	}
+
+	function publish()
+	{
+		self::toggle('published', 1);
+	}
+
+	function disable_required()
+	{
+		self::toggle('required', 0);
+	}
+
+	function enable_required()
+	{
+		self::toggle('required', 1);
+	}
+
+	function disable_registration()
+	{
+		self::toggle('registration', 0);
+	}
+
+	function enable_registration()
+	{
+		self::toggle('registration', 1);
+	}
+
+	function disable_shipping()
+	{
+		self::toggle('shipping', 0);
+	}
+
+	function enable_shipping()
+	{
+		self::toggle('shipping', 1);
+	}
+
+	function disable_account()
+	{
+		self::toggle('account', 0);
+	}
+
+	function enable_account()
+	{
+		self::toggle('account', 1);
+	}
+
+	function disable_readonly()
+	{
+		self::toggle('readonly', 0);
+	}
+
+	function enable_readonly()
+	{
+		self::toggle('readonly', 1);
+	}
+
+	function toggle($field, $value)
+	{
+		$id = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		JArrayHelper::toInteger($id);
+
+		if (count( $id ) < 1) {
+			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+		}
+
+		$model = $this->getModel('userfields');
+		if(!$model->toggle($field, $id, $value)) {
+			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
+		}
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=userfields' );
 	}
 }
 

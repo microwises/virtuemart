@@ -43,7 +43,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	/**
 	 * Constructor for the order status model.
 	 *
-	 * The currency id is read and detmimined if it is an array of ids or just one single id.
+	 * The order status id id is read and detmimined if it is an array of ids or just one single id.
 	 */
 	function __construct()
 	{
@@ -73,7 +73,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	}
 
 	/**
-	 * Loads the pagination for the currency table
+	 * Loads the pagination for the order status table
 	 *
 	 * @return JPagination Pagination for the current list of order statuses
 	 */
@@ -87,9 +87,9 @@ class VirtueMartModelOrderstatus extends JModel {
 	}
 
 	/**
-	 * Gets the total number of currencies
+	 * Gets the total number of order statusses
 	 *
-	 * @return int Total number of currencies in the database
+	 * @return int Total number of order statusses in the database
 	 */
 	function _getTotal()
 	{
