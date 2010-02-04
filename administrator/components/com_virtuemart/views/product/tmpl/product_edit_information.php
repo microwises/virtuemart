@@ -165,7 +165,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%" >
 					<input type="text" size="10" name="discounted_price_override" onchange="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
 					<?php 
-					// echo vmToolTip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
+					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
 					?>
 				</td>
 			</tr>
