@@ -72,8 +72,7 @@ class VirtuemartControllerPaymentmethod extends JController
 	 *
      * @author Max Milbers
 	 */
-	public function edit()
-	{				
+	public function edit(){
 		JRequest::setVar('controller', 'paymentmethod');
 		JRequest::setVar('view', 'paymentmethod');
 		JRequest::setVar('layout', 'edit');

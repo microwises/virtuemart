@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableCalc extends JTable
+class TablePayment_method extends JTable
 {
 	/** @var int Primary key */
 	var $paym_id					= 0;

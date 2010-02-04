@@ -76,7 +76,7 @@ AdminMenuHelper::startAdminArea();
 			$row = $this->payms[$i];
 			$checked = JHTML::_('grid.id', $i, $row->paym_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paym&task=edit&cid[]=' . $row->paym_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paymentmethod&task=edit&cid[]=' . $row->paym_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
@@ -138,8 +138,8 @@ AdminMenuHelper::startAdminArea();
 </div>
 	        
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="calc" />
-	<input type="hidden" name="view" value="calc" />	
+	<input type="hidden" name="controller" value="paymentmethod" />
+	<input type="hidden" name="view" value="paymentmethod" />	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>

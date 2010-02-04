@@ -132,12 +132,12 @@ class VirtueMartModelPaymentmethod extends JModel
 //		$this->_data->calc_categories = $db->loadResultArray();
 //                  
 		/* Add the paymentmethod shoppergroups */
-		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->paym_shopper_groups = $db->loadResultArray();
 
 		/* Add the accepted credit cards */
-		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->paym_creditcard = $db->loadResultArray();
 //		
