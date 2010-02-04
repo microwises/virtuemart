@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');?>
       </td>
       <td width="21%" >
         <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $this->product->product_packaging & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        //echo vmToolTip(JText::_('VM_PRODUCT_FORM_PACKAGING_DESCRIPTION')); 
+        echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_PACKAGING_DESCRIPTION')); 
         ?>
       </td>
     </tr>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');?>
       </td>
       <td width="21%" >
         <input type="text" class="inputbox"  name="product_box" value="<?php echo ($this->product->product_packaging>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        // echo vmToolTip(JText::_('VM_PRODUCT_FORM_BOX_DESCRIPTION')); 
+         echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_BOX_DESCRIPTION')); 
         ?>
       </td>
     </tr>
