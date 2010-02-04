@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage ShopperGroup
- * @author Markus Öhler
+ * @author Markus ï¿½hler
  */
 class VirtueMartModelShopperGroup extends JModel {
 
@@ -44,7 +44,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Constructor for the shopper group model.
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      */
     function __construct() {
 	    parent::__construct();
@@ -66,17 +66,17 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Resets the shopper group id and data
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      */
     function setId($id) {
-	    $_id = $id;
-	    $_data = null;
+	    $this->_id = $id;
+	    $this->_data = null;
     }
 
     /**
      * Loads the pagination for the shopper group table
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      * @return JPagination Pagination for the current list of shopper groups
      */
     function getPagination() {
@@ -91,7 +91,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Gets the total number of countries
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      * @return int Total number of countries in the database
      */
     function _getTotal() {
@@ -110,15 +110,10 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      */
     function getShopperGroup() {
 	    $db = JFactory::getDBO();
-
-	    // TODO-MOE: This should not be necessary - however for some reason
-	    // it does not pick up the cid parameter using $this->_id
-	    // !! NEED TO FIGURE OUT WHAT I'M DOING WRONG !!
-      $idArray = JRequest::getVar('cid', 0, '', 'array');
 
 	    if (empty($_data)) {
 	      $this->_data = $this->getTable();
@@ -138,7 +133,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Bind the post data to the shoppergroup table and save it
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
@@ -171,7 +166,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Delete all records specified by the cid request parameter.
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      * @return boolean True is the delete was successful, false otherwise.
      */
     function delete() {
@@ -192,7 +187,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Retireve a list of shopper groups from the database.
      *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of shopper group objects
      */
