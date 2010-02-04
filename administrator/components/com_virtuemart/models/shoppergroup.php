@@ -117,7 +117,7 @@ class VirtueMartModelShopperGroup extends JModel {
 
 	    if (empty($_data)) {
 	      $this->_data = $this->getTable();
-	      $this->_data->load((int) $idArray[0]);
+	      $this->_data->load((int) $this->_id);
 	    }
 
 	    if (!$this->_data) {
