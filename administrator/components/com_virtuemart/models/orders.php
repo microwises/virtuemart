@@ -334,9 +334,9 @@ class VirtueMartModelOrders extends JModel {
 		    vmPaymentMethod::importPaymentPluginById($order->payment_method_id);
 		    $result = $mainframe->triggerEvent('void_authorization', array($void_order));
 		    if( $result !== false ) {
-			if( $result[0] === false ) {
-			    return false;
-			}
+				if( $result[0] === false ) {
+			    	return false;
+				}
 		    }
 		}
 
@@ -378,13 +378,9 @@ class VirtueMartModelOrders extends JModel {
 		    $db->setQuery($q);
 		    $order_items = $db->loadObjectList();
 		    if ($order_items) {
-			foreach ($order_items as $key => $order_item) {
-			    $order_item_table = $this->getTable('order_item');
-			    $order_item_table->load($order_item->order_item_id);
-			    $order_item_table->order_status = $new_status;
-			    $order_item_table->mdate = $timestamp;
-			    $order_item_table->store();
-			}
+		    	foreach ($orderItems as $key => $order_item) {
+		    		$this->updateItemStatus($order_item, $new_status, true);
+		    	}
 		    }
 
 		    /* Send a download ID */
@@ -399,7 +395,25 @@ class VirtueMartModelOrders extends JModel {
 	}
 	return array('updated' => $updated, 'error' => $error);
     }
-
+    
+    
+    /**
+     * Update an order item status and send e-mail if needed
+     * @author RickG
+     */
+    public function updateItemStatus($orderItem = '', $newStatus='', $entireOrderUpdate=false) {
+    	if (($orderItem) && ($newStatus)) {
+			$order_item_table = $this->getTable('order_item');
+			$order_item_table->load($orderItem->order_item_id);
+			$order_item_table->order_status = $newStatus;
+			$order_item_table->mdate = time();
+			if ($order_item_table->store() && !$entireOrderUpdate) {			
+				$this->notifyCustomer($orderItem, $order_item_table);
+			}
+		}
+    }    
+    
+    
     /**
      * E-mails the Download-ID to the customer
      * or deletes the Download-ID from the product_downloads table
@@ -616,27 +630,33 @@ class VirtueMartModelOrders extends JModel {
      * Remove an order line item.
      *
      * @author RickG
-     * @param string $orderId Order id number
      * @param string $orderLineId Order line item number
      * @return boolean True of remove was successful, false otherwise
      */
-    function removeOrderLineItem($orderId, $orderLineId) {
-	if (!isset($orderId) || !isset($orderLineId)) {
+    function removeOrderLineItem($orderLineId) {
+	$table = $this->getTable('order_item');
+
+	if ($table->delete($orderLineId)) {
+	    return true;
+	}
+	else {
+	    $this-setError($table->getErrorMsg());
 	    return false;
 	}
-
-	$db = JFactory::getDBO();
-	$query = 'DELETE FROM `#__vm_order_item`';
-	$query .= ' WHERE `order_item_id`=' . $orderLineId;
-	$query .= ' AND `order_id`=' . $orderId;
-	$db->setQuery($query);
-
-	if (!$db->query()) {
-	    $this-setError($db->getErrorMsg());
-	    return false;
-	}
-
-	return true;
     }
+    
+    
+	/**
+	* Create a list of products for JSON return
+	*/
+	public function getProductListJson() {
+		$db = JFactory::getDBO();
+		$filter = JRequest::getVar('q', false);
+		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+			FROM #__vm_product";
+		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}    
 }
 ?>

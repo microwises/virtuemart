@@ -40,6 +40,7 @@ class VirtuemartViewOrders extends JView {
 	$this->loadHelper('adminMenu');
 	$this->loadHelper('currencydisplay');
 	$this->loadHelper('shopFunctions');
+	$this->loadHelper('html');
 
 	$curTask = JRequest::getVar('task');
 	if ($curTask == 'edit') {
@@ -65,6 +66,20 @@ class VirtuemartViewOrders extends JView {
 	    JToolBarHelper::cancel();
 	}
 	else if ($curTask == 'editOrderItem') {
+	    /* Get order statuses */
+	    $orderstatuses = $this->get('OrderStatusList');
+	    $this->assignRef('orderstatuses', $orderstatuses);
+
+	    $model = $this->getModel();
+	    $orderId = JRequest::getVar('orderId', '');
+	    $orderLineItem = JRequest::getVar('orderLineId', '');
+	    $this->assignRef('order_id', $orderId);
+	    $this->assignRef('order_item_id', $orderLineItem);
+
+	    $orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
+	    $this->assignRef('orderitem', $orderItem);
+	}
+	else if ($curTask == 'updateOrderItemStatus') {
 	    /* Get order statuses */
 	    $orderstatuses = $this->get('OrderStatusList');
 	    $this->assignRef('orderstatuses', $orderstatuses);

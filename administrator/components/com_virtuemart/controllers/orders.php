@@ -140,6 +140,7 @@ class VirtuemartControllerOrders extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
 	}
 
+
 	/**
 	* Update an order status
 	*
@@ -166,13 +167,64 @@ class VirtuemartControllerOrders extends JController {
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 	}
+	
+	
+	/**
+	 * Save changes to the order item status
+	 *
+	 */
+	public function saveItemStatus() {
+		$mainframe = Jfactory::getApplication();
+		
+		/* Load the view object */
+		$view = $this->getView('orders', 'html');
+
+		/* Load the helper */
+		$view->loadHelper('shopFunctions');
+		$view->loadHelper('vendorHelper');		
+		
+		$data = JRequest::get('post');
+		$model = $this->getModel('orders');
+		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.$data['order_id']);
+	}
 
 
 	/**
 	 * Display the order item details for editing
 	 */
 	public function editOrderItem() {
-	    JRequest::setVar('layout', 'edit_orderitem');
+	    JRequest::setVar('layout', 'orders_editorderitem');
+	    JRequest::setVar('hidemenu', 1);
+
+	    parent::display();
+	}
+	
+	
+	/**
+	* Get a list of related products
+	* @author RolandD
+	*/
+	public function getProducts() {
+		/* Create the view object */
+		$view = $this->getView('orders', 'json');
+
+		/* Default model */
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+
+		$view->setLayout('orders_editorderitem');
+
+		/* Now display the view. */
+		$view->display();
+	}	
+
+
+	/**
+	 * Display the order item details for editing
+	 */
+	public function updateOrderItemStatus() {
+	    JRequest::setVar('layout', 'orders_updatestatus');
 	    JRequest::setVar('hidemenu', 1);
 
 	    parent::display();
@@ -183,7 +235,7 @@ class VirtuemartControllerOrders extends JController {
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
-	    $orderId = JRequest::getVar('order_id', '');
+	    $orderId = JRequest::getVar('order_id', '');  
 	    $model = $this->getModel('orders');
 	    $msg = '';
 
@@ -202,7 +254,6 @@ class VirtuemartControllerOrders extends JController {
 	public function removeOrderItem() {
 	    $model = $this->getModel('orders');
 	    $msg = '';
-	    $orderId = JRequest::getVar('orderId', '');
 	    $orderLineItem = JRequest::getVar('orderLineId', '');
 	    if (!$model->removeOrderLineItem($orderId, $orderLineItem)) {
 		$msg = $model->getError();

@@ -84,6 +84,15 @@ $payment = $this->order['payment'];
 			echo "</tr>\n";
 		    }
 		    ?>
+		    <tr>
+			<td colspan="4">
+			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&tmpl=component&task=updateOrderItemStatus'); ?>
+			    <a href="<?php echo $statusLink; ?>" class="modal">
+				<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "Update Status"); ?>
+				Update Status
+			    </a>
+			</td>
+		    </tr>
 		</table>
 	    </td>
 	</tr>
@@ -175,9 +184,15 @@ $payment = $this->order['payment'];
 			    </a>
 			</td>
 			<td><?php echo $item->product_quantity; ?></td>
-			<td><?php echo $item->order_item_name; ?></td>
+			<td><?php echo $item->order_item_name; ?></a>
+			</td>
 			<td><?php echo $item->order_item_sku; ?></td>
-			<td><?php echo $item->order_status; ?></td>
+			<td align="center">
+			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&tmpl=component&task=updateOrderItemStatus'); ?>
+			    <a href="<?php echo $statusLink; ?>" class="modal">
+					<?php echo $item->order_status; ?>
+			    </a>
+			</td>
 			<td><?php echo $item->product_item_price; ?></td>
 			<td><?php echo $item->product_final_price; ?></td>
 			<td><?php echo $item->product_quantity * $item->product_final_price; ?></td>
