@@ -49,7 +49,7 @@ class VirtuemartViewUserfields extends JView {
 
 			$userField = $model->getUserfield();
 			
-			if ($userField->fieldid < 1) {
+			if ($userField->fieldid < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
@@ -57,8 +57,9 @@ class VirtuemartViewUserfields extends JView {
 
 				$this->assignRef('ordering', JText::_('New items default to the last place. Ordering can be changed after this item is saved.'));
 				$userFieldValues = array();
+				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
-			} else {
+			} else { // Update existing userfield
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, name AS text'
 					. ' FROM #__vm_userfield'
@@ -72,7 +73,8 @@ class VirtuemartViewUserfields extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 
 				$userFieldValues = $model->getUserfieldValues();
-				$lists['type'] = $this->_getTypes($userField->type);
+				$lists['type'] = $this->_getTypes($userField->type)
+					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
 			}
 
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
@@ -82,6 +84,46 @@ class VirtuemartViewUserfields extends JView {
 			$vendor_list = $vendor_model->getVendors();
 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'vendor_id', '', 'vendor_id', 'vendor_name', $userField->vendor_id);
 
+			// Shopper groups for EU VAT Id
+			$shoppergroup_model = $this->getModel('shoppergroup');
+			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
+			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'shopper_group_id', '', 'shopper_group_id', 'shopper_group_name', $model->_params->get('shopper_group_id'));
+			
+			// Minimum age select
+			$ages = array();
+			for ($i = 13; $i <= 25; $i++) {
+				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('CMN_YEARS'));
+			}
+			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $model->_params->get('minimum_age', 18));
+
+			// Web address types
+			$webaddress_types = array(
+				 array('key' => 0, 'value' => JText::_('VM_USERFIELDS_URL_ONLY'))
+				,array('key' => 2, 'value' => JText::_('VM_USERFIELDS_HYPERTEXT_URL'))
+			);
+			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $model->_params->get('webaddresstype'));
+
+			// Userfield values
+			if (($n = count($userFieldValues)) < 1) {
+				$lists['userfield_values'] = 
+					 '<tr>'
+					.'<td><input type="text" value="" name="vNames[0]" /></td>'
+					.'<td><input type="text" value="" name="vValues[0]" /></td>'
+					.'</tr>';
+				$i = 1;
+			} else {
+				$lists['userfield_values'] = '';
+				for ($i = 0; $i < $n; $i++) {
+					$lists['userfield_values'] .= 
+						 '<tr>'
+						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']" readonly="readonly" /></td>'
+						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
+						.'</tr>';
+				}
+			}
+			$this->assignRef('valueCount', --$i);
+
+			// Toggles
 			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
@@ -158,7 +200,13 @@ class VirtuemartViewUserfields extends JView {
 				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
 		}
 	}
-	
+
+	/**
+	 * Create an array with userfield types and the visible text in the format expected by the Joomla select class
+	 * 
+	 * @param string $value If not null, the type of which the text should be returned
+	 * @return mixed array or string
+	 */
 	function _getTypes ($value = null)
 	{
 		$types = array(

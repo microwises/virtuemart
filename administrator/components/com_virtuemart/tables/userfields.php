@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: order_status.php 2227 2010-01-20 23:03:48Z SimonHodgkiss $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -70,8 +70,8 @@ class TableUserfields extends JTable {
 	var $sys			= 0;
 	/** @var int The Vendor ID, if vendor specific*/
 	var $vendor_id		= 0;
-	/** @var mediumtex */
-	var $param			= 0;
+	/** @var mediumtex Additional type-specific parameters */
+	var $params			= null;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
@@ -85,31 +85,44 @@ class TableUserfields extends JTable {
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check()
+	function check($nrOfValues)
 	{
-        if (!$this->order_status_code) {
-			$this->setError(JText::_('Order status records must contain an order status code.'));
+		if (!$this->name) {
+			$this->setError(JText::_('The userfield must have a name.'));
 			return false;
 		}
-		if (!$this->order_status_name) {
-			$this->setError(JText::_('Order status records must contain an order status name.'));
+		if (!$this->title) {
+			$this->setError(JText::_('The userfield must have a title.'));
 			return false;
 		}
-
-		if ($this->order_status_id == 0) {
-			$db =& JFactory::getDBO();
-
-			$q = 'SELECT count(*) FROM `#__vm_order_status` ';
-			$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
-			$db->setQuery($q);
-			$rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('The given status code already exists.'));
-				return false;
-			}
+		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
+			$this->setError(JText::_('The name of the userfield contains invalid characters'));
+			return false;
+		}
+		$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
+		if (in_array($this->type, $reqValues) && $nrOfValues == 0) {
+			$this->setError(JText::_('Values are required for this type.'));
+			return false;
 		}
 		return true;
 	}
+	
+	/**
+	 * Reimplement the store method to return the last inserted ID
+	 * 
+	 * @return mixed When a new record was succesfully inserted, return the ID, otherwise the status
+	 */
+	function store()
+	{
+		$isNew = ($this->fieldid == 0);
+		if (!parent::store()) { // Write data to the DB
+			$this->setError($this->getError());
+			return false;
+		} else {
+			return ($isNew ? $this->_db->insertid() : true);
+		}
+	}
+
 }
 
 //No CLosing Tag

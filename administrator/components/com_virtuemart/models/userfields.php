@@ -22,6 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+// Load the helper
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'paramhelper.php');
+
+
 /**
  * Model class for user fields
  *
@@ -35,6 +39,10 @@ class VirtueMartModelUserfields extends JModel {
 	var $_id;
 	/** @var objectlist order status data */
 	var $_data;
+	/** @var object paramater parsers */
+	var $_params;
+	/** @var array type=>fieldname with formfields that are saved as parameters */
+	var $reqParam;
 	/** @var integer Total number of order statuses in the database */
 	var $_total;
 	/** @var pagination Pagination for order status list */
@@ -58,9 +66,19 @@ class VirtueMartModelUserfields extends JModel {
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
+		// Instantiate the Helper class
+		$this->_params =& new ParamHelper();
+
 		// Get the (array of) order status ID(s)
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
 		$this->setId((int)$idArray[0]);
+		
+		// Form fields that must be translated to parameters
+		$this->reqParam = array (
+			 'age_verification' => 'minimum_age'
+			,'euvatid'          => 'shopper_group_id'
+			,'webaddress'       => 'webaddresstype'
+		);
 	}
 	
 	/**
@@ -152,6 +170,9 @@ class VirtueMartModelUserfields extends JModel {
 			$this->_data = null;
 		}
 
+		// Parse the parameters, if any
+		$this->_params->parseParam($this->_data->params);
+
 		return $this->_data;
 	}
 
@@ -164,8 +185,9 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$this->_data = $this->getTable('userfields_values');
 		if ($this->_id > 0) {
-			$query = 'SELECT * FROM `#__vm_userfield_values` WHERE `fieldid` = ' . $this->_id;
-			$_userFieldValues = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$query = 'SELECT * FROM `#__vm_userfield_values` WHERE `fieldid` = ' . $this->_id
+				. ' ORDER BY `ordering`';
+			$_userFieldValues = $this->_getList($query);
 			return $_userFieldValues;
 		} else {
 			return array();
@@ -182,6 +204,7 @@ class VirtueMartModelUserfields extends JModel {
 		$field =& $this->getTable('userfields');
 
 		$data = JRequest::get('post');
+
 		$isNew = ($data['fieldid'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
@@ -194,14 +217,24 @@ class VirtueMartModelUserfields extends JModel {
 				$reorderRequired = true;
 			}
 		}
+
+		// Put the parameters, if any, in the correct format
+		if (array_key_exists($data['type'], $this->reqParam)) {
+			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
+			$data['params'] = $this->_params->paramString();
+		}
+
+		// Store the fieldvalues, if any, in a correct array
+		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['fieldid']);
+
 		if (!$field->bind($data)) { // Bind data
 			$this->setError($field->getError());
 			return false;
 		}
 
-		if (!$field->check()) { // Perform data checks
+		if (!$field->check(count($fieldValues))) { // Perform data checks
 			$this->setError($field->getError());
-			return false;
+			return false; 
 		}
 
 		// if new item, order last in appropriate group
@@ -209,11 +242,15 @@ class VirtueMartModelUserfields extends JModel {
 			$field->ordering = $field->getNextOrder();
 		}
 
-		if (!$field->store()) { // Write data to the DB
+		if (($_id = $field->store()) === false) { // Write data to the DB
 			$this->setError($field->getError());
 			return false;
 		}
 
+		if (!$this->storeFieldValues($fieldValues, $_id)) {
+			return false;
+		}
+					
 		if ($reorderRequired) {
 			$field->reorder();
 		}
@@ -221,6 +258,68 @@ class VirtueMartModelUserfields extends JModel {
 		return true;
 	}
 
+	/**
+	 * Bind and write all value records
+	 * 
+	 * @param array $_values
+	 * @param mixed $_id If a new record is being inserted, it contains the fieldid, otherwise the value true
+	 * @return boolean
+	 */
+	private function storeFieldValues($_values, $_id)
+	{
+		if (count($_values) == 0) {
+			return true; //Nothing to do
+		}
+		$fieldvalue =& $this->getTable('userfields_values');
+		for ($i = 0; $i < count($_values); $i++) {
+			if (!($_id === true)) { // If $_id is true, it was not a new record
+				$_values[$i]['fieldid'] = $_id;
+			}
+
+			if (!$fieldvalue->bind($_values[$i])) { // Bind data
+				$this->setError($fieldvalue->getError());
+				return false;
+			}
+
+			if (!$fieldvalue->check()) { // Perform data checks
+				$this->setError($fieldvalue->getError());
+				return false;
+			}
+
+			if (!$fieldvalue->store()) { // Write data to the DB
+				$this->setError($fieldvalue->getError());
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Translate arrays form userfield_values to the format expected by the table class.
+	 * 
+	 * @param array $titles List of titles from the formdata
+	 * @param array $values List of values from the formdata
+	 * @param int $fieldid ID of the userfield to relate
+	 * @return array Data to bind to the userfield_values table
+	 */
+	private function postData2FieldValues($titles, $values, $fieldid)
+	{
+		$_values = array();
+		if (is_array($titles) && is_array($values)) {
+			for ($i=0; $i < count($titles) ;$i++) {
+				if (empty($titles[$i])) {
+					continue; // Ignore empty fields
+				}
+				$_values[] = array(
+					 'fieldid'    => $fieldid
+					,'fieldtitle' => $titles[$i]
+					,'fieldvalue' => $values[$i]
+					,'ordering'   => $i
+				);
+			}
+		}
+		return $_values;
+	}
 
 	/**
 	 * Delete all record ids selected
@@ -231,7 +330,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$fieldIds = JRequest::getVar('cid',  0, '', 'array');
 		$field =& $this->getTable('userfields');
-		$value =& $this->getTable('userfields_value');
+		$value =& $this->getTable('userfields_values');
 		
 		foreach($fieldIds as $fieldId) {
 			if (!$field->delete($fieldId)) {
@@ -284,7 +383,6 @@ class VirtueMartModelUserfields extends JModel {
 	function _getFilter()
 	{
 		$db = JFactory::getDBO();
-//		global $mainframe, $option;
 		if (JRequest::getVar('search', false)) {
 			return (' WHERE `name` LIKE ' .$db->Quote('%'.JRequest::getVar('search').'%'));
 		}
@@ -350,6 +448,14 @@ class VirtueMartModelUserfields extends JModel {
 		return true;
 	}
 
+	/**
+	 * Switch a toggleable field on or off
+	 * 
+	 * @param $field string Database fieldname to toggle
+	 * @param $id array list of primary keys to toggle
+	 * @param $value boolean Value to set
+	 * @return boolean Result
+	 */
 	function toggle($field, $id = array(), $value = 1)
 	{
 		if (count( $id ))

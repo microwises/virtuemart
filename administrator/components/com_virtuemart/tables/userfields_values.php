@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: order_status.php 2227 2010-01-20 23:03:48Z SimonHodgkiss $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -33,9 +33,9 @@ class TableUserfields_values extends JTable {
 	/** @var int Reference to the userfield */
 	var $fieldid		= 0;
 	/** @var string Label of the value */
-	var $fieldtitle	= null;
+	var $fieldtitle		= null;
 	/** @var string Selectable value */
-	var $fieldvalue	= null;
+	var $fieldvalue		= null;
 	/** @var int Value ordering */
 	var $ordering		= 0;
 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
@@ -50,32 +50,28 @@ class TableUserfields_values extends JTable {
 	}
 
 	/**
-	 * Validates the userfields record fields.
+	 * Validates the userfields record fields, and checks if the given value already exists.
+	 * If so, the primary key is set.
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check()
 	{
-        if (!$this->order_status_code) {
-			$this->setError(JText::_('Order status records must contain an order status code.'));
-			return false;
-		}
-		if (!$this->order_status_name) {
-			$this->setError(JText::_('Order status records must contain an order status name.'));
+		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldtitle) > 0) {
+			$this->setError(JText::_('Title in fieldvalues contains invalid characters'));
 			return false;
 		}
 
-		if ($this->order_status_id == 0) {
-			$db =& JFactory::getDBO();
-
-			$q = 'SELECT count(*) FROM `#__vm_order_status` ';
-			$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
-			$db->setQuery($q);
-			$rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('The given status code already exists.'));
-				return false;
-			}
+		$db =& JFactory::getDBO();
+		$q = 'SELECT `fieldvalueid` FROM `#__vm_userfield_values` '
+			. 'WHERE `fieldtitle`="' . $this->fieldtitle . '" '
+			. 'AND   `fieldid`=' . $this->fieldid;
+		$db->setQuery($q);
+		$_id = $db->loadResult();
+		if ($_id === null) {
+			$this->fieldvalueid = null;
+		} else {
+			$this->fieldvalueid = $_id;
 		}
 		return true;
 	}
@@ -87,12 +83,11 @@ class TableUserfields_values extends JTable {
 	 */
 	function delete($fieldid)
 	{
-		if ($fieldvalueids = $this->_getList('SELECT `fieldvalueid` FROM `#__vm_userfield_value` WHERE `fieldid` = ' . $fieldid)) {
-			foreach ($fieldvalueids as $fieldvalueid) {
-				if (!parent::delete($fieldvalueid)) {
-					return false;
-				}
-			}
+		$db =& JFactory::getDBO();
+		$db->setQuery('DELETE from `#__vm_userfield_values` WHERE `fieldid` = ' . $fieldid);
+		if ($db->query() === false) {
+			$this->setError($db->getError());
+			return false;
 		}
 		return true;
 	}

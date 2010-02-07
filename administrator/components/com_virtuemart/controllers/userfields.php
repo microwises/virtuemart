@@ -47,7 +47,8 @@ class VirtuemartControllerUserfields extends JController {
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('userfields', $viewType);
-
+		$view->loadHelper('paramhelper');
+		
 		// Push a model into the view
 		$model =& $this->getModel('userfields');
 
@@ -77,8 +78,11 @@ class VirtuemartControllerUserfields extends JController {
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('userfields', $viewType);
+		
+		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-
+		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
+		
 		parent::display();
 	}
 
@@ -112,14 +116,17 @@ class VirtuemartControllerUserfields extends JController {
 	{
 		$model = $this->getModel('userfields');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more order statuses could not be deleted!');
+			$msg = JText::_('Error: One or more userfields could not be deleted!');
 		} else {
-			$msg = JText::_( 'Order statuses Deleted!');
+			$msg = JText::_( 'Userfield(s) Deleted!');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=orderstatus', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
+	/**
+	 * Move an item up in the grid.
+	 */
 	function orderup()
 	{
 		$model = $this->getModel('userfields');
@@ -131,6 +138,9 @@ class VirtuemartControllerUserfields extends JController {
 		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
+	/**
+	 * Move an item down in the grid.
+	 */
 	function orderdown()
 	{
 		$model = $this->getModel('userfields');
@@ -142,6 +152,9 @@ class VirtuemartControllerUserfields extends JController {
 		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
+	/**
+	 * Save the given grid ordering.
+	 */
 	function saveorder()
 	{
 		$cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
@@ -156,66 +169,108 @@ class VirtuemartControllerUserfields extends JController {
 		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Publish toggle off.
+	 */
 	function unpublish()
 	{
 		self::toggle('published', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Publish toggle on.
+	 */
 	function publish()
 	{
 		self::toggle('published', 1);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Required toggle off.
+	 */
 	function disable_required()
 	{
 		self::toggle('required', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Required toggle on.
+	 */
 	function enable_required()
 	{
 		self::toggle('required', 1);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Registration toggle off.
+	 */
 	function disable_registration()
 	{
 		self::toggle('registration', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Registration toggle on.
+	 */
 	function enable_registration()
 	{
 		self::toggle('registration', 1);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Shipping toggle off.
+	 */
 	function disable_shipping()
 	{
 		self::toggle('shipping', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Shipping toggle on.
+	 */
 	function enable_shipping()
 	{
 		self::toggle('shipping', 1);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Account toggle off.
+	 */
 	function disable_account()
 	{
 		self::toggle('account', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Account toggle on.
+	 */
 	function enable_account()
 	{
 		self::toggle('account', 1);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Readonly toggle off.
+	 */
 	function disable_readonly()
 	{
 		self::toggle('readonly', 0);
 	}
 
+	/**
+	 * Interface to toggle(); switch the Readonly toggle on.
+	 */
 	function enable_readonly()
 	{
 		self::toggle('readonly', 1);
 	}
 
+	/**
+	 * Switch the given toggle on or off.
+	 * 
+	 * @param $field string Toggle set switch
+	 * @param $value boolean on or off
+	 */
 	function toggle($field, $value)
 	{
 		$id = JRequest::getVar( 'cid', array(), 'post', 'array' );
