@@ -72,15 +72,40 @@ class VirtueMartControllerCart extends JController {
 	public function add() {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
 		$this->getModel('productdetails');
 		$model = $this->getModel('cart');
-		$msgtype = '';
-		if ($model->add()) $msg = JText::_('PRODUCT_ADDED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
+		if ($model->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
+		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
+		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+	}
+	
+	/**
+	* Delete a product from the cart 
+	* 
+	* @author RolandD 
+	* @access public 
+	*/
+	public function delete() {
+		$mainframe = JFactory::getApplication();
+		/* Load the cart helper */
+		if (cart::removeProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_REMOVED_SUCCESSFULLY'));
+		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+	}
+	
+	/**
+	* Delete a product from the cart 
+	* 
+	* @author RolandD 
+	* @access public 
+	*/
+	public function update() {
+		$mainframe = JFactory::getApplication();
+		/* Load the cart helper */
+		if (cart::updateProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_UPDATED_SUCCESSFULLY'));
+		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
+		
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 	}
 }

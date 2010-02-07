@@ -90,10 +90,27 @@ else { ?>
 								$options = array();
 								foreach ($variant as $name => $price) {
 									if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
-									$options[] = JHTML::_('select.option', $variant_name.'_'.$name, $name);
+									$options[] = JHTML::_('select.option', $name, $name);
 								}
-								if (!empty($options)) echo $variant_name.JHTML::_('select.genericlist', $options, $variant_name);
+								if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $this->product->product_id.$variant_name).'<br />';
 							}
+							?>
+							<br style="clear: both;" />
+							<?php
+							/* Show the custom attributes */
+							foreach($this->product->customvariants as $ckey => $customvariant) { 		
+								?>
+								<div class="vmAttribChildDetail" style="float: left;width:30%;text-align:right;margin:3px;">
+								<label for="<?php echo $customvariant ?>_field"><?php echo $customvariant ?>
+								</label>:
+								</div>
+								<div class="vmAttribChildDetail" style="float:left;width:60%;margin:3px;">
+								<input type="text" class="inputboxattrib" id="<?php echo $customvariant ?>_field" size="30" name="<?php echo $this->product->product_id.$customvariant; ?>" />
+								</div>
+								<br style="clear: both;" />
+							<?php
+							}
+							
 							/* Display the quantity box */
 							?>
 							<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>

@@ -43,7 +43,8 @@ else {
 		$discount_before=$discount_after=$show_tax=$shipping=false;
 		$product_rows = array();
 	
-		for ($i=0; $i < $this->cart["idx"]; $i++) {
+		for ($i=0; $i < $this->cart['idx']; $i++) {
+			$product = $this->products[$i];
 			// Added for the zone shipping module
 			//$vars["zone_qty"] += $cart[$i]["quantity"];
 	
@@ -51,20 +52,33 @@ else {
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
 	
 			/* Create product URL */
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->cart[$i]['product']->product_id.'&category_id='.$this->cart[$i]['category_id']);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$this->cart[$i]['category_id']);
 			
 			/** @todo Add variants */
-			$product_rows[$i]['product_name'] = JHTML::link($url, $this->cart[$i]['product']->product_name).'<br />';
+			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name).'<br />';
+			
+			/* Add the variants */
+			$product_rows[$i]['product_variants'] = '';
+			foreach ($this->cart[$i]['variants'] as $vname => $vvalue) {
+				$product_rows[$i]['product_variants'] .= '<br />'.$vname.': '.$vvalue;
+			}
+			
+			/* Add the custom variants */
+			$product_rows[$i]['product_customvariants'] = '';
+			foreach ($this->cart[$i]['customvariants'] as $cname => $cvalue) {
+				$product_rows[$i]['product_customvariants'] .= '<br />'.$cname.': '.$cvalue;
+			}
+			
 	
 			// Display attribute values if this an item
 			$product_rows[$i]['product_attributes'] = '';
-			if ($this->cart[$i]['product']->product_parent_id > 0) {
-				foreach ($this->cart[$i]['product']->attributes as $attribute) {
+			if ($product->product_parent_id > 0) {
+				foreach ($product->attributes as $attribute) {
 					$product_rows[$i]['product_attributes'] .= "<br />".$attribute->attribute_name."&nbsp;";
 					$product_rows[$i]['product_attributes'] .= "(" . $attribute->attribute_value.")";
 				}
 			}
-			$product_rows[$i]['product_sku'] = $this->cart[$i]['product']->product_sku;
+			$product_rows[$i]['product_sku'] = $product->product_sku;
 	
 			/** @todo WEIGHT CALCULATION */
 			//$weight_subtotal = vmShippingMethod::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
@@ -72,11 +86,11 @@ else {
 	
 			/* Product PRICE */
 			/** @todo Format price */
-			$product_rows[$i]['product_price'] = $this->cart[$i]['product']->product_price['salesPrice'];
+			$product_rows[$i]['product_price'] = $product->product_price['salesPrice'];
 	
 			/* SUBTOTAL CALCULATION */
-			$subtotal = $this->cart[$i]['product']->product_price['priceWithoutTax'] * $this->cart[$i]["quantity"];
-			$subtotal_with_tax = $this->cart[$i]['product']->product_price['salesPrice'] * $this->cart[$i]["quantity"];
+			$subtotal = $product->product_price['priceWithoutTax'] * $this->cart[$i]['quantity'];
+			$subtotal_with_tax = $product->product_price['salesPrice'] * $this->cart[$i]['quantity'];
 	
 			$total += $subtotal;
 			/** @todo Format price */
@@ -98,22 +112,22 @@ else {
 			
 			// UPDATE CART / DELETE FROM CART
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
-			<input type="hidden" name="option" value="com_virtuemart" />
-			<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="4" maxlength="4" name="quantity" value="'.$this->cart[$i]["quantity"].'" />
-			<input type="hidden" name="view" value="cart" />
-		<input type="hidden" name="task" value="update" />
-		<input type="hidden" name="product_id" value="'.$this->cart[$i]['product']->product_id.'" />
-		<!-- <input type="hidden" name="description" value="'. stripslashes($this->cart[$i]["description"]).'" /> -->
-		<input type="image" name="update" title="'. JText::_('VM_CART_UPDATE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/update_quantity_cart.png" alt="'. JText::_('VM_UPDATE') .'" align="middle" />
-	  </form>';
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="4" maxlength="4" name="quantity" value="'.$this->cart[$i]["quantity"].'" />
+				<input type="hidden" name="view" value="cart" />
+				<input type="hidden" name="task" value="update" />
+				<input type="hidden" name="cart_id" value="'.$i.'" />
+				<input type="hidden" name="product_id" value="'.$product->product_id.'" />
+				<input type="image" name="update" title="'. JText::_('VM_CART_UPDATE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/update_quantity_cart.png" alt="'. JText::_('VM_UPDATE') .'" align="middle" />
+			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="view" value="cart" />
-		<input type="hidden" name="task" value="delete" />
-		<input type="hidden" name="product_id" value="'.$this->cart[$i]['product']->product_id.'" />
-		<!-- <input type="hidden" name="description" value="'. $this->cart[$i]["description"].'" /> -->
-		<input type="image" name="delete" title="'. JText::_('VM_CART_DELETE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/remove_from_cart.png" alt="'. JText::_('VM_CART_DELETE') .'" align="middle" />
-	  </form>';
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="view" value="cart" />
+				<input type="hidden" name="task" value="delete" />
+				<input type="hidden" name="cart_id" value="'.$i.'" />
+				<input type="hidden" name="product_id" value="'.$product->product_id.'" />
+				<input type="image" name="delete" title="'. JText::_('VM_CART_DELETE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/remove_from_cart.png" alt="'. JText::_('VM_CART_DELETE') .'" align="middle" />
+			  </form>';
 		} // End of for loop through the Cart
 	
 		//vmRequest::setVar( 'zone_qty', $vars['zone_qty'] );
@@ -219,10 +233,10 @@ else {
 		*/
 		// Attention: When show_price_including_tax is 1,
 		// we already have an order_total including the Tax!
-		if( $auth["show_price_including_tax"] == 0 ) {
-			$order_total += $tax_total;
-			$total_undiscounted += $tax_total;
-		}
+		//if( $auth["show_price_including_tax"] == 0 ) {
+		//	$order_total += $tax_total;
+		//	$total_undiscounted += $tax_total;
+		//}
 		$order_total += $shipping_total + $total;
 		$total_undiscounted += $shipping_total;
 	
@@ -239,7 +253,7 @@ else {
 		  </tr>
 		<?php foreach( $product_rows as $product ) { ?>
 		  <tr valign="top" class="<?php echo $product['row_color'] ?>">
-			<td><?php echo $product['product_name'] . $product['product_attributes'] ?></td>
+			<td><?php echo $product['product_name'].$product['product_variants'].$product['product_customvariants'].$product['product_attributes']; ?></td>
 			<td><?php echo $product['product_sku'] ?></td>
 			<td align="right"><?php echo $product['product_price'] ?></td>
 			<td><?php echo $product['update_form'] ?>

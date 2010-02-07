@@ -118,7 +118,7 @@ class VirtueMartModelProduct extends JModel {
 		 foreach ($categories as $value) {
 		 	 $row->categories[$value]  = 1;
 		 }
-
+		 
      	 return $row;
      }
 
@@ -613,6 +613,7 @@ class VirtueMartModelProduct extends JModel {
 	* Store a product
 	*
 	* @author RolandD
+	* @access public
 	*/
 	public function saveProduct() {
 		$db = JFactory::getDBO();
@@ -679,8 +680,11 @@ class VirtueMartModelProduct extends JModel {
 		$product_data->attribute = $this->formatAttributeX();
 
         /* Set the product packaging */
-        $product_data->product_packaging = (($data["product_box"] << 16) | ($data["product_packaging"]&0xFFFF));
-
+        $product_data->product_packaging = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
+        
+        /* Set the order levels */
+        $product_data->product_order_levels = $data['min_order_level'].','.$data['max_order_level'];
+        
         /* Store the product */
 		$product_data->store();
 

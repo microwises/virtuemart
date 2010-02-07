@@ -43,6 +43,19 @@ class VirtueMartViewCart extends JView {
 		$cart = cart::getCart();
 		$this->assignRef('cart', $cart);
 		
+		/* Get the products for the cart */
+		$model = $this->getModel('cart');
+		$products = $model->getCartProducts($cart);
+		$this->assignRef('products', $products);
+		
+		/* Get the prices for the cart */
+		$prices = $model->getCartPrices($cart);
+		$this->assignRef('prices', $prices);
+		?><pre><?php
+		print_r($prices);
+		?></pre><?php
+		
+		
 		/* Get a continue link */
 		$category_id = JRequest::getInt('category_id');
 		$product_id = JRequest::getInt('product_id');

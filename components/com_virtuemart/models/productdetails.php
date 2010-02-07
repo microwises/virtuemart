@@ -99,8 +99,17 @@ class VirtueMartModelProductdetails extends JModel {
 			/* Load the variants */
 			$product->variants = $this->getVariants($product);
 			
+			/* Load the custom variants */
+			$product->customvariants = $this->getCustomVariants($product->custom_attribute);
+			
 			/* Load the attributes */
 			$product->attributes = $this->getAttributes($product);
+			
+			/* Check the order levels */
+			if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
+			
+			/* Check the stock level */
+			if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 			
 			/* Handle some child product data */
 			if ($product->product_parent_id > 0) {
@@ -477,11 +486,12 @@ class VirtueMartModelProductdetails extends JModel {
 	 * from the attribute tables about item $item_id AND/OR product $product_id
 	 *
 	 * @author RolandD
+	 * @access private
 	 * @param int $product The product object
 	 * @param string $attribute_name The name of the attribute to filter
 	 * @return array list of attribute objects
 	 */
-	function getAttributes($product, $attribute_name = '') {
+	private function getAttributes($product, $attribute_name = '') {
 		$db = JFactory::getDBO();
 		$attributes = array();
 		if ($product->product_id && $product->product_parent_id) {
@@ -513,6 +523,23 @@ class VirtueMartModelProductdetails extends JModel {
 		$db->setQuery($q); 
 		$attributes = $db->loadObjectList();
 		return $attributes;
+	}
+	
+	/**
+	* Load the custom variants 
+	* 
+	* @author RolandD 
+	* @access private
+	* @param string $custom_attr_list containing the custom variants 		
+	* @return array containing the custom variants
+	*/
+	private function getCustomVariants($custom_attr_list) {
+		$fields = array();
+		if ($custom_attr_list) {
+			if (substr($custom_attr_list, -1) == ';') $custom_attr_list = substr($custom_attr_list, 0, -1);
+			$fields = explode(";", $custom_attr_list);
+		}
+		return $fields;
 	}
 }
 ?>

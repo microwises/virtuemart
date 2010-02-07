@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: edit.php 2281 2010-01-31 19:02:47Z Milbo $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!

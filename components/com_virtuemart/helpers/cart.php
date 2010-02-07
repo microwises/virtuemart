@@ -67,8 +67,12 @@ class cart {
 						AND published = 0';
 					$db->setQuery($q);
 					$remove_products = $db->loadResultArray();
-					
-					if (!empty($remove_products)) self::removeProductFromCart($remove_products);
+				}
+				
+				if (!empty($remove_products)) {
+					for ($i=0; $i < $contents["idx"]; $i++) {
+						if (in_array(intval($contents[$i]['product_id']), $remove_products)) self::removeProductCart(array($i));
+					}
 				}
 			}
 		}
@@ -118,24 +122,63 @@ class cart {
 	* Remove a product from the cart 
 	* 
 	* @author RolandD
-	* @todo Check for duplicate products
-	* @param array $product_ids the product IDs to remove from the cart
+	* @param array $cart_id the cart IDs to remove from the cart
 	* @access public
 	*/
-	public function removeProductFromCart($product_ids=array()) {
+	public function removeProductCart($cart_ids=array()) {
+		/* Check for cart IDs */
+		if (empty($cart_ids)) $cart_ids = array(JRequest::getInt('cart_id'));
+		
 		/* Check if the product ID is ok */
-		if (!$product_ids || !is_array($product_ids) || empty($product_ids)) return;
+		if (!$cart_ids || !is_array($cart_ids) || empty($cart_ids)) return;
 		
 		/* Load the cart */
 		$cart = self::getCart();
 		
 		/* Remove the product */
-		foreach ($product_ids as $product_id) {
-			// Do some funky code here
+		foreach ($cart_ids as $cart_id) {
+			unset($cart[$cart_id]);
+		}
+		
+		/* Clean up the cart */
+		unset($cart['idx']);
+		$cart = array_values($cart);
+		$cart['idx'] = count($cart);
+		
+		/* Save the cart */
+		self::setCart($cart);
+		return true;
+	}
+	
+	/**
+	* Update a product in the cart 
+	* 
+	* @author RolandD
+	* @param array $cart_id the cart IDs to remove from the cart
+	* @access public
+	*/
+	public function updateProductCart($cart_ids=array()) {
+		/* Check for cart IDs */
+		if (empty($cart_ids)) $cart_ids = array(JRequest::getInt('cart_id'));
+		
+		/* Check if the product ID is ok */
+		if (!$cart_ids || !is_array($cart_ids) || empty($cart_ids)) return;
+		
+		/* Load the cart */
+		$cart = self::getCart();
+		
+		/* Update the product */
+		foreach ($cart_ids as $cart_id) {
+			if (array_key_exists($cart_id, $cart)) {
+				$cart[$cart_id]['quantity'] = JRequest::getInt('quantity');
+				$updated = true;
+			}
 		}
 		
 		/* Save the cart */
 		self::setCart($cart);
+		if ($updated) return true;
+		else return false;
 	}
 	
 	/**

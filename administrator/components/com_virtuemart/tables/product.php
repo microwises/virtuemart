@@ -93,7 +93,7 @@ class TableProduct extends JTable {
 	/** @var int File thumbnail image width */
 	var $product_packaging	= null;
 	/** @var int File thumbnail image width */
-	var $product_order_levels	= null;
+	var $product_order_levels	= '0,0';
 	/** @var string Internal note for product */
 	var $intnotes = null;
 	/** @var string Meta description */
