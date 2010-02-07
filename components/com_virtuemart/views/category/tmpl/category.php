@@ -110,36 +110,78 @@ foreach ($this->products as $product) {
 		echo JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL').' '.JHTML::image(JURI::root().'components/com_virtuemart/assets/images/'.$product->stock->stock_level.'.gif', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
 		?>
 	</div>
-	<span class="browseAddToCartContainer">
-		<?php 
-		
-			/* Display the quantity box */
-			?>
-			<label for="quantity<?php echo $product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
-			<input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $product->product_id;?>" name="quantity[]" value="1" />
-			<input type="button" class="quantity_box_button quantity_box_button_up" onclick="var qty_el = document.getElementById('quantity<?php echo $product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty )) qty_el.value++;return false;" />
-			<input type="button" class="quantity_box_button quantity_box_button_down" onclick="var qty_el = document.getElementById('quantity<?php echo $product->product_id;?>'); var qty = qty_el.value; if( !isNaN( qty ) && qty > 0 ) qty_el.value--;return false;" />
+	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
+		<form action="index.php" method="post" name="addtocart" id="addtocartproduct">
+		<div style="text-align: center;">
 			<?php
-			
-			/* Add the button */
-			$button_lbl = JText::_('VM_CART_ADD_TO');
-			$button_cls = 'addtocart_button';
-			if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
-				$button_lbl = JText::_('VM_CART_NOTIFY');
-				$button_cls = 'notify_button';
-			}
-			/** @todo Make the add to cart button work, so it puts products in the basket */
-			?>
-			<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-			
-			<?php /** @todo Complete form */ ?>
-			<!--
-			<input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" />
-			<input type="hidden" name="category_id" value="<?php echo $category_id ?>" />
-			<input type="hidden" name="func" value="cartAdd" />
-			<input type="hidden" name="option" value="<?php echo $option ?>" />
-			-->
-	</span>
+				/* Show the variants */
+				foreach ($product->variants as $variant_name => $variant) {
+					$options = array();
+					foreach ($variant as $name => $price) {
+						if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
+						$options[] = JHTML::_('select.option', $name, $name);
+					}
+					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $product->product_id.$variant_name).'<br />';
+				}
+				?>
+				<br style="clear: both;" />
+				<?php
+				/* Show the custom attributes */
+				foreach($product->customvariants as $ckey => $customvariant) { 		
+					?>
+					<div class="vmAttribChildDetail" style="float: left;width:30%;text-align:right;margin:3px;">
+					<label for="<?php echo $customvariant ?>_field"><?php echo $customvariant ?>
+					</label>:
+					</div>
+					<div class="vmAttribChildDetail" style="float:left;width:60%;margin:3px;">
+					<input type="text" class="inputboxattrib" id="<?php echo $customvariant ?>_field" size="30" name="<?php echo $product->product_id.$customvariant; ?>" />
+					</div>
+					<br style="clear: both;" />
+				<?php
+				}
+				
+				/* Display the quantity box */
+				?>
+				<label for="quantity<?php echo $product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
+				<input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $product->product_id;?>" name="quantity[]" value="1" />
+				<input type="button" class="quantity_box_button quantity_box_button_up" onClick="add(<?php echo $product->product_id;?>); return false;" />
+				<input type="button" class="quantity_box_button quantity_box_button_down" onClick="minus(<?php echo $product->product_id;?>); return false;" />
+				<?php
+				
+				/* Add the button */
+				$button_lbl = JText::_('VM_CART_ADD_TO');
+				$button_cls = 'addtocart_button';
+				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
+					$button_lbl = JText::_('VM_CART_NOTIFY');
+					$button_cls = 'notify_button';
+				}
+				?>
+				<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+				
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="view" value="cart" />
+				<input type="hidden" name="task" value="add" />
+				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
+				<?php /** @todo Handle the manufacturer view */ ?> 
+				<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
+				<input type="hidden" name="category_id[]" value="<?php echo $product->category_id ?>" />
+			</div>
+		</form>
+	<?php } ?>
 	
 	</div>
 <?php } ?>
+<script type="text/javascript">
+function add(nr) {
+	var currentVal = parseInt(jQuery('#quantity'+nr).val());
+	if (currentVal != NaN) {
+		jQuery('#quantity'+nr).val(currentVal + 1);
+	}
+};
+function minus(nr) {
+	var currentVal = parseInt(jQuery('#quantity'+nr).val());
+	if (currentVal != NaN) {
+		jQuery('#quantity'+nr).val(currentVal - 1);
+	}
+};
+</script>

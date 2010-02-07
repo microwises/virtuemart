@@ -126,7 +126,6 @@ else { ?>
 								$button_lbl = JText::_('VM_CART_NOTIFY');
 								$button_cls = 'notify_button';
 							}
-							/** @todo Make the add to cart button work, so it puts products in the basket */
 							?>
 							<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							
