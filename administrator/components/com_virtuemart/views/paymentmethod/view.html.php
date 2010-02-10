@@ -49,7 +49,10 @@ class VirtuemartViewPaymentMethod extends JView {
 			// Load the helper(s)
 			$this->loadHelper('adminMenu');
 			$this->loadHelper('image');
+			$this->loadHelper('html');
+			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
+			
 			$this->loadHelper('shopFunctions');
 			
 			$paym = $model->getPaym();
@@ -69,7 +72,7 @@ class VirtuemartViewPaymentMethod extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
-//			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
+			$this->assignRef('PaymentTypeList',self::renderPaymentTypesList($paym->paym_type));
 //			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
 			
 
@@ -135,39 +138,27 @@ class VirtuemartViewPaymentMethod extends JView {
 	}
 	
 	/**
-	 * Builds a list to choose the Entrypoints
-	 * When you want to add extra Entrypoints, look in helpers/calculationh.php for mor information
+	 * Builds a list to choose the mathematical operations
+	 * When you want to add extra operations, look in helpers/calculationh.php for more information
 	 * 
-	 * This does not use the normal joomla function as it needs too much data that is not necessary,
-	 * Maybe this will be moved to the helper
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
+	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author 		Max Milbers
 	 * @param 	$selected 	the selected values, may be single data or array
 	 * @return 	$list 		list of the Entrypoints  
 	 */
 	 
-//	function renderEntryPointsList($selected){
-//
-//		//Entrypoints array
-//
-//		$selected = self::prepareTreeSelection($selected);
-//		//MathOp array
-//		$entryPoints = array(
-//		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAX')),
-//		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAX')),
-//		'2' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAX')),
-//		'3' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAXBILL')),
-//		'4' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAXBILL')),
-//		'5' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAXBILL')),
-//		
-//		);
-//
-//		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
-//		return $listHTML;
-//
-//	}
+	function renderPaymentTypesList($selected){
+		$selected = self::prepareTreeSelection($selected);
+		$list = array(
+		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
+		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
+		'2' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
+		'3' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+		);
 
+		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );
+		return $listHTML;
+	}
 	
 }
 ?>

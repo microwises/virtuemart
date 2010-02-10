@@ -172,13 +172,10 @@ class VirtueMartModelPaymentmethod extends JModel
 		}
 
 		$db = JFactory::getDBO();
-//		$config =& JFactory::getConfig();
-//		$tzoffset = $config->getValue('config.offset');
-//		$this->_data['tzoffset'] = $config->getValue('config.offset');
+		if(isset($this->_data)){
 		foreach ($this->_data as $data){
-
-//			$data->tzoffset=$tzoffset;
 			/* Write the first 5 shoppergroups in the list */
+			$data->paymShoppersList='';
 			$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
 			$db->setQuery($q);
 			$tempArray = $db->loadResultArray();
@@ -197,64 +194,29 @@ class VirtueMartModelPaymentmethod extends JModel
 			}
 
 			/* Write the first 5 accepted creditcards in the list */
+			$data->paymCreditCardList='';
 			$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
 			$db->setQuery($q);
 			$tempArray = $db->loadResultArray();
 			if(isset($tempArray)){
-				$paymaCreditCardList='';
+				$paymCreditCardList='';
 				$i=0;
 				foreach ($tempArray as $value) {
 					$q = 'SELECT creditcard_name FROM #__vm_creditcard WHERE creditcard_id = "'.$value.'"';
 					$db->setQuery($q);
 					$tmp = $db->loadResult();
-					$paymaCreditCardList .= $tmp. ', ';
+					$paymCreditCardList .= $tmp. ', ';
 					$i++;
 					if($i>4) break;
 				}
-				$data->paymaCreditCardList = substr($paymaCreditCardList,0,-2);
+				$data->paymCreditCardList = substr($paymaCreditCardList,0,-2);
 			}
-			
-//			/* Write the first 5 countries in the list */
-//			$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-//			$db->setQuery($q);
-//			$calcShoppers = $db->loadResultArray();
-//			if(isset($calcShoppers)){
-//				$calcShoppersList='';
-//				$i=0;
-//				foreach ($calcShoppers as $value) {
-//					$q = 'SELECT country_name FROM #__vm_country WHERE country_id = "'.$value.'"';
-//					$db->setQuery($q);
-//					$shopperName = $db->loadResult();
-//					$calcShoppersList .= $shopperName. ', ';
-//					$i++;
-//					if($i>4) break;
-//				}
-//				$data->calcCountriesList = substr($calcShoppersList,0,-2);
-//			}
-//			
-//			/* Write the first 5 states in the list */
-//			$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-//			$db->setQuery($q);
-//			$calcShoppers = $db->loadResultArray();
-//			if(isset($calcShoppers)){
-//				$calcShoppersList='';
-//				$i=0;
-//				foreach ($calcShoppers as $value) {
-//					$q = 'SELECT state_name FROM #__vm_state WHERE state_id = "'.$value.'"';
-//					$db->setQuery($q);
-//					$shopperName = $db->loadResult();
-//					$calcShoppersList .= $shopperName. ', ';
-//					$i++;
-//					if($i>4) break;
-//				}
-//				$data->calcStatesList = substr($calcShoppersList,0,-2);
-			}
-//
-//		}
+		}
+
 //		echo (print_r($this->_data).'<br /><br />');
 		return $this->_data;
 	}
-	
+	}
     /**
      * Publish a field
      *

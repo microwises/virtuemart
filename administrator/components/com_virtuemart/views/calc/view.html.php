@@ -139,8 +139,6 @@ class VirtuemartViewCalc extends JView {
 	 * Builds a list to choose the Entrypoints
 	 * When you want to add extra Entrypoints, look in helpers/calculationh.php for mor information
 	 * 
-	 * This does not use the normal joomla function as it needs too much data that is not necessary,
-	 * Maybe this will be moved to the helper
 	 * 
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
@@ -172,9 +170,6 @@ class VirtuemartViewCalc extends JView {
 	/**
 	 * Builds a list to choose the mathematical operations
 	 * When you want to add extra operations, look in helpers/calculationh.php for more information
-	 * 
-	 * This does not use the normal joomla function as it needs too much data that is not necessary,
-	 * Maybe this will be moved to the helper
 	 * 
 	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author 		Max Milbers

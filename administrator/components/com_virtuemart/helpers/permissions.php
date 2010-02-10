@@ -262,7 +262,7 @@ class Permissions {
 			$values['none'] = JText::_('NO_RESTRICTION');
 		}
 		
-		echo ps_html::selectList( $name, $group_name, $values, $size, $multi );
+		echo VmHTML::selectList( $name, $group_name, $values, $size, $multi );
 	}
 	
 	

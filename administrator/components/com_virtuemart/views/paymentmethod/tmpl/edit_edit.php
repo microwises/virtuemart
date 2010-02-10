@@ -23,8 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('VM_ISSHIP_LIST_PUBLISH_LBL') ?>?:</td>
-      <td>checkbox</td>
+      <td class="labelcell"><?php echo JText::_('VM_FIELDMANAGER_PUBLISHED') ?>?:</td>
+      <td><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->paym->published); ?></td>
     </tr>
     <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_NAME') ?>:</td>
@@ -38,7 +38,8 @@ defined('_JEXEC') or die('Restricted access');
           ?>
       </td>
       <td width="69%">
-      	<?php 
+      	<?php
+      	echo FileUtilities::list_available_classes( 'element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
 //     	echo vmPaymentMethod::list_available_classes( 'element', $db->sf("element") ? $db->sf("element") : 'payment' );
       	echo JHTML::tooltip( JText::_('VM_PAYMENT_CLASS_NAME_TIP') ); ?>
       </td>
@@ -46,23 +47,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
       <td width="69%" >
-      List for Payment types
-      <?php 
-      
-//          $payment_process = $db->f("type"); 
-//          $payment_types = array( "" => JText::_('VM_PAYMENT_FORM_CC'), 
-//                              "Y" => JText::_('VM_PAYMENT_FORM_USE_PP'), 
-//                              "B" => JText::_('VM_PAYMENT_FORM_BANK_DEBIT'), 
-//                              "N" => JText::_('VM_PAYMENT_FORM_AO'), 
-//                              "P" => JText::_('VM_PAYMENT_FORM_FORMBASED') );
-//          $i = 0;
-//          foreach( $payment_types as $value => $description) {
-//            echo "<input type=\"radio\" onchange=\"check()\" name=\"type\" id=\"type$i\" value=\"$value\"";
-//            echo $payment_process == $value ? " checked=\"checked\">\n" : ">\n";
-//            echo '<label for="type'.$i.'">'.$description . "</label><br />";
-//            $i++;
-//          }
-      ?>
+		<?php echo $this->PaymentTypeList ?>
       </td>
     </tr>
     <tr class="row1">

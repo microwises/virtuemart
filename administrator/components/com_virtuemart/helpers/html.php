@@ -20,8 +20,27 @@ defined('_JEXEC') or die();
  * @subpackage Helpers
  * @author RickG
  */
-class VmHTML
-{
+class VmHTML{
+	/**
+	 * Converts all special chars to html entities
+	 *
+	 * @param string $string
+	 * @param string $quote_style
+	 * @param boolean $only_special_chars Only Convert Some Special Chars ? ( <, >, &, ... )
+	 * @return string
+	 */
+	function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=false ) {
+		if( defined( $quote_style )) {
+			$quote_style = constant($quote_style);
+		}
+		if( $use_entities ) {
+			$string = @htmlentities( $string, constant($quote_style), vmGetCharset() );
+		} else {
+			$string = @htmlspecialchars( $string, $quote_style, vmGetCharset() );
+		}
+		return $string;
+	}
+
     /**
      * Generate HTML code for a checkbox
      *
@@ -43,4 +62,82 @@ class VmHTML
 	return $htmlcode;
     }
 
+	/**
+	 * Prints an HTML dropdown box named $name using $arr to
+	 * load the drop down.  If $value is in $arr, then $value
+	 * will be the selected option in the dropdown.
+	 * @author gday
+	 * @author soeren
+	 * 
+	 * @param string $name The name of the select element
+	 * @param string $value The pre-selected value
+	 * @param array $arr The array containting $key and $val
+	 * @param int $size The size of the select element
+	 * @param string $multiple use "multiple=\"multiple\" to have a multiple choice select list
+	 * @param string $extra More attributes when needed
+	 * @return string HTML drop-down list
+	 */	
+	function selectList($name, $value, &$arr, $size=1, $multiple="", $extra="") {
+		$html = '';
+		if( empty( $arr ) ) {
+			$arr = array();
+		}
+		$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
+
+		
+		while (list($key, $val) = each($arr)) {
+			$selected = "";
+			if( is_array( $value )) {
+				if( in_array( $key, $value )) {
+					$selected = "selected=\"selected\"";
+				}
+			}
+			else {
+				if(strtolower($value) == strtolower($key) ) {
+					$selected = "selected=\"selected\"";
+				}
+			}
+			$html .= "<option value=\"$key\" $selected>".self::shopMakeHtmlSafe($val);
+			$html .= "</option>\n";
+		}
+
+		$html .= "</select>\n";
+		
+		return $html;
+	}
+	
+	/**
+	 * Creates a Radio Input List
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param string $arr
+	 * @param string $extra
+	 * @return string
+	 */
+	function radioList($name, $value, &$arr, $extra="") {
+		$html = '';
+		if( empty( $arr ) ) {
+			$arr = array();
+		}
+		$html = '';
+		$i = 0;
+		while (list($key, $val) = each($arr)) {
+			$checked = '';
+			if( is_array( $value )) {
+				if( in_array( $key, $value )) {
+					$checked = 'checked="checked"';
+				}
+			}
+			else {
+				if(strtolower($value) == strtolower($key) ) {
+					$checked = 'checked="checked"';
+				}
+			}
+			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
+		}
+		
+		return $html;
+	}
 }

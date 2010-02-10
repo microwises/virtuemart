@@ -175,13 +175,13 @@ class Vendor {
 			while ($db->next_record()) {
 				$array[$db->f("vendor_id")] = $db->f("vendor_name");
 			}
-			echo ps_html::selectList('vendor_id', $vendor_id, $array );
+			echo VmHTML::selectList('vendor_id', $vendor_id, $array );
 		}
 		else{
 			if($withZero){
 				$array[0] = "-";
 			}
-			echo ps_html::selectList('vendor_id', $vendor_id, $array );
+			echo VmHTML::selectList('vendor_id', $vendor_id, $array );
 		}
 		unset($db);
 	}
@@ -213,7 +213,7 @@ class Vendor {
 				while ($db->next_record()) {
 					$array[$db->f("vendor_id")] = $db->f("vendor_name");
 				}
-				echo ps_html::selectList('vendor_id', $product_vendor_id, $array );
+				echo VmHTML::selectList('vendor_id', $product_vendor_id, $array );
 			}
 		}else{
 			$db = ps_vendor::get_vendor_fields($product_vendor_id, array("vendor_id","vendor_name"),"");
