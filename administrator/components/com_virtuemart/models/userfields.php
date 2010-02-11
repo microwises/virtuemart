@@ -67,7 +67,7 @@ class VirtueMartModelUserfields extends JModel {
 		$this->setState('limitstart', $limitstart);
 
 		// Instantiate the Helper class
-		$this->_params =& new ParamHelper();
+		$this->_params = new ParamHelper();
 
 		// Get the (array of) order status ID(s)
 		$idArray = JRequest::getVar('cid',  0, '', 'array');

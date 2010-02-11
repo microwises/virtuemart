@@ -113,11 +113,29 @@ class VirtueMartModelAccountmaintenance extends JModel {
 						$post['isValidVATID'] = shopFunctions::validateEUVat($post[$name]);
 						$post['__euvatid_field'] = $post[$name];
 					}
-					break; 
+					break;
 				default:
-					if (empty($post[$name])) {
-						$provided_required = false;
-						$missing[] = JText::_($accountFields['allfields'][$name]);
+					switch ($name) {
+						case 'state_id':
+							$q = "SELECT COUNT(country_id) AS country 
+								FROM #__vm_state 
+								WHERE country_id = ".$post['country_id']." 
+								GROUP BY country_id";
+							$db->setQuery($q);
+							$country = $db->loadResult();
+							if ($country == 1) {
+								if (empty($post[$name])) {
+									$provided_required = false;
+									$missing[] = JText::_($accountFields['allfields'][$name]);
+								}
+							}
+							break;
+						default:
+							if (empty($post[$name])) {
+								$provided_required = false;
+								$missing[] = JText::_($accountFields['allfields'][$name]);
+							}
+							break;
 					}
 					break;
 			}
@@ -152,7 +170,22 @@ class VirtueMartModelAccountmaintenance extends JModel {
 			$table_user_info->bind($post);
 			
 			/* Store the new details */
-			if ($table_user_info->store()) return array(true, '');
+			if ($table_user_info->store()) {
+				/* Update the Joomla user information */
+				$user = JUser::getInstance($post['user_id']);
+				$user->set('email', $post['email']);
+				$user->set('username', $post['username']);
+				
+				/* Handle the password */
+				if (array_key_exists('password_field', $post) && array_key_exists('password2_field', $post) && $post['password_field'] == $post['password2_field']) {
+					$salt		= JUserHelper::genRandomPassword(32);
+					$crypt		= JUserHelper::getCryptedPassword($post['password_field'], $salt);
+					$user->setParam('password', $crypt.':'.$salt);
+				}
+				/* Store the user */
+				if ($user->save()) return array(true, '');
+				else return array(false, '');
+			}
 			else {
 				?><pre><?php
 				print_r($table_user_info);

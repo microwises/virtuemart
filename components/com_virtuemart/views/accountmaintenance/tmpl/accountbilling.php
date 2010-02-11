@@ -1,11 +1,11 @@
 <?php
 /**
 *
-* Description
+* Account billing template
 *
 * @package	VirtueMart
 * @subpackage 
-* @author
+* @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -100,7 +100,7 @@ foreach ($this->fields['details'] as $field) {
 	echo '">';
 	/* Add the label */
 	echo '<label for="'.$field->name.'_field">'.$field->title.'</label>';
-	if (isset($required_fields[$field->name])) echo '<strong>'.JText::_('REQUIRED_FIELD').'</strong>';
+	if (array_key_exists($field->name, $this->fields['required_fields'])) echo '<strong>'.JText::_('VM_REQUIRED_FIELD').'</strong>';
 	
 	/* Finish label div and start field div */
 	echo ' </div><div class="formField" id="'.$field->name.'_input">'."\n";
@@ -167,8 +167,8 @@ foreach ($this->fields['details'] as $field) {
 					echo shopFunctions::listMonths('birthday_selector_month', JRequest::getInt('birthday_selector_month', $month));
 					echo shopFunctions::listYears('birthday_selector_year', JRequest::getInt('birthday_selector_year', $year), $year-100, $year);
 					break;
-				/** @todo implement new version */
 				case 'captcha':
+					/** @todo implement new version */
 					break;
 				// Begin of a fallthrough
 				case 'multicheckbox':
@@ -247,7 +247,7 @@ if (VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
 </div>
 <input type="hidden" name="option" value="<?php echo JRequest::getCmd('option'); ?>" />
   <input type="hidden" name="task" value="shopperupdate" />
-  <input type="hidden" name="user_info_id" value="<?php $this->userinfo->user_info_id; ?>" />
+  <input type="hidden" name="user_info_id" value="<?php echo $this->userinfo->user_info_id; ?>" />
   <input type="hidden" name="user_id" value="<?php echo $this->auth["user_id"] ?>" />
   <input type="hidden" name="address_type" value="BT" />
   <?php echo JHTML::_( 'form.token' ); ?>

@@ -87,7 +87,7 @@ class ShopFunctions {
 		$attrs = '';
 		$name = 'country_name';
 		$idA = $id = 'country_id';
-
+		
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($countries, $emptyOption);
 		
@@ -95,8 +95,8 @@ class ShopFunctions {
 			$attrs .= 'multiple="multiple"';
 			$idA .= '[]';
 		}
-		$listHTML = JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
-		return $listHTML;
+		
+		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 	
 	
@@ -348,7 +348,11 @@ class ShopFunctions {
 		$db = JFactory::getDBO();
 
 		/* Set the selectors */		
-		if (empty($fields)) $selector = '*';
+		if (empty($fields)) {
+			$selector = '*';
+			/* Add specific selectors */
+			$selector .= ', u.country_id, u.state_id';
+		}
 		else $selector = implode(",", $fields);
 		
 		$q = "SELECT ".$selector." 
