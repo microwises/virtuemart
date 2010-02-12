@@ -18,6 +18,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
+$document = JFactory::getDocument();
+$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
+//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
+
 AdminMenuHelper::startAdminArea();
 $orderbt = $this->order['details']['BT'];
 
@@ -175,9 +179,9 @@ $payment = $this->order['payment'];
 		    <tr valign="top">
 			<td>
 			    <?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&task=removeOrderItem'); ?>
-			    <a href="<?php echo $removeLineLink; ?>">
+			    <span onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');">
 				<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-bug.png', "Remove", NULL, "Remove"); ?>
-			    </a>
+			    </span>
 			    <?php $editLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&tmpl=component&task=editOrderItem'); ?>
 			    <a href="<?php echo $editLineLink; ?>" class="modal">
 				<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?>
@@ -402,4 +406,16 @@ $payment = $this->order['payment'];
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
+
 <?php AdminMenuHelper::endAdminArea(); ?>
+
+<script type="text/javascript">
+<!--
+function confirmation(destnUrl) {
+	var answer = confirm("<?php echo JText::_('VM_ORDER_DELETE_ITEM_MSG'); ?>")
+	if (answer) {
+		window.location = destnUrl;
+	}
+}
+//-->
+</script>

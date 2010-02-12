@@ -254,9 +254,11 @@ class VirtuemartControllerOrders extends JController {
 	public function removeOrderItem() {
 	    $model = $this->getModel('orders');
 	    $msg = '';
+	    $orderId = JRequest::getVar('orderId', '');
 	    $orderLineItem = JRequest::getVar('orderLineId', '');
-	    if (!$model->removeOrderLineItem($orderId, $orderLineItem)) {
-		$msg = $model->getError();
+
+	    if (!$model->removeOrderLineItem($orderLineItem)) {
+			$msg = $model->getError();
 	    }
 
 	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $orderId;

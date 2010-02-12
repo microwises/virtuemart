@@ -1,8 +1,15 @@
-<br /><br />
+<?php 
+$document = JFactory::getDocument();
+$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js'); 
+?>
+
+<br />
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-    <table class="admintable" width="100%">
+    <table class="admintable" width="300">
 	<tr>
-	    <td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_ITEMEDIT_LBL') ?></td>
+	    <td align="center" colspan="2">
+		<h1><?php echo JText::_('VM_ORDER_PRINT_ITEMEDIT_LBL') ?></h1>
+	    </td>
 	</tr>
 	<tr>
 	    <td class="key"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></td>
@@ -12,20 +19,21 @@
 	</tr>
 	<tr>
 	    <td class="key"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></td>
-	    <td>
-		<?php echo $this->orderitem->order_item_name;?>
-	    </td>
+	    <?php if ($this->orderitem->order_item_id < 1) { ?>
+	    	<td style="vertical-align:top;"><br />
+				<input type="text" size="40" name="search" id="productSearch" value="" />
+				<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
+			</td>
+		<?php } else {?>
+			<td>
+				<?php echo $this->orderitem->order_item_name;?>
+	    	</td>
+	<?php } ?>
 	</tr>
 	<tr>
 	    <td class="key"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></td>
 	    <td>
 		<?php echo $this->orderitem->order_item_sku;?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></td>
-	    <td>
-		<?php echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status', '', 'value', 'text', $this->orderitem->order_status, 'order_status'); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -41,9 +49,10 @@
 	    </td>
 	</tr>
 	<tr>
-	    <td colspan="2">
+	    <td colspan="2" align="center">
 		<br />
 		<input type="submit" value="<?php echo JText::_('SAVE');?>" style="font-size:10px" />
+		<input type="submit" value="<?php echo JText::_('CANCEL');?>" style="font-size:10px" />
 	    </td>
 	</tr>
     </table>
@@ -55,3 +64,25 @@
     <input type="hidden" name="order_id" value="<?php echo $this->order_id; ?>" />
     <input type="hidden" name="order_item_id" value="<?php echo $this->order_item_id; ?>" />
 </form>
+<script type="text/javascript">
+jQuery('input#productSearch').autocomplete('index.php?option=com_virtuemart&view=orders&task=getProducts&format=json', {
+		mustMatch: false,
+		dataType: "json",
+		parse: function(data) {
+					return jQuery.map(data, 
+						function(row) {
+							return {
+								data: row,
+								value: row.value,
+								result: row.value
+							}
+						}
+					);
+		},
+		formatItem: function(item) {
+			return item.value;
+		}
+		}).result(function(e, item) {
+					jQuery("select#products").append('<option value="'+item.id+'" selected="selected">'+item.value+'</option>');
+				});
+</script>
