@@ -22,9 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 <table cellpadding="10">
     <tr>
 	<td align="center">
-	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=installSampleData'); ?>">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=installSampleData'); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_INSTALLSAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-	    </a>
+	    </span>
 	    <br />
 	    Install<br />Sample Data
 	</td>
@@ -45,25 +46,39 @@ defined('_JEXEC') or die('Restricted access');
     <tr><td colspan="4"></td></tr>
     <tr>
 	<td align="center">
-	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=restoreSystemDefaults'); ?>">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=restoreSystemDefaults'); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_RESTOREDEFAULTS_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_cpanel_48.png">
-	    </a>
+	    </span>
 	    <br />
 	    Restore<br />System Defaults
 	</td>
 	<td align="center">
-	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmData'); ?>">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmData'); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_REMOVEDATA_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
-	    </a>
+	    </span>
 	    <br />
 	    Remove<br />Virtuemart Data
 	</td>
 	<td align="center">
-	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmTables'); ?>">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=deleteVmTables'); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_REMOVETABLES_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
-	    </a>
+	    </span>
 	    <br />
 	    Remove<br />Virtuemart Tables
 	</td>
     </tr>
-</table>	      
+</table>	    
+
+<script type="text/javascript">
+<!--
+function confirmation(message, destnUrl) {
+	var answer = confirm(message);
+	if (answer) {
+		window.location = destnUrl;
+	}
+}
+//-->
+</script>  
