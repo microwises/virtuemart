@@ -35,7 +35,7 @@
 	    <td colspan="2" align="center">
 		<br />
 		<input type="submit" value="<?php echo JText::_('SAVE');?>" style="font-size:10px" />
-		<input type="submit" value="<?php echo JText::_('CANCEL');?>" style="font-size:10px" />
+		<input type="button" onclick="javascript: window.parent.document.getElementById( 'sbox-window' ).close();" value="<?php echo JText::_('CANCEL');?>" style="font-size:10px" />
 	    </td>
 	</tr>
     </table>

@@ -52,7 +52,7 @@ $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.au
 	    <td colspan="2" align="center">
 		<br />
 		<input type="submit" value="<?php echo JText::_('SAVE');?>" style="font-size:10px" />
-		<input type="submit" value="<?php echo JText::_('CANCEL');?>" style="font-size:10px" />
+		<input type="button" onclick="javascript: window.parent.document.getElementById( 'sbox-window' ).close();" value="<?php echo JText::_('CANCEL');?>" style="font-size:10px" />
 	    </td>
 	</tr>
     </table>
@@ -64,25 +64,3 @@ $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.au
     <input type="hidden" name="order_id" value="<?php echo $this->order_id; ?>" />
     <input type="hidden" name="order_item_id" value="<?php echo $this->order_item_id; ?>" />
 </form>
-<script type="text/javascript">
-jQuery('input#productSearch').autocomplete('index.php?option=com_virtuemart&view=orders&task=getProducts&format=json', {
-		mustMatch: false,
-		dataType: "json",
-		parse: function(data) {
-					return jQuery.map(data, 
-						function(row) {
-							return {
-								data: row,
-								value: row.value,
-								result: row.value
-							}
-						}
-					);
-		},
-		formatItem: function(item) {
-			return item.value;
-		}
-		}).result(function(e, item) {
-					jQuery("select#products").append('<option value="'+item.id+'" selected="selected">'+item.value+'</option>');
-				});
-</script>

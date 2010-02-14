@@ -175,7 +175,8 @@ $payment = $this->order['payment'];
 			</tr>
 		    </thead>
 		    <?php
-		    foreach ($items as $item) { ?>
+		    foreach ($items as $item) { 	
+		    ?>
 		    <tr valign="top">
 			<td>
 			    <?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&task=removeOrderItem'); ?>

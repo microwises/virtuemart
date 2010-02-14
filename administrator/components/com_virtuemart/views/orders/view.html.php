@@ -66,6 +66,8 @@ class VirtuemartViewOrders extends JView {
 	    JToolBarHelper::cancel();
 	}
 	else if ($curTask == 'editOrderItem') {
+		$this->loadHelper('calculationHelper');
+		
 	    /* Get order statuses */
 	    $orderstatuses = $this->get('OrderStatusList');
 	    $this->assignRef('orderstatuses', $orderstatuses);
