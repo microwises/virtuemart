@@ -209,7 +209,7 @@ class VmConnector {
 			    }
 			}
 			else {
-				JError::raiseNotice(1, 'Host:'. $urlParts['host'].' path: '. $urlParts['path'] );
+//				JError::raiseNotice(1, 'Host:'. $urlParts['host'].' path: '. $urlParts['path'] );
 			    fputs($fp, 'GET '.$urlParts['path']." HTTP/1.0\r\n");
 			    fputs($fp, 'Host:'. $urlParts['host']."\r\n");
 			}

@@ -58,6 +58,18 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_( 'VM_PAYM_SHOPPERGROUPS' ); ?>
 			</th>
 			<th width="20">
+				<?php echo JText::_( 'VM_PAYM_DISCOUNT' ); ?>
+			</th>
+			<th width="20">
+				<?php echo JText::_( 'VM_PAYM_IS_PERCENTAGE' ); ?>
+			</th>
+			<th width="20">
+				<?php echo JText::_( 'VM_PAYM_MIN_DISCOUNT' ); ?>
+			</th>
+			<th width="20">
+				<?php echo JText::_( 'VM_PAYM_MAX_DISCOUNT' ); ?>
+			</th>
+			<th width="20">
 				<?php echo JText::_( 'VM_PAYM_TYPE' ); ?>
 			</th>
 			<th width="10">
@@ -94,6 +106,18 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td>
 					<?php echo JText::_($row->paymShoppersList); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->discount); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->discount_is_percentage); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->discount_min_amount); ?>
+				</td>
+				<td>
+					<?php echo JText::_($row->discount_max_amount); ?>
 				</td>
 				<td>
 					<?php 

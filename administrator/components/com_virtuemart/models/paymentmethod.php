@@ -125,12 +125,7 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_id = 0;
    			$this->_data = null;
   		}
-  		
-//		/* Add the calculation rule categories */
-//		$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
-//		$db->setQuery($q);
-//		$this->_data->calc_categories = $db->loadResultArray();
-//                  
+            
 		/* Add the paymentmethod shoppergroups */
 		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
@@ -140,11 +135,6 @@ class VirtueMartModelPaymentmethod extends JModel
 		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->paym_creditcard = $db->loadResultArray();
-//		
-//		/* Add the calculation rule states */
-//		$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
-//		$db->setQuery($q);
-//		$this->_data->calc_states = $db->loadResultArray();
 				
   		return $this->_data;		
 	}    
@@ -209,7 +199,7 @@ class VirtueMartModelPaymentmethod extends JModel
 					$i++;
 					if($i>4) break;
 				}
-				$data->paymCreditCardList = substr($paymaCreditCardList,0,-2);
+				$data->paymCreditCardList = substr($paymCreditCardList,0,-2);
 			}
 		}
 
@@ -241,7 +231,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	
         
 	/**
-	 * Bind the post data to the calculation table and save it
+	 * Bind the post data to the paymentmethod tables and save it
      *
      * @author RickG, Max Milbers
      * @return boolean True is the save was successful, false otherwise. 
@@ -281,9 +271,7 @@ class VirtueMartModelPaymentmethod extends JModel
 //		echo print_r($data) ; die;
 		self::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data["paym_id"],$data["paym_shopper_group"]);
 		self::storeArrayData('#__vm_calc_shoppergroup_xref','paym_id','paym_accepted_credit_card',$data["paym_id"],$data["paym_accepted_credit_card"]);
-//		self::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country',$data["calc_id"],$data["country_id"]);
-//		self::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state',$data["calc_id"],$data["state_id"]);
-		
+
 		return true;
 	}	
 
@@ -358,23 +346,23 @@ class VirtueMartModelPaymentmethod extends JModel
      * 
      * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
      */ 	 
-	public function shopperPublish($categories){
+	public function changeIsPercentagePublish($quotedId){
 				
-		foreach ($categories as $id){
+//		foreach ($categories as $id){
 			
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT calc_shopper_published 
-					  FROM #__vm_calc
-					  WHERE calc_id = '. $quotedId;
+//			$quotedId = $this->_db->Quote($id);
+			$query = 'SELECT discount_is_percentage 
+					  FROM #__vm_payment_method 
+					  WHERE paym_id = '. $quotedId;
 			
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 			
 			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
 			
-			$query = 'UPDATE #__vm_calc
-					  SET calc_shopper_published = '.$publish.'
-					  WHERE calc_id = '.$quotedId;
+			$query = 'UPDATE #__vm_payment_method
+					  SET discount_is_percentage = '.$publish.'
+					  WHERE paym_id = '.$quotedId;
 			
 			$this->_db->setQuery($query);
 			
@@ -383,7 +371,7 @@ class VirtueMartModelPaymentmethod extends JModel
 				return false;
 			}
 			
-		}
+//		}
         
 		return ($publish ? 1 : -1);		
 	}

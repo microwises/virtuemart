@@ -23,6 +23,9 @@ class calculationHelper{
 	private $_currency;
 	private $_debug;
 	private $_amount;
+	private $_deliveryCountry;
+	private $_deliveryState;
+	
 	public $productVendorId;
 	public $productCurrency;
 
@@ -89,11 +92,14 @@ class calculationHelper{
 			$this->_cats=$catIds;
 		}
 
-		$user = JFactory::getUser();
-		if(isset($user->id)){
-			$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
-			$this->_shopperGroupId=$this->_db->loadResultArray();			
+		if(empty($this->_shopperGroupId)){
+			$user = JFactory::getUser();
+			if(isset($user->id)){
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
+				$this->_shopperGroupId=$this->_db->loadResultArray();			
+			}
 		}
+
 		
 		if(!empty($amount)){
 			$this->_amount;
@@ -158,7 +164,7 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 	 * 							'discountAfterTax'	final result
 	 * 
 	 */
-	function getCheckoutPrices($productIds,$cartVendorId=1){
+	function getCheckoutPrices($productIds,$cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
@@ -184,20 +190,45 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 			next($prices);
 		}
 		echo '<br />';
+		
+		if(empty($this->_shopperGroupId)){
+			$user = JFactory::getUser();
+			if(isset($user->id)){
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
+				$this->_shopperGroupId=$this->_db->loadResultArray();			
+			}
+		}
+		
+		//todo fill with data
+		$this ->_deliveryCountry;
+		$this ->_deliveryState;
+	
 		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
-		$cBRules = $this->gatherEffectingRulesForCoupon();
+		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
+		$sBRules = $this->gatherEffectingRulesForShipment($shipId);
+		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
 		
 		$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $resultWithTax));
+
 		$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $discountBeforeTax));
 		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $discountWithTax));
+		
+		$substractCoupons = $this->roundDisplay($discountAfterTax - $this -> calculateCouponPrices($couponId));
+		$addedShipment = $this->roundDisplay($substractCoupons + $this -> calculateShipmentPrice($shipId));
+		$addedPayment = $this->roundDisplay($addedShipment + $this -> calculatePaymentPrice($paymId,$addedShipment));
+		
+		
 		echo '$resultWithOutTax: '.$resultWithOutTax.'<br />';
 		echo '$basePrice: '.$resultWithTax.'<br />';
 		echo '$discountBeforeTax: '.$discountBeforeTax.'<br />';
 		echo '$discountWithTax: '.$discountWithTax.'<br />';
 		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
+		echo '$substractCoupons: '.$substractCoupons.'<br />';
+		echo '$addedShipment: '.$addedShipment.'<br />';
+		echo '$addedPayment: '.$addedPayment.'<br />';
 		
 	}
 
@@ -309,10 +340,9 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 */
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
 
-//		$cats = $this -> writeRulePartEffectingQuery($this->_cats,'calc_categories',true);
-		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
-		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
-		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
+//		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
+//		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
+//		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
@@ -321,18 +351,50 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 			' AND `published`="1" ' .
 			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) '.
-			$shoppergrps .  $countries . $states ;
+			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
+//			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-//		echo ' query: '.$q;
+		foreach($rules as $rule){
+
+			$q= 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$this->_db->setQuery($q);
+			$countries = $this->_db->loadResultArray();
+			
+			$q= 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$this->_db->setQuery($q);
+			$states = $this->_db->loadResultArray();
+			
+			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$this->_db->setQuery($q);
+			$shoppergrps = $this->_db->loadResultArray();
+				
+			$hitsCountry = $this->testRulePartEffecting($countries,$this->_deliveryCountry);	
+			$hitsStates = $this->testRulePartEffecting($states,$this->_deliveryState);	
+			
+			if(isset($this->_shopperGroupId)){
+				$hitsShopper = $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
+			}else{
+				$hitsShopper = 1;
+			}
+			
+//			$hitsAmount = 1;
+//			if(!empty($this->_amount)){
+//				//Test 
+//			}
+
+			if($hitsCountry && $hitsStates && $hitsShopper ){
+				if ($this -> _debug	) echo '<br/ >Add Checkout rule '.$rule["calc_id"].'<br/ >';
+				$testedRules[]=$rule;
+			}
+		}
 
 //		if (empty($rules)) return;	
 		//Just for developing
 //		foreach($rules as $rule){
 //			echo '<br /> Add rule '.$rule['calc_name'].' query: '.$q;
 //		}
-		return $rules;
+		return $testedRules;
 	}
 	
 	/**
@@ -343,7 +405,7 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 * @param 	$code 	The Id of the coupon
 	 * @return 	$rules 	ids of the coupons
 	 */
-	function gatherEffectingRulesForCoupon($code=0){
+	function calculateCouponPrices($code=array()){
 		if (empty($code)) return;
 		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
 		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
@@ -354,7 +416,67 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 		$rules = $this->_db->loadAssocList();
 		return $rules;
 	}
-	
+
+	/**
+	 * Calculates the effecting Shipment prices for the calculation
+	 * @todo
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param 	$code 	The Id of the coupon
+	 * @return 	$rules 	ids of the coupons
+	 */
+	function calculateShipmentPrice($code=0){
+		if (empty($code)) return;
+		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
+//			$couponCod$codeesQuery .
+			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
+			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
+		$this->_db->setQuery($q);
+		$rules = $this->_db->loadAssocList();
+		return $rules;
+	}
+
+	/**
+	 * Calculates the effecting Shipment prices for the calculation
+	 * @todo
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param 	$code 	The Id of the paymentmethod
+	 * @param	$value	amount of the money to transfere
+	 * @param	$value	$cartVendorId
+	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
+	 */
+	function calculatePaymentPrice($code=0,$value=0.0,$cartVendorId=1){
+		if (empty($code)) return 0.0;
+		$paymentCosts = 0.0;
+		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE `paym_id` = "'.$code.'" '.
+			' AND `p`.`published`="1" ' .
+			' AND (`p`.`paym_vendor_id`="'.$cartVendorId.'" OR `p`.`shared`="1" ) ';
+			if(isset($this->_shopperGroupId)){
+//				' AND `s`.`paym_id`= "'.$this->_shopperGroupId.'" AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
+				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
+			}
+		$this->_db->setQuery($q);
+		$paymFields = $this->_db->loadAssocList();
+		$discmax = 0.0;
+		if(isset($paymFields['discount_max_amount'])) $discmax = $paymFields['discount_max_amount'];
+		if(isset($paymFields['discount_min_amount'])) $discmin = $paymFields['discount_min_amount'];
+		if(!empty($paymFields['discount'])){
+			//This secured and  handled before the checkout can be finished
+			if($discmin <= $value){
+				if(isset($paymFields['discount_max_amount']) && $value<=$paymFields['discount_max_amount']){
+					if($paymFields['discount_is_percentage']){
+						$paymentCosts = $value * (1 -$paymFields['discount']/100);
+					}else{
+						$paymentCosts = $value - $paymFields['discount'];
+					}
+				}
+			}
+		}
+		
+		return $paymentCosts;
+	}
+			
 	/**
 	 * This function just writes the query for gatherEffectingRulesForProductPrice
 	 * When a condition is not set, it is handled like a set condition that affects it. So the users have only to add a value 
