@@ -532,7 +532,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `params` text NOT NULL default '',
   `shared` TINYINT( 1 ) NOT NULL DEFAULT '1' COMMENT 'valide for all vendors?',
   PRIMARY KEY  (`paym_id`),
-  KEY `idx_payment_method_vendor_id` (`vendor_id`),
+  KEY `idx_payment_method_vendor_id` (`paym_vendor_id`),
   KEY `idx_payment_method_name` (`paym_name`),
   KEY `idx_payment_method_list_order` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store';
