@@ -36,11 +36,11 @@ class VirtueMartModelPaymentmethod extends JModel
     
     
     /**
-     * Constructor for the calc model.
+     * Constructor for the paymentmethod model.
      *
      * The paym id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author RickG 
+     * @author Max Milbers 
      */
     public function __construct()
     {
@@ -241,15 +241,6 @@ class VirtueMartModelPaymentmethod extends JModel
 		$table = $this->getTable('payment_method');
 
 		$data = JRequest::get('post');		
-		
-		// Convert selected dates to MySQL format for storing.
-//		$startDate = JFactory::getDate($data['publish_up']);
-//		$data['publish_up'] = $startDate->toMySQL();
-//		$expireDate = JFactory::getDate($data['publish_down']);
-//		$data['publish_down'] = $expireDate->toMySQL();
-//		
-//		$modified = JFactory::getDate();
-//		$data['modified']=$modified->toMySQL();
 
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    

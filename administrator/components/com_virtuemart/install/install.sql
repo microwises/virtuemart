@@ -515,22 +515,22 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
 
 CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `id` int(11) NOT NULL auto_increment,
-  `vendor_id` int(11) default NULL,
-  `name` varchar(255) default NULL,
+  `vendor_id` int(11) NOT NULL default '1',
+  `name` varchar(255) NOT NULL default '',
   `element` varchar(50) NOT NULL default '',
-  `shopper_group_id` int(11) default NULL,
-  `discount` decimal(12,2) default NULL,
-  `discount_is_percentage` tinyint(1) NOT NULL,
-  `discount_max_amount` decimal(10,2) NOT NULL,
-  `discount_min_amount` decimal(10,2) NOT NULL,
-  `ordering` int(11) default NULL,
-  `type` char(1) default NULL,
+  `shopper_group_id` int(11) NOT NULL default '',
+  `discount` decimal(12,2) NOT NULL default '',
+  `discount_is_percentage` tinyint(1) NOT NULL default '',
+  `discount_max_amount` decimal(10,2) NOT NULL default '',
+  `discount_min_amount` decimal(10,2) NOT NULL ,
+  `ordering` int(11) NOT NULL default '',
+  `type` char(1) NOT NULL default '',
   `is_creditcard` tinyint(1) NOT NULL default '0',
   `published` tinyint(1) NOT NULL default '0',
   `accepted_creditcards` varchar(128) NOT NULL default '',
-  `extra_info` text NOT NULL,
-  `secret_key` blob NOT NULL,
-  `params` text NOT NULL,
+  `extra_info` text NOT NULL default '',
+  `secret_key` blob NOT NULL default '',
+  `params` text NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `idx_payment_method_vendor_id` (`vendor_id`),
   KEY `idx_payment_method_name` (`name`),
@@ -539,6 +539,35 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store';
 
 -- --------------------------------------------------------
+
+
+--
+-- Table structure for table `jos_vm_payment_method_acceptedcreditcards_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_payment_method_acceptedcreditcards_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `paym_id` int(11) NOT NULL default '0',
+  `paym_accepted_credit_card` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=81 ;
+
+-- --------------------------------------------------------
+
+
+--
+-- Table structure for table `jos_vm_payment_method_shoppergroup_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
+  `id` int(11) NOT NULL auto_increment,
+  `paym_id` int(11) NOT NULL default '0',
+  `paym_shopper_group` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=81 ;
+
+-- --------------------------------------------------------
+
 
 --
 -- Table structure for table `#__vm_plugins`
