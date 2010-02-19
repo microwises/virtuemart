@@ -96,7 +96,7 @@ class calculationHelper{
 			$user = JFactory::getUser();
 			if(isset($user->id)){
 				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
-				$this->_shopperGroupId=$this->_db->loadResultArray();			
+				$this->_shopperGroupId=$this->_db->loadResult();			
 			}
 		}
 
@@ -168,28 +168,36 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
+		$resultWithOutTax=0.0;
 		foreach ($productIds as $productId){
 //			echo '$productId '.$productId;
-			if (!array_key_exists($productId,$pricesPerId)){
-				$pricesPerId[$productId] = $this -> getProductPrices($productId);
-//				echo '$productId Calculated '.$productId;
+			if(!is_array($productId)){
+				$pricesPerId[(int)$productId] = $this -> getProductPrices($productId);
+
+				if (!array_key_exists($productId,$pricesPerId)){
+					$pricesPerId[$productId] = $this -> getProductPrices($productId);
+					echo '$productId Calculated '.$productId;
+				}
+				$prices[] = $pricesPerId[(int)$productId];
+				$resultWithTax = $resultWithTax + $pricesPerId[$productId]['salesPrice'];
+				$resultWithOutTax = $resultWithOutTax + $pricesPerId[$productId]['basePrice'];
+			} else {
+				echo '$productId is an array '.print_r($productId);
 			}
-			$prices[] = $pricesPerId[$productId];
-			$resultWithTax = $resultWithTax + $pricesPerId[$productId]['salesPrice'];
-			$resultWithOutTax = $resultWithOutTax + $pricesPerId[$productId]['basePrice'];
+
 		}
 //		echo print_r($prices);
-		echo '<br />';
-		for ($x = 0; $x < sizeof($prices); ++$x){
-			echo "key: ".key($prices)."  value: ".current($prices)."<br />";
-			$steps = current($prices);
-			for ($y = 0; $y < sizeof($steps); ++$y){
-				echo "   key: ".key($steps)."  value: ".current($steps)."<br />";
-				next($steps);
-			}
-			next($prices);
-		}
-		echo '<br />';
+//		echo '<br />';
+//		for ($x = 0; $x < sizeof($prices); ++$x){
+//			echo "key: ".key($prices)."  value: ".current($prices)."<br />";
+//			$steps = current($prices);
+//			for ($y = 0; $y < sizeof($steps); ++$y){
+//				echo "   key: ".key($steps)."  value: ".current($steps)."<br />";
+//				next($steps);
+//			}
+//			next($prices);
+//		}
+//		echo '<br />';
 		
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
@@ -204,9 +212,9 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 		$this ->_deliveryState;
 	
 		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
-		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
-		$sBRules = $this->gatherEffectingRulesForShipment($shipId);
-		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
+//		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
+//		$sBRules = $this->gatherEffectingRulesForShipment($shipId);
+//		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
@@ -230,6 +238,14 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 		echo '$addedShipment: '.$addedShipment.'<br />';
 		echo '$addedPayment: '.$addedPayment.'<br />';
 		
+		$prices['resultWithOutTax'] = $resultWithOutTax;
+		$prices['resultWithTax'] = $resultWithTax;
+		$prices['discountBeforeTax'] = $discountBeforeTax;
+		$prices['discountWithTax'] = $discountWithTax;
+		$prices['discountAfterTax'] = $discountAfterTax;
+		$prices['Coupons'] = $substractCoupons;
+		$prices['Shipment'] = $addedShipment;
+		$prices['Payment'] = $addedPayment;
 	}
 
 	/**
@@ -355,6 +371,7 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 //			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
+		$testedRules= array();
 		foreach($rules as $rule){
 
 			$q= 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
@@ -447,22 +464,31 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
 	function calculatePaymentPrice($code=0,$value=0.0,$cartVendorId=1){
-		if (empty($code)) return 0.0;
+//		if (empty($code)) return 0.0; 
+		$code =2;
 		$paymentCosts = 0.0;
-		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE `paym_id` = "'.$code.'" '.
+		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE '.
+			' `p`.`paym_id` = "'.$code.'" '.
 			' AND `p`.`published`="1" ' .
 			' AND (`p`.`paym_vendor_id`="'.$cartVendorId.'" OR `p`.`shared`="1" ) ';
-			if(isset($this->_shopperGroupId)){
+			if(!empty($this->_shopperGroupId)){
 //				' AND `s`.`paym_id`= "'.$this->_shopperGroupId.'" AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
-				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
+				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'"  AND `s`.`paym_id` = "'.$code.'" ';
+				echo 'Shoppergruppe: '.$this->_shopperGroupId;
 			}
 		$this->_db->setQuery($q);
 		$paymFields = $this->_db->loadAssocList();
-		$discmax = 0.0;
-		if(isset($paymFields['discount_max_amount'])) $discmax = $paymFields['discount_max_amount'];
-		if(isset($paymFields['discount_min_amount'])) $discmin = $paymFields['discount_min_amount'];
+//		echo 'hmm '.print_r($paymFields);
+//		$discmax = 0.0;
+//		if(isset($paymFields['discount_max_amount'])) $discmax = $paymFields['discount_max_amount'];
+//		if(isset($paymFields['discount_min_amount'])) $discmin = $paymFields['discount_min_amount'];
+
 		if(!empty($paymFields['discount'])){
-			//This secured and  handled before the checkout can be finished
+			echo '<br />$paymFields["discount"] is NOT empty';
+			
+			$discmax = $paymFields['discount_max_amount'];
+			$discmin = $paymFields['discount_min_amount'];
+			//This must be secured and handled before the checkout can be finished
 			if($discmin <= $value){
 				if(isset($paymFields['discount_max_amount']) && $value<=$paymFields['discount_max_amount']){
 					if($paymFields['discount_is_percentage']){
@@ -472,6 +498,8 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 					}
 				}
 			}
+		} else {
+			echo '<br />$paymFields["discount"] was EMPTY'; 
 		}
 		
 		return $paymentCosts;

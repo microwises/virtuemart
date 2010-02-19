@@ -257,11 +257,25 @@ class VirtueMartModelCart extends JModel {
 	*/
 	public function getCartPrices($cart) {
 		$calculator = new calculationHelper();
-		$prices = array();
-		for ($i = 0; $cart['idx'] > $i; $i++) {
-			$prices[$i] = $calculator->getCheckoutPrices($cart[$i]);
+//		$prices = array();
+//		for ($i = 0; $cart['idx'] > $i; $i++) {
+//			$prices[$i] = $calculator->getCheckoutPrices($cart[$i]);
+//		}
+//		return $prices;
+		echo '<br />';
+		for ($x = 0; $x < sizeof($cart); ++$x){
+			echo "key: ".key($cart)."  value: ".current($cart)."<br />";
+			$steps = current($cart);
+			if(is_array($steps)){
+				for ($y = 0; $y < sizeof($steps); ++$y){
+				echo "&nbsp;&nbsp;&nbsp;   key: ".key($steps)."  value: ".current($steps)."<br />";
+				next($steps);
+				}
+			}
+			next($cart);
 		}
-		return $prices;
+		echo '<br />';
+		return $calculator->getCheckoutPrices($cart);
 	}
 	
 	/**

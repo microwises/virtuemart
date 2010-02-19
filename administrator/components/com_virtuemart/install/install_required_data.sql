@@ -441,6 +441,70 @@ INSERT INTO `#__vm_manufacturer_category` (`mf_category_id`, `mf_category_name`,
 (1, '-default-', 'This is the default manufacturer category');
 
 
+--
+-- Dumping data for table `#__vm_payment_method`
+--
+
+INSERT INTO `jos_vm_payment_method` (`paym_id`, `paym_vendor_id`, `paym_name`, `paym_element`, `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount`, `ordering`, `paym_type`, `is_creditcard`, `published`, `accepted_creditcards`, `extra_info`, `secret_key`, `params`, `shared`) VALUES
+(1, 1, 'Purchase Order', 'payment', 0.00, 0, 0.00, 0.00, 4, 'N', 0, 0, '', '', '', '', 1),
+(2, 1, 'Cash On Delivery', 'payment', -2.00, 0, 0.00, 0.00, 5, 'N', 0, 0, '', '', '', '', 1),
+(3, 1, 'Credit Card', 'authorize', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '1,2,6,7,', '', '', '', 1),
+(4, 1, 'PayPal', 'paypal', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1),
+(5, 1, 'PayMate', 'paymate', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1),
+(6, 1, 'WorldPay', 'worldpay', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1),
+(7, 1, '2Checkout', 'twocheckout', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1),
+(8, 1, 'NoChex', 'nochex', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1),
+(9, 1, 'Credit Card (PayMeNow)', 'paymenow', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '1,2,3,', '', '', '', 1),
+(10, 1, 'eWay', 'eway', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '', '', '', '', 1),
+(11, 1, 'eCheck.net', 'echeck', 0.00, 0, 0.00, 0.00, 0, 'B', 0, 0, '', '', '', '', 1),
+(12, 1, 'Credit Card (eProcessingNetwork)', 'epn', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '1,2,3,', '', '', '', 1),
+(13, 1, 'iKobo', 'payment', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '<form action="https://www.iKobo.com/store/index.php" method="post"> \n  <input type="hidden" name="cmd" value="cart" />Click on the image below to Pay with iKobo\n  <input type="image" src="https://www.ikobo.com/merchant/buttons/ikobo_pay1.gif" name="submit" alt="Pay with iKobo" /> \n  <input type="hidden" name="poid" value="USER_ID" /> \n  <input type="hidden" name="item" value="Order: <?php $db->p("order_id") ?>" /> \n  <input type="hidden" name="price" value="<?php printf("%.2f", $db->f("order_total"))?>" /> \n  <input type="hidden" name="firstname" value="<?php echo $user->first_name?>" /> \n  <input type="hidden" name="lastname" value="<?php echo $user->last_name?>" /> \n  <input type="hidden" name="address" value="<?php echo $user->address_1?>&#10<?php echo $user->address_2?>" /> \n  <input type="hidden" name="city" value="<?php echo $user->city?>" /> \n  <input type="hidden" name="state" value="<?php echo $user->state?>" /> \n  <input type="hidden" name="zip" value="<?php echo $user->zip?>" /> \n  <input type="hidden" name="phone" value="<?php echo $user->phone_1?>" /> \n  <input type="hidden" name="email" value="<?php echo $user->email?>" /> \n  </form> >', '', '', 1),
+(14, 1, 'iTransact', 'payment', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '<?php\n  //your iTransact account details\n  $vendorID = "XXXXX";\n  global $vendor_name;\n  $mername = $vendor_name;\n  \n  //order details\n  $total = $db->f("order_total");$first_name = $user->first_name;$last_name = $user->last_name;$address = $user->address_1;$city = $user->city;$state = $user->state;$zip = $user->zip;$country = $user->country;$email = $user->email;$phone = $user->phone_1;$home_page = $mosConfig_live_site."/index.php";$ret_addr = $mosConfig_live_site."/index.php";$cc_payment_image = $mosConfig_live_site."/components/com_virtuemart/shop_image/ps_image/cc_payment.jpg";\n  ?>\n  <form action="https://secure.paymentclearing.com/cgi-bin/mas/split.cgi" method="POST"> \n                <input type="hidden" name="vendor_id" value="<?php echo $vendorID; ?>" />\n              <input type="hidden" name="home_page" value="<?php echo $home_page; ?>" />\n             <input type="hidden" name="ret_addr" value="<?php echo $ret_addr; ?>" />\n               <input type="hidden" name="mername" value="<?php echo $mername; ?>" />\n         <!--Enter text in the next value that should appear on the bottom of the order form.-->\n               <INPUT type="hidden" name="mertext" value="" />\n         <!--If you are accepting checks, enter the number 1 in the next value.  Enter the number 0 if you are not accepting checks.-->\n                <INPUT type="hidden" name="acceptchecks" value="0" />\n           <!--Enter the number 1 in the next value if you want to allow pre-registered customers to pay with a check.  Enter the number 0 if not.-->\n            <INPUT type="hidden" name="allowreg" value="0" />\n               <!--If you are set up with Check Guarantee, enter the number 1 in the next value.  Enter the number 0 if not.-->\n              <INPUT type="hidden" name="checkguar" value="0" />\n              <!--Enter the number 1 in the next value if you are accepting credit card payments.  Enter the number zero if not.-->\n         <INPUT type="hidden" name="acceptcards" value="1">\n              <!--Enter the number 1 in the next value if you want to allow a separate mailing address for credit card orders.  Enter the number 0 if not.-->\n               <INPUT type="hidden" name="altaddr" value="0" />\n                <!--Enter the number 1 in the next value if you want the customer to enter the CVV number for card orders.  Enter the number 0 if not.-->\n             <INPUT type="hidden" name="showcvv" value="1" />\n                \n              <input type="hidden" name="1-desc" value="Order Total" />\n               <input type="hidden" name="1-cost" value="<?php echo $total; ?>" />\n            <input type="hidden" name="1-qty" value="1" />\n          <input type="hidden" name="total" value="<?php echo $total; ?>" />\n             <input type="hidden" name="first_name" value="<?php echo $first_name; ?>" />\n           <input type="hidden" name="last_name" value="<?php echo $last_name; ?>" />\n             <input type="hidden" name="address" value="<?php echo $address; ?>" />\n         <input type="hidden" name="city" value="<?php echo $city; ?>" />\n               <input type="hidden" name="state" value="<?php echo $state; ?>" />\n             <input type="hidden" name="zip" value="<?php echo $zip; ?>" />\n         <input type="hidden" name="country" value="<?php echo $country; ?>" />\n         <input type="hidden" name="phone" value="<?php echo $phone; ?>" />\n             <input type="hidden" name="email" value="<?php echo $email; ?>" />\n             <p><input type="image" alt="Process Secure Credit Card Transaction using iTransact" border="0" height="60" width="210" src="<?php echo $cc_payment_image; ?>" /> </p>\n            </form>', '', '', 1),
+(15, 1, 'Verisign PayFlow Pro', 'payflow_pro', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '1,2,6,7,', '', '', '', 1),
+(16, 1, 'Dankort/PBS via ePay', 'epay', 0.00, 0, 0.00, 0.00, 0, 'P', 0, 0, '', '', '', '', 1);
+
+
+
+--
+-- Dumping data for table `#__vm_payment_method_shoppergroup_xref`
+--
+
+INSERT INTO `#__vm_payment_method_shoppergroup_xref` (`paym_id`,`paym_shopper_group`) VALUES
+(1,6),
+(2,5),
+(3,5),
+(4,5),
+(5,5),
+(6,5),
+(7,5),
+(8,5),
+(9,5),
+(10,5),
+(11,5),
+(12,5),
+(13,5),
+(14,5),
+(15,5),
+(16,5);
+
+
+--
+-- Dumping data for table `#__vm_plugins`
+--
+
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES
+(1, 'auspost', 'auspost', 'shipping', 11, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(2, 'canadapost', 'canadapost', 'shipping', 9, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(3, 'dhl', 'dhl', 'shipping', 4, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(4, 'fedex', 'fedex', 'shipping', 3, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(5, 'flex', 'flex', 'shipping', 2, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(6, 'intershipper', 'intershipper', 'shipping', 5, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(7, 'shipvalue', 'shipvalue', 'shipping', 8, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(8, 'standard_shipping', 'standard_shipping', 'shipping', 1, 1, 1, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(9, 'UPS Shipping Module', 'ups', 'shipping', 6, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(10, 'USPS Shipping Module', 'usps', 'shipping', 7, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
+(11, 'Zone Shipping Module', 'zone_shipping', 'shipping', 10, 0, 1, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+
 
 --
 -- Dumping data for table `#__vm_shipping_carrier`
