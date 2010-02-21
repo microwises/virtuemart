@@ -161,19 +161,26 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					$publish_up ='';
 					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
-						$date = JFactory::getDate($row->publish_up, $row->tzoffset);
-						$publish_up = $date->toMySQL();
+						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
+						$publish_up = $date->toFormat(VM_DATE_FORMAT);
 					}
 					echo $publish_up?>
 				</td>
 				<td>
 					<?php 
-					$publish_down ='';
-					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
-						$date = JFactory::getDate($row->publish_down, $row->tzoffset);
-						$publish_down = $date->toMySQL();
-					}
-					echo $publish_down?>
+						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
+							$endDate = JText::_('Never');
+						} else {
+							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
+							$endDate = $date->toFormat(VM_DATE_FORMAT);
+						}
+//						echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT);
+//					$publish_down ='';
+//					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
+//						$date = JFactory::getDate($row->publish_down, $row->tzoffset);
+//						$publish_down = $date->toMySQL();
+//					}
+					echo $endDate?>
 				</td>
 				<td>
 					<?php echo JText::_($row->calc_amount_cond); ?>

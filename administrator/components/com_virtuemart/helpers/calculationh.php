@@ -100,45 +100,52 @@ class calculationHelper{
 			}
 		}
 
-		
 		if(!empty($amount)){
 			$this->_amount;
 		}
+		
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
-		$basePriceShopCurrency = $this->convertCurrencyToShopDefault($this->productCurrency, $basePrice);		
+		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));		
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
-		if($this -> _debug)echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
-		if($this -> _debug)echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
-		
-		
-		$unroundeddiscountedPrice = $this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency));	
-		$discountedPrice = $this->roundDisplay($unroundeddiscountedPrice);
-if($this -> _debug)		echo '<br /> $unroundeddiscountedPrice. '.$unroundeddiscountedPrice;
-if($this -> _debug)		echo '<br /> $discountedPrice. '.$discountedPrice;
-		$unroundedSalesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
-if($this -> _debug)		echo '<br /> $unroundedSalesPrice. '.$unroundedSalesPrice;
-		$unroundedSalesPrice = $this -> executeCalculation($dATaxRules, $unroundedSalesPrice);
-if($this -> _debug)		echo '<br /> $unroundedSalesPrice with Discount after tax. '.$unroundedSalesPrice;
-		$salesPrice = $this->roundDisplay($unroundedSalesPrice);
-if($this -> _debug)		echo '<br /> $salesPrice. '.$salesPrice;
+//		if($this -> _debug)echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
+//		if($this -> _debug)echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
+//		if($this -> _debug)echo '<br />$dBTaxRules '.$dBTaxRules ;
+		$withDiscount=false;
+		if(count($dBTaxRules)==0){
+			$discountedPrice = $basePriceShopCurrency;
+		}else{
+			$discountedPrice = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency)));
+			$withDiscount=true;		
+		}
+	
+		$salesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
+
+		if(!count($dATaxRules)==0){
+			$salesPrice = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
+			$withDiscount=true;		
+		}
+
+//if($this -> _debug)		echo '<br /> $salesPrice. '.$salesPrice;
 		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
-if($this -> _debug)		echo '<br /> $discountAmount. '.$discountAmount;
-if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
+//if($this -> _debug)		echo '<br /> $discountAmount. '.$discountAmount;
+//if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
+//if($this -> _debug)		echo '<br /> $withDiscount. '.$withDiscount;
+
 		$prices = array(
 				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
 				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
 				'discountedPrice'   => $discountedPrice, //before Tax
 				'priceWithoutTax'   => $priceWithoutTax, //price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
 				'discountAmount'   => $discountAmount, //The "you save X money"
-				'salesPrice'   => $salesPrice 		//The endprice, with all kind of discounts and Tax
+				'salesPrice'   => $salesPrice, 		//The endprice, with all kind of discounts and Tax
+				'withDiscount' => $withDiscount
 				);
-//				echo '<br />';
-//				echo print_r($prices);
-//				echo '<br />';
+
+				echo '<br />';
 //		Console::logSpeed('getProductPrices DONE: ');
 		return $prices;
 	}
@@ -263,7 +270,7 @@ if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
 				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$price);
-if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price.'<br />';
+if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
 			}
 		}
 		return $price;
@@ -287,6 +294,7 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 */ 
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
+		//calc_id 	calc_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond	
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
@@ -306,10 +314,11 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 
+		
 		$testedRules= array();
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach($rules as $rule){
-
+			
 			$q= 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$cats = $this->_db->loadResultArray();
@@ -317,32 +326,28 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
-			
-//			echo '<br/ >calc_shopper_group '. sizeof($shoppergrps);
-////			echo '<br/ >rule '.$rule["calc_id"].' '.$rule['calc_name'].' the cats '.print_r($cats).' groups '.print_r($shoppergrps);
-//			echo '<br/ >Cats Test '.$this->testRulePartEffecting($cats,$this->_cats);
-//			echo '<br/ >Shoppergrps Test '.$this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
 
-			$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);		
+			$hitsCategory = true;
+			if(isset($this->_cats)){
+				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
+			}
+			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){
 				$hitsShopper = $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
-			}else{
-				$hitsShopper = 1;
 			}
-			$hitsAmount = 1;
+			
+			$hitsAmount = true;
 			if(!empty($this->_amount)){
 				//Test 
 			}
-			
-			//This does not work, can someone explain me why?
-//			if( $this->testRulePartEffecting($cats,$this->_cats && $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId) ){
+//if ($this -> _debug	) echo '<br/ >foreach '.$rule["calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if( $hitsCategory && $hitsShopper ){
-				if ($this -> _debug	) echo '<br/ >Add rule '.$rule["calc_id"].'<br/ >';
+				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["calc_id"];
 				$testedRules[]=$rule;
 			}
 		}
-
 		return $testedRules;
+		
 	}
 	
 	/**
@@ -389,10 +394,9 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 			$hitsCountry = $this->testRulePartEffecting($countries,$this->_deliveryCountry);	
 			$hitsStates = $this->testRulePartEffecting($states,$this->_deliveryState);	
 			
+			$hitsShopper=true;
 			if(isset($this->_shopperGroupId)){
 				$hitsShopper = $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
-			}else{
-				$hitsShopper = 1;
 			}
 			
 //			$hitsAmount = 1;
@@ -564,7 +568,7 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 			if(strlen($mathop)>1){
 				$second = substr($mathop,1,2);
 				if(strcmp($sign,"%")){
-					if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
+//					if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
 					return $price * (1-$value/100.0);
 				}
 			} else {
@@ -617,32 +621,24 @@ if($this -> _debug)	echo 'RulesEffecting '.$rule['calc_name'].' and value '.$rul
 	 */
 	 
 	function testRulePartEffecting($rule,$data){
-		
+
 		if(!isset ($rule)) return true;
 		if(!isset ($data)) return true;
-		
-		if (!is_array($rule)) $rule = array($rule);
+
+		if (is_array($rule)) {
+			if(count($rule)==0) return true;
+		} else {
+			$rule = array($rule);
+		}
 		if (!is_array($data)) $data = array($data);
+		
 		$intersect = array_intersect($rule,$data);
 		if($intersect){
 			return true;
 		}else{
 			return false;
 		}
-//		if(isset($rule)){
-//			if(is_array($rule)){
-//				$intersect = array_intersect($rule,$data);
-//				if($intersect){
-//					return true;
-//				}else{
-//					return false;
-//				}
-//			}else{
-//				return true;
-//			}
-//		}else{
-//			return true;
-//		}
+
 	}
 	
 	/** Sorts indexed 2D array by a specified sub array key

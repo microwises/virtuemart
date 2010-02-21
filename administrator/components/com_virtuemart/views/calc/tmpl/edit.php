@@ -47,7 +47,16 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->calc->published); ?>
 			</td>
-		</tr>			
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+				<?php echo JText::_( 'VM_CALC_ORDERING' ); ?>
+				</label>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="ordering" id="ordering" size="4" value="<?php echo $this->calc->ordering; ?>" />
+			</td>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -153,8 +162,14 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>			
-				<?php $startDate = JFactory::getDate($this->calc->publish_up);
-				echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT); ?>
+				<?php 
+//				if(!empty($this->calc->publish_up)){
+					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
+					echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT);
+//				} else {
+//					echo JHTML::_('calendar', '', "publish_up", "publish_up", VM_DATE_FORMAT);			
+//				}
+ 				?>
 			</td>
 		</tr>
 		<tr>
@@ -164,8 +179,14 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>			
-				<?php $endDate = JFactory::getDate($this->calc->publish_down);
-				echo JHTML::_('calendar', $endDate->toFormat(VM_DATE_FORMAT), "publish_down", "publish_down", VM_DATE_FORMAT); ?>
+				<?php $endDate; 
+				if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
+					$endDate = JText::_('VM_NEVER');
+				} else {
+					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
+					$endDate = $date->toFormat(VM_DATE_FORMAT);
+				}
+				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", VM_DATE_FORMAT,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 			</td>
 		</tr>
 		<tr>
@@ -190,7 +211,6 @@ AdminMenuHelper::startAdminArea();
 		</tr>	
 	</table>
 	</fieldset>
-	<?php //print_r($this->calc);?>
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />

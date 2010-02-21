@@ -144,7 +144,7 @@ class VirtueMartModelCalc extends JModel
 		$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
 		$db->setQuery($q);
 		$this->_data->calc_states = $db->loadResultArray();
-				
+
   		return $this->_data;		
 	}    
     
@@ -157,7 +157,8 @@ class VirtueMartModelCalc extends JModel
 	 * @return object List of calculation rule objects
 	 */
 	public function getCalcs($onlyPublished=false, $noLimit=false)
-	{		
+	{	
+		$db = JFactory::getDBO();
 		$query = 'SELECT * FROM `#__vm_calc` ';
 		if ($onlyPublished) { 
 			$query .= 'WHERE `#__vm_calc`.`published` = 1';			
@@ -170,13 +171,8 @@ class VirtueMartModelCalc extends JModel
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 
-		$db = JFactory::getDBO();
-		$config =& JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
-//		$this->_data['tzoffset'] = $config->getValue('config.offset');
 		foreach ($this->_data as $data){
 
-			$data->tzoffset=$tzoffset;
 			/* Write the first 5 categories in the list */
 			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
 			$db->setQuery($q);
@@ -292,9 +288,15 @@ class VirtueMartModelCalc extends JModel
 		// Convert selected dates to MySQL format for storing.
 		$startDate = JFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toMySQL();
-		$expireDate = JFactory::getDate($data['publish_down']);
-		$data['publish_down'] = $expireDate->toMySQL();
-		
+//		if ($data['publish_down'] == '' or $data['publish_down']==0){
+		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('VM_NEVER')){
+			$db = JFactory::getDBO();
+			$data['publish_down']	= $db->getNullDate();
+		} else {
+			$expireDate = JFactory::getDate($data['publish_down']);
+			$data['publish_down']	= $expireDate->toMySQL();
+		}
+
 		$modified = JFactory::getDate();
 		$data['modified']=$modified->toMySQL();
 
