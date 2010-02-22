@@ -221,6 +221,15 @@ class VirtueMartModelConfig extends JModel {
 	$config = $db->loadResult();
 	if ($config) {
 	    $params = new JParameter($config);
+	    
+	    $media_category_path = $params->get('media_category_path') ;
+		if(empty($media_category_path)){
+			$params->set('media_category_path','images/stories/virtuemart/category/');	
+		}
+		$media_product_path = $params->get('media_product_path') ;
+		if(empty($media_product_path)){
+			$params->set('media_product_path','images/stories/virtuemart/product/');	
+		}
 	}
 	else {
 	    $params = new JParameter('');

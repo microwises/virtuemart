@@ -25,7 +25,7 @@ echo "<br /><h4>".JText::_('VM_CATEGORIES')."</h4>";
 foreach ($this->categories as $category) {
 	echo JHTML::_('link', 
 			JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id), 
-			JHTML::_('image', JURI::root().'components/com_virtuemart/shop_image/category/'.$category->category_thumb_image, $category->category_name).$category->category_name
+			JHTML::_('image', JURI::root().VmConfig::get('media_category_path').$category->category_thumb_image, $category->category_name).$category->category_name
 			);
 }
 

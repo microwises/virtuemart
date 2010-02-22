@@ -184,6 +184,24 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    ?>
 			</td>
 		    </tr>
+		    <tr>
+				<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>"/>
+			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
+				</td>
+				<td>
+					<input type="text" name="media_category_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
+				</td>
+		    </tr>
+		    <tr>
+				<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>"/>
+			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
+				</td>
+				<td>
+					<input type="text" name="media_product_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
+				</td>
+		    </tr>
 		    <?php
 		    if( function_exists('imagecreatefromjpeg') ) {
 			?>
