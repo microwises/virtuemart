@@ -90,7 +90,7 @@ class ImageHelper {
 	 *
 	 * @author RickG, RolandD
 	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
+	 * @param string $imgRootURI The whole URI from joomla path up to the picture, use the variables defined in the config.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param integer $resize Should this image be auto resized.
 	 * @param integer $thumbWidth Width the returned image should be.
@@ -157,7 +157,7 @@ class ImageHelper {
 		else {
 			$url = VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
 		}
-		echo 'The url is '.$url;
+
 		return JHTML::image($url, '');
 			
 	}

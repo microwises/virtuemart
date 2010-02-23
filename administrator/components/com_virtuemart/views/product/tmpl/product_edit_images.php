@@ -77,7 +77,7 @@ echo '</div>';
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php echo ImageHelper::displayShopImage($this->product->product_full_image, 'product', '', 0); ?>
+                <?php echo ImageHelper::generateImageHtml($this->product->product_full_image, 'product', '', 0); ?>
               </div>
             </td>
           </tr>
@@ -123,7 +123,7 @@ echo '</div>';
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php echo ImageHelper::displayShopImage($this->product->product_thumb_image, 'product/', '', 0); ?>
+                <?php echo ImageHelper::generateImageHtml($this->product->product_thumb_image, VmConfig::get('media_product_path'), '', 0); ?>
               </div>
             </td>
           </tr>

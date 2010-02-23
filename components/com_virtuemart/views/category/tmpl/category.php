@@ -84,7 +84,7 @@ foreach ($this->products as $product) {
 	<div class="browseProductImageContainer">
 		<?php 
 			/** @todo make image popup */	
-			echo ImageHelper::displayShopImage($product->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" title="'.$product->product_name.'" alt="'.$product->product_name .'"'); 
+			echo ImageHelper::generateImageHtml($product->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" title="'.$product->product_name.'" alt="'.$product->product_name .'"'); 
 		?>
 	</div>
 	

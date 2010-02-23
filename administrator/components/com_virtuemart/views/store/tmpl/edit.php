@@ -104,7 +104,7 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
 				</td>
 				<td>
-				    <?php ImageHelper::displayShopImage($this->store->vendor_full_image, 'vendor', 'alt="Shop Image"', false); ?>
+				    <?php ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
 				</td>
 			    </tr>
 			    <tr>

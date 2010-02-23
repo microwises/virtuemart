@@ -108,44 +108,54 @@ class calculationHelper{
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
-		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));		
+		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
+		$prices['basePrice']=$basePriceShopCurrency; //basePrice calculated in the shopcurrency
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
+		$prices['basePriceWithTax']=$basePriceWithTax; //basePrice with Tax
+		
+		
 //		if($this -> _debug)echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
 //		if($this -> _debug)echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
 //		if($this -> _debug)echo '<br />$dBTaxRules '.$dBTaxRules ;
 		$withDiscount=false;
 		if(count($dBTaxRules)==0){
 			$discountedPrice = $basePriceShopCurrency;
+			$prices['discountedPrice']=0;
 		}else{
 			$discountedPrice = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency)));
-			$withDiscount=true;		
+			$withDiscount=true;
+			$prices['discountedPrice']=$discountedPrice; //before Tax
 		}
 	
 		$salesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
-
-		if(!count($dATaxRules)==0){
+		
+		if(count($dATaxRules)==0){
 			$salesPrice = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
-			$withDiscount=true;		
+			$prices['salesPriceWithDiscount']=$salesPrice;
+		} else{
+			$prices['salesPriceWithDiscount']=0;
 		}
-
+		//The endprice, with all kind of discounts and Tax
+		$prices['salesPrice']=$salesPrice;
 //if($this -> _debug)		echo '<br /> $salesPrice. '.$salesPrice;
-		$discountAmount = $this->roundDisplay($basePriceWithTax - $salesPrice);
-		$priceWithoutTax = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
+		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
+		
+		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax TODO is wrong
+		$prices['priceWithoutTax'] = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
 //if($this -> _debug)		echo '<br /> $discountAmount. '.$discountAmount;
 //if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
 //if($this -> _debug)		echo '<br /> $withDiscount. '.$withDiscount;
 
-		$prices = array(
-				'basePrice'  => $basePriceShopCurrency,	//basePrice calculated in the shopcurrency
-				'basePriceWithTax' => $basePriceWithTax, //basePrice with Tax
-				'discountedPrice'   => $discountedPrice, //before Tax
-				'priceWithoutTax'   => $priceWithoutTax, //price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
-				'discountAmount'   => $discountAmount, //The "you save X money"
-				'salesPrice'   => $salesPrice, 		//The endprice, with all kind of discounts and Tax
-				'withDiscount' => $withDiscount
-				);
+//		$prices = array(
+//				'basePrice'  => $basePriceShopCurrency,	
+//				'basePriceWithTax' => $basePriceWithTax, 
+//				'discountedPrice'   => $discountedPrice, //before Tax
+//				'priceWithoutTax'   => $priceWithoutTax, 
+//				'discountAmount'   => $discountAmount, //The "you save X money"
+//				'salesPrice'   => $salesPrice 		
+//				);
 
-				echo '<br />';
+//				echo '<br />';
 //		Console::logSpeed('getProductPrices DONE: ');
 		return $prices;
 	}
