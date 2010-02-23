@@ -88,9 +88,7 @@ class VirtuemartControllerConfig extends JController {
 	 */
 	function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
-
-		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart', $msg);
 	}
 
 
@@ -113,8 +111,31 @@ class VirtuemartControllerConfig extends JController {
 			$msg = JText::_($model->getError());
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart', $msg);
 	}
+	
+	
+	/**
+	 * Handle the apply task
+	 *
+	 * @author RickG
+	 */
+	function apply()
+	{
+		$model = $this->getModel('config');
+		$data = JRequest::get('post');
+
+		if ($model->store($data)) {
+			$msg = JText::_('Config saved!');
+			// Load the newly saved values into the session.
+			VmConfig::loadConfig();
+		}
+		else {
+			$msg = JText::_($model->getError());
+		}
+
+		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+	}	
 
 
 	/**
