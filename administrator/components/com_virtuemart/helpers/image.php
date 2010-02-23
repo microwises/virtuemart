@@ -58,22 +58,22 @@ class ImageHelper {
 	 *
 	 * @author RickG
 	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
+	 * @param string $imgRootFolder The whole URI from joomla path up to the picture, use the variables defined in the config.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param integer $resize Should this image be auto resized.
 	 * @param integer $thumbWidth Width the returned image should be.
 	 * @param integer $thumbHeight Height the returned image should be. 
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 */
-	public function displayShopImage($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
-		echo ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
+	public function displayShopImage($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
+		echo ImageHelper::generateImageHtml($image, $imgRootURI, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
 	/** Return the HTML <img> code for a given image.
 	 *
 	 * @author RickG
 	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
+	 * @param string $imgRootFolder The whole URI from joomla path up to the picture, use the variables defined in the config.
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param integer $resize Should this image be auto resized.
 	 * @param integer $thumbWidth Width the returned image should be.
@@ -81,8 +81,8 @@ class ImageHelper {
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 * @return string <img> tag containing the image as the src attribute.  Needs only to be echo'd.
 	 */	
-	function getShopImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
-		return ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
+	function getShopImageHtml($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
+		return ImageHelper::generateImageHtml($image, $imgRootURI, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
 	/**
@@ -98,7 +98,7 @@ class ImageHelper {
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 * @return string <img> tage containing the image as the src attribute.  Needs only to be echo'd.
 	 */
-	function generateImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
+	function generateImageHtml($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
 		// Process image arguments
 		$border="";
 		if( strpos( $imageArgs, "border=" )===false ) {
@@ -124,20 +124,22 @@ class ImageHelper {
 				
 				// Dynamic image resizing will happen
 				if (VmConfig::get('pshop_img_resize_enable') == '1' || $resize==1) {
-					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
+					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
 					if (!strpos($imageArgs, "height=")) {
-						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootFolder, '', $newImageWidth, $newImageHeight));
+						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootURI, '', $newImageWidth, $newImageHeight));
 						$width = $arr[0]; 
 						$height = $arr[1];
 					}
 				}			
 				else {
-					if ($imgRootFolder <> '') {
-						$url = JURI::root().'components/com_virtuemart/shop_image/'.$imgRootFolder.'/'.$image;	
-					}
-					else {
-						$url = JURI::root().'components/com_virtuemart/shop_image/'.$image;	
-					}
+//					if ($imgRootFolder <> '') {
+////						$url = JURI::root().'components/com_virtuemart/shop_image/'.$imgRootFolder.'/'.$image;	
+//						$url = JURI::root().'/'.$imgRootFolder.$image;	
+//					}
+//					else {
+////					$url = JURI::root().'components/com_virtuemart/shop_image/'.$image;	
+						$url = JURI::root().$imgRootURI.$image;	
+//					}
 					if ($resize) {
 						if ($height < $width) {
 							$newImageWidth = round($width / ($height / VmConfig::get('pshop_img_height', 90)));
@@ -147,7 +149,7 @@ class ImageHelper {
 							$newImageHeight = round($height / ($width / VmConfig::get('pshop_img_width', 90)));
 							$newImageWidth = VmConfig::get('pshop_img_width', 90);
 						}
-						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
+						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
 					}
 				}
 			}
@@ -155,7 +157,7 @@ class ImageHelper {
 		else {
 			$url = VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
 		}
-		
+		echo 'The url is '.$url;
 		return JHTML::image($url, '');
 			
 	}
@@ -173,24 +175,29 @@ class ImageHelper {
 	 * @param integer $height Height the resized image should be
 	 * @return string URL to the resized image or 'No Imgae'
 	 */
-	function createResizedImage($imageFilename, $imageRootFolder, $width, $height) {
+	function createResizedImage($imageFilename, $imgRootURI, $width, $height) {
 		$maxsize = false;
 		$bgred = 255;
 		$bggreen = 255;
 		$bgblue = 255;
-		
+
 		$origFileInfo = pathinfo($imageFilename);
 		$resizedFilename = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
 		
-		if ($imageRootFolder) {
-			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
-			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
-		}
-		else {
-			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageFilename;
-			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
-		}			
+//		if ($imageRootFolder) {
+//			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
+//			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
+//		}
+//		else {
+//			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageFilename;
+//			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+//		}
 
+		$imageRootFolderExp = explode('/', $imgRootURI);
+		$imageRootFolder = implode(DS, $imageRootFolderExp);
+		$fullSizeFilenamePath = JPATH_SITE.DS.$imageRootFolder.$imageFilename;
+		$resizedFilenamePath = JPATH_SITE.DS.$imageRootFolder.'resized'.DS.$resizedFilename;
+//		echo'$fullSizeFilenamePath '.$fullSizeFilenamePath;
 		// Don't allow sizes beyond 2000 pixels
 		$width = min($width, 2000);
 		$height = min($height, 2000);
@@ -198,14 +205,15 @@ class ImageHelper {
 		if (!file_exists($resizedFilenamePath) && file_exists($fullSizeFilenamePath)) {
 			$newFile = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
 		}	
-		
 		if (file_exists($resizedFilenamePath)) {
-			if ($imageRootFolder <> '') {
-				return JURI::root().'components/com_virtuemart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
-			}
-			else {
-				return JURI::root().'components/com_virtuemart/shop_image/resized/'.$resizedFilename;
-			}				
+//			if ($imageRootFolder <> '') {
+////				return JURI::root().'components/com_virtuemart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
+//				return JURI::root().$imageRootFolder.'/resized/'.$resizedFilename;
+//			}
+//			else {
+//				return JURI::root().'components/com_virtuemart/shop_image/resized/'.$resizedFilename;
+				return JURI::root().$imgRootURI.'resized/'.$resizedFilename;
+//			}				
 		}
 		else {
 			return VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
@@ -225,7 +233,7 @@ class ImageHelper {
 	 * @param integer $width Width of the image we are looking for.  
 	 * @return string Full path to the resized image file.
 	 */
-	function getResizedFilename($filename, $imageRootFolder='product', $ext='', $height=0, $width=0)
+	function getResizedFilename($filename, $imgRootURI, $ext='', $height=0, $width=0)
 	{
 		$fileinfo = pathinfo($filename);
 		if ($ext == '') {
@@ -239,13 +247,16 @@ class ImageHelper {
 			$height = VmConfig::get('pshop_img_height', 90);
 		}
 		
+		
 		$resizedFilename = $fileinfo['filename'].'_'.$width.'x'.$height.'.'.$fileinfo['extension'];
-		if ($imageRootFolder) {
-			return JPATH_COMPONENT.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
-		}
-		else {
-			return JPATH_COMPONENT.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
-		}
+		$imageRootFolderExp = explode('/', $imgRootURI);
+		$imageRootFolder = implode(DS, $imageRootFolderExp);
+//		if ($imageRootFolder) {
+			return JPATH_SITE.DS.$imageRootFolder.$resizedFilename;
+//		}
+//		else {
+//			return JPATH_COMPONENT.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+//		}
 	}
 	
 }

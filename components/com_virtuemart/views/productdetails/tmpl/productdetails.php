@@ -78,7 +78,7 @@ else { ?>
 		<tr>
 			<td align="left" valign="top" width="220">
 			<?php /** @todo make the image popup */ ?>
-			<div><?php echo ImageHelper::displayShopImage($this->product->product_full_image, 'product'); ?></div>
+			<div><?php echo ImageHelper::generateImageHtml($this->product->product_full_image, VmConfig::get('media_product_path')); ?></div>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
@@ -231,7 +231,7 @@ else { ?>
 										<!-- The product image DIV. -->
 										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
 											<?php 
-												$img = ImageHelper::getShopImageHtml($related->product_thumb_image, 'product', 'alt="'.$related->product_name .'", title="'.$related->product_name.'"');
+												$img = ImageHelper::generateImageHtml($related->product_thumb_image,  VmConfig::get('media_product_path'), 'alt="'.$related->product_name .'", title="'.$related->product_name.'"');
 												echo JHTML::_('link', $related->link, $img); 
 											?>
 										</div>
@@ -295,7 +295,7 @@ else { ?>
 								<br />
 								<?php
 								$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
-								echo JHTML::link($url, ImageHelper::getShopImageHtml($category->category_thumb_image, 'category', 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
+								echo JHTML::link($url, ImageHelper::generateImageHtml($category->category_thumb_image,  VmConfig::get('media_product_path'), 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
 								?>
 								<br/>
 							</td>

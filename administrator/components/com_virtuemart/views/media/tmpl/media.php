@@ -75,7 +75,11 @@ $pagination = $this->pagination;
 			if (strtolower(substr($productfile->file_name, 0, 4)) == 'http') {
 				$filename = $productfile->file_name;
 			}
-			else $filename = JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS.'product'.DS.str_replace(JPATH_SITE, '', $productfile->file_name);
+			else{
+				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
+				$imageProductFolder = implode(DS, $imageRootFolderExp);
+				$filename = JPATH_SITE.DS.$imageProductFolder.str_replace(JPATH_SITE, '', $productfile->file_name);
+			}
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
 			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';

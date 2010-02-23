@@ -557,8 +557,12 @@ class VirtueMartModelCategory extends JModel {
 
 		//uploading images and creating thumbnails
 		$fullImage = JRequest::getVar('category_full_image', array(), 'files');
+		
+		$imageRootFolderExp = explode('/', VmConfig::get('media_category_path'));
+		$imageCategoryFolder = implode(DS, $imageRootFolderExp);
+		
 		if($fullImage['error'] == UPLOAD_ERR_OK) {
-			move_uploaded_file( $fullImage['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.$fullImage['name']);
+			move_uploaded_file( $fullImage['tmp_name'], JPATH_SITE.DS.$imageCategoryFolder.$fullImage['name']);
 			$data['category_full_image'] = $fullImage['name'];
 		}
 		elseif($data['category_full_image_url']){
@@ -570,18 +574,18 @@ class VirtueMartModelCategory extends JModel {
 
 		//creating the thumbnail image
 		if( $data['image_action_full'] == 1 ){
-			$data['category_thumb_image'] = basename( ImageHelper::createResizedImage($data['category_full_image'], 'category', PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+			$data['category_thumb_image'] = basename( ImageHelper::createResizedImage($data['category_full_image'], VmConfig::get('media_category_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
 		}
 		//deleting image
 		elseif( $data['image_action_full'] == 2 ){
-			JFile::delete( JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.$data['category_full_image_current'] );
+			JFile::delete( JPATH_SITE.DS.$imageCategoryFolder.$data['category_full_image_current'] );
 			$data['category_full_image'] = '';
 		}
 
 		//uploading explicit thumbnail image
 		$thumbImage = JRequest::getVar('category_thumb_image', array(), 'files');
 		if( $thumbImage['error'] == UPLOAD_ERR_OK ){
-			move_uploaded_file( $thumbImage['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.'resized'.DS.$thumbImage['name']);
+			move_uploaded_file( $thumbImage['tmp_name'], JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$thumbImage['name']);
 			$data['category_thumb_image'] = $thumbImage['name'];
 		}
 		elseif( empty($data['category_thumb_image']) ){
@@ -595,7 +599,7 @@ class VirtueMartModelCategory extends JModel {
 
 		//deleting thumbnail image
 		if( $data['image_action_thumb'] == 2 ){
-			JFile::delete( JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.'resized'.DS.$data['category_thumb_image_current'] );
+			JFile::delete( JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$data['category_thumb_image_current'] );
 			$data['category_thumb_image'] = '';
 		}
 

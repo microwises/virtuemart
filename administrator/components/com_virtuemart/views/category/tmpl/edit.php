@@ -26,7 +26,7 @@ $editor = JFactory::getEditor();
 $mainframe = JFactory::getApplication();
 
 //making images URL
-$imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/category/';
+$imagesURL = $mainframe->getSiteURL().VmConfig::get('media_category_path');
 ?>
 
 <form action="index.php" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
@@ -307,7 +307,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 						</tr>
 						<tr>
 							<td colspan="2">
-								<?php echo ImageHelper::generateImageHtml( $this->category->category_full_image, 'category', '', 0);?>
+								<?php echo ImageHelper::generateImageHtml( $this->category->category_full_image, VmConfig::get('media_category_path'), '', 0);?>
 							</td>
 						</tr>
 					</table>
@@ -367,7 +367,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 						</tr>
 						<tr>
 							<td colspan="2">
-								<?php echo ImageHelper::generateImageHtml( $this->category->category_thumb_image, 'category/resized', '', 0);?>
+								<?php echo ImageHelper::generateImageHtml( $this->category->category_thumb_image, VmConfig::get('media_category_path').'resized/', '', 0);?>
 							</td>
 						</tr>	
 					</table>
