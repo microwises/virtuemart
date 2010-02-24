@@ -91,7 +91,6 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>" />
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?>
-			    fix
 			</td>
 			<td>
 			    <?php
@@ -146,11 +145,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			<td>
 			    <?php
 			    echo JHTML::_('Select.genericlist', $this->themelist, 'theme', 'size=1', 'value', 'text', $this->config->get('theme'));
-			    $link = JROUTE::_('index.php?option=com_virtuemart&page=admin.theme_config_form&amp;theme='.basename(VM_THEMEURL));
-			    $text = JText::_('VM_CONFIG');
 			    ?>
-			    <a href="<?php echo $link; ?>"><?php echo $text; ?></a>
-			    fix
 			</td>
 		    </tr>
 		    <tr>
