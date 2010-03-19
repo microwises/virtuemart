@@ -19,7 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-
 ?>
 <table class="adminform">
     <tr class="row0">
@@ -29,52 +28,63 @@ defined('_JEXEC') or die('Restricted access');
     <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_NAME') ?>:</td>
       <td width="69%" > 
-        <input type="text" class="inputbox" name="name" value="<?php $this->paym->paym_name ?>" size="32" />
+        <input type="text" class="inputbox" name="paym_name" value="<?php echo $this->paym->paym_name; ?>" size="32" />
       </td>
     </tr>
-    <tr class="row1">
-      <td class="labelcell"><?php
-          echo JText::_('VM_PAYMENT_CLASS_NAME');
-          ?>
-      </td>
-      <td width="69%">
-      	<?php
+    <tr class="row0">
+      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_CLASS_NAME'); ?>:</td>
+      <td width="69%"><?php
       	echo FileUtilities::list_available_classes( 'element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
-//     	echo vmPaymentMethod::list_available_classes( 'element', $db->sf("element") ? $db->sf("element") : 'payment' );
       	echo JHTML::tooltip( JText::_('VM_PAYMENT_CLASS_NAME_TIP') ); ?>
       </td>
     </tr>
-    <tr class="row0"> 
+    <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
-      <td width="69%" >
-		<?php echo $this->PaymentTypeList ?>
+      <td width="69%" ><?php
+		echo $this->PaymentTypeList ?>
       </td>
-    </tr>
-    <tr class="row1">
-      <td colspan="2"><hr /></td>
-    </tr>
-    <tr class="row0">
-      <td class="labelcell"><div id="accepted_creditcards1"></div></td>
-      <td width="69%"><div id="accepted_creditcards2"></div></td>
-    </tr>
-    <div id="accepted_creditcards_store"></div>
-    <tr class="row1">
-      <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
-      <td width="69%" > 
+      <td width="69%" ><?php
+		echo $this->shopperGroupList ?>
       </td>
     </tr>
-    
-    <tr class="row0"> 
+    <tr class="row1"> 
+      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_DISCOUNT') ?>:</td>
+      <td width="69%" >
+      <input type="text" class="inputbox" name="discount" value="<?php	echo $this->paym->discount;?>" size="4" />
+		<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_TIP') ); ?>
+      </td>
+    </tr>
+	<tr class="row0"> 
+      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
+      <td width="69%" >
+		<?php
+		echo JHTML::_('select.booleanlist',  'is_discount', 'class="inputbox"', $this->paym->discount_is_percentage);
+		echo JHTML::tooltip( JText::_('VM_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?>
+      </td>
+    </tr>
+	<tr class="row1"> 
+      	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT') ?>:</td>
+      	<td width="69%" >
+      	<input type="text" class="inputbox" name="discount_max_amount" value="<?php	echo $this->paym->discount_max_amount;?>" size="4" />
+      	<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT_TIP') ); ?>
+      </td>
+    </tr>
+    </tr>
+        <tr class="row0"> 
+      	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
+      	<td width="69%" >
+      	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
+      	<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT_TIP') ); ?>
+      </td>
+    </tr>
+    <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
-    </tr>
-    <tr class="row0"> 
-      <td colspan="2">&nbsp;</td>
     </tr>
   </table>  
             

@@ -102,22 +102,22 @@ AdminMenuHelper::startAdminArea();
 				</td>
 
 				<td>
-					<?php echo JText::_($row->paym_element); ?>
+					<?php echo $row->paym_element; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->paymShoppersList); ?>
+					<?php echo $row->paymShoppersList; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->discount); ?>
+					<?php echo $row->discount; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->discount_is_percentage); ?>
+					<?php echo $row->discount_is_percentage; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->discount_min_amount); ?>
+					<?php echo $row->discount_min_amount; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->discount_max_amount); ?>
+					<?php echo $row->discount_max_amount; ?>
 				</td>
 				<td>
 					<?php 

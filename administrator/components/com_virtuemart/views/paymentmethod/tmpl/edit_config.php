@@ -20,15 +20,17 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 //        if( $db->sf('element') ) {
+		if($this->paym->paym_element){
 //	        $parameters = new vmParameters($db->f('params'), ADMINPATH.'plugins/payment/'.basename($db->f('element')).'.xml', 'payment' );
-//	        echo $parameters->render();
-//        }
+	        $parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'payment' );
+	        echo $parameters->render();
+        }
         echo '<br />
 <strong>'.JText::_('VM_PAYMENT_EXTRAINFO').':';
 		echo JHTML::tooltip( JText::_('VM_PAYMENT_EXTRAINFO_TIP') ) 
 	?>
 <br />
-<textarea class="inputbox" name="payment_extrainfo" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>
+<textarea class="inputbox" name="paym_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>
 <?php /*
 <script type="text/javascript">
 function check() {

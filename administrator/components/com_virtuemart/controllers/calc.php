@@ -80,7 +80,7 @@ class VirtuemartControllerCalc extends JController
 		JRequest::setVar('hidemenu', 1);		
 		
 		parent::display();
-	}		
+	}
 	
 	
 	/**

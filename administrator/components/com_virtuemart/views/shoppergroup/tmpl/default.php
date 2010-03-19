@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -40,12 +40,6 @@ AdminMenuHelper::startAdminArea();
 		      <th>
 			      <?php echo JText::_( 'VM_SHOPPER_GROUP_LIST_DESCRIPTION' ); ?>
 		      </th>
-		      <th>
-			      <?php echo JText::_( 'VM_SHOPPER_GROUP_LIST_INCLUDE_TAX' ); ?>
-		      </th>
-		      <th>
-            <?php echo JText::_( 'VM_SHOPPER_GROUP_LIST_DISCOUNT' ); ?>
-          </th>
 		      <th width="20">
 			      <?php echo JText::_( 'VM_DEFAULT' ); ?>
 		      </th>
@@ -71,12 +65,6 @@ AdminMenuHelper::startAdminArea();
           </td>
 			    <td align="left">
 				    <?php echo $row->shopper_group_desc; ?>
-			    </td>
-			    <td>
-				    <?php echo $row->show_price_including_tax; ?>
-			    </td>
-			    <td>
-				    <?php echo $row->shopper_group_discount; ?>
 			    </td>
 			    <td>
 				    <?php echo $row->default; ?>

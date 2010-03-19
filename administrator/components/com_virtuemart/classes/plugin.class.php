@@ -323,8 +323,9 @@ class vmPluginHelper {
 				$foldertype = "folder AS type";
 				break;
 		}
+//		FROM `#__{vm}_'.$table . '` 
 		$query = 'SELECT id, '.$foldertype.', element AS name, params' . ' 
-						FROM `#__{vm}_'.$table . '` 
+						FROM `#__'.$table . '` 
 						WHERE ' .$published_clause .'
 						'. $condition .' 
 						ORDER BY ordering' ;

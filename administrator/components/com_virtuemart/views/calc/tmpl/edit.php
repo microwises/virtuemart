@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 <?php //echo print_r($this->c) ?>
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Calculation Rule Details' ); ?></legend>
+	<legend><?php echo JText::_( 'VM_CALC_DETAILS' ); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Calculation Name' ); ?>:
+					<?php echo JText::_( 'VM_CALC_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Published'); ?>:
+					<?php echo JText::_('PUBLISHED'); ?>:
 				</label>
 			</td>
 			<td>
@@ -60,7 +60,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Description'); ?>:
+					<?php echo JText::_('VM_CALC_DESCR'); ?>:
 				</label>
 			</td>
 			<td>
@@ -70,7 +70,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Kind of the rule'); ?>:
+					<?php echo JText::_('VM_CALC_KIND'); ?>:
 				</label>
 			</td>
 			<td>
@@ -80,7 +80,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Mathematical operation'); ?>:
+					<?php echo JText::_('VM_CALC_VALUE_MATHOP'); ?>:
 				</label>
 			</td>
 			<td>
@@ -90,7 +90,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Value'); ?>:
+					<?php echo JText::_('VM_CALC_VALUE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -100,7 +100,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Affected Categories'); ?>:
+					<?php echo JText::_('VM_CALC_CATEGORY'); ?>:
 				</label>
 			</td>			
 			<td>
@@ -112,7 +112,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Affected Shoppergroups'); ?>:
+					<?php echo JText::_('VM_CALC_SHOPPER_GROUPS'); ?>:
 				</label>
 			</td>			
 			<td>

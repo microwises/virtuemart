@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage ShopperGroup
- * @author Markus Öhler 
+ * @author Markus ï¿½hler 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * 
  * This class is a template.
  *
- * @author Markus Öhler
+ * @author Markus ï¿½hler
  * @package	VirtueMart
  */
 class TableShopperGroup extends JTable
@@ -31,13 +31,7 @@ class TableShopperGroup extends JTable
 	var $shopper_group_name  = '';	
 	
 	/** @var string Shopper group description */
-  var $shopper_group_desc  = '';  
-  
-	/** @var float 3 Shopper group discount; decimal with 5 places, two of which are comma-values */
-	var $shopper_group_discount  = 0.0;				
-	
-    /** @var int Specifies wether the price are displayed to the customers with or without tax */
-	var $show_price_including_tax  = 0;
+	var $shopper_group_desc  = '';  
 	
     /** @var int default group that new customers are associated with. There can only be one 
      * default group per vendor. */
@@ -45,7 +39,7 @@ class TableShopperGroup extends JTable
 
 
 	/**
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -57,7 +51,7 @@ class TableShopperGroup extends JTable
 	/**
 	 * Validates the shopper group record fields.
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 * @return boolean True if the table buffer contains valid data, false otherwise.
 	 */
 	function check() 

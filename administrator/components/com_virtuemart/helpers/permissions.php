@@ -140,7 +140,7 @@ class Permissions {
 				}
 				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
 				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
+//				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
 				$auth["default_shopper_group"] = $shopper_group["default_shopper_group"];
 				$auth["is_registered_customer"] = true;
 			}
@@ -152,8 +152,8 @@ class Permissions {
 				else $auth["perms"]  = "shopper";
 				
 				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
+//				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
+//				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
 				$auth["default_shopper_group"] = 1;
 				$auth["is_registered_customer"] = false;
 			}
@@ -165,8 +165,8 @@ class Permissions {
 			$auth["first_name"] = "guest";
 			$auth["last_name"] = "";
 			$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-			$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-			$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
+//			$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
+//			$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
 			$auth["default_shopper_group"] = 1;
 			$auth["is_registered_customer"] = false;
 		}

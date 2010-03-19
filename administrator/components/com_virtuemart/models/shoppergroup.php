@@ -32,27 +32,29 @@ jimport( 'joomla.application.component.model');
 class VirtueMartModelShopperGroup extends JModel {
 
     /** @var integer Primary key */
-    var $_id;
+    private $_cid;
+    /** @var integer Primary key */
+    private $_id;    
     /** @var objectlist Shopper group data */
-    var $_data;
+    private $_data;
     /** @var integer Total number of shopper groups in the database */
-    var $_total;
+    private $_total;
     /** @var pagination Pagination for shopper group list */
-    var $_pagination;
+    private $_pagination;
 
 
     /**
      * Constructor for the shopper group model.
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      */
     function __construct() {
 	    parent::__construct();
 
-			// Get the pagination request variables
-			$mainframe = JFactory::getApplication() ;
-			$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-			$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option') . '.limitstart', 'limitstart', 0, 'int');
+		// Get the pagination request variables
+		$mainframe = JFactory::getApplication() ;
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option') . '.limitstart', 'limitstart', 0, 'int');
 
 	    // Set the state pagination variables
 	    $this->setState('limit', $limit);
@@ -66,7 +68,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Resets the shopper group id and data
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      */
     function setId($id) {
 	    $this->_id = $id;
@@ -76,7 +78,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Loads the pagination for the shopper group table
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      * @return JPagination Pagination for the current list of shopper groups
      */
     function getPagination() {
@@ -91,7 +93,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Gets the total number of countries
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      * @return int Total number of countries in the database
      */
     function _getTotal() {
@@ -110,7 +112,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      */
     function getShopperGroup() {
 	    $db = JFactory::getDBO();
@@ -131,9 +133,36 @@ class VirtueMartModelShopperGroup extends JModel {
 
 
     /**
+     * Retireve a list of shopper groups from the database.
+     *
+     * @author Markus Öhler
+     * @param string $noLimit True if no record count limit is used, false otherwise
+     * @return object List of shopper group objects
+     */
+    function getShopperGroups($onlyPublished=false, $noLimit = false) {
+    	$db = JFactory::getDBO();
+
+	    $query = 'SELECT * FROM '
+	      . $db->nameQuote('#__vm_shopper_group')
+	      . 'ORDER BY '
+	      . $db->nameQuote('vendor_id')
+	      . ','
+	      . $db->nameQuote('shopper_group_name')
+		;
+		if ($noLimit) {
+			$this->_data = $this->_getList($query);
+		}
+		else {
+			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+
+	    return $this->_data;
+    }
+
+    /**
      * Bind the post data to the shoppergroup table and save it
      *
-     * @author Markus �hler
+     * @author Markus Öhler, Max Milbers
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
@@ -166,7 +195,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /**
      * Delete all records specified by the cid request parameter.
      *
-     * @author Markus �hler
+     * @author Markus Öhler
      * @return boolean True is the delete was successful, false otherwise.
      */
     function delete() {
@@ -183,30 +212,6 @@ class VirtueMartModelShopperGroup extends JModel {
 	    return true;
     }
 
-
-    /**
-     * Retireve a list of shopper groups from the database.
-     *
-     * @author Markus �hler
-     * @param string $noLimit True if no record count limit is used, false otherwise
-     * @return object List of shopper group objects
-     */
-    function getShopperGroups($noLimit = false) {
-    	$db = JFactory::getDBO();
-	    $query = 'SELECT * FROM '
-	      . $db->nameQuote('#__vm_shopper_group')
-	      . 'ORDER BY '
-	      . $db->nameQuote('vendor_id')
-	      . ','
-	      . $db->nameQuote('shopper_group_name');
-
-	    if ($noLimit) {
-	      $this->_data = $this->_getList($query);
-	    } else {
-	      $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-     	}
-
-	    return $this->_data;
-    }
+	
 }
 ?>

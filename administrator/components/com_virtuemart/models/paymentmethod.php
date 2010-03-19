@@ -125,7 +125,7 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_id = 0;
    			$this->_data = null;
   		}
-            
+
 		/* Add the paymentmethod shoppergroups */
 		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
@@ -147,8 +147,7 @@ class VirtueMartModelPaymentmethod extends JModel
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	public function getPayms($onlyPublished=false, $noLimit=false)
-	{		
+	public function getPayms($onlyPublished=false, $noLimit=false){
 		$query = 'SELECT * FROM `#__vm_payment_method` ';
 		if ($onlyPublished) { 
 			$query .= 'WHERE `#__vm_payment_method`.`published` = 1';			
@@ -156,56 +155,59 @@ class VirtueMartModelPaymentmethod extends JModel
 		$query .= ' ORDER BY `#__vm_payment_method`.`paym_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
-		}
-		else {
+		} else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 
 		$db = JFactory::getDBO();
 		if(isset($this->_data)){
-		foreach ($this->_data as $data){
-			/* Write the first 5 shoppergroups in the list */
-			$data->paymShoppersList='';
-			$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-			$db->setQuery($q);
-			$tempArray = $db->loadResultArray();
-			if(isset($tempArray)){
-				$paymShoppersList='';
-				$i=0;
-				foreach ($tempArray as $value) {
-					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
-					$db->setQuery($q);
-					$tmp = $db->loadResult();
-					$paymShoppersList .= $tmp. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->paymShoppersList = substr($paymShoppersList,0,-2);
-			}
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+			foreach ($this->_data as $data){
 
-			/* Write the first 5 accepted creditcards in the list */
-			$data->paymCreditCardList='';
-			$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-			$db->setQuery($q);
-			$tempArray = $db->loadResultArray();
-			if(isset($tempArray)){
-				$paymCreditCardList='';
-				$i=0;
-				foreach ($tempArray as $value) {
-					$q = 'SELECT creditcard_name FROM #__vm_creditcard WHERE creditcard_id = "'.$value.'"';
-					$db->setQuery($q);
-					$tmp = $db->loadResult();
-					$paymCreditCardList .= $tmp. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->paymCreditCardList = substr($paymCreditCardList,0,-2);
+				/* Write the first 5 shoppergroups in the list */
+$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+				
+//				$data->paymShoppersList='';
+//				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+//				$db->setQuery($q);
+//				$tempArray = $db->loadResultArray();
+//				if(isset($tempArray)){
+//					$paymShoppersList='';
+//					$i=0;
+//					foreach ($tempArray as $value) {
+//						$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
+//						$db->setQuery($q);
+//						$tmp = $db->loadResult();
+//						$paymShoppersList .= $tmp. ', ';
+//						$i++;
+//						if($i>4) break;
+//					}
+//					$data->paymShoppersList = substr($paymShoppersList,0,-2);
+//				}
+	
+				/* Write the first 5 accepted creditcards in the list */
+$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__vm_creditcard','creditcard_id');
+//				$data->paymCreditCardList='';
+//				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+//				$db->setQuery($q);
+//				$tempArray = $db->loadResultArray();
+//				if(isset($tempArray)){
+//					$paymCreditCardList='';
+//					$i=0;
+//					foreach ($tempArray as $value) {
+//						$q = 'SELECT creditcard_name FROM #__vm_creditcard WHERE creditcard_id = "'.$value.'"';
+//						$db->setQuery($q);
+//						$tmp = $db->loadResult();
+//						$paymCreditCardList .= $tmp. ', ';
+//						$i++;
+//						if($i>4) break;
+//					}
+//					$data->paymCreditCardList = substr($paymCreditCardList,0,-2);
+//				}
 			}
+//			echo (print_r($this->_data).'<br /><br />');
 		}
-
-//		echo (print_r($this->_data).'<br /><br />');
 		return $this->_data;
-	}
 	}
     /**
      * Publish a field
@@ -259,28 +261,14 @@ class VirtueMartModelPaymentmethod extends JModel
 			$this->setError($table->getError());
 			return false;
 		}
-//		echo print_r($data) ; die;
-		self::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data["paym_id"],$data["paym_shopper_group"]);
-		self::storeArrayData('#__vm_calc_shoppergroup_xref','paym_id','paym_accepted_credit_card',$data["paym_id"],$data["paym_accepted_credit_card"]);
+
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
+		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['paym_accepted_credit_card']);
 
 		return true;
 	}	
 
-	private function storeArrayData($table,$fieldId,$fieldData,$id,$data){
-		$db = JFactory::getDBO();
-		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
-		$db->setQuery($q);
-		$db->Query();
-
-		/* Store the new categories */
-		foreach( $data as $category_id ) {
-			$q  = 'INSERT INTO `'.$table.'` ';
-			$q .= '('.$fieldId.','.$fieldData.') ';
-			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
-			$db->setQuery($q); 
-			$db->query();
-		}
-	}
 	
 	/**
 	 * Delete all record ids selected

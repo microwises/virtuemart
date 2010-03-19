@@ -546,10 +546,8 @@ INSERT INTO `#__vm_shipping_rate` (`shipping_rate_id`, `shipping_rate_name`, `sh
 -- Dumping data for table `#__vm_shopper_group`
 --
 
-INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `shopper_group_discount`, `show_price_including_tax`, `default`) VALUES
-(5, 1, '-default-', 'This is the default shopper group.', '0.00', 1, 1),
-(6, 1, 'Gold Level', 'Gold Level Shoppers.', '0.00', 1, 0),
-(7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', '0.00', 0, 0);
+INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
+(5, 1, '-default-', 'This is the default shopper group.', 1));
 
 --
 -- Dumping data for table `#__vm_shopper_vendor_xref`

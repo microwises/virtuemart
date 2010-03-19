@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -58,26 +58,7 @@ AdminMenuHelper::startAdminArea();
         <?php echo JHTML::_('select.booleanlist',  'default', 'class="inputbox"', $this->shoppergroup->default); ?>                
       </td>
     </tr>   			
-		<tr>
-			<td width="110" class="key">
-				<label for="shopper_group_discount">
-					<?php echo JText::_('VM_SHOPPER_GROUP_FORM_DISCOUNT'); ?>:
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="shopper_group_discount" id="shopper_group_discount" size="5" value="<?php echo $this->shoppergroup->shopper_group_discount; ?>" />			
-			</td>
-		</tr>		
-		<tr>
-			<td width="110" class="key">
-				<label for="show_price_including_tax">
-					<?php echo JText::_( 'VM_ADMIN_CFG_PRICES_INCLUDE_TAX' ); ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo JHTML::_('select.booleanlist', 'show_price_including_tax', 'class="inputbox"', $this->shoppergroup->show_price_including_tax); ?>				
-			</td>
-		</tr>
+
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">

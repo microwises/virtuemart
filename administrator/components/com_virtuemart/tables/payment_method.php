@@ -49,11 +49,11 @@ class TablePayment_method extends JTable
 	/** @var string Type of the paymentmethod */
 	var $paym_type       		 	= '';
 	/** @var string is paymentmethod a creditcard */
-	var $paym_is_creditcard			= '';
+	var $is_creditcard			= '';
 	/** @var string parameter of the paymentmethod*/
 	var $paym_params				= 0;
-	/** @var accepted creditcard */
-	var $paym_accepted_creditcard	= '';
+//	/** @var accepted creditcard */
+//	var $accepted_creditcard	= '';
 	/** @var string extra information to hold with the paymentmethod */
 	var $paym_extra_info			= '';
 	/** @var blob secret key of the paymentmethod */
@@ -81,8 +81,8 @@ class TablePayment_method extends JTable
 	 * @author Max Milbers
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
-	{
+	function check() {
+		
         if (!$this->paym_name) {
 			$this->setError(JText::_('Paymentmethods records must contain a name.'));
 			return false;

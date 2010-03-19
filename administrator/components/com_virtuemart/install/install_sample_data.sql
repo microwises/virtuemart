@@ -166,6 +166,13 @@ INSERT IGNORE INTO `#__vm_product_price` (`product_price_id`, `product_id`, `pro
 (15, 16, '59.99000', 'USD', 0, 0, 962351259, 962351259, 5, 0, 0),
 (16, 7, '2.99000', 'USD', 0, 0, 966589140, 966589140, 6, 0, 0);
 
+--
+-- Dumping data for table `#__vm_shopper_group`
+--
+
+INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
+(6, 1, 'Gold Level', 'Gold Level Shoppers.', 0),
+(7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0);
 
 --
 -- Dumping data for table `#__vm_tax_rate`

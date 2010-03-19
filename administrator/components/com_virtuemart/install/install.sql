@@ -525,9 +525,9 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `is_creditcard` tinyint(1) NOT NULL default '0',
   `published` tinyint(1) NOT NULL default '0',
   `accepted_creditcards` varchar(128) NOT NULL default '',
-  `extra_info` text NOT NULL default '',
-  `secret_key` blob NOT NULL default '',
-  `params` text NOT NULL default '',
+  `paym_extra_info` text NOT NULL default '',
+  `paym_secret_key` blob NOT NULL default '',
+  `paym_params` text NOT NULL default '',
   `shared` TINYINT( 1 ) NOT NULL DEFAULT '1' COMMENT 'valide for all vendors?',
   PRIMARY KEY  (`paym_id`),
   KEY `idx_payment_method_vendor_id` (`paym_vendor_id`),
@@ -566,27 +566,41 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
 -- --------------------------------------------------------
 
 
+
+--
+-- Table structure for table `#__vm_calc_shoppergroup_xref`
+--
+
+--CREATE TABLE IF NOT EXISTS `#__vm_plugins_shoppergroup_xref` (
+--  `id` int(11) NOT NULL auto_increment,
+--  `ext_id` int(11) NOT NULL default '0',
+--  `ext_shopper_group` int(11) NOT NULL default '0',
+--  PRIMARY KEY  (`id`)
+--) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
 --
 -- Table structure for table `#__vm_plugins`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(100) NOT NULL default '',
-  `element` varchar(100) NOT NULL default '',
-  `folder` varchar(100) NOT NULL default '',
-  `ordering` int(11) NOT NULL default '0',
-  `published` tinyint(1) NOT NULL default '0',
-  `iscore` tinyint(3) NOT NULL default '0',
-  `vendor_id` tinyint(3) NOT NULL default '1',
-  `shopper_group_id` int(10) unsigned NOT NULL,
-  `checked_out` int(11) unsigned NOT NULL default '0',
-  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `params` text NOT NULL,
-  `secrets` blob NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `idx_folder` (`published`,`vendor_id`,`folder`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+-- CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
+--   `id` int(11) NOT NULL auto_increment,
+--   `name` varchar(100) NOT NULL default '',
+--   `element` varchar(100) NOT NULL default '',
+--   `folder` varchar(100) NOT NULL default '',
+--   `ordering` int(11) NOT NULL default '0',
+--   `published` tinyint(1) NOT NULL default '0',
+--   `iscore` tinyint(3) NOT NULL default '0',
+--   `vendor_id` tinyint(3) NOT NULL default '1',
+--   `shopper_group_id` int(10) unsigned NOT NULL,
+--   `checked_out` int(11) unsigned NOT NULL default '0',
+--   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+--   `params` text NOT NULL,
+--   `secrets` blob NOT NULL,
+--   PRIMARY KEY  (`id`),
+--   KEY `idx_folder` (`published`,`vendor_id`,`folder`)
+-- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -955,8 +969,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
   `vendor_id` int(11) default NULL,
   `shopper_group_name` varchar(32) default NULL,
   `shopper_group_desc` text,
-  `shopper_group_discount` decimal(5,2) NOT NULL default '0.00',
-  `show_price_including_tax` tinyint(1) NOT NULL default '1',
   `default` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`shopper_group_id`),
   KEY `idx_shopper_group_vendor_id` (`vendor_id`),

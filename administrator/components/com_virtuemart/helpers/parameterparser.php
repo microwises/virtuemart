@@ -31,8 +31,9 @@ class FileUtilities{
 	 * @return string
 	 */
 	function list_available_classes( $name, $preselected='payment' ) {
-
-		$files = self::vmReadDirectory( ADMINPATH . "plugins/payment/", ".php$", true, true);
+		
+//		$files = self::vmReadDirectory( ADMINPATH . "plugins/payment/", ".php$", true, true);
+		$files = self::vmReadDirectory( JPATH_PLUGINS.DS.'vmpayment', ".php$", true, true);
 		$list = array();
         foreach ($files as $file) {
             $file_info = pathinfo($file);
@@ -102,6 +103,7 @@ class FileUtilities{
 	* @param boolean True if to prepend the full path to the file name
 	*/
 	function vmReadDirectory( $path, $filter='.', $recurse=false, $fullpath=false  ) {
+
 		$arr = array();
 		if (!@is_dir( $path )) {
 			return $arr;
@@ -423,7 +425,7 @@ class vmParameters {
 			//$result[1] = call_user_func_array( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
 			//$userFuncName = $this . '_form_' . $type;
 			//$result[1] = call_user_func( $userFuncName, $name, $value, $param, $control_name, $label );
-			$result[1] = '';
+//			$result[1] = '';
 		} else {
 			$result[1] = _HANDLER . ' = ' . $type;
 		}

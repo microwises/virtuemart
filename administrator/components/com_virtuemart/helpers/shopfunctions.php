@@ -58,7 +58,7 @@ class ShopFunctions {
 	*/
 	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
 		$shopperModel = self::getModel('shoppergroup');
-		$shoppergrps = $shopperModel->getShopperGroups(true);
+		$shoppergrps = $shopperModel->getShopperGroups(false,true);
 		$attrs = '';
 		$name = 'shopper_group_name';
 		$idA = $id = 'shopper_group_id';

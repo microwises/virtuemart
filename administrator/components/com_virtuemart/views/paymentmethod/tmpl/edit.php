@@ -41,5 +41,6 @@ echo $pane->endPane();
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="paymentmethod" />
+<input type="hidden" name="paym_id" value="<?php echo $this->paym->paym_id; ?>" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

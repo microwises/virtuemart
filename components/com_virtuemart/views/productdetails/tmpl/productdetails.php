@@ -162,9 +162,11 @@ else { ?>
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					}
 					else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
-				
-					if ($this->auth["show_price_including_tax"] == 1) echo $this->product->product_price['salesPrice'];
-					else echo $this->product->product_price['priceWithoutTax'];
+					
+					if($this->product->product_price['salesPrice']) echo $this->product->product_price['salesPrice'];
+					if($this->product->product_price['priceWithoutTax']) echo $this->product->product_price['priceWithoutTax'];
+//					if ($this->auth["show_price_including_tax"] == 1) echo $this->product->product_price['salesPrice'];
+//					else echo $this->product->product_price['priceWithoutTax'];
 				}
 				?><br />
 			</td>

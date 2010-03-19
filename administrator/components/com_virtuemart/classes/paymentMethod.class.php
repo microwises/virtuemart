@@ -855,8 +855,9 @@ class vmPaymentMethod extends vmAbstractObject {
 	 * @return string
 	 */
 	function list_available_classes( $name, $preselected='payment' ) {
-		
-		$files = vmReadDirectory( ADMINPATH . "plugins/payment/", ".php$", true, true);
+		echo 'list_available_classes'.JPATH_PLUGINS . '"vmpayment'; die;
+//		$files = vmReadDirectory( ADMINPATH . "plugins/payment/", ".php$", true, true);
+		$files = vmReadDirectory( JPATH_PLUGINS . '"vmpayment'.DS, ".php$", true, true);
 		$array = array();
         foreach ($files as $file) { 
             $file_info = pathinfo($file);

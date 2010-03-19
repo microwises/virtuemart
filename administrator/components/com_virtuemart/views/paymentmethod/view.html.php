@@ -47,7 +47,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		if ($layoutName == 'edit') {
 
 			// Load the helper(s)
-			$this->loadHelper('adminMenu');
+//			$this->loadHelper('adminMenu');
 			$this->loadHelper('image');
 			$this->loadHelper('html');
 			$this->loadHelper('parameterparser');
@@ -60,43 +60,22 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$isNew = ($paym->paym_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('VM_PAYM_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('VM_PAYM_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
 			$this->assignRef('PaymentTypeList',self::renderPaymentTypesList($paym->paym_type));
-//			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
-			
 
-
-			/* Get the category tree */
-//			$categoryTree= null;
-//			if (isset($calc->calc_categories)){
-//				$calc_categories = $calc->calc_categories;
-//				$categoryTree = ShopFunctions::categoryListTree($calc_categories);
-//			}else{
-//				 $categoryTree = ShopFunctions::categoryListTree();
-//			}
-//			$this->assignRef('categoryTree', $categoryTree);
-
-			
-			/* Get the shoppergroup tree */
-//			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->calc_shopper_groups,True);
-//			$this->assignRef('shopperGroupList', $shopperGroupList);
-
-//			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
-//			$this->assignRef('countriesList', $countriesList);
-//			
-//			$statesList = ShopFunctions::renderStateList($calc->calc_states, $calc->calc_countries, 'country_id',True);
-//			$this->assignRef('statesList', $statesList);			
+			$shopperGroupList= ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups,True);
+			$this->assignRef('shopperGroupList', $shopperGroupList);
 
         }
         else {
@@ -138,8 +117,7 @@ class VirtuemartViewPaymentMethod extends JView {
 	}
 	
 	/**
-	 * Builds a list to choose the mathematical operations
-	 * When you want to add extra operations, look in helpers/calculationh.php for more information
+	 * Builds a list to choose the Payment type
 	 * 
 	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author 		Max Milbers

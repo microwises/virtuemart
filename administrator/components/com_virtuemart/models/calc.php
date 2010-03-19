@@ -167,83 +167,24 @@ class VirtueMartModelCalc extends JModel
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
-		else {
+	 	else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
 		foreach ($this->_data as $data){
 
-			/* Write the first 5 categories in the list */
-			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-			$db->setQuery($q);
-			$calcCategories = $db->loadResultArray();
-			if(isset($calcCategories)){
-				$calcCategoriesList='';
-				$i=0;
-				foreach ($calcCategories as $value) {
-					$q = 'SELECT category_name FROM #__vm_category WHERE category_id = "'.$value.'"';
-					$db->setQuery($q);
-					$categoryName = $db->loadResult();
-					$calcCategoriesList .= $categoryName. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->calcCategoriesList = substr($calcCategoriesList,0,-2);
-			}
-			
-			/* Write the first 5 shoppergroups in the list */
-			$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-			$db->setQuery($q);
-			$calcShoppers = $db->loadResultArray();
-			if(isset($calcShoppers)){
-				$calcShoppersList='';
-				$i=0;
-				foreach ($calcShoppers as $value) {
-					$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
-					$db->setQuery($q);
-					$shopperName = $db->loadResult();
-					$calcShoppersList .= $shopperName. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->calcShoppersList = substr($calcShoppersList,0,-2);
-			}
-			
-			/* Write the first 5 countries in the list */
-			$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-			$db->setQuery($q);
-			$calcShoppers = $db->loadResultArray();
-			if(isset($calcShoppers)){
-				$calcShoppersList='';
-				$i=0;
-				foreach ($calcShoppers as $value) {
-					$q = 'SELECT country_name FROM #__vm_country WHERE country_id = "'.$value.'"';
-					$db->setQuery($q);
-					$shopperName = $db->loadResult();
-					$calcShoppersList .= $shopperName. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->calcCountriesList = substr($calcShoppersList,0,-2);
-			}
-			
-			/* Write the first 5 states in the list */
-			$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id` = "'.$data->calc_id.'"';
-			$db->setQuery($q);
-			$calcShoppers = $db->loadResultArray();
-			if(isset($calcShoppers)){
-				$calcShoppersList='';
-				$i=0;
-				foreach ($calcShoppers as $value) {
-					$q = 'SELECT state_name FROM #__vm_state WHERE state_id = "'.$value.'"';
-					$db->setQuery($q);
-					$shopperName = $db->loadResult();
-					$calcShoppersList .= $shopperName. ', ';
-					$i++;
-					if($i>4) break;
-				}
-				$data->calcStatesList = substr($calcShoppersList,0,-2);
-			}
+		/* Write the first 5 categories in the list */
+		$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__vm_category','category_id');
+
+		/* Write the first 5 shoppergroups in the list */
+		$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__vm_calc_shoppergroup_xref','calc_rule_id',$data->calc_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+
+		/* Write the first 5 countries in the list */
+		$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__vm_country','country_id');
+
+		/* Write the first 5 states in the list */
+		$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
 
 		}
 //		echo (print_r($this->_data).'<br /><br />');
@@ -318,29 +259,31 @@ class VirtueMartModelCalc extends JModel
 			return false;
 		}
 //		echo print_r($data) ; die;
-		self::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category',$data["calc_id"],$data["calc_categories"]);
-		self::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group',$data["calc_id"],$data["shopper_group_id"]);
-		self::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country',$data["calc_id"],$data["country_id"]);
-		self::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state',$data["calc_id"],$data["state_id"]);
+
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		modelfunctions::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category',$data["calc_id"],$data["calc_categories"]);
+		modelfunctions::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group',$data["calc_id"],$data["shopper_group_id"]);
+		modelfunctions::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country',$data["calc_id"],$data["country_id"]);
+		modelfunctions::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state',$data["calc_id"],$data["state_id"]);
 		
 		return true;
 	}	
 
-	private function storeArrayData($table,$fieldId,$fieldData,$id,$data){
-		$db = JFactory::getDBO();
-		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
-		$db->setQuery($q);
-		$db->Query();
-
-		/* Store the new categories */
-		foreach( $data as $category_id ) {
-			$q  = 'INSERT INTO `'.$table.'` ';
-			$q .= '('.$fieldId.','.$fieldData.') ';
-			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
-			$db->setQuery($q); 
-			$db->query();
-		}
-	}
+//	private function storeArrayData($table,$fieldId,$fieldData,$id,$data){
+//		$db = JFactory::getDBO();
+//		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
+//		$db->setQuery($q);
+//		$db->Query();
+//
+//		/* Store the new categories */
+//		foreach( $data as $category_id ) {
+//			$q  = 'INSERT INTO `'.$table.'` ';
+//			$q .= '('.$fieldId.','.$fieldData.') ';
+//			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
+//			$db->setQuery($q); 
+//			$db->query();
+//		}
+//	}
 	
 	/**
 	 * Delete all record ids selected
@@ -350,22 +293,24 @@ class VirtueMartModelCalc extends JModel
      */ 	 
 	public function delete() 
 	{
-		$calcIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('calc');
- 
-    	foreach($calcIds as $calcId) {
-
-    		if (!$table->delete($calcId)) {
-        		$this->setError($table->getError());
-        		return false;
-    		}	
-        	else {
-        		//$this->setError('Could not remove country states!');
-        		return true;
-        	}
-    	}
- 
-    	return true;	
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::delete('cid','calc');
+//		$calcIds = JRequest::getVar('cid',  0, '', 'array');
+//    	$table = $this->getTable('calc');
+// 
+//    	foreach($calcIds as $calcId) {
+//
+//    		if (!$table->delete($calcId)) {
+//        		$this->setError($table->getError());
+//        		return false;
+//    		}	
+//        	else {
+//        		//$this->setError('Could not remove country states!');
+//        		return true;
+//        	}
+//    	}
+// 
+//    	return true;	
 	}	
 	
 	
@@ -378,15 +323,17 @@ class VirtueMartModelCalc extends JModel
      */ 	 
 	public function publish($publishId = false) 
 	{
-		$table = $this->getTable('calc');
-		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
-		
-        if (!$table->publish($calcIds, $publishId)) {
-			$this->setError($table->getError());
-			return false;        		
-        }		
-        
-		return true;		
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','calc');
+//		$table = $this->getTable('calc');
+//		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
+//		
+//        if (!$table->publish($calcIds, $publishId)) {
+//			$this->setError($table->getError());
+//			return false;        		
+//        }		
+//        
+//		return true;
 	}	
 
 	

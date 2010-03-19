@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport('joomla.application.component.view');
  *
  * @package	VirtueMart
  * @subpackage ShopperGroup
- * @author Markus Öhler
+ * @author Markus ï¿½hler
  */
 class VirtuemartViewShopperGroup extends JView {
 
@@ -37,26 +37,26 @@ class VirtuemartViewShopperGroup extends JView {
 
 		$model = $this->getModel();
 		//$vendorModel = $this->getModel('Vendor');
-
-		$shoppergroup = $model->getShopperGroup();
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($shoppergroup->shopper_group_id < 1);
 
-		if ($layoutName == 'edit') {
-		  if ($isNew) {
+		if ($layoutName == 'edit') {		
+			$shoppergroup = $model->getShopperGroup();
+			$isNew = ($shoppergroup->shopper_group_id < 1);
+			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
-		  } else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
-		  }
+			}
+		 
 		  $this->assignRef('shoppergroup',	$shoppergroup);
-		  //$this->assignRef('vendors',	$zoneModel->getShippingZoneSelectList());
-		}	else {
+		  
+		} else {
 			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL ' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
@@ -65,10 +65,10 @@ class VirtuemartViewShopperGroup extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
-			$shoppergroups = $model->getShopperGroups();
-			//$vendors = $vendorModel->getVendors());
+			$shoppergroups = $model->getShopperGroups(false, true);
+
 			$this->assignRef('shoppergroups',	$shoppergroups);
-			//$this->assignRef('vendors', $vendors);
+
 		}
 		parent::display($tpl);
   }
