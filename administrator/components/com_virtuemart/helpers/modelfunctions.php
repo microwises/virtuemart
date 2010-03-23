@@ -21,6 +21,24 @@ defined('_JEXEC') or die('Restricted access');
 
 class modelfunctions{
 
+	/**
+	 * Prepares the selection for the TreeLists
+	 * 
+	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+	 * @author Max Milbers
+	 * @param $value the selected values, may be single data or array
+	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
+	 */
+	function prepareTreeSelection($values){
+		if (!isset($values)){
+			return;
+		}
+		if (!is_array($values)) $values = array($values);
+		foreach ($values as $value) {
+			$values[$value]  = 1;
+		}
+		return $values;
+	}
 
 	/**
 	 * Stores arrays in a table

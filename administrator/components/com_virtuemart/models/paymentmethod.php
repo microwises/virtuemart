@@ -134,8 +134,8 @@ class VirtueMartModelPaymentmethod extends JModel
 		/* Add the accepted credit cards */
 		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
-		$this->_data->paym_creditcard = $db->loadResultArray();
-				
+		$this->_data->paym_creditcard = $db->loadResultArray();	
+		
   		return $this->_data;		
 	}    
     

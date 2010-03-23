@@ -32,32 +32,39 @@ defined('_JEXEC') or die('Restricted access');
       </td>
     </tr>
     <tr class="row0">
+      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_ELEMENT'); ?>:</td>
+      <td width="69%">
+      	<input type="text" class="inputbox" name="paym_element" value="<?php	echo $this->paym->paym_element;?>" size="4" />
+		<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_ELEMENT_TIP') ); ?>
+      </td>
+    </tr>
+    <tr class="row1">
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_CLASS_NAME'); ?>:</td>
       <td width="69%"><?php
       	echo FileUtilities::list_available_classes( 'element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
       	echo JHTML::tooltip( JText::_('VM_PAYMENT_CLASS_NAME_TIP') ); ?>
       </td>
     </tr>
-    <tr class="row1"> 
+    <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->PaymentTypeList ?>
       </td>
     </tr>
-    <tr class="row0"> 
+    <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
       <td width="69%" ><?php
 		echo $this->shopperGroupList ?>
       </td>
     </tr>
-    <tr class="row1"> 
+    <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_DISCOUNT') ?>:</td>
       <td width="69%" >
       <input type="text" class="inputbox" name="discount" value="<?php	echo $this->paym->discount;?>" size="4" />
 		<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_TIP') ); ?>
       </td>
     </tr>
-	<tr class="row0"> 
+	<tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
       <td width="69%" >
 		<?php
@@ -65,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');
 		echo JHTML::tooltip( JText::_('VM_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?>
       </td>
     </tr>
-	<tr class="row1"> 
+	<tr class="row0"> 
       	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT') ?>:</td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_max_amount" value="<?php	echo $this->paym->discount_max_amount;?>" size="4" />
@@ -73,14 +80,14 @@ defined('_JEXEC') or die('Restricted access');
       </td>
     </tr>
     </tr>
-        <tr class="row0"> 
+        <tr class="row1"> 
       	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
       	<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT_TIP') ); ?>
       </td>
     </tr>
-    <tr class="row1"> 
+    <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />

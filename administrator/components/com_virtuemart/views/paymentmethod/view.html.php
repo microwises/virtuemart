@@ -96,25 +96,7 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		parent::display($tpl);
 	}
-	
-	/**
-	 * Prepares the selection for the TreeLists
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param $value the selected values, may be single data or array
-	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
-	 */
-	function prepareTreeSelection($values){
-		if (!isset($values)){
-			return;
-		}
-		if (!is_array($values)) $values = array($values);
-		foreach ($values as $value) {
-			$values[$value]  = 1;
-		}
-		return $values;
-	}
+
 	
 	/**
 	 * Builds a list to choose the Payment type
@@ -126,7 +108,8 @@ class VirtuemartViewPaymentMethod extends JView {
 	 */
 	 
 	function renderPaymentTypesList($selected){
-		$selected = self::prepareTreeSelection($selected);
+		$this->loadHelper('modelfunctions');
+		$selected = modelfunctions::prepareTreeSelection($selected);
 		$list = array(
 		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
 		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),

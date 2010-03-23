@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
-
+//		echo 'Wie ist das mit dem Pfad? '.JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml';
 //        if( $db->sf('element') ) {
 		if($this->paym->paym_element){
 //	        $parameters = new vmParameters($db->f('params'), ADMINPATH.'plugins/payment/'.basename($db->f('element')).'.xml', 'payment' );
@@ -39,7 +39,7 @@ function check() {
       if (document.getElementById('accepted_creditcards_store').innerHTML != '')
         document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
       else
-        document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $db->f("accepted_creditcards") ); ?>';
+        document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->paym_creditcard ); ?>';
    }
    else {
     try {
@@ -51,5 +51,5 @@ function check() {
   }
 }
 check();
-</script>
-*/
+</script>*/
+?>

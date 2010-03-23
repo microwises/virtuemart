@@ -34,13 +34,13 @@
 		<param type="text" name="PAYPAL_EMAIL" label="PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL"
              default="username@email.com" description="PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN" />
         <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS" description="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN"
-			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="C"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="C"
 			/>
         <param name="PAYMENT_PENDING_STATUS" label="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING" description="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN"
-			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="P"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="P"
 			/>
         <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED" description="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN"
-			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="X"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="X"
 			/>
 		<param name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED" description="PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED_EXPLAIN">
 			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>

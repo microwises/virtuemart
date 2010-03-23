@@ -89,6 +89,24 @@ class VirtuemartControllerOrders extends JController {
 	}
 
 	/**
+	* Shows the order details
+	*/
+	public function editOrderStatus() {
+		/* Create the view object */
+		$view = $this->getView('orders', 'html');
+
+		/* Default model */
+		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
+
+		/* Set the layout */
+		$view->setLayout('orders_editstatus');
+
+		/* Now display the view. */
+		$view->display();
+	}
+
+
+	/**
 	* Cancellation, redirect to main order list
 	*
 	* @author RolandD

@@ -120,24 +120,6 @@ class VirtuemartViewCalc extends JView {
 		parent::display($tpl);
 	}
 	
-	/**
-	 * Prepares the selection for the TreeLists
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param $value the selected values, may be single data or array
-	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
-	 */
-	function prepareTreeSelection($values){
-		if (!isset($values)){
-			return;
-		}
-		if (!is_array($values)) $values = array($values);
-		foreach ($values as $value) {
-			$values[$value]  = 1;
-		}
-		return $values;
-	}
 	
 	/**
 	 * Builds a list to choose the Entrypoints
@@ -153,8 +135,8 @@ class VirtuemartViewCalc extends JView {
 	function renderEntryPointsList($selected){
 
 		//Entrypoints array
-
-		$selected = self::prepareTreeSelection($selected);
+		$this->loadHelper('modelfunctions');
+		$selected = modelfunctions::prepareTreeSelection($selected);
 		//MathOp array
 		$entryPoints = array(
 		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAX')),
@@ -182,7 +164,8 @@ class VirtuemartViewCalc extends JView {
 	 */
 	 
 	function renderMathOpList($selected){
-		$selected = self::prepareTreeSelection($selected);
+		$this->loadHelper('modelfunctions');
+		$selected = modelfunctions::prepareTreeSelection($selected);
 		//MathOp array
 		$mathOps = array(
 		'0' => array('calc_value_mathop' => '+', 'calc_value_mathop_name' => '+'),

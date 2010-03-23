@@ -30,15 +30,33 @@ class VmHTML{
 	 * @return string
 	 */
 	function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=false ) {
+
 		if( defined( $quote_style )) {
 			$quote_style = constant($quote_style);
 		}
 		if( $use_entities ) {
-			$string = @htmlentities( $string, constant($quote_style), vmGetCharset() );
+			$string = @htmlentities( $string, constant($quote_style), self::vmGetCharset() );
 		} else {
-			$string = @htmlspecialchars( $string, $quote_style, vmGetCharset() );
+			$string = @htmlspecialchars( $string, $quote_style, self::vmGetCharset() );
 		}
 		return $string;
+	}
+
+
+	/**
+	 * Returns the charset string from the global _ISO constant
+	 *
+	 * @return string UTF-8 by default
+	 * @since 1.0.5
+	 */
+	function vmGetCharset() {
+		$iso = explode( '=', @constant('_ISO') );
+		if( !empty( $iso[1] )) {
+			return $iso[1];
+		}
+		else {
+			return 'UTF-8';
+		}
 	}
 
     /**
@@ -77,35 +95,98 @@ class VmHTML{
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
 	 */	
-	function selectList($name, $value, &$arr, $size=1, $multiple="", $extra="") {
-		$html = '';
-		if( empty( $arr ) ) {
-			$arr = array();
-		}
-		$html = "<select class=\"inputbox\" name=\"$name\" size=\"$size\" $multiple $extra>\n";
+	function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="") {
 
-		
+		$html = '';
+		if( empty( $arrIn ) ) {
+			$arr = array();
+		} else {
+			if(!is_array($arrIn)){
+	        	 $arr=array($arrIn);
+	        } else {
+	        	 $arr=$arrIn;
+	        }			
+		}
+
+        
+		$html = '<select class="inputbox" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.'>';
+
 		while (list($key, $val) = each($arr)) {
+//		foreach ($arr as $key=>$val){
 			$selected = "";
 			if( is_array( $value )) {
 				if( in_array( $key, $value )) {
-					$selected = "selected=\"selected\"";
+					$selected = 'selected="selected"';
 				}
 			}
 			else {
 				if(strtolower($value) == strtolower($key) ) {
-					$selected = "selected=\"selected\"";
+					$selected = 'selected="selected"';
 				}
 			}
-			$html .= "<option value=\"$key\" $selected>".self::shopMakeHtmlSafe($val);
-			$html .= "</option>\n";
+
+			$html .= '<option value="'.$key.'" '.$selected.'>'.self::shopMakeHtmlSafe($val);
+			$html .= '</option>';
+
 		}
 
-		$html .= "</select>\n";
-		
+		$html .= '</select>';
+
 		return $html;
 	}
 	
+	
+	/**
+	 * 
+	 */
+    function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+//    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
+        
+        echo '<br />$tag_name '.$tag_name;
+        echo '<br />$tag_attribs '.$tag_attribs;
+        echo '<br />$key '.$key;
+        echo '<br />$text '.$text;
+        echo '<br />$selected '.$selected;
+        if(empty($arrIn)){
+        	 return 'Error selectListParamParser no first argument given';
+        }
+        if(!is_array($arrIn)){
+        	 $arr=array($arrIn);
+        } else {
+        	 $arr=$arrIn;
+        }
+        reset( $arr );
+        $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
+        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('VM_SELECT')."</option>";
+        $n=count( $arr );
+        for ($i=0; $i < $n; $i++ ) {
+        	echo '<br />Watn isn hier loas $arr[$i] '.$arr[$i].' und $text '.$text.'<br />';
+                $k = stripslashes($arr[$i]->$key);
+                $t = stripslashes($arr[$i]->$text);
+                $id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+
+                $extra = '';
+                $extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+                if (is_array( $selected )) {
+                        foreach ($selected as $obj) {
+                                $k2 = stripslashes($obj->$key);
+                                if ($k == $k2) {
+                                        $extra .= " selected=\"selected\"";
+                                        break;
+                                }
+                        }
+                } else {
+                        $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
+                }
+                $html .= "\n\t<option value=\"".$k."\"$extra>";
+				if( $t[0] == '_' ) $t = substr( $t, 1 );
+				$html .= JText::_($t);
+                $html .= "</option>";
+        }
+        $html .= "\n</select>\n";
+        return $html;
+	}
+        
 	/**
 	 * Creates a Radio Input List
 	 *

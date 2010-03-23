@@ -1208,6 +1208,7 @@ class vmCommonHTML {
                 $html .= "\n</select>\n";
                 return $html;
         }
+        
         function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
                 
                 reset( $arr );

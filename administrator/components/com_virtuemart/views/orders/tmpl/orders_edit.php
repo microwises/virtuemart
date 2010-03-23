@@ -90,7 +90,7 @@ $payment = $this->order['payment'];
 		    ?>
 		    <tr>
 			<td colspan="4">
-			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&tmpl=component&task=updateOrderItemStatus'); ?>
+			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&order_id='.$this->orderbt->order_id.'&tmpl=component&task=editOrderStatus'); ?>
 			    <a href="<?php echo $statusLink; ?>" class="modal">
 				<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "Update Status"); ?>
 				Update Status

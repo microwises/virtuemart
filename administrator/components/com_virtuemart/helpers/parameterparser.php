@@ -32,7 +32,6 @@ class FileUtilities{
 	 */
 	function list_available_classes( $name, $preselected='payment' ) {
 		
-//		$files = self::vmReadDirectory( ADMINPATH . "plugins/payment/", ".php$", true, true);
 		$files = self::vmReadDirectory( JPATH_PLUGINS.DS.'vmpayment', ".php$", true, true);
 		$list = array();
         foreach ($files as $file) {
@@ -325,19 +324,24 @@ class vmParameters {
 	* @return string HTML
 	*/
 	function render( $name='params' ) {
-		
+//		echo '<br />ParameterParser Render with params: '.$name;
 		if ($this->_path) {
+
 			if (!is_object( $this->_xmlElem )) {
-				require_once( CLASSPATH . 'simplexml.php' );
+				require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'simplexml.php');
 
 				$xmlDoc = new vmSimpleXML();
 	
-				if ($xmlDoc->loadFile( $this->_path) !== false ) {
-					$root =& $xmlDoc->document;
-
+				if ($xmlDoc->loadFile( $this->_path) !== false) {
+					echo '<br /> File loaded '.$this->_path;
+					$root = $xmlDoc->document;
+					
 					$tagName = $root->name();
+
 					if ( $root->attributes('type') == $this->_type) {
-						if ($params = &$root->getElementByPath( '/params' )) {
+
+						if ($params = $root->getElementByPath( '/params' )) {
+							
 							$this->_xmlElem =& $params;
 						}
 					}
@@ -346,7 +350,7 @@ class vmParameters {
 		}
 		
 		if (is_object( $this->_xmlElem )) {
-			echo 'dat xmlElem ist ein object';
+
 			$html = array();
 			$html[] = '<table width="100%" class="adminform">';
 
@@ -359,29 +363,29 @@ class vmParameters {
 
 			//$params = mosParseParams( $row->params );
 			$this->_methods = get_class_methods( get_class( $this ) );
-			echo 'Jetzt kommt die foreach';
+
 			$i=0;
 			foreach ($element->_children as $param) {
-				echo ' Bin bei runde '.$i++;;
+
 				$result = $this->renderParam( $param, $name );
 				$html[] = '<tr>';
 
 				$html[] = '<td width="40%" class="labelcell"><span class="editlinktip">' . $result[0] . '</span></td>';
-				$html[] = '<td>' . $result[1] . '</td>';
+				$html[] = '<td>' . $result[1] . $result[2].'</td>';
 
 				$html[] = '</tr>';
 			}
 			$html[] = '</table>';
-			echo 'fertig mit foreach';
+
 			if (count( $element->_children ) < 1) {
 				$html[] = "<tr><td colspan=\"2\"><i>" . _NO_PARAMS . "</i></td></tr>";
 			}
-			echo 'return implode';
 			return implode( "\n", $html );
 		} else {
 			return "<textarea name=\"$name\" cols=\"40\" rows=\"10\" class=\"text_area\">$this->_raw</textarea>";
 		}
 	}
+	
 /**
 * @param object A param tag node
 * @param string The control name
@@ -401,9 +405,10 @@ class vmParameters {
 		
 		$value = $this->get( $name, $param->attributes( 'default' ) );
 		if( $param->attributes( 'description') ) {
+			echo'Found description ';
 			$description = JText::_($param->attributes( 'description'));
 		} else {
-			$description = '';
+			$description = 'No description found';
 		}
 
 		$result[0] = $label ? $label : $name;
@@ -411,32 +416,26 @@ class vmParameters {
 		if ($type == 'spacer' || $type == 'checkbox') {
 			$result[0] = '&nbsp;';
 		} else {
-			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
+//			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
+			$result[0] = $description;
 		}
-		//echo ' renderParam result0 '.$result[0];
 
 		if (in_array( '_form_' . $type, $this->_methods )) {
-			echo ' CALL OF user_func type  '.$type;
-			//original line,... which throws an exception, the first parameter of this function should be the function name afaik
-			//so the given array is a bit strange.
+
 			$result[1] =  call_user_func( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
-			//This function throws notices, but seems to "work" but the result maybe not the desired one
-			echo ' and running ....     '; 
-			//$result[1] = call_user_func_array( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
-			//$userFuncName = $this . '_form_' . $type;
-			//$result[1] = call_user_func( $userFuncName, $name, $value, $param, $control_name, $label );
-//			$result[1] = '';
+
 		} else {
 			$result[1] = _HANDLER . ' = ' . $type;
 		}
 
 		if ( $description ) {
-			$result[2] = JHTML::tooltip( $description, $result[0] );
-			$result[2] = '';
+//			$result[2] = JHTML::tooltip( $description, $result[0] );
+			$result[2] = JHTML::tooltip( $description);
+//			$result[2] =  $description;
 		} else {
 			$result[2] = '';
 		}
-		//echo ' renderParam FINALresult0return '.$result[1];
+
 		return $result;
 	}
 	/**
@@ -532,6 +531,7 @@ class vmParameters {
 
 		return VmHTML::radioList( $control_name .'['. $name .']', $value, $options );
 	}
+	
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
@@ -540,8 +540,9 @@ class vmParameters {
 	* @return string The html for the element
 	*/
 	function _form_table_data_list( $name, $value, &$node, $control_name ) {
-		$db = JFactory::getDBO();
-		
+
+		$db = JFactory::getDBO();	
+
 		$table = $node->attributes('table');
 		$condition = $node->attributes('sql_condition');
 		$valuefield = $node->attributes('valuefield');
@@ -558,13 +559,9 @@ class vmParameters {
 		if( $orderfield ) {
 			$query .= "\n ORDER BY `".$db->getEscaped($orderfield)."` ".$sorting;
 		}
-		
-		$db->query( $query );
+		$db->setQuery($query);
 		$array = $db->loadResultArray();
-//		$array = array('' => JText::_('VM_SELECT'));
-//		while( $db->next_record() ) {
-//			$array[$db->f($valuefield)] = $db->f($textfield);
-//		}
+
 		
 		if( $multiselect == '1' ) {
 			$multiple = 'multiple="multiple"';
@@ -573,8 +570,13 @@ class vmParameters {
 			$multiple = '';
 			$size = 1;
 		}
+		$name = ''. $control_name .'['. $name .']';
+//		return JHTML::_('Select.genericlist', $array, $name, $multiple, $name, $name );
+
 		return VmHTML::selectList( ''. $control_name .'['. $name .']', $value, $array, $size, $multiple, 'class="inputbox"'  );
 	}
+
+	
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
