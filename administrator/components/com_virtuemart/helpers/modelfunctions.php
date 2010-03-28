@@ -67,7 +67,7 @@ class modelfunctions{
 	}
 	
 	/**
-	 * Builds a list for information (not chooseable)
+	 * Builds an enlist for information (not chooseable)
 	 * @author Max Milbers
 	 * 
 	 * @param $fieldnameXref datafield for the xreftable, where the name is stored

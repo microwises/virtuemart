@@ -51,7 +51,7 @@ class TablePayment_method extends JTable
 	/** @var string is paymentmethod a creditcard */
 	var $is_creditcard			= '';
 	/** @var string parameter of the paymentmethod*/
-	var $paym_params				= 0;
+	var $params				= 0;
 //	/** @var accepted creditcard */
 //	var $accepted_creditcard	= '';
 	/** @var string extra information to hold with the paymentmethod */

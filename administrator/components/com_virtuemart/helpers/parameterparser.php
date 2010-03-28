@@ -133,240 +133,58 @@ class FileUtilities{
 	
 }
 
-class vmParameters {
-	/** @var object */
-	var $_params 	= null;
-	/** @var string The raw params string */
-	var $_raw 		= null;
-	/** @var string Path to the xml setup file */
+class vmParameters extends JParameter{
+
+//	/** @var string Path to the xml setup file */
 	var $_path 		= null;
-	/** @var string The type of setup file */
+//	/** @var string The type of setup file */
 	var $_type 		= null;
-	/** @var object The xml params element */
-	var $_xmlElem 	= null;
 
+	var $_group ='_default';
+	/**
+	 * Constructor
+	 *
+	 * @access	protected
+	 * @param	string The raw parms text
+	 * @param	string Path to the xml setup file
+	 * @since	1.5
+	 */
+	function __construct($data, $path = '', $type='component')
+	{
+		parent::__construct($data,$path);
+
+		$this->_type = $type;
+		$this->_raw = $data;
+
+	}
 	
-	/**
-	* Constructor
-	* @param string The raw parms text
-	* @param string Path to the xml setup file
-	* @var string The type of setup file
-	*/
-	function vmParameters( $text, $path='', $type='component' ) {
-		$this->_params 	= $this->parse( $text );
-		$this->_raw 	= $text;
-		$this->_path 	= $path;
-		$this->_type 	= $type;
-	}
 
-	/**
-	 * Returns the params array
-	 * @return object
-	 */
-	function toObject() {
-		return $this->_params;
-	}
 
-	/**
-	 * Returns a named array of the parameters
-	 * @return object
-	 */
-	function toArray() {
-		return vmObjectToArray( $this->_params );
-	}
-
-	/**
-	* @param string The name of the param
-	* @param string The value of the parameter
-	* @return string The set value
-	*/
-	function set( $key, $value='' ) {
-		$this->_params->$key = $value;
-		return $value;
-	}
-	/**
-	* Sets a default value if not alreay assigned
-	* @param string The name of the param
-	* @param string The value of the parameter
-	* @return string The set value
-	*/
-	function def( $key, $value='' ) {
-		return $this->set( $key, $this->get( $key, $value ) );
-	}
-	/**
-	* @param string The name of the param
-	* @param mixed The default value if not found
-	* @return string
-	*/
-	function get( $key, $default='' ) {
-		if (isset( $this->_params->$key )) {
-			return $this->_params->$key === '' ? $default : $this->_params->$key;
-		} else {
-			return $default;
-		}
-	}
-	/**
-	* Parse an .ini string, based on phpDocumentor phpDocumentor_parse_ini_file function
-	* @param mixed The ini string or array of lines
-	* @param boolean add an associative index for each section [in brackets]
-	* @return object
-	*/
-	function parse( $txt, $process_sections = false, $asArray = false ) {
-		if (is_string( $txt )) {
-			$lines = explode( "\n", $txt );
-		} else if (is_array( $txt )) {
-			$lines = $txt;
-		} else {
-			$lines = array();
-		}
-		$obj = $asArray ? array() : new stdClass();
-
-		$sec_name = '';
-		$unparsed = 0;
-		if (!$lines) {
-			return $obj;
-		}
-		foreach ($lines as $line) {
-			// ignore comments
-			if ($line && $line[0] == ';') {
-				continue;
-			}
-			$line = trim( $line );
-
-			if ($line == '') {
-				continue;
-			}
-			if ($line && $line[0] == '[' && $line[strlen($line) - 1] == ']') {
-				$sec_name = substr( $line, 1, strlen($line) - 2 );
-				if ($process_sections) {
-					if ($asArray) {
-						$obj[$sec_name] = array();
-					} else {
-						$obj->$sec_name = new stdClass();
-					}
-				}
-			} else {
-				if ($pos = strpos( $line, '=' )) {
-					$property = trim( substr( $line, 0, $pos ) );
-
-					if (substr($property, 0, 1) == '"' && substr($property, -1) == '"') {
-						$property = stripcslashes(substr($property,1,count($property) - 2));
-					}
-					$value = trim( substr( $line, $pos + 1 ) );
-					if ($value == 'false') {
-						$value = false;
-					}
-					if ($value == 'true') {
-						$value = true;
-					}
-					if (substr( $value, 0, 1 ) == '"' && substr( $value, -1 ) == '"') {
-						$value = stripcslashes( substr( $value, 1, count( $value ) - 2 ) );
-					}
-
-					if ($process_sections) {
-						$value = str_replace( '\n', "\n", $value );
-						if ($sec_name != '') {
-							if ($asArray) {
-								$obj[$sec_name][$property] = $value;
-							} else {
-								$obj->$sec_name->$property = $value;
-							}
-						} else {
-							if ($asArray) {
-								$obj[$property] = $value;
-							} else {
-								$obj->$property = $value;
-							}
-						}
-					} else {
-						$value = str_replace( '\n', "\n", $value );
-						if ($asArray) {
-							$obj[$property] = $value;
-						} else {
-							$obj->$property = $value;
-						}
-					}
-				} else {
-					if ($line && trim($line[0]) == ';') {
-						continue;
-					}
-					if ($process_sections) {
-						$property = '__invalid' . $unparsed++ . '__';
-						if ($process_sections) {
-							if ($sec_name != '') {
-								if ($asArray) {
-									$obj[$sec_name][$property] = trim($line);
-								} else {
-									$obj->$sec_name->$property = trim($line);
-								}
-							} else {
-								if ($asArray) {
-									$obj[$property] = trim($line);
-								} else {
-									$obj->$property = trim($line);
-								}
-							}
-						} else {
-							if ($asArray) {
-								$obj[$property] = trim($line);
-							} else {
-								$obj->$property = trim($line);
-							}
-						}
-					}
-				}
-			}
-		}
-		return $obj;
-	}
 	/**
 	* @param string The name of the control, or the default text area if a setup file is not found
+	* @author Sören, Max Milbers
 	* @return string HTML
 	*/
 	function render( $name='params' ) {
-//		echo '<br />ParameterParser Render with params: '.$name;
-		if ($this->_path) {
 
-			if (!is_object( $this->_xmlElem )) {
-				require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'simplexml.php');
+		if (is_object( $this->_xml[$this->_group] )) {
 
-				$xmlDoc = new vmSimpleXML();
-	
-				if ($xmlDoc->loadFile( $this->_path) !== false) {
-					echo '<br /> File loaded '.$this->_path;
-					$root = $xmlDoc->document;
-					
-					$tagName = $root->name();
-
-					if ( $root->attributes('type') == $this->_type) {
-
-						if ($params = $root->getElementByPath( '/params' )) {
-							
-							$this->_xmlElem =& $params;
-						}
-					}
-				}
-			}
-		}
-		
-		if (is_object( $this->_xmlElem )) {
-
+			$params = $this->getParams($name);
 			$html = array();
 			$html[] = '<table width="100%" class="adminform">';
 
-			$element = $this->_xmlElem;
+			$element = $this->_xml[$this->_group];
 
 			if ($description = @$element->attributes( 'description')) {
 				// add the params description to the display
 				$html[] = '<tr><td colspan="2">' . $description . '</td></tr>';
 			}
 
-			//$params = mosParseParams( $row->params );
 			$this->_methods = get_class_methods( get_class( $this ) );
-
+			
+		
 			$i=0;
 			foreach ($element->_children as $param) {
-
 				$result = $this->renderParam( $param, $name );
 				$html[] = '<tr>';
 
@@ -382,11 +200,13 @@ class vmParameters {
 			}
 			return implode( "\n", $html );
 		} else {
-			return "<textarea name=\"$name\" cols=\"40\" rows=\"10\" class=\"text_area\">$this->_raw</textarea>";
+			return '<textarea name="$name" cols="40" rows="10" class="text_area">'.$this->_raw.'</textarea>';
 		}
 	}
 	
 /**
+ * 
+ * @author Sören, Max Milbers
 * @param object A param tag node
 * @param string The control name
 * @return array Any array of the label, the form element and the tooltip
@@ -403,9 +223,7 @@ class vmParameters {
 			$label = '';
 		}
 		
-		$value = $this->get( $name, $param->attributes( 'default' ) );
 		if( $param->attributes( 'description') ) {
-			echo'Found description ';
 			$description = JText::_($param->attributes( 'description'));
 		} else {
 			$description = 'No description found';
@@ -421,8 +239,11 @@ class vmParameters {
 		}
 
 		if (in_array( '_form_' . $type, $this->_methods )) {
-
+			
+			$value = $this->get($name);
+//			$value = $this->get($param->attributes('name'), $param->attributes('default'));
 			$result[1] =  call_user_func( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
+			
 
 		} else {
 			$result[1] = _HANDLER . ' = ' . $type;
@@ -438,6 +259,7 @@ class vmParameters {
 
 		return $result;
 	}
+	
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
@@ -562,7 +384,6 @@ class vmParameters {
 		$db->setQuery($query);
 		$array = $db->loadResultArray();
 
-		
 		if( $multiselect == '1' ) {
 			$multiple = 'multiple="multiple"';
 			$size = 5; 
@@ -570,10 +391,8 @@ class vmParameters {
 			$multiple = '';
 			$size = 1;
 		}
-		$name = ''. $control_name .'['. $name .']';
-//		return JHTML::_('Select.genericlist', $array, $name, $multiple, $name, $name );
-
-		return VmHTML::selectList( ''. $control_name .'['. $name .']', $value, $array, $size, $multiple, 'class="inputbox"'  );
+		$name = $control_name .'['. $name .']';
+		return  VmHTML::selectList( $name, $value, $array, $size, $multiple, 'class="inputbox"'  );
 	}
 
 	
@@ -612,10 +431,9 @@ class vmParameters {
 	* @return string The html for the element
 	*/
 	function _form_filelist( $name, $value, &$node, $control_name ) {
-		global $mosConfig_absolute_path;
 
 		// path to images directory
-		$path 	= $mosConfig_absolute_path . $node->attributes( 'directory');
+		$path 	= JPATH_SITE . $node->attributes( 'directory');
 		$filter = $node->attributes( 'filter');
 		$files 	= vmReadDirectory( $path, $filter );
 

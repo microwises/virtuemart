@@ -118,7 +118,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		}
 
 		$this->setRedirect($redirection, $msg);
-}
+	}
 	/**
 	 * Handle the remove task
 	 *

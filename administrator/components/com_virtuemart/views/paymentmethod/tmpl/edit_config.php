@@ -18,12 +18,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
-//		echo 'Wie ist das mit dem Pfad? '.JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml';
-//        if( $db->sf('element') ) {
+
 		if($this->paym->paym_element){
-//	        $parameters = new vmParameters($db->f('params'), ADMINPATH.'plugins/payment/'.basename($db->f('element')).'.xml', 'payment' );
-	        $parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'payment' );
-	        echo $parameters->render();
+	        $parameters = new vmParameters($this->paym->params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
+	        echo $rendered = $parameters->render();
         }
         echo '<br />
 <strong>'.JText::_('VM_PAYMENT_EXTRAINFO').':';

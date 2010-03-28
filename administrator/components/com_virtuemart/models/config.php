@@ -236,7 +236,7 @@ class VirtueMartModelConfig extends JModel {
 	    $params->set('store_name', 'My Super Store');
 	    $params->set('currency', 'EUR');
 
-	    $q = "INSERT INTO jos_vm_config (config) VALUES(".$db->Quote($params->toString()).")";
+	    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
 	    $db->setQuery($q);
 	    $db->query();
 	    echo $db->getErrorMsg();

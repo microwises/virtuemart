@@ -126,6 +126,19 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_data = null;
   		}
 
+//		if($this->_data->params){
+////			echo '<br />Read: '.$this->_data->params;
+//			
+//			$this->_data->params = new JParameter($this->_data->params);
+////			echo '<br />done in param: <pre> '.print_r($this->_data->params).'</pre>';
+//		} else {
+//		    $this->_data->params = new JParameter('');
+////		    $q = "INSERT INTO `#__vm_config` (paym_params) VALUES(".$db->Quote($params->toString()).")";
+////		    $db->setQuery($q);
+////		    $db->query();
+////		    echo $db->getErrorMsg();	
+//		}
+		
 		/* Add the paymentmethod shoppergroups */
 		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
@@ -136,6 +149,24 @@ class VirtueMartModelPaymentmethod extends JModel
 		$db->setQuery($q);
 		$this->_data->paym_creditcard = $db->loadResultArray();	
 		
+			
+//			$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
+//			$db->setQuery($query);
+//			$config = $db->loadResult();
+//			if ($config) {
+//			    $params = new JParameter($config);
+//			}
+//			else {
+//			    $params = new JParameter('');
+//			    $params->set('store_name', 'My Super Store');
+//			    $params->set('currency', 'EUR');
+//		
+//			    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
+//			    $db->setQuery($q);
+//			    $db->query();
+//			    echo $db->getErrorMsg();
+//			}
+	
   		return $this->_data;		
 	}    
     
@@ -167,49 +198,63 @@ class VirtueMartModelPaymentmethod extends JModel
 				/* Write the first 5 shoppergroups in the list */
 $data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
 				
-//				$data->paymShoppersList='';
-//				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-//				$db->setQuery($q);
-//				$tempArray = $db->loadResultArray();
-//				if(isset($tempArray)){
-//					$paymShoppersList='';
-//					$i=0;
-//					foreach ($tempArray as $value) {
-//						$q = 'SELECT shopper_group_name FROM #__vm_shopper_group WHERE shopper_group_id = "'.$value.'"';
-//						$db->setQuery($q);
-//						$tmp = $db->loadResult();
-//						$paymShoppersList .= $tmp. ', ';
-//						$i++;
-//						if($i>4) break;
-//					}
-//					$data->paymShoppersList = substr($paymShoppersList,0,-2);
-//				}
-	
 				/* Write the first 5 accepted creditcards in the list */
 $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__vm_creditcard','creditcard_id');
-//				$data->paymCreditCardList='';
-//				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-//				$db->setQuery($q);
-//				$tempArray = $db->loadResultArray();
-//				if(isset($tempArray)){
-//					$paymCreditCardList='';
-//					$i=0;
-//					foreach ($tempArray as $value) {
-//						$q = 'SELECT creditcard_name FROM #__vm_creditcard WHERE creditcard_id = "'.$value.'"';
-//						$db->setQuery($q);
-//						$tmp = $db->loadResult();
-//						$paymCreditCardList .= $tmp. ', ';
-//						$i++;
-//						if($i>4) break;
-//					}
-//					$data->paymCreditCardList = substr($paymCreditCardList,0,-2);
-//				}
+
 			}
-//			echo (print_r($this->_data).'<br /><br />');
+
 		}
 		return $this->_data;
 	}
-    /**
+
+        
+	/**
+	 * Bind the post data to the paymentmethod tables and save it
+     *
+     * @author Max Milbers
+     * @return boolean True is the save was successful, false otherwise. 
+	 */
+    public function store() 
+	{
+		$table = $this->getTable('payment_method');
+
+		$data = JRequest::get('post');		
+
+		if(isset($data['params'])){
+			$db = JFactory::getDBO();
+			$params = new JParameter('');
+			$params->bind($data['params']);
+			$data['params'] = $params->toString();
+		}
+
+		// Bind the form fields to the calculation table
+		if (!$table->bind($data)) {		    
+			$this->setError($table->getError());
+			return false;
+		}
+
+		// Make sure the calculation record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;	
+		}
+		
+		// Save the country record to the database
+		if ($table->store()) {
+			$this->setError($table->getError());
+			return false;
+		}
+
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
+		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['paym_accepted_credit_card']);
+     
+     	die;
+		return true;
+	}	
+
+	
+	/**
      * Publish a field
      *
      * @author Max Milbers     
@@ -231,44 +276,6 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		return $href;
 	}
 	
-        
-	/**
-	 * Bind the post data to the paymentmethod tables and save it
-     *
-     * @author RickG, Max Milbers
-     * @return boolean True is the save was successful, false otherwise. 
-	 */
-    public function store() 
-	{
-		$table = $this->getTable('payment_method');
-
-		$data = JRequest::get('post');		
-
-		// Bind the form fields to the calculation table
-		if (!$table->bind($data)) {		    
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the calculation record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;	
-		}
-		
-		// Save the country record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
-		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['paym_accepted_credit_card']);
-
-		return true;
-	}	
-
 	
 	/**
 	 * Delete all record ids selected
