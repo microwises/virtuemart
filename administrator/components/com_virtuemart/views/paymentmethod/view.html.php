@@ -35,7 +35,8 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-
+		$this->loadHelper('Permissions');
+		
 		$model = $this->getModel('paymentmethod');
 
 		//@todo should be depended by loggedVendor
@@ -74,9 +75,11 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$this->assignRef('PaymentTypeList',self::renderPaymentTypesList($paym->paym_type));
 
-			$shopperGroupList= ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups,True);
+			$shopperGroupList= ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
 
+			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id,True);
+			$this->assignRef('vendorList', $vendorList);
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_PAYM_LIST_LBL' ), 'vm_countries_48' );

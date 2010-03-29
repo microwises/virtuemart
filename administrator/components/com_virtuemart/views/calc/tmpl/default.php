@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 			<?php if(Permissions::check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
-			</th><?php }?>						
+			</th><?php }?>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_DESCR' ); ?>
 			</th>

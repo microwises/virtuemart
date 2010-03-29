@@ -527,7 +527,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `accepted_creditcards` varchar(128) NOT NULL default '',
   `paym_extra_info` text NOT NULL default '',
   `paym_secret_key` blob NOT NULL default '',
-  `paym_params` text NOT NULL default '',
+  `params` text NOT NULL default '',
   `shared` TINYINT( 1 ) NOT NULL DEFAULT '1' COMMENT 'valide for all vendors?',
   PRIMARY KEY  (`paym_id`),
   KEY `idx_payment_method_vendor_id` (`paym_vendor_id`),

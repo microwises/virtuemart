@@ -101,6 +101,10 @@ class VirtuemartControllerCalc extends JController
 	 * @author Max Milbers, Jseros	 
 	 */	
 	public function save(){
+		
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$calcModel = $this->getModel('calc');
 		$cmd = JRequest::getCmd('task');
 
@@ -162,6 +166,9 @@ class VirtuemartControllerCalc extends JController
 	 */		
 	public function publish()
 	{
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(true)) {
 			$msg = JText::_('VM_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
@@ -181,6 +188,9 @@ class VirtuemartControllerCalc extends JController
 	 */		
 	function unpublish()
 	{
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(false)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');

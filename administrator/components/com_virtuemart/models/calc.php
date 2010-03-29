@@ -291,26 +291,10 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
-	public function delete() 
-	{
+	public function delete() {
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('cid','calc');
-//		$calcIds = JRequest::getVar('cid',  0, '', 'array');
-//    	$table = $this->getTable('calc');
-// 
-//    	foreach($calcIds as $calcId) {
-//
-//    		if (!$table->delete($calcId)) {
-//        		$this->setError($table->getError());
-//        		return false;
-//    		}	
-//        	else {
-//        		//$this->setError('Could not remove country states!');
-//        		return true;
-//        	}
-//    	}
-// 
-//    	return true;	
+
 	}	
 	
 	

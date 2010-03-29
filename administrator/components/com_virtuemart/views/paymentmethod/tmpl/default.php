@@ -51,6 +51,10 @@ AdminMenuHelper::startAdminArea();
 			<th width="60">
 				<?php echo JText::_( 'VM_PAYM_LIST_NAME' ); ?>
 			</th>
+			<?php if(Permissions::check( 'admin' )){ ?>
+			<th width="20">
+				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
+			</th><?php }?>
 			<th width="20">
 				<?php echo JText::_( 'VM_PAYM_ELEMENT' ); ?>
 			</th>
@@ -100,7 +104,11 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->paym_name; ?></a>
 				</td>
-
+				<?php if(Permissions::check( 'admin' )){?>				
+				<td align="left">
+					<?php echo JText::_($row->calc_vendor_id); ?>
+				</td>
+				<?php } ?>
 				<td>
 					<?php echo $row->paym_element; ?>
 				</td>

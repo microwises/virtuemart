@@ -93,5 +93,11 @@ defined('_JEXEC') or die('Restricted access');
         <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
     </tr>
+	<tr class="row0"> 
+      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_VENDOR') ?>:</td>
+      <td width="69%" ><?php
+		echo $this->vendorList ?>
+      </td>
+    </tr>
   </table>  
             

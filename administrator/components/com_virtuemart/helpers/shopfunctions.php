@@ -47,6 +47,41 @@ class ShopFunctions {
 		return $mailer;
 	}
 	
+	
+	/**
+	* Creates a Drop Down list of available Shopper Groups
+	*
+	* @author Max Milbers, RolandD
+	* @access public
+	* @param int $shopper_group_id the shopper group to pre-select
+	* @param bool $multiple if the select list should allow multiple selections 
+	* @return string HTML select option list
+	*/
+	public function renderVendorList($vendorId, $multiple = false) {
+
+//		$shopperModel = self::getModel('shoppergroup');
+//		$shoppergrps = $shopperModel->getVendors(false,true);
+		$db = JFactory::getDBO();
+		
+		$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
+		$db->setQuery($q);
+		$vendors = $db->loadResultArray();
+		
+		$attrs = '';
+		$name = 'shopper_group_name';
+		$idA = $id = 'shopper_group_id';
+
+		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
+		array_unshift($vendors, $emptyOption);
+			
+		if ($multiple){
+			$attrs = 'multiple="multiple"';
+			$idA .= '[]';
+		}
+		$listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId );
+		return $listHTML;
+	}
+	
 	/**
 	* Creates a Drop Down list of available Shopper Groups
 	*
