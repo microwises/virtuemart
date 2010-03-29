@@ -247,5 +247,24 @@ class VirtueMartModelAccountmaintenance extends JModel {
 			return True;
 		}
 	}
+	
+	/**
+	* Load all the shipping addresses 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return array of objects containing the shipping addresses
+	*/
+	public function getShippingAddresses() {
+		$db = JFactory::getDBO();
+		$auth = JRequest::getVar('auth');
+		$q = "SELECT *
+			FROM #__vm_user_info
+			WHERE address_type = 'ST'
+			AND user_id = ".$auth['user_id'];
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
 }
 ?>

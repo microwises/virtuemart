@@ -62,7 +62,7 @@ class VirtueMartViewAccountmaintenance extends JView {
 				
 				/* Load the user fields */
 				$fields = shopFunctions::getUserFields('account');
-				$userinfo = shopFunctions::getUserDetails($auth["user_id"],"",""," AND address_type='BT'");
+				$userinfo = shopFunctions::getUserDetails($auth['user_id'],"",""," AND address_type='BT'");
 				
 				/* Load the editor */
 				$editor = JFactory::getEditor(); 
@@ -73,6 +73,48 @@ class VirtueMartViewAccountmaintenance extends JView {
 				$this->assignRef('userinfo', $userinfo);
 				$this->assignRef('editor', $editor);
 				
+				break;
+			case 'accountshipping':
+				/* Set some path information */
+				$mainframe->setPageTitle(JText::_('VM_ACCOUNT_SHIPPING'));
+				$pathway->addItem(JText::_('ACCOUNTINFORMATION'), 'index.php?option=com_virtuemart&view=accountmaintenance');
+				$pathway->addItem(JText::_('SHIPPING'));
+				
+				/* Load the helpers */
+				$this->loadHelper('shopFunctions');
+				
+				/* Load the shipping addresses fields */
+				$shipping_addresses = $this->get('ShippingAddresses');
+				
+				/* Assign data */
+				$this->assignRef('shipping_addresses', $shipping_addresses);
+				break;
+			case 'addshipto':
+			case 'editshipto':
+				$mainframe->setPageTitle(JText::_('VM_ACCOUNT_SHIPPING'));
+				$pathway->addItem(JText::_('ACCOUNTINFORMATION'), 'index.php?option=com_virtuemart&view=accountmaintenance');
+				$pathway->addItem(JText::_('SHIPPING'), 'index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping');
+				$pathway->addItem(JText::_('SHIPPING_EDIT'));
+				
+				/* Load the helpers */
+				$this->loadHelper('shopFunctions');
+				
+				/* Handle NO_REGISTRATION */
+				$skip_fields = array();
+				if (VmConfig::get('vm_registration_type') == 'NO_REGISTRATION' ) {
+					// global $default;
+					// $default['email'] = $db->f('email');
+					$skip_fields = array( 'username', 'password', 'password2' );
+				}
+				
+				/* Load the user fields */
+				$fields = shopFunctions::getUserFields('shipping');
+				$userinfo = shopFunctions::getUserDetails($auth['user_id'],"",""," AND address_type='ST'");
+				
+				/* Assign data */
+				$this->assignRef('fields', $fields);
+				$this->assignRef('skipfields', $skip_fields);
+				$this->assignRef('userinfo', $userinfo);
 				break;
 			default:
 				/* Set some path information */

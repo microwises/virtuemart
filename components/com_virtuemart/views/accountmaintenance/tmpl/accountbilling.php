@@ -4,7 +4,7 @@
 * Account billing template
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage AccountMaintenance
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

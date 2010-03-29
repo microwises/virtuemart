@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage AccountMaintenance
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -32,6 +32,8 @@ class VirtueMartControllerAccountmaintenance extends JController
     
 	public function __construct() {
 		parent::__construct();
+		
+		$this->registerTask('addshipto', 'editshipto');
 	}
 	
 	public function Accountmaintenance() {
@@ -61,6 +63,44 @@ class VirtueMartControllerAccountmaintenance extends JController
 		
 		/* Set the layout */
 		$view->setLayout('accountbilling');
+		
+		/* Display it all */
+		$view->display();
+	}
+	
+	/**
+	* Modify the shipping address in front-end
+	* @author RolandD
+	*/
+	public function accountShipping() {
+		/* Create the view */
+		$view = $this->getView('accountmaintenance', 'html');
+	
+		/* Add the default model */
+		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+		
+		/* Set the layout */
+		$view->setLayout('accountshipping');
+		
+		/* Display it all */
+		$view->display();
+	}
+	
+	/**
+	* Send the user to the add/edit shipping address 
+	* 
+	* @author RolandD
+	* @access public
+	*/
+	public function editShipto() {
+		/* Create the view */
+		$view = $this->getView('accountmaintenance', 'html');
+	
+		/* Add the default model */
+		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+		
+		/* Set the layout */
+		$view->setLayout('accountshipping_edit');
 		
 		/* Display it all */
 		$view->display();
