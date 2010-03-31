@@ -103,8 +103,27 @@ class TableUser_info extends JTable {
 		}
 	}
 
-
-
-
+	/**
+	 * Overloaded delete() to delete a list of user_info_id's based on the user id
+	 * @var mixed id
+	 * @return boolean True on success
+	 */
+	function delete($id)
+	{
+		// TODO If $id is not numeric, assume it's a user_info_id. Validate if this is safe enough 
+		if (!is_numeric($id)) {
+			return (parent::delete($id));
+		}
+		// Implicit else
+		$db =& JFactory::getDBO();
+		$db->setQuery('DELETE from `#__vm_user_info` WHERE `user_id` = ' . $id);
+		if ($db->query() === false) {
+			$this->setError($db->getError());
+			return false;
+		}
+		return true;
+	}
+	
 }
-?>
+
+// No Closing tag

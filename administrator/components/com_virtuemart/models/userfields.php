@@ -37,15 +37,15 @@ class VirtueMartModelUserfields extends JModel {
 
 	/** @var integer Primary key */
 	var $_id;
-	/** @var objectlist order status data */
+	/** @var objectlist userfield data */
 	var $_data;
 	/** @var object paramater parsers */
 	var $_params;
 	/** @var array type=>fieldname with formfields that are saved as parameters */
 	var $reqParam;
-	/** @var integer Total number of order statuses in the database */
+	/** @var integer Total number of userfields in the database */
 	var $_total;
-	/** @var pagination Pagination for order status list */
+	/** @var pagination Pagination for userfieldlist */
 	var $_pagination;
 
 	/**
