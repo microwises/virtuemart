@@ -49,13 +49,13 @@ if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_p
 	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
 }
 
-global $VM_LANG, $vm_mainframe;
+global $VM_LANG;
 
 $tabs = new vmTabPanel(false,true,uniqid('all_in_one'));
 
 // In Joomla! 1.0 and Mambo we need to print the style and script declarations when option != com_virtuemart (called from a module)
 $print = !vmIsJoomla('1.5', '>=');
-$vm_mainframe->render($print);
+JFactory::getApplication()->render($print);
  
 $paneid = uniqid('all_in_one');
 $tabs->startPane($paneid);

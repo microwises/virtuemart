@@ -68,7 +68,7 @@ class calculationHelper{
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
-	function getProductPrices($productId,$catIds=0,$amount=0){
+	function getProductPrices($productId,$variant =0,$catIds=0,$amount=0){
 		
 //		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
@@ -109,6 +109,9 @@ class calculationHelper{
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
+		
+		//@TODO getVariant Modification Need method to get Variantmodification to adjust the basePrice;
+//		$basePriceShopCurrency=$this->getVariantModification;
 		$prices['basePrice']=$basePriceShopCurrency; //basePrice calculated in the shopcurrency
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
 		$prices['basePriceWithTax']=$basePriceWithTax; //basePrice with Tax
@@ -479,41 +482,49 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	function calculatePaymentPrice($code=0,$value=0.0,$cartVendorId=1){
 //		if (empty($code)) return 0.0; 
-		$code =2;
+		
+		$code=4;
 		$paymentCosts = 0.0;
-		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE '.
-			' `p`.`paym_id` = "'.$code.'" '.
-			' AND `p`.`published`="1" ' .
-			' AND (`p`.`paym_vendor_id`="'.$cartVendorId.'" OR `p`.`shared`="1" ) ';
-			if(!empty($this->_shopperGroupId)){
-//				' AND `s`.`paym_id`= "'.$this->_shopperGroupId.'" AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
-				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'"  AND `s`.`paym_id` = "'.$code.'" ';
-				echo 'Shoppergruppe: '.$this->_shopperGroupId;
-			}
-		$this->_db->setQuery($q);
-		$paymFields = $this->_db->loadAssocList();
+//		jimport('joomla.application.component.controller');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		echo 'Controller sollte geladen sein';
+
+		$model = new VirtueMartModelPaymentmethod;
+		$model->setId($code);
+		$paym = $model->getPaym();
+//		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE '.
+//			' `p`.`paym_id` = "'.$code.'" '.
+//			' AND `p`.`published`="1" ' .
+//			' AND (`p`.`paym_vendor_id`="'.$cartVendorId.'" OR `p`.`shared`="1" ) ';
+//			if(!empty($this->_shopperGroupId)){
+////				' AND `s`.`paym_id`= "'.$this->_shopperGroupId.'" AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
+//				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'"  AND `s`.`paym_id` = "'.$code.'" ';
+//				echo 'Shoppergruppe: '.$this->_shopperGroupId;
+//			}
+//		$this->_db->setQuery($q);
+//		$paymFields = $this->_db->loadAssocList();
 //		echo 'hmm '.print_r($paymFields);
 //		$discmax = 0.0;
 //		if(isset($paymFields['discount_max_amount'])) $discmax = $paymFields['discount_max_amount'];
 //		if(isset($paymFields['discount_min_amount'])) $discmin = $paymFields['discount_min_amount'];
 
-		if(!empty($paymFields['discount'])){
-			echo '<br />$paymFields["discount"] is NOT empty';
+		if(!empty($paym->discount)){
+			echo '<br />$paymFields->discount is NOT empty';
 			
-			$discmax = $paymFields['discount_max_amount'];
-			$discmin = $paymFields['discount_min_amount'];
+			$discmax = $paym->discount_max_amount;
+			$discmin = $paym->discount_min_amount;
 			//This must be secured and handled before the checkout can be finished
 			if($discmin <= $value){
-				if(isset($paymFields['discount_max_amount']) && $value<=$paymFields['discount_max_amount']){
-					if($paymFields['discount_is_percentage']){
-						$paymentCosts = $value * (1 -$paymFields['discount']/100);
+				if(isset($paym->discount_max_amount) && $value<=$paym->discount_max_amount){
+					if($paym->discount_is_percentage){
+						$paymentCosts = $value * (1 -$paym->discount/100);
 					}else{
-						$paymentCosts = $value - $paymFields['discount'];
+						$paymentCosts = $value - $paym->discount;
 					}
 				}
 			}
 		} else {
-			echo '<br />$paymFields["discount"] was EMPTY'; 
+			echo '<br />$paymFields->discount was EMPTY'; 
 		}
 		
 		return $paymentCosts;

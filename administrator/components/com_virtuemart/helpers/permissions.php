@@ -21,23 +21,47 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  *
  * @todo Further cleanup
  */
-class Permissions {
+class Permissions extends JObject{
 
 	/** @var array Contains all the user groups */ 
 	var $_user_groups;	
 	
+	/** @var user_id for the permissions*/
+	var $_user_id;		//$auth['user_id']
+
+	var $_show_prices; //$auth['show_prices']
+	
+	var $_db;
+
+	var $_perms;
+	
+	var $_is_registered_customer;
+	
+	static $_instance;
+	
 	public function __construct() {
+		
+		$this->_db = JFactory::getDBO();
 		$this->getUserGroups();
+		$this->doAuthentication();
+		
 	}
 	
+	function getInstance(){ 
+		if(!is_object(self::$_instance)){
+			self::$_instance = new Permissions();
+		}
+ 		return self::$_instance;
+      } 
+      
 	public function getUserGroups() {
 		if (empty($this->_user_groups)) {
-			$db = JFactory::getDBO();
+			$this->_db = JFactory::getDBO();
 			$q = ('SELECT `group_id`,`group_name`,`group_level` 
 					FROM `#__vm_auth_group` 
 					ORDER BY `group_level` ');
-			$db->setQuery($q);
-			$this->_user_groups = $db->loadObjectList('group_name');
+			$this->_db->setQuery($q);
+			$this->_user_groups = $this->_db->loadObjectList('group_name');
 		}
 		return $this->_user_groups;
 	}
@@ -57,7 +81,7 @@ class Permissions {
 	public function isRegisteredCustomer($user_id=0) {
 		if ($user_id == 0) return false;
 
-		$db = JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 		/* If the registration type is neither "no registration" nor "optional registration", 
 			there *must* be a related Joomla! user, we can join */
 		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
@@ -74,8 +98,8 @@ class Permissions {
 				WHERE #__vm_user_info.user_id='" . $user_id . "'  
 				AND #__vm_user_info.address_type='BT'";
 		}
-		$db->setQuery($q);
-		return $db->loadResult();
+		$this->_db->setQuery($q);
+		return $this->_db->loadResult();
 	}
 	
 	/**
@@ -86,93 +110,96 @@ class Permissions {
 	* @return array Authentication information
 	*/
 	function doAuthentication() {
-		$db = JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 		$session = JFactory::getSession();
 		$vmUser = JFactory::getUser();
-		$auth = array();
+//		$auth = array();
 		
 		if (VmConfig::get('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */
-			$auth['show_prices']  = $vmUser->authorize( 'virtuemart', 'prices' );	
+			$this->_show_prices  = $vmUser->authorize( 'virtuemart', 'prices' );	
 		}
 		else {
-			$auth['show_prices'] = 1;
+			$this->_show_prices = 1;
 		}
 		
 		/* Load the shoppr group values */
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
 		
 		/* User has already logged in */
-		if (!empty($vmUser->id) || !empty( $auth['user_id'])) {
+		if (!empty($vmUser->id) || !empty( $this->_user_id)) {
 			if( $vmUser->id > 0 ) {
-				$auth["user_id"]   = $vmUser->id;
-				$auth["username"] = $vmUser->username;
+				$this->_user_id   = $vmUser->id;
+//				$auth["username"] = $vmUser->username;
 			} 
-			else if(!empty($auth['user_id']) 
+			else if(!empty($this->_user_id) 
 					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
 					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') 
 			{
-				$auth["user_id"] = 0;
-				$auth["username"] = "demo";
+				$this->_user_id = 0;
+//				$auth["username"] = "demo";
 			}
 			
-			if (self::isRegisteredCustomer($auth["user_id"])) {
-				$q = "SELECT perms,first_name,last_name,country,zip 
+			if (self::isRegisteredCustomer($this->_user_id)) {
+//				$q = "SELECT perms,first_name,last_name,country,zip 
+//					FROM #__vm_user_info 
+//					WHERE user_id='".$this->_user_id."'";
+				$q = 'SELECT `perms`
 					FROM #__vm_user_info 
-					WHERE user_id='".$auth["user_id"]."'";
-				$db->setQuery($q); 
-				$row = $db->loadAssoc();
-	
-				$auth["perms"] = $row["perms"];
-				$auth["first_name"] = $row["first_name"];
-				$auth["last_name"] = $row["last_name"];
-				$auth["country"] = $row["country"];
-				$auth["zip"] = $row["zip"];
+					WHERE user_id="'.$this->_user_id.'"';
+				$this->_db->setQuery($q); 
+//				$row = $this->_db->loadAssoc();
+				$this->_perms = $this->_db->loadResult();
+
+//				$auth["perms"] = $row["perms"];
+//				$auth["first_name"] = $row["first_name"];
+//				$auth["last_name"] = $row["last_name"];
+//				$auth["country"] = $row["country"];
+//				$auth["zip"] = $row["zip"];
 				
 				/* We must prevent that Administrators or Managers are 'just' shoppers */
-				if ($auth["perms"] == "shopper") {
+				if ($this->_perms == "shopper") {
 					if (stristr($vmUser->usertype,"Administrator")) {
-						$auth["perms"]  = "admin";
+						$this->_perms  = "admin";
 					}
 					elseif (stristr($vmUser->usertype,"Manager")) {
-						$auth["perms"]  = "storeadmin";
+						$this->_perms  = "storeadmin";
 					}
 				}
-				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
+//				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
+//				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
 //				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-				$auth["default_shopper_group"] = $shopper_group["default_shopper_group"];
-				$auth["is_registered_customer"] = true;
+//				$auth["default_shopper_group"] = $shopper_group["default_shopper_group"];
+				$this->_is_registered_customer = true;
 			}
 			/* User is no registered customer */
 			else {
-				if (stristr($vmUser->usertype,"Administrator")) $auth["perms"]  = "admin";
-				elseif (stristr($vmUser->usertype,"Manager")) $auth["perms"]  = "storeadmin";
+				if (stristr($vmUser->usertype,"Administrator")) $this->_perms  = "admin";
+				elseif (stristr($vmUser->usertype,"Manager")) $this->_perms  = "storeadmin";
 				/* Default */
-				else $auth["perms"]  = "shopper";
+				else $this->_perms  = "shopper";
 				
-				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
+//				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
 //				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
 //				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-				$auth["default_shopper_group"] = 1;
-				$auth["is_registered_customer"] = false;
+//				$auth["default_shopper_group"] = 1;
+				$this->_is_registered_customer = false;
 			}
 		} // user is not logged in
-		elseif (empty($auth['user_id'])) {
-			$auth["user_id"] = 0;
-			$auth["username"] = "demo";
-			$auth["perms"]  = "";
-			$auth["first_name"] = "guest";
-			$auth["last_name"] = "";
-			$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
+		elseif (empty($this->_user_id)) {
+			$this->_user_id = 0;
+//			$auth["username"] = "demo";
+			$this->_perms  = "";
+//			$auth["first_name"] = "guest";
+//			$auth["last_name"] = "";
+//			$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
 //			$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
 //			$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-			$auth["default_shopper_group"] = 1;
-			$auth["is_registered_customer"] = false;
+//			$auth["default_shopper_group"] = 1;
+			$this->_is_registered_customer = false;
 		}
-		
-		/* Set the authorization for use */
-		JRequest::setVar('auth', $auth);
+
 	}
 
 	/**
@@ -185,14 +212,14 @@ class Permissions {
 	 */
 	public function check($perms) {
 		/* Set the authorization for use */
-		$auth = JRequest::getVar('auth');
+		
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
 		if ($perms == "none") {
 			return true;
 		}
 		else {
-			$p1 = explode(",", $auth['perms']);
+			$p1 = explode(",", $this->_perms);
 			$p2 = explode(",", $perms);
 			while (list($key1, $value1) = each($p1)) {
 				while (list($key2, $value2) = each($p2)) {
@@ -216,7 +243,7 @@ class Permissions {
 	function hasHigherPerms( $perm ) {
 		$auth = $_SESSION["auth"];
 		
-		if( $auth['perms'] && $this->user_groups[$perm] >= $this->user_groups[$auth['perms']] ) {
+		if( $this->_perms && $this->user_groups[$perm] >= $this->user_groups[$this->_perms] ) {
 			return true;	
 		}
 		else {
@@ -237,12 +264,9 @@ class Permissions {
 		if( $multi ) {
 			$multi = 'multiple="multiple"';
 		}
-		//Why was a $db created here?
-//		$db = new ps_DB;
-//		$db = &JFactory::getDBO();
-		
+
 		// Get users current permission value 
-		$dvalue = $this->user_groups[$auth["perms"]];
+		$dvalue = $this->user_groups[$this->_perms];
 		
 		$perms = $this->getUserGroups();
 		arsort( $perms );

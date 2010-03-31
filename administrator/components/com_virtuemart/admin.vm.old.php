@@ -87,7 +87,7 @@ if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
     echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
 }
 
-
+//Where is this variable defined?
 // renew Page-Information
 if( $pagePermissionsOK ) {
 	$my_page= explode ( '.', $page );
@@ -110,7 +110,7 @@ if( !defined('_VM_TOOLBAR_LOADED') && $no_toolbar != 1 ) {
 // bass28 6/15/09 - Remove VM admin stylesheets, Add stylesheet
 //$vm_mainframe->addStyleSheet( JM_THEMEURL.'admin.styles.css' );
 //$vm_mainframe->addStyleSheet( JM_THEMEURL.'theme.css' );
-$vm_mainframe->addScript( JURI::root().'components/'.VM_COMPONENT_NAME.'/js/functions.js' );
+JFactory::getApplication()->addScript( JURI::root().'components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
 if( $no_menu != 1 && $vmLayout != 'extended' ) {
 	echo '<table style="width:100%;table-layout:fixed;"><tr><td style="vertical-align:top;">';
@@ -136,7 +136,7 @@ if(file_exists(PAGEPATH.$modulename.".".$pagename.".php")) {
 
 		include( PAGEPATH.$modulename.".".$pagename.".php" );
 		if( @$_REQUEST['format'] == 'raw' ) {
-			$vm_mainframe->close(true);
+			JFactory::getApplication()->close(true);
 		}
 	} else {
 		include( PAGEPATH.$modulename.".".$pagename.".php" );
@@ -159,7 +159,7 @@ if( DEBUG == '1' && $no_menu != 1 ) {
 echo '</td></tr></table>';
 
 // Render the script and style resources into the document head
-$vm_mainframe->close();
+JFactory::getApplication()->close();
 
 
 ?>

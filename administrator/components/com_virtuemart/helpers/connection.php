@@ -246,7 +246,7 @@ class VmConnector {
      * @param string The Mime Type of the file
      */
     function sendFile($file,$mime, $overrideFileName='') {
-	global $vm_mainframe;
+
 	// send headers
 	header("Content-Type: $mime");
 
@@ -284,7 +284,7 @@ class VmConnector {
 	}else {
 	    header("HTTP/1.0 500 Internal Server Error");
 	    print "Could not read $file - bad permissions?";
-	    $vm_mainframe->close(true);
+	    JFactory::getApplication()->close(true);
 	}
     }
     /**
@@ -295,7 +295,7 @@ class VmConnector {
      * @param int The file size
      */
     function http_rangeRequest($size, $exitOnError=true ) {
-	global $vm_mainframe;
+
 	if(!isset($_SERVER['HTTP_RANGE'])) {
 	    // no range requested - send the whole file
 	    header("Content-Length: $size");
@@ -317,7 +317,7 @@ class VmConnector {
 	    if( $exitOnError ) {
 		header('HTTP/1.1 416 Requested Range Not Satisfiable');
 		print 'Bad Range Request!';
-		$vm_mainframe->close(true);
+		JFactory::getApplication()->close(true);
 	    } else {
 		return array(0,$size);
 	    }

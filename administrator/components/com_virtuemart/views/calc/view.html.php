@@ -37,6 +37,8 @@ class VirtuemartViewCalc extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel('calc');
+		$this->loadHelper('permissions');
+		$this->assignRef('perms', Permissions::getInstance());
 		
 //		require_once(CLASSPATH. 'ps_perm.php' );
 //		$perm = new ps_perm();
@@ -100,6 +102,8 @@ class VirtuemartViewCalc extends JView {
 			$statesList = ShopFunctions::renderStateList($calc->calc_states, $calc->calc_countries, 'country_id',True);
 			$this->assignRef('statesList', $statesList);			
 
+			$vendorList= ShopFunctions::renderVendorList($calc->calc_vendor_id,True);
+			$this->assignRef('vendorList', $vendorList);
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CALC_LIST_LBL' ), 'vm_countries_48' );

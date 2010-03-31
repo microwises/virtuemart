@@ -35,7 +35,8 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-		$this->loadHelper('Permissions');
+		$this->loadHelper('permissions');
+		$this->assignRef('perms', Permissions::getInstance());
 		
 		$model = $this->getModel('paymentmethod');
 

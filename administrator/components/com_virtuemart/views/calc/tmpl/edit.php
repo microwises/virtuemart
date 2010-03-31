@@ -23,7 +23,7 @@ AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
-<?php //echo print_r($this->c) ?>
+
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'VM_CALC_DETAILS' ); ?></legend>
@@ -208,7 +208,19 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
 			</td>
-		</tr>	
+		</tr>
+		<?php if($this->perms->check('admin')){?>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+				<?php echo JText::_('VM_CALC_VENDOR'); ?>
+				</label>
+			</td>
+     		<td width="69%" ><?php
+				echo $this->vendorList ?>
+      		</td>
+		</tr>
+		<?php } ?>
 	</table>
 	</fieldset>
 </div>

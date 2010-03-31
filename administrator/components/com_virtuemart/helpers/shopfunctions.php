@@ -59,17 +59,15 @@ class ShopFunctions {
 	*/
 	public function renderVendorList($vendorId, $multiple = false) {
 
-//		$shopperModel = self::getModel('shoppergroup');
-//		$shoppergrps = $shopperModel->getVendors(false,true);
 		$db = JFactory::getDBO();
 		
 		$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
 		$db->setQuery($q);
-		$vendors = $db->loadResultArray();
-		
+		$vendors = $db->loadAssocList();
+
 		$attrs = '';
-		$name = 'shopper_group_name';
-		$idA = $id = 'shopper_group_id';
+		$name = 'vendor_name';
+		$idA = $id = 'vendor_id';
 
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($vendors, $emptyOption);

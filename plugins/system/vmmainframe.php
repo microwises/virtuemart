@@ -49,7 +49,7 @@ class  plgSystemVmMainframe extends JPlugin
 	*/
 	function onAfterRender()
 	{
-		global $vm_mainframe;
+		$mainframe = &JFactory::getApplication();
 
 
 		$document	=& JFactory::getDocument();
@@ -60,9 +60,9 @@ class  plgSystemVmMainframe extends JPlugin
 		if ( $doctype !== 'html' ) { return; }
 		if ( $option == 'com_virtuemart' ) { return; }
 		
-		if( is_object($vm_mainframe)) {
+		if( is_object($mainframe)) {
 			ob_start();
-			$vm_mainframe->render(true);
+			$mainframe->render(true);
 			$head_content = ob_get_clean();
 			$body = JResponse::getBody();
 			$body = str_replace('</head>', $head_content.'</head>', $body);

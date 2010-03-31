@@ -153,9 +153,9 @@ class VirtueMartModelCategory extends JModel {
 			$query .= " AND cx.category_parent_id = ". $this->_db->Quote($parentId);
 		}
 
-		/*if( !Permissions::check('admin') ){
+		if( !Permissions::getInstance()->check('admin') ){
 			$query .= " AND (#__vm_category.vendor_id = ". $this->_db->Quote($vendorId) . " OR #__vm_category_xref.category_shared = '1') ";
-		}*/
+		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
 		$filterOrderDir = JRequest::getCmd('filter_order_Dir', 'ASC');

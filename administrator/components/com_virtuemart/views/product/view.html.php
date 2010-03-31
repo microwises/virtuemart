@@ -75,16 +75,16 @@ class VirtuemartViewProduct extends JView {
 				$currency_model = $this->getModel('currency');
 				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_code', 'currency_name', $product->product_currency);
 
-				/* Load the tax rates */
-				$tax_model = $this->getModel('taxRate');
-				$taxrates = $tax_model->getTaxRates();
-				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
+				/* @TODO show Tax for the product, amount or percentage Load the tax rates */
+//				$tax_model = $this->getModel('taxRate');
+//				$taxrates = $tax_model->getTaxRates();
+//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
 
-				/* Load the tax rates */
-				$discount_model = $this->getModel('discount');
-				$discounts = $discount_model->getDiscounts();
-				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
-				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
+				/* @Todo, show price with Discounts; Load the tax rates */ 
+//				$discount_model = $this->getModel('discount');
+//				$discounts = $discount_model->getDiscounts();
+//				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
+//				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
 
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
@@ -158,8 +158,8 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
-				$this->assignRef('taxrates', $taxrates);
-				$this->assignRef('discounts', $discounts);
+//				$this->assignRef('taxrates', $taxrates);
+//				$this->assignRef('discounts', $discounts);
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
 				$this->assignRef('related_products', $related_products);

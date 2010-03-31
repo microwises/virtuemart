@@ -14,7 +14,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-global  $vm_mainframe, $module_description;
+global $module_description;
 
 //should be removed later
 global $vendor_currency_display_style;
@@ -60,7 +60,7 @@ require_once($classPath.'DebugUtil.php');
 /* @MWM1: Initialize Logging */
 $vmLogIdentifier = 'VirtueMart';
 require_once($classPath.'Log/LogInit.php');
-$vm_mainframe = new vmMainFrame();
+//$vm_mainframe = new vmMainFrame();
 
 vmPluginHelper::importPlugin('system');
 
@@ -108,7 +108,7 @@ require_once($classPath.'template.class.php' );
 require_once($classPath.'htmlTools.class.php');
 require_once($classPath.'phpInputFilter/class.inputfilter.php');
 
-$vm_mainframe->triggerEvent('onAfterInitialise');
+JFactory::getApplication()->triggerEvent('onAfterInitialise');
 
 // Instantiate the DB class
 $db = new ps_DB();

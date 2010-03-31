@@ -83,7 +83,7 @@ class VirtueMartViewProductdetails extends JView {
 		
 		/* Check for editing access */
 		/** @todo build edit page */
-		if (Permissions::check("admin,storeadmin")) {
+		if (Permissions::getInstance()->check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('VM_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
 		}

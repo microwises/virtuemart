@@ -38,9 +38,6 @@ require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'car
 /* Front-end helpers */
 require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
 
-/* Load the permissions */
-Permissions::doAuthentication();
-
 /* Loading jQuery and VM scripts. */
 $document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
@@ -110,8 +107,7 @@ $pagename = $my_page[1];
 $is_popup = vmRequest::getBool( 'pop' );
 
 // Page Navigation Parameters
-//$limit = intval( $vm_mainframe->getUserStateFromRequest( "viewlistlimit{$page}", 'limit', $mosConfig_list_limit ) );
-//$limitstart = intval( $vm_mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}{$pagename}limitstart", 'limitstart', 0 )) ;
+
 $limit = intval( $mainframe->getUserStateFromRequest( "viewlistlimit{$page}", 'limit', $mosConfig_list_limit ) );
 $limitstart = intval( $mainframe->getUserStateFromRequest( "view{$keyword}{$category_id}{$pagename}limitstart", 'limitstart', 0 )) ;
 
@@ -207,15 +203,15 @@ else {
 		'vendor.vendor_form' => 'vendor_terms_of_service');
 		editorScript(isset($editor1_array[$page]) ? $editor1_array[$page] : '', isset($editor2_array[$page]) ? $editor2_array[$page] : '');
 		
-		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.css' );
-		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.styles.css' );
-		$vm_mainframe->addScript( "$mosConfig_live_site/components/$option/js/functions.js" );
+		$mainframe->addStyleSheet( VM_THEMEURL .'admin.css' );
+		$mainframe->addStyleSheet( VM_THEMEURL .'admin.styles.css' );
+		$mainframe->addScript( "$mosConfig_live_site/components/$option/js/functions.js" );
 
 		if( $only_page != 1 ) {
 		
 			vmCommonHTML::loadExtjs();
 			
-			$vm_mainframe->addScript( $_SERVER['SCRIPT_NAME'].'?option='.$option.'&pshop_mode=admin&task=extlayout&frontend=1' );
+			$mainframe->addScript( $_SERVER['SCRIPT_NAME'].'?option='.$option.'&pshop_mode=admin&task=extlayout&frontend=1' );
 			$phpscript_url = str_replace( 'index.php', 'index2.php', $_SERVER['SCRIPT_NAME']);
 		
 			echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1&amp;pshop_mode=admin" style="width:100%; height: 100%; overflow:auto; border: none;padding-left:4px;" name="vmPage"></iframe>';
@@ -244,7 +240,7 @@ else {
 		
 					include( PAGEPATH.$modulename.".".$pagename.".php" );
 					if( @$_REQUEST['format'] == 'raw' ) {
-						$vm_mainframe->close(true);
+						$mainframe->close(true);
 					}
 				} else {
 					include( PAGEPATH.$modulename.".".$pagename.".php" );
@@ -275,7 +271,7 @@ else {
 			}
 		}
 		// Render the script and style resources into the document head
-		$vm_mainframe->close();
+		$mainframe->close();
 		return;
 	}
 	/**
@@ -291,7 +287,7 @@ else {
                         && (empty($keyword) && empty($keyword1) && empty($keyword2));
 		
         // IE6 PNG transparency fix
-        $vm_mainframe->addScript( "$mosConfig_live_site/components/$option/js/sleight.js" );
+        $mainframe->addScript( "$mosConfig_live_site/components/$option/js/sleight.js" );
 
 		echo '<div id="vmMainPage">'."\n";
 		
@@ -303,7 +299,7 @@ else {
 				if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger ); /*@MWM1: Log/Debug enhancements*/
 				include( PAGEPATH.$modulename.".".$pagename.".php" );
 				// Exit gracefully
-				$vm_mainframe->close(true);
+				$mainframe->close(true);
 			}
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 		}
@@ -332,6 +328,6 @@ else {
 		}
 
 }
-$vm_mainframe->close();
+$mainframe->close();
 }
 ?>

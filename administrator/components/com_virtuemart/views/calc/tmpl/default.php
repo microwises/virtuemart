@@ -20,7 +20,6 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 AdminMenuHelper::startAdminArea(); 
-//if($vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
       	
@@ -38,7 +37,7 @@ AdminMenuHelper::startAdminArea();
 			<th width="60">
 				<?php echo JText::_( 'VM_CALC_LIST_NAME' ); ?>
 			</th>
-			<?php if(Permissions::check( 'admin' )){ ?>
+			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
 			</th><?php }?>
@@ -118,7 +117,7 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php if(Permissions::check( 'admin' )){?>				
+				<?php if($this->perms->check( 'admin' )){?>				
 				<td align="left">
 					<?php echo JText::_($row->calc_vendor_id); ?>
 				</td>

@@ -16,19 +16,6 @@
 * @version $Id$
 */
 
-/*
- 			<?php if(Permissions::check( 'admin' )){ ?>
-			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_VENDOR' );  ?>
-			</th><?php }?>	
-			
-			
-							<?php if(Permissions::check( 'admin' )){?>				
-				<td align="left">
-					<?php echo JText::_($row->paym_vendor_id); ?>
-				</td>
-				<?php } ?>
- */ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
@@ -51,7 +38,7 @@ AdminMenuHelper::startAdminArea();
 			<th width="60">
 				<?php echo JText::_( 'VM_PAYM_LIST_NAME' ); ?>
 			</th>
-			<?php if(Permissions::check( 'admin' )){ ?>
+			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
 			</th><?php }?>
@@ -104,9 +91,9 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->paym_name; ?></a>
 				</td>
-				<?php if(Permissions::check( 'admin' )){?>				
+				<?php if($this->perms->check( 'admin' )){?>				
 				<td align="left">
-					<?php echo JText::_($row->calc_vendor_id); ?>
+					<?php echo JText::_($row->paym_vendor_id); ?>
 				</td>
 				<?php } ?>
 				<td>

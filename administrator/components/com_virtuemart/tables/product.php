@@ -70,8 +70,8 @@ class TableProduct extends JTable {
 	var $product_availability	= null;
 	/** @var int File thumbnail image width */
 	var $product_special	= null;
-	/** @var int File thumbnail image width */
-	var $product_discount_id	= null;
+//	/** @var int File thumbnail image width */
+//	var $product_discount_id	= null;
 	/** @var int File thumbnail image width */
 	var $ship_code_id	= null;
 	/** @var int File thumbnail image width */

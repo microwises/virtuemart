@@ -152,6 +152,7 @@ else {
 		if( !empty($shipping_rate_id) && !ps_checkout::noShippingMethodNecessary() ) {
 			$shipping = true;
 			$vars["weight"] = $weight_total;
+			//$vm_mainframe is obsolete, please use JFactory::getApplication()
 			$result = $vm_mainframe->triggerEvent('get_shipping_rate', array( $vars ));
 			$shipping_total = is_array($result) ? round($result[0],5) : 0.00;
 	

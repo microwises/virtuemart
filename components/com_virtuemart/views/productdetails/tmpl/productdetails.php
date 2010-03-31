@@ -163,8 +163,8 @@ else { ?>
 					}
 					else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 					
-					if($this->product->product_price['salesPrice']) echo $this->product->product_price['salesPrice'];
-					if($this->product->product_price['priceWithoutTax']) echo $this->product->product_price['priceWithoutTax'];
+					if($this->product->product_price['salesPrice']) echo 'SalesPrice'.JRequest::getVar('currencyDisplay')->getFullValue($this->product->product_price['salesPrice']);
+					if($this->product->product_price['priceWithoutTax']) echo JRequest::getVar('currencyDisplay')->getFullValue($this->product->product_price['priceWithoutTax']);
 //					if ($this->auth["show_price_including_tax"] == 1) echo $this->product->product_price['salesPrice'];
 //					else echo $this->product->product_price['priceWithoutTax'];
 				}

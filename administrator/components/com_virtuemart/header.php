@@ -54,11 +54,12 @@ while ($db->next_record()) {
 	}
 }
 
-$vm_mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
+$mainframe = &JFactory::getApplication();
+$mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css');
+$mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js');
+$mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js');
+$mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
+$mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
 
 $menu_items = getAdminMenu($module_id);
 ?>

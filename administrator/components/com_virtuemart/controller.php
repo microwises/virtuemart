@@ -18,7 +18,9 @@ class VirtuemartController extends JController
 	 * @access	public
 	 */
 	function display()
-	{							
+	{	
+//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+
 		$document = JFactory::getDocument();	    
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();

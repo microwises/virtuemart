@@ -221,7 +221,7 @@ class VirtueMartModelCart extends JModel {
 					$k++;
 				}
 				if( vmIsXHR() ) {
-					$GLOBALS['vm_mainframe']->scriptRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
+					JFactory::getApplication()->scriptRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
 				} else {
 					vmRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
 				}
