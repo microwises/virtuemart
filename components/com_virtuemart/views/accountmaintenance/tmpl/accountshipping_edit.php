@@ -1,11 +1,12 @@
 <?php
 /**
 *
-* Account billing template
+* Account shipping template
 *
 * @package	VirtueMart
 * @subpackage AccountMaintenance
 * @author RolandD
+* @todo Create HTTPS links
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -13,39 +14,23 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: accountbilling.php 2243 2010-01-23 02:52:23Z SimonHodgkiss $
 */
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-/**
-* @todo Test optional registration
-*/
 ?>
-<div style="float:left;width:90%;text-align:right;"> 
-    <span>
-    	<a href="#" onclick="if(submitregistration()) {document.adminForm.submit(); return false;}">
-    		<img border="0" src="administrator/images/save_f2.png" name="submit" alt="<?php echo JText::_('CMN_SAVE') ?>" />
-    	</a>
-    </span>
-    <span style="margin-left:10px;">
-    <a href="<?php echo VmConfig::get('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance"; ?>">
-    		<img src="administrator/images/back_f2.png" alt="<?php echo JText::_('BACK') ?>" border="0" />
-    	</a>
-    </span>
-</div>
-<div style="width:90%;">
 <form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=accountmaintenance'); ?>" method="post" name="adminForm">
-<?php
-if (!empty($this->fields['required_fields']))  {
-	echo '<div style="padding:5px;text-align:center;"><strong>(* = '.JText::_('CMN_REQUIRED').')</strong></div>';
-}
-
-/* Load the form validation code */
-shopFunctions::printJsFormValidation($this->fields['required_fields'], $this->fields['details']);
-
-$delimiter = 0;
+<fieldset>
+	<legend><span class="sectiontableheader"><?php echo JText::_('VM_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
+	<br />
+		<?php echo JText::_('VM_SHIPTO_TEXT') ?>
+	<br />
+	<br />
+	<br />
+	<div style="width:90%;">
+	<?php
+	$delimiter = 0;
 foreach ($this->fields['details'] as $field) {
 	/* Check if the field needs to be skipped */
 	if (in_array($field->name, $this->skipfields)) continue;
@@ -109,15 +94,26 @@ foreach ($this->fields['details'] as $field) {
 	* This is the most important part of this file
 	* Here we print the field & its contents!
 	*/
+	$value = $field->name;
+	$uservalue = '';
+	if (is_object($this->userinfo) && $this->userinfo->$value) $uservalue = $this->userinfo->$value;
 	switch ($field->name) {
 		case 'title':
-			echo shopFunctions::listUserTitle($this->userinfo->title, 'id="title_field"');
+			echo shopFunctions::listUserTitle($uservalue, 'id="title_field"');
 			break;
 		case 'country_id':
-			echo shopFunctions::renderCountryList($this->userinfo->country_id);
+			echo shopFunctions::renderCountryList($uservalue);
 			break;
 		case 'state_id':
-			echo shopFunctions::renderStateList($this->userinfo->state_id, $this->userinfo->country_id, 'country_id');
+			if (empty($uservalue)) {
+				$state_id = 0;
+				$country_id = 0;
+			}
+			else {
+				$state_id = $uservalue;
+				$country_id = $this->userinfo->country_id;
+			}
+			echo shopFunctions::renderStateList($state_id, $country_id, 'country_id');
 			break;
 		case 'agreed':
 			echo '<input type="checkbox" id="agreed_field" name="agreed" value="1" class="inputbox" />';
@@ -127,7 +123,6 @@ foreach ($this->fields['details'] as $field) {
 			echo '<input type="password" id="'.$field->name.'_field" name="'.$field->name.'" size="30" class="inputbox" />'."\n";
 			break;
 		default:
-			$value = $field->name;
 			switch( $field->type ) {
 				case 'date':
 					$maxlength = $field->maxlength ? 'maxlength="'.$field->maxlength.'"' : '';
@@ -138,7 +133,7 @@ foreach ($this->fields['details'] as $field) {
 				case 'webaddress':
 				case 'euvatid':	   						
 					$maxlength = $field->maxlength ? 'maxlength="'.$field->maxlength.'"' : '';
-					echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'.$this->userinfo->$value.'" class="inputbox" '.$maxlength . $readonly . ' />'."\n";
+					echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'.$uservalue.'" class="inputbox" '.$maxlength . $readonly . ' />'."\n";
 					break;
 				case 'textarea':
 					echo '<textarea name="'.$field->name.'" id="'.$field->name.'_field" cols="'.$field->cols.'" rows="'.$field->rows.'" '.$readonly.'>'.$this->userinfo->$value.'</textarea>';
@@ -216,39 +211,38 @@ foreach ($this->fields['details'] as $field) {
 }
 if( $delimiter > 0) {
 	echo "</fieldset>\n";
-}
-echo '</div>';
-if (VmConfig::get('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
-	echo '<script type="text/javascript">
-	//<![CDATA[
-   function showFields( show, fields ) {
-	if( fields ) {
-		for (i=0; i<fields.length;i++) {
-			if( show ) {
-				document.getElementById( fields[i] + \'_div\' ).style.display = \'\';
-				document.getElementById( fields[i] + \'_input\' ).style.display = \'\';
-			} else {
-				document.getElementById( fields[i] + \'_div\' ).style.display = \'none\';
-				document.getElementById( fields[i] + \'_input\' ).style.display = \'none\';
-			}
-		}
-	}
-   }
-   try {
-	showFields( document.getElementById( \'register_account\').checked, new Array(\'username\', \'password\', \'password2\') );
-   } catch(e){}
-   //]]>
-   </script>';
-}
-?>
-
-<div align="center">	
-	<input type="submit" value="<?php echo JText::_('CMN_SAVE') ?>" class="button" onclick="return( submitregistration());" />
-</div>
-	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option'); ?>" />
-	<input type="hidden" name="task" value="shopperupdate" />
-	<input type="hidden" name="user_info_id" value="<?php echo $this->userinfo->user_info_id; ?>" />
-	<input type="hidden" name="user_id" value="<?php echo $this->user->id ?>" />
-	<input type="hidden" name="address_type" value="BT" />
+}?>
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php
+	   if (!empty($this->userinfo->user_info_id)) { ?>
+		<input type="hidden" name="task" value="updateshippingaddress" />
+		<input type="hidden" name="user_info_id" value="<?php echo $this->userinfo->user_info_id; ?>" />
+	<?php 
+	   }
+	   else { ?>
+		  <input type="hidden" name="task" value="addshippingaddress" />
+	<?php } ?>
+	<input type="hidden" name="user_id" value="<?php echo $this->user->id; ?>" />
+	<input type="hidden" name="address_type" value="ST" />
+	<br/>
+	<div style="float:left;width:45%;text-align:right;" >
+		<input type="submit" class="button" name="submit" value="<?php echo JText::_('CMN_SAVE') ?>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping'), JText::_('BACK'), array('class' => 'button')); ?>
+	</div>
 </form>
+<?php if (!empty($this->userinfo->user_info_id)) { ?>
+		<div style="float:left;width:45%;text-align:center;"> 
+			<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=accountmaintenance'); ?>" method="post" name="adminForm">
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="controller" value="accountmaintenance" />
+				<input type="hidden" name="task" value="removeshippingaddress" />
+				<input type="hidden" name="user_info_id" value="<?php echo $this->userinfo->user_info_id; ?>" />
+				<input type="hidden" name="user_id" value="<?php echo $this->user->id; ?>" />
+				<input type="submit" class="button" name="submit" value="<?php echo JText::_('E_REMOVE') ?>" />
+				<?php echo JHTML::_( 'form.token' ); ?>
+			</form>
+		</div>
+	<?php } ?>
+  </div>
+</fieldset>

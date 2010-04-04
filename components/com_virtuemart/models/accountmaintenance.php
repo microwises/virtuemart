@@ -101,6 +101,7 @@ class VirtueMartModelAccountmaintenance extends JModel {
 					break;
 				case 'captcha':
 					/** @todo Implement captcha again */
+					/** @link http://code.google.com/p/joomla15captcha/ */
 					break;
 				case 'euvatid':
 					/* Do nothing when the EU VAT ID field was left empty */
@@ -258,11 +259,80 @@ class VirtueMartModelAccountmaintenance extends JModel {
 	*/
 	public function getShippingAddresses() {
 		$db = JFactory::getDBO();
-		$auth = JRequest::getVar('auth');
+		$user = JFactory::getUser();
 		$q = "SELECT *
 			FROM #__vm_user_info
 			WHERE address_type = 'ST'
-			AND user_id = ".$auth['user_id'];
+			AND user_id = ".$user->id;
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
+	
+	/**
+	* Add a shipping addresses 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return bool true on successul add otherwise false
+	*/
+	public function getAddShippingAddress() {
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+		$table = $this->getTable('user_info');
+		$post = JRequest::get('post');
+		$hash_secret = "VirtueMartIsCool";
+		$timestamp = time();
+		
+		/* Bind the data */
+		$table->bind($post);
+		
+		/* Some fine tuning  */
+		$table->user_info_id = md5(uniqid($hash_secret));
+		$table->address_type = 'ST';
+		$table->cdate = $timestamp;
+		$table->mdate = $timestamp;
+		
+		if ($table->store()) return true;
+		else return false;
+	}
+	
+	/**
+	* Remove a shipping addresses 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return bool true on successul remove otherwise false
+	*/
+	public function getRemoveShippingAddress() {
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+		$table = $this->getTable('user_info');
+		
+		/* Bind the data */
+		$table->load(JRequest::getVar('user_info_id'));
+		
+		if ($table->delete()) return true;
+		else return false;
+	}
+	
+	/**
+	* Load all the users orders 
+	* 
+	* @author RolandD
+	* @return array of objects with order info
+	*/
+	public function getListOrders() {
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
+		$q = "SELECT o.order_id, o.cdate, o.order_total, s.order_status_name
+			FROM #__vm_orders o
+			LEFT JOIN #__vm_order_status s
+			ON s.order_status_code = o.order_status
+			WHERE user_id = ".$user->id;
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}

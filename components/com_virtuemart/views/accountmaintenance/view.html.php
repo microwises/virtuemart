@@ -35,10 +35,12 @@ class VirtueMartViewAccountmaintenance extends JView {
 		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
 		
 		/* Load the authorizations */
-		$auth = JRequest::getVar('auth');
+		$this->loadHelper('permissions');
+		$perm = Permissions::getInstance();
+		$user = JFactory::getUser();
 		
 		/* Check if the user is logged in */
-		if (!$auth['is_registered_customer']) {
+		 if (!$perm->isRegisteredCustomer($user->id)) {
 			$task = false;
 			$this->setLayout('accountmaintenance');
 		}
@@ -62,7 +64,7 @@ class VirtueMartViewAccountmaintenance extends JView {
 				
 				/* Load the user fields */
 				$fields = shopFunctions::getUserFields('account');
-				$userinfo = shopFunctions::getUserDetails($auth['user_id'],"",""," AND address_type='BT'");
+				$userinfo = shopFunctions::getUserDetails($user->id,"",""," AND address_type='BT'");
 				
 				/* Load the editor */
 				$editor = JFactory::getEditor(); 
@@ -109,28 +111,31 @@ class VirtueMartViewAccountmaintenance extends JView {
 				
 				/* Load the user fields */
 				$fields = shopFunctions::getUserFields('shipping');
-				$userinfo = shopFunctions::getUserDetails($auth['user_id'],"",""," AND address_type='ST'");
+				if ($task == 'editshipto') $userinfo = shopFunctions::getUserDetails($user->id,"",""," AND address_type='ST' AND user_info_id='".JRequest::getVar('user_info_id')."'");
+				else $userinfo = null;
 				
 				/* Assign data */
 				$this->assignRef('fields', $fields);
 				$this->assignRef('skipfields', $skip_fields);
 				$this->assignRef('userinfo', $userinfo);
 				break;
+			case 'order':
+				
+				break;
 			default:
 				/* Set some path information */
 				$mainframe->setPageTitle(JText::_('VM_ACCOUNT_TITLE'));
 				$pathway->addItem(JText::_('ACCOUNTINFORMATION'));
 				
-				/* Load the logged in user */
-				$user = JFactory::getUser();
-				
-				/* Assign data */
-				$this->assignRef('user', $user);
+				/* Load some orders */
+				$orders = $this->get('ListOrders');
+				$this->assignRef('orders', $orders);
 				break;
 		}
 		
 		/* Assign data */
-		$this->assignRef('auth', $auth);
+		$this->assignRef('user', $user);
+		$this->assignRef('perm', $perm);
 		
 		/* Display it all */
 		parent::display($tpl); 
