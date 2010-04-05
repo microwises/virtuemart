@@ -852,5 +852,52 @@ class ShopFunctions {
 		return $html ;
 	
 	}
+	
+	/**
+	* Format a date to the given store format 
+	* 
+	* @author RolandD
+	* @access public
+	* @todo Add shop specified format
+	* @param integer $time unix formatted timestamp
+	* @param string $dateformat the format to use for the date	
+	* @return
+	*/
+	public function formatDate($time=0, $dateformat='') {
+		if( empty($time)) $time = time();
+		
+		if (empty( $dateformat)) return JHTML::_('date',  $time);
+		else return JHTML::_('date',  $time, $dateformat);
+	}
+	
+	/**
+	* Return $str with all but $display_length at the end as asterisks.
+	* @author gday
+	*
+	* @access public
+	* @param string $str The string to mask
+	* @param int $display_length The length at the end of the string that is NOT masked
+	* @param boolean $reversed When true, masks the end. Masks from the beginning at default
+	* @return string The string masked by asteriks
+	*/
+	public function asteriskPad($str, $display_length, $reversed = false) {
+
+		$total_length = strlen($str);
+
+		if($total_length > $display_length) {
+			if( !$reversed) {
+				for($i = 0; $i < $total_length - $display_length; $i++) {
+					$str[$i] = "*";
+				}
+			}
+			else {
+				for($i = $total_length-1; $i >= $total_length - $display_length; $i--) {
+					$str[$i] = "*";
+				}
+			}
+		}
+
+		return($str);
+	}
 }
 ?>

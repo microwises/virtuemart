@@ -416,37 +416,54 @@ class Vendor {
 //	}
 	
 	/**
-	 * 
-	 * MUST-TODO , functions calls need to be rewritten !!!
+	 * Create a formatted vendor address
 	 * mosttime $vendor_id is set to 1;
 	 * Returns the formatted Store Address
-	 *	@author someone, completly rewritten by Max Milbers
-	 * @param boolean $use_html
+	 * @author someone, completly rewritten by Max Milbers, RolandD
+	 * @param integer $vendor_id
 	 * @return String
 	 */
-	function formatted_store_address( $use_html=false, $vendor_id ) {
+	function formatted_store_address($vendor_id) {
 		
 		if(empty($vendor_id)){
 			JError::raiseNotice(1,'formatted_store_address no vendor_id given' );
 			return;
 		}
-		
-		$db = ps_vendor::get_vendor_details($vendor_id);
-		
-		$address_details['name'] = $db->f("vendor_store_name");;
-		$address_details['address_1'] = $db->f("address_1");
-		$address_details['address_2'] = $db->f("address_2");
-		$address_details['state'] = $db->f("state");
-		$address_details['state_name'] = $db->f("state_name");
-		$address_details['city'] = $db->f("city");
-		$address_details['zip'] = $db->f("zip");
-		$address_details['country'] = $db->f("country");
-		$address_details['phone'] = $db->f("vendor_phone");
-		$address_details['email'] = $db->f("email");
-		$address_details['fax'] = $db->f("fax");
-		$address_details['url'] = $db->f("url");
-		
-		return vmFormatAddress( $address_details, $use_html, true);
+		else {
+			$db = JFactory::getDBO();
+			$q = "SELECT vendor_store_name AS storename, address_1, address_2, email, fax,
+				s.state_2_code AS state, s.state_name AS statename, city, zip, 
+				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
+				FROM #__vm_vendor v
+				LEFT JOIN #__vm_shopper_vendor_xref x
+				ON x.vendor_id = x.vendor_id
+				LEFT JOIN #__vm_user_info u
+				ON u.user_id = x.user_id
+				LEFT JOIN #__users j
+				ON j.id = u.user_id
+				LEFT JOIN #__vm_country c ON c.country_id = u.country_id
+				LEFT JOIN #__vm_state s ON s.state_id = u.state_id
+				WHERE v.vendor_id = ".$vendor_id."
+				AND address_type = 'BT'";
+			$db->setQuery($q);
+			$vendor = $db->loadObject();
+			
+			$vendor_address_format = VmStore::get('vendor_address_format');
+			$store_address = str_ireplace('{storename}', $vendor->storename, $vendor_address_format);
+			$store_address = str_ireplace('{address_1}', $vendor->address_1, $store_address);
+			$store_address = str_ireplace('{address_2}', $vendor->address_2, $store_address);
+			$store_address = str_ireplace('{state}', $vendor->state, $store_address);
+			$store_address = str_ireplace('{statename}', $vendor->statename, $store_address);
+			$store_address = str_ireplace('{city}', $vendor->city, $store_address);
+			$store_address = str_ireplace('{zip}', $vendor->zip, $store_address);
+			$store_address = str_ireplace('{country}', $vendor->country, $store_address);
+			$store_address = str_ireplace('{phone}', $vendor->phone, $store_address);
+			$store_address = str_ireplace('{email}', $vendor->email, $store_address);
+			$store_address = str_ireplace('{fax}', $vendor->fax, $store_address);
+			$store_address = str_ireplace('{url}', $vendor->url, $store_address);
+			
+			return nl2br($store_address);
+		}
 	}
 	
 	/**

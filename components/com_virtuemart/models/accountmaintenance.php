@@ -336,5 +336,85 @@ class VirtueMartModelAccountmaintenance extends JModel {
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
+	
+	/**
+	* Load the details of the selected order 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return object with the order details
+	*/
+	public function getOrderDetails() {
+		$db = JFactory::getDBO();
+		$order_id = JRequest::getInt('order_id');
+		$q = "SELECT * 
+			FROM #__vm_orders o
+			LEFT JOIN #__vm_order_user_info u
+			ON u.order_id = o.order_id
+			LEFT JOIN #__vm_order_status s
+			ON s.order_status_code = o.order_status
+			WHERE o.order_id = ".$order_id;
+		$db->setQuery($q);
+		return $db->loadObject();
+		
+	}
+	
+	/**
+	* Load the items of the selected order 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return array list of objects with the order items
+	*/
+	public function getOrderItemDetails() {
+		$db = JFactory::getDBO();
+		$order_id = JRequest::getInt('order_id');
+		$q = "SELECT * 
+			FROM #__vm_order_item
+			WHERE order_id = ".$order_id;
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
+	
+	/**
+	* Load the items of the selected order 
+	* 
+	* @author RolandD
+	* @todo
+	* @access public
+	* @return array list of objects with the order items
+	*/
+	public function getOrderPayment() {
+		$db = JFactory::getDBO();
+		$order_id = JRequest::getInt('order_id');
+		$q = "SELECT p.*, ".VmConfig::get('vm_decrypt_function', 'AES_DECRYPT')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number, m.name
+			FROM #__vm_order_payment p
+			LEFT JOIN #__vm_payment_method m
+			ON m.id = p.payment_method_id
+			WHERE order_id = ".$order_id;
+		$db->setQuery($q);
+		return $db->loadObject();
+	}
+	
+	/**
+	* Proxy function for getting vendor information 
+	* 
+	* @author RolandD
+	* @todo
+	* @see 
+	* @access public
+	* @param 		
+	* @return
+	*/
+	public function getVendor($vendor_id) {
+		if (empty($vendor_id)) return false;
+		else {
+			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
+			$model = JModel::getInstance('Vendor', 'VirtueMartModel');
+			return $model->getVendor($vendor_id);
+		}
+	}
 }
 ?>

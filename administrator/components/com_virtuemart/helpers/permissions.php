@@ -75,11 +75,16 @@ class Permissions extends JObject{
 	*
 	* Check if a user is registered in the shop (=customer)
 	*
-	* @param int $user_id
+	* @param int $user_id the user ID to check. If no user ID is given the currently logged in user will be used.
 	* @return boolean
 	*/
 	public function isRegisteredCustomer($user_id=0) {
-		if ($user_id == 0) return false;
+		if ($user_id == 0) {
+			/* Lets see if we can get the current signed in user */
+			$user = JFactory::getUser();
+			if ($user->id == 0) return false;
+			else $user_id = $user->id;
+		}
 
 		$this->_db = JFactory::getDBO();
 		/* If the registration type is neither "no registration" nor "optional registration", 
@@ -433,6 +438,19 @@ class Permissions extends JObject{
 
 		ksort($list);
 		return $list;
+	}
+	
+	/**
+	* Check if the price should be shown including tax 
+	* 
+	* @author RolandD
+	* @todo Figure out where to get the setting from
+	* @access public
+	* @param 
+	* @return bool true if price with tax is shown otherwise false
+	*/
+	public function showPriceIncludingTax() {
+		return true;
 	}
 }
 

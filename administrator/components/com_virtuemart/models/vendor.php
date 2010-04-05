@@ -79,13 +79,12 @@ class VirtueMartModelVendor extends JModel {
 	*
 	* @return object Vendor details
 	*/
-	function getVendor($vendId=1)
-	{
+	function getVendor($vendId=1) {
         if (!$this->_vendor) {
         	//The DB should get with the ps_vendor.php
         	//and the functions in this class must be rewritten OR I port the ps_vendor class in this class
         	// by Max Milbers
-            $db =& $this->getDBO();
+            $db = $this->getDBO();
             $query = 'SELECT * FROM `#__vm_vendor` ';
             $query .=  'WHERE `vendor_id`=' . $vendId;
             $db->setQuery($query);

@@ -57,11 +57,7 @@ else { ?>
 					</h1>
 				</div>
 				<div style="text-align: center; padding: 0px 0px 10px 0px">
-					<?php 
-						/** @todo enable below line when Vmstore is available. Rick, go go go */
-						// echo "<strong>". JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). " </strong>".Vmstore::getVar('vendor_store_name');
-						echo "<strong>". JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). " </strong>";
-					?>
+					<?php echo "<strong>". JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). " </strong>".Vmstore::get('vendor_store_name'); ?>
 				</div>
 			</td>
 			<td>

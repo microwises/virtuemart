@@ -34,6 +34,9 @@ class VirtueMartViewAccountmaintenance extends JView {
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
 		
+		/* Load the currency handler */
+		$this->assignRef('currencyDisplay', JRequest::getVar('currencyDisplay'));
+		
 		/* Load the authorizations */
 		$this->loadHelper('permissions');
 		$perm = Permissions::getInstance();
@@ -119,8 +122,21 @@ class VirtueMartViewAccountmaintenance extends JView {
 				$this->assignRef('skipfields', $skip_fields);
 				$this->assignRef('userinfo', $userinfo);
 				break;
-			case 'order':
+			case 'accountorder':
+				$this->loadHelper('vendorhelper');
 				
+				/* Load the order details */
+				$order = $this->get('OrderDetails');
+				$order_items = $this->get('OrderItemDetails');
+				$order_payment = $this->get('OrderPayment');
+				$this->assignRef('order', $order);
+				$this->assignRef('order_items', $order_items);
+				$this->assignRef('order_payment', $order_payment);
+				
+				/* Load the vendor info */
+				$model = $this->getModel('accountmaintenance');
+				$vendor = $model->getVendor($order->vendor_id);
+				$this->assignRef('vendor', $vendor);
 				break;
 			default:
 				/* Set some path information */

@@ -69,22 +69,11 @@ if ($this->perm->isRegisteredCustomer()) {
         /** @todo Add currency format */
         foreach ($this->orders as $order) { ?>
         	<tr>
-				<td><?php echo JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/goto.png', JText::_('VM_ORDER_LINK')).JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&controller=accountmaintenance&task=accountorder&order_id='.$order->order_id), JText::_('VM_VIEW')); ?></td>
-				<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE'); ?></strong><?php echo $order->cdate; ?><br /><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL');?></strong><?php echo $order->order_total; ?></td>
-        		<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS'); ?></strong><?php echo $order->order_status_name; ?><br /><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER');?></strong><?php echo sprintf("%08d", $order->order_id);?></td>
+				<td><?php echo JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/goto.png', JText::_('VM_ORDER_LINK')).JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=accountmaintenance&task=accountorder&order_id='.$order->order_id), JText::_('VM_VIEW')); ?></td>
+				<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE'); ?></strong> <?php echo shopFunctions::formatDate($order->cdate); ?><br /><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL');?></strong> <?php echo $this->currencyDisplay->getFullValue($order->order_total); ?></td>
+        		<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS'); ?></strong> <?php echo $order->order_status_name; ?><br /><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER');?></strong> <?php echo sprintf("%08d", $order->order_id);?></td>
         	</tr>
-        <?php }
-        //$tmp_cell = "<a href=\"". $sess->url( $mm_action_url."index.php?page=account.order_details&order_id=".$db->f("order_id") )."\">\n";
-		//$tmp_cell .= "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".JText::_('VM_ORDER_LINK')."\" />&nbsp;".JText::_('VM_VIEW')."</a><br />";
-		//$listObj->addCell( $tmp_cell );
-        //
-		//$tmp_cell = "<strong>".JText::_('VM_ORDER_PRINT_PO_DATE').":</strong> " . vmFormatDate($db->f("cdate"), "%d. %B %Y");
-		//$tmp_cell .= "<br /><strong>".JText::_('VM_ORDER_PRINT_TOTAL').":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency'));
-		//$listObj->addCell( $tmp_cell );
-        //
-		//$tmp_cell = "<strong>".JText::_('VM_ORDER_PRINT_PO_STATUS').":</strong> ".$order_status;
-		//$tmp_cell .= "<br /><strong>".JText::_('VM_ORDER_PRINT_PO_NUMBER').":</strong> " . sprintf("%08d", $db->f("order_id"));
-        ?>
+        <?php } ?>
         </table>
       </td>
     </tr>

@@ -96,7 +96,7 @@ class TableCalc extends JTable
 		}
 
 		if (($this->calc_name) && ($this->calc_id == 0)) {
-		    $db =& JFactory::getDBO();
+		    $db = JFactory::getDBO();
 		    
 			$q = 'SELECT count(*) FROM `#__vm_calc` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
