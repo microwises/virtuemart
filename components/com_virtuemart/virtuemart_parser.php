@@ -25,7 +25,7 @@ global $sess, $perm, $ps_module, $pagePermissionsOK;
 
 include_once( dirname(__FILE__).'/../../administrator/components/com_virtuemart/compat.joomla1.5.php' );
 
-echo 'I am in the virtuemart_parser of the frontend';die;
+
 if( !defined( '_VM_PARSER_LOADED' )) {
 	global $my;
 	

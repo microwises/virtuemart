@@ -50,6 +50,8 @@ class Permissions extends JObject{
 	function getInstance(){ 
 		if(!is_object(self::$_instance)){
 			self::$_instance = new Permissions();
+		}else {
+			$this->doAuthentication();
 		}
  		return self::$_instance;
       } 
@@ -245,9 +247,8 @@ class Permissions extends JObject{
 	 * @example $perm->hasHigherPerms( 'storeadmin' );
 	 * 			returns true when user is admin
 	 */
-	function hasHigherPerms( $perm ) {
-		$auth = $_SESSION["auth"];
-		
+	function atLeastPerms( $perm ) {
+
 		if( $this->_perms && $this->user_groups[$perm] >= $this->user_groups[$this->_perms] ) {
 			return true;	
 		}

@@ -57,7 +57,7 @@ class ShopFunctions {
 	* @param bool $multiple if the select list should allow multiple selections 
 	* @return string HTML select option list
 	*/
-	public function renderVendorList($vendorId, $multiple = false) {
+	public function renderVendorList($vendorId, $multiple = false, $vendorIdName='vendor_id') {
 
 		$db = JFactory::getDBO();
 		
@@ -67,7 +67,7 @@ class ShopFunctions {
 
 		$attrs = '';
 		$name = 'vendor_name';
-		$idA = $id = 'vendor_id';
+		$idA = $id = $vendorIdName;
 
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($vendors, $emptyOption);
