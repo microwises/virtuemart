@@ -21,7 +21,6 @@ DROP TABLE
 `#__vm_order_status`, 
 `#__vm_order_user_info`, 
 `#__vm_payment_method`, 
-`#__vm_plugins`, 
 `#__vm_product`, 
 `#__vm_product_attribute`, 
 `#__vm_product_attribute_sku`, 

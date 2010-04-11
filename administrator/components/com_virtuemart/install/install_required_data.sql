@@ -445,7 +445,7 @@ INSERT INTO `#__vm_manufacturer_category` (`mf_category_id`, `mf_category_name`,
 -- Dumping data for table `#__vm_payment_method`
 --
 
-INSERT INTO `jos_vm_payment_method` (`paym_id`, `paym_vendor_id`, `paym_name`, `paym_element`, `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount`, `ordering`, `paym_type`, `is_creditcard`, `published`, `accepted_creditcards`, `extra_info`, `secret_key`, `params`, `shared`) VALUES
+INSERT INTO `#__vm_payment_method` (`paym_id`, `paym_vendor_id`, `paym_name`, `paym_element`, `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount`, `ordering`, `paym_type`, `is_creditcard`, `published`, `accepted_creditcards`, `paym_extra_info`, `paym_secret_key`, `params`, `shared`) VALUES
 (1, 1, 'Purchase Order', 'payment', 0.00, 0, 0.00, 0.00, 4, 'N', 0, 0, '', '', '', '', 1),
 (2, 1, 'Cash On Delivery', 'payment', -2.00, 0, 0.00, 0.00, 5, 'N', 0, 0, '', '', '', '', 1),
 (3, 1, 'Credit Card', 'authorize', 0.00, 0, 0.00, 0.00, 0, 'Y', 0, 0, '1,2,6,7,', '', '', '', 1),
@@ -489,24 +489,6 @@ INSERT INTO `#__vm_payment_method_shoppergroup_xref` (`paym_id`,`paym_shopper_gr
 
 
 --
--- Dumping data for table `#__vm_plugins`
---
-
-INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES
-(1, 'auspost', 'auspost', 'shipping', 11, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(2, 'canadapost', 'canadapost', 'shipping', 9, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(3, 'dhl', 'dhl', 'shipping', 4, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(4, 'fedex', 'fedex', 'shipping', 3, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(5, 'flex', 'flex', 'shipping', 2, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(6, 'intershipper', 'intershipper', 'shipping', 5, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(7, 'shipvalue', 'shipvalue', 'shipping', 8, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(8, 'standard_shipping', 'standard_shipping', 'shipping', 1, 1, 1, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(9, 'UPS Shipping Module', 'ups', 'shipping', 6, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(10, 'USPS Shipping Module', 'usps', 'shipping', 7, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', ''),
-(11, 'Zone Shipping Module', 'zone_shipping', 'shipping', 10, 0, 1, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-
-
---
 -- Dumping data for table `#__vm_shipping_carrier`
 --
 
@@ -547,7 +529,7 @@ INSERT INTO `#__vm_shipping_rate` (`shipping_rate_id`, `shipping_rate_name`, `sh
 --
 
 INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
-(5, 1, '-default-', 'This is the default shopper group.', 1));
+(5, 1, '-default-', 'This is the default shopper group.', 1);
 
 --
 -- Dumping data for table `#__vm_shopper_vendor_xref`

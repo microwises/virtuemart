@@ -563,44 +563,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
--- --------------------------------------------------------
-
-
-
---
--- Table structure for table `#__vm_calc_shoppergroup_xref`
---
-
---CREATE TABLE IF NOT EXISTS `#__vm_plugins_shoppergroup_xref` (
---  `id` int(11) NOT NULL auto_increment,
---  `ext_id` int(11) NOT NULL default '0',
---  `ext_shopper_group` int(11) NOT NULL default '0',
---  PRIMARY KEY  (`id`)
---) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
-
---
--- Table structure for table `#__vm_plugins`
---
-
--- CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
---   `id` int(11) NOT NULL auto_increment,
---   `name` varchar(100) NOT NULL default '',
---   `element` varchar(100) NOT NULL default '',
---   `folder` varchar(100) NOT NULL default '',
---   `ordering` int(11) NOT NULL default '0',
---   `published` tinyint(1) NOT NULL default '0',
---   `iscore` tinyint(3) NOT NULL default '0',
---   `vendor_id` tinyint(3) NOT NULL default '1',
---   `shopper_group_id` int(10) unsigned NOT NULL,
---   `checked_out` int(11) unsigned NOT NULL default '0',
---   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
---   `params` text NOT NULL,
---   `secrets` blob NOT NULL,
---   PRIMARY KEY  (`id`),
---   KEY `idx_folder` (`published`,`vendor_id`,`folder`)
--- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
