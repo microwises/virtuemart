@@ -25,6 +25,11 @@
 * http://virtuemart.org
 */
 
+// This helper uses the ps_DB and VmHTML classes which causes problems if the view using this helper does not
+// include global.php, so make sure ps_database is included here.
+// TODO Rewrite this helper to use the Joomla DB and JHTML classes
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS.'ps_database.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'html.php');
 
 class Vendor {
 	

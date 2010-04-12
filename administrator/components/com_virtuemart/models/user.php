@@ -26,6 +26,9 @@ define ('__SUPER_ADMIN_GID', 25);
 jimport('joomla.application.component.model');
 jimport('joomla.version');
 
+// Get the helpers we need here
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
+
 /**
  * Model class for shop users
  *
@@ -130,6 +133,8 @@ class VirtueMartModelUser extends JModel {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 			}
+			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_auth_user_vendor WHERE user_id = ' . $this->_id);
+			$this->_data->vendor_id = $_vid[0];
 		}
 
 		if (!$this->_data) {
@@ -149,9 +154,8 @@ class VirtueMartModelUser extends JModel {
 	function getContactDetails()
 	{
 		if ($this->_id) {
-			$db = JFactory::getDBO();
-			$db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
-			$_contacts = $db->loadObjectList();
+			$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
+			$_contacts = $this->_db->loadObjectList();
 			return $_contacts[0];
 		}
 		return null;
@@ -308,16 +312,45 @@ class VirtueMartModelUser extends JModel {
 	}
 
 	/**
+	 * Retrieve a list of addresses for a user
+	 * 
+	 *  @param $_uid int User ID
+	 *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
+	 */
+	function getUserAddress($_uid = 0, $_type = 'ST')
+	{
+		$_q = 'SELECT * '
+			. ' FROM #__vm_user_info '
+			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
+			. " AND address_type='$_type'";
+		return ($this->_getList($_q));
+	}
+
+	/**
+	 * Retrieves the Customer Number of the user specified by ID
+	 *
+	 * @param int $_id User ID
+	 * @return string Customer Number
+	 */
+	function getCustomerNumberById($_id = 0)
+	{
+		$_q = "SELECT `customer_number` FROM `#__{vm}_shopper_vendor_xref` "
+			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
+		$this->_db->query($_q);
+		$this->_db->next_record();
+
+		return $this->_db->f("customer_number");
+	}
+	/**
 	 * Get the number of active Super Admins
 	 * 
 	 * @return integer
 	 */
 	function getSuperAdminCount()
 	{
-		$db = JFactory::getDBO();
-		$db->setQuery('SELECT COUNT(id) FROM #__users'
+		$this->_db->setQuery('SELECT COUNT(id) FROM #__users'
 			. ' WHERE gid = ' . __SUPER_ADMIN_GID . ' AND block = 0');
-		return ($db->loadResult());
+		return ($this->_db->loadResult());
 	}
 	
 	/**
@@ -327,10 +360,9 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getFilter()
 	{
-		$db = JFactory::getDBO();
 		if (JRequest::getVar('search', false)) {
-			$_where = ' WHERE `name` LIKE ' .$db->Quote('%'.JRequest::getVar('search').'%')
-					. ' OR `username` LIKE ' .$db->Quote('%'.JRequest::getVar('search').'%');
+			$_where = ' WHERE `name` LIKE ' .$this->_db->Quote('%'.JRequest::getVar('search').'%')
+					. ' OR `username` LIKE ' .$this->_db->Quote('%'.JRequest::getVar('search').'%');
 			return ($_where);
 		}
 		return ('');
@@ -394,7 +426,7 @@ class VirtueMartModelUser extends JModel {
 			$query = 'UPDATE `#__vm_user_info`'
 				. ' SET `' . $field . '` = '.(int) $value
 				. ' WHERE user_id IN ( '.$ids.' )'
-			;print $query;exit;
+			;
 			$this->_db->setQuery( $query );
 			if (!$this->_db->query()) {
 				$this->setError($this->_db->getErrorMsg());
@@ -415,7 +447,6 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function getAclGroupIndentedTree()
 	{
-		$db = JFactory::getDBO();
 		$version = new JVersion();
 
 		if (version_compare($version->getShortVersion(), '1.6.0', '>=' ) == 1) {
@@ -434,8 +465,8 @@ class VirtueMartModelUser extends JModel {
 			$query .= 'ORDER BY `node`.`lft`';
 		}
 
-		$db->setQuery($query);
-		return $db->loadObjectList();
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 

@@ -201,15 +201,19 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function store()
 	{
-		$field =& $this->getTable('userfields');
+		$field      =& $this->getTable('userfields');
+		$userinfo   =& $this->getTable('user_info');
+		$orderinfo  =& $this->getTable('order_user_info');
 
 		$data = JRequest::get('post');
 
 		$isNew = ($data['fieldid'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
+			$_action = 'ADD';
 		} else {
 			$field->load($data['fieldid']);
+			$_action = 'CHANGE';
 
 			if ($field->ordering == $data['ordering']) {
 				$reorderRequired = false;
@@ -237,6 +241,21 @@ class VirtueMartModelUserfields extends JModel {
 			return false; 
 		}
 
+		// Get the fieldtype for the database
+		$_fieldType = $field->formatFieldType($data);
+
+		// Alter the user_info table
+		if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
+			$this->setError($userinfo->getError());
+			return false;
+		}
+
+		// Alter the order_user_info table
+		if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
+			$this->setError($orderinfo->getError());
+			return false;
+		}
+
 		// if new item, order last in appropriate group
 		if ($isNew) {
 			$field->ordering = $field->getNextOrder();
@@ -255,6 +274,8 @@ class VirtueMartModelUserfields extends JModel {
 			$field->reorder();
 		}
 
+		// Alter the user_info database to hold the values
+		
 		return true;
 	}
 
@@ -271,6 +292,7 @@ class VirtueMartModelUserfields extends JModel {
 			return true; //Nothing to do
 		}
 		$fieldvalue =& $this->getTable('userfields_values');
+
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
 				$_values[$i]['fieldid'] = $_id;
@@ -291,7 +313,108 @@ class VirtueMartModelUserfields extends JModel {
 				return false;
 			}
 		}
+		
 		return true;
+	}
+
+	/**
+	 * Retrieve an array with userfield objects
+	 *
+	 * @param string $section The section the fields belong to (e.g. 'registration' or 'account')
+	 * @param array $_switches Array to toggle these options:
+	 *                         * published    Published fields only (default: true)
+	 *                         * required     Required fields only (default: false)
+	 *                         * delimiters   Exclude delimiters (default: false)
+	 *                         * system       System fields filter (no default; true: only system fields, false: exclude system fields)
+	 * @param array $_skip Array with fieldsnames to exclude. Default: array('username', 'password', 'password2', 'agreed'),
+	 *                     specify array() to skip nothing.
+	 * @return array
+	 */
+	function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
+	{
+		$_q = 'SELECT * FROM `#__vm_userfield` ';
+
+		if( $_sec != 'bank' && $_sec != '') {
+			$_q .= "WHERE `$_sec`=1 ";
+		} elseif ($_sec == 'bank' ) {
+			$_q .= "WHERE name LIKE '%bank%' ";
+		}
+
+		if ($_switches['published'] !== false ) {
+			$_q .= "AND published = 1 ";
+		}
+		if ($_switches['required'] === true ) {
+			$_q .= "AND required = 1 ";
+		}
+		if ($_switches['delimiters'] === true ) {
+			$_q .= "AND type != 'delimiter' ";
+		}
+		if ($_switches['sys'] === true ) {
+			$_q .= "AND sys = 1 ";
+		}
+		if ($_switches['sys'] === false ) {
+			$_q .= "AND sys = 0 ";
+		}
+		if (count($_skip) > 0) {
+			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";
+		}
+		$_q .= 'ORDER BY ordering ';
+
+		return $this->_getList($_q);
+	}
+
+	private function _userFieldFormat($_f, $_v)
+	{
+		switch ($_f) {
+			case 'agreed':
+			case 'title':
+				if( $_v[0] == '_') {
+					$_v = substr($_v, 1);
+				}
+				$_r = JText::_($_v);
+				if( $_f == 'title') {
+					break;
+				}
+				// TODO Handling Agreed field
+				$_r->title = '<script type="text/javascript">//<![CDATA[
+						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('VM_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+						document.write(\' ('.JText::_('VM_STORE_FORM_TOS') .')</a>\');
+					//]]></script>
+					<noscript>
+					<label for="agreed_field">'. JText::_('VM_I_AGREE_TO_TOS') .'</label>
+					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('VM_I_AGREE_TO_TOS') .'">
+					 ('.JText::_('VM_STORE_FORM_TOS').')
+					</a></noscript>';
+				break;
+		}
+		return $_r;
+	}
+	/**
+	 * Return an array with userFields in several formats.
+	 * 
+	 * @param $_selection 
+	 */
+	function getUserFieldsByUser(&$_selection, &$_userData = null)
+	{
+
+		
+		$_return = array(
+				 'fields' => array()
+				,'script' => array()
+		);
+
+		foreach ($_selection as $_fld) {
+			$_return['fields'][$_fld->name] = array(
+					 'value' => ($_userData == null) ? $_fld->default : $_userData->{$_fld->name}
+					,'title' => self::_userFieldFormat(
+							 ($_fld->name == 'agreed')?'agreed':'title'
+							,$_fld->title
+						)
+//					,'formfield' => 
+					,'required' => $_fld->required
+//					,'hidden' => 
+			);
+		}
 	}
 
 	/**
@@ -322,17 +445,48 @@ class VirtueMartModelUserfields extends JModel {
 	}
 
 	/**
+	 * Get the column name of a given fieldID
+	 * @param $_id integer Field ID
+	 * @return string Fieldname
+	 */
+	function getNameByID($_id)
+	{
+		$_sql = 'SELECT name '
+				. 'FROM `#__vm_userfield`'
+				. "WHERE fieldid = $_id";
+
+		$_v = $this->_getList($_sql);
+		return ($_v[0]->name);
+	}
+
+	/**
 	 * Delete all record ids selected
 	 *
 	 * @return boolean True is the delete was successful, false otherwise.
 	 */
 	function delete()
 	{
-		$fieldIds = JRequest::getVar('cid',  0, '', 'array');
-		$field =& $this->getTable('userfields');
-		$value =& $this->getTable('userfields_values');
+		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
+		$field      =& $this->getTable('userfields');
+		$value      =& $this->getTable('userfields_values');
+		$userinfo   =& $this->getTable('user_info');
+		$orderinfo  =& $this->getTable('order_user_info');
 		
 		foreach($fieldIds as $fieldId) {
+			$_fieldName = $this->getNameByID($fieldId);
+
+			// Alter the user_info table
+			if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
+				$this->setError($userinfo->getError());
+				return false;
+			}
+
+			// Alter the order_user_info table
+			if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
+				$this->setError($orderinfo->getError());
+				return false;
+			}
+		
 			if (!$field->delete($fieldId)) {
 				$this->setError($field->getError());
 				return false;

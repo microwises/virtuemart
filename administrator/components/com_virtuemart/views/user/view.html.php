@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id:$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -37,7 +37,7 @@ class VirtuemartViewUser extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-
+		
 		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
 
@@ -47,11 +47,19 @@ class VirtuemartViewUser extends JView {
 			$editor = JFactory::getEditor();
 
 			$_currentUser =& JFactory::getUser();
+
+			// Get the required helpers
+			$this->loadHelper('permissions');
+			$this->loadHelper('shoppergroup');
+			$this->loadHelper('shopfunctions');
 			$this->loadHelper('vendorhelper');
+
+			$userFieldsModel = $this->getModel('userfields');
 			$vendor =& new Vendor;
 
 			$userDetails = $model->getUser();
-			if ($userDetails->JUser->get('id') < 1) { // Insert new user
+			$_new = ($userDetails->JUser->get('id') < 1);
+			if ($_new) { // Insert new user
 				JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
@@ -82,8 +90,47 @@ class VirtuemartViewUser extends JView {
 
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
+			// Shopper info
+
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $userDetails->userInfo[0]->perms);
+
+			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
+			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup->default_shopper_group);
+			$lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->vendor_id->vendor_id);
+
+			// Shipping address(es)
+			$_addressList = $model->getUserAddress($userDetails->JUser->get('id') , 'ST');
+			if (($_c = count($_addressList)) == 0) {
+				$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
+			} else {
+				$_shipTo = array();
+				for ($_i = 0; $_i < $_c; $_i++) {
+					$_shipTo[] = '<li>'.'<a href="index.php'
+										.'?option=com_virtuemart'
+										.'&view=user'
+										.'&task=ship_address'
+										.'&uid='.$_addressList[$_i]->user_id
+										.'&cid[]='.$_addressList[$_i]->user_info_id
+									. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
+				
+				}
+				$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
+			}
+
+			$_userFields = $userFieldsModel->getUserFields(
+					 'account'
+					, array() // Default toggles
+					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+			);
+			$userFields = $userFieldsModel->getUserFieldsByUser(
+					 $_userFields
+					,$userDetails->JUser->get('id')
+			);
+//			if(!$_new) {}
+
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
+			$this->assignRef('userFields', $userFields);
 			$this->assignRef('vendor', $vendor);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);

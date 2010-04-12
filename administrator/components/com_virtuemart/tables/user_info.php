@@ -59,6 +59,44 @@ class TableUser_info extends JTable {
 	}
 
 	/**
+	 * Add, change or drop userfields
+	 *
+	 * @param string $_act Action: ADD, DROP or CHANGE (synonyms available, see the switch cases)
+	 * @param string $_col Column name
+	 * @param string $_type Fieldtype
+	 * @return boolean True on success
+	 */
+	function _modifyColumn ($_act, $_col, $_type = '')
+	{
+		$_sql = "ALTER TABLE `#__vm_user_info` ";
+
+		$_check_act = strtoupper(substr($_act, 0, 3));
+		switch ($_check_act) {
+			case 'ADD':
+			case 'CRE': // Create
+				$_sql .= "ADD $_col $_type ";
+				break;
+			case 'DRO': // Drop
+			case 'DEL': // Delete
+				$_sql .= "DROP $_col ";
+				break;
+			case 'MOD': // Modify
+			case 'UPD': // Update
+			case 'CHA': // Change
+				$_sql .= "CHANGE $_col $_col $_type ";
+				break;
+		}
+
+		$this->_db->setQuery($_sql);
+		$this->_db->query();
+		if ($this->_db->getErrorNum() != 0) {
+			$this->setError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	} 
+	
+	/**
 	* Stores/Updates a tax rate
 	*
 	*/
@@ -81,22 +119,20 @@ class TableUser_info extends JTable {
 	* @author RickG, RolandD
 	* @return boolean True if the table buffer is contains valid data, false otherwise.
 	*/
-	public function check() {
-		$db = JFactory::getDBO();
-
+	public function check()
+	{
 		/* Check if a record exists */
 		$q = "SELECT user_info_id
 			FROM #__vm_user_info
 			WHERE user_id = ".$this->user_id."
-			AND address_type = ".$db->Quote($this->address_type)."
-			AND address_type_name = ".$db->Quote($this->address_type_name);
-		$db->setQuery($q);
-		$total = $db->loadResultArray();
+			AND address_type = ".$this->_db->Quote($this->address_type)."
+			AND address_type_name = ".$this->db->Quote($this->address_type_name);
+		$this->_db->setQuery($q);
+		$total = $this->_db->loadResultArray();
 		if (count($total) > 0) {
 			$this->user_info_id = $total[0];
 			return true;
-		}
-		else {
+		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
 			$this->cdate = time();
 			return false;
@@ -115,10 +151,9 @@ class TableUser_info extends JTable {
 			return (parent::delete($id));
 		}
 		// Implicit else
-		$db =& JFactory::getDBO();
-		$db->setQuery('DELETE from `#__vm_user_info` WHERE `user_id` = ' . $id);
-		if ($db->query() === false) {
-			$this->setError($db->getError());
+		$this->_db->setQuery('DELETE from `#__vm_user_info` WHERE `user_id` = ' . $id);
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
 			return false;
 		}
 		return true;

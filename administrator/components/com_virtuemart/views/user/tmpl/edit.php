@@ -26,7 +26,7 @@ AdminMenuHelper::startAdminArea();
 <?php
 	echo $this->pane->startPane("user-pane");
 
-	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'edit_user' );
+	echo $this->pane->startPanel( JText::_('VM_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
 	echo $this->loadTemplate('user');
 	echo $this->pane->endPanel();
 
@@ -34,9 +34,15 @@ AdminMenuHelper::startAdminArea();
 	echo $this->loadTemplate('shopper');
 	echo $this->pane->endPanel();
 
-	if($this->vendor->isVendor($this->userDetails->JUser->get('id'))){
-		echo $this->pane->startPanel( JText::_('VM_STORE_MOD'), 'edit_store' );
-		echo $this->loadTemplate('store');
+	if (count($this->orderlist) > 0) {
+		echo $this->pane->startPanel( JText::_('VM_ORDER_LIST_LBL'), 'edit_orderlist' );
+		echo $this->loadTemplate('orderlist');
+		echo $this->pane->endPanel();
+	}
+
+	if ($this->vendor->isVendor($this->userDetails->JUser->get('id'))) {
+		echo $this->pane->startPanel( JText::_('VM_VENDOR_MOD'), 'edit_vendor' );
+		echo $this->loadTemplate('vendor');
 		echo $this->pane->endPanel();
 	}
 

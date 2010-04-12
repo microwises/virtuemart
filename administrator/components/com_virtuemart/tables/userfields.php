@@ -104,9 +104,62 @@ class TableUserfields extends JTable {
 			$this->setError(JText::_('Values are required for this type.'));
 			return false;
 		}
+		if ($this->fieldid == 0) {
+			$_sql = 'SELECT COUNT(*) AS c '
+					. 'FROM `#__vm_userfield`'
+					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
+
+			$this->_db->setQuery($_sql);
+			$_c = $this->_db->loadResultArray();
+
+			if ($_c[0] > 0) {
+				$this->setError(JText::_('VM_USERFIELD_ERR_ALREADY', $this->name));
+				return false;
+			}
+		}
 		return true;
 	}
-	
+
+	/**
+	 * Format the field type
+	 * @param $_data array array with additional data written to other tables
+	 * @return string Field type in SQL syntax
+	 */
+	function formatFieldType(&$_data = array())
+	{
+		$_fieldType = $this->type;
+		switch($this->type) {
+			case 'date':
+				$_fieldType = 'DATE';
+				break;
+			case 'editorta':
+			case 'textarea':
+			case 'multiselect':
+			case 'multicheckbox':
+				$_fieldType = 'MEDIUMTEXT';
+				break;	
+			case 'letterman_subscription':
+			case 'yanc_subscription':
+			case 'anjel_subscription':
+			case 'ccnewsletter_subscription':
+				$this->params = 'newsletter='.substr($this->type,0,strpos($this->type, '_') )."\n";
+				$this->type = 'checkbox';
+			case 'checkbox':
+				$_fieldType = 'TINYINT';
+				break;
+			case 'euvatid':
+				$this->params = 'shopper_group_id='.$_data['shopper_group_id']."\n";
+				$_fieldType = 'VARCHAR(255)';
+				break;
+			case 'age_verification':
+				$this->params = 'minimum_age='.(int)$_data['minimum_age']."\n";
+			default:
+				$_fieldType = 'VARCHAR(255)';
+				break;
+		}
+		return $_fieldType;
+	}
+
 	/**
 	 * Reimplement the store method to return the last inserted ID
 	 * 
