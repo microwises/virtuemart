@@ -20,6 +20,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea(); 
+
+// Implement Joomla's form validation
+JHTML::_('behavior.formvalidation')
 ?>
 
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">

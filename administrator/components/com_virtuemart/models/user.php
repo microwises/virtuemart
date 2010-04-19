@@ -380,6 +380,8 @@ class VirtueMartModelUser extends JModel {
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
 
+		// FIXME this is a dirty hack since we don't have an ordering field yet...
+		if ($filter_order == 'ordering') $filter_order = 'id'; 
 		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
 	}
 

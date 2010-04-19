@@ -112,12 +112,15 @@ class ShopFunctions {
 	* @author jseros, Max Milbers
 	* 
 	* @param int $countryId Selected country id
+	* @param boolean $multiple True if multiple selecions are allowed (default: false)
+	* @param mixed $_attrib string or array with additional attibutes,
+	* e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
 	* @return string HTML containing the <select />
 	*/
-	public function renderCountryList( $countryId = 0 , $multiple = false ){
+	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = '' ){
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(false, true);
-		$attrs = '';
+		$attrs = array();
 		$name = 'country_name';
 		$idA = $id = 'country_id';
 		
@@ -125,10 +128,16 @@ class ShopFunctions {
 		array_unshift($countries, $emptyOption);
 		
 		if($multiple){
-			$attrs .= 'multiple="multiple"';
+			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		}
-		
+
+		if (is_array($_attrib)) {
+			$attrs = array_merge ($attrs, $_attrib);
+		} else {
+			$_a = explode ('=', $_attrib, 2);
+			$attrs[$_a[0]] = $_a[1];
+		}
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 	

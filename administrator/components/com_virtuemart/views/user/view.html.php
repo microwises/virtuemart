@@ -124,10 +124,23 @@ class VirtuemartViewUser extends JView {
 			);
 			$userFields = $userFieldsModel->getUserFieldsByUser(
 					 $_userFields
-					,$userDetails->JUser->get('id')
-			);
+					,(isNew?null:current($userDetails->userInfo))
+			);//print_r($userFields);exit;
 //			if(!$_new) {}
 
+			// Load the required scripts
+			if (count($userFields['scripts']) > 0) {
+				foreach ($userFields['scripts'] as $_script => $_path) {
+					JHTML::script($_script, $_path);
+				}
+			}
+			// Load the required styresheets
+			if (count($userFields['links']) > 0) {
+				foreach ($userFields['links'] as $_link => $_path) {
+					JHTML::stylesheet($_link, $_path);
+				}
+			}
+			
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
 			$this->assignRef('userFields', $userFields);

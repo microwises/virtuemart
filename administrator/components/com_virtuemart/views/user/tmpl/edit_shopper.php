@@ -17,7 +17,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+
+?>
 
 
 
@@ -28,46 +30,44 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="adminform">
 		<tr>
 			<td class="key">
-				<label for="">
+				<label for="vendor_id">
 					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:
 				</label>
 			</td>
 			<td>
-				<label for="">
-					<?php echo $this->lists['vendors']; ?>
-				</label>
+				<?php echo $this->lists['vendors']; ?>
 			</td>
 		</tr>
 
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_PERMS') ?>:
+				<label for="perms">
+					<?php echo JText::_('VM_USER_FORM_PERMS') ?>:
+				</label>
 			</td>
 			<td>
-				<label for="">
-					<?php echo $this->lists['perms']; ?>
-				</label>
+				<?php echo $this->lists['perms']; ?>
 			</td>
 		</tr>
 
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:
+				<label for="customer_number">
+					<?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:
+				</label>
 			</td>
 			<td>
-				<label for="">
-					<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo  $this->lists['custnumber']; ?>" />
-				</label>
+				<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo  $this->lists['custnumber']; ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:
+				<label for="shopper_group_id">
+					<?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:
+				</label>
 			</td>
 			<td>
-				<label for="">
-					<?php echo $this->lists['shoppergroups']; ?>
-				</label>
+				<?php echo $this->lists['shoppergroups']; ?>
 			</td>
 		</tr>
 	</table>
@@ -102,40 +102,65 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	$_k = 0;
 	$_set = false;
 	$_table = false;
-	for ($_i = 0, $_n = count($this->userFields); $_i < $_n; $_i++) {
-		$_field =& $this->userFields[$_i];
+	$_hiddenFields = '';
 
+	if (count($this->userFields['functions']) > 0) {
+		echo '<script language="javascript">'."\n";
+		echo join("\n", $this->userFields['functions']);
+		echo '</script>'."\n";
+	}
+	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
+		// Do this at the start of the loop, since we're using 'continue' below!
+		if ($_i == 0) {
+			$_field = current($this->userFields['fields']);
+		} else {
+			$_field = next($this->userFields['fields']);
+		}
+
+		if ($_field['hidden'] == true) {
+			$_hiddenFields .= $_field['formcode'];
+			continue;
+		}
 		if ($_field['type'] == 'delimiter') {
 			if ($_set) {
 				// We're in Fieldset. Close this one and start a new
 				if ($_table) {
-					echo '	</table>';
+					echo '	</table>'."\n";
+					$_table = false;
 				}
-				echo '</fieldset>';
+				echo '</fieldset>'."\n";
 			}
 			$_set = true;
-			echo '<fieldset>';
-			echo '	<legend>';
+			echo '<fieldset>'."\n";
+			echo '	<legend>'."\n";
 			echo '		' . $_field['title'];
-			echo '	</legend>';
+			echo '	</legend>'."\n";
 			continue;
 		}
 
 		if (!$_table) {
-			// We're not in a fieldset, so a table hasn't been opened as well.
-			// We need one here, 
-			echo '	<table class="adminform">';
+			// A table hasn't been opened as well. We need one here, 
+			echo '	<table class="adminform">'."\n";
+			$_table = true;
 		}
-
-		
+		echo '		<tr>'."\n";
+		echo '			<td class="key">'."\n";
+		echo '				<label for="'.$_field['name'].'">'."\n";
+		echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
+		echo '				</label>'."\n";
+		echo '			</td>'."\n";
+		echo '			<td>'."\n";
+		echo '				'.$_field['formcode']."\n";
+		echo '			</td>'."\n";
+		echo '		</tr>'."\n";
 	}
 
 	if ($_table) {
-		echo '	</table>';
+		echo '	</table>'."\n";
 	}
-
 	if ($_set) {
-		echo '</fieldset>';
+		echo '</fieldset>'."\n";
 	}
+	echo $_hiddenFields;
 ?>
 </fieldset>
