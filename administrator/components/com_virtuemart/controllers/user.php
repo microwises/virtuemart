@@ -82,7 +82,7 @@ class VirtuemartControllerUser extends JController {
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		
+
 		parent::display();
 	}
 
@@ -99,6 +99,10 @@ class VirtuemartControllerUser extends JController {
 	 */
 	function save()
 	{
+		$document =& JFactory::getDocument();
+		$viewType = $document->getType();
+		$view =& $this->getView('user', $viewType);
+		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$_currentUser =& JFactory::getUser();
 // TODO sortout which check is correctt.....
 //		if (!$_currentUser->authorize('administration', 'manage', 'components', 'com_users')) {

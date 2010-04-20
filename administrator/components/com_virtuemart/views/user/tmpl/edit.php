@@ -24,8 +24,36 @@ AdminMenuHelper::startAdminArea();
 // Implement Joomla's form validation
 JHTML::_('behavior.formvalidation')
 ?>
+<style type="text/css">
+.invalid {
+	border-color: #f00;
+	background-color: #ffd;
+	color: #000;
+}
+label.invalid {
+	background-color: #fff;
+	color: #f00;
+}
+</style>
+<script language="javascript">
+function myValidator(f, t)
+{
+	if (f.task.value=='cancel') {
+		return true;
+	}
+	if (document.formvalidator.isValid(f)) {
+		f.task.value=t;
+		f.submit();
+		return true;
+	} else {
+		var msg = '<?php echo JText::_('VM_USER_FORM_MISSING_REQUIRED'); ?>';
+		alert (msg);
+	}
+	return false;
+}
+</script>
 
-<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
+<form method="post" id="adminForm" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
 <?php
 	echo $this->pane->startPane("user-pane");
 

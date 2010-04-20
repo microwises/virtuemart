@@ -65,6 +65,7 @@ class TableUser_info extends JTable {
 	 * @param string $_col Column name
 	 * @param string $_type Fieldtype
 	 * @return boolean True on success
+	 * @author Oscar van Eijk
 	 */
 	function _modifyColumn ($_act, $_col, $_type = '')
 	{
@@ -121,12 +122,16 @@ class TableUser_info extends JTable {
 	*/
 	public function check()
 	{
+		if (!empty($this->user_info_id)) {
+			return true;
+		}
+
 		/* Check if a record exists */
 		$q = "SELECT user_info_id
 			FROM #__vm_user_info
 			WHERE user_id = ".$this->user_id."
 			AND address_type = ".$this->_db->Quote($this->address_type)."
-			AND address_type_name = ".$this->db->Quote($this->address_type_name);
+			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
 		if (count($total) > 0) {
@@ -143,6 +148,7 @@ class TableUser_info extends JTable {
 	 * Overloaded delete() to delete a list of user_info_id's based on the user id
 	 * @var mixed id
 	 * @return boolean True on success
+	 * @author Oscar van Eijk
 	 */
 	function delete($id)
 	{

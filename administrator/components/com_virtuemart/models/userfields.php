@@ -359,8 +359,60 @@ class VirtueMartModelUserfields extends JModel {
 			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";
 		}
 		$_q .= 'ORDER BY ordering ';
+		$_fields = $this->_getList($_q);
 
-		return $this->_getList($_q);
+		// We need 2 extra fields that are nog in the userfields table. They will be hidden on the details form
+		$_address_type = new stdClass();
+		$_address_type->fieldid = 0;
+		$_address_type->name = 'address_type';
+		$_address_type->title = '';
+		$_address_type->description = '' ;
+		$_address_type->type = 'hidden';
+		$_address_type->maxlength = 0;
+		$_address_type->size = 0;
+		$_address_type->required = 0;
+		$_address_type->ordering = 0;
+		$_address_type->cols = 0;
+		$_address_type->rows = 0;
+		$_address_type->value = '';
+		$_address_type->default = 'BT';
+		$_address_type->published = 1;
+		$_address_type->registration = 1;
+		$_address_type->shipping = 0;
+		$_address_type->account = 1;
+		$_address_type->readonly = 0;
+		$_address_type->calculated = 0;
+		$_address_type->sys = 0;
+		$_address_type->vendor_id = 1;
+		$_address_type->params = '';
+
+		$_user_is_vendor = new stdClass();
+		$_user_is_vendor->fieldid = 0;
+		$_user_is_vendor->name = 'user_is_vendor';
+		$_user_is_vendor->title = '';
+		$_user_is_vendor->description = '' ;
+		$_user_is_vendor->type = 'hidden';
+		$_user_is_vendor->maxlength = 0;
+		$_user_is_vendor->size = 0;
+		$_user_is_vendor->required = 0;
+		$_user_is_vendor->ordering = 0;
+		$_user_is_vendor->cols = 0;
+		$_user_is_vendor->rows = 0;
+		$_user_is_vendor->value = '';
+		$_user_is_vendor->default = 0;
+		$_user_is_vendor->published = 1;
+		$_user_is_vendor->registration = 1;
+		$_user_is_vendor->shipping = 0;
+		$_user_is_vendor->account = 1;
+		$_user_is_vendor->readonly = 0;
+		$_user_is_vendor->calculated = 0;
+		$_user_is_vendor->sys = 0;
+		$_user_is_vendor->vendor_id = 1;
+		$_user_is_vendor->params = '';
+
+		$_fields[] = $_address_type;
+		$_fields[] = $_user_is_vendor;
+		return $_fields;
 	}
 
 	private function _userFieldFormat($_f, $_v)
@@ -389,10 +441,37 @@ class VirtueMartModelUserfields extends JModel {
 		}
 		return $_r;
 	}
+
 	/**
 	 * Return an array with userFields in several formats.
 	 * 
-	 * @param $_selection 
+	 * @param $_selection An array, as returned by getuserFields(), with fields that should be returned.
+	 * @param $_userData Array with userdata holding the values for the fields
+	 * @return array List with all userfield data in the format:
+	 * array(
+	 *    'fields' => array(   // All fields
+	 *                   <fieldname> => array(
+	 *                                     'name' =>       // Name of the field
+	 *                                     'value' =>      // Existing value for the current user, or the default
+	 *                                     'title' =>      // Title used for label and such
+	 *                                     'type' =>       // Field type as specified in the userfields table
+	 *                                     'hidden' =>     // True/False
+	 *                                     'required' =>   // True/False. If True, the formcode also has the class "required" for the Joomla formvalidator
+	 *                                     'formcode' =>   // Full HTML tag
+	 *                                  )
+	 *                   [...]
+	 *                )
+	 *    'functions' => array() // Optional javascript functions without <script> tags.
+	 *                           // Possible usage: if (count($ar('functions')>0) echo '<script ...>'.join("\n", $ar('functions')).'</script>;
+	 *    'scripts'   => array(  // Array with scriptsources for use with JHTML::script();
+	 *                      <name> => <path>
+	 *                      [...]
+	 *                   )
+	 *    'links'     => array(  // Array with stylesheets for use with JHTML::stylesheet();
+	 *                      <name> => <path>
+	 *                      [...]
+	 *                   )
+	 * )
 	 */
 	function getUserFieldsByUser($_selection, $_userData = null)
 	{
@@ -405,10 +484,11 @@ class VirtueMartModelUserfields extends JModel {
 				,'scripts' => array()
 				,'links' => array()
 		);
+		
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_fld->name
-					,'value' => ($_userData == null) ? $_fld->default : $_userData->{$_fld->name}
+					,'value' => (($_userData == null) ? $_fld->default : $_userData->{$_fld->name})
 					,'title' => self::_userFieldFormat(
 							 ($_fld->name == 'agreed')?'agreed':'title'
 							,$_fld->title
@@ -421,17 +501,17 @@ class VirtueMartModelUserfields extends JModel {
 			switch( $_fld->name ) {
 				case 'title':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->listUserTitle(
-						$userData->userInfo[0]['title']);
+						$_return['fields'][$_fld->name]['value']);
 					break;
 				
 				case 'country_id':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderCountryList(
-						$userData->userInfo[0]['country_id'], false, array('onchange' => 'changeStateList();'));
+						$_return['fields'][$_fld->name]['value'], false, array('onchange' => 'changeStateList();'));
 					break;
 				
 				case 'state_id':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderStateList(
-						$userData->userInfo[0]['country_id'], $userData->userInfo[0]['state_id'], 'country_id');
+						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value'], 'country_id');
 // TODO Write a javascript function to reload the statelist. Using jQuery???
 // TODO even more.... findout why it *does* work ?!? Legacy code? Where is it included?
 					break;
@@ -447,6 +527,15 @@ class VirtueMartModelUserfields extends JModel {
 				// It's not a predefined field, so handle it by it's fieldtype
 				default:
 					switch( $_fld->type ) {
+						case 'hidden':
+							$_return['fields'][$_fld->name]['formcode'] = '<input type="hidden" id="'
+								. $_fld->name . '_field" name="' . $_fld->name.'" size="' . $_fld->size
+								. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
+								. ($_fld->required ? ' class="required"' : '')
+								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
+							$_return['fields'][$_fld->name]['hidden'] = true;
+							break;
 						case 'date':
 						case 'age_verification':
 							$_calendar_path = 'includes'.DS.'js'.DS.'calendar';
@@ -465,7 +554,7 @@ class VirtueMartModelUserfields extends JModel {
 								$_return['links']['calendar-mos.css'] = $_calendar_path.DS;
 							}
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_fld->name . '_field" name="'
-								. $_fld->name.'" size="' . $_fld->size . '" value="'. $_userData->{$_fld->name} . '" '
+								. $_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
 								. ($_fld->required ? ' class="required"' : '')
 								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
 								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
@@ -477,7 +566,7 @@ class VirtueMartModelUserfields extends JModel {
 						case 'euvatid':
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="'
 								. $_fld->name . '_field" name="' . $_fld->name.'" size="' . $_fld->size
-								. '" value="' . $_userData->{$_fld->name} .'" '
+								. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
 								. ($_fld->required ? ' class="required"' : '')
 								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
 								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
@@ -487,17 +576,17 @@ class VirtueMartModelUserfields extends JModel {
 								. $_fld->name . '_field" name="' . $_fld->name . '" cols="' . $_fld->cols
 								. '" rows="'.$_fld->rows . '" class="inputbox" '
 								. ($_fld->readonly ? ' readonly="readonly"' : '')
-								. $_userData->{$_fld->name} .'</textarea>';
+								. $_return['fields'][$_fld->name]['value'] .'</textarea>';
 							break;
 						case 'editorta':
 							jimport( 'joomla.html.editor' );
 							$editor =& JFactory::getEditor();
-							$_return['fields'][$_fld->name]['formcode'] = $editor->display($_fld->name, $_userData->{$_fld->name}, 300, 150, $_fld->cols, $_fld->rows);
+							$_return['fields'][$_fld->name]['formcode'] = $editor->display($_fld->name, $_return['fields'][$_fld->name]['value'], 300, 150, $_fld->cols, $_fld->rows);
 							break;
 						case 'checkbox':
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
 								. $_fld->name . '" id="' . $_fld->name . '_field" value="1" '
-								. ($_userData->{$_fld->name} ? 'checked="checked"' : '') .'/>';
+								. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							break;
 						case 'captcha':
 							// FIXME Implement the new securityimages component
@@ -533,10 +622,10 @@ class VirtueMartModelUserfields extends JModel {
 							}
 							
 							if ($_fld->type == 'radio') {
-								$_selected = $_userData->{$_fld->name};
+								$_selected = $_return['fields'][$_fld->name]['value'];
 							} else {
 								$_attribs['size'] = $_fld->size; // Use for all but radioselects
-								$_selected = explode("|*|",$_userData->{$_fld->name});
+								$_selected = explode("|*|", $_return['fields'][$_fld->name]['value']);
 							}
 
 							// Nested switch...
@@ -559,7 +648,7 @@ class VirtueMartModelUserfields extends JModel {
 									$_attribs['multiple'] = 'multiple';
 									$_attribs['rows'] = $_fld->rows;
 									$_attribs['cols'] = $_fld->cols;
-									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected[0]);
+									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_fld->name.'[]', $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									break;
 								case 'radio':
 									$_return['fields'][$_fld->name]['formcode'] =  JHTML::_('select.radiolist', $_values, $_fld->name, $_attribs, $_selected, 'fieldvalue', 'fieldtitle');

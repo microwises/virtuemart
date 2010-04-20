@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 
 		if ($_field['hidden'] == true) {
-			$_hiddenFields .= $_field['formcode'];
+			$_hiddenFields .= $_field['formcode']."\n";
 			continue;
 		}
 		if ($_field['type'] == 'delimiter') {
@@ -145,7 +145,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		echo '		<tr>'."\n";
 		echo '			<td class="key">'."\n";
-		echo '				<label for="'.$_field['name'].'">'."\n";
+		echo '				<label for="'.$_field['name'].'_field">'."\n";
 		echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
 		echo '				</label>'."\n";
 		echo '			</td>'."\n";
@@ -163,4 +163,5 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	echo $_hiddenFields;
 ?>
+<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 </fieldset>

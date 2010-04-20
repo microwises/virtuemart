@@ -217,6 +217,7 @@ class VirtueMartModelUser extends JModel {
 	function store()
 	{
 		global $mainframe;
+
 		$_data = JRequest::get('post');
 		$_currentUser =& JFactory::getUser();
 
@@ -264,6 +265,40 @@ class VirtueMartModelUser extends JModel {
 			);
 			JUtility::sendMail( $adminEmail, $adminName, $user->get('email'), $subject, $message );
 			$_newId = $_user->get('id');
+		}
+
+		// Save the shopper data
+		$_vendorXref =& $this->getTable('shopper_vendor_xref');
+		if (!$_vendorXref->bind($_data)) {
+			$this->setError($_vendorXref->getError());
+			return false;
+		}
+		if (!$_vendorXref->store()) { // Write data to the DB
+			$this->setError($_vendorXref->getError());
+			return false;
+		}
+
+		// Now save the user info
+		$_userFieldsModel =& new VirtueMartModelUserfields();
+		$_prepareUserFields = $_userFieldsModel->getUserFields(
+								 'account'
+								, array() // Default toggles
+								, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+		);
+
+		// Format the data
+		foreach ($_prepareUserFields as $_fld) {
+			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name]);
+		}
+
+		$_userinfo   =& $this->getTable('user_info');
+		if (!$_userinfo->bind($_data)) {
+			$this->setError($_userinfo->getError());
+			return false;
+		}
+		if (!$_userinfo->store()) { // Write data to the DB
+			$this->setError($_userinfo->getError());
+			return false;
 		}
 		return true;
 	}
@@ -334,12 +369,10 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function getCustomerNumberById($_id = 0)
 	{
-		$_q = "SELECT `customer_number` FROM `#__{vm}_shopper_vendor_xref` "
+		$_q = "SELECT `customer_number` FROM `#__vm_shopper_vendor_xref` "
 			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
-		$this->_db->query($_q);
-		$this->_db->next_record();
-
-		return $this->_db->f("customer_number");
+		$_r = $this->_getList($_q);
+		return $_r[0]->customer_number;
 	}
 	/**
 	 * Get the number of active Super Admins

@@ -59,17 +59,23 @@ class VirtuemartViewUser extends JView {
 
 			$userDetails = $model->getUser();
 			$_new = ($userDetails->JUser->get('id') < 1);
+			// In order for the Form validator to work, we're creating our own buttons here.
+			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
+				. '<span title="' . JText::_('Save' ) . '" class="icon-32-save"></span>' . JText::_('Save' ) . '</a>';
+			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
+				. '<span title="' . JText::_('Apply' ) . '" class="icon-32-apply"></span>' . JText::_('Apply' ) . '</a>';
+			$_toolBar =& JToolBar::getInstance('toolbar');
 			if ($_new) { // Insert new user
 				JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::apply();
+				$_toolBar->appendButton('Custom', $_saveButton);
+				$_toolBar->appendButton('Custom', $_applyButton);
 				JToolBarHelper::cancel();
 			} else { // Update existing user
 				JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
 				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::apply();
+				$_toolBar->appendButton('Custom', $_saveButton);
+				$_toolBar->appendButton('Custom', $_applyButton);
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
@@ -91,12 +97,10 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $userDetails->userInfo[0]->perms);
-
 			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
-			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup->default_shopper_group);
-			$lists['vendors'] = ShopFunctions::renderVendorList($this->userDetails->vendor_id->vendor_id);
+			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
+			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
 			$_addressList = $model->getUserAddress($userDetails->JUser->get('id') , 'ST');
@@ -122,12 +126,20 @@ class VirtuemartViewUser extends JView {
 					, array() // Default toggles
 					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
 			);
+			if (count($userDetails->userInfo) == 0) {
+				$_userDetailsList = null;
+				$_userInfoID = null;
+			} else {
+				$_userDetailsList = current($userDetails->userInfo);
+				$_userInfoID = $_userDetailsList->user_info_id;
+			}
 			$userFields = $userFieldsModel->getUserFieldsByUser(
 					 $_userFields
-					,(isNew?null:current($userDetails->userInfo))
-			);//print_r($userFields);exit;
-//			if(!$_new) {}
+					,$_userDetailsList
+			);
 
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);
+			
 			// Load the required scripts
 			if (count($userFields['scripts']) > 0) {
 				foreach ($userFields['scripts'] as $_script => $_path) {
@@ -140,10 +152,11 @@ class VirtuemartViewUser extends JView {
 					JHTML::stylesheet($_link, $_path);
 				}
 			}
-			
+
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
 			$this->assignRef('userFields', $userFields);
+			$this->assignRef('userInfoID', $_userInfoID);
 			$this->assignRef('vendor', $vendor);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);
