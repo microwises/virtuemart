@@ -39,12 +39,6 @@ class VirtuemartViewCalc extends JView {
 		$model = $this->getModel('calc');
 		$this->loadHelper('permissions');
 		$this->assignRef('perms', Permissions::getInstance());
-		
-//		require_once(CLASSPATH. 'ps_perm.php' );
-//		$perm = new ps_perm();
-//		$perm->check( 'admin' );
-//		$this->assignRef('perm',	$perm);
-//		$this->assignRef('model',	$model);
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;

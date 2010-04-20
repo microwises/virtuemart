@@ -66,7 +66,8 @@ class VirtueMartModelCart extends JModel {
 		$total_updated = 0;
 		$total_deleted = 0;
 		$product_ids = $post['product_id'];
-
+//		$product_ids = JRequest::get('product_id');
+		
 		if (!empty($product_ids)) {
 			//Iterate through the prod_id's and perform an add to cart for each one
 			foreach ($product_ids as $p_key => $product_id) {
@@ -79,13 +80,13 @@ class VirtueMartModelCart extends JModel {
 					
 					/* Check for negative quantity */
 					if ($quantity < 0) {
-						$vmLogger->warning( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+//						$vmLogger->warning( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
 						return false;
 					}
 		
 					/* Check for a valid quantity */
 					if (!preg_match("/^[0-9]*$/", $quantity)) {
-						$vmLogger->warning( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+//						$vmLogger->warning( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
 						return false;
 					}
 					
@@ -182,7 +183,7 @@ class VirtueMartModelCart extends JModel {
 					*/
 				}
 				else {
-					$vmLogger->tip( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
+//					$vmLogger->tip( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
 					return false;
 				}
 			} // End Iteration through Prod id's
@@ -198,12 +199,12 @@ class VirtueMartModelCart extends JModel {
 				}
 				
 				// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
-				$vmLogger->info( $msg );
+//				$vmLogger->info( $msg );
 			}
 			else if (@$request_stock && vmIsXHR() ) {
-				$vmLogger->tip( JText::_('VM_CART_GOTO_WAITING_LIST',false) );
+//				$vmLogger->tip( JText::_('VM_CART_GOTO_WAITING_LIST',false) );
 			} else {
-				$vmLogger->tip( JText::_('VM_CART_QUANTITY_EXCEEDED',false) );
+//				$vmLogger->tip( JText::_('VM_CART_QUANTITY_EXCEEDED',false) );
 			}
 			// end cart update message */
 	

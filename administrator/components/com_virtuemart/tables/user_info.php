@@ -28,6 +28,45 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TableUser_info extends JTable {
 
+
+	/** @var int Primary key */
+	var $user_id = 0;
+	
+	/** @var int hidden userkey */
+	var $user_info_id = 0;
+
+	var $user_is_vendor = 0;
+	var $address_type = '';
+	var $address_type_name;
+	var $company = '';
+	var $title ='';
+ 	var $last_name = '';
+	var $first_name = '';
+	var $middle_name = '';
+	var $phone_1 = '';
+	var $phone_2 = '';
+	var $fax = '';
+	var $address_1 = '';
+	var $address_2 = '';
+	var $city = '';
+	var $state_id = '';
+	var $country_id = '';
+	var $zip = '';
+	var $extra_field_1 = '';
+	var $extra_field_2 = '';
+	var $extra_field_3 = '';
+	var $extra_field_4 = '';
+	var $extra_field_5 = '';
+	var $cdate = '';
+	var $mdate = '';
+	var $perms = '';
+	var $bank_account_nr = '';
+	var $bank_name = '';
+	var $bank_sort_code = '';
+	var $bank_iban = '';
+	var $bank_account_holder = '';
+	var $bank_account_type = '';
+
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -140,6 +179,9 @@ class TableUser_info extends JTable {
 		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
 			$this->cdate = time();
+			//I dont understand that and the data is not saved, therefore I changed it to return true;
+			//The function just creates a new user_info_id if necessary. The false should be returned, when something is missing or already used.
+//			return true;  This makes an error, because the check function is already called in store function. There was a mix of two different functions.
 			return false;
 		}
 	}

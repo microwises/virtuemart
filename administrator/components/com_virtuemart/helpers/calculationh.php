@@ -7,10 +7,10 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2010 Soeren Eberhardt-Biermann, Max Milbers 2009 VirtueMart Team. All rights reserved.
  */
  
- // Check to ensure this file is included in Joomla!
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 class calculationHelper{
@@ -25,9 +25,12 @@ class calculationHelper{
 	private $_amount;
 	private $_deliveryCountry;
 	private $_deliveryState;
+	private $_currencyDisplay;
 	
 	public $productVendorId;
 	public $productCurrency;
+
+	static $_instance;
 
 //	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
 //	public $salesPrice;		//end Price in the product currency
@@ -43,12 +46,22 @@ class calculationHelper{
 	function __construct(){
 		$this->_db = &JFactory::getDBO();
 		$jnow		=& JFactory::getDate();
-		$this -> _now			= $jnow->toMySQL();
-		$this -> _nullDate		= $this->_db->getNullDate();
-		$this -> _currency 		= JRequest::getVar('currency');
-		$this -> _debug = false;
+		$this -> _now			  = $jnow->toMySQL();
+		$this -> _nullDate		  = $this->_db->getNullDate();
+		$this -> _currency 		  = JRequest::getVar('currency');
+		$this -> _currencyDisplay = JRequest::getVar('currencyDisplay');
+		$this -> _debug           = false;
 	}
 	
+	function getInstance(){ 
+		if(!is_object(self::$_instance)){
+			self::$_instance = new calculationHelper();
+		}else {
+			
+		}
+ 		return self::$_instance;
+    }
+    
 	/** function to start the calculation, here it is for the product
 	 * 
 	 * The function first gathers the information of the product (maybe better done with using the model)
@@ -68,7 +81,7 @@ class calculationHelper{
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
-	function getProductPrices($productId,$variant =0,$catIds=0,$amount=0){
+	function getProductPrices($productId,$catIds=0,$amount=0,$variant=0.0){
 		
 //		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
@@ -108,58 +121,56 @@ class calculationHelper{
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
-		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
 		
-		//@TODO getVariant Modification Need method to get Variantmodification to adjust the basePrice;
-//		$basePriceShopCurrency=$this->getVariantModification;
+		if (strpos($variant, '=') !== false) {
+//		   $variant=substr($variant,1);
+		   $basePrice = doubleval(substr($variant,1));
+		} else {
+			$basePrice = $basePrice + doubleval($variant);
+		}
+
+		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
+	
 		$prices['basePrice']=$basePriceShopCurrency; //basePrice calculated in the shopcurrency
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
 		$prices['basePriceWithTax']=$basePriceWithTax; //basePrice with Tax
-		
-		
-//		if($this -> _debug)echo '<br /><br /> $basePriceShopCurrency. '.$basePriceShopCurrency;
-//		if($this -> _debug)echo '<br /> $basePriceWithTax. '.$basePriceWithTax;
-//		if($this -> _debug)echo '<br />$dBTaxRules '.$dBTaxRules ;
+	
 		$withDiscount=false;
 		if(count($dBTaxRules)==0){
 			$discountedPrice = $basePriceShopCurrency;
-			$prices['discountedPrice']=0;
+			$prices['discountedPriceWithoutTax']=0;
 		}else{
 			$discountedPrice = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency)));
 			$withDiscount=true;
-			$prices['discountedPrice']=$discountedPrice; //before Tax
+			$prices['discountedPriceWithoutTax']=$discountedPrice; //before Tax
 		}
 	
-		$salesPrice = $this -> executeCalculation($taxRules, $discountedPrice);	
+		$salesPrice = $this->roundDisplay($this -> executeCalculation($taxRules, $discountedPrice));	
+		$prices['taxAmount'] = $this->roundDisplay($salesPrice-$discountedPrice);
 		
 		if(count($dATaxRules)==0){
+			$prices['salesPriceWithDiscount']=0;
+		} else{
 			$salesPrice = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
 			$prices['salesPriceWithDiscount']=$salesPrice;
-		} else{
-			$prices['salesPriceWithDiscount']=0;
 		}
+		
 		//The endprice, with all kind of discounts and Tax
 		$prices['salesPrice']=$salesPrice;
-//if($this -> _debug)		echo '<br /> $salesPrice. '.$salesPrice;
+
+		//The whole discount Amount
 		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax TODO is wrong
 		$prices['priceWithoutTax'] = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
-//if($this -> _debug)		echo '<br /> $discountAmount. '.$discountAmount;
-//if($this -> _debug)		echo '<br /> $priceWithoutTax. '.$priceWithoutTax;	
-//if($this -> _debug)		echo '<br /> $withDiscount. '.$withDiscount;
 
-//		$prices = array(
-//				'basePrice'  => $basePriceShopCurrency,	
-//				'basePriceWithTax' => $basePriceWithTax, 
-//				'discountedPrice'   => $discountedPrice, //before Tax
-//				'priceWithoutTax'   => $priceWithoutTax, 
-//				'discountAmount'   => $discountAmount, //The "you save X money"
-//				'salesPrice'   => $salesPrice 		
-//				);
-
-//				echo '<br />';
-//		Console::logSpeed('getProductPrices DONE: ');
+		//As last step the prices gets adjusted to the by user choosen currency
+		foreach($prices as $price){
+			$price = $this -> _currencyDisplay->getFullValue($price);
+		}
+	
+		$prices['variantModification']=$variant;
+	
 		return $prices;
 	}
 	
@@ -282,7 +293,7 @@ class calculationHelper{
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
-				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$rule['calc_currency'],$price);
+				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$price,$rule['calc_currency']);
 if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
 			}
 		}
@@ -570,7 +581,7 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @param 	$currency	the currency which should be used
 	 * @param	$price		The price to calculate
 	 */
-	function interpreteMathOp($mathop,$value,$currency, $price){
+	function interpreteMathOp($mathop,$value, $price, $currency=''){
 
 		$sign = substr($mathop,0,1);
 		if(!strcmp($sign,'+')){
@@ -596,6 +607,8 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 				$value = $this->convertCurrencyToShopDefault($currency, $value);
 				return $price - $value ;
 			}			
+		}else if(!strcmp($sign,'=')){
+			return $value;
 		}
 	
 	}
@@ -684,23 +697,46 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	    return $records;
 	}
 	
+
 	/**
-	 * Calculate a price for a variant
+	 * Calculate a pricemodification for a variant
 	 *
 	 * Variant values can be in the following format
 	 * - +x.xx
 	 * - -x.xx
 	 * - =x.xx
 	 * 
-	 * @author 
-	 * @todo Calculate the price
+	 * Returns all variant modifications summed up or the highest price set with '='
+	 * 
+	 * @todo could be slimmed a bit down, using smaller array for variantnames
+	 * @author Max Milbers
 	 * @param int $product_id the product ID the attribute price should be calculated for
-	 * @param string $variant_value the value of the variant
-	 * @return array The adjusted price information
+	 * @param array $variantnames the value of the variant
+	 * @return array The adjusted price modificator
 	 */
-	function getVariantPrice($product_id, $variant_value) {
-		$clean_price = substr($variant_value, 1);
-		return array('basePrice' => $clean_price);
+	 
+	function calculateModificators($product_id,$variants){
+		
+//		echo 'Lets see what we have here now?<br />';
+		$modificatorSum=0.0;
+		$max=array();
+		foreach ($variants as $variant_name => $variant) {	
+			$value = JRequest::getVar($product_id.$variant_name,0);
+			if(strpos($value,'(')){
+
+				$bundle=strrchr($value,'(') ;
+				$modificator=substr($bundle,1,strlen($bundle)-2);
+				if(strpos($bundle,'=')){
+					$max[]=$modificator;		
+				}else{
+					if(count($max)==0) $modificatorSum = $modificatorSum+$modificator;
+				}
+			}
+		}
+		if(count($max)==0){
+			return $modificatorSum;
+		} else {
+			return max($max);
+		}
 	}
-	
 }

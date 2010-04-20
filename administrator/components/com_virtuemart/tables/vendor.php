@@ -74,7 +74,7 @@ class TableVendor extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-	parent::__construct('#__vm_vendor', 'vendor_id', $db);
+		parent::__construct('#__vm_vendor', 'vendor_id', $db);
     }
 
 
@@ -85,23 +85,21 @@ class TableVendor extends JTable {
      * @return boolean True if the table buffer is contains valid data, false otherwise.
      */
     function check() {
-	if (($this->vendor_name) && ($this->vendor_id == 0)) {
-	    $db = JFactory::getDBO();
+		if (($this->vendor_name) && ($this->vendor_id == 0)) {
+		    $db = JFactory::getDBO();
+	
+		    $q = 'SELECT count(*) FROM `#__vm_vendor` ';
+		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
+		    $db->setQuery($q);
+		    $rowCount = $db->loadResult();
+		    if ($rowCount > 0) {
+				$this->setError(JText::_('The given vendor name already exists.'));
+				return false;
+		    }
+		}
 
-	    $q = 'SELECT count(*) FROM `#__vm_vendor` ';
-	    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
-	    $db->setQuery($q);
-	    $rowCount = $db->loadResult();
-	    if ($rowCount > 0) {
-		$this->setError(JText::_('The given vendor name already exists.'));
-		return false;
-	    }
-	}
-
-	return true;
+		return true;
     }
-
-
 
 
 }

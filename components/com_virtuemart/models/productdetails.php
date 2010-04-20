@@ -55,21 +55,35 @@ class VirtueMartModelProductdetails extends JModel {
 			
 			if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
 			
+			/* Load the attributes */
+			$product->attributes = $this->getAttributes($product);
+			
+			/* Load the variants */
+			$product->variants = $this->getVariants($product);
+			
+			/* Load the price */
+			$prices = "";
+			if (VmConfig::get('show_prices') == '1') {
+				
+				/* Loads the product price details */
+				$calculator = calculationHelper::getInstance();
+				
+				/* Calculate the modificator */
+				$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+
+				$quantityArray = JRequest::getVar('quantity',1,'post');
+//				$product->product_id.$variant_name
+				$prices = $calculator->getProductPrices($product->product_id,$product->categories,$quantityArray[0],$product_type_modificator);
+			}
+			
+			$product->product_price = $prices;
+			
 			/* Add the product link  */
 			$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id.'&category_id='.$product->category_id);
 			
 			/* Load the neighbours */
 			$product->neighbours = $this->getNeighborProducts($product);
-			
-			/* Load the price */
-			$prices = "";
-			if (VmConfig::get('show_prices') == '1') {
-				/* Loads the product price details */
-				$calculator = new calculationHelper();
-				$prices = $calculator->getProductPrices($product->product_id,$product->categories);
-			}
-			$product->product_price = $prices;
-			
+
 			/* Fix the product packaging */
 			if ($product->product_packaging) {
 				$product->packaging = $product->product_packaging & 0xFFFF;
@@ -96,14 +110,10 @@ class VirtueMartModelProductdetails extends JModel {
 			/* Check for product types */
 			$product->hasproducttypes = $this->hasProductType($product_id);
 			
-			/* Load the variants */
-			$product->variants = $this->getVariants($product);
-			
 			/* Load the custom variants */
 			$product->customvariants = $this->getCustomVariants($product->custom_attribute);
 			
-			/* Load the attributes */
-			$product->attributes = $this->getAttributes($product);
+
 			
 			/* Check the order levels */
 			if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -124,8 +134,52 @@ class VirtueMartModelProductdetails extends JModel {
 			$product->votes = $this->getVotes($product_id);
 			
 			return $product;
+		} else{
+			 return false;
 		}
-		else return false;
+	}
+	
+	public function getPrice($product_id=false){
+		
+		$db = JFactory::getDBO();
+		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
+
+		$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name 
+			FROM #__vm_product p
+			LEFT JOIN #__vm_product_category_xref x
+			ON x.product_id = p.product_id
+			LEFT JOIN #__vm_product_mf_xref mx
+			ON mx.product_id = p.product_id
+			LEFT JOIN #__vm_manufacturer m
+			ON m.manufacturer_id = mx.manufacturer_id
+			WHERE p.product_id = ".$product_id;
+		$db->setQuery($q);
+		$product = $db->loadObject();
+		
+		/* Load the categories the product is in */
+		$product->categories = $this->getCategories();
+		
+		if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
+		
+		/* Load the attributes */
+		$product->attributes = $this->getAttributes($product);
+		
+		/* Load the variants */
+		$product->variants = $this->getVariants($product);
+			
+		/* Loads the product price details */
+		$calculator = calculationHelper::getInstance();
+		
+		/* Calculate the modificator */
+		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+
+		$quantityArray = JRequest::getVar('quantity',1,'post');
+//				$product->product_id.$variant_name
+		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$quantityArray[0],$product_type_modificator);
+
+
+		return $prices;
+		
 	}
 	
 	/**
@@ -279,14 +333,14 @@ class VirtueMartModelProductdetails extends JModel {
 		$db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 		
-		$q = "SELECT comment, `time`, userid, user_rating, username, name 
+		$q = 'SELECT comment, `time`, userid, user_rating, username, name 
 			FROM #__vm_product_reviews r
 			LEFT JOIN jos_users u
 			ON u.id = r.userid
-			WHERE product_id = ".$product_id." 
-			AND published = '1' 
-			ORDER BY `time` DESC ";
-		if (!$showall) $q .= " LIMIT 0, 5";
+			WHERE product_id = "'.$product_id.'" 
+			AND published = "1" 
+			ORDER BY `time` DESC ';
+		if (!$showall) $q .= ' LIMIT 0, 5';
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
@@ -358,14 +412,14 @@ class VirtueMartModelProductdetails extends JModel {
 	* Variants can have several attributes an example:
 	* Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	* @param object $product the product to get attributes for
 	* @param string $extra_ids any extra id's to add to the attributes
 	* @return 
 	*/
 	public function getVariants($product) {
-		$calculator = new calculationHelper();
-		
+
+		$db = &JFactory::getDBO();
 		/* Get the variants */
 		$variants_raw = explode(';', $product->attribute);
 		
@@ -390,12 +444,11 @@ class VirtueMartModelProductdetails extends JModel {
 						foreach ($matches[0] as $key => $match) {
 							/* Remove all obsolete characters */
 							$variant_price = str_replace($find, '', $match);
-							/* Get the price information */
-							$variants[$variant_name][$variant_type] = $calculator->getVariantPrice($product->product_id, $variant_price);
+							$variants[$variant_name][$variant_type] = $variant_price;
 						}
 					}
 					else {
-						$variants[$variant_name][$value] = array();
+						$variants[$variant_name][$value] = '';
 					}
 				}
 			}
@@ -541,5 +594,6 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $fields;
 	}
+	
 }
 ?>

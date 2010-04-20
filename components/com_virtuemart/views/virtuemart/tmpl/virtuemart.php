@@ -76,7 +76,8 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 		?>
 		<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
 			<?php
-			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
+//			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), $featured->product_name);
 			?>
 				<h4><?php echo $featured->product_name; ?></h4></a>
 				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['salesPrice']); ?><br />
@@ -86,7 +87,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 				<?php
 				}
 				if ($featured->product_thumb_image) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$featured->flypage.'&product_id='.$featured->product_id), 
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), 
 						ImageHelper::generateImageHtml($featured->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$featured->product_name.'"'));
 				?>
 				<br /><br/>
@@ -123,13 +124,13 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 		?>
 		<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
 			<?php
-			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$product->flypage.'&product_id='.$product->product_id), $product->product_name);
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$product->flypage.'&product_id='.$product->product_id), $product->product_name);
 			?>
 				<h4><?php echo $product->product_name; ?></h4></a>
 				<?php echo $product->product_price['salesPrice']; ?><br />
 				<?php
 				if ($product->product_thumb_image) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&flypage='.$product->flypage.'&product_id='.$product->product_id), 
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id), 
 						ImageHelper::generateImageHtml($product->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$product->product_name.'"'));
 				?>
 				<br /><br/>
@@ -185,7 +186,7 @@ function addToCart($product) {
 	
 	/* Make the form */
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&flypage='.$product->flypage); ?>" method="post" name="addtocart" id="addtocart<?php echo $product->product_id ?>" class="addtocart_form" <?php if( VmConfig::get('useAjaxCartActions', 1) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+	<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id); ?>" method="post" name="addtocart" id="addtocart<?php echo $product->product_id ?>" class="addtocart_form" <?php if( VmConfig::get('useAjaxCartActions', 1) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 		<?php 
 			if (!$notify) { 
 				/* Display the quantity box */

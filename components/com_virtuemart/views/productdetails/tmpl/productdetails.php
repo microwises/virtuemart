@@ -38,11 +38,12 @@ else { ?>
 	<?php
 	if (VmConfig::get('product_navigation', 1)) {
 		if (!empty($this->product->neighbours['previous'])) {
-			$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['previous']['product_id'].'&flypage='.JRequest::getVar('flypage').'&category_id='.$this->product->category_id);
+//	flypage for what?		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['previous']['product_id'].'&flypage='.JRequest::getVar('flypage').'&category_id='.$this->product->category_id);
+			$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['previous']['product_id'].'&category_id='.$this->product->category_id);
 			echo JHTML::_('link', $prev_link, $this->product->neighbours['previous']['product_name'], array('class' => 'previous_page'));
 		}
 		if (!empty($this->product->neighbours['next'])) {
-			$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['next']['product_id'].'&flypage='.JRequest::getVar('flypage').'&category_id='.$this->product->category_id);
+			$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->neighbours['next']['product_id'].'&category_id='.$this->product->category_id);
 			echo JHTML::_('link', $next_link, $this->product->neighbours['next']['product_name'], array('class' => 'next_page'));
 		}
 	}
@@ -78,14 +79,19 @@ else { ?>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-					<form action="index.php" method="post" name="addtocart" id="addtocartproduct">
+					<form method="post" name="addtocart" id="addtocartproduct">
 					<div style="text-align: center;">
 						<?php
+							$variantExist=false;
 							/* Show the variants */
 							foreach ($this->product->variants as $variant_name => $variant) {
+
+								$variantExist=true;
 								$options = array();
 								foreach ($variant as $name => $price) {
-									if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
+									if (!empty($price)){
+										$name .= ' ('.$price.')';
+									}
 									$options[] = JHTML::_('select.option', $name, $name);
 								}
 								if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $this->product->product_id.$variant_name).'<br />';
@@ -94,7 +100,7 @@ else { ?>
 							<br style="clear: both;" />
 							<?php
 							/* Show the custom attributes */
-							foreach($this->product->customvariants as $ckey => $customvariant) { 		
+							foreach($this->product->customvariants as $ckey => $customvariant) {
 								?>
 								<div class="vmAttribChildDetail" style="float: left;width:30%;text-align:right;margin:3px;">
 								<label for="<?php echo $customvariant ?>_field"><?php echo $customvariant ?>
@@ -106,7 +112,7 @@ else { ?>
 								<br style="clear: both;" />
 							<?php
 							}
-							
+
 							/* Display the quantity box */
 							?>
 							<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
@@ -123,12 +129,18 @@ else { ?>
 								$button_cls = 'notify_button';
 							}
 							?>
-							<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<input id="cart" type="submit" name="cart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<?php if($variantExist){ 
+								/*
+								 * action="index.php?option=com_virtuemart&view=productdetails&task=show&product_id=<?php echo $this->product->product_id;?>"
+								  onClick="setproducttype(<?php echo $this->product->product_id.','.$this->product->category_id; ?>); return false;"
+								 */
+								?>
+								<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+							<?php } ?>
 							
-							<input type="hidden" name="option" value="com_virtuemart" />
-							<input type="hidden" name="view" value="cart" />
-							<input type="hidden" name="task" value="add" />
 							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
+							
 							<?php /** @todo Handle the manufacturer view */ ?> 
 							<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
 							<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
@@ -156,13 +168,17 @@ else { ?>
 				if (VmConfig::get('show_prices') == '1') {
 					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
-					}
-					else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
-					
-					if($this->product->product_price['salesPrice']) echo 'SalesPrice'.JRequest::getVar('currencyDisplay')->getFullValue($this->product->product_price['salesPrice']);
-					if($this->product->product_price['priceWithoutTax']) echo JRequest::getVar('currencyDisplay')->getFullValue($this->product->product_price['priceWithoutTax']);
-//					if ($this->auth["show_price_including_tax"] == 1) echo $this->product->product_price['salesPrice'];
-//					else echo $this->product->product_price['priceWithoutTax'];
+					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+
+					if($this->product->product_price['basePrice'] && Permissions::getInstance()->atLeastPerms('admin')) echo '<div>'.JText::_('VM_PRODUCT_BASEPRICE').'<span id="basePrice">'.$this->product->product_price['basePrice'].'</span></div>';
+					if($this->product->product_price['variantModification']) echo '<div>'.JText::_('VM_PRODUCT_VARIANT_MOD').'<span id="variantModification" >'.$this->product->product_price['variantModification'].'</span></div>';					
+					if($this->product->product_price['basePriceWithTax']) echo '<div>'.JText::_('VM_PRODUCT_BASEPRICE_WITHTAX').'<span id="basePriceWithTax" >'.$this->product->product_price['basePriceWithTax'].'</span></div>';
+					if($this->product->product_price['discountedPriceWithoutTax']) echo '<div>'.JText::_('VM_PRODUCT_DISCOUNTED_PRICE').'<span id="discountedPriceWithoutTax">'.$this->product->product_price['discountedPrice'].'</span></div>';
+					if($this->product->product_price['salesPriceWithDiscount']) echo '<div>'.JText::_('VM_PRODUCT_SALESPRICE_WITH_DISCOUNT').'<span id="salesPriceWithDiscount" class="product-Old-Price">'.$this->product->product_price['salesPriceWithDiscount'].'</span></div>';
+					if($this->product->product_price['salesPrice']) echo '<div>'.JText::_('VM_PRODUCT_SALESPRICE').'<span id="salesPrice" >'.$this->product->product_price['salesPrice'].'</span></div>';
+					if($this->product->product_price['discountAmount']) echo '<div id="discountAmount" >'.JText::_('VM_PRODUCT_DISCOUNT_AMOUNT').'<span id="discountAmount">'.$this->product->product_price['discountAmount'].'</span></div>';
+//					if($this->product->product_price['priceWithoutTax']) echo '<div id="priceWithoutTax" >'.JText::_('VM_PRODUCT_BASEPRICE')..'<span id="basePrice">'$this->product->product_price['priceWithoutTax'].'</span></div>';
+
 				}
 				?><br />
 			</td>
@@ -483,16 +499,63 @@ else { ?>
 		</tr>
 	</table>
 <?php } ?>
+
 <script type="text/javascript">
+
+jQuery(document).ready(function() {
+	var cart = document.getElementById('cart');
+	cart.type='button';
+	jQuery(cart).bind('click', sendtocart);
+	
+	var recalc = document.getElementById('recalc');
+	recalc.type = 'button';
+	jQuery(recalc).bind('click', setproducttype);
+});
+
+
+function sendtocart(){
+	
+	jQuery.post('index.php?option=com_virtuemart&view=cart&task=add', jQuery("#addtocartproduct").serialize(), 
+	
+	function(newPrices, textStatus) {
+//			alert(newPrices+' and '+textStatus);
+			if(newPrices==1){
+				alert('Product added to cart');
+			}else{
+				alert('Product not added to cart, may out of stock');
+			}
+	});
+
+};
+
+function setproducttype(){
+
+//	var newPrices = 
+	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery("#addtocartproduct").serialize(),
+	
+		function(newPrices, textStatus) {
+
+			jQuery('#basePriceWithTax').html(newPrices.basePriceWithTax);
+			jQuery('#discountedPriceWithoutTax').html(newPrices.discountedPriceWithoutTax);
+			jQuery('#salesPriceWithDiscount').html(newPrices.salesPriceWithDiscount);
+			jQuery('#salesPrice').html(newPrices.salesPrice);
+			jQuery('#discountAmount').html(newPrices.discountAmount);
+			jQuery('#priceWithoutTax').html(newPrices.priceWithoutTax);
+			jQuery('#variantModification').html(newPrices.variantModification);
+//			console.log(newPrices.variantModification);
+		});
+};
+
 function add(nr) {
 	var currentVal = parseInt(jQuery('#quantity'+nr).val());
 	if (currentVal != NaN) {
 		jQuery('#quantity'+nr).val(currentVal + 1);
 	}
 };
+
 function minus(nr) {
 	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN) {
+	if (currentVal != NaN && currentVal>0) {
 		jQuery('#quantity'+nr).val(currentVal - 1);
 	}
 };

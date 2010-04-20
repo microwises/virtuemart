@@ -77,8 +77,23 @@ class VirtueMartControllerCart extends JController {
 		if ($model->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
 		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+		
 	}
-	
+
+	/**
+	* Add the product to the cart, with JS
+	* 
+	* @author Max Milbers 
+	* @access public 
+	*/	
+	public function addJS(){
+
+		/* Load the cart helper */
+		$model = $this->getModel('cart');
+		if($model->add()) echo (1); else echo (0);
+
+		die;
+	}
 	/**
 	* Delete a product from the cart 
 	* 
@@ -109,4 +124,4 @@ class VirtueMartControllerCart extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 	}
 }
-?>
+ //pure php no Tag

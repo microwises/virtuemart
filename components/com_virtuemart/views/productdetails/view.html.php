@@ -37,13 +37,11 @@ class VirtueMartViewProductdetails extends JView {
 	* @author RolandD
 	*/
 	function display($tpl = null) {
+		
+//		echo 'grmbl <pre>'.print_r($_POST).'</pre>';	
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$task = JRequest::getCmd('task');
-		
-		/* Load the authorizations */
-		$auth = JRequest::getVar('auth');
-		$this->assignRef('auth', $auth);
 		
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
@@ -58,10 +56,23 @@ class VirtueMartViewProductdetails extends JView {
 		$uri = JURI::getInstance();
 		$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		
+		
+		
 		/* Load the product */
-		$product = $this->get('product');
+//		$product = $this->get('product');
+		$product_model = $this->getModel('productdetails');
+		
+		$product_idArray = JRequest::getVar('product_id');
+		if(is_array($product_idArray)){
+			$product_id=$product_idArray[0];
+		} else {
+			$product_id=$product_idArray;
+		}
+
+		$product = $product_model->getProduct($product_id);
 		$this->assignRef('product', $product);
 		$pathway->addItem($product->product_name);
+	
 		
 		/* Load the category */
 		$category_model = $this->getModel('category');
@@ -100,11 +111,17 @@ class VirtueMartViewProductdetails extends JView {
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
 		
-		/* Use the template the user wants */
-		parent::setLayout($product->detailspage);
+		
+		if($product){
+			/* Use the template the user wants */
+			parent::setLayout($product->detailspage);
+			
+		} else {
+			
+		}
 		
 		/* Display it all */
-		parent::display($tpl); 
+		parent::display($tpl);
 	}
 }
 

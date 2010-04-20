@@ -51,10 +51,11 @@ class Permissions extends JObject{
 		if(!is_object(self::$_instance)){
 			self::$_instance = new Permissions();
 		}else {
-			$this->doAuthentication();
+			//is this necessary?
+//			self::$_instance->doAuthentication();
 		}
  		return self::$_instance;
-      } 
+    }
       
 	public function getUserGroups() {
 		if (empty($this->_user_groups)) {
@@ -120,7 +121,10 @@ class Permissions extends JObject{
 		$this->_db = JFactory::getDBO();
 		$session = JFactory::getSession();
 		$vmUser = JFactory::getUser();
-//		$auth = array();
+		
+		// Check token
+//		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		
 		if (VmConfig::get('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */

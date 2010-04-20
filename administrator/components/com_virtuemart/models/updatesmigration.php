@@ -192,8 +192,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields = array();
 
 	$fields['user_id'] =  $userId;
-	$fields['address_type'] =  "BT";
-	$fields['company'] =  "Washupito''s the User";
+//	$fields['address_type'] =  "BT";
+	$fields['company'] =  "Washupito's the User";
 	$fields['title'] =  "Sire";
 	$fields['last_name'] =  "upito";
 	$fields['first_name'] =  "Wash";
@@ -201,10 +201,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['phone_1'] =  "555-555-555";
 	$fields['address_1'] =  "vendorra road 8";
 	$fields['city'] =  "Canangra";
-	$fields['state'] =  "72";
-	$fields['country'] =  "13";
+	$fields['state_id'] =  "72";
+	$fields['country_id'] =  "13";
 	if (!$this->storeSampleUserInfo($fields)) {
-	    JError::raiseNotice(1, $this->getError());
+	    JError::raiseNotice(1, 'Problems saving userdata of the sample store '.$this->getError());
 	}
 
 	unset($fields);
@@ -216,7 +216,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_id'] = Vendor::getVendorIdByUserId($userId);
 	$fields['vendor_name'] =  "Washupito";
 	$fields['vendor_phone'] =  "555-555-1212";
-	$fields['vendor_store_name'] =  "Washupito''s Tiendita";
+	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  " <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	";
 	$fields['vendor_full_image'] =  "c19970d6f2970cb0d1b13bea3af3144a.gif";
 	$fields['vendor_currency '] =  "EUR";
@@ -226,7 +226,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  "Washupito";
 	if (!$this->storeSampleVendor($fields)) {
-	    JError::raiseNotice(1, $this->getError());
+	    JError::raiseNotice(1, 'Problems saving vendordata of the sample store '.$this->getError());
 	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
@@ -246,18 +246,22 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	// Bind the form fields to the unser info table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
+	    echo 'Problem with bind';die;
 	    return false;
 	}
 
+	//This is done in the store function already, not necessary here
 	// Make sure the user info record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
+//	if (!$table->check()) {
+//	    $this->setError($table->getError());
+//	    echo 'Problem with check';die;
+//	    return false;
+//	}
 
 	// Save the user info record to the database
 	if (!$table->store()) {
 	    $this->setError($table->getError());
+	    echo 'Problem with store';die;
 	    return false;
 	}
 
