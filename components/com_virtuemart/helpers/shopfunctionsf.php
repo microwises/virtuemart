@@ -20,6 +20,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 class shopFunctionsF {
+	
+	/**
+	 * function to create a div to show the prices, is necessary for JS
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param string name of the price
+	 * @param String description key
+	 * @param array the prices of the product
+	 * return a div for prices which is visible according to config and have all ids and class set
+	 */
+	public function createPriceDiv($name,$description,$product_price){
+
+		if(VmConfig::get($name) =='1'){
+	 		if($this->product->product_price[$name]){
+	 			$vis = "block";
+	 		} else {
+	 			$vis = "none";
+	 		}
+		return '<div style="display : '.$vis.';" id="'.$name.'D" class="PriceDescr'.$name.'" >'.JText::_($description).'<span id="'.$name.'" class="Price'.$name.'" >'.$product_price[$name].'</span></div>'; 	
+		}
+	}
+	
 	/**
 	* function to create a hyperlink
 	*

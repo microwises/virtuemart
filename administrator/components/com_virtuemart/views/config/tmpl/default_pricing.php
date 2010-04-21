@@ -61,50 +61,109 @@ defined('_JEXEC') or die('Restricted access');
 	</td><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_TAX_CONFIGURATION') ?></legend>
+		<legend><?php echo JText::_('VM_ADMIN_CFG_PRICES') ?></legend>
 		<table class="admintable">
+
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN'); ?>"/>
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_VIRTUAL_TAX') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE') ?></label>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('tax_virtual', $this->config->get('tax_virtual')); ?>
+			    <?php echo VmHTML::checkbox('basePrice', $this->config->get('basePrice')); ?>
 			</td>
 		    </tr>
+		    
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_EXPLAIN'); ?>"/>
-			    <?php echo JText::_('VM_ADMIN_CFG_TAX_MODE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_VARMOD_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_VARMOD') ?></label>
 			</td>
 			<td>
-			    <?php
-			    $options = array();
-			    $options[] = JHTML::_('select.option', '0', JText::_('VM_ADMIN_CFG_TAX_MODE_SHIP') );
-			    $options[] = JHTML::_('select.option', '1', JText::_('VM_ADMIN_CFG_TAX_MODE_VENDOR'));
-			    $options[] = JHTML::_('select.option', '17749', JText::_('VM_ADMIN_CFG_TAX_MODE_EU'));
-			    echo JHTML::_('Select.genericlist', $options, 'tax_mode', 'size=1', 'value', 'text', $this->config->get('tax_mode'));
-			    ?>
+			    <?php echo VmHTML::checkbox('variantModification', $this->config->get('variantModification')); ?>
 			</td>
 		    </tr>
+		    
+		    		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE_VAR_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE_VAR') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('basePriceVariant', $this->config->get('basePriceVariant')); ?>
+			</td>
+		    </tr>
+		    
+		    		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE_WTAX_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_BASEPRICE_WTAX') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('basePriceWithTax', $this->config->get('basePriceWithTax')); ?>
+			</td>
+		    </tr>
+		    
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN'); ?>"/>
-			    <?php echo JText::_('VM_ADMIN_CFG_MULTI_TAX_RATE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_DISCPRICE_WOTAX_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_DISCPRICE_WOTAX') ?></label>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('multiple_taxrates_enable', $this->config->get('multiple_taxrates_enable')); ?>
+			    <?php echo VmHTML::checkbox('discountedPriceWithoutTax', $this->config->get('discountedPriceWithoutTax')); ?>
 			</td>
 		    </tr>
+		    
+		    		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE_WD_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE_WD') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('salesPriceWithDiscount', $this->config->get('salesPriceWithDiscount')); ?>
+			</td>
+		    </tr>
+		    
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN'); ?>"/>
-			    <?php echo JText::_('VM_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE') ?></label>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('payment_discount_before', $this->config->get('payment_discount_before')); ?>
+			    <?php echo VmHTML::checkbox('salesPrice', $this->config->get('salesPrice')); ?>
 			</td>
 		    </tr>
+
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE_WOTAX_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_SALESPRICE_WOTAX') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('priceWithoutTax', $this->config->get('priceWithoutTax')); ?>
+			</td>
+		    </tr>
+
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_DISC_AMOUNT_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_DISC_AMOUNT') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('discountAmount', $this->config->get('discountAmount')); ?>
+			</td>
+		    </tr>
+
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_PRICE_TAX_AMOUNT_EXPLAIN'); ?>"/>
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_PRICE_TAX_AMOUNT') ?></label>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('taxAmount', $this->config->get('taxAmount')); ?>
+			</td>
+		    </tr>
+    
 		</table>
 	    </fieldset>
 	</td></tr>

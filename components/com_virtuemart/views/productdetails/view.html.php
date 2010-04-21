@@ -55,9 +55,8 @@ class VirtueMartViewProductdetails extends JView {
 		$mainframe->setPageTitle(JText::_('VM_PRODUCT_DETAILS'));
 		$uri = JURI::getInstance();
 		$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-		
-		
-		
+
+
 		/* Load the product */
 //		$product = $this->get('product');
 		$product_model = $this->getModel('productdetails');
@@ -119,6 +118,7 @@ class VirtueMartViewProductdetails extends JView {
 		} else {
 			
 		}
+		
 		
 		/* Display it all */
 		parent::display($tpl);

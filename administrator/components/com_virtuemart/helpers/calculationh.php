@@ -122,16 +122,19 @@ class calculationHelper{
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		
 		
-		if (strpos($variant, '=') !== false) {
-//		   $variant=substr($variant,1);
-		   $basePrice = doubleval(substr($variant,1));
-		} else {
-			$basePrice = $basePrice + doubleval($variant);
-		}
+
 
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
-	
-		$prices['basePrice']=$basePriceShopCurrency; //basePrice calculated in the shopcurrency
+		$prices['basePrice']=$basePriceShopCurrency;
+		
+		if (strpos($variant, '=') !== false) {
+//		   $variant=substr($variant,1);
+		   $basePriceShopCurrency = doubleval(substr($variant,1));
+		} else {
+			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
+		}
+		$prices['basePriceVariant'] = $basePriceShopCurrency;
+		 //basePrice calculated in the shopcurrency
 		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
 		$prices['basePriceWithTax']=$basePriceWithTax; //basePrice with Tax
 	
@@ -161,8 +164,8 @@ class calculationHelper{
 		//The whole discount Amount
 		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		
-		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax TODO is wrong
-		$prices['priceWithoutTax'] = $this->roundDisplay($basePrice + ($salesPrice - $discountedPrice));	
+		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
+		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
 
 		//As last step the prices gets adjusted to the by user choosen currency
 		foreach($prices as $price){

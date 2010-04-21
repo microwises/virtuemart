@@ -170,15 +170,20 @@ else { ?>
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
-					if($this->product->product_price['basePrice'] && Permissions::getInstance()->atLeastPerms('admin')) echo '<div>'.JText::_('VM_PRODUCT_BASEPRICE').'<span id="basePrice">'.$this->product->product_price['basePrice'].'</span></div>';
-					if($this->product->product_price['variantModification']) echo '<div>'.JText::_('VM_PRODUCT_VARIANT_MOD').'<span id="variantModification" >'.$this->product->product_price['variantModification'].'</span></div>';					
-					if($this->product->product_price['basePriceWithTax']) echo '<div>'.JText::_('VM_PRODUCT_BASEPRICE_WITHTAX').'<span id="basePriceWithTax" >'.$this->product->product_price['basePriceWithTax'].'</span></div>';
-					if($this->product->product_price['discountedPriceWithoutTax']) echo '<div>'.JText::_('VM_PRODUCT_DISCOUNTED_PRICE').'<span id="discountedPriceWithoutTax">'.$this->product->product_price['discountedPrice'].'</span></div>';
-					if($this->product->product_price['salesPriceWithDiscount']) echo '<div>'.JText::_('VM_PRODUCT_SALESPRICE_WITH_DISCOUNT').'<span id="salesPriceWithDiscount" class="product-Old-Price">'.$this->product->product_price['salesPriceWithDiscount'].'</span></div>';
-					if($this->product->product_price['salesPrice']) echo '<div>'.JText::_('VM_PRODUCT_SALESPRICE').'<span id="salesPrice" >'.$this->product->product_price['salesPrice'].'</span></div>';
-					if($this->product->product_price['discountAmount']) echo '<div id="discountAmount" >'.JText::_('VM_PRODUCT_DISCOUNT_AMOUNT').'<span id="discountAmount">'.$this->product->product_price['discountAmount'].'</span></div>';
-//					if($this->product->product_price['priceWithoutTax']) echo '<div id="priceWithoutTax" >'.JText::_('VM_PRODUCT_BASEPRICE')..'<span id="basePrice">'$this->product->product_price['priceWithoutTax'].'</span></div>';
-
+					//todo add config settings
+					if( Permissions::getInstance()->atLeastPerms('admin')){
+						shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->product_price);
+					}
+					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->product_price);
+					
 				}
 				?><br />
 			</td>
@@ -534,17 +539,36 @@ function setproducttype(){
 	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery("#addtocartproduct").serialize(),
 	
 		function(newPrices, textStatus) {
-
-			jQuery('#basePriceWithTax').html(newPrices.basePriceWithTax);
-			jQuery('#discountedPriceWithoutTax').html(newPrices.discountedPriceWithoutTax);
-			jQuery('#salesPriceWithDiscount').html(newPrices.salesPriceWithDiscount);
-			jQuery('#salesPrice').html(newPrices.salesPrice);
-			jQuery('#discountAmount').html(newPrices.discountAmount);
-			jQuery('#priceWithoutTax').html(newPrices.priceWithoutTax);
-			jQuery('#variantModification').html(newPrices.variantModification);
-//			console.log(newPrices.variantModification);
+//			jQuery('#basePrice').html(newPrices.basePrice);
+			togglePriceVisibility(newPrices.basePrice,'#basePrice');
+			togglePriceVisibility(newPrices.variantModification,'#variantModification');
+			togglePriceVisibility(newPrices.basePriceVariant,'#basePriceVariant');
+			togglePriceVisibility(newPrices.basePriceWithTax,'#basePriceWithTax');
+			togglePriceVisibility(newPrices.discountedPriceWithoutTax,'#discountedPriceWithoutTax');
+			togglePriceVisibility(newPrices.salesPriceWithDiscount,'#salesPriceWithDiscount');
+			togglePriceVisibility(newPrices.salesPrice,'#salesPrice');
+			togglePriceVisibility(newPrices.priceWithoutTax,'#priceWithoutTax');
+			togglePriceVisibility(newPrices.discountAmount,'#discountAmount');
+			togglePriceVisibility(newPrices.taxAmount,'#taxAmount');
+			togglePriceVisibility(newPrices.variantModification,'#variantModification'); 
 		});
 };
+
+function togglePriceVisibility(newPrice,divname){
+	div = jQuery(divname+"D");
+	span = jQuery(divname);
+	if(newPrice!=0){
+		div.show();
+		span.show();
+		span.html(newPrice);
+	} else {
+		span.html(0);
+		div.hide();
+		span.hide();
+	}
+	
+	
+}
 
 function add(nr) {
 	var currentVal = parseInt(jQuery('#quantity'+nr).val());
