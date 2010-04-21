@@ -115,14 +115,15 @@ class ShopFunctions {
 	* @param boolean $multiple True if multiple selecions are allowed (default: false)
 	* @param mixed $_attrib string or array with additional attibutes,
 	* e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
+	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = '' ){
+	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = '', $_prefix = ''){
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(false, true);
 		$attrs = array();
 		$name = 'country_name';
-		$idA = $id = 'country_id';
+		$idA = $id = $_prefix . 'country_id';
 		
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($countries, $emptyOption);
@@ -149,15 +150,16 @@ class ShopFunctions {
 	* @param int $stateID Selected state id
 	* @param int $countryID Selected country id
 	* @param string $dependentField Parent <select /> ID attribute
+	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false){	
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false, $_prefix = ''){	
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		$states = array();
 		$attrs = array();
 		$name = 'state_name';
-		$idA = $id = 'state_id';
+		$idA = $id = $_prefix.'state_id';
 		
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($states, $emptyOption);
@@ -420,15 +422,16 @@ class ShopFunctions {
 	 *
 	 * @param string $t The selected title value
 	 * @param string $extra More attributes when needed
+	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 */
-	public function listUserTitle($t, $extra="") {
+	public function listUserTitle($t, $extra="", $_prefix = '') {
 		$options = array();
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MR'), JText::_('VM_REGISTRATION_FORM_MR'));
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MRS'), JText::_('VM_REGISTRATION_FORM_MRS'));
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_DR'), JText::_('VM_REGISTRATION_FORM_DR'));
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_PROF'), JText::_('VM_REGISTRATION_FORM_PROF'));
 		
-		return JHTML::_('select.genericlist', $options, 'title', $extra, 'value', 'text', $t);
+		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}
 	
 	/**

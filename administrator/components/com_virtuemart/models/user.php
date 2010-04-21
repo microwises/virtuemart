@@ -222,7 +222,7 @@ class VirtueMartModelUser extends JModel {
 		$_currentUser =& JFactory::getUser();
 
 		$_new = ($_data['user_id'] < 1);
-		$_user =& new JUser($_data['user_id']);
+		$_user = new JUser($_data['user_id']);
 		$_gid = $_user->get('gid'); // Save original gid
 
 		$_data['username']	= JRequest::getVar('username', '', 'post', 'username');
@@ -279,7 +279,7 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		// Now save the user info
-		$_userFieldsModel =& new VirtueMartModelUserfields();
+		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_prepareUserFields = $_userFieldsModel->getUserFields(
 								 'account'
 								, array() // Default toggles
@@ -300,6 +300,31 @@ class VirtueMartModelUser extends JModel {
 			$this->setError($_userinfo->getError());
 			return false;
 		}
+		
+		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
+		$_shipto = array();
+		$_pattern = '/^shipto_/';
+		foreach ($_data as $_k => $_v) {
+			if (preg_match($_pattern, $_k)) {
+				$_new = preg_replace($_pattern, '', $_k);
+				$_shipto[$_new] = $_v;
+			}
+		}
+		if (count($_shipto) > 0) {
+			// The user_is_vendor must be copied to make sure users won't be listed twice
+			$_shipto['user_is_vendor'] = $_data['user_is_vendor'];
+			// Set the address type
+			$_shipto['address_type'] = 'ST';
+			if (!$_userinfo->bind($_shipto)) {
+				$this->setError($_userinfo->getError());
+				return false;
+			}
+			if (!$_userinfo->store()) { // Write data to the DB
+				$this->setError($_userinfo->getError());
+				return false;
+			}
+		}
+
 		return true;
 	}
 
@@ -352,7 +377,22 @@ class VirtueMartModelUser extends JModel {
 	 *  @param $_uid int User ID
 	 *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
 	 */
-	function getUserAddress($_uid = 0, $_type = 'ST')
+	function getUserAddressList($_uid = 0, $_type = 'ST')
+	{
+		$_q = 'SELECT * '
+			. ' FROM #__vm_user_info '
+			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
+			. " AND address_type='$_type'";
+		return ($this->_getList($_q));
+	}
+
+	/**
+	 * Retrieve a single address for a user
+	 * 
+	 *  @param $_uid int User ID
+	 *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
+	 */
+	function getUserAddress($_uid = 0, $_user_info_id = -1, $_type = 'ST')
 	{
 		$_q = 'SELECT * '
 			. ' FROM #__vm_user_info '

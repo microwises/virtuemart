@@ -42,8 +42,6 @@ class VirtuemartViewUser extends JView {
 		$model = $this->getModel();
 
 		if ($layoutName == 'edit') {
-			jimport('joomla.html.pane');
-			$pane = JPane::getInstance();
 			$editor = JFactory::getEditor();
 
 			$_currentUser =& JFactory::getUser();
@@ -55,7 +53,7 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('vendorhelper');
 
 			$userFieldsModel = $this->getModel('userfields');
-			$vendor =& new Vendor;
+			$vendor = new Vendor;
 
 			$userDetails = $model->getUser();
 			$_new = ($userDetails->JUser->get('id') < 1);
@@ -103,7 +101,7 @@ class VirtuemartViewUser extends JView {
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
-			$_addressList = $model->getUserAddress($userDetails->JUser->get('id') , 'ST');
+			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
 			if (($_c = count($_addressList)) == 0) {
 				$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
 			} else {
@@ -112,9 +110,9 @@ class VirtuemartViewUser extends JView {
 					$_shipTo[] = '<li>'.'<a href="index.php'
 										.'?option=com_virtuemart'
 										.'&view=user'
-										.'&task=ship_address'
-										.'&uid='.$_addressList[$_i]->user_id
-										.'&cid[]='.$_addressList[$_i]->user_info_id
+										.'&task=edit'
+										.'&cid[]='.$_addressList[$_i]->user_id
+										.'&shipto='.$_addressList[$_i]->user_info_id
 									. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 				
 				}
@@ -153,8 +151,48 @@ class VirtuemartViewUser extends JView {
 				}
 			}
 
+			// The ShipTo address if selected
+			$_shipto_id = JRequest::getVar('shipto', -1);
+			if ($_shipto_id == -1) {
+				$_shipto = 0;
+				$_paneOffset = array();
+			} else {
+				// Contains 0 for new, otherwise a user_info_id
+				$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
+				$_paneOffset = array('startOffset' => 2);
+				$_shiptoFields = $userFieldsModel->getUserFields(
+					 'shipping'
+					, array() // Default toggles
+				);
+				if ($_shipto_id == 0) {
+					$_userDetailsList = null;
+				} else {
+					// Find the correct record
+					$_userDetailsList = current($userDetails->userInfo);
+					for ($_i = 0; $_i <= count($userDetails->userInfo); $_i++) {
+						if ($_userDetailsList->user_info_id == $_shipto_id) {
+							break;
+						}
+						$_userDetailsList = next($userDetails->userInfo);
+					}
+				}
+				$shipToFields = $userFieldsModel->getUserFieldsByUser(
+					 $_shiptoFields
+					,$_userDetailsList
+					,'shipto_'
+				);
+				$this->assignRef('shipToFields', $shipToFields);
+				$this->assignRef('shipToID', $_shipto_id);
+			}
+
+			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
+			// In tmpl/edit.php, this is the 3th tab (0-based, so set to 2 above)
+			jimport('joomla.html.pane');
+			$pane = JPane::getInstance('Tabs', $_paneOffset);
+
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
+			$this->assignRef('shipto', $_shipto);
 			$this->assignRef('userFields', $userFields);
 			$this->assignRef('userInfoID', $_userInfoID);
 			$this->assignRef('vendor', $vendor);

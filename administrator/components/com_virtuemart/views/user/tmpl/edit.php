@@ -65,6 +65,15 @@ function myValidator(f, t)
 	echo $this->loadTemplate('shopper');
 	echo $this->pane->endPanel();
 
+	if ($this->shipto != 0) {
+		// Note:
+		// Of the order of the tabs change here, change the startOffset value for
+		// JPane::getInstance() as well in view.html.php!
+		echo $this->pane->startPanel( JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
+		echo $this->loadTemplate('shipto');
+		echo $this->pane->endPanel();
+	}
+
 	if (count($this->orderlist) > 0) {
 		echo $this->pane->startPanel( JText::_('VM_ORDER_LIST_LBL'), 'edit_orderlist' );
 		echo $this->loadTemplate('orderlist');

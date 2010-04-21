@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 
 /**
- * Controller class for the Order status
+ * Controller class for the user
  *
  * @package    VirtueMart
  * @subpackage User

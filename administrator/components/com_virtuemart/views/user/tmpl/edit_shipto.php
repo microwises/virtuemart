@@ -23,78 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_SHOPPER_FORM_LBL') ?>
-	</legend>
-	<table class="adminform">
-		<tr>
-			<td class="key">
-				<label for="vendor_id">
-					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['vendors']; ?>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="key">
-				<label for="perms">
-					<?php echo JText::_('VM_USER_FORM_PERMS') ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['perms']; ?>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="key">
-				<label for="customer_number">
-					<?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:
-				</label>
-			</td>
-			<td>
-				<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo  $this->lists['custnumber']; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<label for="shopper_group_id">
-					<?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['shoppergroups']; ?>
-			</td>
-		</tr>
-	</table>
-</fieldset>
-
-
-<?php if ($this->userDetails->JUser->get('id') ) { ?>
-<fieldset>
-	<legend>
-		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
-	</legend>
-
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
-		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
-	</a>
-
-	<table class="adminform">
-		<tr>
-			<td>
-				<?php echo $this->lists['shipTo']; ?>
-			</td>
-		</tr>
-	</table>
-</fieldset>
-<?php } ?>
-
-<fieldset>
-	<legend>
-		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
+		<?php echo JText::_('VM_SHOPPER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 <?php 
 	$_k = 0;
@@ -102,17 +31,17 @@ defined('_JEXEC') or die('Restricted access');
 	$_table = false;
 	$_hiddenFields = '';
 
-	if (count($this->userFields['functions']) > 0) {
+	if (count($this->shipToFields['functions']) > 0) {
 		echo '<script language="javascript">'."\n";
-		echo join("\n", $this->userFields['functions']);
+		echo join("\n", $this->shipToFields['functions']);
 		echo '</script>'."\n";
 	}
-	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
+	for ($_i = 0, $_n = count($this->shipToFields['fields']); $_i < $_n; $_i++) {
 		// Do this at the start of the loop, since we're using 'continue' below!
 		if ($_i == 0) {
-			$_field = current($this->userFields['fields']);
+			$_field = current($this->shipToFields['fields']);
 		} else {
-			$_field = next($this->userFields['fields']);
+			$_field = next($this->shipToFields['fields']);
 		}
 
 		if ($_field['hidden'] == true) {
@@ -161,5 +90,6 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	echo $_hiddenFields;
 ?>
-<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="shipto_user_info_id" value="<?php echo $this->shipToID; ?>" />
+
 </fieldset>
