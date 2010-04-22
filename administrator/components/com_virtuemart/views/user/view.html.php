@@ -164,7 +164,7 @@ class VirtuemartViewUser extends JView {
 					 'shipping'
 					, array() // Default toggles
 				);
-				if ($_shipto_id == 0) {
+				if ($_shipto_id === 0) {
 					$_userDetailsList = null;
 				} else {
 					// Find the correct record
