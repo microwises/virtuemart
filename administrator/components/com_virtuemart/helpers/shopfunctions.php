@@ -118,7 +118,7 @@ class ShopFunctions {
 	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = '', $_prefix = ''){
+	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = array(), $_prefix = ''){
 		$countryModel = self::getModel('country');
 		$countries = $countryModel->getCountries(false, true);
 		$attrs = array();
