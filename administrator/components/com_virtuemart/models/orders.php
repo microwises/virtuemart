@@ -133,8 +133,10 @@ class VirtueMartModelOrders extends JModel {
 
     /**
      * Select the products to list on the product list page
+     * @param $_uid integer Optional user ID to get the orders of a single user
+     * @param $_ignorePagination boolean If true, ignore the Joomla pagination (for embedded use, default false)
      */
-    public function getOrdersList() {
+    public function getOrdersList($_uid = 0, $_ignorePagination = false) {
 	$db = JFactory::getDBO();
 	/* Pagination */
 	$this->getPagination();
@@ -142,9 +144,17 @@ class VirtueMartModelOrders extends JModel {
 	/* Build the query */
 	$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name,
      			m.name AS payment_method
-     			".$this->getOrdersListQuery().$this->getOrdersListFilter()."
-			";
-	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     			".$this->getOrdersListQuery();
+	if ($_uid > 0) {
+		$q .= ' WHERE u.user_id = ' . $_uid . ' ';
+	}
+	$_q .= $this->getOrdersListFilter()."
+	";
+	if ($_ignorePagination) {
+		$db->setQuery($q);
+	} else {
+		$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+	}
 	return $db->loadObjectList('order_id');
     }
 

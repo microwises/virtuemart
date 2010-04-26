@@ -311,6 +311,15 @@ class VirtueMartModelUser extends JModel {
 			}
 		}
 		if (count($_shipto) > 0) {
+			$_prepareUserFields = $_userFieldsModel->getUserFields(
+									 'shipping'
+									, array() // Default toggles
+			);
+
+			// Format the data
+			foreach ($_prepareUserFields as $_fld) {
+				$_shipto[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_shipto[$_fld->name]);
+			}
 			// The user_is_vendor must be copied to make sure users won't be listed twice
 			$_shipto['user_is_vendor'] = $_data['user_is_vendor'];
 			// Set the address type

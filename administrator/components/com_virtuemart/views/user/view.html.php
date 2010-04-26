@@ -51,10 +51,13 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('shoppergroup');
 			$this->loadHelper('shopfunctions');
 			$this->loadHelper('vendorhelper');
-
+			$this->loadHelper('currencydisplay');
+			
 			$userFieldsModel = $this->getModel('userfields');
+			$ordeModel = $this->getModel('orders');
 			$vendor = new Vendor;
-
+			$currency = new CurrencyDisplay();
+			
 			$userDetails = $model->getUser();
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
@@ -185,6 +188,11 @@ class VirtuemartViewUser extends JView {
 				$this->assignRef('shipToID', $_shipto_id);
 			}
 
+
+			// Checkl for existing orders for this user
+			$orders = new VirtueMartModelOrders();
+			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 			// In tmpl/edit.php, this is the 3th tab (0-based, so set to 2 above)
 			jimport('joomla.html.pane');
@@ -196,6 +204,8 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('userFields', $userFields);
 			$this->assignRef('userInfoID', $_userInfoID);
 			$this->assignRef('vendor', $vendor);
+			$this->assignRef('orderlist', $orderList);
+			$this->assignRef('currency', $currency);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);
 			$this->assignRef('pane', $pane);

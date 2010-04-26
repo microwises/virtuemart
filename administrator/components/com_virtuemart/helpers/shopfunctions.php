@@ -302,7 +302,27 @@ class ShopFunctions {
 		$model = new $className();
 		return $model;
 	}
-	
+
+	/**
+	* Return the order status name for a given code
+	* 
+	* @author Oscar van Eijk
+	* @access public
+	* 
+	* @param char $_code Order status code
+	* @return string The name of the order status
+	*/
+	public function getOrderStatusName ($_code)
+	{
+		$_db = JFactory::getDBO();
+		
+		$_q = 'SELECT order_status_name FROM `#__vm_order_status`'
+			. " WHERE order_status_code = '$_code' ";
+		$_db->setQuery($_q);
+		$_r = $_db->loadObject();
+		return $_r->order_status_name;
+	}
+
 	/**
 	* This function allows you to get an object list of user fields
 	*

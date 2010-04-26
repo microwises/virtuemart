@@ -74,8 +74,8 @@ function myValidator(f, t)
 		echo $this->pane->endPanel();
 	}
 
-	if (count($this->orderlist) > 0) {
-		echo $this->pane->startPanel( JText::_('VM_ORDER_LIST_LBL'), 'edit_orderlist' );
+	if (($_ordcnt = count($this->orderlist)) > 0) {
+		echo $this->pane->startPanel( JText::_('VM_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
 		echo $this->loadTemplate('orderlist');
 		echo $this->pane->endPanel();
 	}
