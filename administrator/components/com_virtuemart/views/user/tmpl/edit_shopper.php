@@ -162,4 +162,5 @@ defined('_JEXEC') or die('Restricted access');
 	echo $_hiddenFields;
 ?>
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="address_type" value="BT" />
 </fieldset>

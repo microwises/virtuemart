@@ -220,7 +220,7 @@ class VirtueMartModelUser extends JModel {
 
 		$_data = JRequest::get('post');
 		$_currentUser =& JFactory::getUser();
-
+		
 		$_new = ($_data['user_id'] < 1);
 		$_user = new JUser($_data['user_id']);
 		$_gid = $_user->get('gid'); // Save original gid
@@ -334,6 +334,16 @@ class VirtueMartModelUser extends JModel {
 			}
 		}
 
+		// Finally, if this user is a vendor, save the store data
+		if ($_data['my_vendor_id']) {
+			$_data['vendor_id'] = $_data['my_vendor_id'];
+			$_storeModel = new VirtueMartModelStore();
+			$_storeModel->setId($_data['vendor_id']);
+			if (!$_storeModel->store($_data)) {
+				$this->setError($_storeModel->getError());
+				return false;
+			}
+		}
 		return true;
 	}
 

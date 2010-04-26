@@ -187,12 +187,18 @@ class VirtueMartModelStore extends JModel {
      * Bind the post data to the vendor table and save it
      *
      * @author RickG
+     * @param $data array. If not empty, the store function is called from another model.
      * @return boolean True is the save was successful, false otherwise.
      */
-    public function store() {
+    public function store($data = null) {
 	$table = $this->getTable('vendor');
 
-	$data = JRequest::get('post');
+	if ($data === null) {
+		$data = JRequest::get('post');
+		$_external = false;
+	} else {
+		$_external = true;
+	}
 	// Store multiple selectlist entries as a ; seperated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -220,6 +226,10 @@ class VirtueMartModelStore extends JModel {
 	    return false;
 	}
 
+	if ($_external) {
+		// When called from another model (currently: the user model), user_info was already saved.
+		return true;
+	}
 	return $this->storeUserInfo($data);
     }
 

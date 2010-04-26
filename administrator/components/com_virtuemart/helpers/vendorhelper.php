@@ -274,6 +274,20 @@ class Vendor {
 		return $this->db->loadResult();
 	}
 	
+
+	/**
+	 * Retrieve a lost of vendor objects
+	 * 
+	 * @author Oscar van Eijk
+	 * @return Array with all Vendor objects
+	 */
+	function getVendorCategories()
+	{
+		$_q = 'SELECT * FROM `#__vm_vendor_category`';
+		$this->db->setQuery($_q);
+		return $this->db->loadObjectList();
+	}
+
 	function getUserIdByOrderId( &$order_id){
 		if(empty ($order_id))return;
 		$q  = "SELECT `user_id` FROM `#__vm_orders` WHERE `order_id`='$order_id'";

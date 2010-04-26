@@ -52,9 +52,10 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('shopfunctions');
 			$this->loadHelper('vendorhelper');
 			$this->loadHelper('currencydisplay');
+			$this->loadHelper('image');
 			
 			$userFieldsModel = $this->getModel('userfields');
-			$ordeModel = $this->getModel('orders');
+//			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
 			$currency = new CurrencyDisplay();
 			
@@ -125,14 +126,21 @@ class VirtuemartViewUser extends JView {
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					, array() // Default toggles
-					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 			);
-			if (count($userDetails->userInfo) == 0) {
+			if (($_addressCount = count($userDetails->userInfo)) == 0) {
 				$_userDetailsList = null;
 				$_userInfoID = null;
 			} else {
 				$_userDetailsList = current($userDetails->userInfo);
-				$_userInfoID = $_userDetailsList->user_info_id;
+				for ($_i = 0; $_i < $_addressCount; $_i++) {
+					if ($_userDetailsList->address_type == 'BT') {
+						$_userInfoID = $_userDetailsList->user_info_id;
+						reset($userDetails->userInfo);
+						break;
+					}
+					$_userDetailsList = next($userDetails->userInfo);
+				}
 			}
 			$userFields = $userFieldsModel->getUserFieldsByUser(
 					 $_userFields
@@ -174,6 +182,7 @@ class VirtuemartViewUser extends JView {
 					$_userDetailsList = current($userDetails->userInfo);
 					for ($_i = 0; $_i <= count($userDetails->userInfo); $_i++) {
 						if ($_userDetailsList->user_info_id == $_shipto_id) {
+							reset($userDetails->userInfo);
 							break;
 						}
 						$_userDetailsList = next($userDetails->userInfo);
@@ -189,9 +198,22 @@ class VirtuemartViewUser extends JView {
 			}
 
 
-			// Checkl for existing orders for this user
+			// Check for existing orders for this user
 			$orders = new VirtueMartModelOrders();
 			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+
+			// If the current user is a vendor, load the store data
+			if ($vendor->isVendor($userDetails->JUser->get('id'))) {
+				$storeModel = $this->getModel('store');
+				$storeModel->setId($vendor->getVendorIdByUserId($userDetails->JUser->get('id')));
+				$_store = $storeModel->getStore();
+				$this->assignRef('store', $_store);
+				$currencyModel = $this->getModel('currency');
+				$_currencies = $currencyModel->getCurrencies();
+				$this->assignRef('currencies', $_currencies);
+				$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
+				$this->assignRef('vendorCategories', $_vendorCats);
+			}
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 			// In tmpl/edit.php, this is the 3th tab (0-based, so set to 2 above)
