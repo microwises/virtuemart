@@ -424,7 +424,7 @@ class VirtueMartModelUserfields extends JModel {
 		switch ($_f) {
 			case 'agreed':
 			case 'title':
-				if( $_v[0] == '_') {
+				if (substr($_v, 0, 1) == '_') {
 					$_v = substr($_v, 1);
 				}
 				$_r = JText::_($_v);
@@ -493,13 +493,16 @@ class VirtueMartModelUserfields extends JModel {
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_prefix . $_fld->name
-					,'value' => (($_userData == null) ? $_fld->default : $_userData->{$_fld->name})
+					,'value' => (($_userData == null)
+						? $_fld->default
+						: $_userData->{$_fld->name})
 					,'title' => self::_userFieldFormat(
 							 ($_fld->name == 'agreed')?'agreed':'title'
 							,$_fld->title
 						)
 					,'type' => $_fld->type
 					,'required' => $_fld->required
+					,'hidden' => false
 			);
 
 			// First, see if there are predefined fields by checking the name

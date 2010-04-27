@@ -67,10 +67,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo $print_link; ?>
 				</td>
 				<td align="left">
-					<?php echo ShopFunctions::formatDate($row->cdate, 'd-M-y H:i'); ?>
+					<?php echo JHTML::_('date', $row->cdate); ?>
 				</td>
 				<td align="left">
-					<?php echo ShopFunctions::formatDate($row->mdate, 'd-M-y H:i'); ?>
+					<?php echo JHTML::_('date', $row->mdate); ?>
 				</td>
 				<td align="left">
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>

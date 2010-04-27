@@ -133,7 +133,7 @@ class VirtueMartModelUser extends JModel {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 			}
-			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_auth_user_vendor WHERE user_id = ' . $this->_id);
+			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
 			$this->_data->vendor_id = $_vid[0];
 		}
 
@@ -156,7 +156,9 @@ class VirtueMartModelUser extends JModel {
 		if ($this->_id) {
 			$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
 			$_contacts = $this->_db->loadObjectList();
-			return $_contacts[0];
+			if (count($_contacts) > 0) {
+				return $_contacts[0];
+			}
 		}
 		return null;
 	}

@@ -57,7 +57,6 @@ class VirtuemartViewUser extends JView {
 			$userFieldsModel = $this->getModel('userfields');
 //			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
-			$currency = new CurrencyDisplay();
 			
 			$userDetails = $model->getUser();
 			$_new = ($userDetails->JUser->get('id') < 1);
@@ -201,6 +200,21 @@ class VirtuemartViewUser extends JView {
 			// Check for existing orders for this user
 			$orders = new VirtueMartModelOrders();
 			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+			if (count($orderList) > 0) {
+				$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
+				if (!empty($_vendorData)) {
+					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
+						, $_vendorData->vendor_currency_display_style);
+					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+						, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+						, $_currencyDisplayStyle['negative']
+					);
+				} else {
+					$currency = new CurrencyDisplay();
+				}
+				$this->assignRef('currency', $currency);
+			}
 
 			// If the current user is a vendor, load the store data
 			if ($vendor->isVendor($userDetails->JUser->get('id'))) {
@@ -213,6 +227,14 @@ class VirtuemartViewUser extends JView {
 				$this->assignRef('currencies', $_currencies);
 				$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
 				$this->assignRef('vendorCategories', $_vendorCats);
+				$_currencyDisplayStyle = Vendor::get_currency_display_style($vendor->getVendorIdByUserId($userDetails->JUser->get('id'))
+					, $_vendorData->vendor_currency_display_style);
+				$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+					, $_currencyDisplayStyle['negative']
+				);
+			$this->assignRef('vendorCurrency', $_vendorCurrency);
 			}
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
@@ -227,7 +249,6 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('userInfoID', $_userInfoID);
 			$this->assignRef('vendor', $vendor);
 			$this->assignRef('orderlist', $orderList);
-			$this->assignRef('currency', $currency);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);
 			$this->assignRef('pane', $pane);
