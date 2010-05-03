@@ -81,7 +81,7 @@ class calculationHelper{
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
-	function getProductPrices($productId,$catIds=0,$amount=0,$variant=0.0){
+	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true){
 		
 //		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
@@ -107,9 +107,13 @@ class calculationHelper{
 
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
-			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
-				$this->_shopperGroupId=$this->_db->loadResult();			
+			if(!empty($user->id)){
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" AND `vendor_id`="'.$this->productVendorId.'"');
+				$this->_shopperGroupId=$this->_db->loadResult();
+			} 
+			if(empty($this->_shopperGroupId)){
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');				
+				$this->_shopperGroupId = $this->_db->loadResult();
 			}
 		}
 
@@ -117,63 +121,70 @@ class calculationHelper{
 			$this->_amount;
 		}
 		
+//		$calcRules = $this->gatherEffectingRulesForProductPrice('Calc');
 		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
 		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
-		
-		
 
 
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
 		$prices['basePrice']=$basePriceShopCurrency;
 		
-		if (strpos($variant, '=') !== false) {
-//		   $variant=substr($variant,1);
-		   $basePriceShopCurrency = doubleval(substr($variant,1));
-		} else {
-			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
-		}
-		$prices['basePriceVariant'] = $basePriceShopCurrency;
-		 //basePrice calculated in the shopcurrency
-		$basePriceWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $basePriceShopCurrency));
-		$prices['basePriceWithTax']=$basePriceWithTax; //basePrice with Tax
-	
-		$withDiscount=false;
-		if(count($dBTaxRules)==0){
-			$discountedPrice = $basePriceShopCurrency;
-			$prices['discountedPriceWithoutTax']=0;
-		}else{
-			$discountedPrice = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this -> roundInternal($basePriceShopCurrency)));
-			$withDiscount=true;
-			$prices['discountedPriceWithoutTax']=$discountedPrice; //before Tax
-		}
-	
-		$salesPrice = $this->roundDisplay($this -> executeCalculation($taxRules, $discountedPrice));	
-		$prices['taxAmount'] = $this->roundDisplay($salesPrice-$discountedPrice);
+
 		
-		if(count($dATaxRules)==0){
-			$prices['salesPriceWithDiscount']=0;
-		} else{
-			$salesPrice = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
-			$prices['salesPriceWithDiscount']=$salesPrice;
+		if(isset($variant)){
+			if (strpos($variant, '=') !== false) {
+	//		   $variant=substr($variant,1);
+			   $basePriceShopCurrency = doubleval(substr($variant,1));
+			} else {
+				$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
+			}
+			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
+			
 		}
 		
-		//The endprice, with all kind of discounts and Tax
-		$prices['salesPrice']=$salesPrice;
+		//For Profit, margin, and so on
+//		if(count($calcRules)!==0){
+//			
+//			$prices['profit'] = 
+//		}
+
+//		$basePrice = !empty($prices['basePriceVariant'])?$prices['basePriceVariant']:$prices['basePrice'];
+		$prices['basePriceWithTax'] = $this->roundDisplay($this -> executeCalculation($taxRules, $prices['basePrice']));
+		$prices['discountedPriceWithoutTax']=$this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['basePrice']));
+		
+		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax'])?$prices['discountedPriceWithoutTax']:$prices['basePrice'];
+		$prices['priceBeforeTax']=$priceBeforeTax;
+		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($taxRules, $priceBeforeTax));
+		
+		$salesPrice = !empty($prices['salesPrice'])?$prices['salesPrice']:$priceBeforeTax;
+		$prices['salesPriceTemp']=$salesPrice;
+		$prices['taxAmount'] = $this->roundDisplay($salesPrice-$priceBeforeTax);
+		
+		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
+		
+		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount'])?$prices['salesPriceWithDiscount']:$salesPrice;
+		
 
 		//The whole discount Amount
+//		$prices['discountAmount'] = $this->roundDisplay($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
+		$basePriceWithTax = !empty($prices['basePriceWithTax'])?$prices['basePriceWithTax']:$prices['basePrice'];
 		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
 		
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
-		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
-
-		//As last step the prices gets adjusted to the by user choosen currency
+//		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
+		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
+		
+		//As last step the prices gets adjusted to the user choosen currency
 		foreach($prices as $price){
 			$price = $this -> _currencyDisplay->getFullValue($price);
 		}
 	
 		$prices['variantModification']=$variant;
 	
+//		echo '<br />The prices:<br />';
+//		echo '<pre>'.print_r($prices).'</pre>';
+
 		return $prices;
 	}
 	
@@ -198,40 +209,49 @@ class calculationHelper{
 	 * 							'discountAfterTax'	final result
 	 * 
 	 */
-	function getCheckoutPrices($productIds,$cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
+//	function getCheckoutPrices($productIds,$variantMods=array(), $cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
+	function getCheckoutPrices($cart){
+
+//		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
 		$resultWithOutTax=0.0;
-		foreach ($productIds as $productId){
-//			echo '$productId '.$productId;
-			if(!is_array($productId)){
-				$pricesPerId[(int)$productId] = $this -> getProductPrices($productId);
+		$productIdsCount = $cart['idx'];
 
-				if (!array_key_exists($productId,$pricesPerId)){
-					$pricesPerId[$productId] = $this -> getProductPrices($productId);
-					echo '$productId Calculated '.$productId;
-				}
-				$prices[] = $pricesPerId[(int)$productId];
-				$resultWithTax = $resultWithTax + $pricesPerId[$productId]['salesPrice'];
-				$resultWithOutTax = $resultWithOutTax + $pricesPerId[$productId]['basePrice'];
-			} else {
-				echo '$productId is an array '.print_r($productId);
-			}
+		$prices['basePrice']= 0;
+		$prices['basePriceWithTax']= 0;
+		$prices['discountedPriceWithoutTax']= 0;
+		$prices['salesPrice']= 0;
+		$prices['taxAmount']= 0;
+		$prices['salesPriceWithDiscount']= 0;
+		$prices['discountAmount']= 0;
+		$prices['priceWithoutTax']= 0;
+		$prices['coupons'] = $this->existCoupons();
+		$prices['couponValue'] = 0;
+		$prices['duty'] = 1;
+		$prices['shipping'] = 0; //could be automatically set to a default set in the globalconfig
+		$prices['shippingTax'] = 0;
+		$prices['payment'] = 0; //could be automatically set to a default set in the globalconfig
+		$prices['paymentTax'] = 0;
+		
+		for ($i = 0; $i<$productIdsCount;$i++){
+			$productId = $cart[$i]['product_id'];
+			$variantmod = $this->parseModifier($cart[$i]['variants']);
+			$pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$cart[$i]['quantity']);	
+			$prices[] = $pricesPerId[(int)$productId];
 
+			$prices['basePrice'] = $prices['basePrice'] + $pricesPerId[$productId]['basePrice']*$cart[$i]['quantity'];
+//				$prices['basePriceVariant'] = $prices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$cart[$i]['quantity'];
+			$prices['basePriceWithTax'] = $prices['basePriceWithTax'] + $pricesPerId[$productId]['basePriceWithTax']*$cart[$i]['quantity'];
+			$prices['discountedPriceWithoutTax'] = $prices['discountedPriceWithoutTax'] + $pricesPerId[$productId]['discountedPriceWithoutTax']*$cart[$i]['quantity'];
+			$prices['salesPrice'] = $prices['salesPrice'] + $pricesPerId[$productId]['salesPrice']*$cart[$i]['quantity'];
+			$prices['taxAmount'] = $prices['taxAmount'] + $pricesPerId[$productId]['taxAmount']*$cart[$i]['quantity'];
+			$prices['salesPriceWithDiscount'] = $prices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$cart[$i]['quantity'];
+			$prices['discountAmount'] = $prices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$cart[$i]['quantity'];
+			$prices['priceWithoutTax'] = $prices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$cart[$i]['quantity'];
 		}
-//		echo print_r($prices);
-//		echo '<br />';
-//		for ($x = 0; $x < sizeof($prices); ++$x){
-//			echo "key: ".key($prices)."  value: ".current($prices)."<br />";
-//			$steps = current($prices);
-//			for ($y = 0; $y < sizeof($steps); ++$y){
-//				echo "   key: ".key($steps)."  value: ".current($steps)."<br />";
-//				next($steps);
-//			}
-//			next($prices);
-//		}
-//		echo '<br />';
+
 		
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
@@ -253,33 +273,16 @@ class calculationHelper{
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
 		
-		$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $resultWithTax));
+		$prices['discountBeforeTax']=$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['salesPrice']));
+		$toTax = !empty($prices['discountBeforeTax']) ? $prices['discountBeforeTax']:$prices['salesPrice'];
 
-		$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $discountBeforeTax));
-		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $discountWithTax));
+		$prices['withTax']=$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax));
+		$toDisc = !empty($prices['withTax']) ? $prices['withTax']:$toTax;
 		
-		$substractCoupons = $this->roundDisplay($discountAfterTax - $this -> calculateCouponPrices($couponId));
-		$addedShipment = $this->roundDisplay($substractCoupons + $this -> calculateShipmentPrice($shipId));
-		$addedPayment = $this->roundDisplay($addedShipment + $this -> calculatePaymentPrice($paymId,$addedShipment));
-		
-		
-		echo '$resultWithOutTax: '.$resultWithOutTax.'<br />';
-		echo '$basePrice: '.$resultWithTax.'<br />';
-		echo '$discountBeforeTax: '.$discountBeforeTax.'<br />';
-		echo '$discountWithTax: '.$discountWithTax.'<br />';
-		echo '$discountAfterTax: '.$discountAfterTax.'<br />';
-		echo '$substractCoupons: '.$substractCoupons.'<br />';
-		echo '$addedShipment: '.$addedShipment.'<br />';
-		echo '$addedPayment: '.$addedPayment.'<br />';
-		
-		$prices['resultWithOutTax'] = $resultWithOutTax;
-		$prices['resultWithTax'] = $resultWithTax;
-		$prices['discountBeforeTax'] = $discountBeforeTax;
-		$prices['discountWithTax'] = $discountWithTax;
-		$prices['discountAfterTax'] = $discountAfterTax;
-		$prices['Coupons'] = $substractCoupons;
-		$prices['Shipment'] = $addedShipment;
-		$prices['Payment'] = $addedPayment;
+		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $toDisc));
+		$prices['withTax']=$prices['discountAfterTax']=!empty($discountAfterTax) ?$discountAfterTax:$toDisc;
+
+		return $prices;
 	}
 
 	/**
@@ -292,7 +295,8 @@ class calculationHelper{
 	 * @return int 	$price  	the endprice	
 	 */
 	function executeCalculation($rules, $price){
-		if(empty($rules))return $price;
+//		if(empty($rules))return $price;
+		if(empty($rules))return 0;
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
@@ -439,9 +443,9 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 
 //		if (empty($rules)) return;	
 		//Just for developing
-//		foreach($rules as $rule){
-//			echo '<br /> Add rule '.$rule['calc_name'].' query: '.$q;
-//		}
+		foreach($testedRules as $rule){
+			echo '<br /> Add rule Entrypoint '.$entrypoint.'  and '.$rule['calc_name'].' query: '.$q;
+		}
 		return $testedRules;
 	}
 	
@@ -465,6 +469,10 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 		return $rules;
 	}
 
+	private function existCoupons(){
+	
+		return 1;
+	}
 	/**
 	 * Calculates the effecting Shipment prices for the calculation
 	 * @todo
@@ -499,9 +507,7 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 		
 		$code=4;
 		$paymentCosts = 0.0;
-//		jimport('joomla.application.component.controller');
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
-		echo 'Controller sollte geladen sein';
 
 		$model = new VirtueMartModelPaymentmethod;
 		$model->setId($code);
@@ -704,10 +710,53 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	/**
 	 * Calculate a pricemodification for a variant
 	 *
-	 * Variant values can be in the following format
-	 * - +x.xx
-	 * - -x.xx
-	 * - =x.xx
+	 * Variant values can be in the following format:
+	 * Array ( [Size] => Array ( [XL] => +1 [M] => [S] => -2 ) [Power] => Array ( [strong] => [middle] => [poor] => =24 ) ) 
+	 * 
+	 * In the post is the data for the chosen variant, when there is a hit, it gets calculated
+	 * 
+	 * Returns all variant modifications summed up or the highest price set with '='
+	 * 
+	 * @todo could be slimmed a bit down, using smaller array for variantnames, this could be done by using the parseModifiers method, needs to adjust the post
+	 * @author Max Milbers
+	 * @param int $product_id the product ID the attribute price should be calculated for
+	 * @param array $variantnames the value of the variant
+	 * @return array The adjusted price modificator
+	 */
+	 
+	function calculateModificators($product_id,$variants){
+		
+		
+		$modificatorSum=0.0;
+		$max=array();
+		foreach ($variants as $variant_name => $variant) {	
+			$value = JRequest::getVar($product_id.$variant_name,0);
+//			echo '<br />The Value is now  <pre>'.print_r($value).'</pre>';
+			if(strpos($value,'(')){
+
+				$bundle=strrchr($value,'(') ;
+				$modificator=substr($bundle,1,strlen($bundle)-2);
+				if(strpos($bundle,'=')){
+					$max[]=$modificator;		
+				}else{
+					if(count($max)==0) $modificatorSum = $modificatorSum+$modificator;
+				}
+			}
+		}
+		if(count($max)==0){
+			return $modificatorSum;
+		} else {
+			return max($max);
+		}
+	}
+	
+	/**
+	 * Calculate a pricemodification for a variant, this is only an internal function for the cartprices
+	 *
+	 * Variant values can be in the following format, for exampel:
+	 *	Array ( [Size] => XL (+1) [Power] => poor (=24) ) 
+	 * 
+	 * The amount is directly calculated
 	 * 
 	 * Returns all variant modifications summed up or the highest price set with '='
 	 * 
@@ -718,15 +767,12 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @return array The adjusted price modificator
 	 */
 	 
-	function calculateModificators($product_id,$variants){
-		
-//		echo 'Lets see what we have here now?<br />';
+	private function parseModifier($variants){
+//		echo '<br />Lets see what we have here for variant? <pre>'.print_r($variants).'</pre>';
 		$modificatorSum=0.0;
 		$max=array();
-		foreach ($variants as $variant_name => $variant) {	
-			$value = JRequest::getVar($product_id.$variant_name,0);
+		foreach ($variants as $variant_name => $value) {		
 			if(strpos($value,'(')){
-
 				$bundle=strrchr($value,'(') ;
 				$modificator=substr($bundle,1,strlen($bundle)-2);
 				if(strpos($bundle,'=')){

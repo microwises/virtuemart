@@ -340,20 +340,22 @@ class VirtueMartModelUserfields extends JModel {
 			$_q .= "WHERE name LIKE '%bank%' ";
 		}
 
-		if ($_switches['published'] !== false ) {
-			$_q .= "AND published = 1 ";
-		}
-		if ($_switches['required'] === true ) {
-			$_q .= "AND required = 1 ";
-		}
-		if ($_switches['delimiters'] === true ) {
-			$_q .= "AND type != 'delimiter' ";
-		}
-		if ($_switches['sys'] === true ) {
-			$_q .= "AND sys = 1 ";
-		}
-		if ($_switches['sys'] === false ) {
-			$_q .= "AND sys = 0 ";
+		if(count($_switches)>0){
+			if ($_switches['published'] !== false ) {
+				$_q .= "AND published = 1 ";
+			}
+			if ($_switches['required'] === true ) {
+				$_q .= "AND required = 1 ";
+			}
+			if ($_switches['delimiters'] === true ) {
+				$_q .= "AND type != 'delimiter' ";
+			}
+			if ($_switches['sys'] === true ) {
+				$_q .= "AND sys = 1 ";
+			}
+			if ($_switches['sys'] === false ) {
+				$_q .= "AND sys = 0 ";
+			}
 		}
 		if (count($_skip) > 0) {
 			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";

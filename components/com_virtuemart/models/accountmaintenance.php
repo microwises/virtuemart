@@ -37,8 +37,7 @@ class VirtueMartModelAccountmaintenance extends JModel {
 	public function saveShopper() {
 		$db = JFactory::getDBO();
 		$my = JFactory::getUser();
-		//global $my, $perm, $sess, $vmLogger, $page;
-		// $vmLogger->err( 'ps_shopper update' );
+
 		/* Load the authorizations */
 		$auth = JRequest::getVar('auth');
 		/* Get the user id */

@@ -123,5 +123,24 @@ class VirtueMartControllerCart extends JController {
 		
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 	}
+	
+	/**
+	 * Checks for the data that is needed to process the order
+	 * 
+	 */
+	 
+	public function checkout(){
+		
+		//Tests step for step for the necessary data, redirects to it, when something is lacking
+		//Test Shipment and Payment addresses
+		
+		//Test Shipment
+		
+		//Test Payment
+		
+		//Show cart and checkout data overview
+		
+	}
+	
 }
  //pure php no Tag

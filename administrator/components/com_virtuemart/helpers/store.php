@@ -47,9 +47,12 @@ class VmStore {
 	$query .= "WHERE user_id = '". $userId ."'";
 	$db->setQuery($query);
 	$userFields = $db->loadObject();
-	foreach ($userFields as $k => $v) {
-	    $params->set($k, $v);
+	if(!empty($userFields)){
+		foreach ($userFields as $k => $v) {
+		    $params->set($k, $v);
+		}		
 	}
+
 
 	$session = JFactory::getSession();
 	$session->set("vmstore", $params->toString());

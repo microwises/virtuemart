@@ -102,8 +102,8 @@ class VirtuemartControllerCalc extends JController
 	 */	
 	public function save(){
 		
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		// Check token, how does this really work?
+//		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		$calcModel = $this->getModel('calc');
 		$cmd = JRequest::getCmd('task');

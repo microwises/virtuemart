@@ -33,7 +33,7 @@ class VirtueMartModelProductdetails extends JModel {
 	/**
 	* Load the product details
 	*/
-	public function getProduct($product_id=false) {
+	public function getProduct($product_id=false,$withCalc =true) {
 		$db = JFactory::getDBO();
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 		
@@ -63,7 +63,7 @@ class VirtueMartModelProductdetails extends JModel {
 			
 			/* Load the price */
 			$prices = "";
-			if (VmConfig::get('show_prices') == '1') {
+			if (VmConfig::get('show_prices') == '1' && $withCalc) {
 				
 				/* Loads the product price details */
 				$calculator = calculationHelper::getInstance();
@@ -73,7 +73,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 				$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
-				$prices = $calculator->getProductPrices($product->product_id,$product->categories,$quantityArray[0],$product_type_modificator);
+				$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 			}
 			
 			$product->product_price = $prices;
@@ -175,7 +175,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
-		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$quantityArray[0],$product_type_modificator);
+		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 
 
 		return $prices;

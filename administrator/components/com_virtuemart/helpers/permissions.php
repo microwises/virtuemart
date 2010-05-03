@@ -66,6 +66,7 @@ class Permissions extends JObject{
 			$this->_db->setQuery($q);
 			$this->_user_groups = $this->_db->loadObjectList('group_name');
 		}
+//		echo 'Die Usergroups: <pre>'.print_r($this->_user_groups).'</pre>';
 		return $this->_user_groups;
 	}
 	
@@ -245,7 +246,7 @@ class Permissions extends JObject{
 	
 	/**
 	 * Checks if the user has higher permissions than $perm
-	 *
+	 * does not work properly, do not use or correct it
 	 * @param string $perm
 	 * @return boolean
 	 * @example $perm->hasHigherPerms( 'storeadmin' );
@@ -253,7 +254,7 @@ class Permissions extends JObject{
 	 */
 	function atLeastPerms( $perm ) {
 
-		if( $this->_perms && $this->user_groups[$perm] >= $this->user_groups[$this->_perms] ) {
+		if( $this->_perms && $this->_user_groups[$perm] >= $this->_user_groups[$this->_perms] ) {
 			return true;	
 		}
 		else {

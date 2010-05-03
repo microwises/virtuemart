@@ -143,7 +143,7 @@ class VirtueMartModelOrders extends JModel {
 
 	/* Build the query */
 	$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name,
-     			m.name AS payment_method
+     			m.paym_name AS payment_method
      			".$this->getOrdersListQuery();
 	if ($_uid > 0) {
 		$q .= ' WHERE u.user_id = ' . $_uid . ' ';

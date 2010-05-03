@@ -46,13 +46,15 @@ class VirtuemartControllerUser extends JController {
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('user', $viewType);
+		$view = $this->getView('user', $viewType);
 		
 		// Push a model into the view
-		$model =& $this->getModel('user');
+		$model = $this->getModel('user');
 
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
+		}else{
+			echo 'Couldnt load backend model in VirtuemartControllerUser';	
 		}
 	}
 

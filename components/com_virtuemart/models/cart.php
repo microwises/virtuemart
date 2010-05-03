@@ -251,31 +251,14 @@ class VirtueMartModelCart extends JModel {
 	/**
 	* Function Description 
 	* 
-	* @author RolandD 
+	* @author Max Milbers
 	* @access public
 	* @param array $cart the cart to get the products for
 	* @return array of product objects
 	*/
 	public function getCartPrices($cart) {
-		$calculator = new calculationHelper();
-//		$prices = array();
-//		for ($i = 0; $cart['idx'] > $i; $i++) {
-//			$prices[$i] = $calculator->getCheckoutPrices($cart[$i]);
-//		}
-//		return $prices;
-		echo '<br />';
-		for ($x = 0; $x < sizeof($cart); ++$x){
-			echo "key: ".key($cart)."  value: ".current($cart)."<br />";
-			$steps = current($cart);
-			if(is_array($steps)){
-				for ($y = 0; $y < sizeof($steps); ++$y){
-				echo "&nbsp;&nbsp;&nbsp;   key: ".key($steps)."  value: ".current($steps)."<br />";
-				next($steps);
-				}
-			}
-			next($cart);
-		}
-		echo '<br />';
+	
+		$calculator = calculationHelper::getInstance();
 		return $calculator->getCheckoutPrices($cart);
 	}
 	
@@ -290,7 +273,7 @@ class VirtueMartModelCart extends JModel {
 	private function getProduct($product_id) {
 		JModel::addIncludePath(JPATH_COMPONENT.DS.'models');
 		$model = JModel::getInstance('Productdetails', 'VirtueMartModel');
-		return $model->getProduct($product_id);
+		return $model->getProduct($product_id, false);
 	}
 	
 	/**

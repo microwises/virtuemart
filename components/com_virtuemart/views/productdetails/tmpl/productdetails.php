@@ -114,16 +114,16 @@ else { ?>
 							}
 
 							/* Display the quantity box */
-							?>
+							?><br />
 							<label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
 							<input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $this->product->product_id;?>" name="quantity[]" value="1" />
 							<input type="button" class="quantity_box_button quantity_box_button_up" onClick="add(<?php echo $this->product->product_id;?>); return false;" />
 							<input type="button" class="quantity_box_button quantity_box_button_down" onClick="minus(<?php echo $this->product->product_id;?>); return false;" />
-							<?php
+							<br /><?php
 							
 							/* Add the button */
 							$button_lbl = JText::_('VM_CART_ADD_TO');
-							$button_cls = 'addtocart_button';
+							$button_cls = ''; //$button_cls = 'addtocart_button';
 							if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
 								$button_lbl = JText::_('VM_CART_NOTIFY');
 								$button_cls = 'notify_button';
@@ -131,10 +131,6 @@ else { ?>
 							?>
 							<input id="cart" type="submit" name="cart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							<?php if($variantExist){ 
-								/*
-								 * action="index.php?option=com_virtuemart&view=productdetails&task=show&product_id=<?php echo $this->product->product_id;?>"
-								  onClick="setproducttype(<?php echo $this->product->product_id.','.$this->product->category_id; ?>); return false;"
-								 */
 								?>
 								<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 							<?php } ?>
@@ -171,11 +167,11 @@ else { ?>
 					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
 					//todo add config settings
-					if( Permissions::getInstance()->atLeastPerms('admin')){
-						shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->product_price);
+					if( Permissions::getInstance()->check('admin')){
+						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->product_price);
+						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->product_price);
 					}
 					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->product_price);
 					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->product_price);
 					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->product_price);
 					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->product_price);
@@ -520,7 +516,7 @@ jQuery(document).ready(function() {
 
 function sendtocart(){
 	
-	jQuery.post('index.php?option=com_virtuemart&view=cart&task=add', jQuery("#addtocartproduct").serialize(), 
+	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS', jQuery("#addtocartproduct").serialize(), 
 	
 	function(newPrices, textStatus) {
 //			alert(newPrices+' and '+textStatus);

@@ -14,6 +14,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
+echo 'We entered global';
+die;
+
 global $module_description;
 
 //should be removed later

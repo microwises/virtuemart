@@ -55,7 +55,7 @@ else {
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$this->cart[$i]['category_id']);
 			
 			/** @todo Add variants */
-			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name).'<br />';
+			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name).'';
 			
 			/* Add the variants */
 			$product_rows[$i]['product_variants'] = '';
@@ -86,34 +86,25 @@ else {
 	
 			/* Product PRICE */
 			/** @todo Format price */
-			$product_rows[$i]['product_price'] = $product->product_price['salesPrice'];
+			$product_rows[$i]['product_price'] = $this->prices[$i]['salesPrice'];
 	
 			/* SUBTOTAL CALCULATION */
-			$subtotal = $product->product_price['priceWithoutTax'] * $this->cart[$i]['quantity'];
-			$subtotal_with_tax = $product->product_price['salesPrice'] * $this->cart[$i]['quantity'];
+			$subtotal = $this->prices[$i]['priceWithoutTax'] * $this->cart[$i]['quantity'];
+			$subtotal_tax_amount = $this->prices[$i]['taxAmount'] * $this->cart[$i]['quantity'];
+			$subtotal_discount_amount = $this->prices[$i]['discountAmount'] * $this->cart[$i]['quantity'];
+			$subtotal_with_tax = $this->prices[$i]['salesPrice'] * $this->cart[$i]['quantity'];
 	
-			$total += $subtotal;
+
 			/** @todo Format price */
 			$product_rows[$i]['subtotal'] = $subtotal;
+			$product_rows[$i]['subtotal_tax_amount'] = $subtotal_tax_amount;
+			$product_rows[$i]['subtotal_discount_tax'] = $subtotal_discount_amount;
 			$product_rows[$i]['subtotal_with_tax'] = $subtotal_with_tax;
-	
-			/** @todo handle multiple tax rates */
-			/**
-			if (!empty($my_taxrate) && MULTIPLE_TAXRATES_ENABLE=='1') {
-				if( $auth["show_price_including_tax"] == 1 ) {
-					eval( "\$message = \"".JText::_('VM_INCLUDING_TAX')."\";" );
-					$product_rows[$i]['subtotal'] .= "&nbsp;".$message;
-				}
-				else {
-					$product_rows[$i]['subtotal'] .= "&nbsp;(+ $tax% ".JText::_('VM_CART_TAX').")";
-				}
-			}
-			*/
 			
 			// UPDATE CART / DELETE FROM CART
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
-				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="4" maxlength="4" name="quantity" value="'.$this->cart[$i]["quantity"].'" />
+				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$this->cart[$i]["quantity"].'" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
 				<input type="hidden" name="cart_id" value="'.$i.'" />
@@ -132,8 +123,10 @@ else {
 	
 		//vmRequest::setVar( 'zone_qty', $vars['zone_qty'] );
 	
-		$total = $total_undiscounted = round($total, 5);
-		$vars["total"] = $total;
+//		$total = $total_undiscounted = round($total, 5);
+//		$vars["total"] = $total;
+
+//		$vars["total"] = $this->prices['withTax'];
 		//$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 		$subtotal_display = 0;
 	
@@ -238,68 +231,117 @@ else {
 		//	$order_total += $tax_total;
 		//	$total_undiscounted += $tax_total;
 		//}
-		$order_total += $shipping_total + $total;
-		$total_undiscounted += $shipping_total;
+//		$order_total += $shipping_total + $total;
+//		$total_undiscounted += $shipping_total;
 	
 		//$order_total_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($order_total);
-		$order_total_display = $order_total;
+//		$order_total_display = $order_total;
+
+
+		$subtotal_display = $this->prices['priceWithoutTax'];
+		$order_total_display = $this->prices['withTax'];
+		$tax_display = $this->prices['taxAmount'];
+		$coupon_display = $this->prices['couponValue'];
+		$duty_display = $this->prices['duty'];
+		
+		$shipping_display = $this->prices['shipping'];
+		$shipping_tax_display = $this->prices['shippingTax'];
+		
+		$payment_display = $this->prices['payment'];
+		$payment_tax_display = $this->prices['paymentTax'];
+		
 		?>
 		<table width="100%" cellspacing="2" cellpadding="4" border="0">
-		  <tr align="left" class="sectiontableheader">
+			<tr align="left" class="sectiontableheader">
 				<th><?php echo JText::_('VM_CART_NAME') ?></th>
-				<th><?php echo JText::_('VM_CART_SKU') ?></th>
-			<th><?php echo JText::_('VM_CART_PRICE') ?></th>
-			<th><?php echo JText::_('VM_CART_QUANTITY') ?> / <?php echo JText::_('VM_CART_ACTION') ?></th>
-			<th><?php echo JText::_('VM_CART_SUBTOTAL') ?></th>
-		  </tr>
+				<th align="left" ><?php echo JText::_('VM_CART_SKU') ?></th>
+				<th align="right" width="60px" ><?php echo JText::_('VM_CART_PRICE') ?></th>
+				<th align="right" width="140px" ><?php echo JText::_('VM_CART_QUANTITY') ?> / <?php echo JText::_('VM_CART_ACTION') ?></th>
+				<th align="right" width="70px"><?php echo JText::_('VM_CART_SUBTOTAL') ?></th>
+				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
+				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+				<th align="right" width="70px"><?php echo JText::_('VM_CART_TOTAL') ?></th>
+			</tr>
 		<?php foreach( $product_rows as $product ) { ?>
-		  <tr valign="top" class="<?php echo $product['row_color'] ?>">
-			<td><?php echo $product['product_name'].$product['product_variants'].$product['product_customvariants'].$product['product_attributes']; ?></td>
-			<td><?php echo $product['product_sku'] ?></td>
-			<td align="right"><?php echo $product['product_price'] ?></td>
-			<td><?php echo $product['update_form'] ?>
-				<?php echo $product['delete_form'] ?>
-			</td>
-			<td align="right"><?php echo $product['subtotal'] ?></td>
-		  </tr>
+			<tr valign="top" class="<?php echo $product['row_color'] ?>">
+				<td align="left" ><?php echo $product['product_name'].$product['product_variants'].$product['product_customvariants'].$product['product_attributes']; ?></td>
+				<td align="left" ><?php echo $product['product_sku'] ?></td>
+				<td align="right" ><?php echo $product['product_price'] ?></td>
+				<td align="right" ><?php echo $product['update_form'] ?>
+					<?php echo $product['delete_form'] ?>
+				</td>
+				<td colspan="1" align="right"><?php echo $product['subtotal'] ?></td>
+				<td align="right"><?php echo $product['subtotal_tax_amount'] ?></td>
+				<td align="right"><?php echo $product['subtotal_discount_tax'] ?></td>			
+				<td colspan="1" align="right"><?php echo $product['subtotal_with_tax'] ?></td>
+			</tr>
 		<?php } ?>
 		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
+		<tr>
+			<td colspan="4">&nbsp;</td>
+			<td colspan="4"><hr /></td>
+		</tr>
 		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_CART_SUBTOTAL') ?>:</td> 
-			<td colspan="3" align="right"><?php echo $subtotal_display ?></td>
+			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td> 
+			<td align="right"><?php echo $this->prices['priceWithoutTax'] ?></td>
+			<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
+			<td align="right"><?php echo $this->prices['discountAmount'] ?></td>
+			<td align="right"><?php echo $this->prices['salesPrice'] ?></td>
 		  </tr>
-		<?php if( $discount_before ) { ?>
+		  
+
+		  
+		<?php if($this->prices['coupons']){ 
+			$couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); ?> 
+			<tr class="sectiontableentry2">
+				<td colspan="2" align="right"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>
+				<td colspan="4" align="right"><?php echo $coupon_display; ?> </td>
+			</tr>
+		<?php }  
+		$shippinglink = JRoute::_('index.php?view=cart&task=editshipping');  ?>
+		<tr class="sectiontableentry1">
+				<td colspan="2" align="right"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
+				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> 
+				<td colspan="4" align="right"><?php echo $shipping_display; ?></td>
+		</tr>
+		<?php if($this->prices['shippingTax']) { ?>
+		  	<tr class="sectiontableentry2">
+				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?> </td> 
+				<td colspan="4" align="right"><?php echo $this->prices['shippingTax']; ?> </td>		  		
+			</tr>		
+		<?php }
+		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
+		<tr class="sectiontableentry1">
+				<td colspan="2" align="right"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
+				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
+				<td colspan="4" align="right"><?php echo $payment_display ?></td>
+		</tr>
+		<?php if($this->prices['shippingTax']) { ?>
+		  	<tr class="sectiontableentry2">
+				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_TAX') ?> </td> 
+				<td colspan="4" align="right"><?php echo $this->prices['shippingTax'] ?> </td>		  		
+			</tr>		
+		<?php }
+		if($this->prices['duty']) { ?>
 		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:
-			</td> 
-			<td colspan="3" align="right"><?php echo $coupon_display ?></td>
-		  </tr>
-		<?php } 
-		if( $shipping ) { ?>
-		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>: </td> 
-			<td colspan="3" align="right"><?php echo $shipping_display ?></td>
-		  </tr>
-		<?php } 
-		if($discount_after) { ?>
-		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:
-			</td> 
-			<td colspan="3" align="right"><?php echo $coupon_display ?></td>
+			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_DUTY') ?> </td> 
+			<td colspan="4" align="right"><?php echo $this->prices['duty'] ?> </td>
 		  </tr>
 		<?php } ?>
+	
 		  <tr>
 			<td colspan="4">&nbsp;</td>
-			<td colspan="3"><hr /></td>
+			<td colspan="4"><hr /></td>
 		  </tr>
-		  <tr class="sectiontableentry1">
+		  <tr class="sectiontableentry2">
 			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?>: </td>
-			<td colspan="3" align="right"><strong><?php echo $order_total_display ?></strong></td>
+			<td colspan="4" align="right"><strong><?php echo $this->prices['withTax'] ?></strong></td>
 		  </tr>
 		<?php if ( $show_tax ) { ?>
 		  <tr class="sectiontableentry1">
 				<td colspan="4" align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>: </td> 
-				<td colspan="3" align="right"><?php echo $tax_display ?></td>
+				<td colspan="4" align="right"><?php echo $tax_display ?></td>
 		  </tr>
 		<?php } ?>
 		  <tr>

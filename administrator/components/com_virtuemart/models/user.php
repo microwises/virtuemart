@@ -134,7 +134,10 @@ class VirtueMartModelUser extends JModel {
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 			}
 			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
-			$this->_data->vendor_id = $_vid[0];
+			if(!empty($_vid)){
+				$this->_data->vendor_id = $_vid[0];
+			}
+			
 		}
 
 		if (!$this->_data) {
@@ -433,7 +436,12 @@ class VirtueMartModelUser extends JModel {
 		$_q = "SELECT `customer_number` FROM `#__vm_shopper_vendor_xref` "
 			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
 		$_r = $this->_getList($_q);
-		return $_r[0]->customer_number;
+		if(!empty($_r[0])){
+			return $_r[0]->customer_number;
+		}else {
+			return 0;
+		}
+		
 	}
 	/**
 	 * Get the number of active Super Admins
