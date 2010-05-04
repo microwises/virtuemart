@@ -104,7 +104,7 @@ class VirtuemartModelReport extends JModel {
 			$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 			$query .= "COUNT(order_id) as number_of_orders, ";
 			$query .= "SUM(order_subtotal) as revenue ";
-			$query .= "FROM jww_vm_orders ";
+			$query .= "FROM `#__vm_orders` ";
 			$query .= "GROUP BY order_date ";
 			$query .= "ORDER BY date_num ASC ";
 			
