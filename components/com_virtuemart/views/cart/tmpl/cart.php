@@ -292,14 +292,14 @@ else {
 
 		  
 		<?php if($this->prices['coupons']){ 
-			$couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); ?> 
+			$couponlink = JRoute::_('index.php?view=user&task=editcoupon'); ?> 
 			<tr class="sectiontableentry2">
 				<td colspan="2" align="right"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>
 				<td colspan="2" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>
 				<td colspan="4" align="right"><?php echo $coupon_display; ?> </td>
 			</tr>
 		<?php }  
-		$shippinglink = JRoute::_('index.php?view=cart&task=editshipping');  ?>
+		$shippinglink = JRoute::_('index.php?view=user&task=editshipping');  ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="right"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> 
@@ -311,7 +311,7 @@ else {
 				<td colspan="4" align="right"><?php echo $this->prices['shippingTax']; ?> </td>		  		
 			</tr>		
 		<?php }
-		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
+		$paymentlink = JRoute::_('index.php?view=user&task=editpayment');  ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="right"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
 				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
@@ -346,6 +346,18 @@ else {
 		<?php } ?>
 		  <tr>
 			<td colspan="7"><hr /></td>
+		  </tr>
+		  <tr class="sectiontableentry2">
+		 <?php $adresslink = JRoute::_('index.php?view=user&task=editAdress');  ?>
+		 	<td colspan="2" align="right"><?php echo JHTML::_('link', $adresslink, JText::_('VM_CART_EDIT_ADRESS'));?> </td>
+		  </tr>
+	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
+		This exampel should just show how the adress should be shown and how the information is saved*/
+	?> 
+		  <tr class="sectiontableentry1">
+		  	<td colspan="3" align="right"><?php echo JText::_('VM_CART_NAME') ;?> </td>
+		  	<td colspan="3" align="right"><?php echo $this->cart['name'];?> </td>
+		  	
 		  </tr>
 		</table>
 		<?php

@@ -335,28 +335,34 @@ class VirtueMartModelUserfields extends JModel {
 		$_q = 'SELECT * FROM `#__vm_userfield` ';
 
 		if( $_sec != 'bank' && $_sec != '') {
-			$_q .= "WHERE `$_sec`=1 ";
+			$_q .= 'WHERE `'.$_sec.'`=1 ';
 		} elseif ($_sec == 'bank' ) {
 			$_q .= "WHERE name LIKE '%bank%' ";
 		}
 
-		if(count($_switches)>0){
+		if(array_key_exists('published',$_switches)){
 			if ($_switches['published'] !== false ) {
-				$_q .= "AND published = 1 ";
+				$_q .= 'AND published = 1 ';
 			}
+		}
+		if(array_key_exists('required',$_switches)){
 			if ($_switches['required'] === true ) {
 				$_q .= "AND required = 1 ";
 			}
+		}
+		if(array_key_exists('delimiters',$_switches)){
 			if ($_switches['delimiters'] === true ) {
 				$_q .= "AND type != 'delimiter' ";
 			}
+		}
+		if(array_key_exists('sys',$_switches)){
 			if ($_switches['sys'] === true ) {
 				$_q .= "AND sys = 1 ";
-			}
-			if ($_switches['sys'] === false ) {
+			} else {
 				$_q .= "AND sys = 0 ";
 			}
 		}
+		
 		if (count($_skip) > 0) {
 			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";
 		}
@@ -389,7 +395,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_address_type->vendor_id = 1;
 			$_address_type->params = '';
 			$_fields[] = $_address_type;
-	}
+		}
 
 
 		if (!in_array('user_is_vendor', $_skip)) {
