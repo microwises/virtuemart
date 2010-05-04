@@ -186,7 +186,7 @@ function include_class($module) {
 	$ps_product_type, // Changed Product Type
 	$ps_product_type_parameter, // Changed Product Type
 	$ps_product_product_type, // Changed Product Type
-	$ps_product_price,	$nh_report,	$ps_shopper,	$ps_shopper_group,
+	$ps_product_price,	/*$nh_report*/ $ps_report,	$ps_shopper,	$ps_shopper_group,
 	$ps_cart,	$ps_zone,$ps_tax, $zw_waiting_list;
 	
 	switch ( $module ) {
@@ -260,12 +260,18 @@ function include_class($module) {
 //			$ps_product_price = new ps_product_price;
 			break;
 
-		case "reportbasic" :
+/*		case "reportbasic" : //Changed in 1.5 to MVC ps_report
 			// Load Classes
 			require_once( CLASSPATH . 'ps_reportbasic.php');
 			$nh_report = new nh_report;
 			break;
-
+*/
+		case "report" :
+			//Load Class
+			require_once(CLASSPATH . 'ps_report.php');
+			$ps_report = new ps_report;
+			break;
+			
 		case "shipping" :
 			// Load Class
 			require_once( CLASSPATH . 'ps_shipping.php');
