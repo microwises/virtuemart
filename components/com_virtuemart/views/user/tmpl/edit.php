@@ -22,7 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 //AdminMenuHelper::startAdminArea(); 
 
 // Implement Joomla's form validation
-JHTML::_('behavior.formvalidation')
+JHTML::_('behavior.formvalidation');
+JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
 ?>
 <style type="text/css">
 .invalid {
