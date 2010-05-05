@@ -28,6 +28,7 @@ jimport('joomla.version');
 
 // Get the helpers we need here
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
 
 /**
  * Model class for shop users
@@ -66,8 +67,14 @@ class VirtueMartModelUser extends JModel {
 		$this->setState('limitstart', $limitstart);
 
 		// Get the (array of) order status ID(s)
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$idArray[0]);
+		if(Permissions::getInstance()->check("admin,storeadmin")){
+			$idArray = JRequest::getVar('cid',  0, '', 'array');
+			$this->setId((int)$idArray[0]);
+		} else {
+			$user = JFactory::getUser();
+			$this->setId((int)$user->id);
+		}
+		
 	}
 
 	/**
@@ -129,6 +136,7 @@ class VirtueMartModelUser extends JModel {
 			$this->_data = new stdClass();
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 			$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
+			$this->_data->userInfo=array();
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
@@ -136,6 +144,8 @@ class VirtueMartModelUser extends JModel {
 			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
 			if(!empty($_vid)){
 				$this->_data->vendor_id = $_vid[0];
+			}else{
+				$this->_data->vendor_id = 0;
 			}
 			
 		}

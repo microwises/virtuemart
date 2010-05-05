@@ -235,6 +235,11 @@ class calculationHelper{
 		$prices['payment'] = 0; //could be automatically set to a default set in the globalconfig
 		$prices['paymentTax'] = 0;
 		
+		$prices['couponName'] = 'Coupon Number 777';
+		$prices['couponTax'] = '';
+		$prices['couponValue'] = '';
+		$prices['salesPriceCoupon'] = '';
+		
 		for ($i = 0; $i<$productIdsCount;$i++){
 			$productId = $cart[$i]['product_id'];
 			$variantmod = $this->parseModifier($cart[$i]['variants']);

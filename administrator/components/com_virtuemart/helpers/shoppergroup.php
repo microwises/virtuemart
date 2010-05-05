@@ -24,7 +24,7 @@ class ShopperGroup {
     	$vendor_id = 1;
     	$db = JFactory::getDBO();
     	
-    	$q =  "SELECT `#__vm_shopper_group`.`shopper_group_id`, `default` AS default_shopper_group FROM `#__vm_shopper_group`";
+    	$q =  "SELECT `#__vm_shopper_group`.`shopper_group_id`, `#__vm_shopper_group`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__vm_shopper_group`";
     		
     	if (!empty($id) && !$default_group) {
       		$q .= ", `#__vm_shopper_vendor_xref`";

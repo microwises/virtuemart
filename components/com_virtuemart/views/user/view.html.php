@@ -37,12 +37,15 @@ class VirtuemartViewUser extends JView {
 		global $option;
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+//		$this->loadHelper('adminMenu');
 		
-		$layoutName = JRequest::getVar('layout', 'default');
-		$model = $this->getModel();
+//		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = 'edit';
+		
+		$model = $this->getModel('user');
 
-		if ($layoutName == 'edit' || $layoutName='account') {
+		
+		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
 			$_currentUser =& JFactory::getUser();
@@ -55,17 +58,17 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 			
-//			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
-$userFieldsModel = new VirtueMartModelUserfields;
-//			$userFieldsModel = $this->getModel('userfields');
-//			$orderModel = $this->getModel('orders');
+			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
 			
 			$userDetails = $model->getUser();
+//			echo 'The userDetails model looks like? <br />';
+//			echo '<pre>'.print_r($userDetails).'</pre>';die;
 			$_new = ($userDetails->JUser->get('id') < 1);
 			
-			if ($layoutName == 'edit'){
+			//This must be solved different in frontend
+//			if ($layoutName == 'edit'){
 				// In order for the Form validator to work, we're creating our own buttons here.
 //				$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
 //					. '<span title="' . JText::_('Save' ) . '" class="icon-32-save"></span>' . JText::_('Save' ) . '</a>';
@@ -85,7 +88,7 @@ $userFieldsModel = new VirtueMartModelUserfields;
 //					$_toolBar->appendButton('Custom', $_applyButton);
 //					JToolBarHelper::cancel('cancel', 'Close');
 //				}
-			}
+//			}
 			// User details
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();
@@ -105,8 +108,24 @@ $userFieldsModel = new VirtueMartModelUserfields;
 
 			// Shopper info
 			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
-			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
+			if(Permissions::getInstance()->check("admin,storeadmin")){		
+				$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+				$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);		
+			} else {
+				$lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
+				if(empty($lists['shoppergroups'])){
+					$lists['shoppergroups']='unregistered';
+				}			
+				$lists['vendors'] = $userDetails->vendor_id;
+				if(empty($lists['vendors'])){
+					$lists['vendors']='you are not a vendor';
+				}
+			}
+			
+//			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
+//			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+			
+//			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -151,8 +170,18 @@ $userFieldsModel = new VirtueMartModelUserfields;
 					 $_userFields
 					,$_userDetailsList
 			);
+			
+			if(Permissions::getInstance()->check("admin,storeadmin")){
+				$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
+			} else {
+				if(!empty($_userDetailsList->perms)){
+					$lists['perms'] = $_userDetailsList->perms;
+				}
+				if(empty($lists['perms'])){
+					$lists['perms']='unregistered';
+				}
+			}
 
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);
 			
 			// Load the required scripts
 			if (count($userFields['scripts']) > 0) {
@@ -204,9 +233,10 @@ $userFieldsModel = new VirtueMartModelUserfields;
 
 
 			// Check for existing orders for this user
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
+//			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
 //			$userFieldsModel = new VirtueMartModelUserfields;
-			$orders = new VirtueMartModelOrders();
+			$orders = $this->getModel('orders');
+//			$orders = new VirtueMartModelOrders();
 			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
 			if (count($orderList) > 0) {
 				$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
@@ -261,14 +291,14 @@ $userFieldsModel = new VirtueMartModelUserfields;
 			$this->assignRef('editor', $editor);
 			$this->assignRef('pane', $pane);
 		} else {
-			JToolBarHelper::title( JText::_('VM_USER_LIST_LBL'), 'vm_user_48.png');
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
-			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_vendor', 'publish','','VM_USER_ISVENDOR');
-			JToolBarHelper::custom('disable_vendor', 'unpublish','','VM_USER_ISNOTVENDOR');
-			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+//			JToolBarHelper::title( JText::_('VM_USER_LIST_LBL'), 'vm_user_48.png');
+//			JToolBarHelper::addNewX();
+//			JToolBarHelper::editListX();
+//			JToolBarHelper::divider();
+//			JToolBarHelper::custom('enable_vendor', 'publish','','VM_USER_ISVENDOR');
+//			JToolBarHelper::custom('disable_vendor', 'unpublish','','VM_USER_ISNOTVENDOR');
+//			JToolBarHelper::divider();
+//			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
