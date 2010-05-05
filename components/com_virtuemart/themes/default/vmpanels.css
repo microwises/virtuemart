@@ -51,12 +51,12 @@
 }
 .jpane-toggler span
 {
-	background: transparent url(../images/j_arrow.png) 5px 50% no-repeat;
+	background: transparent url(images/j_arrow.png) 5px 50% no-repeat;
 	padding-left: 20px;
 }
 .jpane-toggler-down span
 {
-	background: transparent url(../images/j_arrow_down.png) 5px 50% no-repeat;
+	background: transparent url(images/j_arrow_down.png) 5px 50% no-repeat;
 	padding-left: 20px;
 }
 .jpane-toggler-down

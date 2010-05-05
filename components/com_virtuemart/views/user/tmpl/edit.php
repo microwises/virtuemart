@@ -66,10 +66,6 @@ function myValidator(f, t)
 	echo $this->loadTemplate('shopper');
 	echo $this->pane->endPanel();
 
-	echo $this->pane->startPanel( JText::_('VM_SHOPPER_SHIPPING_FORM_LBL'), 'edit_shipping' );
-	echo $this->loadTemplate('shipping');
-	echo $this->pane->endPanel();
-	
 	echo $this->pane->startPanel( JText::_('VM_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
 	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();

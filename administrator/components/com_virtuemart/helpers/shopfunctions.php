@@ -123,7 +123,8 @@ class ShopFunctions {
 		$countries = $countryModel->getCountries(false, true);
 		$attrs = array();
 		$name = 'country_name';
-		$idA = $id = $_prefix . 'country_id';
+		$id = 'country_id';
+		$idA = $_prefix . 'country_id';
 		
 		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
 		array_unshift($countries, $emptyOption);

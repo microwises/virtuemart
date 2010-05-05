@@ -332,12 +332,17 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
-		$_q = 'SELECT * FROM `#__vm_userfield` ';
+		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
 
 		if( $_sec != 'bank' && $_sec != '') {
-			$_q .= 'WHERE `'.$_sec.'`=1 ';
+			$_q .= 'AND `'.$_sec.'`=1 ';
 		} elseif ($_sec == 'bank' ) {
-			$_q .= "WHERE name LIKE '%bank%' ";
+			$_q .= "AND name LIKE '%bank%' ";
+		}
+
+		if (($_skipBank = array_search('bank', $_skip)) !== false ) {
+			$_q .= "AND name NOT LIKE '%bank%' ";
+			unset ($_skip[$_skipBank]);
 		}
 
 		if(array_key_exists('published',$_switches)){

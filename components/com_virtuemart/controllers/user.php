@@ -32,10 +32,7 @@ class VirtueMartControllerUser extends JController
     
 	public function __construct() {
 		parent::__construct();
-		
-		$this->registerTask('addshipto', 'editshipto');
-		
-				$view = $this->getView('user', 'html');
+		$view = $this->getView('user', 'html');
 		
 		/* Add the default model */
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
@@ -51,193 +48,183 @@ class VirtueMartControllerUser extends JController
 		/* Display it all */
 		$view->display();
 	}
+
+	function edit()
+	{
+		// Placeholder
+	}
+
+	public function User()
+	{
+		// Placehoder
+	}
 	
-	public function User() {
-		/* Create the view */
-//		$this->addViewPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'views' );
-//		$view = $this->getView('user', 'html');
-//		
+//	/**
+//	* Modify the billing address in front-end
+//	* @author RolandD
+//	*/
+//	public function accountBilling() {
+//		/* Create the view */
+//		$view = $this->getView('accountmaintenance', 'html');
+//	
 //		/* Add the default model */
-//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
-//
+//		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+//		
 //		/* Set the layout */
-//		$view->setLayout('edit');
+//		$view->setLayout('accountbilling');
 //		
 //		/* Display it all */
 //		$view->display();
-	}
-	
-	/**
-	* Modify the billing address in front-end
-	* @author RolandD
-	*/
-	public function accountBilling() {
-		/* Create the view */
-		$view = $this->getView('accountmaintenance', 'html');
-	
-		/* Add the default model */
-		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
-		
-		/* Set the layout */
-		$view->setLayout('accountbilling');
-		
-		/* Display it all */
-		$view->display();
-	}
-	
-	/**
-	* Modify the shipping address in front-end
-	* @author RolandD
-	*/
-	public function accountShipping() {
-		/* Create the view */
-		$view = $this->getView('accountmaintenance', 'html');
-	
-		/* Add the default model */
-		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
-		
-		/* Set the layout */
-		$view->setLayout('accountshipping');
-		
-		/* Display it all */
-		$view->display();
-	}
-	
-	/**
-	* List an order in the front-end
-	*
-	* @author RolandD
-	*/
-	public function accountOrder() {
-		/* Create the view */
-		$view = $this->getView('accountmaintenance', 'html');
-	
-		/* Add the default model */
-		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
-		
-		/* Set the layout */
-		$view->setLayout('accountorder');
-		
-		/* Display it all */
-		$view->display();
-	}
-	
-	/**
-	* Send the user to the add/edit shipping address 
-	* 
-	* @author RolandD
-	* @access public
-	*/
-	public function editShipto() {
-		/* Create the view */
-		$view = $this->getView('accountmaintenance', 'html');
-	
-		/* Add the default model */
-		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
-		
-		/* Set the layout */
-		$view->setLayout('accountshipping_edit');
-		
-		/* Display it all */
-		$view->display();
-	}
-	
-	/**
-	* Update shoppers billing address
-	*/
-	public function shopperUpdate() {
+//	}
+//	
+//	/**
+//	* Modify the shipping address in front-end
+//	* @author RolandD
+//	*/
+//	public function accountShipping() {
+//		/* Create the view */
+//		$view = $this->getView('accountmaintenance', 'html');
+//	
+//		/* Add the default model */
+//		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+//		
+//		/* Set the layout */
+//		$view->setLayout('accountshipping');
+//		
+//		/* Display it all */
+//		$view->display();
+//	}
+//	
+//	/**
+//	* List an order in the front-end
+//	*
+//	* @author RolandD
+//	*/
+//	public function accountOrder() {
+//		/* Create the view */
+//		$view = $this->getView('accountmaintenance', 'html');
+//	
+//		/* Add the default model */
+//		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+//		
+//		/* Set the layout */
+//		$view->setLayout('accountorder');
+//		
+//		/* Display it all */
+//		$view->display();
+//	}
+//	
+//	/**
+//	* Send the user to the add/edit shipping address 
+//	* 
+//	* @author RolandD
+//	* @access public
+//	*/
+//	public function editShipto() {
+//		/* Create the view */
+//		$view = $this->getView('accountmaintenance', 'html');
+//	
+//		/* Add the default model */
+//		$view->setModel($this->getModel( 'accountmaintenance', 'VirtuemartModel' ), true);
+//		
+//		/* Set the layout */
+//		$view->setLayout('accountshipping_edit');
+//		
+//		/* Display it all */
+//		$view->display();
+//	}
+//	
+//	/**
+//	* Update shoppers billing address
+//	*/
+//	public function shopperUpdate() {
+////		$mainframe = JFactory::getApplication();
+//		/* Check for request forgeries */
+//		if (JRequest::checkToken()) {
+//			/* Load the model object */
+//			$model = $this->getModel('accountmaintenance');
+//			/* Add model path */
+//			JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models');
+//			$userfields_model = $this->getModel('userfields');
+//			JRequest::setVar('userfields_model', $userfields_model);
+//			
+//			$msgtype = '';
+//			$result = $model->saveShopper();
+//			if ($result[0]) {
+//				$msg = JText::_('ACCOUNT_SAVED_SUCCESSFULLY');
+////				$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance', $msg);
+//				$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance', $msg);
+//			}
+//			else {
+//				$msg = JText::_('ACCOUNT_NOT_SAVED_SUCCESSFULLY').'<br />'.$result[1];
+////				$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling', $msg, 'error');
+//				$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling', $msg, 'error');
+//				
+//			}
+//		}
+//		else {
+////			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance', JText::_('INVALID_TOKEN'), 'error');
+//			$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance', JText::_('INVALID_TOKEN'), 'error');
+//		}
+//			
+//	}
+//	
+//	/**
+//	* Add a shipping address
+//	*
+//	* @author RolandD
+//	*/
+//	public function addShippingAddress() {
 //		$mainframe = JFactory::getApplication();
-		/* Check for request forgeries */
-		if (JRequest::checkToken()) {
-			/* Load the model object */
-			$model = $this->getModel('accountmaintenance');
-			/* Add model path */
-			JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models');
-			$userfields_model = $this->getModel('userfields');
-			JRequest::setVar('userfields_model', $userfields_model);
-			
-			$msgtype = '';
-			$result = $model->saveShopper();
-			if ($result[0]) {
-				$msg = JText::_('ACCOUNT_SAVED_SUCCESSFULLY');
-//				$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance', $msg);
-				$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance', $msg);
-			}
-			else {
-				$msg = JText::_('ACCOUNT_NOT_SAVED_SUCCESSFULLY').'<br />'.$result[1];
-//				$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling', $msg, 'error');
-				$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling', $msg, 'error');
-				
-			}
-		}
-		else {
-//			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance', JText::_('INVALID_TOKEN'), 'error');
-			$this->redirect('index.php?option=com_virtuemart&view=accountmaintenance', JText::_('INVALID_TOKEN'), 'error');
-		}
-			
-	}
-	
-	/**
-	* Add a shipping address
-	*
-	* @author RolandD
-	*/
-	public function addShippingAddress() {
-		$mainframe = JFactory::getApplication();
-		/* Check for request forgeries */
-		if (JRequest::checkToken()) {
-			$db = JFactory::getDBO();
-			/* Load the model object */
-			$model = $this->getModel('accountmaintenance');
-			/* Add model path */
-			JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models');
-			$userfields_model = $this->getModel('userfields');
-			JRequest::setVar('userfields_model', $userfields_model);
-			
-			$msgtype = '';
-			if ($model->getAddShippingAddress()) {
-				$msg = JText::_('SHIPPING_ADDRESS_SAVED_SUCCESSFULLY');
-				
-			}
-			else {
-				$msg = JText::_('SHIPPING_ADDRESS_NOT_SAVED_SUCCESSFULLY').'<br />'.$db->getErrorMsg();
-				$msgtype = 'error';
-			}
-			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', $msg, $msgtype);
-		}
-		else {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', JText::_('INVALID_TOKEN'), 'error');
-		}
-	}
-	
-	/**
-	* Remove a shipping address
-	*
-	* @author RolandD
-	*/
-	public function removeshippingaddress() {
-		$mainframe = JFactory::getApplication();
-		/* Check for request forgeries */
-		if (JRequest::checkToken()) {
-			$db = JFactory::getDBO();
-			/* Load the model object */
-			$model = $this->getModel('accountmaintenance');
-			$msgtype = '';
-			if ($model->getRemoveShippingAddress()) $msg = JText::_('SHIPPING_ADDRESS_REMOVED_SUCCESSFULLY');
-			else {
-				$msg = JText::_('SHIPPING_ADDRESS_NOT_REMOVED_SUCCESSFULLY').'<br />'.$db->getErrorMsg();
-				$msgtype = 'error';
-			}
-			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', $msg, $msgtype);
-		}
-		else {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', JText::_('INVALID_TOKEN'), 'error');
-		}
-	}
+//		/* Check for request forgeries */
+//		if (JRequest::checkToken()) {
+//			$db = JFactory::getDBO();
+//			/* Load the model object */
+//			$model = $this->getModel('accountmaintenance');
+//			/* Add model path */
+//			JController::addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models');
+//			$userfields_model = $this->getModel('userfields');
+//			JRequest::setVar('userfields_model', $userfields_model);
+//			
+//			$msgtype = '';
+//			if ($model->getAddShippingAddress()) {
+//				$msg = JText::_('SHIPPING_ADDRESS_SAVED_SUCCESSFULLY');
+//				
+//			}
+//			else {
+//				$msg = JText::_('SHIPPING_ADDRESS_NOT_SAVED_SUCCESSFULLY').'<br />'.$db->getErrorMsg();
+//				$msgtype = 'error';
+//			}
+//			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', $msg, $msgtype);
+//		}
+//		else {
+//			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', JText::_('INVALID_TOKEN'), 'error');
+//		}
+//	}
+//	
+//	/**
+//	* Remove a shipping address
+//	*
+//	* @author RolandD
+//	*/
+//	public function removeshippingaddress() {
+//		$mainframe = JFactory::getApplication();
+//		/* Check for request forgeries */
+//		if (JRequest::checkToken()) {
+//			$db = JFactory::getDBO();
+//			/* Load the model object */
+//			$model = $this->getModel('accountmaintenance');
+//			$msgtype = '';
+//			if ($model->getRemoveShippingAddress()) $msg = JText::_('SHIPPING_ADDRESS_REMOVED_SUCCESSFULLY');
+//			else {
+//				$msg = JText::_('SHIPPING_ADDRESS_NOT_REMOVED_SUCCESSFULLY').'<br />'.$db->getErrorMsg();
+//				$msgtype = 'error';
+//			}
+//			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', $msg, $msgtype);
+//		}
+//		else {
+//			$mainframe->redirect('index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping', JText::_('INVALID_TOKEN'), 'error');
+//		}
+//	}
 }
-?>
+// No closing tag

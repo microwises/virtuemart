@@ -150,7 +150,8 @@ class VirtuemartViewUser extends JView {
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					, array() // Default toggles
-					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
+						, 'agreed', 'address_type', 'bank') // Skips
 			);
 			if (($_addressCount = count($userDetails->userInfo)) == 0) {
 				$_userDetailsList = null;
@@ -170,7 +171,17 @@ class VirtuemartViewUser extends JView {
 					 $_userFields
 					,$_userDetailsList
 			);
-			
+
+			// Bank details, reuse the current $_userDetailsList pointer that holds the BT info
+			$_bankFields = $userFieldsModel->getUserFields(
+				 'bank'
+				, array() // Default toggles
+			);
+			$_bankInfo = $userFieldsModel->getUserFieldsByUser(
+				 $_bankFields
+				,$_userDetailsList
+			);
+
 			if(Permissions::getInstance()->check("admin,storeadmin")){
 				$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
 			} else {
@@ -204,7 +215,7 @@ class VirtuemartViewUser extends JView {
 			} else {
 				// Contains 0 for new, otherwise a user_info_id
 				$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
-				$_paneOffset = array('startOffset' => 2);
+				$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
 				$_shiptoFields = $userFieldsModel->getUserFields(
 					 'shipping'
 					, array() // Default toggles
@@ -214,7 +225,7 @@ class VirtuemartViewUser extends JView {
 				} else {
 					// Find the correct record
 					$_userDetailsList = current($userDetails->userInfo);
-					for ($_i = 0; $_i <= count($userDetails->userInfo); $_i++) {
+					for ($_i = 0; $_i < count($userDetails->userInfo); $_i++) {
 						if ($_userDetailsList->user_info_id == $_shipto_id) {
 							reset($userDetails->userInfo);
 							break;
@@ -230,7 +241,6 @@ class VirtuemartViewUser extends JView {
 				$this->assignRef('shipToFields', $shipToFields);
 				$this->assignRef('shipToID', $_shipto_id);
 			}
-
 
 			// Check for existing orders for this user
 //			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
@@ -276,13 +286,14 @@ class VirtuemartViewUser extends JView {
 			}
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-			// In tmpl/edit.php, this is the 3th tab (0-based, so set to 2 above)
+			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
 			jimport('joomla.html.pane');
-			$pane = JPane::getInstance('Tabs', $_paneOffset);
+			$pane = JPane::getInstance('Sliders', $_paneOffset);
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
 			$this->assignRef('shipto', $_shipto);
+			$this->assignRef('bankInfo', $_bankInfo);
 			$this->assignRef('userFields', $userFields);
 			$this->assignRef('userInfoID', $_userInfoID);
 			$this->assignRef('vendor', $vendor);
