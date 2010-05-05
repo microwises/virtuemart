@@ -20,14 +20,14 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 <?php
-$checkLatestVerisonLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=checkForLatestVersion');
-$testVersionLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=testVersion&view=updatesMigration');
-$installSampleLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=installSample&view=updatesMigration');
-$updateVMTables10to11Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables10to11&view=updatesMigration');
-$updateVMTables11to15Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables11to15&view=updatesMigration');
+$checkLatestVerisonLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesmigration&task=checkForLatestVersion');
+$testVersionLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesmigration&task=testVersion&view=updatesmigration');
+$installSampleLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesmigration&task=installSample&view=updatesmigration');
+$updateVMTables10to11Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesmigration&task=updateVMTables10to11&view=updatesmigration');
+$updateVMTables11to15Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesmigration&task=updateVMTables11to15&view=updatesmigration');
 
-$linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteAll');
-$linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
+$linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesmigration&view=updatesmigration&task=deleteAll');
+$linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesmigration&view=updatesmigration&task=deleteRestorable');
 $linkDoNothing =JROUTE::_('index2.php');
 ?>
 <br />

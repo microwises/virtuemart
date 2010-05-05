@@ -86,7 +86,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	$model->installSampleData();
 
 	$msg = JText::_('Sample data installed!!');
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 
 
@@ -100,7 +100,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	$model->integrateJoomlaUsers();
 
 	$msg = JText::_('Users Syncronized!');
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 
 
@@ -114,7 +114,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	$model->restoreSystemDefaults();
 
 	$msg = JText::_('System defaults restored!');
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration', $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 
 
@@ -140,7 +140,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
 	}
 	else {
-	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesMigration');
+	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
 	}
     }
 
@@ -161,5 +161,3 @@ class VirtuemartControllerUpdatesMigration extends JController {
 
 
 }
-
-?>
