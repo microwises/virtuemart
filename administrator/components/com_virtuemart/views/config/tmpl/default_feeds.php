@@ -26,8 +26,9 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">
 		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'), JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">
 		<label for="conf_VM_FEED_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE') ?></label>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_enabled', $this->config->get('feed_enabled')); ?>
@@ -35,8 +36,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_cache', $this->config->get('feed_cache')); ?>
@@ -48,16 +50,19 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP'); ?>"/>
-		<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE') ?></td>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE') ?>
+		</span>
+		</td>
 	    <td>
 		<input type="text" size="40" value="<?php echo $this->config->get('feed_title'); ?>" name="feed_title" id="feed_title" /><br />
 	    </td>
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES') ?>
+		</span>
 	    </td>
 	    <td>
 		<input type="text" size="40" value="<?php echo $this->config->get('feed_title_categories'); ?>" name="feed_title_categories" id="feed_title_categories" /><br />
@@ -65,8 +70,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWIMAGES_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWIMAGES') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_show_images', $this->config->get('feed_show_images')); ?>
@@ -74,8 +80,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWPRICES_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWPRICES_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWPRICES') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_show_prices', $this->config->get('feed_show_prices')); ?>
@@ -83,8 +90,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWDESC_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWDESC_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_SHOWDESC') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_show_description', $this->config->get('feed_show_description')); ?>
@@ -92,8 +100,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_DESCRIPTION_TYPE') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php
@@ -106,8 +115,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_LIMITTEXT') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('feed_limittext', $this->config->get('feed_limittext')); ?>
@@ -115,8 +125,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_FEED_MAX_TEXT_LENGTH') ?>
+		</span>
 	    </td>
 	    <td>
 		<input type="text" size="10" value="<?php echo $this->config->get('feed_max_text_length', '500'); ?>" name="feed_max_text_length" id="feed_max_text_length" />

@@ -57,6 +57,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<input class="inputbox" type="text" name="ordering" id="ordering" size="4" value="<?php echo $this->calc->ordering; ?>" />
 			</td>
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">

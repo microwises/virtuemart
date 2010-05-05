@@ -189,8 +189,7 @@ $payment = $this->order['payment'];
 			    </a>
 			</td>
 			<td><?php echo $item->product_quantity; ?></td>
-			<td><?php echo $item->order_item_name; ?></a>
-			</td>
+			<td><?php echo $item->order_item_name; ?></td>
 			<td><?php echo $item->order_item_sku; ?></td>
 			<td align="center">
 			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&tmpl=component&task=updateOrderItemStatus'); ?>

@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_URLSECURE') ?>
+		</span>
 	    </td>
 	    <td>
 		<input size="40" type="text" name="secureurl" class="inputbox" value="<?php echo JText::_($this->config->get('secureurl')); ?>" />
@@ -34,8 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_DEBUG') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('debug', $this->config->get('debug')); ?>
@@ -43,8 +45,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('debug_ip_enabled', $this->config->get('debug_ip_enabled')); ?>
@@ -52,8 +55,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS') ?>
+		</span>
 	    </td>
 	    <td>
 		<input size="20" type="text" name="debug_ip_address" class="inputbox" value="<?php echo $this->config->get('debug_ip_address'); ?>" />
@@ -61,8 +65,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK') ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>"/>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('enable_cookie_check', $this->config->get('enable_cookie_check')); ?>
@@ -76,8 +81,9 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_REGISTRATION_TYPE_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_REGISTRATION_TYPE_TIP'); ?>">
 		    <?php echo JText::_('VM_CFG_REGISTRATION_TYPE') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php
@@ -92,8 +98,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX_TIP'); ?>">
 		    <?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('show_remember_me_box', $this->config->get('show_remember_me_box')); ?>
@@ -138,8 +145,9 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL') ?>
+		</span>
 	    </td>
 	    <td>
 		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_url')); ?>" />
@@ -147,8 +155,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT') ?>
+		</span>
 	    </td>
 	    <td>
 		<input type="text" name="proxy_port" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_port')); ?>" />
@@ -156,8 +165,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER') ?>
+		</span>
 	    </td>
 	    <td>
 		<input type="text" name="proxy_user" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_user'));
@@ -166,8 +176,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS') ?>
+		</span>
 	    </td>
 	    <td>
 		<input autocomplete="off" type="password" name="proxy_pass" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_pass')); ?>" />
@@ -181,8 +192,9 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
         <tr>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED') ?>
+		</span>
             </td>
             <td>
 		<?php echo VmHTML::checkbox('enable_logfile', $this->config->get('enable_logfile')); ?>
@@ -190,8 +202,9 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME') ?>
+		</span>
             </td>
             <td>
                 <input size="65" type="text" name="logfile_name" class="inputbox" value="<?php echo $this->config->get('logfile_name'); ?>" />
@@ -199,8 +212,9 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php if (!defined('VM_LOGFILE_LEVEL')) define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
@@ -226,8 +240,9 @@ defined('_JEXEC') or die('Restricted access');
 	    }
 	    ?>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT') ?>
+		</span>
             </td>
             <td>
                 <input size="65" type="text" name="logfile_format" class="inputbox" value="<?php echo $this->config->get('logfile_format') ?>" />

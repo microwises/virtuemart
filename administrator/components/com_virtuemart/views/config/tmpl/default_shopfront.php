@@ -36,8 +36,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE') ?>
+			</span>
 			</td>
 			<td>
 			    <input type="text" name="errorpage" class="inputbox" value="<?php echo JText::_($this->config->get('errorpage')); ?>" />
@@ -45,8 +46,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" />
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" >
 			    <?php echo JText::_('VM_ADMIN_CFG_PDF_BUTTON') ?>
+			</span>
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('pdf_button_enable', $this->config->get('pdf_button_enable')); ?>
@@ -54,8 +56,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>" />
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
 			    <label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND') ?></label>
+			    </span>
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('show_emailfriend', $this->config->get('show_emailfriend')); ?>
@@ -63,16 +66,19 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>" />
-			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('VM_ADMIN_SHOW_PRINTICON') ?></label></td>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>" >
+			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('VM_ADMIN_SHOW_PRINTICON') ?></label>
+			    </span>
+			    </td>
 			<td>
 			    <?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 			</td>
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" />
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
 			    <?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
@@ -80,8 +86,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" />
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php echo JHTML::_('Select.genericlist', $orderByFields, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field')); ?>
@@ -89,8 +96,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>" />
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php
@@ -103,16 +111,19 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>"/>
-			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?></td>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?>
+			    </span>
+			    </td>
 			<td>
 			    <?php echo VmHTML::checkbox('show_products_in_category', $this->config->get('show_products_in_category')); ?>
 			</td>
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php
@@ -122,8 +133,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('show_footer', $this->config->get('show_footer')); ?>
@@ -139,8 +151,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_THEME_TIP'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_THEME_TIP'); ?>">
 			    <?php echo JText::_('VM_SELECT_THEME') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php
@@ -150,8 +163,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
+			    </span>
 			</td>
 			<td>
 			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
@@ -159,8 +173,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php
@@ -170,8 +185,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_FLYPAGE') ?>
+			    </span>
 			</td>
 			<td>
 			    <?php
@@ -181,8 +197,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>"/>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
+			    </span>
 				</td>
 				<td>
 					<input type="text" name="media_category_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
@@ -190,8 +207,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>"/>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
+			    </span>
 				</td>
 				<td>
 					<input type="text" name="media_product_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
@@ -202,8 +220,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			?>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
 			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+			    </span>
 			</td>
 			<td>
 				<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
@@ -211,8 +230,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
 				<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
+				</span>
 			</td>
 			<td>
 			    <input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
@@ -220,8 +240,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>"/>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
 				<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
+				</span>
 			</td>
 			<td>
 			    <input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />

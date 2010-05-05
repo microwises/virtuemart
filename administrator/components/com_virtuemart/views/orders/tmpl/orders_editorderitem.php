@@ -21,8 +21,9 @@ $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.au
 	    <td class="key"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></td>
 	    <?php if ($this->orderitem->order_item_id < 1) { ?>
 	    	<td style="vertical-align:top;"><br />
-				<input type="text" size="40" name="search" id="productSearch" value="" />
 				<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
+				<input type="text" size="40" name="search" id="productSearch" value="" />
+				</div>
 			</td>
 		<?php } else {?>
 			<td>

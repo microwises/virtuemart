@@ -102,7 +102,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 			if (!$this->product->attribute) { ?>
 				<table id="attributeX_table_0" cellpadding="0" cellspacing="0"
 					border="0" class="adminform" width="30%">
-					<tbody width="30%">
+					<tbody style="width: 30%;">
 						<tr>
 							<td width="5%"><?php
 							echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ;
@@ -143,7 +143,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 					// display each attribute in the first loop...
 					?>
 					<table id="attributeX_table_<?php echo $i ;?>" cellpadding="0" cellspacing="0" border="0" class="adminform" width="30%">
-						<tbody width="30%">
+						<tbody style="width: 30%">
 							<tr>
 								<td width="5%">
 									<?php echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ; ?>

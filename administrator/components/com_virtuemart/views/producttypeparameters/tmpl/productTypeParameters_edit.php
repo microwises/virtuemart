@@ -23,8 +23,11 @@ AdminMenuHelper::startAdminArea();
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <table class="adminform">
 	<tr> 
-		<td width="25%" nowrap><div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME') ?>
-			<?php echo JHTML::tooltip(JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION'), JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME'), 'tooltip.png', '', '', false); ?>
+		<td width="25%" nowrap>
+			<div align="right">
+				<?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME') ?>
+				<?php echo JHTML::tooltip(JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION'), JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME'), 'tooltip.png', '', '', false); ?>
+			</div>
 		</td>
 		<td width="75%">
 			<input type="text" class="inputbox" name="parameter_name" size="60" value="<?php echo $this->parameter->parameter_name; ?>" />

@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_ENABLE_CHECKOUTBAR') ?>
+		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('show_checkout_bar', $this->config->get('show_checkout_bar')); ?>
@@ -34,8 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_VENDOR_PRO_CART_EXPLAIN'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAX_VENDOR_PRO_CART_EXPLAIN'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_MAX_VENDOR_PRO_CART') ?>
+		</span>
 	    </td>
 	    <td>
 		<input type="text" name="max_vendor_pro_cart" class="inputbox" value=<?php echo $this->config->get('max_vendor_pro_cart'); ?> />
@@ -43,8 +45,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key" valign="top">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CHECKOUT_SHOWSTEP_TIP'); ?>"/>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CHECKOUT_SHOWSTEP_TIP'); ?>">
 		<?php echo JText::_('VM_ADMIN_CFG_CHECKOUT_PROCESS') ?>
+		</span>
 	    </td>
 	    <td valign="top">
 		<?php

@@ -79,7 +79,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 //			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
 			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), $featured->product_name);
 			?>
-				<h4><?php echo $featured->product_name; ?></h4></a>
+				<h4><?php echo $featured->product_name; ?></h4>
 				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['salesPrice']); ?><br />
 				<?php if (!empty($featured->product_price['discountedPrice'])){ ?>
 				 <span class="product-Old-Price">
@@ -126,7 +126,7 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 			<?php
 			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$product->flypage.'&product_id='.$product->product_id), $product->product_name);
 			?>
-				<h4><?php echo $product->product_name; ?></h4></a>
+				<h4><?php echo $product->product_name; ?></h4>
 				<?php echo $product->product_price['salesPrice']; ?><br />
 				<?php
 				if ($product->product_thumb_image) {

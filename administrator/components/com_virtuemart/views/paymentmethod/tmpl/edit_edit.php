@@ -79,7 +79,6 @@ defined('_JEXEC') or die('Restricted access');
       	<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT_TIP') ); ?>
       </td>
     </tr>
-    </tr>
         <tr class="row1"> 
       	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
       	<td width="69%" >

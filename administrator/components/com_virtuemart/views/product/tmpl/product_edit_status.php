@@ -123,8 +123,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0">
 					<td style="vertical-align:top;"><br />
 						<?php echo JText::_('VM_PRODUCT_RELATED_SEARCH'); ?>
-						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 						<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
+						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
+						</div>
 					</td>
 					<td>
 						<input type="button" name="remove_related" onclick="removeSelectedOptions('related_products');" value="&nbsp; &lt; &nbsp;" />

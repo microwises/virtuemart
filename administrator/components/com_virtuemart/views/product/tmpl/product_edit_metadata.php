@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');?>
 	<legend><?php echo JText::_('VM_META_INFORMATION') ?></legend>		
 	<table valign="top">
 		<tr>
-			<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
+			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
 			<td valign="top">
 				<textarea class="inputbox" name="metadesc" id="meta_desc" cols="60" rows="6"><?php echo $this->product->metadesc; ?></textarea>
 			</td>

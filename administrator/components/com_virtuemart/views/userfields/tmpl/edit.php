@@ -150,8 +150,10 @@ AdminMenuHelper::startAdminArea();
 						<input type="button" class="button" onclick="insertRow();" value="<?php echo JText::_('VM_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
-								<th class="title" width="20%"><?php echo JText::_('VM_USERFIELDS_TITLE') ?></th>
-								<th class="title" width="80%"><?php echo JText::_('VM_USERFIELDS_VALUE') ?></th>
+								<tr>
+									<th class="title" width="20%"><?php echo JText::_('VM_USERFIELDS_TITLE') ?></th>
+									<th class="title" width="80%"><?php echo JText::_('VM_USERFIELDS_VALUE') ?></th>
+								</tr>
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
 						</table>

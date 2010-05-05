@@ -55,14 +55,14 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></td>
-		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_ROLE'); ?></td>
-		<th><?php echo JText::_('VM_VIEW'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></td>
-		<th><?php echo JText::_('VM_FILEMANAGER_PUBLISHED'); ?></td>
+		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
+		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_ROLE'); ?></th>
+		<th><?php echo JText::_('VM_VIEW'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></th>
+		<th><?php echo JText::_('VM_FILEMANAGER_PUBLISHED'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -154,6 +154,7 @@ $pagination = $this->pagination;
 		} 
 	}	
 	?>
+	</tbody>
 	<tfoot>
 	<tr>
 	<td colspan="15">
@@ -161,7 +162,6 @@ $pagination = $this->pagination;
 	</td>
 	</tr>
 	</tfoot>
-	</tbody>
 	</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
