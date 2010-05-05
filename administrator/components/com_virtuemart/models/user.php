@@ -67,8 +67,8 @@ class VirtueMartModelUser extends JModel {
 		$this->setState('limitstart', $limitstart);
 
 		// Get the (array of) order status ID(s)
-		if(Permissions::getInstance()->check("admin,storeadmin")){
-			$idArray = JRequest::getVar('cid',  0, '', 'array');
+		$idArray = JRequest::getVar('cid',  0, '', 'array');
+		if(Permissions::getInstance()->check("admin,storeadmin") && ($idArray[0] != 0)){
 			$this->setId((int)$idArray[0]);
 		} else {
 			$user = JFactory::getUser();
