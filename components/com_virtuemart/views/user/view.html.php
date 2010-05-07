@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id:$
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -21,6 +21,10 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
+
+// Set to '0' to use tabs i.s.o. sliders
+// Might be a config option later on, now just here for testing.
+define ('__VM_USER_USE_SLIDERS', 1);
 
 /**
  * HTML View class for maintaining the list of users
@@ -216,7 +220,11 @@ class VirtuemartViewUser extends JView {
 			} else {
 				// Contains 0 for new, otherwise a user_info_id
 				$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
-				$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
+				if (__VM_USER_USE_SLIDERS) {
+					$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
+				} else {
+					$_paneOffset = array('startOffset' => 3);
+				}
 				$_shiptoFields = $userFieldsModel->getUserFields(
 					 'shipping'
 					, array() // Default toggles
@@ -289,7 +297,7 @@ class VirtuemartViewUser extends JView {
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
 			jimport('joomla.html.pane');
-			$pane = JPane::getInstance('Sliders', $_paneOffset);
+			$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
