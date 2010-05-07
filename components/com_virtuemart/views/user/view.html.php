@@ -92,6 +92,7 @@ class VirtuemartViewUser extends JView {
 			// User details
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();
+
 			if (!is_array($_groupList)) {
 				$lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
 			} else {

@@ -79,6 +79,63 @@ function gotocontact(id) {
 				<input class="inputbox" type="password" name="password2" id="password2" size="40" value=""/>
 			</td>
 		</tr>
+
+		<tr>
+			<td valign="top" class="key">
+				<label for="gid">
+					<?php echo JText::_('VM_USER_FORM_GROUP'); ?>
+				</label>
+			</td>
+			<td>
+				<?php echo $this->lists['gid']; ?>
+			</td>
+		</tr>
+
+		<?php if ($this->lists['canBlock']) : ?>
+		<tr>
+			<td class="key">
+				<?php echo JText::_('VM_USER_FORM_BLOCKUSER'); ?>
+			</td>
+			<td>
+				<?php echo $this->lists['block']; ?>
+			</td>
+		</tr>
+		<?php endif; ?>
+
+		<?php if ($this->lists['canSetMailopt']) : ?>
+		<tr>
+			<td class="key">
+				<?php echo JText::_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
+			</td>
+			<td>
+				<?php echo $this->lists['sendEmail']; ?>
+			</td>
+		</tr>
+
+		<?php else : ?>
+			<input type="hidden" name="sendEmail" value="0" />
+		<?php endif; ?>
+
+		<?php if( $this->userDetails->JUser ) : ?>
+		<tr>
+			<td class="key">
+				<?php echo JText::_('VM_USER_FORM_REGISTERDATE'); ?>
+			</td>
+			<td>
+				<?php echo $this->userDetails->JUser->get('registerDate');?>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="key">
+				<?php echo JText::_('VM_USER_FORM_LASTVISITDATE'); ?>
+			</td>
+			<td>
+				<?php echo $this->userDetails->JUser->get('lastvisitDate'); ?>
+			</td>
+		</tr>
+		<?php endif; ?>
+
 	</table>
 </fieldset>
 

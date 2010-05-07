@@ -194,8 +194,9 @@ class VirtueMartModelUser extends JModel {
 		$_my_grp = $_aclObject->get_object_groups ($_my_usr, 'ARO');
 		$_my_grpName = strtolower ($_aclObject->get_group_name($_my_grp[0], 'ARO'));
 
-		if ( $_grpName == $_my_grpName && $_my_grpName == 'administrator' ) {
-			// administrators can't change each other
+		// administrators can't change each other and frontend-only users can only see groupnames
+		if (( $_grpName == $_my_grpName && $_my_grpName == 'administrator' ) ||
+			!$_aclObject->is_group_child_of($_my_grpName, 'Public Backend')) {
 			return $_grpName;
 		} else {
 			$_grpList = $_aclObject->get_group_children_tree(null, 'USERS', false);

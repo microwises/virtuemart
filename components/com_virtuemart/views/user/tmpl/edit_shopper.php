@@ -21,6 +21,56 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
+<fieldset>
+	<legend>
+		<?php echo JText::_('VM_SHOPPER_FORM_LBL') ?>
+	</legend>
+	<table class="adminform">
+		<tr>
+			<td class="key">
+				<label for="vendor_id">
+					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->lists['vendors']; ?>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="key">
+				<label for="perms">
+					<?php echo JText::_('VM_USER_FORM_PERMS') ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->lists['perms']; ?>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="key">
+				<label for="customer_number">
+					<?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:
+				</label>
+			</td>
+			<td>
+				<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo  $this->lists['custnumber']; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="shopper_group_id">
+					<?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->lists['shoppergroups']; ?>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+
 <?php if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
