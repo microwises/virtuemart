@@ -50,35 +50,35 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
 	}
 }
 
-//if (VmConfig::get('show_prices') == '1') {
-	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
-	if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
-		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
-		if( class_exists( $module_filename )) {
-// FIXME Never use setVar here at global lever! When forms are submitted; data gets added we might not wanna have,
-// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
-//			JRequest::setVar('currency',  new $module_filename());
-		}
-	}
-	else {
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
-// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
-//		JRequest::setVar('currency',  new convertECB());
-//	}	
-}
-
-//if (VmConfig::get('show_prices') == '1') {
-$mainvendor = 1;
-$db = Vendor::getVendorFields($mainvendor,array('vendor_currency_display_style'));
-if(!empty($db)){
-	$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
-	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
-// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
-//	JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
-}
+////if (VmConfig::get('show_prices') == '1') {
+//	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+//	if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+//		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
+//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
+//		if( class_exists( $module_filename )) {
+//// FIXME Never use setVar here at global lever! When forms are submitted; data gets added we might not wanna have,
+//// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+////			JRequest::setVar('currency',  new $module_filename());
+//		}
+//	}
+//	else {
+//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+//// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
+//// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+////		JRequest::setVar('currency',  new convertECB());
+////	}	
+//}
+//
+////if (VmConfig::get('show_prices') == '1') {
+//$mainvendor = 1;
+//$db = Vendor::getVendorFields($mainvendor,array('vendor_currency_display_style'));
+//if(!empty($db)){
+//	$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
+//	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+//// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
+//// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+////	JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
+//}
 
 // see /classes/currency_convert.php
 //Vendor::vmSetGlobalCurrency( $db->vendor_accepted_currencies,$vendorCurrency); //@todo,... maybe necessary to take a look at this

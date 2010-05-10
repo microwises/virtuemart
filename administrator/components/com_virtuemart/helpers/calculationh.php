@@ -43,13 +43,14 @@ class calculationHelper{
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 */
-	function __construct(){
+	function __construct()
+	{
 		$this->_db = &JFactory::getDBO();
 		$jnow		=& JFactory::getDate();
 		$this -> _now			  = $jnow->toMySQL();
 		$this -> _nullDate		  = $this->_db->getNullDate();
-		$this -> _currency 		  = JRequest::getVar('currency');
-		$this -> _currencyDisplay = JRequest::getVar('currencyDisplay');
+		$this -> _currency 		  = $this->_getCurrencyObject();
+		$this -> _currencyDisplay = $this->_getCurrencyDisplayObject();
 		$this -> _debug           = false;
 	}
 	
@@ -59,9 +60,9 @@ class calculationHelper{
 		}else {
 			
 		}
- 		return self::$_instance;
-    }
-    
+		return self::$_instance;
+	}
+
 	/** function to start the calculation, here it is for the product
 	 * 
 	 * The function first gathers the information of the product (maybe better done with using the model)
@@ -187,7 +188,48 @@ class calculationHelper{
 
 		return $prices;
 	}
-	
+
+	/**
+	 * Load the currency object
+	 * @access private
+	 * @author Oscar van Eijk
+	 * @return object
+	 * 
+	 */
+	private function _getCurrencyObject()
+	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+			$module_filename = VM_CURRENCY_CONVERTER_MODULE;
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
+			if( class_exists( $module_filename )) {
+				$_currency = new $module_filename();
+			}
+		} else {
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			$_currency = new convertECB();
+		}
+		return $_currency;
+	}
+
+	/**
+	 * Load the currency display object
+	 * @access private
+	 * @author Oscar van Eijk
+	 * @return object
+	 */
+	private function _getCurrencyDisplayObject()
+	{
+		$_mainVendor = 1;
+		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
+		if(!empty($_vendorFields)){
+			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
+		}
+		return $_currencyDisplay;
+	}
+
 	/** function to start the calculation, here it is for the invoice in the checkout
 	 * This function is partly implemented !
 	 * 
@@ -633,7 +675,8 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 			return $price;
 		}
 		if(empty($this ->_currency)){
-			$this -> _currency 		= JRequest::getVar('currency');
+			// @TODO Why is this check here?
+			$this -> _currency = $this->_getCurrencyObject();
 		}
 //		if(!strcmp($this->vendorCurrency, $currency)){
 			$price = $this ->_currency->convert( $price, $currency,$this->vendorCurrency);
