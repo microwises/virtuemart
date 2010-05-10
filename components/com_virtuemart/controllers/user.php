@@ -30,7 +30,13 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerUser extends JController
 {
     
-	public function __construct() {
+//	public function __construct()
+	function display()
+	{
+		self::edit();
+	}
+	function edit()
+	{
 		parent::__construct();
 		$view = $this->getView('user', 'html');
 		
@@ -49,15 +55,65 @@ class VirtueMartControllerUser extends JController
 		$view->display();
 	}
 
-	function edit()
-	{
+//	function edit()
+//	{
 		// Placeholder
+//	}
+
+//	public function User()
+//	{
+		// Placehoder
+//	}
+
+	function save()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$user	 =& JFactory::getUser();
+		$userid = JRequest::getVar( 'my_user_id', 0, 'post', 'int' );
+		// preform security checks
+		if ($user->get('id') == 0 || $userid == 0 ||
+				($userid <> $user->get('id') && Permissions::getInstance()->check("admin,storeadmin"))) {
+			JError::raiseError( 403, JText::_('Access Forbidden') );
+			return;
+		}
+
+		// get the redirect
+		$return = JURI::base();
+
+		// store data
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$model = $this->getModel('user');
+
+		// The view is loaded just for the setModel() method. Anyone a better suggestion?
+		$view = $this->getView('user', 'html');
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
+		
+		//		$this->getModel( 'userfields', '' );
+//		$this->getModel( 'store', 'VirtuemartModel' );
+//		$this->getModel( 'currency', 'VirtuemartModel' );
+//		$this->getModel( 'orders', 'VirtuemartModel' );
+
+		if ($model->store()) {
+			$msg	= JText::_( 'Your settings have been saved.' );
+		} else {
+			//$msg	= JText::_( 'Error saving your settings.' );
+			$msg	= $model->getError();
+		}
+		$this->setRedirect( $return, $msg );
 	}
 
-	public function User()
+	function cancel()
 	{
-		// Placehoder
+		$this->setRedirect(JURI::base());
 	}
+
+	
+	
+	
 	
 //	/**
 //	* Modify the billing address in front-end

@@ -200,8 +200,8 @@ class VirtuemartViewUser extends JView {
 			// Check for existing orders for this user
 			$orders = new VirtueMartModelOrders();
 			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+			$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
 			if (count($orderList) > 0) {
-				$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
 				if (!empty($_vendorData)) {
 					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
 						, $_vendorData->vendor_currency_display_style);

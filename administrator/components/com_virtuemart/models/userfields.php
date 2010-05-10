@@ -508,7 +508,7 @@ class VirtueMartModelUserfields extends JModel {
 					 'name' => $_prefix . $_fld->name
 					,'value' => (($_userData == null)
 						? $_fld->default
-						: $_userData->{$_fld->name})
+						: @$_userData->{$_fld->name})
 					,'title' => self::_userFieldFormat(
 							 ($_fld->name == 'agreed')?'agreed':'title'
 							,$_fld->title

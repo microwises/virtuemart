@@ -19,17 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<script language="javascript" type="text/javascript">
-function gotocontact(id) {
-	var form = document.adminForm;
-	form.target = "_parent";
-	form.contact_id.value = id;
-	form.option.value = 'com_users';
-	submitform('contact');
-}
-</script>
-
-
 <fieldset class="adminform">
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_LEGEND_USERDETAILS'); ?>
@@ -44,6 +33,25 @@ function gotocontact(id) {
 			</td>
 			<td>
 				<input type="text" name="name" id="name" class="inputbox" size="40" value="<?php echo $this->userDetails->JUser->get('name'); ?>" />
+			</td>
+		</tr>
+
+		<tr>
+			<td class="key">
+				<label for="username">
+					<?php echo JText::_('VM_USER_FORM_USERNAME'); ?>
+				</label>
+			</td>
+			<td>
+				<?php
+					// Only admins can change other users, and only admins can change usernames
+					if ( $this->lists['current_id'] == $this->userDetails->JUser->get('id')) :
+				?>
+					<input type="hidden" name="username" id="username" value="<?php echo $this->userDetails->JUser->get('username'); ?>" />
+					<?php echo $this->userDetails->JUser->get('username');?>
+				<?php  else : ?>
+					<input type="text" name="username" id="username" class="inputbox" size="40" value="<?php echo $this->userDetails->JUser->get('username'); ?>" autocomplete="off" />
+				<?php endif; ?>
 			</td>
 		</tr>
 
@@ -156,7 +164,5 @@ function gotocontact(id) {
 	</table>
 </fieldset>
 
+<input type="hidden" name="my_user_id" value="<?php echo $this->lists['current_id']; ?>" />
 <input type="hidden" name="user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
-<input type="hidden" name="cid[]" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
-<input type="hidden" name="contact_id" value="" />
-

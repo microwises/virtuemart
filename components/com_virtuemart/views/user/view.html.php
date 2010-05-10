@@ -24,7 +24,7 @@ jimport( 'joomla.application.component.view');
 
 // Set to '0' to use tabs i.s.o. sliders
 // Might be a config option later on, now just here for testing.
-define ('__VM_USER_USE_SLIDERS', 1);
+define ('__VM_USER_USE_SLIDERS', 0);
 
 /**
  * HTML View class for maintaining the list of users
@@ -40,304 +40,242 @@ class VirtuemartViewUser extends JView {
 		//todo this must be removed somehow by Max Milbers
 		global $option;
 
-		// Load the helper(s)
-//		$this->loadHelper('adminMenu');
-		
-//		$layoutName = JRequest::getVar('layout', 'default');
-		$layoutName = 'edit';
-		
 		$model = $this->getModel('user');
-
+		$editor = JFactory::getEditor();
+		$_currentUser =& JFactory::getUser();
+		$lists['current_id'] = $_currentUser->get('id');
 		
-		if ($layoutName == 'edit') {
-			$editor = JFactory::getEditor();
+		// Get the required helpers
+		$this->loadHelper('permissions');
+		$this->loadHelper('shoppergroup');
+		$this->loadHelper('shopfunctions');
+		$this->loadHelper('vendorhelper');
+		$this->loadHelper('currencydisplay');
+		$this->loadHelper('image');
 
-			$_currentUser =& JFactory::getUser();
+		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+		$orderModel = $this->getModel('orders');
+		$vendor = new Vendor;
+		$userDetails = $model->getUser();
+//		echo 'The userDetails model looks like? <br />';
+//		echo '<pre>'.print_r($userDetails).'</pre>';die;
+		$_new = ($userDetails->JUser->get('id') < 1);
 
-			// Get the required helpers
-			$this->loadHelper('permissions');
-			$this->loadHelper('shoppergroup');
-			$this->loadHelper('shopfunctions');
-			$this->loadHelper('vendorhelper');
-			$this->loadHelper('currencydisplay');
-			$this->loadHelper('image');
-			
-			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-			$orderModel = $this->getModel('orders');
-			$vendor = new Vendor;
-			
-			$userDetails = $model->getUser();
-//			echo 'The userDetails model looks like? <br />';
-//			echo '<pre>'.print_r($userDetails).'</pre>';die;
-			$_new = ($userDetails->JUser->get('id') < 1);
-			
-			//This must be solved different in frontend
-//			if ($layoutName == 'edit'){
-				// In order for the Form validator to work, we're creating our own buttons here.
-//				$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
-//					. '<span title="' . JText::_('Save' ) . '" class="icon-32-save"></span>' . JText::_('Save' ) . '</a>';
-//				$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
-//					. '<span title="' . JText::_('Apply' ) . '" class="icon-32-apply"></span>' . JText::_('Apply' ) . '</a>';
-////				$_toolBar =& JToolBar::getInstance('toolbar');
-//				if ($_new) { // Insert new user
-//					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
-//					JToolBarHelper::divider();
-//					$_toolBar->appendButton('Custom', $_saveButton);
-//					$_toolBar->appendButton('Custom', $_applyButton);
-//					JToolBarHelper::cancel();
-//				} else { // Update existing user
-//					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
-//					JToolBarHelper::divider();
-//					$_toolBar->appendButton('Custom', $_saveButton);
-//					$_toolBar->appendButton('Custom', $_applyButton);
-//					JToolBarHelper::cancel('cancel', 'Close');
-//				}
-//			}
-			// User details
-			$_contactDetails = $model->getContactDetails();
-			$_groupList = $model->getGroupList();
+		// User details
+		$_contactDetails = $model->getContactDetails();
+		$_groupList = $model->getGroupList();
 
-			if (!is_array($_groupList)) {
-				$lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
-			} else {
-				$lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
+		if (!is_array($_groupList)) {
+			$lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
+		} else {
+			$lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
+		}
+
+		$lists['canBlock']      = ($_currentUser->authorize('com_users', 'block user')
+						&& ($userDetails->JUser->get('id') != $_currentUser->get('id'))); // Can't block myself
+		$lists['canSetMailopt'] = $_currentUser->authorize('workflow', 'email_events');
+		$lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+		$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+
+		$lists['params'] = $userDetails->JUser->getParameters(true);
+
+		// Shopper info
+		$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
+		if(Permissions::getInstance()->check("admin,storeadmin")){		
+			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);		
+		} else {
+			$lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
+			if(empty($lists['shoppergroups'])){
+				$lists['shoppergroups']='unregistered';
 			}
+			$lists['vendors'] = $userDetails->vendor_id->vendor_id;
+			if(empty($lists['vendors'])){
+				$lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');
+			}
+		}
+//		$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
+//		$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+		
+//		$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
+		$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
-			$lists['canBlock']      = ($_currentUser->authorize('com_users', 'block user')
-							&& ($userDetails->JUser->get('id') != $_currentUser->get('id'))); // Can't block myself
-			$lists['canSetMailopt'] = $_currentUser->authorize('workflow', 'email_events');
-			$lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+		// Shipping address(es)
+		$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
+		if (($_c = count($_addressList)) == 0) {
+			$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
+		} else {
+			$_shipTo = array();
+			for ($_i = 0; $_i < $_c; $_i++) {
+				$_shipTo[] = '<li>'.'<a href="index.php'
+									.'?option=com_virtuemart'
+									.'&view=user'
+									.'&task=edit'
+									.'&cid[]='.$_addressList[$_i]->user_id
+									.'&shipto='.$_addressList[$_i]->user_info_id
+								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
+			
+			}
+			$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
+		}
 
-			$lists['params'] = $userDetails->JUser->getParameters(true);
-
-			// Shopper info
-			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
-			if(Permissions::getInstance()->check("admin,storeadmin")){		
-				$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-				$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);		
-			} else {
-				$lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
-				if(empty($lists['shoppergroups'])){
-					$lists['shoppergroups']='unregistered';
-				}			
-				$lists['vendors'] = $userDetails->vendor_id;
-				if(empty($lists['vendors'])){
-					$lists['vendors']='you are not a vendor';
+		$_userFields = $userFieldsModel->getUserFields(
+				 'account'
+				, array() // Default toggles
+				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
+					, 'agreed', 'address_type', 'bank') // Skips
+		);
+		if (($_addressCount = count($userDetails->userInfo)) == 0) {
+			$_userDetailsList = null;
+			$_userInfoID = null;
+		} else {
+			$_userDetailsList = current($userDetails->userInfo);
+			for ($_i = 0; $_i < $_addressCount; $_i++) {
+				if ($_userDetailsList->address_type == 'BT') {
+					$_userInfoID = $_userDetailsList->user_info_id;
+					reset($userDetails->userInfo);
+					break;
 				}
+				$_userDetailsList = next($userDetails->userInfo);
 			}
-			
-//			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
-//			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			
-//			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
-			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
+		}
+		$userFields = $userFieldsModel->getUserFieldsByUser(
+				 $_userFields
+				,$_userDetailsList
+		);
 
-			// Shipping address(es)
-			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
-			if (($_c = count($_addressList)) == 0) {
-				$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
+		// Bank details, reuse the current $_userDetailsList pointer that holds the BT info
+		$_bankFields = $userFieldsModel->getUserFields(
+			 'bank'
+			, array() // Default toggles
+		);
+		$_bankInfo = $userFieldsModel->getUserFieldsByUser(
+			 $_bankFields
+			,$_userDetailsList
+		);
+
+		if(Permissions::getInstance()->check("admin,storeadmin")){
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
+		} else {
+			if(!empty($_userDetailsList->perms)){
+				$lists['perms'] = $_userDetailsList->perms;
+			}
+			if(empty($lists['perms'])){
+				$lists['perms']='unregistered';
+			}
+		}
+
+		// Load the required scripts
+		if (count($userFields['scripts']) > 0) {
+			foreach ($userFields['scripts'] as $_script => $_path) {
+				JHTML::script($_script, $_path);
+			}
+		}
+		// Load the required styresheets
+		if (count($userFields['links']) > 0) {
+			foreach ($userFields['links'] as $_link => $_path) {
+				JHTML::stylesheet($_link, $_path);
+			}
+		}
+
+		// The ShipTo address if selected
+		$_shipto_id = JRequest::getVar('shipto', -1);
+		if ($_shipto_id == -1) {
+			$_shipto = 0;
+			$_paneOffset = array();
+		} else {
+			// Contains 0 for new, otherwise a user_info_id
+			$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
+			if (__VM_USER_USE_SLIDERS) {
+				$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
 			} else {
-				$_shipTo = array();
-				for ($_i = 0; $_i < $_c; $_i++) {
-					$_shipTo[] = '<li>'.'<a href="index.php'
-										.'?option=com_virtuemart'
-										.'&view=user'
-										.'&task=edit'
-										.'&cid[]='.$_addressList[$_i]->user_id
-										.'&shipto='.$_addressList[$_i]->user_info_id
-									. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
-				
-				}
-				$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
+				$_paneOffset = array('startOffset' => 3);
 			}
-
-			$_userFields = $userFieldsModel->getUserFields(
-					 'account'
-					, array() // Default toggles
-					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank') // Skips
+			$_shiptoFields = $userFieldsModel->getUserFields(
+				 'shipping'
+				, array() // Default toggles
 			);
-			if (($_addressCount = count($userDetails->userInfo)) == 0) {
+			if ($_shipto_id === 0) {
 				$_userDetailsList = null;
-				$_userInfoID = null;
 			} else {
+				// Find the correct record
 				$_userDetailsList = current($userDetails->userInfo);
-				for ($_i = 0; $_i < $_addressCount; $_i++) {
-					if ($_userDetailsList->address_type == 'BT') {
-						$_userInfoID = $_userDetailsList->user_info_id;
+				for ($_i = 0; $_i < count($userDetails->userInfo); $_i++) {
+					if ($_userDetailsList->user_info_id == $_shipto_id) {
 						reset($userDetails->userInfo);
 						break;
 					}
 					$_userDetailsList = next($userDetails->userInfo);
 				}
 			}
-			$userFields = $userFieldsModel->getUserFieldsByUser(
-					 $_userFields
-					,$_userDetailsList
-			);
-
-			// Bank details, reuse the current $_userDetailsList pointer that holds the BT info
-			$_bankFields = $userFieldsModel->getUserFields(
-				 'bank'
-				, array() // Default toggles
-			);
-			$_bankInfo = $userFieldsModel->getUserFieldsByUser(
-				 $_bankFields
+			$shipToFields = $userFieldsModel->getUserFieldsByUser(
+				 $_shiptoFields
 				,$_userDetailsList
+				,'shipto_'
 			);
+			$this->assignRef('shipToFields', $shipToFields);
+			$this->assignRef('shipToID', $_shipto_id);
+		}
 
-			if(Permissions::getInstance()->check("admin,storeadmin")){
-				$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
-			} else {
-				if(!empty($_userDetailsList->perms)){
-					$lists['perms'] = $_userDetailsList->perms;
-				}
-				if(empty($lists['perms'])){
-					$lists['perms']='unregistered';
-				}
-			}
-
-			
-			// Load the required scripts
-			if (count($userFields['scripts']) > 0) {
-				foreach ($userFields['scripts'] as $_script => $_path) {
-					JHTML::script($_script, $_path);
-				}
-			}
-			// Load the required styresheets
-			if (count($userFields['links']) > 0) {
-				foreach ($userFields['links'] as $_link => $_path) {
-					JHTML::stylesheet($_link, $_path);
-				}
-			}
-
-			// The ShipTo address if selected
-			$_shipto_id = JRequest::getVar('shipto', -1);
-			if ($_shipto_id == -1) {
-				$_shipto = 0;
-				$_paneOffset = array();
-			} else {
-				// Contains 0 for new, otherwise a user_info_id
-				$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
-				if (__VM_USER_USE_SLIDERS) {
-					$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
-				} else {
-					$_paneOffset = array('startOffset' => 3);
-				}
-				$_shiptoFields = $userFieldsModel->getUserFields(
-					 'shipping'
-					, array() // Default toggles
-				);
-				if ($_shipto_id === 0) {
-					$_userDetailsList = null;
-				} else {
-					// Find the correct record
-					$_userDetailsList = current($userDetails->userInfo);
-					for ($_i = 0; $_i < count($userDetails->userInfo); $_i++) {
-						if ($_userDetailsList->user_info_id == $_shipto_id) {
-							reset($userDetails->userInfo);
-							break;
-						}
-						$_userDetailsList = next($userDetails->userInfo);
-					}
-				}
-				$shipToFields = $userFieldsModel->getUserFieldsByUser(
-					 $_shiptoFields
-					,$_userDetailsList
-					,'shipto_'
-				);
-				$this->assignRef('shipToFields', $shipToFields);
-				$this->assignRef('shipToID', $_shipto_id);
-			}
-
-			// Check for existing orders for this user
-//			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
-//			$userFieldsModel = new VirtueMartModelUserfields;
-			$orders = $this->getModel('orders');
-//			$orders = new VirtueMartModelOrders();
-			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
-			if (count($orderList) > 0) {
-				$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
-				if (!empty($_vendorData)) {
-					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
-						, $_vendorData->vendor_currency_display_style);
-					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-						, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-						, $_currencyDisplayStyle['negative']
-					);
-				} else {
-					$currency = new CurrencyDisplay();
-				}
-				$this->assignRef('currency', $currency);
-			}
-
-			// If the current user is a vendor, load the store data
-			if ($vendor->isVendor($userDetails->JUser->get('id'))) {
-				$storeModel = $this->getModel('store');
-				$storeModel->setId($vendor->getVendorIdByUserId($userDetails->JUser->get('id')));
-				$_store = $storeModel->getStore();
-				$this->assignRef('store', $_store);
-				$currencyModel = $this->getModel('currency');
-				$_currencies = $currencyModel->getCurrencies();
-				$this->assignRef('currencies', $_currencies);
-				$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
-				$this->assignRef('vendorCategories', $_vendorCats);
-				$_currencyDisplayStyle = Vendor::get_currency_display_style($vendor->getVendorIdByUserId($userDetails->JUser->get('id'))
+		// Check for existing orders for this user
+//		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
+//		$userFieldsModel = new VirtueMartModelUserfields;
+		$orders = $this->getModel('orders');
+//		$orders = new VirtueMartModelOrders();
+		$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+		$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
+		if (count($orderList) > 0) {
+			if (!empty($_vendorData)) {
+				$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
 					, $_vendorData->vendor_currency_display_style);
-				$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+				$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
 					, $_currencyDisplayStyle['negative']
 				);
-			$this->assignRef('vendorCurrency', $_vendorCurrency);
+			} else {
+				$currency = new CurrencyDisplay();
 			}
-
-			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
-			jimport('joomla.html.pane');
-			$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
-
-			$this->assignRef('lists', $lists);
-			$this->assignRef('userDetails', $userDetails);
-			$this->assignRef('shipto', $_shipto);
-			$this->assignRef('bankInfo', $_bankInfo);
-			$this->assignRef('userFields', $userFields);
-			$this->assignRef('userInfoID', $_userInfoID);
-			$this->assignRef('vendor', $vendor);
-			$this->assignRef('orderlist', $orderList);
-			$this->assignRef('contactDetails', $_contactDetails);
-			$this->assignRef('editor', $editor);
-			$this->assignRef('pane', $pane);
-		} else {
-//			JToolBarHelper::title( JText::_('VM_USER_LIST_LBL'), 'vm_user_48.png');
-//			JToolBarHelper::addNewX();
-//			JToolBarHelper::editListX();
-//			JToolBarHelper::divider();
-//			JToolBarHelper::custom('enable_vendor', 'publish','','VM_USER_ISVENDOR');
-//			JToolBarHelper::custom('disable_vendor', 'unpublish','','VM_USER_ISNOTVENDOR');
-//			JToolBarHelper::divider();
-//			JToolBarHelper::deleteList('', 'remove', 'Delete');
-
-			$userList = $model->getUserList();
-			$this->assignRef('userList', $userList);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
-
-			// search filter
-			$mainframe = JFactory::getApplication('site');
-			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
-			$search = JString::strtolower( $search );
-			$lists['search']= $search;
-
-			// Get the ordering
-			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
-			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-			$this->assignRef('lists', $lists);
+			$this->assignRef('currency', $currency);
 		}
 
+		// If the current user is a vendor, load the store data
+		if ($vendor->isVendor($userDetails->JUser->get('id'))) {
+			$storeModel = $this->getModel('store');
+			$storeModel->setId($vendor->getVendorIdByUserId($userDetails->JUser->get('id')));
+			$_store = $storeModel->getStore();
+			$this->assignRef('store', $_store);
+			$currencyModel = $this->getModel('currency');
+			$_currencies = $currencyModel->getCurrencies();
+			$this->assignRef('currencies', $_currencies);
+			$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
+			$this->assignRef('vendorCategories', $_vendorCats);
+			$_currencyDisplayStyle = Vendor::get_currency_display_style($vendor->getVendorIdByUserId($userDetails->JUser->get('id'))
+				, $_vendorData->vendor_currency_display_style);
+			$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+				, $_currencyDisplayStyle['negative']
+			);
+		$this->assignRef('vendorCurrency', $_vendorCurrency);
+		}
+
+		// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
+		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
+		jimport('joomla.html.pane');
+		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
+
+		$this->assignRef('lists', $lists);
+		$this->assignRef('userDetails', $userDetails);
+		$this->assignRef('shipto', $_shipto);
+		$this->assignRef('bankInfo', $_bankInfo);
+		$this->assignRef('userFields', $userFields);
+		$this->assignRef('userInfoID', $_userInfoID);
+		$this->assignRef('vendor', $vendor);
+		$this->assignRef('orderlist', $orderList);
+		$this->assignRef('contactDetails', $_contactDetails);
+		$this->assignRef('editor', $editor);
+		$this->assignRef('pane', $pane);
 		parent::display($tpl);
 	}
 

@@ -39,11 +39,12 @@ label.invalid {
 <script language="javascript">
 function myValidator(f, t)
 {
+	f.task.value=t;
 	if (f.task.value=='cancel') {
+		f.submit();
 		return true;
 	}
 	if (document.formvalidator.isValid(f)) {
-		f.task.value=t;
 		f.submit();
 		return true;
 	} else {
@@ -53,8 +54,12 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-
-<form method="post" id="adminForm" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
+<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
+<div style="text-align: right; width: 100%;">
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
+	&nbsp;
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
+</div>
 <?php
 	echo $this->pane->startPane("user-pane");
 
@@ -94,9 +99,8 @@ function myValidator(f, t)
 	echo $this->pane->endPane();
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="controller" value="user" />
+<input type="hidden" name="task" value="" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php //AdminMenuHelper::endAdminArea(); ?>

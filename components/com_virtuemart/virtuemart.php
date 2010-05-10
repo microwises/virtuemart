@@ -17,11 +17,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 /* Going for a new look :) */
 
-/* Add VirtueMart to the breadcrumb */
-$pathway = $mainframe->getPathway();
-/** @todo Fix this to take the name of the menu entry */
-$pathway->addItem(JText::_('MY_SHOP'), JURI::root().'index.php?option=com_virtuemart');
-
 /* Require the base controller */
 require_once(JPATH_COMPONENT.DS.'controller.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -49,7 +44,10 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsi
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
-   require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+	if (file_exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php')) {
+		// Only if the file exists, since it might be a Joomla view we're requesting...
+		require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+	}
 }
 
 //if (VmConfig::get('show_prices') == '1') {
@@ -58,14 +56,18 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
 		$module_filename = VM_CURRENCY_CONVERTER_MODULE;
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
 		if( class_exists( $module_filename )) {
-			JRequest::setVar('currency',  new $module_filename());
+// FIXME Never use setVar here at global lever! When forms are submitted; data gets added we might not wanna have,
+// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+//			JRequest::setVar('currency',  new $module_filename());
 		}
 	}
 	else {
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-		JRequest::setVar('currency',  new convertECB());
-	}	
-//}
+// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
+// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+//		JRequest::setVar('currency',  new convertECB());
+//	}	
+}
 
 //if (VmConfig::get('show_prices') == '1') {
 $mainvendor = 1;
@@ -73,7 +75,9 @@ $db = Vendor::getVendorFields($mainvendor,array('vendor_currency_display_style')
 if(!empty($db)){
 	$currency_display = Vendor::get_currency_display_style(1,$db->vendor_currency_display_style);
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-	JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
+// FIXME Never use setVar here at global level! When forms are submitted; data gets added we might not wanna have,
+// or worse; overwritten. Please make this conditional or better, use where it's needed!!!
+//	JRequest::setVar('currencyDisplay', new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']));
 }
 
 // see /classes/currency_convert.php

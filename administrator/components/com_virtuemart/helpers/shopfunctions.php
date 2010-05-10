@@ -326,6 +326,7 @@ class ShopFunctions {
 
 	/**
 	* This function allows you to get an object list of user fields
+	* NOTE: FUNCTION IS OBSOLETE! USE THE USERFIELDS MODEL INSTEAD
 	*
 	* @param string $section The section the fields belong to (e.g. 'registration' or 'account')
 	* @param boolean $required_only
@@ -333,6 +334,8 @@ class ShopFunctions {
 	* @return array
 	*/
 	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
+		// One below added by Oscar to find out how if calls to this function still exist.
+		die ("Invalid call to shopFunctions::getUserFields(); use the userfields model instead");
 		$db = JFactory::getDBO();
 		$fields = array();
 		$skipfields = self::getSkipFields();
@@ -402,6 +405,8 @@ class ShopFunctions {
 	/**
 	* Gets the user details, it joins 
 	* #__users ju, #__{vm}_user_info u, #__{vm}_country c and #__{vm}_state s
+	* NOTE: FUNCTION IS OBSOLETE! USE THE USERFIELDS MODEL INSTEAD
+	*
 	* @author Max Milbers
 	* @author RolandD
 	* @param int $user_id user_id of the user same ID for joomla and VM
@@ -410,6 +415,8 @@ class ShopFunctions {
 	* @param String $and this is for an additional AND condition
 	*/
 	public function getUserDetails($user_id=0, $fields=array(), $orderby='', $filter='') {
+		// One below added by Oscar to find out how if calls to this function still exist.
+		die ("Invalid call to shopFunctions::getUserDetails(); use the userfields model instead");
 		$db = JFactory::getDBO();
 
 		/* Set the selectors */		
