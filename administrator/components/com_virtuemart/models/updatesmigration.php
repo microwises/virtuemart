@@ -192,7 +192,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields = array();
 
 	$fields['user_id'] =  $userId;
-//	$fields['address_type'] =  "BT";
+	$fields['address_type'] =  "BT";
 	$fields['company'] =  "Washupito's the User";
 	$fields['title'] =  "Sire";
 	$fields['last_name'] =  "upito";
