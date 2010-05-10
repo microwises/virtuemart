@@ -80,7 +80,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), $featured->product_name);
 			?>
 				<h4><?php echo $featured->product_name; ?></h4>
-				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['salesPrice']); ?><br />
+				<?php echo $this->currencyDisplay->getFullValue($featured->product_price['salesPrice']); ?><br />
 				<?php if (!empty($featured->product_price['discountedPrice'])){ ?>
 				 <span class="product-Old-Price">
 				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['basePriceWithTax']); ?></span>

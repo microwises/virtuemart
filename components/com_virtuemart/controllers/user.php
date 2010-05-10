@@ -33,11 +33,33 @@ class VirtueMartControllerUser extends JController
 //	public function __construct()
 	function display()
 	{
-		self::edit();
-	}
-	function edit()
-	{
 		parent::__construct();
+		
+		
+//		self::edit();
+	}
+	
+	function editaddress(){
+		
+		$view = $this->getView('user', 'html');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setLayout('edit_address');
+
+		/* Display it all */
+		$view->display();
+		
+	}
+
+//	function edit()
+//	{
+		// Placeholder
+//	}
+
+	public function User(){
+		
 		$view = $this->getView('user', 'html');
 		
 		/* Add the default model */
@@ -54,16 +76,6 @@ class VirtueMartControllerUser extends JController
 		/* Display it all */
 		$view->display();
 	}
-
-//	function edit()
-//	{
-		// Placeholder
-//	}
-
-//	public function User()
-//	{
-		// Placehoder
-//	}
 
 	function save()
 	{

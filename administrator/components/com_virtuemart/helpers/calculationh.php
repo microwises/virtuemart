@@ -50,7 +50,7 @@ class calculationHelper{
 		$this -> _now			  = $jnow->toMySQL();
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
-		$this -> _currencyDisplay = $this->_getCurrencyDisplayObject();
+		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
 		$this -> _debug           = false;
 	}
 	
@@ -218,7 +218,7 @@ class calculationHelper{
 	 * @author Oscar van Eijk
 	 * @return object
 	 */
-	private function _getCurrencyDisplayObject()
+	public function getCurrencyDisplayObject()
 	{
 		$_mainVendor = 1;
 		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));

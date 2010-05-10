@@ -44,6 +44,9 @@ class VirtueMartViewVirtueMart extends JView {
 	    * $this->assignRef('vendor',	$vendor);
 	    */
 	    
+	    
+	    $this->assignRef('currencyDisplay',calculationHelper::getCurrencyDisplayObject());
+	    
 	    $categoryId = JRequest::getInt('catid', 0);
         $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
         $this->assignRef('categories',	$categoryChildren);

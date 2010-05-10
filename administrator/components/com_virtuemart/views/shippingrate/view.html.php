@@ -71,6 +71,7 @@ class VirtuemartViewShippingRate extends JView {
 
 			$taxratemodel = $this->getModel('taxrate');
         	$taxrates = $taxratemodel->getTaxRates(false, true);
+        	
         	$this->assignRef('taxRates', $taxrates);
         }
         else {

@@ -40,29 +40,38 @@ class VirtuemartViewUser extends JView {
 		//todo this must be removed somehow by Max Milbers
 		global $option;
 
+		$layoutName = JRequest::getVar('layout', $this->getLayout());
+
 		$model = $this->getModel('user');
 		$editor = JFactory::getEditor();
 		$_currentUser =& JFactory::getUser();
 		$lists['current_id'] = $_currentUser->get('id');
 		
 		// Get the required helpers
-		$this->loadHelper('permissions');
-		$this->loadHelper('shoppergroup');
-		$this->loadHelper('shopfunctions');
-		$this->loadHelper('vendorhelper');
-		$this->loadHelper('currencydisplay');
-		$this->loadHelper('image');
+		if($layoutName=='edit'){
+			$this->loadHelper('permissions');
+			$this->loadHelper('shoppergroup');
+			$this->loadHelper('shopfunctions');
+			$this->loadHelper('vendorhelper');
+			$this->loadHelper('currencydisplay');
+			$this->loadHelper('image');		
+		}
+
 
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-		$orderModel = $this->getModel('orders');
-		$vendor = new Vendor;
 		$userDetails = $model->getUser();
-//		echo 'The userDetails model looks like? <br />';
-//		echo '<pre>'.print_r($userDetails).'</pre>';die;
+				
+		if($layoutName=='edit'){
+			$orderModel = $this->getModel('orders');
+			$vendor = new Vendor;
+		}
+
 		$_new = ($userDetails->JUser->get('id') < 1);
 
 		// User details
 		$_contactDetails = $model->getContactDetails();
+		
+	if($layoutName=='edit'){
 		$_groupList = $model->getGroupList();
 
 		if (!is_array($_groupList)) {
@@ -89,7 +98,12 @@ class VirtuemartViewUser extends JView {
 			if(empty($lists['shoppergroups'])){
 				$lists['shoppergroups']='unregistered';
 			}
-			$lists['vendors'] = $userDetails->vendor_id->vendor_id;
+//			echo 'Test <pre>'.print_r($userDetails->vendor_id).'</pre>';
+			
+			if(!empty($userDetails->vendor_id)){
+				$lists['vendors'] = $userDetails->vendor_id->vendor_id;
+			}
+			
 			if(empty($lists['vendors'])){
 				$lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');
 			}
@@ -99,7 +113,7 @@ class VirtuemartViewUser extends JView {
 		
 //		$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
 		$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
-
+	}
 		// Shipping address(es)
 		$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
 		if (($_c = count($_addressList)) == 0) {
@@ -154,6 +168,7 @@ class VirtuemartViewUser extends JView {
 			,$_userDetailsList
 		);
 
+	if($layoutName=='edit'){
 		if(Permissions::getInstance()->check("admin,storeadmin")){
 			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
 		} else {
@@ -177,7 +192,7 @@ class VirtuemartViewUser extends JView {
 				JHTML::stylesheet($_link, $_path);
 			}
 		}
-
+	}
 		// The ShipTo address if selected
 		$_shipto_id = JRequest::getVar('shipto', -1);
 		if ($_shipto_id == -1) {
@@ -217,30 +232,33 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('shipToID', $_shipto_id);
 		}
 
+	if($layoutName=='edit'){
 		// Check for existing orders for this user
-//		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orders.php');
-//		$userFieldsModel = new VirtueMartModelUserfields;
 		$orders = $this->getModel('orders');
-//		$orders = new VirtueMartModelOrders();
-		$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
-		$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
-		if (count($orderList) > 0) {
-			if (!empty($_vendorData)) {
-				$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
-					, $_vendorData->vendor_currency_display_style);
-				$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-					, $_currencyDisplayStyle['negative']
-				);
-			} else {
-				$currency = new CurrencyDisplay();
-			}
-			$this->assignRef('currency', $currency);
-		}
 
+		$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+
+
+		
 		// If the current user is a vendor, load the store data
 		if ($vendor->isVendor($userDetails->JUser->get('id'))) {
+			
+			$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
+			if (count($orderList) > 0) {
+				if (!empty($_vendorData)) {
+					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
+						, $_vendorData->vendor_currency_display_style);
+					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+						, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+						, $_currencyDisplayStyle['negative']
+					);
+				} else {
+//					$currency = new CurrencyDisplay();
+				}
+				$this->assignRef('currency', $currency);
+			}
+		
 			$storeModel = $this->getModel('store');
 			$storeModel->setId($vendor->getVendorIdByUserId($userDetails->JUser->get('id')));
 			$_store = $storeModel->getStore();
@@ -257,9 +275,15 @@ class VirtuemartViewUser extends JView {
 				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
 				, $_currencyDisplayStyle['negative']
 			);
-		$this->assignRef('vendorCurrency', $_vendorCurrency);
+			$this->assignRef('vendorCurrency', $_vendorCurrency);
 		}
-
+		
+		if(empty($currency)){
+			$currency = new CurrencyDisplay();
+			$this->assignRef('currency', $currency);
+		}
+	}
+		
 		// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
 		jimport('joomla.html.pane');

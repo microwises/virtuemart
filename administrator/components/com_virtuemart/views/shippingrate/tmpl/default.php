@@ -36,7 +36,13 @@ AdminMenuHelper::startAdminArea();
 			</th>				
 			<th>
 				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_NAME' ); ?>
-			</th>				
+			</th>
+			<th>
+				<?php echo JText::_( 'VM_RATE_FORM_VALUE' ); ?>
+			</th>
+			<th>
+				<?php echo JText::_( 'VM_RATE_FORM_PACKAGE_FEE' ); ?>
+			</th>
 			<th>
 				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_WSTART' ); ?>
 			</th>	
@@ -65,10 +71,16 @@ AdminMenuHelper::startAdminArea();
 				</td>					
 				<td align="left">
 					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_rate_name)); ?>
-				</td>	
+				</td>
+				<td align="left">
+					<?php echo JText::_($row->shipping_rate_value); ?>
+				</td>
+				<td align="left">
+					<?php echo JText::_($row->shipping_rate_package_fee); ?>
+				</td>
 				<td align="left">
 					<?php echo JText::_($row->shipping_rate_weight_start); ?>
-				</td>					
+				</td>	
 				<td align="left">
 					<?php echo JText::_($row->shipping_rate_weight_end); ?>
 				</td>											        																														

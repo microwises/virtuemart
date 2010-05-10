@@ -104,7 +104,8 @@ class VirtueMartModelTaxRate extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `tax_rate_id` FROM `#__vm_tax_rate`';
+//			$query = 'SELECT `tax_rate_id` FROM `#__vm_tax_rate`';
+			$query = 'SELECT `calc_id` FROM `#__vm_tax_rate` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -120,10 +121,15 @@ class VirtueMartModelTaxRate extends JModel {
 	{
 		$db = JFactory::getDBO();
 
-  		if (empty($this->_data)) {
+//  		if (empty($this->_data)) {
+//  			$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_id`="'.(int)$this->_id.'" AND WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+//  			$db->setQuery($q);
+//			$this->_data = $db->loadResultArray();
+  			
    			$this->_data = $this->getTable('tax_rate');
    			$this->_data->load((int)$this->_id);
-  		}
+   			echo print_r($this->_data);die;
+//  		}
 
   		if (!$this->_data) {
    			$this->_data = new stdClass();
@@ -135,6 +141,46 @@ class VirtueMartModelTaxRate extends JModel {
 	}
 
 
+	function getTaxRates() {
+		
+		$db = JFactory::getDBO();
+		
+		if (empty($this->_data)) {
+			$q = 'SELECT * ';
+//			$q .= 'CONCAT("(", `#__vm_calc`.`calc_id`, ") ", FORMAT(`#__vm_calc`.`calc_value`*100, 2)) AS select_list_name ';
+			$q .= 'FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" AND `calc_value_mathop`="+%" OR `calc_value_mathop`="-%" ';
+//  			$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+  			$db->setQuery($q);
+			$this->_data = $db->loadObjectList();
+  			
+//   			$this->_data = $this->getTable('tax_rate');
+//   			$this->_data->load((int)$this->_id);
+  		}
+		if (!$this->_data) {
+   			$this->_data = new stdClass();
+   			$this->_id = 0;
+   			$this->_data = null;
+  		}
+  		
+		return $this->_data;
+	}
+
+	/**
+	 * Retireve a list of tax rates from the database.
+	 *
+     * @author RolandD, RickG
+	 * @return object List of tax rates objects
+	 */
+//	function getTaxRates() {
+//		$db = JFactory::getDBO();
+//		$query = 'SELECT *, ';
+//		$query .= 'CONCAT("(", `#__vm_tax_rate`.`tax_rate_id`, ") ", FORMAT(`#__vm_tax_rate`.`tax_rate`*100, 2)) AS select_list_name ';
+//		$query .= 'FROM `#__vm_tax_rate`';
+//
+//		$db->setQuery($query);
+//		return $db->loadObjectList();
+//	}
+
 	/**
 	 * Bind the post data to the tax rate table and save it
      *
@@ -143,26 +189,26 @@ class VirtueMartModelTaxRate extends JModel {
 	 */
     function store()
 	{
-		$table =& $this->getTable('tax_rate');
-
-		$data = JRequest::get( 'post' );
-		// Bind the form fields to the tax rate table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the tax rate record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the tax rate record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
+//		$table =& $this->getTable('tax_rate');
+//
+//		$data = JRequest::get( 'post' );
+//		// Bind the form fields to the tax rate table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Make sure the tax rate record is valid
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Save the tax rate record to the database
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
 
 		return true;
 	}
@@ -176,34 +222,20 @@ class VirtueMartModelTaxRate extends JModel {
      */
 	function delete()
 	{
-		$currencyIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('currency');
-
-    	foreach($currencyIds as $currencyId) {
-        	if (!$table->delete($currencyId)) {
-            	$this->setError($table->getError());
-            	return false;
-        	}
-    	}
+//		$currencyIds = JRequest::getVar('cid',  0, '', 'array');
+//    	$table =& $this->getTable('currency');
+//
+//    	foreach($currencyIds as $currencyId) {
+//        	if (!$table->delete($currencyId)) {
+//            	$this->setError($table->getError());
+//            	return false;
+//        	}
+//    	}
 
     	return true;
 	}
 
 
-	/**
-	 * Retireve a list of tax rates from the database.
-	 *
-     * @author RolandD, RickG
-	 * @return object List of tax rates objects
-	 */
-	function getTaxRates() {
-		$db = JFactory::getDBO();
-		$query = 'SELECT *, ';
-		$query .= 'CONCAT("(", `#__vm_tax_rate`.`tax_rate_id`, ") ", FORMAT(`#__vm_tax_rate`.`tax_rate`*100, 2)) AS select_list_name ';
-		$query .= 'FROM `#__vm_tax_rate`';
 
-		$db->setQuery($query);
-		return $db->loadObjectList();
-	}
 }
 ?>

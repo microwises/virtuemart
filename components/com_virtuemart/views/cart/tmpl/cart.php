@@ -356,7 +356,7 @@ else {
 			<td colspan="7"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
-		 <?php $adresslink = JRoute::_('index.php?view=user&task=editAdress');  ?>
+		 <?php $adresslink = JRoute::_('index.php?view=user&task=editaddress');  ?>
 		 	<td colspan="2" align="right"><?php echo JHTML::_('link', $adresslink, JText::_('VM_CART_EDIT_ADRESS'));?> </td>
 		  </tr>
 	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
