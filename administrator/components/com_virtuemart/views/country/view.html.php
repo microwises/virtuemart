@@ -71,7 +71,7 @@ class VirtuemartViewCountry extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
-			$countries = $model->getCountries();
+			$countries = $model->getCountries(false);
 			$this->assignRef('countries',	$countries);
 		}
 		parent::display($tpl);

@@ -221,7 +221,7 @@ class VirtueMartModelCountry extends JModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of country objects
      */
-    function getCountries($onlyPublished=false, $noLimit=false) {
+    function getCountries($onlyPublished=true, $noLimit=false) {
 	$query = 'SELECT * FROM `#__vm_country` ';
 	if ($onlyPublished) {
 	    $query .= 'WHERE `#__vm_country`.`published` = 1';

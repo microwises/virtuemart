@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<?php if ($this->userDetails->JUser->get('id') ) { ?>
+<?php // if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 </fieldset>
-<?php  } ?>
+<?php // } ?>
 
 <fieldset>
 	<legend>

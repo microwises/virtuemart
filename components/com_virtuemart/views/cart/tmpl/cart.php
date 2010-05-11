@@ -362,13 +362,112 @@ else {
 	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
 		This exampel should just show how the adress should be shown and how the information is saved*/
 	?> 
-		  <tr class="sectiontableentry1">
-		  	<td colspan="3" align="right"><?php echo JText::_('VM_CART_NAME') ;?> </td>
-		  	<td colspan="3" align="right"><?php echo $this->cart['name'];?> </td>
-		  	
-		  </tr>
+		<?php /* if ( !empty($this->cart['company'] )) { ?>
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_COMPANY') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['company'];?> </td>
+		</tr>			
+		<?php } ?>
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_NAME') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user->titel.' '.$this->cart->first_name.' '.$this->cart->middle_name.' '.$this->cart->last_name ?> </td>
+		</tr>
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STREET') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['address_1'];?> </td>
+		</tr>
+		<?php if ( !empty($this->cart['address_2'] )) { ?>
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STREET') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['address_2'];?> </td>
+		</tr>			
+		<?php } ?>
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_CITY') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['city'];?> </td>
+		</tr>		
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_ZIP') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['zip'];?> </td>
+		</tr>		
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_COUNTRY') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['country'];?> </td>
+		</tr>		
+		<tr class="sectiontableentry1">
+		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STATE') ;?> </td>
+		  	<td colspan="2" align="right"><?php echo $this->user['state'];?> </td>
+		</tr>		
+		
 		</table>
-		<?php
+		
+	
+<?php	*/ 
+	$_k = 0;
+	$_set = false;
+	$_table = false;
+	$_hiddenFields = '';
+
+	if (count($this->userFields['functions']) > 0) {
+		echo '<script language="javascript">'."\n";
+		echo join("\n", $this->userFields['functions']);
+		echo '</script>'."\n";
+	}
+	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
+		// Do this at the start of the loop, since we're using 'continue' below!
+		if ($_i == 0) {
+			$_field = current($this->userFields['fields']);
+		} else {
+			$_field = next($this->userFields['fields']);
+		}
+
+		if ($_field['hidden'] == true) {
+			$_hiddenFields .= $_field['formcode']."\n";
+			continue;
+		}
+		if ($_field['type'] == 'delimiter') {
+			if ($_set) {
+				// We're in Fieldset. Close this one and start a new
+				if ($_table) {
+					echo '	</table>'."\n";
+					$_table = false;
+				}
+				echo '</fieldset>'."\n";
+			}
+			$_set = true;
+			echo '<fieldset>'."\n";
+			echo '	<legend>'."\n";
+			echo '		' . $_field['title'];
+			echo '	</legend>'."\n";
+			continue;
+		}
+
+		
+		if (!$_table) {
+			// A table hasn't been opened as well. We need one here, 
+			echo '	<table class="adminform">'."\n";
+			$_table = true;
+		}
+		echo '		<tr>'."\n";
+		echo '			<td class="key">'."\n";
+		echo '				<label for="'.$_field['name'].'_field">'."\n";
+		echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
+		echo '				</label>'."\n";
+		echo '			</td>'."\n";
+		echo '			<td>'."\n";
+		echo '				'.$_field['formcode']."\n";
+		echo '			</td>'."\n";
+		echo '		</tr>'."\n";
+	}
+
+	if ($_table) {
+		echo '	</table>'."\n";
+	}
+	if ($_set) {
+		echo '</fieldset>'."\n";
+	}
+	
+//		<?php
 		/** @todo handle coupon field */
 		/* Input Field for the Coupon Code */
 		/**

@@ -34,8 +34,6 @@ class VirtueMartControllerUser extends JController
 	function display()
 	{
 		parent::__construct();
-		
-		
 //		self::edit();
 	}
 	

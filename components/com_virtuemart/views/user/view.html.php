@@ -108,10 +108,7 @@ class VirtuemartViewUser extends JView {
 				$lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');
 			}
 		}
-//		$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
-//		$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-		
-//		$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
+
 		$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 	}
 		// Shipping address(es)

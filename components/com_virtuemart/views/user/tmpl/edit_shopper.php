@@ -91,11 +91,12 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 <?php } ?>
 
+<?php /*
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
 	</legend>
-<?php 
+<?php */
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -162,4 +163,4 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 <input type="hidden" name="address_type" value="BT" />
-</fieldset>
+<? //</fieldset>  ?>
