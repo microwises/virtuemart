@@ -132,7 +132,7 @@ class VirtuemartControllerUser extends JController {
 	{
 		$model = $this->getModel('user');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more users could not be deleted!');
+			$msg = JText::_($model->getError());
 		} else {
 			$msg = JText::_( 'User(s) Deleted!');
 		}

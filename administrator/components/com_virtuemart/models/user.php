@@ -68,7 +68,7 @@ class VirtueMartModelUser extends JModel {
 
 		// Get the (array of) order status ID(s)
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		if(Permissions::getInstance()->check("admin,storeadmin") && ($idArray[0] != 0)){
+		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
 			$this->setId((int)$idArray[0]);
 		} else {
 			$user = JFactory::getUser();
@@ -136,7 +136,8 @@ class VirtueMartModelUser extends JModel {
 			$this->_data = new stdClass();
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 			$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
-			$this->_data->userInfo=array();
+
+			$this->_data->userInfo = array ();
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
@@ -270,17 +271,17 @@ class VirtueMartModelUser extends JModel {
 			$_fromMail = $mainframe->getCfg('mailfrom') || $_currentUser->get('email');
 			$_fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');
 			$_fromSite = $mainframe->getCfg('sitename');
-			
+
 			$_subj = JText::_('NEW_USER_MESSAGE_SUBJECT');
 			$_text = sprintf ( JText::_('NEW_USER_MESSAGE')
 				, $_user->get('name')
 				, $_fromSite
 				, JURI::root()
 				, $_user->get('username')
-				, $user->password_clear
+				, $_user->password_clear
 			);
-			JUtility::sendMail( $adminEmail, $adminName, $user->get('email'), $subject, $message );
-			$_newId = $_user->get('id');
+			JUtility::sendMail( $_fromMail, $_fromName, $_user->get('email'), $subject, $message );
+			$_data['user_id'] = $_user->get('id');
 		}
 
 		// Save the shopper data
@@ -373,14 +374,25 @@ class VirtueMartModelUser extends JModel {
 		$userIds = JRequest::getVar('cid',  0, '', 'array');
 		$userInfo =& $this->getTable('user_info');
 		$shopper_vendor_xref =& $this->getTable('shopper_vendor_xref');
-
+		$_status = true;
 		foreach($userIds as $userId) {
-			if (!$userInfo->delete($userId)) {
+			if ($this->getSuperAdminCount() <= 1) {
+				// Prevent deletion of the only Super Admin
+				$_u =& JUser::getInstance($userId);
+				if ($_u->get('gid') == __SUPER_ADMIN_GID) {
+					$this->setError(JText::_('VM_USER_ERR_LASTSUPERADMIN'));
+					$_status = false;
+					continue;
+				}
+			}
+
+		if (!$userInfo->delete($userId)) {
 				$this->setError($userInfo->getError());
 				return false;
 			}
 			if (!$shopper_vendor_xref->delete($userId)) {
 				$this->setError($shopper_vendor_xref->getError()); // Signal but continue
+				$_status = false;
 				continue;
 			}
 			$_JUser =& JUser::getInstance($userId);
@@ -389,7 +401,7 @@ class VirtueMartModelUser extends JModel {
 				return false;
 			}
 		}
-		return true;
+		return $_status;
 	}
 
 	/**

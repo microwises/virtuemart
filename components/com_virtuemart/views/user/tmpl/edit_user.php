@@ -45,7 +45,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td>
 				<?php
 					// Only admins can change other users, and only admins can change usernames
-					if ( $this->lists['current_id'] == $this->userDetails->JUser->get('id')) :
+					if ( $this->lists['current_id'] == $this->userDetails->JUser->get('id')
+						// but new users must be able to choose a username
+						&& $this->userDetails->JUser->get('id') > 0) :
 				?>
 					<input type="hidden" name="username" id="username" value="<?php echo $this->userDetails->JUser->get('username'); ?>" />
 					<?php echo $this->userDetails->JUser->get('username');?>

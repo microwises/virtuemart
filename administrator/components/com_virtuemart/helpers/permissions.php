@@ -219,7 +219,7 @@ class Permissions extends JObject{
 	 *
 	 * @param string $perms
 	 * @return boolean Check successful or not
-	 * @example $perm->check( 'admin', 'storeadmin' );
+	 * @example $perm->check( 'admin,storeadmin' );
 	 * 			returns true when the user is admin or storeadmin
 	 */
 	public function check($perms) {

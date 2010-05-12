@@ -105,6 +105,7 @@ function myValidator(f, t)
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="register_new" value="<?php echo $this->lists['register_new']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 

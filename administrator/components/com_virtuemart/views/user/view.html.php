@@ -98,7 +98,7 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'));
+			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
@@ -127,9 +127,13 @@ class VirtuemartViewUser extends JView {
 					, array() // Default toggles
 					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 			);
+			
 			if (($_addressCount = count($userDetails->userInfo)) == 0) {
-				$_userDetailsList = null;
 				$_userInfoID = null;
+				// Set some default values
+				$_userDetailsList = new StdClass ();
+				$_userDetailsList->address_type = 'BT'; 
+				$_userDetailsList->perms = 'shopper';
 			} else {
 				$_userDetailsList = current($userDetails->userInfo);
 				for ($_i = 0; $_i < $_addressCount; $_i++) {
@@ -146,7 +150,7 @@ class VirtuemartViewUser extends JView {
 					,$_userDetailsList
 			);
 
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
 			
 			// Load the required scripts
 			if (count($userFields['scripts']) > 0) {

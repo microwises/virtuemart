@@ -98,6 +98,7 @@ class VirtuemartViewUser extends JView {
 			if(empty($lists['shoppergroups'])){
 				$lists['shoppergroups']='unregistered';
 			}
+			$lists['shoppergroups'] .= '<input type="hidden" name="shopper_group_id" value = "' . $_shoppergroup['shopper_group_id'] . '" />';
 //			echo 'Test <pre>'.print_r($userDetails->vendor_id).'</pre>';
 			
 			if(!empty($userDetails->vendor_id)){
@@ -110,6 +111,11 @@ class VirtuemartViewUser extends JView {
 		}
 
 		$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
+		if ($_new) {
+			$lists['register_new'] = 1;
+		} else {
+			$lists['register_new'] = 0;
+		}
 	}
 		// Shipping address(es)
 		$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
@@ -167,14 +173,16 @@ class VirtuemartViewUser extends JView {
 
 	if($layoutName=='edit'){
 		if(Permissions::getInstance()->check("admin,storeadmin")){
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_id', 'group_name', $_userDetailsList->perms);	
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);	
 		} else {
 			if(!empty($_userDetailsList->perms)){
 				$lists['perms'] = $_userDetailsList->perms;
 			}
 			if(empty($lists['perms'])){
-				$lists['perms']='unregistered';
+				$lists['perms'] = 'shopper'; // TODO Make this default configurable
 			}
+			$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $lists['perms'] . '" />';
+			$lists['perms'] .= $_hiddenInfo;
 		}
 
 		// Load the required scripts

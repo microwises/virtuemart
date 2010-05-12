@@ -185,6 +185,12 @@ class VirtueMartModelOrders extends JModel {
 	$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 	if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 
+	// FIXME Joomla expects an ID field in every query. If might be a default ordering from a previous
+	// page here, so this dirty hack makes sure we don't get errors here.
+	// Consider it a Joomla bug... but we have to deal with it....
+	if ($filter_order == 'id') {
+		$filter_order = 'order_id';
+	}
 	/* Attributes name */
 	if (JRequest::getVar('filter_orders', false)) $filters[] = '#__vm_orders.`order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
 
