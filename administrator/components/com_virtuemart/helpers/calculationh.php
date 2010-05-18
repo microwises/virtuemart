@@ -255,6 +255,7 @@ class calculationHelper{
 	function getCheckoutPrices($cart){
 
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
+		echo '<br />shipping_rate_id '.$cart['shipping_rate_id'].'<br />';
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
@@ -272,10 +273,13 @@ class calculationHelper{
 		$prices['coupons'] = $this->existCoupons();
 		$prices['couponValue'] = 0;
 		$prices['duty'] = 1;
-		$prices['shipping'] = 0; //could be automatically set to a default set in the globalconfig
+		$prices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
+		$prices['shippingName'] = '';
 		$prices['shippingTax'] = 0;
 		$prices['payment'] = 0; //could be automatically set to a default set in the globalconfig
+		$prices['paymentName'] = '';
 		$prices['paymentTax'] = 0;
+		
 		
 		$prices['couponName'] = 'Coupon Number 777';
 		$prices['couponTax'] = '';

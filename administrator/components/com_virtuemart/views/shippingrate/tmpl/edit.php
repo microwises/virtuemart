@@ -66,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_3_code', 'country_name', $this->rate->shipping_rate_country); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country); ?>			
 			</td>
 		</tr>		
 		<tr>

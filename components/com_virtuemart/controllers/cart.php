@@ -97,6 +97,31 @@ class VirtueMartControllerCart extends JController {
 
 		die;
 	}
+	
+	public function editshipping(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('selectshipper');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);
+		
+		
+		/* Display it all */
+		$view->display();
+	}
+	
+	public function editpayment(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('selectpayment');
+		
+		/* Display it all */
+		$view->display();
+	}
+	
 	/**
 	* Delete a product from the cart 
 	* 

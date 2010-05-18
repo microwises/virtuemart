@@ -5,9 +5,8 @@
 *
 * @package	VirtueMart
 * @subpackage Cart
-* @author RolandD
-* @todo create the totalsales value in the cart
-* @todo Come up with a better solution for the zone shipping module
+* @author Max Milbers
+*
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -244,7 +243,7 @@ else {
 		$coupon_display = $this->prices['couponValue'];
 		$duty_display = $this->prices['duty'];
 		
-		$shipping_display = $this->prices['shipping'];
+		$shipping_display = $this->prices['shippingValue'];
 		$shipping_tax_display = $this->prices['shippingTax'];
 		
 		$payment_display = $this->prices['payment'];
@@ -302,16 +301,16 @@ else {
 				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
 			</tr>
 		<?php }  
-		$shippinglink = JRoute::_('index.php?view=user&task=editshipping');  ?>
+		$shippinglink = JRoute::_('index.php?view=cart&task=editshipping');  ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="right"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
+				<td colspan="2" align="left"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
-				<td colspan="3" align="left"><?php echo $this->prices['shippingName']; ?> </td>
-				<td align="right"><?php echo $this->prices['shipppingValue']; ?> </td>
+				<td colspan="2" align="left"><?php echo $this->prices['shippingName']; ?> </td>
+				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>	
-				<td align="right"> </td>	
-				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
-				<td colspan="4" align="right"><?php echo $shipping_display; ?></td>
+				<td></td>
+				<td align="right"><?php // echo $this->prices['salesPriceShipping']; ?> </td>
+				
 		</tr>
 		<?php if($this->prices['shippingTax']) { ?>
 		  	<tr class="sectiontableentry2">
@@ -319,16 +318,16 @@ else {
 				<td colspan="4" align="right"><?php echo $this->prices['shippingTax']; ?> </td>		  		
 			</tr>		
 		<?php }
-		$paymentlink = JRoute::_('index.php?view=user&task=editpayment');  ?>
+		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="right"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
 				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
 				<td colspan="4" align="right"><?php echo $payment_display ?></td>
 		</tr>
-		<?php if($this->prices['shippingTax']) { ?>
+		<?php if($this->prices['paymentTax']) { ?>
 		  	<tr class="sectiontableentry2">
 				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_TAX') ?> </td> 
-				<td colspan="4" align="right"><?php echo $this->prices['shippingTax'] ?> </td>		  		
+				<td colspan="4" align="right"><?php echo $this->prices['paymentTax'] ?> </td>		  		
 			</tr>		
 		<?php }
 		if($this->prices['duty']) { ?>
@@ -353,7 +352,7 @@ else {
 		  </tr>
 		<?php } ?>
 		  <tr>
-			<td colspan="7"><hr /></td>
+			<td colspan="10"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
 		 <?php $adresslink = JRoute::_('index.php?view=user&task=editaddress');  ?>
@@ -361,48 +360,7 @@ else {
 		  </tr>
 	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
 		This exampel should just show how the adress should be shown and how the information is saved*/
-	?> 
-		<?php /* if ( !empty($this->cart['company'] )) { ?>
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_COMPANY') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['company'];?> </td>
-		</tr>			
-		<?php } ?>
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_NAME') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user->titel.' '.$this->cart->first_name.' '.$this->cart->middle_name.' '.$this->cart->last_name ?> </td>
-		</tr>
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STREET') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['address_1'];?> </td>
-		</tr>
-		<?php if ( !empty($this->cart['address_2'] )) { ?>
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STREET') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['address_2'];?> </td>
-		</tr>			
-		<?php } ?>
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_CITY') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['city'];?> </td>
-		</tr>		
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_ZIP') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['zip'];?> </td>
-		</tr>		
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_COUNTRY') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['country'];?> </td>
-		</tr>		
-		<tr class="sectiontableentry1">
-		  	<td colspan="1" align="right"><?php echo JText::_('VM_CART_STATE') ;?> </td>
-		  	<td colspan="2" align="right"><?php echo $this->user['state'];?> </td>
-		</tr>		
-		
-		</table>
-		
-	
-<?php	*/ 
+
 	$_k = 0;
 	$_set = false;
 	$_table = false;

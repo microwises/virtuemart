@@ -33,15 +33,34 @@ class VirtueMartViewCart extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		
-		/* Add the cart title to the pathway */
-		$pathway->addItem(JText::_('VM_CART_TITLE'));
-		$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
+		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		
 		/* Load the cart helper */
 		$this->loadHelper('cart');
 		
 		$cart = cart::getCart();
 		$this->assignRef('cart', $cart);
+		
+		if($layoutName=='selectshipper'){
+			//For the selection of the shipper we need the weight and maybe the dimension.
+			//Just for developing
+			$cartweight= '2';
+			$this->assignRef('cartweight', $cartweight);
+			
+			$shippingCarrierModel = $this->getModel('shippingcarrier');
+//			$shippingCarriers = $shippingCarrierModel->getShippingCarriers();
+			$shippingCarriers = $shippingCarrierModel->getShippingCarrierRates($cartweight);
+			
+			$this->assignRef('shippingCarriers',$shippingCarriers);
+			
+		} else if($layoutName=='selectpayment'){
+			//For the selection of the payment method we need the total amount to pay.
+			
+		} else {
+			
+		/* Add the cart title to the pathway */
+		$pathway->addItem(JText::_('VM_CART_TITLE'));
+		$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
 
 		//For User address
 		$_currentUser =& JFactory::getUser();
@@ -124,11 +143,15 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('products', $products);
 		
 		/* Get the prices for the cart */
+		$cart['shipping_rate_id'] = JRequest::getVar('shipping_rate_id', '0');
+		
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
-		?><pre><?php
-//		print_r($prices);
-		?></pre><?php
+
+
+		
+		
+//		echo '<br />chooseShippingRate '.$shipping;
 		
 		
 		/* Get a continue link */
@@ -141,11 +164,8 @@ class VirtueMartViewCart extends JView {
 		elseif (!empty($manufacturer_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$manufacturer_id);
 		else $continue_link = JRoute::_('index.php?option=com_virtuemart');
 		
-		$this->assignRef('continue_link', $continue_link);
-		
-		
-
-		
+		$this->assignRef('continue_link', $continue_link);	
+		}
 		
 		parent::display($tpl);
 	}

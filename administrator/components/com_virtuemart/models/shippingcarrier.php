@@ -220,11 +220,59 @@ class VirtueMartModelShippingCarrier extends JModel {
      * @author RickG
      * @return object List of shipping carrier objects
      */
-    function getShippingCarriers() {
+    public function getShippingCarriers() {
 	$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
 	$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_id`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
+    
+    
+    /**
+     * 
+     * @author Max Milbers
+     * @return a associative List
+     */
+	public function getShippingCarrierRates($weight=0, $country=0, $zip=0) {
+		
+		$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
+		$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_list_order`';
+		$carrierList = $this->_getList($query);
+
+		$db =& JFactory::getDBO();
+		$list;
+		$i=(int)0;
+
+		foreach ($carrierList as $key=>$value) {
+			$query = 'SELECT * FROM `#__vm_shipping_rate` WHERE `shipping_rate_carrier_id`="'.$value->shipping_carrier_id.'" ';
+			if(!empty($weight)){
+				$query .= 'AND `shipping_rate_weight_start` <="'.$weight.'" AND `shipping_rate_weight_end` > "'.$weight.'"';
+			}		 	 	
+			if(!empty($zip)){
+				$query .= 'AND `shipping_rate_zip_start` <="'.$zip.'" AND `shipping_rate_zip_end` > "'.$zip.'"';
+			}
+			
+			//todo country and dimension
+//			if(!empty($country)){
+//				$countries = explode(';', $this->_data->shipping_rate_country);
+//				$query .= 'AND (`shipping_rate_country` ="'.$country.'" OR `shipping_rate_country` ="" )';
+//			}
+//			echo '<br />$query '.$query;
+			$db->setQuery($query);
+			if ($db->query()) {
+				echo '<br /><br />';
+//				echo 'WIE <pre>'. print_r($db->loadAssocList()) .'</pre>';
+				$list[$value->shipping_carrier_name]=$db->loadAssocList();
+				echo '<br />';
+//				return true;
+	    	}
+		}
+//		echo '<br />';echo '<br />';echo '<br />';
+//		echo '<pre>'. print_r($list) .'</pre>';
+//		
+		return $list;
+    }
+    
 }
-?>
+
+//no closing tag
