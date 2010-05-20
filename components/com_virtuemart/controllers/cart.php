@@ -112,6 +112,22 @@ class VirtueMartControllerCart extends JController {
 		$view->display();
 	}
 	
+	public function setshipping(){
+		
+		/* Get the shipping rate of the cart */
+		$shipping_rate_id = JRequest::getVar('shipping_rate_id', '0');
+		
+		if($shipping_rate_id){
+			//Now set the shipping rate into the cart
+			$cart = cart::getCart();
+			if($cart){
+				$cart['shipping_rate_id']=$shipping_rate_id;
+				cart::setCart($cart);
+			}		
+		}
+		self::Cart();
+	}
+	
 	public function editpayment(){
 	
 		/* Create the view */

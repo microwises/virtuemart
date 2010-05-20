@@ -48,7 +48,6 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('cartweight', $cartweight);
 			
 			$shippingCarrierModel = $this->getModel('shippingcarrier');
-//			$shippingCarriers = $shippingCarrierModel->getShippingCarriers();
 			$shippingCarriers = $shippingCarrierModel->getShippingCarrierRates($cartweight);
 			
 			$this->assignRef('shippingCarriers',$shippingCarriers);
@@ -141,17 +140,14 @@ class VirtueMartViewCart extends JView {
 		$model = $this->getModel('cart');
 		$products = $model->getCartProducts($cart);
 		$this->assignRef('products', $products);
-		
-		/* Get the prices for the cart */
-		$cart['shipping_rate_id'] = JRequest::getVar('shipping_rate_id', '0');
-		
+				
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
 
 
 		
 		
-//		echo '<br />chooseShippingRate '.$shipping;
+		echo '<br />chooseShippingRate '.$cart['shipping_rate_id'];
 		
 		
 		/* Get a continue link */

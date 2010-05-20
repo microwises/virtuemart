@@ -255,7 +255,7 @@ class calculationHelper{
 	function getCheckoutPrices($cart){
 
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
-		echo '<br />shipping_rate_id '.$cart['shipping_rate_id'].'<br />';
+//		echo '<br />shipping_rate_id '.$cart['shipping_rate_id'].'<br />';
 		$pricesPerId = array();
 		$prices = array();
 		$resultWithTax=0.0;
@@ -273,9 +273,7 @@ class calculationHelper{
 		$prices['coupons'] = $this->existCoupons();
 		$prices['couponValue'] = 0;
 		$prices['duty'] = 1;
-		$prices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
-		$prices['shippingName'] = '';
-		$prices['shippingTax'] = 0;
+
 		$prices['payment'] = 0; //could be automatically set to a default set in the globalconfig
 		$prices['paymentName'] = '';
 		$prices['paymentTax'] = 0;
@@ -318,7 +316,11 @@ class calculationHelper{
 	
 		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
-//		$sBRules = $this->gatherEffectingRulesForShipment($shipId);
+
+		$shippingRateId=0;
+		if(!empty($cart['shipping_rate_id'])) $shippingRateId= $cart['shipping_rate_id'];
+		
+		$prices = $this->calculateShipmentPrice($prices, $cart['shipping_rate_id']);
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
@@ -346,13 +348,14 @@ class calculationHelper{
 	 * @return int 	$price  	the endprice	
 	 */
 	function executeCalculation($rules, $price){
+		
 //		if(empty($rules))return $price;
 		if(empty($rules))return 0;
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
 				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$price,$rule['calc_currency']);
-if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
+if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
 			}
 		}
 		return $price;
@@ -495,7 +498,7 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 //		if (empty($rules)) return;	
 		//Just for developing
 		foreach($testedRules as $rule){
-			echo '<br /> Add rule Entrypoint '.$entrypoint.'  and '.$rule['calc_name'].' query: '.$q;
+//			echo '<br /> Add rule Entrypoint '.$entrypoint.'  and '.$rule['calc_name'].' query: '.$q;
 		}
 		return $testedRules;
 	}
@@ -532,15 +535,31 @@ if($this -> _debug)	echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @param 	$code 	The Id of the coupon
 	 * @return 	$rules 	ids of the coupons
 	 */
-	function calculateShipmentPrice($code=0){
-		if (empty($code)) return;
-		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
-//			$couponCod$codeesQuery .
-			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
-			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
+	function calculateShipmentPrice($prices=0,$ship_id){
+		if (empty($prices)) return;
+		$prices['shippingValue'] = 20; //could be automatically set to a default set in the globalconfig
+		$prices['shippingName'] = '';
+		$prices['shippingTax'] = 0;
+		$prices['shippingTotal'] = 0;
+
+//@Todo could be speed optimized
+$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
+$this->_db->setQuery($q);
+$shipping = $this->_db->loadAssoc();
+
+		$prices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
+		$prices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];
+		$prices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
+		$prices['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
+
+		$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
 		$this->_db->setQuery($q);
-		$rules = $this->_db->loadAssocList();
-		return $rules;
+		$taxrules = $this->_db->loadAssocList();
+
+		$prices['shippingTax'] = self::executeCalculation($taxrules, $prices['shippingValue']);
+
+
+		return $prices;
 	}
 
 	/**
