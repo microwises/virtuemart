@@ -20,6 +20,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-echo print_r($this->cart);
+echo print_r($this->cart); ?>
 
 
+	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="view" value="cart" />
+	<input type="hidden" name="task" value="setpayment" />
+	<input type="hidden" name="controller" value="cart" />
+</form>

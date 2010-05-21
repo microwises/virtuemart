@@ -299,6 +299,7 @@ class calculationHelper{
 			$prices['salesPriceWithDiscount'] = $prices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$cart[$i]['quantity'];
 			$prices['discountAmount'] = $prices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$cart[$i]['quantity'];
 			$prices['priceWithoutTax'] = $prices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$cart[$i]['quantity'];
+			
 		}
 
 		
@@ -320,11 +321,14 @@ class calculationHelper{
 		$shippingRateId=0;
 		if(!empty($cart['shipping_rate_id'])) $shippingRateId= $cart['shipping_rate_id'];
 		
-		$prices = $this->calculateShipmentPrice($prices, $cart['shipping_rate_id']);
+		$prices = $this->calculateShipmentPrice($prices, $shippingRateId);
+		
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
+		
+		
 		
 		$prices['discountBeforeTax']=$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['salesPrice']));
 		$toTax = !empty($prices['discountBeforeTax']) ? $prices['discountBeforeTax']:$prices['salesPrice'];
@@ -536,12 +540,16 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @return 	$rules 	ids of the coupons
 	 */
 	function calculateShipmentPrice($prices=0,$ship_id){
-		if (empty($prices)) return;
-		$prices['shippingValue'] = 20; //could be automatically set to a default set in the globalconfig
+		
+		if (empty($prices)) return 0;
+		
+		$prices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$prices['shippingName'] = '';
 		$prices['shippingTax'] = 0;
 		$prices['shippingTotal'] = 0;
-
+		
+		if (empty($ship_id)) return $prices;
+		
 //@Todo could be speed optimized
 $q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
 $this->_db->setQuery($q);
@@ -557,8 +565,7 @@ $shipping = $this->_db->loadAssoc();
 		$taxrules = $this->_db->loadAssocList();
 
 		$prices['shippingTax'] = self::executeCalculation($taxrules, $prices['shippingValue']);
-
-
+		
 		return $prices;
 	}
 

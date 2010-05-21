@@ -98,6 +98,11 @@ class VirtueMartControllerCart extends JController {
 		die;
 	}
 	
+	/**
+	 * For selecting shipper, opens a new layout
+	 * 
+	 * @author Max Milbers
+	 */
 	public function editshipping(){
 	
 		/* Create the view */
@@ -107,11 +112,15 @@ class VirtueMartControllerCart extends JController {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);
 		
-		
 		/* Display it all */
 		$view->display();
 	}
 	
+	/**
+	 * Sets a selected shipper to the cart
+	 * 
+	 * @author Max Milbers
+	 */
 	public function setshipping(){
 		
 		/* Get the shipping rate of the cart */
@@ -128,6 +137,11 @@ class VirtueMartControllerCart extends JController {
 		self::Cart();
 	}
 	
+	/**
+	 * To select a payment method
+	 * 
+	 * @author Max Milbers
+	 */
 	public function editpayment(){
 	
 		/* Create the view */
@@ -136,6 +150,28 @@ class VirtueMartControllerCart extends JController {
 		
 		/* Display it all */
 		$view->display();
+	}
+	
+	/**
+	 * To set a payment method
+	 * 
+	 * @author Max Milbers
+	 */
+	function setpayment(){
+		
+		/* Get the payment id of the cart */
+		$paym_id = JRequest::getVar('paym_id', '0');
+		
+		if($paym_id){
+			//Now set the shipping rate into the cart
+			$cart = cart::getCart();
+			if($cart){
+				//Some Paymentmethods needs extra Information like
+				$cart['payment_id']=$paym_id;
+				cart::setCart($cart);
+			}		
+		}
+		self::Cart();
 	}
 	
 	/**

@@ -144,12 +144,9 @@ class VirtueMartViewCart extends JView {
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
 
+//		echo '<br />chooseShippingRate '.$cart['shipping_rate_id'];
+		
 
-		
-		
-		echo '<br />chooseShippingRate '.$cart['shipping_rate_id'];
-		
-		
 		/* Get a continue link */
 		$category_id = JRequest::getInt('category_id');
 		$product_id = JRequest::getInt('product_id');
@@ -166,4 +163,5 @@ class VirtueMartViewCart extends JView {
 		parent::display($tpl);
 	}
 }
-?>
+
+//no closing tag
