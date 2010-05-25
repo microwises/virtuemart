@@ -309,21 +309,18 @@ else {
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>	
 				<td></td>
-				<td align="right"><?php // echo $this->prices['salesPriceShipping']; ?> </td>
+				<td align="right"><?php echo $this->prices['salesPriceShipping']; ?> </td>
 				
 		</tr>
-		<?php if($this->prices['shippingTax']) { ?>
-		  	<tr class="sectiontableentry2">
-				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?> </td> 
-				<td colspan="4" align="right"><?php echo $this->prices['shippingTax']; ?> </td>		  		
-			</tr>		
-		<?php }
+		<?php 
 		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="right"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
-				<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
-				<td colspan="4" align="right"><?php echo $payment_display ?></td>
-		</tr>
+				<td colspan="2" align="left"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
+				<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
+				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
+				<td align="right"><?php echo $this->prices['paymentTax']; ?> </td>	
+				<td align="right"><?php echo $this->prices['paymentdiscount']; ?></td>
+				<td align="right"><?php  echo $this->prices['salesPricePayment']; ?> </td>		</tr>
 		<?php if($this->prices['paymentTax']) { ?>
 		  	<tr class="sectiontableentry2">
 				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_TAX') ?> </td> 

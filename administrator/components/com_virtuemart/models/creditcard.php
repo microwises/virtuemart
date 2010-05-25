@@ -189,16 +189,30 @@ class VirtueMartModelCreditcard extends JModel {
     	return true;
 	}
 
+	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author Max Milbers
+     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @return boolean True is the delete was successful, false otherwise.      
+     */ 	 
+	public function publish($publishId = false) 
+	{
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','creditcard',$publishId);
 
+	}
+	
 	/**
 	 * Retireve a list of credit cards from the database.
 	 *
-     * @author RickG
+     * @author RickG, Max Milbers
 	 * @return object List of credit card objects
 	 */
-	function getCreditCards()
+	function getCreditCards($published=1)
 	{
 		$query = 'SELECT * FROM `#__vm_creditcard` ';
+		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
 		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;

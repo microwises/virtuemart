@@ -36,6 +36,8 @@ class TableCreditcard extends JTable {
 	var $creditcard_code           = '';
 	/** @var char Credit card code */
 	var $vendor_id		           = 0;
+	
+	var $published = 0;
 
 
 	/**

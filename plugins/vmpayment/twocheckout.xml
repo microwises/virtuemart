@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >	
+	<name>VMPayment - 2Checkout</name>
+	<author><![CDATA[JMart Project]]></author>
+	<creationdate>2010</creationdate>
+	<copyright><![CDATA[2005 JMart Project]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail></authoremail>
+	<authorurl>http://2Checkout.com</authorurl>
+	<version>1.0</version>
+	<description><![CDATA[<a href="http://www.2checkout.com" target="_blank">2Checkout</a> is a popular 
+	payment provider and available in many countries. ]]></description>
+
+	<!-- Payment Method Type Codes:
+	N: no processing (=manual processing like "purchase order" or "Cash on Delivery")
+	P: PayPal-like (Shows HTML Code to the customer - you may use a <form> to redirect the customer to the Payment Gateway (used for PayPal, Worldpay, 2Checkout etc))
+	C: Credit Card (only collect the CC data, manual processing)
+	Y: Automatic Credit Card Processor (authorize.net, eWay)
+	-->
+	<type>P</type>
+	<is_creditcard>0</is_creditcard>
+	<element>twocheckout</element>
+	<files>
+		<filename plugin="twocheckout">twocheckout.php</filename>
+	</files>
+	<params>
+		<param type="text" name="TWOCO_LOGIN" label="PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN"
+             default="login" description="PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN_EXPLAIN" />
+		<param type="password" name="TWOCO_SECRETWORD" label="PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD"
+              description="PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD_EXPLAIN" />
+		<param name="TWOCO_MERCHANT_EMAIL" label="Email Merchant?" type="radio" default="1" description="If set to True, the Merchant receives an email of every payment.">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+          </param>
+		<param name="CHECK_CARD_CODE" label="PHPSHOP_PAYMENT_CVV2" type="radio" default="1" description="PHPSHOP_PAYMENT_CVV2_TOOLTIP">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+          </param>
+        <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="C"
+			/>
+        <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="X"
+			/>
+		<param name="DEBUG" type="radio" default="0" label="PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE" description="PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN">
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+		</param>
+	</params>
+</install>

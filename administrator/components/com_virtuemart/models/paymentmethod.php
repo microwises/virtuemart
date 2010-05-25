@@ -147,7 +147,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		/* Add the accepted credit cards */
 		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$db->setQuery($q);
-		$this->_data->paym_creditcard = $db->loadResultArray();	
+		$this->_data->paym_creditcards = $db->loadResultArray();	
 		
 			
 //			$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
@@ -313,15 +313,18 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
      */ 	 
 	public function publish($publishId = false) 
 	{
-		$table = $this->getTable('payment_method');
-		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','payment_method',$publishId);
 		
-        if (!$table->publish($calcIds, $publishId)) {
-			$this->setError($table->getError());
-			return false;        		
-        }		
-        
-		return true;		
+//		$table = $this->getTable('payment_method');
+//		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
+//		
+//        if (!$table->publish($calcIds, $publishId)) {
+//			$this->setError($table->getError());
+//			return false;        		
+//        }		
+//        
+//		return true;		
 	}	
 
 	

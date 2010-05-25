@@ -51,6 +51,14 @@ defined('_JEXEC') or die('Restricted access');
 		echo $this->PaymentTypeList ?>
       </td>
     </tr>
+    
+    <tr class="row0"> 
+      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_CREDITCARD_LIST') ?>:</td>
+      <td width="69%" ><?php
+		echo $this->creditCardList ?>
+      </td>
+    </tr>
+    
     <tr class="row1"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
       <td width="69%" ><?php

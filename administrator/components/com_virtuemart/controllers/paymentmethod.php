@@ -43,7 +43,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
 		$document =& JFactory::getDocument();				
-		$document = JFactory::getDocument();
+//		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('paymentmethod', $viewType);
 
@@ -76,8 +76,13 @@ class VirtuemartControllerPaymentmethod extends JController
 		JRequest::setVar('controller', 'paymentmethod');
 		JRequest::setVar('view', 'paymentmethod');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);		
+		JRequest::setVar('hidemenu', 1);
 		
+		$document = JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view = $this->getView('paymentmethod', $viewType);
+			
+		$view->setModel($paymModel = $this->getModel('creditcard'));
 		parent::display();
 	}		
 	

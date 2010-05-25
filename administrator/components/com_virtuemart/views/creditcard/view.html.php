@@ -60,6 +60,8 @@ class VirtuemartViewCreditcard extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CREDITCARD_LIST_LBL' ), 'vm_credit_48' );
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
@@ -67,7 +69,7 @@ class VirtuemartViewCreditcard extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
-			$creditcards = $model->getCreditCards();
+			$creditcards = $model->getCreditCards(false);
 			$this->assignRef('creditcards',	$creditcards);
 		}
 

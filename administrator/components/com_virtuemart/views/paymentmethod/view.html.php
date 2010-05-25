@@ -74,12 +74,14 @@ class VirtuemartViewPaymentMethod extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
-			$this->assignRef('PaymentTypeList',self::renderPaymentTypesList($paym->paym_type));
+			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
+			
+			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->paym_creditcards));
 
 			$shopperGroupList= ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
 
-			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id,True,'paym_vendor_id');
+			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id,True,'vendor_id');
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
@@ -115,14 +117,72 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->loadHelper('modelfunctions');
 		$selected = modelfunctions::prepareTreeSelection($selected);
 		$list = array(
-		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
-		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
-		'2' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
-		'3' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_CREDIT')),
+		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
+		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
+		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
+		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );
 		return $listHTML;
+	}
+	
+	function renderPaymentRadioList($selected){
+		
+		$list = array(
+		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_CREDIT')),
+		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
+		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
+		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
+		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+		);
+		$listHTML='<div id="paymList">';
+//		$listHTML='';
+		foreach($list as $item){
+			if(!strcmp($item['paym_type'],$selected)) $checked='checked="checked"'; else $checked='';
+			if($item['paym_type']=='Y') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
+			$listHTML .= '<input id="'.$id.'" type="radio" name="paym_type" value="'.$item['paym_type'].'" '.$checked.'>'.$item['paym_type_name'].' <br />';
+		}
+		$listHTML .= '</div>';
+//		echo $listHTML;die;
+		return $listHTML;
+	}
+	
+	/**
+	 * function to create a div to show the creditcardlist, is necessary for JS
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param string name of the price
+	 * @param String description key
+	 * @param array the prices of the product
+	 * return a div for prices which is visible according to config and have all ids and class set
+	 */
+//	public function createCreditList($name,$description,$product_price){
+	public function renderCreditCardRadioList($selected){
+		
+		if(!is_array($selected)) $selected=array($selected);
+		
+		$model = self::getModel('creditcard');
+		$creditcards = $model->getCreditCards();
+		
+		
+		$vis = "none";
+		$listHTML='<div id=creditcardlist style="display : '.$vis.';" >';
+//		$listHTML='';
+		foreach($creditcards as $item){
+			$checked='';
+			foreach($selected as $select){
+				if(!strcmp($item->creditcard_id,$select)){					
+					$checked='"checked"';
+				}
+			}
+			$listHTML .= '<input type="radio" name="creditcard" value="'.$item->creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
+		}
+		$listHTML .= '</div>';
+		return $listHTML;
+		
 	}
 	
 }

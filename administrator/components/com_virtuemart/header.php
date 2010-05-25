@@ -19,6 +19,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 mm_showMyFileName( __FILE__ );
 include_once( ADMINPATH . "version.php" );
 
+echo 'I am in the header, this is wrong in vm1.5'; die;
 global $error, $page, $ps_product, $ps_product_category;
 $product_id = JRequest::getInt('product_id');
 $product_parent_id = JRequest::getInt('product_parent_id');

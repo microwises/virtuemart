@@ -37,6 +37,9 @@ AdminMenuHelper::startAdminArea();
 		    <th>
 			<?php echo JText::_( 'VM_CREDITCARD_CODE' ); ?>
 		    </th>
+		    <th width="10">
+				<?php echo JText::_( 'PUBLISHED' ); ?>
+			</th>
 		</tr>
 	    </thead>
 	    <?php
@@ -45,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 		$row =& $this->creditcards[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->creditcard_id);
-		//$published = JHTML::_('grid.published', $row, $i);
+		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=creditcard&task=edit&cid[]=' . $row->creditcard_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
@@ -58,7 +61,11 @@ AdminMenuHelper::startAdminArea();
 		<td>
 			<?php echo JText::_($row->creditcard_code); ?>
 		</td>
+		<td align="center">
+			<?php echo $published; ?>
+		</td>
 	    </tr>
+
 		<?php
 		$k = 1 - $k;
 	    }

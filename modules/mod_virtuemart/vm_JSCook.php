@@ -30,7 +30,7 @@ class vmCategoryTree {
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
 		. "WHERE a.published='1' AND "
 		. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
-		. "ORDER BY category_parent_id, list_order, category_name ASC";
+		. "ORDER BY category_parent_id, ordering, category_name ASC";
 		$db->query( $query );
 
 		while( $db->next_record() ) {
@@ -68,7 +68,7 @@ class vmCategoryMenu {
 		. "FROM #__{vm}_category as a, #__{vm}_category_xref as b "
 		. "WHERE a.published='1' AND "
 		. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
-		. "ORDER BY category_parent_id, list_order, category_name ASC";
+		. "ORDER BY category_parent_id, ordering, category_name ASC";
 		$db = new ps_DB();
 		$db->query( $query );
 

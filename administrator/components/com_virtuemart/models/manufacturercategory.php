@@ -220,15 +220,18 @@ class VirtueMartModelManufacturerCategory extends JModel {
      */
 	function publish($publishId = false)
 	{
-		$table = $this->getTable('manufacturer_category');
-		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-
-        if (!$table->publish($categoryIds, $publishId)) {
-			$this->setError($table->getError());
-			return false;
-        }
-
-		return true;
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','manufacturer_category',$publishId);
+		
+//		$table = $this->getTable('manufacturer_category');
+//		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+//
+//        if (!$table->publish($categoryIds, $publishId)) {
+//			$this->setError($table->getError());
+//			return false;
+//        }
+//
+//		return true;
 	}
 
 

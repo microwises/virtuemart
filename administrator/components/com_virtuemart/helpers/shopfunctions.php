@@ -47,6 +47,32 @@ class ShopFunctions {
 		return $mailer;
 	}
 	
+	/**
+	 * Creates a Drop Down list of available Creditcards
+	 * 
+	 * @author Max Milbers
+	 */
+	public function renderCreditCardRadioList($vendorId, $multiple = false) {
+
+		$model = self::getModel('creditcard');
+		$creditcards = $model->getCreditCards();
+
+		$attrs = '';
+		$name = 'creditcard_name';
+		$idA = $id = 'creditcard_id';
+
+		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+		array_unshift($creditcards, $emptyOption);
+			
+		if ($multiple){
+			$attrs = 'multiple="multiple"';
+			$idA .= '[]';
+		}
+		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $vendorId );
+		return $listHTML;
+	}
+	
+	
 	
 	/**
 	* Creates a Drop Down list of available Shopper Groups
@@ -69,7 +95,7 @@ class ShopFunctions {
 		$name = 'vendor_name';
 		$idA = $id = $vendorIdName;
 
-		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($vendors, $emptyOption);
 			
 		if ($multiple){
@@ -96,7 +122,7 @@ class ShopFunctions {
 		$name = 'shopper_group_name';
 		$idA = $id = 'shopper_group_id';
 
-		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
 			
 		if ($multiple){
@@ -126,7 +152,7 @@ class ShopFunctions {
 		$id = 'country_id';
 		$idA = $_prefix . 'country_id';
 		
-		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($countries, $emptyOption);
 		
 		if($multiple){
@@ -162,7 +188,7 @@ class ShopFunctions {
 		$name = 'state_name';
 		$idA = $id = $_prefix.'state_id';
 		
-		$emptyOption = JHTML::_('select.option','', '-- '.JText::_('Select').' --', $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($states, $emptyOption);
 			
 		if($multiple){
@@ -192,7 +218,7 @@ class ShopFunctions {
 
 		static $categoryTree = '';
 		if($level==0){
-			$categoryTree .= '<option value="">-- '.JText::_('Select').' --</option>';
+			$categoryTree .= '<option value="">'.JText::_('LIST_EMPTY_OPTION').'</option>';
 		}	
 		$vendor_id = 1;
 

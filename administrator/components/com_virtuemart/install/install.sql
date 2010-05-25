@@ -235,6 +235,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
   `vendor_id` int(11) NOT NULL default '0',
   `creditcard_name` varchar(70) NOT NULL default '',
   `creditcard_code` varchar(30) NOT NULL default '',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`creditcard_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store credit card types';
 

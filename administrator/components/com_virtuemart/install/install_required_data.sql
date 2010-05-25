@@ -266,14 +266,14 @@ INSERT INTO `#__vm_country` (`country_id`, `zone_id`, `country_name`, `country_3
 -- Dumping data for table `#__vm_creditcard`
 --
 
-INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`) VALUES
-(1, 1, 'Visa', 'VISA'),
-(2, 1, 'MasterCard', 'MC'),
-(3, 1, 'American Express', 'amex'),
-(4, 1, 'Discover Card', 'discover'),
-(5, 1, 'Diners Club', 'diners'),
-(6, 1, 'JCB', 'jcb'),
-(7, 1, 'Australian Bankcard', 'australian_bc');
+INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
+(1, 1, 'Visa', 'VISA',1),
+(2, 1, 'MasterCard', 'MC',1),
+(3, 1, 'American Express', 'amex',1),
+(4, 1, 'Discover Card', 'discover',1),
+(5, 1, 'Diners Club', 'diners',1),
+(6, 1, 'JCB', 'jcb',1),
+(7, 1, 'Australian Bankcard', 'australian_bc',1);
 
 --
 -- Dumping data for table `#__vm_currency`

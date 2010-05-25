@@ -562,8 +562,6 @@ function togglePriceVisibility(newPrice,divname){
 		div.hide();
 		span.hide();
 	}
-	
-	
 }
 
 function add(nr) {

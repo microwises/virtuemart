@@ -44,3 +44,47 @@ echo $pane->endPane();
 <input type="hidden" name="paym_id" value="<?php echo $this->paym->paym_id; ?>" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
+
+<script language="javascript">
+jQuery(document).ready(function() {
+
+	var toggler = document.getElements('#pam_type_CC_on');
+	for (var i = 0; i < toggler.length; i++) {
+		toggler[i].type='radio';
+		jQuery(toggler[i]).bind('click', show);
+	}
+	var toggler = document.getElements('#pam_type_CC_off');
+	for (var i = 0; i < toggler.length; i++) {
+		toggler[i].type='radio';
+		jQuery(toggler[i]).bind('click', hide);
+	}
+});
+
+function show(){
+
+	div = jQuery("#creditcardlist");
+	div.show();
+	alert('show '+div);
+}
+
+function hide(){
+alert('hide');
+	div = jQuery("#creditcardlist");
+	div.hide();
+}
+function toggleVisibility(){
+//	alert('ToggleVisibility called');
+	div = jQuery("creditcardlist");
+	span = jQuery(divname);
+	
+	if(newPrice!=0){
+		div.show();
+//		span.show();
+//		span.html(newPrice);
+	} else {
+//		span.html(0);
+		div.hide();
+//		span.hide();
+	}
+}
+</script>

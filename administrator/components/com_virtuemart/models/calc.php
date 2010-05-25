@@ -308,7 +308,7 @@ class VirtueMartModelCalc extends JModel
 	public function publish($publishId = false) 
 	{
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','calc');
+		return modelfunctions::publish('cid','calc',$publishId);
 //		$table = $this->getTable('calc');
 //		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
 //		
@@ -318,7 +318,7 @@ class VirtueMartModelCalc extends JModel
 //        }		
 //        
 //		return true;
-	}	
+	}
 
 	
 	/**

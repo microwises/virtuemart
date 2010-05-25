@@ -107,7 +107,7 @@ class modelfunctions{
 				
     function delete($idName,$tablename, $default=0) {
 
-		$table = $this->getTable($tablename);
+		$table =& $this->getTable($tablename);
 		$ids = JRequest::getVar($idName,  0, '', 'array');
 
 		foreach($ids as $id) {

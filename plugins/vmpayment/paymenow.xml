@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >
+	<name>VMPayment - Paymenow</name>
+	<author><![CDATA[JMart Project]]></author>
+	<creationdate>2010</creationdate>
+	<copyright><![CDATA[2005 JMart Project]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail></authoremail>
+	<authorurl>http://paymenow.com</authorurl>
+	<version>1.0</version>
+	<description><![CDATA[<a href="http://paymenow.com" target="_blank">Paymenow</a> software is a leading provider of internet-based transactions 
+	with the ability to process major credit cards and online checks. ]]></description>
+
+	<!-- Payment Method Type Codes:
+	N: no processing (=manual processing like "purchase order" or "Cash on Delivery")
+	P: PayPal-like (Shows HTML Code to the customer - you may use a <form> to redirect the customer to the Payment Gateway (used for PayPal, Worldpay, 2Checkout etc))
+	C: Credit Card (only collect the CC data, manual processing)
+	Y: Automatic Credit Card Processor (authorize.net, eWay)
+	-->
+	<type>Y</type>
+	<is_creditcard>1</is_creditcard>
+	<element>paymenow</element>
+	<files>
+		<filename plugin="paymenow">paymenow.php</filename>
+	</files>
+	<params>
+		<param type="text" name="PN_LOGIN" label="PHPSHOP_ADMIN_CFG_PN_LOGIN"
+             default="username" description="PHPSHOP_ADMIN_CFG_PN_LOGIN_EXPLAIN" />
+		<param name="CHECK_CARD_CODE" label="PHPSHOP_PAYMENT_CVV2" type="radio" default="1" description="PHPSHOP_PAYMENT_CVV2_TOOLTIP">
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+          </param>
+        <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="C"
+			/>
+        <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="X"
+			/>
+	</params>
+</install>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >		
+	<name>VMPayment - epay</name>
+	<author><![CDATA[Thomas Knudsen]]></author>
+	<creationdate>2010</creationdate>
+	<copyright><![CDATA[Thomas Knudsen]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail></authoremail>
+	<authorurl>http://epay.dk</authorurl>
+	<version>1.0</version>
+	<description>Payment processing module for transactions with PBS, Nordea, Danske Bank, eWire etc supported by the ePay Payment Gateway (www.epay.dk)</description>
+
+	<!-- Payment Method Type Codes:
+	N: no processing (=manual processing like "purchase order" or "Cash on Delivery")
+	P: PayPal-like (Shows HTML Code to the customer - you may use a <form> to redirect the customer to the Payment Gateway (used for PayPal, Worldpay, 2Checkout etc))
+	C: Credit Card (only collect the CC data, manual processing)
+	Y: Automatic Credit Card Processor (authorize.net, eWay)
+	-->
+	<type>P</type>
+	<is_creditcard>0</is_creditcard>
+	<element>epay</element>
+	<files>
+		<filename plugin="epay">epay.php</filename>
+	</files>
+	<params>
+		<param type="text" name="EPAY_MERCHANTNUMBER" label="PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER"
+             default="XXXXXXX" description="PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN" />
+        <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" 
+			/>
+        <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
+			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" 
+			/>
+        <param type="list" name="EPAY_CARDTYPES" label="PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES" 
+				description="PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES_EXPLAIN" multiselect="1">
+			
+			<option value="1">DANKORT</option>
+			<option value="2">VISA DANKORT</option>
+			<option value="3">VISA ELECTRON</option>
+			<option value="4">MASTERCARD (DK)</option>
+			<option value="5">MASTERCARD</option>
+			<option value="6">VISA ELECTRON (DK)</option>
+			<option value="7">JCB</option>
+			<option value="8">DINERS (DK)</option>
+			<option value="9">MAESTRO (DK)</option>
+			<option value="10">AMERICAN EXPRESS (DK)</option>
+			<option value="12">DINERS</option>
+			<option value="13">JCB Secure (3D-Secure)</option>
+			<option value="14">AMERICAN EXPRESS</option>
+			<option value="15">MAESTRO</option>
+			<option value="16">FORBRUGSFORENINGEN</option>
+			<option value="17">EWIRE</option>
+			<option value="18">VISA</option>
+			<option value="19">IKANO</option>
+			<option value="21">NORDEA</option>
+			<option value="22">DANSKE BANK</option>
+		</param>
+        <param type="list" name="EPAY_LANGUAGE" default="1" label="PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE" description="PHPSHOP_ADMIN_CFG_EPAY_LANGUAGE_EXPLAIN">
+			
+			<option value="1">Danish</option>
+			<option value="2">English</option>
+			<option value="3">Swedish</option>
+			<option value="4">Norwegian</option>
+			<option value="5">Greenland</option>
+			<option value="6">Icelandic</option>
+			<option value="7">German</option>
+		</param>
+        <param type="radio" name="EPAY_INSTANT_CAPTURE" default="1" label="PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE" description="PHPSHOP_ADMIN_CFG_EPAY_INSTANT_CAPTURE_EXPLAIN">
+			
+			<option value="0">JM_DISABLED</option>
+			<option value="1">JM_ENABLED</option>
+		</param>
+		<param type="text" name="EPAY_GROUP" label="PHPSHOP_ADMIN_CFG_EPAY_GROUP"
+             default="" description="PHPSHOP_ADMIN_CFG_EPAY_GROUP_EXPLAIN" />
+        <param type="list" name="EPAY_MD5_TYPE" default="1" label="MD5" description="PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_EXPLAIN">
+			
+			<option value="0">JM_DISABLED</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_1</option>
+			<option value="2">PHPSHOP_ADMIN_CFG_EPAY_MD5_TYPE_2</option>
+		</param>
+		<param type="text" name="EPAY_MD5_KEY" label="PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY"
+             default="" description="PHPSHOP_ADMIN_CFG_EPAY_MD5_KEY_EXPLAIN" />
+		<param type="text" name="EPAY_AUTH_SMS" label="PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS"
+             default="" description="PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS_EXPLAIN" />
+		<param type="text" name="EPAY_AUTH_MAIL" label="PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL"
+             default="" description="PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN" />
+        <param type="radio" name="EPAY_WINDOW_STATE" default="1" label="PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE">
+			
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_1</option>
+			<option value="2">PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_2</option>
+		</param>
+        <param type="list" name="EPAY_3DSECURE" default="1" label="PHPSHOP_ADMIN_CFG_EPAY_3DSECURE">
+			
+			<option value="0">PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_1</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_2</option>
+			<option value="2">PHPSHOP_ADMIN_CFG_EPAY_3DSECURE_3</option>
+		</param>
+       <param type="radio" name="EPAY_CALLBACK" default="0" label="PHPSHOP_ADMIN_CFG_EPAY_CALLBACK" description="PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_EXPLAIN">
+			
+			<option value="0">PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_0</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_1</option>
+		</param>
+       <param type="radio" name="EPAY_ADDFEE" default="0" label="PHPSHOP_ADMIN_CFG_EPAY_ADDFEE" description="PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_EXPLAIN">
+			
+			<option value="0">PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_0</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_1</option>
+		</param>
+       <param type="radio" name="EPAY_SUBSCRIPTION" default="0" label="PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION" description="PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_EXPLAIN">
+			
+			<option value="0">PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_0</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_1</option>
+		</param>
+       <param type="radio" name="EPAY_AUTHEMAILCUSTOMER" default="1" label="PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL" description="PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN">
+			
+			<option value="1">PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_1</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0</option>
+		</param>
+	</params>
+</install>

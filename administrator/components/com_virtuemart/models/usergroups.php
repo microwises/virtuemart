@@ -197,7 +197,7 @@ class VirtueMartModelUsergroups extends JModel {
 	function publish($publishId = false) {
 
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('group_id','usergroups');
+		return modelfunctions::publish('group_id','usergroups',$publishId);
 		
     }
 

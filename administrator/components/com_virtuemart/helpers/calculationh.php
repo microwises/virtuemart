@@ -26,6 +26,7 @@ class calculationHelper{
 	private $_deliveryCountry;
 	private $_deliveryState;
 	private $_currencyDisplay;
+	private $_cartPrices;
 	
 	public $productVendorId;
 	public $productCurrency;
@@ -257,48 +258,48 @@ class calculationHelper{
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
 //		echo '<br />shipping_rate_id '.$cart['shipping_rate_id'].'<br />';
 		$pricesPerId = array();
-		$prices = array();
+		$this->_cartPrices = array();
 		$resultWithTax=0.0;
 		$resultWithOutTax=0.0;
 		$productIdsCount = $cart['idx'];
 
-		$prices['basePrice']= 0;
-		$prices['basePriceWithTax']= 0;
-		$prices['discountedPriceWithoutTax']= 0;
-		$prices['salesPrice']= 0;
-		$prices['taxAmount']= 0;
-		$prices['salesPriceWithDiscount']= 0;
-		$prices['discountAmount']= 0;
-		$prices['priceWithoutTax']= 0;
-		$prices['coupons'] = $this->existCoupons();
-		$prices['couponValue'] = 0;
-		$prices['duty'] = 1;
+		$this->_cartPrices['basePrice']= 0;
+		$this->_cartPrices['basePriceWithTax']= 0;
+		$this->_cartPrices['discountedPriceWithoutTax']= 0;
+		$this->_cartPrices['salesPrice']= 0;
+		$this->_cartPrices['taxAmount']= 0;
+		$this->_cartPrices['salesPriceWithDiscount']= 0;
+		$this->_cartPrices['discountAmount']= 0;
+		$this->_cartPrices['priceWithoutTax']= 0;
+		$this->_cartPrices['coupons'] = $this->existCoupons();
+		$this->_cartPrices['couponValue'] = 0;
+		$this->_cartPrices['duty'] = 1;
 
-		$prices['payment'] = 0; //could be automatically set to a default set in the globalconfig
-		$prices['paymentName'] = '';
-		$prices['paymentTax'] = 0;
+		$this->_cartPrices['payment'] = 0; //could be automatically set to a default set in the globalconfig
+		$this->_cartPrices['paymentName'] = '';
+		$this->_cartPrices['paymentTax'] = 0;
 		
 		
-		$prices['couponName'] = 'Coupon Number 777';
-		$prices['couponTax'] = '';
-		$prices['couponValue'] = '';
-		$prices['salesPriceCoupon'] = '';
+		$this->_cartPrices['couponName'] = 'Coupon Number 777';
+		$this->_cartPrices['couponTax'] = '';
+		$this->_cartPrices['couponValue'] = '';
+		$this->_cartPrices['salesPriceCoupon'] = '';
 		
 		for ($i = 0; $i<$productIdsCount;$i++){
 			$productId = $cart[$i]['product_id'];
 			$variantmod = $this->parseModifier($cart[$i]['variants']);
 			$pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$cart[$i]['quantity']);	
-			$prices[] = $pricesPerId[(int)$productId];
+			$this->_cartPrices[] = $pricesPerId[(int)$productId];
 
-			$prices['basePrice'] = $prices['basePrice'] + $pricesPerId[$productId]['basePrice']*$cart[$i]['quantity'];
-//				$prices['basePriceVariant'] = $prices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$cart[$i]['quantity'];
-			$prices['basePriceWithTax'] = $prices['basePriceWithTax'] + $pricesPerId[$productId]['basePriceWithTax']*$cart[$i]['quantity'];
-			$prices['discountedPriceWithoutTax'] = $prices['discountedPriceWithoutTax'] + $pricesPerId[$productId]['discountedPriceWithoutTax']*$cart[$i]['quantity'];
-			$prices['salesPrice'] = $prices['salesPrice'] + $pricesPerId[$productId]['salesPrice']*$cart[$i]['quantity'];
-			$prices['taxAmount'] = $prices['taxAmount'] + $pricesPerId[$productId]['taxAmount']*$cart[$i]['quantity'];
-			$prices['salesPriceWithDiscount'] = $prices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$cart[$i]['quantity'];
-			$prices['discountAmount'] = $prices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$cart[$i]['quantity'];
-			$prices['priceWithoutTax'] = $prices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$cart[$i]['quantity'];
+			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $pricesPerId[$productId]['basePrice']*$cart[$i]['quantity'];
+//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$cart[$i]['quantity'];
+			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $pricesPerId[$productId]['basePriceWithTax']*$cart[$i]['quantity'];
+			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $pricesPerId[$productId]['discountedPriceWithoutTax']*$cart[$i]['quantity'];
+			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $pricesPerId[$productId]['salesPrice']*$cart[$i]['quantity'];
+			$this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $pricesPerId[$productId]['taxAmount']*$cart[$i]['quantity'];
+			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$cart[$i]['quantity'];
+			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$cart[$i]['quantity'];
+			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$cart[$i]['quantity'];
 			
 		}
 
@@ -321,25 +322,31 @@ class calculationHelper{
 		$shippingRateId=0;
 		if(!empty($cart['shipping_rate_id'])) $shippingRateId= $cart['shipping_rate_id'];
 		
-		$prices = $this->calculateShipmentPrice($prices, $shippingRateId);
+		$this->calculateShipmentPrice($shippingRateId);
 		
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
 		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
+		
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
 		
 		
 		
-		$prices['discountBeforeTax']=$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['salesPrice']));
-		$toTax = !empty($prices['discountBeforeTax']) ? $prices['discountBeforeTax']:$prices['salesPrice'];
+		$this->_cartPrices['discountBeforeTax']=$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this->_cartPrices['salesPrice']));
+		$toTax = !empty($this->_cartPrices['discountBeforeTax']) ? $this->_cartPrices['discountBeforeTax']:$this->_cartPrices['salesPrice'];
 
-		$prices['withTax']=$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax));
-		$toDisc = !empty($prices['withTax']) ? $prices['withTax']:$toTax;
+		$this->_cartPrices['withTax']=$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax));
+		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax']:$toTax;
 		
 		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $toDisc));
-		$prices['withTax']=$prices['discountAfterTax']=!empty($discountAfterTax) ?$discountAfterTax:$toDisc;
+		$this->_cartPrices['withTax']=$this->_cartPrices['discountAfterTax']=!empty($discountAfterTax) ?$discountAfterTax:$toDisc;
 
-		return $prices;
+		$paymentId=0;
+		if(!empty($cart['paym_id'])) $paymentId= $cart['paym_id'];
+
+		$this->calculatePaymentPrice($paymentId,$this->_cartPrices['withTax']);
+		
+		return $this->_cartPrices;
 	}
 
 	/**
@@ -539,34 +546,33 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @param 	$code 	The Id of the coupon
 	 * @return 	$rules 	ids of the coupons
 	 */
-	function calculateShipmentPrice($prices=0,$ship_id){
+	function calculateShipmentPrice($ship_id){
+				
+		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
+		$this->_cartPrices['shippingName'] = '';
+		$this->_cartPrices['shippingTax'] = 0;
+		$this->_cartPrices['shippingTotal'] = 0;
 		
-		if (empty($prices)) return 0;
-		
-		$prices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
-		$prices['shippingName'] = '';
-		$prices['shippingTax'] = 0;
-		$prices['shippingTotal'] = 0;
-		
-		if (empty($ship_id)) return $prices;
+		if (empty($ship_id)) return ;
 		
 //@Todo could be speed optimized
 $q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
 $this->_db->setQuery($q);
 $shipping = $this->_db->loadAssoc();
 
-		$prices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
-		$prices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];
-		$prices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
-		$prices['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
+		$this->_cartPrices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
+		$this->_cartPrices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];
+		$this->_cartPrices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
+		$this->_cartPrices['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
 
 		$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
 		$this->_db->setQuery($q);
 		$taxrules = $this->_db->loadAssocList();
 
-		$prices['shippingTax'] = self::executeCalculation($taxrules, $prices['shippingValue']);
+		$this->_cartPrices['salesPriceShipping'] = self::executeCalculation($taxrules, $this->_cartPrices['shippingValue']);
+		$this->_cartPrices['shippingTax'] = $this->_cartPrices['salesPriceShipping']-$this->_cartPrices['shippingValue'];
 		
-		return $prices;
+		return $this->_cartPrices;
 	}
 
 	/**
@@ -579,9 +585,9 @@ $shipping = $this->_db->loadAssoc();
 	 * @param	$value	$cartVendorId
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
-	function calculatePaymentPrice($code=0,$value=0.0,$cartVendorId=1){
+	function calculatePaymentPrice($paym_id=0,$value=0.0,$cartVendorId=1){
 //		if (empty($code)) return 0.0; 
-		
+
 		$code=4;
 		$paymentCosts = 0.0;
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
@@ -589,24 +595,16 @@ $shipping = $this->_db->loadAssoc();
 		$model = new VirtueMartModelPaymentmethod;
 		$model->setId($code);
 		$paym = $model->getPaym();
-//		$q= 'SELECT `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount` FROM (#__vm_payment_method p, #__vm_payment_method_shoppergroup_xref s)  WHERE '.
-//			' `p`.`paym_id` = "'.$code.'" '.
-//			' AND `p`.`published`="1" ' .
-//			' AND (`p`.`paym_vendor_id`="'.$cartVendorId.'" OR `p`.`shared`="1" ) ';
-//			if(!empty($this->_shopperGroupId)){
-////				' AND `s`.`paym_id`= "'.$this->_shopperGroupId.'" AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'" ';
-//				$q .=' AND `s`.`paym_shopper_group`= "'.$this->_shopperGroupId.'"  AND `s`.`paym_id` = "'.$code.'" ';
-//				echo 'Shoppergruppe: '.$this->_shopperGroupId;
-//			}
-//		$this->_db->setQuery($q);
-//		$paymFields = $this->_db->loadAssocList();
-//		echo 'hmm '.print_r($paymFields);
-//		$discmax = 0.0;
-//		if(isset($paymFields['discount_max_amount'])) $discmax = $paymFields['discount_max_amount'];
-//		if(isset($paymFields['discount_min_amount'])) $discmin = $paymFields['discount_min_amount'];
 
+		$this->_cartPrices['paymentValue'] = $paym->paym_name;
+		$this->_cartPrices['paymentName'] = $paym->paym_name;
+		$this->_cartPrices['paymentTax'] = 0;
+		$this->_cartPrices['paymentdiscount'] = 0;
+		$this->_cartPrices['paymentTotal'] = 0;
+		
+		echo '<pre>'.print_r($paym).'</pre>';
 		if(!empty($paym->discount)){
-			echo '<br />$paymFields->discount is NOT empty';
+//			echo '<br />$paymFields->discount is NOT empty';
 			
 			$discmax = $paym->discount_max_amount;
 			$discmin = $paym->discount_min_amount;
@@ -614,17 +612,19 @@ $shipping = $this->_db->loadAssoc();
 			if($discmin <= $value){
 				if(isset($paym->discount_max_amount) && $value<=$paym->discount_max_amount){
 					if($paym->discount_is_percentage){
-						$paymentCosts = $value * (1 -$paym->discount/100);
+						$this->_cartPrices['paymentdiscount'] = $value * (1 -$paym->discount/100);
 					}else{
-						$paymentCosts = $value - $paym->discount;
+						$this->_cartPrices['paymentdiscount'] = $value - $paym->discount;
 					}
 				}
 			}
 		} else {
-			echo '<br />$paymFields->discount was EMPTY'; 
+//			echo '<br />$paymFields->discount was EMPTY'; 
 		}
 		
-		return $paymentCosts;
+		$this->_cartPrices['salesPricePayment'] = $this->_cartPrices['paymentValue'] + $this->_cartPrices['paymentTax'];
+		
+		return $this->_cartPrices;
 	}
 			
 	/**
