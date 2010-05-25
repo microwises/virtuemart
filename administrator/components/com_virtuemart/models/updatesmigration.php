@@ -193,6 +193,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	$fields['user_id'] =  $userId;
 	$fields['address_type'] =  "BT";
+	// Don't change this company name; it's used in install_sample_data.sql
 	$fields['company'] =  "Washupito's the User";
 	$fields['title'] =  "Sire";
 	$fields['last_name'] =  "upito";
