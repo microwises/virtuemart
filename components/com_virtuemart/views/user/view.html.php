@@ -66,7 +66,7 @@ class VirtuemartViewUser extends JView {
 			$vendor = new Vendor;
 		}
 
-		$_new = ($userDetails->JUser->get('id') < 1);
+		$_new = ($_currentUser->get('id') < 1);
 
 		// User details
 		$_contactDetails = $model->getContactDetails();
@@ -205,7 +205,7 @@ class VirtuemartViewUser extends JView {
 			$_paneOffset = array();
 		} else {
 			// Contains 0 for new, otherwise a user_info_id
-			$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
+			$_shipto = $model->getUserAddress($$_currentUser->get('id'), $_shipto_id, 'ST');
 			if (__VM_USER_USE_SLIDERS) {
 				$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
 			} else {
@@ -241,7 +241,13 @@ class VirtuemartViewUser extends JView {
 		// Check for existing orders for this user
 		$orders = $this->getModel('orders');
 
-		$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+		if ($_currentUser->get('id') == 0) {
+			// getOrdersList() returns all orders when no userID is set (admin function),
+			// so explicetly define an empty array when not logged in. 
+			$orderList = array();
+		} else {
+			$orderList = $orders->getOrdersList($_currentUser->get('id'), true);
+		}
 
 
 		

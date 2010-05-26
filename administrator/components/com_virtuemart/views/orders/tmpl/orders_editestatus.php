@@ -1,3 +1,7 @@
+<!-- 
+	File is obsolete; renamed to orders_editstatus.php
+ -->
+
 <br />
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <table class="admintable" width="100%">

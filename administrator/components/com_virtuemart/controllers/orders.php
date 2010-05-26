@@ -80,7 +80,9 @@ class VirtuemartControllerOrders extends JController {
 
 		/* Default model */
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-
+		/* Additional models */
+		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
+		
 		/* Set the layout */
 		$view->setLayout('orders_edit');
 
@@ -97,9 +99,6 @@ class VirtuemartControllerOrders extends JController {
 
 		/* Default model */
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-
-		/* Set the layout */
-		$view->setLayout('orders_editstatus');
 
 		/* Now display the view. */
 		$view->display();
@@ -242,10 +241,18 @@ class VirtuemartControllerOrders extends JController {
 	 * Display the order item details for editing
 	 */
 	public function updateOrderItemStatus() {
-	    JRequest::setVar('layout', 'orders_updatestatus');
-	    JRequest::setVar('hidemenu', 1);
+//	    JRequest::setVar('layout', 'orders_updatestatus');
+//	    JRequest::setVar('hidemenu', 1);
+//
+//	    parent::display();
+		/* Create the view object */
+		$view = $this->getView('orders', 'html');
 
-	    parent::display();
+		/* Default model */
+		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
+
+		/* Now display the view. */
+		$view->display();
 	}
 
 

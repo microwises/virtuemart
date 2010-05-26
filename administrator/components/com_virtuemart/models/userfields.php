@@ -325,11 +325,12 @@ class VirtueMartModelUserfields extends JModel {
 	 *                         * published    Published fields only (default: true)
 	 *                         * required     Required fields only (default: false)
 	 *                         * delimiters   Exclude delimiters (default: false)
+	 *                         * captcha      Exclude Captcha type (default: false)
 	 *                         * system       System fields filter (no default; true: only system fields, false: exclude system fields)
 	 * @param array $_skip Array with fieldsnames to exclude. Default: array('username', 'password', 'password2', 'agreed'),
 	 *                     specify array() to skip nothing.
-	 * @return array
-	 */
+	 * @see getUserFieldsByUser()
+	 * @return array	 */
 	function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
 		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
@@ -358,6 +359,11 @@ class VirtueMartModelUserfields extends JModel {
 		if(array_key_exists('delimiters',$_switches)){
 			if ($_switches['delimiters'] === true ) {
 				$_q .= "AND type != 'delimiter' ";
+			}
+		}
+		if(array_key_exists('captcha',$_switches)){
+			if ($_switches['captcha'] === true ) {
+				$_q .= "AND type != 'captcha' ";
 			}
 		}
 		if(array_key_exists('sys',$_switches)){
@@ -402,7 +408,6 @@ class VirtueMartModelUserfields extends JModel {
 			$_fields[] = $_address_type;
 		}
 
-
 		if (!in_array('user_is_vendor', $_skip)) {
 			$_user_is_vendor = new stdClass();
 			$_user_is_vendor->fieldid = 0;
@@ -432,6 +437,14 @@ class VirtueMartModelUserfields extends JModel {
 		return $_fields;
 	}
 
+	/**
+	 * Format a userfield, e.g. translate or add JavaScript
+	 * 
+	 * @access private
+	 * @param string $_f Field type
+	 * @param string $_v Input value
+	 * @return string Formatted value
+	 */
 	private function _userFieldFormat($_f, $_v)
 	{
 		switch ($_f) {
@@ -440,7 +453,7 @@ class VirtueMartModelUserfields extends JModel {
 				if (substr($_v, 0, 1) == '_') {
 					$_v = substr($_v, 1);
 				}
-				$_r = JText::_($_v);
+				$_r = (JText::_($_v)?JText::_($_v):$_v);
 				if( $_f == 'title') {
 					break;
 				}
@@ -462,6 +475,7 @@ class VirtueMartModelUserfields extends JModel {
 	/**
 	 * Return an array with userFields in several formats.
 	 * 
+	 * @access public
 	 * @param $_selection An array, as returned by getuserFields(), with fields that should be returned.
 	 * @param $_userData Array with userdata holding the values for the fields
 	 * @param $_prefix string Optional prefix for the formtag name attribute
@@ -490,6 +504,48 @@ class VirtueMartModelUserfields extends JModel {
 	 *                      [...]
 	 *                   )
 	 * )
+	 * @example This example illustrates the use of this function. For additional examples, see the Order view
+	 * and the User view in the administrator section.
+	 *   // In the controller, make sure this model is loaded.
+	 *   // In view.html.php, make the following calls:
+	 *   $_usrDetails = getUserDetailsFromSomeModel(); // retrieve an user_info record, eg from the usermodel or ordermodel
+	 *   $_usrFieldList = $userFieldsModel->getUserFields(
+	 *                    'registration'
+	 *                  , array() // Default switches
+	 *                  , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+	 *    );
+	 *   $usrFieldValues = $userFieldsModel->getUserFieldsByUser(
+	 *                      $_usrFieldList
+	 *                     ,$_usrDetails
+	 *   );
+	 *   $this->assignRef('userfields', $userfields);
+	 *   // In the template, use code below to display the data. For an extended example using
+	 *   // delimiters, JavaScripts and StyleSheets, see the edit_shopper.php in the user view
+	 *   <table class="admintable" width="100%">
+	 *     <thead>
+	 *       <tr>
+	 *         <td class="key" style="text-align: center;"  colspan="2">
+	 *            <?php echo JText::_('Table Header') ?>
+	 *         </td>
+	 *       </tr>
+	 *     </thead>
+	 *      <?php 
+	 *        foreach ($this->shippingfields['fields'] as $_field ) {
+	 *          echo '  <tr>'."\n";
+	 *          echo '    <td class="key">'."\n";
+	 *          echo '      '.$_field['title']."\n";
+	 *          echo '    </td>'."\n";
+	 *          echo '    <td>'."\n";
+	 *          
+	 *          echo '      '.$_field['value']."\n";    // Display only
+	 *       Or:
+	 *          echo '      '.$_field['formcode']."\n"; // Input form
+	 *          
+	 *          echo '    </td>'."\n";
+	 *          echo '  </tr>'."\n";
+	 *        }
+	 *      ?>
+	 *    </table>
 	 */
 	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{

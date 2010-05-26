@@ -78,5 +78,49 @@ class TableOrders extends JTable {
 	function __construct($db) {
 		parent::__construct('#__vm_orders', 'order_id', $db);
 	}
+
+	/**
+	 * Overloaded delete() to delete records from order_user_info and order payment as well,
+	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)
+	 * 
+	 * @var integer Order id
+	 * @return boolean True on success
+	 * @author Oscar van Eijk
+	 */
+	function delete($id)
+	{
+		$this->_db->setQuery('DELETE from `#__vm_order_user_info` WHERE `order_id` = ' . $id);
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
+			return false;
+		}
+		$this->_db->setQuery('DELETE from `#__vm_order_payment` WHERE `order_id` = ' . $id);
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
+			return false;
+		}
+
+		$_q = 'INSERT INTO `#__vm_order_history` ('
+				.	' order_status_history_id'
+				.	',order_id'
+				.	',order_status_code'
+				.	',date_added'
+				.	',customer_notified'
+				.	',comments'
+				.') VALUES ('
+				.	' NULL'
+				.	','.$id
+				.	",'-'"
+				.	',NOW()'
+				.	',0'
+				.	",'Order deleted'"
+			.')';
+
+		$this->_db->setQuery($_q);
+		$this->_db->query(); // Ignore error here
+		return parent::delete($id);
+		
+	}
+	
 }
-?>
+

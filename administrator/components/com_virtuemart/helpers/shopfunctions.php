@@ -361,7 +361,7 @@ class ShopFunctions {
 	*/
 	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
 		// One below added by Oscar to find out how if calls to this function still exist.
-		die ("Invalid call to shopFunctions::getUserFields(); use the userfields model instead");
+		die ("Invalid call to shopFunctions::getUserFields(); use the userfields model instead (see the documentation in VirtueMartModelUserfields::getUserFieldsByUser() for examples)");
 		$db = JFactory::getDBO();
 		$fields = array();
 		$skipfields = self::getSkipFields();

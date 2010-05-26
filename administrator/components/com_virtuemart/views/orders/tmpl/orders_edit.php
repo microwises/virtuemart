@@ -83,7 +83,7 @@ $payment = $this->order['payment'];
 			else {
 			    echo '<td align="center">No</td>';
 			}
-			echo '<td align="center">'.$this->orderbt_event->order_status_code.'</td>';
+			echo '<td align="center">'.$this->orderstatuslist[$this->orderbt_event->order_status_code].'</td>';
 			echo "<td>".$this->orderbt_event->comments."</td>\n";
 			echo "</tr>\n";
 		    }
@@ -111,24 +111,21 @@ $payment = $this->order['payment'];
 			    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></td>
 			</tr>
 		    </thead>
-		    <?php
-		    foreach ($this->userfields['details'] as $field ) {
-			if ($field->type == 'captcha') continue;
-			?>
-		    <tr>
-			<td class="key">&nbsp;<?php echo JText::_($field->title) ? JText::_($field->title) : $field->title ?>:</td>
-			<td><?php
-				$fieldvalue = $field->name;
-				if (empty($fieldvalue) || empty($this->orderbt->$fieldvalue))
-				    echo "&nbsp;";
-				else echo $this->orderbt->$fieldvalue;
-				?>
-			</td>
-		    </tr>
-			<?php
-		    }
-		    ?>
-		</table>
+
+		<?php 
+			foreach ($this->userfields['fields'] as $_field ) {
+				echo '		<tr>'."\n";
+				echo '			<td class="key">'."\n";
+				echo '				'.$_field['title']."\n";
+				echo '			</td>'."\n";
+				echo '			<td>'."\n";
+				echo '				'.$_field['value']."\n";
+				echo '			</td>'."\n";
+				echo '		</tr>'."\n";
+			}
+		?>
+
+	</table>
 	    </td>
 	    <td width="50%" valign="top">
 		<table class="admintable" width="100%">
@@ -137,22 +134,20 @@ $payment = $this->order['payment'];
 			    <td class="key" style="text-align: center;"  colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></td>
 			</tr>
 		    </thead>
-		    <?php
-		    foreach ($this->shippingfields['details'] as $field ) {
-			?>
-		    <tr>
-			<td class="key">&nbsp;<?php echo JText::_($field->title) ? JText::_($field->title) : $field->title ?>:</td>
-			<td><?php
-				$fieldvalue = $field->name;
-				if (empty($fieldvalue) || empty($this->orderst->$fieldvalue))
-				    echo "&nbsp;";
-				else echo $this->orderst->$fieldvalue;
-				?>
-			</td>
-		    </tr>
-			<?php
-		    }
-		    ?>
+
+		<?php 
+			foreach ($this->shippingfields['fields'] as $_field ) {
+				echo '		<tr>'."\n";
+				echo '			<td class="key">'."\n";
+				echo '				'.$_field['title']."\n";
+				echo '			</td>'."\n";
+				echo '			<td>'."\n";
+				echo '				'.$_field['value']."\n";
+				echo '			</td>'."\n";
+				echo '		</tr>'."\n";
+			}
+		?>
+
 		</table>
 	    </td>
 	</tr>
@@ -175,7 +170,7 @@ $payment = $this->order['payment'];
 			</tr>
 		    </thead>
 		    <?php
-		    foreach ($items as $item) { 	
+		    foreach ($items as $item) {
 		    ?>
 		    <tr valign="top">
 			<td>
@@ -194,7 +189,7 @@ $payment = $this->order['payment'];
 			<td align="center">
 			    <?php $statusLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&tmpl=component&task=updateOrderItemStatus'); ?>
 			    <a href="<?php echo $statusLink; ?>" class="modal">
-					<?php echo $item->order_status; ?>
+					<?php echo $this->orderstatuslist[$item->order_status]; ?>
 			    </a>
 			</td>
 			<td><?php echo $item->product_item_price; ?></td>
