@@ -75,8 +75,8 @@ function myValidator(f, t)
 	echo $this->loadTemplate('payment');
 	echo $this->pane->endPanel();
 
-//	echo $this->pane->startPanel( JText::_('VM_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipping' );
-//	echo $this->loadTemplate('shipping');
+//	echo $this->pane->startPanel( JText::_('VM_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
+//	echo $this->loadTemplate('shipto');
 //	echo $this->pane->endPanel();
 
 	if ($this->shipto != 0) {
