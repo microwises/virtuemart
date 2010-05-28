@@ -52,7 +52,7 @@ class ShopFunctions {
 	 * 
 	 * @author Max Milbers
 	 */
-	public function renderCreditCardRadioList($vendorId, $multiple = false) {
+	public function renderCreditCardList($ccId, $multiple = false) {
 
 		$model = self::getModel('creditcard');
 		$creditcards = $model->getCreditCards();
@@ -68,7 +68,7 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
 		}
-		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $vendorId );
+		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId );
 		return $listHTML;
 	}
 	

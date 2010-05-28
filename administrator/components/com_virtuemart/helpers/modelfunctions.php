@@ -55,12 +55,14 @@ class modelfunctions{
 		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
 		$db->setQuery($q);
 		$db->Query();
+		
+		if(!is_array($data)) $data=array($data);
 
 		/* Store the new categories */
-		foreach( $data as $category_id ) {
+		foreach( $data as $dataid ) {
 			$q  = 'INSERT INTO `'.$table.'` ';
 			$q .= '('.$fieldId.','.$fieldData.') ';
-			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
+			$q .= 'VALUES ("'.$id.'","'. $dataid . '")';
 			$db->setQuery($q); 
 			$db->query();
 		}

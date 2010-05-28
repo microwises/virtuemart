@@ -156,7 +156,7 @@ class calculationHelper{
 		$prices['discountedPriceWithoutTax']=$this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['basePrice']));
 		
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax'])?$prices['discountedPriceWithoutTax']:$prices['basePrice'];
-		$prices['priceBeforeTax']=$priceBeforeTax;
+		$prices['priceBeforeTax'] = $priceBeforeTax;
 		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($taxRules, $priceBeforeTax));
 		
 		$salesPrice = !empty($prices['salesPrice'])?$prices['salesPrice']:$priceBeforeTax;
@@ -170,8 +170,11 @@ class calculationHelper{
 
 		//The whole discount Amount
 //		$prices['discountAmount'] = $this->roundDisplay($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
-		$basePriceWithTax = !empty($prices['basePriceWithTax'])?$prices['basePriceWithTax']:$prices['basePrice'];
-		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
+		$basePriceWithTax = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
+		
+		//changed
+//		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
+		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $prices['salesPrice']);
 		
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
 //		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
@@ -190,46 +193,6 @@ class calculationHelper{
 		return $prices;
 	}
 
-	/**
-	 * Load the currency object
-	 * @access private
-	 * @author Oscar van Eijk
-	 * @return object
-	 * 
-	 */
-	private function _getCurrencyObject()
-	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
-		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
-			$module_filename = VM_CURRENCY_CONVERTER_MODULE;
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
-			if( class_exists( $module_filename )) {
-				$_currency = new $module_filename();
-			}
-		} else {
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-			$_currency = new convertECB();
-		}
-		return $_currency;
-	}
-
-	/**
-	 * Load the currency display object
-	 * @access private
-	 * @author Oscar van Eijk
-	 * @return object
-	 */
-	public function getCurrencyDisplayObject()
-	{
-		$_mainVendor = 1;
-		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
-		if(!empty($_vendorFields)){
-			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
-		}
-		return $_currencyDisplay;
-	}
 
 	/** function to start the calculation, here it is for the invoice in the checkout
 	 * This function is partly implemented !
@@ -239,6 +202,8 @@ class calculationHelper{
 	 * 
 	 * Then simular to getProductPrices first the effecting rules are determined and calculated.
 	 * Ah function to determine the coupon that effects the calculation is already implemented. But not completly in the calculation.
+	 * 
+	 * 		Subtotal + Tax + Discount =	Total
 	 * 
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
@@ -316,35 +281,46 @@ class calculationHelper{
 		$this ->_deliveryCountry;
 		$this ->_deliveryState;
 	
-		$dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
+		$this->_cartPrices['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 
-		$shippingRateId=0;
-		if(!empty($cart['shipping_rate_id'])) $shippingRateId= $cart['shipping_rate_id'];
+		$shippingRateId = empty($cart['shipping_rate_id']) ? 0 : $cart['shipping_rate_id'];
 		
 		$this->calculateShipmentPrice($shippingRateId);
 		
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
-		$taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
-		$dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
+		$this->_cartPrices['taxRulesBill'] = $taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
+		$this->_cartPrices['dATaxRulesBill'] = $dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 		
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
-		
-		
-		
-		$this->_cartPrices['discountBeforeTax']=$discountBeforeTax = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this->_cartPrices['salesPrice']));
-		$toTax = !empty($this->_cartPrices['discountBeforeTax']) ? $this->_cartPrices['discountBeforeTax']:$this->_cartPrices['salesPrice'];
 
+		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundDisplay($this -> executeCalculation($dBTaxRules, $this->_cartPrices['salesPrice']));
+		$toTax = !empty($this->_cartPrices['discountBeforeTaxBill']) ? $this->_cartPrices['discountBeforeTaxBill']:$this->_cartPrices['salesPrice'];
+		
+		//We add the price of the Shipment before the tax. The tax per bill is meant for all services. In the other case people should use taxes per
+		//  product or method
+		$toTax = $toTax + $this->_cartPrices['salesPriceShipping'];
+		
 		$this->_cartPrices['withTax']=$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax']:$toTax;
-		
+
+
 		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $toDisc));
 		$this->_cartPrices['withTax']=$this->_cartPrices['discountAfterTax']=!empty($discountAfterTax) ?$discountAfterTax:$toDisc;
 
-		$paymentId=0;
-		if(!empty($cart['paym_id'])) $paymentId= $cart['paym_id'];
+		$paymentId = empty($cart['paym_id']) ? 0 : $cart['paym_id'];
+		$creditId = empty($cart['creditcard_id']) ? 0 : $cart['creditcard_id'];
 
-		$this->calculatePaymentPrice($paymentId,$this->_cartPrices['withTax']);
+		$this->calculatePaymentPrice($paymentId,$creditId,$this->_cartPrices['withTax']);
+		
+		$this->_cartPrices['billSub']  = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
+		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['paymentDiscount'];
+		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax;
+		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
+		
+//		echo '<br />The prices:<br />';
+//		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
+		
 		
 		return $this->_cartPrices;
 	}
@@ -355,7 +331,7 @@ class calculationHelper{
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @param 		$rules 		The Ids of the products
-	 * @param 		$price 		The input price, if no rule is affecting the price just gets returned
+	 * @param 		$price 		The input price, if no rule is affecting, 0 gets returned
 	 * @return int 	$price  	the endprice	
 	 */
 	function executeCalculation($rules, $price){
@@ -365,7 +341,10 @@ class calculationHelper{
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
+				$this->_cartPrices[$rule['calc_id'].'Cin']=$price;
 				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$price,$rule['calc_currency']);
+				$this->_cartPrices[$rule['calc_id'].'Cout']=$this->roundDisplay($price);
+				$this->_cartPrices[$rule['calc_id'].'Diff']= $this->roundDisplay($this->_cartPrices[$rule['calc_id'].'Cout'] - $this->_cartPrices[$rule['calc_id'].'Cin']);
 if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
 			}
 		}
@@ -548,11 +527,11 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	function calculateShipmentPrice($ship_id){
 				
-		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingName'] = '';
+		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingTax'] = 0;
 		$this->_cartPrices['shippingTotal'] = 0;
-		
+		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
 		
 //@Todo could be speed optimized
@@ -569,8 +548,13 @@ $shipping = $this->_db->loadAssoc();
 		$this->_db->setQuery($q);
 		$taxrules = $this->_db->loadAssocList();
 
-		$this->_cartPrices['salesPriceShipping'] = self::executeCalculation($taxrules, $this->_cartPrices['shippingValue']);
-		$this->_cartPrices['shippingTax'] = $this->_cartPrices['salesPriceShipping']-$this->_cartPrices['shippingValue'];
+		if(count($taxrules)>0){
+			$this->_cartPrices['salesPriceShipping'] = self::roundDisplay(self::executeCalculation($taxrules, $this->_cartPrices['shippingValue']));
+			$this->_cartPrices['shippingTax'] = self::roundDisplay($this->_cartPrices['salesPriceShipping'])-$this->_cartPrices['shippingValue'];			
+		} else {
+			$this->_cartPrices['salesPriceShipping'] = $this->_cartPrices['shippingValue'];
+			$this->_cartPrices['shippingTax'] = 0;
+		}
 		
 		return $this->_cartPrices;
 	}
@@ -585,36 +569,41 @@ $shipping = $this->_db->loadAssoc();
 	 * @param	$value	$cartVendorId
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
-	function calculatePaymentPrice($paym_id=0,$value=0.0,$cartVendorId=1){
+	function calculatePaymentPrice($paym_id=0,$cc_id=0,$value=0.0,$cartVendorId=1){
 //		if (empty($code)) return 0.0; 
 
-		$code=4;
+//		$code=4;
 		$paymentCosts = 0.0;
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
 
 		$model = new VirtueMartModelPaymentmethod;
-		$model->setId($code);
+		$model->setId($paym_id);
 		$paym = $model->getPaym();
 
-		$this->_cartPrices['paymentValue'] = $paym->paym_name;
 		$this->_cartPrices['paymentName'] = $paym->paym_name;
+		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
-		$this->_cartPrices['paymentdiscount'] = 0;
-		$this->_cartPrices['paymentTotal'] = 0;
+		$this->_cartPrices['paymentDiscount'] = 0;
+//		$this->_cartPrices['paymentTotal'] = 0;
 		
-		echo '<pre>'.print_r($paym).'</pre>';
+//		echo '<pre>'.print_r($paym).'</pre>';
 		if(!empty($paym->discount)){
-//			echo '<br />$paymFields->discount is NOT empty';
 			
-			$discmax = $paym->discount_max_amount;
-			$discmin = $paym->discount_min_amount;
-			//This must be secured and handled before the checkout can be finished
-			if($discmin <= $value){
-				if(isset($paym->discount_max_amount) && $value<=$paym->discount_max_amount){
+			if($paym->discount>0){
+				$toggle = 'paymentDiscount';
+			} else {
+				$toggle = 'paymentValue';
+			}
+			
+			if($paym->discount_min_amount <= $value){
+				
+				if($paym->discount_max_amount == 0 || $value <=$paym->discount_max_amount){
+					
+					//Attention the minus is due the strange logic by entering discount instead of a fee, maybe changed, but later
 					if($paym->discount_is_percentage){
-						$this->_cartPrices['paymentdiscount'] = $value * (1 -$paym->discount/100);
+						$this->_cartPrices[$toggle] = - $value * ($paym->discount/100);
 					}else{
-						$this->_cartPrices['paymentdiscount'] = $value - $paym->discount;
+						$this->_cartPrices[$toggle] = - $paym->discount;
 					}
 				}
 			}
@@ -622,7 +611,12 @@ $shipping = $this->_db->loadAssoc();
 //			echo '<br />$paymFields->discount was EMPTY'; 
 		}
 		
-		$this->_cartPrices['salesPricePayment'] = $this->_cartPrices['paymentValue'] + $this->_cartPrices['paymentTax'];
+		//Strange thing here, yes. The amount to pay for the payment is solved via the discount.
+		//a negative discount is like a payment method which costs
+//		$this->_cartPrices['paymentValue'] = $this->_cartPrices['paymentDiscount'];
+		$this->_cartPrices['salesPricePayment'] = self::roundDisplay($this->_cartPrices[$toggle] + $this->_cartPrices['paymentTax']);
+		
+//		echo '<pre>'.print_r($this->_cartPrices[$toggle]).'</pre>';
 		
 		return $this->_cartPrices;
 	}
@@ -866,4 +860,46 @@ $shipping = $this->_db->loadAssoc();
 			return max($max);
 		}
 	}
+	
+		/**
+	 * Load the currency object
+	 * @access private
+	 * @author Oscar van Eijk, Max Milbers
+	 * @return object
+	 * 
+	 */
+	private function _getCurrencyObject()
+	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+			$module_filename = VM_CURRENCY_CONVERTER_MODULE;
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
+			if( class_exists( $module_filename )) {
+				$_currency = new $module_filename();
+			}
+		} else {
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			$_currency = new convertECB();
+		}
+		return $_currency;
+	}
+
+	/**
+	 * Load the currency display object
+	 * @access private
+	 * @author Oscar van Eijk, Max Milbers
+	 * @return object
+	 */
+	public function getCurrencyDisplayObject()
+	{
+		$_mainVendor = 1;
+		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
+		if(!empty($_vendorFields)){
+			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
+		}
+		return $_currencyDisplay;
+	}
+	
 }

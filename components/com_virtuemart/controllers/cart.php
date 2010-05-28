@@ -147,6 +147,9 @@ class VirtueMartControllerCart extends JController {
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		$view->setLayout('selectpayment');
+
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);
 		
 		/* Display it all */
 		$view->display();
@@ -161,13 +164,15 @@ class VirtueMartControllerCart extends JController {
 		
 		/* Get the payment id of the cart */
 		$paym_id = JRequest::getVar('paym_id', '0');
+		$cc_id = JRequest::getVar('creditcard', '0');
 		
 		if($paym_id){
 			//Now set the shipping rate into the cart
 			$cart = cart::getCart();
 			if($cart){
 				//Some Paymentmethods needs extra Information like
-				$cart['payment_id']=$paym_id;
+				$cart['paym_id']=$paym_id;
+				$cart['creditcard_id']=$cc_id;
 				cart::setCart($cart);
 			}		
 		}

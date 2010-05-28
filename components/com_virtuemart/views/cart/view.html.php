@@ -54,7 +54,13 @@ class VirtueMartViewCart extends JView {
 			
 		} else if($layoutName=='selectpayment'){
 			//For the selection of the payment method we need the total amount to pay.
+			$paymentModel = $this->getModel('paymentmethod');
 			
+			$selected = empty($cart['paym_id']) ? 0 : $cart['paym_id'];
+			$selectedCC = empty($cart['creditcard_id']) ? 0 : $cart['creditcard_id'];
+			$payments = $paymentModel->renderPaymentList($selected,$selectedCC);
+			
+			$this->assignRef('payments',$payments);
 		} else {
 			
 		/* Add the cart title to the pathway */

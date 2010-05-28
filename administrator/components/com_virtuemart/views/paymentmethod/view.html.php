@@ -75,11 +75,12 @@ class VirtuemartViewPaymentMethod extends JView {
 			}
 
 			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
-			
-			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->paym_creditcards));
 
-			$shopperGroupList= ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups);
-			$this->assignRef('shopperGroupList', $shopperGroupList);
+//			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->paym_creditcards));
+//			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
+			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->paym_creditcards,true));
+
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups));
 
 			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id,True,'vendor_id');
 			$this->assignRef('vendorList', $vendorList);
@@ -91,19 +92,19 @@ class VirtuemartViewPaymentMethod extends JView {
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	
-	
+
 			$pagination = $model->getPagination();			
 			$this->assignRef('pagination',	$pagination);	
-			
+
 			$payms = $model->getPayms();
 			$this->assignRef('payms',	$payms);
-		
+
 		}
 
 		parent::display($tpl);
 	}
 
-	
+
 	/**
 	 * Builds a list to choose the Payment type
 	 * 
@@ -137,52 +138,16 @@ class VirtuemartViewPaymentMethod extends JView {
 		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
 		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
 		);
-		$listHTML='<div id="paymList">';
-//		$listHTML='';
+//		$listHTML='<div id="paymList">';
+		$listHTML='';
 		foreach($list as $item){
-			if(!strcmp($item['paym_type'],$selected)) $checked='checked="checked"'; else $checked='';
-			if($item['paym_type']=='Y') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
+			if($item['paym_type']==$selected) $checked='checked="checked"'; else $checked='';
+			if($item['paym_type']=='Y' || $item['paym_type']=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
 			$listHTML .= '<input id="'.$id.'" type="radio" name="paym_type" value="'.$item['paym_type'].'" '.$checked.'>'.$item['paym_type_name'].' <br />';
 		}
-		$listHTML .= '</div>';
+//		$listHTML .= '</div>';
 //		echo $listHTML;die;
 		return $listHTML;
-	}
-	
-	/**
-	 * function to create a div to show the creditcardlist, is necessary for JS
-	 * 
-	 * @author Max Milbers
-	 * 
-	 * @param string name of the price
-	 * @param String description key
-	 * @param array the prices of the product
-	 * return a div for prices which is visible according to config and have all ids and class set
-	 */
-//	public function createCreditList($name,$description,$product_price){
-	public function renderCreditCardRadioList($selected){
-		
-		if(!is_array($selected)) $selected=array($selected);
-		
-		$model = self::getModel('creditcard');
-		$creditcards = $model->getCreditCards();
-		
-		
-		$vis = "none";
-		$listHTML='<div id=creditcardlist style="display : '.$vis.';" >';
-//		$listHTML='';
-		foreach($creditcards as $item){
-			$checked='';
-			foreach($selected as $select){
-				if(!strcmp($item->creditcard_id,$select)){					
-					$checked='"checked"';
-				}
-			}
-			$listHTML .= '<input type="radio" name="creditcard" value="'.$item->creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
-		}
-		$listHTML .= '</div>';
-		return $listHTML;
-		
 	}
 	
 }

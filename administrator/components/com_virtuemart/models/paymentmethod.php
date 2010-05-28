@@ -192,9 +192,19 @@ class VirtueMartModelPaymentmethod extends JModel
 
 		$db = JFactory::getDBO();
 		if(isset($this->_data)){
+			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 			foreach ($this->_data as $data){
-
+				/* Add the paymentmethod shoppergroups */
+				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+				$db->setQuery($q);
+				$data->paym_shopper_groups = $db->loadResultArray();
+		
+				/* Add the accepted credit cards */
+				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+				$db->setQuery($q);
+				$data->paym_creditcards = $db->loadResultArray();
+				
 				/* Write the first 5 shoppergroups in the list */
 $data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
 				
@@ -218,8 +228,9 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	{
 		$table = $this->getTable('payment_method');
 
-		$data = JRequest::get('post');		
+		$data = JRequest::get('post');
 
+//		echo '<pre>'.print_r($data).'</prev>';die;
 		if(isset($data['params'])){
 			$db = JFactory::getDBO();
 			$params = new JParameter('');
@@ -230,26 +241,28 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());
+			$this->setError('Table bind didnt worked');
 			return false;
 		}
 
 		// Make sure the calculation record is valid
 		if (!$table->check()) {
 			$this->setError($table->getError());
+			$this->setError('Table check didnt worked');
 			return false;	
 		}
 		
-		// Save the country record to the database
-		if ($table->store()) {
+		// Save the record to the database
+		if (!$table->store()) {
 			$this->setError($table->getError());
+			$this->setError('Table store didnt worked');
 			return false;
 		}
 
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
-		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['paym_accepted_credit_card']);
-     
-     	die;
+		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
+
 		return true;
 	}	
 
@@ -315,16 +328,7 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','payment_method',$publishId);
-		
-//		$table = $this->getTable('payment_method');
-//		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
-//		
-//        if (!$table->publish($calcIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;        		
-//        }		
-//        
-//		return true;		
+
 	}	
 
 	
@@ -404,4 +408,71 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		return ($publish ? 1 : -1);		
 	}
 	
+	
+	
+	public function renderPaymentList($selectedPaym=0,$selecedCC=0){
+		
+		$payms = self::getPayms(false,true);
+		$listHTML='';
+		foreach($payms as $item){
+			$checked='';
+			if($item->paym_id==$selectedPaym){					
+				$checked='"checked"';
+			}
+			$listHTML .= '<input type="radio" name="paym_id" value="'.$item->paym_id.'" '.$checked.'>'.$item->paym_name.' <br />';
+			if($item->paym_creditcards){
+				$listHTML .= self::renderCreditCardRadioList($selecedCC,$item->paym_creditcards);
+			}
+			$listHTML .= ' <br />';
+		}
+		
+		return $listHTML;
+		
+	}
+	
+	/**
+	 * function to render the creditcardlist
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param string name of the price
+	 * return 
+	 */
+
+	public function renderCreditCardRadioList($selected,$creditcards=0){
+		
+		if(!$creditcards){
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
+			$creditcards = new VirtueMartModelCreditcard();			
+		} else {
+			$creditcards = self::getPaymentAcceptedCreditCards($creditcards);	
+		}
+
+
+		$listHTML='';
+		foreach($creditcards as $item){
+			$checked='';
+//			foreach($selected as $select){
+				if($item->creditcard_id==$selected){					
+					$checked='"checked"';
+				}
+//			}
+			$listHTML .= '<input type="radio" name="creditcard" value="'.$item->creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
+		}
+		return $listHTML;
+	}
+	
+	function getPaymentAcceptedCreditCards($creditcards){
+
+		$query = 'SELECT * FROM `#__vm_creditcard` ';
+
+		$query .= 'WHERE ';
+		foreach($creditcards as $ccard){
+			$query .= '`creditcard_id`= "'.$ccard.'" OR ';
+		}
+		$query .= ' `creditcard_id`= "0"';
+		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
+		$data = $this->_getList($query);
+		return $data;
+	}
 }

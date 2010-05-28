@@ -86,19 +86,12 @@ else {
 			/* Product PRICE */
 			/** @todo Format price */
 			$product_rows[$i]['product_price'] = $this->prices[$i]['salesPrice'];
-	
-			/* SUBTOTAL CALCULATION */
-			$subtotal = $this->prices[$i]['priceWithoutTax'] * $this->cart[$i]['quantity'];
-			$subtotal_tax_amount = $this->prices[$i]['taxAmount'] * $this->cart[$i]['quantity'];
-			$subtotal_discount_amount = $this->prices[$i]['discountAmount'] * $this->cart[$i]['quantity'];
-			$subtotal_with_tax = $this->prices[$i]['salesPrice'] * $this->cart[$i]['quantity'];
-	
 
 			/** @todo Format price */
-			$product_rows[$i]['subtotal'] = $subtotal;
-			$product_rows[$i]['subtotal_tax_amount'] = $subtotal_tax_amount;
-			$product_rows[$i]['subtotal_discount_tax'] = $subtotal_discount_amount;
-			$product_rows[$i]['subtotal_with_tax'] = $subtotal_with_tax;
+			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $this->cart[$i]['quantity'];
+			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $this->cart[$i]['quantity'];
+			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $this->cart[$i]['quantity'];
+			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $this->cart[$i]['quantity'];
 			
 			// UPDATE CART / DELETE FROM CART
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
@@ -271,7 +264,7 @@ else {
 				</td>
 				<td colspan="1" align="right"><?php echo $product['subtotal'] ?></td>
 				<td align="right"><?php echo $product['subtotal_tax_amount'] ?></td>
-				<td align="right"><?php echo $product['subtotal_discount_tax'] ?></td>			
+				<td align="right"><?php echo $product['subtotal_discount'] ?></td>			
 				<td colspan="1" align="right"><?php echo $product['subtotal_with_tax'] ?></td>
 			</tr>
 		<?php } ?>
@@ -287,10 +280,21 @@ else {
 			<td align="right"><?php echo $this->prices['discountAmount'] ?></td>
 			<td align="right"><?php echo $this->prices['salesPrice'] ?></td>
 		  </tr>
-		  
 
+		<?php 
+		foreach($this->prices['dBTaxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+				<td> </td>
+				<td align="right"><?php  ?> </td>
+				<td align="right"><?php echo -$this->prices[$rule['calc_id'].'Diff'];  ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php 
+			if($i) $i=1; else $i=0;
+		}
 		  
-		<?php if($this->prices['coupons']){ 
+		if($this->prices['coupons']){ 
 			$couponlink = JRoute::_('index.php?view=user&task=editcoupon'); ?> 
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
@@ -316,31 +320,49 @@ else {
 		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
-				<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> 
+			<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
+				<td colspan="2" align="left"><?php echo $this->prices['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentTax']; ?> </td>	
-				<td align="right"><?php echo $this->prices['paymentdiscount']; ?></td>
-				<td align="right"><?php  echo $this->prices['salesPricePayment']; ?> </td>		</tr>
-		<?php if($this->prices['paymentTax']) { ?>
-		  	<tr class="sectiontableentry2">
-				<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_TAX') ?> </td> 
-				<td colspan="4" align="right"><?php echo $this->prices['paymentTax'] ?> </td>		  		
-			</tr>		
-		<?php }
-		if($this->prices['duty']) { ?>
-		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_DUTY') ?> </td> 
-			<td colspan="4" align="right"><?php echo $this->prices['duty'] ?> </td>
-		  </tr>
-		<?php } ?>
-	
+				<td align="right"><?php echo $this->prices['paymentDiscount']; ?></td>
+				<td align="right"><?php  echo $this->prices['salesPricePayment']; ?> </td>				  		
+			</tr>
+		<?php 
+		
+		foreach($this->prices['taxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+				<td> </td>
+				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff']; ?> </td>
+				<td align="right"><?php    ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php 
+			if($i) $i=1; else $i=0;
+		} 
+		
+		foreach($this->prices['dATaxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+				<td> </td>
+				<td align="right"><?php  ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php 
+			if($i) $i=1; else $i=0;
+		} ?>
+		
 		  <tr>
 			<td colspan="4">&nbsp;</td>
 			<td colspan="4"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
 			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?>: </td>
-			<td colspan="4" align="right"><strong><?php echo $this->prices['withTax'] ?></strong></td>
+			<td align="right"> <?php echo $this->prices['billSub'] ?> </td>
+			<td align="right"> <?php echo $this->prices['billTaxAmount'] ?> </td>
+			<td align="right"> <?php echo $this->prices['billDiscountAmount'] ?> </td>
+			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
 		<?php if ( $show_tax ) { ?>
 		  <tr class="sectiontableentry1">

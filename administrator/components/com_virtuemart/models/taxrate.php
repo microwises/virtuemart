@@ -128,7 +128,7 @@ class VirtueMartModelTaxRate extends JModel {
   			
    			$this->_data = $this->getTable('tax_rate');
    			$this->_data->load((int)$this->_id);
-   			echo print_r($this->_data);die;
+//   			echo print_r($this->_data);die;
 //  		}
 
   		if (!$this->_data) {

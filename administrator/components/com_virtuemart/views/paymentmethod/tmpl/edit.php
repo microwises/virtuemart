@@ -46,6 +46,7 @@ echo $pane->endPane();
 <?php AdminMenuHelper::endAdminArea(); ?>
 
 <script language="javascript">
+
 jQuery(document).ready(function() {
 
 	var toggler = document.getElements('#pam_type_CC_on');
@@ -61,30 +62,15 @@ jQuery(document).ready(function() {
 });
 
 function show(){
-
 	div = jQuery("#creditcardlist");
 	div.show();
-	alert('show '+div);
+	//alert('show '+div);
 }
 
 function hide(){
-alert('hide');
 	div = jQuery("#creditcardlist");
 	div.hide();
 }
-function toggleVisibility(){
-//	alert('ToggleVisibility called');
-	div = jQuery("creditcardlist");
-	span = jQuery(divname);
-	
-	if(newPrice!=0){
-		div.show();
-//		span.show();
-//		span.html(newPrice);
-	} else {
-//		span.html(0);
-		div.hide();
-//		span.hide();
-	}
-}
+
+
 </script>

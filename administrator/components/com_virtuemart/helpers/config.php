@@ -42,6 +42,7 @@ class VmConfig
 	{
 		$value = '';
 		if ($key) {
+//			VmConfig::loadConfig();
 			$session = JFactory::getSession();
 			$config = $session->get('vmconfig', '');
 			
