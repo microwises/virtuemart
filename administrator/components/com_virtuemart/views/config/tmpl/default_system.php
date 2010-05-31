@@ -111,14 +111,14 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo 'Joomla! ' . JText::_('VM_ADMIN_CFG_ALLOW_REGISTRATION'); ?>
 	    </td>
 	    <td><?php
-		if ($this->joomlaconfig->getCfg('allowUserRegistration') == '1' ) {
+		if ($this->userparams->get('allowUserRegistration') == '1' ) {
 		    echo '<span style="color:green;">'.JText::_('VM_ADMIN_CFG_YES').'</span>';
 		}
 		else {
 		    echo '<span style="color:red;font-weight:bold;">'.JText::_('VM_ADMIN_CFG_NO').'</span>';
 		}
 		$link = JROUTE::_('index.php?option=com_config');
-		echo JHTML::_('link', $link, '&nbsp;['.JText::_('VM_UPDATE').']');
+		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('VM_UPDATE').']');
 		?></td>
 	</tr>
 	<tr>
@@ -126,14 +126,14 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo 'Joomla! ' . JText::_('VM_ADMIN_CFG_ACCOUNT_ACTIVATION'); ?>
 	    </td>
 	    <td><?php
-		if ($this->joomlaconfig->getCfg('useractivation') == '0' ) {
+		if ($this->userparams->get('useractivation') == '0' ) {
 		    echo '<span style="color:green;">'.JText::_('VM_ADMIN_CFG_NO').'</span>';
 		}
 		else {
 		    echo '<span style="color:red;font-weight:bold;">'.JText::_('VM_ADMIN_CFG_YES').'</span>';
 		}
 		$link = JROUTE::_('index.php?option=com_config');
-		echo JHTML::_('link', $link, '&nbsp['.JText::_('VM_UPDATE').']');
+		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('VM_UPDATE').']');
 		?>
 	    </td>
 	</tr>
