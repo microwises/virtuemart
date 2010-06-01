@@ -28,7 +28,7 @@
 
 * other free or open source software licenses.
 
-* @version $Id: extensions.php 2227 2010-01-20 23:03:48Z SimonHodgkiss $
+* @version $Id$
 
 */
 

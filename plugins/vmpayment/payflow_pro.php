@@ -4,7 +4,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * The PayFlow Pro class, containing the payment processing code
 *  for transactions with payflowpro.verisign.com
 *
-* @version $Id: payflow_pro.php 2225 2010-01-19 23:18:41Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2007-2008 soeren - All rights reserved.

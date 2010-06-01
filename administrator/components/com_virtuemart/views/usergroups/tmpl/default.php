@@ -28,7 +28,7 @@
 
 * other free or open source software licenses.
 
-* @version $Id: default.php 2233 2010-01-21 21:21:29Z SimonHodgkiss $
+* @version $Id$
 
 */
 

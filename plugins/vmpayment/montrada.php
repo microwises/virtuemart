@@ -1,7 +1,7 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* @version $Id: montrada.php 2225 2010-01-19 23:18:41Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage Payment
 * @copyright (C) 2006 Benjamin Schirmer

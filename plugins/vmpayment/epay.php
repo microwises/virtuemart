@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id: epay.php 2281 2010-01-31 19:02:47Z Milbo $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage Payment
  * @copyright (C) 2007-2008 Thomas Knudsen

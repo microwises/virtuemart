@@ -15,7 +15,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: cart.php 2343 2010-03-31 20:03:37Z milbo $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!

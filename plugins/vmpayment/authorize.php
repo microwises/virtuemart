@@ -4,7 +4,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * The ps_authorize class, containing the payment processing code
 *  for transactions with authorize.net 
 *
-* @version $Id: authorize.php 2225 2010-01-19 23:18:41Z rolandd $
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

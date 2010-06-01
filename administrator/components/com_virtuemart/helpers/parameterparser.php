@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
-* @version $Id: parameters.class.php   $
+* @version $Id$
 * @package VirtueMart
 * @subpackage core
 * @copyright Copyright (c) 2006 Open Source Matters

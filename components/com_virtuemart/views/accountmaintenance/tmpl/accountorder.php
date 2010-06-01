@@ -14,7 +14,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: accountbilling.php 2243 2010-01-23 02:52:23Z SimonHodgkiss $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!

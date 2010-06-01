@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: accountmaintenance.php 2344 2010-04-04 23:40:42Z rolandd $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!

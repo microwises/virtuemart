@@ -7,7 +7,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * a special type of 'cash on delivey':
  * its fee depend on total sum
  *
- * @version $Id: cashondel.php 2225 2010-01-19 23:18:41Z rolandd $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
