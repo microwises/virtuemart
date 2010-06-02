@@ -192,9 +192,9 @@ $payment = $this->order['payment'];
 					<?php echo $this->orderstatuslist[$item->order_status]; ?>
 			    </a>
 			</td>
-			<td><?php echo $item->product_item_price; ?></td>
-			<td><?php echo $item->product_final_price; ?></td>
-			<td><?php echo $item->product_quantity * $item->product_final_price; ?></td>
+			<td><?php echo $this->currency->getFullValue($item->product_item_price); ?></td>
+			<td><?php echo $this->currency->getFullValue($item->product_final_price); ?></td>
+			<td><?php echo $this->currency->getFullValue($item->product_quantity * $item->product_final_price); ?></td>
 		    </tr>
 			<?php } ?>
 		</table>
@@ -209,7 +209,7 @@ $payment = $this->order['payment'];
 			</td>
 			<td align="right">
 			    <div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_subtotal; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_subtotal); ?></td>
 		    </tr>
 		    <?php
 		    /* COUPON DISCOUNT */
@@ -223,8 +223,8 @@ $payment = $this->order['payment'];
 					else echo JText::_('VM_FEE');
 					?>:</strong></td>
 			<td width="5%" align="right" style="padding-right: 5px;"><?php
-				    if ($this->orderbt->order_discount > 0 ) echo "-" . $this->orderbt->order_discount;
-				    elseif ($this->orderbt->order_discount < 0 )  echo "+" . $ordert->order_discount; ?>
+				    if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
+				    elseif ($this->orderbt->order_discount < 0 )  echo "+" . $this->currency->getFullValue($ordert->order_discount); ?>
 			</td>
 		    </tr>
 			    <?php
@@ -242,15 +242,15 @@ $payment = $this->order['payment'];
 		    }?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_tax; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_tax); ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_shipping; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->orderbt->order_shipping_tax; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping_tax); ?></td>
 		    </tr>
 		    <?php
 		    if (VmConfig::get('payment_discount_before') != '1') {
@@ -264,8 +264,8 @@ $payment = $this->order['payment'];
 			</td>
 			<td width="5%" align="right" style="padding-right: 5px;"><?php
 				    if ($this->orderbt->order_discount > 0 )
-					echo "-" . $this->orderbt->order_discount;
-				    elseif ($this->orderbt->order_discount < 0 ) echo "+".$this->orderbt->order_discount; ?>
+					echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
+				    elseif ($this->orderbt->order_discount < 0 ) echo "+".$this->currency->getFullValue($this->orderbt->order_discount); ?>
 			</td>
 		    </tr>
 			    <?php
@@ -274,7 +274,7 @@ $payment = $this->order['payment'];
 			    ?>
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
-			<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->orderbt->coupon_discount; ?></td>
+			<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->getFullValue($this->orderbt->coupon_discount); ?></td>
 		    </tr>
 			    <?php
 			}
@@ -283,7 +283,7 @@ $payment = $this->order['payment'];
 		    <tr>
 			<td align="right" colspan="7"><strong><?php echo JText::_('VM_CART_TOTAL') ?>:</strong></td>
 			<td width="5%" align="right" style="padding-right: 5px;">
-			    <strong><?php echo $this->orderbt->order_total; ?></strong>
+			    <strong><?php echo $this->currency->getFullValue($this->orderbt->order_total); ?></strong>
 			</td>
 		    </tr>
 		    <?php

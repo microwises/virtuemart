@@ -609,6 +609,7 @@ $shipping = $this->_db->loadAssoc();
 			}
 		} else {
 //			echo '<br />$paymFields->discount was EMPTY'; 
+			$toggle = 'paymentValue';
 		}
 		
 		//Strange thing here, yes. The amount to pay for the payment is solved via the discount.

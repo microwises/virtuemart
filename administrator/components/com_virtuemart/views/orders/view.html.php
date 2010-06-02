@@ -41,6 +41,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
+		$this->loadHelper('vendorhelper');
 
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
@@ -52,6 +53,20 @@ class VirtuemartViewOrders extends JView {
 			$order = $this->get('Order');
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
+
+			$_vendorData = Vendor::getVendorFields($order['details']['BT']->vendor_id, array('vendor_currency_display_style'));
+			if (!empty($_vendorData)) {
+				$_currencyDisplayStyle = Vendor::get_currency_display_style($order['details']['BT']->vendor_id
+					, $_vendorData->vendor_currency_display_style);
+				$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+					, $_currencyDisplayStyle['negative']
+				);
+			} else {
+				$currency = new CurrencyDisplay();
+			}
+			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
 					 'registration'
@@ -156,10 +171,24 @@ class VirtuemartViewOrders extends JView {
 			$orderstatuses = $this->get('OrderStatusList');
 			$this->assignRef('orderstatuses', $orderstatuses);
 
-			/* Apply currency */
-			$currencydisplay = new CurrencyDisplay();
+			/* Apply currency This must be done per order since it's vendor specific */
+			$_currencies = array(); // Save the currency data during this loop for performance reasons
 			foreach ($orderslist as $order_id => $order) {
-				$order->order_total = $currencydisplay->getValue($order->order_total);
+				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {
+					$_vendorData = Vendor::getVendorFields($order->vendor_id, array('vendor_currency_display_style'));
+					if (!empty($_vendorData)) {
+						$_currencyDisplayStyle = Vendor::get_currency_display_style($order->vendor_id
+							, $_vendorData->vendor_currency_display_style);
+						$_currencies['v'.$order->vendor_id] = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+							, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+							, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+							, $_currencyDisplayStyle['negative']
+						);
+					} else {
+						$_currencies['v'.$order->vendor_id] = new CurrencyDisplay();
+					}
+				}
+				$order->order_total = $_currencies['v'.$order->vendor_id]->getFullValue($order->order_total);
 			}
 
 			/* Get the pagination */
