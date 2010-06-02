@@ -204,6 +204,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['city'] =  "Canangra";
 	$fields['state_id'] =  "72";
 	$fields['country_id'] =  "13";
+	$fields['user_is_vendor'] =  "1";
 	if (!$this->storeSampleUserInfo($fields)) {
 	    JError::raiseNotice(1, 'Problems saving userdata of the sample store '.$this->getError());
 	}
