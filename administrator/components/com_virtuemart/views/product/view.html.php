@@ -107,7 +107,10 @@ class VirtuemartViewProduct extends JView {
 					$product->child_products = $product_model->getChildAttributes($product->product_id);
 				}
 				else $product->child_products = null;
-
+				if( empty( $product->product_available_date )) {
+					$product->product_available_date = time();
+				}
+				
 				/* Get the minimum and maximum order levels */
 				$min_order = 0;
 				$max_order = 0;

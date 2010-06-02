@@ -187,8 +187,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <script type="text/javascript">
 var tax_rates = new Array();
 <?php
-foreach( $this->taxrates as $key => $tax_rate ) {
-	echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
+if( is_array( $this->taxrates )) {
+	foreach( $this->taxrates as $key => $tax_rate ) {
+		echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
+	}
 }
 ?>
 function doRound(x, places) {

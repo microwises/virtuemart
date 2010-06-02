@@ -76,7 +76,6 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			
 			// The selected language
 			$lang =& JFactory::getLanguage();
-			$mosConfig_lang = $GLOBALS['mosConfig_lang']          = strtolower( $lang->getBackwardLang() );
 			$mosConfig_locale = $GLOBALS['mosConfig_locale']          = $lang->getTag();
 			
 			// $database is directly needed by some functions, so we need to create it here. 

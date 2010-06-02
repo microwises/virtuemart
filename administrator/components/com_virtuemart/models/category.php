@@ -154,14 +154,19 @@ class VirtueMartModelCategory extends JModel {
 		}
 
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= " AND (#__vm_category.vendor_id = ". $this->_db->Quote($vendorId) . " OR #__vm_category_xref.category_shared = '1') ";
+			$query .= " AND (c.vendor_id = ". $this->_db->Quote($vendorId) . " OR cx.category_shared = '1') ";
 		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
 		$filterOrderDir = JRequest::getCmd('filter_order_Dir', 'ASC');
-
+		// $filterOrder can still be empty at this point!
+		if( empty( $filterOrder )) {
+			$filterOrder = 'c.ordering';
+		}
+		if( empty( $filterOrderDir )) {
+			$filterOrderDir = 'ASC';
+		}
 		$query .= " ORDER BY ". $filterOrder ." ". $filterOrderDir;
-
 
 		// Set the query in the database connector
 		$this->_db->setQuery($query);

@@ -39,8 +39,8 @@ class AdminMenuHelper {
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
 
 	//loading from public site
-	$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
-	$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/vm.js');
+	$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
+	$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	?>
 <div class="vm-block vm-main-container">

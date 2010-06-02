@@ -26,7 +26,7 @@ $editor = JFactory::getEditor();
 $mainframe = JFactory::getApplication();
 
 //making images URL
-$imagesURL = $mainframe->getSiteURL().VmConfig::get('media_category_path');
+//$imagesURL = $mainframe->getSiteURL().VmConfig::get('media_category_path');
 ?>
 
 <form action="index.php" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
