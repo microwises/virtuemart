@@ -17,9 +17,36 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
+?>
+<h2><?php echo JText::_('VM_ACC_ORDER_INFO'); ?></h2>
 
-DETAILS PAGE  -- NOT YET IMPLEMENTED <br/>
-<pre>
-<?php print_r ($this->orderdetails); ?>
-</pre>
+<div style="float: left; max-width:40%; overflow: auto; padding: 0px; margin: 0px; spacing: 0px;">
+<?php
+echo $this->loadTemplate('order');
+?>
+</div>
+
+<div style="float: right; max-width:60%; overflow: auto; padding: 0px; margin: 0px; spacing: 0px;">
+<?php
+echo $this->pane->startPane("order-pane");
+
+echo $this->pane->startPanel( JText::_('VM_ORDER_HISTORY'), 'details_history' );
+echo $this->loadTemplate('history');
+echo $this->pane->endPanel();
+
+echo $this->pane->startPanel( JText::_('VM_ORDER_ITEM'), 'details_items' );
+echo $this->loadTemplate('items');
+echo $this->pane->endPanel();
+
+//echo $this->pane->startPanel( JText::_('Debug dump'), 'order_debug' );
+//echo "<pre>\n";
+//print_r ($this->orderdetails);
+//echo "</pre>\n";
+//echo $this->pane->endPanel();
+
+echo $this->pane->endPane();
+?>
+</div>
+<br clear="all"/><br/>

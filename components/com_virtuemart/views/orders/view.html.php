@@ -22,6 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 // Load the view framework
 jimport('joomla.application.component.view');
 
+// Set to '0' to use tabs i.s.o. sliders
+// Might be a config option later on, now just here for testing.
+define ('__VM_ORDER_USE_SLIDERS', 0);
+
 /**
  * Handle the orders view
  */
@@ -38,7 +42,17 @@ class VirtuemartViewOrders extends JView {
 		
 		if ($layoutName == 'details') {
 			$orderDetails = $orderModel->getOrder();
+			if ($orderDetails['details']['BT']->user_id != $_currentUser->get('id')) {
+				echo JText::_('Restricted access');
+				return;
+			}
 			$this->assignRef('orderdetails', $orderDetails);
+
+			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
+			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
+			jimport('joomla.html.pane');
+			$pane = JPane::getInstance((__VM_ORDER_USE_SLIDERS?'Sliders':'Tabs'));
+			$this->assignRef('pane', $pane);
 		} else { // 'list' -. default
 			if ($_currentUser->get('id') == 0) {
 				// getOrdersList() returns all orders when no userID is set (admin function),
@@ -53,8 +67,15 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('currencydisplay');
 		$currency = new CurrencyDisplay();
 		$this->assignRef('currency', $currency);
-		
-		
+
+		// Create a simple indexed array woth ordertatuses
+		$_orderstatuses = $this->get('OrderStatusList');
+		$orderstatuses = array();
+		foreach ($_orderstatuses as $_ordstat) {
+			$orderstatuses[$_ordstat->value] = $_ordstat->text;
+		}
+		$this->assignRef('orderstatuses', $orderstatuses);
+
 		parent::display($tpl);
 	}
 }
