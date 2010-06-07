@@ -28,6 +28,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 <?php
 	foreach($this->orderdetails['history'] as $_hist) {
+		if (!$_hist->customer_notified) {
+			continue;
+		}
 ?>
 		<tr valign="top">
 			<td align="left">
