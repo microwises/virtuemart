@@ -160,7 +160,7 @@ class VmHTML{
         if(!$required) $html .= "\n\t<option value=\"\">".JText::_('VM_SELECT')."</option>";
         $n=count( $arr );
         for ($i=0; $i < $n; $i++ ) {
-        	echo '<br />Watn isn hier loas $arr[$i] '.$arr[$i].' und $text '.$text.'<br />';
+
                 $k = stripslashes($arr[$i]->$key);
                 $t = stripslashes($arr[$i]->$text);
                 $id = isset($arr[$i]->id) ? $arr[$i]->id : null;

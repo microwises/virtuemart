@@ -51,15 +51,31 @@ class VirtueMartViewCart extends JView {
 			$shippingCarriers = $shippingCarrierModel->getShippingCarrierRates($cartweight);
 			
 			$this->assignRef('shippingCarriers',$shippingCarriers);
+			$this->loadHelper('shopfunctions');
 			
 		} else if($layoutName=='selectpayment'){
 			//For the selection of the payment method we need the total amount to pay.
 			$paymentModel = $this->getModel('paymentmethod');
 			
-			$selected = empty($cart['paym_id']) ? 0 : $cart['paym_id'];
+			$selectedPaym = empty($cart['paym_id']) ? 0 : $cart['paym_id'];
 			$selectedCC = empty($cart['creditcard_id']) ? 0 : $cart['creditcard_id'];
-			$payments = $paymentModel->renderPaymentList($selected,$selectedCC);
+			$this->assignRef('selectedPaym',$selectedPaym);
+			$this->assignRef('selectedCC',$selectedCC);
 			
+//			$mainframe = &JFactory::getApplication();
+//			$paymentMethods = array();
+//			$paymentMethods = $mainframe->triggerEvent('onRegisterPaymentMethod', &$paymentMethods);
+//			$payments = $paymentModel->renderPaymentList($selected,$selectedCC);
+			$payments = $paymentModel->getPayms(false,true);
+			$withCC=false;
+			foreach($payments as $item){
+				if(isset($item->accepted_creditcards)){
+					$withCC=true;
+				}
+			}
+			$this->assignRef('withCC',$withCC);
+
+			$this->assignRef('paymentModel',$paymentModel);
 			$this->assignRef('payments',$payments);
 		} else {
 			

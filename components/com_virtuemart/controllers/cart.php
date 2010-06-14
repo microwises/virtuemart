@@ -221,7 +221,8 @@ class VirtueMartControllerCart extends JController {
 		
 		//Test Shipment
 		
-		//Test Payment
+		//Test Payment and show payment plugin
+		
 		
 		//Show cart and checkout data overview
 		

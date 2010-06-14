@@ -127,7 +127,7 @@ class VirtueMartModelPaymentmethod extends JModel
   		}
 
 //		if($this->_data->params){
-////			echo '<br />Read: '.$this->_data->params;
+//// 			echo '<br />Read: '.$this->_data->params;
 //			
 //			$this->_data->params = new JParameter($this->_data->params);
 ////			echo '<br />done in param: <pre> '.print_r($this->_data->params).'</pre>';
@@ -409,7 +409,14 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	}
 	
 	
-	
+	/**
+	 * function to render the payment plugin list
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param radio list of creditcards 
+	 * return 
+	 */
 	public function renderPaymentList($selectedPaym=0,$selecedCC=0){
 		
 		$payms = self::getPayms(false,true);
@@ -435,7 +442,7 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	 * 
 	 * @author Max Milbers
 	 * 
-	 * @param string name of the price
+	 * @param radio list of creditcards 
 	 * return 
 	 */
 
