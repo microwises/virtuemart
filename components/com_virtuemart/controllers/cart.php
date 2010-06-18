@@ -163,22 +163,38 @@ class VirtueMartControllerCart extends JController {
 	function setpayment(){
 		
 		/* Get the payment id of the cart */
-		$paym_id = JRequest::getVar('paym_id', '0');
-		$cc_id = JRequest::getVar('creditcard', '0');
-		
-		if($paym_id){
 			//Now set the shipping rate into the cart
 			$cart = cart::getCart();
 			if($cart){
 				//Some Paymentmethods needs extra Information like
-				$cart['paym_id']=$paym_id;
-				$cart['creditcard_id']=$cc_id;
+				$cart['paym_id']= JRequest::getVar('paym_id', '0');
+				$cart['creditcard_id']= JRequest::getVar('creditcard', '0');			
+				$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
+				
+				$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+				$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
+				$cc_ = $cc_model -> getCreditCard($cart['creditcard_id']);
+				$cc_type = $cc_->creditcard_code;
+				
+				$cc_number = JRequest::getVar('cart_cc_number', '');
+				
+				if(!$cc_model->validate_creditcard_data($cc_type,$cc_number)){
+//					JError::raiseWarning('', 'Creditcard number not valid');
+//					return false;
+				}
+				
+				$cart['cc_number']= $cc_number;
+				$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
+				$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
+				$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
+
 				cart::setCart($cart);
 			}		
-		}
+
 		self::Cart();
 	}
 	
+
 	/**
 	* Delete a product from the cart 
 	* 
@@ -217,15 +233,21 @@ class VirtueMartControllerCart extends JController {
 	public function checkout(){
 		
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
-		//Test Shipment and Payment addresses
+		$cart = cart::getCart();
+		if($cart){
+			//Test Shipment and Payment addresses
 		
-		//Test Shipment
+			//Test Shipment
+			if(empty($cart['shipping_rate_id'])){
+				
+			}
+			//Test Payment and show payment plugin
+			if(empty($cart['paym_id'])){
+				
+			}		
 		
-		//Test Payment and show payment plugin
-		
-		
-		//Show cart and checkout data overview
-		
+			//Show cart and checkout data overview
+		}
 	}
 	
 }

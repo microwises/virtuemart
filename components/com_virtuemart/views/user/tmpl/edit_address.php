@@ -19,9 +19,50 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-?>
+//if($this->setForm){ 
 
-<?php // if ($this->userDetails->JUser->get('id') ) { ?>
+// Implement Joomla's form validation
+JHTML::_('behavior.formvalidation');
+JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
+?>
+<style type="text/css">
+.invalid {
+	border-color: #f00;
+	background-color: #ffd;
+	color: #000;
+}
+label.invalid {
+	background-color: #fff;
+	color: #f00;
+}
+</style>
+<script language="javascript">
+function myValidator(f, t)
+{
+	f.task.value=t;
+	if (f.task.value=='cancel') {
+		f.submit();
+		return true;
+	}
+	if (document.formvalidator.isValid(f)) {
+		f.submit();
+		return true;
+	} else {
+		var msg = '<?php echo JText::_('VM_USER_FORM_MISSING_REQUIRED'); ?>';
+		alert (msg);
+	}
+	return false;
+}
+</script>
+<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
+<div style="text-align: right; width: 100%;">
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
+	&nbsp;
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
+</div>
+
+<?php // }  
+if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
@@ -39,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 </fieldset>
-<?php // } ?>
+<?php  } ?>
 
 <fieldset>
 	<legend>
@@ -112,4 +153,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 <input type="hidden" name="address_type" value="BT" />
-</fieldset>
+</fieldset> <?php
+if($this->setForm){
+	echo '</form>';
+} ?>

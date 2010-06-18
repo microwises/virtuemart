@@ -244,7 +244,9 @@ else { ?>
 		
 		$payment_display = $this->prices['payment'];
 		$payment_tax_display = $this->prices['paymentTax'];
-		
+//		echo '<br />cart <pre>';
+//		echo print_r($this);
+//		echo '</pre>';
 		?>
 		<table width="100%" cellspacing="2" cellpadding="4" border="0">
 			<tr align="left" class="sectiontableheader">
@@ -495,8 +497,8 @@ else { ?>
 				<?php
 			}
 			else {
-				$href = JRoute::_('index.php?option=com_virtuemart&view=checkout');
-				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
+				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
+//				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
 				$class_att = array('class' => 'checkout_link');
 				$text = JText::_('VM_CHECKOUT_TITLE');
 				

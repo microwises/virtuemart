@@ -29,6 +29,11 @@ defined('_JEXEC') or die('Restricted access');
 */
 class cart {
 	
+	
+	
+	public  $cart_cc_expire_month = 0;
+	public  $cart_cc_expire_year = 0;
+	
 	/**
 	* Initialise the cart 
 	* 

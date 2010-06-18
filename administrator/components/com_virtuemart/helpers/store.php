@@ -24,10 +24,14 @@ class VmStore {
 
 	$juser = JFactory::getUser();
 	if ($juser->username) {
+		//todo This should ask first if the user is a vendor and then look for the vendorId
 	    $query = "SELECT vendor_id FROM #__vm_auth_user_vendor ";
 	    $query .= "WHERE user_id = '". $juser->id ."'";
 	    $db->setQuery($query);
 	    $vendorId = $db->loadResult();
+	    if(empty($vendorId)){
+			$vendorId = 1;
+		}
 	    $userId = $juser->id;
 	}
 	else {

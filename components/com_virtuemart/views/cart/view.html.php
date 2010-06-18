@@ -168,8 +168,6 @@ class VirtueMartViewCart extends JView {
 				
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
-
-//		echo '<br />chooseShippingRate '.$cart['shipping_rate_id'];
 		
 
 		/* Get a continue link */

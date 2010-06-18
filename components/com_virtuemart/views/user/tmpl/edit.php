@@ -61,6 +61,7 @@ function myValidator(f, t)
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
+
 	echo $this->pane->startPane("user-pane");
 
 	echo $this->pane->startPanel( JText::_('VM_USER_FORM_TAB_GENERALINFO'), 'edit_user' );

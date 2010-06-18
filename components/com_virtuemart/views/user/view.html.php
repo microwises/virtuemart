@@ -60,7 +60,7 @@ class VirtuemartViewUser extends JView {
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 		$model->setId($_currentUser->get('id'));
 		$userDetails = $model->getUser();
-
+//		echo 'UserDetails: <pre>'.print_r($userDetails).'</pre>';
 		if($layoutName=='edit'){
 			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
@@ -301,6 +301,12 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('currency', $currency);
 		}
 	}
+		if($layoutName=='edit_address'){
+			$setForm = true;
+		}else {
+			$setForm = false;
+		}
+		$this->assignRef('setForm', $setForm);
 		
 		// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)

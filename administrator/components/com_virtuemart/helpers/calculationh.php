@@ -580,7 +580,7 @@ $shipping = $this->_db->loadAssoc();
 		$model->setId($paym_id);
 		$paym = $model->getPaym();
 
-		$this->_cartPrices['paymentName'] = $paym->paym_name;
+		$this->_cartPrices['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('VM_CART_NO_PAYM_SELECTED');
 		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentDiscount'] = 0;
