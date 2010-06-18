@@ -129,6 +129,12 @@ defined('_JEXEC') or die('Restricted access');
 				echo '</fieldset>'."\n";
 			}
 			$_set = true;
+			if ($_field['title'] == JText::_('VM_USER_FORM_BILLTO_LBL')) {
+				// Call this a dirty hack if you like, but it looks like the best way to
+				// jump to the 'Modify BillTo' form immediatly from an external page (like the cart)
+				// Suggestions to improve this are welcome :-/
+				echo '<a name="BT"></a>';
+			}
 			echo '<fieldset>'."\n";
 			echo '	<legend>'."\n";
 			echo '		' . $_field['title'];

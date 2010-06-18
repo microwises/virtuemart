@@ -89,7 +89,6 @@ class VirtueMartControllerUser extends JController
 			$user	 =& JFactory::getUser();
 		}
 
-		// get the redirect
 		$return = JURI::base();
 
 		$userid = ($_new ? $user->get('id') : JRequest::getVar( 'my_user_id', 0, 'post', 'int' ));

@@ -88,6 +88,7 @@ class VirtueMartViewCart extends JView {
 		$lists['current_id'] = $_currentUser->get('id');
 		
 		$user = $this->getModel('user');
+		$user->setId($lists['current_id']);
 		$this->assignRef('user', $user);
 		
 		$userDetails = $user->getUser();
@@ -96,23 +97,25 @@ class VirtueMartViewCart extends JView {
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 		
 		// Shipping address(es)
-		$_addressList = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
-		if (($_c = count($_addressList)) == 0) {
-			$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
-		} else {
-			$_shipTo = array();
-			for ($_i = 0; $_i < $_c; $_i++) {
-				$_shipTo[] = '<li>'.'<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&task=edit'
-									.'&cid[]='.$_addressList[$_i]->user_id
-									.'&shipto='.$_addressList[$_i]->user_info_id
-								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
-			
-			}
-			$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
+		$_addressBT = $user->getUserAddressList($userDetails->JUser->get('id') , 'BT');
+		// Overwrite the address name for display purposes
+		$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
+		$_addressST = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
+		$_addressList = array_merge(
+			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+			, $_addressST
+		);
+		for ($_i = 0; $_i < count($_addressList); $_i++) {
+			$_addressList[$_i]->address_type_name = '<a href="index.php'
+								.'?option=com_virtuemart'
+								.'&view=user'
+								.'&layout=edit'
+								.'&cid[]='.$_addressList[$_i]->user_id
+								.(($_i == 0) ? '&tab=1#BT' /* BillTo */ : '&shipto='.$_addressList[$_i]->user_info_id)
+							. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
 		}
+		
+		$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_addressList[0]->user_info_id);
 
 		$_userFields = $userFieldsModel->getUserFields(
 				 'account'

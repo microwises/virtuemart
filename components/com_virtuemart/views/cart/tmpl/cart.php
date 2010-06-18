@@ -20,16 +20,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
-
 /* Show Continue Shopping link when the cart is empty */ 
 if ($this->cart["idx"] == 0) {
+	echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
 	echo JText::_('VM_EMPTY_CART');
 	echo '<br />';
 	echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
 }
-else {
-	
+else { ?>
+<fieldset>
+	<legend>
+		<?php echo JText::_('VM_CART_TITLE'); ?>
+	</legend>
+<?php 
 		$total = 0;
 		// Added for the zone shipping module
 		//$vars["zone_qty"] = 0;
@@ -373,13 +376,34 @@ else {
 		  <tr>
 			<td colspan="10"><hr /></td>
 		  </tr>
+<!-- 
+	Outcommented by Oscar; Note for Max; if you agree, just remove this
 		  <tr class="sectiontableentry2">
 		 <?php $adresslink = JRoute::_('index.php?view=user&task=editaddress');  ?>
 		 	<td colspan="2" align="right"><?php echo JHTML::_('link', $adresslink, JText::_('VM_CART_EDIT_ADRESS'));?> </td>
 		  </tr>
+-->
+	</table>
+</fieldset>
+
+<fieldset>
+	<legend>
+		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
+	</legend>
+
+	<?php echo $this->lists['shipTo']; ?>
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
+		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
+	</a>
+</fieldset>
+
 	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
 		This exampel should just show how the adress should be shown and how the information is saved*/
-
+// I (Oscar) outcommented this 'coz I think it's not a good idea...
+// It means we need to call the user and userfields models as well during saving, which would make the implementation
+// more complex then necessary.
+// After all, this won't be used with every order.
+/* >> Outcommented by Oscar
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -443,7 +467,9 @@ else {
 	if ($_set) {
 		echo '</fieldset>'."\n";
 	}
-	
+// << Outcommented by Oscar
+*/
+
 //		<?php
 		/** @todo handle coupon field */
 		/* Input Field for the Coupon Code */

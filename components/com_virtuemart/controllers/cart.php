@@ -39,8 +39,8 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-	
-		// $this->registerTask('add', 'cart');
+		// Force the default task kto cart() in order to make redirects work
+		$this->registerTask('__default', 'cart');
 	}
 
 	/**

@@ -127,7 +127,7 @@ class VirtuemartViewUser extends JView {
 				$_shipTo[] = '<li>'.'<a href="index.php'
 									.'?option=com_virtuemart'
 									.'&view=user'
-									.'&task=edit'
+									.'&layout=edit'
 									.'&cid[]='.$_addressList[$_i]->user_id
 									.'&shipto='.$_addressList[$_i]->user_info_id
 								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
@@ -202,15 +202,11 @@ class VirtuemartViewUser extends JView {
 		$_shipto_id = JRequest::getVar('shipto', -1);
 		if ($_shipto_id == -1) {
 			$_shipto = 0;
-			$_paneOffset = array();
+			$_openTab = JRequest::getVar('tab', -1);
 		} else {
 			// Contains 0 for new, otherwise a user_info_id
 			$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
-			if (__VM_USER_USE_SLIDERS) {
-				$_paneOffset = array('startOffset' => 3, 'startTransition' => 1, 'allowAllClose' => true);
-			} else {
-				$_paneOffset = array('startOffset' => 3);
-			}
+			$_openTab = 3;
 			$_shiptoFields = $userFieldsModel->getUserFields(
 				 'shipping'
 				, array() // Default toggles
@@ -236,6 +232,17 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('shipToFields', $shipToFields);
 			$this->assignRef('shipToID', $_shipto_id);
 		}
+
+		if ($_openTab < 0) {
+			$_paneOffset = array();
+		} else {
+			if (__VM_USER_USE_SLIDERS) {
+				$_paneOffset = array('startOffset' => $_openTab, 'startTransition' => 1, 'allowAllClose' => true);
+			} else {
+				$_paneOffset = array('startOffset' => $_openTab);
+			}
+		}
+
 
 	if($layoutName=='edit'){
 		// Check for existing orders for this user
