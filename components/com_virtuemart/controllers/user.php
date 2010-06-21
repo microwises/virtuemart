@@ -117,7 +117,16 @@ class VirtueMartControllerUser extends JController
 			$msg	= $model->getError();
 		}
 
-		$this->setRedirect( $return, $msg );
+		$cart = cart::getCart();
+		if($cart){
+			if($cart['inCheckOut']){
+				$mainframe = JFactory::getApplication();
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+			}
+		} else {
+			$this->setRedirect( $return, $msg );
+		}
+		
 	}
 
 	

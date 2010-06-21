@@ -132,6 +132,10 @@ class VirtueMartControllerCart extends JController {
 			if($cart){
 				$cart['shipping_rate_id']=$shipping_rate_id;
 				cart::setCart($cart);
+				if($cart['inCheckOut']){
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+				}
 			}		
 		}
 		self::Cart();
@@ -189,8 +193,12 @@ class VirtueMartControllerCart extends JController {
 				$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
 
 				cart::setCart($cart);
+				if($cart['inCheckOut']){
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+				}
 			}		
-
+		
 		self::Cart();
 	}
 	
@@ -235,19 +243,39 @@ class VirtueMartControllerCart extends JController {
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart();
 		if($cart){
+			$mainframe = JFactory::getApplication();
+//			echo 'Print: <pre>'.print_r($cart).'</pre>';
 			//Test Shipment and Payment addresses
-		
+			if(empty($cart['shipping_rate_id'])){
+				$cart['inCheckOut'] = true;
+				cart::setCart($cart);
+				//index.php?option=com_virtuemart&view=user&layout=edit&cid[]=72&tab=1#BT
+				
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
+			}
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
-				
+				$cart['inCheckOut'] = true;
+				cart::setCart($cart);
+//				$this->editshipping();
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');	
 			}
+
 			//Test Payment and show payment plugin
 			if(empty($cart['paym_id'])){
-				
+				$cart['inCheckOut'] = true;
+				cart::setCart($cart);
+//				$this->editpayment();
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
 			}		
 		
 			//Show cart and checkout data overview
+			$cart['inCheckOut'] = false;
+			cart::setCart($cart);
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=finalconfirmation');		
 		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
 	}
 	
 }
