@@ -490,18 +490,24 @@ else { ?>
 			<?php
 			if ($this->continue_link != '') echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
 			
-			if (VmStore::get('vendor_min_pov', 0) < $this->cart->totalsales) {
+			if(!empty($this->cart['totalsales'])) $totalsalesCart = $this->cart['totalsales'] ; else $totalsalesCart=0;
+			if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
 				/** @todo currency format totalsales */
 				?>
-				<span style="font-weight:bold;"><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2'). " ".$this->cart->totalsales; ?></span>
+				<span style="font-weight:bold;"><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2'). " ".$totalsalesCart ?></span>
 				<?php
 			}
 			else {
 				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
 //				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
 				$class_att = array('class' => 'checkout_link');
-				$text = JText::_('VM_CHECKOUT_TITLE');
-				
+				if(!empty($this->cart['dataValidated']) && $this->cart['dataValidated']){
+//				if($this->cart['dataValidated']){
+					$text = JText::_('VM_ORDER_CONFIRM_MNU');
+				} else {
+					$text = JText::_('VM_CHECKOUT_TITLE');
+				}
+
 				/** @todo build the greybox checkout */
 				//if ($this->get_cfg('useGreyBoxOnCheckout', 1)) echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
 				echo JHTML::link($href, $text, $class_att);

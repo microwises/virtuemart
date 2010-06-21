@@ -236,17 +236,25 @@ class VirtueMartControllerCart extends JController {
 	/**
 	 * Checks for the data that is needed to process the order
 	 * 
+	 * @author Max Milbers
 	 */
 	 
 	public function checkout(){
 		
+
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart();
+		
 		if($cart){
+			
 			$mainframe = JFactory::getApplication();
+			if(!empty($cart['dataValidated']) && $cart['dataValidated']){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=confirmedOrder');
+			}
+			
 //			echo 'Print: <pre>'.print_r($cart).'</pre>';
 			//Test Shipment and Payment addresses
-			if(empty($cart['shipping_rate_id'])){
+			if(empty($cart['adress_billto_id'])){
 				$cart['inCheckOut'] = true;
 				cart::setCart($cart);
 				//index.php?option=com_virtuemart&view=user&layout=edit&cid[]=72&tab=1#BT
@@ -271,12 +279,27 @@ class VirtueMartControllerCart extends JController {
 		
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
+			$cart['dataValidated'] = true;
 			cart::setCart($cart);
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=finalconfirmation');		
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');		
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
 	}
+	
+	
+//	public function finalconfirmation(){
+//	
+//		/* Create the view */
+//		$view = $this->getView('cart', 'html');
+//		$view->setLayout('cart');
+//
+////		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+////		$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);
+//		
+//		/* Display it all */
+//		$view->display();
+//	}
 	
 }
  //pure php no Tag
