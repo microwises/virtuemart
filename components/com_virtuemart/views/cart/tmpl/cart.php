@@ -20,6 +20,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+echo '<pre>'.print_r($this->cart,1).'</pre>';
+
 /* Show Continue Shopping link when the cart is empty */ 
 if ($this->cart["idx"] == 0) {
 	echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
@@ -378,16 +380,11 @@ else { ?>
 		  <tr>
 			<td colspan="10"><hr /></td>
 		  </tr>
-<!-- 
-	Outcommented by Oscar; Note for Max; if you agree, just remove this
-		  <tr class="sectiontableentry2">
-		 <?php $adresslink = JRoute::_('index.php?view=user&task=editaddress');  ?>
-		 	<td colspan="2" align="right"><?php echo JHTML::_('link', $adresslink, JText::_('VM_CART_EDIT_ADRESS'));?> </td>
-		  </tr>
--->
+
 	</table>
 </fieldset>
 
+<form action="index.php">
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
@@ -397,82 +394,10 @@ else { ?>
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
 		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
+	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
 </fieldset>
 
-	<?php /*maybe it is a good idea to start a form here also, so that the people can edit the adress directly,. I dont know, just an idea 	
-		This exampel should just show how the adress should be shown and how the information is saved*/
-// I (Oscar) outcommented this 'coz I think it's not a good idea...
-// It means we need to call the user and userfields models as well during saving, which would make the implementation
-// more complex then necessary.
-// After all, this won't be used with every order.
-/* >> Outcommented by Oscar
-	$_k = 0;
-	$_set = false;
-	$_table = false;
-	$_hiddenFields = '';
-
-	if (count($this->userFields['functions']) > 0) {
-		echo '<script language="javascript">'."\n";
-		echo join("\n", $this->userFields['functions']);
-		echo '</script>'."\n";
-	}
-	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
-		// Do this at the start of the loop, since we're using 'continue' below!
-		if ($_i == 0) {
-			$_field = current($this->userFields['fields']);
-		} else {
-			$_field = next($this->userFields['fields']);
-		}
-
-		if ($_field['hidden'] == true) {
-			$_hiddenFields .= $_field['formcode']."\n";
-			continue;
-		}
-		if ($_field['type'] == 'delimiter') {
-			if ($_set) {
-				// We're in Fieldset. Close this one and start a new
-				if ($_table) {
-					echo '	</table>'."\n";
-					$_table = false;
-				}
-				echo '</fieldset>'."\n";
-			}
-			$_set = true;
-			echo '<fieldset>'."\n";
-			echo '	<legend>'."\n";
-			echo '		' . $_field['title'];
-			echo '	</legend>'."\n";
-			continue;
-		}
-
-		
-		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
-			echo '	<table class="adminform">'."\n";
-			$_table = true;
-		}
-		echo '		<tr>'."\n";
-		echo '			<td class="key">'."\n";
-		echo '				<label for="'.$_field['name'].'_field">'."\n";
-		echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
-		echo '				</label>'."\n";
-		echo '			</td>'."\n";
-		echo '			<td>'."\n";
-		echo '				'.$_field['formcode']."\n";
-		echo '			</td>'."\n";
-		echo '		</tr>'."\n";
-	}
-
-	if ($_table) {
-		echo '	</table>'."\n";
-	}
-	if ($_set) {
-		echo '</fieldset>'."\n";
-	}
-// << Outcommented by Oscar
-*/
-
-//		<?php
+		<?php
 		/** @todo handle coupon field */
 		/* Input Field for the Coupon Code */
 		/**
@@ -488,7 +413,10 @@ else { ?>
 		?>
 		<div align="center">
 			<?php
-			if ($this->continue_link != '') echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
+			if ($this->continue_link != '') {
+				echo "<input type='button' class='continue_link' value='".JText::_('VM_CONTINUE_SHOPPING')."' />";
+//				echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
+			}
 			
 			if(!empty($this->cart['totalsales'])) $totalsalesCart = $this->cart['totalsales'] ; else $totalsalesCart=0;
 			if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
@@ -498,9 +426,9 @@ else { ?>
 				<?php
 			}
 			else {
-				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
+//				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
 //				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
-				$class_att = array('class' => 'checkout_link');
+				$class_att = array('class' => 'checkout_link', 'onClick' => 'javascript:document.checkout.submit(); return true;');
 				if(!empty($this->cart['dataValidated']) && $this->cart['dataValidated']){
 //				if($this->cart['dataValidated']){
 					$text = JText::_('VM_ORDER_CONFIRM_MNU');
@@ -510,7 +438,13 @@ else { ?>
 
 				/** @todo build the greybox checkout */
 				//if ($this->get_cfg('useGreyBoxOnCheckout', 1)) echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
-				echo JHTML::link($href, $text, $class_att);
+//				echo JHTML::link('#', $text, $class_att);
+//				echo "<a href='#' class='checkout_link' onClick='checkout.submit(); return true;'>$text</a>";
+				echo "<input type='submit' class='checkout_link' value='$text' />";
 			} ?>
 		</div>
+		<input type="hidden" name="option" value="com_virtuemart"/>
+		<input type="hidden" name="view" value="cart"/>
+		<input type="hidden" name="task" value="checkout"/>
+		</form>
 <?php } ?>

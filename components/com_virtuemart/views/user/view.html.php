@@ -313,6 +313,9 @@ class VirtuemartViewUser extends JView {
 		jimport('joomla.html.pane');
 		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
 
+		// Check for a view to return to
+		$lists['rview'] = JRequest::getVar('rview', '');
+
 		$this->assignRef('lists', $lists);
 		$this->assignRef('userDetails', $userDetails);
 		$this->assignRef('shipto', $_shipto);

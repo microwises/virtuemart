@@ -40,6 +40,7 @@ label.invalid {
 function myValidator(f, t)
 {
 	f.task.value=t;
+
 	if (f.task.value=='cancel') {
 		f.submit();
 		return true;
@@ -54,7 +55,7 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
+<form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
 	&nbsp;
@@ -106,6 +107,7 @@ function myValidator(f, t)
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="rview" value="<?php echo $this->lists['rview']; ?>" />
 <input type="hidden" name="register_new" value="<?php echo $this->lists['register_new']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>

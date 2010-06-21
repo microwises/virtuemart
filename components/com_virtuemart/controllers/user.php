@@ -30,24 +30,24 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerUser extends JController
 {
 
-	function display()
+	public function __construct()
 	{
 		parent::__construct();
 	}
-	
-	function editaddress(){
-		
-		$view = $this->getView('user', 'html');
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setLayout('edit_address');
 
-		/* Display it all */
-		$view->display();
-		
-	}
+//	function editaddress(){
+//		
+//		$view = $this->getView('user', 'html');
+//		
+//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+//		$view->setLayout('edit_address');
+//
+//		/* Display it all */
+//		$view->display();
+//		
+//	}
 
 	public function User(){
 		
@@ -118,15 +118,13 @@ class VirtueMartControllerUser extends JController
 		}
 
 		$cart = cart::getCart();
-		if($cart){
-			if($cart['inCheckOut']){
-				$mainframe = JFactory::getApplication();
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
-			}
-		} else {
-			$this->setRedirect( $return, $msg );
+		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
+			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
 		}
-		
+//		if (JRequest::getVar('rview', '') != '') {
+//			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+//		}
+		$this->setRedirect( $return, $msg );
 	}
 
 	
@@ -217,7 +215,12 @@ class VirtueMartControllerUser extends JController
 
 	function cancel()
 	{
-		$this->setRedirect(JURI::base());
+		$return = JURI::base();
+		$cart = cart::getCart();
+		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
+			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+		}
+				$this->setRedirect( $return, $msg );
 	}
 }
 // No closing tag

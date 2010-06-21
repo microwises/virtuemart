@@ -110,13 +110,20 @@ class VirtueMartViewCart extends JView {
 								.'?option=com_virtuemart'
 								.'&view=user'
 								.'&layout=edit'
+								.'&rview=cart'
 								.'&cid[]='.$_addressList[$_i]->user_id
 								.(($_i == 0) ? '&tab=1#BT' /* BillTo */ : '&shipto='.$_addressList[$_i]->user_info_id)
 							. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
 		}
+		$_selectedAddress = (
+			empty($cart['adress_shipto_id'])
+				? $_addressList[0]->user_info_id // Defaults to BillTo
+				: $cart['adress_shipto_id']
+			);
 		
-		$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_addressList[0]->user_info_id);
-
+		$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+		$lists['billTo'] = $_addressList[0]->user_info_id;
+		
 		$_userFields = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles

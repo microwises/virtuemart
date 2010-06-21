@@ -245,20 +245,30 @@ class VirtueMartControllerCart extends JController {
 
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart();
-		
+
 		if($cart){
-			
+			// Shipto is selected in the first cartview
+			if ($_shipto = JRequest::getVar('shipto', '')) {
+				$cart['adress_shipto_id'] = $_shipto;
+			}
+			if ($_billto = JRequest::getVar('billto', '')) {
+				$cart['adress_billto_id'] = $_billto;
+			}
+			cart::setCart($cart);
 			$mainframe = JFactory::getApplication();
 			if($cart['dataValidated'] === true){
-				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=confirmedOrder');
+				// FIXME I suppose here we should call some save() function in the model...
+				// (the redirect below is invalid)
+//				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=confirmedOrder');
 			}
 			
 //			echo 'Print: <pre>'.print_r($cart).'</pre>';
 			//Test Shipment and Payment addresses
+			// TODO Check is we're an anynomous user without BT address
 //			if(empty($cart['adress_billto_id'])){
 //				$cart['inCheckOut'] = true;
 //				cart::setCart($cart);
-//				//index.php?option=com_virtuemart&view=user&layout=edit&cid[]=72&tab=1#BT
+////				//index.php?option=com_virtuemart&view=user&layout=edit&cid[]=72&tab=1#BT
 //				
 //				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
 //			}
