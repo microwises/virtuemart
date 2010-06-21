@@ -131,6 +131,7 @@ class VirtueMartControllerCart extends JController {
 			$cart = cart::getCart();
 			if($cart){
 				$cart['shipping_rate_id']=$shipping_rate_id;
+				$cart['dataValidated'] = false;
 				cart::setCart($cart);
 				if($cart['inCheckOut']){
 					$mainframe = JFactory::getApplication();
@@ -192,7 +193,7 @@ class VirtueMartControllerCart extends JController {
 					}
 
 				}
-
+				$cart['dataValidated'] = false;
 				cart::setCart($cart);
 				if($cart['inCheckOut']){
 					$mainframe = JFactory::getApplication();
@@ -257,21 +258,17 @@ class VirtueMartControllerCart extends JController {
 			cart::setCart($cart);
 			$mainframe = JFactory::getApplication();
 			if($cart['dataValidated'] === true){
-				// FIXME I suppose here we should call some save() function in the model...
-				// (the redirect below is invalid)
-//				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=confirmedOrder');
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
 			}
 			
 //			echo 'Print: <pre>'.print_r($cart).'</pre>';
 			//Test Shipment and Payment addresses
 			// TODO Check is we're an anynomous user without BT address
-//			if(empty($cart['adress_billto_id'])){
-//				$cart['inCheckOut'] = true;
-//				cart::setCart($cart);
-////				//index.php?option=com_virtuemart&view=user&layout=edit&cid[]=72&tab=1#BT
-//				
-//				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
-//			}
+			if(empty($cart['adress_billto_id'])){
+				$cart['inCheckOut'] = true;
+				cart::setCart($cart);				
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
+			}
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
 				$cart['inCheckOut'] = true;
@@ -285,6 +282,7 @@ class VirtueMartControllerCart extends JController {
 				$cart['inCheckOut'] = true;
 
 				cart::setCart($cart);
+				//Another thing oscar, can you explain me why we need a redirect? and cant call it directly?
 //				$this->editpayment();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
 			}
@@ -312,18 +310,50 @@ class VirtueMartControllerCart extends JController {
 	}
 	
 	
-//	public function finalconfirmation(){
-//	
-//		/* Create the view */
-//		$view = $this->getView('cart', 'html');
-//		$view->setLayout('cart');
-//
-////		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-////		$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);
-//		
-//		/* Display it all */
-//		$view->display();
-//	}
+	public function confirmedOrder(){
+	
+		//Here we do the task, like storing order information
+		$cart = cart::getCart();
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+
+
+		if (!empty($cart['adress_billto_id'])){
+			$user_model = $this->getModel('user','VirtuemartModel');
+			$user_model->setId($_currentUser->get('id'));
+			$billto=$user_model->getUserAddress('','','BT');
+		}else{
+			//todo anonymous
+//			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+//			$userFieldsModel->setId($_currentUser->get('id'));
+			for ($_i = 0, $_n = count($userFieldsModel->userFields['fields']); $_i < $_n; $_i++) {
+				//here is the loop through the userdata fields,,,,
+			}
+		}
+		
+		if (!empty($cart['adress_shipto_id'])){
+			$user_model = $this->getModel('user','VirtuemartModel');
+			$user_model->setId($_currentUser->get('id'));
+			$shipto=$user_model->getUserAddress('','','ST');
+		}else{
+			//todo anonymous
+			//if also empty, but billto is valid, take billto
+		}
+		
+		//Call payment plugins
+		
+		//Store order
+		
+		//send email
+		
+		
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('orderdone');
+		
+		/* Display it all */
+		$view->display();
+	}
 	
 }
  //pure php no Tag
