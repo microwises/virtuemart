@@ -113,7 +113,8 @@ class VirtueMartModelPaymentmethod extends JModel
      */ 
 	public function getPaym()
 	{	
-		$db = JFactory::getDBO();
+		
+//		$db = JFactory::getDBO();
      
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('payment_method');
@@ -141,13 +142,13 @@ class VirtueMartModelPaymentmethod extends JModel
 		
 		/* Add the paymentmethod shoppergroups */
 		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->paym_shopper_groups = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$this->_data->paym_shopper_groups = $this->_db->loadResultArray();
 
 		/* Add the accepted credit cards */
 		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->paym_creditcards = $db->loadResultArray();	
+		$this->_db->setQuery($q);
+		$this->_data->paym_creditcards = $this->_db->loadResultArray();	
 		
 			
 //			$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
@@ -189,21 +190,22 @@ class VirtueMartModelPaymentmethod extends JModel
 		} else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-
-		$db = JFactory::getDBO();
+		
+		if(empty($this->_db))  $this->_db = JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 		if(isset($this->_data)){
 			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 			foreach ($this->_data as $data){
 				/* Add the paymentmethod shoppergroups */
 				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-				$db->setQuery($q);
-				$data->paym_shopper_groups = $db->loadResultArray();
+				$this->_db->setQuery($q);
+				$data->paym_shopper_groups = $this->_db->loadResultArray();
 		
 				/* Add the accepted credit cards */
 				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
-				$db->setQuery($q);
-				$data->paym_creditcards = $db->loadResultArray();
+				$this->_db->setQuery($q);
+				$data->paym_creditcards = $this->_db->loadResultArray();
 				
 				/* Write the first 5 shoppergroups in the list */
 $data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
@@ -232,7 +234,6 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 
 //		echo '<pre>'.print_r($data).'</prev>';die;
 		if(isset($data['params'])){
-			$db = JFactory::getDBO();
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['params'] = $params->toString();
@@ -482,4 +483,19 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		$data = $this->_getList($query);
 		return $data;
 	}
+	
+	function hasCreditCard($paym_id){
+		
+		$query = 'SELECT * FROM `#__vm_payment_method_acceptedcreditcards_xref` WHERE `paym_id`="'.$paym_id.'"';
+		if(empty($this->_db))  $this->_db = JFactory::getDBO();
+		$this->_db->setQuery($query);
+		$result = $this->_db->query();
+//		echo 'humpf: '.print_r($this->_db->query());die;
+		if( $result->num_rows > 0 ){
+			return true;
+		}else{
+			return false;	
+		}
+	}
+	
 }
