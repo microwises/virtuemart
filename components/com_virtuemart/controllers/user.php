@@ -119,7 +119,7 @@ class VirtueMartControllerUser extends JController
 
 		$cart = cart::getCart();
 		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
-			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+			$return = 'index.php?option=com_virtuemart&view=cart&layout=cart';
 		}
 //		if (JRequest::getVar('rview', '') != '') {
 //			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
@@ -218,7 +218,7 @@ class VirtueMartControllerUser extends JController
 		$return = JURI::base();
 		$cart = cart::getCart();
 		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
-			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
+			$return = 'index.php?option=com_virtuemart&view=cart&layout=cart';
 		}
 				$this->setRedirect( $return, $msg );
 	}
