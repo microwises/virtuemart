@@ -34,6 +34,7 @@ class VirtueMartViewCart extends JView {
 		$pathway = $mainframe->getPathway();
 		
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
+		$this->assignRef('layoutName', $layoutName);
 		
 		/* Load the cart helper */
 		$this->loadHelper('cart');
@@ -61,11 +62,7 @@ class VirtueMartViewCart extends JView {
 			$selectedCC = empty($cart['creditcard_id']) ? 0 : $cart['creditcard_id'];
 			$this->assignRef('selectedPaym',$selectedPaym);
 			$this->assignRef('selectedCC',$selectedCC);
-			
-//			$mainframe = &JFactory::getApplication();
-//			$paymentMethods = array();
-//			$paymentMethods = $mainframe->triggerEvent('onRegisterPaymentMethod', &$paymentMethods);
-//			$payments = $paymentModel->renderPaymentList($selected,$selectedCC);
+
 			$payments = $paymentModel->getPayms(false,true);
 			$withCC=false;
 			foreach($payments as $item){
@@ -77,7 +74,15 @@ class VirtueMartViewCart extends JView {
 
 			$this->assignRef('paymentModel',$paymentModel);
 			$this->assignRef('payments',$payments);
-		} else {
+		} else if($layoutName=='headermail'){
+			$store = $this->getModel('store','VirtuemartModel');
+			$store->setId($cart['vendor_id']);
+			$_store = $store->getStore();
+			$this->assignRef('store',$_store);
+			
+		} else if($layoutName=='orderdone'){
+			
+		} else {  //cart and pricelist
 			
 		/* Add the cart title to the pathway */
 		$pathway->addItem(JText::_('VM_CART_TITLE'));
@@ -86,45 +91,45 @@ class VirtueMartViewCart extends JView {
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$lists['current_id'] = $_currentUser->get('id');
-		
-		$user = $this->getModel('user');
-		$user->setId($lists['current_id']);
-		$this->assignRef('user', $user);
-		
-		$userDetails = $user->getUser();
-		$_contactDetails = $user->getContactDetails();
-		
-		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-		
-		// Shipping address(es)
-		$_addressBT = $user->getUserAddressList($userDetails->JUser->get('id') , 'BT');
-		// Overwrite the address name for display purposes
-		$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
-		$_addressST = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
-		$_addressList = array_merge(
-			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
-			, $_addressST
-		);
-		for ($_i = 0; $_i < count($_addressList); $_i++) {
-			$_addressList[$_i]->address_type_name = '<a href="index.php'
-								.'?option=com_virtuemart'
-								.'&view=user'
-								.'&layout=edit'
-								.'&rview=cart'
-								.'&cid[]='.$_addressList[$_i]->user_id
-								.(($_i == 0) ? '&tab=1#BT' /* BillTo */ : '&shipto='.$_addressList[$_i]->user_info_id)
-							. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
-		}
-		$_selectedAddress = (
-			empty($cart['adress_shipto_id'])
-				? $_addressList[0]->user_info_id // Defaults to BillTo
-				: $cart['adress_shipto_id']
+		if($lists['current_id']){
+			$user = $this->getModel('user');
+			$user->setId($lists['current_id']);
+			$this->assignRef('user', $user);
+			
+			$userDetails = $user->getUser();
+			$_contactDetails = $user->getContactDetails();
+			
+			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+			
+			// Shipping address(es)
+			$_addressBT = $user->getUserAddressList($userDetails->JUser->get('id') , 'BT');
+			// Overwrite the address name for display purposes
+			$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
+			$_addressST = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
+			$_addressList = array_merge(
+				array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+				, $_addressST
 			);
+			for ($_i = 0; $_i < count($_addressList); $_i++) {
+				$_addressList[$_i]->address_type_name = '<a href="index.php'
+									.'?option=com_virtuemart'
+									.'&view=user'
+									.'&layout=edit'
+									.'&rview=cart'
+									.'&cid[]='.$_addressList[$_i]->user_id
+									.(($_i == 0) ? '&tab=1#BT' : '&shipto='.$_addressList[$_i]->user_info_id) // BT = BillTo 
+								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
+			}
+			$_selectedAddress = (
+				empty($cart['adress_shipto_id'])
+					? $_addressList[0]->user_info_id // Defaults to BillTo
+					: $cart['adress_shipto_id']
+				);
+			
+			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+			$lists['billTo'] = $_addressList[0]->user_info_id;
 		
-		$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
-		$lists['billTo'] = $_addressList[0]->user_info_id;
-		
-		$_userFields = $userFieldsModel->getUserFields(
+/*		$_userFields = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles
 				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
@@ -159,14 +164,15 @@ class VirtueMartViewCart extends JView {
 			,$_userDetailsList
 		);
 		
-		$this->assignRef('lists', $lists);
-		$this->assignRef('userDetails', $userDetails);
+
 		$this->assignRef('bankInfo', $_bankInfo);
 		$this->assignRef('userFields', $userFields);
 		$this->assignRef('userInfoID', $_userInfoID);
 		$this->assignRef('contactDetails', $_contactDetails);
-		
-		
+		*/
+			$this->assignRef('lists', $lists);
+			$this->assignRef('userDetails', $userDetails);
+		}
 		
 		/* Get the products for the cart */
 		$model = $this->getModel('cart');

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Template for the payment selection
+* Layout for the payment selection
 *
 * @package	VirtueMart
 * @subpackage Cart

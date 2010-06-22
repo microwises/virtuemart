@@ -57,10 +57,11 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		
 		/* Set the layout */
-		$view->setLayout('cart');
+		$layoutName = JRequest::getVar('layout', 'cart');
+		$view->setLayout($layoutName);
 		
 		/* Display it all */
 		$view->display();
@@ -173,9 +174,7 @@ class VirtueMartControllerCart extends JController {
 			if($cart){
 				//Some Paymentmethods needs extra Information like
 				$cart['paym_id']= JRequest::getVar('paym_id', '0');
-							
-				
-				
+
 				$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 				$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
 				if($paym_model->hasCreditCard($cart['paym_id'])->paym_creditcards){
@@ -246,7 +245,7 @@ class VirtueMartControllerCart extends JController {
 
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart();
-
+		
 		if($cart){
 			// Shipto is selected in the first cartview
 			if ($_shipto = JRequest::getVar('shipto', '')) {
@@ -269,6 +268,7 @@ class VirtueMartControllerCart extends JController {
 				cart::setCart($cart);				
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
 			}
+			
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
 				$cart['inCheckOut'] = true;
@@ -318,34 +318,36 @@ class VirtueMartControllerCart extends JController {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 
 
-		if (!empty($cart['adress_billto_id'])){
-			$user_model = $this->getModel('user','VirtuemartModel');
-			$user_model->setId($_currentUser->get('id'));
-			$billto=$user_model->getUserAddress('','','BT');
-		}else{
-			//todo anonymous
-//			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-//			$userFieldsModel->setId($_currentUser->get('id'));
-			for ($_i = 0, $_n = count($userFieldsModel->userFields['fields']); $_i < $_n; $_i++) {
-				//here is the loop through the userdata fields,,,,
-			}
-		}
-		
-		if (!empty($cart['adress_shipto_id'])){
-			$user_model = $this->getModel('user','VirtuemartModel');
-			$user_model->setId($_currentUser->get('id'));
-			$shipto=$user_model->getUserAddress('','','ST');
-		}else{
-			//todo anonymous
-			//if also empty, but billto is valid, take billto
-		}
+//		if (!empty($cart['adress_billto_id'])){
+//			$user_model = $this->getModel('user','VirtuemartModel');
+//			$user_model->setId($_currentUser->get('id'));
+//			$billto=$user_model->getUserAddress('','','BT');
+//		}else{
+//			//todo anonymous
+////			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+////			$userFieldsModel->setId($_currentUser->get('id'));
+//			for ($_i = 0, $_n = count($userFieldsModel->userFields['fields']); $_i < $_n; $_i++) {
+//				//here is the loop through the userdata fields,,,,
+//			}
+//		}
+//		
+//		if (!empty($cart['adress_shipto_id'])){
+//			$user_model = $this->getModel('user','VirtuemartModel');
+//			$user_model->setId($_currentUser->get('id'));
+//			$shipto=$user_model->getUserAddress('','','ST');
+//		}else{
+//			//todo anonymous
+//			//if also empty, but billto is valid, take billto
+//		}
 		
 		//Call payment plugins
 		
 		//Store order
 		
 		//send email
-		
+		$body = $this->prepareEmailBody($cart);
+		echo 'The body: '.$body;
+		$sentmail = $this->sendMail($cart,$body);
 		
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
@@ -355,5 +357,108 @@ class VirtueMartControllerCart extends JController {
 		$view->display();
 	}
 	
+	/**
+	 * For showing the calculation of the prices only
+	 * 
+	 * @author Max Milbers
+	 */
+	public function cartPriceList(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('pricelist');
+		
+		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		
+		/* Display it all */
+		$view->display();
+	}
+	
+	/**
+	 * For showing the calculation of the prices only
+	 * 
+	 * @author Max Milbers
+	 */
+	public function cartHeaderMail(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('headermail');
+		
+		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		
+		/* Display it all */
+		$view->display();
+	}
+	
+	function prepareEmailBody($cart){
+		
+		$body = $this -> cartHeaderMail();
+		$body .= $this -> cartPriceList();
+		//We may get this path from the shop config
+//		$body = self::get_output(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'confirmation_email.php');  
+		return $body;
+	}
+	
+	function get_output($file){
+		ob_start();
+		include($file);
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
+	}
+
+
+
+	function sendMail($cart,$body){
+		
+		$mailer =& JFactory::getMailer();
+		
+		//This is now just without multivendor
+		$config =& JFactory::getConfig();
+		$sender = array( 
+    		$config->getValue( 'config.mailfrom' ),
+    		$config->getValue( 'config.fromname' ) ); 
+ 
+		$mailer->setSender($sender);
+		
+//		$user =& JFactory::getUser();
+//		$recipient = $user->email;
+ 		$recipient = $cart['BT']['email'];
+ 
+		$mailer->addRecipient($recipient);
+		
+//		$body   = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
+		$mailer->setSubject('Your subject string');
+		
+		// Optional file attached
+//		if($downloadable){
+//			$mailer->addAttachment();
+//		}
+		
+		$mailer->isHTML(true);
+		$mailer->setBody($body);
+		
+		// Optionally add embedded image  //TODO adjust paths
+		$store = $this->getModel('store','VirtuemartModel');
+		$store->setId($cart['vendor_id']);
+		$_store = $store->getStore();
+		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );
+		
+		$send =& $mailer->Send();
+		if ( $send !== true ) {
+		    echo 'Error sending email: ' . $send->message;
+		} else {
+		    echo 'Mail sent';
+		}
+		
+	}
 }
  //pure php no Tag

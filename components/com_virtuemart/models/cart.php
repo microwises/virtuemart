@@ -67,6 +67,9 @@ class VirtueMartModelCart extends JModel {
 		$total_deleted = 0;
 		$product_ids = $post['product_id'];
 //		$product_ids = JRequest::get('product_id');
+
+	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
+		$cart['vendor_id'] = 1;
 		
 		if (!empty($product_ids)) {
 			//Iterate through the prod_id's and perform an add to cart for each one

@@ -81,6 +81,7 @@ class cart {
 				}
 			}
 		}
+		
 		self::setCart($cart);
 	}
 	

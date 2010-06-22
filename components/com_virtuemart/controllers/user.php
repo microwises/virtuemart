@@ -35,19 +35,19 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 	}
 
-//	function editaddress(){
-//		
-//		$view = $this->getView('user', 'html');
-//		
-//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-//		$view->setLayout('edit_address');
-//
-//		/* Display it all */
-//		$view->display();
-//		
-//	}
+	function editaddress(){
+		
+		$view = $this->getView('user', 'html');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setLayout('edit_address');
+
+		/* Display it all */
+		$view->display();
+		
+	}
 
 	public function User(){
 		
