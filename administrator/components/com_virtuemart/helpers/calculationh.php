@@ -526,18 +526,18 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @return 	$rules 	ids of the coupons
 	 */
 	function calculateShipmentPrice($ship_id){
-				
-		$this->_cartPrices['shippingName'] = '';
+		
+		$this->_cartPrices['shippingName'] = JText::_('VM_CART_NO_SHIPMENT_SELECTED');
 		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingTax'] = 0;
 		$this->_cartPrices['shippingTotal'] = 0;
 		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
 		
-//@Todo could be speed optimized
-$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
-$this->_db->setQuery($q);
-$shipping = $this->_db->loadAssoc();
+		//@Todo could be speed optimized
+		$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
+		$this->_db->setQuery($q);
+		$shipping = $this->_db->loadAssoc();
 
 		$this->_cartPrices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];

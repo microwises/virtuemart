@@ -34,15 +34,26 @@ else {
 	include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	
 ?>
-
 <form action="index.php">
+<fieldset>
+	<legend>
+		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
+	</legend>
+
+	<?php echo $this->lists['shipTo']; ?>
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->user_id; ?>">
+		<?php echo JText::_('VM_USER_FORM_LBL'); ?>
+	</a>
+	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
+</fieldset>
+
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 
 	<?php echo $this->lists['shipTo']; ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->user_id; ?>">
 		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>

@@ -57,7 +57,7 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		
 		/* Set the layout */
 		$layoutName = JRequest::getVar('layout', 'cart');
@@ -309,52 +309,109 @@ class VirtueMartControllerCart extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
 	}
 	
-	
+	/**
+	 * This function is called, when the order is confirmed by the shopper.
+	 * 
+	 * Here are the last checks done by payment plugins.
+	 * The mails are created and send to vendor and shopper
+	 * will show the orderdone page (thank you page)
+	 * 
+	 */
 	public function confirmedOrder(){
 	
 		//Here we do the task, like storing order information
 		$cart = cart::getCart();
+				
+		//TODO Call payment plugins
 		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-
-
-//		if (!empty($cart['adress_billto_id'])){
-//			$user_model = $this->getModel('user','VirtuemartModel');
-//			$user_model->setId($_currentUser->get('id'));
-//			$billto=$user_model->getUserAddress('','','BT');
-//		}else{
-//			//todo anonymous
-////			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-////			$userFieldsModel->setId($_currentUser->get('id'));
-//			for ($_i = 0, $_n = count($userFieldsModel->userFields['fields']); $_i < $_n; $_i++) {
-//				//here is the loop through the userdata fields,,,,
-//			}
-//		}
-//		
-//		if (!empty($cart['adress_shipto_id'])){
-//			$user_model = $this->getModel('user','VirtuemartModel');
-//			$user_model->setId($_currentUser->get('id'));
-//			$shipto=$user_model->getUserAddress('','','ST');
-//		}else{
-//			//todo anonymous
-//			//if also empty, but billto is valid, take billto
-//		}
-		
-		//Call payment plugins
-		
-		//Store order
+		//TODO Store order
 		
 		//send email
 		$body = $this->prepareEmailBody($cart);
-		echo 'The body: '.$body;
-		$sentmail = $this->sendMail($cart,$body);
+		echo 'The Shopperbody: '.$body['shopper'];
+		echo '<br />The Vendorbody: '.$body['vendor'];
+
+		$sentmail = $this->sendMail($cart,$body['shopper'],$cart['user_email']); //TODO should be set by the user stuff, Oscar?
+		$sentmail = $this->sendMail($cart,$body['vendor'],$cart['vendor_email']); //TODO This is just a notice, we can gather the email here or maybe it is better before, we will see
 		
-		/* Create the view */
+//		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		$view->setLayout('orderdone');
+//		
+//		/* Display it all */
+//		$view->display();
+	}
+
+	/**
+	 * Prepares the body for shopper and vendor
+	 * 
+	 * @author Max Milbers
+	 */
+	function prepareEmailBody($cart){
 		
-		/* Display it all */
+		$body = array();
+		$body['vendor'] = $this -> cartHeaderMailVendor();
+		$body['shopper'] = $this -> cartHeaderMailShopper();
+		$priceList = $this -> cartPriceListMail();
+		$body['vendor'] .= $priceList;
+		$body['shopper'] .= $priceList;
+		$adressList = $this -> cartListShopperAdressesMail();
+		$body['vendor'] .= $adressList;
+		$body['shopper'] .= $adressList;
+		$body['shopper'] .= $this -> cartFooterMailShopper();
+		//We may get this path from the shop config
+//		$body = self::get_output(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'confirmation_email.php');  
+		return $body;
+	}
+
+	/**
+	 * Writes the Header of the email for the vendor
+	 * 
+	 * @author Max Milbers
+	 */
+	public function cartHeaderMailVendor(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('headermailvendor');
+		
+		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+//		$view->setModel( $this->getModel( 'order', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		
+		/* Render it all */
+		ob_start();
 		$view->display();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
+	}
+	
+	/**
+	 * Writes the Header of the email for the shopper
+	 * 
+	 * @author Max Milbers
+	 */
+	public function cartHeaderMailShopper(){
+	
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('headermailshopper');
+		
+		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+//		$view->setModel( $this->getModel( 'order', 'VirtuemartModel' ), true ); //TODO we need the oder_number in the mail
+		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		
+		/* Render it all */
+		ob_start();
+		$view->display();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
 	}
 	
 	/**
@@ -362,7 +419,7 @@ class VirtueMartControllerCart extends JController {
 	 * 
 	 * @author Max Milbers
 	 */
-	public function cartPriceList(){
+	public function cartPriceListMail(){
 	
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
@@ -371,53 +428,80 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		
-		/* Display it all */
-		$view->display();
-	}
-	
-	/**
-	 * For showing the calculation of the prices only
-	 * 
-	 * @author Max Milbers
-	 */
-	public function cartHeaderMail(){
-	
-		/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('headermail');
-		
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
-		
-		/* Display it all */
-		$view->display();
-	}
-	
-	function prepareEmailBody($cart){
-		
-		$body = $this -> cartHeaderMail();
-		$body .= $this -> cartPriceList();
-		//We may get this path from the shop config
-//		$body = self::get_output(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'confirmation_email.php');  
-		return $body;
-	}
-	
-	function get_output($file){
+		/* Render it all */
 		ob_start();
-		include($file);
+		$view->display();
 		$content = ob_get_contents();
 		ob_end_clean();
 		return $content;
 	}
 
+	/**
+	 * Writes the addresses of the shopper
+	 * 
+	 * @author Max Milbers
+	 */	
+	public function cartListShopperAdressesMail(){
+		
+	/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('shopperadresses');
+		
+//		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		
+	/* Render */
+		ob_start();
+		$view->display();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
+	}
 
+	/**
+	 * Writes the Header of the email for the shopper
+	 * 
+	 * @author Max Milbers
+	 */	
+	public function cartFooterMailShopper(){
 
-	function sendMail($cart,$body){
+	/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('footermailshopper');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		
+	/* Render */
+		ob_start();
+		$view->display();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
+	}
+	
+	/**
+	 * does not work with self::renderView($view)
+	 * @author Max Milbers
+	 */
+	function renderView($view){
+		ob_start();
+		$view->display();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
+	}
+	
+	/**
+	 * Sends the mail joomla conform
+	 * 
+	 * @param $cart the cart in the session
+	 * @param $body the html body to send, the content of the email
+	 * @param $recipient the recipients of the mail, can be array also 
+	 */
+	function sendMail($cart,$body,$recipient){
 		
 		$mailer =& JFactory::getMailer();
 		
@@ -428,15 +512,12 @@ class VirtueMartControllerCart extends JController {
     		$config->getValue( 'config.fromname' ) ); 
  
 		$mailer->setSender($sender);
-		
-//		$user =& JFactory::getUser();
-//		$recipient = $user->email;
- 		$recipient = $cart['BT']['email'];
- 
+
 		$mailer->addRecipient($recipient);
 		
 //		$body   = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
-		$mailer->setSubject('Your subject string');
+		
+		$mailer->setSubject(JText::_('Order Confirmed by vendorname'));  //TODO find Text string
 		
 		// Optional file attached
 //		if($downloadable){
@@ -446,8 +527,9 @@ class VirtueMartControllerCart extends JController {
 		$mailer->isHTML(true);
 		$mailer->setBody($body);
 		
-		// Optionally add embedded image  //TODO adjust paths
+		// Optionally add embedded image  //TODO @Milbo adjust paths
 		$store = $this->getModel('store','VirtuemartModel');
+		if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
 		$store->setId($cart['vendor_id']);
 		$_store = $store->getStore();
 		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );

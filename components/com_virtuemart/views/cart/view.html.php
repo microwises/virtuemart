@@ -74,14 +74,15 @@ class VirtueMartViewCart extends JView {
 
 			$this->assignRef('paymentModel',$paymentModel);
 			$this->assignRef('payments',$payments);
-		} else if($layoutName=='headermail'){
+		} else if($layoutName=='headermailshopper' || $layoutName=='headermailvendor'){
 			$store = $this->getModel('store','VirtuemartModel');
+			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
 			$store->setId($cart['vendor_id']);
 			$_store = $store->getStore();
 			$this->assignRef('store',$_store);
 			
 		} else if($layoutName=='orderdone'){
-			
+			//Show Thank you page or error due payment plugins like paypal express
 		} else {  //cart and pricelist
 			
 		/* Add the cart title to the pathway */
@@ -91,6 +92,7 @@ class VirtueMartViewCart extends JView {
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$lists['current_id'] = $_currentUser->get('id');
+		$this->assignRef('user_id', $lists['current_id']);
 		if($lists['current_id']){
 			$user = $this->getModel('user');
 			$user->setId($lists['current_id']);
@@ -182,7 +184,7 @@ class VirtueMartViewCart extends JView {
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
 		
-
+		
 		/* Get a continue link */
 		$category_id = JRequest::getInt('category_id');
 		$product_id = JRequest::getInt('product_id');
