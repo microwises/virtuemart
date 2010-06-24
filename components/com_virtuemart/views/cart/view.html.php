@@ -123,9 +123,9 @@ class VirtueMartViewCart extends JView {
 								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 			$_selectedAddress = (
-				empty($cart['adress_shipto_id'])
+				empty($cart['address_shipto_id'])
 					? $_addressList[0]->user_info_id // Defaults to BillTo
-					: $cart['adress_shipto_id']
+					: $cart['address_shipto_id']
 				);
 			
 			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);

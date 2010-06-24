@@ -247,14 +247,15 @@ class VirtueMartControllerCart extends JController {
 		$cart = cart::getCart();
 		
 		if($cart){
+			// Load the user_info helper
+			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
 			// Shipto is selected in the first cartview
 			if ($_shipto = JRequest::getVar('shipto', '')) {
-				$cart['adress_shipto_id'] = $_shipto;
+				user_info::address2cart($_shipto, 'ST');
 			}
 			if ($_billto = JRequest::getVar('billto', '')) {
-				$cart['adress_billto_id'] = $_billto;
+				user_info::address2cart($_billto, 'BT');
 			}
-			cart::setCart($cart);
 			$mainframe = JFactory::getApplication();
 			if($cart['dataValidated'] === true){
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
@@ -263,7 +264,7 @@ class VirtueMartControllerCart extends JController {
 //			echo 'Print: <pre>'.print_r($cart).'</pre>';
 			//Test Shipment and Payment addresses
 			// TODO Check is we're an anynomous user without BT address
-			if(empty($cart['adress_billto_id'])){
+			if(empty($cart['address_billto_id'])){
 				$cart['inCheckOut'] = true;
 				cart::setCart($cart);				
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
@@ -283,6 +284,8 @@ class VirtueMartControllerCart extends JController {
 
 				cart::setCart($cart);
 				//Another thing oscar, can you explain me why we need a redirect? and cant call it directly?
+				// Dunno; as long as you stay in the same controller, I wouldn't expect we'ld need redirects.
+				// TODO I'll check this out later
 //				$this->editpayment();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
 			}

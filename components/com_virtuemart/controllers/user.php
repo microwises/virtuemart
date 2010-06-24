@@ -118,12 +118,11 @@ class VirtueMartControllerUser extends JController
 		}
 
 		$cart = cart::getCart();
-		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
-			$return = 'index.php?option=com_virtuemart&view=cart&layout=cart';
+		if (($cart && $cart['inCheckOut']) || ($_rview = JRequest::getVar('rview', '')) != ''){
+			$return = 'index.php?option=com_virtuemart&view='.$_rview.'&'
+				. ($cart['inCheckOut'] ? 'task=checkout' : '');
 		}
-//		if (JRequest::getVar('rview', '') != '') {
-//			$return = 'index.php?option=com_virtuemart&view=cart&task=checkout';
-//		}
+
 		$this->setRedirect( $return, $msg );
 	}
 
@@ -217,10 +216,11 @@ class VirtueMartControllerUser extends JController
 	{
 		$return = JURI::base();
 		$cart = cart::getCart();
-		if (($cart && $cart['inCheckOut']) || JRequest::getVar('rview', '') != ''){
-			$return = 'index.php?option=com_virtuemart&view=cart&layout=cart';
+		if (($cart && $cart['inCheckOut']) || ($_rview = JRequest::getVar('rview', '')) != ''){
+			$return = 'index.php?option=com_virtuemart&view='.$_rview.'&'
+				. ($cart['inCheckOut'] ? 'task=checkout' : '');
 		}
-				$this->setRedirect( $return, $msg );
+		$this->setRedirect( $return, $msg );
 	}
 }
 // No closing tag

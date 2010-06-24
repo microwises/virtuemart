@@ -35,6 +35,10 @@ else {
 	
 ?>
 <form action="index.php">
+<!-- 
+<?php 
+// FIXME Note for Max; I (Oscar) outcommented this, we should discuss this when both online
+?>
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
@@ -46,6 +50,7 @@ else {
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
 </fieldset>
+ -->
 
 <fieldset>
 	<legend>

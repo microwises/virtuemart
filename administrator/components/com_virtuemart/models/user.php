@@ -29,6 +29,7 @@ jimport('joomla.version');
 // Get the helpers we need here
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'user_info.php');
 
 /**
  * Model class for shop users
@@ -84,6 +85,15 @@ class VirtueMartModelUser extends JModel {
 	{
 		$this->_id = $id;
 		$this->_data = null;
+	}
+	
+	/**
+	 * Set the ID to the current user
+	 */
+	function setCurrent()
+	{
+		$_currentUser =& JFactory::getUser();
+		$this->setId($_currentUser->get('id'));
 	}
 
 	/**
@@ -226,6 +236,7 @@ class VirtueMartModelUser extends JModel {
 			return $_grpList;
 		}
 	}
+
 	/**
 	 * Bind the post data to the JUser object and the VM tables save it
 	 *
@@ -296,59 +307,8 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		// Now save the user info
-		$_userFieldsModel = new VirtueMartModelUserfields();
-		$_prepareUserFields = $_userFieldsModel->getUserFields(
-								 'account'
-								, array() // Default toggles
-								, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
-		);
-
-		// Format the data
-		foreach ($_prepareUserFields as $_fld) {
-			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name]);
-		}
-
-		$_userinfo   =& $this->getTable('user_info');
-		if (!$_userinfo->bind($_data)) {
-			$this->setError($_userinfo->getError());
+		if (!user_info::storeAddress($_data, 'user_info', (($_data['rview'] === 'cart')?true:false))) {
 			return false;
-		}
-		if (!$_userinfo->store()) { // Write data to the DB
-			$this->setError($_userinfo->getError());
-			return false;
-		}
-		
-		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
-		$_shipto = array();
-		$_pattern = '/^shipto_/';
-		foreach ($_data as $_k => $_v) {
-			if (preg_match($_pattern, $_k)) {
-				$_new = preg_replace($_pattern, '', $_k);
-				$_shipto[$_new] = $_v;
-			}
-		}
-		if (count($_shipto) > 0) {
-			$_prepareUserFields = $_userFieldsModel->getUserFields(
-									 'shipping'
-									, array() // Default toggles
-			);
-
-			// Format the data
-			foreach ($_prepareUserFields as $_fld) {
-				$_shipto[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_shipto[$_fld->name]);
-			}
-			// The user_is_vendor must be copied to make sure users won't be listed twice
-			$_shipto['user_is_vendor'] = $_data['user_is_vendor'];
-			// Set the address type
-			$_shipto['address_type'] = 'ST';
-			if (!$_userinfo->bind($_shipto)) {
-				$this->setError($_userinfo->getError());
-				return false;
-			}
-			if (!$_userinfo->store()) { // Write data to the DB
-				$this->setError($_userinfo->getError());
-				return false;
-			}
 		}
 
 		// Finally, if this user is a vendor, save the store data
@@ -361,6 +321,7 @@ class VirtueMartModelUser extends JModel {
 				return false;
 			}
 		}
+		$this->setId($_data['user_id']);
 		return true;
 	}
 
@@ -437,14 +398,20 @@ class VirtueMartModelUser extends JModel {
 	 * Retrieve a single address for a user
 	 * 
 	 *  @param $_uid int User ID
-	 *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
+	 *  @param $_user_info_id string Optional User Info ID
+	 *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo). Empty string to ignore
 	 */
 	function getUserAddress($_uid = 0, $_user_info_id = -1, $_type = 'ST')
 	{
 		$_q = 'SELECT * '
 			. ' FROM #__vm_user_info '
-			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
-			. " AND address_type='$_type'";
+			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
+		if ($_type !== '') {
+			$_q .= " AND address_type='$_type'";
+		}
+		if ($_user_info_id !== -1) {
+			$_q .= " AND user_info_id='$_user_info_id'";
+		}
 		return ($this->_getList($_q));
 	}
 

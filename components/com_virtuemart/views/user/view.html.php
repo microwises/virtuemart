@@ -316,6 +316,23 @@ class VirtuemartViewUser extends JView {
 		// Check for a view to return to
 		$lists['rview'] = JRequest::getVar('rview', '');
 
+		// If the source for this action is the cart (taken from 'rview'), we just edited an
+		// address.
+		// Make sure this address is written to the cart as selected.
+		// TODO Should this code be moved to the cart helper?
+		if ($lists['rview'] == 'cart') {
+			$_cart = cart::getCart();
+			if ($_cart) {
+				if (($_shipto = JRequest::getVar('shipto', '')) != '') {
+					$_cart['address_shipto_id'] = $_shipto;
+				} else {
+					$_cart['address_shipto_id'] = $_userInfoID;
+				}
+				$_cart['address_billto_id'] = $_userInfoID;
+				cart::setCart($_cart);
+			}
+		}
+
 		$this->assignRef('lists', $lists);
 		$this->assignRef('userDetails', $userDetails);
 		$this->assignRef('shipto', $_shipto);
