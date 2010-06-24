@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Layout for the shopping cart
+* Layout for the Footer of the mails
 *
 * @package	VirtueMart
 * @subpackage Cart
@@ -19,6 +19,22 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
+	//Header for shopper ?>
 <?php echo $this->store->vendor_store_name; ?>
-<?php ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
+<?php ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
+//TODO Ordernumber
+
+//PriceList
+include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+
+include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
+
+//TODO if silent registration logindata
+//TODO if Paymentmethod needs Bank account data of vendor
+
+//We may wish to integrate later a kind of signature
+//include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
+
+	//Footer for shopper
+?>
+

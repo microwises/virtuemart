@@ -327,15 +327,9 @@ class VirtueMartControllerCart extends JController {
 				
 		//TODO Call payment plugins
 		
-		//TODO Store order
+		//TODO Store the order
 		
-		//send email
-		$body = $this->prepareEmailBody($cart);
-		echo 'The Shopperbody: '.$body['shopper'];
-		echo '<br />The Vendorbody: '.$body['vendor'];
-
-		$sentmail = $this->sendMail($cart,$body['shopper'],$cart['user_email']); //TODO should be set by the user stuff, Oscar?
-		$sentmail = $this->sendMail($cart,$body['vendor'],$cart['vendor_email']); //TODO This is just a notice, we can gather the email here or maybe it is better before, we will see
+		$this->doEmail($cart);
 		
 //		/* Create the view */
 		$view = $this->getView('cart', 'html');
@@ -346,144 +340,45 @@ class VirtueMartControllerCart extends JController {
 	}
 
 	/**
-	 * Prepares the body for shopper and vendor
+	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
 	 * 
 	 * @author Max Milbers
 	 */
-	function prepareEmailBody($cart){
-		
-		$body = array();
-		$body['vendor'] = $this -> cartHeaderMailVendor();
-		$body['shopper'] = $this -> cartHeaderMailShopper();
-		$priceList = $this -> cartPriceListMail();
-		$body['vendor'] .= $priceList;
-		$body['shopper'] .= $priceList;
-		$adressList = $this -> cartListShopperAdressesMail();
-		$body['vendor'] .= $adressList;
-		$body['shopper'] .= $adressList;
-		$body['shopper'] .= $this -> cartFooterMailShopper();
-		//We may get this path from the shop config
-//		$body = self::get_output(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'confirmation_email.php');  
-		return $body;
-	}
+	function doEmail($cart){
 
-	/**
-	 * Writes the Header of the email for the vendor
-	 * 
-	 * @author Max Milbers
-	 */
-	public function cartHeaderMailVendor(){
-	
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
-		$view->setLayout('headermailvendor');
 		
 		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'order', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
 		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+
+		$view->setLayout('mailshopper');
 		
 		/* Render it all */
 		ob_start();
 		$view->display();
-		$content = ob_get_contents();
+		$bodyShopper = ob_get_contents();
 		ob_end_clean();
-		return $content;
-	}
-	
-	/**
-	 * Writes the Header of the email for the shopper
-	 * 
-	 * @author Max Milbers
-	 */
-	public function cartHeaderMailShopper(){
-	
-		/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('headermailshopper');
+		$sentmail = $this->sendMail($cart,$bodyShopper,$cart['user_email']); //TODO should be set by the user stuff, Oscar?
 		
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'order', 'VirtuemartModel' ), true ); //TODO we need the oder_number in the mail
-		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		$view->setLayout('mailvendor');
 		
 		/* Render it all */
 		ob_start();
 		$view->display();
-		$content = ob_get_contents();
+		$bodyVendor = ob_get_contents();
 		ob_end_clean();
-		return $content;
-	}
-	
-	/**
-	 * For showing the calculation of the prices only
-	 * 
-	 * @author Max Milbers
-	 */
-	public function cartPriceListMail(){
-	
-		/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('pricelist');
+		$sentmail = $this->sendMail($cart,$bodyVendor,$cart['vendor_email']); //TODO This is just a notice, we can gather the email here or maybe it is better before, we will see
 		
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		
-		/* Render it all */
-		ob_start();
-		$view->display();
-		$content = ob_get_contents();
-		ob_end_clean();
-		return $content;
+		//Just for developing
+		echo '<br />$bodyShopper '.$bodyShopper;
+		echo '<br />$bodyVendor '.$bodyVendor;
 	}
 
-	/**
-	 * Writes the addresses of the shopper
-	 * 
-	 * @author Max Milbers
-	 */	
-	public function cartListShopperAdressesMail(){
-		
-	/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('shopperadresses');
-		
-//		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		
-	/* Render */
-		ob_start();
-		$view->display();
-		$content = ob_get_contents();
-		ob_end_clean();
-		return $content;
-	}
-
-	/**
-	 * Writes the Header of the email for the shopper
-	 * 
-	 * @author Max Milbers
-	 */	
-	public function cartFooterMailShopper(){
-
-	/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('footermailshopper');
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		
-	/* Render */
-		ob_start();
-		$view->display();
-		$content = ob_get_contents();
-		ob_end_clean();
-		return $content;
-	}
 	
 	/**
 	 * does not work with self::renderView($view)
@@ -522,7 +417,7 @@ class VirtueMartControllerCart extends JController {
 		
 		$mailer->setSubject(JText::_('Order Confirmed by vendorname'));  //TODO find Text string
 		
-		// Optional file attached
+		// Optional file attached  //this information must come from the cart
 //		if($downloadable){
 //			$mailer->addAttachment();
 //		}

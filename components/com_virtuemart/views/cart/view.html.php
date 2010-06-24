@@ -74,12 +74,12 @@ class VirtueMartViewCart extends JView {
 
 			$this->assignRef('paymentModel',$paymentModel);
 			$this->assignRef('payments',$payments);
-		} else if($layoutName=='headermailshopper' || $layoutName=='headermailvendor'){
-			$store = $this->getModel('store','VirtuemartModel');
-			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
-			$store->setId($cart['vendor_id']);
-			$_store = $store->getStore();
-			$this->assignRef('store',$_store);
+//		} else if($layoutName=='headermailshopper' || $layoutName=='headermailvendor'){
+//			$store = $this->getModel('store','VirtuemartModel');
+//			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
+//			$store->setId($cart['vendor_id']);
+//			$_store = $store->getStore();
+//			$this->assignRef('store',$_store);
 			
 		} else if($layoutName=='orderdone'){
 			//Show Thank you page or error due payment plugins like paypal express
@@ -176,6 +176,16 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('userDetails', $userDetails);
 		}
 		
+		if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
+			$store = $this->getModel('store','VirtuemartModel');
+			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
+			$store->setId($cart['vendor_id']);
+			$_store = $store->getStore();
+			$this->assignRef('store',$_store);
+			
+			//TODO add orders
+		}
+		 
 		/* Get the products for the cart */
 		$model = $this->getModel('cart');
 		$products = $model->getCartProducts($cart);
