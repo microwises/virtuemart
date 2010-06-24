@@ -41,8 +41,8 @@ class VirtuemartViewUser extends JView {
 		global $option;
 
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
-
-		$model = $this->getModel('user');
+		
+		$model = $this->getModel('user', 'VirtuemartModel');
 		$editor = JFactory::getEditor();
 		$_currentUser =& JFactory::getUser();
 		$lists['current_id'] = $_currentUser->get('id');
@@ -56,7 +56,7 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');		
 		}
-
+		
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 		$model->setId($_currentUser->get('id'));
 		$userDetails = $model->getUser();

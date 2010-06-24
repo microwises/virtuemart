@@ -92,9 +92,10 @@ class cart {
 	* @todo
 	* @access public
 	*/
-	public function getCart() {
+	public function getCart($deleteValidation=true) {
 		$session = JFactory::getSession();
 		$cart = $session->get('vmcart', array('idx' => 0), 'vm');
+		if ($deleteValidation) $cart['dataValidated'] = false;
 		return $cart;
 	}
 	

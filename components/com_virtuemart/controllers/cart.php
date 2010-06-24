@@ -244,37 +244,36 @@ class VirtueMartControllerCart extends JController {
 		
 
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
-		$cart = cart::getCart();
+		$cart = cart::getCart(false);
 		
 		if($cart){
-			// Load the user_info helper
-			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
-			// Shipto is selected in the first cartview
-			if ($_shipto = JRequest::getVar('shipto', '')) {
-				user_info::address2cart($_shipto, 'ST');
-			}
-			if ($_billto = JRequest::getVar('billto', '')) {
-				user_info::address2cart($_billto, 'BT');
-			}
 			$mainframe = JFactory::getApplication();
 			if($cart['dataValidated'] === true){
+				
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
 			}
 			
-//			echo 'Print: <pre>'.print_r($cart).'</pre>';
-			//Test Shipment and Payment addresses
-			// TODO Check is we're an anynomous user without BT address
-			if(empty($cart['address_billto_id'])){
-				$cart['inCheckOut'] = true;
-				cart::setCart($cart);				
-				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
+			// Load the user_info helper
+			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
+			if ($_billto = JRequest::getVar('billto', '')) {
+				user_info::address2cart($_billto, 'BT');
+			}
+			// Shipto is selected in the first cartview 
+			if ($_shipto = JRequest::getVar('shipto', '')) {
+				user_info::address2cart($_shipto, 'ST');
 			}
 			
+			//Here we must test again if the entered data is valid
+			if(empty($cart['dummy1']) || 
+				empty($cart['dummy2'])){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
+			}
+				
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
 				$cart['inCheckOut'] = true;
 				cart::setCart($cart);
-//				$this->editshipping();
+				$this->editshipping();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');	
 			}
 
@@ -286,7 +285,7 @@ class VirtueMartControllerCart extends JController {
 				//Another thing oscar, can you explain me why we need a redirect? and cant call it directly?
 				// Dunno; as long as you stay in the same controller, I wouldn't expect we'ld need redirects.
 				// TODO I'll check this out later
-//				$this->editpayment();
+				$this->editpayment();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
 			}
 			
@@ -309,7 +308,9 @@ class VirtueMartControllerCart extends JController {
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');		
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
+		
+//		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
+		
 	}
 	
 	/**
@@ -323,20 +324,27 @@ class VirtueMartControllerCart extends JController {
 	public function confirmedOrder(){
 	
 		//Here we do the task, like storing order information
-		$cart = cart::getCart();
-				
-		//TODO Call payment plugins
+		$cart = cart::getCart(false);
+		if($cart['dataValidated']){
+			//TODO Call payment plugins
 		
-		//TODO Store the order
-		
-		$this->doEmail($cart);
-		
-//		/* Create the view */
-		$view = $this->getView('cart', 'html');
-		$view->setLayout('orderdone');
-//		
-//		/* Display it all */
-//		$view->display();
+			//TODO Store the order
+			
+			$this->doEmail($cart);
+			
+	//		/* Create the view */
+			$view = $this->getView('cart', 'html');
+			$view->setLayout('orderdone');
+			
+			//Empty cart, now for developing only dataValidated
+			$cart['dataValidated']=false;
+			cart::setCart($cart);
+	//		/* Display it all */
+	//		$view->display();
+		} else {
+			JError::raiseNotice(1, 'Validation of Data failed');
+		}
+
 	}
 
 	/**

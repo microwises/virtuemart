@@ -38,6 +38,7 @@ else {
 <!-- 
 <?php 
 // FIXME Note for Max; I (Oscar) outcommented this, we should discuss this when both online
+// Note for Oscar No Problem, this was done before I asked you about it.
 ?>
 <fieldset>
 	<legend>
