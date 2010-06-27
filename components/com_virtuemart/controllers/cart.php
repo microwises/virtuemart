@@ -238,20 +238,23 @@ class VirtueMartControllerCart extends JController {
 	 * Checks for the data that is needed to process the order
 	 * 
 	 * @author Max Milbers
+	 * 
+	 * 
 	 */
 	 
 	public function checkout(){
 		
-
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
 		
 		if($cart){
 			$mainframe = JFactory::getApplication();
+			
+			//When the data is already validated, then the confirmation was done
 			if($cart['dataValidated'] === true){
-				
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
+				$confirmDone=true;
 			}
+			//But we check the data again to be sure
 			
 			// Load the user_info helper
 			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
@@ -264,8 +267,12 @@ class VirtueMartControllerCart extends JController {
 			}
 			
 			//Here we must test again if the entered data is valid
-			if(empty($cart['dummy1']) || 
-				empty($cart['dummy2'])){
+			//Of course this should be done with a nice cycling through the needed userfields, just a dummy solution
+			//There is a problem left, that the adress view does not point back to the checkout. This worked before alrady
+			//I assume that you have the solution already in mind oscar and let it like it is
+			
+			if(empty($cart['BT']['last_name']) || 
+				empty($cart['BT']['address_1'])){
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
 			}
 				
@@ -285,6 +292,7 @@ class VirtueMartControllerCart extends JController {
 				//Another thing oscar, can you explain me why we need a redirect? and cant call it directly?
 				// Dunno; as long as you stay in the same controller, I wouldn't expect we'ld need redirects.
 				// TODO I'll check this out later
+				//Interesting thing is, that it works in the email stuff without redirect.
 				$this->editpayment();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
 			}
@@ -305,8 +313,12 @@ class VirtueMartControllerCart extends JController {
 			$cart['inCheckOut'] = false;
 			$cart['dataValidated'] = true;
 			cart::setCart($cart);
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');		
+			
+			if($confirmDone){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
+			} else {
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+			}
 		}
 		
 //		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
@@ -325,21 +337,22 @@ class VirtueMartControllerCart extends JController {
 	
 		//Here we do the task, like storing order information
 		$cart = cart::getCart(false);
+
+		//Just to prevent direct call
 		if($cart['dataValidated']){
 			//TODO Call payment plugins
 		
 			//TODO Store the order
 			
 			$this->doEmail($cart);
-			
-	//		/* Create the view */
-			$view = $this->getView('cart', 'html');
-			$view->setLayout('orderdone');
-			
+
 			//Empty cart, now for developing only dataValidated
 			$cart['dataValidated']=false;
 			cart::setCart($cart);
-	//		/* Display it all */
+			
+			/* Display it all */
+			$view = $this->getView('cart', 'html');
+			$view->setLayout('orderdone');
 	//		$view->display();
 		} else {
 			JError::raiseNotice(1, 'Validation of Data failed');
@@ -362,7 +375,8 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
-		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
+		$store = $this->getModel( 'store', 'VirtuemartModel' );
+		$view->setModel( $store, true );
 
 		$view->setLayout('mailshopper');
 		
@@ -380,7 +394,13 @@ class VirtueMartControllerCart extends JController {
 		$view->display();
 		$bodyVendor = ob_get_contents();
 		ob_end_clean();
-		$sentmail = $this->sendMail($cart,$bodyVendor,$cart['vendor_email']); //TODO This is just a notice, we can gather the email here or maybe it is better before, we will see
+		
+		$store->setId($cart['vendor_id']);
+		$vendor=$store->getStore();
+//		echo '<pre>';
+//		echo print_r($vendor->jUser);
+//		echo '</pre>';
+		$sentmail = $this->sendMail($cart,$bodyVendor,$vendor->jUser->email); //TODO 
 		
 		//Just for developing
 		echo '<br />$bodyShopper '.$bodyShopper;

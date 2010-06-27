@@ -85,6 +85,7 @@ class calculationHelper{
 	 */
 	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true){
 		
+		//todo Calculation not done, when no rule is set
 //		Console::logSpeed('getProductPrices START: ');
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
@@ -147,7 +148,6 @@ class calculationHelper{
 		
 		//For Profit, margin, and so on
 //		if(count($calcRules)!==0){
-//			
 //			$prices['profit'] = 
 //		}
 

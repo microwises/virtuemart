@@ -153,6 +153,7 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 ?>
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 <input type="hidden" name="address_type" value="BT" />
+
 </fieldset> <?php
 if($this->setForm){
 	echo '</form>';

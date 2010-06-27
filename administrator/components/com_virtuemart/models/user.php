@@ -152,12 +152,13 @@ class VirtueMartModelUser extends JModel {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 			}
-			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
-			if(!empty($_vid)){
-				$this->_data->vendor_id = $_vid[0];
-			}else{
-				$this->_data->vendor_id = 0;
-			}
+			//I do not understand the sense of this. User does not belong to a vendor.
+//			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
+//			if(!empty($_vid)){
+//				$this->_data->vendor_id = $_vid[0];
+//			}else{
+//				$this->_data->vendor_id = 0;
+//			}
 			
 		}
 

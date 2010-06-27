@@ -33,13 +33,14 @@ class VirtueMartViewCart extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		
+		
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		$this->assignRef('layoutName', $layoutName);
 		
 		/* Load the cart helper */
 		$this->loadHelper('cart');
 		
-		$cart = cart::getCart();
+		$cart = cart::getCart(false);
 		$this->assignRef('cart', $cart);
 		
 		if($layoutName=='selectshipper'){
@@ -53,6 +54,10 @@ class VirtueMartViewCart extends JView {
 			
 			$this->assignRef('shippingCarriers',$shippingCarriers);
 			$this->loadHelper('shopfunctions');
+			
+			/* Add the cart title to the pathway */
+			$pathway->addItem(JText::_('VM_CART_SELECTSHIPPER'));
+			$mainframe->setPageTitle(JText::_('VM_CART_SELECTSHIPPER'));
 			
 		} else if($layoutName=='selectpayment'){
 			//For the selection of the payment method we need the total amount to pay.
@@ -74,6 +79,11 @@ class VirtueMartViewCart extends JView {
 
 			$this->assignRef('paymentModel',$paymentModel);
 			$this->assignRef('payments',$payments);
+			
+			/* Add the cart title to the pathway */
+			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));
+			$mainframe->setPageTitle(JText::_('VM_CART_SELECTPAYMENT'));
+			
 //		} else if($layoutName=='headermailshopper' || $layoutName=='headermailvendor'){
 //			$store = $this->getModel('store','VirtuemartModel');
 //			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
@@ -83,11 +93,20 @@ class VirtueMartViewCart extends JView {
 			
 		} else if($layoutName=='orderdone'){
 			//Show Thank you page or error due payment plugins like paypal express
-		} else {  //cart and pricelist
 			
-		/* Add the cart title to the pathway */
-		$pathway->addItem(JText::_('VM_CART_TITLE'));
-		$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
+			/* Add the cart title to the pathway */
+			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
+			$mainframe->setPageTitle(JText::_('VM_CART_THANKYOU'));
+			
+		} else if($layoutName=='cart' || $layoutName=='mailshopper' || $layoutName=='mailvendor'){
+		//cart and pricelist
+		/* Get the products for the cart */
+		$model = $this->getModel('cart');
+		$products = $model->getCartProducts($cart);
+		$this->assignRef('products', $products);
+				
+		$prices = $model->getCartPrices($cart);
+		$this->assignRef('prices', $prices);
 
 		//For User address
 		$_currentUser =& JFactory::getUser();
@@ -130,7 +149,13 @@ class VirtueMartViewCart extends JView {
 			
 			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
 			$lists['billTo'] = $_addressList[0]->user_info_id;
-		
+			
+			$this->assignRef('lists', $lists);
+			$this->assignRef('userDetails', $userDetails);
+			
+			/* Add the cart title to the pathway */
+			$pathway->addItem(JText::_('VM_CART_TITLE'));
+			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
 /*		$_userFields = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles
@@ -172,8 +197,8 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('userInfoID', $_userInfoID);
 		$this->assignRef('contactDetails', $_contactDetails);
 		*/
-			$this->assignRef('lists', $lists);
-			$this->assignRef('userDetails', $userDetails);
+
+			
 		}
 		
 		if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
@@ -183,17 +208,10 @@ class VirtueMartViewCart extends JView {
 			$_store = $store->getStore();
 			$this->assignRef('store',$_store);
 			
-			//TODO add orders
-		}
-		 
-		/* Get the products for the cart */
-		$model = $this->getModel('cart');
-		$products = $model->getCartProducts($cart);
-		$this->assignRef('products', $products);
-				
-		$prices = $model->getCartPrices($cart);
-		$this->assignRef('prices', $prices);
-		
+			// TODO add orders, for the orderId
+			// TODO add registering userdata
+			// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
+		}		
 		
 		/* Get a continue link */
 		$category_id = JRequest::getInt('category_id');
