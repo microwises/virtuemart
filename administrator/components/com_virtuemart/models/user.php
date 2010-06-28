@@ -238,6 +238,24 @@ class VirtueMartModelUser extends JModel {
 		}
 	}
 
+	function address2cart()
+	{
+		$_data = JRequest::get('post');
+
+		$_fields = user_info::getUserFields($_data['address_type'], true);
+		// Translate array to an object
+		$_address = new stdClass();
+		foreach ($_data as $_k => $_v) {
+			$_address->{$_k} = $_v;
+		}
+		if ($_data['address_type'] == 'BT') {
+			$_address->address_billto_id = 'BT_dynID';
+		} else {
+			$_address->address_shipto_id = 'ST_dynID';
+		}
+		user_info::saveAddressInCart($_address, $_fields, $_data['address_type']);
+	}
+
 	/**
 	 * Bind the post data to the JUser object and the VM tables save it
 	 *

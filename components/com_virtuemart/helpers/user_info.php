@@ -49,7 +49,7 @@ class user_info
 		}
 
 		if ($_cart) {
-			self::_saveAddressInCart($_data);
+			self::saveAddressInCart($_data);
 		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
@@ -81,7 +81,7 @@ class user_info
 			}
 
 			if ($_cart) {
-				self::_saveAddressInCart($_shipto, $_prepareUserFields);
+				self::saveAddressInCart($_shipto, $_prepareUserFields);
 			}
 		}
 		return true;
@@ -90,7 +90,7 @@ class user_info
 	function _prepareUserFields($_data, $_type)
 	{
 		$_userFieldsModel = new VirtueMartModelUserfields();
-		$_prepareUserFields = self::_getUserFields($_type);
+		$_prepareUserFields = self::getUserFields($_type);
 		
 		// Format the data
 		foreach ($_prepareUserFields as $_fld) {
@@ -99,7 +99,7 @@ class user_info
 		return $_data;
 	}
 
-	function _getUserFields($_type)
+	function getUserFields($_type, $_dynamic = false)
 	{
 		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
 		// VirtueMartModelUserfields::getUserFields() won't work
@@ -110,16 +110,25 @@ class user_info
 									, array() // Default toggles
 			);
 		} else { // BT
-			$_prepareUserFields = $_userFieldsModel->getUserFields(
-									 'account'
-									, array() // Default toggles
-									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
-			);
+			if ($_dynamic) {
+				// The user is not logged in (anonymous), so we need tome extra fields
+				$_prepareUserFields = $_userFieldsModel->getUserFields(
+										 'account'
+										, array() // Default toggles
+										, array('delimiter_userinfo', 'username', 'password', 'password2', 'agreed') // Skips
+				);
+			} else {
+				$_prepareUserFields = $_userFieldsModel->getUserFields(
+										 'account'
+										, array() // Default toggles
+										, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+				);
+			}
 		}
 		return $_prepareUserFields;
 	}
 
-	function _saveAddressInCart($_data, $_fields, $_type)
+	function saveAddressInCart($_data, $_fields, $_type)
 	{
 		$_cart = cart::getCart();
 		$_address = array();
@@ -131,7 +140,7 @@ class user_info
 		} else {
 			$_cart['address_billto_id'] = $_data->user_info_id;
 		}
-		$_cart[$_address['address_type']] = $_address;
+		$_cart[$_type] = $_address;
 		cart::setCart($_cart);
 	}
 
@@ -140,8 +149,22 @@ class user_info
 		$_usr = new VirtueMartModelUser();
 		$_usr->setCurrent();
 		$_address = $_usr->getUserAddress(0, $_usr_inf_id, '');
-		$_userFields = self::_getUserFields($_type);
-		self::_saveAddressInCart($_address[0], $_userFields, $_type);
+		$_userFields = self::getUserFields($_type);
+		self::saveAddressInCart($_address[0], $_userFields, $_type);
+	}
+
+	function getAddress ($_model, $_fields, $_type)
+	{
+		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
+		$_cart = cart::getCart();
+		$_address = new stdClass();
+		$_data = $_cart[$_type];
+
+		foreach ($_data as $_k => $_v) {
+			$_address->{$_k} = $_v;
+		}
+		$_data = $_model->getUserFieldsByUser($_fields, $_address, (($_type == 'ST')?'shipto':''));
+		return $_data;
 	}
 }
 // No closing tag

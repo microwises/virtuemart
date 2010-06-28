@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Modify user form view, User info
+ * Enter address data for the cart, when anonymous users checkout
  *
  * @package	VirtueMart
  * @subpackage User
@@ -18,8 +18,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//if($this->setForm){ 
 
 // Implement Joomla's form validation
 JHTML::_('behavior.formvalidation');
@@ -54,7 +52,8 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
+<form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
+<!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
 	&nbsp;
@@ -151,10 +150,13 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 	}
 	echo $_hiddenFields;
 ?>
-<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
-<input type="hidden" name="address_type" value="BT" />
+<input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="controller" value="user" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
+<input type="hidden" name="rview" value="<?php echo $this->lists['rview']; ?>" />
+<input type="hidden" name="dynaddr" value="1" />
 
-</fieldset> <?php
-if($this->setForm){
-	echo '</form>';
-} ?>
+</fieldset> 
+<?php echo JHTML::_( 'form.token' ); ?>
+</form>

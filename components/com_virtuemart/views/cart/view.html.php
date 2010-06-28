@@ -156,49 +156,23 @@ class VirtueMartViewCart extends JView {
 			/* Add the cart title to the pathway */
 			$pathway->addItem(JText::_('VM_CART_TITLE'));
 			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
-/*		$_userFields = $userFieldsModel->getUserFields(
-				 'account'
-				, array() // Default toggles
-				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
-					, 'agreed', 'address_type', 'bank') // Skips
-		);
-		if (($_addressCount = count($userDetails->userInfo)) == 0) {
-			$_userDetailsList = null;
-			$_userInfoID = null;
+
 		} else {
-			$_userDetailsList = current($userDetails->userInfo);
-			for ($_i = 0; $_i < $_addressCount; $_i++) {
-				if ($_userDetailsList->address_type == 'BT') {
-					$_userInfoID = $_userDetailsList->user_info_id;
-					reset($userDetails->userInfo);
-					break;
-				}
-				$_userDetailsList = next($userDetails->userInfo);
-			}
-		}
-		$userFields = $userFieldsModel->getUserFieldsByUser(
-				 $_userFields
-				,$_userDetailsList
-		);
+			$_address = array();
+			$_address[] = new stdClass();
 
-		// Bank details, reuse the current $_userDetailsList pointer that holds the BT info
-		$_bankFields = $userFieldsModel->getUserFields(
-			 'bank'
-			, array() // Default toggles
-		);
-		$_bankInfo = $userFieldsModel->getUserFieldsByUser(
-			 $_bankFields
-			,$_userDetailsList
-		);
-		
-
-		$this->assignRef('bankInfo', $_bankInfo);
-		$this->assignRef('userFields', $userFields);
-		$this->assignRef('userInfoID', $_userInfoID);
-		$this->assignRef('contactDetails', $_contactDetails);
-		*/
-
-			
+			$_addressBT[0]->address_type_name = '<a href="index.php'
+									.'?option=com_virtuemart'
+									.'&view=user'
+									.'&task=editaddress'
+									.'&rview=cart'
+									.'&cid[]=0'
+									.'&shipto=BT_dynID'
+								. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
+			$_addressBT[0]->user_info_id = 'BT_dynID';
+			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressBT, 'shipto', null, 'user_info_id', 'address_type_name', 'BT_dynID');
+			$lists['billTo'] = 'BT_dynID';
+			$this->assignRef('lists', $lists);
 		}
 		
 		if($layoutName=='mailshopper' || $layoutName=='mailvendor'){

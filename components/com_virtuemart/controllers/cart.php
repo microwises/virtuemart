@@ -149,7 +149,6 @@ class VirtueMartControllerCart extends JController {
 	 * @author Max Milbers
 	 */
 	public function editpayment(){
-	
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		$view->setLayout('selectpayment');
@@ -246,7 +245,7 @@ class VirtueMartControllerCart extends JController {
 		
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
-		
+
 		if($cart){
 			$mainframe = JFactory::getApplication();
 			
@@ -265,36 +264,31 @@ class VirtueMartControllerCart extends JController {
 			if ($_shipto = JRequest::getVar('shipto', '')) {
 				user_info::address2cart($_shipto, 'ST');
 			}
-			
-			//Here we must test again if the entered data is valid
-			//Of course this should be done with a nice cycling through the needed userfields, just a dummy solution
-			//There is a problem left, that the adress view does not point back to the checkout. This worked before alrady
-			//I assume that you have the solution already in mind oscar and let it like it is
-			
-			if(empty($cart['BT']['last_name']) || 
-				empty($cart['BT']['address_1'])){
-				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress');
+
+			// Cart has been modified, so reload it.
+			$cart = cart::getCart(false);
+
+			if(empty($cart['address_billto_id'])){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress&addrtype=BT&rview=cart');
 			}
-				
+			if(empty($cart['address_shipto_id'])){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress&addrtype=ST&rview=cart');
+			}
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
 				$cart['inCheckOut'] = true;
 				cart::setCart($cart);
 				$this->editshipping();
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');	
+				return;
 			}
-
+			
 			//Test Payment and show payment plugin
 			if(empty($cart['paym_id'])){
 				$cart['inCheckOut'] = true;
-
+				
 				cart::setCart($cart);
-				//Another thing oscar, can you explain me why we need a redirect? and cant call it directly?
-				// Dunno; as long as you stay in the same controller, I wouldn't expect we'ld need redirects.
-				// TODO I'll check this out later
-				//Interesting thing is, that it works in the email stuff without redirect.
-				$this->editpayment();
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
+				self::editpayment();
+				return;
 			}
 			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
@@ -305,7 +299,8 @@ class VirtueMartControllerCart extends JController {
 					empty($cart['cc_code']) || 
 					empty($cart['cc_expire_month']) ||  
 					empty($cart['cc_expire_year'])){
-					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment');
+						$this->editpayment();
+						return;
 				}
 			}
 		
@@ -315,14 +310,11 @@ class VirtueMartControllerCart extends JController {
 			cart::setCart($cart);
 			
 			if($confirmDone){
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=confirmedOrder');
+				$this->confirmedOrder();
 			} else {
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+				$this->Cart();
 			}
 		}
-		
-//		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');	
-		
 	}
 	
 	/**
@@ -385,7 +377,8 @@ class VirtueMartControllerCart extends JController {
 		$view->display();
 		$bodyShopper = ob_get_contents();
 		ob_end_clean();
-		$sentmail = $this->sendMail($cart,$bodyShopper,$cart['user_email']); //TODO should be set by the user stuff, Oscar?
+		$sentmail = $this->sendMail($cart,$bodyShopper,$cart['BT']['email']);
+		
 		
 		$view->setLayout('mailvendor');
 		

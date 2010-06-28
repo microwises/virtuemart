@@ -19,8 +19,11 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-echo '<pre>'.print_r($this->cart,1).'</pre>';
+if (function_exists('dumpTrace')) { // J!Dump is installed
+	dump($this->cart, 'Cart');
+} else {
+	echo '<pre>'.print_r($this->cart,1).'</pre>';
+}
 
 /* Show Continue Shopping link when the cart is empty */ 
 if ($this->cart["idx"] == 0) {
@@ -35,23 +38,6 @@ else {
 	
 ?>
 <form action="index.php">
-<!-- 
-<?php 
-// FIXME Note for Max; I (Oscar) outcommented this, we should discuss this when both online
-// Note for Oscar No Problem, this was done before I asked you about it.
-?>
-<fieldset>
-	<legend>
-		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
-	</legend>
-
-	<?php echo $this->lists['shipTo']; ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->user_id; ?>">
-		<?php echo JText::_('VM_USER_FORM_LBL'); ?>
-	</a>
-	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
-</fieldset>
- -->
 
 <fieldset>
 	<legend>
@@ -59,7 +45,7 @@ else {
 	</legend>
 
 	<?php echo $this->lists['shipTo']; ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&shipto=0&cid[]=<?php echo $this->user_id; ?>">
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&rview=cart&shipto=0&cid[]=<?php echo $this->user_id; ?>">
 		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>

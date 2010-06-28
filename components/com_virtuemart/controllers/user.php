@@ -110,17 +110,26 @@ class VirtueMartControllerUser extends JController
 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
-		if ($model->store()) {
-			$msg	= JText::_( 'Your settings have been saved.' );
+		if (JRequest::getVar('dynaddr', 0) == 1) {
+			$model->address2cart();
 		} else {
-			//$msg	= JText::_( 'Error saving your settings.' );
-			$msg	= $model->getError();
+			if ($model->store()) {
+				$msg	= JText::_( 'Your settings have been saved.' );
+			} else {
+				//$msg	= JText::_( 'Error saving your settings.' );
+				$msg	= $model->getError();
+			}
 		}
 
-		$cart = cart::getCart();
-		if (($cart && $cart['inCheckOut']) || ($_rview = JRequest::getVar('rview', '')) != ''){
-			$return = 'index.php?option=com_virtuemart&view='.$_rview.'&'
-				. ($cart['inCheckOut'] ? 'task=checkout' : '');
+		$_rview = JRequest::getVar('rview', '');
+		if (($_rview = JRequest::getVar('rview', '')) != '') {
+			$return = 'index.php?option=com_virtuemart&view='.$_rview;
+			if ($_rview == 'cart') {
+				$cart = cart::getCart();
+				if ($cart){
+					$return .= ($cart['inCheckOut'] ? '&task=checkout' : '');
+				}
+			}
 		}
 
 		$this->setRedirect( $return, $msg );
@@ -215,10 +224,14 @@ class VirtueMartControllerUser extends JController
 	function cancel()
 	{
 		$return = JURI::base();
-		$cart = cart::getCart();
-		if (($cart && $cart['inCheckOut']) || ($_rview = JRequest::getVar('rview', '')) != ''){
-			$return = 'index.php?option=com_virtuemart&view='.$_rview.'&'
-				. ($cart['inCheckOut'] ? 'task=checkout' : '');
+		if (($_rview = JRequest::getVar('rview', '')) != '') {
+			$return = 'index.php?option=com_virtuemart&view='.$_rview;
+			if ($_rview == 'cart') {
+				$cart = cart::getCart();
+				if ($cart){
+					$return .= ($cart['inCheckOut'] ? '&task=checkout' : '');
+				}
+			}
 		}
 		$this->setRedirect( $return, $msg );
 	}
