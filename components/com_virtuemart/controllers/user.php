@@ -35,19 +35,6 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 	}
 
-	function editaddress(){
-		
-		$view = $this->getView('user', 'html');
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setLayout('edit_address');
-
-		/* Display it all */
-		$view->display();
-		
-	}
 
 	public function User(){
 		
@@ -69,12 +56,98 @@ class VirtueMartControllerUser extends JController
 	}
 
 	/**
-	 * Save the user info. This is a copy of (modifued) the save() function from Joomla
+	 * This is for use in the cart, it calls a standard template for editing user adresses. It sets the following task of the form
+	 * in the template to saveCartUser, the task saveCartUser just sets the right redirect in save(). This is done just to have the 
+	 * controll flow in the controller and not in the layout. The layout is everytime calling a standard joomla task.
+	 * 
+	 * @author Max Milbers
+	 */
+	 
+	function editaddresscart(){
+		
+		$view = $this->getView('user', 'html');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setLayout('edit_address');
+		
+		$ftask ='savecartuser';
+		$view->assignRef('fTask', $ftask);
+		/* Display it all */
+		$view->display();
+		
+	}
+	
+	/**This function is called from the layout edit_adress and just sets the right redirect to the save function
+	 * 
+	 * @author Max Milbers
+	 */
+	function saveCartUser(){
+		$msg = $this->saveData();
+		$this->saveToCart();
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart');
+	}
+
+	/**
+	 * This is for use in the checkout process, it is the same like editAddressCart, but it sets the save task
+	 * to saveCheckoutUser, the task saveCheckoutUser just sets the right redirect. This is done just to have the 
+	 * controll flow in the controller and not in the layout. The layout is everytime calling a standard joomla task.
+	 * 
+	 * @author Max Milbers
+	 */
+	function editAddressCheckout(){
+		
+		$view = $this->getView('user', 'html');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setLayout('edit_address');
+
+		$ftask ='savecheckoutuser';
+		$view->assignRef('fTask', $ftask);
+
+		/* Display it all */
+		$view->display();
+	}
+
+	/**This function is called from the layout edit_adress and just sets the right redirect to the save function
+	 * 
+	 * @author Max Milbers
+	 */	
+	function saveCheckoutUser(){
+		$msg = $this->saveData();
+		$this->saveToCart();
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
+	}
+	
+	function saveToCart(){
+		
+		// Load the user_info helper
+		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
+		if ($_billto = JRequest::getVar('billto', '')) {
+			user_info::address2cart($_billto, 'BT');
+		}
+		// Shipto is selected in the first cartview 
+		if ($_shipto = JRequest::getVar('shipto', '')) {
+			user_info::address2cart($_shipto, 'ST');
+		}
+	}
+	
+	function save(){
+		$msg = $this->saveData();
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=user', $msg );
+	}
+	
+	/**
+	 * Save the user info. This is a copy of (modified) the save() function from Joomla
 	 * user-controller. It cannot be called since that function ends with as redirect and
 	 * after that we need to save the VirtueMart specific data.
 	 * 
+	 * @author Oscar van Eijk
 	 */
-	function save()
+	function saveData()
 	{
 		// For new user gistrations, call register() first
 		$_new = JRequest::getVar( 'register_new', 0, 'post', 'int' );
@@ -89,12 +162,13 @@ class VirtueMartControllerUser extends JController
 			$user	 =& JFactory::getUser();
 		}
 
-		$return = JURI::base();
-
 		$userid = ($_new ? $user->get('id') : JRequest::getVar( 'my_user_id', 0, 'post', 'int' ));
-		// preform security checks
+		
+		$unregistered = JRequest::getVar('dynaddr', 0);
+		
+		// perform security checks
 //		if ($user->get('id') == 0 || $userid == 0 ||
-		if ($userid <> $user->get('id') && !Permissions::getInstance()->check("admin,storeadmin")) {
+		if (!$unregistered && $userid <> $user->get('id') && !Permissions::getInstance()->check("admin,storeadmin")) {
 			JError::raiseError( 403, JText::_('Access Forbidden') );
 			return;
 		}
@@ -110,7 +184,7 @@ class VirtueMartControllerUser extends JController
 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
-		if (JRequest::getVar('dynaddr', 0) == 1) {
+		if ($unregistered == 1) {
 			$model->address2cart();
 		} else {
 			if ($model->store()) {
@@ -121,18 +195,8 @@ class VirtueMartControllerUser extends JController
 			}
 		}
 
-		$_rview = JRequest::getVar('rview', '');
-		if (($_rview = JRequest::getVar('rview', '')) != '') {
-			$return = 'index.php?option=com_virtuemart&view='.$_rview;
-			if ($_rview == 'cart') {
-				$cart = cart::getCart();
-				if ($cart){
-					$return .= ($cart['inCheckOut'] ? '&task=checkout' : '');
-				}
-			}
-		}
+		return $msg;
 
-		$this->setRedirect( $return, $msg );
 	}
 
 	

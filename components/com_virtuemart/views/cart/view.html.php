@@ -36,6 +36,7 @@ class VirtueMartViewCart extends JView {
 		
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		$this->assignRef('layoutName', $layoutName);
+//		echo 'my layout:'.$layoutName;
 		
 		/* Load the cart helper */
 		$this->loadHelper('cart');
@@ -84,13 +85,6 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));
 			$mainframe->setPageTitle(JText::_('VM_CART_SELECTPAYMENT'));
 			
-//		} else if($layoutName=='headermailshopper' || $layoutName=='headermailvendor'){
-//			$store = $this->getModel('store','VirtuemartModel');
-//			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
-//			$store->setId($cart['vendor_id']);
-//			$_store = $store->getStore();
-//			$this->assignRef('store',$_store);
-			
 		} else if($layoutName=='orderdone'){
 			//Show Thank you page or error due payment plugins like paypal express
 			
@@ -99,82 +93,97 @@ class VirtueMartViewCart extends JView {
 			$mainframe->setPageTitle(JText::_('VM_CART_THANKYOU'));
 			
 		} else if($layoutName=='cart' || $layoutName=='mailshopper' || $layoutName=='mailvendor'){
-		//cart and pricelist
-		/* Get the products for the cart */
-		$model = $this->getModel('cart');
-		$products = $model->getCartProducts($cart);
-		$this->assignRef('products', $products);
+			//cart and pricelist
+			/* Get the products for the cart */
+			$model = $this->getModel('cart');
+			$products = $model->getCartProducts($cart);
+			$this->assignRef('products', $products);
+					
+			$prices = $model->getCartPrices($cart);
+			$this->assignRef('prices', $prices);
+	
+			//For User address
+			$_currentUser =& JFactory::getUser();
+			$lists['current_id'] = $_currentUser->get('id');
+			$this->assignRef('user_id', $lists['current_id']);
+			if($lists['current_id']){
+				$user = $this->getModel('user');
+				$user->setId($lists['current_id']);
+				$this->assignRef('user', $user);
 				
-		$prices = $model->getCartPrices($cart);
-		$this->assignRef('prices', $prices);
-
-		//For User address
-		$_currentUser =& JFactory::getUser();
-		$lists['current_id'] = $_currentUser->get('id');
-		$this->assignRef('user_id', $lists['current_id']);
-		if($lists['current_id']){
-			$user = $this->getModel('user');
-			$user->setId($lists['current_id']);
-			$this->assignRef('user', $user);
-			
-			$userDetails = $user->getUser();
-			$_contactDetails = $user->getContactDetails();
-			
-			$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-			
-			// Shipping address(es)
-			$_addressBT = $user->getUserAddressList($userDetails->JUser->get('id') , 'BT');
-			// Overwrite the address name for display purposes
-			$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
-			$_addressST = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
-			$_addressList = array_merge(
-				array($_addressBT[0])// More BT addresses can exist for shopowners :-(
-				, $_addressST
-			);
-			for ($_i = 0; $_i < count($_addressList); $_i++) {
-				$_addressList[$_i]->address_type_name = '<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&layout=edit'
-									.'&rview=cart'
-									.'&cid[]='.$_addressList[$_i]->user_id
-									.(($_i == 0) ? '&tab=1#BT' : '&shipto='.$_addressList[$_i]->user_info_id) // BT = BillTo 
-								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
-			}
-			$_selectedAddress = (
-				empty($cart['address_shipto_id'])
-					? $_addressList[0]->user_info_id // Defaults to BillTo
-					: $cart['address_shipto_id']
+				$userDetails = $user->getUser();
+				$_contactDetails = $user->getContactDetails();
+				
+				$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+				
+				// Shipping address(es)
+				$_addressBT = $user->getUserAddressList($userDetails->JUser->get('id') , 'BT');
+				// Overwrite the address name for display purposes
+				$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
+				$_addressST = $user->getUserAddressList($userDetails->JUser->get('id') , 'ST');
+				$_addressList = array_merge(
+					array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+					, $_addressST
 				);
+				for ($_i = 0; $_i < count($_addressList); $_i++) {
+					$_addressList[$_i]->address_type_name = '<a href="index.php'
+										.'?option=com_virtuemart'
+										.'&view=user'
+										.'&layout=edit'
+										.'&rview=cart'
+										.'&cid[]='.$_addressList[$_i]->user_id
+										.(($_i == 0) ? '&tab=1#BT' : '&shipto='.$_addressList[$_i]->user_info_id) // BT = BillTo 
+									. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
+				}
+	//			for ($_i = 0; $_i < count($_addressList); $_i++) {
+	//				$_addressList[$_i]->address_type_name = '<a href="index.php'
+	//									.'?option=com_virtuemart'
+	//									.'&view=user'
+	//									.'&task=editaddress'
+	////									.'&addrtype='.($_i == 0) ? '&tab=1#BT' : 'ST'
+	//									.($_i == 0) ? '&tab=1#BT':'&addrtype=ST'
+	//									.'&cid[]='.$_addressList[$_i]->user_id
+	//									.'&shipto='.$_addressList[$_i]->user_info_id
+	////									.(($_i == 0) ? '&tab=1#BT' : '&shipto='.$_addressList[$_i]->user_info_id) // BT = BillTo 
+	//								. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
+	//			}
+				$_selectedAddress = (
+					empty($cart['address_shipto_id'])
+						? $_addressList[0]->user_info_id // Defaults to BillTo
+						: $cart['address_shipto_id']
+					);
+				
+				$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+				$lists['billTo'] = $_addressList[0]->user_info_id;
+				
+				$this->assignRef('lists', $lists);
+				$this->assignRef('userDetails', $userDetails);
+				
+				/* Add the cart title to the pathway */
+				$pathway->addItem(JText::_('VM_CART_TITLE'));
+				$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
+	
+			} else {
+	
+				//This else is for anonymous case
+				$_address = array();
+				$_address[] = new stdClass();
+	
+				$_addressBT[0]->address_type_name = '<a href="index.php'
+										.'?option=com_virtuemart'
+										.'&view=user'
+										.'&task=editaddress'
+										.'&rview=cart'
+										.'&cid[]=0'
+										.'&shipto=BT_dynID'
+									. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
+				$_addressBT[0]->user_info_id = 'BT_dynID';
+				$lists['shipTo'] = JHTML::_('select.radiolist', $_addressBT, 'shipto', null, 'user_info_id', 'address_type_name', 'BT_dynID');
+				$lists['billTo'] = 'BT_dynID';
+				$this->assignRef('lists', $lists);
+			}
+		}	
 			
-			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
-			$lists['billTo'] = $_addressList[0]->user_info_id;
-			
-			$this->assignRef('lists', $lists);
-			$this->assignRef('userDetails', $userDetails);
-			
-			/* Add the cart title to the pathway */
-			$pathway->addItem(JText::_('VM_CART_TITLE'));
-			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
-
-		} else {
-			$_address = array();
-			$_address[] = new stdClass();
-
-			$_addressBT[0]->address_type_name = '<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&task=editaddress'
-									.'&rview=cart'
-									.'&cid[]=0'
-									.'&shipto=BT_dynID'
-								. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
-			$_addressBT[0]->user_info_id = 'BT_dynID';
-			$lists['shipTo'] = JHTML::_('select.radiolist', $_addressBT, 'shipto', null, 'user_info_id', 'address_type_name', 'BT_dynID');
-			$lists['billTo'] = 'BT_dynID';
-			$this->assignRef('lists', $lists);
-		}
-		
 		if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
 			$store = $this->getModel('store','VirtuemartModel');
 			if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
@@ -197,8 +206,8 @@ class VirtueMartViewCart extends JView {
 		elseif (!empty($manufacturer_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$manufacturer_id);
 		else $continue_link = JRoute::_('index.php?option=com_virtuemart');
 		
-		$this->assignRef('continue_link', $continue_link);	
-		}
+		$this->assignRef('continue_link', $continue_link);
+		
 		
 		parent::display($tpl);
 	}

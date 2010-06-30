@@ -226,19 +226,19 @@ class VirtueMartModelCountry extends JModel {
      * @return object List of country objects
      */
     function getCountries($onlyPublished=true, $noLimit=false) {
-	$query = 'SELECT * FROM `#__vm_country` ';
-	if ($onlyPublished) {
-	    $query .= 'WHERE `#__vm_country`.`published` = 1';
-	}
-	$query .= ' ORDER BY `#__vm_country`.`country_name`';
-	if ($noLimit) {
-	    $this->_data = $this->_getList($query);
-	}
-	else {
-	    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-	}
-
-	return $this->_data;
+		$query = 'SELECT * FROM `#__vm_country` ';
+		if ($onlyPublished) {
+		    $query .= 'WHERE `#__vm_country`.`published` = 1';
+		}
+		$query .= ' ORDER BY `#__vm_country`.`country_name`';
+		if ($noLimit) {
+		    $this->_data = $this->_getList($query);
+		}
+		else {
+		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+	
+		return $this->_data;
     }
 }
 ?>

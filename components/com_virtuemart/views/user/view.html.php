@@ -58,7 +58,12 @@ class VirtuemartViewUser extends JView {
 		}
 
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-		$model->setId($_currentUser->get('id'));
+		$uid = $_currentUser->get('id');
+		if(!empty($model)){
+			$model->setId($uid);
+		}else{
+			echo 'Model userfields is empty';die;
+		}
 		$userDetails = $model->getUser();
 		//		echo 'UserDetails: <pre>'.print_r($userDetails).'</pre>';
 		if($layoutName=='edit'){
@@ -66,7 +71,7 @@ class VirtuemartViewUser extends JView {
 			$vendor = new Vendor;
 		}
 
-		$_new = ($_currentUser->get('id') < 1);
+		$_new = ($uid < 1);
 
 		// User details
 		$_contactDetails = $model->getContactDetails();
@@ -81,7 +86,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 			$lists['canBlock']      = ($_currentUser->authorize('com_users', 'block user')
-			&& ($userDetails->JUser->get('id') != $_currentUser->get('id'))); // Can't block myself
+			&& ($userDetails->JUser->get('id') != $uid)); // Can't block myself
 			$lists['canSetMailopt'] = $_currentUser->authorize('workflow', 'email_events');
 			$lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
@@ -136,6 +141,7 @@ class VirtuemartViewUser extends JView {
 			$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
 		}
 		if ($layoutName=='edit_address') {
+
 			$_type = JRequest::getVar('addrtype', 'BT');
 			$this->assignRef('address_type', $_type);
 
@@ -343,13 +349,13 @@ class VirtuemartViewUser extends JView {
 		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
 
 		// Check for a view to return to
-		$lists['rview'] = JRequest::getVar('rview', '');
+//		$lists['rview'] = JRequest::getVar('rview', '');
 
 		// If the source for this action is the cart (taken from 'rview'), we just edited an
 		// address.
 		// Make sure this address is written to the cart as selected.
 		// TODO Should this code be moved to the cart helper?
-		if ($lists['rview'] == 'cart') {
+//		if ($lists['rview'] == 'cart') {
 			$_cart = cart::getCart();
 			if ($_cart) {
 				if (($_shipto = JRequest::getVar('shipto', '')) != '') {
@@ -360,7 +366,7 @@ class VirtuemartViewUser extends JView {
 				$_cart['address_billto_id'] = $_userInfoID;
 				cart::setCart($_cart);
 			}
-		}
+//		}
 
 		$this->assignRef('lists', $lists);
 		$this->assignRef('userDetails', $userDetails);

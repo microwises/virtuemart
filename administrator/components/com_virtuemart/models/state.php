@@ -268,8 +268,42 @@ class VirtueMartModelState extends JModel {
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
+	
+	/**
+	 * Tests if a state and country fits together and if they are published
+	 * 
+	 * @author Max Milbers
+	 * @return String Attention, this function gives a 0=false back in case of success
+	 */
+	public function testStateCountry($countryId,$stateId)
+	{
+		//Test if id is published
+					
+		$db =& JFactory::getDBO();
+		$q = 'SELECT * FROM `#__vm_country` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
+		$db->setQuery($q);
+		if($db->loadResult()){
+			//Test if country has states 
+			$q = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
+			$db->setQuery($q);
+			if($db->loadResult()){
+				//Test if state_id fits to country_id
+				$q = 'SELECT * FROM `#__vm_state` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `published`="1"';
+				$db->setQuery($q);
+				if($db->loadResult()){
+					return 0;
+				} else {
+					return 'state_id';
+				}
+			} else {
+				return 0;
+			}
 
-
+		} else {
+			return 'country_id';
+		}
+	}
+	
 	/**
 	 * Retireve a full list of countries from the database.
 	 *

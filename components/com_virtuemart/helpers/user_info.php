@@ -128,6 +128,31 @@ class user_info
 		return $_prepareUserFields;
 	}
 
+	function getTestUserFields()
+	{
+		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
+		// VirtueMartModelUserfields::getUserFields() won't work
+		$_userFieldsModel = new VirtueMartModelUserfields();
+//		if ($_dynamic) {
+			// The user is not logged in (anonymous), so we need tome extra fields
+			$_prepareUserFields = $_userFieldsModel->getUserFields(
+									 'shipping'
+									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
+				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor') // Skips
+									
+			);
+//		} else {
+//			$_prepareUserFields = $_userFieldsModel->getUserFields(
+//									 'shipping'
+//									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
+//									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2') // Skips
+//
+//			);
+//		}
+
+		return $_prepareUserFields;
+	}
+	
 	function saveAddressInCart($_data, $_fields, $_type)
 	{
 		$_cart = cart::getCart();
@@ -158,11 +183,15 @@ class user_info
 		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
 		$_cart = cart::getCart();
 		$_address = new stdClass();
-		$_data = $_cart[$_type];
+		if(!empty($_cart[$_type])){
+			
+			$_data = $_cart[$_type];
 
-		foreach ($_data as $_k => $_v) {
-			$_address->{$_k} = $_v;
+			foreach ($_data as $_k => $_v) {
+				$_address->{$_k} = $_v;
+			}
 		}
+
 		$_data = $_model->getUserFieldsByUser($_fields, $_address, (($_type == 'ST')?'shipto':''));
 		return $_data;
 	}

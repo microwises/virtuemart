@@ -41,12 +41,26 @@ else {
 
 <fieldset>
 	<legend>
+		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
+	</legend>
+
+	<?php  ?>
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT&cid[]=<?php echo $this->user_id; ?>">
+		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
+	</a>
+	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
+</fieldset>
+
+<fieldset>
+	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 
-	<?php echo $this->lists['shipTo']; ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&rview=cart&shipto=0&cid[]=<?php echo $this->user_id; ?>">
-		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
+	<?php echo $this->lists['shipTo']; 
+/*	?><a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&rview=cart&shipto=0&cid[]=<?php echo $this->user_id; ?>">
+		<?php */ 
+	?>	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->user_id; ?>">
+	<?php	echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
 </fieldset>

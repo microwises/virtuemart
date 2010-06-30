@@ -40,7 +40,7 @@ class VirtueMartControllerCart extends JController {
 	public function __construct() {
 		parent::__construct();
 		// Force the default task kto cart() in order to make redirects work
-		$this->registerTask('__default', 'cart');
+//		$this->registerTask('__default', 'cart');
 	}
 
 	/**
@@ -165,7 +165,7 @@ class VirtueMartControllerCart extends JController {
 	 * 
 	 * @author Max Milbers
 	 */
-	function setpayment(){
+	function setpayment($redirect=true){
 		
 		/* Get the payment id of the cart */
 			//Now set the shipping rate into the cart
@@ -195,11 +195,19 @@ class VirtueMartControllerCart extends JController {
 				cart::setCart($cart);
 				if($cart['inCheckOut']){
 					$mainframe = JFactory::getApplication();
-					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+					if($redirect){
+						$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+					} else {
+						return true;	
+					}
+					
 				}
-			}		
-		
-		self::Cart();
+			}
+		if($redirect){
+			self::Cart();
+		} else {
+			return false;
+		}
 	}
 	
 
@@ -249,34 +257,38 @@ class VirtueMartControllerCart extends JController {
 		if($cart){
 			$mainframe = JFactory::getApplication();
 			
-			//When the data is already validated, then the confirmation was done
+			//When the data is already validated, then the confirmation was done,
+			//so set confirmdone true,  this checks again all data for the final contract
 			if($cart['dataValidated'] === true){
 				$confirmDone=true;
+			}else{
+				$confirmDone=false;
 			}
-			//But we check the data again to be sure
 			
-			// Load the user_info helper
-			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
-			if ($_billto = JRequest::getVar('billto', '')) {
-				user_info::address2cart($_billto, 'BT');
+			//But we check the data again to be sure
+			if(empty($cart['BT'])){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
+			}else {
+				//just for testing
+				$anonym = true;
+				$redirectMsg = self::validateUserData($cart,$anonym);
+				if($redirectMsg){
+					$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT',$redirectMsg);		
+				}
 			}
-			// Shipto is selected in the first cartview 
-			if ($_shipto = JRequest::getVar('shipto', '')) {
-				user_info::address2cart($_shipto, 'ST');
+			//Only when there is an ST data, test if all necessary fields are filled
+			if(!empty($cart['ST'])){
+				$anonym = true;
+				$redirectMsg = self::validateUserData($cart,$anonym,'ST');
+				if($redirectMsg){
+					$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST',$redirectMsg);		
+				}			
 			}
 
-			// Cart has been modified, so reload it.
-			$cart = cart::getCart(false);
-
-			if(empty($cart['address_billto_id'])){
-				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress&addrtype=BT&rview=cart');
-			}
-			if(empty($cart['address_shipto_id'])){
-				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddress&addrtype=ST&rview=cart');
-			}
 			//Test Shipment
 			if(empty($cart['shipping_rate_id'])){
 				$cart['inCheckOut'] = true;
+				$confirmDone=false;
 				cart::setCart($cart);
 				$this->editshipping();
 				return;
@@ -285,9 +297,9 @@ class VirtueMartControllerCart extends JController {
 			//Test Payment and show payment plugin
 			if(empty($cart['paym_id'])){
 				$cart['inCheckOut'] = true;
-				
+				$confirmDone=false;
 				cart::setCart($cart);
-				self::editpayment();
+				$this->editpayment();
 				return;
 			}
 			
@@ -299,9 +311,12 @@ class VirtueMartControllerCart extends JController {
 					empty($cart['cc_code']) || 
 					empty($cart['cc_expire_month']) ||  
 					empty($cart['cc_expire_year'])){
+						$cart['inCheckOut'] = true;
+						$confirmDone=false;
 						$this->editpayment();
 						return;
 				}
+				$this->setpayment(false);
 			}
 		
 			//Show cart and checkout data overview
@@ -334,7 +349,7 @@ class VirtueMartControllerCart extends JController {
 		if($cart['dataValidated']){
 			//TODO Call payment plugins
 		
-			//TODO Store the order
+			//TODO Store the order and do inventory
 			
 			$this->doEmail($cart);
 
@@ -390,9 +405,6 @@ class VirtueMartControllerCart extends JController {
 		
 		$store->setId($cart['vendor_id']);
 		$vendor=$store->getStore();
-//		echo '<pre>';
-//		echo print_r($vendor->jUser);
-//		echo '</pre>';
 		$sentmail = $this->sendMail($cart,$bodyVendor,$vendor->jUser->email); //TODO 
 		
 		//Just for developing
@@ -420,7 +432,7 @@ class VirtueMartControllerCart extends JController {
 	 * @param $body the html body to send, the content of the email
 	 * @param $recipient the recipients of the mail, can be array also 
 	 */
-	function sendMail($cart,$body,$recipient){
+	function sendMail($cart,$body,$recipient,$subject='TODO set subject'){
 		
 		$mailer =& JFactory::getMailer();
 		
@@ -433,10 +445,8 @@ class VirtueMartControllerCart extends JController {
 		$mailer->setSender($sender);
 
 		$mailer->addRecipient($recipient);
-		
-//		$body   = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
-		
-		$mailer->setSubject(JText::_('Order Confirmed by vendorname'));  //TODO find Text string
+				
+		$mailer->setSubject($subject);  
 		
 		// Optional file attached  //this information must come from the cart
 //		if($downloadable){
@@ -446,11 +456,12 @@ class VirtueMartControllerCart extends JController {
 		$mailer->isHTML(true);
 		$mailer->setBody($body);
 		
-		// Optionally add embedded image  //TODO @Milbo adjust paths
+		// Optionally add embedded image  //TODO Test it
 		$store = $this->getModel('store','VirtuemartModel');
 		if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
 		$store->setId($cart['vendor_id']);
 		$_store = $store->getStore();
+		
 		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );
 		
 		$send =& $mailer->Send();
@@ -461,5 +472,53 @@ class VirtueMartControllerCart extends JController {
 		}
 		
 	}
+	
+	/**
+	 * Test userdata if valid
+	 * 
+	 * @author Max Milbers
+	 * @param String if BT or ST
+	 * @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
+	 */
+	 private function validateUserData($cart,$anonym=false,$type='BT'){
+	 	
+	 
+		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+		$neededFields = user_info::getTestUserFields($anonym);
+		$redirectMsg=0;
+		foreach($neededFields as $field){
+			
+			if(empty($cart[$type][$field->name]) && $field->name!='state_id'){
+				$redirectMsg = 'Enter for '.$type.' '.$field->name.' title: '.JText::_($field->title).' and value: '.$cart[$type][$field->name].' but '.$cart['BT']['country_id'];
+			} else {
+				//This is a special test for the state_idd. There is the speciality that the state_id could be 0 but is valid.
+				if($field->name=='state_id'){
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
+					if(!$msg=VirtueMartModelState::testStateCountry($cart[$type]['country_id'],$cart[$type]['state_id'])){
+						$redirectMsg = $msg;
+					}
+				}
+				
+				//We may add here further Tests. Like if the email has the form a@b.xxx and so on
+			}
+		}
+	 	return $redirectMsg;
+	 }
+	  
+	/**
+	 * This function is just to get the userfields with name and title which are required for shopping something
+	 * Of course this is not the right place todo this. Maybe it should be in the userfield model in the backend.
+	 * But for simplification, developing and performance reasons, I place it here.
+	 *  
+	 * @author Max Milbers
+	 */
+//	private function getRequiredUserFields(){
+//		
+//		$db = JFactory::getDBO();
+//		$q = 'SELECT `name`,`title` FROM #__vm_userfield WHERE `required`="1" AND `shipping`="1"';
+//		$db->setQuery($q);
+//		return $db->loadAssocList();
+//	}
+	
 }
  //pure php no Tag

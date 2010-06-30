@@ -298,6 +298,7 @@ class ShopFunctions {
 
 	/**
 	* Return model instance. This is a DRY solution!
+	* This is only called within this class
 	* 
 	* @author jseros
 	* @access private
@@ -306,11 +307,11 @@ class ShopFunctions {
 	* @return JModel Instance any model
 	*/
 	public function getModel($name = ''){
-		
+
 		$name = strtolower($name);
 		$className = ucfirst($name);
 		
-		//retrieving country model
+		//retrieving model
 		if( !class_exists('VirtueMartModel'.$className) ){
 			
 			$modelPath = JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS."models".DS.$name.".php";
@@ -320,6 +321,7 @@ class ShopFunctions {
 			}
 			else{
 				JError::raiseWarning( 0, 'Model '. $name .' not found.' );
+				echo 'Model '. $name .' not found.';die;
 				return false;
 			}
 		}
@@ -327,7 +329,14 @@ class ShopFunctions {
 		$className = 'VirtueMartModel'.$className;
 		//instancing the object
 		$model = new $className();
-		return $model;
+
+		if(empty($model)){
+			JError::raiseWarning( 0, 'Model '. $name .' not created.' );
+			echo 'Model '. $name .' not created.';
+		}else {
+			return $model;
+		}
+	
 	}
 
 	/**

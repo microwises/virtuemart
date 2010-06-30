@@ -439,7 +439,7 @@ class VirtueMartModelUserfields extends JModel {
 
 	/**
 	 * Format a userfield, e.g. translate or add JavaScript
-	 * 
+	 * Note by Max Milbers, This should be in the helper afaik
 	 * @access private
 	 * @param string $_f Field type
 	 * @param string $_v Input value
