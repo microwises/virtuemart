@@ -199,5 +199,62 @@ class shopFunctionsF {
 
 		return $image;
 	}
+	
+		/**
+	 * Sends the mail joomla conform
+	 * TODO people often send media with emails. Like pictures, serials,...
+	 * 
+	 * @author Max Milbers
+	 * @param $body the html body to send, the content of the email
+	 * @param $recipient the recipients of the mail, can be array also 
+	 * @param $mediaToSend an array for the paths which holds the files which should be sent to
+	 * @param $vendorId default is 1 (mainstore)
+	 */
+	function sendMail($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
+		
+		$mailer =& JFactory::getMailer();
+		
+		//This is now just without multivendor
+		$config =& JFactory::getConfig();
+		$sender = array( 
+    		$config->getValue( 'config.mailfrom' ),
+    		$config->getValue( 'config.fromname' ) ); 
+ 
+		$mailer->setSender($sender);
+
+		$mailer->addRecipient($recipient);
+				
+		$mailer->setSubject($subject);  
+		
+		// Optional file attached  //this information must come from the cart
+		if($mediaToSend){
+			//Test if array, if not make an array out of it
+			foreach ($mediaToSend as $media){
+				//Todo test and such things.
+//				$mailer->addAttachment($media);				
+			}
+		}
+		
+		$mailer->isHTML(true);
+		$mailer->setBody($body);
+		
+		// Optionally add embedded image  //TODO Test it
+		$store = $this->getModel('store','VirtuemartModel');
+		$store->setId($vendor_id);
+		$_store = $store->getStore();
+		
+		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );
+		
+		return $mailer->Send();
+		
+		//Perfect Exampel for a misplaced return message. The function is used in different locations, so the messages should be set there!
+//		if ( $send !== true ) {
+//		    echo 'Error sending email: ' . $send->message;
+//		} else {
+//		    echo 'Mail sent';
+//		}
+		
+	}
+	
 }
 ?>

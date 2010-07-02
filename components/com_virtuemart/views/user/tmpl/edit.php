@@ -73,13 +73,18 @@ function myValidator(f, t)
 	echo $this->loadTemplate('shopper');
 	echo $this->pane->endPanel();
 
-	echo $this->pane->startPanel( JText::_('VM_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
-	echo $this->loadTemplate('payment');
-	echo $this->pane->endPanel();
-
-//	echo $this->pane->startPanel( JText::_('VM_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
-//	echo $this->loadTemplate('shipto');
+/*
+ * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one
+ * So maybe we should place here a method (joomla plugin hook) which loads all published plugins, which already used by the user and display
+ * them.
+ */
+//	echo $this->pane->startPanel( JText::_('VM_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
+//	echo $this->loadTemplate('payment');
 //	echo $this->pane->endPanel();
+
+	echo $this->pane->startPanel( JText::_('VM_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
+	echo $this->loadTemplate('shipto');
+	echo $this->pane->endPanel();
 	if ($this->shipto !== 0) {
 		// Note:
 		// Of the order of the tabs change here, change the startOffset value for

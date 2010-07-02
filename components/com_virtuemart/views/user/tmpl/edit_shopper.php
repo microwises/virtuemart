@@ -91,12 +91,12 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 <?php } ?>
 
-<?php /*
+
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
 	</legend>
-<?php */
+<?php 
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -114,7 +114,8 @@ defined('_JEXEC') or die('Restricted access');
 		} else {
 			$_field = next($this->userFields['fields']);
 		}
-
+//		echo'<br/>My $_field : <br/><pre>';
+//		echo print_r($_field).'</pre>';
 		if ($_field['hidden'] == true) {
 			$_hiddenFields .= $_field['formcode']."\n";
 			continue;
@@ -167,6 +168,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	echo $_hiddenFields;
 ?>
+</fieldset>
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 <input type="hidden" name="address_type" value="BT" />
-<? //</fieldset>  ?>
+

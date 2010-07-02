@@ -81,7 +81,6 @@ class VirtueMartControllerCart extends JController {
 		if ($model->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
 		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
-		
 	}
 
 	/**
@@ -353,7 +352,7 @@ class VirtueMartControllerCart extends JController {
 			
 			$this->doEmail($cart);
 
-			//Empty cart, now for developing only dataValidated
+			//TODO Empty cart, now for developing only dataValidated
 			$cart['dataValidated']=false;
 			cart::setCart($cart);
 			
@@ -371,6 +370,10 @@ class VirtueMartControllerCart extends JController {
 	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
 	 * 
 	 * @author Max Milbers
+	 * 
+	 * @param CartArray $cart
+	 * @param boolean When one email does not work, it gives a false back
+	 * 
 	 */
 	function doEmail($cart){
 
@@ -387,13 +390,17 @@ class VirtueMartControllerCart extends JController {
 
 		$view->setLayout('mailshopper');
 		
+		$error=false;
 		/* Render it all */
 		ob_start();
 		$view->display();
 		$bodyShopper = ob_get_contents();
 		ob_end_clean();
-		$sentmail = $this->sendMail($cart,$bodyShopper,$cart['BT']['email']);
-		
+		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$cart['BT']['email']); //TODO MX set vendorId
+		if ( $sendShopper !== true ) {
+			$error=true;
+			//TODO set message, must be a raising one
+		}
 		
 		$view->setLayout('mailvendor');
 		
@@ -405,16 +412,22 @@ class VirtueMartControllerCart extends JController {
 		
 		$store->setId($cart['vendor_id']);
 		$vendor=$store->getStore();
-		$sentmail = $this->sendMail($cart,$bodyVendor,$vendor->jUser->email); //TODO 
+		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
+		if ( $sendShopper !== true ) {
+			$error=true;
+			//TODO set message, must be a raising one
+		}
+		
 		
 		//Just for developing
 		echo '<br />$bodyShopper '.$bodyShopper;
 		echo '<br />$bodyVendor '.$bodyVendor;
+		return $error;
 	}
 
 	
 	/**
-	 * does not work with self::renderView($view)
+	 * does not work with self::renderView($view), maybe with $this
 	 * @author Max Milbers
 	 */
 	function renderView($view){
@@ -425,53 +438,7 @@ class VirtueMartControllerCart extends JController {
 		return $content;
 	}
 	
-	/**
-	 * Sends the mail joomla conform
-	 * 
-	 * @param $cart the cart in the session
-	 * @param $body the html body to send, the content of the email
-	 * @param $recipient the recipients of the mail, can be array also 
-	 */
-	function sendMail($cart,$body,$recipient,$subject='TODO set subject'){
-		
-		$mailer =& JFactory::getMailer();
-		
-		//This is now just without multivendor
-		$config =& JFactory::getConfig();
-		$sender = array( 
-    		$config->getValue( 'config.mailfrom' ),
-    		$config->getValue( 'config.fromname' ) ); 
- 
-		$mailer->setSender($sender);
 
-		$mailer->addRecipient($recipient);
-				
-		$mailer->setSubject($subject);  
-		
-		// Optional file attached  //this information must come from the cart
-//		if($downloadable){
-//			$mailer->addAttachment();
-//		}
-		
-		$mailer->isHTML(true);
-		$mailer->setBody($body);
-		
-		// Optionally add embedded image  //TODO Test it
-		$store = $this->getModel('store','VirtuemartModel');
-		if(empty($cart['vendor_id'])) $cart['vendor_id']=1;
-		$store->setId($cart['vendor_id']);
-		$_store = $store->getStore();
-		
-		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );
-		
-		$send =& $mailer->Send();
-		if ( $send !== true ) {
-		    echo 'Error sending email: ' . $send->message;
-		} else {
-		    echo 'Mail sent';
-		}
-		
-	}
 	
 	/**
 	 * Test userdata if valid

@@ -173,11 +173,10 @@ class VirtueMartViewCart extends JView {
 										.'?option=com_virtuemart'
 										.'&view=user'
 										.'&task=editaddress'
-										.'&rview=cart'
-										.'&cid[]=0'
+										.'&cid[]=0'			//I think this cid=0 says already that there is a dynID
 										.'&shipto=BT_dynID'
 									. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
-				$_addressBT[0]->user_info_id = 'BT_dynID';
+				$_addressBT[0]->user_info_id = 'BT_dynID';	//Do we need that?
 				$lists['shipTo'] = JHTML::_('select.radiolist', $_addressBT, 'shipto', null, 'user_info_id', 'address_type_name', 'BT_dynID');
 				$lists['billTo'] = 'BT_dynID';
 				$this->assignRef('lists', $lists);

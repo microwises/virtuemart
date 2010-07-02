@@ -19,6 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(count($this->shipToFields['fields']=0)){
+	echo 'THIS WHOLE TAB SHOULDNT BE SHOWN WHEN THERE IS NO SHIPPING ADDRESS SET';
+}
 ?>
 
 <fieldset>
