@@ -59,7 +59,7 @@ function myValidator(f, t)
 	&nbsp;
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
 </div>
-<?php echo '<pre>'.print_r(cart::getCart(),1).'</pre>'; ?>
+
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>

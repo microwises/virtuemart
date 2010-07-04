@@ -6,6 +6,7 @@
  * @package	VirtueMart
  * @subpackage User
  * @author Oscar van Eijk
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -32,6 +33,7 @@ define ('__VM_USER_USE_SLIDERS', 0);
  * @package	VirtueMart
  * @subpackage User
  * @author Oscar van Eijk
+ * @author Max Milbers
  */
 class VirtuemartViewUser extends JView {
 
@@ -39,6 +41,7 @@ class VirtuemartViewUser extends JView {
 	private $_model;
 	private $_uid = 0;
 	private $_currentUser=0;
+	private $_cuid = 0;
 	private $_userDetails = 0;
 	private $_userFieldsModel = 0;
 	private $_userInfoID = 0;
@@ -48,57 +51,59 @@ class VirtuemartViewUser extends JView {
 	private $_orderList=0;
 	private $_openTab=0;
 	
-	/*
-	 * Okey I try now a completly new idea.
+	/**
+	 * Displays the view, collects needed data for the different layouts
 	 * 
+	 * Okey I try now a completly new idea.
 	 * We make a function for every tab and the display is getting the right tabs by an own function
 	 * putting that in an array and after that we call the preparedataforlayoutBlub
-	 */
-	 
+	 * 
+	 * @author Oscar van Eijk
+ 	 * @author Max Milbers
+	 */ 
 	function display($tpl = null) {
 
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
 		$editor = JFactory::getEditor();
-		$this->_currentUser =& JFactory::getUser();
-		$this->_uid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 		
-		$this->loadHelper('permissions');
-		$this->loadHelper('shoppergroup');
-		$this->loadHelper('shopfunctions');
-		$this->loadHelper('vendorhelper');
-		$this->loadHelper('currencydisplay');
-		$this->loadHelper('image');
+		//the cuid is the id of the current user
+		$this->_currentUser =& JFactory::getUser();
+		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
+		
+		//the uid is the id of the user, we wanna edit.
+		$this->_uid = JRequest::getVar('cid', $this->_cuid);
+		
+		//Seems not used 
+		//$this->loadHelper('image');
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
-		if(!empty($this->_model)){
-			$this->_model->setId($this->_uid);
-		}else{
-			echo 'Model user is empty in user/view.html.php';
-		}
+//		This is wrong, because the model gets it self, compare usermodel line 71
+//		if(!empty($this->_model)){
+//			$this->_model->setId($this->_uid);
+//		}else{
+//			echo 'Model user is empty in user/view.html.php';
+//		}
+
 		$this->_userDetails = $this->_model->getUser();
+		dump($this->_userDetails,'Was hab ich den hier alles so');
 		$this->assignRef('userDetails', $this->_userDetails);
 		
-		//Prepare the data for the user
-		if($layoutName=='edit'){
-			$this->lUser();
-		}
-		$userFields = $this->setUserFieldsForView();
 
-		$this->getUserInfoId();
+		$userFields = $this->setUserFieldsForView($layoutName);
 		
 		if($layoutName=='edit'){
+			$this->lUser();
 			$this->shopper($userFields);
 		}
 		$this->generateStAddressList();
 		
 		$this->lshipto();
-		
-		$this->payment();
-		
+
 		if($layoutName=='edit'){
+			$this->payment();
 			$this->lOrderlist();
 			$this->lVendor();	
 		}
@@ -120,17 +125,17 @@ class VirtuemartViewUser extends JView {
 
 		// Make sure this address is written to the cart as selected.
 		// TODO Should this code be moved to the cart helper?
-
-		$_cart = cart::getCart();
-		if ($_cart) {
-			if (($_shipto = JRequest::getVar('shipto', '')) != '') {
-				$_cart['address_shipto_id'] = $_shipto;
-			} else {
-				$_cart['address_shipto_id'] = $this->_userInfoID;
-			}
-			$_cart['address_billto_id'] = $this->_userInfoID;
-			cart::setCart($_cart);
-		}
+		// Disabled for developing
+//		$_cart = cart::getCart();
+//		if ($_cart) {
+//			if (($_shipto = JRequest::getVar('shipto', '')) != '') {
+//				$_cart['address_shipto_id'] = $_shipto;
+//			} else {
+//				$_cart['address_shipto_id'] = $this->_userInfoID;
+//			}
+//			$_cart['address_billto_id'] = $this->_userInfoID;
+//			cart::setCart($_cart);
+//		}
 
 
 		$this->assignRef('lists', $this->_lists);
@@ -147,34 +152,54 @@ class VirtuemartViewUser extends JView {
 	 * This sets the userfields we wanna have for the view
 	 * We may move that later to an helper and use a switch to fine grain it
 	 * 
-	 * @author Oscar van Eijk, Max Milbers
+	 * @author Oscar van Eijk
 	 */
-	function setUserFieldsForView($switch=0){
+	function setUserFieldsForView($layoutName){
+		
+		self::getUserDataBT();
 		$type = JRequest::getVar('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 
+		if($layoutName=='edit'){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+						, 'agreed', 'address_type', 'bank', 'email');
+		} else {
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+						, 'agreed', 'address_type', 'bank');
+		}
 		if ($type == 'BT') {
 			$_userFields = $this->_userFieldsModel->getUserFields(
 					 'account'
 					, array() // Default toggles
-					, array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank') // Skips
+					,  $skips// Skips
 			);
 		} else {
 			$_userFields = $this->_userFieldsModel->getUserFields(
 				 'shipping'
 				, array() // Default toggles
-				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2'
-					, 'agreed', 'address_type', 'bank') // Skips
+				, $skips
 			);
 		}
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 		
-		$userFields = user_info::getAddress(
-			 $this->_userFieldsModel
-			,$_userFields
-			,$type
-		);
+ 		//for register
+		if(empty($this->_userDetailsList)){
+			$this->_userDetailsList=0;
+		}
+		//TODO attention, this is the function which actually loads the data into the field.
+		// The values are saved in $this->_userDetailsList
+		$userFields = $this->_userFieldsModel->getUserFieldsByUser(
+					 $_userFields
+					,$this->_userDetailsList
+			);
+			
+		//We may move this to the helper of course, but for developing I just wanna get it working
+//		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+//		
+//		$userFields = user_info::getAddress(
+//			 $this->_userFieldsModel
+//			,$_userFields
+//			,$type
+//		);
 		
 		$this->assignRef('userFields', $userFields);
 		return $userFields;
@@ -183,7 +208,7 @@ class VirtuemartViewUser extends JView {
 	/** Gets the userInfoId and the userDetailsList
 	 * TODO there is a problem with the userDetailsList, it is used in different places, sorry do not see through it
 	 */
-	function getUserInfoId(){
+	function getUserDataBT(){
 		
 		if (($_addressCount = count($this->_userDetails->userInfo)) == 0) {
 			$_userDetailsList = null;
@@ -198,12 +223,14 @@ class VirtuemartViewUser extends JView {
 				}
 				$userDetailsList = next($this->_userDetails->userInfo);
 			}
+			$this->_userInfoID = $userInfoID;
+			$this->assignRef('userInfoID', $userInfoID);
+			
+			$this->_userDetailsList = $userDetailsList ;
+			$this->assignRef('userDetailsList', $userDetailsList);
 		}
-		$this->_userInfoID = $userInfoID;
-		$this->assignRef('userInfoID', $userInfoID);
 		
-		$this->_userDetailsList = $userDetailsList ;
-		$this->assignRef('userDetailsList', $userDetailsList);
+
 		
 	}
 	
@@ -227,7 +254,7 @@ class VirtuemartViewUser extends JView {
 	
 	/**
 	 * This generates the list when the user have different ST addresses saved
-	 * 
+	 * @author Oscar van Eijk
 	 */
 	function generateStAddressList (){
 		
@@ -251,6 +278,10 @@ class VirtuemartViewUser extends JView {
 		}
 	}
 	
+	/**
+	 * For the edit_shipto layout
+	 * 
+	 */
 	function lshipto(){
 		
 		// The ShipTo address if selected
@@ -291,21 +322,26 @@ class VirtuemartViewUser extends JView {
 	
 	function shopper($userFields){
 		
+		$this->loadHelper('permissions');
+		$this->loadHelper('shoppergroup');
+		$this->loadHelper('shopfunctions');
+		
 		// Shopper info
 		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_uid);
 		if(Permissions::getInstance()->check("admin,storeadmin")){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id->vendor_id); //TODO Max This is strange, this should be reworked in the model
+			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
+
 		} else {
 			$this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
 			if(empty($this->_lists['shoppergroups'])){
 				$this->_lists['shoppergroups']='unregistered';
 			}
 			$this->_lists['shoppergroups'] .= '<input type="hidden" name="shopper_group_id" value = "' . $_shoppergroup['shopper_group_id'] . '" />';
-			//			echo 'Test <pre>'.print_r($this->_userDetails->vendor_id).'</pre>';
+
 				
 			if(!empty($this->_userDetails->vendor_id)){
-				$this->_lists['vendors'] = $this->_userDetails->vendor_id->vendor_id;
+				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
 			}
 				
 			if(empty($this->_lists['vendors'])){
@@ -314,7 +350,7 @@ class VirtuemartViewUser extends JView {
 		}
 		
 		if(Permissions::getInstance()->check("admin,storeadmin")){
-			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
+			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetailsList->perms);
 		} else {
 			if(!empty($_userDetailsList->perms)){
 				$this->_lists['perms'] = $_userDetailsList->perms;
@@ -351,7 +387,7 @@ class VirtuemartViewUser extends JView {
 		}
 
 		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
-		&& ($this->_uid != $this->_uid)); // Can't block myself TODO I broke that sorry
+		&& ($this->_uid != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
 		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
@@ -370,17 +406,20 @@ class VirtuemartViewUser extends JView {
 	
 	function lVendor(){
 		
+		$this->loadHelper('vendorhelper');
+		$this->loadHelper('currencydisplay');
+		
 		$vendor = new Vendor;
 		if(!$this->_orderList){
 			$this->lOrderlist();
 		}
 		// If the current user is a vendor, load the store data
 		if ($vendor->isVendor($this->_uid)) {
-			$_vendorData = Vendor::getVendorFields($this->_userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
+			$_vendorData = Vendor::getVendorFields($this->_userDetails->vendor_id, array('vendor_currency_display_style'));
 			if (count($this->_orderList) > 0) {
 				if (!empty($_vendorData)) {
 					$_currencyDisplayStyle = Vendor::get_currency_display_style(
-						 $this->_userDetails->vendor_id->vendor_id
+						 $this->_userDetails->vendor_id
 						,$_vendorData->vendor_currency_display_style
 					);
 					$currency = new CurrencyDisplay(

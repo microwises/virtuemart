@@ -36,7 +36,6 @@ class VirtueMartViewCart extends JView {
 		
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		$this->assignRef('layoutName', $layoutName);
-//		echo 'my layout:'.$layoutName;
 		
 		/* Load the cart helper */
 		$this->loadHelper('cart');
@@ -108,7 +107,7 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('user_id', $lists['current_id']);
 			if($lists['current_id']){
 				$user = $this->getModel('user');
-				$user->setId($lists['current_id']);
+//				$user->setId($lists['current_id']);
 				$this->assignRef('user', $user);
 				
 				$userDetails = $user->getUser();

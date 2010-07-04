@@ -18,7 +18,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'user.php' );
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 
@@ -155,6 +154,8 @@ class user_info
 	
 	function saveAddressInCart($_data, $_fields, $_type)
 	{
+		//JPATH_COMPONENT does not work, because it is used in FE and BE
+		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = cart::getCart();
 		$_address = array();
 		foreach ($_fields as $_fld) {
@@ -180,7 +181,8 @@ class user_info
 
 	function getAddress ($_model, $_fields, $_type)
 	{
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'cart.php');
+		//JPATH_COMPONENT does not work, because it is used in FE and BE
+		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = cart::getCart();
 		$_address = new stdClass();
 		if(!empty($_cart[$_type])){

@@ -57,7 +57,7 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask?>');" /><?php echo JText::_('Save'); ?></button>
 	&nbsp;
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
 </div>

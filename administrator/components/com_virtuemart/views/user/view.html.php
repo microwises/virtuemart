@@ -100,7 +100,7 @@ class VirtuemartViewUser extends JView {
 			// Shopper info
 			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id->vendor_id);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -204,10 +204,10 @@ class VirtuemartViewUser extends JView {
 			// Check for existing orders for this user
 			$orders = new VirtueMartModelOrders();
 			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
-			$_vendorData = Vendor::getVendorFields($userDetails->vendor_id->vendor_id, array('vendor_currency_display_style'));
+			$_vendorData = Vendor::getVendorFields($userDetails->vendor_id, array('vendor_currency_display_style'));
 			if (count($orderList) > 0) {
 				if (!empty($_vendorData)) {
-					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id->vendor_id
+					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id
 						, $_vendorData->vendor_currency_display_style);
 					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']

@@ -216,7 +216,7 @@ class VirtueMartControllerUser extends JController
 //			$user	 =& JFactory::getUser();
 //		}
 
-		$userid = ($_new ? $user->get('id') : JRequest::getVar( 'my_user_id', 0, 'post', 'int' ));
+//		$userid = ($_new ? $user->get('id') : JRequest::getVar( 'my_user_id', 0, 'post', 'int' ));
 		
 		//Afaik this is not needed, we just should test if the user is logged in or not.
 		//dont trust the users. Everytime think about them like evil thiefs. 
@@ -337,7 +337,10 @@ class VirtueMartControllerUser extends JController
 			JError::raiseWarning('', JText::_( $user->getError()));
 			return false;
 		}
-
+		$msg = $this->saveData();
+//		if(!empty($msg)){
+//			
+//		}
 		// Send registration confirmation mail
 		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
@@ -351,9 +354,9 @@ class VirtueMartControllerUser extends JController
 
 		// Everything went fine, set relevant message depending upon user activation state and display message
 		if ( $useractivation == 1 ) {
-			$message  = JText::_( 'REG_COMPLETE_ACTIVATE' );
+			$message  = JText::_( 'REG_COMPLETE_ACTIVATE' ). ' Virtuemart'.$msg;
 		} else {
-			$message = JText::_( 'REG_COMPLETE' );
+			$message = JText::_( 'REG_COMPLETE' ). ' Virtuemart'.$msg;
 		}
 
 		JRequest::setVar('user_id', $user->get('id'));
@@ -377,7 +380,7 @@ class VirtueMartControllerUser extends JController
 			return false;	
 		}
 		/* Create the view */
-		$view = $this->getView('cart', 'html');
+		$view = $this->getView('user', 'html');
 		
 		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );

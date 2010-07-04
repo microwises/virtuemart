@@ -69,19 +69,36 @@ class VirtueMartModelUser extends JModel {
 
 		// Get the (array of) order status ID(s)
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
-			$this->setId((int)$idArray[0]);
-		} else {
-			$user = JFactory::getUser();
-			$this->setId((int)$user->id);
+		if(!empty($idArray[0])){
+			if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+				$this->setId((int)$idArray[0]);
+			}
 		}
+		if(empty($this->_id)){
+			$user = JFactory::getUser();
+			if($user){
+				$this->setId((int)$user->id);
+			} else {
+				$this->setId(0);	
+			}
+		}
+
+//		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+//			$this->setId((int)$idArray[0]);
+//		} else {
+//			$user = JFactory::getUser();
+//			$this->setId((int)$user->id);
+//		}
 		
 	}
 
 	/**
-	 * Resets the user id and data
+	 * Resets the user id and data, you should avoid external use of this function
+	 * I set it now to private.
+	 * 
+	 * @author Max Milbers
 	 */
-	function setId($id)
+	private function setId($id)
 	{
 		$this->_id = $id;
 		$this->_data = null;
@@ -145,14 +162,28 @@ class VirtueMartModelUser extends JModel {
 		if (empty($this->_data)) {
 			$this->_data = new stdClass();
 			$this->_data->JUser =& JUser::getInstance($this->_id);
+			dump($this->_id,'my ID in getUser');
 			$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
 
 			$this->_data->userInfo = array ();
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
+				
+				//This parts sets the vendor_id to a user
+				$this->_data->vendor_id = 0;
+				if($this->_data->userInfo[$_ui_id]->user_is_vendor){
+					require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorhelper.php' );
+					$vid = Vendor::getVendorIdByUserId($this->_id,false);
+					if($vid){
+						$this->_data->vendor_id = $vid;
+					}
+				}
 			}
+			
 			//I do not understand the sense of this. User does not belong to a vendor.
+			//To underline it. A user can buy from different vendors, to which vendor does he belong to?
+			//We can gather,.. which vendors did a user use. Or, which users already bought by the vendor x.
 //			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
 //			if(!empty($_vid)){
 //				$this->_data->vendor_id = $_vid[0];
@@ -161,13 +192,14 @@ class VirtueMartModelUser extends JModel {
 //			}
 			
 		}
-
+		
 		if (!$this->_data) {
 			$this->_data = new stdClass();
 			$this->_id = 0;
 			$this->_data = null;
 		}
-
+//		dump($this->_data, 'model user->getUser');
+		
 		return $this->_data;
 	}
 
