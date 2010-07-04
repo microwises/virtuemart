@@ -6,6 +6,7 @@
  * @package	VirtueMart
  * @subpackage User
  * @author Oscar van Eijk
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -162,14 +163,15 @@ class VirtueMartModelUser extends JModel {
 		if (empty($this->_data)) {
 			$this->_data = new stdClass();
 			$this->_data->JUser =& JUser::getInstance($this->_id);
-			dump($this->_id,'my ID in getUser');
+			
 			$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
 
 			$this->_data->userInfo = array ();
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-				
+				dump($this->_id,'my ID in getUser');
+				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 				//This parts sets the vendor_id to a user
 				$this->_data->vendor_id = 0;
 				if($this->_data->userInfo[$_ui_id]->user_is_vendor){
