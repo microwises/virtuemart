@@ -35,7 +35,7 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('VM_RETURN_PRODUCT_FILES_LIST'));
+	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('VM_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
 	<div style="float: right;">
@@ -62,7 +62,7 @@ $pagination = $this->pagination;
 		<th><?php echo JText::_('VM_VIEW'); ?></th>
 		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></th>
 		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></th>
-		<th><?php echo JText::_('VM_FILEMANAGER_PUBLISHED'); ?></th>
+		<th><?php echo JText::_('PUBLISH'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
