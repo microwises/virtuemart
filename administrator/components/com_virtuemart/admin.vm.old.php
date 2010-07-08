@@ -39,7 +39,7 @@ $task = JRequest::getVar('task');
 include_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'version.php' );
 
 if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
-	$VMVERSION =& new vmVersion();
+	$VMVERSION = new vmVersion();
 }
 
 // Get the Layout Type from the Cookie

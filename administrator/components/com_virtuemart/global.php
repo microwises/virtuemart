@@ -14,7 +14,10 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-echo 'We entered global';
+echo '<br/>';
+echo '<br/>';
+echo 'ATTENTION<br/>';
+echo 'We entered global, that means this view is not ported yet or this view/menue is obsolete';
 die;
 
 global $module_description;
@@ -195,7 +198,7 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
  *  @global CurrencyDisplay $GLOBALS['CURRENCY_DISPLAY']
  *  @global CurrencyDisplay $CURRENCY_DISPLAY
  */
-$CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
+$CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
 	
 // Include the theme
 if( file_exists( VM_THEMEPATH.'theme.php' )) {

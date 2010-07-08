@@ -167,7 +167,6 @@ INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depen
 (1, 0, 'VM_MANAGE_USER_FIELDS', 'page=admin.user_field_list', '', 'vmicon vmicon-16-content', 8, '1', '', 'userfields', ''),
 (1, 0, 'VM_COUNTRY_LIST_MNU', 'page=admin.country_list', '', 'vmicon vmicon-16-content', 10, '1', '', 'country', ''),
 (1, 0, 'VM_CURRENCY_LIST_MNU', 'page=admin.curr_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'currency', ''),
-(1, 0, 'VM_MODULE_LIST_MNU', 'page=admin.module_list', '', 'vmicon vmicon-16-content', 14, '1', '', '', ''),
 (1, 0, 'VM_CHECK_UPDATES_MNU', 'page=admin.update_check', '', 'vmicon vmicon-16-content', 16, '1', '', 'updatesmigration', ''),
 (8, 0, 'VM_STATISTIC_SUMMARY', 'page=store.index', '', 'vmicon vmicon-16-info', 2, '1', '', 'virtuemart', ''),
 (8, 0, 'VM_STORE_FORM_MNU', 'page=store.store_form', '', 'vmicon vmicon-16-config', 4, '1', '', 'store', ''),
@@ -177,7 +176,6 @@ INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depen
 (8, 0, 'VM_SHIPPING_MODULE_LIST_LBL', 'page=store.shipping_module_list', '', 'vmicon vmicon-16-content', 10, '1', '', '', ''),
 (8, 0, 'VM_CREDITCARD_LIST_LBL', 'page=store.creditcard_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'creditcard', ''),
 (8, 0, 'VM_CREDITCARD_FORM_LBL', 'page=store.creditcard_form', '', 'vmicon vmicon-16-editadd', 14, '1', '', 'creditcard', 'add'),
-(2, 0, 'CSVIMPROVED_TITLE', 'http://www.csvimproved.com/', '', 'vmicon vmicon-16-import', 2, '1', 'CSVIMPROVED_NEEDINSTALL', '', ''),
 (2, 0, 'VM_PRODUCT_LIST_MNU', 'page=product.product_list', '', 'vmicon vmicon-16-content', 4, '1', '', 'product', 'product'),
 (2, 0, 'VM_PRODUCT_FORM_MNU', 'page=product.product_form', '', 'vmicon vmicon-16-editadd', 6, '1', '', 'product','add'),
 (2, 0, 'VM_PRODUCT_INVENTORY_MNU', 'page=product.product_inventory', '', 'vmicon vmicon-16-install', 8, '1', '', 'inventory', 'inventory'),
@@ -212,8 +210,6 @@ INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depen
 (12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, '1', '', '', ''),
 (2, 0, 'VM_PRODUCT_FILES_LIST_MNU', 'page=product.file_list', '', 'vmicon vmicon-16-content', 28, '1', '', 'media', 'media'),
 (2, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes'),
-(1, 0, 'Extension Manager', 'page=admin.extension_list', '', 'vmicon vmicon-16-content', 15, '1', '', '', ''),
-(1, 0, 'Plugin List', 'page=admin.plugin_list', '', 'vmicon vmicon-16-content', 16, '1', '', '', '');
 
 --
 -- Dumping data for table `#__vm_module`

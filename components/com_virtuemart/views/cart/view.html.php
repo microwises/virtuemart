@@ -27,7 +27,8 @@ jimport( 'joomla.application.component.view');
 /**
 * View for the shopping cart
 * @package VirtueMart
-* @author RolandD
+* @author Max Milbers
+* @author Oscar van Eijk
 */
 class VirtueMartViewCart extends JView {
 	
@@ -45,7 +46,7 @@ class VirtueMartViewCart extends JView {
 		if($layoutName=='editcoupon'){
 		
 			$this->lSelectCoupon();
-	
+			
 			$pathway->addItem(JText::_('VM_CART_SELECTCOUPON'));
 			$mainframe->setPageTitle(JText::_('VM_CART_SELECTCOUPON'));	
 				
