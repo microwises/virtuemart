@@ -74,23 +74,12 @@ class VirtuemartViewUser extends JView {
 		
 		//the uid is the id of the user, we wanna edit.
 		$this->_uid = JRequest::getVar('cid', $this->_cuid);
-		
-		//Seems not used 
-		//$this->loadHelper('image');
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
-//		This is wrong, because the model gets it self, compare usermodel line 71
-//		if(!empty($this->_model)){
-//			$this->_model->setId($this->_uid);
-//		}else{
-//			echo 'Model user is empty in user/view.html.php';
-//		}
-
 		$this->_userDetails = $this->_model->getUser();
-		dump($this->_userDetails,'Was hab ich den hier alles so');
+		dump($this->_userDetails,'Display user userDetails');
 		$this->assignRef('userDetails', $this->_userDetails);
-		
 
 		$userFields = $this->setUserFieldsForView($layoutName);
 		
@@ -185,21 +174,27 @@ class VirtuemartViewUser extends JView {
 		if(empty($this->_userDetailsList)){
 			$this->_userDetailsList=0;
 		}
+		dump($this->_userDetailsList,'_userDetailsList');
 		//TODO attention, this is the function which actually loads the data into the field.
 		// The values are saved in $this->_userDetailsList
-		$userFields = $this->_userFieldsModel->getUserFieldsByUser(
-					 $_userFields
-					,$this->_userDetailsList
+		if(!empty($this->_cuid)){
+			$userFields = $this->_userFieldsModel->getUserFieldsByUser(
+							 $_userFields
+							,$this->_userDetailsList
+							);
+			dump($userFields,'my Userfields with getUserFieldsByUser');
+		} else {
+			//We may move this to the helper of course, but for developing I just wanna get it working
+			//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+		
+			$userFields = user_info::getAddress(
+				 $this->_userFieldsModel
+				,$_userFields
+				,$type
 			);
-			
-		//We may move this to the helper of course, but for developing I just wanna get it working
-//		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
-//		
-//		$userFields = user_info::getAddress(
-//			 $this->_userFieldsModel
-//			,$_userFields
-//			,$type
-//		);
+			dump($userFields,'my Userfields with getAddress');
+		}
+
 		
 		$this->assignRef('userFields', $userFields);
 		return $userFields;
@@ -210,28 +205,41 @@ class VirtuemartViewUser extends JView {
 	 */
 	function getUserDataBT(){
 		
-		if (($_addressCount = count($this->_userDetails->userInfo)) == 0) {
-			$_userDetailsList = null;
-			$userInfoID = null;
+		if (($addressCount = count($this->_userDetails->userInfo)) == 0) {
+			//TODO I think here is maybe the right position to fill the fields with the cart values, if available
+//			$cart = cart::getCart();
+//			dump($cart, 'what a pitty');
+//			if($cart){
+//				if(!empty($cart['BT'])){
+//					$userDetailsList = $cart['BT'];
+//				}
+//			} else {
+				$userDetailsList = null;
+				$userInfoID = null;
+//			}
+			
 		} else {
 			$userDetailsList = current($this->_userDetails->userInfo);
-			for ($_i = 0; $_i < $_addressCount; $_i++) {
+			for ($_i = 0; $_i < $addressCount; $_i++) {
 				if ($userDetailsList->address_type == 'BT') {
 					$userInfoID = $userDetailsList->user_info_id;
 					reset($this->_userDetails->userInfo);
 					break;
 				}
+				
 				$userDetailsList = next($this->_userDetails->userInfo);
+//				dump($userDetailsList, 'what a pitty');
 			}
 			$this->_userInfoID = $userInfoID;
-			$this->assignRef('userInfoID', $userInfoID);
 			
 			$this->_userDetailsList = $userDetailsList ;
-			$this->assignRef('userDetailsList', $userDetailsList);
+			
 		}
 		
-
+		$this->assignRef('userInfoID', $userInfoID);
 		
+//		dump($userDetailsList,'How does the userDetailsList look like?');	
+		$this->assignRef('userDetailsList', $userDetailsList);	
 	}
 	
 	function lOrderlist(){
@@ -396,6 +404,7 @@ class VirtuemartViewUser extends JView {
 
 		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_uid);
 		
+		//TODO I do not understand for what we have that by Max.
 		if ($this->_uid < 1) {
 			$this->_lists['register_new'] = 1;
 		} else {
@@ -405,16 +414,16 @@ class VirtuemartViewUser extends JView {
 	}
 	
 	function lVendor(){
-		
-		$this->loadHelper('vendorhelper');
-		$this->loadHelper('currencydisplay');
-		
+
 		$vendor = new Vendor;
-		if(!$this->_orderList){
-			$this->lOrderlist();
-		}
+
 		// If the current user is a vendor, load the store data
 		if ($vendor->isVendor($this->_uid)) {
+			$this->loadHelper('vendorhelper');
+			$this->loadHelper('currencydisplay');
+			if(!$this->_orderList){
+				$this->lOrderlist();
+			}
 			$_vendorData = Vendor::getVendorFields($this->_userDetails->vendor_id, array('vendor_currency_display_style'));
 			if (count($this->_orderList) > 0) {
 				if (!empty($_vendorData)) {

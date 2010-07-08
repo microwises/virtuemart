@@ -84,8 +84,9 @@ class VirtueMartModelUserfields extends JModel {
 	/**
 	* Prepare a user field for database update
 	*/
-	public function prepareFieldDataSave($fieldType, $fieldName, $value=null) {
-		$post = JRequest::get('post');
+	public function prepareFieldDataSave($fieldType, $fieldName, $value=null, $post) {
+//		$post = JRequest::get('post');
+
 		switch(strtolower($fieldType)) {
 			case 'webaddress':
 				if (isset($post[$fieldName."Text"]) && ($post[$fieldName."Text"])) {

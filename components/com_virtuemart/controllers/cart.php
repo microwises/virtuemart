@@ -46,6 +46,7 @@ class VirtueMartControllerCart extends JController {
 	/**
 	* Show the main page for the cart 
 	* 
+	* @author Max Milbers
 	* @author RolandD 
 	* @access public 
 	*/
@@ -62,6 +63,19 @@ class VirtueMartControllerCart extends JController {
 		/* Set the layout */
 		$layoutName = JRequest::getVar('layout', 'cart');
 		$view->setLayout($layoutName);
+		
+		//set some default values to the cart
+		$cart = cart::getCart(false);
+		dump($cart,'my Cart in the main Cart task');
+		if(!isset($cart['inCheckOut'])){
+			dump($cart['inCheckOut'],'I set inCheckOut');
+			$cart['inCheckOut']=false;
+		} 
+		if(!isset($cart['dataValidated'])){
+			dump($cart['dataValidated'],'I set dataValidated');
+			$cart['dataValidated']=false;
+		}
+		cart::setCart($cart);
 		
 		/* Display it all */
 		$view->display();
@@ -96,6 +110,23 @@ class VirtueMartControllerCart extends JController {
 		if($model->add()) echo (1); else echo (0);
 
 		die;
+	}
+	
+	/**
+	 * For selecting couponcode to use, opens a new layout
+	 * 
+	 * @author Max Milbers
+	 */
+	public function editcoupon(){
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+		$view->setLayout('editcoupon');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel($this->getModel('coupon', 'VirtuemartModel'), true);
+		
+		/* Display it all */
+		$view->display();
 	}
 	
 	/**
@@ -175,7 +206,7 @@ class VirtueMartControllerCart extends JController {
 
 				$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 				$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
-				if($paym_model->hasCreditCard($cart['paym_id'])->paym_creditcards){
+				if($paym_model->hasCreditCard($cart['paym_id'])){
 					$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
 					$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
 					$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
@@ -249,7 +280,7 @@ class VirtueMartControllerCart extends JController {
 	 */
 	 
 	public function checkout(){
-		
+	
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
 
@@ -321,8 +352,9 @@ class VirtueMartControllerCart extends JController {
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
 			$cart['dataValidated'] = true;
-			cart::setCart($cart);
 			
+			cart::setCart($cart);
+			dump($cart,'Cart runned through checkout and confirmDone '.$confirmDone);
 			if($confirmDone){
 				$this->confirmedOrder();
 			} else {
@@ -458,7 +490,7 @@ class VirtueMartControllerCart extends JController {
 			if(empty($cart[$type][$field->name]) && $field->name!='state_id'){
 				$redirectMsg = 'Enter for '.$type.' '.$field->name.' title: '.JText::_($field->title).' and value: '.$cart[$type][$field->name].' but '.$cart['BT']['country_id'];
 			} else {
-				//This is a special test for the state_idd. There is the speciality that the state_id could be 0 but is valid.
+				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
 					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
 					if(!$msg=VirtueMartModelState::testStateCountry($cart[$type]['country_id'],$cart[$type]['state_id'])){
@@ -472,6 +504,12 @@ class VirtueMartControllerCart extends JController {
 	 	return $redirectMsg;
 	 }
 	  
+	 function cancel(){
+	 	$mainframe = JFactory::getApplication();
+	 	$mainframe->redirect('index.php?option=com_virtuemart&view=cart','Cancelled');		
+	}
+
+
 	/**
 	 * This function is just to get the userfields with name and title which are required for shopping something
 	 * Of course this is not the right place todo this. Maybe it should be in the userfield model in the backend.

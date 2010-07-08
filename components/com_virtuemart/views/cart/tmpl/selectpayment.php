@@ -62,7 +62,6 @@ function myValidator(f, t)
 <?php
 echo 'Todo: only a rough view to have something to work with';
 echo '<p>Please select a paymentmethod that fit your needs:</p><br /><br />';
-echo '<pre>'.print_r($this->cart).'</pre>';
 if($this->withCC){
 ?> <fieldset>
 	<table border="0" cellspacing="0" cellpadding="2" width="100%">

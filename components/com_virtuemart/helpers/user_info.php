@@ -32,24 +32,29 @@ class user_info
 	 * @param boolean $_cart True to write to the session (cart). Default: false
 	 * @return boolean True if the save was successful, false otherwise.
 	 */
-	function storeAddress($_data, $_table = null, $_cart = false)
+	function storeAddress($_data, $_table = null, $new = false)
 	{
-		$_data = self::_prepareUserFields($_data, 'BT');
+		$_data = self::_prepareUserFields($_data, 'BT',$new);
+		dump($_data['user_info_id'],'Hmm what is the user_info_id here?');
 		if ($_table !== null) {
+			dump($_data,'In storeAddress after prepareUserFields storing to table '.$_table);
 			$_userinfo   =& $this->getTable($_table);
 			if (!$_userinfo->bind($_data)) {
 				$this->setError($_userinfo->getError());
 				return false;
 			}
+
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
 				return false;
 			}
+			dump($_userinfo,'$_userinfoTable In storeAddress after storing to table');
+			
 		}
 
-		if ($_cart) {
+//		if ($_cart) {
 			self::saveAddressInCart($_data);
-		}
+//		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		$_shipto = array();
@@ -61,7 +66,7 @@ class user_info
 			}
 		}
 		if (count($_shipto) > 0) {
-			$_shipto = self::_prepareUserFields($_shipto, 'ST');
+			$_shipto = self::_prepareUserFields($_shipto, 'ST', $new);
 
 			// The user_is_vendor must be copied to make sure users won't be listed twice
 			$_shipto['user_is_vendor'] = $_data['user_is_vendor'];
@@ -79,22 +84,24 @@ class user_info
 				}
 			}
 
-			if ($_cart) {
-				self::saveAddressInCart($_shipto, $_prepareUserFields);
-			}
+//			if ($_cart) {
+				self::saveAddressInCart($_shipto);
+//			}
 		}
 		return true;
 	}
 
-	function _prepareUserFields($_data, $_type)
+	function _prepareUserFields($_data, $_type,$new)
 	{
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_prepareUserFields = self::getUserFields($_type);
-		
+		$data =$_data;
 		// Format the data
 		foreach ($_prepareUserFields as $_fld) {
-			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name]);
+			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name],$data);
+//			dump($_fld->name,'In _prepareUserFields ');
 		}
+//		dump($_data,'In _prepareUserFields ');
 		return $_data;
 	}
 
@@ -114,13 +121,13 @@ class user_info
 				$_prepareUserFields = $_userFieldsModel->getUserFields(
 										 'account'
 										, array() // Default toggles
-										, array('delimiter_userinfo', 'username', 'password', 'password2', 'agreed') // Skips
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'agreed') // Skips
 				);
 			} else {
 				$_prepareUserFields = $_userFieldsModel->getUserFields(
 										 'account'
 										, array() // Default toggles
-										, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+										, array('delimiter_userinfo', 'name', 'username', 'email', 'password', 'password2', 'agreed') // Skips
 				);
 			}
 		}
@@ -135,7 +142,7 @@ class user_info
 //		if ($_dynamic) {
 			// The user is not logged in (anonymous), so we need tome extra fields
 			$_prepareUserFields = $_userFieldsModel->getUserFields(
-									 'shipping'
+									 'account'  //TODO we need, agreed also
 									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
 				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor') // Skips
 									
@@ -159,13 +166,15 @@ class user_info
 		$_cart = cart::getCart();
 		$_address = array();
 		foreach ($_fields as $_fld) {
+			$name = $_fld->name;
 			$_address[$_fld->name] = $_data->{$_fld->name};
+
 		}
-		if ($_type == 'ST') {
-			$_cart['address_shipto_id'] = $_data->user_info_id;
-		} else {
-			$_cart['address_billto_id'] = $_data->user_info_id;
-		}
+//		if ($_type == 'ST') {
+//			$_cart['address_shipto_id'] = $_data->user_info_id;
+//		} else {
+//			$_cart['address_billto_id'] = $_data->user_info_id;
+//		}
 		$_cart[$_type] = $_address;
 		cart::setCart($_cart);
 	}
@@ -179,6 +188,29 @@ class user_info
 		self::saveAddressInCart($_address[0], $_userFields, $_type);
 	}
 
+	function address2cartanonym ($data, $_type)
+	{
+		$_userFields = self::getUserFields($_type);
+		self::saveAddressFromFormToCart($data, $_userFields, $_type);
+	}
+
+	function saveAddressFromFormToCart($_data, $_fields, $_type)
+	{
+		//JPATH_COMPONENT does not work, because it is used in FE and BE
+		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		$_cart = cart::getCart();
+		$_address = array();
+
+		foreach ($_fields as $_fld) {
+			$name = $_fld->name;
+
+			$_address[$name] = $_data[$name];
+		}
+
+		$_cart[$_type] = $_address;
+		cart::setCart($_cart);
+	}
+		
 	function getAddress ($_model, $_fields, $_type)
 	{
 		//JPATH_COMPONENT does not work, because it is used in FE and BE

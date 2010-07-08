@@ -221,7 +221,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		  
 		if($this->prices['coupons']){ 
-			$couponlink = JRoute::_('index.php?view=user&task=editcoupon'); ?> 
+			$couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); ?> 
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>

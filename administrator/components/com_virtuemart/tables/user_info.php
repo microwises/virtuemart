@@ -162,6 +162,7 @@ class TableUser_info extends JTable {
 	public function check()
 	{
 		if (!empty($this->user_info_id)) {
+			dump($this->user_info_id, 'It says user_info_id is not empty');
 			return true;
 		}
 
@@ -179,9 +180,7 @@ class TableUser_info extends JTable {
 		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
 			$this->cdate = time();
-			//I dont understand that and the data is not saved, therefore I changed it to return true;
-			//The function just creates a new user_info_id if necessary. The false should be returned, when something is missing or already used.
-//			return true;  This makes an error, because the check function is already called in store function. There was a mix of two different functions.
+			dump($this->user_info_id, 'New user info id created');			
 			return false;
 		}
 	}

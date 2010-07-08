@@ -20,7 +20,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 if (function_exists('dumpTrace')) { // J!Dump is installed
-	dump($this->cart, 'Cart');
+//	dump($this->cart, 'Cart');
 } else {
 	echo '<pre>'.print_r($this->cart,1).'</pre>';
 }
@@ -45,7 +45,7 @@ else {
 	</legend>
 
 	<?php  ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT&cid[]=<?php echo $this->user_id; ?>">
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT&cid[]=<?php echo $this->lists['current_id']; ?>">
 		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
@@ -59,7 +59,7 @@ else {
 	<?php echo $this->lists['shipTo']; 
 /*	?><a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&rview=cart&shipto=0&cid[]=<?php echo $this->user_id; ?>">
 		<?php */ 
-	?>	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->user_id; ?>">
+	?>	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
 	<?php	echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
