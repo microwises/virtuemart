@@ -76,7 +76,7 @@ class VirtueMartControllerCart extends JController {
 			$cart['dataValidated']=false;
 		}
 		cart::setCart($cart);
-		
+
 		/* Display it all */
 		$view->display();
 	}
@@ -130,6 +130,31 @@ class VirtueMartControllerCart extends JController {
 	}
 	
 	/**
+	 * 
+	 * 
+	 */
+	public function setcoupon(){
+		
+		/* Get the coupon_id of the cart */
+		$coupon_id = JRequest::getVar('coupon_id', '0');
+		if($coupon_id){
+			//Now set the shipping rate into the cart
+			$cart = cart::getCart();
+			if($cart){
+				$cart['coupon_id']=$coupon_id;
+				$cart['dataValidated'] = false;
+				cart::setCart($cart);
+				if($cart['inCheckOut']){
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+				}
+			}
+		}
+		self::Cart();
+		
+	}
+	
+	/**
 	 * For selecting shipper, opens a new layout
 	 * 
 	 * @author Max Milbers
@@ -168,7 +193,7 @@ class VirtueMartControllerCart extends JController {
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
-			}		
+			}
 		}
 		self::Cart();
 	}
@@ -346,9 +371,11 @@ class VirtueMartControllerCart extends JController {
 						$this->editpayment();
 						return;
 				}
-				$this->setpayment(false);
+				$this->setpayment(false);	//For what was this case? internal notice Max
 			}
-		
+			
+			//TODO We may add a hook here for other payment methods
+			
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
 			$cart['dataValidated'] = true;
@@ -384,7 +411,8 @@ class VirtueMartControllerCart extends JController {
 			
 			$this->doEmail($cart);
 
-			//TODO Empty cart, now for developing only dataValidated
+			//TODO Empty cart from things which cost something, now for developing only dataValidated
+			//BT and ST data should remain ! Paym_id and shipping_rate_id also
 			$cart['dataValidated']=false;
 			cart::setCart($cart);
 			
@@ -481,7 +509,6 @@ class VirtueMartControllerCart extends JController {
 	 */
 	 private function validateUserData($cart,$anonym=false,$type='BT'){
 	 	
-	 
 		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 		$neededFields = user_info::getTestUserFields($anonym);
 		$redirectMsg=0;

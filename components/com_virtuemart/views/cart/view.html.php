@@ -43,6 +43,7 @@ class VirtueMartViewCart extends JView {
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		$this->assignRef('layoutName', $layoutName);
 		
+		$this->links=true;
 		if($layoutName=='editcoupon'){
 		
 			$this->lSelectCoupon();
@@ -83,7 +84,7 @@ class VirtueMartViewCart extends JView {
 			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
 			
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
-			
+			$this->links=false;
 			$this->prepareCartData();
 			
 			$this->prepareUserData();

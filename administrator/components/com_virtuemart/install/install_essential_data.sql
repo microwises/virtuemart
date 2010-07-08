@@ -209,7 +209,7 @@ INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depen
 (12842, 0, 'VM_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, '1', '', '', ''),
 (12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, '1', '', '', ''),
 (2, 0, 'VM_PRODUCT_FILES_LIST_MNU', 'page=product.file_list', '', 'vmicon vmicon-16-content', 28, '1', '', 'media', 'media'),
-(2, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes'),
+(2, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes');
 
 --
 -- Dumping data for table `#__vm_module`

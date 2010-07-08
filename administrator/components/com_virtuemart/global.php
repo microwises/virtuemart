@@ -17,7 +17,12 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 echo '<br/>';
 echo '<br/>';
 echo 'ATTENTION<br/>';
-echo 'We entered global, that means this view is not ported yet or this view/menue is obsolete';
+echo '<br/>We entered global, that means this view is not ported yet or this view/menue is obsolete';
+echo '<br/>This can happen, when you uninstalled your old joomla and installed new vm1.5, but use old links within joomla to access the VM Component.';
+echo '<br/>Use joomla for choosing a view like for all other components ';
+echo '<br/>vm mainpage is Virtuemart » Virtuemart / Virtuemart';
+echo '<br/>the cart is  VirtueMart » Cart / Cart';
+echo '<br/>the cart is  VirtueMart » Cart / Cart'; 
 die;
 
 global $module_description;

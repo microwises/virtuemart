@@ -51,10 +51,9 @@ class user_info
 			dump($_userinfo,'$_userinfoTable In storeAddress after storing to table');
 			
 		}
+		
+		self::saveAddressInCart($_data);
 
-//		if ($_cart) {
-			self::saveAddressInCart($_data);
-//		}
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		$_shipto = array();
@@ -190,7 +189,7 @@ class user_info
 
 	function address2cartanonym ($data, $_type)
 	{
-		$_userFields = self::getUserFields($_type);
+		$_userFields = self::getTestUserFields($_type);
 		self::saveAddressFromFormToCart($data, $_userFields, $_type);
 	}
 

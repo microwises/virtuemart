@@ -21,17 +21,15 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php 
-	echo '<pre>'.print_r($this->userDetails->JUser);
-	echo '</pre>';
+
 	//Hello Shopowner 
-//	JText::_('VM_CART_MAIL_VENDOR_TITLE')
+	JText::_('VM_CART_MAIL_VENDOR_TITLE');
 	echo $this->store->vendor_store_name; 
 	ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
 	
-	//The user with name blablub bought
-	echo '<br />'.$this->userDetails->JUser->username;
-	echo '<br />'.$this->userDetails->JUser->email;
-//	echo '<br />'.$this->userDetails->JUser->shoppergroup;
+	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
+
+
 	//PriceList
 include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 

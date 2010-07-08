@@ -221,7 +221,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		  
 		if($this->prices['coupons']){ 
-			$couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); ?> 
+			if($this->links) $couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); else $couponlink= ''?> 
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>
@@ -231,7 +231,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
 			</tr>
 		<?php }  
-		$shippinglink = JRoute::_('index.php?view=cart&task=editshipping');  ?>
+		if($this->links) $shippinglink = JRoute::_('index.php?view=cart&task=editshipping'); else $shippinglink= '' ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
@@ -243,7 +243,7 @@ defined('_JEXEC') or die('Restricted access');
 				
 		</tr>
 		<?php 
-		$paymentlink = JRoute::_('index.php?view=cart&task=editpayment');  ?>
+		if($this->links) $paymentlink = JRoute::_('index.php?view=cart&task=editpayment'); else $paymentlink= '' ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
 			<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>

@@ -12,7 +12,7 @@
  */
 defined('_JEXEC') or die();
 
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'classes' . DS. "class.img2thumb.php");
+//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'classes' . DS. "class.img2thumb.php");
 
 
 /**
