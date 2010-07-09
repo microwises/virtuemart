@@ -43,6 +43,12 @@
 		<folder>views</folder>	
 	</files>
 	
+	<files folder="images/stories/virtuemart/" destination="images/stories/virtuemart/">
+		<folder>category</folder>
+		<folder>product</folder>	
+	</files>
+			
+			
 	<!-- Language files -->
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
@@ -78,6 +84,7 @@
    			<folder>views</folder>
 
 		</files>
+		
 		
 		<!-- Language files -->
 		<languages folder="administrator/language">

@@ -26,13 +26,13 @@ defined('_JEXEC') or die('Restricted access');
 //}
 
 /* Show Continue Shopping link when the cart is empty */ 
-if ($this->cart["idx"] == 0) {
-	echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
-	echo JText::_('VM_EMPTY_CART');
-	echo '<br />';
-	echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
-}
-else { 
+//if ($this->cart["idx"] == 0) {
+//	echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
+//	echo JText::_('VM_EMPTY_CART');
+//	echo '<br />';
+//	echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
+//}
+//else { 
 
 	include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	
@@ -114,4 +114,4 @@ else {
 		<input type="hidden" name="view" value="cart"/>
 		<input type="hidden" name="task" value="<?php echo $this->fTask;?>" />
 		</form>
-<?php } ?>
+<?php // } ?>

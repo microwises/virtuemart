@@ -45,7 +45,7 @@ class vmVersion {
 	/** @var string Revision */
 	var $REVISION = '$Revision: 1755 $';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright (C) 2005-2008 VirtueMart Development Team - All rights reserved.'; 
+	var $COPYRIGHT = 'Copyright (C) 2005-2010 VirtueMart Development Team - All rights reserved.'; 
 	/** @var string URL */
 	var $URL = '<a href="http://virtuemart.org">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL License.';
 }
