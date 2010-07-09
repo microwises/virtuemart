@@ -43,7 +43,6 @@ class VirtuemartViewProduct extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
 		JView::loadHelper('image');
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS.'htmlTools.class.php');
 
 		/* Load some common models */
 		$category_model = $this->getModel('category');

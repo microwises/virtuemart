@@ -207,16 +207,8 @@ class VirtuemartViewUser extends JView {
 		
 		if (($addressCount = count($this->_userDetails->userInfo)) == 0) {
 			//TODO I think here is maybe the right position to fill the fields with the cart values, if available
-//			$cart = cart::getCart();
-//			dump($cart, 'what a pitty');
-//			if($cart){
-//				if(!empty($cart['BT'])){
-//					$userDetailsList = $cart['BT'];
-//				}
-//			} else {
-				$userDetailsList = null;
-				$userInfoID = null;
-//			}
+			$userDetailsList = null;
+			$userInfoID = null;
 			
 		} else {
 			$userDetailsList = current($this->_userDetails->userInfo);
@@ -228,7 +220,6 @@ class VirtuemartViewUser extends JView {
 				}
 				
 				$userDetailsList = next($this->_userDetails->userInfo);
-//				dump($userDetailsList, 'what a pitty');
 			}
 			$this->_userInfoID = $userInfoID;
 			
@@ -238,7 +229,7 @@ class VirtuemartViewUser extends JView {
 		
 		$this->assignRef('userInfoID', $userInfoID);
 		
-//		dump($userDetailsList,'How does the userDetailsList look like?');	
+//		dump($userDetailsList,'getUserDataBT the userDetailsList');	
 		$this->assignRef('userDetailsList', $userDetailsList);	
 	}
 	

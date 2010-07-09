@@ -331,13 +331,13 @@ class VirtueMartModelUser extends JModel {
 			if(!empty($email)){
 				$data['email'] = $email;
 			} else {
-				$data['email'] = JRequest::getVar('email', '', 'post', 'email');
-				//This is important, when a user changes his email address from the cart, 
-				//that means using view user layout edit_address (which is called from the cart)
-				$user->set('email',$data['email']);		
+				$data['email'] = JRequest::getVar('email', '', 'post', 'email');	
 			}
 		}	
-		
+
+		//This is important, when a user changes his email address from the cart, 
+		//that means using view user layout edit_address (which is called from the cart)
+		$user->set('email',$data['email']);
 		
 		
 		if(empty ($data['name'])){
@@ -359,6 +359,7 @@ class VirtueMartModelUser extends JModel {
 		}
 		
 		if(empty ($data['password'])){
+			//This is interesting, the passwords dont need this construction
 //			$password = $user->get('password');
 //			if(!empty($password)){
 //				$data['password'] = $password;
@@ -368,6 +369,7 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		if(empty ($data['password2'])){
+			//This is interesting, the passwords dont need this construction
 //			$password2 = $user->get('password2');
 //			if(!empty($password2)){
 //				$data['password2'] = $password2;
@@ -376,19 +378,12 @@ class VirtueMartModelUser extends JModel {
 //			}
 		}
 
-//		$data['name'] = !empty($user->get('name')) ? $user->get('name') : JRequest::getVar('name', '', 'post', 'name');
-//		$data['email'] = !empty($user->get('email')) ? $user->get('email') : JRequest::getVar('email', '', 'post', 'email');
-//		
-//		$data['password'] = !empty($user->get('password')) ? $user->get('password') : JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-//		$data['password2'] = !empty($user->get('password2')) ? $user->get('password2') : JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-////		$data['password']	= JRequest::getVar('password', '', 'post', 'string', JREQUEST_ALLOWRAW);
-//		$data['password2']	= JRequest::getVar('password2', '', 'post', 'string', JREQUEST_ALLOWRAW);
-		dump($data,'The data binded to user');
+//		dump($data,'The data binded to user');
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
 			//develop
 			$this->setError('user bind '.$user->getError());
-			dump($user,'binding data error');
+//			dump($user,'binding data error');
 			return false;
 		}
 
@@ -503,7 +498,7 @@ class VirtueMartModelUser extends JModel {
 		if(empty($this->_id)){
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
-		dump($_data,'What a pitty');
+
 		if (!user_info::storeAddress($_data, 'user_info', $new)) {
 			$this->setError('Was not able to save the virtuemart user data');
 			return false;

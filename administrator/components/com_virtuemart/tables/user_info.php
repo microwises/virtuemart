@@ -162,7 +162,6 @@ class TableUser_info extends JTable {
 	public function check()
 	{
 		if (!empty($this->user_info_id)) {
-			dump($this->user_info_id, 'It says user_info_id is not empty');
 			return true;
 		}
 

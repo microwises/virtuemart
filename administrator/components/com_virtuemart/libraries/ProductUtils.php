@@ -17,7 +17,7 @@ class ProductUtils
 			}
 			// local image file
 			else {
-			    $url = '<img src="'.IMAGEURL.'product'.DS.$image.'" />';
+			    $url = '<img src="'.VmConfig::get('media_product_path').$image.'" />';
 			}	  
 		} 
 		
@@ -61,7 +61,8 @@ class ProductUtils
 					}
 				}
 				else {
-					$url = IMAGEURL.$path_appendix.'/'.$image;
+					$whichPath= 'media_'.$path_appendix.'_path';
+					$url = JPATH_SITE.DS.VmConfig::get($whichPath).'/'.$image;
 					if( file_exists($image)) {
 						$url = str_replace( $mosConfig_absolute_path, JURI::base(), $image );
 					} elseif( file_exists($mosConfig_absolute_path.'/'.$image)) {
@@ -69,7 +70,7 @@ class ProductUtils
 					}
 					
 					if( !strpos( $args, "height=" ) ) {
-						$arr = getimagesize( str_replace( IMAGEURL, IMAGEPATH, $url ) );
+						$arr = getimagesize( str_replace( IMAGEURL, IMAGEPATH, $url ) );	//TODO Imageurl
 						$width = $arr[0]; $height = $arr[1];
 						
 					}

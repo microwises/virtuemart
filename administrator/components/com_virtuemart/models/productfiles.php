@@ -105,6 +105,7 @@ class VirtueMartModelProductFiles extends JModel {
     	$productfileslist = $db->loadObjectList();
 
     	/* Get the files from the product table */
+    	//TODO replace IMAGEURL with VmConfig::get('media_product_path')
     	if (JRequest::getInt('product_id', 0) > 0) $filter = ' AND product_id = '.JRequest::getInt('product_id');
     	$q = "SELECT 'product_images' AS file_id, '1' AS file_is_image, product_id AS file_product_id, '1' AS published,
     				product_full_image AS file_name, product_full_image AS file_title, '0' AS isdownloadable, product_name,

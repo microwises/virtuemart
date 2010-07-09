@@ -35,9 +35,7 @@ class user_info
 	function storeAddress($_data, $_table = null, $new = false)
 	{
 		$_data = self::_prepareUserFields($_data, 'BT',$new);
-		dump($_data['user_info_id'],'Hmm what is the user_info_id here?');
 		if ($_table !== null) {
-			dump($_data,'In storeAddress after prepareUserFields storing to table '.$_table);
 			$_userinfo   =& $this->getTable($_table);
 			if (!$_userinfo->bind($_data)) {
 				$this->setError($_userinfo->getError());
@@ -48,7 +46,6 @@ class user_info
 				$this->setError($_userinfo->getError());
 				return false;
 			}
-			dump($_userinfo,'$_userinfoTable In storeAddress after storing to table');
 			
 		}
 		
@@ -98,9 +95,7 @@ class user_info
 		// Format the data
 		foreach ($_prepareUserFields as $_fld) {
 			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name],$data);
-//			dump($_fld->name,'In _prepareUserFields ');
 		}
-//		dump($_data,'In _prepareUserFields ');
 		return $_data;
 	}
 

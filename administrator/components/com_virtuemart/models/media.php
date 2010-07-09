@@ -217,6 +217,7 @@ class VirtueMartModelMedia extends JModel {
 			default:
 				if (JRequest::getInt('product_id', false)) $filter = ' AND product_id = '.JRequest::getInt('product_id');
 				else $filter = '';
+				//TODO replace IMAGEURL with VmConfig::get('media_product_path')
 				$q = "SELECT 'isProductImage' AS file_role,
 							NULL AS file_id,
 							'1' AS file_is_image,
@@ -227,7 +228,7 @@ class VirtueMartModelMedia extends JModel {
 							product_thumb_image,
 							'0' AS isdownloadable,
 							product_name,
-							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url,
+							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url,			
 							SUBSTRING(product_full_image, -3, 3) AS file_extension
 					FROM #__vm_product
 					WHERE LENGTH(product_full_image) > 0 ".$filter;
@@ -516,7 +517,8 @@ class VirtueMartModelMedia extends JModel {
 			case 'product_full_image':
 			case 'product_thumb_image':
 				$this->_productfile->file_is_image = "1";
-				$this->_productfile->file_url = IMAGEURL."product/".$this->_productfile->file_name;
+//				$this->_productfile->file_url = IMAGEURL."product/".$this->_productfile->file_name;
+				$this->_productfile->file_url = JPATH_SITE.DS.VmConfig::get('media_product_path').$this->_productfile->file_name;
 				$file_create_thumbnail = JRequest::getVar("file_create_thumbnail", false);
 				if ($file_create_thumbnail) {
 				    $tmp_filename = $uploaddir.$this->_productfile->file_name;

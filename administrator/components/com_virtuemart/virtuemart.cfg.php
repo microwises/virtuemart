@@ -36,6 +36,7 @@ else {
 define( 'URL', JURI::root() );
 define( 'SECUREURL', JURI::root() );
 
+dump('Hmm the virtuemart.cfg.php is used');
 //todo What is now with this urls?
 if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == '443' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
@@ -50,8 +51,8 @@ define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 
 define( 'ADMINPATH', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS );
 
-define( 'CLASSPATH', ADMINPATH.'classes'.DS );
-define( 'PAGEPATH', ADMINPATH.'html'.DS );
+//define( 'CLASSPATH', ADMINPATH.'classes'.DS );
+//define( 'PAGEPATH', ADMINPATH.'html'.DS );
 define( 'IMAGEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS );
 define( 'VM_ADMIN_ICON_URL',COMPONENTURL.'assets/images/');
 define('PSHOP_IS_OFFLINE', '');

@@ -50,7 +50,7 @@ class VirtueMartControllerCart extends JController {
 	* @author RolandD 
 	* @access public 
 	*/
-	public function Cart() {
+	public function Cart($confirmed=false) {
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		
@@ -68,15 +68,21 @@ class VirtueMartControllerCart extends JController {
 		$cart = cart::getCart(false);
 		dump($cart,'my Cart in the main Cart task');
 		if(!isset($cart['inCheckOut'])){
-			dump($cart['inCheckOut'],'I set inCheckOut');
 			$cart['inCheckOut']=false;
 		} 
 		if(!isset($cart['dataValidated'])){
-			dump($cart['dataValidated'],'I set dataValidated');
 			$cart['dataValidated']=false;
 		}
 		cart::setCart($cart);
 
+		if($confirmed){
+			$ftask ='confirm';
+		} else {
+			$ftask ='checkout';
+		}
+		
+		$view->assignRef('fTask', $ftask);
+	dump($view,'my view in the main Cart task and '.$ftask);
 		/* Display it all */
 		$view->display();
 	}
@@ -304,7 +310,7 @@ class VirtueMartControllerCart extends JController {
 	 * 
 	 */
 	 
-	public function checkout(){
+	public function checkout($confirmDone=false){
 	
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
@@ -314,11 +320,11 @@ class VirtueMartControllerCart extends JController {
 			
 			//When the data is already validated, then the confirmation was done,
 			//so set confirmdone true,  this checks again all data for the final contract
-			if($cart['dataValidated'] === true){
-				$confirmDone=true;
-			}else{
-				$confirmDone=false;
-			}
+//			if($cart['dataValidated'] === true){
+//				$confirmDone=true;
+//			}else{
+//				$confirmDone=false;
+//			}
 			
 			//But we check the data again to be sure
 			if(empty($cart['BT'])){
@@ -385,11 +391,22 @@ class VirtueMartControllerCart extends JController {
 			if($confirmDone){
 				$this->confirmedOrder();
 			} else {
-				$this->Cart();
+				$this->Cart(true);
 			}
 		}
 	}
 	
+	public function confirm(){
+		
+		$cart = cart::getCart(false);
+		
+		if($cart['dataValidated'] === true){
+			$this->checkout(true);
+		} else {
+			self::Cart();	
+		}
+		
+	}
 	/**
 	 * This function is called, when the order is confirmed by the shopper.
 	 * 
@@ -398,7 +415,7 @@ class VirtueMartControllerCart extends JController {
 	 * will show the orderdone page (thank you page)
 	 * 
 	 */
-	public function confirmedOrder(){
+	private function confirmedOrder(){
 	
 		//Here we do the task, like storing order information
 		$cart = cart::getCart(false);

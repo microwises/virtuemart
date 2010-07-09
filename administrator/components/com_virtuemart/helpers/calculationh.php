@@ -841,9 +841,11 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	 
 	private function parseModifier($variants){
+		if(empty( $variants) ) return 0.0;
 //		echo '<br />Lets see what we have here for variant? <pre>'.print_r($variants).'</pre>';
 		$modificatorSum=0.0;
 		$max=array();
+		
 		foreach ($variants as $variant_name => $value) {		
 			if(strpos($value,'(')){
 				$bundle=strrchr($value,'(') ;

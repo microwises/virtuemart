@@ -186,7 +186,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
-
+	
 	$vmLogIdentifier = 'VirtueMart';
 
 	$fields = array();
@@ -232,7 +232,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
-	$this->execSQLFile($filename);
+	if(!$this->execSQLFile($filename)){
+		$msg = JText::_('Problems execution of SQL File '.$filename);	
+	} else {
+		$msg = JText::_('Sample data installed!!');	
+	}
+	return $msg;
+	
     }
 
 
@@ -248,7 +254,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	// Bind the form fields to the unser info table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
-	    echo 'Problem with bind';die;
+	    echo 'storeSampleUserInfo: Problem with bind';die;
 	    return false;
 	}
 
@@ -263,7 +269,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	// Save the user info record to the database
 	if (!$table->store()) {
 	    $this->setError($table->getError());
-	    echo 'Problem with store';die;
+	    echo 'storeSampleUserInfo: Problem with store';die;
 	    return false;
 	}
 

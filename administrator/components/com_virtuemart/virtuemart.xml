@@ -37,11 +37,9 @@
 		
 		<folder>assets</folder>
 		<folder>controllers</folder>
-		<folder>js</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>shop_image</folder>
-		<folder>themes</folder>
 		<folder>views</folder>	
 	</files>
 	
@@ -70,10 +68,8 @@
 			<filename>version.php</filename>
 			
 			<folder>assets</folder>
-			<folder>classes</folder>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
-			<folder>html</folder>
 			<folder>install</folder>
    			<folder>libraries</folder>			
 			<folder>models</folder>

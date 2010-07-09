@@ -83,9 +83,12 @@ class VirtuemartControllerUpdatesMigration extends JController {
      */
     function installSampleData() {
 	$model = $this->getModel('updatesMigration');
-	$model->installSampleData();
+	if(!$model){
+		$msg = 'Developer output no model updatesMigration found in installSampleData';
+	} else {
+		$msg = $model->installSampleData();
+	}
 
-	$msg = JText::_('Sample data installed!!');
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 

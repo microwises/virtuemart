@@ -19,11 +19,11 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-if (function_exists('dumpTrace')) { // J!Dump is installed
-//	dump($this->cart, 'Cart');
-} else {
-	echo '<pre>'.print_r($this->cart,1).'</pre>';
-}
+//if (function_exists('dumpTrace')) { // J!Dump is installed
+////	dump($this->cart, 'Cart');
+//} else {
+//	echo '<pre>'.print_r($this->cart,1).'</pre>';
+//}
 
 /* Show Continue Shopping link when the cart is empty */ 
 if ($this->cart["idx"] == 0) {
@@ -112,6 +112,6 @@ else {
 		</div>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="cart"/>
-		<input type="hidden" name="task" value="checkout"/>
+		<input type="hidden" name="task" value="<?php echo $this->fTask;?>" />
 		</form>
 <?php } ?>

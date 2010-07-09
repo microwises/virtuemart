@@ -38,20 +38,20 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of theme objects
      */
     function getThemeList() {
-	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$result = '';
-
-	if ($handle = opendir($dir)) {
-	    while (false !== ($file = readdir($handle))) {
-		if ($file != "." && $file != ".." && $file != '.svn') {
-		    if (filetype($dir.DS.$file) == 'dir') {
-			$result[] = JHTML::_('select.option', $file, JText::_($file));
-		    }
-		}
-	    }
-	}
-
-	return $result;
+//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//		$result = '';
+//	
+//		if ($handle = opendir($dir)) {
+//		    while (false !== ($file = readdir($handle))) {
+//				if ($file != "." && $file != ".." && $file != '.svn') {
+//				    if (filetype($dir.DS.$file) == 'dir') {
+//					$result[] = JHTML::_('select.option', $file, JText::_($file));
+//				    }
+//				}
+//		    }
+//		}
+//	
+//		return $result;
     }
 
 
@@ -62,22 +62,22 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of template objects
      */
     function getTemplateList() {
-	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'browse';
-	$result = '';
-
-	if ($handle = opendir($dir)) {
-	    while (false !== ($file = readdir($handle))) {
-		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-		    if (filetype($dir.DS.$file) != 'dir') {
-			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-		    }
-		}
-	    }
-	}
-	$result[] = JHTML::_('select.option', 'managed', JText::_('managed'));
-
-	return $result;
+//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'browse';
+//	$result = '';
+//
+//	if ($handle = opendir($dir)) {
+//	    while (false !== ($file = readdir($handle))) {
+//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+//		    if (filetype($dir.DS.$file) != 'dir') {
+//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+//		    }
+//		}
+//	    }
+//	}
+//	$result[] = JHTML::_('select.option', 'managed', JText::_('managed'));
+//
+//	return $result;
     }
 
 
@@ -88,21 +88,21 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of flypage objects
      */
     function getFlypageList() {
-	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
-	$result = '';
+//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
+//	$result = '';
+//
+//	if ($handle = opendir($dir)) {
+//	    while (false !== ($file = readdir($handle))) {
+//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+//		    if (filetype($dir.DS.$file) != 'dir') {
+//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+//		    }
+//		}
+//	    }
+//	}
 
-	if ($handle = opendir($dir)) {
-	    while (false !== ($file = readdir($handle))) {
-		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-		    if (filetype($dir.DS.$file) != 'dir') {
-			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-		    }
-		}
-	    }
-	}
-
-	return $result;
+//	return $result;
     }
 
 
@@ -113,21 +113,21 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of image objects
      */
     function getNoImageList() {
-	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-	$dir .= DS.VmConfig::get('theme').DS.'images';
-	$result = '';
+//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//	$dir .= DS.VmConfig::get('theme').DS.'images';
+//	$result = '';
+//
+//	if ($handle = opendir($dir)) {
+//	    while (false !== ($file = readdir($handle))) {
+//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+//		    if (filetype($dir.DS.$file) != 'dir') {
+//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+//		    }
+//		}
+//	    }
+//	}
 
-	if ($handle = opendir($dir)) {
-	    while (false !== ($file = readdir($handle))) {
-		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-		    if (filetype($dir.DS.$file) != 'dir') {
-			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-		    }
-		}
-	    }
-	}
-
-	return $result;
+//	return $result;
     }
 
 
