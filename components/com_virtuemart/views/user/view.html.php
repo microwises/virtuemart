@@ -78,7 +78,9 @@ class VirtuemartViewUser extends JView {
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
 		$this->_userDetails = $this->_model->getUser();
-		dump($this->_userDetails,'Display user userDetails');
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($this->_userDetails,'Display user userDetails');
+		}
 		$this->assignRef('userDetails', $this->_userDetails);
 
 		$userFields = $this->setUserFieldsForView($layoutName);
@@ -174,7 +176,9 @@ class VirtuemartViewUser extends JView {
 		if(empty($this->_userDetailsList)){
 			$this->_userDetailsList=0;
 		}
-		dump($this->_userDetailsList,'_userDetailsList');
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($this->_userDetailsList,'_userDetailsList');
+		}
 		//TODO attention, this is the function which actually loads the data into the field.
 		// The values are saved in $this->_userDetailsList
 		if(!empty($this->_cuid)){
@@ -182,7 +186,9 @@ class VirtuemartViewUser extends JView {
 							 $_userFields
 							,$this->_userDetailsList
 							);
-			dump($userFields,'my Userfields with getUserFieldsByUser');
+			if (function_exists('dumpTrace')) { // J!Dump is installed
+				dump($userFields,'my Userfields with getUserFieldsByUser');
+			}
 		} else {
 			//We may move this to the helper of course, but for developing I just wanna get it working
 			//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
@@ -192,7 +198,9 @@ class VirtuemartViewUser extends JView {
 				,$_userFields
 				,$type
 			);
-			dump($userFields,'my Userfields with getAddress');
+			if (function_exists('dumpTrace')) { // J!Dump is installed
+				dump($userFields,'my Userfields with getAddress');
+			}
 		}
 
 		
@@ -229,7 +237,9 @@ class VirtuemartViewUser extends JView {
 		
 		$this->assignRef('userInfoID', $userInfoID);
 		
-//		dump($userDetailsList,'getUserDataBT the userDetailsList');	
+//		if (function_exists('dumpTrace')) { // J!Dump is installed
+//			dump($userDetailsList,'getUserDataBT the userDetailsList');
+//		}	
 		$this->assignRef('userDetailsList', $userDetailsList);	
 	}
 	

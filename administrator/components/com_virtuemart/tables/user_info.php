@@ -179,7 +179,9 @@ class TableUser_info extends JTable {
 		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
 			$this->cdate = time();
-			dump($this->user_info_id, 'New user info id created');			
+			if (function_exists('dumpTrace')) { // J!Dump is installed
+				dump($this->user_info_id, 'New user info id created');
+			}
 			return false;
 		}
 	}

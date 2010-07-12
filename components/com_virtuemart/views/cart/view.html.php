@@ -196,7 +196,9 @@ class VirtueMartViewCart extends JView {
 	
 		$cart = cart::getCart(false);
 		$this->assignRef('cart', $cart);
-		dump($cart,'cart prepared:');
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($cart,'cart prepared:');
+		}
 		//cart and pricelist
 		/* Get the products for the cart */
 		$model = $this->getModel('cart');

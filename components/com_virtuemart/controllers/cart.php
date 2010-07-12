@@ -66,7 +66,9 @@ class VirtueMartControllerCart extends JController {
 		
 		//set some default values to the cart
 		$cart = cart::getCart(false);
-		dump($cart,'my Cart in the main Cart task');
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($cart,'my Cart in the main Cart task');
+		}
 		if(!isset($cart['inCheckOut'])){
 			$cart['inCheckOut']=false;
 		} 
@@ -82,7 +84,9 @@ class VirtueMartControllerCart extends JController {
 		}
 		
 		$view->assignRef('fTask', $ftask);
-	dump($view,'my view in the main Cart task and '.$ftask);
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($view,'my view in the main Cart task and '.$ftask);
+		}
 		/* Display it all */
 		$view->display();
 	}
@@ -387,7 +391,9 @@ class VirtueMartControllerCart extends JController {
 			$cart['dataValidated'] = true;
 			
 			cart::setCart($cart);
-			dump($cart,'Cart runned through checkout and confirmDone '.$confirmDone);
+			if (function_exists('dumpTrace')) { // J!Dump is installed
+				dump($cart,'Cart runned through checkout and confirmDone '.$confirmDone);
+			}
 			if($confirmDone){
 				$this->confirmedOrder();
 			} else {

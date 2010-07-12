@@ -36,7 +36,9 @@ else {
 define( 'URL', JURI::root() );
 define( 'SECUREURL', JURI::root() );
 
-dump('Hmm the virtuemart.cfg.php is used');
+if (function_exists('dumpTrace')) { // J!Dump is installed
+	dump('Hmm the virtuemart.cfg.php is used');
+}
 //todo What is now with this urls?
 if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == '443' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );

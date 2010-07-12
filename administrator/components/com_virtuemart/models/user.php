@@ -173,7 +173,9 @@ class VirtueMartModelUser extends JModel {
 				for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 					$_ui_id = $_ui[$i]->user_info_id;
 					$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-	//				dump($this->_id,'my ID in getUser');
+//					if (function_exists('dumpTrace')) { // J!Dump is installed
+//						dump($this->_id,'my ID in getUser');
+//					}
 					$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 					
 					//This parts sets the vendor_id to a user
@@ -206,7 +208,9 @@ class VirtueMartModelUser extends JModel {
 			$this->_id = 0;
 			$this->_data = null;
 		}
-//		dump($this->_data, 'model user->getUser');
+//		if (function_exists('dumpTrace')) { // J!Dump is installed
+//			dump($this->_data, 'model user->getUser');
+//		}
 		
 		return $this->_data;
 	}
@@ -378,12 +382,16 @@ class VirtueMartModelUser extends JModel {
 //			}
 		}
 
-//		dump($data,'The data binded to user');
+//		if (function_exists('dumpTrace')) { // J!Dump is installed
+//			dump($data,'The data binded to user');
+//		}
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
 			//develop
 			$this->setError('user bind '.$user->getError());
-//			dump($user,'binding data error');
+//			if (function_exists('dumpTrace')) { // J!Dump is installed
+//				dump($user,'binding data error');
+//			}
 			return false;
 		}
 
