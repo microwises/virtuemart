@@ -324,7 +324,6 @@ class VirtueMartControllerCart extends JController {
 			$mainframe = JFactory::getApplication();
 			if( $cart['idx'] == 0){
 				$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));		
-//				$this->Cart(false);
 			}
 			
 			//But we check the data again to be sure

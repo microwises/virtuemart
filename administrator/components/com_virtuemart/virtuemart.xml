@@ -42,11 +42,12 @@
 		<folder>shop_image</folder>
 		<folder>views</folder>	
 	</files>
-	
-	<files folder="images/stories/virtuemart/" destination="images/stories/virtuemart/">
+
+	<!-- This are the sampel pictures, NOT the shoppictures -->
+	<media folder="images/stories/virtuemart" destination="../images/stories/virtuemart">	
 		<folder>category</folder>
 		<folder>product</folder>	
-	</files>
+	</media>
 			
 			
 	<!-- Language files -->

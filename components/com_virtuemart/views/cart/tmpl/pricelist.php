@@ -156,41 +156,37 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
-				<td align="right"><?php  ?> </td>
+				<td align="right"> </td>
 				<td align="right"><?php echo -$this->prices[$rule['calc_id'].'Diff'];  ?> </td>
 				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php 
 			if($i) $i=1; else $i=0;
 		}
-		  
-		if($this->prices['coupons']){ 
-			if($this->layoutName=='cart') $couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); else $couponlink= ''?> 
+
+		if($this->prices['coupons']){ ?>
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
-				<td colspan="2" align="left"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
 				<td colspan="3" align="left"><?php echo $this->prices['couponName']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponValue']; ?> </td>	
 				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
 			</tr>
-		<?php }  
-		if($this->layoutName=='cart') $shippinglink = JRoute::_('index.php?view=cart&task=editshipping'); else $shippinglink= '' ?>
+		<?php }   ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->prices['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>	
 				<td></td>
 				<td align="right"><?php echo $this->prices['salesPriceShipping']; ?> </td>
-				
 		</tr>
-		<?php 
-		if($this->layoutName=='cart') $paymentlink = JRoute::_('index.php?view=cart&task=editpayment'); else $paymentlink= '' ?>
+		
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
-			<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
+				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('VM_CART_EDIT_PAYMENT')); ?> </td>
+		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->prices['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentTax']; ?> </td>	
