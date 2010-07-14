@@ -25,16 +25,14 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_CART_TITLE'); ?>
 	</legend>
 <?php 
-		$total = 0;
+
 		// Added for the zone shipping module
 		//$vars["zone_qty"] = 0;
 		$weight_total = 0;
 		$weight_subtotal = 0;
-		$tax_total = 0;
-		$shipping_total = 0;
-		$shipping_tax = 0;
-		$order_total = 0;
-		$discount_before=$discount_after=$show_tax=$shipping=false;
+
+		//of course, some may argue that the $product_rows should be generated in the view.html.php, but
+		//
 		$product_rows = array();
 	
 		for ($i=0; $i < $this->cart['idx']; $i++) {
@@ -107,67 +105,13 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="product_id" value="'.$product->product_id.'" />
 				<input type="image" name="delete" title="'. JText::_('VM_CART_DELETE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/remove_from_cart.png" alt="'. JText::_('VM_CART_DELETE') .'" align="middle" />
 			  </form>';
-			} else {			
+			} else {
 				$product_rows[$i]['update_form'] = $this->cart[$i]["quantity"];
 				$product_rows[$i]['delete_form'] ='';
 			}
 		} // End of for loop through the Cart
-	
-		//vmRequest::setVar( 'zone_qty', $vars['zone_qty'] );
 
-		$subtotal_display = 0;
-	
-		/** @todo handle coupons */
-		/**
-		if (!empty($_POST["do_coupon"]) || (in_array( strtolower($func), array( 'cartadd', 'cartupdate', 'cartdelete' )) && !empty($_SESSION['coupon_redeemed'])) ) {
-			require_once( CLASSPATH . "ps_coupon.php" );
-			$vars["total"] = $total;
-			ps_coupon::process_coupon_code( $vars );
-	
-		}
-		/** @todo handle coupons */
-		/**
-		//CT.COUPON VALIDITY CHECK ON ORDER
-		if (
-			(isset($_SESSION['coupon_redeemed'])) &&
-			($_SESSION['coupon_redeemed'] == 1) &&
-			($total+$shipping_total < @$_SESSION['coupon_value_valid'])){
-	
-			echo JText::_('VM_COUPON_REMOVED').$_SESSION['coupon_value_valid'];
-	
-			@$_SESSION['coupon_redeemed'] = 0;
-			@$_SESSION['coupon_id'] = 0;
-			@$_SESSION['coupon_code'] = "";
-			@$_SESSION['coupon_type'] = "";
-			@$_SESSION['coupon_value_valid'] = 0;
-			@$_SESSION['coupon_discount'] = 0;
-	
-		}
-	
-		// COUPON DISCOUNT
-		$coupon_display = '';
-		if( PSHOP_COUPONS_ENABLE=='1' && @$_SESSION['coupon_redeemed']=="1" && PAYMENT_DISCOUNT_BEFORE=='1') {
-	
-			$total -= $_SESSION['coupon_discount'];
-			$coupon_display = "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $_SESSION['coupon_discount'] );
-			$discount_before=true;
-		}
-*/
 
-		$subtotal_display = $this->prices['priceWithoutTax'];
-		$order_total_display = $this->prices['withTax'];
-		$tax_display = $this->prices['taxAmount'];
-		$coupon_display = $this->prices['couponValue'];
-		$duty_display = $this->prices['duty'];
-		
-		$shipping_display = $this->prices['shippingValue'];
-		$shipping_tax_display = $this->prices['shippingTax'];
-		
-		$payment_display = $this->prices['payment'];
-		$payment_tax_display = $this->prices['paymentTax'];
-//		echo '<br />cart <pre>';
-//		echo print_r($this);
-//		echo '</pre>';
 		?>
 		<table width="100%" cellspacing="2" cellpadding="4" border="0">
 			<tr align="left" class="sectiontableheader">
@@ -221,7 +165,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		  
 		if($this->prices['coupons']){ 
-			if($this->links) $couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); else $couponlink= ''?> 
+			if($this->layoutName=='cart') $couponlink = JRoute::_('index.php?view=cart&task=editcoupon'); else $couponlink= ''?> 
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $couponlink, JText::_('VM_CART_EDIT_COUPON')); ?> </td>
@@ -231,7 +175,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
 			</tr>
 		<?php }  
-		if($this->links) $shippinglink = JRoute::_('index.php?view=cart&task=editshipping'); else $shippinglink= '' ?>
+		if($this->layoutName=='cart') $shippinglink = JRoute::_('index.php?view=cart&task=editshipping'); else $shippinglink= '' ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $shippinglink, JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
@@ -243,7 +187,7 @@ defined('_JEXEC') or die('Restricted access');
 				
 		</tr>
 		<?php 
-		if($this->links) $paymentlink = JRoute::_('index.php?view=cart&task=editpayment'); else $paymentlink= '' ?>
+		if($this->layoutName=='cart') $paymentlink = JRoute::_('index.php?view=cart&task=editpayment'); else $paymentlink= '' ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php echo JHTML::_('link', $paymentlink, JText::_('VM_CART_EDIT_PAYMENT'));?> </td>
 			<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
@@ -290,10 +234,10 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right"> <?php echo $this->prices['billDiscountAmount'] ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
-		<?php if ( $show_tax ) { ?>
+		<?php if ( VmConfig::get('show_tax')) { ?>
 		  <tr class="sectiontableentry1">
 				<td colspan="4" align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>: </td> 
-				<td colspan="4" align="right"><?php echo $tax_display ?></td>
+				<td colspan="4" align="right"><?php echo $this->prices['taxAmount'] ?></td>
 		  </tr>
 		<?php } ?>
 		  <tr>

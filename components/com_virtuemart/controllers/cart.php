@@ -320,15 +320,12 @@ class VirtueMartControllerCart extends JController {
 		$cart = cart::getCart(false);
 
 		if($cart){
-			$mainframe = JFactory::getApplication();
 			
-			//When the data is already validated, then the confirmation was done,
-			//so set confirmdone true,  this checks again all data for the final contract
-//			if($cart['dataValidated'] === true){
-//				$confirmDone=true;
-//			}else{
-//				$confirmDone=false;
-//			}
+			$mainframe = JFactory::getApplication();
+			if( $cart['idx'] == 0){
+				$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));		
+//				$this->Cart(false);
+			}
 			
 			//But we check the data again to be sure
 			if(empty($cart['BT'])){
