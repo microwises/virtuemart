@@ -86,6 +86,12 @@ class VirtuemartViewUser extends JView {
 		$userFields = $this->setUserFieldsForView($layoutName);
 		
 		if($layoutName=='edit'){
+			if($this->_uid==0 && $this->_cuid==0){
+				$button_lbl = JText::_('Register');
+			} else {
+				$button_lbl = JText::_('Save');
+			}
+			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
 			$this->shopper($userFields);
 		}
@@ -113,21 +119,6 @@ class VirtuemartViewUser extends JView {
 		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
 		jimport('joomla.html.pane');
 		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
-
-		// Make sure this address is written to the cart as selected.
-		// TODO Should this code be moved to the cart helper?
-		// Disabled for developing
-//		$_cart = cart::getCart();
-//		if ($_cart) {
-//			if (($_shipto = JRequest::getVar('shipto', '')) != '') {
-//				$_cart['address_shipto_id'] = $_shipto;
-//			} else {
-//				$_cart['address_shipto_id'] = $this->_userInfoID;
-//			}
-//			$_cart['address_billto_id'] = $this->_userInfoID;
-//			cart::setCart($_cart);
-//		}
-
 
 		$this->assignRef('lists', $this->_lists);
 		

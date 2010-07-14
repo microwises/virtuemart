@@ -42,10 +42,10 @@ if (function_exists('dumpTrace')) { // J!Dump is installed
 //todo What is now with this urls?
 if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == '443' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
-	define( 'VM_THEMEURL', SECUREURL.'components/com_virtuemart/themes/default/' );
+	define( 'VM_THEMEURL', SECUREURL.'components/com_virtuemart/assets/css/' );
 } else {
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
-	define( 'VM_THEMEURL', URL.'components/com_virtuemart/themes/default/' );
+	define( 'VM_THEMEURL', URL.'components/com_virtuemart/assets/css/' );
 }
 define( 'VM_THEMEPATH', $mosConfig_absolute_path.DS.'components'.DS.'com_virtuemart'.DS.'themes'.DS.'default'.DS );
 

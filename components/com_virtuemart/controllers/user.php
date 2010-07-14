@@ -57,8 +57,8 @@ class VirtueMartControllerUser extends JController
 		/* Set the layout */
 		$view->setLayout('edit');
 		
-		$ftask ='saveuser';
-		$view->assignRef('fTask', $ftask);
+//		$ftask ='saveuser';
+//		$view->assignRef('fTask', $ftask);
 		
 		/* Display it all */
 		$view->display();

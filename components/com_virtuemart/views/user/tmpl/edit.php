@@ -57,7 +57,7 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask?>');" /><?php echo JText::_('Save'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" /><?php echo $this->button_lbl ?></button>
 	&nbsp;
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
 </div>
@@ -111,7 +111,6 @@ function myValidator(f, t)
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="register_new" value="<?php echo $this->lists['register_new']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
