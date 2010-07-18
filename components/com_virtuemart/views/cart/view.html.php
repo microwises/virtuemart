@@ -119,53 +119,51 @@ class VirtueMartViewCart extends JView {
 		if(!$this->_user){
 			$this->prepareUserData();	
 		}
-		
-		if($this->lists['current_id']){
-			// Shipping address(es)
+
+		// Shipping address(es)
+		if($this->_user){
 			$_addressBT = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'BT');
+			
 			// Overwrite the address name for display purposes
 			$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
-			$_addressST = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'ST');
-			$_addressList = array_merge(
-				array($_addressBT[0])// More BT addresses can exist for shopowners :-(
-				, $_addressST
-			);
-			for ($_i = 0; $_i < count($_addressList); $_i++) {
-				
-				$_addressList[$_i]->address_type_name = '<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&task=editaddresscart'
-									.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-									.'&cid[]="'.$_addressList[$_i]->user_info_id
-									. '">'.$_addressList[$_i]->address_type_name.'</a>'.'<br />';
-    
-			}
-			$_selectedAddress = (
-				empty($cart['address_shipto_id'])
-					? $_addressList[0]->user_info_id // Defaults to BillTo
-					: $cart['address_shipto_id']
-				);
 			
-			$this->lists['shipTo'] = JHTML::_('select.radiolist', $_addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
-			$this->lists['billTo'] = $_addressList[0]->user_info_id;
+			$_addressST = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'ST');
+			
 		} else {
-			//This else is for anonymous case
-			$_address = array();
-			$_address[] = new stdClass();
-
 			$_addressBT[0]->address_type_name = '<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&task=editaddress'
-									.'&cid[]=0'			//I think this cid=0 says already that there is a dynID
-									.'&shipto=BT_dynID'
-								. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
-			$_addressBT[0]->user_info_id = 'BT_dynID';	//Do we need that?
-			$this->lists['shipTo'] = JHTML::_('select.radiolist', $_addressBT, 'shipto', null, 'user_info_id', 'address_type_name', 'BT_dynID');
-			$this->lists['billTo'] = 'BT_dynID';
-			$this->assignRef('lists', $this->lists);
+					.'?option=com_virtuemart'
+					.'&view=user'
+					.'&task=editaddresscart'
+					.'&addrtype=BT'
+				. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
+				$_addressST = array();
 		}
+
+		$addressList = array_merge(
+			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+			, $_addressST );
+		
+		for ($_i = 0; $_i < count($addressList); $_i++) {
+			$addressList[$_i]->address_type_name = '<a href="index.php'
+								.'?option=com_virtuemart'
+								.'&view=user'
+								.'&task=editaddresscart'
+								.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
+								.'&user_info_id='.$addressList[$_i]->user_info_id
+								. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+		}
+
+		$_selectedAddress = (
+			empty($cart['address_shipto_id'])
+				? $addressList[0]->user_info_id // Defaults to BillTo
+				: $cart['address_shipto_id']
+			);
+		dump($addressList,'my AddressList');
+		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+
+		$this->lists['billTo'] = $addressList[0]->user_info_id;
+		$this->assignRef('lists', $this->lists);
+
 	}
 	
 	private function prepareUserData(){
@@ -206,6 +204,39 @@ class VirtueMartViewCart extends JView {
 				
 		$prices = $model->getCartPrices($cart);
 		$this->assignRef('prices', $prices);
+		
+		//Add names of country/state
+		if(!empty($cart['BT'])){
+			if($cart['BT']['country_id']){
+				$countryModel = self::getModel('country');
+				$countryModel->setId($cart['BT']['country_id']);
+				$country = $countryModel->getCountry();
+				if($country) $cart['BT']['country_name'] = $country->country_name;
+			}
+			
+			if($cart['BT']['state_id']){
+				$stateModel = self::getModel('state');
+				$stateModel->setId($cart['BT']['state_id']);
+				$state = $stateModel->getState();
+				if($state) $cart['BT']['state_name'] = $state->state_name;	
+			}	
+		}
+		
+		if(!empty($cart['ST'])){
+			if($cart['ST']['country_id']){
+				$countryModel = self::getModel('country');
+				$countryModel->setId($cart['ST']['country_id']);
+				$country = $countryModel->getCountry();
+				if($country) $cart['ST']['country_name'] = $country->country_name;
+			}
+			
+			if($cart['ST']['state_id']){
+				$stateModel = self::getModel('state');
+				$stateModel->setId($cart['ST']['state_id']);
+				$state = $stateModel->getState();
+				if($state) $cart['ST']['state_name'] = $state->state_name;	
+			}
+		}
 	}
 	
 	private function prepareMailData(){

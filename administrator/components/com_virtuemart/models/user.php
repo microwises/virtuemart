@@ -460,6 +460,7 @@ class VirtueMartModelUser extends JModel {
 			$this->sendRegistrationEmail($user);
 		}
 		
+		//Save the VM user stuff
 		if(!$this->saveUserData($data,$new)){
 			$this->setError('Was not able to save the virtuemart user data');
 			JError::raiseWarning('', JText::_( 'used RaiseWarning: Was not able to save the virtuemart user data'));

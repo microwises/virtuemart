@@ -135,8 +135,7 @@ function myValidator(f, t)
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="<?php echo $this->fTask?>" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-<input type="hidden" name="dynaddr" value="1" />
-
+<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 </fieldset> 
 <?php // }  
 if ($this->userDetails->JUser->get('id') ) { ?>
@@ -158,5 +157,5 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 	</table>
 </fieldset>
 <?php  } ?>
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php  echo JHTML::_( 'form.token' ); ?>
 </form>

@@ -59,6 +59,8 @@ class VirtueMartControllerCart extends JController {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
 		
 		/* Set the layout */
 		$layoutName = JRequest::getVar('layout', 'cart');
@@ -66,9 +68,9 @@ class VirtueMartControllerCart extends JController {
 		
 		//set some default values to the cart
 		$cart = cart::getCart(false);
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($cart,'my Cart in the main Cart task');
-		}
+//		if (function_exists('dumpTrace')) { // J!Dump is installed
+//			dump($cart,'my Cart in the main Cart task');
+//		}
 		if(!isset($cart['inCheckOut'])){
 			$cart['inCheckOut']=false;
 		} 
@@ -316,9 +318,10 @@ class VirtueMartControllerCart extends JController {
 	 
 	public function checkout($confirmDone=false){
 	
+		dump(JRequest::get('post'),'my Post data in checkout');
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
-
+		
 		if($cart){
 			
 			$mainframe = JFactory::getApplication();
@@ -464,6 +467,10 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+			
+		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+
 		$store = $this->getModel( 'store', 'VirtuemartModel' );
 		$view->setModel( $store, true );
 
@@ -529,7 +536,7 @@ class VirtueMartControllerCart extends JController {
 	 private function validateUserData($cart,$anonym=false,$type='BT'){
 	 	
 		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
-		$neededFields = user_info::getTestUserFields($anonym);
+		$neededFields = user_info::getUserFields($type);  //$anonym has no function atm
 		$redirectMsg=0;
 		foreach($neededFields as $field){
 			

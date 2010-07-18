@@ -81,6 +81,22 @@ class VirtueMartControllerUser extends JController
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=user', $msg );
 	}
 	
+	function editAddressSt(){
+		
+		$view = $this->getView('user', 'html');
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setLayout('edit_address');
+		
+		$ftask ='saveUser';
+		$view->assignRef('fTask', $ftask);
+		/* Display it all */
+		$view->display();
+		
+	}
+	
 	/**
 	 * This is for use in the cart, it calls a standard template for editing user adresses. It sets the task following into the form
 	 * of the template to saveCartUser, the task saveCartUser just sets the right redirect in the js save(). This is done just to have the 
@@ -166,8 +182,8 @@ class VirtueMartControllerUser extends JController
 		// Load the user_info helper
 		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
 		
-		user_info::address2cartanonym($data, 'BT');
-		user_info::address2cartanonym($data, 'ST');
+		user_info::address2cartanonym($data, $data['address_type']);
+//		user_info::address2cartanonym($data, 'ST');
 
 	}
 	

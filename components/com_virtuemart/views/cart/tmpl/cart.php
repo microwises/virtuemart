@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	
 ?>
-<form action="index.php">
+<form action="index.php" method="post">
 
 <fieldset>
 	<legend>
@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 	</legend>
 
 	<?php  ?>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT&cid[]=<?php echo $this->lists['current_id']; ?>">
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
 		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
 	</a>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
@@ -55,17 +55,31 @@ defined('_JEXEC') or die('Restricted access');
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
-
-	<?php echo $this->lists['shipTo']; 
-/*	?><a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&layout=edit&rview=cart&shipto=0&cid[]=<?php echo $this->user_id; ?>">
-		<?php */ 
-	?>	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
-	<?php	echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
-	</a>
-	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
+	<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
+	</a><br />
+	<?php echo $this->lists['shipTo'];  ?>
 </fieldset>
 
-		<?php
+<?php
+		echo '<fieldset>';
+		echo 'Your Billto address: <br/>';
+		foreach($this->cart['BT'] as $name=>$value){			
+			if($name!='country_id' && $name!='state_id'){
+				echo $name.': '.$value.'<br/>';
+			}
+		}
+		echo '<br/><br/>';
+		
+		echo 'Your Shipto address: <br/>';
+		foreach($this->cart['ST'] as $name=>$value){		
+			if($name!='country_id' && $name!='state_id'){
+				echo $name.': '.$value.'<br/>';
+			}
+		}
+		
+		echo '</fieldset>';
+		
 		/** @todo handle coupon field */
 		/* Input Field for the Coupon Code */
 		/**
@@ -112,6 +126,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="cart"/>
+		<input type="hidden" name="layout" value="cart"/>
 		<input type="hidden" name="task" value="<?php echo $this->fTask;?>" />
 		</form>
 <?php // } ?>
