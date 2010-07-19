@@ -431,10 +431,22 @@ class VirtueMartControllerCart extends JController {
 		
 			//TODO Store the order and do inventory
 			
+			
 			$this->doEmail($cart);
 
-			//TODO Empty cart from things which cost something, now for developing only dataValidated
-			//BT and ST data should remain ! Paym_id and shipping_rate_id also
+			//We save the old stuff
+			$BT = $cart['BT'];
+			$ST = $cart['ST'];
+			$paym_id = $cart['paym_id'];
+			$shipping_rate_id = $cart['shipping_rate_id'];
+
+			//Empty the cart and fill it again.
+			cart::emptyCart();
+			$cart = cart::getCart();
+			$cart['BT'] = $BT;
+			$cart['ST'] = $ST;
+			$cart['paym_id'] = $paym_id;
+			$cart['shipping_rate_id'] =$shipping_rate_id;
 			$cart['dataValidated']=false;
 			cart::setCart($cart);
 			
@@ -535,8 +547,15 @@ class VirtueMartControllerCart extends JController {
 	 */
 	 private function validateUserData($cart,$anonym=false,$type='BT'){
 	 	
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
-		$neededFields = user_info::getUserFields($type);  //$anonym has no function atm
+//		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$_userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
+		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
+		$neededFields = $_userFieldsModel->getUserFields(
+									 $fieldtype  //TODO we need, agreed also
+									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
+				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor'));
+//		$neededFields = user_info::getUserFields($type);  //$anonym has no function atm
 		$redirectMsg=0;
 		foreach($neededFields as $field){
 			

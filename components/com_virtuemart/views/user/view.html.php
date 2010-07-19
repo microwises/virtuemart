@@ -85,7 +85,7 @@ class VirtuemartViewUser extends JView {
 
 //		if($layoutName=='edit_address'){
 //			$type = JRequest::getVar('addrtype', 'BT');
-//			$shipTo = JRequest::getVar('user_info_id', 0);
+//			$shipTo = JRequest::getVar('?_id', 0);
 //			dump($shipTo,'my shipto in user/view.html.php');
 //			if($type!='BT' && !$shipTo){
 //				$this->userInfoID = 0;		
@@ -179,16 +179,18 @@ class VirtuemartViewUser extends JView {
 			$this->_userDetailsList=0;
 		}
 		
+		$preFix='';
 		//Here we set the data to fill the fields
 		if($type=='BT'){
 			self::getUserData($type);
 			$user_info_id = JRequest::getVar('user_info_id', 0);
 			$userAddressData = $this->_userDetailsList;
 		} else {
-			$user_info_id = JRequest::getVar('user_info_id', 0);
-			$userAddressData = $this->_userDetails->userInfo[$user_info_id];
+			$preFix='shipto_';
+			$userInfoID = JRequest::getVar('user_info_id', 0);
+			if(!empty($userInfoID)) $userAddressData = $this->_userDetails->userInfo[$userInfoID];
+			$this->assignRef('userInfoID', $userInfoID);
 		}
-		
 
 		if (function_exists('dumpTrace')) { // J!Dump is installed
 			dump($this->_userDetailsList,'_userDetailsList');
@@ -198,8 +200,8 @@ class VirtuemartViewUser extends JView {
 		if(!empty($this->_cuid)){
 			$userFields = $this->_userFieldsModel->getUserFieldsByUser(
 							 $_userFields
-//							,$this->_userDetailsList
 							,$userAddressData
+//							,$preFix
 							);
 			if (function_exists('dumpTrace')) { // J!Dump is installed
 				dump($userFields,'my Userfields with getUserFieldsByUser for '.$user_info_id);
@@ -229,10 +231,11 @@ class VirtuemartViewUser extends JView {
 	 */
 	function getUserData($type='BT'){
 		
+		$userDetailsList = 0;
+		$userInfoID = 0;
 		if (($addressCount = count($this->_userDetails->userInfo)) == 0) {
 			//TODO I think here is maybe the right position to fill the fields with the cart values, if available
-			$userDetailsList = null;
-			$userInfoID = null;
+
 			
 		} else {
 			$userDetailsList = current($this->_userDetails->userInfo);
@@ -297,14 +300,13 @@ class VirtuemartViewUser extends JView {
 				.'&task=editAddressSt'
 				.'&addrtype=ST'
 				.'&cid[]='.$_addressList[$_i]->user_id
-				.'&user_info_ido='.$_addressList[$_i]->user_info_id
+				.'&user_info_id='.$_addressList[$_i]->user_info_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 					
 			}
 			$this->_lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
 		}
-	}
-	
+	}	
 	/**
 	 * For the edit_shipto layout
 	 * 
@@ -312,18 +314,24 @@ class VirtuemartViewUser extends JView {
 	function lshipto(){
 		
 		// The ShipTo address if selected
-		$_shipto_id = JRequest::getVar('shipto', -1);
+		$_shipto_id = JRequest::getVar('user_info_id', 0);
+//		$_shipto_id = JRequest::getVar('shipto', -1);
+
+		$_shiptoFields = $this->_userFieldsModel->getUserFields(
+			 'shipping'
+			,array() // Default toggles
+		);
+		
+		$_userDetailsList = null;
+		
 		if(!empty($_shipto_id)){
 			// Contains 0 for new, otherwise a user_info_id
 			$_shipto = $this->_model->getUserAddress($this->_uid, $_shipto_id, 'ST');
 			$this->_openTab = 3;
-			$_shiptoFields = $this->_userFieldsModel->getUserFields(
-				 'shipping'
-				,array() // Default toggles
-			);
-			if ($_shipto_id === 0) {
-				$_userDetailsList = null;
-			} else {
+
+//			if ($_shipto_id === 0) {
+//				$_userDetailsList = null;
+//			} else {
 				// Find the correct record
 				$_userDetailsList = current($this->_userDetails->userInfo);
 				for ($_i = 0; $_i < count($this->_userDetails->userInfo); $_i++) {
@@ -333,12 +341,13 @@ class VirtuemartViewUser extends JView {
 					}
 					$_userDetailsList = next($this->_userDetails->userInfo);
 				}
-			}
+//			}
 		}
+		
 		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
 			 $_shiptoFields
 			,$_userDetailsList
-			,'shipto'
+//			,'shipto_'
 			);
 		
 		$this->assignRef('shipToFields', $shipToFields);

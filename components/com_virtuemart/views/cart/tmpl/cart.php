@@ -64,18 +64,14 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 		echo '<fieldset>';
 		echo 'Your Billto address: <br/>';
-		foreach($this->cart['BT'] as $name=>$value){			
-			if($name!='country_id' && $name!='state_id'){
-				echo $name.': '.$value.'<br/>';
-			}
+		foreach($this->BTaddress as $item){				
+			echo $item['title'].': '.$item['value'].'<br/>';
 		}
 		echo '<br/><br/>';
 		
 		echo 'Your Shipto address: <br/>';
-		foreach($this->cart['ST'] as $name=>$value){		
-			if($name!='country_id' && $name!='state_id'){
-				echo $name.': '.$value.'<br/>';
-			}
+		foreach($this->STaddress as $item){		
+			echo $item['title'].': '.$item['value'].'<br/>';
 		}
 		
 		echo '</fieldset>';

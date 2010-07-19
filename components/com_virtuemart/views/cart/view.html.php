@@ -79,6 +79,8 @@ class VirtueMartViewCart extends JView {
 			
 			$this->prepareAddressRadioSelection();
 			
+			$this->prepareAddressDataInCart();
+			
 			$pathway->addItem(JText::_('VM_CART_TITLE'));
 			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
 			
@@ -143,25 +145,34 @@ class VirtueMartViewCart extends JView {
 			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
 			, $_addressST );
 		
-		for ($_i = 0; $_i < count($addressList); $_i++) {
-			$addressList[$_i]->address_type_name = '<a href="index.php'
-								.'?option=com_virtuemart'
-								.'&view=user'
-								.'&task=editaddresscart'
-								.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-								.'&user_info_id='.$addressList[$_i]->user_info_id
-								. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+		if($this->_user){
+			for ($_i = 0; $_i < count($addressList); $_i++) {
+				$addressList[$_i]->address_type_name = '<a href="index.php'
+									.'?option=com_virtuemart'
+									.'&view=user'
+									.'&task=editaddresscart'
+									.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
+									.'&user_info_id='.empty($addressList[$_i]->user_info_id)? 0 : $addressList[$_i]->user_info_id
+									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+			}
+		
+			$_selectedAddress = (
+				empty($cart['address_shipto_id'])
+					? $addressList[0]->user_info_id // Defaults to BillTo
+					: $cart['address_shipto_id']
+				);
+				
+			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+		} else {
+			$_selectedAddress = 0;
+			$this->lists['shipTo'] = '';
 		}
+//		dump($addressList,'my AddressList');
+//		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+//		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
 
-		$_selectedAddress = (
-			empty($cart['address_shipto_id'])
-				? $addressList[0]->user_info_id // Defaults to BillTo
-				: $cart['address_shipto_id']
-			);
-		dump($addressList,'my AddressList');
-		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
-
-		$this->lists['billTo'] = $addressList[0]->user_info_id;
+//		$this->lists['billTo'] = $addressList[0]->user_info_id;
+		$this->lists['billTo'] = empty($addressList[0]->user_info_id)? 0 : $addressList[0]->user_info_id;
 		$this->assignRef('lists', $this->lists);
 
 	}
@@ -301,6 +312,57 @@ class VirtueMartViewCart extends JView {
 		
 
 	}
+	
+	private function prepareAddressDataInCart(){
+
+
+		$cart = cart::getCart(false);
+		
+		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+		
+		//Here we define the fields to skip
+		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+						, 'agreed', 'address_type', 'bank');
+
+		$BTaddress= array();
+		if(!empty($cart['BT'])){
+			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			//Here we get the fields
+			$_userFieldsBT = $userFieldsModel->getUserFields(
+				 'account'
+				, array() // Default toggles
+				,  $skips// Skips
+			);
+					
+			$BTaddress = user_info::getAddress(
+				 $userFieldsModel
+				,$_userFieldsBT
+				,'BT'
+			);
+		}
+		dump($BTaddress,'My BT');
+		$this->assignRef('BTaddress',$BTaddress['fields']);
+		
+		$STaddress= array();
+		if(!empty($cart['ST'])){
+			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			$_userFieldsST = $userFieldsModel->getUserFields(
+				'shipping'
+				, array() // Default toggles
+				, $skips
+			);
+			
+			$STaddress = user_info::getAddress(
+				 $userFieldsModel
+				,$_userFieldsST
+				,'ST'
+			);
+			dump($STaddress,'My ST');
+		}
+		
+		$this->assignRef('STaddress',$STaddress['fields']);
+	}
+	
 }
 
 //no closing tag

@@ -29,7 +29,7 @@ class user_info
 	 *
 	 * @param array $_data (Posted) user data
 	 * @param sting $_table Table name to write to, null (default) not to write to the database
-	 * @param boolean $_cart True to write to the session (cart). Default: false
+	 * @param boolean $_cart Attention, this was deleted, the address to cart is now done in the controller (True to write to the session (cart))
 	 * @return boolean True if the save was successful, false otherwise.
 	 */
 	function storeAddress($_data, $_table = null, $new = false)
@@ -37,14 +37,16 @@ class user_info
 		
 		$_data = self::_prepareUserFields($_data, 'BT',$new);
 		if ($_table !== null) {
-			$_userinfo   =& $this->getTable($_table);
+			$_userinfo   = $this->getTable($_table);
 			if (!$_userinfo->bind($_data)) {
 				$this->setError($_userinfo->getError());
+				dump($_userinfo,'storeAddress bind ERROR $_userinfo');
 				return false;
 			}
 
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
+				dump($_userinfo,'storeAddress Store ERROR $_userinfo');
 				return false;
 			}	
 		}
@@ -54,8 +56,7 @@ class user_info
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		$_shipto = array();
-//		$_pattern = '/^shipto_/';
-		$_pattern = '/^shipto/';
+		$_pattern = '/^shipto_/';
 		foreach ($_data as $_k => $_v) {
 			if (preg_match($_pattern, $_k)) {
 				$_new = preg_replace($_pattern, '', $_k);
@@ -77,6 +78,7 @@ class user_info
 				}
 				if (!$_userinfo->store()) { // Write data to the DB
 					$this->setError($_userinfo->getError());
+					dump($_userinfo,'storeAddress $_userinfo');
 					return false;
 				}
 			}
@@ -98,6 +100,7 @@ class user_info
 		foreach ($_prepareUserFields as $_fld) {
 			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name],$data);
 		}
+		
 		return $_data;
 	}
 
@@ -117,7 +120,7 @@ class user_info
 				$_prepareUserFields = $_userFieldsModel->getUserFields(
 										 'account'
 										, array() // Default toggles
-										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'agreed') // Skips
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'agreed','user_is_vendor') // Skips
 				);
 //			} else {
 //				$_prepareUserFields = $_userFieldsModel->getUserFields(
@@ -127,51 +130,32 @@ class user_info
 //				);
 //			}
 		}
+		dump($_prepareUserFields, 'getUserFields');
 		return $_prepareUserFields;
 	}
 
-//	function getTestUserFields()
-//	{
-//		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
-//		// VirtueMartModelUserfields::getUserFields() won't work
-//		$_userFieldsModel = new VirtueMartModelUserfields();
-////		if ($_dynamic) {
-//			// The user is not logged in (anonymous), so we need tome extra fields
-//			$_prepareUserFields = $_userFieldsModel->getUserFields(
-//									 'account'  //TODO we need, agreed also
-//									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
-//				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor') // Skips
-//									
-//			);
-////		} else {
-////			$_prepareUserFields = $_userFieldsModel->getUserFields(
-////									 'shipping'
-////									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
-////									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2') // Skips
-////
-////			);
-////		}
-//
-//		return $_prepareUserFields;
-//	}
-	
+
 	function saveAddressInCart($_data, $_fields, $_type) {
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
 		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = cart::getCart();
 		$_address = array();
+		
 		if(is_array($_data)){
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
 				$_address[$name] = $_data[$name];
+				dump($_data,'saveAddressInCart is array '.$name);
 			}
+			
 		} else {
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
-				$_address[$_fld->name] = $_data->{$_fld->name};
-			}	
+				$_address[$name] = $_data->{$name};
+			}
+			dump($_data,'saveAddressInCart is object');
 		}
-
+		dump($_data,'saveAddressInCart');
 		$_cart[$_type] = $_address;
 		cart::setCart($_cart);
 	}
@@ -180,7 +164,6 @@ class user_info
 	{
 //		$_userFields = self::getTestUserFields($_type);
 		$_userFields = self::getUserFields($_type);
-		dump($_userFields,'address2cartanonym $_userFields');
 		self::saveAddressInCart($data, $_userFields, $_type);
 	}
 
@@ -199,7 +182,8 @@ class user_info
 			}
 		}
 
-		$_data = $_model->getUserFieldsByUser($_fields, $_address, (($_type == 'ST')?'shipto':''));
+//		$_data = $_model->getUserFieldsByUser($_fields, $_address, (($_type == 'ST')?'shipto_':''));
+		$_data = $_model->getUserFieldsByUser($_fields, $_address);
 		return $_data;
 	}
 	

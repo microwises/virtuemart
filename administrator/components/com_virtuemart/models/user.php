@@ -389,9 +389,6 @@ class VirtueMartModelUser extends JModel {
 		if (!$user->bind($data)) {
 			//develop
 			$this->setError('user bind '.$user->getError());
-//			if (function_exists('dumpTrace')) { // J!Dump is installed
-//				dump($user,'binding data error');
-//			}
 			return false;
 		}
 
@@ -439,8 +436,6 @@ class VirtueMartModelUser extends JModel {
 				return false;
 			}
 		}
-
-//		$user->set('email',$data['email']);
 		
 		// Save the JUser object
 		if (!$user->save()) {
@@ -508,10 +503,44 @@ class VirtueMartModelUser extends JModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
 
+		dump($_data,'saveUserData ');
+		if(!empty($_data['shopper_group_id'])){
+			$table = $this->getTable('Auth_user_group');
+			
+			// Bind the form fields to the calculation table
+			$shoppergroupData = array('user_id'=>$_data['user_id'],'group_id'=>$_data['shopper_group_id']);
+			if (!$table->bind($shoppergroupData)) {		    
+				$this->setError($table->getError());
+				dump($table,'$table bind Error ');
+				return false;
+			}
+			
+			// Make sure the record is valid
+			if (!$table->check()) {
+				$this->setError($table->getError());
+				dump($table,'$table check error ');
+				return false;	
+			}
+			
+			dump($table,'$table Auth_user_group before store');
+			// Save the record to the database
+			if (!$table->store()) {
+				$this->setError($table->getError());
+				dump($table,'$table store error');
+				return false;
+			}
+			dump($table,'$table Auth_user_group');
+//			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
+//			$this->_db->query();
+//			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
+		}
+		
+		
 		if (!user_info::storeAddress($_data, 'user_info', $new)) {
 			$this->setError('Was not able to save the virtuemart user data');
 			return false;
 		}
+		
 		
 		if($_data['user_is_vendor']){
 			
@@ -620,6 +649,7 @@ class VirtueMartModelUser extends JModel {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
+		dump($this->_data,"getUserList");
 		return $this->_data;
 	}
 
@@ -728,6 +758,10 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery ()
 	{
+		//TODO this query is wrong. There are a lot of issues with it
+		//you geht multiple records for users with an ST address
+		//the shoppergroup name is not read correctly.
+		
 		// User named fields here since user can have multiple user_info records
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
