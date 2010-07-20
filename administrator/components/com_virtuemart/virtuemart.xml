@@ -28,7 +28,6 @@
 	<files folder="components/com_virtuemart">
 		<filename>controller.php</filename>
 		<filename>fetchscript.php</filename>
-		<filename>jmart.php</filename>
 		<filename>router.php</filename>
 		<filename>show_image_in_imgtag.php</filename>
 		<filename>virtuemart.php</filename>
@@ -61,8 +60,6 @@
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.virtuemart.php</filename>
-			<filename>admin.vm.old.php</filename>
-			<filename>compat.joomla1.5.php</filename>
 			<filename>controller.php</filename>
 			<filename>COPYRIGHT.php</filename>
 			<filename>global.php</filename>
