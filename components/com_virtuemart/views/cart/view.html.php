@@ -110,6 +110,7 @@ class VirtueMartViewCart extends JView {
 		
 		$this->assignRef('continue_link', $continue_link);
 		
+		$this->assignRef('lists', $this->lists);
 		
 		parent::display($tpl);
 	}
@@ -152,13 +153,13 @@ class VirtueMartViewCart extends JView {
 									.'&view=user'
 									.'&task=editaddresscart'
 									.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-									.'&user_info_id='.empty($addressList[$_i]->user_info_id)? 0 : $addressList[$_i]->user_info_id
+									.'&user_info_id='.(empty($addressList[$_i]->user_info_id)? 0 : $addressList[$_i]->user_info_id)
 									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 		
 			$_selectedAddress = (
 				empty($cart['address_shipto_id'])
-					? $addressList[0]->user_info_id // Defaults to BillTo
+					? $addressList[0]->user_info_id // Defaults to 1st BillTo
 					: $cart['address_shipto_id']
 				);
 				
@@ -173,7 +174,6 @@ class VirtueMartViewCart extends JView {
 
 //		$this->lists['billTo'] = $addressList[0]->user_info_id;
 		$this->lists['billTo'] = empty($addressList[0]->user_info_id)? 0 : $addressList[0]->user_info_id;
-		$this->assignRef('lists', $this->lists);
 
 	}
 	
@@ -192,7 +192,6 @@ class VirtueMartViewCart extends JView {
 			//This are other contact details, like used in CB or so. 
 //			$_contactDetails = $this->_user->getContactDetails();
 			
-			$this->assignRef('lists', $this->lists);
 			$this->assignRef('userDetails', $this->_userDetails);
 		}
 		
