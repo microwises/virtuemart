@@ -758,20 +758,18 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery ()
 	{
-		//TODO this query is wrong. There are a lot of issues with it
-		//you geht multiple records for users with an ST address
-		//the shoppergroup name is not read correctly.
-		
-		// User named fields here since user can have multiple user_info records
+
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
-			. ', vu.user_is_vendor AS is_vendor'
+			. ', vd.user_is_vendor AS is_vendor'
 			. ', vu.perms AS perms'
 			. ', ju.usertype AS usertype'
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
 			. 'LEFT JOIN #__vm_user_info AS vu ON ju.id = vu.user_id '
+			. 'LEFT JOIN #__vm_user_info AS vd ON ju.id = vd.user_id '
+			. " AND vd.address_type = 'BT' "
 			. 'LEFT JOIN #__vm_shopper_vendor_xref AS vx ON ju.id = vx.user_id '
 			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.vendor_id = sg.vendor_id '
 			. 'AND vx.shopper_group_id = sg.shopper_group_id ';
