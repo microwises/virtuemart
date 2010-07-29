@@ -490,12 +490,18 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 		$this->_db->setQuery($query);
 		$result = $this->_db->query();
-//		echo 'humpf: '.print_r($this->_db->query());die;
-		if( $result->num_rows > 0 ){
-			return true;
+
+		if(isset($result->num_rows)){
+		 	if($result->num_rows > 0 ){
+				return true;
+		 	}else{
+				return false;	
+			}
 		}else{
 			return false;	
 		}
+		
+
 	}
 	
 }

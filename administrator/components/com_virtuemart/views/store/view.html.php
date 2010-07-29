@@ -36,18 +36,19 @@ class VirtueMartViewStore extends JView {
 
 	$model = $this->getModel();
 	$this->loadHelper('image');
-        $this->loadHelper('adminMenu');
+    $this->loadHelper('adminMenu');
 	// loading the ShopFunctions Helper by jseros
 	$this->loadHelper('shopFunctions');
 
 	// If there is only one store go directly to the edit layout.
-	if ($model->getTotalNbrOfStores() == 1) {
-	    $storeId = $model->getIdOfOnlyStore();
-	    $model->setId($storeId);
+//	if ($model->getTotalNbrOfStores() == 1) {
+//	    $storeId = $model->getIdOfOnlyStore();
+//	    $model->setId($storeId);
 	    $this->setLayout('edit');
-	}
+//	}
 
     $store = $model->getStore();
+    $this->assignRef('store', $store);
 	$isNew = ($store->vendor_id < 1);
 
 	if ($this->getLayout() == 'edit') {
@@ -67,7 +68,7 @@ class VirtueMartViewStore extends JView {
 	    $this->loadHelper('currencyDisplay');
 	    CurrencyDisplay::setCurrencyDisplayToStyleStr($store->vendor_currency_display_style);
 	    $currencyModel = $this->getModel('currency');
-	    $this->assignRef('store', $store);
+	    
 	    $currencies = $currencyModel->getCurrencies();
 	    $this->assignRef('currencies', $currencies);
 
@@ -75,11 +76,12 @@ class VirtueMartViewStore extends JView {
 	    $editor = JFactory::getEditor();
 	    $this->assignRef('editor', $editor);
 	    
-	    $countriesList = ShopFunctions::renderCountryList($store->userInfo->country);
+	    $countriesList = ShopFunctions::renderCountryList($store->userInfo->country_id);
 		$this->assignRef('countriesList', $countriesList);
 		
-		$statesList = ShopFunctions::renderStateList($store->userInfo->state, $store->userInfo->country, 'country_id');
+		$statesList = ShopFunctions::renderStateList($store->userInfo->state_id, $store->userInfo->country_id, 'country_id');
 		$this->assignRef('statesList', $statesList);
+		dump($store->userInfo,'my store info');
 	}
 	else {
 

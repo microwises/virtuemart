@@ -49,20 +49,42 @@ class VirtueMartModelStore extends JModel {
      * @author RickG
      */
     public function __construct() {
-	parent::__construct();
+		parent::__construct();
+	
+		// Get the pagination request variables
+		$mainframe = JFactory::getApplication() ;
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');
+	
+		// Set the state pagination variables
+		$this->setState('limit', $limit);
+		$this->setState('limitstart', $limitstart);
 
-	// Get the pagination request variables
-	$mainframe = JFactory::getApplication() ;
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');
+//		// Get the store id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//		$this->setId((int)$idArray[0]);
 
-	// Set the state pagination variables
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
-
-	// Get the store id or array of ids.
-	$idArray = JRequest::getVar('cid',  0, '', 'array');
-	$this->setId((int)$idArray[0]);
+		// Get the (array of) store id ID(s)
+		$idArray = JRequest::getVar('cid',  0, '', 'array');
+		if(!empty($idArray[0])){
+			if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+				$this->setId((int)$idArray[0]);
+			}
+		}
+		if(empty($this->_id)){
+			$user = JFactory::getUser();
+			
+			if($user){
+				$query = "SELECT vendor_id FROM #__vm_auth_user_vendor ";
+	    		$query .= "WHERE user_id = '". (int)$user->id ."'";
+	    		$this->_db->setQuery($query);
+	    		$vendor_id = $this->_db->loadObject();
+				$this->setId($vendor_id->vendor_id);
+				dump($vendor_id,'I set vendor');
+			} else {
+				$this->setId(0);	
+			}
+		}
     }
 
 
@@ -119,23 +141,23 @@ class VirtueMartModelStore extends JModel {
     }
 
 
-    /**
-     * Returns id of the first store in the database if there is only one store
-     *
-     * @author RickG
-     * @return int 0 if there are more than 1 store, vendor_id if only one store exists
-     */
-    public function getIdOfOnlyStore() {
-	if ($this->_total == 1) {
-	    $db = JFactory::getDBO();
-	    $query = 'SELECT `vendor_id` FROM `#__vm_vendor`';
-	    $db->setQuery($query);
-	    return $db->loadResult();
-	}
-	else {
-	    return 0;
-	}
-    }
+//    /**
+//     * Returns id of the first store in the database if there is only one store
+//     *
+//     * @author RickG
+//     * @return int 0 if there are more than 1 store, vendor_id if only one store exists
+//     */
+//    public function getIdOfOnlyStore() {
+//	if ($this->_total == 1) {
+//	    $db = JFactory::getDBO();
+//	    $query = 'SELECT `vendor_id` FROM `#__vm_vendor`';
+//	    $db->setQuery($query);
+//	    return $db->loadResult();
+//	}
+//	else {
+//	    return 0;
+//	}
+//    }
 
 
     /**
@@ -147,7 +169,7 @@ class VirtueMartModelStore extends JModel {
      * @author RickG
      */
     public function getStore() {
-	if (empty($this->_data)) {
+//	if (empty($this->_data)) {
 	    // Get vendor table data
 	    $vendorTable = $this->getTable('vendor');
 	    $vendorTable->load((int)$this->_id);
@@ -176,8 +198,8 @@ class VirtueMartModelStore extends JModel {
 //	   	$user_table = $this->getTable('user');
 //	    $user_table->load((int)$userId);
 	    $this->_data->jUser = $vendorJUser;
-	    
-	}
+	    dump($this->_data,'My store info');
+//	}
 
 	if (!$this->_data) {
 	    $this->_data = new stdClass();

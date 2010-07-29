@@ -323,7 +323,7 @@ class VirtueMartViewCart extends JView {
 		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'agreed', 'address_type', 'bank');
 
-		$BTaddress= array();
+		$BTaddress['fields']= array();
 		if(!empty($cart['BT'])){
 			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
@@ -342,7 +342,7 @@ class VirtueMartViewCart extends JView {
 		dump($BTaddress,'My BT');
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 		
-		$STaddress= array();
+		$STaddress['fields']= array();
 		if(!empty($cart['ST'])){
 			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			$_userFieldsST = $userFieldsModel->getUserFields(
