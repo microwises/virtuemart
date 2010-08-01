@@ -88,21 +88,23 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of flypage objects
      */
     function getFlypageList() {
-//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
-//	$result = '';
-//
-//	if ($handle = opendir($dir)) {
-//	    while (false !== ($file = readdir($handle))) {
-//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-//		    if (filetype($dir.DS.$file) != 'dir') {
-//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-//		    }
-//		}
-//	    }
-//	}
-
-//	return $result;
+    	
+//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.'productdetails'.DS.'tmpl';	//Todo make tmpl configurable (override)
+		$result = '';
+	
+		if ($handle = opendir($dir)) {
+		    while (false !== ($file = readdir($handle))) {
+				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+				    if (filetype($dir.DS.$file) != 'dir') {
+					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+				    }
+				}
+		    }
+		}
+	
+		return $result;
     }
 
 
@@ -113,21 +115,23 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of image objects
      */
     function getNoImageList() {
-//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//	$dir .= DS.VmConfig::get('theme').DS.'images';
-//	$result = '';
-//
-//	if ($handle = opendir($dir)) {
-//	    while (false !== ($file = readdir($handle))) {
-//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-//		    if (filetype($dir.DS.$file) != 'dir') {
-//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-//		    }
-//		}
-//	    }
-//	}
+    	//Todo Decide the right path here
+//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//		$dir .= DS.VmConfig::get('theme').DS.'images';
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS.'ps_image';
+		$result = '';
+	
+		if ($handle = opendir($dir)) {
+		    while (false !== ($file = readdir($handle))) {
+				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+				    if (filetype($dir.DS.$file) != 'dir') {
+					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+				    }
+				}
+		    }
+		}
 
-//	return $result;
+	return $result;
     }
 
 

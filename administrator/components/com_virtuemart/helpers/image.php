@@ -105,7 +105,7 @@ class ImageHelper {
 			$border = 'border="0"';
 		}
 		$newImageHeight = $newImageWidth = '';
-		
+
 		if ($image != "") {
 			// Remote image URL
 			if( substr( $image, 0, 4) == "http" ) {

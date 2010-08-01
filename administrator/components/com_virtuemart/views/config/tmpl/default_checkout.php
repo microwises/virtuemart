@@ -17,8 +17,10 @@
 */
  
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');  
-?>
+defined('_JEXEC') or die('Restricted access');
+
+echo 'At the moment without use';
+ /* ?>
 <br />
 <fieldset class="adminform">
     <legend><?php echo JText::_('VM_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
@@ -82,4 +84,4 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	</tr>
     </table>
-</fieldset>
+</fieldset>  <?php */

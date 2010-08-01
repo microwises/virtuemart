@@ -42,14 +42,14 @@ class VmConfig
 	{
 		$value = '';
 		if ($key) {
-//			VmConfig::loadConfig();
+			VmConfig::loadConfig();
 			$session = JFactory::getSession();
 			$config = $session->get('vmconfig', '');
 			
-			if (!$config) { 
-				VmConfig::loadConfig();
-				$config = $session->get('vmconfig', '');
-			}			
+//			if (!$config) { 
+//				VmConfig::loadConfig();
+//				$config = $session->get('vmconfig', '');
+//			}			
 				
 			if ($config) {
 				$params = new JParameter($config);
