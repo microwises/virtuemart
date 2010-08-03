@@ -49,7 +49,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		</tr>
 		<tr> 
 		  	<td width="50%">
-		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=admin.user_list');?>">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=user');?>">
 					<?php echo JText::_('VM_STATISTIC_CUSTOMERS') ?>
 				</a>
 			</td>			
@@ -86,7 +86,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		$sum = 0;
 		for ($i=0, $n=count( $this->ordersByStatus ); $i < $n; $i++) {
 			$row = $this->ordersByStatus[$i]; 
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show='.$row->order_status_code);
+			$link = JROUTE::_('index.php?option=com_virtuemart&view=orders&show='.$row->order_status_code);
 			?>
 			<tr>
 		  		<td width="50%">
@@ -127,7 +127,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		<?php 
 		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
 			$row = $this->recentCustomers[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=admin.user_form&user_id='.$row->user_id);
+			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&user_id='.$row->user_id);
 			?>
 			<tr>
 		  		<td colspan="2">
