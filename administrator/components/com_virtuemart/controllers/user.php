@@ -168,9 +168,10 @@ class VirtuemartControllerUser extends JController {
 		JArrayHelper::toInteger($id);
 
 		if (count( $id ) < 1) {
-			JError::raiseError(500, JText::_( 'Select a user to modify' ) );
+			JError::raiseWarning(500, JText::_( 'Select a user to modify' ) );
 		}
-
+		dump($field,'field user toggle');
+		dump($value,'value user toggle');
 		$model = $this->getModel('user');
 		if(!$model->toggle($field, $id, $value)) {
 			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";

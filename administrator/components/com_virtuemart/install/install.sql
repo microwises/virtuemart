@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
   `vendor_id` int(11) default NULL,
   KEY `idx_auth_user_vendor_user_id` (`user_id`),
   KEY `idx_auth_user_vendor_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to a vendor';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to the vendortable; holds the vendorinformation of a user who is vendor';
 
 -- --------------------------------------------------------
 

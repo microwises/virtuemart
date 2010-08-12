@@ -161,6 +161,17 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    ?>
 			</td>
 		    </tr>
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="categories_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('categories_per_row') ?>" />
+			</td>
+		    </tr>
+		    <tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">

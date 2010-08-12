@@ -34,20 +34,24 @@ function com_install(){
 		$newInstall = true;
 	}
 	
-	if ($newInstall) {		
+	if ($newInstall) {
 		// Install Essential Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql'; 
 		$model->execSQLFile($filename);
 		// Install Required Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql'; 
-		$model->execSQLFile($filename);			
+		$model->execSQLFile($filename);
 		
-		$model->integrateJoomlaUsers();
-		$id = $model->determineStoreOwner();
-		$model->setStoreOwner($id);
+	}
+	
+	$model->integrateJoomlaUsers();
+	$id = $model->determineStoreOwner();
+	$model->setStoreOwner($id);
+	
+	if ($newInstall) {
 		$model->setUserToShopperGroup($id);	
 	}
-
+	
 	$installOk = true;
 
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.virtuemart.html.php');

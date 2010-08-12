@@ -52,6 +52,9 @@ class calculationHelper{
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
 		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
+		if(!$this -> _currencyDisplay){
+			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+		}
 		$this -> _debug           = false;
 	}
 	
@@ -181,9 +184,14 @@ class calculationHelper{
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 		
 		//As last step the prices gets adjusted to the user choosen currency
-		foreach($prices as $price){
-			$price = $this -> _currencyDisplay->getFullValue($price);
+		if($this -> _currencyDisplay){
+			foreach($prices as $price){
+				$price = $this -> _currencyDisplay->getFullValue($price);
+			}
+		}else {
+			
 		}
+
 	
 		$prices['variantModification']=$variant;
 	
@@ -897,10 +905,13 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	{
 		$_mainVendor = 1;
 		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 		if(!empty($_vendorFields)){
-			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);	
 			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
+		}else{
+			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+			$_currencyDisplay = new CurrencyDisplay();
 		}
 		return $_currencyDisplay;
 	}
