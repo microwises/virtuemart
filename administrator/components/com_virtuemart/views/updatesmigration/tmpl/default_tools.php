@@ -70,6 +70,15 @@ defined('_JEXEC') or die('Restricted access');
 	    Remove<br />Virtuemart Tables
 	</td>
     </tr>
+    <td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall'); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('This deletes all tables of Virtuemart and makes a fresh install (no files). Are you sure?'); ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
+	    </span>
+	    <br />
+	    Reset all tables <br /> and install sampledata
+	</td>
+    </tr>
 </table>	    
 
 <script type="text/javascript">

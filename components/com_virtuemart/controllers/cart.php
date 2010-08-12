@@ -6,6 +6,7 @@
 * @package	VirtueMart
 * @subpackage Cart
 * @author RolandD
+* @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -39,10 +40,10 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-		// Force the default task kto cart() in order to make redirects work
-//		$this->registerTask('__default', 'cart');
+
 	}
 
+	
 	/**
 	* Show the main page for the cart
 	*
@@ -68,9 +69,6 @@ class VirtueMartControllerCart extends JController {
 
 		//set some default values to the cart
 		$cart = cart::getCart(false);
-//		if (function_exists('dumpTrace')) { // J!Dump is installed
-//			dump($cart,'my Cart in the main Cart task');
-//		}
 		if(!isset($cart['inCheckOut'])){
 			$cart['inCheckOut']=false;
 		}

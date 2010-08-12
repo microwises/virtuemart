@@ -92,7 +92,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	else {
 	    $user = JFactory::getUser();
 	}
-
+	dump ($user->id,'Storeowner new user ID');
 	return $user->id;
     }
 
@@ -135,18 +135,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
 	    }
 	    if ($db->query() == false ) {
-
+			JError::raiseNotice(1, 'Update __vm_auth_user_vendor failed. user_id '.$userId);
 	    }
 	}
 
-	$command = 'UPDATE';
-	if ( !isset($oldUserId)) {
-		$command = 'INSERT';
-	}
-	$db->setQuery( $command.' `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
+	$db->setQuery('UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
 	$db->query();
 	if (!$db->query()) {
-	    JError::raiseNotice(1, 'setStoreOwner failed '.$command.'. User with id = ' . $userId . ' not found in table');
+	    JError::raiseNotice(1, 'setStoreOwner failed. User with id = ' . $userId . ' not found in table');
 	    return 0;
 	}
 	else {
@@ -190,11 +186,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
-	
-	$vmLogIdentifier = 'VirtueMart';
 
+	$db = JFactory::getDBO();
+	$db->setQuery('SELECT `user_info_id` FROM `#__vm_user_info` WHERE `user_id` ="'.$userId.'"');
+	$db->query();
+	if (!$db->query()) {
+	    JError::raiseNotice(1, 'installSampleData failed. User with id = ' . $userId . ' not found in table');
+	    return 0;
+	}
+	
 	$fields = array();
 
+	$fields['user_info_id'] = $db->loadResult();
 	$fields['user_id'] =  $userId;
 	$fields['address_type'] =  "BT";
 	// Don't change this company name; it's used in install_sample_data.sql
@@ -241,6 +244,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	} else {
 		$msg = JText::_('Sample data installed!!');	
 	}
+
 	return $msg;
 	
     }
@@ -314,20 +318,30 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     function restoreSystemDefaults() {
 
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
-	$this->execSQLFile($filename);
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_required_data.sql';
-	$this->execSQLFile($filename);
- 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
-	$this->execSQLFile($filename);
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
-	$this->execSQLFile($filename);
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
-	$this->execSQLFile($filename);
-	$this->setStoreOwner();
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
+		$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_required_data.sql';
+		$this->execSQLFile($filename);
+	 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
+		$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
+		$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
+		$this->execSQLFile($filename);
+		
     }
 
+    function restoreSystemCompletly() {
 
+		$this -> removeAllVMTables();
+	 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
+		$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
+		$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
+		$this->execSQLFile($filename);
+    }
+    
     /**
      * Parse a sql file executing each sql statement found.
      *

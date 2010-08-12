@@ -115,8 +115,8 @@ class VirtuemartControllerUpdatesMigration extends JController {
     function restoreSystemDefaults() {
 	$model = $this->getModel('updatesMigration');
 	$model->restoreSystemDefaults();
-
-	$msg = JText::_('System defaults restored!');
+	$msg = $model->setStoreOwner();
+	$msg .= ' '.JText::_('System defaults restored!');
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 
@@ -151,16 +151,32 @@ class VirtuemartControllerUpdatesMigration extends JController {
     function deleteAll() {
 	$this -> installer -> populateVmDatabase("delete_essential.sql");
 	$this -> installer -> populateVmDatabase("delete_data.sql");
-	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
+//	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
     }
 
 
     function deleteRestorable() {
 	$this -> installer -> populateVmDatabase("delete_restoreable.sql");
-	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
+//	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
     }
 
+	function refreshCompleteInstall(){
+		
+		$model = $this->getModel('updatesMigration');
 
+		$model -> restoreSystemCompletly();
+				
+		$model->integrateJoomlaUsers();
+		$id = $model->determineStoreOwner();
+		$model->setStoreOwner($id);
+		$model->setUserToShopperGroup($id);	
+		
+		$msg = $model->installSampleData($id);
+		
+		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
+	}
 
 
 }

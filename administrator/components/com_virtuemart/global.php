@@ -69,8 +69,7 @@ require_once( $classPath.'dispatcher.class.php' );
    enabled. */
 require_once($classPath.'DebugUtil.php');
 
-/* @MWM1: Initialize Logging */
-$vmLogIdentifier = 'VirtueMart';
+
 require_once($classPath.'Log/LogInit.php');
 //$vm_mainframe = new vmMainFrame();
 

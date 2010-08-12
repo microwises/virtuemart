@@ -55,9 +55,9 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="choosePaymentRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('SAVE'); ?></button>
+	<button class="button" type="submit"  /><?php echo JText::_('SAVE'); ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('CANCEL'); ?></button>
+	<button class="button" type="reset"  /><?php echo JText::_('CANCEL'); ?></button>
 </div>
 <?php
 echo 'Todo: only a rough view to have something to work with';
@@ -127,5 +127,6 @@ if($this->withCC){
 ?>	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="setpayment" />
+	<input type="hidden" name="layout" value="cart"/>
 	<input type="hidden" name="controller" value="cart" />
 </form>

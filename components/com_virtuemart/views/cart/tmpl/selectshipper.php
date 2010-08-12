@@ -55,9 +55,9 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'save');" /><?php echo JText::_('Save'); ?></button>
+	<button class="button" type="submit" /><?php echo JText::_('Save'); ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="reset" /><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
 echo 'Todo: only a rough view to have something to work with, checking for dimensions and country is missing';
@@ -79,5 +79,6 @@ foreach($this->shippingCarriers as $keyCarr=>$valueCarr){
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="setshipping" />
+	<input type="hidden" name="layout" value="cart"/>
 	<input type="hidden" name="controller" value="cart" />
 </form>

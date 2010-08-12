@@ -71,7 +71,7 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
 			$mainframe->setPageTitle(JText::_('VM_CART_THANKYOU'));
 		
-		} else if($layoutName=='cart' ){
+		} else if($layoutName=='cart' || $layoutName=='default' ){
 			
 			$this->prepareCartData();
 			
