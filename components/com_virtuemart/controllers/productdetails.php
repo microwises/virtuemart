@@ -60,6 +60,23 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 	}
 	
+	public function askquestion(){
+		/* Create the view */
+		$view = $this->getView('productdetails', 'html');
+
+		/* Add the default model */
+		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		
+		/* Add the category model */
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+		
+		/* Set the layout */
+		$view->setLayout('askquestion');
+		
+		/* Display it all */
+		$view->display();
+	}
+	
 	public function recalculate(){
 
 		$product_idArray = JRequest::getVar('product_id',0);

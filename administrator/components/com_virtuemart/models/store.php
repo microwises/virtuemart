@@ -79,10 +79,14 @@ class VirtueMartModelStore extends JModel {
 	    		$query .= "WHERE user_id = '". (int)$user->id ."'";
 	    		$this->_db->setQuery($query);
 	    		$vendor_id = $this->_db->loadObject();
-				$this->setId($vendor_id->vendor_id);
-				dump($vendor_id,'I set vendor');
+	    		if($vendor_id){
+					$this->setId($vendor_id->vendor_id);
+					dump($vendor_id,'I set vendor');	    			
+	    		}else{
+	    			$this->setId(0);
+	    		}
 			} else {
-				$this->setId(0);	
+				$this->setId(0);
 			}
 		}
     }

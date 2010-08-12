@@ -80,8 +80,13 @@ class VirtueMartViewProductdetails extends JView {
 		if ($category_id == 0) {
 			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0]; 
 		}
-		$category = $category_model->getCategory($category_id);
-		$this->assignRef('category', $category);
+		
+		
+		if($category_model){
+			$category = $category_model->getCategory($category_id);
+			$this->assignRef('category', $category);				
+		}
+
 		
 		/* Load the reviews */
 		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {

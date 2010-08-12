@@ -18,7 +18,11 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$folder = array(IMAGEPATH."product", IMAGEPATH."product/resized");
+
+$media_path_url = VmConfig::get('media_product_path');
+$media_path = str_replace('/',DS,$media_path_url);
+$media_path = substr($media_path,0,-1);
+$folder = array(JPATH_ROOT.DS.$media_path, JPATH_ROOT.DS.$media_path.DS.'resized');
 $style = 'text-align:left;margin-left:20px;';
 echo '<div class="vmquote" style="'.$style.'">';
 foreach( $folder as $dir ) {

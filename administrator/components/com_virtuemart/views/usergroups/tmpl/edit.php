@@ -10,7 +10,7 @@
 
 * @package	VirtueMart
 
-* @subpackage Plugin
+* @subpackage 
 
 * @author StephanieS
 
@@ -111,7 +111,7 @@ AdminMenuHelper::startAdminArea();
 
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<input type="hidden" name="controller" value="extensions" />
+	<input type="hidden" name="controller" value="usergroups" />
 
 </form>
 

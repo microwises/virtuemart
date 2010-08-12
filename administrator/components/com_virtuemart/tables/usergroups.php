@@ -47,7 +47,7 @@ class TableUsergroups extends JTable {
 	 */
 	function check($nrOfValues)
 	{
-		if (!$this->name) {
+		if (!$this->group_name) {
 			$this->setError(JText::_('The usergroup must have a name.'));
 			return false;
 		}
