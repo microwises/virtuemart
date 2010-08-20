@@ -1214,6 +1214,16 @@ class VirtueMartModelProduct extends JModel {
 					. 'WHERE `product_id` = ' . $_id
 					);
 		$_db->query();
+
+		if ($_sign == '-') {
+			$_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
+					. 'FROM `#__vm_product` '
+					. 'WHERE `product_id` = ' . $_id
+			);
+			if ($_db->loadResult() == 1) {
+				// TODO Generate low stock warning
+			}
+		}
 	}
 
 }

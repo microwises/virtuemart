@@ -438,7 +438,6 @@ class VirtueMartModelOrders extends JModel {
 	public function createOrderFromCart($_cart)
 	{
 		$_usr =& JFactory::getUser();
-		$_orderNr = $this->generateOrderNumber($_usr->get('id'));
 
 		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'cart.php');
 		$_cartModel = new VirtueMartModelCart();
@@ -448,8 +447,8 @@ class VirtueMartModelOrders extends JModel {
 		$_orderID = $this->_createOrder($_cart, $_usr, $_prices);
 		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
 		$this->_updateOrderHist($_orderID);
-		
-		
+		$this->_writeUserInfo($_orderID, $_usr, $_cart);
+		return orderID;
 	}
 
 	/**
@@ -457,11 +456,11 @@ class VirtueMartModelOrders extends JModel {
 	 *
 	 * @author Oscar van Eijk
 	 * @param $_cart array The cart data
-	 * @param $_usr array User data
+	 * @param $_usr object User object
 	 * @param $_prices array Price data
 	 * @return integer The new ordernumber
 	 */
-	private function _createOrder($_cart, $_usr, $_prices)
+	private function _createOrder($_cart, &$_usr, $_prices)
 	{
 //		TODO We need tablefields for the new values:
 //		Shipping:
@@ -500,6 +499,51 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->store();
 		
 		return $_orderData->_db->insertid();
+	}
+
+	/**
+	 * Write the BillTo record, and if set, the ShipTo record
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Order ID
+	 * @param $_usr object User object
+	 * @param $_cart array Cart data
+	 */
+	private function _writeUserInfo($_id, &$_usr, $_cart)
+	{
+		$_userInfoData =  $this->getTable('order_user_info');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'userfields.php');
+		$_userFieldsModel = new VirtueMartModelUserfields();
+		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
+			, array('delimiters'=>true, 'captcha'=>true)
+			, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id')
+		);
+
+		foreach ($_userFieldsBT as $_fld) {
+			$_name = $_fld->name;
+			@$_userInfoData->$_name = $_cart['BT'][$_name];
+		}
+		$_userInfoData->order_id = $_id;
+		$_userInfoData->user_id = $_usr->get('id');
+		if (!$_userInfoData->store()){
+			$this->setError($_userInfoData->getError());
+		}
+		
+		if ($_cart['ST']) {
+			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
+				, array('delimiters'=>true, 'captcha'=>true)
+				, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id')
+			);
+			foreach ($_userFieldsST as $_fld) {
+				$_name = $_fld->name;
+				@$_userInfoData->$_name = $_cart['ST'][$_name];
+			}
+			$_userInfoData->order_id = $_id;
+			$_userInfoData->user_id = $_usr->get('id');
+			if (!$_userInfoData->store()){
+				$this->setError($_userInfoData->getError());
+			}
+		}
 	}
 
 	/**
@@ -544,7 +588,7 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
 			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
 			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
-			$_orderItems->order_item_currency = $_prices[$_lineCount][''];
+			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 			$_orderItems->cdate = time();
 			$_orderItems->mdate = time();
