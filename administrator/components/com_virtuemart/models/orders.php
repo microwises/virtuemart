@@ -374,13 +374,7 @@ class VirtueMartModelOrders extends JModel {
 				}
 				if ($order->store()) {
 					/* Update the order history */
-					$order_history = $this->getTable('order_history');
-					$order_history->order_id = $order_id;
-					$order_history->order_status_code = $order_status_code;
-					$order_history->date_added = date('Y-m-d G:i:s', $timestamp);
-					$order_history->customer_notified = $customer_notified;
-					$order_history->comments = $comment;
-					$order_history->store();
+					$this->_updateOrderHist($order_id, $order_status_code, $customer_notified, $comment);
 
 					if (!$line_only) {
 						/* Update stock level */
@@ -434,6 +428,185 @@ class VirtueMartModelOrders extends JModel {
 		return array('updated' => $updated, 'error' => $error);
 	}
 
+	/**
+	 * Get the information from the cart and create an order from it
+	 *
+	 * @author Oscar van Eijk
+	 * @param $_cart array The cart data
+	 * @return integer The new ordernumber
+	 */
+	public function createOrderFromCart($_cart)
+	{
+		$_usr =& JFactory::getUser();
+		$_orderNr = $this->generateOrderNumber($_usr->get('id'));
+
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'cart.php');
+		$_cartModel = new VirtueMartModelCart();
+		$_products = $_cartModel->getCartProducts($_cart);
+		$_prices = $_cartModel->getCartPrices($_cart);
+		
+		$_orderID = $this->_createOrder($_cart, $_usr, $_prices);
+		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
+		$this->_updateOrderHist($_orderID);
+		
+		
+	}
+
+	/**
+	 * Write the order header record
+	 *
+	 * @author Oscar van Eijk
+	 * @param $_cart array The cart data
+	 * @param $_usr array User data
+	 * @param $_prices array Price data
+	 * @return integer The new ordernumber
+	 */
+	private function _createOrder($_cart, $_usr, $_prices)
+	{
+//		TODO We need tablefields for the new values:
+//		Shipping:
+//		$_prices['shippingValue']		w/out tax
+//		$_prices['shippingTax']			Tax
+//		$_prices['salesPriceShipping']	Total
+//		
+//		Payment:
+//		$_prices['paymentValue']		w/out tax
+//		$_prices['paymentTax']			Tax
+//		$_prices['paymentDiscount']		Discount
+//		$_prices['salesPricePayment']	Total
+
+		$_orderData =  $this->getTable('orders');
+		$_orderData->order_id = null;
+		$_orderData->user_id = $_usr->get('id');
+		$_orderData->vendor_id = $_cart['vendor_id'];
+		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
+		$_orderData->user_info_id = 'TODO'; // $_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+		$_orderData->order_total = $_prices['salesPrice'];
+		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
+		$_orderData->order_tax = $_prices['taxAmount'];
+		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?
+		$_orderData->order_shipping = $_prices['shippingValue'];
+		$_orderData->order_shipping_tax = $_prices['shippingTax'];
+		$_orderData->coupon_discount = $_prices['couponValue']; // TODO Coupons not yet implemented
+		$_orderData->coupon_code = $_prices['couponName']; // TODO Coupons not yet implemented
+		$_orderData->order_discount = $_prices['discountAmount'];
+		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
+		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
+		$_orderData->cdate = time();
+		$_orderData->mdate = time();
+		$_orderData->ship_method_id = $_cart['shipping_rate_id'];
+		$_orderData->customer_note = ''; // TODO Customer notes not yet implemented (Max?)
+		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
+		$_orderData->store();
+		
+		return $_orderData->_db->insertid();
+	}
+
+	/**
+	 * Create the ordered item records
+	 *
+	 * @author Oscar van Eijk
+	 * @param $_id integer Order ID
+	 * @param $_cart array The cart data
+	 * @param $_products array Product data
+	 * @param $_prices array Price data
+	 * @return integer The new ordernumber
+	 */
+	private function _createOrderLines($_id, $_cart, $_products, $_prices)
+	{
+		// Load the product model for stock updates
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+		$_productModel = new VirtueMartModelProduct();
+
+		$_orderItems = $this->getTable('order_item');
+		$_lineCount = 0;
+		foreach ($_products as $_prod) {
+		// TODO: add fields for the following data:
+//    * [double] basePrice = 38.48
+//    * [double] basePriceVariant = 38.48
+//    * [double] basePriceWithTax = 42.04
+//    * [double] discountedPriceWithoutTax = 36.48
+//    * [double] priceBeforeTax = 36.48
+//    * [double] salesPrice = 39.85
+//    * [double] salesPriceTemp = 39.85
+//    * [double] taxAmount = 3.37
+//    * [double] salesPriceWithDiscount = 0
+//    * [double] discountAmount = 2.19
+//    * [double] priceWithoutTax = 36.48
+//    * [double] variantModification = 0
+			$_orderItems->order_item_id = null;
+			$_orderItems->order_id = $_id;
+			$_orderItems->user_info_id = 'TODO'; //$_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+			$_orderItems->vendor_id = $_prod->vendor_id;
+			$_orderItems->product_id = $_prod->product_id;
+			$_orderItems->order_item_sku = $_prod->product_sku;
+			$_orderItems->order_item_name = $_prod->product_name;
+			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
+			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
+			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
+			$_orderItems->order_item_currency = $_prices[$_lineCount][''];
+			$_orderItems->order_status = 'P';
+			$_orderItems->cdate = time();
+			$_orderItems->mdate = time();
+			$_orderItems->product_attribute = '';
+			$_variants = array_merge($_cart[$_lineCount]['variants'], $_cart[$_lineCount]['customvariants']);
+			foreach ($_variants as $_a => $_v) {
+				$_orderItems->product_attribute .= (
+					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
+					. $_a . ': ' . $_v
+				);
+			}
+
+			$_orderItems->store();
+
+			// Update stock
+			$_productModel->decreaseStockAfterSales ($_prod->product_id, $_cart[$_lineCount]['quantity']);
+
+			$_lineCount++;
+		}
+	}
+
+	/**
+	 * Update the order history
+	 *
+	 * @author Oscar van Eijk
+	 * @param $_id Order ID
+	 * @param $_status New order status (default: P)
+	 * @param $_notified 1 (default) if the customer was notified, 0 otherwise
+	 * @param $_comment (Customer) comment, default empty
+	 */
+	private function _updateOrderHist($_id, $_status = 'P', $_notified = 1, $_comment = '')
+	{
+		$_orderHist = $this->getTable('order_history');
+		$_orderHist->order_id = $_id;
+		$_orderHist->order_status_code = $_status;
+		$_orderHist->date_added = date('Y-m-d G:i:s', time());
+		$_orderHist->customer_notified = $_notified;
+		$_orderHist->comments = $_comment;
+		$_orderHist->store();
+	}
+
+	/**
+	 * Generate a unique ordernumber. This is done in a similar way as VM1.1.x, although
+	 * the reason for this is unclear to me :-S
+	 *
+	 * @author Oscar van Eijk
+	 * @param integer $_uid The user ID. Defaults to 0 for guests
+	 * @return string A unique ordernumber
+	 */
+	private function generateOrderNumber($_uid = 0)
+	{
+		return substr(
+				 $_uid
+					.'_'
+					.md5(
+						 session_id()
+						.(string) time()
+					)
+				,0
+				,32
+		);
+	}
 
 	/**
 	 * Update an order item status and send e-mail if needed

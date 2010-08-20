@@ -1151,6 +1151,70 @@ class VirtueMartModelProduct extends JModel {
 		}
 		return $options;
 	}
+	
+	/**
+	 * Decrease the stock for a given product and increase the sales amount
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Product ID
+	 * @param $_amount integer Amount sold
+	 * @access public
+	 */
+	public function decreaseStockAfterSales ($_id, $_amount)
+	{
+		$this->decreaseStock($_id, $_amount);
+		$_db = JFactory::getDBO();
+		$_db->setQuery('UPDATE `#__vm_product` '
+					. 'SET `product_sales` = `product_sales` + ' . $_amount . ' '
+					. 'WHERE `product_id` = ' . $_id
+					);
+		$_db->query();
+	}
+
+	/**
+	 * Decrease the stock for a given product, calls _updateStock
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Product ID
+	 * @param $_amount integer Amount sold
+	 * @access public
+	 */
+	public function decreaseStock ($_id, $_amount)
+	{
+		$this->_updateStock($_id, $_amount, '-');
+	}
+
+	/**
+	 * Increase the stock for a given product, calls _updateStock
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Product ID
+	 * @param $_amount integer Amount sold
+	 * @access public
+	 */
+	public function increaseStock ($_id, $_amount)
+	{
+		$this->_updateStock($_id, $_amount, '+');
+	}
+
+	/**
+	 * Update the stock for a given product
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Product ID
+	 * @param $_amount integer Amount sold
+	 * @param $_sign char '+' for increase, '-' for decrease
+	 * @access private
+	 */
+	private function _updateStock($_id, $_amount, $_sign)
+	{
+		$_db = JFactory::getDBO();
+		$_db->setQuery('UPDATE `#__vm_product` '
+					. 'SET `product_in_stock` = `product_in_stock` ' . $_sign . $_amount . ' '
+					. 'WHERE `product_id` = ' . $_id
+					);
+		$_db->query();
+	}
 
 }
-?>
+// No closing tag

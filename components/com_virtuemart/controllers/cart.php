@@ -429,7 +429,17 @@ class VirtueMartControllerCart extends JController {
 			//TODO Call payment plugins
 
 			//TODO Store the order and do inventory
-            OrderHelper::recordSale($cart);
+			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+			$view = $this->getView('cart', 'html');
+			$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+			$order = $this->getModel( 'orders', 'VirtuemartModel' );
+			$_orderID = $order->createOrderFromCart($cart);
+			
+			// Change made by Marcus, but conflicts with the change I was already working on
+			// (above), so outcommented for now.
+			// Maybe I decide to use the helper in a later stadium; if not I'll remove this
+			// later on.
+//			OrderHelper::recordSale($cart);
 
 			$this->doEmail($cart);
 
