@@ -496,12 +496,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
   `extra_field_3` varchar(255) default NULL,
   `extra_field_4` char(1) default NULL,
   `extra_field_5` char(1) default NULL,
-  `bank_account_nr` varchar(32) NOT NULL default '',
-  `bank_name` varchar(32) NOT NULL default '',
-  `bank_sort_code` varchar(16) NOT NULL default '',
-  `bank_iban` varchar(64) NOT NULL default '',
-  `bank_account_holder` varchar(48) NOT NULL default '',
-  `bank_account_type` enum('Checking','Business Checking','Savings') NOT NULL default 'Checking',
   PRIMARY KEY  (`order_info_id`),
   KEY `idx_order_info_order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time';

@@ -40,7 +40,7 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-
+		dump($this,'Controller constructor');
 	}
 
 	
@@ -178,6 +178,12 @@ class VirtueMartControllerCart extends JController {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);
 
+		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+		dump($view,'I am in task editshipping');
 		/* Display it all */
 		$view->display();
 	}
@@ -381,7 +387,7 @@ class VirtueMartControllerCart extends JController {
 				$this->setpayment(false);	//For what was this case? internal notice Max
 			}
 
-			//TODO We may add a hook here for other payment methods
+			//TODO We may add a hook here for other payment methods, checking the data of the chosed plugin
 
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
@@ -441,7 +447,7 @@ class VirtueMartControllerCart extends JController {
 			// later on.
 //			OrderHelper::recordSale($cart);
 
-			$this->doEmail($cart);
+			$this->doEmail($cart,$_orderID);
 
 			//We save the old stuff
 			$BT = $cart['BT'];
@@ -478,7 +484,7 @@ class VirtueMartControllerCart extends JController {
 	 * @param boolean When one email does not work, it gives a false back
 	 *
 	 */
-	function doEmail($cart){
+	function doEmail($cart,$_orderID){
 
 		/* Create the view */
 		$view = $this->getView('cart', 'html');

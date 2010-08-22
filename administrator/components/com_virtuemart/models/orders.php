@@ -479,11 +479,14 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->user_id = $_usr->get('id');
 		$_orderData->vendor_id = $_cart['vendor_id'];
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
-		$_orderData->user_info_id = 'TODO'; // $_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+		//Note as long we do not have an extra table only storing addresses, the user_info_id is not needed.
+		//The user_info_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
+		//the saved order should be an snapshot with plain data written in it.
+//		$_orderData->user_info_id = 'TODO'; // $_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 		$_orderData->order_total = $_prices['salesPrice'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
-		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?
+		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
 		$_orderData->order_shipping = $_prices['shippingValue'];
 		$_orderData->order_shipping_tax = $_prices['shippingTax'];
 		$_orderData->coupon_discount = $_prices['couponValue']; // TODO Coupons not yet implemented

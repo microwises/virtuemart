@@ -40,9 +40,12 @@ class VirtueMartViewCart extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		
-		$layoutName = JRequest::getVar('layout', $this->getLayout());
+//		$layoutName = JRequest::getVar('layout', $this->getLayout());
+//		$layoutName = JRequest::getVar('layout', 0);
+		$layoutName = $this->getLayout();
+		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'cart');
 		$this->assignRef('layoutName', $layoutName);
-		
+
 		if($layoutName=='editcoupon'){
 		
 			$this->lSelectCoupon();
@@ -185,16 +188,19 @@ class VirtueMartViewCart extends JView {
 //		$this->assignRef('user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
 			$this->_user = $this->getModel('user');
-			$this->assignRef('user', $this->_user);
-			
-			$this->_userDetails = $this->_user->getUser();
-			
-			//This are other contact details, like used in CB or so. 
-//			$_contactDetails = $this->_user->getContactDetails();
-			
-			$this->assignRef('userDetails', $this->_userDetails);
+			if(!$this->_user){
+				dump($this,'The user model is not defined');
+			}else{
+				$this->assignRef('user', $this->_user);
+				
+				$this->_userDetails = $this->_user->getUser();
+				
+				//This are other contact details, like used in CB or so. 
+	//			$_contactDetails = $this->_user->getContactDetails();
+				
+				$this->assignRef('userDetails', $this->_userDetails);
+			}
 		}
-		
 	}
 		
 	private function prepareCartData(){
@@ -202,6 +208,7 @@ class VirtueMartViewCart extends JView {
 		$this->loadHelper('cart');
 	
 		$cart = cart::getCart(false);
+
 		$this->assignRef('cart', $cart);
 		if (function_exists('dumpTrace')) { // J!Dump is installed
 			dump($cart,'cart prepared:');
@@ -209,6 +216,9 @@ class VirtueMartViewCart extends JView {
 		//cart and pricelist
 		/* Get the products for the cart */
 		$model = $this->getModel('cart');
+		if(!$model){
+			dump($this,'The cart model is not defined');
+		}else{
 		$products = $model->getCartProducts($cart);
 		$this->assignRef('products', $products);
 				
@@ -246,6 +256,7 @@ class VirtueMartViewCart extends JView {
 				$state = $stateModel->getState();
 				if($state) $cart['ST']['state_name'] = $state->state_name;	
 			}
+		}
 		}
 	}
 	
