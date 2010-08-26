@@ -60,9 +60,9 @@ AdminMenuHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_( 'VM_PAYM_MAX_DISCOUNT' ); ?>
 			</th>
-			<th width="20">
+<?php /*			<th width="20">
 				<?php echo JText::_( 'VM_PAYM_TYPE' ); ?>
-			</th>
+			</th>  */?>
 			<th width="10">
 				<?php echo JText::_( 'PUBLISHED' ); ?>
 			</th>
@@ -114,7 +114,7 @@ AdminMenuHelper::startAdminArea();
 				<td>
 					<?php echo $row->discount_max_amount; ?>
 				</td>
-				<td>
+<?php /*				<td>
 					<?php 
 					switch($row->paym_type) { 
 						case "Y": 
@@ -134,7 +134,7 @@ AdminMenuHelper::startAdminArea();
 							break;
 					}
 					echo $tmp_cell; ?>
-				</td>
+				</td> */ ?>
 				<td align="center">
 					<?php echo $published; ?>
 				</td>

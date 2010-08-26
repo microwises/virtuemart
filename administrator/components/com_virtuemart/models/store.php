@@ -202,7 +202,7 @@ class VirtueMartModelStore extends JModel {
 //	   	$user_table = $this->getTable('user');
 //	    $user_table->load((int)$userId);
 	    $this->_data->jUser = $vendorJUser;
-	    dump($this->_data,'My store info');
+//	    dump($this->_data,'My store info');
 //	}
 
 	if (!$this->_data) {

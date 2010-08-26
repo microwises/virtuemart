@@ -60,12 +60,12 @@ class TableUser_info extends JTable {
 	var $cdate = '';
 	var $mdate = '';
 	var $perms = '';
-	var $bank_account_nr = '';
-	var $bank_name = '';
-	var $bank_sort_code = '';
-	var $bank_iban = '';
-	var $bank_account_holder = '';
-	var $bank_account_type = '';
+//	var $bank_account_nr = '';
+//	var $bank_name = '';
+//	var $bank_sort_code = '';
+//	var $bank_iban = '';
+//	var $bank_account_holder = '';
+//	var $bank_account_type = '';
 
 	/**
 	 * @author RickG

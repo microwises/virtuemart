@@ -51,6 +51,7 @@ class modelfunctions{
 	 * @param $data data array
 	 */
 	function storeArrayData($table,$fieldId,$fieldData,$id,$data){
+		if(!$data) return false;
 		$db = JFactory::getDBO();
 		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
 		$db->setQuery($q);
@@ -66,6 +67,7 @@ class modelfunctions{
 			$db->setQuery($q); 
 			$db->query();
 		}
+		return true;
 	}
 	
 	/**

@@ -277,7 +277,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	// Save the user info record to the database
 	if (!$table->store()) {
 	    $this->setError($table->getError());
-	    echo 'storeSampleUserInfo: Problem with store';die;
+	    echo 'storeSampleUserInfo: Problem with store: '.$table->getError();die;
 	    return false;
 	}
 

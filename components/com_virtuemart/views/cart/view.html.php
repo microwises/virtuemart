@@ -62,6 +62,13 @@ class VirtueMartViewCart extends JView {
 			
 		} else if($layoutName=='selectpayment'){
 
+			/* Load the cart helper */
+			$this->loadHelper('cart');	
+			$cart = cart::getCart(false);
+			$this->assignRef('cart', $cart);
+			
+			JPluginHelper::importPlugin('vmpayment');
+
 			$this->lSelectPayment();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));

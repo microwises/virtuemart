@@ -232,7 +232,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
 			//$vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
-			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),false),'error');						
+			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR',false),'error');						
 			return false;
 		}
 		//$db = new ps_DB;
@@ -605,7 +605,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 			case '3':
 				return 'Invalid transaction type. Transaction type is not appropriate for this transaction. For example, you cannot credit an authorization-only transaction.';
 			case '4':
-				return 'Invalid amount format. Use the format: “#####.##” Do not include currency symbols or commas.';
+				return 'Invalid amount format. Use the format: â€œ#####.##â€� Do not include currency symbols or commas.';
 			case '5': 
 				return 'Invalid merchant information. Processor does not recognize your merchant account information. Contact your bank account acquirer to resolve this problem.';
 			case '6':
@@ -675,11 +675,11 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 			case '111':
 				return 'Capture error. Either an attempt to capture a transaction that is not an authorization transaction type, or an attempt to capture an authorization transaction that has already been captured.';
 			case '112':
-				return 'Failed AVS check. Address and ZIP code do not match. An authorization may still exist on the cardholder’s account.';
+				return 'Failed AVS check. Address and ZIP code do not match. An authorization may still exist on the cardholderâ€™s account.';
 			case '113':
 				return 'Merchant sale total will exceed the sales cap with current transaction. ACH transactions only.';
 			case '114':
-				return 'Card Security Code (CSC) Mismatch. An authorization may still exist on the cardholder’s account.';
+				return 'Card Security Code (CSC) Mismatch. An authorization may still exist on the cardholderâ€™s account.';
 			case '115':
 				return 'System busy, try again later';
 			case '116':
@@ -694,9 +694,9 @@ CSC validation failed. The CSC return value should appear in the RESPMSG.';
 			case '122':
 				return 'Merchant sale total will exceed the credit cap with current transaction. ACH transactions only.';
 			case '125':
-				return 'Fraud Protection Services Filter — Declined by filters';
+				return 'Fraud Protection Services Filter â€” Declined by filters';
 			case '126':
-				return 'Fraud Protection Services Filter — Flagged for review by filters';
+				return 'Fraud Protection Services Filter â€” Flagged for review by filters';
 				break;
 		}
 	}

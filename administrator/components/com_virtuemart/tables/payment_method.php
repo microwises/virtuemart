@@ -30,6 +30,8 @@ class TablePayment_method extends JTable
 	var $paym_id					= 0;
 	/** @var string VendorID of the payment_method creator */
 	var $paym_vendor_id				= 0;
+	/** @var id for the used plugin */
+	var $paym_jplugin_id			= 0;
 	/** @var string Paymentmethod name */
 	var $paym_name           		= '';	
 	/** @var string Element of paymentmethod */
@@ -46,14 +48,13 @@ class TablePayment_method extends JTable
 	/** @var string discount_min_amount of the paymentmethod */
 	var $discount_min_amount		='';
 	 	
-	/** @var string Type of the paymentmethod */
-	var $paym_type       		 	= '';
-	/** @var string is paymentmethod a creditcard */
-	var $is_creditcard			= '';
+//	/** @var string Type of the paymentmethod */
+//	var $paym_type       		 	= '';
+	
+
 	/** @var string parameter of the paymentmethod*/
-	var $params				= 0;
-//	/** @var accepted creditcard */
-//	var $accepted_creditcard	= '';
+	var $paym_params				= 0;
+
 	/** @var string extra information to hold with the paymentmethod */
 	var $paym_extra_info			= '';
 	/** @var blob secret key of the paymentmethod */
@@ -88,6 +89,11 @@ class TablePayment_method extends JTable
 			return false;
 		}
 
+        if (!$this->paym_vendor_id) {
+			$this->setError(JText::_('Paymentmethods records must have a vendor.'));
+			return false;
+		}
+		
 		if (($this->paym_name) && ($this->paym_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    

@@ -95,6 +95,7 @@ class cart {
 	public function getCart($deleteValidation=true) {
 		$session = JFactory::getSession();
 		$cart = $session->get('vmcart', array('idx' => 0), 'vm');
+		if(!array_key_exists('vendor_id',$cart) ) $cart['vendor_id'] = 0;
 		if ($deleteValidation) $cart['dataValidated'] = false;
 		return $cart;
 	}

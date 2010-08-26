@@ -44,6 +44,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
 		
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 		
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -74,7 +75,8 @@ class VirtuemartViewPaymentMethod extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
-			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
+			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->paym_jplugin_id));
+//			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
 
 //			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->paym_creditcards));
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
@@ -82,7 +84,7 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups));
 
-			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id,True,'vendor_id');
+			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
@@ -147,6 +149,36 @@ class VirtuemartViewPaymentMethod extends JView {
 		}
 //		$listHTML .= '</div>';
 //		echo $listHTML;die;
+		return $listHTML;
+	}
+	
+	function renderInstalledPaymentPlugins($selected){
+		
+		$db = JFactory::getDBO();
+		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
+//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
+//		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
+		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmpayment" AND `published`="1" ';
+		$db->setQuery($q);
+//		dump($db,'Functions of db');
+		$result = $db->loadAssocList();
+		dump($result,'My installed Pluginlist');
+		
+		$listHTML='<select id="paym_jplugin_id" name="paym_jplugin_id">';
+		
+		foreach($result as $paym){
+			$params = new JParameter($paym['params']);
+//			dump($params,'My Params');
+			dump($params->getValue('pType'),'My Type');
+			if($paym['id']==$selected) $checked='selected="selected"'; else $checked='';
+			// Get plugin info
+			$pType = $params->getValue('pType');
+			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['id'].'">'.$paym['name'].'</option>';
+			
+		}
+		$listHTML .= '</select>';
+		
 		return $listHTML;
 	}
 	

@@ -40,7 +40,6 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-		dump($this,'Controller constructor');
 	}
 
 	
@@ -239,41 +238,44 @@ class VirtueMartControllerCart extends JController {
 	function setpayment($redirect=true){
 
 		/* Get the payment id of the cart */
-			//Now set the shipping rate into the cart
-			$cart = cart::getCart();
-			if($cart){
-				//Some Paymentmethods needs extra Information like
-				$cart['paym_id']= JRequest::getVar('paym_id', '0');
+		//Now set the shipping rate into the cart
+		$cart = cart::getCart();
+		if($cart){
+			$mainframe = JFactory::getApplication();
+			
+			//Some Paymentmethods needs extra Information like
+			$cart['paym_id']= JRequest::getVar('paym_id', '0');
 
-				$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-				$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
-				if($paym_model->hasCreditCard($cart['paym_id'])){
-					$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
-					$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
-					$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
-					$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
-					$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
-					$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
-					$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
-					if(!empty($cart['creditcard_id'])){
-						$cc_ = $cc_model->getCreditCard($cart['creditcard_id']);
-						$cc_type = $cc_->creditcard_code;
-						$cc_model->validate_creditcard_data($cc_type,$cart['cc_number']);
-					}
-
-				}
-				$cart['dataValidated'] = false;
-				cart::setCart($cart);
-				if($cart['inCheckOut']){
-					$mainframe = JFactory::getApplication();
-					if($redirect){
-						$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
-					} else {
-						return true;
-					}
-
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$tmp = array('cart'=>$cart);
+			$mainframe->triggerEvent('plgVmOnPaymentSelectCheck', $tmp);
+			
+//			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+//			$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
+//			if($paym_model->hasCreditCard($cart['paym_id'])){
+//				$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
+//				$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
+//				$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
+//				$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
+//				$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
+//				$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
+//				$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
+//				if(!empty($cart['creditcard_id'])){
+//					$cc_ = $cc_model->getCreditCard($cart['creditcard_id']);
+//					$cc_type = $cc_->creditcard_code;
+//					$cc_model->validate_creditcard_data($cc_type,$cart['cc_number']);
+//				}
+//			}
+			$cart['dataValidated'] = false;
+			cart::setCart($cart);
+			if($cart['inCheckOut']){	
+				if($redirect){
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+				} else {
+					return true;
 				}
 			}
+		}
 		if($redirect){
 			self::Cart();
 		} else {
@@ -325,7 +327,7 @@ class VirtueMartControllerCart extends JController {
 		dump(JRequest::get('post'),'my Post data in checkout');
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = cart::getCart(false);
-        dump($cart);
+        dump($cart,'My cart in the checkout');
 		if($cart){
 
 			$mainframe = JFactory::getApplication();
@@ -371,24 +373,26 @@ class VirtueMartControllerCart extends JController {
 				return;
 			}
 
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
-			if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
-				if(empty($cart['creditcard_id']) ||
-					empty($cart['cc_name']) ||
-					empty($cart['cc_number']) ||
-					empty($cart['cc_code']) ||
-					empty($cart['cc_expire_month']) ||
-					empty($cart['cc_expire_year'])){
-						$cart['inCheckOut'] = true;
-						$confirmDone=false;
-						$this->editpayment();
-						return;
-				}
-				$this->setpayment(false);	//For what was this case? internal notice Max
-			}
+//			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+//			if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
+//				if(empty($cart['creditcard_id']) ||
+//					empty($cart['cc_name']) ||
+//					empty($cart['cc_number']) ||
+//					empty($cart['cc_code']) ||
+//					empty($cart['cc_expire_month']) ||
+//					empty($cart['cc_expire_year'])){
+//						$cart['inCheckOut'] = true;
+//						$confirmDone=false;
+//						$this->editpayment();
+//						return;
+//				}
+//				$this->setpayment(false);	//For what was this case? internal notice Max
+//			}
 
-			//TODO We may add a hook here for other payment methods, checking the data of the chosed plugin
-
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$tmp = array('cart'=>$cart);
+			$mainframe->triggerEvent('plgVmOnCheckoutCheckPaymentData', $tmp);
+			
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
 			$cart['dataValidated'] = true;
@@ -440,6 +444,13 @@ class VirtueMartControllerCart extends JController {
 			$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
 			$order = $this->getModel( 'orders', 'VirtuemartModel' );
 			$_orderID = $order->createOrderFromCart($cart);
+			$cart['order_id']= $_orderID;
+			
+			//Add a hook here for other payment methods, storing the data of the choosed plugin
+			//Maybe it is better to put this hook into the createOrderFromCart function (oscar)
+			$tmp = array('cart'=>$cart);
+			$mainframe = JFactory::getApplication();
+			$mainframe->triggerEvent('plgVmOnConfirmedOrderStorePaymentData', $tmp);
 			
 			// Change made by Marcus, but conflicts with the change I was already working on
 			// (above), so outcommented for now.

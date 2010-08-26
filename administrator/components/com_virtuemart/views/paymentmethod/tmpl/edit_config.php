@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 		if($this->paym->paym_element){
-	        $parameters = new vmParameters($this->paym->params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
+	        $parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
 	        echo $rendered = $parameters->render();
         }
         echo '<br />

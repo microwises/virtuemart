@@ -31,27 +31,28 @@ defined('_JEXEC') or die('Restricted access');
         <input type="text" class="inputbox" name="paym_name" value="<?php echo $this->paym->paym_name; ?>" size="32" />
       </td>
     </tr>
-    <tr class="row0">
+<?php /*    <tr class="row0">
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_ELEMENT'); ?>:</td>
       <td width="69%">
       	<input type="text" class="inputbox" name="paym_element" value="<?php	echo $this->paym->paym_element;?>" size="4" />
 		<?php echo JHTML::tooltip( JText::_('VM_PAYMENT_METHOD_ELEMENT_TIP') ); ?>
       </td>
-    </tr>
+    </tr> */ ?>
     <tr class="row1">
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_CLASS_NAME'); ?>:</td>
       <td width="69%"><?php
-      	echo FileUtilities::list_available_classes( 'element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
+      	echo $this->vmPPaymentList;
+      	//echo FileUtilities::list_available_classes( 'paym_element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
       	echo JHTML::tooltip( JText::_('VM_PAYMENT_CLASS_NAME_TIP') ); ?>
       </td>
     </tr>
-    <tr class="row0"> 
+<?php /*    <tr class="row0"> 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->PaymentTypeList ?>
       </td>
     </tr>
-    
+    */ ?>
     
     <tr class="row0" id=creditcardlist style="display : "none";" > 
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_CREDITCARD_LIST') ?>:</td>

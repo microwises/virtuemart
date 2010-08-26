@@ -62,68 +62,18 @@ function myValidator(f, t)
 <?php
 echo 'Todo: only a rough view to have something to work with';
 echo '<p>Please select a paymentmethod that fit your needs:</p><br /><br />';
-if($this->withCC){
-?> <fieldset>
-	<table border="0" cellspacing="0" cellpadding="2" width="100%">
-			    <tr valign="top">
-		        <td nowrap width="10%" align="right">
-		        	<label for="order_payment_name"><?php echo JText::_('VM_CHECKOUT_PAYINFO_NAMECARD') ?>:</label>
-		        </td>
-		        <td>
-		        <input type="text" class="inputbox" id="cart_cc_name" name="cart_cc_name" value="<?php if(!empty($this->cart['cc_name'])) echo $this->cart['cc_name'] ?>" autocomplete="off" />
-		        </td>
-		    </tr>
-		    <tr valign="top">
-		        <td nowrap width="10%" align="right">
-		        	<label for="order_payment_number"><?php echo JText::_('VM_CHECKOUT_PAYINFO_CCNUM') ?>:</label>
-		        </td>
-		        <td>
-		        <input type="text" class="inputbox" id="cart_cc_number" name="cart_cc_number" value="<?php if(!empty($this->cart['cc_number'])) echo $this->cart['cc_number'] ?>" autocomplete="off" />
-		        </td>
-		    </tr>
-		    <tr valign="top">
-		        <td nowrap width="10%" align="right">
-		        	<label for="credit_card_code"><?php echo JText::_('VM_CHECKOUT_PAYINFO_CVV2')  ?>: </label>
-		        </td>		        		
-		        <td>
-		            <input type="text" class="inputbox" id="cart_cc_code" name="cart_cc_code" value="<?php if(!empty($this->cart['cc_code'])) echo $this->cart['cc_code'] ?>" autocomplete="off" />   
-		        </td>
-		    </tr>
-		    <tr>
-		        <td nowrap width="10%" align="right"><?php echo JText::_('VM_CHECKOUT_PAYINFO_EXDATE') ?>:</td>
-		        <td> <?php 
-		        $cc_expire_month = 0;
-		        if(!empty($this->cart['cc_expire_month'])) $cc_expire_month =  $this->cart['cc_expire_month'];
-		        echo shopfunctions::listMonths('cart_cc_expire_month', $cc_expire_month );
-		        echo "/";
-		        $cc_expire_year = 0;
-		        if(!empty($this->cart['cc_expire_year'])) $cc_expire_year =  $this->cart['cc_expire_year'];
-		        echo shopfunctions::listYears('cart_cc_expire_year', $cc_expire_year);
-		        
- ?>
-		       </td>
-		    </tr>
-    	</table>
-    	</fieldset>
-	<?php	
-}
-		foreach($this->payments as $item){
-			$checked='';
-			if($item->paym_id==$this->selectedPaym){					
-				$checked='"checked"';
-			}
-			echo '<fieldset>';
-			echo '<input type="radio" name="paym_id" value="'.$item->paym_id.'" '.$checked.'>'.$item->paym_name.' ';
-			if($item->paym_creditcards){
-				echo ($this->paymentModel->renderCreditCardRadioList($this->selectedCC,$item->paym_creditcards));
-			}else {
-				echo '<br />';
-			}
-			echo ' </fieldset> ';
+
+		global $mainframe;
+		$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
+		$html = $mainframe->triggerEvent('plgVmOnShowList', $tmp);
+//		dump($tmp,'Plugin onShowList');
+
+		foreach($html as $item){	
+			
+			echo $item;
+			
 		}
 		
-		$listHTML;
-
 ?>	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="setpayment" />

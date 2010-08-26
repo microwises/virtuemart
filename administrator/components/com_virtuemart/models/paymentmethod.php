@@ -61,11 +61,23 @@ class VirtueMartModelPaymentmethod extends JModel
 
     }
 
+	/**
+	 * Gets the paym_id with a plugin and vendorId
+	 * 
+	 * @author Max Milbers
+	 */
+	 public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
+	 	if(!$jpluginId) return 0;
+	 	$q = 'SELECT `paym_id` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `vendor_id` = "'.$vendorId.'" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadResult();
+	 }
+	
 
     /**
-     * Resets the calc id and data
+     * Resets the paym id and data
      *
-     * @author RickG
+     * @author Max Milbers
      */        
     public function setId($id)
     {
@@ -150,7 +162,27 @@ class VirtueMartModelPaymentmethod extends JModel
 		$this->_db->setQuery($q);
 		$this->_data->paym_creditcards = $this->_db->loadResultArray();	
 		
+		/* Add param from table plugins */
+//		$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$this->_data->paym_element.'"';
+//		$this->_db->setQuery($q);
+//		$paym_jplugin_id = $this->_db->loadResult();
 			
+		$q = 'SELECT `params` FROM #__plugins WHERE `id` = "'.$this->_data->paym_jplugin_id.'"';
+		$this->_db->setQuery($q);
+		$this->_data->param = $this->_db->loadResult();	
+		
+		dump($this->_data,'getPaym');
+//		$jParams = new JParameter($this->_data->param);
+//		$vmParams = new JParameter($this->_data->paym_params);
+//		dump($jParams,'meine params');
+//		foreach ($jParams->toArray($jParams->getNamespaces()) as $k => $v){
+//			$value = $vmParams->getValue($k);
+//			if(empty($value)){
+//				$vmParams->setValue($v);
+//			}
+//		}
+//		$this->_data->paym_params = $vmParams->toString();
+//		dump($this->_data,'getPaym');
 //			$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
 //			$db->setQuery($query);
 //			$config = $db->loadResult();
@@ -192,7 +224,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		}
 		
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
-		$this->_db = JFactory::getDBO();
+
 		if(isset($this->_data)){
 			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
@@ -212,7 +244,15 @@ $data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__
 				
 				/* Write the first 5 accepted creditcards in the list */
 $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__vm_creditcard','creditcard_id');
-
+				
+				/* Add published from table plugins obsolete */
+//				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
+//				$this->_db->setQuery($q);
+//				$paym_jplugin_id = $this->_db->loadResult();
+//					
+//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
+//				$this->_db->setQuery($q);
+//				$data->published = $this->_db->loadResult();	
 			}
 
 		}
@@ -232,31 +272,45 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 
 		$data = JRequest::get('post');
 
-//		echo '<pre>'.print_r($data).'</prev>';die;
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['params'] = $params->toString();
 		}
+		if($data['vendor_id']) $data['paym_vendor_id'] = $data['vendor_id'];
+		
+		/* Obsolete */
+//		if($data['paym_element']){
+//			$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data['paym_element'].'"';
+//			$this->_db->setQuery($q);
+//			$data['paym_jplugin_id'] = $this->_db->loadResult();
+//			if($data['published']){
+//				$this->publish($data['published'],array($data['paym_jplugin_id']));
+//				unset($data['published']);
+//			}
+//		} else {
+//			//Todo error message, you must choose a payment plugin
+//		}
+		
 
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());
-			$this->setError('Table bind didnt worked');
+//			$this->setError('Table bind didnt worked');
 			return false;
 		}
 
 		// Make sure the calculation record is valid
 		if (!$table->check()) {
 			$this->setError($table->getError());
-			$this->setError('Table check didnt worked');
+//			$this->setError('Table check didnt worked');
 			return false;	
 		}
 		
 		// Save the record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
-			$this->setError('Table store didnt worked');
+//			$this->setError('Table store didnt worked');
 			return false;
 		}
 
@@ -319,17 +373,53 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	
 	
 	/**
-	 * Publish/Unpublish all the ids selected
+	 * Publish/Unpublish all the ids selected.
+	 * Important !  
+	 * This function does change the table plugin and NOT the table paymentmethod!
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publish True is the ids should be published, false otherwise.
+     * @param the ids to alter
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
-	public function publish($publishId = false) 
-	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','payment_method',$publishId);
+	public function publish($publish=false,$id=array()) {
 
+    	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','country',$id);
+
+//		if(empty($id)) {
+//			$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+//
+//			JArrayHelper::toInteger( $cid );
+//			$i = 0 ;
+//			foreach($cid as $id){
+//				$q = 'SELECT `paym_jplugin_id` FROM #__vm_payment_method WHERE paym_id = "'.$id.'" ';
+//				$this->_db->setQuery($q);
+//				$pid[$i] = $this->_db->loadResult();
+//				$i++;
+//			}
+//		}else {
+//			$pid=$id;
+//		}
+//
+//		$k			= 'id';
+//
+//		$pids = $k . '=' . implode( ' OR ' . $k . '=', $pid );
+//
+//		$query = 'UPDATE #__plugins'
+//		. ' SET published = ' . (int) $publish
+//		. ' WHERE ('.$pids.')'
+//		;
+//
+//		$this->_db->setQuery( $query );
+//		if (!$this->_db->query())
+//		{
+//			$this->setError($this->_db->getErrorMsg());
+//			return false;
+//		}
+//
+//		$this->setError('');
+//		return true;
 	}	
 
 	
@@ -371,52 +461,14 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	}
 	
 	
-	
 	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     * 
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
-     */ 	 
-	public function vendorPublish($categories){
-				
-		foreach ($categories as $id){
-			
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT calc_vendor_published 
-					  FROM #__vm_calc
-					  WHERE calc_id = '. $quotedId;
-			
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-			
-			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
-			
-			$query = 'UPDATE #__vm_calc
-					  SET calc_vendor_published = '.$publish.'
-					  WHERE calc_id = '.$quotedId;
-			
-			$this->_db->setQuery($query);
-			
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-			
-		}
-        
-		return ($publish ? 1 : -1);		
-	}
-	
-	
-	/**
+	 * Due the new plugin system this should be obsolete
 	 * function to render the payment plugin list
 	 * 
 	 * @author Max Milbers
 	 * 
 	 * @param radio list of creditcards 
-	 * return 
+	 * @return html
 	 */
 	public function renderPaymentList($selectedPaym=0,$selecedCC=0){
 		
@@ -428,9 +480,6 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 				$checked='"checked"';
 			}
 			$listHTML .= '<input type="radio" name="paym_id" value="'.$item->paym_id.'" '.$checked.'>'.$item->paym_name.' <br />';
-			if($item->paym_creditcards){
-				$listHTML .= self::renderCreditCardRadioList($selecedCC,$item->paym_creditcards);
-			}
 			$listHTML .= ' <br />';
 		}
 		
@@ -444,43 +493,51 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 	 * @author Max Milbers
 	 * 
 	 * @param radio list of creditcards 
-	 * return 
+	 * @return html
 	 */
 
-	public function renderCreditCardRadioList($selected,$creditcards=0){
-		
-		if(!$creditcards){
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
-			$creditcards = new VirtueMartModelCreditcard();			
-		} else {
-			$creditcards = self::getPaymentAcceptedCreditCards($creditcards);	
+	public function renderCreditCardRadioList($selected,$creditcardIds=0){
+		$creditcardIds=0;
+		if(!$creditcardIds){
+			$creditcardIds = self::getPaymentAcceptedCreditCards(); 
 		}
 
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
+		$creditcardModel = new VirtueMartModelCreditcard();		
 
 		$listHTML='';
-		foreach($creditcards as $item){
-			$checked='';
-//			foreach($selected as $select){
-				if($item->creditcard_id==$selected){					
-					$checked='"checked"';
-				}
-//			}
-			$listHTML .= '<input type="radio" name="creditcard" value="'.$item->creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
+		
+		if($creditcardIds){
+			foreach($creditcardIds as $ccId){
+				$item = $creditcardModel->getCreditCard($ccId);
+				$checked='';
+	//			foreach($selected as $select){
+					if($item->creditcard_id==$selected){					
+						$checked='"checked"';
+					}
+	//			}
+				$listHTML .= '<input type="radio" name="creditcard" value="'.$item->creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
+			}
 		}
 		return $listHTML;
 	}
 	
-	function getPaymentAcceptedCreditCards($creditcards){
+	/**
+	 * Gets the ids of accepted creditcards
+	 * 
+	 * @return ids of Creditcards
+	 */
+	function getPaymentAcceptedCreditCards(){
 
-		$query = 'SELECT * FROM `#__vm_creditcard` ';
+		$data = array(0);
+		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 
-		$query .= 'WHERE ';
-		foreach($creditcards as $ccard){
-			$query .= '`creditcard_id`= "'.$ccard.'" OR ';
-		}
-		$query .= ' `creditcard_id`= "0"';
-		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
-		$data = $this->_getList($query);
+		$query = 'SELECT `paym_accepted_credit_card` FROM `#__vm_payment_method_acceptedcreditcards_xref` ';
+		$query .= 'WHERE `paym_id` = "'.$this->_id.'"';
+		
+		$this->_db->setQuery($query);
+		$data = $this->_db->loadResultArray();
+
 		return $data;
 	}
 	

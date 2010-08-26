@@ -23,14 +23,14 @@ In the administrator console of JMart -&gt; Payment Method List -&gt; Creditcard
 	C: Credit Card (only collect the CC data, manual processing)
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	-->
-	<type>Y</type>
-	<is_creditcard>1</is_creditcard>
+
 	<element>linkpoint</element>
 	<files>
 		<filename plugin="linkpoint">linkpoint.php</filename>
 	</files>
 	
 	<params>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "Y" description="VM_PAYMS_TYPE" />
 		<param type="text" name="LP_LOGIN" label="Linkpoint Store ID"
              default="xxxxxx" description="This is your Link Point Store Name" />
 		<param type="text" name="LP_KEYFILE" label="Location Of Public Keyfile"
@@ -41,13 +41,13 @@ In the administrator console of JMart -&gt; Payment Method List -&gt; Creditcard
 			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
           </param>
         <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="C"
+			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="C"
 			/>
         <param name="PAYMENT_PENDING_STATUS" label="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING" description="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="P"
+			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="P"
 			/>
         <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="X"
+			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="X"
 			/>
 		<param name="LP_RECURRING" type="radio" default="NO" label="PHPSHOP_PAYMENT_AN_RECURRING" description="PHPSHOP_PAYMENT_AN_RECURRING_TOOLTIP">
 			<option value="NO">PHPSHOP_ADMIN_CFG_NO</option>

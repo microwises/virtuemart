@@ -16,12 +16,13 @@
 	C: Credit Card (only collect the CC data, manual processing)
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	-->
-	<type>Y</type>
-	<is_creditcard>1</is_creditcard>
+
 	<element>montrada</element>
 	<files>
 		<filename plugin="montrada">montrada.php</filename>
 	</files>
+	<params>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "Y" description="VM_PAYMS_TYPE" />
 		<param name="DEBUG" type="radio" default="0" label="PHPSHOP_ADMIN_CFG_ENABLE_AN_TESTMODE" description="PHPSHOP_ADMIN_CFG_ENABLE_AN_TESTMODE_EXPLAIN">
 			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
 			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
@@ -37,11 +38,11 @@
         </param>
 		  
         <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" 
+			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" 
 		/>
         
 		<param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" 
+			type="table_data_list" table="#__{vm}_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" 
 		/>
-		
+	</params>	
 </install>

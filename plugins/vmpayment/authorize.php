@@ -18,10 +18,19 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-class plgPaymentAuthorize extends vmPaymentPlugin {
+class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
-	var $payment_code = "AN";
+	var $_pelement = 'authorize';
+	var $payment_code = 'AN';
 	
+	private $_cc_name = '';
+	private $_cc_number = '';
+	private $_cc_code = '';
+	private $_cc_expire_month = '';
+	private $_cc_expire_year = '';
+
+	var $selectedCC = '0';
+	var $paym_creditcards = '0';
 	/**
 	 * Constructor
 	 *
@@ -33,9 +42,125 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 	 * @param array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgPaymentAuthorize(& $subject, $config) {
+	function plgVmPaymentAuthorize(& $subject, $config) {
 		parent::__construct($subject, $config);
 	}
+	
+	/**
+	 * This shows the plugin for choosing in the payment list of the checkout process.
+	 * 
+	 * @author Max Milbers
+	 */
+	function plgVmOnShowList($cart,$checkedPaymId=0){
+		
+		if(!$this -> setVmParams($cart['vendor_id'])) return ;
+		
+		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
+		
+		$html = '<fieldset>';
+		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+
+	
+		if($this->paymentMethod->paym_creditcards){
+			$html .= ($this->paymentModel->renderCreditCardRadioList($this->selectedCC,$this->paymentMethod->paym_creditcards));
+		}else {
+			$html .= '<br />';
+		}
+		if(!empty($this->cart['cc_name'])) $this->_cc_name = $this->cart['cc_name'];
+		if(!empty($this->cart['cc_number'])) $this->_cc_number = $this->cart['cc_number'];
+		if(!empty($this->cart['cc_code'])) $this->_cc_code = $this->cart['cc_code'];
+		if(!empty($this->cart['cc_expire_month'])) $this->_cc_expire_month = $this->cart['cc_expire_month'];
+		if(!empty($this->cart['cart_cc_expire_year'])) $this->_cc_expire_year = $this->cart['cart_cc_expire_year'];
+
+		$html .= '<fieldset>
+				<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="order_payment_name">'.JText::_('VM_CHECKOUT_PAYINFO_NAMECARD') .':</label>
+		        </td>
+		        <td>
+		        <input type="text" class="inputbox" id="cart_cc_name" name="cart_cc_name" value="'. $this->_cc_name .'" autocomplete="off" />
+		        </td>
+		    </tr>
+		    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="order_payment_number">'. JText::_('VM_CHECKOUT_PAYINFO_CCNUM') .':</label>
+		        </td>
+		        <td>
+		        <input type="text" class="inputbox" id="cart_cc_number" name="cart_cc_number" value="'.$this->_cc_number.'" autocomplete="off" />
+		        </td>
+		    </tr>
+		    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="credit_card_code">'. JText::_('VM_CHECKOUT_PAYINFO_CVV2')  .': </label>
+		        </td>		        		
+		        <td>
+		            <input type="text" class="inputbox" id="cart_cc_code" name="cart_cc_code" value="'. $this->_cc_code.'" autocomplete="off" />   
+		        </td>
+		    </tr>
+		    <tr>
+		        <td nowrap width="10%" align="right">'. JText::_('VM_CHECKOUT_PAYINFO_EXDATE').':</td>
+		        <td> '.$this->_cc_expire_month;
+		        $html .= shopfunctions::listMonths('cart_cc_expire_month', $this->_cc_expire_month );
+		        $html .= "/";
+		        $html .= $this->_cc_expire_year;
+		        $html .= shopfunctions::listYears('cart_cc_expire_year', $this->_cc_expire_year);
+		        $html .= '</td>  </tr>  	</table>';
+    	
+		$html .= ' </fieldset> </fieldset>';
+		return $html;
+		
+	}
+
+	/**
+	 * This is for checking the input data of the payment method within the checkout
+	 * 
+	 * @author Max Milbers
+	 */
+	function plgVmOnCheckoutCheckPaymentData(){
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
+			if(empty($cart['creditcard_id']) ||
+				empty($cart['cc_name']) ||
+				empty($cart['cc_number']) ||
+				empty($cart['cc_code']) ||
+				empty($cart['cc_expire_month']) ||
+				empty($cart['cc_expire_year'])){
+					$cart['inCheckOut'] = true;
+					$confirmDone=false;
+					$this->editpayment();
+					return;
+			}
+//			$this->setpayment(false);	//For what was this case? internal notice Max
+		}
+	}
+	
+	/**
+	 * This is for adding the input data of the payment method to the cart, after selecting
+	 * 
+	 * @author Max Milbers
+	 */
+	function plgVmOnPaymentSelectCheck($cart){
+		
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
+		if($paym_model->hasCreditCard($cart['paym_id'])){
+			$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
+			$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
+			$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
+			$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
+			$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
+			$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
+			$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
+			if(!empty($cart['creditcard_id'])){
+				$cc_ = $cc_model->getCreditCard($cart['creditcard_id']);
+				$cc_type = $cc_->creditcard_code;
+				return $cc_model->validate_creditcard_data($cc_type,$cart['cc_number']);
+			}
+		}
+		return false;
+	}
+				
 	/**
 	 * process transaction with authorize.net
 	 *
@@ -44,7 +169,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 	 * @param array $d
 	 * @return boolean
 	 */
-	function process_payment($order_number, $order_total, &$d) {
+	function plgVmOnConfirmedOrderStorePaymentData($order_number, $order_total, &$d) {
 
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		//$database = new ps_DB;

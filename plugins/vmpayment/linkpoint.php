@@ -80,7 +80,7 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
 	  require( ADMINPATH."plugins/payment/lphp.php" );
 
 	  // Declare new linkpoint php class
-	  $mylphp =& new lphp();
+	  $mylphp = new lphp();
 
         global $vendor_mail, $vendor_currency, $database;
 

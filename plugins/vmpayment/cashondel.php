@@ -6,7 +6,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  *
  * a special type of 'cash on delivey':
  * its fee depend on total sum
- *
+ * @author Max Milbers
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
@@ -21,9 +21,13 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * http://virtuemart.org
  */
 
-class plgPaymentCashondel extends vmPaymentPlugin {
+jimport('joomla.plugin.plugin');
+
+class plgVmPaymentCashondel extends vmPaymentPlugin {
 	
-	var $payment_code = "PU" ;
+	var $_pelement = 'cashondel';
+	var $payment_code = 'PU' ;
+
 	/**
 	 * Constructor
 	 *
@@ -35,16 +39,11 @@ class plgPaymentCashondel extends vmPaymentPlugin {
 	 * @param array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgPaymentCashondel(& $subject, $config) {
+	function plgVmPaymentCashondel(& $subject, $config) {
 		parent::__construct($subject, $config);
 	}
-	/**
-	 * Returns the Fee for this payment method.
-	 *
-	 * @param double $sum
-	 * @return double
-	 */
-	function get_payment_rate( $sum ) {
+
+/*	function get_payment_rate( $sum ) {
 		
 		if( $sum < 5000 )
 			return - ($this->params->get( 'CASH_ON_DEL_5000' )) ;
@@ -65,6 +64,6 @@ class plgPaymentCashondel extends vmPaymentPlugin {
 		
 	//	return -($sum * 0.10);
 	}
-
+*/
 }
 ?>

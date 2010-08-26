@@ -83,17 +83,17 @@ class ShopFunctions {
 	* @param bool $multiple if the select list should allow multiple selections 
 	* @return string HTML select option list
 	*/
-	public function renderVendorList($vendorId, $multiple = false, $vendorIdName='vendor_id') {
+	public function renderVendorList($vendorId, $multiple = false) {
 
 		$db = JFactory::getDBO();
 		
 		$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
 		$db->setQuery($q);
 		$vendors = $db->loadAssocList();
-
+		
 		$attrs = '';
 		$name = 'vendor_name';
-		$idA = $id = $vendorIdName;
+		$idA = $id = 'vendor_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($vendors, $emptyOption);
