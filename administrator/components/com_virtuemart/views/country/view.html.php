@@ -38,13 +38,12 @@ class VirtuemartViewCountry extends JView {
 
 		$model = $this->getModel();
 		$zoneModel = $this->getModel('ShippingZone');
-
-		$country = $model->getCountry();
-
+		
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($country->country_id < 1);
-
+		
 		if ($layoutName == 'edit') {
+			$country = $model->getCountry();
+			$isNew = ($country->country_id < 1);
 		    if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
 				JToolBarHelper::divider();
@@ -58,6 +57,7 @@ class VirtuemartViewCountry extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 		    }
 
+			
 		    $this->assignRef('country',	$country);
 		    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
 		}

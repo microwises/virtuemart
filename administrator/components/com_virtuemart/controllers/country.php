@@ -145,4 +145,5 @@ class VirtuemartControllerCountry extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
 	}
 }
-?>
+
+//pure php no tag

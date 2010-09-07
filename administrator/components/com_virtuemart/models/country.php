@@ -241,4 +241,5 @@ class VirtueMartModelCountry extends JModel {
 		return $this->_data;
     }
 }
-?>
+
+//no closing tag pure php
