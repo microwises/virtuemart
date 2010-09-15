@@ -147,8 +147,25 @@ class Vendor {
 		return $db->f("vendor_name");
 	}
 
-
-
+	/**
+	 * Get the vendor specific currency
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_vendorId Vendor ID
+	 * @return string Currency code
+	 */
+	function getVendorCurrencyCode ($_vendorId)
+	{
+		$_db = JFactory::getDBO();
+		$_q = 'SELECT c.currency_code AS cc '
+			. 'FROM `#__vm_currency` AS c'
+			. ',    `#__vm_vendor` AS v '
+			. 'WHERE v.vendor_id = '.$_vendorId . ' '
+			. 'AND   v.vendor_currency = c.currency_id';
+		$_db->setQuery($_q);
+		$_r = $_db->loadObject();
+		return $_r->cc;
+	}
 
 	/**
 	 * Prints a drop-down list of vendor names and their ids.

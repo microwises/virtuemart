@@ -47,8 +47,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</thead>
 	<?php
 		$k = 0;
-		for ($i = 1, $n = count($this->orderlist); $i <= $n; $i++) {
-			$row =& $this->orderlist[$i];
+		$n = 1;
+		foreach ($this->orderlist as $i => $row) {
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $row->order_id);
 
 			$print_url = JURI::root().'index.php?option=com_virtuemart&view=orders&task=orderprintdetails&order_id='.$row->order_id.'&format=raw';
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="center">
-					<?php echo ($n-$i+1); ?>
+					<?php echo $n++; ?>
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->order_id; ?></a>

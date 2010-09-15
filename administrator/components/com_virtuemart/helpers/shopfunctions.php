@@ -270,8 +270,51 @@ class ShopFunctions {
         return $categoryModel->countProducts($categoryId);
     } 
 
+	/**
+	* Return the countryname or code of a given countryID
+	* 
+	* @author Oscar van Eijk
+	* @access public
+	* @param int $_id Country ID
+	* @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
+	* @return string Country name or code
+	*/
+	public function getCountryByID ($_id, $_fld = 'country_name')
+	{
+		if (empty($_id) && $Id !== 0) {
+			return ""; // Nothing to do
+		}
+		$_db = JFactory::getDBO();
+
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_country` WHERE country_id = ' . $_id;
+		$_db->setQuery($_q);
+		$_r = $_db->loadObject();
+		return $_r->fld;
+	}
 
 	/**
+	* Return the statename or code of a given countryID
+	* 
+	* @author Oscar van Eijk
+	* @access public
+	* @param int $_id State ID
+	* @param char $_fld Field to return: state_name (default), state_2_code or state_3_code.
+	* @return string state name or code
+	*/
+	public function getStateByID ($_id, $_fld = 'state_name')
+	{
+		if (empty($_id) && $Id !== 0) {
+			return ""; // Nothing to do
+		}
+		$_db = JFactory::getDBO();
+
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_state` WHERE state_id = ' . $_id;
+		$_db->setQuery($_q);
+		$_r = $_db->loadObject();
+		return $_r->fld;
+	}
+
+/**
 	 * Print a select-list with enumerated categories
 	 *
      * @author jseros

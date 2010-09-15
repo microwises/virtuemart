@@ -160,55 +160,36 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		}
 		return false;
 	}
-				
-	/**
-	 * process transaction with authorize.net
-	 *
-	 * @param string $order_number
-	 * @param double $order_total
-	 * @param array $d
-	 * @return boolean
-	 */
-	function plgVmOnConfirmedOrderStorePaymentData($order_number, $order_total, &$d) {
 
-		global $vendor_mail, $vendor_currency, $vmLogger;
-		//$database = new ps_DB;
+	/**
+	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
+	 *
+	 * @param int $_orderNr
+	 * @param array $_orderData
+	 * @param array $_priceData
+	 * @param[out] arrayref $_returnValues
+	 * @return boolean
+	 * @author Oscar van Eijk
+	 */
+	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues)
+	{
+		$this->_paym_id = $_orderData['paym_id'];
+		$_transKey = $this->get_passkey();
+		if( $_transKey === false ) return false;
+
+		// Load the required helpers
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
+
+		$_usr =& JFactory::getUser();
+
+		$_usrBT = $_orderData['BT'];
+		$_usrST = (($_orderData['ST'] === null) ? $_orderData['BT'] : $_orderData['ST']);
+
 		$database = JFactory::getDBO();
 		
-		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
-//		$hVendor_id = $_SESSION['ps_vendor_id'];
-		$hVendor_id = 1; 
-		$auth = $_SESSION['auth'];
-		$transaction_key = $this->get_passkey();
-		if( $transaction_key === false ) return false;
-		
-		// Get the Configuration File for authorize.net
-		
-		// connector class
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
-
-		// Get user billing information
-		require_once(CLASSPATH ."ps_user.php");
-		$dbbt = ps_user::get_user_details($auth["user_id"],"",""," AND address_type='BT'");
-		
-//		$dbbt = new ps_DB;
-//		$qt = "SELECT * FROM #__{vm}_user_info WHERE user_id=".$auth["user_id"]." AND address_type='BT'";
-//
-//		$dbbt->query($qt);
-//		$dbbt->next_record();
-		$user_info_id = $dbbt->f("user_info_id");
-		if( $user_info_id != $d["ship_to_info_id"]) {
-			// Get user billing information
-			//$dbst =& new ps_DB;
-			$dbst =& JFactory::getDBO();
-			$qt = "SELECT * FROM #__{vm}_user_info u,#__{vm}_users ju WHERE u.user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST' AND ju.id = '".$auth["user_id"]."'";
-			$dbst->query($qt);
-			$dbst->next_record();
-
-		}
-		else {
-			$dbst = $dbbt;
-		}
+		$_vendorID = $_orderData['vendor_id']; 
+		$_vendorCurrency = Vendor::getVendorCurrencyCode($_vendorID);
 
 		// Option to send email to merchant from gateway
 		if ($this->params->get('AN_EMAIL_MERCHANT') == '0') {
@@ -219,138 +200,119 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		} else {
 			$email_customer = "FALSE";
  		}
- 		$test_request = $this->params->get('DEBUG') == 1 ? 'YES' : 'NO';
- 		
-		//Authnet vars to send
-		$formdata = array (
-		'x_version' => '3.1',
-		'x_login' => $this->params->get('AN_LOGIN'),
-		'x_tran_key' => $transaction_key,
-		'x_test_request' => $test_request,
+ 		$_testReq = $this->params->get('DEBUG') == 1 ? 'YES' : 'NO';
 
-		// Gateway Response Configuration
-		'x_delim_data' => 'TRUE',
-		'x_delim_char' => '|',
-		'x_relay_response' => 'FALSE',
+ 		//Authnet vars to send
+		$_data = array (
+			'x_version' => '3.1',
+			'x_login' => $this->params->get('AN_LOGIN'),
+			'x_tran_key' => $_transKey,
+			'x_test_request' => $_testReq,
 
-		// Customer Name and Billing Address
-		'x_first_name' => substr($dbbt->f("first_name"), 0, 50),
-		'x_last_name' => substr($dbbt->f("last_name"), 0, 50),
-		'x_company' => substr($dbbt->f("company"), 0, 50),
-		'x_address' => substr($dbbt->f("address_1"), 0, 60),
-		'x_city' => substr($dbbt->f("city"), 0, 40),
-		'x_state' => substr($dbbt->f("state"), 0, 40),
-		'x_zip' => substr($dbbt->f("zip"), 0, 20),
-		'x_country' => substr($dbbt->f("country"), 0, 60),
-		'x_phone' => substr($dbbt->f("phone_1"), 0, 25),
-		'x_fax' => substr($dbbt->f("fax"), 0, 25),
+			// Gateway Response Configuration
+			'x_delim_data' => 'TRUE',
+			'x_delim_char' => '|',
+			'x_relay_response' => 'FALSE',
 
-		// Customer Shipping Address
-		'x_ship_to_first_name' => substr($dbst->f("first_name"), 0, 50),
-		'x_ship_to_last_name' => substr($dbst->f("last_name"), 0, 50),
-		'x_ship_to_company' => substr($dbst->f("company"), 0, 50),
-		'x_ship_to_address' => substr($dbst->f("address_1"), 0, 60),
-		'x_ship_to_city' => substr($dbst->f("city"), 0, 40),
-		'x_ship_to_state' => substr($dbst->f("state"), 0, 40),
-		'x_ship_to_zip' => substr($dbst->f("zip"), 0, 20),
-		'x_ship_to_country' => substr($dbst->f("country"), 0, 60),
+			// Customer Name and Billing Address
+			'x_first_name' => substr($_usrBT['first_name'], 0, 50),
+			'x_last_name' => substr($_usrBT['last_name'], 0, 50),
+			'x_company' => substr($_usrBT['company'], 0, 50),
+			'x_address' => substr($_usrBT['address_1'], 0, 60),
+			'x_city' => substr($_usrBT['city'], 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrBT['state_id']), 0, 40),
+			'x_zip' => substr($_usrBT['zip'], 0, 20),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrBT['country_id']), 0, 60),
+			'x_phone' => substr($_usrBT['phone_1'], 0, 25),
+			'x_fax' => substr($_usrBT['fax'], 0, 25),
 
-		// Additional Customer Data
-		'x_cust_id' => $auth['user_id'],
-		'x_customer_ip' => $_SERVER["REMOTE_ADDR"],
-		'x_customer_tax_id' => $dbbt->f("tax_id"),
+			// Customer Shipping Address
+			'x_first_name' => substr($_usrST['first_name'], 0, 50),
+			'x_last_name' => substr($_usrST['last_name'], 0, 50),
+			'x_company' => substr($_usrST['company'], 0, 50),
+			'x_address' => substr($_usrST['address_1'], 0, 60),
+			'x_city' => substr($_usrST['city'], 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrST['state_id']), 0, 40),
+			'x_zip' => substr($_usrST['zip'], 0, 20),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrST['country_id']), 0, 60),
 
-		// Email Settings
-		'x_email' => $dbbt->f("email"),
-		'x_email_customer' => $email_customer,
-		'x_merchant_email' => $vendor_mail,
+			// Additional Customer Data
+			'x_cust_id' => $_usr->get('id'),
+			'x_customer_ip' => $_SERVER["REMOTE_ADDR"],
+			'x_customer_tax_id' => $_cart['tax_id'], // TODO, where can I get this???
 
-		// Invoice Information
-		'x_invoice_num' => substr($order_number, 0, 20),
-		'x_description' => JText::_('VM_ORDER_PRINT_PO_LBL'),
+			// Email Settings
+			'x_email' => $_usrBT['email'],
+			'x_email_customer' => $email_customer,
+			'x_merchant_email' => $vendor_mail,
 
-		// Transaction Data
-		'x_amount' => $order_total,
-		'x_currency_code' => $vendor_currency,
-		'x_method' => 'CC',
-		'x_type' => AN_TYPE,
-		'x_recurring_billing' => AN_RECURRING,
+			// Invoice Information
+			'x_invoice_num' => substr($_orderNr, 0, 20),
+			'x_description' => JText::_('VM_ORDER_PRINT_PO_LBL'),
 
-		'x_card_num' => $_SESSION['ccdata']['order_payment_number'],
-		'x_card_code' => $_SESSION['ccdata']['credit_card_code'],
-		'x_exp_date' => ($_SESSION['ccdata']['order_payment_expire_month']) . ($_SESSION['ccdata']['order_payment_expire_year']),
+			// Transaction Data
+			'x_amount' => $_priceData['salesPrice'],
+			'x_currency_code' => $_vendorCurrency,
+			'x_method' => 'CC',
+			'x_type' => AN_TYPE,
+			'x_recurring_billing' => AN_RECURRING,
 
-		// Level 2 data
-		'x_po_num' => substr($order_number, 0, 20),
-		'x_tax' => substr($d['order_tax'], 0, 15),
-		'x_tax_exempt' => "FALSE",
-		'x_freight' => $d['order_shipping'],
-		'x_duty' => 0
+			'x_card_num' => $_orderData['cc_number'],
+			'x_card_code' => $_orderData['cc_code'],
+			'x_exp_date' => ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']),
 
+			// Level 2 data
+			'x_po_num' => substr($_orderNr, 0, 20),
+			'x_tax' => substr($d['order_tax'], 0, 15),
+			'x_tax_exempt' => "FALSE",
+			'x_freight' => $d['order_shipping'],
+			'x_duty' => 0
 		);
 
-		//build the post string
-		$poststring = '';
-		foreach($formdata AS $key => $val){
-			$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
+		$_qstring = '';
+		foreach($_data AS $_k => $_v){
+			$_qstring .= (empty($_qstring) ? '' : '&')
+					. urlencode($_k) . '=' . urlencode($_v);
 		}
-		// strip off trailing ampersand
-		$poststring = substr($poststring, 0, -1);
+
+		$_returnValues['order_payment_code'] = $this->payment_code;
+		$_returnValues['order_payment_number'] = $_orderData['cc_number'];
+		$_returnValues['order_payment_expire'] = ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']);
+		$_returnValues['order_payment_name'] = $_orderData['cc_name'];
+
+		$_host = 'secure.authorize.net';
+		$_port = 443;
+		$_uri = 'gateway/transact.dll';
+		$_result = VmConnector::handleCommunication( "https://$_host:$_port/$_uri", $_qstring );
 		
-		$host = 'secure.authorize.net';
-				
-		$result = VmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
-		
-		if( !$result ) {
-			$vmLogger->err('The transaction could not be completed.' );
+		if( !$_result ) {
+			JError::raiseError(500, JText::_('The transaction could not be completed.'));
 			return false;
 		}
-		$response = explode("|", $result);
-		// Strip off quotes from the first response field
-		$response[0] = str_replace( '"', '', $response[0] );
-		
-		$vmLogger->debug('Beginning to analyse the response from '.$host);
+		$_response = explode("|", $_result);
+		$_response[0] = str_replace( '"', '', $_response[0] ); // Strip quotes
 
-		// Approved - Success!
-		if ($response[0] == '1') {
-			$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
-			$d["order_payment_log"] .= $response[3];
-
-			$vmLogger->debug( $d['order_payment_log']);
-
-			// Catch Transaction ID
-			$d["order_payment_trans_id"] = $response[6];
-
-			return True;
-		}
-		// Payment Declined
-		elseif ($response[0] == '2') {
-
+		if ($_response[0] == '1') { // Succeeded
+			$_returnValues['order_payment_log'] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').': '
+				. $_response[3]; // Transaction log
+			$_returnValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
+			return true;
+		} else { // 2 (Declined) or 3 (Transaction error)
 			if ($this->params->get('AN_SHOW_ERROR_CODE') == '1') {
-				$vmLogger->err( $response[0] . "-" . $response[1] . "-" . $response[2] . "-" .  $response[5] . "-" . $response[38] . "-" . $response[39] . "-" . $response[3] );
-		   	} else {
-           		$vmLogger->err( $response[3] );
+				JError::raiseWarning(500, $_response[0] . '-'
+					. $_response[1] . '-'
+					. $_response[2] . '-'
+					. $_response[5] . '-'
+					. $_response[38] . '-'
+					. $_response[39] . '-'
+					. $_response[3] );
+			} else {
+				JError::raiseWarning(500, $_response[3]);
 			}
 
-			$d["order_payment_log"] = $response[3];
-			// Catch Transaction ID
-			$d["order_payment_trans_id"] = $response[6];
-			return False;
-		}
-		// Transaction Error
-		elseif ($response[0] == '3') {
-
-			if ($this->params->get('AN_SHOW_ERROR_CODE') == '1') {
-				$vmLogger->err( $response[0] . "-" . $response[1] . "-" . $response[2] . "-" .  $response[5] . "-" . $response[38] . "-" . $response[39] . "-" . $response[3] );
-		   	} 
-		   	else {
-           		$vmLogger->err( $response[3] );
-			}
-
-			$d["order_payment_log"] = $response[3];
-			// Catch Transaction ID
-			$d["order_payment_trans_id"] = $response[6];
-			return False;
+			$_returnValues['order_payment_log'] = $_response[3]; // Transaction log
+			$_returnValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
+			return false;
 		}
 	}
 
@@ -548,4 +510,4 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	}
 
 }
-?>
+// No closing tag

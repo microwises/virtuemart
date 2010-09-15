@@ -15,7 +15,9 @@
  * @version $Id: user_info.php 2494 2010-07-19 20:50:08Z milbo $
  */
  
- 
+// Load the shopfunctions helper that's needed by all plugins
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+
 abstract class vmPaymentPlugin extends JPlugin  {
 	
 	private $_paym_id = 0;
@@ -134,13 +136,29 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	}
 	
 	/**
-	 * This method stores the data of the used payment method
+	 * This method stores the data of the used payment method. The function is made abstract
+	 * since all plugins *must* reimplement it.
 	 * 
+	 * @param int $_orderNr The ordernumber being processed
+	 * @param array $_orderData Data from the cart
+	 * @param array $_priceData Price information for this order
+	 * @param[out] arrayref $_returnValues An array that must be filled with transaction logging.
+	 * 		The following fields can or must (depending on the payment type) be set:
+	.* 		- order_id; Order ID (set by the Order model)
+	.* 		- payment_method_id; Payment method ID (set by the Order model)
+	.* 		- order_payment_code; Payment code 
+	.* 		- order_payment_number; Card nr
+	.* 		- order_payment_expire; Card experation date;
+	.* 		- order_payment_name; Name on card
+	.* 		- order_payment_log; Transaction log
+	.* 		- order_payment_trans_id; Transaction ID
+	 * @return mixed A boolean will be used to update the other status, anything else will be ignored:
+	 * 		true: payment successfull
+	 * 		false: payment failed
 	 * @author Max Milbers
+	 * @author Oscar van Eijk
 	 */
-	function plgVmOnConfirmedOrderStorePaymentData(){
-		return true;
-	}
+	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues);
 	
 	/**
 	 * This method displays the stored data of the transaction
@@ -150,5 +168,21 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	function plgVmOnShowStoredOrder(){
 		return true;
 	}
-	
+
+	/**
+	 * Retrieve the payment method-specific encryption key
+	 *
+	 * @author Oscar van Eijk
+	 * @return mixed
+	 */
+	function get_passkey()
+	{
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
+			. 'FROM #__vm_payment_method '
+			. "WHERE paym_id='" . $this->_paym_id . "'";
+		$_db->setQuery($_q);
+		$_r = $_db->loadAssoc(); // TODO Error check
+		return $_r['passkey'];
+	}
 }

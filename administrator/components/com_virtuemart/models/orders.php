@@ -448,7 +448,14 @@ class VirtueMartModelOrders extends JModel {
 		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
 		$this->_updateOrderHist($_orderID);
 		$this->_writeUserInfo($_orderID, $_usr, $_cart);
-		return orderID;
+		if ($this->_handlePayment($_orderID, $_cart, $_prices) === true) {
+			// TODO: Set the order status to SUCCESS status
+		}
+		if ($this->_handlePayment($_orderID, $_cart, $_prices) === false) {
+			// TODO: Set the order status to FAILED status
+		}
+		
+		return $_orderID;
 	}
 
 	/**
@@ -550,6 +557,36 @@ class VirtueMartModelOrders extends JModel {
 	}
 
 	/**
+	 * Handle the selected payment method and write the resulting info to the database
+	 * 
+	 * @author Oscar van Eijk
+	 * @param int $_orderID Order ID
+	 * @param array $_cart Cart data
+	 * @param array $_prices Price data
+	 * @return boolean Result of the Payment plugin
+	 */
+	private function _handlePayment($_orderID, $_cart, $_prices)
+	{
+		$_paymTable =  $this->getTable('order_payment');
+		$_paymData = $_paymTable->getTableFields();
+
+		$_paymData['order_id'] = $_orderID;
+		$_paymData['payment_method_id'] = $_cart['paym_id'];
+
+		// TODO Make sure we select the correct plugin here!
+		$_dispatcher =& JDispatcher::getInstance();
+		$_result = $_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
+					 $_orderID
+					,$_cart
+					,$_prices
+					,$_paymData
+		));
+
+		$_paymTable->store();
+		return $_result;
+	}
+	
+	/**
 	 * Create the ordered item records
 	 *
 	 * @author Oscar van Eijk
@@ -557,7 +594,6 @@ class VirtueMartModelOrders extends JModel {
 	 * @param $_cart array The cart data
 	 * @param $_products array Product data
 	 * @param $_prices array Price data
-	 * @return integer The new ordernumber
 	 */
 	private function _createOrderLines($_id, $_cart, $_products, $_prices)
 	{
@@ -591,7 +627,7 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
 			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
 			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
-			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
+//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 			$_orderItems->cdate = time();
 			$_orderItems->mdate = time();
@@ -948,4 +984,6 @@ class VirtueMartModelOrders extends JModel {
 		return $db->loadObjectList();
 	}
 }
-?>
+
+
+// No closing tag

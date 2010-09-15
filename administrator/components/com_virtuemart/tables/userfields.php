@@ -77,7 +77,25 @@ class TableUserfields extends JTable {
 	 */
 	function __construct(&$db)
 	{
+		self::loadFields($_db);
 		parent::__construct('#__vm_userfield', 'fieldid', $db);
+	}
+
+	/**
+	 * Load the fieldlist
+	 */
+	private function loadFields(&$_db)
+	{
+		$_fieldlist = array();
+		$_q = "SHOW COLUMNS FROM `#__vm_orderfields`";
+		$_db->setQuery($_q);
+		$_fields = $_db->loadObjectList();
+		if (count($_fields) > 0) {
+			foreach ($_fields as $key => $_f) {
+				$_fieldlist[$_f->Field] = $_f->Default;
+			}
+			$this->setProperties($_fieldlist);
+		}
 	}
 
 	/**

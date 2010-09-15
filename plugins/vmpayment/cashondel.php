@@ -43,6 +43,11 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		parent::__construct($subject, $config);
 	}
 
+	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues)
+	{
+		return null;
+	}
+	
 /*	function get_payment_rate( $sum ) {
 		
 		if( $sum < 5000 )
@@ -66,4 +71,5 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	}
 */
 }
-?>
+
+// No closing tag

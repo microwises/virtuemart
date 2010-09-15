@@ -440,6 +440,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_order_payment` (
+  `order_payment_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL DEFAULT '0',
   `payment_method_id` int(11) DEFAULT NULL,
   `order_payment_code` varchar(30) NOT NULL DEFAULT '',
@@ -448,6 +449,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_payment` (
   `order_payment_name` varchar(255) DEFAULT NULL,
   `order_payment_log` text,
   `order_payment_trans_id` text NOT NULL,
+  PRIMARY KEY (`order_payment_id`),
   KEY `idx_order_payment_order_id` (`order_id`),
   KEY `idx_order_payment_method_id` (`payment_method_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='The payment method that was chosen for a specific order';

@@ -481,6 +481,7 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('currencies', $_currencies);
 			$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
 			$this->assignRef('vendorCategories', $_vendorCats);
+dump($this, 'VD');
 			$_currencyDisplayStyle = Vendor::get_currency_display_style(
 				 $vendor->getVendorIdByUserId($this->_uid)
 				,$_vendorData->vendor_currency_display_style
