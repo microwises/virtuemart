@@ -448,12 +448,7 @@ class VirtueMartModelOrders extends JModel {
 		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
 		$this->_updateOrderHist($_orderID);
 		$this->_writeUserInfo($_orderID, $_usr, $_cart);
-		if ($this->_handlePayment($_orderID, $_cart, $_prices) === true) {
-			// TODO: Set the order status to SUCCESS status
-		}
-		if ($this->_handlePayment($_orderID, $_cart, $_prices) === false) {
-			// TODO: Set the order status to FAILED status
-		}
+		$this->_handlePayment($_orderID, $_cart, $_prices);
 		
 		return $_orderID;
 	}
@@ -501,6 +496,11 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->order_discount = $_prices['discountAmount'];
 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
 		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
+		if (isset($_cart['currency_id'])) {
+			$_orderData->user_currency_id = $_cart['currency_id'];
+			$_orderData->user_currency_rate = $_cart['currency_rate'];
+		}
+		$_orderData->payment_method_id = $_cart['paym_id'];
 		$_orderData->cdate = time();
 		$_orderData->mdate = time();
 		$_orderData->ship_method_id = $_cart['shipping_rate_id'];
@@ -557,33 +557,22 @@ class VirtueMartModelOrders extends JModel {
 	}
 
 	/**
-	 * Handle the selected payment method and write the resulting info to the database
+	 * Handle the selected payment method
 	 * 
 	 * @author Oscar van Eijk
 	 * @param int $_orderID Order ID
 	 * @param array $_cart Cart data
 	 * @param array $_prices Price data
-	 * @return boolean Result of the Payment plugin
 	 */
 	private function _handlePayment($_orderID, $_cart, $_prices)
 	{
-		$_paymTable =  $this->getTable('order_payment');
-		$_paymData = $_paymTable->getTableFields();
-
-		$_paymData['order_id'] = $_orderID;
-		$_paymData['payment_method_id'] = $_cart['paym_id'];
-
-		// TODO Make sure we select the correct plugin here!
+		JPluginHelper::importPlugin('vmpayment');
 		$_dispatcher =& JDispatcher::getInstance();
-		$_result = $_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
+		$_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
 					 $_orderID
 					,$_cart
 					,$_prices
-					,$_paymData
 		));
-
-		$_paymTable->store();
-		return $_result;
 	}
 	
 	/**

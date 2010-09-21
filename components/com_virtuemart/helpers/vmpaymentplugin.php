@@ -18,16 +18,19 @@
 // Load the shopfunctions helper that's needed by all plugins
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 
+// Get the plugin library
+jimport('joomla.plugin.plugin');
+
 abstract class vmPaymentPlugin extends JPlugin  {
 	
 	private $_paym_id = 0;
 	private $_paym_name = '';
 	
-	/** var Must be overriden in every plugin file */
+	/** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
 	var $_pelement = '';
 	
 	/** var Must be overriden in every plugin file */
-	var $payment_code = '' ;
+	var $_pcode = '' ;
 
 	/** var Must be overriden in every plugin file  atm without use, must be choosen while configuration
 	 * 
@@ -59,6 +62,29 @@ abstract class vmPaymentPlugin extends JPlugin  {
 //		dump($this->params,'plgPaymentCashondel Constructor $this->params');		
 	}
 	
+	/**
+	 * Method to create te plugin specific table; must be reimplemented.
+	 * @example 
+	 * 	$_db = JFactory::getDBO();
+	 *.	$_q = 'CREATE TABLE IF NOT EXISTS `#__vm_order_payment_' . $this->_pelement . '` ('
+	 *.	. ' `id` INT(11) NOT NULL AUTO_INCREMENT'
+	.*.	. ',`order_id` INT(11) NOT NULL' // REQUIRED!
+	.*.	. ',`payment_method_id` INT(11) NOT NULL' // REQUIRED!
+	.*.	. ',`status` INT(11) NOT NULL DEFAULT 1'
+	.*.	. ',`data` BLOB'
+	.*.	. ',`account` INT(11) DEFAULT NULL'
+	.*.	. ',`log` TEXT'
+	.*.	. ',PRIMARY KEY (`id`)'
+	.*.	. ',KEY `idx_order_payment_' . $this->_pelement . '_order_id` (`order_id`)'
+	.*.	. ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Data for the " . $this->_pelement . " payment plugin.'";
+	.*.	$_db->setQuery($_q);
+	.*.	if (!$_db->query()) {
+	.*.		JError::raiseWarning(500, $_db->getErrorMsg());
+	.*.	}
+	 * @author Oscar van Eijk
+	 */
+	abstract protected function _createTable();
+
 	/**
 	 * This functions gets the used and configured payment method
 	 * pelement of this class determines the used jplugin.
@@ -142,23 +168,10 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @param int $_orderNr The ordernumber being processed
 	 * @param array $_orderData Data from the cart
 	 * @param array $_priceData Price information for this order
-	 * @param[out] arrayref $_returnValues An array that must be filled with transaction logging.
-	 * 		The following fields can or must (depending on the payment type) be set:
-	.* 		- order_id; Order ID (set by the Order model)
-	.* 		- payment_method_id; Payment method ID (set by the Order model)
-	.* 		- order_payment_code; Payment code 
-	.* 		- order_payment_number; Card nr
-	.* 		- order_payment_expire; Card experation date;
-	.* 		- order_payment_name; Name on card
-	.* 		- order_payment_log; Transaction log
-	.* 		- order_payment_trans_id; Transaction ID
-	 * @return mixed A boolean will be used to update the other status, anything else will be ignored:
-	 * 		true: payment successfull
-	 * 		false: payment failed
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues);
+	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData);
 	
 	/**
 	 * This method displays the stored data of the transaction
@@ -184,5 +197,59 @@ abstract class vmPaymentPlugin extends JPlugin  {
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return $_r['passkey'];
+	}
+
+	/**
+	 * This method checks if the selected payment method matches the current plugin
+	 * @param string $_pelement Element name, taken from the plugin filename
+	 * @param int $_pid The payment method ID
+	 * @author Oscar van Eijk
+	 * @return True if the calling plugin has the given payment ID
+	 */
+	protected function selectedThisMethod($_pelement, $_pid)
+	{
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT COUNT(*) AS c '
+			. 'FROM #__vm_payment_method AS vm '
+			. ',    #__plugins AS j '
+			. "WHERE vm.paym_id='$_pid' "
+			. 'AND   vm.paym_jplugin_id = j.id '
+			. "AND   j.element = '$_pelement'";
+		$_db->setQuery($_q);
+		$_r = $_db->loadAssoc(); // TODO Error check
+		return ($_r['c'] == 1);
+		
+	}
+
+	/**
+	 * This method writes all payment plugin specific data to the plugin's table
+	 *
+	 * @param array $_values Indexed array in the format 'column_name' => 'value'
+	 * @param string $_table Table name
+	 * @author Oscar van Eijk
+	 */
+	protected function writePaymentData($_values, $_table)
+	{
+		if (count($_values) == 0) {
+			JError::raiseWarning(500, 'writePaymentData got no data to save to ' . $_table);
+			return;
+		}
+		$_cols = array();
+		$_vals = array();
+		foreach ($_values as $_col => $_val) {
+			$_cols[] = "`$_col`";
+			$_vals[] = "'$_val'";
+		}
+		$_db = JFactory::getDBO();
+		$_q = 'INSERT INTO `' . $_table . '` ('
+			. implode(',', $_cols)
+			. ') VALUES ('
+			. implode(',', $_vals)
+			. ')';
+		$_db->setQuery($_q);
+		dump ($_values,'ValuesToSave');dump($_q, 'SaveQuery');
+		if (!$_db->query()) {
+			JError::raiseWarning(500, $_db->getErrorMsg());
+		}
 	}
 }

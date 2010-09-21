@@ -17,6 +17,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * www.virtuemart.net
 */
 
+
+/***********
+ * TODO When this module is converted to 1.5, the following fields must be set
+ * in the cart:
+ * 	currency_id: ID of the user selected currenct
+ * 	currency_rate: Actual rate compared to the shop currency
+ * 
+ * Prices in the orders are saved in the shop currency; these fields are required
+ * to show the prices to the user in a later stadium.
+ */
 global $mosConfig_absolute_path, $sess, $option, $page, $ps_html, $vendor_accepted_currencies;
 
 // Load the virtuemart main parse code

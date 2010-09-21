@@ -19,10 +19,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 class plgVmPaymentAuthorize extends vmPaymentPlugin {
+	var $_pelement;
+	var $_pcode = 'AN';
 
-	var $_pelement = 'authorize';
-	var $payment_code = 'AN';
-	
 	private $_cc_name = '';
 	private $_cc_number = '';
 	private $_cc_code = '';
@@ -43,9 +42,37 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @since 1.5
 	 */
 	function plgVmPaymentAuthorize(& $subject, $config) {
+		$this->_pelement = basename(__FILE__, '.php');
+		$this->_createTable();
 		parent::__construct($subject, $config);
 	}
-	
+
+	/**
+	 * Create the table for this plugin if it does not yet exist.
+	 * @author Oscar van Eijk
+	 */
+	protected function _createTable()
+	{
+		$_db = JFactory::getDBO();
+		$_q = 'CREATE TABLE IF NOT EXISTS `#__vm_order_payment_' . $this->_pelement . '` ('
+			. ' `id` INT(11) NOT NULL AUTO_INCREMENT'
+			. ',`order_id` INT(11) NOT NULL'
+			. ',`payment_method_id` INT(11) NOT NULL'
+			. ',`order_payment_status` INT(11) NOT NULL DEFAULT 1'
+			. ',`order_payment_number` BLOB'
+			. ',`order_payment_expire` INT(11) DEFAULT NULL'
+			. ',`order_payment_name` VARCHAR(255) DEFAULT NULL'
+			. ',`order_payment_log` TEXT'
+			. ",`order_payment_trans_id` TEXT NOT NULL DEFAULT ''"
+			. ',PRIMARY KEY (`id`)'
+			. ',KEY `idx_order_payment_' . $this->_pelement . '_order_id` (`order_id`)'
+			. ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Data for the " . $this->_pelement . " payment plugin.'";
+	$_db->setQuery($_q);
+	if (!$_db->query()) {
+			JError::raiseWarning(500, $_db->getErrorMsg());
+		}
+	}
+
 	/**
 	 * This shows the plugin for choosing in the payment list of the checkout process.
 	 * 
@@ -167,15 +194,16 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @param int $_orderNr
 	 * @param array $_orderData
 	 * @param array $_priceData
-	 * @param[out] arrayref $_returnValues
-	 * @return boolean
 	 * @author Oscar van Eijk
 	 */
-	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues)
+	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData['paym_id'])) {
+			return; // Another method was selected, do nothing
+		}
 		$this->_paym_id = $_orderData['paym_id'];
 		$_transKey = $this->get_passkey();
-		if( $_transKey === false ) return false;
+		if( $_transKey === false ) return;
 
 		// Load the required helpers
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
@@ -275,45 +303,53 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 					. urlencode($_k) . '=' . urlencode($_v);
 		}
 
-		$_returnValues['order_payment_code'] = $this->payment_code;
-		$_returnValues['order_payment_number'] = $_orderData['cc_number'];
-		$_returnValues['order_payment_expire'] = ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']);
-		$_returnValues['order_payment_name'] = $_orderData['cc_name'];
-
+		// Prepare data that should be stored in the database
+		$_dbValues['order_id'] = $_orderNr;
+		$_dbValues['payment_method_id'] = $this->_paym_id;
+		if (VmConfig::get('store_creditcard_data')) {
+			$_dbValues['order_payment_number'] = $_orderData['cc_number'];
+			$_dbValues['order_payment_expire'] = ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']);
+			$_dbValues['order_payment_name'] = $_orderData['cc_name'];
+		}
+		
 		$_host = 'secure.authorize.net';
 		$_port = 443;
 		$_uri = 'gateway/transact.dll';
 		$_result = VmConnector::handleCommunication( "https://$_host:$_port/$_uri", $_qstring );
 		
-		if( !$_result ) {
+		if(!$_result) {
 			JError::raiseError(500, JText::_('The transaction could not be completed.'));
-			return false;
-		}
-		$_response = explode("|", $_result);
-		$_response[0] = str_replace( '"', '', $_response[0] ); // Strip quotes
+			$_dbValues['order_payment_status'] = -1;
+		} else {
+			$_response = explode("|", $_result);
+			$_response[0] = str_replace( '"', '', $_response[0] ); // Strip quotes
 
-		if ($_response[0] == '1') { // Succeeded
-			$_returnValues['order_payment_log'] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').': '
-				. $_response[3]; // Transaction log
-			$_returnValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
-			return true;
-		} else { // 2 (Declined) or 3 (Transaction error)
-			if ($this->params->get('AN_SHOW_ERROR_CODE') == '1') {
-				JError::raiseWarning(500, $_response[0] . '-'
-					. $_response[1] . '-'
-					. $_response[2] . '-'
-					. $_response[5] . '-'
-					. $_response[38] . '-'
-					. $_response[39] . '-'
-					. $_response[3] );
-			} else {
-				JError::raiseWarning(500, $_response[3]);
+			$_dbValues['order_payment_status'] = $_response[0];
+
+			if ($_response[0] == '1') { // Succeeded
+				$_dbValues['order_payment_log'] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').': '
+					. $_response[3]; // Transaction log
+				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
+			} else { // 2 (Declined) or 3 (Transaction error)
+				if ($this->params->get('AN_SHOW_ERROR_CODE') == '1') {
+					$_log = $_response[0] . '-'
+						. $_response[1] . '-'
+						. $_response[2] . '-'
+						. $_response[5] . '-'
+						. $_response[38] . '-'
+						. $_response[39] . '-'
+						. $_response[3];
+				} else {
+					$_log = $_response[3];
+				}
+				JError::raiseWarning(500, $_log);
+				$_dbValues['order_payment_log'] = $_log; // Transaction log
+				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 			}
-
-			$_returnValues['order_payment_log'] = $_response[3]; // Transaction log
-			$_returnValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
-			return false;
+			$_dbValues['order_payment_log'] = $_response[3]; // Transaction log
+			$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 		}
+		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
 	}
 
 	/**************************************************************************

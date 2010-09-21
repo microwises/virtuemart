@@ -25,8 +25,8 @@ jimport('joomla.plugin.plugin');
 
 class plgVmPaymentCashondel extends vmPaymentPlugin {
 	
-	var $_pelement = 'cashondel';
-	var $payment_code = 'PU' ;
+	var $_pelement;
+	var $_pcode = 'PU' ;
 
 	/**
 	 * Constructor
@@ -40,12 +40,48 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 * @since 1.5
 	 */
 	function plgVmPaymentCashondel(& $subject, $config) {
+		$this->_pelement = basename(__FILE__, '.php');
+		$this->_createTable();
 		parent::__construct($subject, $config);
 	}
 
-	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData, &$_returnValues)
+	/**
+	 * Create the table for this plugin if it does not yet exist.
+	 * @author Oscar van Eijk
+	 */
+	protected function _createTable()
 	{
-		return null;
+		$_db = JFactory::getDBO();
+		$_q = 'CREATE TABLE IF NOT EXISTS `#__vm_order_payment_' . $this->_pelement . '` ('
+			. ' `id` INT(11) NOT NULL AUTO_INCREMENT'
+			. ',`order_id` INT(11) NOT NULL'
+			. ',`payment_method_id` INT(11) NOT NULL'
+			. ',PRIMARY KEY (`id`)'
+			. ',KEY `idx_order_payment_' . $this->_pelement . '_order_id` (`order_id`)'
+			. ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Data for the " . $this->_pelement . " payment plugin.'";
+		$_db->setQuery($_q);
+		if (!$_db->query()) {
+				JError::raiseWarning(500, $_db->getErrorMsg());
+		}
+	}
+
+	/**
+	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
+	 *
+	 * @param int $_orderNr
+	 * @param array $_orderData
+	 * @param array $_priceData
+	 * @author Oscar van Eijk
+	 */
+	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
+	{
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData['paym_id'])) {
+			return ; // Another method was selected, do nothing
+		}
+		$this->_paym_id = $_orderData['paym_id'];
+		$_dbValues['order_id'] = $_orderNr;
+		$_dbValues['payment_method_id'] = $this->_paym_id;
+		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
 	}
 	
 /*	function get_payment_rate( $sum ) {
