@@ -124,7 +124,7 @@ class VirtueMartModelShippingRate extends JModel {
    			$this->_data = $this->getTable('shipping_rate');
    			$this->_data->load((int)$this->_id);
 
-   			// Convert ; seperated string into array
+   			// Convert ; separated string into array
    			$this->_data->shipping_rate_country = explode(';', $this->_data->shipping_rate_country);
   		}
 
@@ -150,7 +150,7 @@ class VirtueMartModelShippingRate extends JModel {
 
 		$data = JRequest::get( 'post' );
 
-		// Store multiple selectlist entries as a ; seperated string
+		// Store multiple selectlist entries as a ; separated string
 		if (key_exists('shipping_rate_country', $data) && is_array($data['shipping_rate_country'])) {
 		    $data['shipping_rate_country'] = implode(';', $data['shipping_rate_country']);
 		}

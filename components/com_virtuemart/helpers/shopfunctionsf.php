@@ -200,7 +200,7 @@ class shopFunctionsF {
 		return $image;
 	}
 	
-		/**
+	/**
 	 * Sends the mail joomla conform
 	 * TODO people often send media with emails. Like pictures, serials,...
 	 * 
@@ -231,7 +231,7 @@ class shopFunctionsF {
 			//Test if array, if not make an array out of it
 			foreach ($mediaToSend as $media){
 				//Todo test and such things.
-//				$mailer->addAttachment($media);				
+				$mailer->addAttachment($media);				
 			}
 		}
 		

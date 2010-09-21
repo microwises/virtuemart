@@ -237,7 +237,7 @@ class MiniXMLElement extends MiniXMLTreeComponent {
 	** new node's value is set to SETTOALT.  See the attribute() method
 	** for an example use.
 	**
-	** Returns a space seperated string composed all child MiniXMLNodes'
+	** Returns a space separated string composed all child MiniXMLNodes'
 	** numeric contents.
 	**
 	** Note: ONLY numerical contents are included from the list of child MiniXMLNodes.

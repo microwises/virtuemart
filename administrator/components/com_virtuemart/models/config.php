@@ -257,6 +257,7 @@ class VirtueMartModelConfig extends JModel {
      * @return boolean True is successful, false otherwise
      */
     function store($data) {
+
 	if ($data) {
 	    $curConfigParams = $this->getConfig();
 	    $curConfigParams->bind($data);

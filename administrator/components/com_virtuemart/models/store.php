@@ -178,7 +178,7 @@ class VirtueMartModelStore extends JModel {
 	    $vendorTable = $this->getTable('vendor');
 	    $vendorTable->load((int)$this->_id);
 	    $this->_data = $vendorTable;
-	    // Convert ; seperated string into array
+	    // Convert ; separated string into array
 	    if ($this->_data->vendor_accepted_currencies) {
 		$this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);
 	    }
@@ -231,11 +231,11 @@ class VirtueMartModelStore extends JModel {
 	} else {
 		$_external = true;
 	}
-	// Store multiple selectlist entries as a ; seperated string
+	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
-	// Store multiple selectlist entries as a | seperated string
+	// Store multiple selectlist entries as a | separated string
 	if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
 	    $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
 	}

@@ -213,7 +213,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    </span>
 				</td>
 				<td>
-					<input type="text" name="media_category_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
+					<input type="text" name="media_category_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
 				</td>
 		    </tr>
 		    <tr>
@@ -223,7 +223,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    </span>
 				</td>
 				<td>
-					<input type="text" name="media_product_path"  size="40" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
+					<input type="text" name="media_product_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
 				</td>
 		    </tr>
 		    <?php

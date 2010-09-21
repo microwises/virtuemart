@@ -51,7 +51,8 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
 	}
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+//This should be done in the config, only when there are no entries, get them from the file
+//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 
 
 /* Create the controller */

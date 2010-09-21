@@ -26,8 +26,8 @@ class VmConfig
 		$config = $db->loadResult();
 	
 		$session = JFactory::getSession();
-		$session->clear("vmconfig");
-		$session->set("vmconfig", $config);
+		$session->clear('vmconfig');
+		$session->set('vmconfig', $config,'vm');
 	}
 	
 	
@@ -42,14 +42,13 @@ class VmConfig
 	{
 		$value = '';
 		if ($key) {
-			VmConfig::loadConfig();
+
 			$session = JFactory::getSession();
-			$config = $session->get('vmconfig', '');
-			
-//			if (!$config) { 
-//				VmConfig::loadConfig();
-//				$config = $session->get('vmconfig', '');
-//			}			
+			$config = $session->get('vmconfig', '','vm');
+			if (!$config) { 
+				VmConfig::loadConfig();
+				$config = $session->get('vmconfig', '','vm');
+			}
 				
 			if ($config) {
 				$params = new JParameter($config);
