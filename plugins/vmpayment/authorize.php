@@ -144,7 +144,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * 
 	 * @author Max Milbers
 	 */
-	function plgVmOnCheckoutCheckPaymentData(){
+	function plgVmOnCheckoutCheckPaymentData($cart){
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
 			if(empty($cart['creditcard_id']) ||
@@ -167,12 +167,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * 
 	 * @author Max Milbers
 	 */
-	function plgVmOnPaymentSelectCheck($cart){
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
-		if($paym_model->hasCreditCard($cart['paym_id'])){
-			$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
+	function plgVmOnPaymentSelectCheck(&$cart){
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
 			$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
 			$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
 			$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
@@ -180,9 +178,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
 			$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
 			if(!empty($cart['creditcard_id'])){
-				$cc_ = $cc_model->getCreditCard($cart['creditcard_id']);
+				$cc_ = VirtueMartModelCreditcard::getCreditCard($cart['creditcard_id']);
 				$cc_type = $cc_->creditcard_code;
-				return $cc_model->validate_creditcard_data($cc_type,$cart['cc_number']);
+				return VirtueMartModelCreditcard::validate_creditcard_data($cc_type,$cart['cc_number']);
 			}
 		}
 		return false;

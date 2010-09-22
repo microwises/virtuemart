@@ -241,14 +241,14 @@ class VirtueMartControllerCart extends JController {
 		//Now set the shipping rate into the cart
 		$cart = cart::getCart();
 		if($cart){
-			$mainframe = JFactory::getApplication();
-			
+			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
 			$cart['paym_id']= JRequest::getVar('paym_id', '0');
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$tmp = array('cart'=>$cart);
-			$mainframe->triggerEvent('plgVmOnPaymentSelectCheck', $tmp);
+			$_dispatcher = JDispatcher::getInstance();
+			$_dispatcher->trigger('plgVmOnPaymentSelectCheck', $tmp);
 			
 //			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 //			$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
@@ -388,10 +388,11 @@ class VirtueMartControllerCart extends JController {
 //				}
 //				$this->setpayment(false);	//For what was this case? internal notice Max
 //			}
-
+			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$tmp = array('cart'=>$cart);
-			$mainframe->triggerEvent('plgVmOnCheckoutCheckPaymentData', $tmp);
+			$_dispatcher = JDispatcher::getInstance();
+			$_dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', $tmp);
 			
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
@@ -436,27 +437,12 @@ class VirtueMartControllerCart extends JController {
 
 		//Just to prevent direct call
 		if($cart['dataValidated']){
-			//TODO Call payment plugins
-
-			//TODO Store the order and do inventory
 			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 			$view = $this->getView('cart', 'html');
 			$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
 			$order = $this->getModel( 'orders', 'VirtuemartModel' );
 			$_orderID = $order->createOrderFromCart($cart);
 			$cart['order_id']= $_orderID;
-			
-			//Add a hook here for other payment methods, storing the data of the choosed plugin
-			//Maybe it is better to put this hook into the createOrderFromCart function (oscar)
-			$tmp = array('cart'=>$cart);
-			$mainframe = JFactory::getApplication();
-			$mainframe->triggerEvent('plgVmOnConfirmedOrderStorePaymentData', $tmp);
-			
-			// Change made by Marcus, but conflicts with the change I was already working on
-			// (above), so outcommented for now.
-			// Maybe I decide to use the helper in a later stadium; if not I'll remove this
-			// later on.
-//			OrderHelper::recordSale($cart);
 
 			$this->doEmail($cart,$_orderID);
 

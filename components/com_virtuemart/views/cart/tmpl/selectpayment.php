@@ -55,18 +55,17 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="choosePaymentRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit"  /><?php echo JText::_('SAVE'); ?></button>
+	<button class="button" type="submit"><?php echo JText::_('SAVE'); ?></button>
 	&nbsp;
-	<button class="button" type="reset"  /><?php echo JText::_('CANCEL'); ?></button>
+	<button class="button" type="reset"><?php echo JText::_('CANCEL'); ?></button>
 </div>
 <?php
 echo 'Todo: only a rough view to have something to work with';
 echo '<p>Please select a paymentmethod that fit your needs:</p><br /><br />';
 
-		global $mainframe;
+		$_dispatcher = JDispatcher::getInstance();
 		$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
-		$html = $mainframe->triggerEvent('plgVmOnShowList', $tmp);
-//		dump($tmp,'Plugin onShowList');
+		$html = $_dispatcher->trigger('plgVmOnShowList', $tmp);
 
 		foreach($html as $item){	
 			
