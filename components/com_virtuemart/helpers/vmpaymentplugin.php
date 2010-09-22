@@ -149,7 +149,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Max Milbers
 	 */
 	function plgVmOnPaymentSelectCheck($cart){
-		return true;	
+		return null;	
 	}
 	
 	/**
@@ -158,7 +158,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Max Milbers
 	 */
 	function plgVmOnCheckoutCheckPaymentData(){
-		return true;
+		return null;
 	}
 	
 	/**
@@ -179,7 +179,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Max Milbers
 	 */
 	function plgVmOnShowStoredOrder(){
-		return true;
+		return null;
 	}
 
 	/**

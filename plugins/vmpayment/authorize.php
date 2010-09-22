@@ -79,7 +79,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @author Max Milbers
 	 */
 	function plgVmOnShowList($cart,$checkedPaymId=0){
-		
+		dump($this,'PluginOnList');
 		if(!$this -> setVmParams($cart['vendor_id'])) return ;
 		
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
@@ -153,21 +153,20 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 				empty($cart['cc_code']) ||
 				empty($cart['cc_expire_month']) ||
 				empty($cart['cc_expire_year'])){
-					$cart['inCheckOut'] = true;
-					$confirmDone=false;
-					$this->editpayment();
-					return;
+					return false;
 			}
-//			$this->setpayment(false);	//For what was this case? internal notice Max
 		}
+		return true;
 	}
 	
 	/**
 	 * This is for adding the input data of the payment method to the cart, after selecting
 	 * 
 	 * @author Max Milbers
+	 * @author Oscar van Eijk
 	 */
-	function plgVmOnPaymentSelectCheck(&$cart){
+	function plgVmOnPaymentSelectCheck($cart)
+	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
@@ -177,11 +176,16 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
 			$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
 			$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
+
 			if(!empty($cart['creditcard_id'])){
-				$cc_ = VirtueMartModelCreditcard::getCreditCard($cart['creditcard_id']);
+				$cardModel = new VirtueMartModelCreditcard();
+				$cc_ = $cardModel->getCreditCard($cart['creditcard_id']);
 				$cc_type = $cc_->creditcard_code;
-				return VirtueMartModelCreditcard::validate_creditcard_data($cc_type,$cart['cc_number']);
+				if (!$cardModel->validate_creditcard_data($cc_type,$cart['cc_number'])) {
+					return false;
+				}
 			}
+			return ($cart);
 		}
 		return false;
 	}

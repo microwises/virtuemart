@@ -158,7 +158,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		$this->_data->paym_shopper_groups = $this->_db->loadResultArray();
 
 		/* Add the accepted credit cards */
-		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$this->_id.'"';
+		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->paym_creditcards = $this->_db->loadResultArray();	
 		
@@ -235,15 +235,15 @@ class VirtueMartModelPaymentmethod extends JModel
 				$data->paym_shopper_groups = $this->_db->loadResultArray();
 		
 				/* Add the accepted credit cards */
-				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedCreditCards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
 				$this->_db->setQuery($q);
 				$data->paym_creditcards = $this->_db->loadResultArray();
 				
 				/* Write the first 5 shoppergroups in the list */
-$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
-				
+				$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+
 				/* Write the first 5 accepted creditcards in the list */
-$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__vm_creditcard','creditcard_id');
+				$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__vm_creditcard','creditcard_id');
 				
 				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
@@ -541,24 +541,21 @@ $data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_c
 		return $data;
 	}
 	
-	function hasCreditCard($paym_id){
-		
-		$query = 'SELECT * FROM `#__vm_payment_method_acceptedcreditcards_xref` WHERE `paym_id`="'.$paym_id.'"';
+	/**
+	 * Check if the current payment method accepts credit cards
+	 * 
+	 * @author Max Milbers
+	 * @author Oscar van Eijk
+	 * 
+	 * @param integer $paym_id Payment method ID 
+	 * @return boolean
+	 */
+	function hasCreditCard($paym_id)
+	{
+		$query = 'SELECT COUNT(*) AS c FROM `#__vm_payment_method_acceptedcreditcards_xref` WHERE `paym_id`="'.$paym_id.'"';
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 		$this->_db->setQuery($query);
-		$result = $this->_db->query();
-
-		if(isset($result->num_rows)){
-		 	if($result->num_rows > 0 ){
-				return true;
-		 	}else{
-				return false;	
-			}
-		}else{
-			return false;	
-		}
-		
-
+		$_r = $this->_db->loadAssoc();
+		return ($_r['c'] > 0);
 	}
-	
 }

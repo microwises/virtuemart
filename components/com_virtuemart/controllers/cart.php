@@ -234,6 +234,7 @@ class VirtueMartControllerCart extends JController {
 	 * To set a payment method
 	 *
 	 * @author Max Milbers
+	 * @author Oscar van Eijk
 	 */
 	function setpayment($redirect=true){
 
@@ -246,28 +247,31 @@ class VirtueMartControllerCart extends JController {
 			$cart['paym_id']= JRequest::getVar('paym_id', '0');
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$tmp = array('cart'=>$cart);
 			$_dispatcher = JDispatcher::getInstance();
-			$_dispatcher->trigger('plgVmOnPaymentSelectCheck', $tmp);
-			
-//			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-//			$paym_model = $this->getModel('paymentmethod','VirtuemartModel');
-//			if($paym_model->hasCreditCard($cart['paym_id'])){
-//				$cc_model = $this->getModel('creditcard', 'VirtuemartModel');
-//				$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
-//				$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
-//				$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
-//				$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
-//				$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
-//				$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
-//				if(!empty($cart['creditcard_id'])){
-//					$cc_ = $cc_model->getCreditCard($cart['creditcard_id']);
-//					$cc_type = $cc_->creditcard_code;
-//					$cc_model->validate_creditcard_data($cc_type,$cart['cc_number']);
-//				}
-//			}
+			$_retValues = $_dispatcher->trigger('plgVmOnPaymentSelectCheck', array('cart'=>$cart));
 			$cart['dataValidated'] = false;
 			cart::setCart($cart);
+			foreach ($_retValues as $_retVal) {
+				if ($_retVal === true) {
+					break; // Plugin completed succesful; nothing else to do
+				} elseif ($_retVal === false) {
+					// TODO Max; what todo of the plugin failed?
+					if ($redirect) { self::Cart(); } else { return false; } // Plugin failed
+				} elseif (is_array($_retVal)) {
+					// We got modified cart data back from the plugin
+					$cart = $_retVal;
+					$cart['dataValidated'] = false;
+					cart::setCart($cart);
+					break;
+// Checks below outcommented since we're at the end of out loop anyway :-/
+// Remove comments if newchecks need to be implemented.
+// NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+//				} elseif ($_retVal === null) {
+//					continue; // This plugin was skipped
+//				} else {
+//					continue; // Other values not yet implemented
+				}
+			}
 			if($cart['inCheckOut']){	
 				if($redirect){
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
@@ -373,27 +377,27 @@ class VirtueMartControllerCart extends JController {
 				return;
 			}
 
-//			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
-//			if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
-//				if(empty($cart['creditcard_id']) ||
-//					empty($cart['cc_name']) ||
-//					empty($cart['cc_number']) ||
-//					empty($cart['cc_code']) ||
-//					empty($cart['cc_expire_month']) ||
-//					empty($cart['cc_expire_year'])){
-//						$cart['inCheckOut'] = true;
-//						$confirmDone=false;
-//						$this->editpayment();
-//						return;
-//				}
-//				$this->setpayment(false);	//For what was this case? internal notice Max
-//			}
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$tmp = array('cart'=>$cart);
 			$_dispatcher = JDispatcher::getInstance();
-			$_dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', $tmp);
-			
+			$_retValues = $_dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', array('cart'=>$cart));
+			foreach ($_retValues as $_retVal) {
+				if ($_retVal === true) {
+					break; // Plugin completed succesful; nothing else to do
+				} elseif ($_retVal === false) { // Missing data, ask for it (again)
+					$cart['inCheckOut'] = true;
+					$confirmDone=false;
+					$this->editpayment();
+					// Checks below outcommented since we're at the end of out loop anyway :-/
+// Remove comments if newchecks need to be implemented.
+// NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+//				} elseif ($_retVal === null) {
+//					continue; // This plugin was skipped
+//				} else {
+//					continue; // Other values not yet implemented
+				}
+			}
+
 			//Show cart and checkout data overview
 			$cart['inCheckOut'] = false;
 			$cart['dataValidated'] = true;
