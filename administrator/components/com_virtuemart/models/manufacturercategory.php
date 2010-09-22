@@ -197,7 +197,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 		if ($categoryId) {
 			$db = JFactory::getDBO();
 
-			$query = 'DELETE FROM `#__vm_maufacturer_category`  WHERE `mf_category_id`= "'.$categoryId.'"';
+			$query = 'DELETE FROM `#__vm_manufacturer_category`  WHERE `mf_category_id`= "'.$categoryId.'"';
 			$db->setQuery($query);
 			if ($db->query()) {
 				return true;
