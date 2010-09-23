@@ -57,8 +57,8 @@ class VirtuemartViewUser extends JView {
 			$userFieldsModel = $this->getModel('userfields');
 //			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
-			
 			$userDetails = $model->getUser();
+
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
@@ -66,6 +66,7 @@ class VirtuemartViewUser extends JView {
 			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
 				. '<span title="' . JText::_('Apply' ) . '" class="icon-32-apply"></span>' . JText::_('Apply' ) . '</a>';
 			$_toolBar =& JToolBar::getInstance('toolbar');
+
 			if ($_new) { // Insert new user
 				JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				JToolBarHelper::divider();
@@ -89,18 +90,17 @@ class VirtuemartViewUser extends JView {
 				$lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
 			}
 
-			$lists['canBlock']      = ($_currentUser->authorize('com_users', 'block user')
+			$lists['canBlock'] = ($_currentUser->authorize('com_users', 'block user')
 							&& ($userDetails->JUser->get('id') != $_currentUser->get('id'))); // Can't block myself
 			$lists['canSetMailopt'] = $_currentUser->authorize('workflow', 'email_events');
-			$lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+			$lists['block'] = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
 			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
+			$lists['vendors'] = ShopFunctions::renderVendorList(@$userDetails->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -158,7 +158,7 @@ class VirtuemartViewUser extends JView {
 					JHTML::script($_script, $_path);
 				}
 			}
-			// Load the required styresheets
+			// Load the required stylesheets
 			if (count($userFields['links']) > 0) {
 				foreach ($userFields['links'] as $_link => $_path) {
 					JHTML::stylesheet($_link, $_path);
@@ -201,10 +201,15 @@ class VirtuemartViewUser extends JView {
 			}
 
 
-			// Check for existing orders for this user
-			$orders = new VirtueMartModelOrders();
-			$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
-			$_vendorData = Vendor::getVendorFields($userDetails->vendor_id, array('vendor_currency_display_style'));
+			if (!$_new) {
+				// Check for existing orders for this user
+				$orders = new VirtueMartModelOrders();
+				$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
+			} else {
+				$orderList = null;
+			}
+
+			$_vendorData = Vendor::getVendorFields(@$userDetails->vendor_id, array('vendor_currency_display_style'));
 			if (count($orderList) > 0) {
 				if (!empty($_vendorData)) {
 					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id
@@ -215,7 +220,7 @@ class VirtuemartViewUser extends JView {
 						, $_currencyDisplayStyle['negative']
 					);
 				} else {
-					$currency = new CurrencyDisplay();
+						$currency = new CurrencyDisplay();
 				}
 				$this->assignRef('currency', $currency);
 			}

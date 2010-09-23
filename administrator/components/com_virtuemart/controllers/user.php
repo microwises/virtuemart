@@ -166,7 +166,6 @@ class VirtuemartControllerUser extends JController {
 	{
 		$id = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($id);
-
 		if (count( $id ) < 1) {
 			JError::raiseWarning(500, JText::_( 'Select a user to modify' ) );
 		}

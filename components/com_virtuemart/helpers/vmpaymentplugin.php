@@ -247,7 +247,6 @@ abstract class vmPaymentPlugin extends JPlugin  {
 			. implode(',', $_vals)
 			. ')';
 		$_db->setQuery($_q);
-		dump ($_values,'ValuesToSave');dump($_q, 'SaveQuery');
 		if (!$_db->query()) {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 		}

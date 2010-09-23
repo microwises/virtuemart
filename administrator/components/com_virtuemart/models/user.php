@@ -77,12 +77,15 @@ class VirtueMartModelUser extends JModel {
 			}
 		}
 		if(empty($this->_id)){
-			$user = JFactory::getUser();
-			if($user){
-				$this->setId((int)$user->id);
-			} else {
+			// Do NOT Default to the current user!
+			// That will break the 'Add' view in the user manager!!
+			// User the setCurrent() method instead after an object has been instatiated
+//			$user = JFactory::getUser();
+//			if($user){
+//				$this->setId((int)$user->id);
+//			} else {
 				$this->setId(0);	
-			}
+//			}
 		}
 
 //		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
@@ -166,9 +169,7 @@ class VirtueMartModelUser extends JModel {
 			
 //			if(!empty($this->_id)){
 				$this->_data->JUser =& JUser::getInstance($this->_id);
-				
 				$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
-	
 				$this->_data->userInfo = array ();
 				for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 					$_ui_id = $_ui[$i]->user_info_id;
@@ -211,7 +212,6 @@ class VirtueMartModelUser extends JModel {
 //		if (function_exists('dumpTrace')) { // J!Dump is installed
 //			dump($this->_data, 'model user->getUser');
 //		}
-		
 		return $this->_data;
 	}
 
@@ -487,6 +487,9 @@ class VirtueMartModelUser extends JModel {
 	 * This function saves the vm Userdata for registered JUsers.
 	 * TODO, setting of shoppergroup isnt done
 	 * 
+	 * TODO No reason not to use this function for new users, but it requires a Joomla <user> plugin
+	 * that gets fired by the onAfterStoreUser. I'll built that (OvE)
+	 * 
 	 * Notice:
 	 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the order_id 
 	 * with the email. The order is saved with all information in an extra table, so there is 
@@ -758,7 +761,6 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery ()
 	{
-
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -779,6 +781,34 @@ class VirtueMartModelUser extends JModel {
 	}
 
 	/**
+	 * Take a list of userIds and check if they all have a record in #__vm_user_info 
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_ids Array with userIds to check (uId, uId, ...)
+	 * @return array with invalid users (userId => userName, ...)
+	 */
+	function validateUsers ($_ids = array())
+	{
+		if (count($_ids) == 0) {
+			return array();
+		}
+		$_missing = $this->_getList('SELECT j.username AS uname '
+			. ',      j.id       AS uid '
+			. 'FROM `#__users` j '
+			. 'WHERE j.id IN (' . join(',', $_ids) . ') '
+			. 'AND NOT EXISTS ('
+				. 'SELECT user_id FROM `#__vm_user_info` v '
+				. 'WHERE v.user_id = j.id'
+			. ')'
+		);
+		$_missingUsers = array();
+		foreach ($_missing as $_m) {
+			$_missingUsers[$_m->uid] = $_m->uname;
+		}
+		return $_missingUsers;
+	}
+
+	/**
 	 * Switch a toggleable field on or off
 	 * 
 	 * @param $field string Database fieldname to toggle
@@ -788,7 +818,12 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function toggle($field, $id = array(), $value = 1)
 	{
-		if (count( $id ))
+		$_missingUsers = $this->validateUsers($id);
+		$id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
+		foreach ($_missingUsers as $_uid => $_username) {
+			JError::raiseWarning(500, JText::_( 'User '. $_username . ' has an incomplete profile') );
+		}
+		if (count($id) > 0)
 		{
 			JArrayHelper::toInteger($id);
 			$ids = implode( ',', $id );
