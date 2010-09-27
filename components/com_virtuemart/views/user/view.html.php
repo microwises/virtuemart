@@ -66,6 +66,7 @@ class VirtuemartViewUser extends JView {
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
+		$this->_model->setCurrent();
 		$editor = JFactory::getEditor();
 		
 		//the cuid is the id of the current user

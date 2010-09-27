@@ -170,7 +170,11 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="name" id="name" size="50" onchange="prep4SQL(this);" value="<?php echo $this->userField->name; ?>" <?php echo ($this->userfield->sys ? 'readonly="readonly"' : ''); ?> />
+				<input class="inputbox" type="text" name="name" id="name" size="50" onchange="prep4SQL(this);" value="<?php
+					echo $this->userField->name;
+				?>" <?php
+					echo ($this->userField->sys ? 'readonly="readonly"' : '');
+				?> />
 			</td>
 		</tr>
 

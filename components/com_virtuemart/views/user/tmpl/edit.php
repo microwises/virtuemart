@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
 JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
+JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 <style type="text/css">
 .invalid {
@@ -57,9 +57,9 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" /><?php echo $this->button_lbl ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
 
