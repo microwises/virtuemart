@@ -7,7 +7,6 @@ DELETE FROM `#__vm_coupons`;
 DELETE FROM `#__vm_orders`;
 DELETE FROM `#__vm_order_history`;
 DELETE FROM `#__vm_order_item`;
-DELETE FROM `#__vm_order_payment`;
 DELETE FROM `#__vm_order_status`;
 DELETE FROM `#__vm_order_user_info`;
 DELETE FROM `#__vm_product`;

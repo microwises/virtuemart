@@ -923,9 +923,9 @@ class ShopFunctions {
 		if ($child == 'Y') {
 			//We have a child list so get the current quantity;
 			$quantity = 0 ;
-			for ($i = 0 ; $i < $cart["idx"] ; $i ++ ) {
-				if ($cart[$i]["product_id"] == $product->product_id) {
-					$quantity = $cart[$i]["quantity"];
+			foreach ($cart->products as $productCart){
+				if ($productCart["product_id"] == $product->product_id) {
+					$quantity = $productCart["quantity"];
 				}
 			}
 		} 

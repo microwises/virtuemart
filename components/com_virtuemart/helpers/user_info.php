@@ -138,7 +138,7 @@ class user_info
 	function saveAddressInCart($_data, $_fields, $_type) {
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
 		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
-		$_cart = cart::getCart();
+		$_cart = VirtueMartCart::getCart();
 		$_address = array();
 		
 		if(is_array($_data)){
@@ -156,8 +156,8 @@ class user_info
 			dump($_data,'saveAddressInCart is object');
 		}
 		dump($_data,'saveAddressInCart');
-		$_cart[$_type] = $_address;
-		cart::setCart($_cart);
+		$_cart->$_type = $_address;
+		$_cart->setCartIntoSession();
 	}
 
 	function address2cartanonym ($data, $_type)
@@ -173,10 +173,10 @@ class user_info
 	{
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
 		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
-		$_cart = cart::getCart();
+		$_cart = VirtueMartCart::getCart();
 		$_address = new stdClass();
-		if(!empty($_cart[$_type])){
-			$_data = $_cart[$_type];
+		if(!empty($_cart->$_type)){
+			$_data = $_cart->$_type;
 			foreach ($_data as $_k => $_v) {
 				$_address->{$_k} = $_v;
 			}
@@ -186,29 +186,6 @@ class user_info
 		$_data = $_model->getUserFieldsByUser($_fields, $_address);
 		return $_data;
 	}
-	
-	//	function saveAddressFromFormToCart($_data, $_fields, $_type) {
-//		//JPATH_COMPONENT does not work, because it is used in FE and BE
-//		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
-//		$_cart = cart::getCart();
-//		$_address = array();
-//		foreach ($_fields as $_fld) {
-//			$name = $_fld->name;
-//			$_address[$name] = $_data[$name];
-//		}
-//			
-//		$_cart[$_type] = $_address;
-//		cart::setCart($_cart);
-//	}
-	
-//	function address2cart ($_usr_inf_id, $_type)
-//	{
-//		$_usr = new VirtueMartModelUser();
-//		$_usr->setCurrent();
-//		$_address = $_usr->getUserAddress(0, $_usr_inf_id, '');
-//		$_userFields = self::getUserFields($_type);
-//		echo '<br />self::saveAddressInCart address2cart<br />';
-//		self::saveAddressInCart($_address[0], $_userFields, $_type);
-//	}
+
 }
 // No closing tag

@@ -55,7 +55,8 @@ class VirtueMartControllerCart extends JController {
 		$view = $this->getView('cart', 'html');
 
 		/* Add the default model */
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+//		$cartModel = VirtueMartCart::getCart(false);
+//		$view->setModel($cartModel, true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
@@ -66,16 +67,6 @@ class VirtueMartControllerCart extends JController {
 		$layoutName = JRequest::getVar('layout', 'cart');
 		$view->setLayout($layoutName);
 
-		//set some default values to the cart
-		$cart = cart::getCart(false);
-		if(!isset($cart['inCheckOut'])){
-			$cart['inCheckOut']=false;
-		}
-		if(!isset($cart['dataValidated'])){
-			$cart['dataValidated']=false;
-		}
-		cart::setCart($cart);
-
 		if($confirmed){
 			$ftask ='confirm';
 		} else {
@@ -83,9 +74,7 @@ class VirtueMartControllerCart extends JController {
 		}
 
 		$view->assignRef('fTask', $ftask);
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($view,'my view in the main Cart task and '.$ftask);
-		}
+
 		/* Display it all */
 		$view->display();
 	}
@@ -100,10 +89,15 @@ class VirtueMartControllerCart extends JController {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
 		$this->getModel('productdetails');
-		$model = $this->getModel('cart');
-		if ($model->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
-		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
-		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+		$cart = VirtueMartCart::getCart();
+		if($cart){
+			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
+			else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');			
+		} else {
+			$mainframe->enqueueMessage('Cart does not exist?', 'error');
+		}
+
 	}
 
 	/**
@@ -115,9 +109,14 @@ class VirtueMartControllerCart extends JController {
 	public function addJS(){
 
 		/* Load the cart helper */
-		$model = $this->getModel('cart');
-		if($model->add()) echo (1); else echo (0);
-
+		$cart = VirtueMartCart::getCart();
+		if($cart){
+			if($cart->add()){
+				 echo (1);
+				 die;
+			} 
+		}
+		echo (0);
 		die;
 	}
 
@@ -148,12 +147,12 @@ class VirtueMartControllerCart extends JController {
 		$coupon_id = JRequest::getVar('coupon_id', '0');
 		if($coupon_id){
 			//Now set the shipping rate into the cart
-			$cart = cart::getCart();
+			$cart = VirtueMartCart::getCart();
 			if($cart){
-				$cart['coupon_id']=$coupon_id;
-				$cart['dataValidated'] = false;
-				cart::setCart($cart);
-				if($cart['inCheckOut']){
+				$cart->coupon_id=$coupon_id;
+				$cart->dataValidated = false;
+				$cart->setCartIntoSession();
+				if($cart->inCheckOut){
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
@@ -177,12 +176,12 @@ class VirtueMartControllerCart extends JController {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);
 
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+//		$view->setModel( VirtueMartCart::getCart());
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 //		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
 //		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
-		dump($view,'I am in task editshipping');
+//		dump($view,'I am in task editshipping');
 		/* Display it all */
 		$view->display();
 	}
@@ -199,12 +198,12 @@ class VirtueMartControllerCart extends JController {
 
 		if($shipping_rate_id){
 			//Now set the shipping rate into the cart
-			$cart = cart::getCart();
+			$cart = VirtueMartCart::getCart();
 			if($cart){
-				$cart['shipping_rate_id']=$shipping_rate_id;
-				$cart['dataValidated'] = false;
-				cart::setCart($cart);
-				if($cart['inCheckOut']){
+				$cart->shipping_rate_id=$shipping_rate_id;
+				$cart->dataValidated = false;
+				$cart->setCartIntoSession();
+				if($cart->inCheckOut){
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
@@ -240,28 +239,29 @@ class VirtueMartControllerCart extends JController {
 
 		/* Get the payment id of the cart */
 		//Now set the shipping rate into the cart
-		$cart = cart::getCart();
+		$cart = VirtueMartCart::getCart();
 		if($cart){
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$cart['paym_id']= JRequest::getVar('paym_id', '0');
+			$cart->paym_id= JRequest::getVar('paym_id', '0');
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnPaymentSelectCheck', array('cart'=>$cart));
-			$cart['dataValidated'] = false;
-			cart::setCart($cart);
+			$cart->dataValidated = false;
+			$cart->setCartIntoSession();
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($_retVal === false) {
-					// TODO Max; what todo of the plugin failed?
-					if ($redirect) { self::Cart(); } else { return false; } // Plugin failed
+					// TODO Max; what todo of the plugin failed? Just nothing we can set here a msg
+//					if ($redirect) { self::Cart(); } else { return false; } // Plugin failed
+					$msg = 'Plugin failed';
 				} elseif (is_array($_retVal)) {
 					// We got modified cart data back from the plugin
 					$cart = $_retVal;
-					$cart['dataValidated'] = false;
-					cart::setCart($cart);
+					$cart->dataValidated = false;
+					$cart->setCartIntoSession();
 					break;
 // Checks below outcommented since we're at the end of out loop anyway :-/
 // Remove comments if newchecks need to be implemented.
@@ -272,9 +272,9 @@ class VirtueMartControllerCart extends JController {
 //					continue; // Other values not yet implemented
 				}
 			}
-			if($cart['inCheckOut']){	
+			if($cart->inCheckOut){	
 				if($redirect){
-					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout',$msg);
 				} else {
 					return true;
 				}
@@ -297,7 +297,8 @@ class VirtueMartControllerCart extends JController {
 	public function delete() {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
-		if (cart::removeProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_REMOVED_SUCCESSFULLY'));
+		$cart = VirtueMartCart::getCart();
+		if ($cart->removeProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_REMOVED_SUCCESSFULLY'));
 		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
@@ -312,7 +313,9 @@ class VirtueMartControllerCart extends JController {
 	public function update() {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
-		if (cart::updateProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_UPDATED_SUCCESSFULLY'));
+		$cartModel = VirtueMartCart::getCart();
+		if ($cartModel->updateProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_UPDATED_SUCCESSFULLY'));
+//		if ($cartModel->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_UPDATED_SUCCESSFULLY'));
 		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
@@ -330,17 +333,17 @@ class VirtueMartControllerCart extends JController {
 
 		dump(JRequest::get('post'),'my Post data in checkout');
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
-		$cart = cart::getCart(false);
+		$cart = VirtueMartCart::getCart(false);
         dump($cart,'My cart in the checkout');
 		if($cart){
 
 			$mainframe = JFactory::getApplication();
-			if( $cart['idx'] == 0){
+			if( $cart->products == 0){
 				$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
 			}
 
 			//But we check the data again to be sure
-			if(empty($cart['BT'])){
+			if(empty($cart->BT)){
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
 			}else {
 				//just for testing
@@ -351,7 +354,7 @@ class VirtueMartControllerCart extends JController {
 				}
 			}
 			//Only when there is an ST data, test if all necessary fields are filled
-			if(!empty($cart['ST'])){
+			if(!empty($cart->ST)){
 				$anonym = true;
 				$redirectMsg = self::validateUserData($cart,$anonym,'ST');
 				if($redirectMsg){
@@ -360,19 +363,19 @@ class VirtueMartControllerCart extends JController {
 			}
 
 			//Test Shipment
-			if(empty($cart['shipping_rate_id'])){
-				$cart['inCheckOut'] = true;
+			if(empty($cart->shipping_rate_id)){
+				$cart->inCheckOut = true;
 				$confirmDone=false;
-				cart::setCart($cart);
+				$cart->setCartIntoSession();
 				$this->editshipping();
 				return;
 			}
 
 			//Test Payment and show payment plugin
-			if(empty($cart['paym_id'])){
-				$cart['inCheckOut'] = true;
+			if(empty($cart->paym_id)){
+				$cart->inCheckOut = true;
 				$confirmDone=false;
-				cart::setCart($cart);
+				$cart->setCartIntoSession();
 				$this->editpayment();
 				return;
 			}
@@ -385,7 +388,7 @@ class VirtueMartControllerCart extends JController {
 				if ($_retVal === true) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($_retVal === false) { // Missing data, ask for it (again)
-					$cart['inCheckOut'] = true;
+					$cart->inCheckOut = true;
 					$confirmDone=false;
 					$this->editpayment();
 					// Checks below outcommented since we're at the end of out loop anyway :-/
@@ -399,10 +402,10 @@ class VirtueMartControllerCart extends JController {
 			}
 
 			//Show cart and checkout data overview
-			$cart['inCheckOut'] = false;
-			$cart['dataValidated'] = true;
+			$cart->inCheckOut = false;
+			$cart->dataValidated = true;
 
-			cart::setCart($cart);
+			$cart->setCartIntoSession();
 			if (function_exists('dumpTrace')) { // J!Dump is installed
 				dump($cart,'Cart runned through checkout and confirmDone '.$confirmDone);
 			}
@@ -416,9 +419,9 @@ class VirtueMartControllerCart extends JController {
 
 	public function confirm(){
 
-		$cart = cart::getCart(false);
+		$cart = VirtueMartCart::getCart(false);
 
-		if($cart['dataValidated'] === true){
+		if($cart->dataValidated === true){
 			$this->checkout(true);
 		} else {
 			self::Cart();
@@ -437,34 +440,35 @@ class VirtueMartControllerCart extends JController {
 		require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'order.php';
 
 		//Here we do the task, like storing order information
-		$cart = cart::getCart(false);
+		$cart = VirtueMartCart::getCart(false);
 
 		//Just to prevent direct call
-		if($cart['dataValidated']){
+		if($cart->dataValidated){
 			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 			$view = $this->getView('cart', 'html');
 			$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
 			$order = $this->getModel( 'orders', 'VirtuemartModel' );
 			$_orderID = $order->createOrderFromCart($cart);
-			$cart['order_id']= $_orderID;
+			$cart->order_id= $_orderID;
 
 			$this->doEmail($cart,$_orderID);
 
 			//We save the old stuff
-			$BT = $cart['BT'];
-			$ST = $cart['ST'];
-			$paym_id = $cart['paym_id'];
-			$shipping_rate_id = $cart['shipping_rate_id'];
+			$BT = $cart->BT;
+			$ST = $cart->ST;
+			$paym_id = $cart->paym_id;
+			$shipping_rate_id = $cart->shipping_rate_id;
 
 			//Empty the cart and fill it again.
-			cart::emptyCart();
-			$cart = cart::getCart();
-			$cart['BT'] = $BT;
-			$cart['ST'] = $ST;
-			$cart['paym_id'] = $paym_id;
-			$cart['shipping_rate_id'] = $shipping_rate_id;
-			$cart['dataValidated']=false;
-			cart::setCart($cart);
+			
+			$cart = VirtueMartCart::getCart();
+			$cart->emptyCart();
+			$cart->BT = $BT;
+			$cart->ST = $ST;
+			$cart->paym_id = $paym_id;
+			$cart->shipping_rate_id = $shipping_rate_id;
+			$cart->dataValidated=false;
+			$cart->setCartIntoSession();
 
 			/* Display it all */
 			$view = $this->getView('cart', 'html');
@@ -490,7 +494,7 @@ class VirtueMartControllerCart extends JController {
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+//		$view->setModel(VirtueMartCart::getCart(),true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
@@ -510,7 +514,7 @@ class VirtueMartControllerCart extends JController {
 		$view->display();
 		$bodyShopper = ob_get_contents();
 		ob_end_clean();
-		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$cart['BT']['email']); //TODO MX set vendorId
+		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$cart->BT['email']); //TODO MX set vendorId
 		if ( $sendShopper !== true ) {
 			$error=true;
 			//TODO set message, must be a raising one
@@ -524,7 +528,7 @@ class VirtueMartControllerCart extends JController {
 		$bodyVendor = ob_get_contents();
 		ob_end_clean();
 
-		$store->setId($cart['vendor_id']);
+		$store->setId($cart->vendorId);
 		$vendor=$store->getStore();
 		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
 		if ( $sendShopper !== true ) {
@@ -575,13 +579,13 @@ class VirtueMartControllerCart extends JController {
 		$redirectMsg=0;
 		foreach($neededFields as $field){
 
-			if(empty($cart[$type][$field->name]) && $field->name!='state_id'){
-				$redirectMsg = 'Enter for '.$type.' '.$field->name.' title: '.JText::_($field->title).' and value: '.$cart[$type][$field->name].' but '.$cart['BT']['country_id'];
+			if(empty($cart->$type[$field->name]) && $field->name!='state_id'){
+				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$cart->$type[$field->name].' but '.$cart->BT['first_name'];
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
 					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
-					if(!$msg=VirtueMartModelState::testStateCountry($cart[$type]['country_id'],$cart[$type]['state_id'])){
+					if(!$msg=VirtueMartModelState::testStateCountry($cart->$type['country_id'],$cart[$type]['state_id'])){
 						$redirectMsg = $msg;
 					}
 				}

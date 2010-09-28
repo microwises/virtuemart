@@ -69,31 +69,39 @@ class VirtueMartModelUser extends JModel {
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
-		// Get the (array of) user status ID(s)
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		if(!empty($idArray[0])){
-			if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+		//Lets try it again, I know Oscar,... if it does not work, we take your solution, hmm I dont get it to work
+//		// Get the (array of) user status ID(s)
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//		if(!empty($idArray[0])){
+//			if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+//				$this->setId((int)$idArray[0]);
+//			}
+//		}
+//		if(empty($this->_id)){
+//			// Do NOT Default to the current user!
+//			// That will break the 'Add' view in the user manager!!
+//			// User the setCurrent() method instead after an object has been instatiated
+////			$user = JFactory::getUser();
+////			if($user){
+////				$this->setId((int)$user->id);
+////			} else {
+//				$this->setId(0);	
+////			}
+//		}
+
+		//Okey, this works now in the backend and Frontend. I prefer this solution, because as developer you neednt to use the setCurrent() method
+		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
+			$idArray = JRequest::getVar('cid',  0, '', 'array');
+			if(empty($idArray[0])){
+				$this->setId((int)0);
+			} else {
 				$this->setId((int)$idArray[0]);
 			}
+			
+		} else {
+			$user = JFactory::getUser();
+			$this->setId((int)$user->id);
 		}
-		if(empty($this->_id)){
-			// Do NOT Default to the current user!
-			// That will break the 'Add' view in the user manager!!
-			// User the setCurrent() method instead after an object has been instatiated
-//			$user = JFactory::getUser();
-//			if($user){
-//				$this->setId((int)$user->id);
-//			} else {
-				$this->setId(0);	
-//			}
-		}
-
-//		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
-//			$this->setId((int)$idArray[0]);
-//		} else {
-//			$user = JFactory::getUser();
-//			$this->setId((int)$user->id);
-//		}
 		
 	}
 

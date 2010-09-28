@@ -133,7 +133,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 
 	function plgVmOnShowList($cart,$checkedPaymId=0){
 		
-		if(!$this -> setVmParams($cart['vendor_id'])) return ;
+		if(!$this -> setVmParams($cart->vendorId)) return ;
 		
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
 		

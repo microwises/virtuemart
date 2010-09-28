@@ -35,32 +35,49 @@ defined('_JEXEC') or die('Restricted access');
 		//
 		$product_rows = array();
 	
-		for ($i=0; $i < $this->cart['idx']; $i++) {
-			$product = $this->products[$i];
+		$i=0;
+		foreach ($this->cart->products as $k=>$product){
+//			dump($product,'product in pricelist'); break;
+//		for ($i=0; $i < $this->cart['idx']; $i++) {	
+//			$product = $this->products[$i];
 			// Added for the zone shipping module
-			//$vars["zone_qty"] += $cart[$i]["quantity"];
+			//$vars["zone_qty"] += $product["quantity"];
 	
 			if ($i % 2) $product_rows[$i]['row_color'] = "sectiontableentry2";
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
 	
 			/* Create product URL */
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$this->cart[$i]['category_id']);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
 			
 			/** @todo Add variants */
-			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name).'';
+			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 			
 			/* Add the variants */
-			$product_rows[$i]['product_variants'] = '';
-			foreach ($this->cart[$i]['variants'] as $vname => $vvalue) {
-				$product_rows[$i]['product_variants'] .= '<br />'.$vname.': '.$vvalue;
+			$variant = '';
+			if(!empty($product->variant)){
+				$product_rows[$i]['product_variant'] = '';
+				
+				foreach ($product->variant as $vname => $vvalue) {
+					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
+					$variant .=$vvalue;
+				}
+			} else {
+				$product_rows[$i]['product_variant']='';
 			}
+
 			
 			/* Add the custom variants */
-			$product_rows[$i]['product_customvariants'] = '';
-			foreach ($this->cart[$i]['customvariants'] as $cname => $cvalue) {
-				$product_rows[$i]['product_customvariants'] .= '<br />'.$cname.': '.$cvalue;
+			$cvariant = '';
+			if(!empty($product->customvariant)){
+				$product_rows[$i]['product_customvariant'] = '';
+				
+				foreach ($product->customvariant as $cname => $cvalue) {
+					$product_rows[$i]['product_customvariant'] .= '<br />'.$cname.': '.$cvalue;
+					$cvariant .= $cvalue;
+				}
+			} else {
+				$product_rows[$i]['product_customvariant']='';
 			}
-			
 	
 			// Display attribute values if this an item
 			$product_rows[$i]['product_attributes'] = '';
@@ -73,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 	
 			/** @todo WEIGHT CALCULATION */
-			//$weight_subtotal = vmShippingMethod::get_weight($cart[$i]["product_id"]) * $cart[$i]['quantity'];
+			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 	
 			/* Product PRICE */
@@ -81,34 +98,33 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_price'] = $this->prices[$i]['salesPrice'];
 
 			/** @todo Format price */
-			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $this->cart[$i]['quantity'];
-			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $this->cart[$i]['quantity'];
-			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $this->cart[$i]['quantity'];
-			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $this->cart[$i]['quantity'];
+			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
+			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $product->quantity;
+			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $product->quantity;
+			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $product->quantity;
 			
 			// UPDATE CART / DELETE FROM CART
 			if($this->layoutName=='cart'){
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
-				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$this->cart[$i]["quantity"].'" />
+				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
-				<input type="hidden" name="cart_id" value="'.$i.'" />
-				<input type="hidden" name="product_id" value="'.$product->product_id.'" />
+				<input type="hidden" name="cart_product_id" value="'.$k.'" />
 				<input type="image" name="update" title="'. JText::_('VM_CART_UPDATE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/update_quantity_cart.png" alt="'. JText::_('VM_UPDATE') .'" align="middle" />
 			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="delete" />
-				<input type="hidden" name="cart_id" value="'.$i.'" />
-				<input type="hidden" name="product_id" value="'.$product->product_id.'" />
+				<input type="hidden" name="cart_product_id" value="'.$k.'" />
 				<input type="image" name="delete" title="'. JText::_('VM_CART_DELETE') .'" src="'.JURI::root().'/components/com_virtuemart/assets/images/remove_from_cart.png" alt="'. JText::_('VM_CART_DELETE') .'" align="middle" />
 			  </form>';
 			} else {
-				$product_rows[$i]['update_form'] = $this->cart[$i]["quantity"];
+				$product_rows[$i]['update_form'] = $product->quantity;
 				$product_rows[$i]['delete_form'] ='';
 			}
+			$i++;
 		} // End of for loop through the Cart
 
 
@@ -124,18 +140,18 @@ defined('_JEXEC') or die('Restricted access');
 				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('VM_CART_TOTAL') ?></th>
 			</tr>
-		<?php foreach( $product_rows as $product ) { ?>
-			<tr valign="top" class="<?php echo $product['row_color'] ?>">
-				<td align="left" ><?php echo $product['product_name'].$product['product_variants'].$product['product_customvariants'].$product['product_attributes']; ?></td>
-				<td align="left" ><?php echo $product['product_sku'] ?></td>
-				<td align="right" ><?php echo $product['product_price'] ?></td>
-				<td align="right" ><?php echo $product['update_form'] ?>
-					<?php echo $product['delete_form'] ?>
+		<?php foreach( $product_rows as $prow ) { ?>
+			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
+				<td align="left" ><?php echo $prow['product_name'].$prow['product_variant'].$prow['product_customvariant'].$prow['product_attributes']; ?></td>
+				<td align="left" ><?php echo $prow['product_sku'] ?></td>
+				<td align="right" ><?php echo $prow['product_price'] ?></td>
+				<td align="right" ><?php echo $prow['update_form'] ?>
+					<?php echo $prow['delete_form'] ?>
 				</td>
-				<td colspan="1" align="right"><?php echo $product['subtotal'] ?></td>
-				<td align="right"><?php echo $product['subtotal_tax_amount'] ?></td>
-				<td align="right"><?php echo $product['subtotal_discount'] ?></td>			
-				<td colspan="1" align="right"><?php echo $product['subtotal_with_tax'] ?></td>
+				<td colspan="1" align="right"><?php echo $prow['subtotal'] ?></td>
+				<td align="right"><?php echo $prow['subtotal_tax_amount'] ?></td>
+				<td align="right"><?php echo $prow['subtotal_discount'] ?></td>			
+				<td colspan="1" align="right"><?php echo $prow['subtotal_with_tax'] ?></td>
 			</tr>
 		<?php } ?>
 		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->

@@ -80,7 +80,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnShowList($cart,$checkedPaymId=0){
 		dump($this,'PluginOnList');
-		if(!$this -> setVmParams($cart['vendor_id'])) return ;
+		if(!$this -> setVmParams($cart->vendorId)) return ;
 		
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
 		
@@ -146,13 +146,13 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnCheckoutCheckPaymentData($cart){
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
-			if(empty($cart['creditcard_id']) ||
-				empty($cart['cc_name']) ||
-				empty($cart['cc_number']) ||
-				empty($cart['cc_code']) ||
-				empty($cart['cc_expire_month']) ||
-				empty($cart['cc_expire_year'])){
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
+			if(empty($cart->creditcard_id) ||
+				empty($cart->cc_name) ||
+				empty($cart->cc_number) ||
+				empty($cart->cc_code) ||
+				empty($cart->cc_expire_month) ||
+				empty($cart->cc_expire_year)){
 					return false;
 			}
 		}
@@ -168,20 +168,20 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	function plgVmOnPaymentSelectCheck($cart)
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart['paym_id'])){
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
-			$cart['creditcard_id']= JRequest::getVar('creditcard', '0');
-			$cart['cc_name']= JRequest::getVar('cart_cc_name', '');
-			$cart['cc_number']= JRequest::getVar('cart_cc_number', '');
-			$cart['cc_code']= JRequest::getVar('cart_cc_code', '');
-			$cart['cc_expire_month']= JRequest::getVar('cart_cc_expire_month', '');
-			$cart['cc_expire_year']= JRequest::getVar('cart_cc_expire_year', '');
+			$cart->creditcard_id= JRequest::getVar('creditcard', '0');
+			$cart->cc_name= JRequest::getVar('cart_cc_name', '');
+			$cart->cc_number= JRequest::getVar('cart_cc_number', '');
+			$cart->cc_code= JRequest::getVar('cart_cc_code', '');
+			$cart->cc_expire_month= JRequest::getVar('cart_cc_expire_month', '');
+			$cart->cc_expire_year= JRequest::getVar('cart_cc_expire_year', '');
 
-			if(!empty($cart['creditcard_id'])){
+			if(!empty($cart->creditcard_id)){
 				$cardModel = new VirtueMartModelCreditcard();
-				$cc_ = $cardModel->getCreditCard($cart['creditcard_id']);
+				$cc_ = $cardModel->getCreditCard($cart->creditcard_id);
 				$cc_type = $cc_->creditcard_code;
-				if (!$cardModel->validate_creditcard_data($cc_type,$cart['cc_number'])) {
+				if (!$cardModel->validate_creditcard_data($cc_type,$cart->cc_number)) {
 					return false;
 				}
 			}

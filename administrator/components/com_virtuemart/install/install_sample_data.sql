@@ -211,9 +211,9 @@ INSERT IGNORE INTO `#__vm_order_item` (`order_item_id`, `order_id`, `user_info_i
 -- Dumping data for table `#__vm_order_payment`
 --
 
-INSERT IGNORE INTO `#__vm_order_payment` (`order_id`, `payment_method_id`, `order_payment_code`, `order_payment_number`, `order_payment_expire`, `order_payment_name`, `order_payment_log`, `order_payment_trans_id`) VALUES
-(1, 1, '', NULL, NULL, NULL, NULL, NULL),
-(2, 1, '', NULL, NULL, NULL, NULL, NULL);
+-- INSERT IGNORE INTO `#__vm_order_payment` (`order_id`, `payment_method_id`, `order_payment_code`, `order_payment_number`, `order_payment_expire`, `order_payment_name`, `order_payment_log`, `order_payment_trans_id`) VALUES
+-- (1, 1, '', NULL, NULL, NULL, NULL, NULL),
+-- (2, 1, '', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Dumping data for table `#__vm_order_user_info`

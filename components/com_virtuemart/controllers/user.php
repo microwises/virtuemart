@@ -237,7 +237,7 @@ class VirtueMartControllerUser extends JController
 		/* Create the view */
 		$view = $this->getView('user', 'html');
 		
-		$view->setModel($this->getModel('cart', 'VirtuemartModel'), true);
+		$view->setModel(VirtueMartCart::getCart(), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
@@ -293,9 +293,9 @@ class VirtueMartControllerUser extends JController
 		if (($_rview = JRequest::getVar('rview', '')) != '') {
 			$return = 'index.php?option=com_virtuemart&view='.$_rview;
 			if ($_rview == 'cart') {
-				$cart = cart::getCart();
+				$cart = VirtueMartCart::getCart();
 				if ($cart){
-					$return .= ($cart['inCheckOut'] ? '&task=checkout' : '');
+					$return .= ($cart->inCheckOut ? '&task=checkout' : '');
 				}
 			}
 		}

@@ -21,9 +21,11 @@ class OrderHelper {
    * @param $cart
    */
   function recordOrder($cart) {
-    for ($i = 0; $cart['idx'] > $i; $i++) {
-	  OrderHelper::updateProductAfterSale($cart[$i]['product_id']);
-	}
+		foreach($cart->products as $product){
+			OrderHelper::updateProductAfterSale($product['product_id']);
+		}
+	  	
+	  }
   }
 
   /**

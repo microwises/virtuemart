@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 //				echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
 			}
 			
-			if(!empty($this->cart['totalsales'])) $totalsalesCart = $this->cart['totalsales'] ; else $totalsalesCart=0;
+			if(!empty($this->cart->totalsales)) $totalsalesCart = $this->cart->totalsales ; else $totalsalesCart=0;
 			if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
 				/** @todo currency format totalsales */
 				?>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 //				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
 //				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
 				$class_att = array('class' => 'checkout_link', 'onClick' => 'javascript:document.checkout.submit(); return true;');
-				if(!empty($this->cart['dataValidated']) && $this->cart['dataValidated']){
+				if(!empty($this->cart->dataValidated) && $this->cart->dataValidated){
 					$text = JText::_('VM_ORDER_CONFIRM_MNU');
 				} else {
 					$text = JText::_('VM_CHECKOUT_TITLE');

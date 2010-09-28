@@ -440,9 +440,9 @@ class VirtueMartModelOrders extends JModel {
 		$_usr =& JFactory::getUser();
 
 		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'cart.php');
-		$_cartModel = new VirtueMartModelCart();
-		$_products = $_cartModel->getCartProducts($_cart);
-		$_prices = $_cartModel->getCartPrices($_cart);
+		$_cartModel = new VirtueMartCart();
+		$_products = $_cartModel->getCartProducts();
+		$_prices = $_cartModel->getCartPrices();
 		
 		$_orderID = $this->_createOrder($_cart, $_usr, $_prices);
 		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
