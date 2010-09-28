@@ -557,8 +557,6 @@ class VirtueMartControllerCart extends JController {
 		return $content;
 	}
 
-
-
 	/**
 	 * Test userdata if valid
 	 *
@@ -590,7 +588,6 @@ class VirtueMartControllerCart extends JController {
 						$redirectMsg = $msg;
 					}
 				}
-
 				//We may add here further Tests. Like if the email has the form a@b.xxx and so on
 			}
 		}

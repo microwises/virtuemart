@@ -72,7 +72,7 @@ class VirtueMartViewProductdetails extends JView {
 		$this->assignRef('product', $product);
 		$pathway->addItem($product->product_name);
 	
-		
+		dump($product,'My product in view.html productdetails');
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */

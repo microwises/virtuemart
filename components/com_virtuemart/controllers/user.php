@@ -116,21 +116,10 @@ class VirtueMartControllerUser extends JController
 		
 		$ftask ='savecartuser';
 		$view->assignRef('fTask', $ftask);
+
 		/* Display it all */
 		$view->display();
 		
-	}
-	
-	/**
-	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
-	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
-	 * 
-	 * @author Max Milbers
-	 */
-	function saveCartUser(){
-		$msg = $this->saveData(true);
-		$this->saveToCart();
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart',$msg);
 	}
 
 	/**
@@ -155,6 +144,19 @@ class VirtueMartControllerUser extends JController
 		/* Display it all */
 		$view->display();
 	}
+	
+	/**
+	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
+	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
+	 * 
+	 * @author Max Milbers
+	 */
+	function saveCartUser(){
+		$msg = $this->saveData(true);
+		$this->saveToCart();
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart',$msg);
+	}
+
 
 	/**
 	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart
