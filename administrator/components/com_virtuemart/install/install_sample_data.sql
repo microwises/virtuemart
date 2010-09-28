@@ -208,14 +208,6 @@ INSERT IGNORE INTO `#__vm_order_item` (`order_item_id`, `order_id`, `user_info_i
 (4, 2, (SELECT `user_info_id` FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" AND `address_type` = "BT" LIMIT 1), 1, 8, 'P02', 'Circular Saw', 1, '181.39420', '198.17', '', 'P', 1274812633, 1274812633, 'Size: XL (+ 1)<br/> Power: strong');
 
 --
--- Dumping data for table `#__vm_order_payment`
---
-
--- INSERT IGNORE INTO `#__vm_order_payment` (`order_id`, `payment_method_id`, `order_payment_code`, `order_payment_number`, `order_payment_expire`, `order_payment_name`, `order_payment_log`, `order_payment_trans_id`) VALUES
--- (1, 1, '', NULL, NULL, NULL, NULL, NULL),
--- (2, 1, '', NULL, NULL, NULL, NULL, NULL);
-
---
 -- Dumping data for table `#__vm_order_user_info`
 --
 

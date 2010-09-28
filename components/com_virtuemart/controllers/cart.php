@@ -274,6 +274,7 @@ class VirtueMartControllerCart extends JController {
 			}
 			if($cart->inCheckOut){	
 				if($redirect){
+					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout',$msg);
 				} else {
 					return true;
@@ -579,13 +580,13 @@ class VirtueMartControllerCart extends JController {
 		$redirectMsg=0;
 		foreach($neededFields as $field){
 
-			if(empty($cart->$type[$field->name]) && $field->name!='state_id'){
-				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$cart->$type[$field->name].' but '.$cart->BT['first_name'];
+			if(empty($cart->{$type}[$field->name]) && $field->name!='state_id'){
+				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$cart->{$type}[$field->name].' but '.$cart->BT['first_name'];
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
 					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
-					if(!$msg=VirtueMartModelState::testStateCountry($cart->$type['country_id'],$cart[$type]['state_id'])){
+					if(!$msg=VirtueMartModelState::testStateCountry($cart->{$type}['country_id'],$cart->{$type}['state_id'])){
 						$redirectMsg = $msg;
 					}
 				}
