@@ -166,7 +166,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * since all plugins *must* reimplement it.
 	 * 
 	 * @param int $_orderNr The ordernumber being processed
-	 * @param array $_orderData Data from the cart
+	 * @param object $_orderData Data from the cart
 	 * @param array $_priceData Price information for this order
 	 * @author Max Milbers
 	 * @author Oscar van Eijk

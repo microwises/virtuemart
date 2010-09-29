@@ -69,16 +69,16 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
 	 *
 	 * @param int $_orderNr
-	 * @param array $_orderData
+	 * @param object $_orderData
 	 * @param array $_priceData
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData['paym_id'])) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
 			return ; // Another method was selected, do nothing
 		}
-		$this->_paym_id = $_orderData['paym_id'];
+		$this->_paym_id = $_orderData->paym_id;
 		$_dbValues['order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);

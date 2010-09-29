@@ -194,16 +194,16 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
 	 *
 	 * @param int $_orderNr
-	 * @param array $_orderData
+	 * @param object $_orderData
 	 * @param array $_priceData
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData['paym_id'])) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
 			return; // Another method was selected, do nothing
 		}
-		$this->_paym_id = $_orderData['paym_id'];
+		$this->_paym_id = $_orderData->paym_id;
 		$_transKey = $this->get_passkey();
 		if( $_transKey === false ) return;
 
@@ -213,12 +213,12 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		$_usr =& JFactory::getUser();
 
-		$_usrBT = $_orderData['BT'];
-		$_usrST = (($_orderData['ST'] === null) ? $_orderData['BT'] : $_orderData['ST']);
+		$_usrBT = $_orderData->BT;
+		$_usrST = (($_orderData->ST === null) ? $_orderData->BT : $_orderData->ST);
 
 		$database = JFactory::getDBO();
 		
-		$_vendorID = $_orderData['vendor_id']; 
+		$_vendorID = $_orderData->vendor_id; 
 		$_vendorCurrency = Vendor::getVendorCurrencyCode($_vendorID);
 
 		// Option to send email to merchant from gateway
@@ -287,15 +287,15 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_type' => AN_TYPE,
 			'x_recurring_billing' => AN_RECURRING,
 
-			'x_card_num' => $_orderData['cc_number'],
-			'x_card_code' => $_orderData['cc_code'],
-			'x_exp_date' => ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']),
+			'x_card_num' => $_orderData->cc_number,
+			'x_card_code' => $_orderData->cc_code,
+			'x_exp_date' => ($_orderData->cc_expire_month) . ($_orderData->cc_expire_year),
 
 			// Level 2 data
 			'x_po_num' => substr($_orderNr, 0, 20),
-			'x_tax' => substr($d['order_tax'], 0, 15),
+			'x_tax' => substr($_priceData['order_tax'], 0, 15),
 			'x_tax_exempt' => "FALSE",
-			'x_freight' => $d['order_shipping'],
+			'x_freight' => $_priceData['order_shipping'],
 			'x_duty' => 0
 		);
 

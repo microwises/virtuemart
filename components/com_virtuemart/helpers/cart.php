@@ -35,7 +35,7 @@ class VirtueMartCart  {
 	
 //	var $productIds = array();
 	var $products = array();
-	var $inCheckout = false;
+	var $inCheckOut = false;
 	var $dataValidated = false;
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;	

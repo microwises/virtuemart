@@ -38,7 +38,7 @@ label.invalid {
 function myValidator(f, t)
 {
 	f.task.value=t;
-	if (f.task.value=='cancel') {
+	if (f.task.value=='<?php echo $this->cTask; ?>') {
 		f.submit();
 		return true;
 	}
@@ -55,9 +55,9 @@ function myValidator(f, t)
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask?>');" /><?php echo JText::_('Save'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('Save'); ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" /><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->cTask; ?>');" ><?php echo JText::_('Cancel'); ?></button>
 </div>
 
 <fieldset>
@@ -133,7 +133,7 @@ function myValidator(f, t)
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="user" />
 <input type="hidden" name="controller" value="user" />
-<input type="hidden" name="task" value="<?php echo $this->fTask?>" />
+<input type="hidden" name="task" value="" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
 <input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 </fieldset> 

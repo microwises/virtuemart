@@ -116,7 +116,9 @@ class VirtueMartControllerUser extends JController
 		
 		$ftask ='savecartuser';
 		$view->assignRef('fTask', $ftask);
-
+		$ctask ='cancelcartuser';
+		$view->assignRef('cTask', $ctask);
+		
 		/* Display it all */
 		$view->display();
 		
@@ -140,7 +142,9 @@ class VirtueMartControllerUser extends JController
 
 		$ftask ='savecheckoutuser';
 		$view->assignRef('fTask', $ftask);
-
+		$ctask ='cancelcheckoutuser';
+		$view->assignRef('cTask', $ctask);
+		
 		/* Display it all */
 		$view->display();
 	}
@@ -157,7 +161,16 @@ class VirtueMartControllerUser extends JController
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart',$msg);
 	}
 
-
+	/**
+	 * Editing a user address was cancelled when called from the cart; return to the cart
+	 * 
+	 * @author Oscar van Eijk
+	 */	
+	function cancelCartUser()
+	{
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
+	}
+	
 	/**
 	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart
 	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
@@ -171,7 +184,17 @@ class VirtueMartControllerUser extends JController
 		//We may add here the option for silent registration.
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
 	}
-	
+
+	/**
+	 * Editing a user address was cancelled during chaeckout; return to the cart
+	 * 
+	 * @author Oscar van Eijk
+	 */	
+	function cancelCheckoutUser()
+	{
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
+	}
+
 	/**
 	 * This function just gets the post data and put the data if there is any to the cart
 	 * 
@@ -285,23 +308,14 @@ class VirtueMartControllerUser extends JController
 	}
 	
 	/**
-	 * TODO the rView is obsolete and we need to think about how we wanna handle it
+	 * Action cancelled; return to the previous view
 	 * 
 	 * @author Oscar van Eijk
 	 */
 	function cancel()
 	{
 		$return = JURI::base();
-		if (($_rview = JRequest::getVar('rview', '')) != '') {
-			$return = 'index.php?option=com_virtuemart&view='.$_rview;
-			if ($_rview == 'cart') {
-				$cart = VirtueMartCart::getCart();
-				if ($cart){
-					$return .= ($cart->inCheckOut ? '&task=checkout' : '');
-				}
-			}
-		}
-		$this->setRedirect( $return, $msg );
+		$this->setRedirect( $return );
 	}
 }
 // No closing tag
