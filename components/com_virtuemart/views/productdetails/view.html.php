@@ -81,6 +81,7 @@ class VirtueMartViewProductdetails extends JView {
 			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0]; 
 		}
 		
+		shopFunctionsF::setLastVisitedCategoryId($category_id);
 		
 		if($category_model){
 			$category = $category_model->getCategory($category_id);
@@ -123,6 +124,7 @@ class VirtueMartViewProductdetails extends JView {
 		} else {
 			
 		}
+		
 		
 		
 		/* Display it all */

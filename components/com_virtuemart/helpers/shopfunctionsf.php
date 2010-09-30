@@ -21,6 +21,19 @@ defined('_JEXEC') or die('Restricted access');
 
 class shopFunctionsF {
 	
+	public function getLastVisitedCategoryId(){
+		
+		$session = JFactory::getSession();
+		return $session->get('vmlastvisitedcategoryid', 0, 'vm');
+		
+	}
+
+	public function setLastVisitedCategoryId($categoryId){
+		$session = JFactory::getSession();
+		return $session->set('vmlastvisitedcategoryid', (int) $categoryId, 'vm');
+		
+	}
+		
 	/**
 	 * function to create a div to show the prices, is necessary for JS
 	 * 

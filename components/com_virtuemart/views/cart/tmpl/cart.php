@@ -19,25 +19,11 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-//if (function_exists('dumpTrace')) { // J!Dump is installed
-////	dump($this->cart, 'Cart');
-//} else {
-//	echo '<pre>'.print_r($this->cart,1).'</pre>';
-//}
 
-/* Show Continue Shopping link when the cart is empty */ 
-//if ($this->cart["idx"] == 0) {
-//	echo '<h2>'. JText::_('VM_CART_TITLE') .'</h2>';
-//	echo JText::_('VM_EMPTY_CART');
-//	echo '<br />';
-//	echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
-//}
-//else { 
-
-	include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+//This displays the pricelist MUST be done with tables, because it is also used for the emails
+include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	
 ?>
-<form action="index.php" method="post">
 
 <fieldset>
 	<legend>
@@ -63,13 +49,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 		echo '<fieldset>';
-		echo 'Your Billto address: <br/>';
+		echo JText::_('VM_USER_FORM_BILLTO_YOUR').' <br/>';
 		foreach($this->BTaddress as $item){				
 			echo $item['title'].': '.$item['value'].'<br/>';
 		}
 		echo '<br/><br/>';
 		
-		echo 'Your Shipto address: <br/>';
+		echo JText::_('VM_USER_FORM_SHIPTO_YOUR').' <br/>';
 		foreach($this->STaddress as $item){		
 			echo $item['title'].': '.$item['value'].'<br/>';
 		}
@@ -86,43 +72,22 @@ defined('_JEXEC') or die('Restricted access');
 			$basket_html .= $tpl->fetch( 'common/couponField.tpl.php' );
 		}
 		*/
-	
-		
-		?>
-		<div align="center">
-			<?php
-			if ($this->continue_link != '') {
-				echo "<input type='button' class='continue_link' value='".JText::_('VM_CONTINUE_SHOPPING')."' />";
-//				echo JHTML::link($this->continue_link, JText::_('VM_CONTINUE_SHOPPING'), array('class' => 'continue_link'));
-			}
-			
-			if(!empty($this->cart->totalsales)) $totalsalesCart = $this->cart->totalsales ; else $totalsalesCart=0;
-			if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
-				/** @todo currency format totalsales */
-				?>
-				<span style="font-weight:bold;"><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2'). " ".$totalsalesCart ?></span>
-				<?php
-			}
-			else {
-//				$href = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
-//				$href2 = JRoute::_('index2.php?option=com_virtuemart&view=checkout');
-				$class_att = array('class' => 'checkout_link', 'onClick' => 'javascript:document.checkout.submit(); return true;');
-				if(!empty($this->cart->dataValidated) && $this->cart->dataValidated){
-					$text = JText::_('VM_ORDER_CONFIRM_MNU');
-				} else {
-					$text = JText::_('VM_CHECKOUT_TITLE');
-				}
+	echo '<div class="cartfooterlinks" >';
+	if ($this->continue_link_html != '') {			
+		echo $this->continue_link_html;
+	}
 
-				/** @todo build the greybox checkout */
-				//if ($this->get_cfg('useGreyBoxOnCheckout', 1)) echo vmCommonHTML::getGreyBoxPopupLink( $href2, $text, '', $text, $class_att, 500, 600, $href );
-//				echo JHTML::link('#', $text, $class_att);
-//				echo "<a href='#' class='checkout_link' onClick='checkout.submit(); return true;'>$text</a>";
-				echo "<input type='submit' class='checkout_link' value='$text' />";
-			} ?>
-		</div>
-		<input type="hidden" name="option" value="com_virtuemart"/>
-		<input type="hidden" name="view" value="cart"/>
-		<input type="hidden" name="layout" value="cart"/>
-		<input type="hidden" name="task" value="<?php echo $this->fTask;?>" />
-		</form>
-<?php // } ?>
+//	if(!empty($this->cart->totalsales)) $totalsalesCart = $this->cart->totalsales ; else $totalsalesCart=0;
+//	if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
+//		/** @todo currency format totalsales */
+//		
+//		<span style="font-weight:bold;"><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2'). " ".$totalsalesCart </span>
+//		<?php
+//	}
+//	else {
+		echo $this->checkout_link_html;
+		
+//	} 
+echo '</div>';
+?>
+

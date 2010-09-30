@@ -91,8 +91,8 @@ class VirtueMartViewCart extends JView {
 			
 			$this->prepareAddressDataInCart();
 			
-			$pathway->addItem(JText::_('VM_CART_TITLE'));
-			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
+			$pathway->addItem(JText::_('VM_CART_OVERVIEW'));
+			$mainframe->setPageTitle(JText::_('VM_CART_OVERVIEW'));
 			
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
 
@@ -109,16 +109,29 @@ class VirtueMartViewCart extends JView {
 		}		
 		
 		/* Get a continue link */
-		$category_id = JRequest::getInt('category_id');
-		$product_id = JRequest::getInt('product_id');
-		$manufacturer_id = JRequest::getInt('manufacturer_id');
+//		$category_id = JRequest::getInt('category_id');
+//		$product_id = JRequest::getInt('product_id');
+//		$manufacturer_id = JRequest::getInt('manufacturer_id');
+//		
+//		if (!empty($category_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
+//		elseif (empty($category_id) && !empty($product_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->get('categoryid'));
+//		elseif (!empty($manufacturer_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$manufacturer_id);
+//		else $continue_link = JRoute::_('index.php?option=com_virtuemart');
 		
-		if (!empty($category_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
-		elseif (empty($category_id) && !empty($product_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->get('categoryid'));
-		elseif (!empty($manufacturer_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$manufacturer_id);
-		else $continue_link = JRoute::_('index.php?option=com_virtuemart');
+		$category_id = shopFunctionsF::getLastVisitedCategoryId();
+		$categoryLink='';
+		if($category_id){
+			$categoryLink='&category_id='.$category_id;
+		}
+		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 		
-		$this->assignRef('continue_link', $continue_link);
+		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+		$this->assignRef('continue_link_html', $continue_link_html);
+		
+		if($this->fTask = 'confirm') $text = JText::_('VM_ORDER_CONFIRM_MNU'); else $text = JText::_('VM_CHECKOUT_TITLE');
+		$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task='.$this->fTask);
+		$checkout_link_html = '<a class="checkout_link" href="'.$checkout_link.'" />'.$text.'</a>';
+		$this->assignRef('checkout_link_html', $checkout_link_html);
 		
 		$this->assignRef('lists', $this->lists);
 		

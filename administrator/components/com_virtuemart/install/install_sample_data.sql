@@ -51,6 +51,14 @@ INSERT IGNORE INTO `#__vm_category_xref` (`category_parent_id`, `category_child_
 (2, 4, NULL, 1),
 (2, 5, NULL, 1);
 
+--
+-- Daten data for table `#__vm_payment_method`
+--
+
+INSERT INTO `#__vm_payment_method` (`paym_id`, `paym_vendor_id`, `paym_jplugin_id`, `paym_name`, `paym_element`, `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount`, `ordering`, `published`, `paym_extra_info`, `paym_secret_key`, `paym_params`, `shared`) VALUES
+(NULL, 1, 36, 'Cash on delivery', '', '0.00', 0, '0.00', '0.00', 0, 1, '', '', '0', 0),
+(NULL, 1, 36, 'Authorize', '', '0.00', 0, '0.00', '0.00', 0, 1, '', '', '0', 0);
+
 
 --
 -- Dumping data for table `#__vm_product`

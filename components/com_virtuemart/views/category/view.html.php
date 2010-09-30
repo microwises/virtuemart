@@ -48,6 +48,7 @@ class VirtuemartViewCategory extends JView {
 	    $vendorId = 1;
 	    
 	    $category = $categoryModel->getCategory($categoryId);
+	    
 	    /* Add the category name to the pathway */
 		$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
@@ -58,6 +59,8 @@ class VirtuemartViewCategory extends JView {
 	    /* Load the products in the given category */
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
+	    
+	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 	    
 		parent::display($tpl);
 	}

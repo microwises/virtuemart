@@ -95,21 +95,51 @@ input.addtocart_button_module:hover  {
 .quantity_box_button_up {
 	background-image: url(images/up_small.gif);
 }
-.continue_link, .checkout_link {
-	margin: 2px;
-	padding: 2px 0px 2px 40px;
+
+div.cartfooterlinks {
+	display: block;
+	position: relative;
+	top: 10px;
+	height: 52px;
+}
+a.continue_link,a.checkout_link {
+	position: absolute; bottom: 10px;
+	width: 40%;
+	height: 24px;
+	margin: 10px;
+	padding: 2px 2px 2px 2px;
 	vertical-align: middle;
+	text-align: center;
 	font-weight: bold;
 	font-size: 1.4em;
-	width: 40%;
 }
-.checkout_link {
-	margin-left: 40px;
-	background: url( 'images/forward.png' ) no-repeat left;
+
+a.continue_link:link,a.continue_link:visited,a.checkout_link:link, a.checkout_link:visited {
+	border-style: inset;
+	text-decoration: none;
 }
-.continue_link {
+
+a.continue_link:hover,a.continue_link:focus,a.checkout_link:hover,a.checkout_link:focus {
+	border-style: outset;
+	text-decoration: none;
+}
+
+a.continue_link:active,a.checkout_link:active {
+	border-style: outset;
+	text-decoration: underline;
+}
+
+a.continue_link {
+	left: 5px;
 	background: url( 'images/back.png' ) no-repeat left;
 }
+
+a.checkout_link {
+	right: 5px;
+	background: url( 'images/forward.png' ) no-repeat left;
+}
+
+a.chekc
 .next_page {
 	background: url( 'images/next_16x16.png' ) no-repeat right;
 	padding-right: 30px;
