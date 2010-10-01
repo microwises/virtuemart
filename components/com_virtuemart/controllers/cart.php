@@ -316,7 +316,7 @@ class VirtueMartControllerCart extends JController {
 
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = VirtueMartCart::getCart();
-		if($cart && $cart->getDataValidated()){
+		if($cart ){
 			$cart->checkout();
 		}
 	}
@@ -333,29 +333,10 @@ class VirtueMartControllerCart extends JController {
 
 		//Use false to prevent valid boolean to get deleted
 		$cart = VirtueMartCart::getCart(false);
-		if($cart){
+		if($cart && $cart->getDataValidated()){
 			$cart->confirmDone();
 		}
 	}
-
-//	public function orderdone(){
-//
-//		/* Create the view */
-//		$view = $this->getView('cart', 'html');
-//
-//		/* Add the default model */
-//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
-//
-//		/* Set the layout */
-//		$view->setLayout('orderdone');
-//
-//		/* Display it all */
-//		$view->display();
-//	}
 	
 	function cancel(){
 	 	$mainframe = JFactory::getApplication();

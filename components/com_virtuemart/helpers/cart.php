@@ -386,7 +386,6 @@ class VirtueMartCart  {
 		if($this->_dataValidated){
 			$this->_confirmDone = true;
 			$this->confirmedOrder();
-			
 		} else {
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DATA_NOT_VALID'));
@@ -394,16 +393,17 @@ class VirtueMartCart  {
 	}
 
 	function checkout(){
-		$this -> checkoutData();
-		$mainframe = JFactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+		if($this -> checkoutData()){
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));		
+		}
 	}
 	
 	private function checkoutData(){
 
 		$this->_inCheckOut = true;
 		$this->_dataValidated = true;
-		
+
 		$mainframe = JFactory::getApplication();
 		if( $this->products == 0){
 			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
@@ -416,7 +416,6 @@ class VirtueMartCart  {
 				}
 			}	
 		}
-
 		
 		//But we check the data again to be sure
 		if(empty($this->BT)){
@@ -439,22 +438,20 @@ class VirtueMartCart  {
 		if(empty($this->shipping_rate_id)){
 			
 //			$confirmDone=false;
-			$this->setCartIntoSession();
+//			$this->setCartIntoSession();
 			
 //			$this->editshipping();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
-			return;
 		}
 
 		//Test Payment and show payment plugin
 		if(empty($this->paym_id)){
 
 //			$confirmDone=false;
-			$this->setCartIntoSession();
+//			$this->setCartIntoSession();
 			
 //			$this->editpayment();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
-			return;
 		} else {
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
@@ -489,7 +486,7 @@ class VirtueMartCart  {
 			dump($this,'Cart runned through checkout and $this->_dataValidated '.$this->_dataValidated);
 		}
 
-		
+		return true;
 	}
 	
 	/**
