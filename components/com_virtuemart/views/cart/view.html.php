@@ -32,6 +32,7 @@ jimport( 'joomla.application.component.view');
 */
 class VirtueMartViewCart extends JView {
 	
+	private $_cart;
 	private $_user;
 	private $_userDetails;
 	public $lists;
@@ -43,9 +44,12 @@ class VirtueMartViewCart extends JView {
 //		$layoutName = JRequest::getVar('layout', $this->getLayout());
 //		$layoutName = JRequest::getVar('layout', 0);
 		$layoutName = $this->getLayout();
-		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'cart');
+		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 
+		$this->_cart = VirtueMartCart::getCart(false);
+		$this->assignRef('cart', $this->_cart);
+			
 		if($layoutName=='editcoupon'){
 		
 			$this->lSelectCoupon();
@@ -64,8 +68,7 @@ class VirtueMartViewCart extends JView {
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
-			$cart = VirtueMartCart::getCart(false);
-			$this->assignRef('cart', $cart);
+
 			
 			JPluginHelper::importPlugin('vmpayment');
 
@@ -81,7 +84,7 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
 			$mainframe->setPageTitle(JText::_('VM_CART_THANKYOU'));
 		
-		} else if($layoutName=='cart' || $layoutName=='default' ){
+		} else if($layoutName=='default' ){
 			
 			$this->prepareCartData();
 			
@@ -127,14 +130,21 @@ class VirtueMartViewCart extends JView {
 		
 		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
+
+		if($this->_cart->getDataValidated()){
+			 $text = JText::_('VM_ORDER_CONFIRM_MNU');
+			 $checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm');
+		} else {
+			$text = JText::_('VM_CHECKOUT_TITLE');
+			$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
+		}
 		
-		if($this->fTask = 'confirm') $text = JText::_('VM_ORDER_CONFIRM_MNU'); else $text = JText::_('VM_CHECKOUT_TITLE');
-		$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task='.$this->fTask);
 		$checkout_link_html = '<a class="checkout_link" href="'.$checkout_link.'" />'.$text.'</a>';
 		$this->assignRef('checkout_link_html', $checkout_link_html);
 		
 		$this->assignRef('lists', $this->lists);
 		
+		dump($this->_cart,'My Cart in cartview');
 		parent::display($tpl);
 	}
 	
@@ -181,9 +191,9 @@ class VirtueMartViewCart extends JView {
 			}
 		
 			$_selectedAddress = (
-				empty($cart->address_shipto_id)
+				empty($this->_cart->address_shipto_id)
 					? $addressList[0]->user_info_id // Defaults to 1st BillTo
-					: $cart->address_shipto_id
+					: $this->_cart->address_shipto_id
 				);
 				
 			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
@@ -227,45 +237,43 @@ class VirtueMartViewCart extends JView {
 	private function prepareCartData(){
 
 		/* Get the products for the cart */
-		$cart = VirtueMartCart::getCart();
-		$this->assignRef('cart', $cart);
-		
-		dump($cart,'cart');
-//		$this->assignRef('products', $products);
 				
-		$prices = $cart->getCartPrices();
+		$prices = $this->_cart->getCartPrices();
 		$this->assignRef('prices', $prices);
 
+		//TODO Oscar this must be added to userfields somehow,
+		//There should be possibility to show only the filled userfields and 
+		//the country, state name instead (in other cases we need always the ids and all fields,...
 		//Add names of country/state
-		if(!empty($cart->BT)){
-			if($cart->BT['country_id']){
+		if(!empty($this->_cart->BT)){
+			if($this->_cart->BT['country_id']){
 				$countryModel = self::getModel('country');
-				$countryModel->setId($cart->BT['country_id']);
+				$countryModel->setId($this->_cart->BT['country_id']);
 				$country = $countryModel->getCountry();
-				if($country) $cart->BT['country_name'] = $country->country_name;
+				if($country) $this->_cart->BT['country_name'] = $country->country_name;
 			}
 			
-			if($cart->BT['state_id']){
+			if($this->_cart->BT['state_id']){
 				$stateModel = self::getModel('state');
-				$stateModel->setId($cart->BT['state_id']);
+				$stateModel->setId($this->_cart->BT['state_id']);
 				$state = $stateModel->getState();
-				if($state) $cart->BT['state_name'] = $state->state_name;	
+				if($state) $this->_cart->BT['state_name'] = $state->state_name;	
 			}	
 		}
 		
-		if(!empty($cart->ST)){
-			if($cart->ST['country_id']){
+		if(!empty($this->_cart->ST)){
+			if($this->_cart->ST['country_id']){
 				$countryModel = self::getModel('country');
-				$countryModel->setId($cart->ST['country_id']);
+				$countryModel->setId($this->_cart->ST['country_id']);
 				$country = $countryModel->getCountry();
-				if($country) $cart->ST['country_name'] = $country->country_name;
+				if($country) $this->_cart->ST['country_name'] = $country->country_name;
 			}
 			
-			if($cart->ST['state_id']){
+			if($this->_cart->ST['state_id']){
 				$stateModel = self::getModel('state');
-				$stateModel->setId($cart->ST['state_id']);
+				$stateModel->setId($this->_cart->ST['state_id']);
 				$state = $stateModel->getState();
-				if($state) $cart->ST['state_name'] = $state->state_name;	
+				if($state) $this->_cart->ST['state_name'] = $state->state_name;	
 			}
 		}
 	}
@@ -274,8 +282,7 @@ class VirtueMartViewCart extends JView {
 		
 
 		$store = $this->getModel('store','VirtuemartModel');
-		if(empty($cart->vendorId)) $cart->vendorId=1;
-		$store->setId($cart->vendorId);
+		$store->setId($this->_cart->vendorId);
 		$_store = $store->getStore();
 		$this->assignRef('store',$_store);
 		
@@ -305,17 +312,14 @@ class VirtueMartViewCart extends JView {
 	
 	private function lSelectPayment(){
 		
-//		$cartModel = $this->getModel('cart');
-		$cart = VirtueMartCart::getCart(false);
-		
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = $this->getModel('paymentmethod');
 		
-		$selectedPaym = empty($cart->paym_id) ? 0 : $cart->paym_id;
+		$selectedPaym = empty($this->_cart->paym_id) ? 0 : $this->_cart->paym_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
 //		Done by the plugin, shouldnt be used anylonger
-//		$selectedCC = empty($cart->creditcard_id']) ? 0 : $cart->creditcard_id'];
+//		$selectedCC = empty($this->_cart->creditcard_id']) ? 0 : $this->_cart->creditcard_id'];
 //		$this->assignRef('selectedCC',$selectedCC);
 
 		$payments = $paymentModel->getPayms(false,true);
@@ -340,9 +344,6 @@ class VirtueMartViewCart extends JView {
 	}
 	
 	private function prepareAddressDataInCart(){
-
-//		$cartModel = $this->getModel('cart');
-		$cart = VirtueMartCart::getCart(false);
 		
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 		
@@ -351,7 +352,7 @@ class VirtueMartViewCart extends JView {
 						, 'agreed', 'address_type', 'bank');
 
 		$BTaddress['fields']= array();
-		if(!empty($cart->BT)){
+		if(!empty($this->_cart->BT)){
 			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
 			$_userFieldsBT = $userFieldsModel->getUserFields(
@@ -370,7 +371,7 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 		
 		$STaddress['fields']= array();
-		if(!empty($cart->ST)){
+		if(!empty($this->_cart->ST)){
 			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			$_userFieldsST = $userFieldsModel->getUserFields(
 				'shipping'

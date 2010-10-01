@@ -435,17 +435,17 @@ class VirtueMartModelOrders extends JModel {
 	 * @param $_cart array The cart data
 	 * @return integer The new ordernumber
 	 */
-	public function createOrderFromCart($_cart)
+	public function createOrderFromCart()
 	{
 		$_usr =& JFactory::getUser();
 
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'cart.php');
-		$_cartModel = new VirtueMartCart();
-		$_products = $_cartModel->getCartProducts();
-		$_prices = $_cartModel->getCartPrices();
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		$_cart = VirtueMartCart::getCart(false);
+//		$_products = $_cart->getCartProducts();
+		$_prices = $_cart->getCartPrices();
 		
 		$_orderID = $this->_createOrder($_cart, $_usr, $_prices);
-		$this->_createOrderLines($_orderID, $_cart, $_products, $_prices);
+		$this->_createOrderLines($_orderID, $_cart, $_cart->products, $_prices);
 		$this->_updateOrderHist($_orderID);
 		$this->_writeUserInfo($_orderID, $_usr, $_cart);
 		$this->_handlePayment($_orderID, $_cart, $_prices);
@@ -476,10 +476,14 @@ class VirtueMartModelOrders extends JModel {
 //		$_prices['paymentDiscount']		Discount
 //		$_prices['salesPricePayment']	Total
 
+		//you can get the cart at start or for every function
+//		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+//		$_cart = VirtueMartCart::getCart(false);
+		
 		$_orderData =  $this->getTable('orders');
 		$_orderData->order_id = null;
 		$_orderData->user_id = $_usr->get('id');
-		$_orderData->vendor_id = $_cart['vendor_id'];
+		$_orderData->vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
 		//Note as long we do not have an extra table only storing addresses, the user_info_id is not needed.
 		//The user_info_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
@@ -496,14 +500,14 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->order_discount = $_prices['discountAmount'];
 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
 		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
-		if (isset($_cart['currency_id'])) {
-			$_orderData->user_currency_id = $_cart['currency_id'];
-			$_orderData->user_currency_rate = $_cart['currency_rate'];
+		if (isset($_cart->currency_id)) {
+			$_orderData->user_currency_id = $_cart->currency_id;
+			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
-		$_orderData->payment_method_id = $_cart['paym_id'];
+		$_orderData->payment_method_id = $_cart->paym_id;
 		$_orderData->cdate = time();
 		$_orderData->mdate = time();
-		$_orderData->ship_method_id = $_cart['shipping_rate_id'];
+		$_orderData->ship_method_id = $_cart->shipping_rate_id;
 		$_orderData->customer_note = ''; // TODO Customer notes not yet implemented (Max?)
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
 		$_orderData->store();
@@ -591,7 +595,7 @@ class VirtueMartModelOrders extends JModel {
 		$_productModel = new VirtueMartModelProduct();
 
 		$_orderItems = $this->getTable('order_item');
-		$_lineCount = 0;
+//		$_lineCount = 0;
 		foreach ($_products as $_prod) {
 		// TODO: add fields for the following data:
 //    * [double] basePrice = 38.48
@@ -613,28 +617,34 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_id = $_prod->product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name;
-			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
-			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
-			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
+			
+			//Just for you Oscar, remove it then
+//			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
+//			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
+//			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
+			$_orderItems->product_quantity = $_prod->quantity;
+			$_orderItems->product_item_price = $_prod->prices['basePriceVariant'];
+			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 //			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 			$_orderItems->cdate = time();
 			$_orderItems->mdate = time();
 			$_orderItems->product_attribute = '';
-			$_variants = array_merge($_cart[$_lineCount]['variants'], $_cart[$_lineCount]['customvariants']);
-			foreach ($_variants as $_a => $_v) {
-				$_orderItems->product_attribute .= (
-					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
-					. $_a . ': ' . $_v
-				);
-			}
+			
+			//TODO Oscar, must be redone there is now an array, variants and customvariants in the product object
+//			$_variants = array_merge($_cart[$_lineCount]['variants'], $_cart[$_lineCount]['customvariants']);
+//			foreach ($_variants as $_a => $_v) {
+//				$_orderItems->product_attribute .= (
+//					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
+//					. $_a . ': ' . $_v
+//				);
+//			}
 
 			$_orderItems->store();
 
 			// Update stock
-			$_productModel->decreaseStockAfterSales ($_prod->product_id, $_cart[$_lineCount]['quantity']);
+			$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
 
-			$_lineCount++;
 		}
 	}
 

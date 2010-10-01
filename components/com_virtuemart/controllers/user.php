@@ -278,7 +278,7 @@ class VirtueMartControllerUser extends JController
 		$view->display();
 		$bodyShopper = ob_get_contents();
 		ob_end_clean();
-		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$userEmail); 
+		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$user->email); 
 		if ( $sendShopper !== true ) {
 			$ok=false;
 			//TODO set message, must be a raising one

@@ -173,7 +173,7 @@ class user_info
 	{
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
 		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
-		$_cart = VirtueMartCart::getCart();
+		$_cart = VirtueMartCart::getCart(false);
 		$_address = new stdClass();
 		if(!empty($_cart->$_type)){
 			$_data = $_cart->$_type;

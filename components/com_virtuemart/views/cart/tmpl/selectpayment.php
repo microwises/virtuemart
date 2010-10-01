@@ -76,6 +76,5 @@ echo '<p>Please select a paymentmethod that fit your needs:</p><br /><br />';
 ?>	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="setpayment" />
-	<input type="hidden" name="layout" value="cart"/>
 	<input type="hidden" name="controller" value="cart" />
 </form>

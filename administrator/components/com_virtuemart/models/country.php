@@ -118,6 +118,7 @@ class VirtueMartModelCountry extends JModel {
 	if (empty($this->_data)) {
 	    $this->_data = $this->getTable();
 	    $this->_data->load((int)$this->_id);
+
 	}
 
 	if (!$this->_data) {
@@ -204,16 +205,7 @@ class VirtueMartModelCountry extends JModel {
     	
     	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','country',$publishId);
-    	
-//	$table = $this->getTable('country');
-//	$countryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-//
-//	if (!$table->publish($countryIds, $publishId)) {
-//	    $this->setError($table->getError());
-//	    return false;
-//	}
-//
-//	return true;
+
     }
 
 

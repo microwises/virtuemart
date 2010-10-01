@@ -35,8 +35,9 @@ class VirtueMartCart  {
 	
 //	var $productIds = array();
 	var $products = array();
-	var $inCheckOut = false;
-	var $dataValidated = false;
+	private $_inCheckOut = false;
+	private $_dataValidated = false;
+	private $_confirmDone = false;
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
@@ -46,7 +47,6 @@ class VirtueMartCart  {
 		self::setCartIntoSession();
 
 	}
-	
 
 
 	/**
@@ -62,7 +62,9 @@ class VirtueMartCart  {
 		$cartTemp = $session->get('vmcart', 0, 'vm');
 		if(!empty($cartTemp) ){
 			$cart = unserialize($cartTemp);
-			if(!$deleteValidation) $cart->dataValidated = false;
+			if($deleteValidation){
+				$cart->setDataValidation();
+			}
 		} else {
 			$cart = new VirtueMartCart;
 		}
@@ -93,6 +95,16 @@ class VirtueMartCart  {
 		$session = JFactory::getSession();
 		$session->set('vmcart', 0, 'vm');
 	}
+	
+	public function setDataValidation($valid=false){
+		$this->_dataValidated = $valid;
+		$this->setCartIntoSession();
+	}
+	
+	public function getDataValidated(){
+		return $this->_dataValidated;
+	}
+	
 	
 	/**
 	* Add a product to the cart 
@@ -178,59 +190,6 @@ class VirtueMartCart  {
 		$this->setCartIntoSession();
 		return true;
 	}
-	
-	/**
-	 * Checks if the quantity is correct
-	 * 
-	 * @author Max Milbers
-	 */
-	public function checkForQuantities($product,$quantity=0) {
-		
-		$mainframe = JFactory::getApplication();
-		/* Check for a valid quantity */
-		if (!preg_match("/^[0-9]*$/", $quantity)) {
-			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
-			return false;
-		}
-		
-		/* Check for negative quantity */
-		if ($quantity < 0) {
-			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
-			return false;
-		}
-	
-		/* Check for the minimum and maximum quantities */
-		list($min,$max) = explode(',', $product->product_order_levels);
-		if ($min != 0 && $quantity < $min) {
-			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MIN_ORDER'), $min), 'error');
-			return false;
-		}
-		if ($max !=0 && $quantity > $max) {
-			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MAX_ORDER'), $max), 'error');
-			return false;
-		}
-		
-		$ci = 0;
-		$request_stock = array();
-		
-		/* Check to see if checking stock quantity */
-		if (VmConfig::get('check_stock', false)) {
-			if ($quantity > $product->product_in_stock) {
-				/* Create an array for out of stock items and continue to next item */
-				$request_stock[$ci]['product_id'] = $product->product_id;
-				$request_stock[$ci]['quantity'] = $quantity;
-				$ci++;
-				continue;
-			}
-		}
-		if(count($request_stock)!=0){
-			foreach($request_stock as $rstock){
-				$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_OUT_OF_STOCK'), 'error');	
-			}
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	* Remove a product from the cart 
@@ -259,7 +218,6 @@ class VirtueMartCart  {
 //		/* Remove the product */
 //		foreach ($cart_ids as $cart_id) {
 //			'P'.$product->product_id.$product->variants.$product->customvariants
-			dump($prod_id,'I delete product from the cart with prod_id ');
 			unset($this->products[$prod_id]);
 //		}
 
@@ -331,6 +289,23 @@ class VirtueMartCart  {
 		return $model->getProduct($product_id, false);
 	}
 	
+//	/**
+//	* Function Description 
+//	* 
+//	* @author Max Milbers 
+//	* @access public
+//	* @param array $cart the cart to get the products for
+//	* @return array of product objects
+//	*/
+//	public function getCartProducts() {
+//		$products = array();
+////		for ($i = 0; $cart['idx'] > $i; $i++) {
+//		foreach($this->products as $product)
+//			$products[] = $this->getProduct($product->product_id);
+//		}
+//		return $products;
+//	}
+	
 	/**
 	* Get the category ID from a product ID 
 	* 
@@ -345,7 +320,336 @@ class VirtueMartCart  {
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
+	
 		
+	/**
+	 * Checks if the quantity is correct
+	 * 
+	 * @author Max Milbers
+	 */
+	private function checkForQuantities($product,$quantity=0) {
+		
+		$mainframe = JFactory::getApplication();
+		/* Check for a valid quantity */
+		if (!preg_match("/^[0-9]*$/", $quantity)) {
+			$this->_error[] = 'Quantity was not a number';
+			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+			return false;
+		}
+		
+		/* Check for negative quantity */
+		if ($quantity < 0) {
+			$this->_error[] = 'Quantity under zero';
+			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+			return false;
+		}
+	
+		/* Check for the minimum and maximum quantities */
+		list($min,$max) = explode(',', $product->product_order_levels);
+		if ($min != 0 && $quantity < $min) {
+			$this->_error[] = 'Quantity reached not minimum';
+			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MIN_ORDER'), $min), 'error');
+			return false;
+		}
+		if ($max !=0 && $quantity > $max) {
+			$this->_error[] = 'Quantity reached over maximum';
+			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MAX_ORDER'), $max), 'error');
+			return false;
+		}
+		
+		$ci = 0;
+		$request_stock = array();
+		
+		/* Check to see if checking stock quantity */
+		if (VmConfig::get('check_stock', false)) {
+			if ($quantity > $product->product_in_stock) {
+				/* Create an array for out of stock items and continue to next item */
+				$request_stock[$ci]['product_id'] = $product->product_id;
+				$request_stock[$ci]['quantity'] = $quantity;
+				$ci++;
+				$this->_error[] = 'Quantity reached stock limit '.$product->product_id;
+				continue;
+			}
+		}
+		if(count($request_stock)!=0){
+			foreach($request_stock as $rstock){
+				$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_OUT_OF_STOCK'), 'error');
+			}
+			return false;
+		}
+		return true;
+	}
+
+	function confirmDone(){
+		
+		$this -> checkoutData();
+		if($this->_dataValidated){
+			$this->_confirmDone = true;
+			$this->confirmedOrder();
+			
+		} else {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DATA_NOT_VALID'));
+		}
+	}
+
+	function checkout(){
+		$this -> checkoutData();
+		$mainframe = JFactory::getApplication();
+		$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+	}
+	
+	private function checkoutData(){
+
+		$this->_inCheckOut = true;
+		$this->_dataValidated = true;
+		
+		$mainframe = JFactory::getApplication();
+		if( $this->products == 0){
+			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
+		} else {
+			foreach ($this->products as $product){	
+				$redirectMsg = $this->checkForQuantities($product,$product->quantity);
+				if(!$redirectMsg){
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart',$redirectMsg);
+					
+				}
+			}	
+		}
+
+		
+		//But we check the data again to be sure
+		if(empty($this->BT)){
+			$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
+		}else {
+			$redirectMsg = self::validateUserData();
+			if($redirectMsg){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT',$redirectMsg);
+			}
+		}
+		//Only when there is an ST data, test if all necessary fields are filled
+		if(!empty($this->ST)){
+			$redirectMsg = self::validateUserData('ST');
+			if($redirectMsg){
+				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST',$redirectMsg);
+			}
+		}
+
+		//Test Shipment
+		if(empty($this->shipping_rate_id)){
+			
+//			$confirmDone=false;
+			$this->setCartIntoSession();
+			
+//			$this->editshipping();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
+			return;
+		}
+
+		//Test Payment and show payment plugin
+		if(empty($this->paym_id)){
+
+//			$confirmDone=false;
+			$this->setCartIntoSession();
+			
+//			$this->editpayment();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
+			return;
+		} else {
+			JPluginHelper::importPlugin('vmpayment');
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$_dispatcher = JDispatcher::getInstance();
+			$_retValues = $_dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', array('cart'=>$this));
+			foreach ($_retValues as $_retVal) {
+				if ($_retVal === true) {
+					break; // Plugin completed succesful; nothing else to do
+				} elseif ($_retVal === false) { // Missing data, ask for it (again)
+//					$this->_inCheckOut = true;
+//					$confirmDone=false;
+					$this->editpayment();
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
+					
+					// Checks below outcommented since we're at the end of out loop anyway :-/
+// 	Remove comments if newchecks need to be implemented.
+// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+//					} elseif ($_retVal === null) {
+//						continue; // This plugin was skipped
+//					} else {
+//						continue; // Other values not yet implemented
+				}
+			}
+		}
+		
+		//Show cart and checkout data overview
+		$this->_inCheckOut = false;
+		$this->_dataValidated = true;
+
+		$this->setCartIntoSession();
+		if (function_exists('dumpTrace')) { // J!Dump is installed
+			dump($this,'Cart runned through checkout and $this->_dataValidated '.$this->_dataValidated);
+		}
+
+		
+	}
+	
+	/**
+	 * Test userdata if valid
+	 *
+	 * @author Max Milbers
+	 * @param String if BT or ST
+	 * @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
+	 */
+	 private function validateUserData($type='BT'){
+
+//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
+		$_userFieldsModel = new VirtueMartModelUserfields();
+//		$_userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
+		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
+		$neededFields = $_userFieldsModel->getUserFields(
+									 $fieldtype  //TODO we need, agreed also
+									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
+				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor'));
+
+		$redirectMsg=0;
+		foreach($neededFields as $field){
+
+			if(empty($this->{$type}[$field->name]) && $field->name!='state_id'){
+				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$this->{$type}[$field->name].' but '.$this->BT['first_name'];
+			} else {
+				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
+				if($field->name=='state_id'){
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
+					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
+						$redirectMsg = $msg;
+					}
+				}
+				//We may add here further Tests. Like if the email has the form a@b.xxx and so on
+			}
+		}
+		return $redirectMsg;
+	}
+
+
+	/**
+	 * This function is called, when the order is confirmed by the shopper.
+	 *
+	 * Here are the last checks done by payment plugins.
+	 * The mails are created and send to vendor and shopper
+	 * will show the orderdone page (thank you page)
+	 *
+	 */
+	private function confirmedOrder(){
+
+		//Just to prevent direct call
+		if($this->_dataValidated && $this->_confirmDone){
+			require_once( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
+//			$order = new VirtueMartModelOrders();
+//			$_orderID = $order->createOrderFromCart($this);
+//			$this->order_id= $_orderID;
+
+//			$this->doEmail($_orderID);
+
+			//We delete the old stuff
+			$this->products = array();
+			$this->_inCheckOut = false;
+			$this->_dataValidated = false;
+			$this->_confirmDone = false;
+
+			$this->setCartIntoSession();
+
+			/* Display it all */
+			
+//			$view = $this->getView('cart', 'html');
+//			$view->setLayout('orderdone');
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('VM_CART_ORDERDONE_THANK_YOU'));
+	//		$view->display();
+		} else {
+			$mainframe = JFactory::getApplication();
+			JError::raiseNotice(1, 'Validation of Data failed');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
+			
+		}
+
+	}
+
+	/**
+	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
+	 *
+	 * @author Max Milbers
+	 *
+	 * @param CartArray $cart
+	 * @param boolean When one email does not work, it gives a false back
+	 *
+	 */
+	private function doEmail($_orderID){
+
+		/* Create the view */
+		$view = $this->getView('cart', 'html');
+
+//		$view->setModel(VirtueMartCart::getCart(),true);
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+
+		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+
+		$store = $this->getModel( 'store', 'VirtuemartModel' );
+		$view->setModel( $store, true );
+
+		$view->setLayout('mailshopper');
+
+		$error=false;
+		/* Render it all */
+		ob_start();
+		$view->display();
+		$bodyShopper = ob_get_contents();
+		ob_end_clean();
+		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$this->BT['email']); //TODO MX set vendorId
+		if ( $sendShopper !== true ) {
+			$error=true;
+			//TODO set message, must be a raising one
+		}
+
+		$view->setLayout('mailvendor');
+
+		/* Render it all */
+		ob_start();
+		$view->display();
+		$bodyVendor = ob_get_contents();
+		ob_end_clean();
+
+		$store->setId($this->vendorId);
+		$vendor=$store->getStore();
+		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
+		if ( $sendShopper !== true ) {
+			$error=true;
+			//TODO set message, must be a raising one
+		}
+
+
+		//Just for developing
+		echo '<br />$bodyShopper '.$bodyShopper;
+		echo '<br />$bodyVendor '.$bodyVendor;
+		return $error;
+	}
+
+
+	/**
+	 * does not work with self::renderView($view), maybe with $this
+	 * @author Max Milbers
+//	 */
+//	function renderView($view){
+//		ob_start();
+//		$view->display();
+//		$content = ob_get_contents();
+//		ob_end_clean();
+//		return $content;
+//	}
+	
 	/**
 	* Initialise the cart, ATTENTION, started by Roland but not finished, when someone needs it, dont be shy ;-) note by Max Milbers
 	* 

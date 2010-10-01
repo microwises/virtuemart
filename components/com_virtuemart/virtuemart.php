@@ -31,10 +31,6 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
 require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
-$cart = VirtueMartCart::getCart();
-dump($cart,'my cart');
-
-
 
 /* Front-end helpers */
 require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');

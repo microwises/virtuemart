@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $product->quantity;
 			
 			// UPDATE CART / DELETE FROM CART
-			if($this->layoutName=='cart'){
+			if($this->layoutName=='default'){
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
@@ -183,7 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 		if($this->prices['coupons']){ ?>
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
-				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
 				<td colspan="3" align="left"><?php echo $this->prices['couponName']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponValue']; ?> </td>	
@@ -191,7 +191,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php }   ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->prices['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
@@ -201,7 +201,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='cart') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('VM_CART_EDIT_PAYMENT')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('VM_CART_EDIT_PAYMENT')); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->prices['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>

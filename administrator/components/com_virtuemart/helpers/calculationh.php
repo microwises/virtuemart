@@ -270,7 +270,8 @@ class calculationHelper{
 			
 			$variantmod = $this->parseModifier($product->variant);
 			dump($variantmod,'My variant modification in calc');
-			$pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity);	
+			//TODO maybe there is away to avoid the cartPrices
+			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity);	
 			$this->_cartPrices[] = $pricesPerId[(int)$productId];
 
 			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $pricesPerId[$productId]['basePrice']*$product->quantity;
