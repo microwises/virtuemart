@@ -104,7 +104,11 @@ class VirtueMartCart  {
 	public function getDataValidated(){
 		return $this->_dataValidated;
 	}
-	
+
+	public function getInCheckOut(){
+		return $this->_inCheckOut;
+	}
+		
 	
 	/**
 	* Add a product to the cart 
@@ -399,18 +403,30 @@ class VirtueMartCart  {
 		}
 	}
 	
+	public function setShippingRate($shipping_rate_id){
+		$this->shipping_rate_id=$shipping_rate_id;
+		$this->setCartIntoSession();
+	}
+
+	public function setPaymentMethod($paym_id){
+		$this->paym_id=$paym_id;
+		$this->setCartIntoSession();
+	}
+		
 	private function checkoutData(){
 
 		$this->_inCheckOut = true;
 		$this->_dataValidated = true;
-
+		$this->setCartIntoSession();
+		
 		$mainframe = JFactory::getApplication();
-		if( $this->products == 0){
+		if( count($this->products) == 0){
 			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
 		} else {
 			foreach ($this->products as $product){	
 				$redirectMsg = $this->checkForQuantities($product,$product->quantity);
 				if(!$redirectMsg){
+//					$this->setCartIntoSession();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart',$redirectMsg);
 					
 				}
@@ -430,27 +446,21 @@ class VirtueMartCart  {
 		if(!empty($this->ST)){
 			$redirectMsg = self::validateUserData('ST');
 			if($redirectMsg){
+//				$this->setCartIntoSession();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST',$redirectMsg);
 			}
 		}
 
 		//Test Shipment
 		if(empty($this->shipping_rate_id)){
-			
-//			$confirmDone=false;
+
 //			$this->setCartIntoSession();
-			
-//			$this->editshipping();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
 		}
 
 		//Test Payment and show payment plugin
 		if(empty($this->paym_id)){
 
-//			$confirmDone=false;
-//			$this->setCartIntoSession();
-			
-//			$this->editpayment();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
 		} else {
 			JPluginHelper::importPlugin('vmpayment');
@@ -461,9 +471,7 @@ class VirtueMartCart  {
 				if ($_retVal === true) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($_retVal === false) { // Missing data, ask for it (again)
-//					$this->_inCheckOut = true;
-//					$confirmDone=false;
-					$this->editpayment();
+
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
 					
 					// Checks below outcommented since we're at the end of out loop anyway :-/

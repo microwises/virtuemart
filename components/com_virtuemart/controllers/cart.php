@@ -141,7 +141,7 @@ class VirtueMartControllerCart extends JController {
 			if($cart){
 				$cart->coupon_id=$coupon_id;
 //				$cart->setDataValidation(); //Not needed already done in the getCart function
-				if($cart->inCheckOut){
+				if($cart->getInCheckOut()){
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
@@ -183,17 +183,17 @@ class VirtueMartControllerCart extends JController {
 
 		/* Get the shipping rate of the cart */
 		$shipping_rate_id = JRequest::getVar('shipping_rate_id', '0');
-
+		
 		if($shipping_rate_id){
 			//Now set the shipping rate into the cart
 			$cart = VirtueMartCart::getCart();
 			if($cart){
-				$cart->shipping_rate_id=$shipping_rate_id;
-//				$cart->setDataValidation();		//Not needed already done in the getCart function
-				if($cart->inCheckOut){
+				$cart->setShippingRate($shipping_rate_id);
+				if($cart->getInCheckOut()){
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
+				
 			}
 		}
 		self::Cart();
@@ -230,7 +230,8 @@ class VirtueMartControllerCart extends JController {
 		if($cart){
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$cart->paym_id= JRequest::getVar('paym_id', '0');
+			$paym_id= JRequest::getVar('paym_id', '0');
+			$cart->setPaymentMethod( $paym_id );
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();
@@ -258,18 +259,16 @@ class VirtueMartControllerCart extends JController {
 				}
 			}
 //			$cart->setDataValidation();	//Not needed already done in the getCart function
-			if($cart->inCheckOut){
-				return true;
-			} else {
+			if($cart->getInCheckOut()){
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout',$msg);
 			}
 		}
-		if($cart->inCheckOut){
-			return false;	
-		} else {
-			self::Cart();
-		}
+//		if($cart->getInCheckOut()){
+//			return false;	
+//		} else {
+//			self::Cart();
+//		}
 	}
 
 
