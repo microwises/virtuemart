@@ -432,22 +432,28 @@ class VirtueMartModelOrders extends JModel {
 	 * Get the information from the cart and create an order from it
 	 *
 	 * @author Oscar van Eijk
-	 * @param $_cart array The cart data
-	 * @return integer The new ordernumber
+	 * @param object $_cart The cart data
+	 * @return mixed The new ordernumber, false on errors
 	 */
-	public function createOrderFromCart()
+	public function createOrderFromCart($_cart = null)
 	{
-		$_usr =& JFactory::getUser();
+		if ($_cart === null) {
+			$this->setError('createOrderFromCart() called without a cart - that\'s a programming bug');
+			return false;
+		}
 
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
-		$_cart = VirtueMartCart::getCart(false);
-//		$_products = $_cart->getCartProducts();
+		$_usr =& JFactory::getUser();
 		$_prices = $_cart->getCartPrices();
-		
-		$_orderID = $this->_createOrder($_cart, $_usr, $_prices);
-		$this->_createOrderLines($_orderID, $_cart, $_cart->products, $_prices);
+		if (($_orderID = $this->_createOrder($_cart, $_usr, $_prices)) == 0) {
+			return false;
+		}
+		if (!$this->_createOrderLines($_orderID, $_cart)) {
+			return false;
+		}
 		$this->_updateOrderHist($_orderID);
-		$this->_writeUserInfo($_orderID, $_usr, $_cart);
+		if (!$this->_writeUserInfo($_orderID, $_usr, $_cart)) {
+			return false;
+		}
 		$this->_handlePayment($_orderID, $_cart, $_prices);
 		
 		return $_orderID;
@@ -457,9 +463,9 @@ class VirtueMartModelOrders extends JModel {
 	 * Write the order header record
 	 *
 	 * @author Oscar van Eijk
-	 * @param $_cart array The cart data
-	 * @param $_usr object User object
-	 * @param $_prices array Price data
+	 * @param object $_cart The cart data
+	 * @param object $_usr User object
+	 * @param array $_prices Price data
 	 * @return integer The new ordernumber
 	 */
 	private function _createOrder($_cart, &$_usr, $_prices)
@@ -476,10 +482,6 @@ class VirtueMartModelOrders extends JModel {
 //		$_prices['paymentDiscount']		Discount
 //		$_prices['salesPricePayment']	Total
 
-		//you can get the cart at start or for every function
-//		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
-//		$_cart = VirtueMartCart::getCart(false);
-		
 		$_orderData =  $this->getTable('orders');
 		$_orderData->order_id = null;
 		$_orderData->user_id = $_usr->get('id');
@@ -510,18 +512,22 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->ship_method_id = $_cart->shipping_rate_id;
 		$_orderData->customer_note = ''; // TODO Customer notes not yet implemented (Max?)
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
-		$_orderData->store();
-		
-		return $_orderData->_db->insertid();
+		if (!$_orderData->store()){
+			$this->setError($_orderData->getError());
+			return 0;
+		}
+		$_orderID = $_orderData->_db->insertid();
+		return $_orderID;
 	}
 
 	/**
 	 * Write the BillTo record, and if set, the ShipTo record
 	 * 
 	 * @author Oscar van Eijk
-	 * @param $_id integer Order ID
-	 * @param $_usr object User object
-	 * @param $_cart array Cart data
+	 * @param integer $_id Order ID
+	 * @param object $_usr User object
+	 * @param object $_cart Cart object
+	 * @return boolean True on success
 	 */
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
@@ -530,73 +536,85 @@ class VirtueMartModelOrders extends JModel {
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
 			, array('delimiters'=>true, 'captcha'=>true)
-			, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id')
+			, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id', 'user_is_vendor')
 		);
 
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			@$_userInfoData->$_name = $_cart['BT'][$_name];
+			@$_userInfoData->$_name = $_cart->BT[$_name];
 		}
 		$_userInfoData->order_id = $_id;
 		$_userInfoData->user_id = $_usr->get('id');
 		if (!$_userInfoData->store()){
 			$this->setError($_userInfoData->getError());
+			return false;
 		}
 		
-		if ($_cart['ST']) {
+		if ($_cart->ST) {
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 				, array('delimiters'=>true, 'captcha'=>true)
-				, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id')
+				, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id', 'user_is_vendor')
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
-				@$_userInfoData->$_name = $_cart['ST'][$_name];
+				@$_userInfoData->$_name = $_cart->ST[$_name];
 			}
 			$_userInfoData->order_id = $_id;
 			$_userInfoData->user_id = $_usr->get('id');
 			if (!$_userInfoData->store()){
 				$this->setError($_userInfoData->getError());
+				return false;
 			}
 		}
+		return true;
 	}
 
 	/**
-	 * Handle the selected payment method
+	 * Handle the selected payment method. If triggered to do so, this method will also
+	 * take care of the stock updates.
 	 * 
 	 * @author Oscar van Eijk
 	 * @param int $_orderID Order ID
-	 * @param array $_cart Cart data
+	 * @param object $_cart Cart object
 	 * @param array $_prices Price data
 	 */
 	private function _handlePayment($_orderID, $_cart, $_prices)
 	{
 		JPluginHelper::importPlugin('vmpayment');
 		$_dispatcher =& JDispatcher::getInstance();
-		$_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
+		$_returnValues = $_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
 					 $_orderID
 					,$_cart
 					,$_prices
 		));
+		foreach ($_returnValues as $_returnValue) {
+			if ($_returnValue === true) {
+				// Trigger to update the stock after successfull payment
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+				$_productModel = new VirtueMartModelProduct();
+				foreach ($_cart->products as $_prod) {
+					$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
+				}
+			} elseif ($_returnValue === false) {
+				break; // This was the active plugin, but there's nothing left to do here.
+			}
+			// Returnvalue 'null' must be ignored; it's an inactive plugin.
+		}
 	}
 	
 	/**
 	 * Create the ordered item records
 	 *
 	 * @author Oscar van Eijk
-	 * @param $_id integer Order ID
-	 * @param $_cart array The cart data
-	 * @param $_products array Product data
-	 * @param $_prices array Price data
+	 * @param integer $_id integer Order ID
+	 * @param object $_cart array The cart data
+	 * @return boolean True on success
 	 */
-	private function _createOrderLines($_id, $_cart, $_products, $_prices)
+	private function _createOrderLines($_id, $_cart)
 	{
-		// Load the product model for stock updates
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
-		$_productModel = new VirtueMartModelProduct();
-
 		$_orderItems = $this->getTable('order_item');
 //		$_lineCount = 0;
-		foreach ($_products as $_prod) {
+		foreach ($_cart->products as $_prod) {
 		// TODO: add fields for the following data:
 //    * [double] basePrice = 38.48
 //    * [double] basePriceVariant = 38.48
@@ -617,11 +635,6 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_id = $_prod->product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name;
-			
-			//Just for you Oscar, remove it then
-//			$_orderItems->product_quantity = $_cart[$_lineCount]['quantity'];
-//			$_orderItems->product_item_price = $_prices[$_lineCount]['basePriceVariant'];
-//			$_orderItems->product_final_price = $_prices[$_lineCount]['salesPrice'];
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_prod->prices['basePriceVariant'];
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
@@ -630,22 +643,22 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->cdate = time();
 			$_orderItems->mdate = time();
 			$_orderItems->product_attribute = '';
-			
-			//TODO Oscar, must be redone there is now an array, variants and customvariants in the product object
-//			$_variants = array_merge($_cart[$_lineCount]['variants'], $_cart[$_lineCount]['customvariants']);
-//			foreach ($_variants as $_a => $_v) {
-//				$_orderItems->product_attribute .= (
-//					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
-//					. $_a . ': ' . $_v
-//				);
-//			}
 
-			$_orderItems->store();
+			$_variants = array_merge($_prod->variant, $_prod->customvariants);
+			foreach ($_variants as $_a => $_v) {
+				$_orderItems->product_attribute .= (
+					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
+					. $_a . ': ' . $_v
+				);
+			}
 
-			// Update stock
-			$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
-
+			if (!$_orderItems->store()){
+				// Stop on first failure, most likely the result of a bug anyway (so in the testphase)
+				$this->setError($_orderItems->getError());
+				return false;
+			}
 		}
+		return true;
 	}
 
 	/**

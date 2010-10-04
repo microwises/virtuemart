@@ -88,7 +88,6 @@ class VirtueMartCart  {
 	* Remove the cart from the session 
 	* 
 	* @author Max Milbers
-	* @todo
 	* @access public
 	*/
 	public function removeCartFromSession() {
@@ -115,7 +114,6 @@ class VirtueMartCart  {
 	* 
 	* @author RolandD
 	* @author Max Milbers
-	* @todo
 	* @access public
 	*/
 	public function add() {
@@ -549,10 +547,13 @@ class VirtueMartCart  {
 		//Just to prevent direct call
 		if($this->_dataValidated && $this->_confirmDone){
 			require_once( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
-//			$order = new VirtueMartModelOrders();
-//			$_orderID = $order->createOrderFromCart($this);
-//			$this->order_id= $_orderID;
-
+			$order = new VirtueMartModelOrders();
+			if (($_orderID = $order->createOrderFromCart($this)) === false) {
+				$mainframe = JFactory::getApplication();
+				JError::raiseWarning(500, $order->getError());
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+			}
+			$this->order_id= $_orderID;
 //			$this->doEmail($_orderID);
 
 			//We delete the old stuff
@@ -597,7 +598,7 @@ class VirtueMartCart  {
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the oder_number in the mail
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
 		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
@@ -710,7 +711,6 @@ class VirtueMartCart  {
 	* Save the cart in the database 
 	* 
 	* @author RolandD
-	* @todo
 	* @access public
 	*/
 	public function saveCart() {

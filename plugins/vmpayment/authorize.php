@@ -89,7 +89,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 	
 		if($this->paymentMethod->paym_creditcards){
+			$html .= '<fieldset>';
 			$html .= ($this->paymentModel->renderCreditCardRadioList($this->selectedCC,$this->paymentMethod->paym_creditcards));
+			$html .= '</fieldset>';
 		}else {
 			$html .= '<br />';
 		}
@@ -196,16 +198,19 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @param int $_orderNr
 	 * @param object $_orderData
 	 * @param array $_priceData
+	 * @return mixed Null when not selected, True on success, False on failure
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
 		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
-			return; // Another method was selected, do nothing
+			return null; // Another method was selected, do nothing
 		}
 		$this->_paym_id = $_orderData->paym_id;
 		$_transKey = $this->get_passkey();
-		if( $_transKey === false ) return;
+		if( $_transKey === false ) return false;
+
+		$_returnValue = true;
 
 		// Load the required helpers
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
@@ -309,9 +314,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_dbValues['order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		if (VmConfig::get('store_creditcard_data')) {
-			$_dbValues['order_payment_number'] = $_orderData['cc_number'];
-			$_dbValues['order_payment_expire'] = ($_orderData['cc_expire_month']) . ($_orderData['cc_expire_year']);
-			$_dbValues['order_payment_name'] = $_orderData['cc_name'];
+			$_dbValues['order_payment_number'] = $_orderData->cc_number;
+			$_dbValues['order_payment_expire'] = ($_orderData->cc_expire_month) . ($_orderData->cc_expire_year);
+			$_dbValues['order_payment_name'] = $_orderData->cc_name;
 		}
 		
 		$_host = 'secure.authorize.net';
@@ -347,11 +352,13 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 				JError::raiseWarning(500, $_log);
 				$_dbValues['order_payment_log'] = $_log; // Transaction log
 				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
+				$_returnValue = false;
 			}
 			$_dbValues['order_payment_log'] = $_response[3]; // Transaction log
 			$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 		}
 		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
+		return $_returnValue;
 	}
 
 	/**************************************************************************

@@ -164,10 +164,15 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	/**
 	 * This method stores the data of the used payment method. The function is made abstract
 	 * since all plugins *must* reimplement it.
+	 * NOTE:
+	 *  * If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+	 *  * By returning TRUE, the order model will update the product stock
+	 *  * If the stock should not be updated, the selected plugin should return FALSE
 	 * 
 	 * @param int $_orderNr The ordernumber being processed
 	 * @param object $_orderData Data from the cart
 	 * @param array $_priceData Price information for this order
+	 * @return mixed Null when this method was not selected, True when the product stock should be updated, False otherwise
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */

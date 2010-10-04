@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
   `order_currency` varchar(16) DEFAULT NULL,
   `order_status` char(1) DEFAULT NULL,
   `user_currency_id` INT(11) DEFAULT NULL,
-  `user_currenct_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.0',
+  `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.0',
   `payment_method_id` INT(11) NOT NULL,
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL,
