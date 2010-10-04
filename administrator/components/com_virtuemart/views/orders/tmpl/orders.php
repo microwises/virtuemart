@@ -100,7 +100,7 @@ AdminMenuHelper::startAdminArea();
 			    <?php
 			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'.JText::_('VM_ORDER_LIST_NOTIFY');
 			    echo '<br />';
-			    echo '<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT');
+			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT');
 			    echo '<br />';
 			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->order_id.']"  checked="checked" />'.JText::_('VM_ORDER_UPDATE_LINESTATUS');
 			    ?>

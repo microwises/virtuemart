@@ -17,6 +17,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * http://virtuemart.org
 */
+// This is required in order to call the plugins from the backend as well!
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 
 class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	var $_pelement;
@@ -67,8 +69,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			. ',PRIMARY KEY (`id`)'
 			. ',KEY `idx_order_payment_' . $this->_pelement . '_order_id` (`order_id`)'
 			. ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Data for the " . $this->_pelement . " payment plugin.'";
-	$_db->setQuery($_q);
-	if (!$_db->query()) {
+		$_db->setQuery($_q);
+		if (!$_db->query()) {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 		}
 	}
@@ -79,7 +81,6 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @author Max Milbers
 	 */
 	function plgVmOnShowList($cart,$checkedPaymId=0){
-		dump($this,'PluginOnList');
 		if(!$this -> setVmParams($cart->vendorId)) return ;
 		
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
@@ -183,8 +184,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 				$cardModel = new VirtueMartModelCreditcard();
 				$cc_ = $cardModel->getCreditCard($cart->creditcard_id);
 				$cc_type = $cc_->creditcard_code;
-				if (!$cardModel->validate_creditcard_data($cc_type,$cart->cc_number)) {
-					return false;
+				if ($this->params->get('CHECK_CARD_CODE')) {
+					if (!$cardModel->validate_creditcard_data($cc_type,$cart->cc_number)) {
+						return false;
+					}
 				}
 			}
 			return ($cart);
@@ -193,12 +196,62 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	}
 
 	/**
+	 * Display stored payment data for an order
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowStoredOrder()
+	 */
+	function plgVmOnShowStoredOrder($_order_id, $_paymethod_id)
+	{
+		
+		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
+			return null; // Another method was selected, do nothing
+		}
+		$_db = JFactory::getDBO();
+		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
+			. 'WHERE `order_id` = ' . $_order_id;
+		$_db->setQuery($_q);
+		if (!($payment = $_db->loadObject())) {
+			JError::raiseWarning(500, $_db->getErrorMsg());
+			return '';
+		}
+		$_html = '<table class="adminlist">'."\n";
+		$_html .= '	<thead>'."\n";
+		$_html .= '		<tr>'."\n";
+		$_html .= '			<th width="13%">'.JText::_('VM_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
+		$_html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
+		$_html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
+		$_html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
+		$_html .= '		</tr>'."\n";
+		$_html .= '	</thead>'."\n";
+		$_html .= '	<tr>'."\n";
+		$_html .= '		<td>'.$this->getThisMethodName($_paymethod_id).'</td>'."\n";
+		$_html .= '		<td>'.$payment->order_payment_name.'</td>'."\n";
+		$_html .= '		<td>'."\n";
+		if($payment->order_payment_code) {
+			$_html .= '<br/>(' . JText::_('VM_ORDER_PAYMENT_CCV_CODE') . ': '.$payment->order_payment_code.') ';
+		}
+		$_html .= '		</td>'."\n";
+		$_html .= '		<td>'.date('M-Y', $payment->order_payment_expire).'</td>'."\n";
+		$_html .= '	</tr>'."\n";
+		$_html .= '	<tr class="sectiontableheader">'."\n";
+		$_html .= '		<th colspan="4">'.JText::_('VM_ORDER_PRINT_PAYMENT_LOG_LBL').'</th>'."\n";
+		$_html .= '	</tr>'."\n";
+		$_html .= '	<tr>'."\n";
+		$_html .= '		<td colspan="4">';
+		if ($payment->order_payment_log) {
+			$_html .= $payment->order_payment_log;
+		} else {
+			$_html .= './.'; 
+		}
+		$_html .=  '</td>'."\n";
+		$_html .= '	</tr>'."\n";
+		$_html .= '</table>'."\n";
+		return $_html;
+	}
+
+	/**
 	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
 	 *
-	 * @param int $_orderNr
-	 * @param object $_orderData
-	 * @param array $_priceData
-	 * @return mixed Null when not selected, True on success, False on failure
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
@@ -315,7 +368,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		if (VmConfig::get('store_creditcard_data')) {
 			$_dbValues['order_payment_number'] = $_orderData->cc_number;
-			$_dbValues['order_payment_expire'] = ($_orderData->cc_expire_month) . ($_orderData->cc_expire_year);
+			// Set the exp. date to the last day of the month by selecting day 0 of the next month
+			$_dbValues['order_payment_expire'] = mktime(0, 0, 0, ($_orderData->cc_expire_month+1), 0, $_orderData->cc_expire_year);
 			$_dbValues['order_payment_name'] = $_orderData->cc_name;
 		}
 		

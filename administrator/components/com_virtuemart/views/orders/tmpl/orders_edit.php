@@ -28,7 +28,6 @@ $orderbt = $this->order['details']['BT'];
 $orderst = (array_key_exists('ST', $this->order['details'])) ? $this->order['details']['ST'] : $orderbt;
 $history = $this->order['history'];
 $items = $this->order['items'];
-$payment = $this->order['payment'];
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <table class="adminlist" style="table-layout: fixed;">
@@ -342,34 +341,21 @@ $payment = $this->order['payment'];
 		</table>
 	    </td>
 	    <td valign="top">
-		<table class="adminlist">
-		    <thead>
-			<tr>
-			    <th width="13%"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?></th>
-			    <th width="40%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NAME') ?></th>
-			    <th width="30%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
-			    <th width="17%"><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?></th>
-			</tr>
-		    </thead>
-		    <tr>
-			<td width="40%"><?php $payment->order_payment_name;?></td>
-			<td width="30%">
-			    <?php
-			    //echo ps_checkout::asterisk_pad( $payment->account_number, 4, true );
-			    if( $payment->order_payment_code) {
-				echo '<br/>(' . JText::_('VM_ORDER_PAYMENT_CCV_CODE') . ': '.$payment->order_payment_code.') ';
-			    }
-			    ?>
-			</td>
-			<td width="17%"><?php echo date('M-Y', $payment->order_payment_expire); ?></td>
-		    </tr>
-		    <tr class="sectiontableheader">
-			<th colspan="4"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LOG_LBL') ?></th>
-		    </tr>
-		    <tr>
-			<td colspan="4"><?php if($payment->order_payment_log) echo $payment->order_payment_log; else echo "./."; ?></td>
-		    </tr>
-		</table>
+		<?php 
+		JPluginHelper::importPlugin('vmpayment');
+		$_dispatcher =& JDispatcher::getInstance();
+		// I don't like the variables to be in the orderBT details array, but that's the way iot is for now
+		// TODO, in VM1.6, when user address handling is redone, the variables will probably come from somehwere else...
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowStoredOrder',array(
+					 $orderbt->order_id
+					,$orderbt->payment_method_id
+		));
+		foreach ($_returnValues as $_returnValue) {
+			if ($_returnValue !== null) {
+				echo $_returnValue;
+			}
+		}
+		?>
 	    </td>
 	</tr>
 	<tr>

@@ -69,7 +69,6 @@ class VirtueMartModelOrders extends JModel {
 			$q = "SELECT o.`order_id` ".$this->getOrdersListQuery().$this->getOrdersListFilter();
 			$db->setQuery($q);
 			$fields = $db->loadObjectList('order_id');
-
 			$this->_total = count($fields);
 		}
 
@@ -120,13 +119,13 @@ class VirtueMartModelOrders extends JModel {
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 
-		/* Payment details */
-		$q  = "SELECT *, ".VmConfig::get('encrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
-			FROM #__vm_payment_method, #__vm_order_payment
-			WHERE #__vm_order_payment.order_id=".$order_id."
-			AND #__vm_payment_method.paym_id = #__vm_order_payment.payment_method_id";
-		$db->setQuery($q);
-		$order['payment'] = $db->loadObject();
+//		/* Payment details */
+//		$q  = "SELECT *, ".VmConfig::get('encrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
+//			FROM #__vm_payment_method, #__vm_order_payment
+//			WHERE #__vm_order_payment.order_id=".$order_id."
+//			AND #__vm_payment_method.paym_id = #__vm_order_payment.payment_method_id";
+//		$db->setQuery($q);
+//		$order['payment'] = $db->loadObject();
 
 		return $order;
 	}
@@ -142,9 +141,9 @@ class VirtueMartModelOrders extends JModel {
 		$this->getPagination();
 
 		/* Build the query */
-		$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name,
-     			m.paym_name AS payment_method
-     			".$this->getOrdersListQuery();
+		$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
+     			.',m.paym_name AS payment_method '
+     			.$this->getOrdersListQuery();
 		if ($_uid > 0) {
 			$q .= ' WHERE u.user_id = ' . $_uid . ' ';
 		}
@@ -165,11 +164,9 @@ class VirtueMartModelOrders extends JModel {
 	private function getOrdersListQuery() {
 		return 'FROM #__vm_orders o
     			LEFT JOIN #__vm_order_user_info u
-    			ON u.order_id = o.order_id
-    			LEFT JOIN #__vm_order_payment p
-    			ON p.order_id = o.order_id
+    			ON u.order_id = o.order_id 
     			LEFT JOIN #__vm_payment_method m
-    			ON m.paym_id = p.payment_method_id';
+    			ON o.payment_method_id = m.paym_id';
 	}
 
 	/**
@@ -274,16 +271,18 @@ class VirtueMartModelOrders extends JModel {
 		return $db->loadObjectList();
 	}
 
+	public function updateOrderStatus()
+	{
+		// TODO This must be a rewrite of the updateStatus below
+	}
+
 	/**
 	 * Update an order status and send e-mail if needed
 	 * @author RolandD
-	 * @todo Modify payment plugins to use J! registry
-	 * @todo Add order status dependencies triggers
-	 * @todo Check if config has this value VmConfig::get('check_stock')
-	 * @todo Check download ID sending if config has this value VmConfig::get('downloads_enable')
-	 * @todo Clean up order payments
+	 * @author Oscar van Eijk
 	 */
-	public function updateStatus() {
+	public function updateStatus()
+	{
 		$db = JFactory::getDBO();
 		$mainframe = JFactory::getApplication();
 
@@ -299,7 +298,9 @@ class VirtueMartModelOrders extends JModel {
 		} else {
 			$update = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
 		}
-
+dump(JRequest::getVar('order_status', array()), 'OrderStat in updateStat/lines');
+dump(JRequest::getVar('current_order_status', array()), 'OrderStat in updateStat');
+dump($update, 'Updatable');
 		/* Get the list of orders to notify */
 		$notify = JRequest::getVar('notify_customer', array());
 
@@ -549,8 +550,10 @@ class VirtueMartModelOrders extends JModel {
 			$this->setError($_userInfoData->getError());
 			return false;
 		}
+		$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
 		
 		if ($_cart->ST) {
+			$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 				, array('delimiters'=>true, 'captcha'=>true)
 				, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id', 'user_is_vendor')

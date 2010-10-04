@@ -203,7 +203,7 @@ class VirtuemartViewOrders extends JView {
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
 			 * the arguments.
 			 */
-//			JToolBarHelper::save('editOrderStatus', JText::_('VM_UPDATE_STATUS'));
+			JToolBarHelper::save('editOrderStatus', JText::_('VM_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 
 			/* Assign the data */

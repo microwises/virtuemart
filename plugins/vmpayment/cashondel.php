@@ -21,7 +21,8 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * http://virtuemart.org
  */
 
-jimport('joomla.plugin.plugin');
+// This is required in order to call the plugins from the backend as well!
+require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 
 class plgVmPaymentCashondel extends vmPaymentPlugin {
 	
@@ -68,10 +69,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	/**
 	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
 	 *
-	 * @param int $_orderNr
-	 * @param object $_orderData
-	 * @param array $_priceData
-	 * @return mixed Null when not selected, false otherwise
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
@@ -86,6 +84,44 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		return true; // Trigger the product stock to be updated
 	}
 	
+	/**
+	 * Display stored payment data for an order
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowStoredOrder()
+	 */
+	function plgVmOnShowStoredOrder($_order_id, $_paymethod_id)
+	{
+		
+		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
+			return null; // Another method was selected, do nothing
+		}
+		$_db = JFactory::getDBO();
+		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
+			. 'WHERE `order_id` = ' . $_order_id;
+		$_db->setQuery($_q);
+		if (!($payment = $_db->loadObject())) {
+			JError::raiseWarning(500, $_db->getErrorMsg());
+			return '';
+		}
+		
+		$_html = '<table class="adminlist">'."\n";
+		$_html .= '	<thead>'."\n";
+		$_html .= '		<tr>'."\n";
+		$_html .= '			<th>'.JText::_('VM_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
+//		$_html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
+//		$_html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
+//		$_html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
+		$_html .= '		</tr>'."\n";
+		$_html .= '	</thead>'."\n";
+		$_html .= '	<tr>'."\n";
+		$_html .= '		<td>'.$this->getThisMethodName($_paymethod_id).'</td>'."\n";
+//		$_html .= '		<td></td>'."\n";
+//		$_html .= '		<td></td>'."\n";
+//		$_html .= '		<td></td>'."\n";
+		$_html .= '	<tr>'."\n";
+		$_html .= '</table>'."\n";
+		return $_html;
+	}
+
 /*	function get_payment_rate( $sum ) {
 		
 		if( $sum < 5000 )

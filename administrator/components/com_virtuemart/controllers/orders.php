@@ -98,8 +98,8 @@ class VirtuemartControllerOrders extends JController {
 		$view = $this->getView('orders', 'html');
 
 		/* Default model */
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-
+		$model = $this->getModel('orders');
+		$model->updateStatus();
 		/* Now display the view. */
 		$view->display();
 	}

@@ -168,6 +168,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 *  * If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
 	 *  * By returning TRUE, the order model will update the product stock
 	 *  * If the stock should not be updated, the selected plugin should return FALSE
+	 *  The values TRUE and FALSE can NOT be replaced by 1 and 0!
 	 * 
 	 * @param int $_orderNr The ordernumber being processed
 	 * @param object $_orderData Data from the cart
@@ -181,11 +182,13 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	/**
 	 * This method displays the stored data of the transaction
 	 * 
+	 * @param integer $_order_id The order ID
+	 * @param integer $_paymethod_id Payment method used for this order
+	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Max Milbers
+	 * @author Oscar van Eijk
 	 */
-	function plgVmOnShowStoredOrder(){
-		return null;
-	}
+	abstract function plgVmOnShowStoredOrder($_order_id, $_paymethod_id);
 
 	/**
 	 * Retrieve the payment method-specific encryption key
@@ -211,7 +214,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Oscar van Eijk
 	 * @return True if the calling plugin has the given payment ID
 	 */
-	protected function selectedThisMethod($_pelement, $_pid)
+	final protected function selectedThisMethod($_pelement, $_pid)
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT COUNT(*) AS c '
@@ -226,6 +229,24 @@ abstract class vmPaymentPlugin extends JPlugin  {
 		
 	}
 
+	/**
+	 * Get the name of the payment method
+	 * @param int $_pid The payment method ID
+	 * @author Oscar van Eijk
+	 * @return string Paymenent method name
+	 */
+	final protected function getThisMethodName($_pid)
+	{
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT `paym_name` '
+			. 'FROM #__vm_payment_method '
+			. ',    #__plugins AS j '
+			. "WHERE paym_id='$_pid' ";
+		$_db->setQuery($_q);
+		$_r = $_db->loadAssoc(); // TODO Error check
+		return $_r['paym_name'];
+		
+	}
 	/**
 	 * This method writes all payment plugin specific data to the plugin's table
 	 *
@@ -255,5 +276,11 @@ abstract class vmPaymentPlugin extends JPlugin  {
 		if (!$_db->query()) {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 		}
+	}
+
+	protected function updateOrderStatus ($_orderID, $_orderStatus)
+	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orders.php');
+		
 	}
 }
