@@ -26,10 +26,10 @@ if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
 	@define( '_VM_IS_BACKEND', '1' );
 }
 defined('_VM_TOOLBAR_LOADED' ) or define('_VM_TOOLBAR_LOADED', 1 );
+/*
+//include( dirname(__FILE__).'/compat.joomla1.5.php');
 
-include( dirname(__FILE__).'/compat.joomla1.5.php');
-
-global $page, $sess; 
+//global $page, $sess; 
 //if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
 if (!file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'install.php' )) {
     // We parse the phpShop main code before loading the toolbar,
@@ -132,5 +132,5 @@ if (!file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'in
          $bar->customHref( $sess->url( $_SERVER['PHP_SELF'].'?page=product.product_list'), 'cancel', JText::_('CMN_CANCEL') );
          
      }
-}
+}*/
 ?>

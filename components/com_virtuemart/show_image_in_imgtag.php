@@ -30,11 +30,11 @@ if( !isset( $mosConfig_absolute_path ) ) {
 	$mosConfig_absolute_path = dirname( $config_file );
 }
 
-include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php");
+//include_once("../../administrator/components/com_virtuemart/virtuemart.cfg.php");
 
 //	Image2Thumbnail - Klasse einbinden 
-include( CLASSPATH . "ps_main.php");
-include( CLASSPATH . "class.img2thumb.php");
+//include( CLASSPATH . "ps_main.php");
+//include( CLASSPATH . "class.img2thumb.php");
 
 $basefilename = @basename(urldecode($_REQUEST['filename']));
 $filenames[] = IMAGEPATH."product/".$basefilename;

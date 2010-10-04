@@ -45,10 +45,10 @@ class shopFunctionsF {
 	 * return a div for prices which is visible according to config and have all ids and class set
 	 */
 	public function createPriceDiv($name,$description,$product_price){
-		
+			
 		//This could be easily extended by product specific settings
 		if(VmConfig::get($name) =='1'){
-	 		if($this->product->product_price[$name]){
+	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
 	 		} else {
 	 			$vis = "none";

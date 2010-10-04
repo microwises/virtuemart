@@ -72,13 +72,15 @@ class VmConnector {
 		 $urlParts['query'] = '?'.$urlParts['query'];
 		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
 	}
+	
+	$vm_proxy_url = VmConfig::get('conf_VM_PROXY_URL','');
 	// Check proxy
-	if( trim( @VM_PROXY_URL ) != '') {
-	    if( !stristr(VM_PROXY_URL, 'http')) {
-		$proxyURL['host'] = VM_PROXY_URL;
+	if( trim( $vm_proxy_url ) != '') {
+	    if( !stristr($vm_proxy_url, 'http')) {
+		$proxyURL['host'] = $vm_proxy_url;
 		$proxyURL['scheme'] = 'http';
 	    } else {
-		$proxyURL = parse_url(VM_PROXY_URL);
+		$proxyURL = parse_url($vm_proxy_url);
 	    }
 	}
 	else {

@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.view' );
 *
 * @package VirtueMart
 * @author RolandD
-* @todo Add full path to breadcrumb
+* @author Max Milbers
 */
 class VirtueMartViewProductdetails extends JView {
 	
@@ -38,6 +38,9 @@ class VirtueMartViewProductdetails extends JView {
 	*/
 	function display($tpl = null) {
 		
+		$document = JFactory::getDocument();
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmprices.js');
+
 //		echo 'grmbl <pre>'.print_r($_POST).'</pre>';	
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
@@ -54,9 +57,7 @@ class VirtueMartViewProductdetails extends JView {
 		/* Set the titles */
 		$mainframe->setPageTitle(JText::_('VM_PRODUCT_DETAILS'));
 		$uri = JURI::getInstance();
-		$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-
-
+		
 		/* Load the product */
 //		$product = $this->get('product');
 		$product_model = $this->getModel('productdetails');
@@ -70,9 +71,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		$product = $product_model->getProduct($product_id);
 		$this->assignRef('product', $product);
-		$pathway->addItem($product->product_name);
-	
-		dump($product,'My product in view.html productdetails');
+
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
@@ -86,8 +85,11 @@ class VirtueMartViewProductdetails extends JView {
 		if($category_model){
 			$category = $category_model->getCategory($category_id);
 			$this->assignRef('category', $category);				
+			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));	
 		}
 
+		$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
+		$pathway->addItem($product->product_name);
 		
 		/* Load the reviews */
 		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {

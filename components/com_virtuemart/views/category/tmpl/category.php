@@ -78,7 +78,7 @@ foreach ($this->products as $product) {
 		</h3>
 	
 	<div class="browsePriceContainer">
-		<?php echo $product->product_price['salesPrice']; ?>
+		<?php echo $product->prices['salesPrice']; ?>
 	</div>
 	
 	<div class="browseProductImageContainer">
@@ -111,14 +111,17 @@ foreach ($this->products as $product) {
 		?>
 	</div>
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-		<form action="index.php" method="post" name="addtocart" id="addtocartproduct">
+		<form  method="post" id="addtocartproduct<?php echo $product->product_id ?>">
 		<div style="text-align: center;">
 			<?php
+				$variantExist=false;
 				/* Show the variants */
 				foreach ($product->variants as $variant_name => $variant) {
+					
 					$options = array();
 					foreach ($variant as $name => $price) {
 						if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
+						$variantExist=true;
 						$options[] = JHTML::_('select.option', $name, $name);
 					}
 					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $product->product_id.$variant_name).'<br />';
@@ -150,17 +153,19 @@ foreach ($this->products as $product) {
 				
 				/* Add the button */
 				$button_lbl = JText::_('VM_CART_ADD_TO');
-				$button_cls = 'addtocart_button';
+				$button_cls = 'addtocart_button_module';
 				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
 					$button_lbl = JText::_('VM_CART_NOTIFY');
 					$button_cls = 'notify_button';
 				}
 				?>
-				<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+				<input type="submit" id="<?php echo $product->product_id;?>" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 				
-				<input type="hidden" name="option" value="com_virtuemart" />
-				<input type="hidden" name="view" value="cart" />
-				<input type="hidden" name="task" value="add" />
+				<?php  if($variantExist){ 
+					?>
+					<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+				<?php }  ?>
+
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?> 
 				<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
@@ -171,17 +176,3 @@ foreach ($this->products as $product) {
 	
 	</div>
 <?php } ?>
-<script type="text/javascript">
-function add(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN) {
-		jQuery('#quantity'+nr).val(currentVal + 1);
-	}
-};
-function minus(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN) {
-		jQuery('#quantity'+nr).val(currentVal - 1);
-	}
-};
-</script>

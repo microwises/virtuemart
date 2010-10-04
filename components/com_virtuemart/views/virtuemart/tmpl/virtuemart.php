@@ -72,29 +72,48 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 	$cellwidth = intval( (100 / $featured_per_row) - 2 );
 	
 	echo "<h3>".JText::_('VM_FEATURED_PRODUCT')."</h3>";
-	foreach ($this->featuredProducts as $featured) {
+	foreach ($this->featuredProducts as $featProduct) {
 		?>
 		<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
 			<?php
 //			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
-			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), $featured->product_name);
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), $featProduct->product_name);
 			?>
-				<h4><?php echo $featured->product_name; ?></h4>
-				<?php echo $this->currencyDisplay->getFullValue($featured->product_price['salesPrice']); ?><br />
-				<?php if (!empty($featured->product_price['discountedPrice'])){ ?>
+				<h4><?php echo $featProduct->product_name; ?></h4><?php
+			if (VmConfig::get('show_prices') == '1') {
+//				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
+//						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
+//					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+
+					//todo add config settings
+					if( Permissions::getInstance()->check('admin')){
+						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$featProduct->prices);
+						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$featProduct->prices);
+					}
+					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$featProduct->prices);
+					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$featProduct->prices);
+			}
+/*					 	echo $this->currencyDisplay->getFullValue($featured->product_price['salesPrice']); ?><br />
+			<?php if (!empty($featured->product_price['discountedPrice'])){ ?>
 				 <span class="product-Old-Price">
 				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['basePriceWithTax']); ?></span>
-				<?php
-				}
-				if ($featured->product_thumb_image) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featured->product_id), 
-						ImageHelper::generateImageHtml($featured->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$featured->product_name.'"'));
+				<?php 
+				}*/
+				if ($featProduct->product_thumb_image) {
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), 
+						ImageHelper::generateImageHtml($featProduct->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$featProduct->product_name.'"'));
 				?>
 				<br /><br/>
 				<?php } ?>
-				<?php echo $featured->product_s_desc; ?><br />
+				<?php echo $featProduct->product_s_desc; ?><br />
 				
-				<?php echo addToCart($featured); ?>
+				<?php echo addToCart($featProduct); ?>
 		</div>
 		<?php
 		// Do we need to close the current row now?
@@ -127,7 +146,7 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$product->flypage.'&product_id='.$product->product_id), $product->product_name);
 			?>
 				<h4><?php echo $product->product_name; ?></h4>
-				<?php echo $product->product_price['salesPrice']; ?><br />
+				<?php echo $product->prices['salesPrice']; ?><br />
 				<?php
 				if ($product->product_thumb_image) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id), 
@@ -156,7 +175,7 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 
 function addToCart($product) {
 	$call_for_pricing = false;
-	if ($product->product_price['salesPrice'] == JText::_('CALL_FOR_PRICING')) $call_for_pricing = true;
+	if ($product->prices['salesPrice'] == JText::_('CALL_FOR_PRICING')) $call_for_pricing = true;
 	$button_lbl = JText::_('VM_CART_ADD_TO');
 	$button_cls = 'addtocart_button';
 	if (VmConfig::get('check_stock') == '1' 

@@ -29,6 +29,7 @@ jimport('joomla.application.component.controller');
 * @package VirtueMart
 * @subpackage Cart
 * @author RolandD
+* @author Max Milbers
 */
 class VirtueMartControllerCart extends JController {
 
@@ -97,14 +98,14 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function addJS(){
-
+		
 		/* Load the cart helper */
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
 				 echo (1);
 				 die;
-			} 
+			}
 		}
 		echo (0);
 		die;

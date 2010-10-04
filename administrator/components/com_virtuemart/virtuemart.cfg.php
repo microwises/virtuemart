@@ -16,7 +16,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-global $mosConfig_absolute_path,$mosConfig_live_site;
+//global $mosConfig_absolute_path,$mosConfig_live_site;
 if( !class_exists( 'jconfig' )) {
 	$global_lang = $GLOBALS['mosConfig_lang'];
 
@@ -25,12 +25,12 @@ if( !class_exists( 'jconfig' )) {
 	$GLOBALS['mosConfig_lang'] = $mosConfig_lang = $global_lang;
 }
 // Check for trailing slash
-if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
-	$app = '';
-}
-else {
-	$app = '/';
-}
+//if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
+//	$app = '';
+//}
+//else {
+//	$app = '/';
+//}
 // these path and url definitions here are based on the Joomla! Configuration
 //a virgin file should have define( 'URL', JURI::root() );   not a concrete URL
 define( 'URL', JURI::root() );
@@ -47,7 +47,7 @@ if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERV
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
 	define( 'VM_THEMEURL', URL.'components/com_virtuemart/assets/css/' );
 }
-define( 'VM_THEMEPATH', $mosConfig_absolute_path.DS.'components'.DS.'com_virtuemart'.DS.'themes'.DS.'default'.DS );
+define( 'VM_THEMEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes'.DS.'default'.DS );
 
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 

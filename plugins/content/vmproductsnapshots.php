@@ -37,20 +37,20 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * string style (the value for the style attribute of the Table element)
  * string align (defines the align of the table with the product snapshot)
  */
-global $ps_product ;
+//global $ps_product ;
 
-require_once (dirname( __FILE__ ) . "/../../components/com_virtuemart/virtuemart_parser.php") ;
+//require_once (dirname( __FILE__ ) . "/../../components/com_virtuemart/virtuemart_parser.php") ;
 include_class( "product" ) ;
 
-if( vmIsJoomla( '1.5', '>=' ) ) {
+//if( vmIsJoomla( '1.5', '>=' ) ) {
 	$mainframe->registerEvent( 'onBeforeDisplayContent', 'pluginProductSnap' ) ;
-} else {
-	$_MAMBOTS->registerFunction( 'onPrepareContent', 'botProductSnap' ) ;
-}
+//} else {
+//	$_MAMBOTS->registerFunction( 'onPrepareContent', 'botProductSnap' ) ;
+//}
 
-function pluginProductSnap( &$row, &$params, $page = 0 ) {
-	return handleProductSnapShot( $row, $params, $page ) ;
-}
+//function pluginProductSnap( &$row, &$params, $page = 0 ) {
+//	return handleProductSnapShot( $row, $params, $page ) ;
+//}
 function botProductSnap( $published, &$row, &$params, $page = 0 ) {
 	return handleProductSnapShot( $row, $params, $page, $published ) ;
 }

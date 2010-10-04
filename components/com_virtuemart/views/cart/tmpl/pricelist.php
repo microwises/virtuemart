@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 			/* Product PRICE */
 			/** @todo Format price */
-			$product_rows[$i]['product_price'] = $this->prices[$i]['salesPrice'];
+			$product_rows[$i]['prices'] = $this->prices[$i]['salesPrice'];
 
 			/** @todo Format price */
 			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
@@ -144,7 +144,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
 				<td align="left" ><?php echo $prow['product_name'].$prow['product_variant'].$prow['product_customvariant'].$prow['product_attributes']; ?></td>
 				<td align="left" ><?php echo $prow['product_sku'] ?></td>
-				<td align="right" ><?php echo $prow['product_price'] ?></td>
+				<td align="right" ><?php echo $prow['prices'] ?></td>
 				<td align="right" ><?php echo $prow['update_form'] ?>
 					<?php echo $prow['delete_form'] ?>
 				</td>

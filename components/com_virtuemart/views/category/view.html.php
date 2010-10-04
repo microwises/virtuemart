@@ -32,7 +32,11 @@ jimport('joomla.application.component.view');
 */
 class VirtuemartViewCategory extends JView {
 	
-	public function display($tpl = null) {	  	    
+	public function display($tpl = null) {
+		
+		$document = JFactory::getDocument();
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmprices.js');
+ 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		

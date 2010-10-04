@@ -18,10 +18,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // Load the configuration file
 // Quickfix by Harry Patterson: 
-global $mosConfig_absolute_path;
-$mosConfig_absolute_path=JPATH_ROOT.DS;
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+//global $mosConfig_absolute_path;
+//$mosConfig_absolute_path=JPATH_ROOT.DS;
+//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 
 // Require the base controller
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controller.php');

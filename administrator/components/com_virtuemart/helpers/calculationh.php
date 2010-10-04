@@ -44,7 +44,7 @@ class calculationHelper{
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 */
-	function __construct()
+	private function __construct()
 	{
 		$this->_db = &JFactory::getDBO();
 		$jnow		=& JFactory::getDate();
@@ -62,7 +62,8 @@ class calculationHelper{
 		if(!is_object(self::$_instance)){
 			self::$_instance = new calculationHelper();
 		}else {
-			
+			$jnow			=& JFactory::getDate();
+			$this -> _now 	= $jnow->toMySQL();
 		}
 		return self::$_instance;
 	}
@@ -135,9 +136,7 @@ class calculationHelper{
 
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
 		$prices['basePrice']=$basePriceShopCurrency;
-		
 
-		
 		if(isset($variant)){
 			if (strpos($variant, '=') !== false) {
 	//		   $variant=substr($variant,1);
@@ -891,7 +890,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	private function _getCurrencyObject()
 	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
 			$module_filename = VM_CURRENCY_CONVERTER_MODULE;
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');

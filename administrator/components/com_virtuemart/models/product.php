@@ -119,6 +119,12 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->categories[$value]  = 1;
 		 }
 		 
+		 if (VmConfig::get('show_prices') == '1') {
+			/* Loads the product price details */
+//			$calculator = new calculationHelper();
+//			$row->price = $calculator->getProductPrices($featured->product_id);
+		}
+				
      	 return $row;
      }
 
@@ -386,10 +392,10 @@ class VirtueMartModelProduct extends JModel {
 				$price = "";
 				if (VmConfig::get('show_prices') == '1') {
 					/* Loads the product price details */
-					$calculator = new calculationHelper();
+					$calculator = calculationHelper::getInstance();
 					$price = $calculator->getProductPrices($featured->product_id);
 				}
-				$featured->product_price = $price;
+				$featured->prices = $price;
 	
 				/* Child products */
 				$featured->haschildren = $this->checkChildProducts($featured->product_id);

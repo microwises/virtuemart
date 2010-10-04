@@ -41,6 +41,10 @@ class VirtueMartCart  {
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
+	var $shipping_rate_id = 0;
+	var $paym_id = 0;
+	var $BT = 0;
+	var $ST = 0;
 	
 	private function __construct() {
 				
@@ -126,7 +130,7 @@ class VirtueMartCart  {
 		$total_deleted = 0;
 		$product_ids = $post['product_id'];
 //		$product_ids = JRequest::get('product_id');
-		dump($post,'post data in add');
+		
 		if (empty($product_ids)) {
 			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_PRODUCT_IDS',false) );
 			return false;	
@@ -137,20 +141,20 @@ class VirtueMartCart  {
 			$product = $this->getProduct($product_id);
 			
 			/* Check if we have a product */
-			if ($product && $product->product_id > 0 && $product->published == 1) {
-				$quantity = $post['quantity'][$p_key];
-				$category_id = $post['category_id'][$p_key];
-				
-				if(!$this->checkForQuantities($product,$quantity)) return false;
+			if ($product) {
+				$quantityPost = $post['quantity'][$p_key];
+				$category_idPost = $post['category_id'][$p_key];
 
 				/** @todo Check for child items, variants and attributes */
 				
 				/** @todo check for attributes adding to the cart */
 				
 				
-				$product->quantity = $quantity;
-				$product->category_id = $category_id;
+//				$product->quantity = $quantity;
+				$product->category_id = $category_idPost;
 				$productKey= $product->product_id.':';
+
+//				echo '<pre>'.print_r($quantityPost).'</pre>';die;
 				
 //				/* Check for variants being posted */
 				$variants = array();
@@ -174,14 +178,15 @@ class VirtueMartCart  {
 				$product->customvariant =  $customvariants;
 
 				if (array_key_exists($productKey, $this->products)) {
-					$product->quantity += $quantity;
-					$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
+					$this->products[$productKey]->quantity += $quantityPost;
+					if($this->checkForQuantities($product,$this->products[$productKey]->quantity))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
 				} else {
 					$this->products[$productKey] = $product;
-					dump($product,'$product added to cart');
-					$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
+					if($this->checkForQuantities($product,$this->products[$quantityPost]))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
 				}
 
+				
+				
 			}
 			else {
 				$mainframe->enqueueMessage( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
@@ -400,7 +405,7 @@ class VirtueMartCart  {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));		
 		}
 	}
-	
+
 	public function setShippingRate($shipping_rate_id){
 		$this->shipping_rate_id=$shipping_rate_id;
 		$this->setCartIntoSession();

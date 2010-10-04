@@ -5,6 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage 
+* @author Max Milbers
 * @author RolandD
 * @todo handle child products
 * @link http://www.virtuemart.net
@@ -79,7 +80,7 @@ else { ?>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-					<form method="post" name="addtocart" id="addtocartproduct">
+					<form  method="post" id="addtocartproduct<?php echo $this->product->product_id ?>">
 					<div style="text-align: center;">
 						<?php
 							$variantExist=false;
@@ -129,7 +130,7 @@ else { ?>
 								$button_cls = 'notify_button';
 							}
 							?>
-							<input id="cart" type="submit" name="cart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<input id="<?php echo $this->product->product_id;?>" type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							<?php if($variantExist){ 
 								?>
 								<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
@@ -168,17 +169,17 @@ else { ?>
 
 					//todo add config settings
 					if( Permissions::getInstance()->check('admin')){
-						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->product_price);
-						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->product_price);
+						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->prices);
+						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
 					}
-					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$this->product->product_price);
-					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->product_price);
+					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->prices);
 					
 				}
 				?><br />
@@ -503,78 +504,6 @@ else { ?>
 
 <script type="text/javascript">
 
-jQuery(document).ready(function() {
-	var cart = document.getElementById('cart');
-	cart.type='button';
-	jQuery(cart).bind('click', sendtocart);
-	
-	var recalc = document.getElementById('recalc');
-	recalc.type = 'button';
-	jQuery(recalc).bind('click', setproducttype);
-});
 
 
-function sendtocart(){
-	
-	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS', jQuery("#addtocartproduct").serialize(), 
-	
-	function(newPrices, textStatus) {
-//			alert(newPrices+' and '+textStatus);
-			if(newPrices==1){
-				alert('Product added to cart');
-			}else{
-				alert('Product not added to cart, may out of stock');
-			}
-	});
-
-};
-
-function setproducttype(){
-
-//	var newPrices = 
-	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery("#addtocartproduct").serialize(),
-	
-		function(newPrices, textStatus) {
-//			jQuery('#basePrice').html(newPrices.basePrice);
-			togglePriceVisibility(newPrices.basePrice,'#basePrice');
-			togglePriceVisibility(newPrices.variantModification,'#variantModification');
-			togglePriceVisibility(newPrices.basePriceVariant,'#basePriceVariant');
-			togglePriceVisibility(newPrices.basePriceWithTax,'#basePriceWithTax');
-			togglePriceVisibility(newPrices.discountedPriceWithoutTax,'#discountedPriceWithoutTax');
-			togglePriceVisibility(newPrices.salesPriceWithDiscount,'#salesPriceWithDiscount');
-			togglePriceVisibility(newPrices.salesPrice,'#salesPrice');
-			togglePriceVisibility(newPrices.priceWithoutTax,'#priceWithoutTax');
-			togglePriceVisibility(newPrices.discountAmount,'#discountAmount');
-			togglePriceVisibility(newPrices.taxAmount,'#taxAmount');
-			togglePriceVisibility(newPrices.variantModification,'#variantModification'); 
-		});
-};
-
-function togglePriceVisibility(newPrice,divname){
-	div = jQuery(divname+"D");
-	span = jQuery(divname);
-	if(newPrice!=0){
-		div.show();
-		span.show();
-		span.html(newPrice);
-	} else {
-		span.html(0);
-		div.hide();
-		span.hide();
-	}
-}
-
-function add(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN) {
-		jQuery('#quantity'+nr).val(currentVal + 1);
-	}
-};
-
-function minus(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN && currentVal>0) {
-		jQuery('#quantity'+nr).val(currentVal - 1);
-	}
-};
 </script>

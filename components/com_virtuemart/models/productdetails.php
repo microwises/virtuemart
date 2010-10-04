@@ -76,7 +76,7 @@ class VirtueMartModelProductdetails extends JModel {
 				$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 			}
 			
-			$product->product_price = $prices;
+			$product->prices = $prices;
 			
 			/* Add the product link  */
 			$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id.'&category_id='.$product->category_id);
@@ -295,7 +295,7 @@ class VirtueMartModelProductdetails extends JModel {
 		/* Get the price also */
 		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
-			$calculator = new calculationHelper();
+			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
 				/* Add the product link  */
