@@ -133,7 +133,7 @@ else { ?>
 							<input id="<?php echo $this->product->product_id;?>" type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							<?php if($variantExist){ 
 								?>
-								<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+								<input id="<?php echo $this->product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 							<?php } ?>
 							
 							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />

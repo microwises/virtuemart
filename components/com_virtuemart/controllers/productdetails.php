@@ -85,7 +85,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = $this->getModel('productdetails');
 		$price = $product_model->getPrice($product_id);
 		
-		$currencyDisplay = JRequest::getVar('currencyDisplay');
+//		$currencyDisplay = JRequest::getVar('currencyDisplay');
 //		$currencyDisplay->getFullValue($this->product->product_price['salesPrice'])
 		
 //		for ($x = 0; $x < sizeof($fields); ++$x){
@@ -101,7 +101,7 @@ class VirtueMartControllerProductdetails extends JController {
 //			echo '<br />the current adjusted: '.current($price);
 //			next($price);
 //		}
-		JRequest::setVar('tmpl', 'component');
+//		JRequest::setVar('tmpl', 'component');
 		
 		echo json_encode ($price);
 		

@@ -40,11 +40,15 @@ class VirtuemartViewUser extends JView {
 		
 		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
-
+		
+		$_currentUser =& JFactory::getUser();
+		
+		$task = JRequest::getVar('task', 'edit');
+		if($task == 'editshop'){
+			$model->setCurrent($_currentUser->id);
+		}
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
-
-			$_currentUser =& JFactory::getUser();
 
 			// Get the required helpers
 			$this->loadHelper('permissions');
@@ -57,8 +61,10 @@ class VirtuemartViewUser extends JView {
 			$userFieldsModel = $this->getModel('userfields');
 //			$orderModel = $this->getModel('orders');
 			$vendor = new Vendor;
-			$userDetails = $model->getUser();
 
+			$userDetails = $model->getUser();
+			
+			
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'

@@ -182,7 +182,8 @@ class VirtueMartCart  {
 					if($this->checkForQuantities($product,$this->products[$productKey]->quantity))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
 				} else {
 					$this->products[$productKey] = $product;
-					if($this->checkForQuantities($product,$this->products[$quantityPost]))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
+					$product->quantity = $quantityPost;
+					if($this->checkForQuantities($product,$quantityPost))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
 				}
 
 				

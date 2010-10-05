@@ -52,6 +52,7 @@ class calculationHelper{
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
 		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
+
 		if(!$this -> _currencyDisplay){
 			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
 		}
@@ -94,16 +95,20 @@ class calculationHelper{
 		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 
 		$row=$this->_db->loadRow();
-		$basePrice = $row[0];
-		$this->productCurrency=$row[1];
+		if($row && count($row)==2){
+			$basePrice = $row[0];
+			$this->productCurrency=$row[1];
+		}
 		
 		$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
 		$single = $this->_db->loadResult();
 		$this->productVendorId = $single;
-
+		if(empty($this->productVendorId)){
+			$this->productVendorId=1;
+		}
 		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__vm_vendor  WHERE `vendor_id`="'.$this->productVendorId.'" ');
-		$single = $this->_db->loadResult();
-		$this->vendorCurrency = $single;
+		$row = $this->_db->loadResult();
+		$this->vendorCurrency = $row[0];
 				
 		if(empty($catIds)){
 			$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
@@ -184,19 +189,23 @@ class calculationHelper{
 		
 		//As last step the prices gets adjusted to the user choosen currency
 		if($this -> _currencyDisplay){
-			foreach($prices as $price){
-				$price = $this -> _currencyDisplay->getFullValue($price);
+			//just for developing
+			$this->userCurrency = $this -> vendorCurrency;
+			
+			foreach($prices as $k=>$price){
+				//Maybe we need this. ATM I dont know
+//				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
+				if($price) $prices[$k] = $this -> _currencyDisplay->getFullValue($price);
 			}
 		}else {
 			
 		}
 
-	
 		$prices['variantModification']=$variant;
-	
+
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($prices).'</pre>';
-
+//		dump($prices,'$prices');
 		return $prices;
 	}
 
@@ -912,6 +921,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	public function getCurrencyDisplayObject()
 	{
+		//We may want to set this to the userdisplay style, for different currencies
 		$_mainVendor = 1;
 		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');

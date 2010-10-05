@@ -91,6 +91,29 @@ class VirtuemartControllerUser extends JController {
 		parent::display();
 	}
 
+	function editshop(){
+		
+		$this->edit();
+//		JRequest::setVar('controller', 'user');
+//		JRequest::setVar('view', 'user');
+//		JRequest::setVar('layout', 'edit');
+//		JRequest::setVar('hidemainmenu', 1);
+//
+//		$document =& JFactory::getDocument();
+//		$viewType = $document->getType();
+//		$view =& $this->getView('user', $viewType);
+//		
+//		// Load the additional models
+//		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
+//		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
+//		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
+//		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
+//		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
+//		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ));
+//		
+//		parent::display();
+	}	
+	
 	/**
 	 * Handle the cancel task
 	 */

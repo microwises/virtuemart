@@ -78,7 +78,25 @@ foreach ($this->products as $product) {
 		</h3>
 	
 	<div class="browsePriceContainer">
-		<?php echo $product->prices['salesPrice']; ?>
+<?php	if (VmConfig::get('show_prices') == '1') {
+			if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
+				echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
+			} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+
+			//todo add config settings
+			if( Permissions::getInstance()->check('admin')){
+				echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$product->prices);
+				echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
+			}
+			echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$product->prices);
+			echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$product->prices);
+			echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$product->prices);
+			echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
+			echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$product->prices);
+			echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$product->prices);
+			echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$product->prices);
+			echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$product->prices);	
+		} ?>
 	</div>
 	
 	<div class="browseProductImageContainer">
@@ -125,6 +143,8 @@ foreach ($this->products as $product) {
 						$options[] = JHTML::_('select.option', $name, $name);
 					}
 					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $product->product_id.$variant_name).'<br />';
+//																				genericlist   ,$arr     , $name               , $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false )
+//					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $variant_name, null,'value','text',NULL,$product->product_id).'<br />';
 				}
 				?>
 				<br style="clear: both;" />
@@ -161,10 +181,9 @@ foreach ($this->products as $product) {
 				?>
 				<input type="submit" id="<?php echo $product->product_id;?>" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 				
-				<?php  if($variantExist){ 
-					?>
-					<input id="recalc" type="submit" name="productdetails" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
-				<?php }  ?>
+				<?php  if($variantExist){ ?>
+					<input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+				<?php } ?>
 
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?> 
