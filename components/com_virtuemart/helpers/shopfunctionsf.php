@@ -50,6 +50,8 @@ class shopFunctionsF {
 		if(VmConfig::get($name) =='1'){
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
+	 			$calculator = calculationHelper::getInstance();
+	 			$product_price[$name] = $calculator->priceDisplay($product_price[$name]);
 	 		} else {
 	 			$vis = "none";
 	 		}

@@ -16,7 +16,8 @@
 * other free or open source software licenses.
 * 
 */
- 
+
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
@@ -95,14 +96,19 @@ defined('_JEXEC') or die('Restricted access');
 	
 			/* Product PRICE */
 			/** @todo Format price */
-			$product_rows[$i]['prices'] = $this->prices[$i]['salesPrice'];
+			$product_rows[$i]['prices'] = $this->prices[$product->product_id]['salesPrice'];
 
 			/** @todo Format price */
-			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
-			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $product->quantity;
-			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $product->quantity;
-			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $product->quantity;
-			
+//			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
+//			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $product->quantity;
+//			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $product->quantity;
+//			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $product->quantity;
+
+			$product_rows[$i]['subtotal'] = $this->prices[$product->product_id]['subtotal'];
+			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$product->product_id]['subtotal_tax_amount'];
+			$product_rows[$i]['subtotal_discount'] = $this->prices[$product->product_id]['subtotal_discount'];
+			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$product->product_id]['subtotal_with_tax'];
+						
 			// UPDATE CART / DELETE FROM CART
 			if($this->layoutName=='default'){
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
@@ -168,7 +174,7 @@ defined('_JEXEC') or die('Restricted access');
 		  </tr>
 
 		<?php 
-		foreach($this->prices['dBTaxRulesBill'] as $rule){ ?>
+		foreach($this->cartData['dBTaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
@@ -180,11 +186,11 @@ defined('_JEXEC') or die('Restricted access');
 			if($i) $i=1; else $i=0;
 		}
 
-		if($this->prices['coupons']){ ?>
+		if($this->cartData['coupons']){ ?>
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
-				<td colspan="3" align="left"><?php echo $this->prices['couponName']; ?> </td>
+				<td colspan="3" align="left"><?php echo $this->cartData['couponName']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
 				<td align="right"><?php echo $this->prices['couponValue']; ?> </td>	
 				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
@@ -193,7 +199,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
-				<td colspan="2" align="left"><?php echo $this->prices['shippingName']; ?> </td>
+				<td colspan="2" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>	
 				<td></td>
@@ -203,7 +209,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('VM_CART_EDIT_PAYMENT')); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
-				<td colspan="2" align="left"><?php echo $this->prices['paymentName']; ?> </td>
+				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentTax']; ?> </td>	
 				<td align="right"><?php echo $this->prices['paymentDiscount']; ?></td>
@@ -211,7 +217,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php 
 		
-		foreach($this->prices['taxRulesBill'] as $rule){ ?>
+		foreach($this->cartData['taxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
@@ -223,7 +229,7 @@ defined('_JEXEC') or die('Restricted access');
 			if($i) $i=1; else $i=0;
 		} 
 		
-		foreach($this->prices['dATaxRulesBill'] as $rule){ ?>
+		foreach($this->cartData['dATaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>

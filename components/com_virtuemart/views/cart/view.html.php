@@ -237,45 +237,60 @@ class VirtueMartViewCart extends JView {
 	private function prepareCartData(){
 
 		/* Get the products for the cart */
-				
-		$prices = $this->_cart->getCartPrices();
+		$prices = array();
+		$product_prices = $this->_cart->getCartPrices();
+		$calculator = calculationHelper::getInstance();
+		foreach($product_prices as $k=>$price){
+			if(is_int($k)){
+				foreach($price as $sk=>$sprice){
+					$prices[$k][$sk] = $calculator->priceDisplay($sprice);
+				}
+			} else {
+				$prices[$k] = $calculator->priceDisplay($price);
+			}		
+		}
+
+		dump($prices,'prices');
 		$this->assignRef('prices', $prices);
 
+		$this->assignRef('cartData',$calculator->getCartData());
+		$this->assignRef('calculator',$calculator);
+		
 		//TODO Oscar this must be added to userfields somehow,
 		//There should be possibility to show only the filled userfields and 
 		//the country, state name instead (in other cases we need always the ids and all fields,...
 		//Add names of country/state
-		if(!empty($this->_cart->BT)){
-			if($this->_cart->BT['country_id']){
-				$countryModel = self::getModel('country');
-				$countryModel->setId($this->_cart->BT['country_id']);
-				$country = $countryModel->getCountry();
-				if($country) $this->_cart->BT['country_name'] = $country->country_name;
-			}
-			
-			if($this->_cart->BT['state_id']){
-				$stateModel = self::getModel('state');
-				$stateModel->setId($this->_cart->BT['state_id']);
-				$state = $stateModel->getState();
-				if($state) $this->_cart->BT['state_name'] = $state->state_name;	
-			}	
-		}
-		
-		if(!empty($this->_cart->ST)){
-			if($this->_cart->ST['country_id']){
-				$countryModel = self::getModel('country');
-				$countryModel->setId($this->_cart->ST['country_id']);
-				$country = $countryModel->getCountry();
-				if($country) $this->_cart->ST['country_name'] = $country->country_name;
-			}
-			
-			if($this->_cart->ST['state_id']){
-				$stateModel = self::getModel('state');
-				$stateModel->setId($this->_cart->ST['state_id']);
-				$state = $stateModel->getState();
-				if($state) $this->_cart->ST['state_name'] = $state->state_name;	
-			}
-		}
+//		if(!empty($this->_cart->BT)){
+//			if($this->_cart->BT['country_id']){
+//				$countryModel = self::getModel('country');
+//				$countryModel->setId($this->_cart->BT['country_id']);
+//				$country = $countryModel->getCountry();
+//				if($country) $this->_cart->BT['country_name'] = $country->country_name;
+//			}
+//			
+//			if($this->_cart->BT['state_id']){
+//				$stateModel = self::getModel('state');
+//				$stateModel->setId($this->_cart->BT['state_id']);
+//				$state = $stateModel->getState();
+//				if($state) $this->_cart->BT['state_name'] = $state->state_name;	
+//			}	
+//		}
+//		
+//		if(!empty($this->_cart->ST)){
+//			if($this->_cart->ST['country_id']){
+//				$countryModel = self::getModel('country');
+//				$countryModel->setId($this->_cart->ST['country_id']);
+//				$country = $countryModel->getCountry();
+//				if($country) $this->_cart->ST['country_name'] = $country->country_name;
+//			}
+//			
+//			if($this->_cart->ST['state_id']){
+//				$stateModel = self::getModel('state');
+//				$stateModel->setId($this->_cart->ST['state_id']);
+//				$state = $stateModel->getState();
+//				if($state) $this->_cart->ST['state_name'] = $state->state_name;	
+//			}
+//		}
 	}
 	
 	private function prepareMailData(){

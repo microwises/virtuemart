@@ -179,6 +179,8 @@ class CurrencyDisplay {
 	// case, an unwanted ',' is displayed.
 	// That's why we have to do the work ourserlve.
 	// Note : when no decimal il given (i.e. 3 parameters), everything works fine
+	
+	if(is_string($nb)) $nb = floatval($nb);
 	if( $decimals === '') {
 	    $decimals = $this->nbDecimal;
 	}

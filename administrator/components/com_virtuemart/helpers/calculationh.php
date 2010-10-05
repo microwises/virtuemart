@@ -27,6 +27,7 @@ class calculationHelper{
 	private $_deliveryState;
 	private $_currencyDisplay;
 	private $_cartPrices;
+	private $_cartData;
 	
 	public $productVendorId;
 	public $productCurrency;
@@ -69,6 +70,17 @@ class calculationHelper{
 		return self::$_instance;
 	}
 
+	function priceDisplay($price=0){
+		if($price) return $this -> _currencyDisplay->getFullValue($price);	
+	}
+	
+	function getCartPrices(){
+		return $this->_cartPrices;
+	}
+	
+	function getCartData(){
+		return $this->_cartData;
+	}
 	/** function to start the calculation, here it is for the product
 	 * 
 	 * The function first gathers the information of the product (maybe better done with using the model)
@@ -88,7 +100,7 @@ class calculationHelper{
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 * 
 	 */
-	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true){
+	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
 		
 		//todo Calculation not done, when no rule is set
 //		Console::logSpeed('getProductPrices START: ');
@@ -107,8 +119,8 @@ class calculationHelper{
 			$this->productVendorId=1;
 		}
 		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__vm_vendor  WHERE `vendor_id`="'.$this->productVendorId.'" ');
-		$row = $this->_db->loadResult();
-		$this->vendorCurrency = $row[0];
+		$single = $this->_db->loadResult();
+		$this->vendorCurrency = $single;
 				
 		if(empty($catIds)){
 			$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
@@ -187,22 +199,24 @@ class calculationHelper{
 //		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 		
+		
+		
 		//As last step the prices gets adjusted to the user choosen currency
-		if($this -> _currencyDisplay){
-			//just for developing
-			$this->userCurrency = $this -> vendorCurrency;
-			
-			foreach($prices as $k=>$price){
-				//Maybe we need this. ATM I dont know
-//				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
-				if($price) $prices[$k] = $this -> _currencyDisplay->getFullValue($price);
-			}
-		}else {
-			
-		}
+//		if($this -> _currencyDisplay && $currencydisplay){
+//			//just for developing
+//			$this->userCurrency = $this -> vendorCurrency;
+//			dump($prices,'$prices');
+//			foreach($prices as $k=>$price){
+//				//Maybe we need this. ATM I dont know
+////				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
+//				if($price) $prices[$k] = $this -> _currencyDisplay->getFullValue($price);
+//			}
+//		}else {
+//			
+//		}
 
 		$prices['variantModification']=$variant;
-
+		
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($prices).'</pre>';
 //		dump($prices,'$prices');
@@ -240,9 +254,9 @@ class calculationHelper{
 //		echo '<br />shipping_rate_id '.$cart->shipping_rate_id.'<br />';
 		$pricesPerId = array();
 		$this->_cartPrices = array();
+		$this->_cartData = array();
 		$resultWithTax=0.0;
 		$resultWithOutTax=0.0;
-		$productIdsCount = count( $cart->products);
 
 		$this->_cartPrices['basePrice']= 0;
 		$this->_cartPrices['basePriceWithTax']= 0;
@@ -252,22 +266,20 @@ class calculationHelper{
 		$this->_cartPrices['salesPriceWithDiscount']= 0;
 		$this->_cartPrices['discountAmount']= 0;
 		$this->_cartPrices['priceWithoutTax']= 0;
-		$this->_cartPrices['coupons'] = $this->existCoupons();
-		$this->_cartPrices['couponValue'] = 0;
-		$this->_cartPrices['duty'] = 1;
+		
+		$this->_cartData['duty'] = 1;
 
-		$this->_cartPrices['payment'] = 0; //could be automatically set to a default set in the globalconfig
-		$this->_cartPrices['paymentName'] = '';
+		$this->_cartData['payment'] = 0; //could be automatically set to a default set in the globalconfig
+		$this->_cartData['paymentName'] = '';
 		$this->_cartPrices['paymentTax'] = 0;
 		
-		
-		$this->_cartPrices['couponName'] = 'Coupon Number 777';
+		$this->_cartData['coupons'] = $this->existCoupons();
+		$this->_cartData['couponName'] = 'Coupon Number 777';
 		$this->_cartPrices['couponTax'] = '';
 		$this->_cartPrices['couponValue'] = '';
 		$this->_cartPrices['salesPriceCoupon'] = '';
 		
-		
-//		for ($i = 0; $i<$productIdsCount;$i++){
+
 		foreach ($cart->products as $product){
 			dump($product,'Product in cart in calc'); 
 			$productId = $product->product_id;
@@ -279,8 +291,8 @@ class calculationHelper{
 			$variantmod = $this->parseModifier($product->variant);
 			dump($variantmod,'My variant modification in calc');
 			//TODO maybe there is away to avoid the cartPrices
-			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity);	
-			$this->_cartPrices[] = $pricesPerId[(int)$productId];
+			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
+			$this->_cartPrices[$productId] = $pricesPerId[(int)$productId];
 
 			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $pricesPerId[$productId]['basePrice']*$product->quantity;
 //				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$product->quantity;
@@ -291,10 +303,14 @@ class calculationHelper{
 			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$product->quantity;
 			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$product->quantity;
 			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$product->quantity;
-			
+
+			$this->_cartPrices[$productId]['subtotal'] = $pricesPerId[$productId]['priceWithoutTax'] * $product->quantity;
+			$this->_cartPrices[$productId]['subtotal_tax_amount'] = $pricesPerId[$productId]['taxAmount'] * $product->quantity;
+			$this->_cartPrices[$productId]['subtotal_discount'] = $pricesPerId[$productId]['discountAmount'] * $product->quantity;
+			$this->_cartPrices[$productId]['subtotal_with_tax'] = $pricesPerId[$productId]['salesPrice'] * $product->quantity;
+						
 		}
 
-		
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(isset($user->id)){
@@ -302,12 +318,12 @@ class calculationHelper{
 				$this->_shopperGroupId=$this->_db->loadResultArray();			
 			}
 		}
-		
+
 		//todo fill with data
 		$this ->_deliveryCountry;
 		$this ->_deliveryState;
 	
-		$this->_cartPrices['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
+		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 
 		$shippingRateId = empty($cart->shipping_rate_id) ? 0 : $cart->shipping_rate_id;
@@ -315,8 +331,8 @@ class calculationHelper{
 		$this->calculateShipmentPrice($shippingRateId);
 		
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
-		$this->_cartPrices['taxRulesBill'] = $taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
-		$this->_cartPrices['dATaxRulesBill'] = $dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
+		$this->_cartData['taxRulesBill'] = $taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
+		$this->_cartData['dATaxRulesBill'] = $dATaxRules= $this->gatherEffectingRulesForBill('DATaxBill');
 		
 //		$cBRules = $this->gatherEffectingRulesForCoupon();
 
@@ -347,7 +363,21 @@ class calculationHelper{
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
 		
-		
+//		//As last step the prices gets adjusted to the user choosen currency
+//		if($this -> _currencyDisplay){
+//			//just for developing
+//			$this->userCurrency = $this -> vendorCurrency;
+//			
+//			foreach($this->_cartPrices as $k=>$price){
+//				if($price ){
+//					$this->_cartPrices[$k] = $this -> _currencyDisplay->getFullValue($price);
+//				}
+//				//Maybe we need this. ATM I dont know
+////				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
+////				if($price) $this->_cartPrices[$k] = $this -> _currencyDisplay->getFullValue($price);
+//			}
+//		}
+		dump($this -> _cartPrices,"my cart prices");
 		return $this->_cartPrices;
 	}
 
@@ -553,7 +583,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 */
 	function calculateShipmentPrice($ship_id){
 		
-		$this->_cartPrices['shippingName'] = JText::_('VM_CART_NO_SHIPMENT_SELECTED');
+		$this->_cartData['shippingName'] = JText::_('VM_CART_NO_SHIPMENT_SELECTED');
 		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingTax'] = 0;
 		$this->_cartPrices['shippingTotal'] = 0;
@@ -568,7 +598,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 		$this->_cartPrices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];
 		$this->_cartPrices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
-		$this->_cartPrices['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
+		$this->_cartData['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
 
 		$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
 		$this->_db->setQuery($q);
@@ -606,7 +636,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 		$model->setId($paym_id);
 		$paym = $model->getPaym();
 
-		$this->_cartPrices['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('VM_CART_NO_PAYM_SELECTED');
+		$this->_cartData['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('VM_CART_NO_PAYM_SELECTED');
 		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentDiscount'] = 0;
