@@ -130,7 +130,8 @@ class VirtuemartControllerOrders extends JController {
 		$msgtype = '';
 		if ($model->saveOrder()) $msg = JText::_('ORDER_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ORDER_NOT_SAVED_SUCCESSFULLY');
+//			$msg = JText::_('ORDER_NOT_SAVED_SUCCESSFULLY');
+			$model->getError();
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
@@ -151,7 +152,8 @@ class VirtuemartControllerOrders extends JController {
 		$msgtype = '';
 		if ($model->removeOrder()) $msg = JText::_('ORDER_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ORDER_NOT_REMOVED_SUCCESSFULLY');
+//			$msg = JText::_('ORDER_NOT_REMOVED_SUCCESSFULLY');
+			$model->getError();
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
@@ -180,7 +182,7 @@ class VirtuemartControllerOrders extends JController {
 		if ($result['updated'] > 0) 
 		    $msg = str_replace('{X}', $result['updated'], JText::_('ORDER_UPDATED_SUCCESSFULLY'));
 		if ($result['error'] > 0) 
-		    $msg - str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY'));
+		    $msg .= str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 	}

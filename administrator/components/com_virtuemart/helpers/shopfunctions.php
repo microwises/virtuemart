@@ -281,7 +281,7 @@ class ShopFunctions {
 	*/
 	public function getCountryByID ($_id, $_fld = 'country_name')
 	{
-		if (empty($_id) && $Id !== 0) {
+		if (empty($_id) && $_id !== 0) {
 			return ""; // Nothing to do
 		}
 		$_db = JFactory::getDBO();
@@ -303,7 +303,7 @@ class ShopFunctions {
 	*/
 	public function getStateByID ($_id, $_fld = 'state_name')
 	{
-		if (empty($_id) && $Id !== 0) {
+		if (empty($_id) && $_id !== 0) {
 			return ""; // Nothing to do
 		}
 		$_db = JFactory::getDBO();

@@ -164,16 +164,14 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	/**
 	 * This method stores the data of the used payment method. The function is made abstract
 	 * since all plugins *must* reimplement it.
-	 * NOTE:
-	 *  * If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 *  * By returning TRUE, the order model will update the product stock
-	 *  * If the stock should not be updated, the selected plugin should return FALSE
-	 *  The values TRUE and FALSE can NOT be replaced by 1 and 0!
+	 * NOTE for Plugin developers:
+	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+	 *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
 	 * 
 	 * @param int $_orderNr The ordernumber being processed
 	 * @param object $_orderData Data from the cart
 	 * @param array $_priceData Price information for this order
-	 * @return mixed Null when this method was not selected, True when the product stock should be updated, False otherwise
+	 * @return mixed Null when this method was not selected, otherwise the new order status
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
@@ -189,6 +187,70 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Oscar van Eijk
 	 */
 	abstract function plgVmOnShowStoredOrder($_order_id, $_paymethod_id);
+
+	/**
+	 * This event is triggered each time the status of an order is changed to Cancelled.
+	 * It can be used to refund payments, void authorization etc.
+	 * Return values are ignored.
+	 * 
+	 * Note for plugin developers: you are not required to reimplement this method, but if you
+	 * do so, it MUST start with this code:
+	 * 
+	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
+	 * 	if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
+	 * 		return;
+	 * 	}
+	 *
+	 * @author Oscar van Eijk
+	 * @param int $_orderID 
+	 * @param char $_oldStat Previous order status
+	 * @param char $_newStat New order status
+	 */
+	function plgVmOnCancelOrder($_orderID, $_oldStat, $_newStat)
+	{
+		return;
+	}
+
+	/**
+	 * Process a previous transaction, capture the Payment
+	 *
+	 * Note for plugin developers: you are not required to reimplement this method, but if you
+	 * do so, it MUST start with this code:
+	 * 
+	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
+	 * 	if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
+	 * 		return null;
+	 * 	}
+	 *
+	 * @author Oscar van Eijk
+	 * @param int $_orderID Order ID
+	 * @return mixed True on success, False on failure, Null if this plugin was not activated
+	 */
+	function plgVmOnShipOrder( $_orderID )
+	{
+		return null;
+	}
+
+	/**
+	 * Get the order payment ID for a given order number
+	 * @access protected
+	 * @author Oscar van Eijk
+	 * @param int $_id The order ID
+	 * @return int The payment method ID, or -1 when not found 
+	 */
+	protected function getPaymentMethodForOrder($_id)
+	{
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT `payment_method_id` '
+			. 'FROM #__vm_orders '
+			. "WHERE order_id = $_id";
+		$_db->setQuery($_q);
+		if (!($_r = $_db->loadAssoc())) {
+			return -1;
+		}
+		return $_r['payment_method_id'];
+	}
+
 
 	/**
 	 * Retrieve the payment method-specific encryption key

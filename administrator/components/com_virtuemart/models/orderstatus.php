@@ -239,6 +239,34 @@ class VirtueMartModelOrderstatus extends JModel {
 	}
 
 	/**
+	 * Check if stock should be updated when an order status changes/
+	 * TODO This must be implemented in an orderstatus flow in a future release
+	 * 
+	 * @author Oscar van Eijk, null if the order is new (default)
+	 * @param char $_newStat New order status
+	 * @param char $_oldStat Old order status, null if the order is new (default)
+	 * @return integer <0: decrease stock, 0: do nothing, >0 increase stock
+	 */
+	function updateStockAfterStatusChange($_newStat, $_oldStat = null)
+	{
+		if ($_oldStat == null || $_oldStat == 'P' || $_oldStat == 'X' || $_oldStat == 'R') {
+			if ($_newStat == 'C' || $_newStat == 'S') {
+				return -1; // Decrease stock
+			} else {
+				return 0;
+			}
+		} elseif ($_oldStat == 'C' || $_oldStat == 'S') { // Status Shipped shouldn't be changeble...
+			if ($_newStat == 'X' || $_newStat == 'R' || $_newStat == 'P') {
+				return 1; // Increase stock
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
 	 * Reorder the Order statusus
 	 *
 	 * @return boolean True on success

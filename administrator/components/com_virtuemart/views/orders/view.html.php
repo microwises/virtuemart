@@ -51,6 +51,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Get the data */
 			$order = $this->get('Order');
+			$_orderID = $order['details']['BT']->order_id;
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
@@ -97,6 +98,7 @@ class VirtuemartViewOrders extends JView {
 			
 			/* Assign the data */
 			$this->assignRef('order', $order);
+			$this->assignRef('orderID', $_orderID);
 			$this->assignRef('userfields', $userfields);
 			$this->assignRef('shippingfields', $shippingfields);
 			$this->assignRef('orderstatuslist', $_orderStatusList);
@@ -104,27 +106,33 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderst', $orderst);
 
 			JHTML::_('behavior.modal');
-			$this->setLayout('orders_edit');
+			$this->setLayout('order');
 
+			/* Data for the Edit Status form popup */
+			$_currentOrderStat = $order['details']['BT']->order_status;
+			$_orderStatusSelect = JHTML::_('select.genericlist', $_orderStats, 'order_status['.$_orderID.']', '', 'value', 'text', $_currentOrderStat, 'order_status');
+			$this->assignRef('orderStatSelect', $_orderStatusSelect);
+			$this->assignRef('currentOrderStat', $_currentOrderStat);
+			
 			/* Toolbar */
 			JToolBarHelper::title(JText::_( 'VM_ORDER_EDIT_LBL' ), 'vm_orders_48');
-			JToolBarHelper::cancel();
+			JToolBarHelper::back();
 		}
-		else if ($curTask == 'editOrderStatus') {
-			/* Set the layout */
-			$this->setLayout('orders_editstatus');
-
-			/* Get the data */
-			$order = $this->get('Order');
-
-			/* Get order statuses */
-			$orderstatuses = $this->get('OrderStatusList');
-			$this->assignRef('orderstatuses', $orderstatuses);
-			$this->assignRef('order_id', $order['details']['BT']->order_id);
-			$this->assignRef('cur_order_status', $order['details']['BT']->order_status);
-			$_lo = 0; // Use a var; must be passed by reference
-			$this->assignRef('line_only', $_lo);
-					}
+//		else if ($curTask == 'editOrderStatus') {
+//			/* Set the layout */
+//			$this->setLayout('orders_editstatus');
+//
+//			/* Get the data */
+//			$order = $this->get('Order');
+//
+//			/* Get order statuses */
+//			$orderstatuses = $this->get('OrderStatusList');
+//			$this->assignRef('orderstatuses', $orderstatuses);
+//			$this->assignRef('order_id', $order['details']['BT']->order_id);
+//			$this->assignRef('cur_order_status', $order['details']['BT']->order_status);
+//			$_lo = 0; // Use a var; must be passed by reference
+//			$this->assignRef('line_only', $_lo);
+//		}
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
 

@@ -286,21 +286,9 @@ class VirtueMartModelOrders extends JModel {
 		$db = JFactory::getDBO();
 		$mainframe = JFactory::getApplication();
 
-		/* Check if the status should be updated for line(s) only */
-		$line_only = JRequest::getInt('line_only', 0);
-
 		/* Get a list of orders to update */
-		if ($line_only) {
-			// Statuscode is dummy here since the order itself ain't updated 
-//			$_statList = JRequest::getVar('order_status', array());
-//			$update = array(JRequest::getInt('order_id', 0) => );
-			$update = array_diff_assoc(JRequest::getVar('order_status', array()), array());
-		} else {
-			$update = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
-		}
-dump(JRequest::getVar('order_status', array()), 'OrderStat in updateStat/lines');
-dump(JRequest::getVar('current_order_status', array()), 'OrderStat in updateStat');
-dump($update, 'Updatable');
+		$update = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
+
 		/* Get the list of orders to notify */
 		$notify = JRequest::getVar('notify_customer', array());
 
@@ -334,74 +322,65 @@ dump($update, 'Updatable');
 
 					/* When the order is set to "shipped", we can capture the payment */
 					if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
-						$q = "SELECT order_number,element,order_payment_trans_id
-						FROM #__vm_order_payment, #__vm_orders WHERE
-						#__vm_order_payment.order_id = '".$order_id."'
-						AND #__vm_orders.order_id='".$order_id."' ";
-						$db->setQuery($q);
-						$capture_order = $db->loadObject();
-						require_once(CLASSPATH.'paymentMethod.class.php');
-						vmPaymentMethod::importPaymentPluginById($order->payment_method_id);
-						$result = $mainframe->triggerEvent('capture_payment', array($capture_order, $order_id));
-						if( $result !== false ) {
-							if( $result[0] === false ) {
-								return false;
+						JPluginHelper::importPlugin('vmpayment');
+						$_dispatcher =& JDispatcher::getInstance();
+						$_returnValues = $_dispatcher->trigger('plgVmOnShipOrder',array(
+										 $_orderID
+									)
+							);
+						foreach ($_returnValues as $_returnValue) {
+							if ($_returnValue == true) {
+								break; // Plugin was successfull
+							} elseif ($_returnValue == false) {
+								return false; // Plugin failed
 							}
+							// Ignore null status and look for the next returnValue
 						}
 					}
 
 					/**
-					 * If a pending order gets cancelled, void the authorization.
-					 *
-					 * It might work on captured cards too, if we want to
-					 * void shipped orders.
+					 * If an order gets cancelled, fire a plugin event, perhaps
+					 * some authorization needs to be voided
 					 */
-					if( $order_status_code == "P" && $new_status == "X") {
-						$q = "SELECT order_number,element,order_payment_trans_id
-						FROM #__vm_order_payment, #__vm_orders WHERE
-						#__vm_order_payment.order_id='".$order_id."'
-						AND #__vm_orders.order_id='".$order_id."' ";
-						$db->setQuery($q);
-						$void_order = $db->loadObject();
-						require_once( CLASSPATH.'paymentMethod.class.php');
-						vmPaymentMethod::importPaymentPluginById($order->payment_method_id);
-						$result = $mainframe->triggerEvent('void_authorization', array($void_order));
-						if( $result !== false ) {
-							if( $result[0] === false ) {
-								return false;
-							}
-						}
+					if ($new_status == "X") {
+						JPluginHelper::importPlugin('vmpayment');
+						$_dispatcher =& JDispatcher::getInstance();
+						$_dispatcher->trigger('plgVmOnCancelOrder',array(
+										 $_orderID
+										,$order_status_code
+										,$new_status
+								)
+						);
 					}
 				}
 				if ($order->store()) {
 					/* Update the order history */
 					$this->_updateOrderHist($order_id, $order_status_code, $customer_notified, $comment);
 
-					if (!$line_only) {
-						/* Update stock level */
-						$update_stock_status = array('X', 'R');
-						if (in_array($new_status, $update_stock_status)
-						&& VmConfig::get('check_stock')) {
-							/* Get the order items and update the stock level */
-							$q = "SELECT product_id, product_quantity
-							FROM #__vm_order_item
-							WHERE order_id='".$order_id."'";
-							$db->setQuery($q);
-							$products = $db->loadObjectList();
-							if ($products) {
-								foreach ($products as $key => $product) {
-									$product_table = $this->getTable('product');
-									$product_table->load($product->product_id);
-									$product_table->product_in_stock += $product->product_quantity;
-									$product_table->product_sales -= $product->product_quantity;
-									$product_table->store();
+					/* Update stock level */
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orderstatus.php');
+					$_updateStock = VirtueMartModelOrderstatus::updateStockAfterStatusChange($new_status, $order_status_code);
+					if ($_updateStock != 0) {
+						require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+						$_productModel = new VirtueMartModelProduct();
+						$_q = 'SELECT product_id '
+							.', product_quantity '
+							.'FROM `#__vm_order_item` '
+							."WHERE `order_id` = $order_id";
+						$db->setQuery($_q);
+						if ($_products = $db->loadObjectList()) {
+							foreach ($_products as $_key => $_product) {
+								if ($_updateStock > 0) { // Increase
+									$_productModel->increaseStockAfterCancel ($_product->product_id, $_product->product_quantity);
+								} else { // Decrease
+									$_productModel->decreaseStockAfterSales ($_product->product_id, $_product->product_quantity);
 								}
 							}
 						}
 					}
 
 					/* Update order item status */
-					if (@$update_lines[$order_id] == 1 || $line_only) {
+					if (@$update_lines[$order_id] == 1) {
 						$q = "SELECT order_item_id
 							FROM #__vm_order_item
 							WHERE order_id=".$order_id;
@@ -409,7 +388,7 @@ dump($update, 'Updatable');
 						$order_items = $db->loadObjectList();
 						if ($order_items) {
 							foreach ($order_items as $key => $order_item) {
-								if (!$line_only || in_array($order_item->order_item_id ,$order_item_ids)) {
+								if (in_array($order_item->order_item_id ,$order_item_ids)) {
 									$this->updateItemStatus($order_item, $new_status, true);
 								}
 							}
@@ -591,17 +570,19 @@ dump($update, 'Updatable');
 					,$_prices
 		));
 		foreach ($_returnValues as $_returnValue) {
-			if ($_returnValue === true) {
-				// Trigger to update the stock after successfull payment
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
-				$_productModel = new VirtueMartModelProduct();
-				foreach ($_cart->products as $_prod) {
-					$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
+			if ($_returnValue !== null) {
+				// We got a new order status; check if the stock should be updated
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orderstatus.php');
+				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($_returnValue) < 0) {// >0 is not possible for new orders
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+					$_productModel = new VirtueMartModelProduct();
+					foreach ($_cart->products as $_prod) {
+						$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
+					}
 				}
-			} elseif ($_returnValue === false) {
-				break; // This was the active plugin, but there's nothing left to do here.
+				break; // This was the active plugin, so there's nothing left to do here.
 			}
-			// Returnvalue 'null' must be ignored; it's an inactive plugin.
+			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 		}
 	}
 	

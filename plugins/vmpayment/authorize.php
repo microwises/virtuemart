@@ -62,6 +62,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			. ',`payment_method_id` INT(11) NOT NULL'
 			. ',`order_payment_status` INT(11) NOT NULL DEFAULT 1'
 			. ',`order_payment_number` BLOB'
+			. ',`order_payment_code` INT(11)'
 			. ',`order_payment_expire` INT(11) DEFAULT NULL'
 			. ',`order_payment_name` VARCHAR(255) DEFAULT NULL'
 			. ',`order_payment_log` TEXT'
@@ -263,7 +264,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_transKey = $this->get_passkey();
 		if( $_transKey === false ) return false;
 
-		$_returnValue = true;
+		$_returnValue = 'C'; // TODO Read the status from the parameters
 
 		// Load the required helpers
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
@@ -368,6 +369,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		if (VmConfig::get('store_creditcard_data')) {
 			$_dbValues['order_payment_number'] = $_orderData->cc_number;
+			$_dbValues['order_payment_code'] = $_orderData->cc_code;
 			// Set the exp. date to the last day of the month by selecting day 0 of the next month
 			$_dbValues['order_payment_expire'] = mktime(0, 0, 0, ($_orderData->cc_expire_month+1), 0, $_orderData->cc_expire_year);
 			$_dbValues['order_payment_name'] = $_orderData->cc_name;
@@ -406,7 +408,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 				JError::raiseWarning(500, $_log);
 				$_dbValues['order_payment_log'] = $_log; // Transaction log
 				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
-				$_returnValue = false;
+				$_returnValue = 'X';
 			}
 			$_dbValues['order_payment_log'] = $_response[3]; // Transaction log
 			$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
@@ -415,15 +417,20 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		return $_returnValue;
 	}
 
-	/**************************************************************************
-	** name: capture_payment()
-	** created by: Soeren
-	** description: Process a previous transaction with authorize.net, Capture the Payment
-	** parameters: $order_number, the number of the order, we're processing here
-	** returns:
-	***************************************************************************/
-	function capture_payment( &$d ) {
-
+	/**
+	 * Reimplementation of vmPaymentPlugin::plgVmOnShipOrder()
+	 *
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShipOrder()
+	 * @author Soeren
+	 * TODO This method must be rewritten !!!
+	 */
+	function plgVmOnShipOrder( &$d )
+	{
+		$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
+		if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
+			return null;
+		}
+		
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		//$database = new ps_DB();
 		$database = JFactory::getDBO();

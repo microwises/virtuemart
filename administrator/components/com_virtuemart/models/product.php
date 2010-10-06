@@ -1178,6 +1178,26 @@ class VirtueMartModelProduct extends JModel {
 	}
 
 	/**
+	 * Increase the stock for a given product after an order was cancelled
+	 * and decrease the sales amount
+	 * 
+	 * @author Oscar van Eijk
+	 * @param $_id integer Product ID
+	 * @param $_amount integer Amount sold
+	 * @access public
+	 */
+	public function increaseStockAfterCancel ($_id, $_amount)
+	{
+		$this->increaseStock($_id, $_amount);
+		$_db = JFactory::getDBO();
+		$_db->setQuery('UPDATE `#__vm_product` '
+					. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
+					. 'WHERE `product_id` = ' . $_id
+					);
+		$_db->query();
+	}
+
+	/**
 	 * Increase the stock for a given product and decrease the sales amount
 	 * after an order cancellation
 	 * 

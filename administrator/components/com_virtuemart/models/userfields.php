@@ -586,12 +586,16 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
 						, array('onchange' => 'changeStateList();'), $_prefix);
+//					$_return['fields'][$_fld->name]['value'] =
+//						$shopFunctions->getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 				
 				case 'state_id':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderStateList(
 						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value']
 						, $_prefix.'country_id', false, $_prefix);
+//					$_return['fields'][$_fld->name]['value'] =
+//						$shopFunctions->getStateByID($_return['fields'][$_fld->name]['value']);
 // TODO Write a javascript function to reload the statelist. Using jQuery???
 // TODO even more.... findout why it *does* work ?!? Legacy code? Where is it included?
 					break;

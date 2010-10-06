@@ -81,7 +81,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		$_dbValues['order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
-		return true; // Trigger the product stock to be updated
+		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
 	
 	/**
