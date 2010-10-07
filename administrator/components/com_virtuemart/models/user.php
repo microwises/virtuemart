@@ -660,7 +660,7 @@ class VirtueMartModelUser extends JModel {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		dump($this->_data,"getUserList");
+		//dump($this->_data,"getUserList");
 		return $this->_data;
 	}
 
