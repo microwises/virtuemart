@@ -15,13 +15,13 @@
 	C: Credit Card (only collect the CC data, manual processing)
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	-->
-	<type>Y</type>
-	<is_creditcard>1</is_creditcard>
+
 	<element>eway</element>
 	<files>
 		<filename plugin="eway">eway.php</filename>
 	</files>
 	<params>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "Y" description="VM_PAYMS_TYPE" />
 		<param type="text" name="EWAY_CUSTID" label="PHPSHOP_ADMIN_CFG_EWAY_CUSTID"
              default="username@email.com" description="PHPSHOP_ADMIN_CFG_EWAY_CUSTID_EXPLAIN" />
 		<param name="CHECK_CARD_CODE" label="PHPSHOP_PAYMENT_CVV2" type="radio" default="1" description="PHPSHOP_PAYMENT_CVV2_TOOLTIP">

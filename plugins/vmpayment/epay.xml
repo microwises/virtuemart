@@ -16,13 +16,13 @@
 	C: Credit Card (only collect the CC data, manual processing)
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	-->
-	<type>P</type>
-	<is_creditcard>0</is_creditcard>
+
 	<element>epay</element>
 	<files>
 		<filename plugin="epay">epay.php</filename>
 	</files>
 	<params>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "P" description="VM_PAYMS_TYPE" />
 		<param type="text" name="EPAY_MERCHANTNUMBER" label="PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER"
              default="XXXXXXX" description="PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN" />
         <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"

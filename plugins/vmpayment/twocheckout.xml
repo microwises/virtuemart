@@ -24,6 +24,7 @@
 		<filename plugin="twocheckout">twocheckout.php</filename>
 	</files>
 	<params>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "P" description="VM_PAYMS_TYPE" />
 		<param type="text" name="TWOCO_LOGIN" label="PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN"
              default="login" description="PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN_EXPLAIN" />
 		<param type="password" name="TWOCO_SECRETWORD" label="PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD"

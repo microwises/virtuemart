@@ -15,13 +15,14 @@
 	C: Credit Card (only collect the CC data, manual processing)
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	-->
-	<type>N</type>
-	<is_creditcard>0</is_creditcard>
+
 	<element>cashondel</element>	
 	<files>
 		<filename plugin="cashondel">cashondel.php</filename>
 	</files>
-	<params description="PHPSHOP_SPEC_CASH_ON_DELIVER_RATES">
+
+	<params >
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "N" description="VM_PAYMS_TYPE" />
 		<param type="text" name="CASH_ON_DEL_5000" label="5000 =&gt;"
              default="230" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_10000" label="10000 =&gt;"
@@ -37,4 +38,5 @@
 		<param type="text" name="CASH_ON_DEL_100000" label="100000 =&gt;"
              default="1130" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
 	</params>
+	
 </install>
