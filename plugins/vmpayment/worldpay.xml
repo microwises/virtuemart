@@ -18,13 +18,13 @@
 	Y: Automatic Credit Card Processor (authorize.net, eWay)
 	Set "is_creditcard" to 1 if type is "C" or "Y", set it to 0 if type is "N" or "P"
 	-->
-
+	<type>P</type>
+	<is_creditcard>0</is_creditcard>
 	<element>worldpay</element>
 	<files>
 		<filename plugin="worldpay">worldpay.php</filename>
 	</files>
 	<params>
-		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "P" description="VM_PAYMS_TYPE" />
 		<param type="text" name="WORLDPAY_INST_ID" label="PHPSHOP_ADMIN_CFG_WORLDPAY_INSTID"
              default="xxxxxx" description="PHPSHOP_ADMIN_CFG_WORLDPAY_INSTID_EXPLAIN" />
 	</params>
