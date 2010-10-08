@@ -382,10 +382,10 @@ class VirtueMartModelPaymentmethod extends JModel
      * @param the ids to alter
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
-	public function publish($publish=false,$id=array()) {
+	public function publish($publish=false) {
 
     	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','country',$id);
+		return modelfunctions::publish('cid','payment_method',$publish);
 
 //		if(empty($id)) {
 //			$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );

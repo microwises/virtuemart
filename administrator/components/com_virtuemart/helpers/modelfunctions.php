@@ -129,7 +129,9 @@ class modelfunctions{
 
 		$table = $this->getTable($tablename);
 		$ids = JRequest::getVar( $idName, array(0), 'post', 'array' );
-	
+		dump($idName,'$idName');
+		dump($publishId,'$publishId');
+		dump($ids,'$ids');
 		if (!$table->publish($ids, $publishId)) {
 			$this->setError($table->getError());
 			return false;

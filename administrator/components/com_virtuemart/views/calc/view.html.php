@@ -114,7 +114,9 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('calcs',	$calcs);
 			
 		}
-
+		$dateformat = VmConfig::get('dateformat');
+		$this->assignRef('dateformat',	$dateformat);
+		
 		parent::display($tpl);
 	}
 	

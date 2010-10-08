@@ -269,6 +269,16 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. $this->config->get('img_height') .'" /></td></tr>';
 		    }
 		    ?>
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
+				<?php echo JText::_('VM_ADMIN_CFG_DATEFORMAT') ?>
+				</span>
+			</td>
+			<td>
+			    <input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
+			</td>
+		    </tr>
 		</table>
 	    </fieldset>
 

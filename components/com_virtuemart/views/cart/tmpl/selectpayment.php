@@ -52,12 +52,13 @@ function myValidator(f, t)
 	}
 	return false;
 }
+
 </script>
 <form method="post" id="userForm" name="choosePaymentRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit"><?php echo JText::_('SAVE'); ?></button>
-	&nbsp;
-	<button class="button" type="reset"><?php echo JText::_('CANCEL'); ?></button>
+
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('CANCEL'); ?></button>
 </div>
 <?php
 echo 'Todo: only a rough view to have something to work with';

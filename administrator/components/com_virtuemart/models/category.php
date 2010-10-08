@@ -403,7 +403,7 @@ class VirtueMartModelCategory extends JModel {
 	public function publish($publishId = false){
 		
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','country',$publishId);
+		return modelfunctions::publish('cid','category',$publishId);
 //		$table = $this->getTable();
 //		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 //

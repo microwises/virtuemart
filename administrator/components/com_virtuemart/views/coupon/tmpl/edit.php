@@ -97,7 +97,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php 
                 $mydate = JFactory::getDate($this->coupon->coupon_start_date);
-                echo JHTML::_('calendar', $mydate->toFormat(VM_DATE_FORMAT), "coupon_start_date", "coupon_start_date", VM_DATE_FORMAT); 
+                echo JHTML::_('calendar', $mydate->toFormat($this->dateformat), "coupon_start_date", "coupon_start_date", $this->dateformat); 
                 ?>
 			</td>
 		</tr>		
@@ -110,7 +110,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php 
                 $expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
-                echo JHTML::_('calendar', $expireDate->toFormat(VM_DATE_FORMAT), "coupon_expiry_date", "coupon_expiry_date", VM_DATE_FORMAT); 
+                echo JHTML::_('calendar', $expireDate->toFormat($this->dateformat), "coupon_expiry_date", "coupon_expiry_date", $this->dateformat); 
                 ?>				
 			</td>
 		</tr>		

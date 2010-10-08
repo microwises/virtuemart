@@ -103,6 +103,9 @@ abstract class vmPaymentPlugin extends JPlugin  {
 			$db->setQuery($q);
 			$this->_jplugin_id = $db->loadResult();
 			if(!$this->_jplugin_id){
+				$mainframe = &JFactory::getApplication();
+				$mainframe->enqueueMessage( 'The Paymentmethod didnt found used payment plugin' );
+	//			dump('Error');
 				return false;	
 			}		
 	 	}else{
@@ -120,6 +123,8 @@ abstract class vmPaymentPlugin extends JPlugin  {
 			$this->paymentMethod = $this->paymentModel->getPaym();
 			return true;	
 		} else{
+	//		$mainframe = &JFactory::getApplication();
+	//		$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
 			return false;
 		}
 

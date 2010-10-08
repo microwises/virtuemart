@@ -164,12 +164,8 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>			
 				<?php 
-//				if(!empty($this->calc->publish_up)){
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
-					echo JHTML::_('calendar', $startDate->toFormat(VM_DATE_FORMAT), "publish_up", "publish_up", VM_DATE_FORMAT);
-//				} else {
-//					echo JHTML::_('calendar', '', "publish_up", "publish_up", VM_DATE_FORMAT);			
-//				}
+					echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
  				?>
 			</td>
 		</tr>
@@ -185,9 +181,9 @@ AdminMenuHelper::startAdminArea();
 					$endDate = JText::_('VM_NEVER');
 				} else {
 					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
-					$endDate = $date->toFormat(VM_DATE_FORMAT);
+					$endDate = $date->toFormat($this->dateformat);
 				}
-				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", VM_DATE_FORMAT,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
+				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 			</td>
 		</tr>
 		<tr>

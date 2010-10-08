@@ -37,11 +37,7 @@ label.invalid {
 <script language="javascript">
 function myValidator(f, t)
 {
-	f.task.value=t;
-	if (f.task.value=='<?php echo $this->cTask; ?>') {
-		f.submit();
-		return true;
-	}
+
 	if (document.formvalidator.isValid(f)) {
 		f.submit();
 		return true;
@@ -57,7 +53,7 @@ function myValidator(f, t)
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('Save'); ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->cTask; ?>');" ><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('Cancel'); ?></button>
 </div>
 
 <fieldset>

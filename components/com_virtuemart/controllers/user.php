@@ -116,8 +116,8 @@ class VirtueMartControllerUser extends JController
 		
 		$ftask ='savecartuser';
 		$view->assignRef('fTask', $ftask);
-		$ctask ='cancelcartuser';
-		$view->assignRef('cTask', $ctask);
+//		$ctask ='cancelcartuser';		//Looks like we dont need it, but atm not sure
+//		$view->assignRef('cTask', $ctask);
 		
 		/* Display it all */
 		$view->display();
@@ -142,8 +142,8 @@ class VirtueMartControllerUser extends JController
 
 		$ftask ='savecheckoutuser';
 		$view->assignRef('fTask', $ftask);
-		$ctask ='cancelcheckoutuser';
-		$view->assignRef('cTask', $ctask);
+//		$ctask ='cancelcheckoutuser';
+//		$view->assignRef('cTask', $ctask);
 		
 		/* Display it all */
 		$view->display();

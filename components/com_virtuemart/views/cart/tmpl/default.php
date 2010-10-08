@@ -50,17 +50,22 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 <?php
 		echo '<fieldset>';
 		echo JText::_('VM_USER_FORM_BILLTO_YOUR').' <br/>';
-		foreach($this->BTaddress as $item){				
-//		foreach($this->cart->BT as $item){				
-			echo $item['title'].': '.$item['value'].'<br/>';
+		foreach($this->BTaddress as $item){
+			if(!empty($item['value'])){
+				echo $item['title'].': '.$item['value'].'<br/>';
+			}
 		}
 		echo '<br/><br/>';
 		
+		if(!empty($this->STaddress)){
 		echo JText::_('VM_USER_FORM_SHIPTO_YOUR').' <br/>';
-		foreach($this->STaddress as $item){		
-//		foreach($this->cart->ST as $item){		
-			echo $item['title'].': '.$item['value'].'<br/>';
+			foreach($this->STaddress as $item){	
+				if(!empty($item['value'])){		
+					echo $item['title'].': '.$item['value'].'<br/>';
+				}
+			}			
 		}
+
 		
 		echo '</fieldset>';
 		

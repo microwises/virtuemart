@@ -57,7 +57,7 @@ function myValidator(f, t)
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" /><?php echo JText::_('Save'); ?></button>
 	&nbsp;
-	<button class="button" type="reset" /><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" /><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
 echo 'Todo: only a rough view to have something to work with, checking for dimensions and country is missing';
