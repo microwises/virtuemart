@@ -55,7 +55,7 @@ class VirtueMartViewProductdetails extends JView {
 		$this->loadHelper('addtocart');
 		
 		/* Set the titles */
-		$mainframe->setPageTitle(JText::_('VM_PRODUCT_DETAILS'));
+		$document->setTitle(JText::_('VM_PRODUCT_DETAILS'));
 		$uri = JURI::getInstance();
 		
 		/* Load the product */

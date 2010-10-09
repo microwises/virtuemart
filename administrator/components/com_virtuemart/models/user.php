@@ -863,10 +863,10 @@ class VirtueMartModelUser extends JModel {
 		$version = new JVersion();
 
 		if (version_compare($version->getShortVersion(), '1.6.0', '>=' ) == 1) {
-			$query = 'SELECT `node`.`name`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`name`) - 1)), `node`.`name`) AS `text` ';
-			$query .= 'FROM `#__usergroups` AS node, `#__core_acl_aro_groups` AS parent ';
+			$query = 'SELECT `node`.`title`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`title`) - 1)), `node`.`title`) AS `text` ';
+			$query .= 'FROM `#__usergroups` AS node, `#__usergroups` AS parent ';
 			$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
-			$query .= 'GROUP BY `node`.`name` ';
+			$query .= 'GROUP BY `node`.`title` ';
 			$query .= 'ORDER BY `node`.`lft`';
 		}
 		else {

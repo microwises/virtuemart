@@ -128,8 +128,9 @@ class shopFunctionsF {
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
+				$filter = JFilterInput::getInstance();
 				$text = self::ImageCheck( 'printButton.png', '/images/M_images/', NULL, NULL, JText::_('CMN_PRINT'), JText::_('CMN_PRINT') );
-				$text .= JFilterInput::clean($add_text);
+				$text .= $filter->clean($add_text);
 			} else {
 				$text = '|&nbsp;'. JText::_('CMN_PRINT'). '&nbsp;|';
 			}
@@ -176,7 +177,7 @@ class shopFunctionsF {
 	* load the default or use no image
 	*/
 	function ImageCheck( $file, $directory='/images/M_images/', $param=NULL, $param_directory='/images/M_images/', $alt=NULL, $name=NULL, $type=1, $align='middle', $title=NULL, $admin=NULL ) {
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 		$cur_template = $mainframe->getTemplate();
 
 		$name 	= ( $name 	? ' name="'. $name .'"' 	: '' );

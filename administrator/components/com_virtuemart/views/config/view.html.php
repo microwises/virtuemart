@@ -54,7 +54,13 @@ class VirtuemartViewConfig extends JView {
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
 		$table = JTable::getInstance('component');
-		$table->loadByOption('com_users');
+		if( !is_object($table)) {
+			$table = JTable::getInstance('extension');
+			//$id = $table->find();
+			$table->load(array('name'=>'com_users'));
+		} else {
+			$table->loadByOption('com_users');
+		}
 		$userparams = new JParameter($table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'config.xml');
 		$this->assignRef('userparams', $userparams);
 		$themelist = $model->getThemeList();

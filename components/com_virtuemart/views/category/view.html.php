@@ -58,7 +58,7 @@ class VirtuemartViewCategory extends JView {
 	    $this->assignRef('category', $category);
 	    
 	    /* Set the titles */
-		$mainframe->setPageTitle($category->category_name);
+		$document->setTitle($category->category_name);
 	    
 	    /* Load the products in the given category */
 	    $products = $productModel->getProductsInCategory($categoryId);

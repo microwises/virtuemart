@@ -42,7 +42,7 @@ class VmConfig
 	{
 		$value = '';
 		if ($key) {
-
+			jimport('joomla.html.parameter');
 			$session = JFactory::getSession();
 			$config = $session->get('vmconfig', '','vm');
 			if (!$config) { 
