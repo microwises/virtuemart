@@ -170,8 +170,10 @@ class VirtueMartModelPaymentmethod extends JModel
 		$q = 'SELECT `params` FROM #__plugins WHERE `id` = "'.$this->_data->paym_jplugin_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->param = $this->_db->loadResult();	
-		
-		dump($this->_data,'getPaym');
+
+		if (function_exists('dumpTrace')) {
+			dump($this->_data,'getPaym');
+		}
 //		$jParams = new JParameter($this->_data->param);
 //		$vmParams = new JParameter($this->_data->paym_params);
 //		dump($jParams,'meine params');
