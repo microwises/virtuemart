@@ -57,7 +57,7 @@ class VirtuemartViewShopperGroup extends JView {
 		  $this->assignRef('shoppergroup',	$shoppergroup);
 		  
 		} else {
-			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL ' ), 'vm_shop_users_48' );
+			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
