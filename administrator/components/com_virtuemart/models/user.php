@@ -862,6 +862,7 @@ class VirtueMartModelUser extends JModel {
 	{
 		$version = new JVersion();
 
+		//TODO check this out
 		if (version_compare($version->getShortVersion(), '1.6.0', '>=' ) == 1) {
 			$query = 'SELECT `node`.`title`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`title`) - 1)), `node`.`title`) AS `text` ';
 			$query .= 'FROM `#__usergroups` AS node, `#__usergroups` AS parent ';

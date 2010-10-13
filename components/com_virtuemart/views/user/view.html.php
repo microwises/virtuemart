@@ -131,9 +131,7 @@ class VirtuemartViewUser extends JView {
 		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
 
 		$this->assignRef('lists', $this->_lists);
-		
-		//TODO we have shipToID and shipto?	
-//		$this->assignRef('shipto', $_shipto);
+
 			
 		$this->assignRef('editor', $editor);
 		$this->assignRef('pane', $pane);

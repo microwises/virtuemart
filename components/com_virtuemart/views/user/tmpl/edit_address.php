@@ -37,7 +37,7 @@ label.invalid {
 <script language="javascript">
 function myValidator(f, t)
 {
-
+	f.task.value=t; //I understand this as method to set the task of the form on the fTask. This is not longer needed, because we use another js method for the cancel button than before.
 	if (document.formvalidator.isValid(f)) {
 		f.submit();
 		return true;
@@ -125,13 +125,7 @@ function myValidator(f, t)
 	}
 	echo $_hiddenFields;
 ?>
-		
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="user" />
-<input type="hidden" name="controller" value="user" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
+
 </fieldset> 
 <?php // }  
 if ($this->userDetails->JUser->get('id') ) { ?>
@@ -153,5 +147,11 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 	</table>
 </fieldset>
 <?php  } ?>
+<input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="view" value="user" />
+<input type="hidden" name="controller" value="user" />
+<input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why? ?>" />
+<input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
+<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
 <?php  echo JHTML::_( 'form.token' ); ?>
 </form>

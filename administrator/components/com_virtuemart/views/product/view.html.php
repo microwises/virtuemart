@@ -93,7 +93,8 @@ class VirtuemartViewProduct extends JView {
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
-				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
+//				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
+				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
 
 				/* Load the attribute names */
 				$product->attribute_names = $this->get('ProductAttributeNames');
