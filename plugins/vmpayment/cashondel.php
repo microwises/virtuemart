@@ -52,18 +52,39 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 */
 	protected function _createTable()
 	{
-		$_db = JFactory::getDBO();
-		$_q = 'CREATE TABLE IF NOT EXISTS `#__vm_order_payment_' . $this->_pelement . '` ('
-			. ' `id` INT(11) NOT NULL AUTO_INCREMENT'
-			. ',`order_id` INT(11) NOT NULL'
-			. ',`payment_method_id` INT(11) NOT NULL'
-			. ',PRIMARY KEY (`id`)'
-			. ',KEY `idx_order_payment_' . $this->_pelement . '_order_id` (`order_id`)'
-			. ") ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Data for the " . $this->_pelement . " payment plugin.'";
-		$_db->setQuery($_q);
-		if (!$_db->query()) {
-				JError::raiseWarning(500, $_db->getErrorMsg());
+		$_scheme = DbScheme::get_instance();
+		$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
+		$_schemeCols = array(
+			 'id' => array (
+					 'type' => 'int'
+					,'length' => 11
+					,'auto_inc' => true
+					,'null' => false
+			)
+			,'order_id' => array (
+					 'type' => 'int'
+					,'length' => 11
+					,'null' => false
+			)
+			,'payment_method_id' => array (
+					 'type' => 'text'
+					,'null' => false
+			)
+		);
+		$_schemeIdx = array(
+			 'idx_order_payment' => array(
+					 'columns' => array ('order_id')
+					,'primary' => false
+					,'unique' => false
+					,'type' => null
+			)
+		);
+		$_scheme->define_scheme($_schemeCols);
+		$_scheme->define_index($_schemeIdx);
+		if (!$_scheme->scheme()) {
+			JError::raiseWarning(500, $_scheme->get_db_error());
 		}
+		$_scheme->reset();
 	}
 
 	/**

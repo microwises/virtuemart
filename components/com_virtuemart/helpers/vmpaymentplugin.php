@@ -15,8 +15,9 @@
  * @version $Id: user_info.php 2494 2010-07-19 20:50:08Z milbo $
  */
  
-// Load the shopfunctions helper that's needed by all plugins
+// Load the helper functions that are needed by all plugins
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'dbscheme.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
