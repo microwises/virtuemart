@@ -147,7 +147,7 @@ class ImageHelper {
 			}
 		}
 		else {
-			$url = VmConfig::get('vm_themeurl').'images/vmgeneral/'.VmConfig::get('no_image');
+			$url = VmConfig::get('vm_themeurl').'assets/images/vmgeneral/'.VmConfig::get('no_image');
 		}
 
 		return JHTML::image($url, '');

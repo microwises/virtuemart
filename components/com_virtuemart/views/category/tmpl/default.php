@@ -113,7 +113,7 @@ foreach ($this->products as $product) {
 			<span class="contentpagetitle"><?php echo JText::_('VM_CUSTOMER_RATING') ?>:</span>
 			<br />
 			<?php
-			$img_url = JURI::root().'/components/com_virtuemart/shop_image/reviews/'.$product->votes->rating.'.gif';
+			$img_url = JURI::root().VmConfig::get('media_general_path').'/reviews/'.$product->votes->rating.'.gif';
 			echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
 			echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 		</div>

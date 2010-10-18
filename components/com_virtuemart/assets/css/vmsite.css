@@ -18,16 +18,16 @@
 	overflow:hidden;
 }
 .addtocart_button {
-	background: url( 'images/add-to-cart_blue.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/add-to-cart_blue.gif' ) no-repeat  center transparent;
 }
 .notify_button {
-	background: url( 'images/notify_blue.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/notify_blue.gif' ) no-repeat  center transparent;
 }
 .details_button {
-	background: url( 'images/add-to-cart-details.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/add-to-cart-details.gif' ) no-repeat  center transparent;
 }
 .options_button {
-	background: url( 'images/add-to-cart-options.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/special.png' ) no-repeat  center transparent;
 }
 .stock_low, .stock_ok, .stock_out {
 	text-align:left;
@@ -43,13 +43,13 @@
 	float: left;
 }
 .stock_low {
-	background: url( 'images/lowstock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/lowstock.gif' ) no-repeat  center transparent;
 }
 .stock_ok {
-	background: url( 'images/normalstock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/normalstock.gif' ) no-repeat  center transparent;
 }
 .stock_out {
-	background: url( 'images/nostock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/nostock.gif' ) no-repeat  center transparent;
 }
 
 .addtocart_button_module {
@@ -61,7 +61,7 @@
 	border: none;
 	font-weight:bold;
 	font-family:inherit;
-	background: url( 'images/transparent.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/transparent.gif' ) no-repeat  center transparent;
 	vertical-align: middle;
 	overflow:hidden;
 	
@@ -90,10 +90,10 @@ input.addtocart_button_module:hover  {
    border:1px solid #000;
 }
 .quantity_box_button_down {
-	background-image: url(images/down_small.gif);
+	background-image: url(../images/vmgeneral/down_small.gif);
 }
 .quantity_box_button_up {
-	background-image: url(images/up_small.gif);
+	background-image: url(../images/vmgeneral/up_small.gif);
 }
 
 div.cartfooterlinks {
@@ -131,24 +131,24 @@ a.continue_link:active,a.checkout_link:active {
 
 a.continue_link {
 	left: 5px;
-	background: url( 'images/back.png' ) no-repeat left;
+	background: url( '../images/vmgeneral/back.png' ) no-repeat left;
 }
 
 a.checkout_link {
 	right: 5px;
-	background: url( 'images/forward.png' ) no-repeat left;
+	background: url( '../images/vmgeneral/forward.png' ) no-repeat left;
 }
 
 a.chekc
 .next_page {
-	background: url( 'images/next_16x16.png' ) no-repeat right;
+	background: url( '../images/vmgeneral/next_16x16.png' ) no-repeat right;
 	padding-right: 30px;
 	line-height: 20px;
 	float: right;
 	width: auto;
 }
 .previous_page {
-	background: url( 'images/previous_16x16.png' ) no-repeat left;
+	background: url( '../images/vmgeneral/previous_16x16.png' ) no-repeat left;
 	padding-left: 30px;
 	line-height: 20px;
 	float: left;
@@ -312,22 +312,22 @@ table.adminform td.labelcell {
 	padding:0.5em 1em 1.5em 48px;
 }
 .shop_error {
-	background-image: url( images/error.gif );
+	background-image: url( ../images/vmgeneral/error.gif );
 }
 .shop_warning {
-	background-image: url( images/warning.png );
+	background-image: url( ../images/vmgeneral/warning.png );
 }
 .shop_info, .shop_tip {
-  	background-image: url( images/info.png );
+  	background-image: url( ../images/vmgeneral/info.png );
 }
 
 .shop_debug {
-	background-image: url( images/log_debug.png );
+	background-image: url( ../images/vmgeneral/log_debug.png );
 
 }
 .shop_critical {
 	font-weight: bold;
-	background-image: url( images/log_critical.png );
+	background-image: url( ../images/vmgeneral/log_critical.png );
 }
 /**
 * Addtocart detail Styles
@@ -606,7 +606,7 @@ ul.pagination li {
    margin-top: -15px;
    padding-top: 15px;
    padding-bottom: 5px;
-   background: url(images/selector-arrow.png) no-repeat;
+   background: url(../images/vmgeneral/selector-arrow.png) no-repeat;
 }
  
 .stockImageTip-text {

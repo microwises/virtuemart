@@ -40,9 +40,7 @@ class VirtueMartViewCart extends JView {
 	public function display($tpl = null) {	  	    
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
-		
-//		$layoutName = JRequest::getVar('layout', $this->getLayout());
-//		$layoutName = JRequest::getVar('layout', 0);
+
 		$layoutName = $this->getLayout();
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);

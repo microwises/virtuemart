@@ -71,13 +71,13 @@ class VirtueMartModelConfig extends JModel {
     /**
      * Retrieve a list of possible images to be used for the 'no image' image.
      *
-     * @author Max Milbers
      * @author RickG
+     * @author Max Milbers
      * @return object List of image objects
      */
     function getNoImageList() {
     	
-		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'images'.DS.'vmgeneral';
+		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 		
 		$tplpath = VmConfig::get('vmtemplate',0);
 		if($tplpath){
