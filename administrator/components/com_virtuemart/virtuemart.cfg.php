@@ -41,13 +41,12 @@ if (function_exists('dumpTrace')) { // J!Dump is installed
 }
 //todo What is now with this urls?
 if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == '443' ) {
-	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
-	define( 'VM_THEMEURL', SECUREURL.'components/com_virtuemart/assets/css/' );
+	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/images/' );
+//	define( 'VM_THEMEURL', SECUREURL.'components/com_virtuemart/assets/css/' );
 } else {
-	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
-	define( 'VM_THEMEURL', URL.'components/com_virtuemart/assets/css/' );
+	define( 'IMAGEURL', URL .'components/com_virtuemart/images/' );
+//	define( 'VM_THEMEURL', URL.'components/com_virtuemart/assets/css/' );
 }
-define( 'VM_THEMEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes'.DS.'default'.DS );
 
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 
@@ -55,7 +54,7 @@ define( 'ADMINPATH', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtu
 
 //define( 'CLASSPATH', ADMINPATH.'classes'.DS );
 //define( 'PAGEPATH', ADMINPATH.'html'.DS );
-define( 'IMAGEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS );
+define( 'IMAGEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'images'.DS );
 define( 'VM_ADMIN_ICON_URL',COMPONENTURL.'assets/images/');
 define('PSHOP_IS_OFFLINE', '');
 define('PSHOP_OFFLINE_MESSAGE', '<h2>Our Shop is currently down for maintenance.</h2> Please check back again soon.');

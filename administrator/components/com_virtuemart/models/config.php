@@ -5,6 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Config
+* @author Max Milbers
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -27,111 +28,78 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Config
+ * @author Max Milbers
  * @author RickG
  */
 class VirtueMartModelConfig extends JModel {
 
-    /**
-     * Retrieve a list of themes from the themes directory.
-     *
-     * @author RickG
-     * @return object List of theme objects
-     */
-    function getThemeList() {
-//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//		$result = '';
-//	
-//		if ($handle = opendir($dir)) {
-//		    while (false !== ($file = readdir($handle))) {
-//				if ($file != "." && $file != ".." && $file != '.svn') {
-//				    if (filetype($dir.DS.$file) == 'dir') {
-//					$result[] = JHTML::_('select.option', $file, JText::_($file));
-//				    }
-//				}
-//		    }
-//		}
-//	
-//		return $result;
-    }
-
 
     /**
-     * Retrieve a list of category templates from the templates directory.
+     * Retrieve a list of layouts from the default and choosen templates directory.
      *
-     * @author RickG
-     * @return object List of template objects
-     */
-    function getTemplateList() {
-//	$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//	$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'browse';
-//	$result = '';
-//
-//	if ($handle = opendir($dir)) {
-//	    while (false !== ($file = readdir($handle))) {
-//		if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-//		    if (filetype($dir.DS.$file) != 'dir') {
-//			$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-//		    }
-//		}
-//	    }
-//	}
-//	$result[] = JHTML::_('select.option', 'managed', JText::_('managed'));
-//
-//	return $result;
-    }
-
-
-    /**
-     * Retrieve a list of flypages from the templates directory.
-     *
-     * @author RickG
+     * @author Max Milbers
+     * @param name of the view
      * @return object List of flypage objects
      */
-    function getFlypageList() {
-    	
-//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.'product_details';
-		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.'productdetails'.DS.'tmpl';	//Todo make tmpl configurable (override)
-		$result = '';
-	
-		if ($handle = opendir($dir)) {
-		    while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-				    if (filetype($dir.DS.$file) != 'dir') {
-					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-				    }
-				}
-		    }
+    function getLayoutList($view) {
+   		
+		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
+ 
+		$tplpath = VmConfig::get('vmtemplate',0);
+		if($tplpath){
+			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view)){
+				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view;
+			}		
 		}
-	
+
+		$result = '';
+		foreach($dirs as $dir){
+			if ($handle = opendir($dir)) {
+			    while (false !== ($file = readdir($handle))) {
+					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+					    if (filetype($dir.DS.$file) != 'dir') {
+						$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+					    }
+					}
+			    }
+			}			
+		}
 		return $result;
     }
-
+    
 
     /**
      * Retrieve a list of possible images to be used for the 'no image' image.
      *
+     * @author Max Milbers
      * @author RickG
      * @return object List of image objects
      */
     function getNoImageList() {
-    	//Todo Decide the right path here
-//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//		$dir .= DS.VmConfig::get('theme').DS.'images';
-		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS.'ps_image';
-		$result = '';
-	
-		if ($handle = opendir($dir)) {
-		    while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-				    if (filetype($dir.DS.$file) != 'dir') {
-					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
-				    }
-				}
-		    }
+    	
+		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'images'.DS.'vmgeneral';
+		
+		$tplpath = VmConfig::get('vmtemplate',0);
+		if($tplpath){
+			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
+				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
+			}		
 		}
-
-	return $result;
+		
+		$result = '';
+		
+		foreach($dirs as $dir){
+			if ($handle = opendir($dir)) {
+			    while (false !== ($file = readdir($handle))) {
+					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+					    if (filetype($dir.DS.$file) != 'dir') {
+						$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+					    }
+					}
+			    }
+			}
+		}
+		return $result;
     }
 
 
@@ -225,7 +193,11 @@ class VirtueMartModelConfig extends JModel {
 	$config = $db->loadResult();
 	if ($config) {
 	    $params = new JParameter($config);
-	    
+
+	    $media_general_path = $params->get('media_general_path') ;
+		if(empty($media_general_path)){
+			$params->set('media_general_path','components/com_virtuemart/images/vmgeneral');	
+		}	    
 	    $media_category_path = $params->get('media_category_path') ;
 		if(empty($media_category_path)){
 			$params->set('media_category_path','images/stories/virtuemart/category/');	

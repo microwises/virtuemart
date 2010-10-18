@@ -162,7 +162,6 @@ AdminMenuHelper::startAdminArea();
 					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
 						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
 						$publish_up = $date->toFormat($this->dateformat);
-//						$publish_up = $date->toFormat();
 					}
 					echo $publish_up?>
 				</td>
@@ -173,14 +172,7 @@ AdminMenuHelper::startAdminArea();
 						} else {
 							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 							$endDate = $date->toFormat($this->dateformat);
-//							$endDate = $date->toFormat();
 						}
-//						echo JHTML::_('calendar', $endDate->toFormat($this->dateformat), "publish_down", "publish_down", $this->dateformat);
-//					$publish_down ='';
-//					if(strcmp($row->publish_down,'0000-00-00 00:00:00')){
-//						$date = JFactory::getDate($row->publish_down, $row->tzoffset);
-//						$publish_down = $date->toMySQL();
-//					}
 					echo $endDate?>
 				</td>
 				<td>

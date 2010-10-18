@@ -50,7 +50,6 @@ if( !defined('VM_COMPONENT_NAME')) {
 			Your Configuration File must be updated. so please proceed to the <a href="'.$_SERVER['PHP_SELF'].'?page=admin.show_cfg&amp;option=com_virtuemart">Configuration Form</a> and save the Configuration once you are done with the settings.</div>';
 	define('VM_COMPONENT_NAME', 'com_virtuemart');
 	define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
-	defined('VM_THEMEPATH ') or define('VM_THEMEPATH', $mosConfig_absolute_path. '/components/com_virtuemart/themes/default/');
 	defined('VM_THEMEURL') or define('VM_THEMEURL', $mosConfig_live_site. '/components/com_virtuemart/themes/default/');
 }
 

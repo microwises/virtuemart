@@ -109,7 +109,7 @@ class VirtueMartModelProductFiles extends JModel {
     	if (JRequest::getInt('product_id', 0) > 0) $filter = ' AND product_id = '.JRequest::getInt('product_id');
     	$q = "SELECT 'product_images' AS file_id, '1' AS file_is_image, product_id AS file_product_id, '1' AS published,
     				product_full_image AS file_name, product_full_image AS file_title, '0' AS isdownloadable, product_name,
-    				CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url, SUBSTRING(product_full_image, -3, 3) AS file_extension
+    				CONCAT('".VmConfig::get('media_product_path')."','product/', product_full_image) AS file_url, SUBSTRING(product_full_image, -3, 3) AS file_extension
     		FROM #__vm_product
     		WHERE LENGTH(product_full_image) > 0 ";
     	$q .= $filter;
@@ -155,11 +155,11 @@ class VirtueMartModelProductFiles extends JModel {
 	 */
 	public function getProductFilesRoles() {
 	 	return array(
-	 			'isDownlodable' => IMAGEURL.'ps_image/downloadable.gif',
-				'isImage' => IMAGEURL.'ps_image/image.gif',
-				'isProductImage' => IMAGEURL.'ps_image/image.png',
-				'isFile' => IMAGEURL.'ps_image/attachment.gif',
-				'isRemoteFile' => IMAGEURL.'ps_image/url.gif'
+	 			'isDownlodable' => VmConfig::get('media_general_path').'downloadable.gif',
+				'isImage' => VmConfig::get('media_general_path').'image.gif',
+				'isProductImage' => VmConfig::get('media_general_path').'image.png',
+				'isFile' => VmConfig::get('media_general_path').'attachment.gif',
+				'isRemoteFile' => VmConfig::get('media_general_path').'url.gif'
 		);
 	}
 

@@ -151,17 +151,66 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_THEME_TIP'); ?>">
-			    <?php echo JText::_('VM_SELECT_THEME') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_DEFAULT_SHOP_TEMPLATE_TIP'); ?>">
+			    <?php echo JText::_('VM_SELECT_DEFAULT_SHOP_TEMPLATE') ?>
 			    </span>
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->themelist, 'theme', 'size=1', 'value', 'text', $this->config->get('theme'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1', 'name', 'name', $this->config->get('vmtemplate'));
+			    ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_MAIN_LAYOUT') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'text', 'text', $this->config->get('vmlayout'));
+			    ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'categorytemplate', 'size=1', 'name', 'name', $this->config->get('categorytemplate'));
 			    ?>
 			</td>
 		    </tr>
 			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_LAYOUT') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'text', 'text', $this->config->get('categorylayout'));
+			    ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCT_LAYOUT_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_PRODUCT_LAYOUT') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->productLayoutList, 'productlayout', 'size=1', 'text', 'text', $this->config->get('productlayout'));
+			    ?>
+			</td>
+		    </tr>
+		    
+		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
@@ -182,31 +231,17 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
 			</td>
 		    </tr>
+		    
 		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
+				<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_GENERAL_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_GENERAL_PATH') ?>
 			    </span>
-			</td>
-			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->templatelist, 'category_template', 'size=1', 'value', 'text', $this->config->get('category_template'));
-			    ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_FLYPAGE') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->flypagelist, 'flypage', 'size=1', 'value', 'text', $this->config->get('flypage'));
-			    ?>
-			</td>
-		    </tr>
-		    <tr>
+				</td>
+				<td>
+					<input type="text" name="media_general_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_general_path') ?>" />
+				</td>
+		    </tr>		    <tr>
 				<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>

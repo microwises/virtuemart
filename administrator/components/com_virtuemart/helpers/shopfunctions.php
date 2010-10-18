@@ -27,25 +27,26 @@ class ShopFunctions {
 	}
 	
 	
-	/**
-	* Initialise the mailer object to start sending mails
-	* @author RolandD
-	* @todo Add vendor data
-	*/
-	public function loadMailer() {
-		$mainframe = JFactory::getApplication();
-		jimport('joomla.mail.helper');
-		
-		/* Start the mailer object */
-		$mailer = JFactory::getMailer();
-		$mailer->isHTML(true);
-		/* This has to be replaced by the vendor data */
-		//$mailer->From = $mainframe->getCfg('mailfrom');
-		//$mailer->FromName = $mainframe->getCfg('sitename');
-		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-		
-		return $mailer;
-	}
+//	Forget this function!
+//	/**
+//	* Initialise the mailer object to start sending mails
+//	* @author RolandD
+//	* @todo Add vendor data
+//	*/
+//	public function loadMailer() {
+//		$mainframe = JFactory::getApplication();
+//		jimport('joomla.mail.helper');
+//		
+//		/* Start the mailer object */
+//		$mailer = JFactory::getMailer();
+//		$mailer->isHTML(true);
+//		/* This has to be replaced by the vendor data */
+//		//$mailer->From = $mainframe->getCfg('mailfrom');
+//		//$mailer->FromName = $mainframe->getCfg('sitename');
+//		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+//		
+//		return $mailer;
+//	}
 	
 	/**
 	 * Creates a Drop Down list of available Creditcards
@@ -411,75 +412,75 @@ class ShopFunctions {
 	* @param mixed $sys When left empty, doesn't filter by sys
 	* @return array
 	*/
-	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
-		// One below added by Oscar to find out how if calls to this function still exist.
-		die ("Invalid call to shopFunctions::getUserFields(); use the userfields model instead (see the documentation in VirtueMartModelUserfields::getUserFieldsByUser() for examples)");
-		$db = JFactory::getDBO();
-		$fields = array();
-		$skipfields = self::getSkipFields();
-		
-		$q = "SELECT f.* FROM `#__vm_userfield` f"
-			. "\n WHERE f.published=1";
-		if( $section != 'bank' && $section != '') {
-			$q .= "\n AND f.`$section`=1";
-		}
-		elseif( $section == 'bank' ) {
-			$q .= "\n AND f.name LIKE '%bank%'";
-		}
-		if( $exclude_delimiters ) {
-			$q .= "\n AND f.type != 'delimiter' ";
-			}
-		if( $required_only ) {
-			$q .= "\n AND f.required=1";
-		}
-		if( $sys !== '') {
-			if( $sys == '1') { $q .= "\n AND f.sys=1"; }
-			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
-		}
-		if ($exclude_skipfields ) {
-			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', $skipfields)."') = 0 ";
-		}
-		$q .= "\n ORDER BY f.ordering";
-		
-		$db->setQuery($q);
-		$fields['details'] = $db->loadObjectList();
-		
-		/* Collect extra field information */
-		foreach ($fields['details'] as $key => $field) {
-			if ($field->required == 1) $fields['required_fields'][$field->name] = $field->type;
-			/* Create a list of all fields */
-			$fields['allfields'][$field->name] = $field->title;
-			/* Get the details for several types */
-			switch ($field->type) {
-				case 'multicheckbox':
-				case 'select':
-				case 'multiselect':
-				case 'radio':
-					$q = "SELECT fieldtitle,fieldvalue 
-						FROM #__vm_userfield_values
-						WHERE fieldid = ".$field->fieldid."
-						ORDER BY ordering";
-					$db->setQuery($q);
-					$fields['details'][$key]->values = $db->loadObjectList();
-				break;
-			}
-			
-		}
-		foreach ($skipfields as $skip ) {		
-			unset($fields['required_fields'][$skip]); 
-		}
-		return $fields;
-	}
+//	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
+//		// One below added by Oscar to find out how if calls to this function still exist.
+//		die ("Invalid call to shopFunctions::getUserFields(); use the userfields model instead (see the documentation in VirtueMartModelUserfields::getUserFieldsByUser() for examples)");
+//		$db = JFactory::getDBO();
+//		$fields = array();
+//		$skipfields = self::getSkipFields();
+//		
+//		$q = "SELECT f.* FROM `#__vm_userfield` f"
+//			. "\n WHERE f.published=1";
+//		if( $section != 'bank' && $section != '') {
+//			$q .= "\n AND f.`$section`=1";
+//		}
+//		elseif( $section == 'bank' ) {
+//			$q .= "\n AND f.name LIKE '%bank%'";
+//		}
+//		if( $exclude_delimiters ) {
+//			$q .= "\n AND f.type != 'delimiter' ";
+//			}
+//		if( $required_only ) {
+//			$q .= "\n AND f.required=1";
+//		}
+//		if( $sys !== '') {
+//			if( $sys == '1') { $q .= "\n AND f.sys=1"; }
+//			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
+//		}
+//		if ($exclude_skipfields ) {
+//			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', $skipfields)."') = 0 ";
+//		}
+//		$q .= "\n ORDER BY f.ordering";
+//		
+//		$db->setQuery($q);
+//		$fields['details'] = $db->loadObjectList();
+//		
+//		/* Collect extra field information */
+//		foreach ($fields['details'] as $key => $field) {
+//			if ($field->required == 1) $fields['required_fields'][$field->name] = $field->type;
+//			/* Create a list of all fields */
+//			$fields['allfields'][$field->name] = $field->title;
+//			/* Get the details for several types */
+//			switch ($field->type) {
+//				case 'multicheckbox':
+//				case 'select':
+//				case 'multiselect':
+//				case 'radio':
+//					$q = "SELECT fieldtitle,fieldvalue 
+//						FROM #__vm_userfield_values
+//						WHERE fieldid = ".$field->fieldid."
+//						ORDER BY ordering";
+//					$db->setQuery($q);
+//					$fields['details'][$key]->values = $db->loadObjectList();
+//				break;
+//			}
+//			
+//		}
+//		foreach ($skipfields as $skip ) {		
+//			unset($fields['required_fields'][$skip]); 
+//		}
+//		return $fields;
+//	}
 	
-	/**
-	* Returns an array of fieldnames which are NOT used for VirtueMart tables
-	*
-	* @return array Field names which are to be skipped by VirtueMart db functions
-	*/
-	public function getSkipFields() {
-		return array( 'username', 'password', 'password2', 'agreed' );
-	}
-	
+//	/**
+//	* Returns an array of fieldnames which are NOT used for VirtueMart tables
+//	*
+//	* @return array Field names which are to be skipped by VirtueMart db functions
+//	*/
+//	public function getSkipFields() {
+//		return array( 'username', 'password', 'password2', 'agreed' );
+//	}
+//	
 	/**
 	* Gets the user details, it joins 
 	* #__users ju, #__{vm}_user_info u, #__{vm}_country c and #__{vm}_state s
@@ -492,36 +493,36 @@ class ShopFunctions {
 	* @param String $orderby should be ordered by $field
 	* @param String $and this is for an additional AND condition
 	*/
-	public function getUserDetails($user_id=0, $fields=array(), $orderby='', $filter='') {
-		// One below added by Oscar to find out how if calls to this function still exist.
-		die ("Invalid call to shopFunctions::getUserDetails(); use the userfields model instead");
-		$db = JFactory::getDBO();
-
-		/* Set the selectors */		
-		if (empty($fields)) {
-			$selector = '*';
-			/* Add specific selectors */
-			$selector .= ', u.country_id, u.state_id';
-		}
-		else $selector = implode(",", $fields);
-		
-		$q = "SELECT ".$selector." 
-			FROM #__vm_user_info u
-			LEFT JOIN #__users ju 
-			ON ju.id = u.user_id
-			LEFT JOIN #__vm_country c 
-			ON c.country_id = u.country_id 
-			LEFT JOIN jos_vm_state s 
-			ON s.state_id = u.state_id ";
-			
-		if (!empty($user_id)) $q .= "WHERE u.user_id = ".$user_id;
-		if (!empty($filter)) $q .= $filter." ";
-		if (!empty($orderby)) $q .= "ORDER BY ".$orderby." ";
-		
-//		$GLOBALS['vmLogger']->info('get_user_details query '.$q);				
-		$db->setQuery($q);
-		return $db->loadObject();
-	}
+////	public function getUserDetails($user_id=0, $fields=array(), $orderby='', $filter='') {
+//		// One below added by Oscar to find out how if calls to this function still exist.
+//		die ("Invalid call to shopFunctions::getUserDetails(); use the userfields model instead");
+//		$db = JFactory::getDBO();
+//
+//		/* Set the selectors */		
+//		if (empty($fields)) {
+//			$selector = '*';
+//			/* Add specific selectors */
+//			$selector .= ', u.country_id, u.state_id';
+//		}
+//		else $selector = implode(",", $fields);
+//		
+//		$q = "SELECT ".$selector." 
+//			FROM #__vm_user_info u
+//			LEFT JOIN #__users ju 
+//			ON ju.id = u.user_id
+//			LEFT JOIN #__vm_country c 
+//			ON c.country_id = u.country_id 
+//			LEFT JOIN jos_vm_state s 
+//			ON s.state_id = u.state_id ";
+//			
+//		if (!empty($user_id)) $q .= "WHERE u.user_id = ".$user_id;
+//		if (!empty($filter)) $q .= $filter." ";
+//		if (!empty($orderby)) $q .= "ORDER BY ".$orderby." ";
+//		
+////		$GLOBALS['vmLogger']->info('get_user_details query '.$q);				
+//		$db->setQuery($q);
+//		return $db->loadObject();
+//	}
 	
 	/**
 	 * Lists titles for people
@@ -541,7 +542,8 @@ class ShopFunctions {
 	}
 	
 	/**
-	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range
+	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range,
+	 * dont use within virtuemart. It is just meant for paymentmethods
 	 *
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
@@ -557,6 +559,9 @@ class ShopFunctions {
 		}
 		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
 	}
+
+
+
 	/**
 	 * Creates a Drop-Down List for the 12 months in a year
 	 *
@@ -842,7 +847,7 @@ class ShopFunctions {
 	}
 	
 	/**
-	* Validates an EU-vat number
+	* Validates an EU-vat number, What is this?
 	* @author RolandD
 	* @param string $euvat EU-vat number to validate
 	* @return boolean The result of the validation
@@ -878,6 +883,7 @@ class ShopFunctions {
 	 * @return string The flypage value for that product
 	 */
 	function getFlypage($product_id) {
+		die ('Wrong call getFlypage, there exists only layouts');
 		$session = JFactory::getSession();
 		$product_sess = $session->get("product_sess", null);
 		if (empty($product_sess[$product_id]['flypage'])) {
@@ -981,12 +987,12 @@ class ShopFunctions {
 	* @param string $dateformat the format to use for the date	
 	* @return
 	*/
-	public function formatDate($time=0, $dateformat='') {
-		if( empty($time)) $time = time();
-		
-		if (empty( $dateformat)) return JHTML::_('date',  $time);
-		else return JHTML::_('date',  $time, $dateformat);
-	}
+//	public function formatDate($time=0, $dateformat='') {
+//		if( empty($time)) $time = time();
+//		
+//		if (empty( $dateformat)) return JHTML::_('date',  $time);
+//		else return JHTML::_('date',  $time, $dateformat);
+//	}
 	
 	/**
 	* Return $str with all but $display_length at the end as asterisks.

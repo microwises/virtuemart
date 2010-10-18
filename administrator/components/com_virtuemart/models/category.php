@@ -101,7 +101,6 @@ class VirtueMartModelCategory extends JModel {
 	 * @return object List of objects containing the child categories
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
-		$db = JFactory::getDBO();
 
 		$query = 'SELECT `category_id`, `category_thumb_image`, `category_child_id`, `category_name` ';
 		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
@@ -498,30 +497,30 @@ class VirtueMartModelCategory extends JModel {
 	}
 
 
-	/**
-     * Retrieve a list of pages from the templates directory.
-     *
-     * @author RickG, jseros
-     * @return object List of flypage objects
-     */
-    public function getTemplateList( $section = 'browse' ) {
-		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.$section;
-		$result = '';
-
-		if ($handle = opendir($dir)) {
-		    while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-				    if (filetype($dir.DS.$file) != 'dir') {
-				    	$file = str_replace('.php', '', $file);
-						$result[] = JHTML::_('select.option', $file, JText::_($file));
-				    }
-				}
-		    }
-		}
-
-		return $result;
-    }
+//	/**
+//     * Retrieve a list of pages from the templates directory.
+//     *
+//     * @author RickG, jseros
+//     * @return object List of flypage objects
+//     */
+//    public function getTemplateList( $section = 'browse' ) {
+//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+//		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.$section;
+//		$result = '';
+//
+//		if ($handle = opendir($dir)) {
+//		    while (false !== ($file = readdir($handle))) {
+//				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+//				    if (filetype($dir.DS.$file) != 'dir') {
+//				    	$file = str_replace('.php', '', $file);
+//						$result[] = JHTML::_('select.option', $file, JText::_($file));
+//				    }
+//				}
+//		    }
+//		}
+//
+//		return $result;
+//    }
 
 
     /**

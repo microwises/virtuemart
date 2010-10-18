@@ -64,6 +64,16 @@ class VirtueMartViewVirtueMart extends JView {
 			$this->assignRef('latestProducts', $latestProducts);
 		}
 		
+		
+		$template = VmConfig::get('vmtemplate','default');
+		if (is_dir(JPATH_THEMES.DS.$template)) {
+			$mainframe = JFactory::getApplication();
+			$mainframe->set('setTemplate', $template);
+		}
+		$layout = VmConfig::get('vmlayout','default');
+		$this->setLayout($layout);
+
+		
 		parent::display($tpl);
 
 	}

@@ -42,8 +42,7 @@ class VirtueMartModelCalc extends JModel
      *
      * @author RickG 
      */
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
 		
 		// Get the pagination request variables
@@ -67,8 +66,7 @@ class VirtueMartModelCalc extends JModel
      *
      * @author RickG
      */        
-    public function setId($id)
-    {
+    public function setId($id){
         $this->_id = $id;
         $this->_data = null;
     }
@@ -80,8 +78,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG
      * @return JPagination Pagination for the current list of countries
 	 */
-    public function getPagination()
-    {
+    public function getPagination(){
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
@@ -96,8 +93,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG	 
 	 * @return int Total number of countries in the database
 	 */
-	public function _getTotal() 
-	{
+	public function _getTotal() {
     	if (empty($this->_total)) {
 			$query = 'SELECT `calc_id` FROM `#__vm_calc`';	  		
 			$this->_total = $this->_getListCount($query);
@@ -111,8 +107,7 @@ class VirtueMartModelCalc extends JModel
      *
      * @author Max Milbers
      */ 
-	public function getCalc()
-	{	
+	public function getCalc(){	
 		$db = JFactory::getDBO();
      
   		if (empty($this->_data)) {
@@ -156,8 +151,7 @@ class VirtueMartModelCalc extends JModel
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	public function getCalcs($onlyPublished=false, $noLimit=false)
-	{	
+	public function getCalcs($onlyPublished=false, $noLimit=false){	
 		$db = JFactory::getDBO();
 		$query = 'SELECT * FROM `#__vm_calc` ';
 		if ($onlyPublished) { 
@@ -174,18 +168,18 @@ class VirtueMartModelCalc extends JModel
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
 		foreach ($this->_data as $data){
 
-		/* Write the first 5 categories in the list */
-		$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__vm_category','category_id');
-
-		/* Write the first 5 shoppergroups in the list */
-		$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__vm_calc_shoppergroup_xref','calc_rule_id',$data->calc_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
-
-		/* Write the first 5 countries in the list */
-		$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__vm_country','country_id');
-
-		/* Write the first 5 states in the list */
-		$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
-
+			/* Write the first 5 categories in the list */
+			$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__vm_category','category_id');
+	
+			/* Write the first 5 shoppergroups in the list */
+			$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__vm_calc_shoppergroup_xref','calc_rule_id',$data->calc_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+	
+			/* Write the first 5 countries in the list */
+			$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__vm_country','country_id');
+	
+			/* Write the first 5 states in the list */
+			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
+			
 		}
 //		echo (print_r($this->_data).'<br /><br />');
 		return $this->_data;
@@ -197,8 +191,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers     
      * 
      */ 
-	public function published( $row, $i, $variable = 'published' )
-	{
+	public function published( $row, $i, $variable = 'published' ){
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
@@ -220,8 +213,7 @@ class VirtueMartModelCalc extends JModel
      * @author RickG, Max Milbers
      * @return boolean True is the save was successful, false otherwise. 
 	 */
-    public function store() 
-	{
+    public function store() {
 		$table = $this->getTable('calc');
 
 		$data = JRequest::get('post');		
@@ -269,21 +261,6 @@ class VirtueMartModelCalc extends JModel
 		return true;
 	}	
 
-//	private function storeArrayData($table,$fieldId,$fieldData,$id,$data){
-//		$db = JFactory::getDBO();
-//		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
-//		$db->setQuery($q);
-//		$db->Query();
-//
-//		/* Store the new categories */
-//		foreach( $data as $category_id ) {
-//			$q  = 'INSERT INTO `'.$table.'` ';
-//			$q .= '('.$fieldId.','.$fieldData.') ';
-//			$q .= 'VALUES ("'.$id.'","'. $category_id . '")';
-//			$db->setQuery($q); 
-//			$db->query();
-//		}
-//	}
 	
 	/**
 	 * Delete all record ids selected

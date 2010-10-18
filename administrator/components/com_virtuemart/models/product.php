@@ -385,8 +385,8 @@ class VirtueMartModelProduct extends JModel {
 		if($result) {
 			/* Add some extra info */
 			foreach ($result as $featured) {
-				/* Flypage */
-				$featured->flypage = shopFunctions::getFlypage($featured->product_id);
+				/* todo Flypage */
+//				$featured->layout = shopFunctions::getFlypage($featured->product_id);
 	
 				/* Product price */
 				$price = "";

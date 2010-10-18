@@ -47,12 +47,16 @@ class TableCategory extends JTable {
 	var $cdate				= null;
 	/** @var date Category last modification date */
 	var $mdate	= null;
+	
 	/** @var string Category browse page layout */
-	var $category_browsepage = null;
+	var $category_template = null;
+	/** @var string Category browse page layout */
+	var $category_layout = null;
+	/** @var int Category flypage */
+	var $category_product_layout		= null;
+	
 	/** @var integer Products to show per row  */
 	var $products_per_row		= null;
-	/** @var int Category flypage */
-	var $category_flypage		= null;
 	/** @var int Category order */
 	var $ordering		= 0;
 	/** @var int category limit start*/

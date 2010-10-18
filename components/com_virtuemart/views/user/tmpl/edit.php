@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Implement Joomla's form validation
 JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/'); // VM_THEMEURL
+JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 <style type="text/css">
 .invalid {

@@ -25,9 +25,10 @@ jimport('joomla.application.component.controller');
 /**
  * Controller class for the user
  *
- * @package    VirtueMart
- * @subpackage User
- * @author     Oscar van Eijk
+ * @package    	VirtueMart
+ * @subpackage 	User
+ * @author     	Oscar van Eijk
+ * @author 		Max Milbers
  */
 class VirtuemartControllerUser extends JController {
 
@@ -93,7 +94,10 @@ class VirtuemartControllerUser extends JController {
 
 	function editshop(){
 		
+		$user = JFactory::getUser();
+		JRequest::setVar('cid', (int)$user->id);
 		$this->edit();
+		
 //		JRequest::setVar('controller', 'user');
 //		JRequest::setVar('view', 'user');
 //		JRequest::setVar('layout', 'edit');

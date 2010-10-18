@@ -167,13 +167,23 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="category_browsepage">
-												<?php echo JText::_( 'VM_CATEGORY_FORM_BROWSE_PAGE' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_TEMPLATE' ); ?>:
 											</label>
 										</td>
 										<td>
-											<?php echo JHTML::_('Select.genericlist', $this->browsePageList, 'category_browsepage', '', 'value', 'text', $this->category->category_browsepage, 'category_browsepage'); ?>	
+											<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'name', 'name', $this->category->category_template); ?>								
 										</td>
 									</tr>
+									<tr>
+										<td class="key">
+											<label for="category_browsepage">
+												<?php echo JText::_( 'VM_CATEGORY_FORM_BROWSE_LAYOUT' ); ?>:
+											</label>
+										</td>
+										<td>
+											<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'text', 'text', $this->category->category_layout); ?>								
+										</td>
+									</tr>									
 									<tr>
 										<td class="key">
 											<label for="category_flypage">
@@ -181,11 +191,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<?php 
-												$flatFlyPage = str_replace('shop.', '', $this->category->category_flypage);
-												$flatFlyPage .= ".tpl";
-												echo JHTML::_('Select.genericlist', $this->flypageList, 'category_flypage', '', 'value', 'text', $flatFlyPage, 'category_flypage');
-											?>		
+											<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'category_product_layout', 'size=1', 'text', 'text', $this->category->category_product_layout); ?>
 										</td>
 									</tr>
 								</table>

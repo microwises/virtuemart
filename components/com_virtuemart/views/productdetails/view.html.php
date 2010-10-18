@@ -41,7 +41,6 @@ class VirtueMartViewProductdetails extends JView {
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmprices.js');
 
-//		echo 'grmbl <pre>'.print_r($_POST).'</pre>';	
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$task = JRequest::getCmd('task');
@@ -117,17 +116,8 @@ class VirtueMartViewProductdetails extends JView {
 		$uri = JURI::getInstance();
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
-		
-		
-		if($product){
-			/* Use the template the user wants */
-			parent::setLayout($product->detailspage);
-			
-		} else {
-			
-		}
-		
-		
+//		dump($product,'my product in view.html.php');
+		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout,$product->layout);
 		
 		/* Display it all */
 		parent::display($tpl);

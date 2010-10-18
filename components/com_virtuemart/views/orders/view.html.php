@@ -75,7 +75,8 @@ class VirtuemartViewOrders extends JView {
 			$orderstatuses[$_ordstat->value] = $_ordstat->text;
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
-
+		
+		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
 }

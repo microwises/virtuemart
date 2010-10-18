@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('VM_PRODUCT_DETAILS_PAGE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['detailspage'];?>
+					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
 				</td>
 			</tr>
 			<?php } ?>

@@ -99,16 +99,19 @@ class VirtueMartControllerCart extends JController {
 	*/
 	public function addJS(){
 		
+		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
-				 echo (1);
-				 die;
+				jexit(1);
+//				 echo (1);
+//				 die;
 			}
 		}
-		echo (0);
-		die;
+		jexit(0);
+//		echo (0);
+//		die;
 	}
 
 	/**

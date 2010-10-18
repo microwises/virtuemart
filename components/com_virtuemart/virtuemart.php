@@ -64,6 +64,8 @@ $controller = new $classname();
 /* Perform the Request task */
 $controller->execute(JRequest::getVar('task', JRequest::getVar('view', 'virtuemart')));
 
+//shopFunctionsF::displayDumps();
+
 /* Redirect if set by the controller */
 $controller->redirect();
 

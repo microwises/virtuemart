@@ -135,6 +135,9 @@ class VirtuemartViewUser extends JView {
 			
 		$this->assignRef('editor', $editor);
 		$this->assignRef('pane', $pane);
+		
+		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
+		
 		parent::display($tpl);
 	}
 

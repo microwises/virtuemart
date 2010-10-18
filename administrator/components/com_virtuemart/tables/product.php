@@ -105,7 +105,7 @@ class TableProduct extends JTable {
 	/** @var string Meta author */
 	var $metaauthor	= null;
 	/** @var string Name of the details page to use for showing product details in the front end */
-	var $detailspage = 'productdetails';
+	var $layout = null;
 	/** @var float Product purchase price */
 	var $purchase_price = null;
 

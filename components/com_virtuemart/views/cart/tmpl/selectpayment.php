@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
+JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 
 ?>
 <style type="text/css">

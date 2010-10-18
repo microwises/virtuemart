@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHTML::stylesheet('vmpanels.css', VM_THEMEURL);
+JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
 <h2><?php echo JText::_('VM_ACC_ORDER_INFO'); ?></h2>
 

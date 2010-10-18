@@ -255,24 +255,24 @@ class Vendor {
 	** parameters:
 	** returns:
 	***************************************************************************/
-	function show_image($image, $args="") {
-
-		$VendorId = $args;
-		
-		$url = IMAGEURL;
-//		$path = ps_vendor::get_field($hVendor_id,"vendor_image_path");
-		$db = ps_vendor::get_vendor_fields($VendorId, array("vendor_image_path"));
-		$path = $this->db->loadResult();
-//		$path =$db ->f('vendor_image_path');
-		if (!empty($path))
-		$url = str_replace( "shop_image/", $path, $url );
-
-		$url .= "vendor/";
-		$url .= $image;
-		echo "<img src=\"".$url ."\" ". $args ." />\n";
-
-		return True;
-	}
+//	function show_image($image, $args="") {
+//
+//		$VendorId = $args;
+//		
+//		$url = IMAGEURL;
+////		$path = ps_vendor::get_field($hVendor_id,"vendor_image_path");
+//		$db = ps_vendor::get_vendor_fields($VendorId, array("vendor_image_path"));
+//		$path = $this->db->loadResult();
+////		$path =$db ->f('vendor_image_path');
+//		if (!empty($path))
+//		$url = str_replace( "shop_image/", $path, $url );
+//
+//		$url .= "vendor/";
+//		$url .= $image;
+//		echo "<img src=\"".$url ."\" ". $args ." />\n";
+//
+//		return True;
+//	}
 	
 		/**
 	 * 

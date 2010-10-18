@@ -48,7 +48,10 @@ class VirtuemartViewCalc extends JView {
 		$config =& JFactory::getConfig();
 		$tzoffset = $config->getValue('config.offset');
 		$this->assignRef('tzoffset',	$tzoffset);
-		
+
+		$dateformat = VmConfig::get('dateformat');
+		$this->assignRef('dateformat',	$dateformat);
+				
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			
@@ -114,8 +117,7 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('calcs',	$calcs);
 			
 		}
-		$dateformat = VmConfig::get('dateformat');
-		$this->assignRef('dateformat',	$dateformat);
+
 		
 		parent::display($tpl);
 	}

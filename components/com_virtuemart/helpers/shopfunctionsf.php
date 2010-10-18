@@ -272,5 +272,97 @@ class shopFunctionsF {
 		
 	}
 	
+	function setVmTemplate($view,$catTpl=0,$prodTpl=0,$catLayout=0,$prodLayout=0){
+		
+		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
+		$template = VmConfig::get('vmtemplate','default');
+		
+		//Set specific category template
+		if(!empty($catTpl) && empty($prodTpl)){
+			if(is_Int($catTpl)){
+				$db = JFactory::getDBO();
+				$q = 'SELECT `category_template` FROM `#__vm_category` WHERE `category_id` = "'.$catTpl.'" ';
+				$db->setQuery($q);
+				$temp = $db->loadResult();
+				if ($temp) $template = $temp;
+			} else {
+				$template = $catTpl;
+			}	
+		}
+		
+		//Set specific product template
+		if(!empty($prodTpl)){
+			if(is_Int($prodTpl)){
+				$db = JFactory::getDBO();
+				$q = 'SELECT `product_template` FROM `#__vm_product` WHERE `product_id` = "'.$prodTpl.'" ';
+				$db->setQuery($q);
+				$temp = $db->loadResult();				
+				if($temp) $template = $temp;
+			} else {
+				$template = $prodTpl;
+			}
+		}
+		dump($template,'$template');
+		shopFunctionsF::setTemplate($template);
+
+		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
+		$layout = VmConfig::get('vmlayout','default');
+
+		//Set specific category layout
+		if(!empty($catLayout) && empty($prodLayout)){
+			if(is_Int($catLayout)){
+				$db = JFactory::getDBO();
+				$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+				$db->setQuery($q);
+				$temp = $db->loadResult();
+				if ($temp) $layout = $temp;
+			} else {
+				$layout = $catLayout;
+			}
+		}
+		dump($layout,'$layout for category');
+		//Set specific product layout
+		if(!empty($prodLayout)){
+			if(is_Int($prodLayout)){
+				$db = JFactory::getDBO();
+				$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+				$db->setQuery($q);
+				$temp = $db->loadResult();
+				if ($temp) $layout = $temp;
+			} else {
+				$layout = $prodLayout;
+			}
+		}
+		
+		dump($layout,'$layout and $prodLayout '.$prodLayout);
+		$view->setLayout(strtolower($layout));
+	}
+	
+	function setTemplate( $template ){
+		if(!empty($template)){
+			if (is_dir(JPATH_THEMES.DS.$template)) {
+				$mainframe = JFactory::getApplication();
+				$mainframe->set('setTemplate', $template);
+			}			
+		}
+	} 
+	
+
+	function dumpIt($var,$desc){
+		global $dumper;
+		$dumper[] = $desc.':<br /> <pre>'.print_r($var,true).'</pre>';
+//		<small><pre>'.print_r(debug_backtrace(),true).' </pre> </small>'; 
+	}
+	
+	function displayDumps(){
+		global $dumper;
+		if(is_array($dumper)){
+			foreach($dumper as $dump){
+				echo $dump.'<br />';
+			}			
+		}
+
+	}
 }
-?>
+
+// pure php no closing tag

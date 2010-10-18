@@ -66,13 +66,22 @@ class VirtuemartViewCategory extends JView {
 
 
 			$parent = $model->getParentCategory( $category->category_id );
-			$flypages = $model->getTemplateList('product_details');
-			$browsePages = $model->getTemplateList('browse');
+			$this->assignRef('parent', $parent);
+			
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			$templateList = array();
+			$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+			$this->assignRef('jTemplateList', $templateList);
+			
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
+			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
+			$this->assignRef('categoryLayouts', $categoryLayoutList);
+
+			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
+			$this->assignRef('productLayouts', $productLayouts);
+			
 			$categorylist = ShopFunctions::categoryListTree(array($parent->category_id));
 
-			$this->assignRef('parent', $parent);
-			$this->assignRef('flypageList', $flypages);
-			$this->assignRef('browsePageList', $browsePages);
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
         }

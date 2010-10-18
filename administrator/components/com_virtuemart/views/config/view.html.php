@@ -63,12 +63,21 @@ class VirtuemartViewConfig extends JView {
 		}
 		$userparams = new JParameter($table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'config.xml');
 		$this->assignRef('userparams', $userparams);
-		$themelist = $model->getThemeList();
-		$this->assignRef('themelist', $themelist);
-		$templatelist = $model->getTemplateList();
-		$this->assignRef('templatelist', $templatelist);
-		$flypagelist = $model->getFlypageList();
-		$this->assignRef('flypagelist', $flypagelist);
+
+		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+		$templateList = array();
+		$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+		$this->assignRef('jTemplateList', $templateList);
+		
+		$vmLayoutList = $model->getLayoutList('virtuemart');
+		$this->assignRef('vmLayoutList', $vmLayoutList);
+
+		$categoryLayoutList = $model->getLayoutList('category');
+		$this->assignRef('categoryLayoutList', $categoryLayoutList);
+		
+		$productLayoutList = $model->getLayoutList('productdetails');
+		$this->assignRef('productLayoutList', $productLayoutList);
+		
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 		$orderStatusList = $model->getOrderStatusList();

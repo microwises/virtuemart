@@ -81,24 +81,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</td>
 					<td width="79%" >
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
-						<?php
-						echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false);
-						
-						//TODO We must adjust here somehow the path to the images of the availability icons or something like that
-						$path = str_ireplace(str_replace(DS, '/', JPATH_SITE), '', str_replace('\\', '/', VM_THEMEPATH)."images/availability/");
-						?>
+						<?php echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); ?>
 						<script type="text/javascript">
 							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })
 						</script>
 						<?php
-						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $path);
-						echo JHTML::tooltip(str_replace('%s', $path, JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); 
+						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $this->imagePath);
+						echo JHTML::tooltip(str_replace('%s', $this->imagePath, JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); 
 						?> 
 					</td>
 				</tr>
 				<tr>
 					<td width="21%">&nbsp;</td>
-					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$path.$this->product->product_availability;?>"/></td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$this->imagePath.$this->product->product_availability;?>"/></td>
 				</tr>
 				<tr class="row1">
 					<td width="21%" >

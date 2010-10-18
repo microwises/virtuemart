@@ -6,6 +6,7 @@
 * @package	VirtueMart
 * @subpackage 
 * @author RolandD
+* @author Max Milbers
 * @todo add pagination
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

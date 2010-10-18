@@ -74,6 +74,18 @@ class VirtuemartViewProduct extends JView {
 				$currency_model = $this->getModel('currency');
 				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_code', 'currency_name', $product->product_currency);
 
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
+
+				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
+				$this->assignRef('productLayouts', $productLayouts);
+				
+				if(is_Dir(VmConfig::get('vmtemplate').DS.'images/availability/')){
+					$imagePath = VmConfig::get('vmtemplate').DS.'images/availability/';
+				} else {
+					$imagePath = 'components'.DS.'com_virtuemart'.DS.'images/availability/';
+				}
+				$this->assignRef('imagePath', $imagePath);
+				
 				/* @TODO show Tax for the product, amount or percentage Load the tax rates */
 //				$tax_model = $this->getModel('taxRate');
 //				$taxrates = $tax_model->getTaxRates();
@@ -132,8 +144,9 @@ class VirtuemartViewProduct extends JView {
 				}
 				
 				/* Load the list of template files */
-				$files = $this->get('TemplatesList');
-				$lists['detailspage'] = JHTML::_('select.genericlist', $files, 'detailspage', '', 'value', 'text', $product->detailspage);
+				//TODO must be changed to layoutList!
+//				$files = $this->get('TemplatesList');
+//				$lists['layout'] = JHTML::_('select.genericlist', $files, 'layout', '', 'value', 'text', $product->layout);
 				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {

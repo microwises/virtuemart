@@ -12,14 +12,12 @@
  */
 defined('_JEXEC') or die();
 
-//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'classes' . DS. "class.img2thumb.php");
-
-
 /**
  * Image Helper class
  *
  * @package	VirtueMart
  * @subpackage Helpers
+ * @author Max Milbers
  * @author RickG, RolandD
  */
 class ImageHelper {
@@ -118,12 +116,12 @@ class ImageHelper {
 					$newImageHeight = $thumbHeight;
 				}
 				else {
-					$newImageWidth = VmConfig::get('pshop_img_width', 90);
-					$newImageHeight = VmConfig::get('pshop_img_height', 90);
+					$newImageWidth = VmConfig::get('img_width', 90);
+					$newImageHeight = VmConfig::get('img_height', 90);
 				}
 				
 				// Dynamic image resizing will happen
-				if (VmConfig::get('pshop_img_resize_enable') == '1' || $resize==1) {
+				if (VmConfig::get('img_resize_enable') == '1' || $resize==1) {
 					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
 					if (!strpos($imageArgs, "height=")) {
 						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootURI, '', $newImageWidth, $newImageHeight));
@@ -132,22 +130,16 @@ class ImageHelper {
 					}
 				}			
 				else {
-//					if ($imgRootFolder <> '') {
-////						$url = JURI::root().'components/com_virtuemart/shop_image/'.$imgRootFolder.'/'.$image;	
-//						$url = JURI::root().'/'.$imgRootFolder.$image;	
-//					}
-//					else {
-////					$url = JURI::root().'components/com_virtuemart/shop_image/'.$image;	
 						$url = JURI::root().$imgRootURI.$image;	
-//					}
+
 					if ($resize) {
 						if ($height < $width) {
-							$newImageWidth = round($width / ($height / VmConfig::get('pshop_img_height', 90)));
-							$newImageHeight = VmConfig::get('pshop_img_height', 90);
+							$newImageWidth = round($width / ($height / VmConfig::get('img_height', 90)));
+							$newImageHeight = VmConfig::get('img_height', 90);
 						} 
 						else {
-							$newImageHeight = round($height / ($width / VmConfig::get('pshop_img_width', 90)));
-							$newImageWidth = VmConfig::get('pshop_img_width', 90);
+							$newImageHeight = round($height / ($width / VmConfig::get('img_width', 90)));
+							$newImageWidth = VmConfig::get('img_width', 90);
 						}
 						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
 					}
@@ -155,7 +147,7 @@ class ImageHelper {
 			}
 		}
 		else {
-			$url = VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
+			$url = VmConfig::get('vm_themeurl').'images/vmgeneral/'.VmConfig::get('no_image');
 		}
 
 		return JHTML::image($url, '');
@@ -245,10 +237,10 @@ class ImageHelper {
 		}
 		
 		if ($width == 0) {
-			$width = VmConfig::get('pshop_img_width', 90);
+			$width = VmConfig::get('img_width', 90);
 		}
 		if ($height == 0) {
-			$height = VmConfig::get('pshop_img_height', 90);
+			$height = VmConfig::get('img_height', 90);
 		}
 		
 		
