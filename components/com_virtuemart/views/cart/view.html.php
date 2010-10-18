@@ -146,7 +146,7 @@ class VirtueMartViewCart extends JView {
 		
 		dump($this->_cart,'My Cart in cartview');
 		
-		shopFunctionsF::setVmTemplate($this);
+		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
 	

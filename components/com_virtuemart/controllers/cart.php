@@ -104,14 +104,13 @@ class VirtueMartControllerCart extends JController {
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
-				jexit(1);
-//				 echo (1);
-//				 die;
+				echo (1);
+				jexit();
+
 			}
 		}
-		jexit(0);
-//		echo (0);
-//		die;
+		jexit();
+
 	}
 
 	/**
