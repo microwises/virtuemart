@@ -50,7 +50,6 @@ class VirtueMartControllerUser extends JController
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'store', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 

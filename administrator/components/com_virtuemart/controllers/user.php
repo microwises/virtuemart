@@ -87,6 +87,8 @@ class VirtuemartControllerUser extends JController {
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
+		
+		//Store must be removed and methods integrated into vendor
 		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ));
 
 		parent::display();

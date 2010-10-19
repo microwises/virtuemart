@@ -76,7 +76,6 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 		?>
 		<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
 			<?php
-//			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=show&flypage='.$featured->flypage.'&product_id='.$featured->product_id), $featured->product_name);
 			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), $featProduct->product_name);
 			?>
 				<h4><?php echo $featProduct->product_name; ?></h4><?php
@@ -99,12 +98,6 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$featProduct->prices);
 					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$featProduct->prices);
 			}
-/*					 	echo $this->currencyDisplay->getFullValue($featured->product_price['salesPrice']); ?><br />
-			<?php if (!empty($featured->product_price['discountedPrice'])){ ?>
-				 <span class="product-Old-Price">
-				<?php echo JRequest::getVar('currencyDisplay')->getFullValue($featured->product_price['basePriceWithTax']); ?></span>
-				<?php 
-				}*/
 				if ($featProduct->product_thumb_image) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), 
 						ImageHelper::generateImageHtml($featProduct->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$featProduct->product_name.'"'));
@@ -173,6 +166,7 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 	<?php
 }
 
+//This is really a bullshit solution, must be cleaned up
 function addToCart($product) {
 	$call_for_pricing = false;
 	if ($product->prices['salesPrice'] == JText::_('CALL_FOR_PRICING')) $call_for_pricing = true;
@@ -231,7 +225,7 @@ function addToCart($product) {
 		<input type="hidden" name="category_id" value="<?php echo  JRequest::getInt('category_id'); ?>" />
 		<input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>" />
 		<input type="hidden" name="prod_id[]" value="<?php echo $product->product_id; ?>" />
-		<input type="hidden" name="flypage" value="<?php echo $product->flypage; ?>" />
+		<input type="hidden" name="flypage" value="<?php echo $product->layout; ?>" />
 		<input type="hidden" name="page" value="shop.cart" />
 		<input type="hidden" name="func" value="cartadd" />
 		<input type="hidden" name="Itemid" value="<?php echo JRequest::getInt('Itemid'); ?>" />

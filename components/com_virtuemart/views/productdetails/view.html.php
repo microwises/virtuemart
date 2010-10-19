@@ -117,7 +117,12 @@ class VirtueMartViewProductdetails extends JView {
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
 //		dump($product,'my product in view.html.php');
-		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout,$product->layout);
+	    if(empty($category->category_template)){
+	    	$catTpl = VmConfig::get('categorytemplate');
+	    }else {
+	    	$catTpl = $category->category_template;
+	    }
+		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 		
 		/* Display it all */
 		parent::display($tpl);
