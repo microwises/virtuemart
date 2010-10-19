@@ -188,7 +188,7 @@ foreach ($this->products as $product) {
 
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?> 
-				<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
+				<input type="hidden" name="manufacturer_id" value="<?php echo $product->manufacturer_id ?>" />
 				<input type="hidden" name="category_id[]" value="<?php echo $product->category_id ?>" />
 			</div>
 		</form>

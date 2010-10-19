@@ -79,10 +79,10 @@ class VirtuemartViewProduct extends JView {
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 				
-				if(is_Dir(VmConfig::get('vmtemplate').DS.'images/availability/')){
-					$imagePath = VmConfig::get('vmtemplate').DS.'images/availability/';
+				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
+					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
 				} else {
-					$imagePath = 'components'.DS.'com_virtuemart'.DS.'images/availability/';
+					$imagePath = 'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'availability/';
 				}
 				$this->assignRef('imagePath', $imagePath);
 				
