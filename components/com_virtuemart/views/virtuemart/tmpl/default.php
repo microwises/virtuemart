@@ -225,8 +225,6 @@ function addToCart($product) {
 		<input type="hidden" name="category_id" value="<?php echo  JRequest::getInt('category_id'); ?>" />
 		<input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>" />
 		<input type="hidden" name="prod_id[]" value="<?php echo $product->product_id; ?>" />
-		<input type="hidden" name="flypage" value="<?php echo $product->layout; ?>" />
-		<input type="hidden" name="page" value="shop.cart" />
 		<input type="hidden" name="func" value="cartadd" />
 		<input type="hidden" name="Itemid" value="<?php echo JRequest::getInt('Itemid'); ?>" />
 		<input type="hidden" name="option" value="com_virtuemart" />

@@ -139,7 +139,7 @@ else { ?>
 							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
 							
 							<?php /** @todo Handle the manufacturer view */ ?> 
-							<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
+							<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
 							<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
 						</div>
 					</form>

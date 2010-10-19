@@ -27,7 +27,7 @@
 	background: url( '../images/vmgeneral/add-to-cart-details.gif' ) no-repeat  center transparent;
 }
 .options_button {
-	background: url( '../images/vmgeneral/special.png' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/add-to-cart.gif' ) no-repeat  center transparent;
 }
 .stock_low, .stock_ok, .stock_out {
 	text-align:left;

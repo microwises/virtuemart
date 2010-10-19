@@ -126,7 +126,7 @@ foreach ($this->products as $product) {
 	<br />
 	<div >
 		<?php 
-		echo JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL').' '.JHTML::image(JURI::root().'components/com_virtuemart/assets/images/'.$product->stock->stock_level.'.gif', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
+		echo JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL').' '.JHTML::image(JURI::root().VmConfig::get('media_general_path').'/'.$product->stock->stock_level.'.gif', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
 		?>
 	</div>
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
@@ -188,7 +188,7 @@ foreach ($this->products as $product) {
 
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?> 
-				<!-- <input type="hidden" name="manufacturer_id" value="<?php echo $manufacturer_id ?>" /> -->
+				<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
 				<input type="hidden" name="category_id[]" value="<?php echo $product->category_id ?>" />
 			</div>
 		</form>
