@@ -67,15 +67,29 @@ class VirtuemartViewProduct extends JView {
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				/* Load the product price */
-				$product_price = $this->get('ProductPrice');
-
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
 				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_code', 'currency_name', $product->product_currency);
 
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
+				/* Load the product price */
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+				$calculator = calculationHelper::getInstance();
+				$product->prices = $calculator -> getProductPrices($product->product_id);
+				$this->assignRef('override', $calculator->override);
+				$this->assignRef('product_override_price', $calculator->product_override_price);
+				/* @TODO show Tax for the product, amount or percentage Load the tax rates */
+//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
+//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'calc_id', '"updateGross();"', 'calc_id', 'select_list_name', $product->product_tax_id);
+				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
 
+				/* @Todo, show price with Discounts; Load the tax rates */ 
+//				$discount_model = $this->getModel('discount');
+//				$discounts = VirtueMartModelCalc::getDiscounts();
+//				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
+//				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
+				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
+
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 				
@@ -86,17 +100,6 @@ class VirtuemartViewProduct extends JView {
 				}
 				$this->assignRef('imagePath', $imagePath);
 				
-				/* @TODO show Tax for the product, amount or percentage Load the tax rates */
-//				$tax_model = $this->getModel('taxRate');
-//				$taxrates = $tax_model->getTaxRates();
-//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
-
-				/* @Todo, show price with Discounts; Load the tax rates */ 
-//				$discount_model = $this->getModel('discount');
-//				$discounts = $discount_model->getDiscounts();
-//				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
-//				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
-
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
 				$vendors = $vendor_model->getVendors();
@@ -143,11 +146,6 @@ class VirtuemartViewProduct extends JView {
 					$this->assignRef('waitinglist', $waitinglist);
 				}
 				
-				/* Load the list of template files */
-				//TODO must be changed to layoutList!
-//				$files = $this->get('TemplatesList');
-//				$lists['layout'] = JHTML::_('select.genericlist', $files, 'layout', '', 'value', 'text', $product->layout);
-				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
@@ -174,7 +172,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
-//				$this->assignRef('taxrates', $taxrates);
+				$this->assignRef('taxrates', $taxrates);
 //				$this->assignRef('discounts', $discounts);
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
@@ -302,5 +300,42 @@ class VirtuemartViewProduct extends JView {
 		parent::display($tpl);
 	}
 
+
+	function renderTaxList($selected){
+		$this->loadHelper('modelfunctions');
+		$selected = modelfunctions::prepareTreeSelection($selected);
+		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
+		$taxes = VirtueMartModelCalc::getTaxes();
+//		dump($taxes,'taxes');
+		
+		$taxrates = array();
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
+		foreach($taxes as $tax){
+			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
+		}
+//		dump($taxrates,'taxrates');
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', '', 'product_tax_id', 'text', $selected );
+		return $listHTML;
+	}
+	
+	function renderDiscountList($selected){
+		$this->loadHelper('modelfunctions');
+		$selected = modelfunctions::prepareTreeSelection($selected);
+		
+		$discounts = VirtueMartModelCalc::getDiscounts();
+		
+		$discountrates = array();
+		$discountrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
+//		$discountrates[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
+		foreach($discounts as $discount){
+			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
+		}
+//		dump($taxrates,'taxrates');
+		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', '', 'product_discount_id', 'text', $selected );
+		return $listHTML;
+		
+	}	
 }
-?>
+
+//pure php no closing tag

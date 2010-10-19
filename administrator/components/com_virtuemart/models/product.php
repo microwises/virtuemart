@@ -393,7 +393,8 @@ class VirtueMartModelProduct extends JModel {
 				if (VmConfig::get('show_prices') == '1') {
 					/* Loads the product price details */
 					$calculator = calculationHelper::getInstance();
-					$price = $calculator->getProductPrices($featured->product_id);
+					//Todo check if it is better just to use $featured, but needs redoing the sql above
+					$price = $calculator->getProductPrices((int)$featured->product_id);
 				}
 				$featured->prices = $price;
 	
@@ -760,6 +761,7 @@ class VirtueMartModelProduct extends JModel {
 			$db->query();
 		}
 
+		//TODO save price
 		return true;
 	}
 

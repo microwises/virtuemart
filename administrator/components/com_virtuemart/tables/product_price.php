@@ -34,6 +34,12 @@ class TableProduct_price extends JTable {
 	var $product_id	= 0;
 	/** @var string Product price */
 	var $product_price = null;
+	
+	var $override  = 0;
+	var $product_override_price = 0;
+	var $product_tax_id = 0;
+	var $product_discount_i = 0;
+	
 	/** @var string Product currency */
 	var $product_currency = null;
     /** @var string Creation date */

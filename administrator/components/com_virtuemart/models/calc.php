@@ -108,7 +108,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      */ 
 	public function getCalc(){	
-		$db = JFactory::getDBO();
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
      
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable();
@@ -122,23 +122,23 @@ class VirtueMartModelCalc extends JModel
   		}
 		/* Add the calculation rule categories */
 		$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->calc_categories = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$this->_data->calc_categories = $this->_db->loadResultArray();
 
 		/* Add the calculation rule shoppergroups */
 		$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->calc_shopper_groups = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$this->_data->calc_shopper_groups = $this->_db->loadResultArray();
 
 		/* Add the calculation rule countries */
 		$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->calc_countries = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$this->_data->calc_countries = $this->_db->loadResultArray();
 		
 		/* Add the calculation rule states */
 		$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
-		$db->setQuery($q);
-		$this->_data->calc_states = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$this->_data->calc_states = $this->_db->loadResultArray();
 
   		return $this->_data;		
 	}    
@@ -152,7 +152,8 @@ class VirtueMartModelCalc extends JModel
 	 * @return object List of calculation rule objects
 	 */
 	public function getCalcs($onlyPublished=false, $noLimit=false){	
-		$db = JFactory::getDBO();
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		
 		$query = 'SELECT * FROM `#__vm_calc` ';
 		if ($onlyPublished) { 
 			$query .= 'WHERE `#__vm_calc`.`published` = 1';			
@@ -223,8 +224,8 @@ class VirtueMartModelCalc extends JModel
 		$data['publish_up'] = $startDate->toMySQL();
 //		if ($data['publish_down'] == '' or $data['publish_down']==0){
 		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('VM_NEVER')){
-			$db = JFactory::getDBO();
-			$data['publish_down']	= $db->getNullDate();
+			$this->_db = JFactory::getDBO();
+			$data['publish_down']	= $this->_db->getNullDate();
 		} else {
 			$expireDate = JFactory::getDate($data['publish_down']);
 			$data['publish_down']	= $expireDate->toMySQL();
@@ -374,4 +375,38 @@ class VirtueMartModelCalc extends JModel
 		return ($publish ? 1 : -1);		
 	}
 	
+	
+	function getTaxes() {
+		
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+//		$q = 'SELECT * ';
+//		$q .= 'CONCAT("(", `#__vm_calc`.`calc_id`, ") ", FORMAT(`#__vm_calc`.`calc_value`*100, 2)) AS select_list_name ';
+//		$q .= 'FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" AND `calc_value_mathop`="+%" OR `calc_value_mathop`="-%" ';
+  		$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+  		$this->_db->setQuery($q);
+		$data = $this->_db->loadObjectList();
+  		
+		if (!$data) {
+   			$data = new stdClass();
+   			$data = null;
+  		}
+  		
+		return $data;
+	}
+
+	function getDiscounts() {
+		
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+ 		$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="DBTax" OR `calc_kind`="DATax" ';
+  		$this->_db->setQuery($q);
+		$data = $this->_db->loadObjectList();
+  		
+		if (!$data) {
+   			$data = new stdClass();
+   			$data = null;
+  		}
+  		
+		return $data;
+	}
+		
 }

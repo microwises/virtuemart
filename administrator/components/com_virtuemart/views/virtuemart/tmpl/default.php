@@ -116,7 +116,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 					<a href="<?php echo $link; ?>"><?php echo $row->order_id; ?></a>
 			  	</td>
 				<td width="50%">
-					(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)
+					(<?php echo 'Here was some strange total and vendor currency' ?>)
 				</td>
 			</tr>
 			<?php 

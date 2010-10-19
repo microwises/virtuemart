@@ -106,39 +106,18 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PURCHASE_PRICE') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_BASE') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->purchase_price; ?>" />
-				</td>
-			</tr>
-			<tr class="row0">
-				<td width="29%" >
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?>:</div>
-				</td>
-				<td width="71%" >
-					<table border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td>
-								<input type="text" value="<?php echo $this->product->product_price; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
-								<input type="hidden" name="product_price_id" value="<?php echo $this->product->product_price_id; ?>" />
-								<input type="hidden" name="price_quantity_start" value="<?php echo $this->product->price_quantity_start; ?>" />
-								<input type="hidden" name="price_quantity_end" value="<?php echo $this->product->price_quantity_end; ?>" />
-							</td>
-
-							<td>
-								<input type="hidden" name="shopper_group_id" value="<?php echo $this->product->shopper_group_id ?>" />
-							</td>
-						</tr>
-					</table>
+					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" />
+					<input type="text" value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
 				</td>
 			</tr>
 			<tr class="row0">
@@ -163,10 +142,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
 				</td>
 				<td width="79%" >
-					<input type="text" size="10" name="discounted_price_override" onchange="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
+					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
 					<?php 
-					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
-					?>
+					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
+					$checked = '';
+					if ($this->override) $checked = 'checked="checked"' ?>
+					<input type="checkbox" name="override" value="<?php echo $this->override ?>" <?php echo $checked; ?> />
 				</td>
 			</tr>
 			<tr>

@@ -152,9 +152,6 @@ class VirtueMartModelTaxRate extends JModel {
 //  			$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
   			$db->setQuery($q);
 			$this->_data = $db->loadObjectList();
-  			
-//   			$this->_data = $this->getTable('tax_rate');
-//   			$this->_data->load((int)$this->_id);
   		}
 		if (!$this->_data) {
    			$this->_data = new stdClass();

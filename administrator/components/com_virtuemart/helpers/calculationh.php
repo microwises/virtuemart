@@ -102,32 +102,55 @@ class calculationHelper{
 	 */
 	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
 		
-		//todo Calculation not done, when no rule is set
-//		Console::logSpeed('getProductPrices START: ');
-		$this->_db->setQuery( 'SELECT `product_price`,`product_currency` FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
+		//Use it as productId
+//		if(is_Int($productId)){
+			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
+			$row=$this->_db->loadAssoc();dump($row,'myRow');
+//			if($row && count($row)==2){
+			if($row){
+				$basePrice = $row['product_price'];
+				$this->productCurrency=$row['product_currency'];
+				$this->override=$row['override'];
+				$this->product_override_price=$row['product_override_price'];
+				$this->product_tax_id=$row['product_tax_id'];
+				$this->product_discount_id=$row['product_discount_id'];
+			}
+			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
+			$single = $this->_db->loadResult();
+			$this->productVendorId = $single;
+			if(empty($this->productVendorId)){
+				$this->productVendorId=1;
+			}
+					
+			if(empty($catIds)){
+				$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
+				$this->_cats=$this->_db->loadResultArray();
+			}else{
+				$this->_cats=$catIds;
+			}
+//		} 
+		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
+//		else {
+//			dump($productId,'myProduct');
+////			`product_price`,`product_currency`,`product_discount_id`,`product_tax_id`,`sales_price`,`override`
+//			$basePrice = $productId->product_price;
+//			$this->productCurrency = $productId->product_currency;
+//			$this->product_discount_id = $productId->product_discount_id;
+//			$this->product_tax_id = $productId->product_tax_id;
+//			$this->product_override_price = $productId->product_override_price;
+//			$this->override = $productId->override;
+//			
+//			$this->productVendorId = $productId->vendor_id;
+//			if(empty($this->productVendorId)){
+//				$this->productVendorId=1;
+//			}
+//			$this->_cats = $productId->categories;
+//			
+//		}
 
-		$row=$this->_db->loadRow();
-		if($row && count($row)==2){
-			$basePrice = $row[0];
-			$this->productCurrency=$row[1];
-		}
-		
-		$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
-		$single = $this->_db->loadResult();
-		$this->productVendorId = $single;
-		if(empty($this->productVendorId)){
-			$this->productVendorId=1;
-		}
 		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__vm_vendor  WHERE `vendor_id`="'.$this->productVendorId.'" ');
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
-				
-		if(empty($catIds)){
-			$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
-			$this->_cats=$this->_db->loadResultArray();
-		}else{
-			$this->_cats=$catIds;
-		}
 
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
@@ -142,13 +165,27 @@ class calculationHelper{
 		}
 
 		if(!empty($amount)){
-			$this->_amount;
+//			$this->_amount = $amount;
 		}
 		
 //		$calcRules = $this->gatherEffectingRulesForProductPrice('Calc');
-		$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
-		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
-		$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
+		if(!$this->product_tax_id){
+			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');	
+		} else {
+			if (!is_array($this->product_tax_id)) $this->product_tax_id = array($this->product_tax_id);
+			$taxRules = $this->product_tax_id;
+		}
+		
+		//This is a bit nasty, atm we assume for the discount override that it is meant for discounts after Tax
+		if(!$this->product_discount_id){
+			$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');		
+			$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
+		} else {
+			if (!is_array($this->product_discount_id)) $this->product_discount_id = array($this->product_discount_id);
+			$dBTaxRules = array();
+			$dATaxRules = $this->product_discount_id;			
+		}
+
 
 
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
@@ -185,7 +222,11 @@ class calculationHelper{
 		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
 		
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount'])?$prices['salesPriceWithDiscount']:$salesPrice;
-		
+
+//Okey, this may not the best place, but atm we handle the override price as salesPrice
+		if($this->override){
+			$prices['salesPrice'] = $this->product_override_price;
+		}		
 
 		//The whole discount Amount
 //		$prices['discountAmount'] = $this->roundDisplay($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
@@ -199,7 +240,8 @@ class calculationHelper{
 //		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));	
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 		
-		
+
+		$prices['variantModification']=$variant;
 		
 		//As last step the prices gets adjusted to the user choosen currency
 //		if($this -> _currencyDisplay && $currencydisplay){
@@ -215,7 +257,9 @@ class calculationHelper{
 //			
 //		}
 
-		$prices['variantModification']=$variant;
+		
+		
+		
 		
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($prices).'</pre>';
@@ -290,8 +334,9 @@ class calculationHelper{
 			
 			$variantmod = $this->parseModifier($product->variant);
 			dump($variantmod,'My variant modification in calc');
-			//TODO maybe there is away to avoid the cartPrices
+			
 			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
+//			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($product,0,$variantmod,$product->quantity,true,false);	
 			$this->_cartPrices[$productId] = $pricesPerId[(int)$productId];
 
 			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $pricesPerId[$productId]['basePrice']*$product->quantity;

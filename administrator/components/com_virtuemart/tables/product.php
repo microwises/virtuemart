@@ -86,8 +86,8 @@ class TableProduct extends JTable {
 	var $attribute	= null;
 	/** @var int File thumbnail image width */
 	var $custom_attribute	= null;
-	/** @var int File thumbnail image width */
-	var $product_tax_id	= null;
+//	/** @var int File thumbnail image width */
+//	var $product_tax_id	= null;
 	/** @var int File thumbnail image width */
 	var $product_unit	= null;
 	/** @var int File thumbnail image width */
@@ -106,8 +106,8 @@ class TableProduct extends JTable {
 	var $metaauthor	= null;
 	/** @var string Name of the details page to use for showing product details in the front end */
 	var $layout = null;
-	/** @var float Product purchase price */
-	var $purchase_price = null;
+//	/** @var float Product purchase price */
+//	var $purchase_price = null;
 
 
 	/**
