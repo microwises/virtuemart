@@ -82,16 +82,17 @@ class VirtueMartModelRatings extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT `review_id`,
-     				#__vm_product.`product_id`,
-     				#__vm_product.`product_parent_id`,
-     				`product_name`,
-     				`username`,
-     				`comment`,
-     				user_rating,
-     				time,
-     				IF (`published` = 'Y', 1, 0) AS `published`
-     				".$this->getRatingsListQuery().$this->getRatingsFilter();
+     	$q = "SELECT 	`review_id`,
+     			#__vm_product.`product_id`,
+     			#__vm_product.`product_parent_id`,
+     			`product_name`,
+     			`username`,
+     			`comment`,
+     			user_rating,
+     			time,
+     			#__vm_product_reviews.userid,
+			#__vm_product_reviews.published
+     			".$this->getRatingsListQuery().$this->getRatingsFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_id');
     }
@@ -134,9 +135,12 @@ class VirtueMartModelRatings extends JModel {
     * @author RolandD
     */
     public function getRating() {
-		/* Get the product IDs to remove */
+		/* Get the review IDs to retrieve (input variable may be cid, cid[] or review_id */
 		$cids = array();
 		$cids = JRequest::getVar('cid', false);
+		if (empty($cids)) {
+			$cids= JRequest::getVar('review_id',false);
+		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
 		/* First copy the product in the product table */
@@ -161,28 +165,27 @@ class VirtueMartModelRatings extends JModel {
 		$db->setQuery($q);
 		$ratings_data->product_name = $db->loadResult();
 
-		/* Fix the published setting */
-		$ratings_data->published = ($ratings_data->published == 'Y') ? 1 : 0;
-
 		return $ratings_data;
     }
 
     /**
     * Set the publish/unpublish state
     */
-    public function getPublish() {
+    public function setPublish() {
      	$cid = JRequest::getVar('cid', false);
      	if (is_array($cid)) {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
-			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
-			$q = "UPDATE #__vm_product_reviews
-				SET published = ".$db->Quote($state)."
-				WHERE review_id IN (".$cids.")";
-			$db->setQuery($q);
-			if ($db->query()) return true;
-			else return false;
-		}
+	} else {
+		$cids = $cid;
+	}
+	if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
+	$q = "UPDATE #__vm_product_reviews
+		SET published = ".$db->Quote($state)."
+		WHERE review_id IN (".$cids.")";
+	$db->setQuery($q);
+	if ($db->query()) return true;
+	else return false;
     }
 
     /**
@@ -223,7 +226,9 @@ class VirtueMartModelRatings extends JModel {
 		$data = JRequest::get('post', 4);
 
 		/* Check if we have a timestamp */
-		if ($data['time'] == 0) $data['time'] = time();
+		/* if ($data['time'] == 0) $data['time'] = time(); */
+		/* Timestamps are always kept up to the latest modification */
+		$data['time'] = time();
 
 		/* Bind the rating details */
 		$ratings_data->bind($data);
@@ -231,8 +236,8 @@ class VirtueMartModelRatings extends JModel {
 		/* Check if ratings are auto-published */
 		if (VmConfig::get('autopublish_reviews') == 1) $data['published'] = 1;
 
-		/* Fix the published field */
-		$ratings_data->published = ($data['published'] == 1) ? 'Y' : 'N';
+		/* Fix the published field : not useful */
+		// $ratings_data->published = ($data['published'] == 1) ? 'Y' : 'N';
 
 		/* Store the rating */
 		$ratings_data->store();

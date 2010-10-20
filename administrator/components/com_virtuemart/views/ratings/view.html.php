@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage
+* @subpackage	ratings
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -23,12 +23,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the VirtueMart Component
+ * HTML View class for ratings (and customer reviews)
  *
- * @package		VirtueMart
- * @author
  */
 class VirtuemartViewRatings extends JView {
+	public $max_rating;
 
 	function display($tpl = null) {
 
@@ -40,20 +39,30 @@ class VirtuemartViewRatings extends JView {
 
 		/* Get the task */
 		$task = JRequest::getVar('task');
+		//
+		// Figure out maximum rating scale (default is 5 stars)
+		$this->max_rating = VmConfig::get('vm_maximum_rating_scale');
+		if ($this->max_rating == '') {
+		       	$this->max_rating = 5;
+		}
+		$this->assignRef('max_rating', $this->max_rating);
 
 		switch ($task) {
 			case 'add':
+				// @todo: adding is slightly different (not supported for now, from admin page).
 			case 'edit':
 				/* Get the data */
 				$rating = $this->get('Rating');
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_REVIEW_EDIT' ).' :: '.$rating->product_name, 'vm_product_48');
+				JToolBarHelper::title(JText::_( 'VM_RATING_EDIT_TITLE' ).' :: '.$rating->product_name, 'vm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 
 				/* Assign the data */
+				$this->preprocess($rating);
 				$this->assignRef('rating', $rating);
+
 				break;
 			default:
 				/* Get the data */
@@ -66,20 +75,48 @@ class VirtuemartViewRatings extends JView {
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'VM_REVIEWS' ), 'vm_reviews_48');
-				JToolBarHelper::publish();
-				JToolBarHelper::unpublish();
+				JToolBarHelper::publishList();
+				JToolBarHelper::unpublishList();
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 
 				/* Assign the data */
+				$this->preprocess($ratingslist);
 				$this->assignRef('ratingslist', $ratingslist);
 				$this->assignRef('pagination',	$pagination);
 				$this->assignRef('lists',	$lists);
+
 				break;
 		}
-
 		parent::display($tpl);
 	}
-
+	// Common preprocessing of retrieved values before passing to a template
+	private function preprocess(&$ratings) {	
+		// Figure out date format setting 
+		$config = JFactory::getConfig();
+		$tzoffset = $config->getValue('config.offset');
+		$dateformat = VmConfig::get('dateformat');
+		if (empty($dateformat)) {$dateformat = '%Y-%m-%d %H:%M';} // temporary workaround
+	
+		if (is_array($ratings)) {
+			foreach($ratings as $row) {
+				// Cap ratings to the shop scale
+				if ($row->user_rating > $this->max_rating) {
+					$row->user_rating = $this->max_rating;
+				}
+				// Date formatting 
+				$date= JFactory::getDate($row->time, $tzoffset);
+				$row->reviewDate =  $date->toFormat($dateformat);
+			}
+		} else {
+			if ($ratings->user_rating > $this->max_rating) {
+				$ratings->user_rating = $this->max_rating;
+			}
+			// Date formatting 
+			$date= JFactory::getDate($ratings->time, $tzoffset);
+			$ratings->reviewDate = $date->toFormat($dateformat);
+		}
+		return $ratings;
+	}
 }
 ?>

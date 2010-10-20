@@ -55,7 +55,6 @@ class VirtuemartControllerRatings extends JController {
 		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
 
 		/* Set the layout */
-		$view->setLayout('ratings');
 
 		/* Now display the view. */
 		$view->display();
@@ -73,7 +72,7 @@ class VirtuemartControllerRatings extends JController {
 
 		$model = $this->getModel('ratings');
 		$msgtype = '';
-		if ($model->getPublish()) {
+		if ($model->setPublish()) {
 			$msg = JText::_('RATING_'.strtoupper($this->getTask()).'_SUCCESSFULLY');
 		}
 		else {
@@ -92,7 +91,7 @@ class VirtuemartControllerRatings extends JController {
 	function edit() {
 		JRequest::setVar('controller', 'ratings');
 		JRequest::setVar('view', 'ratings');
-		JRequest::setVar('layout', 'ratings_edit');
+		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 
 		parent::display();
