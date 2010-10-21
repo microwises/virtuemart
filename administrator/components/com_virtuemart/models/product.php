@@ -65,11 +65,11 @@ class VirtueMartModelProduct extends JModel {
 	 */
 	private function getTotal() {
     	if (empty($this->_total)) {
-    		$db = JFactory::getDBO();
+//    		$this->_db = JFactory::getDBO();
 
 			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$this->getProductListFilter();
-			$db->setQuery($q);
-			$fields = $db->loadObjectList('product_id');
+			$this->_db->setQuery($q);
+			$fields = $this->_db->loadObjectList('product_id');
 			$this->_total = count($fields);
         }
 
@@ -80,12 +80,13 @@ class VirtueMartModelProduct extends JModel {
      * Load a single product
      */
      public function getProduct() {
-     	 $db = JFactory::getDBO();
+//     	 $this->_db = JFactory::getDBO();
      	 $product_id = JRequest::getInt('product_id', 0);
      	 /* Check if we are loading an existing product */
      	 if ($product_id > 0) {
-			 $q = "SELECT p.*, pf.manufacturer_id, pp.shopper_group_id, pp.product_price_id, pp.product_price, pp.product_currency,
-			 	pp.price_quantity_start, pp.price_quantity_end, a.attribute_name AS attribute_names
+//			 $q = "SELECT p.*, pf.manufacturer_id, pp.shopper_group_id, pp.product_price_id, pp.product_price, pp.product_currency,
+//			 	pp.price_quantity_start, pp.price_quantity_end, a.attribute_name AS attribute_names
+			 $q = "SELECT p.*, pf.manufacturer_id, pp.*, a.attribute_name AS attribute_names
 				FROM #__vm_product AS p
 				LEFT JOIN #__vm_product_mf_xref AS pf
 				ON p.product_id = pf.product_id
@@ -94,8 +95,8 @@ class VirtueMartModelProduct extends JModel {
 				LEFT JOIN #__vm_product_attribute_sku a
 				ON p.product_id = a.product_id
 				WHERE p.product_id = ".$product_id;
-			 $db->setQuery($q);
-			 $row = $db->loadObject();
+			 $this->_db->setQuery($q);
+			 $row = $this->_db->loadObject();
 		 }
 		 else {
 		 	 /* Load an empty product */
@@ -113,8 +114,8 @@ class VirtueMartModelProduct extends JModel {
 
 		 /* Add the product categories */
 		 $q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;
-		 $db->setQuery($q);
-		 $categories = $db->loadResultArray();
+		 $this->_db->setQuery($q);
+		 $categories = $this->_db->loadResultArray();
 		 foreach ($categories as $value) {
 		 	 $row->categories[$value]  = 1;
 		 }
@@ -133,11 +134,11 @@ class VirtueMartModelProduct extends JModel {
      * @author RolandD
      */
      public function getProductDetails() {
-     	$db = JFactory::getDBO();
+//     	$db = JFactory::getDBO();
      	$cids = JRequest::getVar('cid');
      	$q = "SELECT * FROM #__vm_product WHERE product_id = ".$cids[0];
-     	$db->setQuery($q);
-     	return $db->loadObject();
+     	$this->_db->setQuery($q);
+     	return $this->_db->loadObject();
      }
 
      /**
@@ -146,14 +147,14 @@ class VirtueMartModelProduct extends JModel {
      public function getProductAttributeNames() {
      	 $product_id = JRequest::getInt('product_id', 0);
      	 $product_parent_id = JRequest::getInt('product_parent_id', 0);
-		 $db = JFactory::getDBO();
+//		 $this->_db = JFactory::getDBO();
 		 $q = "SELECT attribute_name
 			FROM #__vm_product_attribute_sku
 			WHERE product_id = ";
 			if ($product_parent_id > 0) $q .= $product_parent_id;
 			else $q .= $product_id;
-		 $db->setQuery($q);
-		 return $db->loadResultArray();
+		 $this->_db->setQuery($q);
+		 return $this->_db->loadResultArray();
      }
 
      /**
@@ -163,12 +164,12 @@ class VirtueMartModelProduct extends JModel {
      	 $product_id = JRequest::getInt('product_id', 0);
      	 /* Check if we are loading an existing product */
      	 if ($product_id > 0) {
-     	 	 $db = JFactory::getDBO();
+//     	 	 $this->_db = JFactory::getDBO();
 			 $q = "SELECT attribute_id, attribute_name, attribute_value
 				FROM #__vm_product_attribute
 				WHERE product_id = ".$product_id;
-			 $db->setQuery($q);
-			 return $db->loadAssocList('attribute_name');
+			 $this->_db->setQuery($q);
+			 return $this->_db->loadAssocList('attribute_name');
      	 }
      	 else return null;
      }
@@ -177,7 +178,7 @@ class VirtueMartModelProduct extends JModel {
      * Select the products to list on the product list page
      */
     public function getProductList() {
-     	$db = JFactory::getDBO();
+//     	$this->_db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
 
@@ -197,8 +198,8 @@ class VirtueMartModelProduct extends JModel {
      				`product_price`
      				".$this->getProductListQuery().$this->getProductListFilter()."
 			";
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_id');
+     	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     	return $this->_db->loadObjectList('product_id');
     }
 
     /**
@@ -230,7 +231,7 @@ class VirtueMartModelProduct extends JModel {
     * @author RolandD
     */
     private function getProductListFilter() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
     	$filters = array();
     	/* Check some filters */
     	$filter_order = JRequest::getCmd('filter_order', 'product_name');
@@ -244,9 +245,9 @@ class VirtueMartModelProduct extends JModel {
      	/* Category ID */
      	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
      	/* Product name */
-     	if (JRequest::getVar('filter_product', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_product').'%');
+     	if (JRequest::getVar('filter_product', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Product type ID */
-     	//if (JRequest::getInt('product_type_id', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_product').'%');
+     	//if (JRequest::getInt('product_type_id', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Time filter */
      	if (JRequest::getVar('search_type', '') != '') {
      		$search_order = JRequest::getVar('search_order') == 'bf' ? '<' : '>';
@@ -275,11 +276,11 @@ class VirtueMartModelProduct extends JModel {
     * @return bool True if there are child products, false if there are no child products
     */
     public function checkChildProducts($product_id) {
-     	$db = JFactory::getDBO();
+//     	$this->_db = JFactory::getDBO();
      	$q  = "SELECT IF (COUNT(product_id) > 0, 'Y', 'N') FROM `#__vm_product` WHERE `product_parent_id` = ".$product_id;
-     	$db->setQuery($q);
-     	if ($db->loadResult() == 'Y') return true;
-     	else if ($db->loadResult() == 'N') return false;
+     	$this->_db->setQuery($q);
+     	if ($this->_db->loadResult() == 'Y') return true;
+     	else if ($this->_db->loadResult() == 'N') return false;
     }
 
     /**
@@ -293,17 +294,17 @@ class VirtueMartModelProduct extends JModel {
 		if (is_array($pid) || empty($pid)) return false;
 
 		$pid = intval($pid);
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 		$product_info = JRequest::getVar('product_info', false);
 
 		if (!$product_info || empty($product_info[$pid]["product_has_attributes"] )) {
-			$db->setQuery("SELECT `product_id` FROM `#__vm_product_attribute_sku` WHERE `product_id`=".$pid);
-			$product_id = $db->loadResult();
+			$this->_db->setQuery("SELECT `product_id` FROM `#__vm_product_attribute_sku` WHERE `product_id`=".$pid);
+			$product_id = $this->_db->loadResult();
 
 			if ($product_id) $product_info[$pid]["product_has_attributes"] = true;
 			else if($checkSimpleAttributes) {
-				$db->setQuery("SELECT `attribute`,`custom_attribute` FROM `#__vm_product` WHERE `product_id`=".$pid);
-				$attributes = $db->loadObject();
+				$this->_db->setQuery("SELECT `attribute`,`custom_attribute` FROM `#__vm_product` WHERE `product_id`=".$pid);
+				$attributes = $this->_db->loadObject();
 				if ($attributes->attribute || $attributes->custom_attribute) {
 					$product_info[$pid]["product_has_attributes"] = true;
 				}
@@ -323,14 +324,14 @@ class VirtueMartModelProduct extends JModel {
     public function getPublish() {
      	$cid = JRequest::getVar('cid', false);
      	if (is_array($cid)) {
-     		$db = JFactory::getDBO();
+//     		$this->_db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
 			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 			$q = "UPDATE #__vm_product
-				SET `published` = ".$db->Quote($state)."
+				SET `published` = ".$this->_db->Quote($state)."
 				WHERE `product_id` IN (".$cids.")";
-			$db->setQuery($q);
-			if ($db->query()) return true;
+			$this->_db->setQuery($q);
+			if ($this->_db->query()) return true;
 			else return false;
 		}
     }
@@ -344,7 +345,7 @@ class VirtueMartModelProduct extends JModel {
 	 * @return object List of  products
 	 */
     public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts) {
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 	    switch ($group) {
 			case 'featured':
 				$filter = 'AND `#__vm_product`.`product_special`="Y" ';
@@ -378,8 +379,8 @@ class VirtueMartModelProduct extends JModel {
 	        }
 	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
         }
-        $db->setQuery($query);
-		$result = $db->loadObjectList();
+        $this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
 		
 		/* Check if we have any products */
 		if($result) {
@@ -414,7 +415,7 @@ class VirtueMartModelProduct extends JModel {
      * @author RolandD
      */
     public function getSaveOrder() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
     	$mainframe = Jfactory::getApplication('site');
     	$order = JRequest::getVar('order');
     	$category_id = JRequest::getInt('category_id');
@@ -431,16 +432,16 @@ class VirtueMartModelProduct extends JModel {
 		$q = "SELECT product_id
 			FROM #__vm_product_category_xref
 			WHERE category_id = ".$category_id;
-		$db->setQuery($q);
-		$product_ids = $db->loadResultArray();
+		$this->_db->setQuery($q);
+		$product_ids = $this->_db->loadResultArray();
 
 		foreach( $order as $key => $list_id ) {
 			$q = "UPDATE #__vm_product_category_xref ";
 			$q .= "SET product_list = ".$list_id;
 			$q .= " WHERE category_id ='".$category_id."' ";
 			$q .= " AND product_id ='".$product_ids[$key]."' ";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 		}
 	}
 
@@ -449,7 +450,7 @@ class VirtueMartModelProduct extends JModel {
      * @author RolandD
      */
     public function getOrderUp() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
     	$cids = JRequest::getVar('cid');
     	$cid = (int)$cids[0];
     	$category_id = JRequest::getInt('category_id');
@@ -458,8 +459,8 @@ class VirtueMartModelProduct extends JModel {
     		FROM #__vm_product_category_xref
     		WHERE category_id = ".$category_id."
     		ORDER BY product_list";
-    	$db->setQuery($q);
-    	$products = $db->loadAssocList('product_id');
+    	$this->_db->setQuery($q);
+    	$products = $this->_db->loadAssocList('product_id');
     	$keys = array_keys($products);
     	while (current($keys) !== $cid) next($keys);
 
@@ -481,8 +482,8 @@ class VirtueMartModelProduct extends JModel {
 			SET product_list = ".$products[$prev_id]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$cid]['product_id'];
-		$db->setQuery($q);
-		$db->query();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 
 		/* Check if a next product_list exists */
     	if (is_null($products[$cid]['product_list'])) {
@@ -493,8 +494,8 @@ class VirtueMartModelProduct extends JModel {
 			SET product_list = ".$products[$cid]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$prev_id]['product_id'];
-		$db->setQuery($q);
-		$db->query();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 	}
 
 	/**
@@ -502,7 +503,7 @@ class VirtueMartModelProduct extends JModel {
      * @author RolandD
      */
     public function getOrderDown() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
     	$cids = JRequest::getVar('cid');
     	$cid = (int)$cids[0];
     	$category_id = JRequest::getInt('category_id');
@@ -511,8 +512,8 @@ class VirtueMartModelProduct extends JModel {
     		FROM #__vm_product_category_xref
     		WHERE category_id = ".$category_id."
     		ORDER BY product_list";
-    	$db->setQuery($q);
-    	$products = $db->loadAssocList('product_id');
+    	$this->_db->setQuery($q);
+    	$products = $this->_db->loadAssocList('product_id');
     	$keys = array_keys($products);
     	while (current($keys) !== $cid) next($keys);
 
@@ -534,8 +535,8 @@ class VirtueMartModelProduct extends JModel {
 			SET product_list = ".$products[$next_id]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$cid]['product_id'];
-		$db->setQuery($q);
-		$db->query();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 
 		/* Check if a next product_list exists */
     	if (is_null($products[$cid]['product_list'])) {
@@ -546,8 +547,8 @@ class VirtueMartModelProduct extends JModel {
 			SET product_list = ".$products[$cid]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$next_id]['product_id'];
-		$db->setQuery($q);
-		$db->query();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 	}
 
 	/**
@@ -556,17 +557,17 @@ class VirtueMartModelProduct extends JModel {
 	 public function getRelatedProducts($product_id=false) {
 	 	 if (!$product_id) return array();
 	 	 else {
-			$db = JFactory::getDBO();
+//			$this->_db = JFactory::getDBO();
 			$q = "SELECT related_products FROM #__vm_product_relations WHERE product_id='".$product_id."'";
-			$db->setQuery($q);
-			$results = $db->loadResult();
+			$this->_db->setQuery($q);
+			$results = $this->_db->loadResult();
 			if ($results) {
 				$ids = 'product_id =' . implode(' OR product_id =', explode("|", $results));
 				$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS text
 					FROM #__vm_product
 					WHERE (".$ids.")";
-				$db->setQuery($q);
-				return $db->loadObjectList();
+				$this->_db->setQuery($q);
+				return $this->_db->loadObjectList();
 			}
 			else return false;
 		 }
@@ -576,28 +577,28 @@ class VirtueMartModelProduct extends JModel {
 	* Create a list of products for JSON return
 	*/
 	public function getProductListJson() {
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
 		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 			FROM #__vm_product";
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
-		$db->setQuery($q);
-		return $db->loadObjectList();
+		$this->_db->setQuery($q);
+		return $this->_db->loadObjectList();
 	}
 
 	/**
 	* Load the child products for a given product
 	*/
 	public function getChildAttributes($product_id) {
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 		$q = "SELECT p.product_id, product_name, product_sku, attribute_name, attribute_value
 			FROM #__vm_product p
 			LEFT JOIN #__vm_product_attribute
 			ON p.product_id = #__vm_product_attribute.product_id
 			WHERE p.product_parent_id = ".$product_id."
 			ORDER BY p.product_sku";
-		$db->setQuery($q);
-		$products = $db->loadObjectList();
+		$this->_db->setQuery($q);
+		$products = $this->_db->loadObjectList();
 		$childproduct = array();
 		foreach ($products as $key => $product) {
 			foreach ($product as $name => $value) {
@@ -620,10 +621,10 @@ class VirtueMartModelProduct extends JModel {
 	* Store a product
 	*
 	* @author RolandD
+	* @author Max Milbers
 	* @access public
 	*/
 	public function saveProduct() {
-		$db = JFactory::getDBO();
 
 		/* Setup some place holders */
 		$product_data = $this->getTable('product');
@@ -678,9 +679,13 @@ class VirtueMartModelProduct extends JModel {
 			/* Handle the thumb image URL if there is any */
 			if (array_key_exists('product_thumb_image_url', $data) && !empty($data['product_thumb_image_url'])) $data['product_thumb_image'] = $data['product_thumb_image_url'];
 		}
-
+		
+		
 		/* Get the product data */
-		$product_data->bind($data);
+		if (!$product_data->bind($data)) {
+			$this->setError($product_data->getError());
+			return false;	
+		}
 
 		/* Set the changed date */
 		$product_data->mdate = time();
@@ -694,16 +699,53 @@ class VirtueMartModelProduct extends JModel {
         /* Set the order levels */
         $product_data->product_order_levels = $data['min_order_level'].','.$data['max_order_level'];
         
+        if (!$product_data->check()) {
+			$this->setError($product_data->getError());
+			return false;	
+		}
+		
         /* Store the product */
-		$product_data->store();
+		if (!$product_data->store()) {
+			$this->setError($product_data->getError());
+			dump($product_data,'$product_data->store()');
+			return false;
+		}
+		$product_price_table = $this->getTable('product_price');
+		dump($data,'My data in product before');
+		//get product_price_id
+		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
+		$this->_db->setQuery($q);
+		$data['product_price_id'] = $this->_db->loadResult();
+		dump($data,'My data in product');
 
+		if (!$product_price_table->bind($data)) {
+			$this->setError($product_price_table->getError());
+			dump($product_price_table,'$product_price_table->bind()');
+			return false;	
+		}
+		// Make sure the calculation record is valid
+		if (!$product_price_table->check()) {
+			$this->setError($product_price_table->getError());
+			dump($product_price_table,'$product_price_table->check()');
+			return false;	
+		}
+		
+		// Save the country record to the database
+		if (!$product_price_table->store()) {
+			$this->setError($product_price_table->getError());
+			dump($product_price_table,'$product_price_table->store()');
+			return false;
+		}
+
+		dump('Update manufacturer link');
+		
 		/* Update manufacturer link */
 		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
 		$q .= $product_data->product_id.', ';
 		$q .= JRequest::getInt('manufacturer_id').') ';
 		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
-		$db->setQuery($q);
-		$db->query();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 
 		/* Update waiting list */
 		if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' && $data['product_in_stock_old'] == '500') {
@@ -715,14 +757,14 @@ class VirtueMartModelProduct extends JModel {
 		if ($product_data->product_parent_id > 0) {
 			$q  = 'SELECT attribute_id FROM #__vm_product_attribute ';
 			$q .= 'WHERE product_id='.$product_data->product_id;
-			$db->setQuery($q);
-			$attributes = $db->loadObjectList();
+			$this->_db->setQuery($q);
+			$attributes = $this->_db->loadObjectList();
 			foreach ($attributes as $id => $attribute) {
 				$q  = 'UPDATE #__vm_product_attribute SET ';
-				$q .= 'attribute_value='.$db->Quote($data['attribute_'.$attribute->attribute_id]);
+				$q .= 'attribute_value='.$this->_db->Quote($data['attribute_'.$attribute->attribute_id]);
 				$q .= ' WHERE attribute_id = '.$attribute->attribute_id;
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 
 			}
 		/* If it is a Product, update Category */
@@ -731,19 +773,19 @@ class VirtueMartModelProduct extends JModel {
 			/* Delete old category links */
 			$q  = "DELETE FROM `#__vm_product_category_xref` ";
 			$q .= "WHERE `product_id` = '".$product_data->product_id."' ";
-			$db->setQuery($q);
-			$db->Query();
+			$this->_db->setQuery($q);
+			$this->_db->Query();
 
 			/* Store the new categories */
 			foreach( $data["product_categories"] as $category_id ) {
-				$db->setQuery('SELECT IF (ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__vm_product_category_xref` WHERE `category_id`='.$category_id );
-				$list_order = $db->loadResult();
+				$this->_db->setQuery('SELECT IF (ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__vm_product_category_xref` WHERE `category_id`='.$category_id );
+				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__vm_product_category_xref ";
 				$q .= "(category_id,product_id,product_list) ";
 				$q .= "VALUES ('".$category_id."','". $product_data->product_id . "', ".$list_order. ")";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 			}
 		}
 
@@ -752,16 +794,15 @@ class VirtueMartModelProduct extends JModel {
 			/* Insert Pipe separated Related Product IDs */
 			$q = "REPLACE INTO #__vm_product_relations (product_id, related_products)";
 			$q .= " VALUES( '".$product_data->product_id."', '".implode('|', $data['related_products'])."') ";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 		}
 		else {
 			$q = "DELETE FROM #__vm_product_relations WHERE product_id='".$product_data->product_id."'";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 		}
 
-		//TODO save price
 		return true;
 	}
 
@@ -818,7 +859,7 @@ class VirtueMartModelProduct extends JModel {
 	* @todo Add sanity checks
 	*/
 	public function cloneProduct($old_product_id=false, $parent_id=false) {
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 
 		/* Get the product IDs to clone */
 		if (!$old_product_id) {
@@ -859,30 +900,30 @@ class VirtueMartModelProduct extends JModel {
 			$q  = "INSERT INTO #__vm_product_category_xref
 			  SELECT category_id, ".$product_data->product_id.", MAX(product_list)+1 AS product_list
 			  FROM #__vm_product_category_xref WHERE product_id='".$old_product_id."' GROUP BY product_id";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Clone the manufacturer */
 			$q  = "INSERT INTO #__vm_product_mf_xref
 			  SELECT ".$product_data->product_id.", manufacturer_id
 			  FROM #__vm_product_mf_xref WHERE product_id='".$old_product_id."'";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Clone the price */
 			$q  = "INSERT INTO #__vm_product_price
 			  SELECT ".$product_data->product_id.", product_price, product_currency, product_price_vdate, product_price_edate, NOW(), NOW(), shopper_group_id, price_quantity_start, price_quantity_end
 			  FROM #__vm_product_price WHERE product_id='".$old_product_id."'";
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Clone the attributes if it is a child product */
 			if ($product_data->product_parent_id > 0 && $parent_id) {
 				$q  = "INSERT INTO #__vm_product_attribute
 				  SELECT attribute_id, ".$product_data->product_id.", attribute_name, attribute_value
 				  FROM #__vm_product_attribute WHERE product_id='".$old_product_id."'";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 			}
 
 			/* Lets see if the product has children  */
@@ -891,13 +932,13 @@ class VirtueMartModelProduct extends JModel {
 				$q  = "INSERT INTO #__vm_product_attribute_sku
 				  SELECT ".$product_data->product_id.", attribute_name, MAX(attribute_list)+1 AS attribute_list
 				  FROM #__vm_product_attribute_sku WHERE product_id='".$old_product_id."' GROUP BY product_id";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 
 				/* Get a list of child products */
 				$q = "SELECT product_id FROM #__vm_product WHERE product_parent_id = ".$old_product_id;
-				$db->setQuery($q);
-				$children = $db->loadResultArray();
+				$this->_db->setQuery($q);
+				$children = $this->_db->loadResultArray();
 				foreach ($children as $child_key => $child_id) {
 					$this->cloneProduct($child_id, $product_data->product_id);
 				}
@@ -912,7 +953,7 @@ class VirtueMartModelProduct extends JModel {
 	* @todo Add sanity checks
 	*/
 	public function removeProduct($old_product_id=false) {
-		$db = JFactory::getDBO();
+//		$this->_db = JFactory::getDBO();
 
 		/* Get the product IDs to remove */
 		$cids = array();
@@ -935,8 +976,8 @@ class VirtueMartModelProduct extends JModel {
 				/* Delete all children */
 				/* Get a list of child products */
 				$q = "SELECT product_id FROM #__vm_product WHERE product_parent_id = ".$product_id;
-				$db->setQuery($q);
-				$children = $db->loadResultArray();
+				$this->_db->setQuery($q);
+				$children = $this->_db->loadResultArray();
 				foreach ($children as $child_key => $child_id) {
 					$this->removeProduct($child_id);
 				}
@@ -944,42 +985,42 @@ class VirtueMartModelProduct extends JModel {
 
 			/* Delete attributes */
 			$q  = "DELETE FROM #__vm_product_attribute_sku WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete categories xref */
 			$q  = "DELETE FROM #__vm_product_category_xref WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete product - manufacturer xref */
 			$q = "DELETE FROM #__vm_product_mf_xref WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete Product - ProductType Relations */
 			$q  = "DELETE FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete product votes */
 			$q  = "DELETE FROM #__vm_product_votes WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete product reviews */
 			$q = "DELETE FROM #__vm_product_reviews WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete Product Relations */
 			$q  = "DELETE FROM #__vm_product_relations WHERE product_id = ".$product_id;
-			$db->setQuery($q); $db->query();
+			$this->_db->setQuery($q); $this->_db->query();
 
 			/* Delete Prices */
 			$q  = "DELETE FROM #__vm_product_price WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
 			/* Delete the product itself */
 			$product_data->delete($product_id);
@@ -992,7 +1033,7 @@ class VirtueMartModelProduct extends JModel {
     * @author RolandD
     */
     public function getProductTypeList() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
 
     	$cids = JRequest::getVar('cid');
 
@@ -1002,8 +1043,8 @@ class VirtueMartModelProduct extends JModel {
 			ON x.product_type_id = t.product_type_id
 			WHERE (product_id != ".$cids[0]." OR product_id IS NULL)
 			ORDER BY product_type_list_order ASC";
-		$db->setQuery($q);
-		return $db->loadObjectList();
+		$this->_db->setQuery($q);
+		return $this->_db->loadObjectList();
     }
 
     /**
@@ -1011,7 +1052,7 @@ class VirtueMartModelProduct extends JModel {
     * @todo Add unique key to table vm_product_product_type_xref
     */
     public function saveProductType() {
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
 
     	$product_id = JRequest::getInt('product_id', false);
     	$product_type_id = JRequest::getInt('product_type_id', false);
@@ -1020,18 +1061,18 @@ class VirtueMartModelProduct extends JModel {
 			/* Check if the product link already exist */
 			$q  = "SELECT COUNT(*) AS count FROM #__vm_product_product_type_xref ";
 			$q .= "WHERE product_id = ".$product_id." AND product_type_id = ".$product_type_id;
-			$db->setQuery($q);
+			$this->_db->setQuery($q);
 
-			if ($db->loadResult() == 0) {
+			if ($this->_db->loadResult() == 0) {
 				$q  = "INSERT INTO #__vm_product_product_type_xref (product_id, product_type_id) ";
 				$q .= "VALUES (".$product_id.",".$product_type_id.")";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 
 				$q  = "INSERT INTO #__vm_product_type_".$product_type_id." (product_id) ";
 				$q .= "VALUES (".$product_id.")";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 
 				return true;
 			}
@@ -1089,7 +1130,7 @@ class VirtueMartModelProduct extends JModel {
     public function getRecentProducts($product_id=null, $maxitems=5) {
     	if ($maxitems == 0) return;
 
-    	$db = JFactory::getDBO();
+//    	$this->_db = JFactory::getDBO();
     	$session = JFactory::getSession();
 		$recentproducts = $session->get("recentproducts", null);
 		if (empty($recentproducts)) $recentproducts['idx'] = 0;
@@ -1115,10 +1156,10 @@ class VirtueMartModelProduct extends JModel {
 				$q .= "AND p.published='1' ";
 				$q .= "AND c.published='1' ";
 				$q .= "LIMIT 0,1";
-				$db->setQuery($q);
-				$product = $db->loadObject();
+				$this->_db->setQuery($q);
+				$product = $this->_db->loadObject();
 
-				if ($db->getAffectedRows() > 0) {
+				if ($this->_db->getAffectedRows() > 0) {
 					$recent[$k]['product_s_desc'] = $product->product_s_desc;
 					$flypage = $product->category_flypage;
 					if (empty($flypage)) $flypage = VmConfig::get('flypage');
@@ -1171,12 +1212,12 @@ class VirtueMartModelProduct extends JModel {
 	public function decreaseStockAfterSales ($_id, $_amount)
 	{
 		$this->decreaseStock($_id, $_amount);
-		$_db = JFactory::getDBO();
-		$_db->setQuery('UPDATE `#__vm_product` '
+//		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery('UPDATE `#__vm_product` '
 					. 'SET `product_sales` = `product_sales` + ' . $_amount . ' '
 					. 'WHERE `product_id` = ' . $_id
 					);
-		$_db->query();
+		$this->_db->query();
 	}
 
 	/**
@@ -1191,12 +1232,12 @@ class VirtueMartModelProduct extends JModel {
 	public function increaseStockAfterCancel ($_id, $_amount)
 	{
 		$this->increaseStock($_id, $_amount);
-		$_db = JFactory::getDBO();
-		$_db->setQuery('UPDATE `#__vm_product` '
+//		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery('UPDATE `#__vm_product` '
 					. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
 					. 'WHERE `product_id` = ' . $_id
 					);
-		$_db->query();
+		$this->_db->query();
 	}
 
 	/**
@@ -1211,12 +1252,12 @@ class VirtueMartModelProduct extends JModel {
 	public function revertStockAfterCancellation ($_id, $_amount)
 	{
 		$this->increaseStock($_id, $_amount);
-		$_db = JFactory::getDBO();
-		$_db->setQuery('UPDATE `#__vm_product` '
+//		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery('UPDATE `#__vm_product` '
 					. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
 					. 'WHERE `product_id` = ' . $_id
 					);
-		$_db->query();
+		$this->_db->query();
 	}
 
 	/**
@@ -1256,19 +1297,19 @@ class VirtueMartModelProduct extends JModel {
 	 */
 	private function _updateStock($_id, $_amount, $_sign)
 	{
-		$_db = JFactory::getDBO();
-		$_db->setQuery('UPDATE `#__vm_product` '
+//		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery('UPDATE `#__vm_product` '
 					. 'SET `product_in_stock` = `product_in_stock` ' . $_sign . $_amount . ' '
 					. 'WHERE `product_id` = ' . $_id
 					);
-		$_db->query();
+		$this->_db->query();
 
 		if ($_sign == '-') {
-			$_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
+			$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
 					. 'FROM `#__vm_product` '
 					. 'WHERE `product_id` = ' . $_id
 			);
-			if ($_db->loadResult() == 1) {
+			if ($this->_db->loadResult() == 1) {
 				// TODO Generate low stock warning
 			}
 		}

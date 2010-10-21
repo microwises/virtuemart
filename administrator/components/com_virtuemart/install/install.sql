@@ -678,14 +678,14 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
 -- Table structure for table `#__vm_product_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
-  `discount_id` int(11) NOT NULL AUTO_INCREMENT,
-  `amount` decimal(15,5) NOT NULL DEFAULT '0.00000',
-  `is_percent` tinyint(1) NOT NULL DEFAULT '0',
-  `start_date` int(11) NOT NULL DEFAULT '0',
-  `end_date` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`discount_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Discounts that can be assigned to products' AUTO_INCREMENT=3 ;
+-- CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
+--   `discount_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `amount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+--   `is_percent` tinyint(1) NOT NULL DEFAULT '0',
+--   `start_date` int(11) NOT NULL DEFAULT '0',
+--   `end_date` int(11) NOT NULL DEFAULT '0',
+--   PRIMARY KEY (`discount_id`)
+-- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Discounts that can be assigned to products' AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -988,16 +988,16 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
 -- Table structure for table `#__vm_tax_rate`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_tax_rate` (
-  `tax_rate_id` int(11) NOT NULL AUTO_INCREMENT,
-  `vendor_id` int(11) DEFAULT NULL,
-  `tax_state` varchar(64) DEFAULT NULL,
-  `tax_country` varchar(64) DEFAULT NULL,
-  `mdate` int(11) DEFAULT NULL,
-  `tax_rate` decimal(10,5) DEFAULT NULL,
-  PRIMARY KEY (`tax_rate_id`),
-  KEY `idx_tax_rate_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The tax rates for your store' AUTO_INCREMENT=3 ;
+-- CREATE TABLE IF NOT EXISTS `#__vm_tax_rate` (
+--   `tax_rate_id` int(11) NOT NULL AUTO_INCREMENT,
+--   `vendor_id` int(11) DEFAULT NULL,
+--   `tax_state` varchar(64) DEFAULT NULL,
+--   `tax_country` varchar(64) DEFAULT NULL,
+--   `mdate` int(11) DEFAULT NULL,
+--   `tax_rate` decimal(10,5) DEFAULT NULL,
+--   PRIMARY KEY (`tax_rate_id`),
+--   KEY `idx_tax_rate_vendor_id` (`vendor_id`)
+-- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The tax rates for your store' AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 

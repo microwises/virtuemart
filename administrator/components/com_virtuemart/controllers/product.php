@@ -136,10 +136,16 @@ class VirtuemartControllerProduct extends JController {
 		$msgtype = '';
 		if ($model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('PRODUCT_NOT_SAVED_SUCCESSFULLY');
+			dump($model,'my model');
+			dump($view,'my view');
+			dump($this,'my controller');
+			$msg = $model->getError();
+//			$msg = JText::_('PRODUCT_NOT_SAVED_SUCCESSFULLY');
+//			$msg = $model->getErrorMsg();
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+
 	}
 
 	/**

@@ -172,8 +172,8 @@ class VirtuemartControllerUpdatesMigration extends JController {
 		$id = $model->determineStoreOwner();
 		$model->setStoreOwner($id);
 		$model->setUserToShopperGroup($id);	
-		
-		$msg = $model->installSampleData($id);
+		$model->installSampleData($id);
+		$msg = $model->getErrors();
 		
 		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
 	}

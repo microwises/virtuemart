@@ -101,6 +101,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_CURRENCY') ?>:</div>
 				</td>
 				<td width="71%">
+					<?php // echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency); ?>
 					<?php echo $this->currencies; ?>
 				</td>
 			</tr>
@@ -109,7 +110,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_BASE') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" class="inputbox" name="purchase_price" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
+					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
 				</td>
 			</tr>
 			<tr class="row1">
@@ -117,7 +118,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
+					<input type="text" readonly value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
 				</td>
 			</tr>
 			<tr class="row0">
@@ -147,7 +148,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
 					$checked = '';
 					if ($this->override) $checked = 'checked="checked"' ?>
-					<input type="checkbox" name="override" value="<?php echo $this->override ?>" <?php echo $checked; ?> />
+					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
 				</td>
 			</tr>
 			<tr>

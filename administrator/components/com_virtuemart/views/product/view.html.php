@@ -61,7 +61,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product */
 				$product_model = $this->getModel('product');
 				$product = $this->get('Product');
-
+				dump($product,'Model in view');
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
@@ -69,24 +69,17 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
-				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_code', 'currency_name', $product->product_currency);
-
+//			JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency); 			
+$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+							
 				/* Load the product price */
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->product_id);
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);
-				/* @TODO show Tax for the product, amount or percentage Load the tax rates */
-//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
-//				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'calc_id', '"updateGross();"', 'calc_id', 'select_list_name', $product->product_tax_id);
-				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
 
-				/* @Todo, show price with Discounts; Load the tax rates */ 
-//				$discount_model = $this->getModel('discount');
-//				$discounts = VirtueMartModelCalc::getDiscounts();
-//				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
-//				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
+				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
 				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
 
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');

@@ -83,13 +83,9 @@ class VirtueMartModelProductspecial extends JModel {
 
      	/* Build the query */
      	$q = "SELECT #__vm_product.`product_id`,
-     				#__vm_product.`product_parent_id`,
-     				`product_name`,
-     				`product_sku`,
-     				`product_special`,
-     				IF (`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,
-     				`published`,
-     				`product_price`
+     				#__vm_product.`product_parent_id`,`product_name`,`product_sku`, `product_special`,";
+//     				IF (`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,  //Todo solve this
+     				$q .="`published`,`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_id');
@@ -104,9 +100,7 @@ class VirtueMartModelProductspecial extends JModel {
 			LEFT JOIN #__vm_product_price
 			ON #__vm_product.product_id = #__vm_product_price.product_id
 			LEFT JOIN #__vm_shopper_group
-			ON #__vm_product_price.shopper_group_id = #__vm_shopper_group.shopper_group_id
-			LEFT JOIN #__vm_product_discount
-			ON #__vm_product.product_discount_id = #__vm_product_discount.discount_id';
+			ON #__vm_product_price.shopper_group_id = #__vm_shopper_group.shopper_group_id';
     }
 
     /**
@@ -126,13 +120,13 @@ class VirtueMartModelProductspecial extends JModel {
      	if (JRequest::getVar('search_type', '') != '') {
      		switch (JRequest::getVar('search_type')) {
 				case 'featured_and_discounted':
-					$filters[] = "#__vm_product.`product_discount_id` > 0 AND #__vm_product.`product_special` = 'Y'";
+					$filters[] = "#__vm_product_price.`product_discount_id` > 0 AND #__vm_product.`product_special` = 'Y'";
 					break;
 				case 'featured':
 					$filters[] = "#__vm_product.`product_special` = 'Y'";
 					break;
 				case 'discounted':
-					$filters[] = '#__vm_product.`product_discount_id` > 0';
+					$filters[] = '#__vm_product_price.`product_discount_id` > 0';
 					break;
      		}
      	}

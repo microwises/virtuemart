@@ -25,6 +25,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @author RolandD
+ * @author Max Milbers
  */
 class TableProduct_price extends JTable {
 
@@ -38,7 +39,7 @@ class TableProduct_price extends JTable {
 	var $override  = 0;
 	var $product_override_price = 0;
 	var $product_tax_id = 0;
-	var $product_discount_i = 0;
+	var $product_discount_id = 0;
 	
 	/** @var string Product currency */
 	var $product_currency = null;
@@ -59,6 +60,30 @@ class TableProduct_price extends JTable {
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__vm_product_price', 'product_price_id', $db);
+	}
+
+	/**
+	 * @author Max Milbers
+	 * @param 
+	 */	
+	function check (){
+		
+		if (!$this->product_id) {
+			$this->setError(JText::_('Impossible to save product prices without product_id'));
+			return false;
+		}
+		
+		if (!$this->product_price) {
+			$this->setError(JText::_('Impossible to save product prices without product_price'));
+			return false;
+		}
+
+		if (!$this->product_currency) {
+			$this->setError(JText::_('Impossible to save product prices without product_currency'));
+			return false;
+		}
+		dump($this, 'my product price table');
+		return true;
 	}
 }
 ?>

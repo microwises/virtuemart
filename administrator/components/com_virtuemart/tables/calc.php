@@ -90,8 +90,17 @@ class TableCalc extends JTable
 	 */
 	function check() 
 	{
+        if (!$this->calc_vendor_id) {
+			$this->calc_vendor_id = 1; //default to mainvendor
+		}
+		
         if (!$this->calc_name) {
 			$this->setError(JText::_('Calculation rules records must contain a Rules name.'));
+			return false;
+		}
+
+        if (!$this->calc_kind) {
+			$this->setError(JText::_('Calculation rules records must contain a calculation kind.'));
 			return false;
 		}
 
@@ -107,6 +116,7 @@ class TableCalc extends JTable
 				return false;
 			}
 		}
+		
 		
 		return true;
 	}
