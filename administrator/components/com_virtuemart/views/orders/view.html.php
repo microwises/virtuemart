@@ -149,26 +149,26 @@ class VirtuemartViewOrders extends JView {
 			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
 			$this->assignRef('orderitem', $orderItem);
 		}
-		else if ($curTask == 'updateOrderItemStatus') {
-			$this->setLayout('orders_editstatus');
-
-			/* Get order statuses */
-			$orderstatuses = $this->get('OrderStatusList');
-			$this->assignRef('orderstatuses', $orderstatuses);
-
-			$model = $this->getModel();
-			$orderId = JRequest::getVar('orderId', '');
-			$orderLineItem = JRequest::getVar('orderLineId', '');
-			$this->assignRef('order_id', $orderId);
-			$this->assignRef('order_item_id', $orderLineItem);
-
-			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
-			$this->assignRef('orderitem', $orderItem);
-			// Following is here for syntactical reasons only (allows us to reuse the same template) 
-			$this->assignRef('cur_order_status', $orderItem->order_status);
-			$_lo = 1; // Use a var; must be passed by reference
-			$this->assignRef('line_only', $_lo);
-		}
+//		else if ($curTask == 'updateOrderItemStatus') {
+//			$this->setLayout('orders_editstatus');
+//
+//			/* Get order statuses */
+//			$orderstatuses = $this->get('OrderStatusList');
+//			$this->assignRef('orderstatuses', $orderstatuses);
+//
+//			$model = $this->getModel();
+//			$orderId = JRequest::getVar('orderId', '');
+//			$orderLineItem = JRequest::getVar('orderLineId', '');
+//			$this->assignRef('order_id', $orderId);
+//			$this->assignRef('order_item_id', $orderLineItem);
+//
+//			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
+//			$this->assignRef('orderitem', $orderItem);
+//			// Following is here for syntactical reasons only (allows us to reuse the same template) 
+//			$this->assignRef('cur_order_status', $orderItem->order_status);
+//			$_lo = 1; // Use a var; must be passed by reference
+//			$this->assignRef('line_only', $_lo);
+//		}
 		else {
 			$this->setLayout('orders');
 

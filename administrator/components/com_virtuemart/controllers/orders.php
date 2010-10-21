@@ -242,21 +242,18 @@ class VirtuemartControllerOrders extends JController {
 	/**
 	 * Display the order item details for editing
 	 */
-	public function updateOrderItemStatus() {
-//	    JRequest::setVar('layout', 'orders_updatestatus');
-//	    JRequest::setVar('hidemenu', 1);
-//
-//	    parent::display();
-		/* Create the view object */
-		$view = $this->getView('orders', 'html');
-
-		/* Default model */
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-
-		/* Now display the view. */
-		$view->display();
+	public function updateOrderItemStatus()
+	{
+		$mainframe = Jfactory::getApplication();
+		$model = $this->getModel('orders');
+		$_items = JRequest::getVar('cid',  0, '', 'array');
+		$_status = JRequest::getVar('order_status', '');
+		$_orderID = JRequest::getVar('order_id', '');
+		foreach ($_items as $_item) {
+			$model->updateSingleItemStatus($_item, $_status[$_orderID]);
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.$_orderID);
 	}
-
 
 	/**
 	* Save the given order item

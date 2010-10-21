@@ -28,25 +28,26 @@ class ShopFunctions {
 	
 	
 //	Forget this function!
-//	/**
-//	* Initialise the mailer object to start sending mails
-//	* @author RolandD
-//	* @todo Add vendor data
-//	*/
-//	public function loadMailer() {
-//		$mainframe = JFactory::getApplication();
-//		jimport('joomla.mail.helper');
-//		
-//		/* Start the mailer object */
-//		$mailer = JFactory::getMailer();
-//		$mailer->isHTML(true);
-//		/* This has to be replaced by the vendor data */
-//		//$mailer->From = $mainframe->getCfg('mailfrom');
-//		//$mailer->FromName = $mainframe->getCfg('sitename');
-//		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-//		
-//		return $mailer;
-//	}
+//	Oscar sais: No, except if you document which alternative to use!! This function IS called!!!
+	/**
+	* Initialise the mailer object to start sending mails
+	* @author RolandD
+	* @todo Add vendor data
+	*/
+	public function loadMailer() {
+		$mainframe = JFactory::getApplication();
+		jimport('joomla.mail.helper');
+		
+		/* Start the mailer object */
+		$mailer = JFactory::getMailer();
+		$mailer->isHTML(true);
+		/* This has to be replaced by the vendor data */
+		//$mailer->From = $mainframe->getCfg('mailfrom');
+		//$mailer->FromName = $mainframe->getCfg('sitename');
+		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+		
+		return $mailer;
+	}
 	
 	/**
 	 * Creates a Drop Down list of available Creditcards

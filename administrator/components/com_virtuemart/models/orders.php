@@ -6,6 +6,7 @@
  * @package	VirtueMart
  * @subpackage
  * @author RolandD
+ * @author Oscar van Eijk
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for VirtueMart Products
+ * Model for VirtueMart Orders
  *
  * @package VirtueMart
  * @author RolandD
@@ -33,7 +34,11 @@ class VirtueMartModelOrders extends JModel {
 	var $_total;
 	var $_pagination;
 
-	function __construct() {
+	/**
+	 * Constructor
+	 */
+	function __construct()
+	{
 		parent::__construct();
 
 		// Get the pagination request variables
@@ -51,7 +56,8 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Loads the pagination
 	 */
-	public function getPagination() {
+	public function getPagination()
+	{
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
@@ -62,7 +68,8 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal() {
+	private function getTotal()
+	{
 		if (empty($this->_total)) {
 			$db = JFactory::getDBO();
 
@@ -78,7 +85,8 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Load a single order
 	 */
-	public function getOrder() {
+	public function getOrder()
+	{
 		$db = JFactory::getDBO();
 		$order = array();
 		$order_id = JRequest::getInt('order_id');
@@ -119,14 +127,6 @@ class VirtueMartModelOrders extends JModel {
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 
-//		/* Payment details */
-//		$q  = "SELECT *, ".VmConfig::get('encrypt_function')."(order_payment_number,'".VmConfig::get('encode_key')."') AS account_number
-//			FROM #__vm_payment_method, #__vm_order_payment
-//			WHERE #__vm_order_payment.order_id=".$order_id."
-//			AND #__vm_payment_method.paym_id = #__vm_order_payment.payment_method_id";
-//		$db->setQuery($q);
-//		$order['payment'] = $db->loadObject();
-
 		return $order;
 	}
 
@@ -135,15 +135,16 @@ class VirtueMartModelOrders extends JModel {
 	 * @param $_uid integer Optional user ID to get the orders of a single user
 	 * @param $_ignorePagination boolean If true, ignore the Joomla pagination (for embedded use, default false)
 	 */
-	public function getOrdersList($_uid = 0, $_ignorePagination = false) {
+	public function getOrdersList($_uid = 0, $_ignorePagination = false)
+	{
 		$db = JFactory::getDBO();
 		/* Pagination */
 		$this->getPagination();
 
 		/* Build the query */
 		$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
-     			.',m.paym_name AS payment_method '
-     			.$this->getOrdersListQuery();
+			.',m.paym_name AS payment_method '
+			.$this->getOrdersListQuery();
 		if ($_uid > 0) {
 			$q .= ' WHERE u.user_id = ' . $_uid . ' ';
 		}
@@ -161,19 +162,21 @@ class VirtueMartModelOrders extends JModel {
 	 * List of tables to include for the product query
 	 * @author RolandD
 	 */
-	private function getOrdersListQuery() {
+	private function getOrdersListQuery()
+	{
 		return 'FROM #__vm_orders o
-    			LEFT JOIN #__vm_order_user_info u
-    			ON u.order_id = o.order_id 
-    			LEFT JOIN #__vm_payment_method m
-    			ON o.payment_method_id = m.paym_id';
+			LEFT JOIN #__vm_order_user_info u
+			ON u.order_id = o.order_id 
+			LEFT JOIN #__vm_payment_method m
+			ON o.payment_method_id = m.paym_id';
 	}
 
 	/**
 	 * Collect the filters for the query
 	 * @author RolandD
 	 */
-	private function getOrdersListFilter() {
+	private function getOrdersListFilter()
+	{
 		$db = JFactory::getDBO();
 		$filters = array();
 		/* Check some filters */
@@ -201,7 +204,8 @@ class VirtueMartModelOrders extends JModel {
 	 *
 	 * @author RolandD
 	 */
-	public function saveAttribute() {
+	public function saveAttribute()
+	{
 		/* Load an attribute */
 		$row = $this->getTable();
 		$row->load(JRequest::getInt('attribute_sku_id'));
@@ -214,16 +218,14 @@ class VirtueMartModelOrders extends JModel {
 				FROM #__vm_product_attribute_sku";
 			$db->setQuery($q);
 			$new_list = $db->loadResult();
-		}
-		else {
+		} else {
 			if ($new_list > $row->attribute_list) {
 				/* First the lists below the new list order */
 				$q = "UPDATE #__vm_product_attribute_sku SET attribute_list = attribute_list-1
 					 WHERE attribute_list <= ".$new_list;
 				$db->setQuery($q);
 				$db->query();
-			}
-			else if ($new_list < $row->attribute_list) {
+			} elseif ($new_list < $row->attribute_list) {
 				/* Second the lists above the new list order */
 				$q = "UPDATE #__vm_product_attribute_sku SET attribute_list = attribute_list+1
 					 WHERE attribute_list >= ".$new_list;
@@ -233,8 +235,11 @@ class VirtueMartModelOrders extends JModel {
 		}
 		$row->bind(JRequest::get('post'));
 		$row->attribute_list = $new_list;
-		if ($row->store()) return true;
-		else return false;
+		if ($row->store()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -242,7 +247,8 @@ class VirtueMartModelOrders extends JModel {
 	 * @author RolandD
 	 * @todo Add sanity checks
 	 */
-	public function removeAttribute() {
+	public function removeAttribute()
+	{
 		/* Get the attribute IDs to remove */
 		$cids = JRequest::getVar('cid');
 		if (!is_array($cids)) $cids = array($cids);
@@ -262,7 +268,8 @@ class VirtueMartModelOrders extends JModel {
 	 * Get a list of order statuses
 	 * @author RolandD
 	 */
-	public function getOrderStatusList() {
+	public function getOrderStatusList()
+	{
 		$db = JFactory::getDBO();
 		$q = "SELECT order_status_code AS value, order_status_name AS text
 			FROM #__vm_order_status
@@ -294,7 +301,6 @@ class VirtueMartModelOrders extends JModel {
 
 		/* See where the lines should be updated too */
 		$update_lines = JRequest::getVar('update_lines', array());
-		$order_item_ids = JRequest::getVar('order_item_id', array());
 		
 		/* Get the list of comments */
 		$comments = JRequest::getVar('order_comment', array());
@@ -315,47 +321,47 @@ class VirtueMartModelOrders extends JModel {
 				$order = $this->getTable();
 				$order->load($order_id);
 				$order_status_code = $order->order_status;
-				if (!$line_only) {
-					// Order updates can be ignored if we're updating only lines
-					$order->order_status = $new_status;
-					$order->mdate = $timestamp;
 
-					/* When the order is set to "shipped", we can capture the payment */
-					if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
-						JPluginHelper::importPlugin('vmpayment');
-						$_dispatcher =& JDispatcher::getInstance();
-						$_returnValues = $_dispatcher->trigger('plgVmOnShipOrder',array(
-										 $_orderID
-									)
-							);
-						foreach ($_returnValues as $_returnValue) {
-							if ($_returnValue == true) {
-								break; // Plugin was successfull
-							} elseif ($_returnValue == false) {
-								return false; // Plugin failed
-							}
-							// Ignore null status and look for the next returnValue
-						}
-					}
+				// Order updates can be ignored if we're updating only lines
+				$order->order_status = $new_status;
+				$order->mdate = $timestamp;
 
-					/**
-					 * If an order gets cancelled, fire a plugin event, perhaps
-					 * some authorization needs to be voided
-					 */
-					if ($new_status == "X") {
-						JPluginHelper::importPlugin('vmpayment');
-						$_dispatcher =& JDispatcher::getInstance();
-						$_dispatcher->trigger('plgVmOnCancelOrder',array(
-										 $_orderID
-										,$order_status_code
-										,$new_status
+				/* When the order is set to "shipped", we can capture the payment */
+				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
+					JPluginHelper::importPlugin('vmpayment');
+					$_dispatcher =& JDispatcher::getInstance();
+					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrder',array(
+									 $order_id
 								)
 						);
+					foreach ($_returnValues as $_returnValue) {
+						if ($_returnValue == true) {
+							break; // Plugin was successfull
+						} elseif ($_returnValue == false) {
+							return false; // Plugin failed
+						}
+						// Ignore null status and look for the next returnValue
 					}
 				}
+
+				/**
+				 * If an order gets cancelled, fire a plugin event, perhaps
+				 * some authorization needs to be voided
+				 */
+				if ($new_status == "X") {
+					JPluginHelper::importPlugin('vmpayment');
+					$_dispatcher =& JDispatcher::getInstance();
+					$_dispatcher->trigger('plgVmOnCancelOrder',array(
+									 $order_id
+									,$order_status_code
+									,$new_status
+							)
+					);
+				}
+
 				if ($order->store()) {
 					/* Update the order history */
-					$this->_updateOrderHist($order_id, $order_status_code, $customer_notified, $comment);
+					$this->_updateOrderHist($order_id, $new_status, $customer_notified, $comment);
 
 					/* Update stock level */
 					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orderstatus.php');
@@ -380,7 +386,7 @@ class VirtueMartModelOrders extends JModel {
 					}
 
 					/* Update order item status */
-					if (@$update_lines[$order_id] == 1) {
+					if ($update_lines[$order_id] == 1) {
 						$q = "SELECT order_item_id
 							FROM #__vm_order_item
 							WHERE order_id=".$order_id;
@@ -388,9 +394,7 @@ class VirtueMartModelOrders extends JModel {
 						$order_items = $db->loadObjectList();
 						if ($order_items) {
 							foreach ($order_items as $key => $order_item) {
-								if (in_array($order_item->order_item_id ,$order_item_ids)) {
-									$this->updateItemStatus($order_item, $new_status, true);
-								}
+								$this->updateSingleItemStatus($order_item->order_item_id, $new_status);
 							}
 						}
 					}
@@ -399,10 +403,11 @@ class VirtueMartModelOrders extends JModel {
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($order_id);
 
 					/* Check if the customer needs to be informed */
-					if (@$notify[$order_id] == 1) $this->notifyCustomer($order, $order_history);
+					if (@$notify[$order_id] == 1) $this->notifyCustomer($order, $comments);
 					$updated++;
+				} else {
+					$error++;
 				}
-				else $error++;
 			}
 		}
 		return array('updated' => $updated, 'error' => $error);
@@ -688,21 +693,17 @@ class VirtueMartModelOrders extends JModel {
 	}
 
 	/**
-	 * Update an order item status and send e-mail if needed
-	 * @author RickG
+	 * Update an order item status
+	 * @author Oscar van Eijk
 	 */
-	public function updateItemStatus($orderItem = '', $newStatus='', $entireOrderUpdate=false) {
-		if (($orderItem) && ($newStatus)) {
-			$order_item_table = $this->getTable('order_item');
-			$order_item_table->load($orderItem->order_item_id);
-			$order_item_table->order_status = $newStatus;
-			$order_item_table->mdate = time();
-			if ($order_item_table->store() && !$entireOrderUpdate) {
-				$this->notifyCustomer($orderItem, $order_item_table);
-			}
-		}
+	public function updateSingleItemStatus($_item, $_status)
+	{
+		$_table = $this->getTable('order_item');
+		$_table->load($_item);
+		$_table->order_status = $_status;
+		$_table->mdate = time();
+		$_table->store();
 	}
-
 
 	/**
 	 * E-mails the Download-ID to the customer
@@ -710,7 +711,8 @@ class VirtueMartModelOrders extends JModel {
 	 *
 	 * @return boolean
 	 */
-	function mailDownloadId($order_id) {
+	function mailDownloadId($order_id)
+	{
 		$mainframe = JFactory::getApplication();
 		$url = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
@@ -786,7 +788,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @author RolandD
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order, $order_history) {
+	function notifyCustomer($order, $_comments) {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&order_id=".$order->order_id.'&Itemid='.$sess->getShopItemid();
@@ -815,9 +817,9 @@ class VirtueMartModelOrders extends JModel {
 		$message .= JText::_('VM_ORDER_STATUS_CHANGE_SEND_MSG_1',false)."\n\n";
 
 		/* Check if we need to include the comment in the mail */
-		if (array_key_exists(@$include_comments[$order->order_id] == 1) && !empty($order_history->comments)) {
+		if (array_key_exists($order->order_id, $include_comments) && !empty($_comments)) {
 			$message .= JText::_('VM_ORDER_HISTORY_COMMENT_EMAIL',false).":\n";
-			$message .= $order_history->comments;
+			$message .= $_comments;
 			$message .= "\n____________________________________________________________\n\n";
 		}
 
