@@ -40,7 +40,7 @@ AdminMenuHelper::startAdminArea();
 		<?php 
 		$rating_options = array();
 		for ($i=0;$i<=$this->max_rating;$i++) {
-			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/shop_image/reviews/'.$i.'.gif','');
+			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
 			$rating_options[] = JHTML::_('select.option',$i,$text);
 		}
 		echo JHTML::_('select.radiolist', $rating_options, 'user_rating', 'id="user_rating" class="inputbox"', 'value', 'text', $this->rating->user_rating);
