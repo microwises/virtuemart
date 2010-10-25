@@ -82,6 +82,7 @@ class VirtuemartControllerOrders extends JController {
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('orders_edit');

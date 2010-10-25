@@ -78,10 +78,13 @@ class VirtueMartModelProduct extends JModel {
 
     /**
      * Load a single product
+     * @param $product_id (optional); if omitted, the product ID is taken from the URI request
      */
-     public function getProduct() {
+     public function getProduct($product_id = null) {
 //     	 $this->_db = JFactory::getDBO();
-     	 $product_id = JRequest::getInt('product_id', 0);
+		if ($product_id === null) {
+			$product_id = JRequest::getInt('product_id', 0);
+		}
      	 /* Check if we are loading an existing product */
      	 if ($product_id > 0) {
 //			 $q = "SELECT p.*, pf.manufacturer_id, pp.shopper_group_id, pp.product_price_id, pp.product_price, pp.product_currency,

@@ -48,6 +48,7 @@ class VirtuemartViewOrders extends JView {
 
 			// Load addl models
 			$userFieldsModel = $this->getModel('userfields');
+			$productModel = $this->getModel('product');
 
 			/* Get the data */
 			$order = $this->get('Order');
@@ -95,13 +96,52 @@ class VirtuemartViewOrders extends JView {
 			foreach ($_orderStats as $_ordStat) {
 				$_orderStatusList[$_ordStat->value] = $_ordStat->text;
 			}
-			
+
+			$_itemStatusUpdateFields = array();
+			$_itemAttributesUpdateFields = array();
+			foreach($order['items'] as $_item) {
+				$_itemStatusUpdateFields[$_item->order_item_id] = JHTML::_('select.genericlist', $_orderStats, 'order_status_'.$_item->order_item_id, '', 'value', 'text', $_item->order_status, 'order_item_status');
+				if (!empty($_item->product_attribute)) {
+					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
+
+					$product = $productModel->getProduct($_item->product_id);
+					$_productAttributes = array();
+					$_prodAttribs = explode(';', $product->attribute);
+					foreach ($_prodAttribs as $_pAttr) {
+						$_list = explode(',', $_pAttr);
+						$_name = array_shift($_list);
+						$_productAttributes[$_item->order_item_id][$_name] = array();
+						foreach ($_list as $_opt) {
+							$_optObj = new stdClass();
+							$_optObj->option = $_opt;
+							$_productAttributes[$_item->order_item_id][$_name][] = $_optObj;
+						}
+					}
+
+					foreach ($_attribs as $_attrib) {
+						$_attr = preg_split('/:\s*/', $_attrib);
+						$_itemAttributesUpdateFields[$_item->order_item_id][] = array(
+							 'lbl' => $_attr[0]
+							,'fld' => JHTML::_('select.genericlist'
+									, $_productAttributes[$_item->order_item_id][$_attr[0]]
+									, 'attrib_'.$_attr[0].'_'.$_item->order_item_id
+									, null
+									, 'option'
+									, 'option'
+									, $_attr[1])
+						);
+					}
+				}
+			}
+
 			/* Assign the data */
 			$this->assignRef('order', $order);
 			$this->assignRef('orderID', $_orderID);
 			$this->assignRef('userfields', $userfields);
 			$this->assignRef('shippingfields', $shippingfields);
 			$this->assignRef('orderstatuslist', $_orderStatusList);
+			$this->assignRef('itemstatusupdatefields', $_itemStatusUpdateFields);
+			$this->assignRef('itemattributesupdatefields', $_itemAttributesUpdateFields);
 			$this->assignRef('orderbt', $orderbt);
 			$this->assignRef('orderst', $orderst);
 
