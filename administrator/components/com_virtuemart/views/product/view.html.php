@@ -76,11 +76,36 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->product_id);
+				dump($calculator->rules,'rule');
+				$dbTax = 'Rules Effecting: <br />';
+				foreach($calculator->rules['dBTax'] as $rule){
+					
+					$dbTax .= $rule['calc_name']. '<br />';
+				}	
+				$this->assignRef('dbTaxRules', $dbTax);
+
+				$tax = 'Tax Effecting: <br />';
+				foreach($calculator->rules['tax'] as $rule){
+					$tax .= $rule['calc_name']. '<br />';
+				}	
+				$this->assignRef('taxRules', $tax);
+
+				$daTax = 'Rules Effecting: <br />';
+				foreach($calculator->rules['dATax'] as $rule){
+					$daTax .= $rule['calc_name']. '<br />';
+				}	
+				$this->assignRef('daTaxRules', $daTax);
+
+				
+//				$this->assignRef('taxRules', $calculator->rules['tax']);
+//				$this->assignRef('dbTaxRules', $calculator->rules['dbTax']);
+//				dump($calculator->rules,'my rules');
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
 				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
-				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
+				$lists['dbdiscounts'] = $this -> renderDiscountList($product->product_discount_id,1);
+				$lists['dadiscounts'] = $this -> renderDiscountList($product->product_discount_id,0);
 
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
@@ -165,7 +190,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
-				$this->assignRef('taxrates', $taxrates);
+//				$this->assignRef('taxrates', $taxrates);
 //				$this->assignRef('discounts', $discounts);
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
@@ -296,28 +321,30 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 	function renderTaxList($selected){
 		$this->loadHelper('modelfunctions');
-		$selected = modelfunctions::prepareTreeSelection($selected);
+//		$selected = modelfunctions::prepareTreeSelection($selected);
 		
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
-//		dump($taxes,'taxes');
-		
+		dump($taxes);
 		$taxrates = array();
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
 		}
-//		dump($taxrates,'taxrates');
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', '', 'product_tax_id', 'text', $selected );
 		return $listHTML;
 	}
 	
-	function renderDiscountList($selected){
+	function renderDiscountList($selected,$before){
 		$this->loadHelper('modelfunctions');
-		$selected = modelfunctions::prepareTreeSelection($selected);
+//		$selected = modelfunctions::prepareTreeSelection($selected);
 		
-		$discounts = VirtueMartModelCalc::getDiscounts();
-		
+		if($before){
+			$discounts = VirtueMartModelCalc::getDBDiscounts();
+		} else {
+			$discounts = VirtueMartModelCalc::getDADiscounts();
+		}
+
 		$discountrates = array();
 		$discountrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
 //		$discountrates[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');

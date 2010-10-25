@@ -240,17 +240,22 @@ class VirtueMartViewCart extends JView {
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
 		$calculator = calculationHelper::getInstance();
+		dump($product_prices,'prices in prepareCartData');
 		foreach($product_prices as $k=>$price){
-			if(is_int($k)){
-				foreach($price as $sk=>$sprice){
-					$prices[$k][$sk] = $calculator->priceDisplay($sprice);
-				}
+//			if(is_int($k)){
+				if(is_array($price)){
+					foreach($price as $sk=>$sprice){
+						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
+					}
+					dump($price,'is array');
+//				}
+
 			} else {
 				$prices[$k] = $calculator->priceDisplay($price);
 			}		
 		}
 
-		dump($prices,'prices');
+		dump($prices,'prices in prepareCartData');
 		$this->assignRef('prices', $prices);
 
 		$this->assignRef('cartData',$calculator->getCartData());

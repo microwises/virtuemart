@@ -77,7 +77,14 @@ class VirtuemartControllerCalc extends JController
 		JRequest::setVar('controller', 'calc');
 		JRequest::setVar('view', 'calc');
 		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);		
+		JRequest::setVar('hidemenu', 1);
+		
+		$document =& JFactory::getDocument();
+		$viewType = $document->getType();
+		$view =& $this->getView('calc', $viewType);
+		
+		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
 		
 		parent::display();
 	}

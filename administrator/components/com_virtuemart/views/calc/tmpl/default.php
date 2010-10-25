@@ -92,9 +92,9 @@ AdminMenuHelper::startAdminArea();
 			<th width="10">
 				<?php echo JText::_( 'PUBLISHED' ); ?>
 			</th>
-			<th width="10">
+		<?php /*	<th width="10">
 				<?php echo JText::_( 'VM_CALC_SHARED' ); ?>
-			</th>
+			</th> */ ?>
 		</tr>
 		</thead>
 		<?php
@@ -138,7 +138,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->calc_value); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_currency); ?>
+					<?php echo JText::_($row->currencyName); ?>
 				</td>				
 				<td>
 					<?php echo JText::_($row->calcCategoriesList); ?>
@@ -190,9 +190,10 @@ AdminMenuHelper::startAdminArea();
 				<td align="center">
 					<?php echo $published; ?>
 				</td>
+				<?php /*
 				<td align="center">
 					<?php echo $row->shared; ?>
-				</td>				        																														
+				</td>	*/?>			        																														
 			</tr>
 			<?php
 			$k = 1 - $k;

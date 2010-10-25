@@ -119,9 +119,7 @@ class VirtueMartModelProduct extends JModel {
 		 $q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;
 		 $this->_db->setQuery($q);
 		 $categories = $this->_db->loadResultArray();
-		 foreach ($categories as $value) {
-		 	 $row->categories[$value]  = 1;
-		 }
+		 $row->categories = $this->_db->loadResultArray();
 		 
 		 if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */

@@ -63,7 +63,7 @@ class CurrencyDisplay {
     // 15 = '(00 Symb)'
     // ================
     function __construct (
-	    $id			="euro",
+	    $id			="euro",  //id is a string?
 	    $symbol		="&euro;",
 	    $nbDecimal	= 2,
 	    $decimal   	= ",",

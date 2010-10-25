@@ -118,7 +118,6 @@ class VirtueMartModelCalc extends JModel
   		if (!$this->_data) {
    			$this->_data = new stdClass();
    			$this->_id = 0;
-   			$this->_data = null;
   		}
 		/* Add the calculation rule categories */
 		$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
@@ -180,8 +179,13 @@ class VirtueMartModelCalc extends JModel
 	
 			/* Write the first 5 states in the list */
 			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
+
+			$query = 'SELECT `currency_name` FROM `#__vm_currency` WHERE `currency_id` = "'.$data->calc_currency.'" ';
+			$this->_db->setQuery($query);
+			$data->currencyName = $this->_db->loadResult();
 			
 		}
+
 //		echo (print_r($this->_data).'<br /><br />');
 		return $this->_data;
 	}
@@ -376,37 +380,38 @@ class VirtueMartModelCalc extends JModel
 	}
 	
 	
-	function getTaxes() {
+	function getRule($kind){
 		
+		if (!is_array($kind)) $kind = array($kind);
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
-//		$q = 'SELECT * ';
-//		$q .= 'CONCAT("(", `#__vm_calc`.`calc_id`, ") ", FORMAT(`#__vm_calc`.`calc_value`*100, 2)) AS select_list_name ';
-//		$q .= 'FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" AND `calc_value_mathop`="+%" OR `calc_value_mathop`="-%" ';
-  		$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
-  		$this->_db->setQuery($q);
+		
+		$q = 'SELECT * FROM `#__vm_calc` WHERE ';
+		foreach ($kind as $field){
+			$q .= '`calc_kind`="'.$field.'" OR ';
+		}
+		$q=substr($q,0,-3);
+
+		$this->_db->setQuery($q);
 		$data = $this->_db->loadObjectList();
-  		
+		
 		if (!$data) {
    			$data = new stdClass();
-   			$data = null;
   		}
+  		return $data;
+	}
+	
+	function getTaxes() {
   		
-		return $data;
+		return self::getRule(array('TAX','TaxBill'));
 	}
 
-	function getDiscounts() {
-		
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
- 		$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="DBTax" OR `calc_kind`="DATax" ';
-  		$this->_db->setQuery($q);
-		$data = $this->_db->loadObjectList();
-  		
-		if (!$data) {
-   			$data = new stdClass();
-   			$data = null;
-  		}
-  		
-		return $data;
+	function getDBDiscounts() {
+ 		
+		return self::getRule(array('DBTax','DBTaxBill'));;
 	}
-		
+	
+	function getDADiscounts() {
+ 		
+		return self::getRule(array('DATax','DATaxBill'));;
+	}
 }

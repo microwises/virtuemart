@@ -101,6 +101,18 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
+					<?php echo JText::_('VM_CALC_CURRENCY'); ?>:
+				</label>
+			</td>
+			<td>
+			<?php dump($this->calc->calc_currency, 'my currency id');?>
+			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'currency_id', 'currency_name', $this->calc->calc_currency); ?>
+
+			</td>
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
 					<?php echo JText::_('VM_CALC_CATEGORY'); ?>:
 				</label>
 			</td>			

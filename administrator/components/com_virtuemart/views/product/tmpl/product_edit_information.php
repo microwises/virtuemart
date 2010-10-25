@@ -126,15 +126,23 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</div>
 				</td>
 				<td width="71%" >
-					<?php echo $this->lists['taxrates']; ?>
+					<?php echo $this->lists['taxrates']; echo $this->taxRules ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+					<?php echo JText::_('VM_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['discounts']; ?>
+					<?php echo $this->lists['dbdiscounts']; echo $this->dbTaxRules;  ?>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('VM_PRODUCT_FORM_DADISCOUNT_TYPE') ?>:</div>
+				</td>
+				<td width="79%">
+					<?php echo $this->lists['dadiscounts']; echo $this->daTaxRules ?>
 				</td>
 			</tr>
 			<tr class="row0">

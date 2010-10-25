@@ -7,9 +7,9 @@
 --
 
 INSERT IGNORE INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `modified`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
-(1, 1, 'Tax 9.25%', 'A simpel tax for all products regardless the category', 'Tax', '+%', 9.25, '', 0, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 18:26:27', 0, 0, 0, '', 1, 0),
-(2, 1, 'Discount for all Hand Tools', 'Discount for all Hand Tools 2 euro', 'DBTax', '-', 2, '', 1, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 22:51:39', 0, 0, 0, '', 1, 0),
-(3, 1, 'Duty for Powertools', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', 20, '', 0, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 23:07:33', 0, 0, 0, '', 1, 0);
+(1, 1, 'Tax 9.25%', 'A simpel tax for all products regardless the category', 'Tax', '+%', 9.25, '47', 0, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 18:26:27', 0, 0, 0, '', 1, 0),
+(2, 1, 'Discount for all Hand Tools', 'Discount for all Hand Tools 2 euro', 'DBTax', '-', 2, '47', 1, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 22:51:39', 0, 0, 0, '', 1, 0),
+(3, 1, 'Duty for Powertools', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', 20, '47', 0, 1, 1, '2010-02-21 00:00:00', '0000-00-00 00:00:00', '2010-02-21 23:07:33', 0, 0, 0, '', 1, 0);
 
 
 --

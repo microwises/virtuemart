@@ -123,7 +123,7 @@ class VirtueMartModelCurrency extends JModel {
 	if (!$this->_data) {
 	    $this->_data = new stdClass();
 	    $this->_id = 0;
-	    $this->_data = null;
+//	    $this->_data = null; Who added this? What is the sense to create a new object and to set it then to null?
 	}
 
 	return $this->_data;

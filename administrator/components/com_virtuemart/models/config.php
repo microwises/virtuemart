@@ -208,14 +208,13 @@ class VirtueMartModelConfig extends JModel {
 		}
 	}
 	else {
-	    $params = new JParameter('');
-	    $params->set('store_name', 'My Super Store');
-	    $params->set('currency', 'EUR');
+//	    $params = new JParameter('');
 
-	    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
-	    $db->setQuery($q);
-	    $db->query();
-	    echo $db->getErrorMsg();
+//	    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
+//	    $db->setQuery($q);
+//	    $db->query();
+//	    echo $db->getErrorMsg();
+		JError::raiseWarning('No config in database found, dont mind, when you configure the shop the first time');
 	}
 
 	return $params;
@@ -235,7 +234,7 @@ class VirtueMartModelConfig extends JModel {
 	    $curConfigParams->bind($data);
 
 	    $db = JFactory::getDBO();
-	    $query = "UPDATE #__vm_config SET config = " . $db->Quote($curConfigParams->toString());
+	    $query = 'UPDATE `#__vm_config` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE config_id ="1"' ;
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 		$this->setError($table->getError());

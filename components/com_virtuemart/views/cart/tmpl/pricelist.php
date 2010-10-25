@@ -38,9 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 	
 		$i=0;
 		foreach ($this->cart->products as $k=>$product){
-//			dump($product,'product in pricelist'); break;
-//		for ($i=0; $i < $this->cart['idx']; $i++) {	
-//			$product = $this->products[$i];
+			dump($product,'product in pricelist');
+
 			// Added for the zone shipping module
 			//$vars["zone_qty"] += $product["quantity"];
 	
@@ -62,6 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
 					$variant .=$vvalue;
 				}
+				$variantmod = $this->calculator->parseModifier($product->variant);
 			} else {
 				$product_rows[$i]['product_variant']='';
 			}
@@ -95,8 +95,8 @@ defined('_JEXEC') or die('Restricted access');
 			//$weight_total += $weight_subtotal;
 	
 			/* Product PRICE */
-			/** @todo Format price */
-			$product_rows[$i]['prices'] = $this->prices[$product->product_id]['salesPrice'];
+			$priceKey = $product->product_id.$variantmod;
+			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
 			/** @todo Format price */
 //			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
@@ -104,10 +104,10 @@ defined('_JEXEC') or die('Restricted access');
 //			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $product->quantity;
 //			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$i]['salesPrice'] * $product->quantity;
 
-			$product_rows[$i]['subtotal'] = $this->prices[$product->product_id]['subtotal'];
-			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$product->product_id]['subtotal_tax_amount'];
-			$product_rows[$i]['subtotal_discount'] = $this->prices[$product->product_id]['subtotal_discount'];
-			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$product->product_id]['subtotal_with_tax'];
+			$product_rows[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
+			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$priceKey]['subtotal_tax_amount'];
+			$product_rows[$i]['subtotal_discount'] = $this->prices[$priceKey]['subtotal_discount'];
+			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$priceKey]['subtotal_with_tax'];
 						
 			// UPDATE CART / DELETE FROM CART
 			if($this->layoutName=='default'){

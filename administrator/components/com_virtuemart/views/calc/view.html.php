@@ -64,6 +64,30 @@ class VirtuemartViewCalc extends JView {
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
+				
+				$db = JFactory::getDBO();
+				//get default currency of the vendor, if not set get default of the shop
+				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "'.$vendorId.'"';
+				$db->setQuery($q);
+				$currency= $db->loadResult();
+				if(empty($currency)){
+					$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "1" ';
+					$db->setQuery($q);
+					$currency= $db->loadResult();
+					$calc->calc_currency = $currency;
+					dump($currency,'currency by Main vendor');
+				} else {
+					dump($currency,'currency by vendor');
+					$calc->calc_currency = $currency;
+				}
+				
+				$usermodel = $this->getModel('user', 'VirtuemartModel');
+				$usermodel->setCurrent();
+				$userDetails = $usermodel->getUser();
+				if(empty($userDetails->vendor_id)){
+					JError::raiseError(403,'Forbidden for non vendors');
+				}
+				$calc->calc_vendor_id = $userDetails->vendor_id;
 			}
 			else {
 				JToolBarHelper::title( JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
@@ -80,6 +104,7 @@ class VirtuemartViewCalc extends JView {
 
 			/* Get the category tree */
 			$categoryTree= null;
+			dump($calc->calc_categories,'calc Kategorien');
 			if (isset($calc->calc_categories)){
 				$calc_categories = $calc->calc_categories;
 				$categoryTree = ShopFunctions::categoryListTree($calc_categories);
@@ -87,7 +112,11 @@ class VirtuemartViewCalc extends JView {
 				 $categoryTree = ShopFunctions::categoryListTree();
 			}
 			$this->assignRef('categoryTree', $categoryTree);
-
+			
+			
+			$currencyModel = $this->getModel('currency');
+			$_currencies = $currencyModel->getCurrencies();
+			$this->assignRef('currencies', $_currencies);
 			
 			/* Get the shoppergroup tree */
 			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->calc_shopper_groups,True);
@@ -99,6 +128,7 @@ class VirtuemartViewCalc extends JView {
 			$statesList = ShopFunctions::renderStateList($calc->calc_states, $calc->calc_countries, 'country_id',True);
 			$this->assignRef('statesList', $statesList);			
 
+			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
 			$vendorList= ShopFunctions::renderVendorList($calc->calc_vendor_id,True);
 			$this->assignRef('vendorList', $vendorList);
         }

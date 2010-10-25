@@ -29,6 +29,7 @@ class calculationHelper{
 	private $_cartPrices;
 	private $_cartData;
 	
+	public $override=0;
 	public $productVendorId;
 	public $productCurrency;
 
@@ -101,11 +102,12 @@ class calculationHelper{
 	 * 
 	 */
 	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
-		
+
 		//Use it as productId
 //		if(is_Int($productId)){
 			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
-			$row=$this->_db->loadAssoc();dump($row,'myRow');
+			$row=$this->_db->loadAssoc(); 
+//			dump($row,'myRow');
 //			if($row && count($row)==2){
 			if($row){
 				$basePrice = $row['product_price'];
@@ -169,15 +171,15 @@ class calculationHelper{
 		}
 		
 //		$calcRules = $this->gatherEffectingRulesForProductPrice('Calc');
-		if(!$this->product_tax_id){
+		if(empty($this->product_tax_id)){
 			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');	
 		} else {
 			if (!is_array($this->product_tax_id)) $this->product_tax_id = array($this->product_tax_id);
 			$taxRules = $this->product_tax_id;
 		}
-		
+		$this->rules['tax'] = $taxRules;
 		//This is a bit nasty, atm we assume for the discount override that it is meant for discounts after Tax
-		if(!$this->product_discount_id){
+		if(empty($this->product_discount_id)){
 			$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');		
 			$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
 		} else {
@@ -185,8 +187,8 @@ class calculationHelper{
 			$dBTaxRules = array();
 			$dATaxRules = $this->product_discount_id;			
 		}
-
-
+		$this->rules['dBTax'] = $dBTaxRules;
+		$this->rules['dATax'] = $dATaxRules;
 
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
 		$prices['basePrice']=$basePriceShopCurrency;
@@ -199,7 +201,7 @@ class calculationHelper{
 				$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
 			}
 			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
-			
+			dump($prices['basePrice'],'my baseprice of variant');
 		}
 		
 		//For Profit, margin, and so on
@@ -208,12 +210,12 @@ class calculationHelper{
 //		}
 
 //		$basePrice = !empty($prices['basePriceVariant'])?$prices['basePriceVariant']:$prices['basePrice'];
-		$prices['basePriceWithTax'] = $this->roundDisplay($this -> executeCalculation($taxRules, $prices['basePrice']));
+		$prices['basePriceWithTax'] = $this->roundDisplay($this -> executeCalculation($taxRules, $prices['basePrice'],true));
 		$prices['discountedPriceWithoutTax']=$this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['basePrice']));
 		
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax'])?$prices['discountedPriceWithoutTax']:$prices['basePrice'];
 		$prices['priceBeforeTax'] = $priceBeforeTax;
-		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($taxRules, $priceBeforeTax));
+		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($taxRules, $priceBeforeTax,true));
 		
 		$salesPrice = !empty($prices['salesPrice'])?$prices['salesPrice']:$priceBeforeTax;
 		$prices['salesPriceTemp']=$salesPrice;
@@ -257,10 +259,6 @@ class calculationHelper{
 //			
 //		}
 
-		
-		
-		
-		
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($prices).'</pre>';
 //		dump($prices,'$prices');
@@ -315,7 +313,7 @@ class calculationHelper{
 
 		$this->_cartData['payment'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartData['paymentName'] = '';
-		$this->_cartPrices['paymentTax'] = 0;
+		$cartpaymentTax = 0;
 		
 		$this->_cartData['coupons'] = $this->existCoupons();
 		$this->_cartData['couponName'] = 'Coupon Number 777';
@@ -334,27 +332,30 @@ class calculationHelper{
 			
 			$variantmod = $this->parseModifier($product->variant);
 			dump($variantmod,'My variant modification in calc');
-			
-			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
+			$cartproductkey = $productId.$variantmod;
+			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
+//			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
 //			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($product,0,$variantmod,$product->quantity,true,false);	
-			$this->_cartPrices[$productId] = $pricesPerId[(int)$productId];
+//			$this->_cartPrices[$cartproductkey] = $pricesPerId[$cartproductkey];
+			$this->_cartPrices[$cartproductkey] = $product->prices;
 
-			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $pricesPerId[$productId]['basePrice']*$product->quantity;
+			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $product->prices['basePrice']*$product->quantity;
 //				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$product->quantity;
-			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $pricesPerId[$productId]['basePriceWithTax']*$product->quantity;
-			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $pricesPerId[$productId]['discountedPriceWithoutTax']*$product->quantity;
-			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $pricesPerId[$productId]['salesPrice']*$product->quantity;
-			$this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $pricesPerId[$productId]['taxAmount']*$product->quantity;
-			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $pricesPerId[$productId]['salesPriceWithDiscount']*$product->quantity;
-			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $pricesPerId[$productId]['discountAmount']*$product->quantity;
-			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $pricesPerId[$productId]['priceWithoutTax']*$product->quantity;
+			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax']*$product->quantity;
+			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax']*$product->quantity;
+			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice']*$product->quantity;
+			$this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount']*$product->quantity;
+			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount']*$product->quantity;
+			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $product->prices['discountAmount']*$product->quantity;
+			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax']*$product->quantity;
 
-			$this->_cartPrices[$productId]['subtotal'] = $pricesPerId[$productId]['priceWithoutTax'] * $product->quantity;
-			$this->_cartPrices[$productId]['subtotal_tax_amount'] = $pricesPerId[$productId]['taxAmount'] * $product->quantity;
-			$this->_cartPrices[$productId]['subtotal_discount'] = $pricesPerId[$productId]['discountAmount'] * $product->quantity;
-			$this->_cartPrices[$productId]['subtotal_with_tax'] = $pricesPerId[$productId]['salesPrice'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['priceWithoutTax'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $product->prices['discountAmount'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
 						
 		}
+
 
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
@@ -365,8 +366,18 @@ class calculationHelper{
 		}
 
 		//todo fill with data
-		$this ->_deliveryCountry;
-		$this ->_deliveryState;
+		if(!empty($cart->ST['country_id'])){
+			$this ->_deliveryCountry = $cart->ST['country_id'];
+		}else if(!empty($cart->BT['country_id'])){
+			$this ->_deliveryCountry = $cart->BT['country_id'];
+		}
+
+		if(!empty($cart->ST['state_id'])){
+			$this ->_deliveryState = $cart->ST['state_id'];
+		}else if(!empty($cart->BT['state_id'])){
+			$this ->_deliveryState = $cart->BT['state_id'];
+		}
+
 	
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
@@ -388,7 +399,7 @@ class calculationHelper{
 		//  product or method
 		$toTax = $toTax + $this->_cartPrices['salesPriceShipping'];
 		
-		$this->_cartPrices['withTax']=$discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax));
+		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundDisplay($this -> executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax']:$toTax;
 
 
@@ -435,21 +446,41 @@ class calculationHelper{
 	 * @param 		$price 		The input price, if no rule is affecting, 0 gets returned
 	 * @return int 	$price  	the endprice	
 	 */
-	function executeCalculation($rules, $price){
-		
-//		if(empty($rules))return $price;
+	function executeCalculation($rules, $baseprice,$relateToBaseAmount=false){
+
 		if(empty($rules))return 0;
 		$rulesEffSorted = $this -> record_sort($rules, 'ordering');
+
+		$price = $baseprice;
+		$finalprice = $baseprice;
 		if(isset($rulesEffSorted)){
 			foreach($rulesEffSorted as $rule){
-				$this->_cartPrices[$rule['calc_id'].'Cin']=$price;
-				$price = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$price,$rule['calc_currency']);
-				$this->_cartPrices[$rule['calc_id'].'Cout']=$this->roundDisplay($price);
-				$this->_cartPrices[$rule['calc_id'].'Diff']= $this->roundDisplay($this->_cartPrices[$rule['calc_id'].'Cout'] - $this->_cartPrices[$rule['calc_id'].'Cin']);
-if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value '.$rule['calc_value'].' currency '.$rule['calc_currency'].' and '.$price;
+
+				if($relateToBaseAmount){
+					$cIn=$baseprice;
+				} else {
+					$cIn=$price;
+				}
+				$cOut = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$cIn,$rule['calc_currency']);
+				$this->_cartPrices[$rule['calc_id'].'Diff'] = $this->roundDisplay($this->roundDisplay($cOut) - $cIn);
+				
+				//okey, this is a bit flawless logic, but should work
+				if($relateToBaseAmount){
+					$finalprice = $finalprice + $this->_cartPrices[$rule['calc_id'].'Diff'];
+				} else {
+					$price = $cOut;
+				}
+				
+//				dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
 			}
 		}
-		return $price;
+		
+		//okey done with it
+		if(!$relateToBaseAmount){
+			$finalprice = $price;
+		}
+
+		return $finalprice;
 	}
 
 
@@ -864,12 +895,17 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @author Max Milbers
 	 */
 	 
-	function record_sort($records, $field, $reverse=false){	
+	function record_sort($records, $field, $reverse=false){
 		if(is_array($records)){
 			$hash = array();
-	   
+
 		    foreach($records as $record){
-		        $hash[$record[$field]] = $record;
+
+				$keyToUse = $record[$field];
+				while(array_key_exists($keyToUse,$hash)){
+					$keyToUse = $keyToUse + 1;
+				}
+		        $hash[$keyToUse] = $record;
 		    }
 		    ($reverse)? krsort($hash) : ksort($hash);
 		    $records = array();
@@ -941,7 +977,7 @@ if($this -> _debug) echo '<br />RulesEffecting '.$rule['calc_name'].' and value 
 	 * @return array The adjusted price modificator
 	 */
 	 
-	private function parseModifier($variants){
+	public function parseModifier($variants){
 		if(empty( $variants) ) return 0.0;
 //		echo '<br />Lets see what we have here for variant? <pre>'.print_r($variants).'</pre>';
 		$modificatorSum=0.0;

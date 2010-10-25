@@ -65,7 +65,7 @@ class VirtueMartControllerCart extends JController {
 		/* Set the layout */
 		$layoutName = JRequest::getVar('layout', 'default');
 		$view->setLayout($layoutName);
-		dump($view,'has layout '.$layoutName);
+
 		/* Display it all */
 		$view->display();
 	}
@@ -170,9 +170,7 @@ class VirtueMartControllerCart extends JController {
 
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
-//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
-//		dump($view,'I am in task editshipping');
+
 		/* Display it all */
 		$view->display();
 	}
