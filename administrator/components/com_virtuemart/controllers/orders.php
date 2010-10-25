@@ -241,7 +241,7 @@ class VirtuemartControllerOrders extends JController {
 
 
 	/**
-	 * Display the order item details for editing
+	 * Update status for the selected order items
 	 */
 	public function updateOrderItemStatus()
 	{
@@ -254,6 +254,17 @@ class VirtuemartControllerOrders extends JController {
 			$model->updateSingleItemStatus($_item, $_status[$_orderID]);
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.$_orderID);
+	}
+
+	/**
+	 * Update a single order item
+	 */
+	public function updateOrderItem()
+	{
+		$mainframe = Jfactory::getApplication();
+		$model = $this->getModel('orders');
+		$model->updateSingleItem();
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.JRequest::getVar('order_id', ''));
 	}
 
 	/**

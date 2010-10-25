@@ -706,6 +706,31 @@ class VirtueMartModelOrders extends JModel {
 	}
 
 	/**
+	 * Update an order item status
+	 * @author Oscar van Eijk
+	 */
+	public function updateSingleItem()
+	{
+		$_table = $this->getTable('order_item');
+		$_item = JRequest::getVar('order_item_id', '');
+		$_table->load($_item);
+		$_table->order_status = JRequest::getVar('order_status_'.$_item, '');
+		$_table->product_quantity = JRequest::getVar('product_quantity_'.$_item, '');
+		$_table->product_item_price = JRequest::getVar('product_item_price_'.$_item, '');
+		$_table->product_final_price = JRequest::getVar('product_final_price_'.$_item, '');
+		$_attribs = JRequest::getVar('product_attribute_'.$_item,  0, '', 'array');
+		if ($_attribs != 0) {
+			$_attrib = array();
+			foreach ($_attribs as $_k => $_v) {
+				$_attrib[] = $_k . ': ' . $_v;
+			}
+			$_table->product_attribute = join("<br>\n", $_attrib);
+		}
+		$_table->mdate = time();
+		$_table->store();
+	}
+	
+	/**
 	 * E-mails the Download-ID to the customer
 	 * or deletes the Download-ID from the product_downloads table
 	 *

@@ -124,7 +124,7 @@ class VirtuemartViewOrders extends JView {
 							 'lbl' => $_attr[0]
 							,'fld' => JHTML::_('select.genericlist'
 									, $_productAttributes[$_item->order_item_id][$_attr[0]]
-									, 'attrib_'.$_attr[0].'_'.$_item->order_item_id
+									, 'product_attribute_'.$_item->order_item_id.'['.$_attr[0].']'
 									, null
 									, 'option'
 									, 'option'
