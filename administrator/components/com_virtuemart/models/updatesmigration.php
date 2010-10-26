@@ -228,7 +228,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  " <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	";
 	$fields['vendor_full_image'] =  "c19970d6f2970cb0d1b13bea3af3144a.gif";
-	$fields['vendor_currency '] =  47;
+	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
 	$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";

@@ -831,14 +831,45 @@ class calculationHelper{
 		if(empty($currency)){
 			return $price;
 		}
+		
+//		if(!$this->vendorCurrency){
+//			
+//		}
+
+		// If both currency codes match, do nothing
+		if( $currency == $this->vendorCurrency ) {
+			return $price;
+		}
+
 		if(empty($this ->_currency)){
 			// @TODO Why is this check here?
 			$this -> _currency = $this->_getCurrencyObject();
 		}
+		
 //		if(!strcmp($this->vendorCurrency, $currency)){
-			$price = $this ->_currency->convert( $price, $currency,$this->vendorCurrency);
+			$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
 //		}
 		return $price;
+	}
+	
+	/**
+	 * Changes the currency_id into the right currency_code
+	 * For exampel 47 => EUR
+	 * 
+	 * @author Max Milbers
+	 */
+	function ensureUsingCurrencyCode($curr){
+		
+		//quick hack
+		if(is_Int($curr)){
+			$db = JFactory::getDBO();
+			$q= 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
+			$db->setQuery($q);
+			$curr = $db->loadResult();
+			if(empty($curr)){
+				JError::raiseWarning('Attention, couldnt find currency code in the table');
+			}
+		}
 	}
 	
 	/**
@@ -1010,10 +1041,12 @@ class calculationHelper{
 	 */
 	private function _getCurrencyObject()
 	{
-//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
-		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
-			$module_filename = VM_CURRENCY_CONVERTER_MODULE;
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.VM_CURRENCY_CONVERTER_MODULE.'.php');
+
+		$converterFile  = VmConfig::get('currency_converter_module');
+
+		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
+			$module_filename = $converterFile;
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
 			if( class_exists( $module_filename )) {
 				$_currency = new $module_filename();
 			}

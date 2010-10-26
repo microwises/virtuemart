@@ -37,23 +37,33 @@ class convertECB {
 	 *
 	 * @param float $amountA
 	 * @param string $currA defaults to $vendor_currency
-	 * @param string $currB defaults to $GLOBALS['product_currency'] (and that defaults to $vendor_currency)
+	 * @param string $currB defaults to 
 	 * @return mixed The converted amount when successful, false on failure
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
 
-		global $vendor_currency; //is DEFAULT!
-		if( !$currA ) {
-			$currA = $vendor_currency;
-		}
-		if( !$currB ) {
-			$currB = $vendor_currency;
-		}
-		// If both currency codes match, do nothing
-		if( $currA == $currB ) {		
-			return $amountA;
-		}
-		
+//		global $vendor_currency; //is DEFAULT!
+//		
+//		dump($currA,'$currA');
+//		dump($currB,'$currB');
+//		
+//		if( !$currA ) {
+//			$currA = $vendor_currency;
+//		}
+//		if( !$currB ) {
+//			$currB = $vendor_currency;
+//		}
+//		// If both currency codes match, do nothing
+//		if( $currA == $currB ) {		
+//			return $amountA;
+//		}
+//
+//		$currA = self::ensureUsingCurrencyCode($currA);
+//		$currB = self::ensureUsingCurrencyCode($currB);
+//
+//		dump($currA,'$currA');
+//		dump($currB,'$currB');
+			
 		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 		if( empty($globalCurrencyConverter)) {
 			setlocale(LC_TIME, "en-GB");
@@ -129,7 +139,7 @@ class convertECB {
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
 					//todo
 					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
-					$GLOBALS['product_currency'] = $vendor_currency;
+//					$GLOBALS['product_currency'] = $vendor_currency;
 					return $amountA;
 				}
 				
@@ -159,5 +169,7 @@ class convertECB {
 		
 		return $val;
 	} // end function convertecb
+	
+
 }
 ?>

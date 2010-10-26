@@ -62,4 +62,4 @@ class VirtueMartControllerVirtuemart extends JController
 		$view->display();
 	}
 }
-?>
+ //pure php no closing tag

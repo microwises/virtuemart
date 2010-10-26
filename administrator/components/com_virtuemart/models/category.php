@@ -403,15 +403,7 @@ class VirtueMartModelCategory extends JModel {
 		
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','category',$publishId);
-//		$table = $this->getTable();
-//		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-//
-//        if (!$table->publish($categoryIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;
-//        }
-//
-//		return true;
+
 	}
 
 
@@ -558,7 +550,7 @@ class VirtueMartModelCategory extends JModel {
 		/* Vendor */
 		$data['vendor_id'] = 1;
 		
-		//normalize data
+		//normalize data //todo this must be adjusted to new flypage system
 		$data['category_flypage'] = 'shop.'.$data['category_flypage'];
 		$data['category_flypage'] = str_replace('.tpl', '', $data['category_flypage']);
 
