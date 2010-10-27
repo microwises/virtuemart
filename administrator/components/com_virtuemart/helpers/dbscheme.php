@@ -493,7 +493,7 @@ class DbScheme
 			}
 
 			$_descr[$_record->Field]['default'] = ($_record->Default == 'NULL') ? '' : $_record->Default;
-			$_descr[$_record->Field]['comment'] = substr(0, 1, $_record->Comment);
+			$_descr[$_record->Field]['comment'] = $_record->Comment;
 		}
 		return $_descr;
 	}
