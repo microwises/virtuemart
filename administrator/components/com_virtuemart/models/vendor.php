@@ -266,7 +266,7 @@ class VirtueMartModelVendor extends JModel {
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if(isset($userId)){
-			$vendorId = Vendor::getVendorIdByUserId($userId,$ownerOnly);
+			$vendorId = self::getVendorIdByUserId($userId,$ownerOnly);
 			return $vendorId;
 		}else{
 			JError::raiseNotice(1,'$user_id empty, no user logged in');

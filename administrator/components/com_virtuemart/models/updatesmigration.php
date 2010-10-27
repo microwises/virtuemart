@@ -85,7 +85,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function determineStoreOwner() {
-	$user_id = Vendor::getUserIdByVendorId(1);
+	$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 	if (isset($user_id)) {
 	    $user = JFactory::getUser($user_id);
 	}
@@ -223,7 +223,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$currencyFields[1] = 'USD';
 
 	$fields = array();
-	$fields['vendor_id'] = Vendor::getVendorIdByUserId($userId);
+	$fields['vendor_id'] = VirtueMartModelVendor::getVendorIdByUserId($userId);
 	$fields['vendor_name'] =  "Washupito";
 	$fields['vendor_phone'] =  "555-555-1212";
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";

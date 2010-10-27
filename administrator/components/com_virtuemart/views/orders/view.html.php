@@ -56,7 +56,7 @@ class VirtuemartViewOrders extends JView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-			$_vendorData = Vendor::getVendorFields($order['details']['BT']->vendor_id, array('vendor_currency_display_style'));
+//			$_vendorData = Vendor::getVendorFields($order['details']['BT']->vendor_id, array('vendor_currency_display_style'));
 			
 			$_currencyDisplayStyle = Vendor::get_currency_display_style($order['details']['BT']->vendor_id);
 			if (!empty($_currencyDisplayStyle)) {

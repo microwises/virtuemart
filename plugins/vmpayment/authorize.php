@@ -327,7 +327,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$database = JFactory::getDBO();
 		
 		$_vendorID = $_orderData->vendor_id; 
-		$_vendorCurrency = Vendor::getVendorCurrencyCode($_vendorID);
+		$_vendorCurrency = VirtueMartModelVendor::getVendorCurrencyCode($_vendorID);
 
 		// Option to send email to merchant from gateway
 		if ($this->params->get('AN_EMAIL_MERCHANT') == '0') {
