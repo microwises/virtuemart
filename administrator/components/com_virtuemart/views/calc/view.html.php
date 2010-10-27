@@ -148,7 +148,6 @@ class VirtuemartViewCalc extends JView {
 			
 		}
 
-		
 		parent::display($tpl);
 	}
 	

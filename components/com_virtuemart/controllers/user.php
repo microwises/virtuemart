@@ -49,13 +49,16 @@ class VirtueMartControllerUser extends JController
 		/* Add the default model */
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
 		/* Set the layout */
 		$view->setLayout('edit');
-		
+		$cid = JRequest::getVar('cid',null);
+		if(!isset($cid)) JRequest::setVar('cid', (int)0);
+
 //		$ftask ='saveuser';
 //		$view->assignRef('fTask', $ftask);
 		
@@ -266,8 +269,8 @@ class VirtueMartControllerUser extends JController
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the order_number in the mail
-		$store = $this->getModel( 'store', 'VirtuemartModel' );
-		$view->setModel( $store, true );
+		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+		$view->setModel( $vendor, true );
 
 		$view->setLayout('mailregisteruser');
 		
@@ -291,8 +294,8 @@ class VirtueMartControllerUser extends JController
 		$bodyVendor = ob_get_contents();
 		ob_end_clean();
 		
-		$store->setId(1);  //TODO MaX at the moment is the new registered email for the vendor always send to the main store
-		$vendor=$store->getStore();
+		$vendor->setId(1);  //TODO MaX at the moment is the new registered email for the vendor always send to the main store
+		$vendor=$vendor->getVendor(true);
 		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
 		if ( $sendShopper !== true ) {
 			$ok=false;

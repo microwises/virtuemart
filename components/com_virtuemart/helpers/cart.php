@@ -609,8 +609,8 @@ class VirtueMartCart  {
 		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
 
-		$store = $this->getModel( 'store', 'VirtuemartModel' );
-		$view->setModel( $store, true );
+//		$store = $this->getModel( 'store', 'VirtuemartModel' );
+//		$view->setModel( $store, true );
 
 		$view->setLayout('mailshopper');
 

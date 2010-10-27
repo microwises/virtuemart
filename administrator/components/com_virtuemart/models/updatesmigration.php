@@ -155,7 +155,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
     /**
      * @author Max Milbers
      */
-    function setUserToShopperGroup($userId=0) {
+    function setUserToPermissionGroup($userId=0) {
 	# insert the user <=> group relationship
 	$db = JFactory::getDBO();
 	$db->setQuery("INSERT INTO `#__vm_auth_user_group`
@@ -209,6 +209,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['phone_1'] =  "555-555-555";
 	$fields['address_1'] =  "vendorra road 8";
 	$fields['city'] =  "Canangra";
+	$fields['zip'] =  "055555";
 	$fields['state_id'] =  "72";
 	$fields['country_id'] =  "13";
 	$fields['user_is_vendor'] =  "1";

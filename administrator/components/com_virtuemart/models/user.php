@@ -39,6 +39,7 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'use
  * @package	VirtueMart
  * @subpackage	User
  * @author	RickG
+ * @author Max Milbers
  */
 class VirtueMartModelUser extends JModel {
 
@@ -69,40 +70,34 @@ class VirtueMartModelUser extends JModel {
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
-		//Lets try it again, I know Oscar,... if it does not work, we take your solution, hmm I dont get it to work
-//		// Get the (array of) user status ID(s)
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//		if(!empty($idArray[0])){
-//			if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
-//				$this->setId((int)$idArray[0]);
-//			}
-//		}
-//		if(empty($this->_id)){
-//			// Do NOT Default to the current user!
-//			// That will break the 'Add' view in the user manager!!
-//			// User the setCurrent() method instead after an object has been instatiated
-////			$user = JFactory::getUser();
-////			if($user){
-////				$this->setId((int)$user->id);
-////			} else {
-//				$this->setId(0);	
-////			}
-//		}
 
-		//Okey, this works now in the backend and Frontend. I prefer this solution, because as developer you neednt to use the setCurrent() method
-		if(Permissions::getInstance()->check("admin,storeadmin")) { // ID can be 0 for new users... && ($idArray[0] != 0)){
-			$idArray = JRequest::getVar('cid',  0, '', 'array');
-			if(empty($idArray[0])){
-				$this->setId((int)0);
-			} else {
-				$this->setId((int)$idArray[0]);
-			}
-			
+		$user = JFactory::getUser();		
+		//anonymous sets to 0 for a new entry
+		if(empty($user->id)){
+			$this->setId(0);
+			dump($this->_id,'Recogniced anonymous case');
 		} else {
-			$user = JFactory::getUser();
-			$this->setId((int)$user->id);
+			$idArray = JRequest::getVar('cid',  null, '', 'array');
+			//not anonymous, but no cid means already registered user edit own data
+			if(!isset($idArray[0])){
+				$this->setId((int)$user->id);
+				dump($user->id,'cid was null, therefore user->id is used');
+			} else {
+				if($idArray[0] != $user->id){
+//					
+					if(Permissions::getInstance()->check("admin,storeadmin")) {
+						$this->setId((int)$idArray[0]);
+						dump($idArray[0],'The Person is admin and can do what he want');
+					} else {
+						JError::raiseWarning(1,'Hacking attempt');	
+					}
+				}else {
+					$this->setId((int)$user->id);
+					dump($idArray[0],'User called his own profile with correct cid');
+				}
+			}		
 		}
-		
+
 	}
 
 	/**
@@ -190,8 +185,8 @@ class VirtueMartModelUser extends JModel {
 					//This parts sets the vendor_id to a user
 					$this->_data->vendor_id = 0;
 					if($this->_data->userInfo[$_ui_id]->user_is_vendor){
-						require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendorhelper.php' );
-						$vid = Vendor::getVendorIdByUserId($this->_id,false);
+						require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
+						$vid = VirtueMartModelVendor::getVendorIdByUserId($this->_id,false);
 						if($vid){
 							$this->_data->vendor_id = $vid;
 						}
@@ -216,7 +211,9 @@ class VirtueMartModelUser extends JModel {
 			$this->_data = new stdClass();
 			$this->_id = 0;
 			$this->_data = null;
+			
 		}
+		
 //		if (function_exists('dumpTrace')) { // J!Dump is installed
 //			dump($this->_data, 'model user->getUser');
 //		}
@@ -324,7 +321,7 @@ class VirtueMartModelUser extends JModel {
 		$mainframe = JFactory::getApplication() ;
 		
 		$data = JRequest::get('post');
-		$currentUser =& JFactory::getUser();
+//		$currentUser =& JFactory::getUser();
 
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
@@ -401,7 +398,6 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		if($new){
-			
 			// If user registration is not allowed, show 403 not authorized.
 			// But it is possible for admins and storeadmins to save
 			$usersConfig = &JComponentHelper::getParams( 'com_users' );
@@ -514,37 +510,38 @@ class VirtueMartModelUser extends JModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
 
-		dump($_data,'saveUserData ');
-		if(!empty($_data['shopper_group_id'])){
-			$table = $this->getTable('Auth_user_group');
-			
-			// Bind the form fields to the calculation table
-			$shoppergroupData = array('user_id'=>$_data['user_id'],'group_id'=>$_data['shopper_group_id']);
-			if (!$table->bind($shoppergroupData)) {		    
-				$this->setError($table->getError());
-				dump($table,'$table bind Error ');
-				return false;
-			}
-			
-			// Make sure the record is valid
-			if (!$table->check()) {
-				$this->setError($table->getError());
-				dump($table,'$table check error ');
-				return false;	
-			}
-			
-			dump($table,'$table Auth_user_group before store');
-			// Save the record to the database
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				dump($table,'$table store error');
-				return false;
-			}
-			dump($table,'$table Auth_user_group');
+		if(empty($_data['shopper_group_id'])){
+			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `vendor_id`="1" AND `default`="1" ';
+			$this->_db->setQuery($q);
+			$_data['shopper_group_id']=$this->_db->loadResult();
+		}
+
+		$table = $this->getTable('shopper_vendor_xref');
+		// Bind the form fields to the auth_user_group table
+		$shoppergroupData = array('user_id'=>$_data['user_id'],'vendor_id'=>1,'shopper_group_id'=>$_data['shopper_group_id'],'customer_number'=>$_data['customer_number']);
+		if (!$table->bind($shoppergroupData)) {		    
+			$this->setError($table->getError());
+			dump($table,'$table bind Error ');
+			return false;
+		}
+		
+		// Make sure the record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			dump($table,'$table check error ');
+			return false;	
+		}
+		
+		// Save the record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			dump($table,'$table store error');
+			return false;
+		}
 //			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
 //			$this->_db->query();
 //			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
-		}
+//		}
 		
 		
 		if (!user_info::storeAddress($_data, 'user_info', $new)) {
@@ -569,11 +566,11 @@ class VirtueMartModelUser extends JModel {
 			// Finally, if this user is a vendor, save the store data
 			if ($_data['my_vendor_id']) {
 				$_data['vendor_id'] = $_data['my_vendor_id'];
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'store.php');
-				$_storeModel = new VirtueMartModelStore();
-				$_storeModel->setId($_data['vendor_id']);
-				if (!$_storeModel->store($_data)) {
-					$this->setError($_storeModel->getError());
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+				$vendorModel = new VirtueMartModelVendor();
+				$vendorModel->setId($_data['vendor_id']);
+				if (!$vendorModel->store($_data)) {
+					$this->setError($vendorModel->getError());
 					return false;
 				}
 			}
@@ -660,7 +657,7 @@ class VirtueMartModelUser extends JModel {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		//dump($this->_data,"getUserList");
+		dump($this->_data,"getUserList");
 		return $this->_data;
 	}
 

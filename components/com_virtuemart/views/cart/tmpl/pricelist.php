@@ -54,6 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 			
 			/* Add the variants */
 			$variant = '';
+			$variantmod = '0';
 			if(!empty($product->variant)){
 				$product_rows[$i]['product_variant'] = '';
 				
@@ -93,9 +94,10 @@ defined('_JEXEC') or die('Restricted access');
 			/** @todo WEIGHT CALCULATION */
 			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
-	
+			
 			/* Product PRICE */
 			$priceKey = $product->product_id.$variantmod;
+			dump($priceKey,'my $priceKey '.$product->product_id);
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
 			/** @todo Format price */

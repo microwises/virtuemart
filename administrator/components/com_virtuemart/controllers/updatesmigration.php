@@ -171,7 +171,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 		$model->integrateJoomlaUsers();
 		$id = $model->determineStoreOwner();
 		$model->setStoreOwner($id);
-		$model->setUserToShopperGroup($id);	
+		$model->setUserToPermissionGroup($id);	
 		$model->installSampleData($id);
 		$msg = $model->getErrors();
 		

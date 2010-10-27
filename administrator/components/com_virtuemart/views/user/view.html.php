@@ -45,7 +45,7 @@ class VirtuemartViewUser extends JView {
 		
 		$task = JRequest::getVar('task', 'edit');
 		if($task == 'editshop'){
-			$model->setCurrent($_currentUser->id);
+			$model->setCurrent();
 		}
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
@@ -60,7 +60,7 @@ class VirtuemartViewUser extends JView {
 			
 			$userFieldsModel = $this->getModel('userfields');
 //			$orderModel = $this->getModel('orders');
-			$vendor = new Vendor;
+			
 
 			$userDetails = $model->getUser();
 			
@@ -214,12 +214,11 @@ class VirtuemartViewUser extends JView {
 			} else {
 				$orderList = null;
 			}
-
-			$_vendorData = Vendor::getVendorFields(@$userDetails->vendor_id, array('vendor_currency_display_style'));
-			if (count($orderList) > 0) {
-				if (!empty($_vendorData)) {
-					$_currencyDisplayStyle = Vendor::get_currency_display_style($userDetails->vendor_id
-						, $_vendorData->vendor_currency_display_style);
+			
+			$vendorModel = $this->getModel('vendor');
+			if (count($orderList) > 0) {		
+					$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($userDetails->vendor_id);
+					if (!empty($_currencyDisplayStyle)) {
 					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 						, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
@@ -230,20 +229,24 @@ class VirtuemartViewUser extends JView {
 				}
 				$this->assignRef('currency', $currency);
 			}
+			
+//			dump($userDetails,'my user details in edit user');
 
-			// If the current user is a vendor, load the store data
-			if ($vendor->isVendor($userDetails->JUser->get('id'))) {
-				$storeModel = $this->getModel('store');
-				$storeModel->setId($vendor->getVendorIdByUserId($userDetails->JUser->get('id')));
-				$_store = $storeModel->getStore();
-				$this->assignRef('store', $_store);
+			if (!empty($userDetails->vendor_id)) {
+				
+				$vendorModel = $this->getModel('vendor');
+				$vendorModel->setId($vendorModel->getVendorIdByUserId($userDetails->JUser->get('id')));
+				$vendor = $vendorModel->getVendor();
+				$this->assignRef('vendor', $vendor);
+				
 				$currencyModel = $this->getModel('currency');
 				$_currencies = $currencyModel->getCurrencies();
 				$this->assignRef('currencies', $_currencies);
-				$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
+				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
 				$this->assignRef('vendorCategories', $_vendorCats);
-				$_currencyDisplayStyle = Vendor::get_currency_display_style($vendor->getVendorIdByUserId($userDetails->JUser->get('id'))
-					, $_vendorData->vendor_currency_display_style);
+				
+				//Different currency styles for different vendors are nonsense imho
+				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($vendorModel->getVendorIdByUserId($userDetails->JUser->get('id')));
 				$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
@@ -262,7 +265,7 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('shipto', $_shipto);
 			$this->assignRef('userFields', $userFields);
 			$this->assignRef('userInfoID', $_userInfoID);
-			$this->assignRef('vendor', $vendor);
+//			$this->assignRef('vendor', $vendor);
 			$this->assignRef('orderlist', $orderList);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);

@@ -139,19 +139,6 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_data = null;
   		}
 
-//		if($this->_data->params){
-//// 			echo '<br />Read: '.$this->_data->params;
-//			
-//			$this->_data->params = new JParameter($this->_data->params);
-////			echo '<br />done in param: <pre> '.print_r($this->_data->params).'</pre>';
-//		} else {
-//		    $this->_data->params = new JParameter('');
-////		    $q = "INSERT INTO `#__vm_config` (paym_params) VALUES(".$db->Quote($params->toString()).")";
-////		    $db->setQuery($q);
-////		    $db->query();
-////		    echo $db->getErrorMsg();	
-//		}
-		
 		/* Add the paymentmethod shoppergroups */
 		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
@@ -162,11 +149,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		$this->_db->setQuery($q);
 		$this->_data->paym_creditcards = $this->_db->loadResultArray();	
 		
-		/* Add param from table plugins */
-//		$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$this->_data->paym_element.'"';
-//		$this->_db->setQuery($q);
-//		$paym_jplugin_id = $this->_db->loadResult();
-			
+
 		$q = 'SELECT `params` FROM #__plugins WHERE `id` = "'.$this->_data->paym_jplugin_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->param = $this->_db->loadResult();	
@@ -174,34 +157,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		if (function_exists('dumpTrace')) {
 			dump($this->_data,'getPaym');
 		}
-//		$jParams = new JParameter($this->_data->param);
-//		$vmParams = new JParameter($this->_data->paym_params);
-//		dump($jParams,'meine params');
-//		foreach ($jParams->toArray($jParams->getNamespaces()) as $k => $v){
-//			$value = $vmParams->getValue($k);
-//			if(empty($value)){
-//				$vmParams->setValue($v);
-//			}
-//		}
-//		$this->_data->paym_params = $vmParams->toString();
-//		dump($this->_data,'getPaym');
-//			$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
-//			$db->setQuery($query);
-//			$config = $db->loadResult();
-//			if ($config) {
-//			    $params = new JParameter($config);
-//			}
-//			else {
-//			    $params = new JParameter('');
-//			    $params->set('store_name', 'My Super Store');
-//			    $params->set('currency', 'EUR');
-//		
-//			    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
-//			    $db->setQuery($q);
-//			    $db->query();
-//			    echo $db->getErrorMsg();
-//			}
-	
+
   		return $this->_data;		
 	}    
     
@@ -281,20 +237,6 @@ class VirtueMartModelPaymentmethod extends JModel
 		}
 		if($data['vendor_id']) $data['paym_vendor_id'] = $data['vendor_id'];
 		
-		/* Obsolete */
-//		if($data['paym_element']){
-//			$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data['paym_element'].'"';
-//			$this->_db->setQuery($q);
-//			$data['paym_jplugin_id'] = $this->_db->loadResult();
-//			if($data['published']){
-//				$this->publish($data['published'],array($data['paym_jplugin_id']));
-//				unset($data['published']);
-//			}
-//		} else {
-//			//Todo error message, you must choose a payment plugin
-//		}
-		
-
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());
@@ -389,39 +331,6 @@ class VirtueMartModelPaymentmethod extends JModel
     	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','payment_method',$publish);
 
-//		if(empty($id)) {
-//			$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-//
-//			JArrayHelper::toInteger( $cid );
-//			$i = 0 ;
-//			foreach($cid as $id){
-//				$q = 'SELECT `paym_jplugin_id` FROM #__vm_payment_method WHERE paym_id = "'.$id.'" ';
-//				$this->_db->setQuery($q);
-//				$pid[$i] = $this->_db->loadResult();
-//				$i++;
-//			}
-//		}else {
-//			$pid=$id;
-//		}
-//
-//		$k			= 'id';
-//
-//		$pids = $k . '=' . implode( ' OR ' . $k . '=', $pid );
-//
-//		$query = 'UPDATE #__plugins'
-//		. ' SET published = ' . (int) $publish
-//		. ' WHERE ('.$pids.')'
-//		;
-//
-//		$this->_db->setQuery( $query );
-//		if (!$this->_db->query())
-//		{
-//			$this->setError($this->_db->getErrorMsg());
-//			return false;
-//		}
-//
-//		$this->setError('');
-//		return true;
 	}	
 
 	

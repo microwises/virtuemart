@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
 							</td>
 							<td>
-								<?php ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
+								<?php ImageHelper::generateImageHtml($this->vendor->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
 							</td>
 						</tr>
 						<tr>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
 							</td>
 							<td>
-								<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->store->vendor_store_name; ?>" />
+								<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->vendor->vendor_store_name; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
 							</td>
 							<td>
-								<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->store->vendor_name; ?>" />
+								<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
 							</td>
 							<td>
-								<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->store->vendor_url; ?>" />
+								<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->vendor->vendor_url; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
 							</td>
 							<td>
-								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->store->vendor_min_pov; ?>" />
+								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
 							</td>
 							<td>
-								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->store->vendor_freeshipping; ?>" />
+								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
 							</td>
 							<td>
-								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->store->vendor_currency); ?>
+								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
 							</td>
 						</tr>
 						<tr>
@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
 							</td>
 							<td>
-								<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->store->vendor_id; ?>" />
+								<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->vendor_id; ?>" />
 								<input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->vendorCurrency->getSymbol(); ?>" />
 							</td>
 						</tr>
@@ -188,7 +188,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
 							</td>
 							<td>
-								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->store->vendor_accepted_currencies); ?>
+								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 							</td>
 						</tr>
 					</table>
@@ -201,7 +201,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<legend>
 						<?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?>
 					</legend>
-					<?php echo $this->editor->display('vendor_store_desc', $this->store->vendor_store_desc, '100%', 220, 70, 15)?>
+					<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 220, 70, 15)?>
 				</fieldset>
 			</td>
 		</tr>
@@ -211,11 +211,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<legend>
 						<?php echo JText::_('VM_STORE_FORM_TOS');?>
 					</legend>
-					<?php echo $this->editor->display('vendor_terms_of_service', $this->store->vendor_terms_of_service, '100%', 220, 70, 15)?>
+					<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 220, 70, 15)?>
 				</fieldset>
 			</td>
 		</tr>
 	</table>
 </div>
 
-<input type="hidden" name="my_vendor_id" value="<?php echo $this->store->vendor_id; ?>" />
+<input type="hidden" name="my_vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />

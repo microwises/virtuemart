@@ -301,10 +301,10 @@ class VirtueMartViewCart extends JView {
 	private function prepareMailData(){
 		
 
-		$store = $this->getModel('store','VirtuemartModel');
-		$store->setId($this->_cart->vendorId);
-		$_store = $store->getStore();
-		$this->assignRef('store',$_store);
+		$vendor = $this->getModel('vendor','VirtuemartModel');
+		$vendor->setId($this->_cart->vendorId);
+		$_vendor = $vendor->getVendor();
+		$this->assignRef('vendor',$_vendor);
 		
 		//TODO add orders, for the orderId
 		//TODO add registering userdata

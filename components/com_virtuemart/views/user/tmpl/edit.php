@@ -100,7 +100,7 @@ function myValidator(f, t)
 		echo $this->pane->endPanel();
 	}
 
-	if ($this->vendor->isVendor($this->userDetails->JUser->get('id'))) {
+	if (!empty($this->userDetails->vendor_id)) {
 		echo $this->pane->startPanel( JText::_('VM_VENDOR_MOD'), 'edit_vendor' );
 		echo $this->loadTemplate('vendor');
 		echo $this->pane->endPanel();

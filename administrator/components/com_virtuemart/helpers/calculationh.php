@@ -55,9 +55,10 @@ class calculationHelper{
 		$this -> _currency 		  = $this->_getCurrencyObject();
 		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
 
-		if(!$this -> _currencyDisplay){
-			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
-		}
+		//todo check if warnning is correctly thrown, should be done in model vendor getVendorCurrencyDisplayStyle
+//		if(!$this -> _currencyDisplay){
+//			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+//		}
 		$this -> _debug           = false;
 	}
 	
@@ -1063,17 +1064,13 @@ class calculationHelper{
 	 * @author Oscar van Eijk, Max Milbers
 	 * @return object
 	 */
-	public function getCurrencyDisplayObject()
-	{
-		//We may want to set this to the userdisplay style, for different currencies
-		$_mainVendor = 1;
-		$_vendorFields = Vendor::getVendorFields($_mainVendor,array('vendor_currency_display_style'));
+	public function getCurrencyDisplayObject(){
+		
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-		if(!empty($_vendorFields)){
-			$currency_display = Vendor::get_currency_display_style(1,$_vendorFields->vendor_currency_display_style);	
+		$currency_display = VirtueMartModelVendor::get_currency_display_style(1);	
+		if(!empty($currency_display)){
 			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
 		}else{
-			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
 			$_currencyDisplay = new CurrencyDisplay();
 		}
 		return $_currencyDisplay;

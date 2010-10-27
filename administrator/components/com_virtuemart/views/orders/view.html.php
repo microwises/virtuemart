@@ -57,9 +57,9 @@ class VirtuemartViewOrders extends JView {
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
 			$_vendorData = Vendor::getVendorFields($order['details']['BT']->vendor_id, array('vendor_currency_display_style'));
-			if (!empty($_vendorData)) {
-				$_currencyDisplayStyle = Vendor::get_currency_display_style($order['details']['BT']->vendor_id
-					, $_vendorData->vendor_currency_display_style);
+			
+			$_currencyDisplayStyle = Vendor::get_currency_display_style($order['details']['BT']->vendor_id);
+			if (!empty($_currencyDisplayStyle)) {
 				$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
@@ -222,11 +222,9 @@ class VirtuemartViewOrders extends JView {
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
 			foreach ($orderslist as $order_id => $order) {
-				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {
-					$_vendorData = Vendor::getVendorFields($order->vendor_id, array('vendor_currency_display_style'));
-					if (!empty($_vendorData)) {
-						$_currencyDisplayStyle = Vendor::get_currency_display_style($order->vendor_id
-							, $_vendorData->vendor_currency_display_style);
+				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {					
+					$_currencyDisplayStyle = Vendor::get_currency_display_style($order->vendor_id);
+					if (!empty($_currencyDisplayStyle)) {
 						$_currencies['v'.$order->vendor_id] = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 							, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 							, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']

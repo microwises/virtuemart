@@ -39,7 +39,7 @@ class VirtuemartViewUser extends JView {
 
 	
 	private $_model;
-	private $_uid = 0;
+//	private $_uid = 0;
 	private $_currentUser=0;
 	private $_cuid = 0;
 	private $_userDetails = 0;
@@ -66,7 +66,7 @@ class VirtuemartViewUser extends JView {
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 		
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
-		$this->_model->setCurrent();
+//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 		$editor = JFactory::getEditor();
 		
 		//the cuid is the id of the current user
@@ -74,7 +74,8 @@ class VirtuemartViewUser extends JView {
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 		
 		//the uid is the id of the user, we wanna edit.
-		$this->_uid = JRequest::getVar('cid', $this->_cuid);
+		//This is nonsene, because the user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
+//		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
@@ -96,7 +97,7 @@ class VirtuemartViewUser extends JView {
 		$userFields = $this->setUserFieldsForView($layoutName);
 		
 		if($layoutName=='edit'){
-			if($this->_uid==0 && $this->_cuid==0){
+			if($this->_model->_id==0 && $this->_cuid==0){
 				$button_lbl = JText::_('Register');
 			} else {
 				$button_lbl = JText::_('Save');
@@ -268,12 +269,12 @@ class VirtuemartViewUser extends JView {
 		// Check for existing orders for this user
 		$orders = $this->getModel('orders');
 
-		if ($this->_uid == 0) {
+		if ($this->_model->_id == 0) {
 			// getOrdersList() returns all orders when no userID is set (admin function),
 			// so explicetly define an empty array when not logged in.
 			$this->_orderList = array();
 		} else {
-			$this->_orderList = $orders->getOrdersList($this->_uid, true);
+			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
 		}
 		$this->assignRef('orderlist', $this->_orderList);
 	}
@@ -289,7 +290,7 @@ class VirtuemartViewUser extends JView {
 	function generateStAddressList (){
 		
 		// Shipping address(es)
-		$_addressList = $this->_model->getUserAddressList($this->_uid , 'ST');
+		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
 		if (($_c = count($_addressList)) == 0) {
 			$this->_lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
 		} else {
@@ -328,7 +329,7 @@ class VirtuemartViewUser extends JView {
 		
 		if(!empty($_shipto_id)){
 			// Contains 0 for new, otherwise a user_info_id
-			$_shipto = $this->_model->getUserAddress($this->_uid, $_shipto_id, 'ST');
+			$_shipto = $this->_model->getUserAddress($this->_model->_id, $_shipto_id, 'ST');
 			$this->_openTab = 3;
 
 //			if ($_shipto_id === 0) {
@@ -363,7 +364,7 @@ class VirtuemartViewUser extends JView {
 		$this->loadHelper('shopfunctions');
 		
 		// Shopper info
-		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_uid);
+		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
 		if(Permissions::getInstance()->check("admin,storeadmin")){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
 			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
@@ -423,17 +424,17 @@ class VirtuemartViewUser extends JView {
 		}
 
 		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
-		&& ($this->_uid != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
+		&& ($this->_model->_id != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
 		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
-		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_uid);
+		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->_id);
 		
 		//TODO I do not understand for what we have that by Max.
-		if ($this->_uid < 1) {
+		if ($this->_model->_id < 1) {
 			$this->_lists['register_new'] = 1;
 		} else {
 			$this->_lists['register_new'] = 0;
@@ -443,22 +444,20 @@ class VirtuemartViewUser extends JView {
 	
 	function lVendor(){
 
-		$vendor = new Vendor;
+		$vendorModel = $this->getModel('vendor');
 
 		// If the current user is a vendor, load the store data
-		if ($vendor->isVendor($this->_uid)) {
+//		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
+//		if ($vendorModel->isVendor($this->_model->_id)) {
+		if (!empty($this->_userDetails->vendor_id)) {
 			$this->loadHelper('vendorhelper');
 			$this->loadHelper('currencydisplay');
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
-			$_vendorData = Vendor::getVendorFields($this->_userDetails->vendor_id, array('vendor_currency_display_style'));
-			if (count($this->_orderList) > 0) {
-				if (!empty($_vendorData)) {
-					$_currencyDisplayStyle = Vendor::get_currency_display_style(
-						 $this->_userDetails->vendor_id
-						,$_vendorData->vendor_currency_display_style
-					);
+			if (count($this->_orderList) > 0) {		
+				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($this->_userDetails->vendor_id);
+				if (!empty($_currencyDisplayStyle)) {
 					$currency = new CurrencyDisplay(
 						 $_currencyDisplayStyle['id']
 						,$_currencyDisplayStyle['symbol']
@@ -474,20 +473,19 @@ class VirtuemartViewUser extends JView {
 				$this->assignRef('currency', $currency);
 			}
 
-			$storeModel = $this->getModel('store');
-			$storeModel->setId($vendor->getVendorIdByUserId($this->_uid));
-			$_store = $storeModel->getStore();
-			$this->assignRef('store', $_store);
+			$vendorModel->setId($this->_userDetails->vendor_id);
+			$vendor = $vendorModel->getVendor();
+			$this->assignRef('vendor', $vendor);
+			
 			$currencyModel = $this->getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
-			$_vendorCats = JHTML::_('select.genericlist', $vendor->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $this->store->vendor_category_id);
+			
+			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
 			$this->assignRef('vendorCategories', $_vendorCats);
-dump($this, 'VD');
-			$_currencyDisplayStyle = Vendor::get_currency_display_style(
-				 $vendor->getVendorIdByUserId($this->_uid)
-				,$_vendorData->vendor_currency_display_style
-			);
+
+			//This is nonsense, as long we do not support real multistore imho
+			$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($this->_userDetails->vendor_id);
 			$_vendorCurrency = new CurrencyDisplay(
 				 $_currencyDisplayStyle['id']
 				,$_currencyDisplayStyle['symbol']
@@ -504,7 +502,7 @@ dump($this, 'VD');
 			$currency = new CurrencyDisplay();
 			$this->assignRef('currency', $currency);
 		}
-		$this->assignRef('vendor', $vendor);
+
 	}
 	
 	/**

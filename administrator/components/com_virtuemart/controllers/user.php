@@ -62,21 +62,24 @@ class VirtuemartControllerUser extends JController {
 	/**
 	 * Display the userlist view
 	 */
-	function display()
-	{
+	function display(){
 		parent::display();
 	}
 
 	/**
 	 * Handle the edit task
 	 */
-	function edit()
-	{
+	function edit(){
 		JRequest::setVar('controller', 'user');
 		JRequest::setVar('view', 'user');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemainmenu', 1);
-
+		
+		//We set here the cid, when no cid is set to 0, for adding a new user
+		//In every other case the cid is sent.
+		$cid = JRequest::getVar('cid');
+		if(!isset($cid)) JRequest::setVar('cid', (int)0);
+		
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('user', $viewType);
@@ -87,57 +90,43 @@ class VirtuemartControllerUser extends JController {
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-		
-		//Store must be removed and methods integrated into vendor
-		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ));
 
 		parent::display();
 	}
 
+//	function add (){
+//		dump('called add');
+//		JRequest::setVar('cid', (int)0);
+//		$this->edit();
+//	}
+	
 	function editshop(){
-		
+
 		$user = JFactory::getUser();
+//		$model = $this->getModel();
+//		$model->setCurrent();
+		//the cid var gets overriden in the edit function, when not set. So we must set it here
 		JRequest::setVar('cid', (int)$user->id);
 		$this->edit();
-		
-//		JRequest::setVar('controller', 'user');
-//		JRequest::setVar('view', 'user');
-//		JRequest::setVar('layout', 'edit');
-//		JRequest::setVar('hidemainmenu', 1);
-//
-//		$document =& JFactory::getDocument();
-//		$viewType = $document->getType();
-//		$view =& $this->getView('user', $viewType);
-//		
-//		// Load the additional models
-//		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-//		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
-//		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-//		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
-//		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-//		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ));
-//		
-//		parent::display();
+
 	}	
 	
 	/**
 	 * Handle the cancel task
 	 */
-	function cancel()
-	{
+	function cancel(){
 		$this->setRedirect('index.php?option=com_virtuemart&view=user');
 	}
 
 	/**
 	 * Handle the save task
 	 */
-	function save()
-	{
+	function save(){
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('user', $viewType);
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ));
+
 		$_currentUser =& JFactory::getUser();
 // TODO sortout which check is correctt.....
 //		if (!$_currentUser->authorize('administration', 'manage', 'components', 'com_users')) {

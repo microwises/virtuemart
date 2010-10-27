@@ -255,9 +255,9 @@ class shopFunctionsF {
 		$mailer->setBody($body);
 		
 		// Optionally add embedded image  //TODO Test it
-		$store = $this->getModel('store','VirtuemartModel');
-		$store->setId($vendor_id);
-		$_store = $store->getStore();
+		$vendor = $this->getModel('vendor','VirtuemartModel');
+		$vendor->setId($vendor_id);
+		$_store = $vendor->getVendor();
 		
 		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->vendor_full_image, 'base64', 'image/jpeg' );
 		
