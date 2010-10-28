@@ -128,7 +128,7 @@ class VirtueMartModelCategory extends JModel {
 	*/
 	public function getCategoryTree($onlyPublished = true, $withParentId = false, $parentId = 0, $keyword = "") {
 
-		//$vendorId = Vendor::getLoggedVendor();
+		//$vendorId = VirtueMartModelVendor::getLoggedVendor();
 		$vendorId = 1;
 		$categories = Array();
 
