@@ -450,7 +450,6 @@ class VirtuemartViewUser extends JView {
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 //		if ($vendorModel->isVendor($this->_model->_id)) {
 		if (!empty($this->_userDetails->vendor_id)) {
-			$this->loadHelper('vendorhelper');
 			$this->loadHelper('currencydisplay');
 			if(!$this->_orderList){
 				$this->lOrderlist();
@@ -468,7 +467,7 @@ class VirtuemartViewUser extends JView {
 						,$_currencyDisplayStyle['negative']
 					);
 				} else {
-					//					$currency = new CurrencyDisplay();
+					$currency = new CurrencyDisplay();
 				}
 				$this->assignRef('currency', $currency);
 			}

@@ -54,7 +54,6 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('permissions');
 			$this->loadHelper('shoppergroup');
 			$this->loadHelper('shopfunctions');
-			$this->loadHelper('vendorhelper');
 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 			

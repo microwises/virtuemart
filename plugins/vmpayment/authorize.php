@@ -317,7 +317,6 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		// Load the required helpers
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorhelper.php');
 
 		$_usr =& JFactory::getUser();
 

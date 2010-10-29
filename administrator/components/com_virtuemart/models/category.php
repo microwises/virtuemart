@@ -21,7 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
 jimport( 'joomla.application.component.model');
-require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'vendorhelper.php');
 require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
 
 /**

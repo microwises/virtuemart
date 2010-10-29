@@ -50,7 +50,6 @@ class VirtueMartViewProductdetails extends JView {
 		
 		/* Load helpers */
 		$this->loadHelper('image');
-		$this->loadHelper('vendorhelper');
 		$this->loadHelper('addtocart');
 		
 		/* Set the titles */
