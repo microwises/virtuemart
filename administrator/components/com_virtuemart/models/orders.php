@@ -518,15 +518,22 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$_userInfoData =  $this->getTable('order_user_info');
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'userfields.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
 			, array('delimiters'=>true, 'captcha'=>true)
-			, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id', 'user_is_vendor')
+			, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')
 		);
 
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			@$_userInfoData->$_name = $_cart->BT[$_name];
+			if ($_name == 'country') {
+				$_userInfoData->$_name = $shopFunctions->getCountryByID($_cart->BT['country_id']);
+			} elseif ($_name == 'state') {
+				$_userInfoData->$_name = $_cart->BT['state_id'];
+			} else {
+				$_userInfoData->$_name = $_cart->BT[$_name];
+			}
 		}
 		$_userInfoData->order_id = $_id;
 		$_userInfoData->user_id = $_usr->get('id');
@@ -540,7 +547,7 @@ class VirtueMartModelOrders extends JModel {
 			$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 				, array('delimiters'=>true, 'captcha'=>true)
-				, array('username', 'password', 'password2', 'agreed', 'country_id', 'state_id', 'user_is_vendor')
+				, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;

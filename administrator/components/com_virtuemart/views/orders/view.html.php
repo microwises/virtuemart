@@ -41,8 +41,8 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
-		$this->loadHelper('vendorhelper');
 
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 

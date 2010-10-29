@@ -6,6 +6,7 @@
 * @package	VirtueMart
 * @subpackage Userfields
 * @author RolandD
+* @author Oscar van Eijk
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -331,7 +332,9 @@ class VirtueMartModelUserfields extends JModel {
 	 * @param array $_skip Array with fieldsnames to exclude. Default: array('username', 'password', 'password2', 'agreed'),
 	 *                     specify array() to skip nothing.
 	 * @see getUserFieldsByUser()
-	 * @return array	 */
+	 * @author Oscar van Eijk
+	 * @return array
+	 */
 	function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
 		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
@@ -444,6 +447,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * @access private
 	 * @param string $_f Field type
 	 * @param string $_v Input value
+	 * @author Oscar van Eijk
 	 * @return string Formatted value
 	 */
 	private function _userFieldFormat($_f, $_v)
@@ -480,6 +484,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * @param $_selection An array, as returned by getuserFields(), with fields that should be returned.
 	 * @param $_userData Array with userdata holding the values for the fields
 	 * @param $_prefix string Optional prefix for the formtag name attribute
+	 * @author Oscar van Eijk
 	 * @return array List with all userfield data in the format:
 	 * array(
 	 *    'fields' => array(   // All fields
@@ -507,6 +512,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * )
 	 * @example This example illustrates the use of this function. For additional examples, see the Order view
 	 * and the User view in the administrator section.
+	 * <pre>
 	 *   // In the controller, make sure this model is loaded.
 	 *   // In view.html.php, make the following calls:
 	 *   $_usrDetails = getUserDetailsFromSomeModel(); // retrieve an user_info record, eg from the usermodel or ordermodel
@@ -547,6 +553,7 @@ class VirtueMartModelUserfields extends JModel {
 	 *        }
 	 *      ?>
 	 *    </table>
+	 * </pre>
 	 */
 	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{
@@ -586,18 +593,30 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
 						, array('onchange' => 'changeStateList();'), $_prefix);
-//					$_return['fields'][$_fld->name]['value'] =
-//						$shopFunctions->getCountryByID($_return['fields'][$_fld->name]['value']);
+//					$_return['fields']['country'] = array (
+//						 'name' => $_prefix . 'country'
+//						,'value' => $shopFunctions->getCountryByID($_return['fields'][$_fld->name]['value'])
+//						,'title' => 'Country'
+//						,'type' => 'text'
+//						,'required' => false
+//						,'hidden' => false
+//						,'formcode' => ''
+//					);
 					break;
 				
 				case 'state_id':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderStateList(
 						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value']
 						, $_prefix.'country_id', false, $_prefix);
-//					$_return['fields'][$_fld->name]['value'] =
-//						$shopFunctions->getStateByID($_return['fields'][$_fld->name]['value']);
-// TODO Write a javascript function to reload the statelist. Using jQuery???
-// TODO even more.... findout why it *does* work ?!? Legacy code? Where is it included?
+//					$_return['fields']['country'] = array (
+//						 'name' => $_prefix . 'state'
+//						,'value' => $shopFunctions->getStateByID($_return['fields'][$_fld->name]['value'])
+//						,'title' => 'State'
+//						,'type' => 'text'
+//						,'required' => false
+//						,'hidden' => false
+//						,'formcode' => ''
+//					);
 					break;
 				case 'agreed':
 					$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
