@@ -331,7 +331,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
 		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', '', 'product_tax_id', 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
 		return $listHTML;
 	}
 	
@@ -352,7 +352,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
 		}
 //		dump($taxrates,'taxrates');
-		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', '', 'product_discount_id', 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 		
 	}	

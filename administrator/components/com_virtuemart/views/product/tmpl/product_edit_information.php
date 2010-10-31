@@ -95,6 +95,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</table>
 	</td>
 	<td>
+		<!-- Product pricing -->
+		<fieldset>
+		<legend><?php echo JText::_('VM_PRODUCT_FORM_PRICES'); ?></legend>
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%">
@@ -117,10 +120,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
+				<!-- Final price @todo change as non editable-->
 				<td width="71%">
 					<input type="text" readonly value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
 				</td>
 			</tr>
+		</table>
+		</fieldset>
+		<!-- Product rules overrides -->
+		<fieldset>
+		<legend><?php echo JText::_('VM_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
+		<table class="adminform">
 			<tr class="row0">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</div>
@@ -159,6 +169,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
 				</td>
 			</tr>
+		</table>
+		</fieldset>
+		<table class="adminform">
 			<tr>
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES'); ?>:</div>
