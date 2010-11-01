@@ -39,7 +39,6 @@ class VirtuemartViewUser extends JView {
 
 	
 	private $_model;
-//	private $_uid = 0;
 	private $_currentUser=0;
 	private $_cuid = 0;
 	private $_userDetails = 0;
@@ -445,11 +444,11 @@ class VirtuemartViewUser extends JView {
 	function lVendor(){
 
 		$vendorModel = $this->getModel('vendor');
-
+		dump($this->_userDetails,'lVendor');
 		// If the current user is a vendor, load the store data
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 //		if ($vendorModel->isVendor($this->_model->_id)) {
-		if (!empty($this->_userDetails->vendor_id)) {
+		if ($this->_userDetails->user_is_vendor) {
 			$this->loadHelper('currencydisplay');
 			if(!$this->_orderList){
 				$this->lOrderlist();
@@ -480,8 +479,8 @@ class VirtuemartViewUser extends JView {
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
 			
-			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
-			$this->assignRef('vendorCategories', $_vendorCats);
+//			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
+//			$this->assignRef('vendorCategories', $_vendorCats);
 
 			//This is nonsense, as long we do not support real multistore imho
 			$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($this->_userDetails->vendor_id);

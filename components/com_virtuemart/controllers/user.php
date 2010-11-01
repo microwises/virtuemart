@@ -266,7 +266,8 @@ class VirtueMartControllerUser extends JController
 		
 		$view->setModel(VirtueMartCart::getCart(), true);
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		$user = $this->getModel( 'user', 'VirtuemartModel' );
+		$view->setModel( $user , false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );	
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the order_number in the mail
 		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
@@ -295,8 +296,9 @@ class VirtueMartControllerUser extends JController
 		ob_end_clean();
 		
 		$vendor->setId(1);  //TODO MaX at the moment is the new registered email for the vendor always send to the main store
-		$vendor=$vendor->getVendor(true);
-		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
+//		$vendor=$vendor->getVendor(true);
+		$vendorData = $user->getUser($vendor->getUserIdByVendorId());
+		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendorData->jUser->email); //TODO MX set vendorId
 		if ( $sendShopper !== true ) {
 			$ok=false;
 			//TODO set message, must be a raising one

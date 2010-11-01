@@ -89,7 +89,7 @@ class VirtueMartModelUsergroups extends JModel {
     function _getTotal() {
 
 		if (empty($this->_total)) {
-		    $query = 'SELECT `group_id` FROM `#__vm_auth_group`';
+		    $query = 'SELECT `group_id` FROM `#__vm_perm_groups`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -119,11 +119,11 @@ class VirtueMartModelUsergroups extends JModel {
     function getUsergroups($onlyPublished=false, $noLimit=false) {
 
 		$db = JFactory::getDBO();
-		$query = 'SELECT * FROM `#__vm_auth_group` ';
+		$query = 'SELECT * FROM `#__vm_perm_groups` ';
 //		if ($onlyPublished) { 
-//			$query .= 'WHERE `#__vm_auth_group`.`published` = 1';			
+//			$query .= 'WHERE `#__vm_perm_groups`.`published` = 1';			
 //		}
-		$query .= ' ORDER BY `#__vm_auth_group`.`group_name`';
+		$query .= ' ORDER BY `#__vm_perm_groups`.`group_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}

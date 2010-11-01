@@ -59,11 +59,9 @@ class VirtuemartViewUser extends JView {
 			
 			$userFieldsModel = $this->getModel('userfields');
 //			$orderModel = $this->getModel('orders');
-			
 
 			$userDetails = $model->getUser();
-			
-			
+
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
@@ -103,9 +101,10 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
-			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$lists['vendors'] = ShopFunctions::renderVendorList(@$userDetails->vendor_id);
+//			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
+//			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -155,7 +154,8 @@ class VirtuemartViewUser extends JView {
 					,$_userDetailsList
 			);
 
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
+//			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
+			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 			
 			// Load the required scripts
 			if (count($userFields['scripts']) > 0) {
@@ -231,21 +231,23 @@ class VirtuemartViewUser extends JView {
 			
 //			dump($userDetails,'my user details in edit user');
 
-			if (!empty($userDetails->vendor_id)) {
+			if (!empty($userDetails->user_is_vendor)) {
 				
 				$vendorModel = $this->getModel('vendor');
-				$vendorModel->setId($vendorModel->getVendorIdByUserId($userDetails->JUser->get('id')));
-				$vendor = $vendorModel->getVendor();
-				$this->assignRef('vendor', $vendor);
+				$vendorModel->setId($userDetails->vendor_id);
+//				$vendor = $vendorModel->getVendor();
+				$this->assignRef('vendor', $userDetails->vendor);
 				
 				$currencyModel = $this->getModel('currency');
 				$_currencies = $currencyModel->getCurrencies();
 				$this->assignRef('currencies', $_currencies);
-				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
-				$this->assignRef('vendorCategories', $_vendorCats);
+				
+				//can someone explain me what that should do?
+//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
+//				$this->assignRef('vendorCategories', $_vendorCats);
 				
 				//Different currency styles for different vendors are nonsense imho
-				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($vendorModel->getVendorIdByUserId($userDetails->JUser->get('id')));
+				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($userDetails->vendor_id);
 				$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']

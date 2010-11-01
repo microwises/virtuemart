@@ -44,7 +44,7 @@ require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'use
 class VirtueMartModelUser extends JModel {
 
 	/** @var integer Primary key */
-	var $_id;
+	var $_id=0;
 	/** @var objectlist users */
 	var $_data;
 	/** @var integer Total number of users in the database */
@@ -168,55 +168,46 @@ class VirtueMartModelUser extends JModel {
 	function getUser()
 	{
 		if (empty($this->_data)) {
+			
 			$this->_data = new stdClass();
 			
-//			if(!empty($this->_id)){
-				$this->_data->JUser =& JUser::getInstance($this->_id);
-				$_ui = $this->_getList('SELECT user_info_id FROM #__vm_user_info WHERE user_id = ' . $this->_id);
-				$this->_data->userInfo = array ();
-				for ($i = 0, $n = count($_ui); $i < $n; $i++) {
-					$_ui_id = $_ui[$i]->user_info_id;
-					$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-//					if (function_exists('dumpTrace')) { // J!Dump is installed
-//						dump($this->_id,'my ID in getUser');
-//					}
-					$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
-					
-					//This parts sets the vendor_id to a user
-					$this->_data->vendor_id = 0;
-					if($this->_data->userInfo[$_ui_id]->user_is_vendor){
-						require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
-						$vid = VirtueMartModelVendor::getVendorIdByUserId($this->_id,false);
-						if($vid){
-							$this->_data->vendor_id = $vid;
-						}
-					}
-				}
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+     
+	   		$this->_data = $this->getTable('vm_users');
+	   		$this->_data->load((int)$this->_id);
+	   		
+	   		/* Add the shopper_group_ids */
+			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref WHERE `user_id` = "'.$this->_id.'"';
+			$this->_db->setQuery($q);
+			$this->_data->shopper_groups = $this->_db->loadResultArray();
+		
+			$this->_data->JUser =& JUser::getInstance($this->_id);
+			
+			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__vm_user_info` WHERE `user_id` = "' . $this->_id.'"');
+			
+			$this->_data->userInfo = array ();
+			
+			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+				$_ui_id = $_ui[$i]->user_info_id;
+				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 				
-				//I do not understand the sense of this. User does not belong to a vendor.
-				//To underline it. A user can buy from different vendors, to which vendor does he belong to?
-				//We can gather,.. which vendors did a user use. Or, which users already bought by the vendor x.
-	//			$_vid = $this->_getList('SELECT vendor_id FROM #__vm_shopper_vendor_xref WHERE user_id = ' . $this->_id);
-	//			if(!empty($_vid)){
-	//				$this->_data->vendor_id = $_vid[0];
-	//			}else{
-	//				$this->_data->vendor_id = 0;
-	//			}
-//			} else {
-//				//Lets try to get some data for the anonymous user, but maybe not good place here.
-//			}
+				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+			}
+			dump($this->_data,'my data in getUser');
+			if($this->_data->user_is_vendor){
+				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
+				$vendorModel = new VirtueMartModelVendor();
+					
+				$vendorModel->setId($this->_data->vendor_id);
+				$this->_data->vendor = $vendorModel->getVendor();	
+			}
 		}
 		
 		if (!$this->_data) {
 			$this->_data = new stdClass();
-			$this->_id = 0;
-			$this->_data = null;
-			
+			$this->_id = 0;			
 		}
 		
-//		if (function_exists('dumpTrace')) { // J!Dump is installed
-//			dump($this->_data, 'model user->getUser');
-//		}
 		return $this->_data;
 	}
 
@@ -316,11 +307,11 @@ class VirtueMartModelUser extends JModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store($cart=false)
+	function store($data=0)
 	{
 		$mainframe = JFactory::getApplication() ;
 		
-		$data = JRequest::get('post');
+		if(empty($data)) $data = JRequest::get('post');
 //		$currentUser =& JFactory::getUser();
 
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
@@ -482,7 +473,7 @@ class VirtueMartModelUser extends JModel {
 			$message = JText::_( 'User data stored' );	//TODO write right keystring
 		}
 
-		return array('user'=>$user,'password'=>$data['password'],'message'=>$message);
+		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
 
 	}
 
@@ -510,37 +501,60 @@ class VirtueMartModelUser extends JModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
 
+		//update user table
+		$table = $this->getTable('vm_users');
+		$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+		if (!$table->bind($vmusersData)) {		    
+			$this->setError($table->getError());
+			dump($table,'$table vm_users bind Error ');
+			return false;
+		}
+		// Make sure the record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			dump($table,'$table vm_users check error ');
+			return false;	
+		}
+
+		// Save the record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			dump($table,'$table vm_users store error');
+			return false;
+		}
+
 		if(empty($_data['shopper_group_id'])){
-			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `vendor_id`="1" AND `default`="1" ';
+//			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `vendor_id`="1" AND `default`="1" ';
+			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref 
+				WHERE `default`="1" AND `vendor_id`="1" ';
 			$this->_db->setQuery($q);
 			$_data['shopper_group_id']=$this->_db->loadResult();
 		}
 
-		$table = $this->getTable('shopper_vendor_xref');
+//		$table = $this->getTable('user_shoppergroup_xref');
 		// Bind the form fields to the auth_user_group table
-		$shoppergroupData = array('user_id'=>$_data['user_id'],'vendor_id'=>1,'shopper_group_id'=>$_data['shopper_group_id'],'customer_number'=>$_data['customer_number']);
-		if (!$table->bind($shoppergroupData)) {		    
-			$this->setError($table->getError());
-			dump($table,'$table bind Error ');
-			return false;
-		}
+		$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		modelfunctions::storeArrayData('#__vm_user_shoppergroup_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 		
-		// Make sure the record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			dump($table,'$table check error ');
-			return false;	
-		}
-		
-		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			dump($table,'$table store error');
-			return false;
-		}
-//			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
-//			$this->_db->query();
-//			$this->_db->setQuery('DELETE FROM #__vm_auth_user_group` WHERE `#__vm_auth_user_group`.`user_id` = '.$this->_id);
+//		if (!$table->bind($shoppergroupData)) {		    
+//			$this->setError($table->getError());
+//			dump($table,'$table bind Error ');
+//			return false;
+//		}
+//		
+//		// Make sure the record is valid
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
+//			dump($table,'$table check error ');
+//			return false;	
+//		}
+//		
+//		// Save the record to the database
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
+//			dump($table,'$table store error');
+//			return false;
 //		}
 		
 		
@@ -549,31 +563,43 @@ class VirtueMartModelUser extends JModel {
 			return false;
 		}
 		
-		
+		dump($_data,'$_data in saveUserData');
 		if($_data['user_is_vendor']){
-			
-			//TODO the function or use of shoppper_vendor_xref is not defined
-			$_vendorXref =& $this->getTable('shopper_vendor_xref');
-			if (!$_vendorXref->bind($_data)) {
-				$this->setError($_vendorXref->getError());
-				return false;
-			}
-			if (!$_vendorXref->store()) { // Write data to the DB
-				$this->setError($_vendorXref->getError());
-				return false;
-			}
-	
-			// Finally, if this user is a vendor, save the store data
-			if ($_data['my_vendor_id']) {
-				$_data['vendor_id'] = $_data['my_vendor_id'];
+
+//				$_data['vendor_id'] = $_data['my_vendor_id'];
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
 				$vendorModel->setId($_data['vendor_id']);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
+					dump($table,'$vendorModel->store error');
 					return false;
+				}else{
+					//Update xref Table
+					$vendor_id = $vendorModel->getId();
+					//update user table
+					$table = $this->getTable('vm_users');
+					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id);
+					if (!$table->bind($vmusersData)) {		    
+						$this->setError($table->getError());
+						dump($table,'$table vm_users bind Error ');
+						return false;
+					}		
+					// Make sure the record is valid
+					if (!$table->check()) {
+						$this->setError($table->getError());
+						dump($table,'$table vm_users check error ');
+						return false;	
+					}
+					
+					// Save the record to the database
+					if (!$table->store()) {
+						$this->setError($table->getError());
+						dump($table,'$table vm_users store error');
+						return false;
+					}
 				}
-			}
+//			}
 		}
 		return true;
 	}
@@ -653,10 +679,10 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function getUserList()
 	{
-		if (!$this->_data) {
+//		if (!$this->_data) {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
+//		}
 		dump($this->_data,"getUserList");
 		return $this->_data;
 	}
@@ -766,22 +792,41 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery ()
 	{
+//		$query = 'SELECT DISTINCT ju.id AS id '
+//			. ', ju.name AS name'
+//			. ', ju.username AS username '
+//			. ', vd.user_is_vendor AS is_vendor'
+//			. ', vu.perms AS perms'
+//			. ', ju.usertype AS usertype'
+//			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
+//			. 'FROM #__users AS ju '
+//			. 'LEFT JOIN #__vm_user_info AS vu ON ju.id = vu.user_id '
+//			. 'LEFT JOIN #__vm_user_info AS vd ON ju.id = vd.user_id '
+//			. " AND vd.address_type = 'BT' "
+//			. 'LEFT JOIN #__vm_shopper_vendor_xref AS vx ON ju.id = vx.user_id '
+//			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.vendor_id = sg.vendor_id '
+//			. 'AND vx.shopper_group_id = sg.shopper_group_id ';
+
+//# Struktur jos_vm_users
+//# Struktur jos_vm_user_info
+//# Struktur jos_vm_user_perm_group
+//# Struktur jos_vm_user_shoppergroup_xref
+//# Struktur jos_vm_vendor
+
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
-			. ', vd.user_is_vendor AS is_vendor'
-			. ', vu.perms AS perms'
+			. ', vmu.user_is_vendor AS is_vendor'
+			. ', vmu.perms AS perms'
 			. ', ju.usertype AS usertype'
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
-			. 'LEFT JOIN #__vm_user_info AS vu ON ju.id = vu.user_id '
-			. 'LEFT JOIN #__vm_user_info AS vd ON ju.id = vd.user_id '
-			. " AND vd.address_type = 'BT' "
-			. 'LEFT JOIN #__vm_shopper_vendor_xref AS vx ON ju.id = vx.user_id '
-			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.vendor_id = sg.vendor_id '
-			. 'AND vx.shopper_group_id = sg.shopper_group_id ';
+			. 'LEFT JOIN #__vm_users AS vmu ON ju.id = vmu.user_id '
+			. 'LEFT JOIN #__vm_user_shoppergroup_xref AS vx ON ju.id = vx.user_id '
+			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
+		echo 'my $query '.$query;
 		return ($query);
 	}
 
@@ -833,7 +878,7 @@ class VirtueMartModelUser extends JModel {
 			JArrayHelper::toInteger($id);
 			$ids = implode( ',', $id );
 
-			$query = 'UPDATE `#__vm_user_info`'
+			$query = 'UPDATE `#__vm_users`'
 				. ' SET `' . $field . '` = '.(int) $value
 				. ' WHERE user_id IN ( '.$ids.' )'
 			;

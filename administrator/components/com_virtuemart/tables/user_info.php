@@ -35,7 +35,7 @@ class TableUser_info extends JTable {
 	/** @var int hidden userkey */
 	var $user_info_id = 0;
 
-	var $user_is_vendor = 0;
+//	var $user_is_vendor = 0;
 	var $address_type = '';
 	var $address_type_name;
 	var $company = '';
@@ -59,7 +59,7 @@ class TableUser_info extends JTable {
 	var $extra_field_5 = '';
 	var $cdate = '';
 	var $mdate = '';
-	var $perms = '';
+//	var $perms = '';
 //	var $bank_account_nr = '';
 //	var $bank_name = '';
 //	var $bank_sort_code = '';
@@ -173,6 +173,7 @@ class TableUser_info extends JTable {
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
+		dump($total,'user_info check '.$q);
 		if (count($total) > 0) {
 			$this->user_info_id = $total[0];
 			return true;

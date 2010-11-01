@@ -85,13 +85,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							</td>
 						</tr>
 						<tr>
-							<td class="key">
+			<?php /*				<td class="key">
 								<?php echo JText::_( 'VM_VENDOR_FORM_CATEGORY' ); ?>:
 							</td>
 							<td>
 								<?php echo $this->vendorCategories; ?>:
 							</td>
-						</tr>
+						</tr> */ ?>
 					</table>
 				</fieldset>
 			</td>
@@ -217,5 +217,5 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 	</table>
 </div>
-
-<input type="hidden" name="my_vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />
+<input type="hidden" name="user_is_vendor" value="1" />
+<input type="hidden" name="vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />

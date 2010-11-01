@@ -1,6 +1,6 @@
 DROP TABLE 
-`#__vm_auth_group`, 
-`#__vm_auth_user_group`, 
+`#__vm_perm_groups`, 
+`#__vm_user_perm_group`, 
 `#__vm_auth_user_vendor`, 
 `#__vm_cart`, 
 `#__vm_category`, 
@@ -40,7 +40,7 @@ DROP TABLE
 `#__vm_shipping_label`, 
 `#__vm_shipping_rate`, 
 `#__vm_shopper_group`, 
-`#__vm_shopper_vendor_xref`, 
+`#__vm_user_shoppergroup_xref`, 
 `#__vm_state`, 
 `#__vm_tax_rate`, 
 `#__vm_userfield`, 

@@ -37,7 +37,7 @@ class TableUsergroups extends JTable {
 
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_auth_group', 'group_id', $db);
+		parent::__construct('#__vm_perm_groups', 'group_id', $db);
 	}
 
 	/**
@@ -48,12 +48,12 @@ class TableUsergroups extends JTable {
 	function check($nrOfValues)
 	{
 		if (!$this->group_name) {
-			$this->setError(JText::_('The usergroup must have a name.'));
+			$this->setError(JText::_('The permission group must have a name.'));
 			return false;
 		}
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			$this->setError(JText::_('The name of the usergroup contains invalid characters'));
+			$this->setError(JText::_('The name of the permission group contains invalid characters'));
 			return false;
 		}
 

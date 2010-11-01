@@ -67,20 +67,22 @@ class VirtueMartModelVendor extends JModel {
     /**
     * Resets the Vendor ID and data
     */
-    function setId($id=1)
-    {
+    function setId($id=1){
         $this->_id = $id;
         $this->_data = null;
     }
 
-
+    function getId(){
+    	return $this->_id;
+    }
+    
     /**
 	* Retrieve the vendor details from the database.
 	*
 	* @author Max Milbers
 	* @return object Vendor details
 	*/
-	function getVendor($withUserData=false) {
+	function getVendor() {
         if (!$this->_data) {
 
 	    	$this->_data = $this->getTable('vendor');
@@ -94,26 +96,26 @@ class VirtueMartModelVendor extends JModel {
 				$this->_data->vendor_accepted_currencies = array();
 		    }
 
-			if($withUserData){
-			    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
-			    $query .= "WHERE vendor_id = '". $this->_id ."'";
-			    $this->_db->setQuery($query);
-			    $userVendor = $this->_db->loadObject();
-		
-			    // Get user_info table data
-			    $this->_data->userId = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
-			    
-				$userInfoTable = $this->getTable('user_info');
-	    		$userInfoTable->load((int)$this->_id);
-	    		$this->_data->userInfo = $userInfoTable;
-	    
-				$vendorJUser = JFactory::getUser($this->_id);
-		//	   	$user_table = $this->getTable('user');
-		//	    $user_table->load((int)$userId);
-			    $this->_data->jUser = $vendorJUser;
-		//	    dump($this->_data,'My store info');
-
-			}
+//			if($withUserData){
+//			    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
+//			    $query .= "WHERE vendor_id = '". $this->_id ."'";
+//			    $this->_db->setQuery($query);
+//			    $userVendor = $this->_db->loadObject();
+//		
+//			    // Get user_info table data
+//			    $this->_data->userId = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
+//			    
+//				$userInfoTable = $this->getTable('user_info');
+//	    		$userInfoTable->load((int)$this->_id);
+//	    		$this->_data->userInfo = $userInfoTable;
+//	    
+//				$vendorJUser = JFactory::getUser($this->_id);
+//		//	   	$user_table = $this->getTable('user');
+//		//	    $user_table->load((int)$userId);
+//			    $this->_data->jUser = $vendorJUser;
+//		//	    dump($this->_data,'My store info');
+//
+//			}
 
 		}
 		
@@ -147,23 +149,25 @@ class VirtueMartModelVendor extends JModel {
 	}
 
 	/**
-	* Retrieve the user ID by vendor ID
-	*
-	* @author jseros
-	* @param $vendId The vendor ID
-	* @return user ID by vendor
-	*/
-	public function getUserId($vendId = 0) {
-		$sql = 'SELECT `user_id`
-   				FROM `#__vm_auth_user_vendor`
-  				WHERE `vendor_id` = "'. $this->_db->Quote((int)$vendId) .'"';
-
-   		$this->_db->setQuery($sql);
-   		$result = $this->_db->loadObject();
-
-   		return (isset($result->user_id) ? $result->user_id : 0);
+	 * Find the user id given a vendor id
+	 *
+	 * @author Max Milbers
+	 * @param int $vendor_id
+	 * @return int $user_id
+	 */
+	function getUserIdByVendorId($vendorId=0) 
+	{
+		//this function is used static, needs its own db
+		$db = JFactory::getDBO();
+		if (empty($vendorId)) return;
+		else {
+			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`="' . $this->_db->Quote((int)$vendorId) . '" ';
+			$db->setQuery($query);
+			$result = $db->loadResult();
+			return (isset($result->user_id) ? $result->user_id : 0);
+		}
 	}
-
+	
 
 	/**
 	 * Bind the post data to the vendor table and save it
@@ -194,25 +198,31 @@ class VirtueMartModelVendor extends JModel {
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
+	    $this->setError($table->getDBO()->getErrorMsg());
 	    return false;
 	}
 
 	// Make sure the vendor record is valid
 	if (!$table->check()) {
-	    $this->setError($table->getError());
+	    $this->setError($table->getDBO()->getErrorMsg());
 	    return false;
 	}
 
 	// Save the vendor to the database
 	if (!$table->store()) {
-	    $this->setError($table->getError());
+	    $this->setError($table->getDBO()->getErrorMsg());
 	    return false;
 	}
-
+	
+	//set vendormodel id to the lastinserted one
+	$dbv = $table->getDBO();
+	$this->_id = $dbv->insertid();
+	
 	if ($_external) {
 		// When called from another model (currently: the user model), user_info was already saved.
 		return true;
 	}
+	
 	dump('vendor store, not a call from user !');
 	return $this->storeUserInfo($data);
 	}
@@ -231,28 +241,6 @@ class VirtueMartModelVendor extends JModel {
 		dump('ATTENTION you use a proxy function');			
 		return self::getVendorId('user', $userId, $ownerOnly);
 	}
-
-	/**
-	 * Find the user id given a vendor id
-	 *
-	 * @author Max Milbers
-	 * @param int $vendor_id
-	 * @return int $user_id
-	 */
-	function getUserIdByVendorId($vendorId) 
-	{
-		//this function is used static, needs its own db
-		$db = JFactory::getDBO();
-		if (empty($vendorId)) return;
-		else {
-			$query = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="' . $vendorId . '" ';
-			$db->setQuery($query);
-			
-			return $db->loadResult();
-		}
-	}
-	
-
 
 	/**
 	* name: getLoggedVendor
@@ -601,13 +589,14 @@ class VirtueMartModelVendor extends JModel {
 			return;
 		}
 		else {
+			//Todo this query is broken due the changes with the tables
 			$this->_db = JFactory::getDBO();
 			$q = "SELECT vendor_store_name AS storename, address_1, address_2, email, fax,
 				s.state_2_code AS state, s.state_name AS statename, city, zip, 
 				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
 				FROM #__vm_vendor v
-				LEFT JOIN #__vm_shopper_vendor_xref x
-				ON x.vendor_id = x.vendor_id
+				LEFT JOIN #__vm_user_shoppergroup_xref x
+				ON x.vendor_id = v.vendor_id
 				LEFT JOIN #__vm_user_info u
 				ON u.user_id = x.user_id
 				LEFT JOIN #__users j

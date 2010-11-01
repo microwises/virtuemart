@@ -64,10 +64,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$row = $db->loadObjectList();
 
 	foreach ($row as $user) {
-	    $query = "INSERT IGNORE INTO `#__vm_shopper_vendor_xref` VALUES ('" . $user->id . "', '1', '5', '')";
+
+		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, 0,null,"shopper")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_shopper_vendor_xref FAILED' );
+		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shoppergroup_xref FAILED' );
+	    }
+	    
+//	    $query = "INSERT IGNORE INTO `#__vm_user_shoppergroup_xref` VALUES ('" . $user->id . "', '5')";
+		$query = "INSERT IGNORE INTO `#__vm_user_shoppergroup_xref` VALUES (null,'" . $user->id . "', '5')";
+	    $db->setQuery($query);
+	    if (!$db->query()) {
+		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shoppergroup_xref FAILED' );
 	    }
 
 	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
@@ -110,36 +118,36 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	$db = JFactory::getDBO();
 
-	$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
+	$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
 	$db->query();
 	$oldVendorId = $db->loadResult();
 
-	$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "' . $userId . '" ');
+	$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
 	$db->query();
 	$oldUserId = $db->loadResult();
 
 	if (!isset($oldVendorId) && !isset($oldUserId)) {
-	    $db->setQuery('INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("' . $userId . '", "1")');
+	    $db->setQuery('INSERT `#__vm_users` (`user_id`, `vendor_id`) VALUES ("' . $userId . '", "1")');
 	    if ($db->query() == false) {
-		JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_auth_user_vendor');
+		JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_users');
 	    }
 	    else {
-		JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
+		JError::raiseNotice(1, 'setStoreOwner INSERT __vm_users '.$userId);
 	    }
 	}
 	else {
 	    if (!isset($oldUserId)) {
-		$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
+		$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
 	    }
 	    else {
-		$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
+		$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
 	    }
 	    if ($db->query() == false ) {
-			JError::raiseNotice(1, 'Update __vm_auth_user_vendor failed. user_id '.$userId);
+			JError::raiseNotice(1, 'Update __vm_users failed. user_id '.$userId);
 	    }
 	}
 
-	$db->setQuery('UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
+	$db->setQuery('UPDATE `#__vm_users` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
 	$db->query();
 	if (!$db->query()) {
 	    JError::raiseNotice(1, 'setStoreOwner failed. User with id = ' . $userId . ' not found in table');
@@ -158,7 +166,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function setUserToPermissionGroup($userId=0) {
 	# insert the user <=> group relationship
 	$db = JFactory::getDBO();
-	$db->setQuery("INSERT INTO `#__vm_auth_user_group`
+	$db->setQuery("INSERT INTO `#__vm_user_perm_group`
 				SELECT user_id,
 					CASE `perms`
 					    WHEN 'admin' THEN 0
@@ -171,7 +179,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				WHERE address_type='BT' ");
 	$db->query();
 
-	$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
+	$db->setQuery( "UPDATE `#__vm_user_perm_group` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
 	$db->query();
     }
 
@@ -187,60 +195,50 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    $userId = $this->determineStoreOwner();
 	}
 
-	$db = JFactory::getDBO();
-	$db->setQuery('SELECT `user_info_id` FROM `#__vm_user_info` WHERE `user_id` ="'.$userId.'"');
-	$db->query();
-	if (!$db->query()) {
-	    JError::raiseNotice(1, 'installSampleData failed. User with id = ' . $userId . ' not found in table');
-	    return 0;
-	}
-	
+	$currencyFields = array();
+	$currencyFields[0] = '47'; //EUR
+	$currencyFields[1] = '144'; //USD
+
 	$fields = array();
 
-	$fields['user_info_id'] = $db->loadResult();
+//	$fields['user_info_id'] = $db->loadResult();
 	$fields['user_id'] =  $userId;
-	$fields['address_type'] =  "BT";
+	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
 	$fields['company'] =  "Washupito's the User";
-	$fields['title'] =  "Sire";
-	$fields['last_name'] =  "upito";
-	$fields['first_name'] =  "Wash";
-	$fields['middle_name'] =  "the cheapest";
-	$fields['phone_1'] =  "555-555-555";
-	$fields['address_1'] =  "vendorra road 8";
-	$fields['city'] =  "Canangra";
-	$fields['zip'] =  "055555";
-	$fields['state_id'] =  "72";
-	$fields['country_id'] =  "13";
-	$fields['user_is_vendor'] =  "1";
-	if (!$this->storeSampleUserInfo($fields)) {
-	    JError::raiseNotice(1, 'Problems saving userdata of the sample store '.$this->getError());
-	}
-
-	unset($fields);
-	$currencyFields = array();
-	$currencyFields[0] = 'EUR';
-	$currencyFields[1] = 'USD';
-
-	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
-	$fields = array();
-	$fields['vendor_id'] = VirtueMartModelVendor::getVendorIdByUserId($userId);
-	$fields['vendor_name'] =  "Washupito";
-	$fields['vendor_phone'] =  "555-555-1212";
+	$fields['title'] =  'Sire';
+	$fields['last_name'] =  'upito';
+	$fields['first_name'] =  'Wash';
+	$fields['middle_name'] =  'the cheapest';
+	$fields['phone_1'] =  '555-555-555';
+	$fields['address_1'] =  'vendorra road 8';
+	$fields['city'] =  'Canangra';
+	$fields['zip'] =  '055555';
+	$fields['state_id'] =  '72';
+	$fields['country_id'] =  '13';
+	//Dont change this, atm everything is mapped to mainvendor with id=1
+	$fields['user_is_vendor'] =  '1';
+	$fields['vendor_id'] = '1';
+	$fields['vendor_name'] =  'Washupito';
+	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
-	$fields['vendor_store_desc'] =  " <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	";
-	$fields['vendor_full_image'] =  "c19970d6f2970cb0d1b13bea3af3144a.gif";
+	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
+	$fields['vendor_full_image'] =  'c19970d6f2970cb0d1b13bea3af3144a.gif';
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
-	$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
-	$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
+	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
+	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
 	$fields['vendor_url'] = JURI::root();
-	$fields['vendor_name'] =  "Washupito";
-	if (!$this->storeSampleVendor($fields)) {
+	$fields['vendor_name'] =  'Washupito';
+	$fields['perms']='admin';
+	
+	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'user.php');
+	$usermodel = new VirtueMartModelUser();
+	if (!$usermodel->store($fields)) {
+		$this->setError($usermodel->getError());
 	    JError::raiseNotice(1, 'Problems saving vendordata of the sample store '.$this->getError());
 	}
 
-	
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
 		$msg = JText::_('Problems execution of SQL File '.$filename);	
@@ -259,28 +257,23 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author RickG
      * @return boolean True is the save was successful, false otherwise.
      */
-    function storeSampleUserInfo($data) {
+    private function storeSampleUserInfo($data) {
 	$table = $this->getTable('user_info');
 
 	// Bind the form fields to the unser info table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
-	    echo 'storeSampleUserInfo: Problem with bind';die;
+	    echo 'storeSampleUserInfo: Problem with bind';
 	    return false;
 	}
 
-	//This is done in the store function already, not necessary here
 	// Make sure the user info record is valid
-//	if (!$table->check()) {
-//	    $this->setError($table->getError());
-//	    echo 'Problem with check';die;
-//	    return false;
-//	}
+	//$table->check() is done in the store function already, not necessary here
 
 	// Save the user info record to the database
 	if (!$table->store()) {
 	    $this->setError($table->getError());
-	    echo 'storeSampleUserInfo: Problem with store: '.$table->getError();die;
+	    echo 'storeSampleUserInfo: Problem with store: '.$table->getError();
 	    return false;
 	}
 
@@ -294,7 +287,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author RickG
      * @return boolean True is the save was successful, false otherwise.
      */
-    function storeSampleVendor($data) {
+    private function storeSampleVendor($data) {
 	$table = $this->getTable('vendor');
 
 	// Bind the form fields to the vendor table

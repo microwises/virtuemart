@@ -49,6 +49,8 @@ class user_info
 				dump($_userinfo,'storeAddress Store ERROR $_userinfo');
 				return false;
 			}	
+		} else {
+//			dump('no table');
 		}
 		
 		
@@ -74,11 +76,12 @@ class user_info
 			if ($_table !== null) {
 				if (!$_userinfo->bind($_shipto)) {
 					$this->setError($_userinfo->getError());
+					dump($_userinfo,'bindAddress ERROR $_userinfo');
 					return false;
 				}
 				if (!$_userinfo->store()) { // Write data to the DB
 					$this->setError($_userinfo->getError());
-					dump($_userinfo,'storeAddress $_userinfo');
+					dump($_userinfo,'storeAddress ERROR $_userinfo');
 					return false;
 				}
 			}

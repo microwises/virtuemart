@@ -158,11 +158,15 @@ class calculationHelper{
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(!empty($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" AND `vendor_id`="'.$this->productVendorId.'"');
-				$this->_shopperGroupId=$this->_db->loadResult();
+				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__vm_user_shoppergroup_xref as `usgr`
+ JOIN `#__vm_shopper_group` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
+				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it 
+				dump($this->_db);
 			} 
 			if(empty($this->_shopperGroupId)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');				
+//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');				
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref 
+				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId = $this->_db->loadResult();
 			}
 		}
@@ -361,7 +365,7 @@ class calculationHelper{
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_vendor_xref  WHERE `user_id`="'.$user->id.'" ');
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref  WHERE `user_id`="'.$user->id.'" ');
 				$this->_shopperGroupId=$this->_db->loadResultArray();			
 			}
 		}

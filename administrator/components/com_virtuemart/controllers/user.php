@@ -134,13 +134,20 @@ class VirtuemartControllerUser extends JController {
 			$msg = JText::_(_NOT_AUTH);
 		} else {
 			$model =& $this->getModel('user');
-			if ($model->store()) {
+			if ($ret=$model->store()) {
 				$msg = JText::_('User saved!');
 			} else {
 				$msg = JText::_($model->getError());
 			}
 		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=user', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply'){
+			$redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
+		}
+		else{
+			$redirection = 'index.php?option=com_virtuemart&view=user';
+		}
+		$this->setRedirect($redirection, $msg);
 	}
 
 	/**

@@ -7,7 +7,7 @@
 -- Table structure for table `#__vm_auth_group`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_group` (
+CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(128) DEFAULT NULL,
   `group_level` int(11) DEFAULT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_group` (
 -- Table structure for table `#__vm_auth_user_group`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_user_group` (
+CREATE TABLE IF NOT EXISTS `#__vm_user_perm_group` (
   `user_id` int(11) NOT NULL DEFAULT '0',
   `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_group` (
 -- Table structure for table `#__vm_auth_user_vendor`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
-  `user_id` int(11) DEFAULT NULL,
-  `vendor_id` int(11) DEFAULT NULL,
-  KEY `idx_auth_user_vendor_user_id` (`user_id`),
-  KEY `idx_auth_user_vendor_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to the vendortable; holds the vendorinformation ';
+-- CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
+--  `user_id` int(11) DEFAULT NULL,
+--  `vendor_id` int(11) DEFAULT NULL,
+--  KEY `idx_auth_user_vendor_user_id` (`user_id`),
+--  KEY `idx_auth_user_vendor_vendor_id` (`vendor_id`)
+-- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to the vendortable; holds the vendorinformation ';
 
 -- --------------------------------------------------------
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_category` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_country_xref` (
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_country` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -953,15 +953,15 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
 -- Table structure for table `#__vm_shopper_vendor_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shopper_vendor_xref` (
-  `user_id` int(11) DEFAULT NULL,
-  `vendor_id` int(11) DEFAULT NULL,
-  `shopper_group_id` int(11) DEFAULT NULL,
-  `customer_number` varchar(32) DEFAULT NULL,
-  KEY `idx_shopper_vendor_xref_user_id` (`user_id`),
-  KEY `idx_shopper_vendor_xref_vendor_id` (`vendor_id`),
-  KEY `idx_shopper_vendor_xref_shopper_group_id` (`shopper_group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to a Shopper Group of a Vendor';
+-- CREATE TABLE IF NOT EXISTS `#__vm_shopper_vendor_xref` (
+--  `user_id` int(11) DEFAULT NULL,
+--  `vendor_id` int(11) DEFAULT NULL,
+--  `shopper_group_id` int(11) DEFAULT NULL,
+--  `customer_number` varchar(32) DEFAULT NULL,
+--  KEY `idx_shopper_vendor_xref_user_id` (`user_id`),
+--  KEY `idx_shopper_vendor_xref_vendor_id` (`vendor_id`),
+--  KEY `idx_shopper_vendor_xref_shopper_group_id` (`shopper_group_id`)
+-- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a user to a Shopper Group of a Vendor';
 
 -- --------------------------------------------------------
 
@@ -1000,6 +1000,30 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
 -- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The tax rates for your store' AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `#__vm_users`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_users` (
+	`user_id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
+	`vendor_id` tinyint(1) NOT NULL DEFAULT '0',
+	`customer_number` varchar(32) DEFAULT NULL,
+	`perms` varchar(40) NOT NULL DEFAULT 'shopper',
+	PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the unique user data' AUTO_INCREMENT=36 ;
+
+--
+-- Table structure for table `#__vm_user_shoppergroup_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_user_shoppergroup_xref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `shopper_group_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for users to shoppergroup' AUTO_INCREMENT=2 ;
 
 --
 -- Table structure for table `#__vm_userfield`
@@ -1056,9 +1080,9 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
 CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
   `user_info_id` varchar(32) NOT NULL DEFAULT '',
   `user_id` int(11) NOT NULL DEFAULT '0',
-  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
+--  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
   `address_type` char(2) DEFAULT NULL,
-  `address_type_name` varchar(32) DEFAULT NULL,
+  `address_type_name` varchar(32) DEFAULT '',
   `company` varchar(64) DEFAULT NULL,
   `title` varchar(32) DEFAULT NULL,
   `last_name` varchar(32) DEFAULT NULL,
@@ -1080,7 +1104,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
   `extra_field_5` char(1) DEFAULT NULL,
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL,
-  `perms` varchar(40) NOT NULL DEFAULT 'shopper',
+--  `perms` varchar(40) NOT NULL DEFAULT 'shopper',
   PRIMARY KEY (`user_info_id`),
   KEY `idx_user_info_user_id` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Customer Information, BT = BillTo and ST = ShipTo';
@@ -1097,7 +1121,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   `vendor_phone` varchar(32) DEFAULT NULL,
   `vendor_store_name` varchar(128) NOT NULL DEFAULT '',
   `vendor_store_desc` text,
-  `vendor_category_id` int(11) DEFAULT NULL,
+--  `vendor_category_id` int(11) DEFAULT NULL,
   `vendor_thumb_image` varchar(255) DEFAULT NULL,
   `vendor_full_image` varchar(255) DEFAULT NULL,
   `vendor_currency` varchar(16) DEFAULT NULL,
@@ -1113,23 +1137,23 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   `vendor_address_format` text NOT NULL,
   `vendor_date_format` varchar(255) NOT NULL,
   PRIMARY KEY (`vendor_id`),
-  KEY `idx_vendor_name` (`vendor_name`),
-  KEY `idx_vendor_category_id` (`vendor_category_id`)
+  KEY `idx_vendor_name` (`vendor_name`)
+--  KEY `idx_vendor_category_id` (`vendor_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store' AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `#__vm_vendor_category`
---
+-- strange table, for what do we need it?
 
-CREATE TABLE IF NOT EXISTS `#__vm_vendor_category` (
-  `vendor_category_id` int(11) NOT NULL AUTO_INCREMENT,
-  `vendor_category_name` varchar(64) DEFAULT NULL,
-  `vendor_category_desc` text,
-  PRIMARY KEY (`vendor_category_id`),
-  KEY `idx_vendor_category_category_name` (`vendor_category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The categories that vendors are assigned to' AUTO_INCREMENT=7 ;
+-- CREATE TABLE IF NOT EXISTS `#__vm_vendor_category` (
+--  `vendor_category_id` int(11) NOT NULL AUTO_INCREMENT,
+--  `vendor_category_name` varchar(64) DEFAULT NULL,
+--  `vendor_category_desc` text,
+--  PRIMARY KEY (`vendor_category_id`),
+--  KEY `idx_vendor_category_category_name` (`vendor_category_name`)
+-- ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The categories that vendors are assigned to' AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 

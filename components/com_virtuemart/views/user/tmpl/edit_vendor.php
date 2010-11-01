@@ -82,12 +82,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="key">
+	<?php /*		<td class="key">
 				<?php echo JText::_( 'VM_VENDOR_FORM_CATEGORY' ); ?>:
 			</td>
 			<td>
 				<?php echo $this->vendorCategories; ?>:
-			</td>
+			</td> */ ?>
 		</tr>
 	</table>
 </fieldset>

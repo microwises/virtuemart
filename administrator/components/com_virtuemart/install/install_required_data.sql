@@ -2,10 +2,10 @@
 -- This will insert all sample data into the VirtueMart tables
 
 --
--- Dumping data for table `#__vm_auth_group`
+-- Dumping data for table `#__vm_perm_groups`
 --
 
-INSERT INTO `#__vm_auth_group` (`group_id`, `group_name`, `group_level`) VALUES
+INSERT INTO `#__vm_perm_groups` (`group_id`, `group_name`, `group_level`) VALUES
 (1, 'admin', 0),
 (2, 'storeadmin', 250),
 (3, 'shopper', 500),
@@ -535,8 +535,8 @@ INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_gro
 -- Dumping data for table `#__vm_shopper_vendor_xref`
 --
 
-INSERT INTO `#__vm_shopper_vendor_xref` (`user_id`, `vendor_id`, `shopper_group_id`, `customer_number`) VALUES
-(62, 1, 5, '');
+-- INSERT INTO `#__vm_shopper_vendor_xref` (`user_id`, `vendor_id`, `shopper_group_id`, `customer_number`) VALUES
+-- (62, 1, 5, '');
 
 --
 -- Dumping data for table `#__vm_state`
@@ -1021,15 +1021,15 @@ INSERT INTO `#__vm_state` (`state_id`, `country_id`, `state_name`, `state_3_code
 -- Dumping data for table `#__vm_vendor`
 --
 
-INSERT INTO `#__vm_vendor` (`vendor_id`, `vendor_name`, `vendor_phone`, `vendor_store_name`, `vendor_store_desc`, `vendor_category_id`, `vendor_thumb_image`, `vendor_full_image`, `vendor_currency`, `cdate`, `mdate`, `vendor_image_path`, `vendor_terms_of_service`, `vendor_url`, `vendor_min_pov`, `vendor_freeshipping`, `vendor_currency_display_style`, `vendor_accepted_currencies`, `vendor_address_format`, `vendor_date_format`) VALUES
-('1', NULL , NULL , '', NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , '', '', NULL , '0.00', '', '', '', '');
+-- INSERT INTO `#__vm_vendor` (`vendor_id`, `vendor_name`, `vendor_phone`, `vendor_store_name`, `vendor_store_desc`, `vendor_category_id`, `vendor_thumb_image`, `vendor_full_image`, `vendor_currency`, `cdate`, `mdate`, `vendor_image_path`, `vendor_terms_of_service`, `vendor_url`, `vendor_min_pov`, `vendor_freeshipping`, `vendor_currency_display_style`, `vendor_accepted_currencies`, `vendor_address_format`, `vendor_date_format`) VALUES
+-- ('1', NULL , NULL , '', NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , '', '', NULL , '0.00', '', '', '', '');
 
 --
 -- Dumping data for table `#__vm_vendor_category`
 --
 
-INSERT INTO `#__vm_vendor_category` (`vendor_category_id`, `vendor_category_name`, `vendor_category_desc`) VALUES
-(6, '-default-', 'Default');
+-- INSERT INTO `#__vm_vendor_category` (`vendor_category_id`, `vendor_category_name`, `vendor_category_desc`) VALUES
+-- (6, '-default-', 'Default');
 
 
 --

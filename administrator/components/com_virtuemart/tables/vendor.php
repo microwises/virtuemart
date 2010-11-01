@@ -39,7 +39,7 @@ class TableVendor extends JTable {
     /** @var text Vendor store description */
     var $vendor_store_desc   		= '';
     /** @var int Category Id */
-    var $vendor_category_id   		= '';
+//    var $vendor_category_id   		= '';
     /** @var varchar Vendor thumb image */
     var $vendor_thumb_image   		= '';
     /** @var varchar Vendor full image */
@@ -57,9 +57,9 @@ class TableVendor extends JTable {
     /** @var varchar Vendor url */
     var $vendor_url					= '';
     /** @var decimal Min POV */
-    var $vendor_min_pov 	   		= '';
+    var $vendor_min_pov 	   		= 0;
     /** @var decimal Freeshipping */
-    var $vendor_freeshipping  		= '';
+    var $vendor_freeshipping  		= 0;
     /** @var varchar Currency display style */
     var $vendor_currency_display_style = '';
     /** @var text Currencies accepted by this vendor */
@@ -101,6 +101,35 @@ class TableVendor extends JTable {
 		return true;
     }
 
+ 	/**
+	 * Records in this table do not need to exist, so we might need to create a record even
+	 * if the primary key is set. Therefore we need to overload the store() function.
+	 * 
+	 * @author Oscar van Eijk
+	 * @author Max Milbers
+	 * @see libraries/joomla/database/JTable#store($updateNulls)
+	 */
+	public function store()
+	{
+		$_qry = 'SELECT vendor_id '
+				. 'FROM #__vm_vendor '
+				. 'WHERE vendor_id = ' . $this->vendor_id
+		;
+		$this->_db->setQuery($_qry);
+		$_count = $this->_db->loadResultArray();
 
+		if (count($_count) > 0) {
+			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+		} else {
+			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+		}
+
+		if (!$returnCode){
+			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+			return false;
+		}
+		else return true;
+	}
 }
-?>
+
+//pure php no closing tag

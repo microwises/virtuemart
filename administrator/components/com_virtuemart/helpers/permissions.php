@@ -61,7 +61,7 @@ class Permissions extends JObject{
 		if (empty($this->_user_groups)) {
 			$this->_db = JFactory::getDBO();
 			$q = ('SELECT `group_id`,`group_name`,`group_level` 
-					FROM `#__vm_auth_group` 
+					FROM `#__vm_perm_groups` 
 					ORDER BY `group_level` ');
 			$this->_db->setQuery($q);
 			$this->_user_groups = $this->_db->loadObjectList('group_name');
@@ -154,22 +154,12 @@ class Permissions extends JObject{
 			}
 			
 			if (self::isRegisteredCustomer($this->_user_id)) {
-//				$q = "SELECT perms,first_name,last_name,country,zip 
-//					FROM #__vm_user_info 
-//					WHERE user_id='".$this->_user_id."'";
 				$q = 'SELECT `perms`
-					FROM #__vm_user_info 
+					FROM #__vm_users 
 					WHERE user_id="'.$this->_user_id.'"';
 				$this->_db->setQuery($q); 
-//				$row = $this->_db->loadAssoc();
 				$this->_perms = $this->_db->loadResult();
 
-//				$auth["perms"] = $row["perms"];
-//				$auth["first_name"] = $row["first_name"];
-//				$auth["last_name"] = $row["last_name"];
-//				$auth["country"] = $row["country"];
-//				$auth["zip"] = $row["zip"];
-				
 				/* We must prevent that Administrators or Managers are 'just' shoppers */
 				if ($this->_perms == "shopper") {
 					if (stristr($vmUser->usertype,"Administrator")) {
@@ -179,10 +169,6 @@ class Permissions extends JObject{
 						$this->_perms  = "storeadmin";
 					}
 				}
-//				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-//				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-//				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-//				$auth["default_shopper_group"] = $shopper_group["default_shopper_group"];
 				$this->_is_registered_customer = true;
 			}
 			/* User is no registered customer */
@@ -191,11 +177,6 @@ class Permissions extends JObject{
 				elseif (stristr($vmUser->usertype,"Manager")) $this->_perms  = "storeadmin";
 				/* Default */
 				else $this->_perms  = "shopper";
-				
-//				$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-//				$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-//				$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-//				$auth["default_shopper_group"] = 1;
 				$this->_is_registered_customer = false;
 			}
 		} // user is not logged in

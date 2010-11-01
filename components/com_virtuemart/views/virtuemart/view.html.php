@@ -40,7 +40,7 @@ class VirtueMartViewVirtueMart extends JView {
 	    /* MULTI-X
 	    * $this->loadHelper('vendorHelper');
 	    * $vendorModel = new Vendor;
-	    * $vendor = $vendorModel->getVendor($vendorId); 	    
+	    * $vendor = $vendorModel->getVendor(); 	    
 	    * $this->assignRef('vendor',	$vendor);
 	    */
 	    
