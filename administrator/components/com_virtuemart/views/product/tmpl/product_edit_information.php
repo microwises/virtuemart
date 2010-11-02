@@ -110,19 +110,29 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_COST') ?>:</div>
+				</td>
+				<td width="71%">
+					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
+					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_BASE') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
+					<input type="text" readonly class="inputbox" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
+					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
-				<!-- Final price @todo change as non editable-->
 				<td width="71%">
 					<input type="text" readonly value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
+					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>
 			</tr>
 		</table>

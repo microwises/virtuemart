@@ -123,6 +123,11 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
 				
+//				$vendor_model->setId($product->vendor_id);
+//				$vendor = $vendor_model->getVendor();
+//				dump($vendor,'my vendor');
+//				$this->assignRef('vendorCurrency', $vendorCurrency);
+				
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);

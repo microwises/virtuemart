@@ -274,6 +274,11 @@ class VirtuemartViewUser extends JView {
 			$this->_orderList = array();
 		} else {
 			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
+			
+			if(empty($this->currency)){
+				$currency = VirtueMartModelVendor::getCurrencyDisplay();;
+				$this->assignRef('currency', $currency);				
+			}
 		}
 		$this->assignRef('orderlist', $this->_orderList);
 	}
@@ -453,24 +458,14 @@ class VirtuemartViewUser extends JView {
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
-			if (count($this->_orderList) > 0) {		
-				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($this->_userDetails->vendor_id);
-				if (!empty($_currencyDisplayStyle)) {
-					$currency = new CurrencyDisplay(
-						 $_currencyDisplayStyle['id']
-						,$_currencyDisplayStyle['symbol']
-						,$_currencyDisplayStyle['nbdecimal']
-						,$_currencyDisplayStyle['sdecimal']
-						,$_currencyDisplayStyle['thousands']
-						,$_currencyDisplayStyle['positive']
-						,$_currencyDisplayStyle['negative']
-					);
-				} else {
-					$currency = new CurrencyDisplay();
-				}
-				$this->assignRef('currency', $currency);
+//			if (count($this->_orderList) > 0) {		
+			//Why is this here? should be set for vendors AND shoppers with orders
+			if(empty($this->currency)){
+				$currency = VirtueMartModelVendor::getCurrencyDisplay();;
+				$this->assignRef('currency', $currency);				
 			}
 
+			
 			$vendorModel->setId($this->_userDetails->vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
@@ -482,18 +477,7 @@ class VirtuemartViewUser extends JView {
 //			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
 //			$this->assignRef('vendorCategories', $_vendorCats);
 
-			//This is nonsense, as long we do not support real multistore imho
-			$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($this->_userDetails->vendor_id);
-			$_vendorCurrency = new CurrencyDisplay(
-				 $_currencyDisplayStyle['id']
-				,$_currencyDisplayStyle['symbol']
-				,$_currencyDisplayStyle['nbdecimal']
-				,$_currencyDisplayStyle['sdecimal']
-				,$_currencyDisplayStyle['thousands']
-				,$_currencyDisplayStyle['positive']
-				,$_currencyDisplayStyle['negative']
-			);
-			$this->assignRef('vendorCurrency', $_vendorCurrency);
+			$this->assignRef('vendorCurrency', $currency);
 		}
 
 		if(empty($currency)){

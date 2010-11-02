@@ -505,6 +505,45 @@ class VirtueMartModelVendor extends JModel {
 	}
 
 	/**
+	 * @author Max Milbers
+	 * 
+	 */
+	public function getCurrencyDisplay($vendorId=1, $style=0){
+		
+		if(empty($style)){
+			$db = JFactory::getDBO();
+			$q = 'SELECT `vendor_currency_display_style` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+			$db->setQuery($q);
+			if($style = $db->loadResult()){
+				
+			} else {
+				JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+				return 0;	
+			}	
+		}
+		$array = explode( "|", $style );
+		$_currencyDisplayStyle = Array();
+		$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
+		$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
+		$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
+		$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
+		$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
+		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
+		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
+
+		if (!empty($_currencyDisplayStyle)) {
+			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+				, $_currencyDisplayStyle['negative']
+			);
+		} else {
+				$currency = new CurrencyDisplay();
+		}
+		return $currency;
+	}
+	
+	/**
 	 * 
 	 * Gives back the formate of the vendor, gets $style if none is set, with the vendorId.
 	 * When no param is set, you get the format of the mainvendor
@@ -541,38 +580,22 @@ class VirtueMartModelVendor extends JModel {
     	EXAMPLE: ||&euro;|2|,||1|8
 	* @return string
 	*/
-	public function get_currency_display_style( $vendorId=1, $style=0 ) {
-		
-		if(empty($style)){
-			$style = self::getVendorCurrencyDisplayStyle($vendorId);	
-		}
-		$array = explode( "|", $style );
-		$display = Array();
-		$display["id"] = @$array[0];
-		$display["symbol"] = @$array[1];
-		$display["nbdecimal"] = @$array[2];
-		$display["sdecimal"] = @$array[3];
-		$display["thousands"] = @$array[4];
-		$display["positive"] = @$array[5];
-		$display["negative"] = @$array[6];
-		return $display;
-	}	
-
-	/**
-	 * Gets the currently used style of the vendor
-	 * @author Max Milbers
-	 */
-	public function getVendorCurrencyDisplayStyle($vendorId=1){	
-		$db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency_display_style` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
-		$db->setQuery($q);
-		if($style = $db->loadResult()){
-			return $style;
-		} else {
-			JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
-			return 0;	
-		}		
-	}
+//	private function get_currency_display_style( $vendorId=1, $style=0 ) {
+//		
+//		if(empty($style)){
+//			$style = self::getVendorCurrencyDisplayStyle($vendorId);	
+//		}
+//		$array = explode( "|", $style );
+//		$display = Array();
+//		$display["id"] = @$array[0];
+//		$display["symbol"] = @$array[1];
+//		$display["nbdecimal"] = @$array[2];
+//		$display["sdecimal"] = @$array[3];
+//		$display["thousands"] = @$array[4];
+//		$display["positive"] = @$array[5];
+//		$display["negative"] = @$array[6];
+//		return $display;
+//	}	
 	
 		/**
 	 * Create a formatted vendor address

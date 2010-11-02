@@ -53,12 +53,8 @@ class calculationHelper{
 		$this -> _now			  = $jnow->toMySQL();
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
-		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
-
-		//todo check if warnning is correctly thrown, should be done in model vendor getVendorCurrencyDisplayStyle
-//		if(!$this -> _currencyDisplay){
-//			JError::raiseWarning('SOME_ERROR_CODE', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
-//		}
+//		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
+		$this -> _currencyDisplay = VirtueMartModelVendor::getCurrencyDisplay(1);
 		$this -> _debug           = false;
 	}
 	
@@ -111,7 +107,7 @@ class calculationHelper{
 //			dump($row,'myRow');
 //			if($row && count($row)==2){
 			if($row){
-				$basePrice = $row['product_price'];
+				$costPrice = $row['product_price'];
 				$this->productCurrency=$row['product_currency'];
 				$this->override=$row['override'];
 				$this->product_override_price=$row['product_override_price'];
@@ -195,7 +191,9 @@ class calculationHelper{
 		$this->rules['dBTax'] = $dBTaxRules;
 		$this->rules['dATax'] = $dATaxRules;
 
-		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $basePrice));
+		
+		$prices['costPrice']  = $costPrice;
+		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
 
 		if(isset($variant)){
@@ -862,11 +860,11 @@ class calculationHelper{
 	 * For exampel 47 => EUR
 	 * 
 	 * @author Max Milbers
+	 * @author Frederic Bidon
 	 */
 	function ensureUsingCurrencyCode($curr){
 		
-		//quick hack
-		if(is_Int($curr)){
+		if(is_numeric($curr)){
 			$db = JFactory::getDBO();
 			$q= 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
 			$db->setQuery($q);
@@ -875,8 +873,10 @@ class calculationHelper{
 				JError::raiseWarning('Attention, couldnt find currency code in the table');
 			}
 		}
+		return $curr;
 	}
-	
+
+        
 	/**
 	 * Standard round function, we round every number with 6 fractionnumbers
 	 * We need at least 4 to calculate something like 9.25% => 0.0925
@@ -1062,22 +1062,5 @@ class calculationHelper{
 		return $_currency;
 	}
 
-	/**
-	 * Load the currency display object
-	 * @access private
-	 * @author Oscar van Eijk, Max Milbers
-	 * @return object
-	 */
-	public function getCurrencyDisplayObject(){
-		
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-		$currency_display = VirtueMartModelVendor::get_currency_display_style(1);	
-		if(!empty($currency_display)){
-			$_currencyDisplay = new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
-		}else{
-			$_currencyDisplay = new CurrencyDisplay();
-		}
-		return $_currencyDisplay;
-	}
 	
 }

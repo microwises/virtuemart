@@ -56,18 +56,7 @@ class VirtuemartViewOrders extends JView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-//			$_vendorData = Vendor::getVendorFields($order['details']['BT']->vendor_id, array('vendor_currency_display_style'));
-			
-			$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($order['details']['BT']->vendor_id);
-			if (!empty($_currencyDisplayStyle)) {
-				$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-					, $_currencyDisplayStyle['negative']
-				);
-			} else {
-				$currency = new CurrencyDisplay();
-			}
+			$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->vendor_id);
 			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
@@ -222,17 +211,10 @@ class VirtuemartViewOrders extends JView {
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
 			foreach ($orderslist as $order_id => $order) {
+				
+				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {					
-					$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($order->vendor_id);
-					if (!empty($_currencyDisplayStyle)) {
-						$_currencies['v'.$order->vendor_id] = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-							, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-							, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-							, $_currencyDisplayStyle['negative']
-						);
-					} else {
-						$_currencies['v'.$order->vendor_id] = new CurrencyDisplay();
-					}
+					$_currencies['v'.$order->vendor_id] = VirtueMartModelVendor::getCurrencyDisplay($order->vendor_id);
 				}
 				$order->order_total = $_currencies['v'.$order->vendor_id]->getFullValue($order->order_total);
 			}

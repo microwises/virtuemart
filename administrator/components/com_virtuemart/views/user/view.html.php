@@ -215,17 +215,10 @@ class VirtuemartViewUser extends JView {
 			}
 			
 			$vendorModel = $this->getModel('vendor');
-			if (count($orderList) > 0) {		
-					$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($userDetails->vendor_id);
-					if (!empty($_currencyDisplayStyle)) {
-					$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-						, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-						, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-						, $_currencyDisplayStyle['negative']
-					);
-				} else {
-						$currency = new CurrencyDisplay();
-				}
+			$vendorModel->setId($userDetails->vendor_id);
+			
+			if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
+				$currency = $vendorModel->getCurrencyDisplay();
 				$this->assignRef('currency', $currency);
 			}
 			
@@ -233,9 +226,9 @@ class VirtuemartViewUser extends JView {
 
 			if (!empty($userDetails->user_is_vendor)) {
 				
-				$vendorModel = $this->getModel('vendor');
-				$vendorModel->setId($userDetails->vendor_id);
+//				$vendorModel = $this->getModel('vendor');	
 //				$vendor = $vendorModel->getVendor();
+
 				$this->assignRef('vendor', $userDetails->vendor);
 				
 				$currencyModel = $this->getModel('currency');
@@ -246,14 +239,10 @@ class VirtuemartViewUser extends JView {
 //				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
 //				$this->assignRef('vendorCategories', $_vendorCats);
 				
-				//Different currency styles for different vendors are nonsense imho
-				$_currencyDisplayStyle = VirtueMartModelVendor::get_currency_display_style($userDetails->vendor_id);
-				$_vendorCurrency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-					, $_currencyDisplayStyle['negative']
-				);
-			$this->assignRef('vendorCurrency', $_vendorCurrency);
+//				//Different currency styles for different vendors are nonsense imho
+//				$currency =	VirtueMartModelVendor::getCurrencyDisplay();
+
+				$this->assignRef('vendorCurrency', $currency);
 			}
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.

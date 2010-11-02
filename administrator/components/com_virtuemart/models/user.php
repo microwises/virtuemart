@@ -278,26 +278,6 @@ class VirtueMartModelUser extends JModel {
 		}
 	}
 
-
-//	function address2cart()
-//	{
-//		$_data = JRequest::get('post');
-//
-//		$_fields = user_info::getUserFields($_data['address_type'], true);
-//		// Translate array to an object
-//		$_address = new stdClass();
-//		foreach ($_data as $_k => $_v) {
-//			$_address->{$_k} = $_v;
-//		}
-//		if ($_data['address_type'] == 'BT') {
-//			$_address->address_billto_id = 'BT_dynID';
-//		} else {
-//			$_address->address_shipto_id = 'ST_dynID';
-//		}
-//		user_info::saveAddressInCart($_address, $_fields, $_data['address_type']);
-//	}
-
-
 	/**
 	 * Bind the post data to the JUser object and the VM tables, then saves it
 	 * It is used to register new users
@@ -790,29 +770,9 @@ class VirtueMartModelUser extends JModel {
 	 *
 	 * @return string SQL query statement
 	 */
-	function _getListQuery ()
-	{
-//		$query = 'SELECT DISTINCT ju.id AS id '
-//			. ', ju.name AS name'
-//			. ', ju.username AS username '
-//			. ', vd.user_is_vendor AS is_vendor'
-//			. ', vu.perms AS perms'
-//			. ', ju.usertype AS usertype'
-//			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
-//			. 'FROM #__users AS ju '
-//			. 'LEFT JOIN #__vm_user_info AS vu ON ju.id = vu.user_id '
-//			. 'LEFT JOIN #__vm_user_info AS vd ON ju.id = vd.user_id '
-//			. " AND vd.address_type = 'BT' "
-//			. 'LEFT JOIN #__vm_shopper_vendor_xref AS vx ON ju.id = vx.user_id '
-//			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.vendor_id = sg.vendor_id '
-//			. 'AND vx.shopper_group_id = sg.shopper_group_id ';
-
-//# Struktur jos_vm_users
-//# Struktur jos_vm_user_info
-//# Struktur jos_vm_user_perm_group
-//# Struktur jos_vm_user_shoppergroup_xref
-//# Struktur jos_vm_vendor
-
+	function _getListQuery (){
+		
+	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_group, #__vm_user_shoppergroup_xref, #__vm_vendor
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -826,7 +786,7 @@ class VirtueMartModelUser extends JModel {
 			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
-		echo 'my $query '.$query;
+
 		return ($query);
 	}
 

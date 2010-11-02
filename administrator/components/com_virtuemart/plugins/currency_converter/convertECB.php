@@ -139,6 +139,7 @@ class convertECB {
 				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
 					//todo
 					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
+					JError::raiseWarning(1,  'The content: '.$contents);
 //					$GLOBALS['product_currency'] = $vendor_currency;
 					return $amountA;
 				}
