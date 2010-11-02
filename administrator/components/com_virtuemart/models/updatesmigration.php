@@ -68,14 +68,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, 0,null,"shopper")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shoppergroup_xref FAILED' );
+		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
 	    }
 	    
-//	    $query = "INSERT IGNORE INTO `#__vm_user_shoppergroup_xref` VALUES ('" . $user->id . "', '5')";
-		$query = "INSERT IGNORE INTO `#__vm_user_shoppergroup_xref` VALUES (null,'" . $user->id . "', '5')";
+//	    $query = "INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES ('" . $user->id . "', '5')";
+		$query = "INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,'" . $user->id . "', '5')";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shoppergroup_xref FAILED' );
+		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
 	    }
 
 	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
@@ -227,7 +227,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
-	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
+	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';

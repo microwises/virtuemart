@@ -40,7 +40,7 @@ DROP TABLE
 `#__vm_shipping_label`, 
 `#__vm_shipping_rate`, 
 `#__vm_shopper_group`, 
-`#__vm_user_shoppergroup_xref`, 
+`#__vm_user_shopper_group_xref`, 
 `#__vm_state`, 
 `#__vm_tax_rate`, 
 `#__vm_userfield`, 

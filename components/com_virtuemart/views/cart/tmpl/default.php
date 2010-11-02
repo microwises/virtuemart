@@ -30,10 +30,15 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
 	</legend>
 
-	<?php  ?>
+	  
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
 		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
-	</a>
+	</a><br /><br />
+<?php 	foreach($this->BTaddress as $item){
+			if(!empty($item['value'])){
+				echo $item['title'].': '.$item['value'].'<br/>';
+			}
+		} ?>
 	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
 </fieldset>
 
@@ -44,31 +49,26 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
 	<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a><br />
-	<?php echo $this->lists['shipTo'];  ?>
-</fieldset>
-
-<?php
-		echo '<fieldset>';
-		echo JText::_('VM_USER_FORM_BILLTO_YOUR').' <br/>';
-		foreach($this->BTaddress as $item){
-			if(!empty($item['value'])){
+	<?php echo $this->lists['shipTo']; 
+		echo '<br /><br />';
+		foreach($this->STaddress as $item){	
+			if(!empty($item['value'])){		
 				echo $item['title'].': '.$item['value'].'<br/>';
 			}
-		}
-		echo '<br/><br/>';
-		
-		if(!empty($this->STaddress)){
-		echo JText::_('VM_USER_FORM_SHIPTO_YOUR').' <br/>';
-			foreach($this->STaddress as $item){	
-				if(!empty($item['value'])){		
-					echo $item['title'].': '.$item['value'].'<br/>';
-				}
-			}			
-		}
+		} ?>
+</fieldset>
+<fieldset>
+	<legend>
+		<?php echo JText::_('VM_CART_TOS'); ?>
+	</legend>
+	<div>
+	<?php echo $this->vendor->vendor_terms_of_service; echo '</div>';
+	$checked = '';
+	if ($this->cart->tosAccepted) $checked = 'checked="checked"' ?>
+	<input type="checkbox" name="tosAccepted" value="1" <?php echo $checked .'/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED'); ?>
+</fieldset>
+<?php
 
-		
-		echo '</fieldset>';
-		
 		/** @todo handle coupon field */
 		/* Input Field for the Coupon Code */
 		/**
@@ -84,16 +84,8 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 		echo $this->continue_link_html;
 	}
 
-//	if(!empty($this->cart->totalsales)) $totalsalesCart = $this->cart->totalsales ; else $totalsalesCart=0;
-//	if (VmStore::get('vendor_min_pov', 0) < $totalsalesCart) {
-//		/** @todo currency format totalsales */
-//		
-//		<span style="font-weight:bold;"><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2'). " ".$totalsalesCart </span>
-//		<?php
-//	}
-//	else {
-		echo $this->checkout_link_html;
+	echo $this->checkout_link_html;
 		
-//	} 
+
 echo '</div>';
 ?>

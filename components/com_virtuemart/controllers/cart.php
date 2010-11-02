@@ -58,6 +58,7 @@ class VirtueMartControllerCart extends JController {
 		/* Add the default model */
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );

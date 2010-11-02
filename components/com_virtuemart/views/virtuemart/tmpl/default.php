@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /** @todo Add vendor description */
-//echo $this->vendor_store_desc."<br />";
+echo $this->vendor->vendor_store_desc."<br />";
 echo "<br /><h4>".JText::_('VM_CATEGORIES')."</h4>";
 foreach ($this->categories as $category) {
 	echo JHTML::_('link', 

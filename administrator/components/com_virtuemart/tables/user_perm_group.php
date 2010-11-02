@@ -33,7 +33,7 @@ class TableUser_perm_group extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_user_perm_group', 'user_id', $db);
+		parent::__construct('#__vm_user_perm_group_xref', 'user_id', $db);
 	}
 
 

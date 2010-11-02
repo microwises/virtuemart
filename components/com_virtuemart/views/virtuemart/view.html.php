@@ -36,14 +36,19 @@ class VirtueMartViewVirtueMart extends JView {
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
 
-	    $vendorId = JRequest::getInt('vendorid', 1);
 	    /* MULTI-X
 	    * $this->loadHelper('vendorHelper');
 	    * $vendorModel = new Vendor;
 	    * $vendor = $vendorModel->getVendor(); 	    
 	    * $this->assignRef('vendor',	$vendor);
 	    */
+	    $vendorId = JRequest::getInt('vendorid', 1);
 	    
+	    $vendorModel = $this->getModel('vendor');
+	    
+	    $vendorModel->setId(1);
+	    $vendor = $vendorModel->getVendor();
+	    $this->assignRef('vendor',$vendor);
 	    
 	    $this->assignRef('currencyDisplay',VirtueMartModelVendor::getCurrencyDisplay());
 	    

@@ -67,7 +67,6 @@ class VirtueMartViewCart extends JView {
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
 
-			
 			JPluginHelper::importPlugin('vmpayment');
 
 			$this->lSelectPayment();
@@ -91,6 +90,8 @@ class VirtueMartViewCart extends JView {
 			$this->prepareAddressRadioSelection();
 			
 			$this->prepareAddressDataInCart();
+			
+			$this->prepareVendor();
 			
 			$pathway->addItem(JText::_('VM_CART_OVERVIEW'));
 			$mainframe->setPageTitle(JText::_('VM_CART_OVERVIEW'));
@@ -260,52 +261,20 @@ class VirtueMartViewCart extends JView {
 
 		$this->assignRef('cartData',$calculator->getCartData());
 		$this->assignRef('calculator',$calculator);
-		
-		//TODO Oscar this must be added to userfields somehow,
-		//There should be possibility to show only the filled userfields and 
-		//the country, state name instead (in other cases we need always the ids and all fields,...
-		//Add names of country/state
-//		if(!empty($this->_cart->BT)){
-//			if($this->_cart->BT['country_id']){
-//				$countryModel = self::getModel('country');
-//				$countryModel->setId($this->_cart->BT['country_id']);
-//				$country = $countryModel->getCountry();
-//				if($country) $this->_cart->BT['country_name'] = $country->country_name;
-//			}
-//			
-//			if($this->_cart->BT['state_id']){
-//				$stateModel = self::getModel('state');
-//				$stateModel->setId($this->_cart->BT['state_id']);
-//				$state = $stateModel->getState();
-//				if($state) $this->_cart->BT['state_name'] = $state->state_name;	
-//			}	
-//		}
-//		
-//		if(!empty($this->_cart->ST)){
-//			if($this->_cart->ST['country_id']){
-//				$countryModel = self::getModel('country');
-//				$countryModel->setId($this->_cart->ST['country_id']);
-//				$country = $countryModel->getCountry();
-//				if($country) $this->_cart->ST['country_name'] = $country->country_name;
-//			}
-//			
-//			if($this->_cart->ST['state_id']){
-//				$stateModel = self::getModel('state');
-//				$stateModel->setId($this->_cart->ST['state_id']);
-//				$state = $stateModel->getState();
-//				if($state) $this->_cart->ST['state_name'] = $state->state_name;	
-//			}
-//		}
+
 	}
 	
-	private function prepareMailData(){
-		
+	private function prepareVendor(){
 
 		$vendor = $this->getModel('vendor','VirtuemartModel');
 		$vendor->setId($this->_cart->vendorId);
 		$_vendor = $vendor->getVendor();
 		$this->assignRef('vendor',$_vendor);
-		
+	}
+	
+	private function prepareMailData(){
+
+		if(empty($this->vendor)) $this->prepareVendor();
 		//TODO add orders, for the orderId
 		//TODO add registering userdata
 		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on	
@@ -338,18 +307,14 @@ class VirtueMartViewCart extends JView {
 		$selectedPaym = empty($this->_cart->paym_id) ? 0 : $this->_cart->paym_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
-//		Done by the plugin, shouldnt be used anylonger
-//		$selectedCC = empty($this->_cart->creditcard_id']) ? 0 : $this->_cart->creditcard_id'];
-//		$this->assignRef('selectedCC',$selectedCC);
-
 		$payments = $paymentModel->getPayms(false,true);
-		$withCC=false;
-		foreach($payments as $item){
-			if(isset($item->accepted_creditcards)){
-				$withCC=true;
-			}
-		}
-		$this->assignRef('withCC',$withCC);
+//		$withCC=false;
+//		foreach($payments as $item){
+//			if(isset($item->accepted_creditcards)){
+//				$withCC=true;
+//			}
+//		}
+//		$this->assignRef('withCC',$withCC);
 
 		$this->assignRef('paymentModel',$paymentModel);
 		$this->assignRef('payments',$payments);

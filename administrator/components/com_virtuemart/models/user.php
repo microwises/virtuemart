@@ -177,7 +177,7 @@ class VirtueMartModelUser extends JModel {
 	   		$this->_data->load((int)$this->_id);
 	   		
 	   		/* Add the shopper_group_ids */
-			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref WHERE `user_id` = "'.$this->_id.'"';
+			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref WHERE `user_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 		
@@ -505,7 +505,7 @@ class VirtueMartModelUser extends JModel {
 
 		if(empty($_data['shopper_group_id'])){
 //			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `vendor_id`="1" AND `default`="1" ';
-			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shoppergroup_xref 
+			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref 
 				WHERE `default`="1" AND `vendor_id`="1" ';
 			$this->_db->setQuery($q);
 			$_data['shopper_group_id']=$this->_db->loadResult();
@@ -515,7 +515,7 @@ class VirtueMartModelUser extends JModel {
 		// Bind the form fields to the auth_user_group table
 		$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__vm_user_shoppergroup_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
+		modelfunctions::storeArrayData('#__vm_user_shopper_group_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 		
 //		if (!$table->bind($shoppergroupData)) {		    
 //			$this->setError($table->getError());
@@ -772,7 +772,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery (){
 		
-	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_group, #__vm_user_shoppergroup_xref, #__vm_vendor
+	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_group, #__vm_user_shopper_group_xref, #__vm_vendor
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -782,7 +782,7 @@ class VirtueMartModelUser extends JModel {
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
 			. 'LEFT JOIN #__vm_users AS vmu ON ju.id = vmu.user_id '
-			. 'LEFT JOIN #__vm_user_shoppergroup_xref AS vx ON ju.id = vx.user_id '
+			. 'LEFT JOIN #__vm_user_shopper_group_xref AS vx ON ju.id = vx.user_id '
 			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();

@@ -38,6 +38,7 @@ class VirtueMartCart  {
 	private $_inCheckOut = false;
 	private $_dataValidated = false;
 	private $_confirmDone = false;
+	
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
@@ -45,6 +46,7 @@ class VirtueMartCart  {
 	var $paym_id = 0;
 	var $BT = 0;
 	var $ST = 0;
+	var $tosAccepted = 0;
 	
 	private function __construct() {
 				
@@ -488,7 +490,7 @@ class VirtueMartCart  {
 				}
 			}
 		}
-		
+		if(empty($this->tosAccepted)) $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
 		$this->_dataValidated = true;

@@ -618,7 +618,7 @@ class VirtueMartModelVendor extends JModel {
 				s.state_2_code AS state, s.state_name AS statename, city, zip, 
 				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
 				FROM #__vm_vendor v
-				LEFT JOIN #__vm_user_shoppergroup_xref x
+				LEFT JOIN #__vm_user_shopper_group_xref x
 				ON x.vendor_id = v.vendor_id
 				LEFT JOIN #__vm_user_info u
 				ON u.user_id = x.user_id
