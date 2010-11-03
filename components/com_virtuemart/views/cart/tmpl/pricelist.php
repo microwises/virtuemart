@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 		$i=0;
 		foreach ($this->cart->products as $k=>$product){
-			dump($product,'product in pricelist');
+//			dump($product,'product in pricelist');
 
 			// Added for the zone shipping module
 			//$vars["zone_qty"] += $product["quantity"];
@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 			
 			/* Product PRICE */
 			$priceKey = $product->product_id.$variantmod;
-			dump($priceKey,'my $priceKey '.$product->product_id);
+//			dump($priceKey,'my $priceKey '.$product->product_id);
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
 			/** @todo Format price */

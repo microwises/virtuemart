@@ -40,13 +40,13 @@ class user_info
 			$_userinfo   = $this->getTable($_table);
 			if (!$_userinfo->bind($_data)) {
 				$this->setError($_userinfo->getError());
-				dump($_userinfo,'storeAddress bind ERROR $_userinfo');
+//				dump($_userinfo,'storeAddress bind ERROR $_userinfo');
 				return false;
 			}
 
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
-				dump($_userinfo,'storeAddress Store ERROR $_userinfo');
+//				dump($_userinfo,'storeAddress Store ERROR $_userinfo');
 				return false;
 			}	
 		} else {
@@ -76,12 +76,12 @@ class user_info
 			if ($_table !== null) {
 				if (!$_userinfo->bind($_shipto)) {
 					$this->setError($_userinfo->getError());
-					dump($_userinfo,'bindAddress ERROR $_userinfo');
+//					dump($_userinfo,'bindAddress ERROR $_userinfo');
 					return false;
 				}
 				if (!$_userinfo->store()) { // Write data to the DB
 					$this->setError($_userinfo->getError());
-					dump($_userinfo,'storeAddress ERROR $_userinfo');
+//					dump($_userinfo,'storeAddress ERROR $_userinfo');
 					return false;
 				}
 			}
@@ -133,7 +133,7 @@ class user_info
 //				);
 //			}
 		}
-		dump($_prepareUserFields, 'getUserFields');
+//		dump($_prepareUserFields, 'getUserFields');
 		return $_prepareUserFields;
 	}
 
@@ -148,7 +148,7 @@ class user_info
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
 				$_address[$name] = $_data[$name];
-				dump($_data,'saveAddressInCart is array '.$name);
+//				dump($_data,'saveAddressInCart is array '.$name);
 			}
 			
 		} else {
@@ -156,9 +156,9 @@ class user_info
 				$name = $_fld->name;
 				$_address[$name] = $_data->{$name};
 			}
-			dump($_data,'saveAddressInCart is object');
+//			dump($_data,'saveAddressInCart is object');
 		}
-		dump($_data,'saveAddressInCart');
+//		dump($_data,'saveAddressInCart');
 		$_cart->$_type = $_address;
 		$_cart->setCartIntoSession();
 	}
