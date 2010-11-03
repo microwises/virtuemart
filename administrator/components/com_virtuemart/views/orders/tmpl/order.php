@@ -383,8 +383,7 @@ AdminMenuHelper::startAdminArea();
 			</tr>
 			<?php }; ?>
 		</table>
-		<?php //$ps_order_change_html->html_change_add_item();
-		?></td>
+		</td>
 	</tr>
 </table>
 &nbsp;
@@ -435,8 +434,7 @@ AdminMenuHelper::startAdminArea();
 				</tr>
 			</thead>
 			<tr>
-				<td valign="top" align="center" width="50%"><?php //$ps_order_change_html->html_change_customer_note();
-		?></td>
+				<td valign="top" align="left" width="50%"><?php echo $this->orderbt->customer_note; ?></td>
 			</tr>
 		</table>
 		</td>

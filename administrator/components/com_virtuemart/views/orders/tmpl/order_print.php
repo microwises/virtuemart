@@ -263,7 +263,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				</tr>
 			</thead>
 			<tr>
-				<td valign="top" align="center" width="50%"></td>
+				<td valign="top" align="left" width="50%"><?php echo $this->orderbt->customer_note; ?></td>
 			</tr>
 		</table>
 		</td>

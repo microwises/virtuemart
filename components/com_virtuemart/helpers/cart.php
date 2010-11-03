@@ -47,6 +47,7 @@ class VirtueMartCart  {
 	var $BT = 0;
 	var $ST = 0;
 	var $tosAccepted = 0;
+	var $customer_comment = '';
 	
 	private function __construct() {
 				
@@ -424,7 +425,8 @@ class VirtueMartCart  {
 		$this->_inCheckOut = true;
 		$this->_dataValidated = true;
 		$this->tosAccepted = JRequest::getVar('tosAccepted', '0');
-		
+		$this->customer_comment = JRequest::getVar('customer_comment', '');
+
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 			$_userModel = JModel::getInstance('user', 'VirtueMartModel');

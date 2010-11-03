@@ -60,6 +60,14 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 </fieldset>
 <fieldset>
 	<legend>
+		<?php echo JText::_('VM_COMMENT'); ?>
+		<div>
+			<textarea name="customer_comment" cols="50" rows="5"><?php echo $this->cart->customer_comment; ?></textarea>
+		</div>
+	</legend>
+</fieldset>
+<fieldset>
+	<legend>
 		<?php echo JText::_('VM_CART_TOS'); ?>
 	</legend>
 	<div>

@@ -492,7 +492,9 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->cdate = time();
 		$_orderData->mdate = time();
 		$_orderData->ship_method_id = $_cart->shipping_rate_id;
-		$_orderData->customer_note = ''; // TODO Customer notes not yet implemented (Max?)
+
+		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
+		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
 		if (!$_orderData->store()){
 			$this->setError($_orderData->getError());
