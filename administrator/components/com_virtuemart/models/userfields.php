@@ -593,30 +593,20 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
 						, array('onchange' => 'changeStateList();'), $_prefix);
-//					$_return['fields']['country'] = array (
-//						 'name' => $_prefix . 'country'
-//						,'value' => $shopFunctions->getCountryByID($_return['fields'][$_fld->name]['value'])
-//						,'title' => 'Country'
-//						,'type' => 'text'
-//						,'required' => false
-//						,'hidden' => false
-//						,'formcode' => ''
-//					);
+					// The table data can contain the country_id or the country name
+					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
+						$_return['fields'][$_fld->name]['value'] = $_userData->country;
+					}
 					break;
 				
 				case 'state_id':
 					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderStateList(
 						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value']
 						, $_prefix.'country_id', false, $_prefix);
-//					$_return['fields']['country'] = array (
-//						 'name' => $_prefix . 'state'
-//						,'value' => $shopFunctions->getStateByID($_return['fields'][$_fld->name]['value'])
-//						,'title' => 'State'
-//						,'type' => 'text'
-//						,'required' => false
-//						,'hidden' => false
-//						,'formcode' => ''
-//					);
+					// The table data can contain the state_id or the state name
+					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
+						$_return['fields'][$_fld->name]['value'] = $_userData->state;
+					}
 					break;
 				case 'agreed':
 					$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '

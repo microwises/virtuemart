@@ -93,7 +93,6 @@ class VirtueMartModelOrders extends JModel {
 
 		/* Get the order details */
 		$q = "SELECT o.*, u.*,
-				c.country_name AS country,
 				IF (isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
 			FROM #__vm_orders o
@@ -101,8 +100,6 @@ class VirtueMartModelOrders extends JModel {
 			ON s.order_status_code = o.order_status
 			LEFT JOIN #__vm_order_user_info u
 			ON u.order_id = o.order_id
-			LEFT JOIN #__vm_country c
-			ON c.country_3_code = u.country
 			WHERE o.order_id=".$order_id;
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
@@ -560,6 +557,7 @@ class VirtueMartModelOrders extends JModel {
 			}
 			$_userInfoData->order_id = $_id;
 			$_userInfoData->user_id = $_usr->get('id');
+			$_userInfoData->address_type = 'ST';
 			if (!$_userInfoData->store()){
 				$this->setError($_userInfoData->getError());
 				return false;
