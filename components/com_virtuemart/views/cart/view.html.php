@@ -131,15 +131,18 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('continue_link_html', $continue_link_html);
 
 		if($this->_cart->getDataValidated()){
-			 $text = JText::_('VM_ORDER_CONFIRM_MNU');
-			 $checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm');
+			$text = JText::_('VM_ORDER_CONFIRM_MNU');
+			$checkout_task = 'confirm';
+//			$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm');
 		} else {
 			$text = JText::_('VM_CHECKOUT_TITLE');
-			$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
+			$checkout_task = 'checkout';
+//			$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
 		}
 		
-		$checkout_link_html = '<a class="checkout_link" href="'.$checkout_link.'" />'.$text.'</a>';
+		$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" />'.$text.'</a>';
 		$this->assignRef('checkout_link_html', $checkout_link_html);
+		$this->assignRef('checkout_task', $checkout_task);
 		
 		$this->assignRef('lists', $this->lists);
 		
@@ -190,13 +193,18 @@ class VirtueMartViewCart extends JView {
 									.'&user_info_id='.(empty($addressList[$_i]->user_info_id)? 0 : $addressList[$_i]->user_info_id)
 									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
-		
+//			$_selectedST = JRequest::getVar('shipto');
 			$_selectedAddress = (
-				empty($this->_cart->address_shipto_id)
+				empty($this->_cart->selected_shipto)
 					? $addressList[0]->user_info_id // Defaults to 1st BillTo
-					: $this->_cart->address_shipto_id
+					: $this->_cart->selected_shipto
 				);
-				
+//			$_selectedAddress = (
+//				empty($this->_cart->address_shipto_id)
+//					? $addressList[0]->user_info_id // Defaults to 1st BillTo
+//					: $this->_cart->address_shipto_id
+//				);
+
 			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
 		} else {
 			$_selectedAddress = 0;

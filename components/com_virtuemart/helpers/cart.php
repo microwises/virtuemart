@@ -403,6 +403,7 @@ class VirtueMartCart  {
 	}
 
 	function checkout(){
+
 		if($this -> checkoutData()){
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));		
@@ -423,6 +424,14 @@ class VirtueMartCart  {
 
 		$this->_inCheckOut = true;
 		$this->_dataValidated = true;
+		$this->tosAccepted = JRequest::getVar('tosAccepted', '0');
+		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
+			$_userModel = JModel::getInstance('user', 'VirtueMartModel');
+			$_stData = $_userModel->getUserAddress(0, $this->selected_shipto, '');
+			$this->validateUserData('ST', $_stData[0]);
+		}
+
 		$this->setCartIntoSession();
 		
 		$mainframe = JFactory::getApplication();
@@ -490,7 +499,7 @@ class VirtueMartCart  {
 				}
 			}
 		}
-		if(empty($this->tosAccepted)) $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
+		if(!$this->tosAccepted) $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
 		$this->_dataValidated = true;
@@ -508,9 +517,10 @@ class VirtueMartCart  {
 	 *
 	 * @author Max Milbers
 	 * @param String if BT or ST
+	 * @param Object If given, an object with data address data that must be formatted to an array
 	 * @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	 */
-	 private function validateUserData($type='BT'){
+	 private function validateUserData($type='BT', $_obj = null){
 
 //		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
@@ -524,7 +534,9 @@ class VirtueMartCart  {
 
 		$redirectMsg=0;
 		foreach($neededFields as $field){
-
+			if ($_obj !== null) {
+				$this->{$type}[$field->name] = $_obj->{$field->name};
+			}
 			if(empty($this->{$type}[$field->name]) && $field->name!='state_id'){
 				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$this->{$type}[$field->name].' but '.$this->BT['first_name'];
 			} else {

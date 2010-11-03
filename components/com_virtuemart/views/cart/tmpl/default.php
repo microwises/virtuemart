@@ -24,6 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	
 ?>
+<form method="post" id=userForm name="checkoutForm" action="<?php echo JRoute::_( 'index.php' ); ?>">
 
 <fieldset>
 	<legend>
@@ -64,8 +65,9 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	<div>
 	<?php echo $this->vendor->vendor_terms_of_service; echo '</div>';
 	$checked = '';
-	if ($this->cart->tosAccepted) $checked = 'checked="checked"' ?>
-	<input type="checkbox" name="tosAccepted" value="1" <?php echo $checked .'/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED'); ?>
+	if ($this->cart->tosAccepted) $checked = 'checked="checked"';
+	echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED');
+	?>
 </fieldset>
 <?php
 
@@ -83,9 +85,13 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	if ($this->continue_link_html != '') {			
 		echo $this->continue_link_html;
 	}
-
 	echo $this->checkout_link_html;
-		
 
-echo '</div>';
+	$text = JText::_('VM_ORDER_CONFIRM_MNU');
 ?>
+</div>
+
+<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+<input type='hidden' name='option' value='com_virtuemart'/>
+<input type='hidden' name='view' value='cart'/>
+</form>

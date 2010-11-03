@@ -221,9 +221,12 @@ class DbScheme
 	/**
 	 * If the table does not exist, of differs from the defined scheme, create of modify the table
 	 * @author Oscar van Eijk
+	 * @param boolean $_drops True if existing fields should be dropped; default false.
+	 * If existing fields should be converted to new fields, call with DbScheme::scheme(false) first,
+	 * then do the conversions, next call DbScheme::scheme(true).
 	 * @return boolean, false on error, true on success
 	 */
-	public function scheme()
+	public function scheme($_drops = false)
 	{
 		if (!$this->inuse) {
 			JError::raiseWarning(500, 'No scheme in use to create or alter - define a scheme first');
@@ -236,7 +239,7 @@ class DbScheme
 		} elseif ($_return === false) {
 			$_stat = $this->create_table(); // table does not exist
 		} else {
-			$_stat = $this->alter_table($_return); // differences found
+			$_stat = $this->alter_table($_return, $_drops); // differences found
 		}
 		return $_stat;
 	}
@@ -388,12 +391,13 @@ class DbScheme
 	/**
 	 * Make changes to the table
 	 * @param array $_diffs Changes to make
+	 * @param boolean $_drops True if existing fields should be dropped
 	 * @author Oscar van Eijk
 	 * @return false on errors, true on success
 	 */
-	private function alter_table($_diffs)
+	private function alter_table($_diffs, $_drops)
 	{
-		if (array_key_exists('drop', $_diffs) && count($_diffs['drop']['columns']) > 0) {
+		if ($_drops === true && array_key_exists('drop', $_diffs) && count($_diffs['drop']['columns']) > 0) {
 			foreach ($_diffs['drop']['columns'] as $_fld => $_desc) {
 				$this->db->setQuery('ALTER TABLE ' . $this->table . ' DROP ' . $_fld);
 				if (!$this->db->query()) {

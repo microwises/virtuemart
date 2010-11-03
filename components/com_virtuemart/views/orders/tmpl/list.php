@@ -46,8 +46,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</thead>
 	<?php
 		$k = 0;
-		for ($i = 1, $n = count($this->orderlist); $i <= $n; $i++) {
-			$row =& $this->orderlist[$i];
+		foreach ($this->orderlist as $row) {
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=details&order_id=' . $row->order_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">

@@ -314,7 +314,6 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkout(){
-
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = VirtueMartCart::getCart();
 		if($cart ){

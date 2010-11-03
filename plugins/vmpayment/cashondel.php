@@ -81,7 +81,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		);
 		$_scheme->define_scheme($_schemeCols);
 		$_scheme->define_index($_schemeIdx);
-		if (!$_scheme->scheme()) {
+		if (!$_scheme->scheme(true)) {
 			JError::raiseWarning(500, $_scheme->get_db_error());
 		}
 		$_scheme->reset();

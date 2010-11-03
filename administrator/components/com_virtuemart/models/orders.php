@@ -145,8 +145,9 @@ class VirtueMartModelOrders extends JModel {
 		$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
 			.',m.paym_name AS payment_method '
 			.$this->getOrdersListQuery();
+		$_filter = array();
 		if ($_uid > 0) {
-			$q .= ' WHERE u.user_id = ' . $_uid . ' ';
+			$_filter[] = ('u.user_id = ' . $_uid);
 		}
 		$q .= $this->getOrdersListFilter()."
 	";
@@ -175,10 +176,9 @@ class VirtueMartModelOrders extends JModel {
 	 * Collect the filters for the query
 	 * @author RolandD
 	 */
-	private function getOrdersListFilter()
+	private function getOrdersListFilter($filters = array())
 	{
 		$db = JFactory::getDBO();
-		$filters = array();
 		/* Check some filters */
 		$filter_order = JRequest::getCmd('filter_order', 'order_id');
 		if ($filter_order == '') $filter_order = 'order_id';
@@ -524,13 +524,12 @@ class VirtueMartModelOrders extends JModel {
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')
 		);
-
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			if ($_name == 'country') {
-				$_userInfoData->$_name = $shopFunctions->getCountryByID($_cart->BT['country_id']);
-			} elseif ($_name == 'state') {
-				$_userInfoData->$_name = $_cart->BT['state_id'];
+			if ($_name == 'country_id') {
+				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['country_id']);
+			} elseif ($_name == 'state_id') {
+				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['state_id']);
 			} else {
 				$_userInfoData->$_name = $_cart->BT[$_name];
 			}
@@ -551,7 +550,13 @@ class VirtueMartModelOrders extends JModel {
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
-				@$_userInfoData->$_name = $_cart->ST[$_name];
+				if ($_name == 'country_id') {
+					$_userInfoData->country = shopFunctions::getCountryByID($_cart->ST['country_id']);
+				} elseif ($_name == 'state_id') {
+					$_userInfoData->state = shopFunctions::getStateByID($_cart->ST['state_id']);
+				} else {
+					$_userInfoData->$_name = $_cart->ST[$_name];
+				}
 			}
 			$_userInfoData->order_id = $_id;
 			$_userInfoData->user_id = $_usr->get('id');
