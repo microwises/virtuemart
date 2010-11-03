@@ -76,7 +76,7 @@ AdminMenuHelper::startAdminArea();
 		<!-- Print view -->
 			<?php
 			/* Print view URL */
-			$details_url = JURI::root()."?option=".$option."&view=orders&task=orderprintdetails&order_id=".$order->order_id."&format=raw";
+			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&order_id=".$order->order_id;
 			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
 			$details_link .= JHTML::_('image', 'images/M_images/printButton.png', JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 			?>

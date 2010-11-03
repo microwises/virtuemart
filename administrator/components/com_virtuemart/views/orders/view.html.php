@@ -135,9 +135,6 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderst', $orderst);
 			$this->assignRef('shippingInfo', $_shippingInfo);
 
-			JHTML::_('behavior.modal');
-			$this->setLayout('order');
-
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;
 			$_orderStatusSelect = JHTML::_('select.genericlist', $_orderStats, 'order_status['.$_orderID.']', '', 'value', 'text', $_currentOrderStat, 'order_status');
@@ -148,21 +145,6 @@ class VirtuemartViewOrders extends JView {
 			JToolBarHelper::title(JText::_( 'VM_ORDER_EDIT_LBL' ), 'vm_orders_48');
 			JToolBarHelper::back();
 		}
-//		else if ($curTask == 'editOrderStatus') {
-//			/* Set the layout */
-//			$this->setLayout('orders_editstatus');
-//
-//			/* Get the data */
-//			$order = $this->get('Order');
-//
-//			/* Get order statuses */
-//			$orderstatuses = $this->get('OrderStatusList');
-//			$this->assignRef('orderstatuses', $orderstatuses);
-//			$this->assignRef('order_id', $order['details']['BT']->order_id);
-//			$this->assignRef('cur_order_status', $order['details']['BT']->order_status);
-//			$_lo = 0; // Use a var; must be passed by reference
-//			$this->assignRef('line_only', $_lo);
-//		}
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
 
@@ -179,26 +161,6 @@ class VirtuemartViewOrders extends JView {
 			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
 			$this->assignRef('orderitem', $orderItem);
 		}
-//		else if ($curTask == 'updateOrderItemStatus') {
-//			$this->setLayout('orders_editstatus');
-//
-//			/* Get order statuses */
-//			$orderstatuses = $this->get('OrderStatusList');
-//			$this->assignRef('orderstatuses', $orderstatuses);
-//
-//			$model = $this->getModel();
-//			$orderId = JRequest::getVar('orderId', '');
-//			$orderLineItem = JRequest::getVar('orderLineId', '');
-//			$this->assignRef('order_id', $orderId);
-//			$this->assignRef('order_item_id', $orderLineItem);
-//
-//			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
-//			$this->assignRef('orderitem', $orderItem);
-//			// Following is here for syntactical reasons only (allows us to reuse the same template) 
-//			$this->assignRef('cur_order_status', $orderItem->order_status);
-//			$_lo = 1; // Use a var; must be passed by reference
-//			$this->assignRef('line_only', $_lo);
-//		}
 		else {
 			$this->setLayout('orders');
 

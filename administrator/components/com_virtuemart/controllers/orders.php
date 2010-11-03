@@ -72,9 +72,31 @@ class VirtuemartControllerOrders extends JController {
 	}
 
 	/**
+	* Print the order details
+	*/
+	public function orderPrint()
+	{
+		/* Create the view object */
+		$view = $this->getView('orders', 'pdf');
+
+		/* Default model */
+		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
+		/* Additional models */
+		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		
+		/* Set the layout */
+		$view->setLayout('order_print');
+
+		/* Now display the view. */
+		$view->display();
+	}
+
+	/**
 	* Shows the order details
 	*/
-	public function edit() {
+	public function edit()
+	{
 		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -85,7 +107,7 @@ class VirtuemartControllerOrders extends JController {
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		
 		/* Set the layout */
-		$view->setLayout('orders_edit');
+		$view->setLayout('order');
 
 		/* Now display the view. */
 		$view->display();
