@@ -73,9 +73,7 @@ class ShopFunctions {
 		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId );
 		return $listHTML;
 	}
-	
-	
-	
+
 	/**
 	* Creates a Drop Down list of available Shopper Groups
 	*
@@ -316,7 +314,22 @@ class ShopFunctions {
 		return $_r->fld;
 	}
 
-/**
+	public function getShippingRateDetails($_id)
+	{
+		$_db = JFactory::getDBO();
+
+		$_q = 'SELECT c.shipping_carrier_name AS carrier '
+			. ', s.shipping_rate_name AS name '
+			. 'FROM `#__vm_shipping_rate` AS s '
+			. ', `#__vm_shipping_carrier` AS c '
+			. 'WHERE s.shipping_rate_id = ' . $_id . ' '
+			. 'AND s.shipping_rate_carrier_id = c.shipping_carrier_id '
+		;
+		$_db->setQuery($_q);
+		return $_db->loadObject();
+	}
+
+	/**
 	 * Print a select-list with enumerated categories
 	 *
      * @author jseros

@@ -398,23 +398,16 @@ AdminMenuHelper::startAdminArea();
 				</tr>
 			</thead>
 			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>:
-				</td>
-				<td align="left"><?php
-				if  ($this->orderbt->ship_method_id) {
-					$details = explode( "|", $this->orderbt->ship_method_id);
-				}
-				echo $details[1]; ?></td>
+				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </td>
+				<td align="left"><?php echo $this->shippingInfo->carrier; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>:
-				</td>
-				<td><?php echo $details[2]; ?></td>
+				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </td>
+				<td><?php echo $this->shippingInfo->name; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>:
-				</td>
-				<td align="left"><?php echo $details[3]; ?></td>
+				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </td>
+				<td align="left"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
 			</tr>
 		</table>
 		</td>

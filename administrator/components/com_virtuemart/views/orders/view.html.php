@@ -122,7 +122,7 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-
+			$_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
 			/* Assign the data */
 			$this->assignRef('order', $order);
 			$this->assignRef('orderID', $_orderID);
@@ -133,6 +133,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('itemattributesupdatefields', $_itemAttributesUpdateFields);
 			$this->assignRef('orderbt', $orderbt);
 			$this->assignRef('orderst', $orderst);
+			$this->assignRef('shippingInfo', $_shippingInfo);
 
 			JHTML::_('behavior.modal');
 			$this->setLayout('order');
