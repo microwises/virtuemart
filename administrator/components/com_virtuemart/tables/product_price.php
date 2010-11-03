@@ -82,7 +82,6 @@ class TableProduct_price extends JTable {
 			$this->setError(JText::_('Impossible to save product prices without product_currency'));
 			return false;
 		}
-		dump($this, 'my product price table');
 		return true;
 	}
 }

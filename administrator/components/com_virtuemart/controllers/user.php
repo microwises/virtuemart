@@ -94,11 +94,6 @@ class VirtuemartControllerUser extends JController {
 		parent::display();
 	}
 
-//	function add (){
-//		dump('called add');
-//		JRequest::setVar('cid', (int)0);
-//		$this->edit();
-//	}
 	
 	function editshop(){
 

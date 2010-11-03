@@ -79,19 +79,7 @@ class VirtuemartViewUser extends JView {
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
 		$this->_userDetails = $this->_model->getUser();
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($this->_userDetails,'Display user userDetails');
-		}
 		$this->assignRef('userDetails', $this->_userDetails);
-
-//		if($layoutName=='edit_address'){
-//			$type = JRequest::getVar('addrtype', 'BT');
-//			$shipTo = JRequest::getVar('?_id', 0);
-//			dump($shipTo,'my shipto in user/view.html.php');
-//			if($type!='BT' && !$shipTo){
-//				$this->userInfoID = 0;		
-//			}
-//		}
 		
 		$userFields = $this->setUserFieldsForView($layoutName);
 		
@@ -194,9 +182,6 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('userInfoID', $userInfoID);
 		}
 
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($this->_userDetailsList,'_userDetailsList');
-		}
 		//TODO attention, this is the function which actually loads the data into the field.
 		// The values are saved in $this->_userDetailsList
 		if(!empty($this->_cuid)){
@@ -205,9 +190,6 @@ class VirtuemartViewUser extends JView {
 							,$userAddressData
 //							,$preFix
 							);
-			if (function_exists('dumpTrace')) { // J!Dump is installed
-				dump($userFields,'my Userfields with getUserFieldsByUser for '.$user_info_id);
-			}
 		} else { //the anonymous case
 			
 			//We may move this to the helper of course, but for developing I just wanna get it working
@@ -218,9 +200,6 @@ class VirtuemartViewUser extends JView {
 				,$_userFields
 				,$type
 			);
-			if (function_exists('dumpTrace')) { // J!Dump is installed
-				dump($userFields,'my Userfields with getAddress');
-			}
 		}
 
 		
@@ -257,10 +236,7 @@ class VirtuemartViewUser extends JView {
 		}
 		
 		$this->assignRef('userInfoID', $userInfoID);
-		
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($userDetailsList,'getUserDataBT the userDetailsList');
-		}	
+	
 		$this->assignRef('userDetailsList', $userDetailsList);	
 	}
 	
@@ -449,7 +425,6 @@ class VirtuemartViewUser extends JView {
 	function lVendor(){
 
 		$vendorModel = $this->getModel('vendor');
-		dump($this->_userDetails,'lVendor');
 		// If the current user is a vendor, load the store data
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 //		if ($vendorModel->isVendor($this->_model->_id)) {

@@ -249,7 +249,6 @@ class VirtueMartCart  {
 		if (empty($quantity)) $quantity = JRequest::getInt('quantity');
 		
 //		foreach($cart_product_ids as $cart_product_id){
-			dump($this->products[$cart_product_id],'Searching for key '.$cart_product_id);
 			if (array_key_exists($cart_product_id, $this->products)) {
 				if(!empty($quantity)){
 					if($this->checkForQuantities($this->products[$cart_product_id],$quantity)){
@@ -425,6 +424,7 @@ class VirtueMartCart  {
 		$this->_inCheckOut = true;
 		$this->_dataValidated = true;
 		$this->tosAccepted = JRequest::getVar('tosAccepted', '0');
+		
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 			$_userModel = JModel::getInstance('user', 'VirtueMartModel');
@@ -505,9 +505,6 @@ class VirtueMartCart  {
 		$this->_dataValidated = true;
 
 		$this->setCartIntoSession();
-		if (function_exists('dumpTrace')) { // J!Dump is installed
-			dump($this,'Cart runned through checkout and $this->_dataValidated '.$this->_dataValidated);
-		}
 
 		return true;
 	}

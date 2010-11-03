@@ -104,8 +104,6 @@ class calculationHelper{
 //		if(is_Int($productId)){
 			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc(); 
-//			dump($row,'myRow');
-//			if($row && count($row)==2){
 			if($row){
 				$costPrice = $row['product_price'];
 				$this->productCurrency=$row['product_currency'];
@@ -157,7 +155,6 @@ class calculationHelper{
 				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__vm_user_shopper_group_xref as `usgr`
  JOIN `#__vm_shopper_group` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it 
-				dump($this->_db);
 			} 
 			if(empty($this->_shopperGroupId)){
 //				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');				
@@ -204,7 +201,7 @@ class calculationHelper{
 				$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
 			}
 			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
-			dump($prices['basePrice'],'my baseprice of variant');
+//			dump($prices['basePrice'],'my baseprice of variant');
 		}
 		
 		//For Profit, margin, and so on
@@ -247,20 +244,6 @@ class calculationHelper{
 		
 
 		$prices['variantModification']=$variant;
-		
-		//As last step the prices gets adjusted to the user choosen currency
-//		if($this -> _currencyDisplay && $currencydisplay){
-//			//just for developing
-//			$this->userCurrency = $this -> vendorCurrency;
-//			dump($prices,'$prices');
-//			foreach($prices as $k=>$price){
-//				//Maybe we need this. ATM I dont know
-////				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
-//				if($price) $prices[$k] = $this -> _currencyDisplay->getFullValue($price);
-//			}
-//		}else {
-//			
-//		}
 
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($prices).'</pre>';
@@ -326,7 +309,7 @@ class calculationHelper{
 		
 
 		foreach ($cart->products as $product){
-			dump($product,'Product in cart in calc'); 
+//			dump($product,'Product in cart in calc'); 
 			$productId = $product->product_id;
 			if (empty($product->quantity) || empty( $product->product_id )){
 				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->product_id);
@@ -334,7 +317,7 @@ class calculationHelper{
 			}
 			
 			$variantmod = $this->parseModifier($product->variant);
-			dump($variantmod,'My variant modification in calc');
+//			dump($variantmod,'My variant modification in calc');
 			$cartproductkey = $productId.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
 //			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
@@ -421,22 +404,8 @@ class calculationHelper{
 		
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
-		
-//		//As last step the prices gets adjusted to the user choosen currency
-//		if($this -> _currencyDisplay){
-//			//just for developing
-//			$this->userCurrency = $this -> vendorCurrency;
-//			
-//			foreach($this->_cartPrices as $k=>$price){
-//				if($price ){
-//					$this->_cartPrices[$k] = $this -> _currencyDisplay->getFullValue($price);
-//				}
-//				//Maybe we need this. ATM I dont know
-////				$price = $this ->_currency->convert( $price, $currency,$this->userCurrency);
-////				if($price) $this->_cartPrices[$k] = $this -> _currencyDisplay->getFullValue($price);
-//			}
-//		}
-		dump($this -> _cartPrices,"my cart prices");
+
+//		dump($this -> _cartPrices,"my cart prices");
 		return $this->_cartPrices;
 	}
 
@@ -1015,10 +984,10 @@ class calculationHelper{
 	 
 	public function parseModifier($variants){
 		if(empty( $variants) ) return 0.0;
-//		echo '<br />Lets see what we have here for variant? <pre>'.print_r($variants).'</pre>';
+
 		$modificatorSum=0.0;
 		$max=array();
-//		dump($variants,'parseModifier $variants');
+
 		foreach ($variants as $variant_name => $value) {		
 			if(strpos($value,'(')){
 				$bundle=strrchr($value,'(') ;

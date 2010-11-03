@@ -75,9 +75,7 @@ class VirtuemartViewCalc extends JView {
 					$db->setQuery($q);
 					$currency= $db->loadResult();
 					$calc->calc_currency = $currency;
-					dump($currency,'currency by Main vendor');
 				} else {
-					dump($currency,'currency by vendor');
 					$calc->calc_currency = $currency;
 				}
 				
@@ -104,7 +102,6 @@ class VirtuemartViewCalc extends JView {
 
 			/* Get the category tree */
 			$categoryTree= null;
-			dump($calc->calc_categories,'calc Kategorien');
 			if (isset($calc->calc_categories)){
 				$calc_categories = $calc->calc_categories;
 				$categoryTree = ShopFunctions::categoryListTree($calc_categories);

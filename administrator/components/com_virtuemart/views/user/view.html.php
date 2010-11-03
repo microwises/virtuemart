@@ -222,12 +222,7 @@ class VirtuemartViewUser extends JView {
 				$this->assignRef('currency', $currency);
 			}
 			
-//			dump($userDetails,'my user details in edit user');
-
 			if (!empty($userDetails->user_is_vendor)) {
-				
-//				$vendorModel = $this->getModel('vendor');	
-//				$vendor = $vendorModel->getVendor();
 
 				$this->assignRef('vendor', $userDetails->vendor);
 				

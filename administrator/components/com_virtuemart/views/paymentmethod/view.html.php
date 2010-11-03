@@ -160,22 +160,12 @@ class VirtuemartViewPaymentMethod extends JView {
 //		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
 		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmpayment" AND `published`="1" ';
 		$db->setQuery($q);
-//		if (function_exists('dumpTrace')) {
-//			dump($db,'Functions of db');
-//		}
 		$result = $db->loadAssocList();
-		if (function_exists('dumpTrace')) {
-			dump($result,'My installed Pluginlist');
-		}
 		
 		$listHTML='<select id="paym_jplugin_id" name="paym_jplugin_id">';
 		
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
-		if (function_exists('dumpTrace')) {
-//			dump($params,'My Params');
-			dump($params->getValue('pType'),'My Type');
-		}
 			if($paym['id']==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
 			$pType = $params->getValue('pType');
@@ -189,4 +179,4 @@ class VirtuemartViewPaymentMethod extends JView {
 	}
 	
 }
-?>
+// pure php not tag

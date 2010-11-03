@@ -115,7 +115,7 @@ class VirtueMartViewProductdetails extends JView {
 		$uri = JURI::getInstance();
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
-//		dump($product,'my product in view.html.php');
+
 	    if(empty($category->category_template)){
 	    	$catTpl = VmConfig::get('categorytemplate');
 	    }else {

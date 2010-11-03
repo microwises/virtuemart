@@ -173,16 +173,13 @@ class TableUser_info extends JTable {
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
-		dump($total,'user_info check '.$q);
+
 		if (count($total) > 0) {
 			$this->user_info_id = $total[0];
 			return true;
 		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
 			$this->cdate = time();
-			if (function_exists('dumpTrace')) { // J!Dump is installed
-				dump($this->user_info_id, 'New user info id created');
-			}
 			return false;
 		}
 	}

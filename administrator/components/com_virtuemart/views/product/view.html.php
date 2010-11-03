@@ -61,7 +61,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product */
 				$product_model = $this->getModel('product');
 				$product = $this->get('Product');
-				dump($product,'Model in view');
+
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
@@ -76,7 +76,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->product_id);
-				dump($calculator->rules,'rule');
+
 				$dbTax = 'Rules Effecting: <br />';
 				foreach($calculator->rules['dBTax'] as $rule){
 					
@@ -96,10 +96,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				}	
 				$this->assignRef('daTaxRules', $daTax);
 
-				
-//				$this->assignRef('taxRules', $calculator->rules['tax']);
-//				$this->assignRef('dbTaxRules', $calculator->rules['dbTax']);
-//				dump($calculator->rules,'my rules');
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
@@ -330,7 +326,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
-		dump($taxes);
+
 		$taxrates = array();
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
 		foreach($taxes as $tax){
@@ -356,7 +352,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		foreach($discounts as $discount){
 			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
 		}
-//		dump($taxrates,'taxrates');
 		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 		

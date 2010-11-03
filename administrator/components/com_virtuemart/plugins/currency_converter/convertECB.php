@@ -42,28 +42,6 @@ class convertECB {
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
 
-//		global $vendor_currency; //is DEFAULT!
-//		
-//		dump($currA,'$currA');
-//		dump($currB,'$currB');
-//		
-//		if( !$currA ) {
-//			$currA = $vendor_currency;
-//		}
-//		if( !$currB ) {
-//			$currB = $vendor_currency;
-//		}
-//		// If both currency codes match, do nothing
-//		if( $currA == $currB ) {		
-//			return $amountA;
-//		}
-//
-//		$currA = self::ensureUsingCurrencyCode($currA);
-//		$currB = self::ensureUsingCurrencyCode($currB);
-//
-//		dump($currA,'$currA');
-//		dump($currB,'$currB');
-			
 		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 		if( empty($globalCurrencyConverter)) {
 			setlocale(LC_TIME, "en-GB");

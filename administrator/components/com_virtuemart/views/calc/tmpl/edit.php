@@ -105,7 +105,6 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-			<?php dump($this->calc->calc_currency, 'my currency id');?>
 			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'currency_id', 'currency_name', $this->calc->calc_currency); ?>
 
 			</td>

@@ -218,28 +218,16 @@ class VirtueMartModelVendor extends JModel {
 	$dbv = $table->getDBO();
 	$this->_id = $dbv->insertid();
 	
-	if ($_external) {
+//	if ($_external) {
 		// When called from another model (currently: the user model), user_info was already saved.
 		return true;
-	}
+//	}
 	
-	dump('vendor store, not a call from user !');
-	return $this->storeUserInfo($data);
+//	return $this->storeUserInfo($data);
 	}
 	
 	public function storeUserInfo($data) {
 		echo 'Attention here in storeUserInfo in the vendor model is nothing'; die;
-	}
-	
-	
-	//Here starts the stuff, which was in the helper
-		/**
-	 * Proxy function
-	 * @todo delete this function
-	 */
-	function getVendorIdByUserId($userId, $ownerOnly=true) {	
-		dump('ATTENTION you use a proxy function');			
-		return self::getVendorId('user', $userId, $ownerOnly);
 	}
 
 	/**
@@ -254,7 +242,7 @@ class VirtueMartModelVendor extends JModel {
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if(isset($userId)){
-			$vendorId = self::getVendorIdByUserId($userId,$ownerOnly);
+			$vendorId = self::getVendorId('user', $userId, $ownerOnly);
 			return $vendorId;
 		}else{
 			JError::raiseNotice(1,'$user_id empty, no user logged in');
@@ -277,42 +265,13 @@ class VirtueMartModelVendor extends JModel {
 		else {
 			
 			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `user_is_vendor` FROM `#__vm_user_info` WHERE `user_id`='.$userId;
+			$q = 'SELECT `user_is_vendor` FROM `#__vm_users` WHERE `user_id`='.$userId;
 			$this->_db->setQuery($q);
 			return $this->_db->loadResult();
 		}
 		
 	}
 	
-
-	
-	/**
-	 * Retrieves the name of a vendor specified by $vendor_id
-	 *
-	 * @param int $vendor_id
-	 * @param int $product_id
-	 * @return String
-	 */
-//	function get_name($vendor_id,$product_id="") {
-//
-//		// Returns the vendor name corresponding to a vendor_id;
-//		$db = new ps_DB;
-//
-//		if ($vendor_id) {
-//			$q = "SELECT `vendor_name` FROM `#__{vm}_vendor` WHERE `vendor_id` = '$vendor_id'";
-//		} elseif ($product_id) {
-//			$q  = "SELECT `vendor_name` FROM `#__{vm}_product`,`#__{vm}_vendor` ";
-//			$q .= "WHERE `product_id` = '$product_id' ";
-//			$q .= "AND `#__{vm}_product`.`vendor_id` = `#__{vm}_vendor`.`vendor_id` ";
-//		} else {
-//			$vendor_id = $this -> getLoggedVendor();
-//			$q = "SELECT `vendor_name` FROM `#__{vm}_vendor` WHERE `vendor_id` = '$vendor_id'";
-//		}
-//
-//		$db->query($q);
-//		$db->next_record();
-//		return $db->f("vendor_name");
-//	}
 
 	/**
 	 * Get the vendor specific currency
@@ -335,85 +294,6 @@ class VirtueMartModelVendor extends JModel {
 	}
 
 	/**
-	 * Prints a drop-down list of vendor names and their ids.
-	 *
-	 * @author unknown changed by Max Milbers
-	 * 
-	 * @param int $vendor_id
-	 * @param boolean $withZero a List with Option to choose NON vendor
-	 */
-//	function list_vendor($vendor_id='1',$withZero=false) {
-//
-//		$db = new ps_DB;
-//
-//		$q = 'SELECT `vendor_id`,`vendor_name` FROM `#__{vm}_vendor` ORDER BY `vendor_name`';
-//		$db->query($q);
-//		$db->next_record();
-//
-//		// If only one vendor do not show list
-//		if ($db->num_rows() == 1 && !$withZero) {
-//			echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
-//			echo $db->f("vendor_name");
-//		}	
-//		elseif($db->num_rows() > 1) {
-//			$db->reset();
-//			$array = array();
-//			if($withZero){
-//				$array[0] = "-";
-//			}
-//			while ($db->next_record()) {
-//				$array[$db->f("vendor_id")] = $db->f("vendor_name");
-//			}
-//			echo VmHTML::selectList('vendor_id', $vendor_id, $array );
-//		}
-//		else{
-//			if($withZero){
-//				$array[0] = "-";
-//			}
-//			echo VmHTML::selectList('vendor_id', $vendor_id, $array );
-//		}
-//		unset($db);
-//	}
-
-	/**
-	 * Prints a drop-down list of vendor names and their ids.
-	 * But not if the user is only a normal vendor. 
-	 * This is used in product.product_form.php
-	 * @author Max Milbers
-	 * @param int $vendor_id the vendorID of the logged in user
-	 */
-//	function list_ornot_vendor($vendor_id='1', $product_vendor_id) {
-//
-//		$db = new ps_DB;
-//		global $perm;
-//		
-//		// If mainvendor or adminrights show whole list
-//		if($vendor_id==1 || $perm->check( 'admin' )){
-//			$q = 'SELECT `vendor_id`,`vendor_name` FROM `#__{vm}_vendor` ORDER BY `vendor_name` ';
-//			$db->query($q);
-//			$db->next_record();
-//			if ($db->num_rows() == 1) {
-//				echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
-//				echo $db->f("vendor_name");
-//			}
-//			elseif($db->num_rows() > 1) {
-//				$db->reset();
-//				$array = array();
-//				while ($db->next_record()) {
-//					$array[$db->f("vendor_id")] = $db->f("vendor_name");
-//				}
-//				echo VmHTML::selectList('vendor_id', $product_vendor_id, $array );
-//			}
-//		}else{
-//			$db = ps_vendor::get_vendor_fields($product_vendor_id, array("vendor_id","vendor_name"),"");
-//			echo '<input type="hidden" name="vendor_id" value="'.$db->f("vendor_id").'" />';
-//			echo $db->f("vendor_name");
-//			
-//		}
-//
-//	}
-	
-			/**
 	 * 
 	 *  
 	 * @author Max Milbers
@@ -505,9 +385,45 @@ class VirtueMartModelVendor extends JModel {
 	}
 
 	/**
-	 * @author Max Milbers
 	 * 
-	 */
+	 * Gives back the formate of the vendor, gets $style if none is set, with the vendorId.
+	 * When no param is set, you get the format of the mainvendor
+	 * 
+	 * @author unknown
+	 * @author Max Milbers
+	 * @param int 		$vendorId Id of hte vendor
+	 * @param string 	$style The vendor_currency_display_code
+	*   FORMAT: 
+    1: id, 
+    2: CurrencySymbol, 
+    3: NumberOfDecimalsAfterDecimalSymbol,
+    4: DecimalSymbol,
+    5: Thousands separator
+    6: Currency symbol position with Positive values :
+									// 0 = '00Symb'
+									// 1 = '00 Symb'
+									// 2 = 'Symb00'
+									// 3 = 'Symb 00'
+    7: Currency symbol position with Negative values :
+									// 0 = '(Symb00)'
+									// 1 = '-Symb00'
+									// 2 = 'Symb-00'
+									// 3 = 'Symb00-'
+									// 4 = '(00Symb)'
+									// 5 = '-00Symb'
+									// 6 = '00-Symb'
+									// 7 = '00Symb-'
+									// 8 = '-00 Symb'
+									// 9 = '-Symb 00'
+									// 10 = '00 Symb-'
+									// 11 = 'Symb 00-'
+									// 12 = 'Symb -00'
+									// 13 = '00- Symb'
+									// 14 = '(Symb 00)'
+									// 15 = '(00 Symb)'
+    	EXAMPLE: ||&euro;|2|,||1|8
+	* @return string
+	*/
 	public function getCurrencyDisplay($vendorId=1, $style=0){
 		
 		if(empty($style)){
@@ -543,61 +459,8 @@ class VirtueMartModelVendor extends JModel {
 		return $currency;
 	}
 	
+
 	/**
-	 * 
-	 * Gives back the formate of the vendor, gets $style if none is set, with the vendorId.
-	 * When no param is set, you get the format of the mainvendor
-	 * @param int 		$vendorId Id of hte vendor
-	 * @param string 	$style The vendor_currency_display_code
-	*   FORMAT: 
-    1: id, 
-    2: CurrencySymbol, 
-    3: NumberOfDecimalsAfterDecimalSymbol,
-    4: DecimalSymbol,
-    5: Thousands separator
-    6: Currency symbol position with Positive values :
-									// 0 = '00Symb'
-									// 1 = '00 Symb'
-									// 2 = 'Symb00'
-									// 3 = 'Symb 00'
-    7: Currency symbol position with Negative values :
-									// 0 = '(Symb00)'
-									// 1 = '-Symb00'
-									// 2 = 'Symb-00'
-									// 3 = 'Symb00-'
-									// 4 = '(00Symb)'
-									// 5 = '-00Symb'
-									// 6 = '00-Symb'
-									// 7 = '00Symb-'
-									// 8 = '-00 Symb'
-									// 9 = '-Symb 00'
-									// 10 = '00 Symb-'
-									// 11 = 'Symb 00-'
-									// 12 = 'Symb -00'
-									// 13 = '00- Symb'
-									// 14 = '(Symb 00)'
-									// 15 = '(00 Symb)'
-    	EXAMPLE: ||&euro;|2|,||1|8
-	* @return string
-	*/
-//	private function get_currency_display_style( $vendorId=1, $style=0 ) {
-//		
-//		if(empty($style)){
-//			$style = self::getVendorCurrencyDisplayStyle($vendorId);	
-//		}
-//		$array = explode( "|", $style );
-//		$display = Array();
-//		$display["id"] = @$array[0];
-//		$display["symbol"] = @$array[1];
-//		$display["nbdecimal"] = @$array[2];
-//		$display["sdecimal"] = @$array[3];
-//		$display["thousands"] = @$array[4];
-//		$display["positive"] = @$array[5];
-//		$display["negative"] = @$array[6];
-//		return $display;
-//	}	
-	
-		/**
 	 * Create a formatted vendor address
 	 * mosttime $vendor_id is set to 1;
 	 * Returns the formatted Store Address
@@ -649,7 +512,7 @@ class VirtueMartModelVendor extends JModel {
 		}
 	}
 	
-		/**
+	/**
 	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 
 	* Assigned users cannot change storeinformations
 	* ownerOnly = false should be used for users who are assigned to a vendor
@@ -715,7 +578,7 @@ class VirtueMartModelVendor extends JModel {
 	 
 	public function getVendorFields($vendor_id, $fields=array(), $orderby="") {
 		
-		dump('Attention you use the obsolete function getVendorFields');
+		JError::raiseNotice(1,'Attention you use the obsolete function getVendorFields');
 		//used static
 		$db = JFactory::getDBO();
 		$usertable= false;

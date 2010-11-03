@@ -146,8 +146,6 @@ class VirtueMartViewCart extends JView {
 		
 		$this->assignRef('lists', $this->lists);
 		
-		dump($this->_cart,'My Cart in cartview');
-		
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
@@ -210,11 +208,7 @@ class VirtueMartViewCart extends JView {
 			$_selectedAddress = 0;
 			$this->lists['shipTo'] = '';
 		}
-//		dump($addressList,'my AddressList');
-//		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
-//		$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
 
-//		$this->lists['billTo'] = $addressList[0]->user_info_id;
 		$this->lists['billTo'] = empty($addressList[0]->user_info_id)? 0 : $addressList[0]->user_info_id;
 
 	}
@@ -229,7 +223,7 @@ class VirtueMartViewCart extends JView {
 			$this->_user = $this->getModel('user');
 			$this->_user->setCurrent();
 			if(!$this->_user){
-				dump($this,'The user model is not defined');
+				
 			}else{
 				$this->assignRef('user', $this->_user);
 				
@@ -249,14 +243,14 @@ class VirtueMartViewCart extends JView {
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
 		$calculator = calculationHelper::getInstance();
-		dump($product_prices,'prices in prepareCartData');
+
 		foreach($product_prices as $k=>$price){
 //			if(is_int($k)){
 				if(is_array($price)){
 					foreach($price as $sk=>$sprice){
 						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
 					}
-					dump($price,'is array');
+					
 //				}
 
 			} else {
@@ -264,7 +258,6 @@ class VirtueMartViewCart extends JView {
 			}		
 		}
 
-		dump($prices,'prices in prepareCartData');
 		$this->assignRef('prices', $prices);
 
 		$this->assignRef('cartData',$calculator->getCartData());
@@ -360,7 +353,7 @@ class VirtueMartViewCart extends JView {
 				,'BT'
 			);
 		}
-		dump($BTaddress,'My BT');
+
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 		
 		$STaddress['fields']= array();
@@ -377,7 +370,7 @@ class VirtueMartViewCart extends JView {
 				,$_userFieldsST
 				,'ST'
 			);
-			dump($STaddress,'My ST');
+
 		}
 		
 		$this->assignRef('STaddress',$STaddress['fields']);

@@ -53,7 +53,6 @@ defined('_JEXEC') or die('Restricted access');
  		
 		if (!$this->user_id) {
 			$this->setError(JText::_('Users must have an user id'));
-			dump($this->user_id,'table check no user id');
 			return false;
 		}
 		return true;

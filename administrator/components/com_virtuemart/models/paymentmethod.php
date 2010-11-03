@@ -154,10 +154,6 @@ class VirtueMartModelPaymentmethod extends JModel
 		$this->_db->setQuery($q);
 		$this->_data->param = $this->_db->loadResult();	
 
-		if (function_exists('dumpTrace')) {
-			dump($this->_data,'getPaym');
-		}
-
   		return $this->_data;		
 	}    
     

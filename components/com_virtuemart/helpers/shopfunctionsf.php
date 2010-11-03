@@ -302,7 +302,7 @@ class shopFunctionsF {
 				$template = $prodTpl;
 			}
 		}
-		dump($template,'$template');
+
 		shopFunctionsF::setTemplate($template);
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
@@ -320,7 +320,7 @@ class shopFunctionsF {
 				$layout = $catLayout;
 			}
 		}
-		dump($layout,'$layout for category');
+
 		//Set specific product layout
 		if(!empty($prodLayout)){
 			if(is_Int($prodLayout)){
@@ -334,7 +334,6 @@ class shopFunctionsF {
 			}
 		}
 		
-		dump($layout,'$layout and $prodLayout '.$prodLayout);
 		$view->setLayout(strtolower($layout));
 	}
 	

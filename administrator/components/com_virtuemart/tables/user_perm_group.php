@@ -47,11 +47,9 @@ class TableUser_perm_group extends JTable
 	{
     	if (!$this->user_id) {
 			$this->setError(JText::_('Shopper must have an user id to set permission.'));
-			dump($this->user_id,'table check no user id');
 			return false;
 		} else if (!$this->group_id) {
 			$this->setError(JText::_('Shopper must have a group id to set permissin'));
-			dump($this->group_id,'table check no group id');
       		return false;
 		}
 

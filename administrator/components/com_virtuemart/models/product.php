@@ -708,37 +708,31 @@ class VirtueMartModelProduct extends JModel {
         /* Store the product */
 		if (!$product_data->store()) {
 			$this->setError($product_data->getError());
-			dump($product_data,'$product_data->store()');
 			return false;
 		}
 		$product_price_table = $this->getTable('product_price');
-		dump($data,'My data in product before');
+
 		//get product_price_id
 		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
 		$this->_db->setQuery($q);
 		$data['product_price_id'] = $this->_db->loadResult();
-		dump($data,'My data in product');
 
 		if (!$product_price_table->bind($data)) {
 			$this->setError($product_price_table->getError());
-			dump($product_price_table,'$product_price_table->bind()');
 			return false;	
 		}
 		// Make sure the calculation record is valid
 		if (!$product_price_table->check()) {
 			$this->setError($product_price_table->getError());
-			dump($product_price_table,'$product_price_table->check()');
 			return false;	
 		}
 		
 		// Save the country record to the database
 		if (!$product_price_table->store()) {
 			$this->setError($product_price_table->getError());
-			dump($product_price_table,'$product_price_table->store()');
 			return false;
 		}
 
-		dump('Update manufacturer link');
 		
 		/* Update manufacturer link */
 		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';

@@ -92,16 +92,15 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function determineStoreOwner() {
-	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
-	$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
-	if (isset($user_id)) {
-	    $user = JFactory::getUser($user_id);
-	}
-	else {
-	    $user = JFactory::getUser();
-	}
-	dump ($user->id,'Storeowner new user ID');
-	return $user->id;
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+		$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
+		if (isset($user_id)) {
+		    $user = JFactory::getUser($user_id);
+		}
+		else {
+		    $user = JFactory::getUser();
+		}
+		return $user->id;
     }
 
 
