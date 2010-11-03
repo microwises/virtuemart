@@ -497,16 +497,14 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		if(empty($_data['shopper_group_id'])){
-//			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `vendor_id`="1" AND `default`="1" ';
-			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref 
-				WHERE `default`="1" AND `vendor_id`="1" ';
+			$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
 			$this->_db->setQuery($q);
 			$_data['shopper_group_id']=$this->_db->loadResult();
 		}
 
 		// Bind the form fields to the auth_user_group table
 		$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_user_shopper_group_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 
 		if (!user_info::storeAddress($_data, 'user_info', $new)) {
