@@ -100,9 +100,8 @@ class VirtuemartControllerUpdatesMigration extends JController {
      */
     function userSync() {
 	$model = $this->getModel('updatesMigration');
-	$model->integrateJoomlaUsers();
+	$msg = $model->integrateJoomlaUsers();
 
-	$msg = JText::_('Users Syncronized!');
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 

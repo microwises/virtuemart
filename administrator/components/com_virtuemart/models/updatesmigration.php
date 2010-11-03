@@ -58,6 +58,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers, RickG
      */
     function integrateJoomlaUsers() {
+    
+    $msg = JText::_('Start Syncronizing!');
 	$db = JFactory::getDBO();
 	$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
 	$db->setQuery($query);
@@ -68,23 +70,28 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, 0,null,"shopper")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
 	    }
-	    
-//	    $query = "INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES ('" . $user->id . "', '5')";
-		$query = "INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,'" . $user->id . "', '5')";
+		
+		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
+		$this->_db->setQuery($q);
+		$default_shopper_group_id=$this->_db->loadResult();
+			
+		$query = 'INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
 	    }
 
 	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
 	    }
 	}
+	$msg = JText::_('Users Syncronized!');
+	return $msg;
     }
 
 
@@ -131,7 +138,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_users');
 	    }
 	    else {
-		JError::raiseNotice(1, 'setStoreOwner INSERT __vm_users '.$userId);
+		JError::raiseNotice(1, 'setStoreOwner INSERT __vm_users ');
 	    }
 	}
 	else {
@@ -250,67 +257,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
-    /**
-     * Bind the post data to the user info table and save it
-     *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
-     */
-    private function storeSampleUserInfo($data) {
-	$table = $this->getTable('user_info');
-
-	// Bind the form fields to the unser info table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    echo 'storeSampleUserInfo: Problem with bind';
-	    return false;
-	}
-
-	// Make sure the user info record is valid
-	//$table->check() is done in the store function already, not necessary here
-
-	// Save the user info record to the database
-	if (!$table->store()) {
-	    $this->setError($table->getError());
-	    echo 'storeSampleUserInfo: Problem with store: '.$table->getError();
-	    return false;
-	}
-
-	return true;
-    }
-
-
-    /**
-     * Bind the post data to the vendor table and save it
-     *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
-     */
-    private function storeSampleVendor($data) {
-	$table = $this->getTable('vendor');
-
-	// Bind the form fields to the vendor table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Make sure the vendor record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Save the vendor record to the database
-	if (!$table->store()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	return true;
-    }
-
-
     function restoreSystemDefaults() {
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
@@ -335,6 +281,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$this->execSQLFile($filename);
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
+		
     }
     
     /**
@@ -434,4 +381,5 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	return true;
     }
 }
-?>
+
+//pure php no tag

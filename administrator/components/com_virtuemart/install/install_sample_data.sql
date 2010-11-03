@@ -50,13 +50,21 @@ INSERT IGNORE INTO `#__vm_category_xref` (`category_parent_id`, `category_child_
 (2, 4, NULL, 1),
 (2, 5, NULL, 1);
 
+
 --
--- Daten data for table `#__vm_payment_method`
+-- Dumping data for table `#__vm_manufacturer`
 --
 
--- INSERT INTO `#__vm_payment_method` (`paym_id`, `paym_vendor_id`, `paym_jplugin_id`, `paym_name`, `paym_element`, `discount`, `discount_is_percentage`, `discount_max_amount`, `discount_min_amount`, `ordering`, `published`, `paym_extra_info`, `paym_secret_key`, `paym_params`, `shared`) VALUES
--- (NULL, 1, 36, 'Cash on delivery', '', '0.00', 0, '0.00', '0.00', 0, 1, '', '', '0', 0),
--- (NULL, 1, 36, 'Authorize', '', '0.00', 0, '0.00', '0.00', 0, 1, '', '', '0', 0);
+INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `mf_thumb_image`, `mf_full_image`) VALUES
+(1, 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', 1, 'http://www.a-url.com', '', '');
+
+
+--
+-- Dumping data for table `#__vm_manufacturer_category`
+--
+
+INSERT INTO `#__vm_manufacturer_category` (`mf_category_id`, `mf_category_name`, `mf_category_desc`) VALUES
+(1, '-default-', 'This is the default manufacturer category');
 
 
 --
@@ -80,6 +88,7 @@ INSERT INTO `#__vm_product` (`product_id`, `vendor_id`, `product_parent_id`, `pr
 (14, 1, 2, 'L01', '', '', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 22, 5, 1072911600, '', 'N', NULL, 962351149, 1084902820, 'Metal Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
 (15, 1, 2, 'L02', '', '', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 962351165, 962351165, 'Wooden Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
 (16, 1, 2, 'L03', '', '', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 962351180, 962351180, 'Plastic Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', '');
+
 
 --
 -- Dumping data for table `#__vm_product_attribute`
@@ -121,13 +130,6 @@ INSERT IGNORE INTO `#__vm_product_category_xref` (`category_id`, `product_id`, `
 (5, 9, NULL),
 (2, 10, NULL);
 
---
--- Dumping data for table `#__vm_product_discount`
---
-
--- INSERT IGNORE INTO `#__vm_product_discount` (`discount_id`, `amount`, `is_percent`, `start_date`, `end_date`) VALUES
--- (1, '20.00', 1, 1097704800, 1194390000),
--- (2, '2.00', 0, 1098655200, 0);
 
 --
 -- Dumping data for table `#__vm_product_mf_xref`
@@ -174,19 +176,49 @@ INSERT INTO `#__vm_product_price` (`product_price_id`, `product_id`, `product_pr
 (16, 7, '2.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, 966589140, 966589140, 6, 0, 0);
 
 --
+-- Dumping data for table `#__vm_shipping_carrier`
+--
+
+INSERT INTO `#__vm_shipping_carrier` (`shipping_carrier_id`, `shipping_carrier_name`, `shipping_carrier_list_order`) VALUES
+(1, 'DHL', 0),
+(2, 'UPS', 1);
+
+--
+-- Dumping data for table `#__vm_shipping_rate`
+--
+
+INSERT INTO `#__vm_shipping_rate` (`shipping_rate_id`, `shipping_rate_name`, `shipping_rate_carrier_id`, `shipping_rate_country`, `shipping_rate_zip_start`, `shipping_rate_zip_end`, `shipping_rate_weight_start`, `shipping_rate_weight_end`, `shipping_rate_value`, `shipping_rate_package_fee`, `shipping_rate_currency_id`, `shipping_rate_vat_id`, `shipping_rate_list_order`) VALUES
+(1, 'Inland &gt; 4kg', 1, 'DEU', '00000', '99999', '0.000', '4.000', '5.62', '2.00', 47, 0, 1),
+(2, 'Inland &gt; 8kg', 1, 'DEU', '00000', '99999', '4.000', '8.000', '6.39', '2.00', 47, 0, 2),
+(3, 'Inland &gt; 12kg', 1, 'DEU', '00000', '99999', '8.000', '12.000', '7.16', '2.00', 47, 0, 3),
+(4, 'Inland &gt; 20kg', 1, 'DEU', '00000', '99999', '12.000', '20.000', '8.69', '2.00', 47, 0, 4),
+(5, 'EU+ &gt;  4kg', 1, 'AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE', '00000', '99999', '0.000', '4.000', '14.57', '2.00', 47, 0, 5),
+(6, 'EU+ &gt;  8kg', 1, 'AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE', '00000', '99999', '4.000', '8.000', '18.66', '2.00', 47, 0, 6),
+(7, 'EU+ &gt; 12kg', 1, 'AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE', '00000', '99999', '8.000', '12.000', '22.57', '2.00', 47, 0, 7),
+(8, 'EU+ &gt; 20kg', 1, 'AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE', '00000', '99999', '12.000', '20.000', '30.93', '2.00', 47, 0, 8),
+(9, 'Europe &gt; 4kg', 1, 'ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP', '00000', '99999', '0.000', '4.000', '23.78', '2.00', 47, 0, 9),
+(10, 'Europe &gt;  8kg', 1, 'ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP', '00000', '99999', '4.000', '8.000', '29.91', '2.00', 47, 0, 10),
+(11, 'Europe &gt; 12kg', 1, 'ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP', '00000', '99999', '8.000', '12.000', '36.05', '2.00', 47, 0, 11),
+(12, 'Europe &gt; 20kg', 1, 'ALB;ARM;AZE;BLR;BIH;BGR;EST;GEO;GIB;ISL;YUG;KAZ;HRV;LVA;LTU;MLT;MKD;MDA;NOR;ROM;RUS;SVN;TUR;UKR;HUN;BLR;CYP', '00000', '99999', '12.000', '20.000', '48.32', '2.00', 47, 0, 12),
+(13, 'World_1 &gt;  4kg', 1, 'EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA', '00000', '99999', '0.000', '4.000', '26.84', '2.00', 47, 0, 13),
+(14, 'World_1 &gt; 8kg', 1, 'EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA', '00000', '99999', '4.000', '8.000', '35.02', '2.00', 47, 0, 14),
+(15, 'World_1 &gt;12kg', 1, 'EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA', '00000', '99999', '8.000', '12.000', '43.20', '2.00', 47, 0, 15),
+(16, 'World_1 &gt;20kg', 1, 'EGY;DZA;BHR;IRQ;IRN;ISR;YEM;JOR;CAN;QAT;KWT;LBN;LBY;MAR;OMN;SAU;SYR;TUN;ARE;USA', '00000', '99999', '12.000', '20.000', '59.57', '2.00', 47, 0, 16),
+(17, 'World_2 &gt; 4kg', 1, '', '00000', '99999', '0.000', '4.000', '32.98', '2.00', 47, 0, 17),
+(18, 'World_2 &gt; 8kg', 1, '', '00000', '99999', '4.000', '8.000', '47.29', '2.00', 47, 0, 18),
+(19, 'World_2 &gt; 12kg', 1, '', '00000', '99999', '8.000', '12.000', '61.61', '2.00', 47, 0, 19),
+(20, 'World_2 &gt; 20kg', 1, '', '00000', '99999', '12.000', '20.000', '90.24', '2.00', 47, 0, 20),
+(21, 'UPS Express', 2, 'AND;BEL;DNK;FRO;FIN;FRA;GRC;GRL;GBR;IRL;ITA;LIE;LUX;MCO;NLD;AUT;POL;PRT;SMR;SWE;CHE;SVK;ESP;CZE', '00000', '99999', '0.000', '20.000', '5.24', '2.00', 47, 0, 21);
+
+
+--
 -- Dumping data for table `#__vm_shopper_group`
 --
 
 INSERT IGNORE INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
-(6, 1, 'Gold Level', 'Gold Level Shoppers.', 0),
-(7, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0);
+(NULL, 1, 'Gold Level', 'Gold Level Shoppers.', 0),
+(NULL, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0);
 
---
--- Dumping data for table `#__vm_tax_rate`
---
-
--- INSERT IGNORE INTO `#__vm_tax_rate` (`tax_rate_id`, `vendor_id`, `tax_state`, `tax_country`, `mdate`, `tax_rate`) VALUES
--- (2, 1, 'CA', 'USA', 964565926, '0.0925');
 
 --
 -- Dumping data for table `#__vm_orders`
@@ -222,7 +254,13 @@ INSERT IGNORE INTO `#__vm_order_user_info` (`order_info_id`, `order_id`, `user_i
 (1, 1, (SELECT `user_id` FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1), 'BT', '-default-', "Washupito's the User" ,'Mr.' ,'upito' ,'Wash' ,'the cheapest' ,'555-555-555' ,'' ,'' ,'vendorra road 8' ,'' ,'Canangra' ,'' ,'13' ,'1234' ,'' ,'' ,'' ,NULL ,NULL ,'' ,'' ,'' ,'' ,'' ,'Checking'),
 (2, 2, (SELECT `user_id` FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1), 'BT', '-default-', "Washupito's the User" ,'Mr.' ,'upito' ,'Wash' ,'the cheapest' ,'555-555-555' ,'' ,'' ,'vendorra road 8' ,'' ,'Canangra' ,'' ,'13' ,'1234' ,'' ,'' ,'' ,NULL ,NULL ,'' ,'' ,'' ,'' ,'' ,'Checking');
 
--- Hmm.... what am I doint wrong here?
--- INSERT IGNORE INTO `#__vm_order_user_info` (`order_info_id`, `order_id`, `user_id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `state`, `country`, `zip`, `extra_field_1`, `extra_field_2`, `extra_field_3`, `extra_field_4`, `extra_field_5`, `bank_account_nr`, `bank_name`, `bank_sort_code`, `bank_iban`, `bank_account_holder`, `bank_account_type`) VALUES
--- (1, 1, (SELECT `user_id` FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1), 'BT', '-default-', (SELECT QUOTE(`company`), QUOTE(`title`), QUOTE(`last_name`), QUOTE(`first_name`), QUOTE(`middle_name`), QUOTE(`phone_1`), QUOTE(`phone_2`), QUOTE(`fax`), QUOTE(`address_1`), QUOTE(`address_2`), QUOTE(`city`), QUOTE(`state_id`), QUOTE(`country_id`), QUOTE(`zip`), QUOTE(`extra_field_1`), QUOTE(`extra_field_2`), QUOTE(`extra_field_3`), QUOTE(`extra_field_4`), QUOTE(`extra_field_5`), QUOTE(`bank_account_nr`), QUOTE(`bank_name`), QUOTE(`bank_sort_code`), QUOTE(`bank_iban`), QUOTE(`bank_account_holder`), QUOTE(`bank_account_type`) FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1)),
--- (2, 2, (SELECT `user_id` FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1), 'BT', '-default-', (SELECT QUOTE(`company`), QUOTE(`title`), QUOTE(`last_name`), QUOTE(`first_name`), QUOTE(`middle_name`), QUOTE(`phone_1`), QUOTE(`phone_2`), QUOTE(`fax`), QUOTE(`address_1`), QUOTE(`address_2`), QUOTE(`city`), QUOTE(`state_id`), QUOTE(`country_id`), QUOTE(`zip`), QUOTE(`extra_field_1`), QUOTE(`extra_field_2`), QUOTE(`extra_field_3`), QUOTE(`extra_field_4`), QUOTE(`extra_field_5`), QUOTE(`bank_account_nr`), QUOTE(`bank_name`), QUOTE(`bank_sort_code`), QUOTE(`bank_iban`), QUOTE(`bank_account_holder`), QUOTE(`bank_account_type`) FROM `#__vm_user_info` WHERE `company` = "Washupito's the User" LIMIT 1));
+
+--
+-- Dumping data for table `#__vm_zone_shipping`
+--
+
+INSERT INTO `#__vm_zone_shipping` (`zone_id`, `zone_name`, `zone_cost`, `zone_limit`, `zone_description`, `zone_tax_rate`) VALUES
+(1, 'Default', '6.00', '35.00', 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', 2),
+(2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', 2),
+(3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),
+(4, 'Zone 3', '11.00', '64.00', 'Another usefull thing might be details about this zone or special instructions.', 2);
