@@ -59,7 +59,7 @@ else { ?>
 					</h1>
 				</div>
 				<div style="text-align: center; padding: 0px 0px 10px 0px">
-					<?php echo "<strong>". JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). " </strong>".Vmstore::get('vendor_store_name'); ?>
+					<?php echo "<strong>". JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). " </strong>".$this->product->vendor_name; ?>
 				</div>
 			</td>
 			<td>
@@ -76,7 +76,9 @@ else { ?>
 		<tr>
 			<td align="left" valign="top" width="220">
 			<?php /** @todo make the image popup */ ?>
-			<div><?php echo ImageHelper::generateImageHtml($this->product->product_full_image, VmConfig::get('media_product_path')); ?></div>
+			<div><?php 
+				echo $this->productImage->displayImage('','',0,0);
+			?></div>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
@@ -247,8 +249,7 @@ else { ?>
 										<!-- The product image DIV. -->
 										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
 											<?php 
-												$img = ImageHelper::generateImageHtml($related->product_thumb_image,  VmConfig::get('media_product_path'), 'alt="'.$related->product_name .'", title="'.$related->product_name.'"');
-												echo JHTML::_('link', $related->link, $img); 
+												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name)); 
 											?>
 										</div>
 										
@@ -309,9 +310,10 @@ else { ?>
 							?>
 							<td align="center" width="<?php echo $cellwidth ?>%" >
 								<br />
-								<?php
+								<?php //TODO
 								$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
-								echo JHTML::link($url, ImageHelper::generateImageHtml($category->category_thumb_image,  VmConfig::get('media_product_path'), 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
+								//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
+								echo JHTML::link($url, VmImage::getImageByCat($category)->displayImage('',$category->category_name));
 								?>
 								<br/>
 							</td>

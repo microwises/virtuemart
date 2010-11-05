@@ -22,10 +22,13 @@ defined('_JEXEC') or die('Restricted access');
 /** @todo Add vendor description */
 echo $this->vendor->vendor_store_desc."<br />";
 echo "<br /><h4>".JText::_('VM_CATEGORIES')."</h4>";
+
 foreach ($this->categories as $category) {
 	echo JHTML::_('link', 
 			JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id), 
-			JHTML::_('image', JURI::root().VmConfig::get('media_category_path').$category->category_thumb_image, $category->category_name).$category->category_name
+//			JHTML::_('image', JURI::root().VmConfig::get('media_category_path').$category->category_thumb_image, $category->category_name).$category->category_name
+	VmImage::getImageByCat($category)->displayImage('class="browseProductImage" border="0"',$category->category_name)
+			
 			);
 }
 
@@ -100,7 +103,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 			}
 				if ($featProduct->product_thumb_image) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), 
-						ImageHelper::generateImageHtml($featProduct->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$featProduct->product_name.'"'));
+						 VmImage::getImageByProduct($featProduct)->displayImage('class="browseProductImage" border="0"',$featProduct->product_name));
 				?>
 				<br /><br/>
 				<?php } ?>
@@ -143,7 +146,7 @@ if (VmConfig::get('showlatest', 1) && !empty($this->latestProducts)) {
 				<?php
 				if ($product->product_thumb_image) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id), 
-						ImageHelper::generateImageHtml($product->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" alt="'.$product->product_name.'"'));
+						VmImage::getImageByProduct($featProduct)->displayImage('class="browseProductImage" border="0"',$product->product_name));
 				?>
 				<br /><br/>
 				<?php } ?>

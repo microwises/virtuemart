@@ -33,7 +33,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
 							</td>
 							<td>
-								<?php ImageHelper::generateImageHtml($this->vendor->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
+								<?php 
+								echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),0);
+//								VmImage::generateImageHtml($this->vendor->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
 							</td>
 						</tr>
 						<tr>

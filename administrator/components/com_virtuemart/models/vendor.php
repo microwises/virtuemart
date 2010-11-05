@@ -83,6 +83,7 @@ class VirtueMartModelVendor extends JModel {
 	* @return object Vendor details
 	*/
 	function getVendor() {
+		
         if (!$this->_data) {
 
 	    	$this->_data = $this->getTable('vendor');
@@ -141,11 +142,6 @@ class VirtueMartModelVendor extends JModel {
 		$query .= 'ORDER BY `#__vm_vendor`.`vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
-	
-//		$db = JFactory::getDBO();
-//		$q = 'SELECT * FROM `#__vm_vendor`';
-//		$db->setQuery($q);
-//		return $db->loadObjectList();
 	}
 
 	/**
@@ -171,7 +167,8 @@ class VirtueMartModelVendor extends JModel {
 
 	/**
 	 * Bind the post data to the vendor table and save it
-     *
+     * This function DOES NOT safe information which is in the vm_users or vm_user_info table
+     * It only stores the stuff into the vendor table
      * @author RickG
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
@@ -180,12 +177,13 @@ class VirtueMartModelVendor extends JModel {
     	
 	$table = $this->getTable('vendor');
 
-	if ($data === null) {
-		$data = JRequest::get('post');
-		$_external = false;
-	} else {
-		$_external = true;
-	}
+
+//	if ($data === null) {
+//		$data = JRequest::get('post');
+//		$_external = false;
+//	} else {
+//		$_external = true;
+//	}
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -218,60 +216,9 @@ class VirtueMartModelVendor extends JModel {
 	$dbv = $table->getDBO();
 	$this->_id = $dbv->insertid();
 	
-//	if ($_external) {
-		// When called from another model (currently: the user model), user_info was already saved.
-		return true;
-//	}
-	
-//	return $this->storeUserInfo($data);
-	}
-	
-	public function storeUserInfo($data) {
-		echo 'Attention here in storeUserInfo in the vendor model is nothing'; die;
-	}
+	return true;
 
-	/**
-	* name: getLoggedVendor
-	* Checks which $vendorId has the just logged in user.
-	* @author Max Milbers
-	* @param @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner) 
-	* returns int $vendorId
-	*/	
-	function getLoggedVendor($ownerOnly = true){
-		global $hVendor;
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		if(isset($userId)){
-			$vendorId = self::getVendorId('user', $userId, $ownerOnly);
-			return $vendorId;
-		}else{
-			JError::raiseNotice(1,'$user_id empty, no user logged in');
-			return 0;
-		}
-		
 	}
-	
-	/**
-	 * Function to determine if a user is a Vendor by looking at the field user_is_vendor
-	 * in the table user_info 
-	 *
-	 * @author Max Milbers
-	 * @param int $user_id
-	 * @param int $vendor_id
-	 * @return boolean
-	 */
-	public function isVendor( $userId ) {
-		if (empty($userId)) return;
-		else {
-			
-			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `user_is_vendor` FROM `#__vm_users` WHERE `user_id`='.$userId;
-			$this->_db->setQuery($q);
-			return $this->_db->loadResult();
-		}
-		
-	}
-	
 
 	/**
 	 * Get the vendor specific currency
@@ -301,14 +248,14 @@ class VirtueMartModelVendor extends JModel {
 	 * returns joomla user email
 	 */
 
-	function get_juser_email_by_user_id(&$user_id){
-		if(empty ($user_id))return;
-//		$db =& JFactory::getDBO();
-		$q = 'SELECT `email` FROM `#__users` WHERE `id`="'.$user_id.'" ';
-		$this->_db->setQuery($q);
-		$this->_db->query();
-		return $this->_db->loadResult();
-	}
+//	function get_juser_email_by_user_id(&$user_id){
+//		if(empty ($user_id))return;
+////		$db =& JFactory::getDBO();
+//		$q = 'SELECT `email` FROM `#__users` WHERE `id`="'.$user_id.'" ';
+//		$this->_db->setQuery($q);
+//		$this->_db->query();
+//		return $this->_db->loadResult();
+//	}
 	
 
 	/**
@@ -351,6 +298,7 @@ class VirtueMartModelVendor extends JModel {
 	
 
 	/**
+	 * ATM Unused !
 	 * Checks a currency symbol wether it is a HTML entity.
 	 * When not and $convertToEntity is true, it converts the symbol
 	 * Seems not be used      ATTENTION
@@ -459,8 +407,81 @@ class VirtueMartModelVendor extends JModel {
 		return $currency;
 	}
 	
+	/**
+	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 
+	* Assigned users cannot change storeinformations
+	* ownerOnly = false should be used for users who are assigned to a vendor
+	* for administrative jobs like execution of orders or managing products
+	* Changing of vendorinformation should ONLY be possible by the Mainvendor who is in charge
+	* @author by Max Milbers
+	* @author RolandD
+	* @param string $type Where the vendor ID should be taken from
+	* @param mixed $value Whatever value the vendor ID should be filtered on
+	* @return int Vendor ID
+	*/
+	public function getVendorId($type, $value, $ownerOnly=true){
+		//static call used, so we need our own db instance
+		$db = JFactory::getDBO();
+		switch ($type) {
+			case 'order':
+				$q = 'SELECT vendor_id FROM #__vm_order_item WHERE order_id='.$value;
+				break;
+			case 'user':
+				if ($ownerOnly) {
+					$q = 'SELECT `vendor_id`
+						FROM `#__vm_users` `au` 
+						LEFT JOIN `#__vm_user_info` `u` 
+						ON (au.user_id = u.user_id) 
+						WHERE `u`.`user_id`=' .$value;
+				}
+				else {
+					$q  = 'SELECT `vendor_id` FROM `#__vm_users` WHERE `user_id`= "' .$value.'" ';
+				}						
+				break;
+			case 'product':
+				$q = 'SELECT vendor_id FROM #__vm_product WHERE product_id='.$value;
+				break;
+		}
+		$db->setQuery($q);
+		$vendor_id = $db->loadResult();
+		if ($vendor_id) return $vendor_id;
+		else {
+			JError::raiseNotice(1, 'No vendor_id found for '.$value.' on '.$type.' check.');
+			return 0;
+		}
+	}
+	
+	/**
+	 * This function gives back the storename for the given vendor.
+	 * This function is just for improving speed. When you need the whole vendor table, use getVendor
+	 * 
+	 * @author Max Milbers
+	 */
+	public function getVendorName($vendor_id=1){
+		$query = 'SELECT `vendor_store_name` FROM `#__vm_vendor` WHERE `vendor_id` = "'.$vendor_id.'" ';
+		$this->_db->setQuery($query);
+		if($this->_db->query()) return $this->_db->loadResult(); else return '';
+	}
 
 	/**
+	 * This function gives back the email for the given vendor.
+	 * This function is just for improving speed. When you need the whole vendor data, use getUser in the usermodell
+	 * 
+	 * @author Max Milbers
+	 */
+	 
+ 	public function getVendorEmail($vendor_id){
+ 		$user_id = self::getUserIdByVendorId($vendor_id);
+ 		if(!empty($user_id)){
+  			$query = 'SELECT `email` FROM `#__users` WHERE `vendor_id` = "'.$user_id.'" ';
+			$this->_db->setQuery($query);
+			if($this->_db->query()) return $this->_db->loadResult(); else return '';			
+ 		}
+		return '';
+ 	}
+
+	/**
+	 * ATTENTION this function ist atm NOT USED
 	 * Create a formatted vendor address
 	 * mosttime $vendor_id is set to 1;
 	 * Returns the formatted Store Address
@@ -470,8 +491,10 @@ class VirtueMartModelVendor extends JModel {
 	 */
 	function formatted_store_address($vendor_id) {
 		
+		echo 'Developer notice, you used an old legacy function, you may do it, but correct it first <br />';
+		echo 'But be aware that the class VmStore is obsolete!';die;
 		if(empty($vendor_id)){
-			JError::raiseNotice(1,'formatted_store_address no vendor_id given' );
+			JError::raiseWarning(1,'formatted_store_address no vendor_id given' );
 			return;
 		}
 		else {
@@ -494,7 +517,8 @@ class VirtueMartModelVendor extends JModel {
 			$this->_db->setQuery($q);
 			$vendor = $this->_db->loadObject();
 			
-			$vendor_address_format = VmStore::get('vendor_address_format');
+//			$vendor_address_format = VmStore::get('vendor_address_format');
+			$vendor_address_format = '';
 			$store_address = str_ireplace('{storename}', $vendor->storename, $vendor_address_format);
 			$store_address = str_ireplace('{address_1}', $vendor->address_1, $store_address);
 			$store_address = str_ireplace('{address_2}', $vendor->address_2, $store_address);
@@ -512,158 +536,109 @@ class VirtueMartModelVendor extends JModel {
 		}
 	}
 	
-	/**
-	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 
-	* Assigned users cannot change storeinformations
-	* ownerOnly = false should be used for users who are assigned to a vendor
-	* for administrative jobs like execution of orders or managing products
-	* Changing of vendorinformation should ONLY be possible by the Mainvendor who is in charge
-	* @author by Max Milbers
-	* @author RolandD
-	* @param string $type Where the vendor ID should be taken from
-	* @param mixed $value Whatever value the vendor ID should be filtered on
-	* @return int Vendor ID
-	*/
-	public function getVendorId($type, $value, $ownerOnly=true){
-		//static call used, so we need our own db instance
-		$db = JFactory::getDBO();
-		switch ($type) {
-			case 'order':
-				$q = 'SELECT vendor_id FROM #__vm_order_item WHERE order_id='.$value;
-				break;
-			case 'user':
-				if ($ownerOnly) {
-					$q = 'SELECT `vendor_id`, `user_is_vendor` 
-						FROM `#__vm_auth_user_vendor` `au` 
-						LEFT JOIN `#__vm_user_info` `u` 
-						ON (au.user_id = u.user_id) 
-						WHERE `u`.`user_id`=' .$value;
-				}
-				else {
-					$q  = 'SELECT `vendor_id` 
-						FROM `#__vm_auth_user_vendor` 
-						WHERE `user_id`=' .$value;
-				}						
-				break;
-			case 'product':
-				$q = 'SELECT vendor_id FROM #__vm_product WHERE product_id='.$value;
-				break;
-		}
-		$db->setQuery($q);
-		$vendor_id = $db->loadResult();
-		if ($vendor_id) return $vendor_id;
-		else {
-			JError::raiseNotice(1, 'No vendor_id found for '.$value.' on '.$type.' check.');
-			return 0;
-		}
-	}
-	
-	
-
-	
-	/**
-	* Retrieves a DB object with the recordset of the specified fields (as array)
-	* of vendor_id and ordered by lastparam 
-	* If no orderby is need just set "" 
-	* the country the vendor is assigned to    
-	* 
-	* @author Max Milbers
-	* @author RolandD
-	* @static 
-	* @param int $vendor_id
-	* @param array $fields  "" = Select *
-	* @param String $orderby to order by, just the columnname Without 'ORDER BY '
-	* @return ps_DB
-	*/
-	 
-	public function getVendorFields($vendor_id, $fields=array(), $orderby="") {
-		
-		JError::raiseNotice(1,'Attention you use the obsolete function getVendorFields');
-		//used static
-		$db = JFactory::getDBO();
-		$usertable= false;
-		$user_id = self::getUserIdByVendorId($vendor_id);
-		if (empty($user_id)) {
-				//JError::raiseNotice(1, 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
-				return;
-		}
-		else{
-			// JError::raiseNotice(1, 'get_vendor_details user_id for vendor_id found' );
-		}
-		if (empty($fields)) {
-			$fieldstring = '*';
-			$usertable = true;
-		}
-		else {
-			$showtables = array();
-			$showtables[] = 'vm_vendor';
-			$showtables[] = 'vm_user_info';
-			$showtables[] = 'users';
-			$showtables[] = 'vm_country';
-			$showtables[] = 'vm_state';
-			$allowedStrings = array();
-			$countryFields = array();
-			foreach ($showtables as $key => $table) {
-				$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__'.$table);
-				$db->setQuery($q);
-				$dbfields = $db->loadObjectList();
-				if (count($dbfields) > 0) {
-					foreach ($dbfields as $key => $dbfield) {
-						$allowedStrings[] = $dbfield->Field;
-						if ($table == 'vm_country') {
-							$countryFields[] = $dbfield->Field;
-						}
-					}
-				}
-			} 
-			
-			/* Validate the fields */
-			foreach($fields as $field){
-					if(!in_array($field, $allowedStrings)){
-						echo $field;
-						//JError::raiseNotice(1, 'get_vendor_fields: field not known: '.$field );	
-						return;
-					}
-					else {
-						switch ($field) {
-							case 'email':
-								$usertable = true;
-									break;
-						}
-					}
-				}
-				/* Check if we need to include the country table */
-				if(in_array($countryFields,$fields)) $countrytable = true;
-				else $countrytable = false;
-				
-				/* Check the fields string */
-				$fieldstring = '`'. implode( '`,`', $fields ) . '`';
-				if(empty($fieldstring)) {
-					JError::raiseNotice(1, 'get_vendor_fields implode returns empty String: '.$fields[0] );
-					return;
-				}
-			}
-		
-		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
-		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
-		if($countrytable) {
-			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id) 
-				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
-		}
-		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
-		
-		if (!empty($orderby)) $q .= 'ORDER BY '.$orderby.' ';
-		
-		$db->setQuery($q);
-		$vendor_fields = $db->loadObject();
-		if (!$vendor_fields) {
-			print '<h1>Invalid query in get_vendor_fields <br />Query: '.$q.'<br />';
-			print 'vendor_id: '.$vendor_id.' and user_id: '.$user_id.' <br />' ;
-			print '$orderby: '.$orderby.' and $usertable: '.$usertable.'</h1>' ;
-			return ;
-		}
-		else return $vendor_fields;
-	}
+//	/**
+//	* Retrieves a DB object with the recordset of the specified fields (as array)
+//	* of vendor_id and ordered by lastparam 
+//	* If no orderby is need just set "" 
+//	* the country the vendor is assigned to    
+//	* 
+//	* @author Max Milbers
+//	* @author RolandD
+//	* @static 
+//	* @param int $vendor_id
+//	* @param array $fields  "" = Select *
+//	* @param String $orderby to order by, just the columnname Without 'ORDER BY '
+//	* @return ps_DB
+//	*/
+//	 
+//	public function getVendorFields($vendor_id, $fields=array(), $orderby="") {
+//		
+//		JError::raiseNotice(1,'Attention you use the obsolete function getVendorFields');
+//		//used static
+//		$db = JFactory::getDBO();
+//		$usertable= false;
+//		$user_id = self::getUserIdByVendorId($vendor_id);
+//		if (empty($user_id)) {
+//				//JError::raiseNotice(1, 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
+//				return;
+//		}
+//		else{
+//			// JError::raiseNotice(1, 'get_vendor_details user_id for vendor_id found' );
+//		}
+//		if (empty($fields)) {
+//			$fieldstring = '*';
+//			$usertable = true;
+//		}
+//		else {
+//			$showtables = array();
+//			$showtables[] = 'vm_vendor';
+//			$showtables[] = 'vm_user_info';
+//			$showtables[] = 'users';
+//			$showtables[] = 'vm_country';
+//			$showtables[] = 'vm_state';
+//			$allowedStrings = array();
+//			$countryFields = array();
+//			foreach ($showtables as $key => $table) {
+//				$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__'.$table);
+//				$db->setQuery($q);
+//				$dbfields = $db->loadObjectList();
+//				if (count($dbfields) > 0) {
+//					foreach ($dbfields as $key => $dbfield) {
+//						$allowedStrings[] = $dbfield->Field;
+//						if ($table == 'vm_country') {
+//							$countryFields[] = $dbfield->Field;
+//						}
+//					}
+//				}
+//			} 
+//			
+//			/* Validate the fields */
+//			foreach($fields as $field){
+//					if(!in_array($field, $allowedStrings)){
+//						echo $field;
+//						//JError::raiseNotice(1, 'get_vendor_fields: field not known: '.$field );	
+//						return;
+//					}
+//					else {
+//						switch ($field) {
+//							case 'email':
+//								$usertable = true;
+//									break;
+//						}
+//					}
+//				}
+//				/* Check if we need to include the country table */
+//				if(in_array($countryFields,$fields)) $countrytable = true;
+//				else $countrytable = false;
+//				
+//				/* Check the fields string */
+//				$fieldstring = '`'. implode( '`,`', $fields ) . '`';
+//				if(empty($fieldstring)) {
+//					JError::raiseNotice(1, 'get_vendor_fields implode returns empty String: '.$fields[0] );
+//					return;
+//				}
+//			}
+//		
+//		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
+//		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
+//		if($countrytable) {
+//			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id) 
+//				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
+//		}
+//		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
+//		
+//		if (!empty($orderby)) $q .= 'ORDER BY '.$orderby.' ';
+//		
+//		$db->setQuery($q);
+//		$vendor_fields = $db->loadObject();
+//		if (!$vendor_fields) {
+//			print '<h1>Invalid query in get_vendor_fields <br />Query: '.$q.'<br />';
+//			print 'vendor_id: '.$vendor_id.' and user_id: '.$user_id.' <br />' ;
+//			print '$orderby: '.$orderby.' and $usertable: '.$usertable.'</h1>' ;
+//			return ;
+//		}
+//		else return $vendor_fields;
+//	}
 	
 }
 

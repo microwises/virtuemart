@@ -127,7 +127,19 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image', 'size=1', 'value', 'text', $this->config->get('no_image'));
+			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', $this->config->get('no_image_set'));
+			    ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_NOIMAGEFOUND') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', $this->config->get('no_image_found'));
 			    ?>
 			</td>
 		    </tr>

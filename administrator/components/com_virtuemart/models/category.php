@@ -101,7 +101,7 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
 
-		$query = 'SELECT `category_id`, `category_thumb_image`, `category_child_id`, `category_name` ';
+		$query = 'SELECT `category_id`, `category_full_image`,`category_thumb_image`, `category_child_id`, `category_name` ';
 		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
@@ -127,7 +127,6 @@ class VirtueMartModelCategory extends JModel {
 	*/
 	public function getCategoryTree($onlyPublished = true, $withParentId = false, $parentId = 0, $keyword = "") {
 
-		//$vendorId = VirtueMartModelVendor::getLoggedVendor();
 		$vendorId = 1;
 		$categories = Array();
 
@@ -173,10 +172,7 @@ class VirtueMartModelCategory extends JModel {
 		$categories = $this->_db->loadObjectList();
 
 		return $categories;
-		/*}
-		else {
-			return $GLOBALS['category_info']['category_tree'];
-		}*/
+
 	}
 
 
@@ -548,10 +544,6 @@ class VirtueMartModelCategory extends JModel {
 		
 		/* Vendor */
 		$data['vendor_id'] = 1;
-		
-		//normalize data //todo this must be adjusted to new flypage system
-		$data['category_flypage'] = 'shop.'.$data['category_flypage'];
-		$data['category_flypage'] = str_replace('.tpl', '', $data['category_flypage']);
 
 		//uploading images and creating thumbnails
 		$fullImage = JRequest::getVar('category_full_image', array(), 'files');
@@ -572,7 +564,9 @@ class VirtueMartModelCategory extends JModel {
 
 		//creating the thumbnail image
 		if( $data['image_action_full'] == 1 ){
-			$data['category_thumb_image'] = basename( ImageHelper::createResizedImage($data['category_full_image'], VmConfig::get('media_category_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+			$catImage = VmImage::getCatImage($data['category_full_image'],$data['category_thumb_image']);
+			$data['category_thumb_image'] = $catImage->createThumb(false);
+//			dump($data['category_thumb_image'],'created new thump');
 		}
 		//deleting image
 		elseif( $data['image_action_full'] == 2 ){
@@ -586,7 +580,8 @@ class VirtueMartModelCategory extends JModel {
 			move_uploaded_file( $thumbImage['tmp_name'], JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$thumbImage['name']);
 			$data['category_thumb_image'] = $thumbImage['name'];
 		}
-		elseif( empty($data['category_thumb_image']) ){
+		
+		if( empty($data['category_thumb_image']) ){
 			if( !empty($data['category_thumb_image_url']) ){ //storing the URL if is it necessary
 				$data['category_thumb_image'] = $data['category_thumb_image_url'];
 			}
@@ -594,7 +589,8 @@ class VirtueMartModelCategory extends JModel {
 				$data['category_thumb_image'] = $data['category_thumb_image_current'];
 			}
 		}
-
+		
+//		dump($data,'my category data');
 		//deleting thumbnail image
 		if( $data['image_action_thumb'] == 2 ){
 			JFile::delete( JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$data['category_thumb_image_current'] );

@@ -21,7 +21,9 @@
 defined('_JEXEC') or die('Restricted access');
 	//Header for shopper ?>
 <?php echo $this->store->vendor_store_name; ?>
-<?php ImageHelper::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
+<?php 
+echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
+//VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
 //TODO Ordernumber
 
 //PriceList

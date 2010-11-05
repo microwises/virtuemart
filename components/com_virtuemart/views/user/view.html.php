@@ -427,7 +427,6 @@ class VirtuemartViewUser extends JView {
 		$vendorModel = $this->getModel('vendor');
 		// If the current user is a vendor, load the store data
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
-//		if ($vendorModel->isVendor($this->_model->_id)) {
 		if ($this->_userDetails->user_is_vendor) {
 			$this->loadHelper('currencydisplay');
 			if(!$this->_orderList){

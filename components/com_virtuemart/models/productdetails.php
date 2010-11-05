@@ -101,9 +101,10 @@ class VirtueMartModelProductdetails extends JModel {
 			$product->related = $this->getRelatedProducts($product_id);
 			
 			/* Load the vendor details */
-			$product->vendor_id = VirtueMartModelVendor::getVendorId('product', $product_id);
-			$product->vendor_name = VirtueMartModelVendor::getVendorFields($product->vendor_id, array('vendor_name'));
-			
+			/* What is this? the $product has already a vendor_id
+//			$product->vendor_id = VirtueMartModelVendor::getVendorId('product', $product_id); */
+			$product->vendor_name = VirtueMartModelVendor::getVendorName($product->vendor_id);
+
 			/* Check for child products */
 			$product->haschildren = $this->checkChildProducts($product_id);
 			
@@ -132,6 +133,7 @@ class VirtueMartModelProductdetails extends JModel {
 			
 			/* Get the votes */
 			$product->votes = $this->getVotes($product_id);
+			
 			
 			return $product;
 		} else{

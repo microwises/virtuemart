@@ -19,20 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$media_path_url = VmConfig::get('media_product_path');
-$media_path = str_replace('/',DS,$media_path_url);
-$media_path = substr($media_path,0,-1);
-$folder = array(JPATH_ROOT.DS.$media_path, JPATH_ROOT.DS.$media_path.DS.'resized');
-$style = 'text-align:left;margin-left:20px;';
-echo '<div class="vmquote" style="'.$style.'">';
-foreach( $folder as $dir ) {
-	echo $dir . ' :: ';
-	echo is_writable( $dir )
-		 ? '<span style="font-weight:bold;color:green;">'.JText::_('VM_WRITABLE').'</span>'
-		 : '<span style="font-weight:bold;color:red;">'.JText::_('VM_UNWRITABLE').'</span>';
-	echo '<br/>';
-}
-echo '</div>';
+echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
+
 ?>
 <table class="adminform" >
     <tr>
@@ -81,7 +69,9 @@ echo '</div>';
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php echo ImageHelper::generateImageHtml($this->product->product_full_image, 'product', '', 0); ?>
+                <?php 
+					echo $this->productImage->displayImage('','',0);
+                ?>
               </div>
             </td>
           </tr>
@@ -127,7 +117,9 @@ echo '</div>';
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php echo ImageHelper::generateImageHtml($this->product->product_thumb_image, VmConfig::get('media_product_path'), '', 0); ?>
+                <?php 
+                	echo $this->productImage->displayImage('','',1,0);
+				?>
               </div>
             </td>
           </tr>

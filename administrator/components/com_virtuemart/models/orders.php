@@ -836,8 +836,11 @@ class VirtueMartModelOrders extends JModel {
 
 		/* Get vendor info */
 		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
-		$vendor = VirtueMartModelVendor::getVendorFields($vendor_id, array("email","vendor_name"));
-
+		$vendorModel = new VirtueMartModelVendor();
+		$vendorModel->setId($vendor_id);
+		$vendor = $vendorModel->getVendor();
+		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
+		
 		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
 			FROM #__vm_order_user_info
 			LEFT JOIN #__vm_orders

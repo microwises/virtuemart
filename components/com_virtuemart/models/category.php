@@ -127,4 +127,5 @@ class VirtueMartModelCategory extends JModel {
 		return $db->loadResult();
 	}
 }
-?>
+
+//pure php no closing tag

@@ -116,12 +116,12 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
+				//TODO add here an if so that only the mainvendor or admin gets the list, in other just the name of the given vendor
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
 				
 //				$vendor_model->setId($product->vendor_id);
 //				$vendor = $vendor_model->getVendor();
-//				dump($vendor,'my vendor');
 //				$this->assignRef('vendorCurrency', $vendorCurrency);
 				
 				/* Load the manufacturers */
@@ -184,6 +184,9 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
 
+				$productImage = VmImage::getImageByProduct($product);
+				$this->assignRef('productImage', $productImage);
+				
 				/* Assign the values */
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
@@ -191,8 +194,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
-//				$this->assignRef('taxrates', $taxrates);
-//				$this->assignRef('discounts', $discounts);
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
 				$this->assignRef('related_products', $related_products);

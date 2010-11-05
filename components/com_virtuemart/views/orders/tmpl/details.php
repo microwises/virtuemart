@@ -40,7 +40,6 @@ echo $this->pane->startPanel( JText::_('VM_ORDER_ITEM'), 'details_items' );
 echo $this->loadTemplate('items');
 echo $this->pane->endPanel();
 
-//echo $this->pane->startPanel( JText::_('Debug dump'), 'order_debug' );
 //echo "<pre>\n";
 //print_r ($this->orderdetails);
 //echo "</pre>\n";

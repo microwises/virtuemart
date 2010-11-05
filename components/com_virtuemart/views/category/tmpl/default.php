@@ -40,7 +40,8 @@ if ($this->category->haschildren) {
 				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id);
 				$cattext = ''; 
 				if ($category->category_thumb_image) {
-					$cattext .= ImageHelper::generateImageHtml('resized/'.$category->category_thumb_image, VmConfig::get('media_category_path'), 'alt="'.$category->category_name.'"', false);
+					
+					$cattext .= VmImage::getImageByCat($category)->displayImage();
 					$cattext .= "<br /><br/>\n";
 				}
 				$cattext .= $category->category_name;
@@ -102,8 +103,9 @@ foreach ($this->products as $product) {
 	
 	<div class="browseProductImageContainer">
 		<?php 
-			/** @todo make image popup */	
-			echo ImageHelper::generateImageHtml($product->product_thumb_image, VmConfig::get('media_product_path'), 'class="browseProductImage" border="0" title="'.$product->product_name.'" alt="'.$product->product_name .'"'); 
+			/** @todo make image popup */
+//			//todo add the attributes 'class="browseProductImage" border="0" title="'.$product->product_name.'" alt="'.$product->product_name .'"'); 
+			echo VmImage::getImageByProduct($product)->displayImage('class="browseProductImage" border="0" title="'.$product->product_name.'" ',$product->product_name);
 		?>
 	</div>
 	

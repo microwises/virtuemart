@@ -20,7 +20,299 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @author RickG, RolandD
  */
-class ImageHelper {
+//class VmImage {
+class VmImage {
+	
+	var $id = 0;
+	var $media_filename = '';
+	var $media_filename_thumb = '';
+	
+	var $media_url = '';
+	var $media_url_thumb = '';
+	
+	var $media_path ='';
+	var $media_path_thumb = '';
+//	var $media_path_writeable = 0;
+	
+//	var $image_exist = 0;
+//	var $image_exist_resized = 0;
+	var $theme_url = 0;
+
+	function __construct($media_path_url,$media_filename,$media_thumb_name=0) {
+		$this->theme_url = VmConfig::get('vm_themeurl',0);
+		if(empty($this->theme_url)){
+			$this->theme_url = JURI::root().'components/com_virtuemart/';
+		}
+		$this->media_url = $media_path_url;
+		$this->media_url_thumb = $media_path_url.'resized/';
+		
+		$media_path = str_replace('/',DS,$media_path_url);
+		$media_path = substr($media_path,0,-1);
+		$this->media_path = JPATH_ROOT.DS.$media_path.DS;
+		$this->media_path_thumb = JPATH_ROOT.DS.$media_path.DS.'resized'.DS;
+		
+		$this->media_filename = $media_filename;
+		$this->media_filename_thumb = $media_thumb_name;
+	}
+	
+	function getShopImage($filename,$thumb_filename=0){	
+		return new VmImage( VmConfig::get('media_path'),$filename,$thumb_filename);
+	}
+
+	/**
+	 * For displaying vendor/shop/store images
+	 * Sets the variables of the images object, so that the new resized image path can be saved
+	 * 
+	 * @author Max Milbers
+	 * @param string $filename name of the full sized image
+	 * @param string $filename name of the thumb image
+	 * @param integer vendor_id for updating the vendor
+	 * @param VmImage an image object with extra product attributes
+	 */	
+	function getVendorImage($filename,$thumb_filename=0,$vendor_id=0){
+		$image = new VmImage( VmConfig::get('media_path'),$filename,$thumb_filename);
+		$image->table = 'vendor';
+		$image->id = $vendor_id;
+		$image->idfield = 'vendor_id';
+		$image->mfield = 'vendor_thumb_image ';
+		return $image;
+	}
+
+	/**
+	 * Small proxy function for getVendorImage, which just works with the vendor object
+	 * 
+	 * @author Max Milbers
+	 * @param object vendor object given by §vendorModel->getVendor()
+	 * @return VmImage an image object with extra vendor attributes
+	 */
+	function getImageByVendor($vendor){
+		return self::getVendorImage($vendor->vendor_full_image,$vendor->vendor_thumb_image,$vendor->vendor_id);
+	}
+		
+	/**
+	 * For displaying product images
+	 * Sets the variables of the images object, so that the new resized image path can be saved
+	 * 
+	 * @author Max Milbers
+	 * @param string $filename name of the full sized image
+	 * @param string $filename name of the thumb image
+	 * @param integer product_id for updating the product
+	 * @param VmImage an image object with extra product attributes
+	 */
+	function getProductImage($filename,$thumb_filename=0,$product_id=0){
+		$image = new VmImage( VmConfig::get('media_product_path'),$filename,$thumb_filename);
+		$image->table = 'product';
+		$image->id = $product_id;
+		$image->idfield = 'product_id';
+		$image->mfield = 'product_thumb_image';
+		return $image;
+	}
+
+	/**
+	 * Small proxy function for getProductImage, which just works with the product object
+	 * 
+	 * @author Max Milbers
+	 * @param object product object given by §productModel->getProduct()
+	 * @return VmImage an image object with extra product attributes
+	 */
+	function getImageByProduct($product){
+		return self::getProductImage($product->product_full_image,$product->product_thumb_image,$product->product_id);
+	}
+	
+	/**
+	 * For displaying category images
+	 * Sets the variables of the images object, so that the new resized image path can be saved
+	 * 
+	 * @author Max Milbers
+	 * @param string $filename name of the full sized image
+	 * @param string $filename name of the thumb image
+	 * @param integer category_id for updating the category
+	 * @return VmImage an image object with extra category attributes
+	 */
+	function getCatImage($filename,$thumb_filename=0,$cat_id=0){
+		$image =  new VmImage( VmConfig::get('media_category_path'),$filename,$thumb_filename);
+		$image->table = 'category';
+		$image->id = $cat_id;
+		$image->idfield = 'category_id';
+		$image->mfield = 'category_thumb_image';
+		return $image;
+	}
+
+	/**
+	 * Small proxy function for getCatImage, which just works with the category object
+	 * 
+	 * @author Max Milbers
+	 * @param object category object given by §categoryModel->getCategory()
+	 * @return VmImage an image object with extra category attributes
+	 */
+	function getImageByCat($cat){
+		return self::getCatImage($cat->category_full_image,$cat->category_thumb_image,$cat->category_id);
+	}
+	
+	/**
+	 * This function should display the image, when the image is not already a resized one, 
+	 * it tries to get first the resized one, or create a resized one or fallback in case
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param string $imageArgs Attributes to be included in the <img> tag.
+	 * @param string $alt alternative Text to display
+	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
+	 */
+	function displayImage($imageArgs="",$alt = '', $preferResized=1, $dynCreate=1){
+
+
+		if (empty($this->media_filename) && empty($this->media_filename_thumb)) {
+			$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
+			return JHTML::image($url, JText::_('NO_IMAGE_SET'));
+		} else {
+			if($preferResized){
+				if(empty($this->media_filename_thumb)){
+					$this->media_filename_thumb = $this->createThumbName();
+				} 
+				$completeImageUrl = $this->media_url_thumb.$this->media_filename_thumb;
+				$completeImagePath = $this->media_path_thumb.$this->media_filename_thumb;
+				if(empty($alt)) $alt = $this->media_filename_thumb;
+			} else {
+				if(empty($this->media_filename)){
+					$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
+					return JHTML::image($url, JText::_('NO_IMAGE_SET'));
+				}
+				$completeImageUrl = $this->media_url.$this->media_filename;
+				$completeImagePath = $this->media_path.$this->media_filename;
+				if(empty($alt)) $alt = $this->media_filename;
+			}
+		}
+
+		// Remote image URL
+		if( substr( $completeImageUrl, 0, 4) == "http" ) {
+			return JHTML::image($completeImageUrl, $alt);
+		}
+
+		if (!file_exists($completeImagePath)) {
+
+			if($dynCreate && VmConfig::get('img_resize_enable') == '1' && $preferResized){
+				$newFileName = $this->createThumb($dynCreate);
+				if($newFileName){
+					$completeImagePath = $this->media_path.$newFileName;
+					$this->media_filename_thumb = $newFileName;
+				}
+			} else {
+				$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+				return JHTML::image($url,JText::_('NO_IMAGE_FOUND'));								
+			}		
+		}	
+
+		//okey the pictures exist, does we want the resized one? if not, just give the normal picture back
+		if($preferResized){
+			return JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt);
+		} else {
+			return JHTML::image($this->media_url.$this->media_filename, $alt);
+		}
+
+	}
+	
+	/**
+	 * a small function that ensures that we always build the thumbnail name with the same method
+	 */
+	private function createThumbName($width=0,$height=0){
+		
+		if(empty($width)) $width = VmConfig::get('img_width', 90);
+		if(empty($height)) $height = VmConfig::get('img_height', 90);
+		
+		$origFileInfo = pathinfo($this->media_filename);
+		$this->media_filename_thumb = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
+		return $this->media_filename_thumb;
+	}
+	
+	/**
+	 * This function actually creates the thumb 
+	 * and when it is instanciated with one of the getImage function automatically updates the db
+	 * 
+	 * @author Max Milbers
+	 * @param boolean $save Execute update function
+	 * @return name of the thumbnail
+	 */
+	public function createThumb($update=0) {
+		
+		//now lets create the thumbnail, saving is done in this function
+		$width = VmConfig::get('img_width', 90);
+		$height = VmConfig::get('img_height', 90);
+
+		// Don't allow sizes beyond 2000 pixels //I dont think that this is good, should be config
+//		$width = min($width, 2000);
+//		$height = min($height, 2000);
+					
+		$maxsize = false;
+		$bgred = 255;
+		$bggreen = 255;
+		$bgblue = 255;
+
+		$fullSizeFilenamePath = $this->media_path.$this->media_filename;
+		
+		$this->media_filename_thumb = $this->createThumbName();
+		$resizedFilenamePath = $this->media_path_thumb.$this->media_filename_thumb;
+				
+		if (file_exists($fullSizeFilenamePath)) {
+
+			$createdImage = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
+			if($createdImage){
+				$this->media_filename_thumb = basename($createdImage->fileout);
+				
+				if($update){
+					//We just created a new thumbnail, we should save that
+					if(empty($this->id)){
+						JError::raiseWarning(1,'We just created a thumbnail and not able to store it '.$this->media_filename_thumb);
+					} else {				
+						$query  = 'UPDATE `#__vm_'.$this->table.'` ';
+						$query .= 'SET `'.$this->mfield.'` = "'.$this->media_filename_thumb.'" WHERE `'.$this->idfield.'` = "'.$this->id.'" ';
+						$db = JFactory::getDBO();
+						$db->setQuery($query);
+						if(!$db->query()){
+							JError::raiseWarning(1,'Couldnt update thumb for $query '.$query);	
+						}
+					}				
+				}
+				return $this->media_filename_thumb;
+			} else {
+				return 0;
+			}	
+		} else {
+			return 0;
+		}
+		
+	}
+	
+	
+	/**
+	 * Tests for a given URL, if the path is writeable
+	 * 
+	 */
+	public function testFolderWriteAble($media_path_url=0){
+		
+		if(!empty($media_path_url)){
+			$media_path = str_replace('/',DS,$media_path_url);
+			$media_path = JPATH_ROOT.DS.substr($media_path,0,-1);
+			$media_path_thumb = $media_path.'/resized/';
+		} else {
+			$media_path = $this->media_path;
+			$media_path_thumb = $this->media_path_thumb;
+		}
+
+		$folder = array($media_path, $media_path_thumb);
+		$style = 'text-align:left;margin-left:20px;';
+		$result = '<div class="vmquote" style="'.$style.'">';
+		foreach( $folder as $dir ) {
+			$result .= $dir . ' :: ';
+			$result .= is_writable( $dir )
+				 ? '<span style="font-weight:bold;color:green;">'.JText::_('VM_WRITABLE').'</span>'
+				 : '<span style="font-weight:bold;color:red;">'.JText::_('VM_UNWRITABLE').'</span>';
+			$result .= '<br/>';
+		}
+		$result .= '</div>';
+		return $result;
+	}
+	
 	/**
 	 * Display an image icon for the given image and create a link to the given link.
 	 *
@@ -37,223 +329,217 @@ class ImageHelper {
 	}	
 	
 	
-	/**
-	 * Display a given image witin IMG tags.
-	 *
-	 * @param string $image Name of the image file to display
-	 * @param string $text Text to use for the image alt text.
-	 */
-	public function displayImage($image, $text)  {
-		$imageHtml  = '<div style="float:left;"><div class="icon">';
-		$imageHtml .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
-		$imageHtml .= '</div></div>';
-		echo $imageHtml;
-	}	
+//	/** The use of this function is not clear and it was never used when I commented it, note by Max Milbers
+//	 * Display a given image witin IMG tags.
+//	 *
+//	 * @param string $image Name of the image file to display
+//	 * @param string $text Text to use for the image alt text.
+//	 */
+//	public function displayImage($image, $text)  {
+//		$imageHtml  = '<div style="float:left;"><div class="icon">';
+//		$imageHtml .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
+//		$imageHtml .= '</div></div>';
+//		echo $imageHtml;
+//	}	
 
-	
-	/** 
-	 * Display a given image in <img> tags
-	 *
-	 * @author RickG
-	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootFolder The whole URI from joomla path up to the picture, use the variables defined in the config.	 
-	 * @param string $imageArgs Attributes to be included in the <img> tag.
-	 * @param integer $resize Should this image be auto resized.
-	 * @param integer $thumbWidth Width the returned image should be.
-	 * @param integer $thumbHeight Height the returned image should be. 
-	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
-	 */
-	public function displayShopImage($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
-		echo ImageHelper::generateImageHtml($image, $imgRootURI, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
-	}
-	
-	/** Return the HTML <img> code for a given image.
-	 *
-	 * @author RickG
-	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootFolder The whole URI from joomla path up to the picture, use the variables defined in the config.
-	 * @param string $imageArgs Attributes to be included in the <img> tag.
-	 * @param integer $resize Should this image be auto resized.
-	 * @param integer $thumbWidth Width the returned image should be.
-	 * @param integer $thumbHeight Height the returned image should be. 
-	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
-	 * @return string <img> tag containing the image as the src attribute.  Needs only to be echo'd.
-	 */	
-	function getShopImageHtml($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
-		return ImageHelper::generateImageHtml($image, $imgRootURI, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
-	}
-	
-	/**
-	 * Generate the <img> html code for a given image and a given image size.
-	 *
-	 * @author RickG, RolandD
-	 * @param string $image Filename of the image.  No path.
-	 * @param string $imgRootURI The whole URI from joomla path up to the picture, use the variables defined in the config.	 
-	 * @param string $imageArgs Attributes to be included in the <img> tag.
-	 * @param integer $resize Should this image be auto resized.
-	 * @param integer $thumbWidth Width the returned image should be.
-	 * @param integer $thumbHeight Height the returned image should be. 
-	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
-	 * @return string <img> tage containing the image as the src attribute.  Needs only to be echo'd.
-	 */
-	function generateImageHtml($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
-		// Process image arguments
-		$border="";
-		if( strpos( $imageArgs, "border=" )===false ) {
-			$border = 'border="0"';
-		}
-		$newImageHeight = $newImageWidth = '';
 
-		if ($image != "") {
-			// Remote image URL
-			if( substr( $image, 0, 4) == "http" ) {
-				$url = $image;
-			}
-			// Local image file
-			else {
-				if ($overrideSize) {
-					$newImageWidth = $thumbWidth;
-					$newImageHeight = $thumbHeight;
-				}
-				else {
-					$newImageWidth = VmConfig::get('img_width', 90);
-					$newImageHeight = VmConfig::get('img_height', 90);
-				}
-				
-				// Dynamic image resizing will happen
-				if (VmConfig::get('img_resize_enable') == '1' || $resize==1) {
-					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
-					if (!strpos($imageArgs, "height=")) {
-						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootURI, '', $newImageWidth, $newImageHeight));
-						$width = $arr[0]; 
-						$height = $arr[1];
-					}
-				}			
-				else {
-						$url = JURI::root().$imgRootURI.$image;	
-
-					if ($resize) {
-						if ($height < $width) {
-							$newImageWidth = round($width / ($height / VmConfig::get('img_height', 90)));
-							$newImageHeight = VmConfig::get('img_height', 90);
-						} 
-						else {
-							$newImageHeight = round($height / ($width / VmConfig::get('img_width', 90)));
-							$newImageWidth = VmConfig::get('img_width', 90);
-						}
-						$url = ImageHelper::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
-					}
-				}
-			}
-		}
-		else {
-			$url = VmConfig::get('vm_themeurl').'assets/images/vmgeneral/'.VmConfig::get('no_image');
-		}
-
-		return JHTML::image($url, '');
-			
-	}
-	
-	
-	/**
-	 * Create a resized image for a given image if one does not already exit.
-	 *
-	 * Resized images are currently held in the shop image directory in a resized folder found under the $imageRootFolder.
-	 *
-	 * @author RickG, RolandD
-	 * @param string $imageFilename Filename of the image.  No path included.
-	 * @param string $imageRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.
-	 * @param integer $width Width the resized image should be 
-	 * @param integer $height Height the resized image should be
-	 * @return string URL to the resized image or 'No Imgae'
-	 */
-	function createResizedImage($imageFilename, $imgRootURI, $width, $height) {
-		$maxsize = false;
-		$bgred = 255;
-		$bggreen = 255;
-		$bgblue = 255;
-
-		$origFileInfo = pathinfo($imageFilename);
-		$resizedFilename = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
-		
-//		if ($imageRootFolder) {
-//			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
-//			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
+//	/**
+//	 * Generate the <img> html code for a given image and a given image size.
+//	 *
+//	 * @author Max Milbers
+//	 * @author RickG, RolandD
+//	 * @param string $image Filename of the image.  No path.
+//	 * @param string $imgRootURI The whole URI from joomla path up to the picture, use the variables defined in the config.	 
+//	 * @param string $imageArgs Attributes to be included in the <img> tag.
+//	 * @param integer $resize Should this image be auto resized.
+//	 * @param integer $thumbWidth Width the returned image should be.
+//	 * @param integer $thumbHeight Height the returned image should be. 
+//	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
+//	 * @return string <img> tage containing the image as the src attribute.  Needs only to be echo'd.
+//	 */
+//	function generateImageHtml($image, $imgRootURI, $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false) {
+//		return 'you used generateImageHtml, please use new methods';
+//		// Process image arguments
+//		$border="";
+//		if( strpos( $imageArgs, "border=" )===false ) {
+//			$border = 'border="0"';
+//		}
+//		$newImageHeight = $newImageWidth = '';
+//
+//		if ($image != "") {
+//			// Remote image URL
+//			if( substr( $image, 0, 4) == "http" ) {
+//				$url = $image;
+//			}
+//			// Local image file
+//			else {
+//				//Test if file is there
+//				
+//				$imgPath = $imgRootURI.$image;
+//				$imgPath = str_replace('/',DS,$imgPath);
+//				$imgPath = JPATH_ROOT.DS.$imgPath;
+//	
+//				if (!file_exists($imgPath)) {
+//					JError::raiseWarning(1,JText::_('The file does not exist').' path '.$imgPath);
+//					$theme_url = VmConfig::get('vm_themeurl');
+//					if(!empty($theme_url)){
+//						$url = $theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+//					} else {
+//						$url = JURI::root().'components/com_virtuemart/assets/images/vmgeneral/'.VmConfig::get('no_image_found');	
+//					}
+//					
+//					return JHTML::image($url, '');
+//				}
+//				
+//				if ($overrideSize) {
+//					$newImageWidth = $thumbWidth;
+//					$newImageHeight = $thumbHeight;
+//				}
+//				else {
+//					$newImageWidth = VmConfig::get('img_width', 90);
+//					$newImageHeight = VmConfig::get('img_height', 90);
+//				}
+//				
+//				// Dynamic image resizing will happen
+//				if (VmConfig::get('img_resize_enable') == '1' || $resize==1) {
+//					dump($imgRootURI,'dynamic resize $imgRootURI');
+//					$url = VmImage::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
+//					if (!strpos($imageArgs, "height=")) {
+//						$arr = @getimagesize(VmImage::getresizedfilename($image, $imgRootURI, '', $newImageWidth, $newImageHeight));
+//						$width = $arr[0]; 
+//						$height = $arr[1];
+//					}
+//					dump($url,'dynamic resize $url');
+//				}
+//				else {
+//					$url = JURI::root().$imgRootURI.$image;	
+//
+//					if ($resize) {
+//						if ($height < $width) {
+//							$newImageWidth = round($width / ($height / VmConfig::get('img_height', 90)));
+//							$newImageHeight = VmConfig::get('img_height', 90);
+//						} 
+//						else {
+//							$newImageHeight = round($height / ($width / VmConfig::get('img_width', 90)));
+//							$newImageWidth = VmConfig::get('img_width', 90);
+//						}
+//						$url = VmImage::createResizedImage(urlencode($image), $imgRootURI, $newImageWidth, $newImageHeight);
+//					}
+//				}
+//			}
 //		}
 //		else {
-//			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageFilename;
-//			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+//			$url = VmConfig::get('vm_themeurl').'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
 //		}
-
-		$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
-		$imageRootFolder = implode(DS, $imageRootFolderExp);
-
+//		dump($url,'generateImageHtml my url');
+//		return JHTML::image($url, '');
+//			
+//	}
+//	
+//	
+//	/**
+//	 * Create a resized image for a given image if one does not already exit.
+//	 *
+//	 * Resized images are currently held in the shop image directory in a resized folder found under the $imageRootFolder.
+//	 *
+//	 * @author Max Milbers
+//	 * @author RickG, RolandD
+//	 * @param string $imageFilename Filename of the image.  No path included.
+//	 * @param string $imageRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.
+//	 * @param integer $width Width the resized image should be 
+//	 * @param integer $height Height the resized image should be
+//	 * @return string URL to the resized image or 'No Imgae'
+//	 */
+//	function createResizedImage($imageFilename, $imgRootURI, $width, $height) {
+//		return 'you used createResizedImage, please use new methods';
+//		$maxsize = false;
+//		$bgred = 255;
+//		$bggreen = 255;
+//		$bgblue = 255;
+//
+//		$origFileInfo = pathinfo($imageFilename);
+//		$resizedFilename = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
+//		
+////		if ($imageRootFolder) {
+////			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
+////			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
+////		}
+////		else {
+////			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageFilename;
+////			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+////		}
+//
+////		$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
 //		$imageRootFolderExp = explode('/', $imgRootURI);
 //		$imageRootFolder = implode(DS, $imageRootFolderExp);
-
-		$fullSizeFilenamePath = JPATH_SITE.DS.$imageRootFolder.$imageFilename;
-		$resizedFilenamePath = JPATH_SITE.DS.$imageRootFolder.'resized'.DS.$resizedFilename;
-//		echo'$fullSizeFilenamePath '.$fullSizeFilenamePath;
-		// Don't allow sizes beyond 2000 pixels
-		$width = min($width, 2000);
-		$height = min($height, 2000);
-
-		if (!file_exists($resizedFilenamePath) && file_exists($fullSizeFilenamePath)) {
-			$newFile = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
-		}	
-		if (file_exists($resizedFilenamePath)) {
-//			if ($imageRootFolder <> '') {
-////				return JURI::root().'components/com_virtuemart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
-//				return JURI::root().$imageRootFolder.'/resized/'.$resizedFilename;
-//			}
-//			else {
-//				return JURI::root().'components/com_virtuemart/shop_image/resized/'.$resizedFilename;
-				return JURI::root().VmConfig::get('media_product_path').'resized/'.$resizedFilename;
-//			}				
-		}
-		else {
-			return VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
-		}
-	}
-	
-	
-	/**
-	 * Returns the filename of an image's resized copy in the /resized folder
-	 *
-	 * @author RickG
-	 * @todo Do we really want to add the width and height to the filename?
-	 * @param string $filename Filename of the image we are looking for.
-	 * @param string $imageRootFolder Folder under the shop image location that contains this image.  For example, 'products'.
-	 * @param string $ext Image extension we ar elooking for,  If none we will use what is on the $filename.
-	 * @param integer $height Height of the image we are looking for.  
-	 * @param integer $width Width of the image we are looking for.  
-	 * @return string Full path to the resized image file.
-	 */
-	function getResizedFilename($filename, $imgRootURI, $ext='', $height=0, $width=0)
-	{
-		$fileinfo = pathinfo($filename);
-		if ($ext == '') {
-			$ext = $fileinfo['extension'];
-		}
-		
-		if ($width == 0) {
-			$width = VmConfig::get('img_width', 90);
-		}
-		if ($height == 0) {
-			$height = VmConfig::get('img_height', 90);
-		}
-		
-		
-		$resizedFilename = $fileinfo['filename'].'_'.$width.'x'.$height.'.'.$fileinfo['extension'];
-		$imageRootFolderExp = explode('/', $imgRootURI);
-		$imageRootFolder = implode(DS, $imageRootFolderExp);
-//		if ($imageRootFolder) {
-			return JPATH_SITE.DS.$imageRootFolder.$resizedFilename;
+//
+////		$imageRootFolderExp = explode('/', $imgRootURI);
+////		$imageRootFolder = implode(DS, $imageRootFolderExp);
+//
+//		$fullSizeFilenamePath = JPATH_SITE.DS.$imageRootFolder.$imageFilename;
+//		$resizedFilenamePath = JPATH_SITE.DS.$imageRootFolder.'resized'.DS.$resizedFilename;
+////		echo'$fullSizeFilenamePath '.$fullSizeFilenamePath;
+//		// Don't allow sizes beyond 2000 pixels
+//		$width = min($width, 2000);
+//		$height = min($height, 2000);
+//
+//		if (!file_exists($resizedFilenamePath) && file_exists($fullSizeFilenamePath)) {
+//			$newFile = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
+//		}	
+//		if (file_exists($resizedFilenamePath)) {
+////			if ($imageRootFolder <> '') {
+//////				return JURI::root().'components/com_virtuemart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
+////				return JURI::root().$imageRootFolder.'/resized/'.$resizedFilename;
+////			}
+////			else {
+////				return JURI::root().'components/com_virtuemart/shop_image/resized/'.$resizedFilename;
+////				return JURI::root().VmConfig::get('media_product_path').'resized/'.$resizedFilename;
+//				return JURI::root().$imgRootURI.'resized/'.$resizedFilename;
+////			}				
 //		}
 //		else {
-//			return JPATH_COMPONENT.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+//			return VmConfig::get('vm_themeurl').'images/'.VmConfig::get('no_image');
 //		}
-	}
+//	}
+	
+	
+	//Not bad, but not used, therefore uncommmented
+//	/**
+//	 * Returns the filename of an image's resized copy in the /resized folder
+//	 *
+//	 * @author RickG
+//	 * @todo Do we really want to add the width and height to the filename?
+//	 * @param string $filename Filename of the image we are looking for.
+//	 * @param string $imageRootFolder Folder under the shop image location that contains this image.  For example, 'products'.
+//	 * @param string $ext Image extension we ar elooking for,  If none we will use what is on the $filename.
+//	 * @param integer $height Height of the image we are looking for.  
+//	 * @param integer $width Width of the image we are looking for.  
+//	 * @return string Full path to the resized image file.
+//	 */
+//	function getResizedFilename($filename, $imgRootURI, $ext='', $height=0, $width=0)
+//	{
+//		$fileinfo = pathinfo($filename);
+//		if ($ext == '') {
+//			$ext = $fileinfo['extension'];
+//		}
+//		
+//		if ($width == 0) {
+//			$width = VmConfig::get('img_width', 90);
+//		}
+//		if ($height == 0) {
+//			$height = VmConfig::get('img_height', 90);
+//		}
+//
+//		$resizedFilename = $fileinfo['filename'].'_'.$width.'x'.$height.'.'.$fileinfo['extension'];
+//		$imageRootFolderExp = explode('/', $imgRootURI);
+//		$imageRootFolder = implode(DS, $imageRootFolderExp);
+////		if ($imageRootFolder) {
+//			return JPATH_SITE.DS.$imageRootFolder.$resizedFilename;
+////		}
+////		else {
+////			return JPATH_COMPONENT.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+////		}
+//	}
 	
 }
 
@@ -372,7 +658,7 @@ class Img2Thumb	{
 *	private function - do not call
 *
 */
-	function NewImgCreate($filename,$newxsize,$newysize,$fileout)
+	private function NewImgCreate($filename,$newxsize,$newysize,$fileout)
 	{
 
 		$type = $this->GetImgType($filename);
@@ -428,7 +714,7 @@ class Img2Thumb	{
 *	private function - do not call
 *	includes function ImageCreateTrueColor and ImageCopyResampled which are available only under GD 2.0.1 or higher !
 */
-	function NewImgResize($orig_img,$newxsize,$newysize,$filename)
+	private function NewImgResize($orig_img,$newxsize,$newysize,$filename)
 	{
 		//getimagesize returns array
 		// [0] = width in pixels
@@ -522,7 +808,7 @@ class Img2Thumb	{
 *	private function - do not call
 *
 */
-	function NewImgSave($new_img,$fileout,$type)
+	private function NewImgSave($new_img,$fileout,$type)
 	{
 		if( !@is_dir( dirname($fileout))) {
 			@mkdir( dirname($fileout) );
@@ -564,7 +850,7 @@ class Img2Thumb	{
 *	private function - do not call
 *
 */
-	function NewImgShow($new_img,$type)
+	private function NewImgShow($new_img,$type)
 	{
 		/* Original code removed in favor of 'switch' statement
 		if ($type=="png")
@@ -611,7 +897,7 @@ class Img2Thumb	{
 *   9 = JPC, 10 = JP2, 11 = JPX,
 *   12 = JB2, 13 = SWC, 14 = IFF
 */
-	function GetImgType($filename)
+	private function GetImgType($filename)
 	{
 		$info = getimagesize($filename);
 		/* Original code removed in favor of 'switch' statement

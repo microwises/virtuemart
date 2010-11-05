@@ -387,8 +387,6 @@ class VirtueMartModelProduct extends JModel {
 		if($result) {
 			/* Add some extra info */
 			foreach ($result as $featured) {
-				/* todo Flypage */
-//				$featured->layout = shopFunctions::getFlypage($featured->product_id);
 	
 				/* Product price */
 				$price = "";
@@ -655,12 +653,17 @@ class VirtueMartModelProduct extends JModel {
 				if (JRequest::getWord('product_full_image_action') == 'auto_resize') {
 					/* Check if we have an uploaded file */
 					if ($full_image['error'] == UPLOAD_ERR_NO_FILE) {
-						$data['product_thumb_image'] = 'resized/'.basename(ImageHelper::createResizedImage($product_data->product_full_image, VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+//						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($product_data->product_full_image, VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+						$productImage = VmImage::getProductImage($product_data->product_full_image);
+						$data['product_thumb_image'] = $productImage->createThumb(false);
 					}
 					/* Move the file to its final destination */
 					else if ($full_image['error'] == UPLOAD_ERR_OK) {
 						move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
-						$data['product_thumb_image'] = 'resized/'.basename(ImageHelper::createResizedImage($full_image['name'], VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+//						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($full_image['name'], VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+						$productImage = VmImage::getProductImage($full_image['name']);
+						$data['product_thumb_image'] = $productImage->createThumb(false);
+
 					}
 				}
 				else {
@@ -669,7 +672,6 @@ class VirtueMartModelProduct extends JModel {
 						move_uploaded_file($thumb_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.'resized'.DS.$thumb_image['name']);
 						$data['product_thumb_image'] = 'resized/'.$thumb_image['name'];
 					}
-
 				}
 			}
 		}

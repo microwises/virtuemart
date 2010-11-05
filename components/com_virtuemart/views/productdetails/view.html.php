@@ -70,6 +70,10 @@ class VirtueMartViewProductdetails extends JView {
 		$product = $product_model->getProduct($product_id);
 		$this->assignRef('product', $product);
 
+		$productImage = VmImage::getImageByProduct($product);
+		$this->assignRef('productImage', $productImage);
+
+
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
@@ -122,6 +126,8 @@ class VirtueMartViewProductdetails extends JView {
 	    	$catTpl = $category->category_template;
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
+		
+		
 		
 		/* Display it all */
 		parent::display($tpl);

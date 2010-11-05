@@ -253,6 +253,7 @@ $mainframe = JFactory::getApplication();
 <?php 
 	echo $pane->endPanel();
 	echo $pane->startPanel(JText::_('IMAGES'), 'images_tab');
+	echo VmImage::testFolderWriteAble(VmConfig::get('media_category_path'));
 ?>
 <div class="col50">
 	<table class="adminform">
@@ -269,7 +270,7 @@ $mainframe = JFactory::getApplication();
 							</td>
 							<td>
 								<input type="file" name="category_full_image" id="category_full_image" size="30" class="inputbox" />		
-								<input type="hidden" name="category_full_image_current" id="category_full_image_current" value="<?php echo $this->category->category_full_image?>" />	
+								<input type="hidden" name="category_full_image_current" id="category_full_image_current" value="<?php echo $this->category->category_full_image ?>" />	
 							</td>
 						</tr>
 						<?php if( function_exists('imagecreatefromjpeg') ):?>
@@ -313,7 +314,7 @@ $mainframe = JFactory::getApplication();
 						</tr>
 						<tr>
 							<td colspan="2">
-								<?php echo ImageHelper::generateImageHtml( $this->category->category_full_image, VmConfig::get('media_category_path'), '', 0);?>
+								<?php  echo VmImage::getImageByCat($this->category)->displayImage('','',0); ?>
 							</td>
 						</tr>
 					</table>
@@ -373,7 +374,8 @@ $mainframe = JFactory::getApplication();
 						</tr>
 						<tr>
 							<td colspan="2">
-								<?php echo ImageHelper::generateImageHtml( $this->category->category_thumb_image, VmConfig::get('media_category_path').'resized/', '', 0);?>
+								<?php 
+								echo VmImage::getImageByCat($this->category)->displayImage('','',1,0); ?>
 							</td>
 						</tr>	
 					</table>
