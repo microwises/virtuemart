@@ -113,7 +113,16 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->product_currency = null;
 		 	 $row->product_price_quantity_start = null;
 		 	 $row->product_price_quantity_end = null;
+		 	 
+		 	 $row->product_tax_id = null;
+		 	 $row->product_discount_id = null;
+		 	 
+		 	 if(empty($this->_data->paym_vendor_id)){
+  		   		require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+   				$row->vendor_id = VirtueMartModelVendor::getLoggedVendor();
+  			}
 		 }
+
 
 		 /* Add the product categories */
 		 $q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;

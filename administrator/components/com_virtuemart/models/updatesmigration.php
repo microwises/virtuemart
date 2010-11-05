@@ -361,6 +361,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	foreach ($tables as $table) {
+		dump($table, 'DROP TABLE ');
 	    $db->setQuery('DROP TABLE ' . $table);
 	    $db->query();
 	}

@@ -84,26 +84,37 @@ class ShopFunctions {
 	* @return string HTML select option list
 	*/
 	public function renderVendorList($vendorId, $multiple = false) {
-
+		
+		if(empty($vendorId)) JError::raiseError('renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 		$db = JFactory::getDBO();
-		
-		$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
-		$db->setQuery($q);
-		$vendors = $db->loadAssocList();
-		
-		$attrs = '';
-		$name = 'vendor_name';
-		$idA = $id = 'vendor_id';
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
+		if( !Permissions::getInstance()->check('admin') ){
+			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
+			$db->setQuery($q);
+			$vendor = $db->loadResult();
+			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
+			$html .='<input type="hidden" value="'.$vendorId.'" name="vendor_id">';
+			return $html;
+		} else {
 
-		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
-		array_unshift($vendors, $emptyOption);
-			
-		if ($multiple){
-			$attrs = 'multiple="multiple"';
-			$idA .= '[]';
+			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
+			$db->setQuery($q);
+			$vendors = $db->loadAssocList();
+						
+			$attrs = '';
+			$name = 'vendor_name';
+			$idA = $id = 'vendor_id';
+	
+			$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift($vendors, $emptyOption);
+				
+			if ($multiple){
+				$attrs = 'multiple="multiple"';
+				$idA .= '[]';
+			}
+			$listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId );
+			return $listHTML;
 		}
-		$listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId );
-		return $listHTML;
 	}
 	
 	/**

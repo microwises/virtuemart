@@ -77,6 +77,27 @@ class VirtueMartModelVendor extends JModel {
     }
     
     /**
+	* name: getLoggedVendor
+	* Checks which $vendorId has the just logged in user.
+	* @author Max Milbers
+	* @param @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner) 
+	* returns int $vendorId
+	*/	
+	function getLoggedVendor($ownerOnly = true){
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		dump($user,'user');
+		if(isset($userId)){
+			$vendorId = self::getVendorId('user', $userId, $ownerOnly);
+			return $vendorId;
+		}else{
+			JError::raiseNotice(1,'$user_id empty, no user logged in');
+			return 0;
+		}
+		
+	}
+	
+    /**
 	* Retrieve the vendor details from the database.
 	*
 	* @author Max Milbers

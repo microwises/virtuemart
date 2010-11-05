@@ -132,27 +132,40 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_data = $this->getTable('payment_method');
    			$this->_data->load((int)$this->_id);
   		}
-  
+  		dump($this->_data,'data');
   		if (!$this->_data) {
    			$this->_data = new stdClass();
    			$this->_id = 0;
-   			$this->_data = null;
+//   			$this->_data = null;
+  		}
+  		
+  		if(empty($this->_data->paym_vendor_id)){
+  		   	require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+   			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+  		}
+   			
+  		if(!empty($this->_id)){
+			/* Add the paymentmethod shoppergroups */
+			$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
+			$this->_db->setQuery($q);
+			$this->_data->paym_shopper_groups = $this->_db->loadResultArray();
+	
+			/* Add the accepted credit cards */
+			$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$this->_id.'"';
+			$this->_db->setQuery($q);
+			$this->_data->paym_creditcards = $this->_db->loadResultArray();	
+			
+	
+			$q = 'SELECT `params` FROM #__plugins WHERE `id` = "'.$this->_data->paym_jplugin_id.'"';
+			$this->_db->setQuery($q);
+			$this->_data->param = $this->_db->loadResult();  			
+  		} else {
+  			$this->_data->paym_shopper_groups = '';
+  			$this->_data->paym_creditcards = '';
+  			$this->_data->param = '';  			
   		}
 
-		/* Add the paymentmethod shoppergroups */
-		$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->paym_shopper_groups = $this->_db->loadResultArray();
-
-		/* Add the accepted credit cards */
-		$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->paym_creditcards = $this->_db->loadResultArray();	
-		
-
-		$q = 'SELECT `params` FROM #__plugins WHERE `id` = "'.$this->_data->paym_jplugin_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->param = $this->_db->loadResult();	
+	
 
   		return $this->_data;		
 	}    

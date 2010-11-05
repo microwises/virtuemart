@@ -100,6 +100,7 @@ class calculationHelper{
 	 */
 	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
 
+		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
 			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
