@@ -103,6 +103,7 @@ class VirtuemartViewUser extends JView {
 			// Shopper info
 //			$_shoppergroup = ShopperGroup::getShoppergroupById ($userDetails->JUser->get('id'), $_new);
 //			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
+			dump($userDetails,'my user details');
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));

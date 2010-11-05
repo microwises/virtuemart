@@ -205,4 +205,5 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 220, 70, 15)?>
 </fieldset>
 
-<input type="hidden" name="my_vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />
+<input type="hidden" name="user_is_vendor" value="1" />
+<input type="hidden" name="vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />

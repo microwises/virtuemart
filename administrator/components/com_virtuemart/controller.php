@@ -19,7 +19,6 @@ class VirtuemartController extends JController
 	 */
 	function display()
 	{	
-//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
 
 		$document = JFactory::getDocument();	    
 		$viewName = JRequest::getVar('view', '');
@@ -31,9 +30,7 @@ class VirtuemartController extends JController
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}	    
-		
-		include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.vm.old.php' );	    
-
+		parent::display();	
 	}
 	
 	

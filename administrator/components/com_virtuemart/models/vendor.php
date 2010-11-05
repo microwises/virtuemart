@@ -235,7 +235,7 @@ class VirtueMartModelVendor extends JModel {
 	
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
-	$this->_id = $dbv->insertid();
+	if(empty($this->_id)) $this->_id = $dbv->insertid();
 	
 	return true;
 

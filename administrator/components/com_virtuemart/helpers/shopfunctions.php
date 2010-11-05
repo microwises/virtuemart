@@ -85,7 +85,7 @@ class ShopFunctions {
 	*/
 	public function renderVendorList($vendorId, $multiple = false) {
 		
-		if(empty($vendorId)) JError::raiseError('renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
+		if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 		$db = JFactory::getDBO();
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
@@ -93,7 +93,7 @@ class ShopFunctions {
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
-			$html .='<input type="hidden" value="'.$vendorId.'" name="vendor_id">';
+//			$html .='<input type="hidden" value="'.$vendorId.'" name="vendor_id">';
 			return $html;
 		} else {
 
