@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package	VirtueMart
  */
-class TableUser_perm_group extends JTable
+class TableUser_perm_groups extends JTable
 {
 	/** @var int primary key, same as user (user can only be in one group */
 	var $user_id	= 0;
@@ -33,7 +33,7 @@ class TableUser_perm_group extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_user_perm_group_xref', 'user_id', $db);
+		parent::__construct('#__vm_user_perm_groups', 'user_id', $db);
 	}
 
 
@@ -66,7 +66,7 @@ class TableUser_perm_group extends JTable
 	function store(){
 		/* Check if a record exists */
 		$q = 'SELECT `user_id`
-			FROM `#__vm_auth_user_group`
+			FROM `#__vm_user_perm_groups`
 			WHERE `user_id` = "'.$this->user_id.'"';
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResult();
@@ -90,4 +90,5 @@ class TableUser_perm_group extends JTable
 		}
 	}
 }
-?>
+
+//no closing tag

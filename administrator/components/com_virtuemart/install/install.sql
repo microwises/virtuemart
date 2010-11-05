@@ -949,17 +949,24 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_shopper_group_xref` (
 
 -- --------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(128) DEFAULT NULL,
+  `group_level` int(11) DEFAULT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
+
 --
 -- Table structure for table `#__vm_user_perm_group_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_user_perm_group_xref` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `group_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`), 
-  UNIQUE KEY `i_user_id` (`user_id`,`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps the user to user=permission groups';
+-- CREATE TABLE IF NOT EXISTS `#__vm_user_perm_group_xref` (
+--  `id` int(11) NOT NULL AUTO_INCREMENT,
+--  `user_id` int(11) NOT NULL DEFAULT '0',
+--  `group_id` int(11) DEFAULT NULL,
+--  PRIMARY KEY (`id`), 
+--  UNIQUE KEY `i_user_id` (`user_id`,`group_id`)
+-- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps the user to user=permission groups';
 
 
 --

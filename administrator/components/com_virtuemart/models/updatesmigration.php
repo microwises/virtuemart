@@ -172,7 +172,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function setUserToPermissionGroup($userId=0) {
 	# insert the user <=> group relationship
 	$db = JFactory::getDBO();
-	$db->setQuery("INSERT INTO `#__vm_user_perm_group`
+	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
 				SELECT user_id,
 					CASE `perms`
 					    WHEN 'admin' THEN 0
@@ -185,7 +185,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				WHERE address_type='BT' ");
 	$db->query();
 
-	$db->setQuery( "UPDATE `#__vm_user_perm_group` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
+	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
 	$db->query();
     }
 

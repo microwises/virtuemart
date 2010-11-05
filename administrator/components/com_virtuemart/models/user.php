@@ -735,7 +735,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _getListQuery (){
 		
-	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_group, #__vm_user_shopper_group_xref, #__vm_vendor
+	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_groups, #__vm_user_shopper_group_xref, #__vm_vendor
 		$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
