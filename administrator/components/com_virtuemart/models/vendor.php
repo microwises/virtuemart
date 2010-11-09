@@ -194,25 +194,32 @@ class VirtueMartModelVendor extends JModel {
      * @return boolean True is the save was successful, false otherwise.
 	 */
     function store($data){
-    
-
+   
 	$table = $this->getTable('vendor');
 
-	//uploading images and creating thumbnails
-	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
-	if(!empty($fullImage)){
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-		$image  = VmImage::getVendorImage($fullImage['name']);
-		$data = $image->saveImage($data,$fullImage);	
+	//uploading images and creating thumbnails
+	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');	
+	if(!empty($fullImage['name'])){
+		$filename = $fullImage['name'];
+	} else {
+		$filename = $data['vendor_full_image_current'];
 	}
-	
-//	if ($data === null) {
-//		$data = JRequest::get('post');
-//		$_external = false;
-//	} else {
-//		$_external = true;
-//	}
+
+	$thumbImage = JRequest::getVar('vendor_thumb_image', array(), 'files');
+	if(!empty($thumbImage['name'])){
+		$filenamethumb = $thumbImage['name'];
+	} else {
+		$filenamethumb = $data['vendor_thumb_image_current'];
+	}
+			
+	$image = VmImage::getVendorImage($filename,$filenamethumb);
+	if(!empty($image)){
+		$data = $image->saveImage($data,$fullImage,false);
+		$data = $image->saveImage($data,$thumbImage,true);
+	}
+		
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);

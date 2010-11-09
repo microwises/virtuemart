@@ -565,62 +565,7 @@ class VirtueMartModelCategory extends JModel {
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
-	
-//		$thumbImage = JRequest::getVar('category_thumb_image', array(), 'files');
-//		$image = VmImage::getCatImage($thumbImage['name']);
-//		if(!empty($image)){
-//			$data = $image->saveImage($data,$thumbImage,true);
-//		}
-		
-//		$imageRootFolderExp = explode('/', VmConfig::get('media_category_path'));
-//		$imageCategoryFolder = implode(DS, $imageRootFolderExp);
-//		
-//		if($fullImage['error'] == UPLOAD_ERR_OK) {
-//			move_uploaded_file( $fullImage['tmp_name'], JPATH_SITE.DS.$imageCategoryFolder.$fullImage['name']);
-//			$data['category_full_image'] = $fullImage['name'];
-//		}
-//		elseif($data['category_full_image_url']){
-//			$data['category_full_image'] = $data['category_full_image_url'];
-//		}
-//		else{
-//			$data['category_full_image'] = $data['category_full_image_current'];
-//		}
-//
-//		//creating the thumbnail image
-//		if( $data['image_action_full'] == 1 ){
-//			$catImage = VmImage::getCatImage($data['category_full_image'],$data['category_thumb_image']);
-//			$data['category_thumb_image'] = $catImage->createThumb(false);
-////			dump($data['category_thumb_image'],'created new thump');
-//		}
-//		//deleting image
-//		elseif( $data['image_action_full'] == 2 ){
-//			JFile::delete( JPATH_SITE.DS.$imageCategoryFolder.$data['category_full_image_current'] );
-//			$data['category_full_image'] = '';
-//		}
-//
-//		//uploading explicit thumbnail image
-//		$thumbImage = JRequest::getVar('category_thumb_image', array(), 'files');
-//		if( $thumbImage['error'] == UPLOAD_ERR_OK ){
-//			move_uploaded_file( $thumbImage['tmp_name'], JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$thumbImage['name']);
-//			$data['category_thumb_image'] = $thumbImage['name'];
-//		}
-//		
-//		if( empty($data['category_thumb_image']) ){
-//			if( !empty($data['category_thumb_image_url']) ){ //storing the URL if is it necessary
-//				$data['category_thumb_image'] = $data['category_thumb_image_url'];
-//			}
-//			else{
-//				$data['category_thumb_image'] = $data['category_thumb_image_current'];
-//			}
-//		}
-//		
-////		dump($data,'my category data');
-//		//deleting thumbnail image
-//		if( $data['image_action_thumb'] == 2 ){
-//			JFile::delete( JPATH_SITE.DS.$imageCategoryFolder.'resized'.DS.$data['category_thumb_image_current'] );
-//			$data['category_thumb_image'] = '';
-//		}
-		dump($data,'my category data');
+
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());

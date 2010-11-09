@@ -644,53 +644,73 @@ class VirtueMartModelProduct extends JModel {
 		$product_data->load($data['product_id']);
 
 		/* Process the images */
-		if (JRequest::getWord('product_full_image_action') == 'delete') $data['product_full_image'] = '';
-		else {
-			/* Handle the full image */
-			if (array_key_exists('product_full_image_url', $data) && !empty($data['product_full_image_url'])) {
-				$data['product_full_image'] = $data['product_full_image_url'];
-			}
-			else {
-				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
-				$imageProductFolder = implode(DS, $imageRootFolderExp);
-				$full_image = JRequest::getVar('product_full_image', array(), 'files');
-				if ($full_image['error'] == UPLOAD_ERR_OK) {
-					move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
-					$data['product_full_image'] = $full_image['name'];
-				}
-
-				if (JRequest::getWord('product_full_image_action') == 'auto_resize') {
-					/* Check if we have an uploaded file */
-					if ($full_image['error'] == UPLOAD_ERR_NO_FILE) {
-//						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($product_data->product_full_image, VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
-						$productImage = VmImage::getProductImage($product_data->product_full_image);
-						$data['product_thumb_image'] = $productImage->createThumb(false);
-					}
-					/* Move the file to its final destination */
-					else if ($full_image['error'] == UPLOAD_ERR_OK) {
-						move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
-//						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($full_image['name'], VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
-						$productImage = VmImage::getProductImage($full_image['name']);
-						$data['product_thumb_image'] = $productImage->createThumb(false);
-
-					}
-				}
-				else {
-					$thumb_image = JRequest::getVar('product_thumb_image', array(), 'files');
-					if ($full_image['error'] == UPLOAD_ERR_OK) {
-						move_uploaded_file($thumb_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.'resized'.DS.$thumb_image['name']);
-						$data['product_thumb_image'] = 'resized/'.$thumb_image['name'];
-					}
-				}
-			}
+		//uploading images and creating thumbnails
+		$fullImage = JRequest::getVar('product_full_image', array(), 'files');	
+		if(!empty($fullImage['name'])){
+			$filename = $fullImage['name'];
+		} else {
+			$filename = $data['product_full_image_current'];
 		}
-
-		/* Handle thumb image */
-		if (JRequest::getWord('product_thumb_image_action') == 'delete') $data['product_thumb_image'] = '';
-		else {
-			/* Handle the thumb image URL if there is any */
-			if (array_key_exists('product_thumb_image_url', $data) && !empty($data['product_thumb_image_url'])) $data['product_thumb_image'] = $data['product_thumb_image_url'];
+	
+		$thumbImage = JRequest::getVar('product_thumb_image', array(), 'files');
+		if(!empty($thumbImage['name'])){
+			$filenamethumb = $thumbImage['name'];
+		} else {
+			$filenamethumb = $data['product_thumb_image_current'];
 		}
+				
+		$image = VmImage::getProductImage($filename,$filenamethumb);
+		if(!empty($image)){
+			$data = $image->saveImage($data,$fullImage,false);
+			$data = $image->saveImage($data,$thumbImage,true);
+		}
+//		if (JRequest::getWord('product_full_image_action') == 'delete') $data['product_full_image'] = '';
+//		else {
+//			/* Handle the full image */
+//			if (array_key_exists('product_full_image_url', $data) && !empty($data['product_full_image_url'])) {
+//				$data['product_full_image'] = $data['product_full_image_url'];
+//			}
+//			else {
+//				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
+//				$imageProductFolder = implode(DS, $imageRootFolderExp);
+//				$full_image = JRequest::getVar('product_full_image', array(), 'files');
+//				if ($full_image['error'] == UPLOAD_ERR_OK) {
+//					move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
+//					$data['product_full_image'] = $full_image['name'];
+//				}
+//
+//				if (JRequest::getWord('product_full_image_action') == 'auto_resize') {
+//					/* Check if we have an uploaded file */
+//					if ($full_image['error'] == UPLOAD_ERR_NO_FILE) {
+////						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($product_data->product_full_image, VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+//						$productImage = VmImage::getProductImage($product_data->product_full_image);
+//						$data['product_thumb_image'] = $productImage->createThumb(false);
+//					}
+//					/* Move the file to its final destination */
+//					else if ($full_image['error'] == UPLOAD_ERR_OK) {
+//						move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
+////						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($full_image['name'], VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+//						$productImage = VmImage::getProductImage($full_image['name']);
+//						$data['product_thumb_image'] = $productImage->createThumb(false);
+//
+//					}
+//				}
+//				else {
+//					$thumb_image = JRequest::getVar('product_thumb_image', array(), 'files');
+//					if ($full_image['error'] == UPLOAD_ERR_OK) {
+//						move_uploaded_file($thumb_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.'resized'.DS.$thumb_image['name']);
+//						$data['product_thumb_image'] = 'resized/'.$thumb_image['name'];
+//					}
+//				}
+//			}
+//		}
+//
+//		/* Handle thumb image */
+//		if (JRequest::getWord('product_thumb_image_action') == 'delete') $data['product_thumb_image'] = '';
+//		else {
+//			/* Handle the thumb image URL if there is any */
+//			if (array_key_exists('product_thumb_image_url', $data) && !empty($data['product_thumb_image_url'])) $data['product_thumb_image'] = $data['product_thumb_image_url'];
+//		}
 		
 		
 		/* Get the product data */

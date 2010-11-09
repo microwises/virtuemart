@@ -273,7 +273,7 @@ class VmImage {
 							JError::raiseWarning(1,'Couldnt update thumb for $query '.$query);	
 						}
 					}				
-				} dump($resizedFilenamePath,'my path');
+				} 
 				return $this->media_filename_thumb;
 			} else {
 				return 0;
@@ -405,7 +405,7 @@ class VmImage {
 		if($fullImage['error'] == UPLOAD_ERR_OK) {
 			move_uploaded_file( $fullImage['tmp_name'], $imageBaseFolder.$fullImage['name']);
 			$data[$field_image] = $fullImage['name'];
-			dump($imageBaseFolder.$fullImage['name'],'move uploaded file to');
+//			dump($imageBaseFolder.$fullImage['name'],'move uploaded file to');
 		}
 		elseif($data[$field_image_url]){
 			$data[$field_image] = $data[$field_image_url];
