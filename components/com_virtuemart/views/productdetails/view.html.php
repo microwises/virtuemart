@@ -66,10 +66,19 @@ class VirtueMartViewProductdetails extends JView {
 		} else {
 			$product_id=$product_idArray;
 		}
-
+		
+		if(empty($product_id)){
+			self::showLastCategory($tpl);
+			return;
+		}
 		$product = $product_model->getProduct($product_id);
 		$this->assignRef('product', $product);
-
+		
+		if(empty($product)){
+			self::showLastCategory($tpl);
+			return;
+		}
+		
 		$productImage = VmImage::getImageByProduct($product);
 		$this->assignRef('productImage', $productImage);
 
@@ -78,7 +87,7 @@ class VirtueMartViewProductdetails extends JView {
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
 		$category_id = JRequest::getInt('category_id');
-		if ($category_id == 0) {
+		if ($category_id == 0 && !empty($product)) {
 			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0]; 
 		}
 		
@@ -132,6 +141,21 @@ class VirtueMartViewProductdetails extends JView {
 		/* Display it all */
 		parent::display($tpl);
 	}
+	
+	private function showLastCategory($tpl) {
+			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$categoryLink='';
+			if($category_id){
+				$categoryLink='&category_id='.$category_id;
+			}
+			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
+			
+			$continue_link_html = '<a href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+			$this->assignRef('continue_link_html', $continue_link_html);
+			/* Display it all */
+			parent::display($tpl);
+	}
+	
 }
 
 // pure php no closing tag

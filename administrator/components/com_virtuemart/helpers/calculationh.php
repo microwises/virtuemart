@@ -79,6 +79,7 @@ class calculationHelper{
 	function getCartData(){
 		return $this->_cartData;
 	}
+	
 	/** function to start the calculation, here it is for the product
 	 * 
 	 * The function first gathers the information of the product (maybe better done with using the model)

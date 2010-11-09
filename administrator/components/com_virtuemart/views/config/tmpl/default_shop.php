@@ -167,28 +167,6 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
 	    </td>
 	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP'); ?>">
-		    <?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT') ?>
-		</span>
-	    </td>
-	    <td>
-		<textarea rows="6" cols="40" id="oncheckout_legalinfo_shorttext" name="oncheckout_legalinfo_shorttext" class="inputbox"><?php echo $this->config->get('oncheckout_legalinfo_shorttext'); ?></textarea>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK_TIP'); ?>">
-		    <?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK') ?>
-		</span>
-	    </td>
-	    <td>
-		<?php
-		echo JHTML::_('Select.genericlist', $this->contentLinks, 'oncheckout_legalinfo_link', 'size=5', 'id', 'text', $this->config->get('oncheckout_legalinfo_link'));
-		?>
-	    </td>
-	</tr>
     </table>
 </fieldset>
 

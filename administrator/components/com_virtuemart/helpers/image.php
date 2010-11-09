@@ -86,6 +86,7 @@ class VmImage {
 	 * @return VmImage an image object with extra vendor attributes
 	 */
 	function getImageByVendor($vendor){
+		if(empty($vendor)) return JText::_('VM_CANT_CREATE_IMAGE_NO_VENDOR_GIVEN');
 		return self::getVendorImage($vendor->vendor_full_image,$vendor->vendor_thumb_image,$vendor->vendor_id);
 	}
 		
@@ -116,6 +117,7 @@ class VmImage {
 	 * @return VmImage an image object with extra product attributes
 	 */
 	function getImageByProduct($product){
+		if(empty($product)) return JText::_('VM_CANT_CREATE_IMAGE_NO_PRODUCT_GIVEN');
 		return self::getProductImage($product->product_full_image,$product->product_thumb_image,$product->product_id);
 	}
 	
@@ -146,6 +148,7 @@ class VmImage {
 	 * @return VmImage an image object with extra category attributes
 	 */
 	function getImageByCat($cat){
+		if(empty($cat)) return JText::_('VM_CANT_CREATE_IMAGE_NO_CATEGORY_GIVEN');
 		return self::getCatImage($cat->category_full_image,$cat->category_thumb_image,$cat->category_id);
 	}
 	
@@ -410,20 +413,22 @@ class VmImage {
 		elseif($data[$field_image_url]){
 			$data[$field_image] = $data[$field_image_url];
 		}
-		else{
-			$data[$field_image] = $data[$field_image_current];
-		}
+//		else{
+			
+//		}
 
 		//creating the thumbnail image
 		if( $data['image_action'.$thumbchar] == 1 ){
 			$data[$field_thumb_image] = $this->createThumb(false);
 		}
+
 		//deleting image
-		elseif( $data['image_action'.$thumbchar] == 2 ){			 
+		elseif( $data['image_action'.$thumbchar] == 2 ){
+			jimport('joomla.filesystem.file');	 
 			JFile::delete( $imageBaseFolder.$data[$field_image_current] );
 			$data[$field_image] = '';
 		}
-		
+
 		return $data;
 	}
 	

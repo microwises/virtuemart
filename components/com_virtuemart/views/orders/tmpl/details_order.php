@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td align="left"><?php echo JText::_('VM_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></td>
 		<td align="right"><?php echo $this->currency->getFullValue($this->orderdetails['details']['BT']->order_discount); ?></td>
 	</tr>
-<?php if (PSHOP_COUPONS_ENABLE=='1') : ?>
+<?php if (VmConfig::get('coupons_enable',0)=='1') : ?>
 	<tr>
 		<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT') ?></td>
 		<td align="right"><?php echo $this->currency->getFullValue($this->orderdetails['details']['BT']->coupon_discount); ?></td>

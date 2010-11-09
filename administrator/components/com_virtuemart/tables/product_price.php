@@ -73,15 +73,15 @@ class TableProduct_price extends JTable {
 			return false;
 		}
 		
-		if (!$this->product_price) {
-			$this->setError(JText::_('Impossible to save product prices without product_price'));
-			return false;
-		}
+//		if (!$this->product_price) {
+//			$this->setError(JText::_('Impossible to save product prices without product_price'));
+//			return false;
+//		}
 
-		if (!$this->product_currency) {
-			$this->setError(JText::_('Impossible to save product prices without product_currency'));
-			return false;
-		}
+//		if (!$this->product_currency) {
+//			$this->setError(JText::_('Impossible to save product prices without product_currency'));
+//			return false;
+//		}
 		return true;
 	}
 	

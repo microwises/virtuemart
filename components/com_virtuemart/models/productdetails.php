@@ -49,7 +49,7 @@ class VirtueMartModelProductdetails extends JModel {
 				WHERE p.product_id = ".$product_id;
 			$this->_db->setQuery($q);
 			$product = $this->_db->loadObject();
-			
+			if(empty($product)) return false;
 			/* Load the categories the product is in */
 			$product->categories = $this->getCategories();
 			
@@ -70,7 +70,7 @@ class VirtueMartModelProductdetails extends JModel {
 				
 				/* Calculate the modificator */
 				$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
-
+//				$product_type_modificator = $calculator->parseModifier($product->variants);
 				$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
 				$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
@@ -115,7 +115,6 @@ class VirtueMartModelProductdetails extends JModel {
 			$product->customvariants = $this->getCustomVariants($product->custom_attribute);
 			
 
-			
 			/* Check the order levels */
 			if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
 			
@@ -172,9 +171,12 @@ class VirtueMartModelProductdetails extends JModel {
 		/* Loads the product price details */
 		$calculator = calculationHelper::getInstance();
 		
+		$quantityArray = JRequest::getVar('quantity',1,'post');
+		
 		/* Calculate the modificator */
 		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
-
+//		$product_type_modificator = $calculator->parseModifier($product->variants);
+		
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);

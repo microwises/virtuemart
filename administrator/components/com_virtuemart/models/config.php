@@ -77,6 +77,7 @@ class VirtueMartModelConfig extends JModel {
      */
     function getNoImageList() {
     	
+    	//TODO set config value here
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 		
 		$tplpath = VmConfig::get('vmtemplate',0);

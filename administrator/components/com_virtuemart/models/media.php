@@ -228,7 +228,7 @@ class VirtueMartModelMedia extends JModel {
 							product_thumb_image,
 							'0' AS isdownloadable,
 							product_name,
-							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url,			
+							CONCAT('". VmConfig::get('media_product_path')."', product_full_image) AS file_url,			
 							SUBSTRING(product_full_image, -3, 3) AS file_extension
 					FROM #__vm_product
 					WHERE LENGTH(product_full_image) > 0 ".$filter;

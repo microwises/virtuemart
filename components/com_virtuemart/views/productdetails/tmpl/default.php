@@ -22,8 +22,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /* Let's see if we found the product */
-if (!$this->product) {
+if (empty($this->product)) {
 	echo JText::_('VM_PRODUCT_NOT_FOUND');
+	echo '<br /><br />  '.$this->continue_link_html;
 }
 else { ?>
 	<div class="buttons_heading">

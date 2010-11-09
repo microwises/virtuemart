@@ -61,18 +61,15 @@ function myValidator(f, t)
 	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('CANCEL'); ?></button>
 </div>
 <?php
-echo 'Todo: only a rough view to have something to work with';
-echo '<p>Please select a paymentmethod that fit your needs:</p><br /><br />';
+	echo JText::_('VM_CART_SELECT_PAYMENT');
 
-		$_dispatcher = JDispatcher::getInstance();
-		$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
-		$html = $_dispatcher->trigger('plgVmOnShowList', $tmp);
+	$_dispatcher = JDispatcher::getInstance();
+	$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
+	$html = $_dispatcher->trigger('plgVmOnShowList', $tmp);
 
-		foreach($html as $item){	
-			
-			echo $item;
-			
-		}
+	foreach($html as $item){			
+		echo $item;		
+	}
 		
 ?>	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />

@@ -664,6 +664,7 @@ class VirtueMartModelProduct extends JModel {
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
+
 //		if (JRequest::getWord('product_full_image_action') == 'delete') $data['product_full_image'] = '';
 //		else {
 //			/* Handle the full image */

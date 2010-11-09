@@ -119,10 +119,10 @@ class VirtuemartControllerShippingCarrier extends JController {
 	{
 		$model = $this->getModel('shippingcarrier');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more shipping carriers could not be deleted!');
+			$msg = JText::_('VM_SHIPPING_CARRIERS_DELETED_ERROR');
 		}
 		else {
-			$msg = JText::_( 'Shipping carriers deleted!');
+			$msg = JText::_( 'VM_SHIPPING_CARRIERS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);

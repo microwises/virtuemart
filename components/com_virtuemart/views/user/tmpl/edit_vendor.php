@@ -175,8 +175,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="admintable">
 	<?php
 		$image = VmImage::getImageByVendor($this->vendor);
-		echo $image -> createImageUploader(false);
-		echo $image -> createImageUploader(true);		
+		if($image){
+			echo $image -> createImageUploader(false);
+			echo $image -> createImageUploader(true);			
+		}
+		
 	?>	
 	</table>
 </fieldset>
