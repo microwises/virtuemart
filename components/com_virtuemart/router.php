@@ -27,7 +27,7 @@ function virtuemartBuildRoute(&$query)
 {
 	$page = '';
 	$segments = array();
-	dump($query,'My query in Route');
+
 	if(isset($query['view'])){
 		$page = $query['view'];
 		unset($query['view']);

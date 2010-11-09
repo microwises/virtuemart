@@ -90,10 +90,6 @@ class VirtuemartControllerProduct extends JController {
 		$view->setModel( $this->getModel( 'manufacturer', 'VirtueMartModel' ));
 		/* Currency functions */
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-		/* Tax functions */
-		$view->setModel( $this->getModel( 'taxRate', 'VirtueMartModel' ));
-		/* Discount functions */
-//		$view->setModel( $this->getModel( 'discount', 'VirtueMartModel' ));
 		/* Waitinglist functions */
 		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
 

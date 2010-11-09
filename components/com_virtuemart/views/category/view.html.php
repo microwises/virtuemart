@@ -62,7 +62,6 @@ class VirtuemartViewCategory extends JView {
 	    
 	    /* Load the products in the given category */
 	    $products = $productModel->getProductsInCategory($categoryId);
-	    dump($products,'');
 	    $this->assignRef('products', $products);
 	    
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);

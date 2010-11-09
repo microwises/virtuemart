@@ -132,7 +132,7 @@ class VirtueMartModelPaymentmethod extends JModel
    			$this->_data = $this->getTable('payment_method');
    			$this->_data->load((int)$this->_id);
   		}
-  		dump($this->_data,'data');
+
   		if (!$this->_data) {
    			$this->_data = new stdClass();
    			$this->_id = 0;

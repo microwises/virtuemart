@@ -477,7 +477,7 @@ class VirtueMartModelUser extends JModel {
 		if(empty($this->_id)){
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
-		dump($_data,'my data in saveUserData');
+
 		//update user table
 		$table = $this->getTable('vm_users');
 		$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
@@ -525,7 +525,7 @@ class VirtueMartModelUser extends JModel {
 				}else{
 					//Update xref Table
 					$vendor_id = $vendorModel->getId();
-					dump($vendor_id,'new vendor id '.$_data['vendor_id']);
+//					dump($vendor_id,'new vendor id '.$_data['vendor_id']);
 					//update user table
 					$table = $this->getTable('vm_users');
 					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id);

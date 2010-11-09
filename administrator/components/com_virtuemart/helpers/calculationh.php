@@ -246,9 +246,12 @@ class calculationHelper{
 
 		$prices['variantModification']=$variant;
 
-//		echo '<br />The prices:<br />';
-//		echo '<pre>'.print_r($prices).'</pre>';
-//		dump($prices,'$prices');
+		if (function_exists('dumpTrace')) {
+			dump($prices,'$prices');
+	//		echo '<br />The prices:<br />';
+	//		echo '<pre>'.print_r($prices).'</pre>';
+		}
+
 		return $prices;
 	}
 

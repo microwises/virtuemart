@@ -84,5 +84,36 @@ class TableProduct_price extends JTable {
 		}
 		return true;
 	}
+	
+	 /**
+	 * Records in this table do not need to exist, so we might need to create a record even
+	 * if the primary key is set. Therefore we need to overload the store() function.
+	 * 
+	 * @author Oscar van Eijk
+	 * @author Max Milbers
+	 * @see libraries/joomla/database/JTable#store($updateNulls)
+	 */
+	public function store()
+	{
+		$_qry = 'SELECT product_id '
+				. 'FROM #__vm_product_price '
+				. 'WHERE product_id = ' . $this->product_price_id
+		;
+		$this->_db->setQuery($_qry);
+		$_count = $this->_db->loadResultArray();
+
+		if (count($_count) > 0) {
+			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+		} else {
+			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+		}
+
+		if (!$returnCode){
+			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+			return false;
+		}
+		else return true;
+	}
+
 }
 // pure php no closing tag

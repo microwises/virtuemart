@@ -86,7 +86,6 @@ class VirtueMartModelVendor extends JModel {
 	function getLoggedVendor($ownerOnly = true){
 		$user = JFactory::getUser();
 		$userId = $user->id;
-		dump($user,'user');
 		if(isset($userId)){
 			$vendorId = self::getVendorId('user', $userId, $ownerOnly);
 			return $vendorId;
@@ -179,7 +178,7 @@ class VirtueMartModelVendor extends JModel {
 		else {
 			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`="' . $this->_db->Quote((int)$vendorId) . '" ';
 			$db->setQuery($query);
-			$result = $db->loadResult(); dump($result,'my result getUserIdByVendorId');
+			$result = $db->loadResult(); 
 			return (isset($result) ? $result : 0);
 		}
 	}
@@ -228,7 +227,7 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
 	    $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
 	}
-	dump($data['vendor_currency_display_style'],'my vendor currency');
+//	dump($data['vendor_currency_display_style'],'my vendor currency');
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -431,7 +430,7 @@ class VirtueMartModelVendor extends JModel {
 		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
 		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
 
-		dump($_currencyDisplayStyle,'$_currencyDisplayStyle');
+//		dump($_currencyDisplayStyle,'$_currencyDisplayStyle');
 		if (!empty($_currencyDisplayStyle)) {
 			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']

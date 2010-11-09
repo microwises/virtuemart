@@ -741,12 +741,18 @@ class VirtueMartModelProduct extends JModel {
 			$this->setError($product_data->getError());
 			return false;
 		}
+		
+		if(empty($data['product_id'])){
+			$dbv = $product_data->getDBO();
+			$data['product_id'] = $dbv->insertid();
+		}
+		
 		$product_price_table = $this->getTable('product_price');
 
-		//get product_price_id
-		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
-		$this->_db->setQuery($q);
-		$data['product_price_id'] = $this->_db->loadResult();
+//		//get product_price_id
+//		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
+//		$this->_db->setQuery($q);
+//		$data['product_price_id'] = $this->_db->loadResult();
 
 		if (!$product_price_table->bind($data)) {
 			$this->setError($product_price_table->getError());
