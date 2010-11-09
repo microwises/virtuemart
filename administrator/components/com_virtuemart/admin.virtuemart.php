@@ -56,4 +56,4 @@ $controller = new $classname();
 $controller->execute(JRequest::getVar('task', $controllername));
 $controller->redirect();
 
-?>
+// pure php no closing tag

@@ -313,4 +313,4 @@ class CurrencyDisplay {
     // ================ /CURRENCY DISPLAY =========================
     // ============================================================
 } // end class
-?>
+// pure php no closing tag

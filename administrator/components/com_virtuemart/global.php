@@ -230,4 +230,4 @@ function vmGetGlobalsArray() {
 					'option', 'my', 'Itemid', 'mosConfig_live_site', 'mosConfig_absolute_path' );
 	return $vm_globals;
 }
-?>
+// pure php no closing tag

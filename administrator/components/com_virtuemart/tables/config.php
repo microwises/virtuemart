@@ -123,8 +123,5 @@ class TableConfig extends JTable {
 		return true;
 	}
 
-
-
-
 }
-?>
+// pure php no closing tag

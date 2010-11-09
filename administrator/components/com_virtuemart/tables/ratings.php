@@ -56,4 +56,4 @@ class TableRatings extends JTable {
 		parent::__construct('#__vm_product_reviews', 'review_id', $db);
 	}
 }
-?>
+// pure php no closing tag

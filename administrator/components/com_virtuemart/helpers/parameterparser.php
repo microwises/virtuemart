@@ -535,4 +535,4 @@ class vmParameters extends JParameter{
 function vmParseParams( $txt ) {
 	return vmParameters::parse( $txt );
 }
-?>
+// pure php no closing tag

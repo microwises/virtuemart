@@ -323,4 +323,4 @@ class VirtuemartControllerOrders extends JController {
 	    $this->setRedirect($editLink, $msg);
 	}
 }
-?>
+// pure php no closing tag

@@ -261,5 +261,5 @@ class VirtuemartControllerUsergroups extends JController {
 
 }
 
-?>
+// pure php no closing tag
 

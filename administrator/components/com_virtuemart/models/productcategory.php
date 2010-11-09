@@ -58,4 +58,4 @@ class VirtueMartModelProductCategory extends JModel {
 
 
 }
-?>
+// pure php no closing tag

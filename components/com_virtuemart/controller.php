@@ -16,4 +16,4 @@ class VirtueMartController extends JController {
 		parent::display();
 	}
 }
-?>
+// pure php no closing tag

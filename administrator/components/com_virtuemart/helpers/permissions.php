@@ -291,9 +291,9 @@ class Permissions extends JObject{
 	function prepareACL() {
 		// The basic ACL integration in Mambo/Joomla is not awesome
 		$child_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, VmConfig::get('vm_price_access_level'));
-		?><pre><?php
-		print_r($child_groups);
-		?></pre><?php
+
+		echo '<pre>'.print_r($child_groups,1).'</pre>';
+
 		
 		foreach( $child_groups as $child_group ) {
 			self::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
@@ -441,4 +441,4 @@ class Permissions extends JObject{
 	}
 }
 
-?>
+//pure php no closing tag

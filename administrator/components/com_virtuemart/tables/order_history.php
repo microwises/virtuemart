@@ -48,4 +48,4 @@ class TableOrder_history extends JTable {
 		parent::__construct('#__vm_order_history', 'order_status_history_id', $db);
 	}
 }
-?>
+// pure php no closing tag

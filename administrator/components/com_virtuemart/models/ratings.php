@@ -262,4 +262,4 @@ class VirtueMartModelRatings extends JModel {
 		return $reviews;
 	}
 }
-?>
+// pure php no closing tag

@@ -34,4 +34,4 @@ class TableReport extends JTable {
 		parent::__construct('#__vm_orders', 'order_id', $db);
 	}
 }
-?>
+// pure php no closing tag

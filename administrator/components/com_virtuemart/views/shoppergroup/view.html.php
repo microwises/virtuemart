@@ -73,4 +73,4 @@ class VirtuemartViewShopperGroup extends JView {
 		parent::display($tpl);
   }
 
-} ?>
+} // pure php no closing tag

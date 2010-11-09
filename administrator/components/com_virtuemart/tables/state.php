@@ -93,4 +93,4 @@ class TableState extends JTable {
 
 
 }
-?>
+// pure php no closing tag

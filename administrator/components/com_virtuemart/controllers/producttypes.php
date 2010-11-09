@@ -116,4 +116,4 @@ class VirtuemartControllerProducttypes extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=discounts&task=discounts', $msg, $msgtype);
 	}
 }
-?>
+// pure php no closing tag

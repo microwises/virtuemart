@@ -128,4 +128,4 @@ class VirtuemartControllerShippingCarrier extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);
 	}
 }
-?>
+// pure php no closing tag

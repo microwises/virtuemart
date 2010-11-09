@@ -138,4 +138,4 @@ class VirtuemartControllerAttributes extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&product_id='.JRequest::getInt('product_id'), $msg, $msgtype);
 	}
 }
-?>
+// pure php no closing tag

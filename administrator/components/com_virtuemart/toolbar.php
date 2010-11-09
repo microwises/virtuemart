@@ -133,4 +133,4 @@ if (!file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'in
          
      }
 }*/
-?>
+// pure php no closing tag

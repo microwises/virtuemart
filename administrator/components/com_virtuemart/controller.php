@@ -111,4 +111,4 @@ class VirtuemartController extends JController
 	}	
 		
 }
-?>
+// pure php no closing tag

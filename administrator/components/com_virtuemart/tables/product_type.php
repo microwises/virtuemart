@@ -48,4 +48,4 @@ class TableProduct_type extends JTable {
 		parent::__construct('#__vm_product_type', 'product_type_id', $db );
 	}
 }
-?>
+// pure php no closing tag

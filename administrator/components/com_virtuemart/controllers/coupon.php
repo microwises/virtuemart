@@ -129,4 +129,4 @@ class VirtuemartControllerCoupon extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=coupon', $msg);
 	}
 }
-?>
+// pure php no closing tag

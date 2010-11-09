@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Module
- * @author Markus Öhler 
+ * @author Markus ï¿½hler 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 /**
  * Module table.
  *
- * @author Markus Öhler
+ * @author Markus ï¿½hler
  * @package	VirtueMart
  */
 class TableModule extends JTable
@@ -42,7 +42,7 @@ class TableModule extends JTable
 
 
 	/**
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -54,7 +54,7 @@ class TableModule extends JTable
 	/**
 	 * Validates the module record fields.
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 * @return boolean True if the table buffer contains valid data, false otherwise.
 	 */
 	function check() 
@@ -68,4 +68,4 @@ class TableModule extends JTable
 	}
 
 }
-?>
+// pure php no closing tag

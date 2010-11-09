@@ -151,4 +151,4 @@ class convertECB {
 	
 
 }
-?>
+// pure php no closing tag

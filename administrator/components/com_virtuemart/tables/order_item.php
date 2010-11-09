@@ -66,4 +66,4 @@ class TableOrder_item extends JTable {
 		parent::__construct('#__vm_order_item', 'order_item_id', $db);
 	}
 }
-?>
+// pure php no closing tag

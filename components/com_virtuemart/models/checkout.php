@@ -34,4 +34,4 @@ class VirtueMartModelCheckout extends JModel {
 	
 	
 }
-?>
+// pure php no closing tag

@@ -208,4 +208,4 @@ class VirtueMartModelModule extends JModel {
 	    return $this->_data;
     }
 }
-?>
+// pure php no closing tag

@@ -210,4 +210,5 @@ class VirtueMartModelAttributes extends JModel {
 		return true;
 	}
 }
-?>
+
+// pure php no closing tag

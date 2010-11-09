@@ -335,4 +335,4 @@ class VirtueMartModelCreditcard extends JModel {
 	}
 	
 }
-?>
+// pure php no closing tag

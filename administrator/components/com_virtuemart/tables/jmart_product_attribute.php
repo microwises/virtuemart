@@ -45,4 +45,4 @@ class TableVirtuemart_product_attribute extends JTable {
 		parent::__construct('#__vm_product_attribute', 'attribute_id', $db);
 	}
 }
-?>
+// pure php no closing tag

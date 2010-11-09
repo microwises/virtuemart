@@ -151,4 +151,4 @@ else {
 				break;
 		}
 }
-?>
+// pure php no closing tag

@@ -414,4 +414,4 @@ function getProductName($id){
 	return $product_name;
 }
 
-?>
+// pure php no closing tag

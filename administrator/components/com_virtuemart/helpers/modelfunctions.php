@@ -138,4 +138,4 @@ class modelfunctions{
     }
     
 }   
-?>
+// pure php no closing tag

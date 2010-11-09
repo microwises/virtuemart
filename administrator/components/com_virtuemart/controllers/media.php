@@ -75,4 +75,4 @@ class VirtuemartControllerMedia extends JController {
 
 
 }
-?>
+// pure php no closing tag

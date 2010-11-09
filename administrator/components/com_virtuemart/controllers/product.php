@@ -271,4 +271,4 @@ class VirtuemartControllerProduct extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&task=add&product_id='.$cids[0]);
 	}
 }
-?>
+// pure php no closing tag

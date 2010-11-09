@@ -77,4 +77,4 @@ class TableShipping_Carrier extends JTable {
 
 
 }
-?>
+// pure php no closing tag

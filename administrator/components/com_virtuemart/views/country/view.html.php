@@ -78,4 +78,4 @@ class VirtuemartViewCountry extends JView {
     }
 
 }
-?>
+// pure php no closing tag

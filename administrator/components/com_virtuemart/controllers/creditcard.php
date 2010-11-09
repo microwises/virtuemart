@@ -161,4 +161,4 @@ class VirtuemartControllerCreditcard extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
 	}
 }
-?>
+// pure php no closing tag

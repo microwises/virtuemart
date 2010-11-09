@@ -45,4 +45,4 @@ class VirtuemartViewState extends JView {
 		echo json_encode($states);
 	}
 }
-?>
+// pure php no closing tag

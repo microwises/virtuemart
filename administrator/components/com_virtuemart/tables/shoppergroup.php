@@ -94,4 +94,4 @@ class TableShopperGroup extends JTable
 	}
 
 }
-?>
+// pure php no closing tag

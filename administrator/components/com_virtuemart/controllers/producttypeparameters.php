@@ -123,4 +123,4 @@ class VirtuemartControllerProducttypeparameters extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.JRequest::getInt('product_type_id', 0), $msg, $msgtype);
 	}
 }
-?>
+// pure php no closing tag

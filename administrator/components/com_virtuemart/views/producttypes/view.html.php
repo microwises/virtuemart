@@ -93,4 +93,4 @@ class VirtuemartViewProducttypes extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

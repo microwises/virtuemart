@@ -159,4 +159,4 @@ class VirtuemartControllerManufacturer extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
 	}
 }
-?>
+// pure php no closing tag

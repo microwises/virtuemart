@@ -120,4 +120,4 @@ class VirtuemartViewCategory extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

@@ -53,4 +53,4 @@ class VirtuemartControllerReport extends JController {
 	}
 	
 }
-?>
+// pure php no closing tag

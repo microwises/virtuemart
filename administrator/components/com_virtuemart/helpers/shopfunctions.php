@@ -822,9 +822,8 @@ class ShopFunctions {
 				$display_type = "none" ;
 		}
 		
-		?><pre><?php
-		print_r($quantity_options);
-		?></pre><?php
+		//todo what is this?
+		echo '<pre>'.print_r($quantity_options,1).'</pre>';
 		exit;
 		
 		$tpl->set( 'prod_id', $prod_id ) ;

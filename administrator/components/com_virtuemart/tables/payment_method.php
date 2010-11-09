@@ -114,4 +114,4 @@ class TablePayment_method extends JTable
 	
 
 }
-?>
+// pure php no closing tag

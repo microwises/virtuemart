@@ -45,4 +45,4 @@ class TableAttributes extends JTable {
 		parent::__construct('#__vm_product_attribute_sku', 'attribute_sku_id', $db);
 	}
 }
-?>
+// pure php no closing tag

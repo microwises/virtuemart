@@ -66,7 +66,6 @@ class VirtueMartModelState extends JModel {
         // Get the state id or array of ids.
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
     	$this->setId((int)$idArray[0]);
-/*	?><pre><?php print_r($this); ?></pre><?php  */
 
     }
 
@@ -317,4 +316,4 @@ class VirtueMartModelState extends JModel {
 		return $this->getStates($countryId);
 	}
 }
-?>
+// pure php no closing tag

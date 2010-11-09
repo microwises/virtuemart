@@ -89,8 +89,5 @@ class TableCountry extends JTable {
 		return true;
 	}
 
-
-
-
 }
-?>
+// pure php no closing tag

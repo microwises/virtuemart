@@ -124,4 +124,4 @@ class VirtueMartModelShippingZone extends JModel {
 		return $db->loadObjectList();
 	}
 }
-?>
+// pure php no closing tag

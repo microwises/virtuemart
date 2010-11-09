@@ -98,4 +98,4 @@ class TableShipping_Rate extends JTable {
 
 
 }
-?>
+// pure php no closing tag

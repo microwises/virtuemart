@@ -139,4 +139,4 @@ class VirtuemartControllerRatings extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=ratings', $msg, $msgtype);
 	}
 }
-?>
+// pure php no closing tag

@@ -261,4 +261,4 @@ class VirtueMartModelWaitingList extends JModel {
 		return True;
 	}
 }
-?>
+// pure php no closing tag

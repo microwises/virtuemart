@@ -152,4 +152,4 @@ class VmEUVatCheck {
 		}
 	}
 }
-?>
+// pure php no closing tag

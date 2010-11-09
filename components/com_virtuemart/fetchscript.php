@@ -255,4 +255,4 @@ doGzip();
 
 exit;
 
-?>
+// pure php no closing tag

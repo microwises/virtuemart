@@ -91,4 +91,4 @@ class VirtuemartViewShippingRate extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

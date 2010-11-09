@@ -155,4 +155,4 @@ class VirtuemartControllerManufacturerCategory extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
 	}
 }
-?>
+// pure php no closing tag

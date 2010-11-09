@@ -144,4 +144,4 @@ class VirtuemartControllerShippingRate extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingrate', $msg);
 	}
 }
-?>
+// pure php no closing tag

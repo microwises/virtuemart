@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage ShopperGroup
- * @author Markus Öhler
+ * @author Markus ï¿½hler
  */
 class VirtuemartControllerShopperGroup extends JController
 {
@@ -60,7 +60,7 @@ class VirtuemartControllerShopperGroup extends JController
 	/**
 	 * Display the shopper group view
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 */
 	function display() {
 		parent::display();
@@ -70,7 +70,7 @@ class VirtuemartControllerShopperGroup extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Markus Öhler
+     * @author Markus ï¿½hler
 	 */
 	function edit()
 	{
@@ -86,7 +86,7 @@ class VirtuemartControllerShopperGroup extends JController
 	/**
 	 * Handle the cnacel task
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 */
 	function cancel()
 	{
@@ -97,7 +97,7 @@ class VirtuemartControllerShopperGroup extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 */
 	function save()
 	{
@@ -117,7 +117,7 @@ class VirtuemartControllerShopperGroup extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Markus Öhler
+	 * @author Markus ï¿½hler
 	 */
 	function remove()
 	{
@@ -133,4 +133,4 @@ class VirtuemartControllerShopperGroup extends JController
 	}
 
 }
-?>
+// pure php no closing tag

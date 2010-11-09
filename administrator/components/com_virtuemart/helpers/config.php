@@ -90,4 +90,4 @@ class VmConfig
 	}	
 	
 }
-?>
+// pure php no closing tag

@@ -74,4 +74,4 @@ class VirtuemartViewCurrency extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

@@ -137,4 +137,4 @@ class VirtueMartModelProductspecial extends JModel {
      	return $filter.' ORDER BY '.$filter_order." ".$filter_order_Dir;
     }
 }
-?>
+// pure php no closing tag

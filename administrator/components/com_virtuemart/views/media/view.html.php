@@ -110,4 +110,4 @@ class VirtuemartViewMedia extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

@@ -80,4 +80,4 @@ class VirtuemartViewManufacturerCategory extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

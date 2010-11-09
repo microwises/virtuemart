@@ -119,4 +119,4 @@ class VirtuemartViewRatings extends JView {
 		return $ratings;
 	}
 }
-?>
+// pure php no closing tag

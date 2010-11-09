@@ -374,4 +374,4 @@ class VirtuemartControllerCalc extends JController
 	}
 
 }
-?>
+// pure php no closing tag

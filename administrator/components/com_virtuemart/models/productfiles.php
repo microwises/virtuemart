@@ -200,4 +200,4 @@ class VirtueMartModelProductFiles extends JModel {
 
 	}
 }
-?>
+// pure php no closing tag

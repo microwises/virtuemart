@@ -110,4 +110,4 @@ class VirtueMartControllerProductdetails extends JController {
 	}
 	
 }
-?>
+// pure php no closing tag

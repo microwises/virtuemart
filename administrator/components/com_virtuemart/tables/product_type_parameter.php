@@ -96,4 +96,4 @@ class TableProduct_type_parameter extends JTable {
 		else return true;
 	}
 }
-?>
+// pure php no closing tag

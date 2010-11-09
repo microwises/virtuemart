@@ -233,4 +233,4 @@ class VirtueMartModelManufacturer extends JModel {
 	}
 
 }
-?>
+// pure php no closing tag

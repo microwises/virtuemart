@@ -58,4 +58,4 @@ $myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION-
 	
 }
 
-?>
+// pure php no closing tag

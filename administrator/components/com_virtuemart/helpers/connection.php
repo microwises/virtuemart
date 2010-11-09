@@ -333,4 +333,4 @@ class VmConnector {
 	return array($start,$tot);
     }
 }
-?>
+// pure php no closing tag

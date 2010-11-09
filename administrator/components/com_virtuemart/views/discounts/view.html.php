@@ -95,4 +95,4 @@ class VirtuemartViewDiscounts extends JView {
 	}
 
 }
-?>
+// pure php no closing tag

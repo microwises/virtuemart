@@ -128,4 +128,4 @@ class VirtueMartModelInventory extends JModel {
      	return ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
     }
 }
-?>
+// pure php no closing tag

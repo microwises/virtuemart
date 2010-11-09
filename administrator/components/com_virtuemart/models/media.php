@@ -700,4 +700,4 @@ class VirtueMartModelMedia extends JModel {
 		$row->store();
 	}
 }
-?>
+// pure php no closing tag
