@@ -22,16 +22,60 @@ defined('_JEXEC') or die('Restricted access');
 echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
 
 ?>
+<div class="col50">
+	<table class="adminform">
+		<tr>
+			<td style="width: 50%" valign="top">
+				<fieldset>
+					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_FULL_IMAGE' ); ?></legend>
+					<table style="width:100%">
+					<?php
+						$image = VmImage::getImageByProduct($this->product);
+						echo $image -> createImageUploader(false);
+					?>
+					</table> 
+				</fieldset>
+			</td>
+			<td valign="top">
+				<fieldset>
+					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_THUMB_IMAGE' ); ?></legend>
+					<table style="width:100%">
+					<?php
+						echo $image -> createImageUploader(true);
+					 ?>
+					</table>
+				</fieldset>
+			</td>
+		</tr>				
+	</table>
+</div>
+<?php
+//The stuff here is not needed anylonger, we may think about to add the scripts below (of course to the common functions then)
+ /* ?>
 <table class="adminform" >
     <tr>
       <td valign="top" width="50%" style="border-right: 1px solid black;">
         <h2><?php echo JText::_('VM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
         <table class="adminform">
           <tr class="row0">
-            <td colspan="2" ><?php
+            <td colspan="2" >
+            <?php
             if ($this->product->product_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?>
-              <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';if(this.value!='') { document.adminForm.product_full_image_action[1].checked=true;toggleDisable(document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true) }" size="50" maxlength="255" />
+                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; 
+            } 
+           ?> <fieldset class="adminform">
+				<legend>
+				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
+			</legend>
+			<table class="admintable">
+			<?php
+				$image = VmImage::getImageByVendor($this->vendor);
+				echo $image -> createImageUploader(false);
+				echo $image -> createImageUploader(true);		
+			?>	
+			</table>
+			</fieldset>
+<?php /*            <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';if(this.value!='') { document.adminForm.product_full_image_action[1].checked=true;toggleDisable(document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true) }" size="50" maxlength="255" />
             </td>
           </tr>
           <tr class="row1">
@@ -124,9 +168,9 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
             </td>
           </tr>
         </table>
-      </td>
+      </td> 
     </tr>
-  </table>
+  </table> */ ?>
 <script type="text/javascript">
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 	try {

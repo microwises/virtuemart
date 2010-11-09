@@ -194,9 +194,9 @@ class VirtueMartModelConfig extends JModel {
 	if ($config) {
 	    $params = new JParameter($config);
 
-	    $media_general_path = $params->get('media_general_path') ;
-		if(empty($media_general_path)){
-			$params->set('media_general_path','components/com_virtuemart/images/vmgeneral');	
+	    $assets_general_path = $params->get('assets_general_path') ;
+		if(empty($assets_general_path)){
+			$params->set('assets_general_path','components/com_virtuemart/images/vmgeneral');	
 		}	    
 	    $media_category_path = $params->get('media_category_path') ;
 		if(empty($media_category_path)){

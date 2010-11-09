@@ -46,7 +46,7 @@ class AdminMenuHelper {
 <div class="vm-block vm-main-container">
     <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('Close')?>"><?php echo JText::_('Close')?></a>
     <div class="vm-block vm-layout-left">
-		<?php AdminMenuHelper::showAdminMenu(); ?>
+		<?php  AdminMenuHelper::showAdminMenu(); ?>
     </div>
     <div id="vmPage" class="vm-block vm-layout-right">
 		<?php
@@ -59,7 +59,8 @@ class AdminMenuHelper {
 	     */
 	    function endAdminArea() {
 		if (VmConfig::get('debug') == '1') {
-		    include(PAGEPATH."shop.debug.php");
+			//TODO maybe add debuggin again here
+//		    include(JPATH_COMPONENT_ADMINISTRATOR.'debug.php');
 		}
 		?>
     </div>
@@ -88,7 +89,7 @@ class AdminMenuHelper {
 		    <center>
 				<?php
 				//TODO The link should be done better
-				echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
+				echo JHTML::_('link', 'http://virtuemart.net', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
 				?>
 			<h2><?php echo JText::_('VM_ADMIN')	?></h2>
 		    </center>
@@ -120,7 +121,7 @@ class AdminMenuHelper {
 							    $url = strncmp($link['view'], 'http', 4 ) === 0 ? $link['view'] : $url;
 							}
 							else {
-							    $url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
+//							    $url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
 							}
 						    }
 						    ?>
@@ -176,7 +177,7 @@ class AdminMenuHelper {
 	$query .= 'ORDER BY `jmmod`.`list_order`, `item`.`ordering`';
 	$db->setQuery($query);
 	$result = $db->loadObjectList();
-
+//		echo '<pre>'.print_r($query,1).'</pre>';
 	for ($i=0, $n=count( $result ); $i < $n; $i++) {
 	    $row =& $result[$i];
 	    $menuArr[$row->module_name]['title'] = 'VM_'.strtoupper($row->module_name).'_MOD';

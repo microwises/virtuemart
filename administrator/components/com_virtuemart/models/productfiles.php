@@ -155,11 +155,11 @@ class VirtueMartModelProductFiles extends JModel {
 	 */
 	public function getProductFilesRoles() {
 	 	return array(
-	 			'isDownlodable' => VmConfig::get('media_general_path').'downloadable.gif',
-				'isImage' => VmConfig::get('media_general_path').'image.gif',
-				'isProductImage' => VmConfig::get('media_general_path').'image.png',
-				'isFile' => VmConfig::get('media_general_path').'attachment.gif',
-				'isRemoteFile' => VmConfig::get('media_general_path').'url.gif'
+	 			'isDownlodable' => VmConfig::get('assets_general_path').'downloadable.gif',
+				'isImage' => VmConfig::get('assets_general_path').'image.gif',
+				'isProductImage' => VmConfig::get('assets_general_path').'image.png',
+				'isFile' => VmConfig::get('assets_general_path').'attachment.gif',
+				'isRemoteFile' => VmConfig::get('assets_general_path').'url.gif'
 		);
 	}
 

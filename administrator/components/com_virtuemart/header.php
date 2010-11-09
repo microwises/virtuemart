@@ -95,14 +95,14 @@ $menu_items = getAdminMenu($module_id);
 					
                     if (strncmp($link['link'], 'http', 4 ) === 0) {
                     	/* Check for CSVI VirtueMart */
-                    	if ($link['name'] == 'CSVIMPROVED_TITLE') {
-                    		$q = "SELECT id FROM #__components WHERE link = 'option=com_csvivirtuemart'";
-                    		$db->setQuery($q);
-                    		$id = $db->loadResult();
-                    		if ($id) $url = 'index.php?option=com_csvivirtuemart';
-                    		else $url = $link['link'];
-                    	}
-                        else $url = $link['link'];
+//                    	if ($link['name'] == 'CSVIMPROVED_TITLE') {
+//                    		$q = "SELECT id FROM #__components WHERE link = 'option=com_csvivirtuemart'";
+//                    		$db->setQuery($q);
+//                    		$id = $db->loadResult();
+//                    		if ($id) $url = 'index.php?option=com_csvivirtuemart';
+//                    		else $url = $link['link'];
+//                    	} else 
+                    	$url = $link['link'];
                     }
                     else {
                     	if ($link['view']) {			                       				                      
@@ -111,9 +111,6 @@ $menu_items = getAdminMenu($module_id);
 	                    	// $url .= $link['extra'] ? $link['extra'] : '';
 	                    	$url = strncmp($link['view'], 'http', 4 ) === 0 ? $link['view'] : $url;
 	                	}
-	                    else {
-                        	$url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
-                    	}
                     }			
                     // end rjg
                     		
@@ -158,39 +155,38 @@ if (!empty($error) && ($page != ERRORPAGE)) {
 }
  
 
-function getAdminMenu($filter_by_module_id=0) {
-		global $page, $auth;
+	function getAdminMenu($filter_by_module_id=0) {
+//		global $page, $auth;
 		
-		$menuArr = array();
-		        
-		$filter[] = "jmmod.published='1'";
-		$filter[] = "item.published='1'";
-		$filter[] = "jmmod.is_admin='1'";
-		$filter[] = "FIND_IN_SET('".$auth['perms']."', module_perms )>0";
-		if( !empty($filter_by_module_id)) {
-			$filter[] = 'vmmod.module_id='.(int)$filter_by_module_id; 
-		}
-		
-		// rjg - 7/14/09 Change to read view and task
-		$q = "SELECT jmmod.module_id,module_name,module_perms,id,name,link,depends,icon_class,view,task 
-					FROM #__vm_module jmmod 
-					LEFT JOIN #__vm_menu_admin item ON jmmod.module_id=item.module_id 
-					WHERE  ".implode(' AND ', $filter )."   
-					ORDER BY jmmod.list_order,item.ordering";
-		$db = new ps_DB();
-		$db->query($q);
-		
-		while( $db->next_record() ) {
-		    $menuArr[$db->f('module_name')]['title'] = 'VM_'.strtoupper($db->f('module_name')).'_MOD';
-		    // rjg - 7/14/09 Change to read view and task
-			$menuArr[$db->f('module_name')]['items'][] = array('name' => $db->f('name'),
-																		'link' => $db->f('link'),
-																		'depends' => $db->f('depends'),
-																		'icon_class' => $db->f('icon_class'),
-														   				'view' => $db->f('view'),
-														   				'task' => $db->f('task'));																			
-		}
+//		$menuArr = array();
+//		        
+//		$filter[] = "jmmod.published='1'";
+//		$filter[] = "item.published='1'";
+//		$filter[] = "jmmod.is_admin='1'";
+//		$filter[] = "FIND_IN_SET('".$auth['perms']."', module_perms )>0";
+//		if( !empty($filter_by_module_id)) {
+//			$filter[] = 'vmmod.module_id='.(int)$filter_by_module_id; 
+//		}
+//		
+//		// rjg - 7/14/09 Change to read view and task
+//		$q = "SELECT jmmod.module_id,module_name,module_perms,id,name,link,depends,icon_class,view,task 
+//					FROM #__vm_module jmmod 
+//					LEFT JOIN #__vm_menu_admin item ON jmmod.module_id=item.module_id 
+//					WHERE  ".implode(' AND ', $filter )."   
+//					ORDER BY jmmod.list_order,item.ordering";
+//		$db = new ps_DB();
+//		$db->query($q);
+//		
+//		while( $db->next_record() ) {
+//		    $menuArr[$db->f('module_name')]['title'] = 'VM_'.strtoupper($db->f('module_name')).'_MOD';
+//		    // rjg - 7/14/09 Change to read view and task
+//			$menuArr[$db->f('module_name')]['items'][] = array('name' => $db->f('name'),
+//																		'link' => $db->f('link'),
+//																		'depends' => $db->f('depends'),
+//																		'icon_class' => $db->f('icon_class'),
+//														   				'view' => $db->f('view'),
+//														   				'task' => $db->f('task'));																			
+//		}
 		return $menuArr;
 	}
-	
-	?>
+?>

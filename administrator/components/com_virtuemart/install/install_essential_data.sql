@@ -6,8 +6,8 @@
 -- Dumping data for table `#__vm_config`
 --
 INSERT INTO `jos_vm_config` (`config_id`, `config`) VALUES
-(1, 'secureurl=\ndebug=0\ndebug_ip_enabled=0\ndebug_ip_address=\nenable_cookie_check=0\nregistration_type=NORMAL_REGISTRATION\nshow_remember_me_box=0\nproxy_url=\nproxy_port=\nproxy_user=\nproxy_pass=\nenable_logfile=0\nlogfile_name=\nlogfile_level=PEAR_LOG_TIP\nlogfile_format=\nshop_is_offline=0\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\nuse_as_catalog=0\nshow_out_of_stock_products=0\ncurrency_converter_module=convertECB.php\norder_mail_html=0\ncontent_plugins_enable=0\ncoupons_enable=0\nallow_reviews=0\nreviews_autopublish=0\ncomment_min_length=\ncomment_max_length=\nagree_to_tos_onorder=0\noncheckout_show_legal_info=0\noncheckout_legalinfo_shorttext=This is a demo shop.\\n\\nYou cant buy anything here. The shopowner must first set a legal TOS. Here is an exampel:\\n\\nReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\ngenerally_prevent_https=0\nencrypt_function=ENCODE\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\nstore_creditcard_data=0\nallow_frontendadmin_for_nonbackenders=0\nerrorpage=\npdf_button_enable=0\nshow_emailfriend=0\nshow_printicon=0\nshow_top_pagenav=0\nbrowse_orderby_field=product_list\nbrowse_orderby_fields=0|0|0|0|0|0\nshow_products_in_category=0\nno_image=noimage.gif\nshow_footer=0\nvmtemplate=rhuk_milkyway\nvmlayout=Default\ncategorytemplate=JA_Purity\ncategorylayout=Default\nproductlayout=Default\ncategories_per_row=\nproducts_per_row=\nmedia_general_path=components/com_virtuemart/images/vmgeneral\nmedia_category_path=images/stories/virtuemart/category/\nmedia_product_path=images/stories/virtuemart/product/\nimg_resize_enable=1\nimg_width=90\nimg_height=90\ndateformat=%m/%d/%y\nshow_prices=1\nprice_access_level_enabled=0\nprice_show_packaging_pricelabel=0\nbasePrice=1\nvariantModification=1\nbasePriceVariant=1\nbasePriceWithTax=1\ndiscountedPriceWithoutTax=1\nsalesPriceWithDiscount=1\nsalesPrice=1\npriceWithoutTax=1\ndiscountAmount=1\ntaxAmount=1\nenable_downloads=0\nenable_download_status=X\ndisable_download_status=X\ndownload_root=\ndownload_max=\ndownload_expire=\ndownloadable_products_keep_stocklevel=0\nfeed_enabled=0\nfeed_cache=0\nfeed_cachetime=1800\nfeed_title=\nfeed_title_categories=\nfeed_show_images=0\nfeed_show_prices=0\nfeed_show_description=0\nfeed_description_type=product_s_desc\nfeed_limittext=0\nfeed_max_text_length=500\ntask=apply\noption=com_virtuemart\nview=config\n\n');
--- (1, 'shop_is_offline=0\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\nuse_as_catalog=0\nshow_prices=1\nprice_access_level_enabled=0\nprice_access_level=\nshow_prices_with_tax=0\nshow_excluding_tax_note=0\nshow_including_tax_note=0\nshow_price_for_packaging=0\nenable_content_plugins=0\nenable_coupons=1\nenable_reviews=0\nautopublish_reviews=0\ncomment_min_length=100\ncomment_max_length=2000\nvirtual_tax=1\ntax_mode=0\nenable_multiple_taxrates=0\nsubtract_payment_before_discount=0\nregistration_type=NORMAL_REGISTRATION\nshow_remember_me_box=0\nagree_tos_onorder=0\noncheckout_show_legal_info=0\noncheckout_legalinfo_shorttext=ReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\nshow_out_of_stock_products=0\nenable_cookie_check=1\nmail_format=0\ndebug=0\ndebug_by_ip=0\ndebug_ip_address=\nenable_logfile=0\nlogfile_name=\nlogfile_level=PEAR_LOG_WARNING\nlogfile_format=%{timestamp}%{ident}[%{priority}][%{remoteip}][%{username}]%{message}\nurl=http://\nsecureurl=https://\ngenerally_prevent_https=1\nencrypt_function=ENCODE\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\nstore_creditcard_data=0\nerrorpage=shop.error\nproxy_url=\nproxy_port=\nproxy_user=\nproxy_pass=\nallow_frontendadminfor_nonbackenders=\ntableprefix=vm\nhomepage=shop.index\nenable_pdf_button=1\nbrowse_orderby_field=product_list\nbrowse_orderby_fields=0|0|0|0|0|0\nshow_emailfriend=1\nshow_print_button=1\nshow_top_pagenav=1\nshow_products_in_category=0\nshow_footer=1\ntheme=default\nproducts_per_row=1\nno_image=affiliate.gif\ncategory_template=managed\nimg_width=90\nimg_height=90\nimg_resize_enable=0\nshow_checkout_bar=1\nmax_vendor_pro_Cart=1\nenable_downloads=0\nenable_download_status=C\ndisable_download_status=X\ndownload_root=D:\\\ndownload_max=3\ndownload_expire=432000\ndownloadable_products_keep_stocklevel=0\nfeed_enabled=1\nfeed_cache=1\nfeed_cachetime=1800\nfeed_title=Latest Products from {storename}\nfeed_category_title={storename} - Latest Products from Category: {catname}\nfeed_show_images=1\nfeed_show_prices=1\nfeed_show_description=1\nfeed_limittext=1\nfeed_max_text_length=500\nfeed_description_type=product_s_desc\nconf_PRODUCTS_PER_ROW=1\nconf_ENCODE_KEY=bcd54d81dae74e9ae31c53cb4e6a6040\nconf_VM_TABLEPREFIX=\nconf_VM_PROXY_URL=\nconf_VM_PROXY_PORT=\nconf_VM_PROXY_USER=\nconf_VM_PROXY_PASS=\nmax_vendor_pro_cart=1\nVM_CHECKOUT_MODULES=Array|Array|Array|Array\nconf_DOWNLOADROOT=D:\\\nproduct_s_desc=product_s_desc\ntask=save\noption=com_virtuemart\nview=config\nmedia_category_path=images/stories/virtuemart/category/\nmedia_product_path=images/stories/virtuemart/product/\nbasePrice=1\nvariantModification=1\nbasePriceVariant=1\nbasePriceWithTax=1\ndiscountedPriceWithoutTax=1\nsalesPriceWithDiscount=1\nsalesPrice=1\npriceWithoutTax=1\ndiscountAmount=1\ntaxAmount=1\ndateformat=%m/%d/%y\nmedia_general_path=components/com_virtuemart/images/vmgeneral\ndebug_ip_enabled=0\ncurrency_converter_module=convertECB.php\norder_mail_html=0\ncontent_plugins_enable=0\ncoupons_enable=0\nallow_reviews=0\nreviews_autopublish=0\nagree_to_tos_onorder=0\nallow_frontendadmin_for_nonbackenders=0\npdf_button_enable=0\nshow_printicon=0\nvmtemplate=beez\nvmlayout=Default\ncategorytemplate=beez\ncategorylayout=Default\nproductlayout=Default\ncategories_per_row=\nprice_show_packaging_pricelabel=0\nfeed_title_categories=\n\n');
+(1, 'secureurl=\ndebug=0\ndebug_ip_enabled=0\ndebug_ip_address=\nenable_cookie_check=0\nregistration_type=NORMAL_REGISTRATION\nshow_remember_me_box=0\nproxy_url=\nproxy_port=\nproxy_user=\nproxy_pass=\nenable_logfile=0\nlogfile_name=\nlogfile_level=PEAR_LOG_TIP\nlogfile_format=\nshop_is_offline=0\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\nuse_as_catalog=0\nshow_out_of_stock_products=0\ncurrency_converter_module=convertECB.php\norder_mail_html=0\ncontent_plugins_enable=0\ncoupons_enable=0\nallow_reviews=0\nreviews_autopublish=0\ncomment_min_length=\ncomment_max_length=\nagree_to_tos_onorder=0\noncheckout_show_legal_info=0\noncheckout_legalinfo_shorttext=This is a demo shop.\\n\\nYou cant buy anything here. The shopowner must first set a legal TOS. Here is an exampel:\\n\\nReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\ngenerally_prevent_https=0\nencrypt_function=ENCODE\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\nstore_creditcard_data=0\nallow_frontendadmin_for_nonbackenders=0\nerrorpage=\npdf_button_enable=0\nshow_emailfriend=0\nshow_printicon=0\nshow_top_pagenav=0\nbrowse_orderby_field=product_list\nbrowse_orderby_fields=0|0|0|0|0|0\nshow_products_in_category=0\nno_image=noimage.gif\nshow_footer=0\nvmtemplate=rhuk_milkyway\nvmlayout=Default\ncategorytemplate=JA_Purity\ncategorylayout=Default\nproductlayout=Default\ncategories_per_row=\nproducts_per_row=\nassets_general_path=components/com_virtuemart/images/vmgeneral\nmedia_category_path=images/stories/virtuemart/category/\nmedia_product_path=images/stories/virtuemart/product/\nimg_resize_enable=1\nimg_width=90\nimg_height=90\ndateformat=%m/%d/%y\nshow_prices=1\nprice_access_level_enabled=0\nprice_show_packaging_pricelabel=0\nbasePrice=1\nvariantModification=1\nbasePriceVariant=1\nbasePriceWithTax=1\ndiscountedPriceWithoutTax=1\nsalesPriceWithDiscount=1\nsalesPrice=1\npriceWithoutTax=1\ndiscountAmount=1\ntaxAmount=1\nenable_downloads=0\nenable_download_status=X\ndisable_download_status=X\ndownload_root=\ndownload_max=\ndownload_expire=\ndownloadable_products_keep_stocklevel=0\nfeed_enabled=0\nfeed_cache=0\nfeed_cachetime=1800\nfeed_title=\nfeed_title_categories=\nfeed_show_images=0\nfeed_show_prices=0\nfeed_show_description=0\nfeed_description_type=product_s_desc\nfeed_limittext=0\nfeed_max_text_length=500\ntask=apply\noption=com_virtuemart\nview=config\n\n');
+-- (1, 'shop_is_offline=0\noffline_message=Our Shop is currently down for maintenance.Please check back again soon.\nuse_as_catalog=0\nshow_prices=1\nprice_access_level_enabled=0\nprice_access_level=\nshow_prices_with_tax=0\nshow_excluding_tax_note=0\nshow_including_tax_note=0\nshow_price_for_packaging=0\nenable_content_plugins=0\nenable_coupons=1\nenable_reviews=0\nautopublish_reviews=0\ncomment_min_length=100\ncomment_max_length=2000\nvirtual_tax=1\ntax_mode=0\nenable_multiple_taxrates=0\nsubtract_payment_before_discount=0\nregistration_type=NORMAL_REGISTRATION\nshow_remember_me_box=0\nagree_tos_onorder=0\noncheckout_show_legal_info=0\noncheckout_legalinfo_shorttext=ReturnsPolicyYou can cancel this order within two weeks after we have received it.  You can return new,unopened items from a cancelled order within 2 weeks after they have been delivered to you.  Items should be returned in their original packaging.  For more information on cancelling orders and returning items, see the OurReturnsPolicy page.\nshow_out_of_stock_products=0\nenable_cookie_check=1\nmail_format=0\ndebug=0\ndebug_by_ip=0\ndebug_ip_address=\nenable_logfile=0\nlogfile_name=\nlogfile_level=PEAR_LOG_WARNING\nlogfile_format=%{timestamp}%{ident}[%{priority}][%{remoteip}][%{username}]%{message}\nurl=http://\nsecureurl=https://\ngenerally_prevent_https=1\nencrypt_function=ENCODE\nencode_key=bcd54d81dae74e9ae31c53cb4e6a6040\nstore_creditcard_data=0\nerrorpage=shop.error\nproxy_url=\nproxy_port=\nproxy_user=\nproxy_pass=\nallow_frontendadminfor_nonbackenders=\ntableprefix=vm\nhomepage=shop.index\nenable_pdf_button=1\nbrowse_orderby_field=product_list\nbrowse_orderby_fields=0|0|0|0|0|0\nshow_emailfriend=1\nshow_print_button=1\nshow_top_pagenav=1\nshow_products_in_category=0\nshow_footer=1\ntheme=default\nproducts_per_row=1\nno_image=affiliate.gif\ncategory_template=managed\nimg_width=90\nimg_height=90\nimg_resize_enable=0\nshow_checkout_bar=1\nmax_vendor_pro_Cart=1\nenable_downloads=0\nenable_download_status=C\ndisable_download_status=X\ndownload_root=D:\\\ndownload_max=3\ndownload_expire=432000\ndownloadable_products_keep_stocklevel=0\nfeed_enabled=1\nfeed_cache=1\nfeed_cachetime=1800\nfeed_title=Latest Products from {storename}\nfeed_category_title={storename} - Latest Products from Category: {catname}\nfeed_show_images=1\nfeed_show_prices=1\nfeed_show_description=1\nfeed_limittext=1\nfeed_max_text_length=500\nfeed_description_type=product_s_desc\nconf_PRODUCTS_PER_ROW=1\nconf_ENCODE_KEY=bcd54d81dae74e9ae31c53cb4e6a6040\nconf_VM_TABLEPREFIX=\nconf_VM_PROXY_URL=\nconf_VM_PROXY_PORT=\nconf_VM_PROXY_USER=\nconf_VM_PROXY_PASS=\nmax_vendor_pro_cart=1\nVM_CHECKOUT_MODULES=Array|Array|Array|Array\nconf_DOWNLOADROOT=D:\\\nproduct_s_desc=product_s_desc\ntask=save\noption=com_virtuemart\nview=config\nmedia_category_path=images/stories/virtuemart/category/\nmedia_product_path=images/stories/virtuemart/product/\nbasePrice=1\nvariantModification=1\nbasePriceVariant=1\nbasePriceWithTax=1\ndiscountedPriceWithoutTax=1\nsalesPriceWithDiscount=1\nsalesPrice=1\npriceWithoutTax=1\ndiscountAmount=1\ntaxAmount=1\ndateformat=%m/%d/%y\nassets_general_path=components/com_virtuemart/images/vmgeneral\ndebug_ip_enabled=0\ncurrency_converter_module=convertECB.php\norder_mail_html=0\ncontent_plugins_enable=0\ncoupons_enable=0\nallow_reviews=0\nreviews_autopublish=0\nagree_to_tos_onorder=0\nallow_frontendadmin_for_nonbackenders=0\npdf_button_enable=0\nshow_printicon=0\nvmtemplate=beez\nvmlayout=Default\ncategorytemplate=beez\ncategorylayout=Default\nproductlayout=Default\ncategories_per_row=\nprice_show_packaging_pricelabel=0\nfeed_title_categories=\n\n');
 
 --
 -- Dumping data for table `#__vm_function`
@@ -160,78 +160,74 @@ INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `func
 -- Dumping data for table `#__vm_menu_admin`
 --
 
-INSERT INTO `#__vm_menu_admin` (`module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
-(1, 0, 'VM_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', '', 'config', ''),
-(1, 0, 'VM_USERS', 'page=admin.user_list', '', 'vmicon vmicon-16-user', 4, '1', '', 'user', ''),
-(1, 0, 'VM_USERGROUP_LBL', 'page=admin.usergroup_list', '', 'vmicon vmicon-16-user', 6, '1', '', 'usergroups', ''),
-(1, 0, 'VM_MANAGE_USER_FIELDS', 'page=admin.user_field_list', '', 'vmicon vmicon-16-content', 8, '1', '', 'userfields', ''),
-(1, 0, 'VM_COUNTRY_LIST_MNU', 'page=admin.country_list', '', 'vmicon vmicon-16-content', 10, '1', '', 'country', ''),
-(1, 0, 'VM_CURRENCY_LIST_MNU', 'page=admin.curr_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'currency', ''),
-(1, 0, 'VM_CHECK_UPDATES_MNU', 'page=admin.update_check', '', 'vmicon vmicon-16-content', 16, '1', '', 'updatesmigration', ''),
-(8, 0, 'VM_STATISTIC_SUMMARY', 'page=store.index', '', 'vmicon vmicon-16-info', 2, '1', '', 'virtuemart', ''),
-(8, 0, 'VM_STORE_FORM_MNU', 'page=store.store_form', '', 'vmicon vmicon-16-config', 4, '1', '', 'user', 'editshop'),
-(8, 0, 'VM_CALCULATOR', '', '', 'vmicon vmicon-16-content', 5, '1', '', 'calc', ''),
-(8, 0, 'VM_PAYMENT_METHOD_LIST_MNU', 'page=store.payment_method_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'paymentmethod', ''),
-(8, 0, 'VM_PAYMENT_METHOD_FORM_MNU', 'page=store.payment_method_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'paymentmethod', 'edit'),
-(8, 0, 'VM_CREDITCARD_LIST_LBL', 'page=store.creditcard_list', '', 'vmicon vmicon-16-content', 12, '1', '', 'creditcard', ''),
-(8, 0, 'VM_CREDITCARD_FORM_LBL', 'page=store.creditcard_form', '', 'vmicon vmicon-16-editadd', 14, '1', '', 'creditcard', 'add'),
-(2, 0, 'VM_PRODUCT_LIST_MNU', 'page=product.product_list', '', 'vmicon vmicon-16-content', 4, '1', '', 'product', 'product'),
-(2, 0, 'VM_PRODUCT_FORM_MNU', 'page=product.product_form', '', 'vmicon vmicon-16-editadd', 6, '1', '', 'product','add'),
-(2, 0, 'VM_PRODUCT_INVENTORY_MNU', 'page=product.product_inventory', '', 'vmicon vmicon-16-install', 8, '1', '', 'inventory', 'inventory'),
-(2, 0, 'VM_SPECIAL_PRODUCTS', 'page=product.specialprod', '', 'vmicon vmicon-16-content', 10, '1', '', 'productspecial', 'productSpecial'),
-(2, 0, 'VM_REVIEWS', 'page=product.review_list', '', 'vmicon vmicon-16-content', 14, '1', '', 'ratings', 'ratings'),
-(2, 0, 'VM_PRODUCT_DISCOUNT_LIST_LBL', 'page=product.product_discount_list', '', 'vmicon vmicon-16-content', 16, '1', '', 'discounts', 'discounts'),
-(2, 0, 'VM_PRODUCT_DISCOUNT_FORM_MNU', 'page=product.product_discount_form', '', 'vmicon vmicon-16-editadd', 18, '1', '', 'discounts', 'add'),
-(2, 0, 'VM_PRODUCT_TYPE_LIST_LBL', 'page=product.product_type_list', '', 'vmicon vmicon-16-content', 20, '1', '', 'producttypes', ''),
-(2, 0, 'VM_PRODUCT_PRODUCT_TYPE_FORM_MNU', 'page=product.product_type_form', '', 'vmicon vmicon-16-editadd', 22, '1', '', 'producttypes', 'add'),
-(2, 0, 'VM_CATEGORY_LIST_MNU', 'page=product.product_category_list', '', 'vmicon vmicon-16-content', 24, '1', '', 'category', ''),
-(2, 0, 'VM_CATEGORY_FORM_MNU', 'page=product.product_category_form', '', 'vmicon vmicon-16-editadd', 26, '1', '', 'category', 'add'),
-(4, 0, 'VM_SHOPPER_GROUP_LIST_MNU', 'page=shopper.shopper_group_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'shoppergroup', ''),
-(4, 0, 'VM_SHOPPER_GROUP_FORM_MNU', 'page=shopper.shopper_group_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'shoppergroup', 'add'),
-(5, 0, 'VM_ORDER_LIST_MNU', 'page=order.order_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'orders', 'orders'),
-(5, 0, 'VM_ORDER_STATUS_LIST_MNU', 'page=order.order_status_list', '', 'vmicon vmicon-16-orderstatus', 4, '1', '', 'orderstatus', ''),
-(5, 0, 'VM_ORDER_STATUS_FORM_MNU', 'page=order.order_status_form', '', 'vmicon vmicon-16-orderstatus', 6, '1', '', 'orderstatus', 'edit'),
-(12, 0, 'VM_REPORT_BASIC_MNU', 'page=report.index', '', 'vmicon vmicon-16-info', 2, '1', '', 'report', 'basic'),
-(11, 0, 'VM_TAX_LIST_MNU', 'page=tax.tax_list', '', 'vmicon vmicon-16-content', 2, '1', '', '', ''),
-(11, 0, 'VM_TAX_FORM_MNU', 'page=tax.tax_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', '', ''),
-(12839, 0, 'VM_CARRIER_LIST_MNU', 'page=shipping.carrier_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'shippingcarrier', ''),
-(12839, 0, 'VM_CARRIER_FORM_MNU', 'page=shipping.carrier_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'shippingcarrier', 'add'),
-(12839, 0, 'VM_RATE_LIST_MNU', 'page=shipping.rate_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'shippingrate', ''),
-(12839, 0, 'VM_RATE_FORM_MNU', 'page=shipping.rate_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'shippingrate', 'add'),
-(12843, 0, 'VM_COUPON_LIST', 'page=coupon.coupon_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'coupon', ''),
-(12843, 0, 'VM_COUPON_NEW_HEADER', 'page=coupon.coupon_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'coupon', 'add'),
-(99, 0, 'VM_MANUFACTURER_LIST_MNU', 'page=manufacturer.manufacturer_list', '', 'vmicon vmicon-16-content', 2, '1', '', 'manufacturer', ''),
-(99, 0, 'VM_MANUFACTURER_FORM_MNU', 'page=manufacturer.manufacturer_form', '', 'vmicon vmicon-16-editadd', 4, '1', '', 'manufacturer','add'),
-(99, 0, 'VM_MANUFACTURER_CAT_LIST_MNU', 'page=manufacturer.manufacturer_category_list', '', 'vmicon vmicon-16-content', 6, '1', '', 'manufacturercategory', ''),
-(99, 0, 'VM_MANUFACTURER_CAT_FORM_MNU', 'page=manufacturer.manufacturer_category_form', '', 'vmicon vmicon-16-editadd', 8, '1', '', 'manufacturercategory', 'add'),
-(12842, 0, 'VM_ABOUT', 'page=help.about', '', 'vmicon vmicon-16-info', 2, '1', '', '', ''),
-(12842, 0, 'VM_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, '1', '', '', ''),
-(12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, '1', '', '', ''),
-(2, 0, 'VM_PRODUCT_FILES_LIST_MNU', 'page=product.file_list', '', 'vmicon vmicon-16-content', 28, '1', '', 'media', 'media'),
-(2, 0, 'VM_ATTRIBUTE_LIST_MNU', 'page=product.attributes', '', 'vmicon vmicon-16-content', 29, '1', '', 'attributes', 'attributes');
-
+INSERT INTO `jos_vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
+(1, 1, 0, 'VM_CONFIG', '', '', 'vmicon vmicon-16-config', 2, 1, '', 'config', ''),
+(2, 1, 0, 'VM_USERS', '', '', 'vmicon vmicon-16-user', 4, 1, '', 'user', ''),
+(3, 1, 0, 'VM_USERGROUP_LBL', '', '', 'vmicon vmicon-16-user', 6, 1, '', 'usergroups', ''),
+(4, 1, 0, 'VM_MANAGE_USER_FIELDS', '', '', 'vmicon vmicon-16-content', 8, 1, '', 'userfields', ''),
+(5, 1, 0, 'VM_COUNTRY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 10, 1, '', 'country', ''),
+(6, 1, 0, 'VM_CURRENCY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 12, 1, '', 'currency', ''),
+(7, 1, 0, 'VM_CHECK_UPDATES_MNU', '', '', 'vmicon vmicon-16-content', 16, 1, '', 'updatesmigration', ''),
+(8, 8, 0, 'VM_STATISTIC_SUMMARY', '', '', 'vmicon vmicon-16-info', 2, 1, '', 'virtuemart', ''),
+(9, 8, 0, 'VM_STORE_FORM_MNU', '', '', 'vmicon vmicon-16-config', 4, 1, '', 'user', 'editshop'),
+(10, 8, 0, 'VM_CALCULATOR', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'calc', ''),
+(11, 8, 0, 'VM_PAYMENT_METHOD_LIST_MNU', '', '', 'vmicon vmicon-16-content', 6, 1, '', 'paymentmethod', ''),
+(12, 8, 0, 'VM_PAYMENT_METHOD_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 8, 1, '', 'paymentmethod', 'edit'),
+(13, 8, 0, 'VM_CREDITCARD_LIST_LBL', '', '', 'vmicon vmicon-16-content', 12, 1, '', 'creditcard', ''),
+(14, 8, 0, 'VM_CREDITCARD_FORM_LBL', '', '', 'vmicon vmicon-16-editadd', 14, 1, '', 'creditcard', 'add'),
+(15, 2, 0, 'VM_PRODUCT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 4, 1, '', 'product', 'product'),
+(16, 2, 0, 'VM_PRODUCT_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 6, 1, '', 'product', 'add'),
+(17, 2, 0, 'VM_PRODUCT_INVENTORY_MNU', '', '', 'vmicon vmicon-16-install', 8, 1, '', 'inventory', 'inventory'),
+(18, 2, 0, 'VM_SPECIAL_PRODUCTS', '', '', 'vmicon vmicon-16-content', 10, 1, '', 'productspecial', 'productSpecial'),
+(19, 2, 0, 'VM_REVIEWS', '', '', 'vmicon vmicon-16-content', 14, 1, '', 'ratings', 'ratings'),
+(20, 2, 0, 'VM_PRODUCT_DISCOUNT_LIST_LBL', '', '', 'vmicon vmicon-16-content', 16, 1, '', 'discounts', 'discounts'),
+(21, 2, 0, 'VM_PRODUCT_DISCOUNT_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 18, 1, '', 'discounts', 'add'),
+(22, 2, 0, 'VM_PRODUCT_TYPE_LIST_LBL', '', '', 'vmicon vmicon-16-content', 20, 1, '', 'producttypes', ''),
+(23, 2, 0, 'VM_PRODUCT_PRODUCT_TYPE_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 22, 1, '', 'producttypes', 'add'),
+(24, 77, 0, 'VM_CATEGORY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 24, 1, '', 'category', ''),
+(25, 77, 0, 'VM_CATEGORY_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 26, 1, '', 'category', 'add'),
+(26, 4, 0, 'VM_SHOPPER_GROUP_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'shoppergroup', ''),
+(27, 4, 0, 'VM_SHOPPER_GROUP_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 4, 1, '', 'shoppergroup', 'add'),
+(28, 5, 0, 'VM_ORDER_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'orders', 'orders'),
+(29, 5, 0, 'VM_ORDER_STATUS_LIST_MNU', '', '', 'vmicon vmicon-16-orderstatus', 4, 1, '', 'orderstatus', ''),
+(30, 5, 0, 'VM_ORDER_STATUS_FORM_MNU', '', '', 'vmicon vmicon-16-orderstatus', 6, 1, '', 'orderstatus', 'edit'),
+(31, 12, 0, 'VM_REPORT_BASIC_MNU', '', '', 'vmicon vmicon-16-info', 2, 1, '', 'report', 'basic'),
+(34, 12839, 0, 'VM_CARRIER_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'shippingcarrier', ''),
+(35, 12839, 0, 'VM_CARRIER_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 4, 1, '', 'shippingcarrier', 'add'),
+(36, 12839, 0, 'VM_RATE_LIST_MNU', '', '', 'vmicon vmicon-16-content', 6, 1, '', 'shippingrate', ''),
+(37, 12839, 0, 'VM_RATE_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 8, 1, '', 'shippingrate', 'add'),
+(38, 12843, 0, 'VM_COUPON_LIST', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'coupon', ''),
+(39, 12843, 0, 'VM_COUPON_NEW_HEADER', '', '', 'vmicon vmicon-16-editadd', 4, 1, '', 'coupon', 'add'),
+(40, 99, 0, 'VM_MANUFACTURER_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'manufacturer', ''),
+(41, 99, 0, 'VM_MANUFACTURER_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 4, 1, '', 'manufacturer', 'add'),
+(42, 99, 0, 'VM_MANUFACTURER_CAT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 6, 1, '', 'manufacturercategory', ''),
+(43, 99, 0, 'VM_MANUFACTURER_CAT_FORM_MNU', '', '', 'vmicon vmicon-16-editadd', 8, 1, '', 'manufacturercategory', 'add'),
+(44, 12842, 0, 'VM_ABOUT', '', '', 'vmicon vmicon-16-info', 2, 1, '', '', ''),
+(45, 12842, 0, 'VM_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, 1, '', '', ''),
+(46, 12842, 0, 'VM_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, 1, '', '', ''),
+(47, 2, 0, 'VM_PRODUCT_FILES_LIST_MNU', '', '', 'vmicon vmicon-16-content', 28, 1, '', 'media', 'media'),
+(48, 2, 0, 'VM_ATTRIBUTE_LIST_MNU', '', '', 'vmicon vmicon-16-content', 29, 1, '', 'attributes', 'attributes');
 --
 -- Dumping data for table `#__vm_module`
 --
 
-INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
+INSERT INTO `jos_vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'admin', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n\r\n<p>Only used for the following:</p>\r\n<OL>\r\n\r\n<LI>User Maintenance</LI>\r\n<LI>Module Maintenance</LI>\r\n<LI>Function Maintenance</LI>\r\n</OL>\r\n', 'admin', 1, '1', 1),
 (2, 'product', '<p>Here you can adminster your online catalog of products.  The Product Administrator allows you to create product categories, create new products, edit product attributes, and add product items for each attribute value.</p>', 'storeadmin,admin', 1, '1', 4),
-(3, 'vendor', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n<p>Here you can manage the vendors on the VirtueMart system.</p>', 'admin', 1, '1', 6),
-(4, 'shopper', '<p>Manage shoppers in your store.  Allows you to create shopper groups.  Shopper groups can be used when setting the price for a product.  This allows you to create different prices for different types of users.  An example of this would be to have a ''wholesale'' group and a ''retail'' group. </p>', 'admin,storeadmin', 1, '1', 4),
-(5, 'order', '<p>View Order and Update Order Status.</p>', 'admin,storeadmin', 1, '1', 5),
+(4, 'shopper', '<p>Manage shoppers in your store.  Allows you to create shopper groups.  Shopper groups can be used when setting the price for a product.  This allows you to create different prices for different types of users.  An example of this would be to have a ''wholesale'' group and a ''retail'' group. </p>', 'admin,storeadmin', 1, '1', 5),
+(5, 'order', '<p>View Order and Update Order Status.</p>', 'admin,storeadmin', 1, '1', 6),
 (6, 'msgs', 'This module is unprotected an used for displaying system messages to users.  We need to have an area that does not require authorization when things go wrong.', 'none', 0, '0', 99),
 (7, 'shop', 'This is the Washupito store module.  This is the demo store included with the VirtueMart distribution.', 'none', 1, '0', 99),
 (8, 'store', '', 'storeadmin,admin', 1, '1', 2),
 (9, 'account', 'This module allows shoppers to update their account information and view previously placed orders.', 'shopper,storeadmin,admin,demo', 0, '0', 99),
 (10, 'checkout', '', 'none', 0, '0', 99),
-(11, 'tax', 'The tax module allows you to set tax rates for states or regions within a country.  The rate is set as a decimal figure.  For example, 2 percent tax would be 0.02.', 'admin,storeadmin', 1, '1', 8),
+(77, 'category', 'For the categories', 'admin,storeadmin', 1, '1', 3),
 (12, 'report', 'The report module allows administrative queries relating to orders.', 'admin,storeadmin', 1, '1', 7),
 (13, 'zone', 'This is the zone-shipping module. Here you can manage your shipping costs according to Zones.', 'admin,storeadmin', 0, '1', 9),
 (12839, 'shipping', '<h4>Shipping</h4><p>Let this module calculate the shipping fees for your customers.<br>Create carriers for shipping areas and weight groups.</p>', 'admin,storeadmin', 1, '1', 10),
 (99, 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 1, '1', 12),
 (12842, 'help', 'Help Module', 'admin,storeadmin', 1, '1', 13),
-(12843, 'coupon', 'Coupon Management', 'admin,storeadmin', 1, '1', 11);
+(12843, 'coupon', 'Coupon Management', 'admin,storeadmin', 0, '1', 11);
 
 
 --

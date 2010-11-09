@@ -366,8 +366,11 @@ class VirtuemartViewUser extends JView {
 			}
 		}
 		
+//		dump($this->_userDetails);
+//		dump($this->_userDetailsList);
+		//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
 		if(Permissions::getInstance()->check("admin,storeadmin")){
-			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetailsList->perms);
+			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
 		} else {
 			if(!empty($_userDetailsList->perms)){
 				$this->_lists['perms'] = $_userDetailsList->perms;

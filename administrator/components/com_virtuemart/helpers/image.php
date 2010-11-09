@@ -70,7 +70,7 @@ class VmImage {
 	 * @param VmImage an image object with extra product attributes
 	 */	
 	function getVendorImage($filename,$thumb_filename=0,$vendor_id=0){
-		$image = new VmImage( VmConfig::get('media_path'),$filename,$thumb_filename);
+		$image = new VmImage('components/com_virtuemart/assets/images/vendors/',$filename,$thumb_filename);
 		$image->table = 'vendor';
 		$image->id = $vendor_id;
 		$image->idfield = 'vendor_id';
@@ -199,7 +199,7 @@ class VmImage {
 				}
 			} else {
 				$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-				return JHTML::image($url,JText::_('NO_IMAGE_FOUND'));								
+				return JHTML::image($url,JText::_('NO_IMAGE_FOUND').' '.$alt);								
 			}		
 		}	
 
@@ -217,6 +217,7 @@ class VmImage {
 	 */
 	private function createThumbName($width=0,$height=0){
 		
+		if(empty($this->media_filename)) return false;
 		if(empty($width)) $width = VmConfig::get('img_width', 90);
 		if(empty($height)) $height = VmConfig::get('img_height', 90);
 		
@@ -250,7 +251,7 @@ class VmImage {
 
 		$fullSizeFilenamePath = $this->media_path.$this->media_filename;
 		
-		$this->media_filename_thumb = $this->createThumbName();
+		if(empty($this->media_filename_thumb)) $this->media_filename_thumb = $this->createThumbName();
 		$resizedFilenamePath = $this->media_path_thumb.$this->media_filename_thumb;
 				
 		if (file_exists($fullSizeFilenamePath)) {
@@ -272,7 +273,7 @@ class VmImage {
 							JError::raiseWarning(1,'Couldnt update thumb for $query '.$query);	
 						}
 					}				
-				}
+				} dump($resizedFilenamePath,'my path');
 				return $this->media_filename_thumb;
 			} else {
 				return 0;
@@ -313,6 +314,120 @@ class VmImage {
 		return $result;
 	}
 	
+	/**
+	 * Creates the typicall picture uploader we use everywhere
+	 * @author Max Milbers
+	 */
+	public function createImageUploader($thumb){
+
+		if($thumb){
+			$thumbchar = '_thumb';
+			$name = $this->media_filename_thumb;
+			if(empty($name)) $name = $this->createThumbName();
+		} else {
+			$thumbchar ='_full';
+			$name = $this->media_filename;
+		}
+		$field_full_image = $this->table.$thumbchar.'_image';
+		$field_full_image_url = $this->table.$thumbchar.'_image_url';
+		$field_full_image_current = $this->table.$thumbchar.'_image_current';
+		
+		$html = '<tr> <td class="key"><label for="title">'.JText::_( 'FILE' ).'</label></td>
+				<td>
+					<input type="file" name="'.$field_full_image.'" id="'.$field_full_image.'" size="30" class="inputbox" />		
+					<input type="hidden" name="'.$field_full_image_current.'" id="'.$field_full_image_current.'" value="'.$name.'" />	
+				</td></tr>';
+		 if( function_exists('imagecreatefromjpeg') ){
+		 	
+		 	$html .= '<tr><td class="key">
+							<label for="image_action'.$thumbchar.'">'.JText::_( 'VM_IMAGE_ACTION' ).'</label>
+							</td>
+						<td>';
+
+			$imageActions[] = JHTML::_('select.option',  '0', JText::_( 'NONE' ) );
+			
+			if(!$thumb){
+				$imageActions[] = JHTML::_('select.option',  '1', JText::_( 'VM_FILES_FORM_AUTO_THUMBNAIL' ) );
+			}
+			if(!empty($name)){
+				$imageActions[] = JHTML::_('select.option',  '2', JText::_( 'VM_FORM_IMAGE_DELETE_LBL' ) );
+			}
+										
+			$html .= JHTML::_('select.radiolist', $imageActions, 'image_action'.$thumbchar, '', 'value', 'text', 0, 'image_action'.$thumbchar);
+			$html .= '</td>	</tr>';
+		}			
+	
+		$fullImageURL = '';
+								
+		if( stripos($name, 'http://') ){
+				$fullImageURL = $name;
+		}
+		
+		$html .= '<tr> <td class="key">
+					<label for="image_url">'. JText::_( 'URL' ) .' <em>('.  JText::_( 'CMN_OPTIONAL' ) .')</em></label>
+				</td> <td>';
+		$html .= '<input type="text" name="'.$field_full_image_url.'" id="'.$field_full_image_url.'" size="45" value="'.$fullImageURL.'" class="inputbox" />
+				</td></tr>
+				<tr>
+					<td colspan="2">';
+		
+		$html .= $this->displayImage('','',$thumb,0);
+
+		$html .'</td></tr>';
+		
+		return $html;
+							
+	}
+	
+	/**
+	 *  an abstract handler for the pictures
+	 * 
+	 * @author Max Milbers
+	 */
+	function saveImage($data,$fullImage,$thumb){
+		
+		if($thumb){
+			 $thumbchar = '_thumb'; 
+			$imagevRootFolder = $this->media_path_thumb;
+		} else {
+			$thumbchar ='_full';
+			$imagevRootFolder = $this->media_path;
+		}
+		
+		$imageRootFolderExp = explode('/', $imagevRootFolder);
+		$imageBaseFolder = implode(DS, $imageRootFolderExp);
+		
+		$field_image = $this->table.$thumbchar.'_image';
+		$field_image_url = $this->table.$thumbchar.'_image_url';
+		$field_image_current = $this->table.$thumbchar.'_image_current';
+		$field_thumb_image	= $this->table.'_thumb_image';
+		
+		if($fullImage['error'] == UPLOAD_ERR_OK) {
+			move_uploaded_file( $fullImage['tmp_name'], $imageBaseFolder.$fullImage['name']);
+			$data[$field_image] = $fullImage['name'];
+			dump($imageBaseFolder.$fullImage['name'],'move uploaded file to');
+		}
+		elseif($data[$field_image_url]){
+			$data[$field_image] = $data[$field_image_url];
+		}
+		else{
+			$data[$field_image] = $data[$field_image_current];
+		}
+
+		//creating the thumbnail image
+		if( $data['image_action'.$thumbchar] == 1 ){
+			$data[$field_thumb_image] = $this->createThumb(false);
+		}
+		//deleting image
+		elseif( $data['image_action'.$thumbchar] == 2 ){			 
+			JFile::delete( $imageBaseFolder.$data[$field_image_current] );
+			$data[$field_image] = '';
+		}
+		
+		return $data;
+	}
+	
+
 	/**
 	 * Display an image icon for the given image and create a link to the given link.
 	 *

@@ -28,25 +28,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
 					</legend>
 					<table class="admintable">
-						<tr>
-							<td class="key">
-								<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
-							</td>
-							<td>
-								<?php 
-								echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),0);
-//								VmImage::generateImageHtml($this->vendor->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); ?>
-							</td>
-						</tr>
-						<tr>
-							<td class="key">
-								<?php echo JText::_( 'VM_STORE_FORM_UPLOAD' ); ?>:
-							</td>
-							<td>
-								<input type="file" name="vendor_full_image" id="vendor_full_image" size="25" class="inputbox"  />
-							</td>
-						</tr>
-						<tr>
 							<td class="key">
 								<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
 							</td>
@@ -85,15 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							<td>
 								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
 							</td>
-						</tr>
-						<tr>
-			<?php /*				<td class="key">
-								<?php echo JText::_( 'VM_VENDOR_FORM_CATEGORY' ); ?>:
-							</td>
-							<td>
-								<?php echo $this->vendorCategories; ?>:
-							</td>
-						</tr> */ ?>
+						</tr>						
 					</table>
 				</fieldset>
 			</td>
@@ -198,7 +171,24 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+		<td colspan="2">
+		<fieldset class="adminform">
+			<legend>
+				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
+			</legend>
+			<table class="admintable">
+			<?php
+				$image = VmImage::getImageByVendor($this->vendor);
+				echo $image -> createImageUploader(false);
+				echo $image -> createImageUploader(true);		
+			?>	
+			</table>
+		</fieldset>
+		
+		</td>
+		</tr>
+		<tr>
+		<td colspan="2">
 				<fieldset>
 					<legend>
 						<?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?>

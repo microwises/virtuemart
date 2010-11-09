@@ -27,24 +27,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
-			</td>
-			<td>
-				<?php 
-				VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),0);
-				?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_( 'VM_STORE_FORM_UPLOAD' ); ?>:
-			</td>
-			<td>
-				<input type="file" name="vendor_full_image" id="vendor_full_image" size="25" class="inputbox"  />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
 				<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
 			</td>
 			<td>
@@ -84,12 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 		<tr>
-	<?php /*		<td class="key">
-				<?php echo JText::_( 'VM_VENDOR_FORM_CATEGORY' ); ?>:
-			</td>
-			<td>
-				<?php echo $this->vendorCategories; ?>:
-			</td> */ ?>
+
 		</tr>
 	</table>
 </fieldset>
@@ -188,6 +165,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 			</td>
 		</tr>
+	</table>
+</fieldset>
+
+<fieldset class="adminform">
+	<legend>
+		<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
+	</legend>
+	<table class="admintable">
+	<?php
+		$image = VmImage::getImageByVendor($this->vendor);
+		echo $image -> createImageUploader(false);
+		echo $image -> createImageUploader(true);		
+	?>	
 	</table>
 </fieldset>
 

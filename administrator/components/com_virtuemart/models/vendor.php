@@ -184,8 +184,8 @@ class VirtueMartModelVendor extends JModel {
 			return (isset($result->user_id) ? $result->user_id : 0);
 		}
 	}
-	
 
+	
 	/**
 	 * Bind the post data to the vendor table and save it
      * This function DOES NOT safe information which is in the vm_users or vm_user_info table
@@ -195,10 +195,19 @@ class VirtueMartModelVendor extends JModel {
      * @return boolean True is the save was successful, false otherwise.
 	 */
     function store($data){
-    	
+    
+
 	$table = $this->getTable('vendor');
 
+	//uploading images and creating thumbnails
+	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');
 
+	if(!empty($fullImage)){
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+		$image  = VmImage::getVendorImage($fullImage['name']);
+		$data = $image->saveImage($data,$fullImage);	
+	}
+	
 //	if ($data === null) {
 //		$data = JRequest::get('post');
 //		$_external = false;
@@ -213,7 +222,7 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
 	    $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
 	}
-
+	dump($data['vendor_currency_display_style'],'my vendor currency');
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -416,6 +425,7 @@ class VirtueMartModelVendor extends JModel {
 		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
 		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
 
+		dump($_currencyDisplayStyle,'$_currencyDisplayStyle');
 		if (!empty($_currencyDisplayStyle)) {
 			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']

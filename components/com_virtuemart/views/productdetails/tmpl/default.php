@@ -364,7 +364,7 @@ else { ?>
 					<br />
 					<?php 
 						echo JText::_('VM_RATE_NOM');
-						$url = JURI::root().VmConfig::get('media_general_path').'/reviews/'.$review->user_rating.'.gif';
+						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
 						echo JHTML::image($url, $review->user_rating, array('border' => 0));
 					?>
 					<br />
@@ -420,7 +420,7 @@ else { ?>
 						<form method="post" action="<?php echo JRoute::_('index.php');  ?>" name="reviewForm" id="reviewform">
 						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
 						  <tr>
-							<?php $url = JURI::root().VmConfig::get('media_general_path').'/reviews/'; ?>
+							<?php $url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'; ?>
 							<th id="five_stars">
 							<label for="user_rating5"><?php echo JHTML::image($url.'5.gif', JText::_('5_STARS')); ?></label>
 							</th>

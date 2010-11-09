@@ -262,122 +262,20 @@ $mainframe = JFactory::getApplication();
 				<fieldset>
 					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_FULL_IMAGE' ); ?></legend>
 					<table style="width:100%">
-						<tr>
-							<td class="key">
-								<label for="title">
-									<?php echo JText::_( 'FILE' ); ?>:
-								</label>
-							</td>
-							<td>
-								<input type="file" name="category_full_image" id="category_full_image" size="30" class="inputbox" />		
-								<input type="hidden" name="category_full_image_current" id="category_full_image_current" value="<?php echo $this->category->category_full_image ?>" />	
-							</td>
-						</tr>
-						<?php if( function_exists('imagecreatefromjpeg') ):?>
-						<tr>
-							<td class="key">
-								<label for="image_action_full">
-									<?php echo JText::_( 'VM_IMAGE_ACTION' ); ?>:
-								</label>
-							</td>
-							<td>
-								<?php 
-									$imageActions = array(
-										JHTML::_('select.option',  '0', JText::_( 'NONE' ) ),
-										JHTML::_('select.option',  '1', JText::_( 'VM_FILES_FORM_AUTO_THUMBNAIL' ) )
-									);
-
-									if(!empty($this->category->category_full_image)){
-										array_push($imageActions, JHTML::_('select.option',  '2', JText::_( 'VM_CATEGORY_FORM_IMAGE_DELETE_LBL' ) ));
-									}
-									
-									echo JHTML::_('select.radiolist', $imageActions, 'image_action_full', '', 'value', 'text', 0, 'image_action_full');
-								?>
-							</td>
-						</tr>
-						<?php endif;
-							$fullImageURL = '';
-							
-							if( stripos($this->category->category_full_image, 'http://') ){
-								$fullImageURL = $this->category->category_full_image;
-							}
-						?>
-						<tr>
-							<td class="key">
-								<label for="image_url">
-									<?php echo JText::_( 'URL' ); ?> <em>(<?php echo JText::_( 'CMN_OPTIONAL' ); ?>)</em>
-								</label>
-							</td>							
-							<td>
-								<input type="text" name="category_full_image_url" id="category_full_image_url" size="45" value="<?php echo $fullImageURL?>" class="inputbox" />
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<?php  echo VmImage::getImageByCat($this->category)->displayImage('','',0); ?>
-							</td>
-						</tr>
-					</table>
+					<?php
+						$image = VmImage::getImageByCat($this->category);
+						echo $image -> createImageUploader(false);
+					?>
+					</table> 
 				</fieldset>
 			</td>
 			<td valign="top">
 				<fieldset>
 					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_THUMB_IMAGE' ); ?></legend>
 					<table style="width:100%">
-						<tr>
-							<td class="key">
-								<label for="title">
-									<?php echo JText::_( 'FILE' ); ?>:
-								</label>
-							</td>
-							<td>
-								<input type="file" name="category_thumb_image" id="category_thumb_image" size="30" class="inputbox" />
-								<input type="hidden" name="category_thumb_image_current" id="category_thumb_image_current" value="<?php echo $this->category->category_thumb_image?>" />			
-							</td>
-						</tr>
-						<?php						
-							$fullThumbURL = '';
-							
-							if( stripos($this->category->category_thumb_image, 'http://') ){
-								$fullThumbURL = $this->category->category_thumb_image;
-							}
-						?>
-						<?php if( !empty($this->category->category_thumb_image)):?>
-						<tr>
-							<td class="key">
-								<label for="image_action_thumb">
-									<?php echo JText::_( 'VM_IMAGE_ACTION' ); ?>:
-								</label>
-							</td>
-							<td>
-								<?php 
-									$imageActions = array(
-										JHTML::_('select.option',  '0', JText::_( 'NONE' ) ),
-										JHTML::_('select.option',  '2', JText::_( 'VM_CATEGORY_FORM_IMAGE_DELETE_LBL' ) )
-									);
-									
-									echo JHTML::_('select.radiolist', $imageActions, 'image_action_thumb', '', 'value', 'text', 0, 'image_action_thumb');
-								?>
-							</td>
-						
-						</tr>
-						<?php endif;?>
-						<tr>
-							<td class="key">
-								<label for="image_url">
-									<?php echo JText::_( 'URL' ); ?> <em>(<?php echo JText::_( 'CMN_OPTIONAL' ); ?>)</em>
-								</label>
-							</td>
-							<td>
-								<input type="text" name="category_thumb_image_url" id="category_thumb_image_url" size="45" value="<?php echo $fullThumbURL?>" class="inputbox" />
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<?php 
-								echo VmImage::getImageByCat($this->category)->displayImage('','',1,0); ?>
-							</td>
-						</tr>	
+					<?php
+						echo $image -> createImageUploader(true);
+					 ?>
 					</table>
 				</fieldset>
 			</td>

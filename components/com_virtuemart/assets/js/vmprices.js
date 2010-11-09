@@ -26,9 +26,9 @@ function sendtocart(){
 		function(newPrices, textStatus) {
 //			alert(newPrices+' and '+textStatus);
 			if(newPrices==1){
-				alert('Product added to cart '+id);
+				alert('Product added to cart ');
 			}else{
-				alert('Product not added to cart, may out of stock '+id);
+				alert('Product not added to cart, may out of stock ');
 			}
 		});
 	}

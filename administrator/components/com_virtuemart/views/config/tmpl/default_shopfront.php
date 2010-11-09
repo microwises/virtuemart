@@ -246,12 +246,12 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_GENERAL_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_GENERAL_PATH') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
 			    </span>
 				</td>
 				<td>
-					<input type="text" name="media_general_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_general_path') ?>" />
+					<input type="text" name="assets_general_path"  size="60" class="inputbox" value="<?php echo $this->config->get('assets_general_path') ?>" />
 				</td>
 		    </tr>		    <tr>
 				<td class="key">

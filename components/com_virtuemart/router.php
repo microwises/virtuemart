@@ -27,21 +27,17 @@ function virtuemartBuildRoute(&$query)
 {
 	$page = '';
 	$segments = array();
-	
-	if(isset($query['page'])){
-		$page = $query['page'];
-		unset($query['page']);
-	}
-	
-	if(isset($query['flypage'])){
-		unset($query['flypage']);
+	dump($query,'My query in Route');
+	if(isset($query['view'])){
+		$page = $query['view'];
+		unset($query['view']);
 	}
 
 	switch ($page) {		
 		// Shop browse/catgory page 
-		case 'shop.browse';	
+		case 'category';	
 			if(isset($query['category_id'])){
-				$segments[] = VM_SHOP_BROWSE;
+//				$segments[] = VM_SHOP_BROWSE;
 				$segments[] = $query['category_id'];				
 				$segments[] = getCategoryName($query['category_id']);		
 				unset($query['category_id']);
@@ -62,11 +58,11 @@ function virtuemartBuildRoute(&$query)
 		break;
 
 		// Shop product details page 
-		case 'shop.product_details';			
-			$segments[] = VM_PRODUCT_DETAILS;			
+		case 'productdetails';			
+//			$segments[] = VM_PRODUCT_DETAILS;			
 			$product_id_exists = false;
 			if(isset($query['product_id']))	{
-				$segments[] = $query['product_id'];
+//				$segments[] = $query['product_id'];
 				$product_id_exists = true;
 				$product_id = $query['product_id'];
 				unset($query['product_id']);
@@ -76,9 +72,9 @@ function virtuemartBuildRoute(&$query)
 				$segments[] = getCategoryName($query['category_id']);		
 				unset($query['category_id']);
 			}
-			if(isset($query['pop']) )	{
-				unset($query['pop']);				
-			}
+//			if(isset($query['pop']) )	{
+//				unset($query['pop']);				
+//			}
 			if($product_id_exists)	{
 				$segments[] = getProductName($product_id);
 			}
@@ -103,108 +99,109 @@ function virtuemartBuildRoute(&$query)
 		break;
 
 		// Checkout Index page			
-		case 'checkout.index';
-		$segments[] = VM_CHECKOUT_INDEX;
-		
-		if(isset($query['ssl_redirect']))	{
-			$segments[] = "ssl_redirect";
-			unset($query['ssl_redirect']);
-		}
-		if(isset($query['redirected']))	{
-			$segments[] = "redirected";
-			unset($query['redirected']);
-		}
+		case 'cart';
+            		
+//		$segments[] = VM_CHECKOUT_INDEX;
+//		
+//		if(isset($query['ssl_redirect']))	{
+//			$segments[] = "ssl_redirect";
+//			unset($query['ssl_redirect']);
+//		}
+//		if(isset($query['redirected']))	{
+//			$segments[] = "redirected";
+//			unset($query['redirected']);
+//		}
 		break;		
 
-		case 'account.billing';
-			$segments[] ="account-billing";
-			if(isset($query['next_page']) )	{
-				$segments[] = "checkout";
-				unset($query['next_page']);				
-			}
-		break;
-
-		case 'account.shipto';
-			$segments[] ="account-shipto";
-			if(isset($query['next_page']) )	{
-				$segments[] = "checkout";
-				unset($query['next_page']);				
-			}
-		break;
-
-		case 'account.shipping';
-			$segments[] ="account-shipping";
-			if(isset($query['next_page']) )	{
-				$segments[] = "checkout";
-				unset($query['next_page']);				
-			}
-		break;
-
-		case 'shop.registration';
-			$segments[] ="user-registration";
-		break;
-		
-		case 'shop.favourites';
-			$segments[] ="favourites";
-		break;
-
-		case 'shop.recommend';
-			$segments[] ="recommend";
-			if(isset($query['tmpl']) )	{
-				$segments[] = $query['tmpl'];
-				unset($query['tmpl']);				
-			}
-			if(isset($query['pop']) )	{
-				$segments[] = $query['pop'];
-				unset($query['pop']);				
-			}
-			if(isset($query['product_id']) ){
-				$segments[] = $query['product_id'];
-				$segments[] = getProductName($query['product_id']);
-				unset($query['product_id']);				
-			}
-		break;
-
-		case 'shop.tos';
-			$segments[] ="terms-of-service";
-		break;
-
-		case 'shop.cart';
-			$segments[] ="cart";
-		break;
-
-		case 'account.index';
-			$segments[] ="account";
-		break;
-
-		case 'account.order_details';
-			$segments[] ="order-details";
-			if(isset($query['order_id']))	{
-				$segments[] = $query['order_id'];
-				unset($query['order_id']);
-			}
-		break;
-
-		case 'shop.waiting_list';
-			$segments[] ="notify";
-			if(isset($query['product_id']))	{
-				$segments[] = $query['product_id'];
-				$product_id_exists = true;
-				$product_id = $query['product_id'];
-				unset($query['product_id']);
-			}
-			if($product_id_exists)	{
-				$segments[] = getProductName($product_id);
-			}
-		break;
-
-		case 'shop.search';
-			$segments[] =VM_ADVANCE_SEARCH;			
-		break;
-
-		case 'store.index';
-			$segments[] = 'administration';			
-		break;
+//		case 'account.billing';
+//			$segments[] ="account-billing";
+//			if(isset($query['next_page']) )	{
+//				$segments[] = "checkout";
+//				unset($query['next_page']);				
+//			}
+//		break;
+//
+//		case 'account.shipto';
+//			$segments[] ="account-shipto";
+//			if(isset($query['next_page']) )	{
+//				$segments[] = "checkout";
+//				unset($query['next_page']);				
+//			}
+//		break;
+//
+//		case 'account.shipping';
+//			$segments[] ="account-shipping";
+//			if(isset($query['next_page']) )	{
+//				$segments[] = "checkout";
+//				unset($query['next_page']);				
+//			}
+//		break;
+//
+//		case 'shop.registration';
+//			$segments[] ="user-registration";
+//		break;
+//		
+//		case 'shop.favourites';
+//			$segments[] ="favourites";
+//		break;
+//
+//		case 'shop.recommend';
+//			$segments[] ="recommend";
+//			if(isset($query['tmpl']) )	{
+//				$segments[] = $query['tmpl'];
+//				unset($query['tmpl']);				
+//			}
+//			if(isset($query['pop']) )	{
+//				$segments[] = $query['pop'];
+//				unset($query['pop']);				
+//			}
+//			if(isset($query['product_id']) ){
+//				$segments[] = $query['product_id'];
+//				$segments[] = getProductName($query['product_id']);
+//				unset($query['product_id']);				
+//			}
+//		break;
+//
+//		case 'shop.tos';
+//			$segments[] ="terms-of-service";
+//		break;
+//
+//		case 'shop.cart';
+//			$segments[] ="cart";
+//		break;
+//
+//		case 'account.index';
+//			$segments[] ="account";
+//		break;
+//
+//		case 'account.order_details';
+//			$segments[] ="order-details";
+//			if(isset($query['order_id']))	{
+//				$segments[] = $query['order_id'];
+//				unset($query['order_id']);
+//			}
+//		break;
+//
+//		case 'shop.waiting_list';
+//			$segments[] ="notify";
+//			if(isset($query['product_id']))	{
+//				$segments[] = $query['product_id'];
+//				$product_id_exists = true;
+//				$product_id = $query['product_id'];
+//				unset($query['product_id']);
+//			}
+//			if($product_id_exists)	{
+//				$segments[] = getProductName($product_id);
+//			}
+//		break;
+//
+//		case 'shop.search';
+//			$segments[] =VM_ADVANCE_SEARCH;			
+//		break;
+//
+//		case 'store.index';
+//			$segments[] = 'administration';			
+//		break;
 	} 
 	return $segments;
 }
@@ -215,7 +212,18 @@ function virtuemartParseRoute($segments)
 	$vars = array();
 
 	$firstSegment = $segments[0]; 
-	switch($firstSegment){		
+	switch($firstSegment){
+		
+		case 'cart':
+			$uri = JFactory::getURI();
+			$redirect  = 1;
+			// Redirect to SSL
+			if($redirect == true) {
+				$uri->setScheme('https');
+				$application->redirect($uri->toString());
+			}
+		break;
+		
 		case VM_SHOP_BROWSE:
 			$vars['page'] = "shop.browse";
 			if(isset($segments[1])){

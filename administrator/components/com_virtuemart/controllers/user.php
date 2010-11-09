@@ -113,6 +113,10 @@ class VirtuemartControllerUser extends JController {
 		$this->setRedirect('index.php?option=com_virtuemart&view=user');
 	}
 
+	function apply(){
+		$this->save();
+	}
+	
 	/**
 	 * Handle the save task
 	 */
@@ -140,11 +144,17 @@ class VirtuemartControllerUser extends JController {
 			$redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
 		}
 		else{
-			$redirection = 'index.php?option=com_virtuemart&view=user';
+			if (!$_currentUser->authorize('com_users', 'manage')) {
+				$redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
+			} else {
+				$redirection = 'index.php?option=com_virtuemart&view=user';
+			}
+			
 		}
 		$this->setRedirect($redirection, $msg);
 	}
 
+	
 	/**
 	 * Handle the remove task
 	 */
