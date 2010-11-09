@@ -131,7 +131,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return ObjectList List of recent orders.
 	 */
 	function getRecentCustomers($nbrCusts=5) {
-		$query = 'SELECT `id`, `first_name`, `last_name`, `username` FROM `#__users` as `u`';
+		$query = 'SELECT `id`, `first_name`, `last_name`, `username` FROM `#__users` as `u` ';
 		$query .= 'JOIN `#__vms` as uvm ON u.id = uvm.user_id';
 		$query .= 'JOIN `#__vm_user_info` as ui ON u.id = ui.user_id';
 		$query .= 'WHERE `perms` <> "admin" ';
@@ -141,4 +141,5 @@ class VirtueMartModelVirtueMart extends JModel {
         return $this->_getList($query, 0, $nbrCusts);
     }
 }
-?>
+
+//pure php no tag

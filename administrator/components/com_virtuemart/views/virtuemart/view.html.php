@@ -54,10 +54,11 @@ class VirtuemartViewVirtuemart extends JView {
 
 		$recentOrders = $model->getRecentOrders();
 		$this->assignRef('recentOrders', $recentOrders);
-		$recentCustomers = $model->getRecentCustomers();
-		$this->assignRef('recentCustomers', $recentCustomers);
+//		$recentCustomers = $model->getRecentCustomers();
+//		$this->assignRef('recentCustomers', $recentCustomers);
 
 		parent::display($tpl);
 	}
 }
-?>
+
+//pure php no tag

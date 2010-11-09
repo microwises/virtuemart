@@ -88,7 +88,7 @@ foreach ($this->products as $product) {
 			//todo add config settings
 			if( Permissions::getInstance()->check('admin')){
 				echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$product->prices);
-				echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
+				echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$product->prices);
 			}
 			echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$product->prices);
 			echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$product->prices);
@@ -115,9 +115,9 @@ foreach ($this->products as $product) {
 			<span class="contentpagetitle"><?php echo JText::_('VM_CUSTOMER_RATING') ?>:</span>
 			<br />
 			<?php
-			$img_url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$product->votes->rating.'.gif';
-			echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
-			echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
+//			$img_url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$product->votes->rating.'.gif';
+//			echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
+//			echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 		</div>
 	<?php } ?>
 	<div class="browseProductDescription">
@@ -128,7 +128,7 @@ foreach ($this->products as $product) {
 	<br />
 	<div >
 		<?php 
-		echo JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL').' '.JHTML::image(JURI::root().VmConfig::get('assets_general_path').'/'.$product->stock->stock_level.'.gif', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
+		echo JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL').' '.JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/vmgeneral/'.$product->stock->stock_level.'.gif', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
 		?>
 	</div>
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>

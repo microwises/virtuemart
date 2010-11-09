@@ -196,7 +196,7 @@ class VirtueMartModelConfig extends JModel {
 
 	    $assets_general_path = $params->get('assets_general_path') ;
 		if(empty($assets_general_path)){
-			$params->set('assets_general_path','components/com_virtuemart/images/vmgeneral');	
+			$params->set('assets_general_path','components/com_virtuemart/assets');	
 		}	    
 	    $media_category_path = $params->get('media_category_path') ;
 		if(empty($media_category_path)){
@@ -249,4 +249,5 @@ class VirtueMartModelConfig extends JModel {
 	return true;
     }
 }
-?>
+
+//pure php no closing tag

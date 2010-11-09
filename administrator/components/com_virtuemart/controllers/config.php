@@ -156,4 +156,5 @@ class VirtuemartControllerConfig extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=config', $msg);
 	}
 }
-?>
+
+//pure php no tag

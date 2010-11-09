@@ -114,8 +114,9 @@ class VirtuemartControllerUpdatesMigration extends JController {
     function restoreSystemDefaults() {
 	$model = $this->getModel('updatesMigration');
 	$model->restoreSystemDefaults();
-	$msg = $model->setStoreOwner();
-	$msg .= ' '.JText::_('System defaults restored!');
+	
+	$msg = JText::_('System defaults restored!');
+	$msg .= ' User id of the main vendor is '.$model->setStoreOwner();
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }
 
@@ -169,13 +170,13 @@ class VirtuemartControllerUpdatesMigration extends JController {
 				
 		$model->integrateJoomlaUsers();
 		$id = $model->determineStoreOwner();
-		$model->setStoreOwner($id);
+		$sid = $model->setStoreOwner($id);
 //		$model->setUserToPermissionGroup($id);
 		$model->installSampleData($id);
 		$msg = $model->getErrors();
+		if(empty($msg)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
 		
 		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
 	}
-
 
 }

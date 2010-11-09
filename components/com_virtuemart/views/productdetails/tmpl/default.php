@@ -364,8 +364,8 @@ else { ?>
 					<br />
 					<?php 
 						echo JText::_('VM_RATE_NOM');
-						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
-						echo JHTML::image($url, $review->user_rating, array('border' => 0));
+//						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
+//						echo JHTML::image($url, $review->user_rating, array('border' => 0));
 					?>
 					<br />
 					<blockquote><div><?php echo wordwrap($review->comment, 150, "<br/>\n", true ); ?></div></blockquote>

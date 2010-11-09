@@ -49,7 +49,7 @@ function com_install(){
 	$model->setStoreOwner($id);
 	
 	if ($newInstall) {
-		$model->setUserToPermissionGroup($id);	
+//		$model->setUserToPermissionGroup($id);	
 	}
 	
 	$installOk = true;

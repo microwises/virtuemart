@@ -115,53 +115,45 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function setStoreOwner($userId=0) {
-	if (empty($userId)) {
-	    $userId = $this->determineStoreOwner();
-	}
-
-	$oldUserId	= "";
-	$oldVendorId = "";
-
-	$db = JFactory::getDBO();
-
-	$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
-	$db->query();
-	$oldVendorId = $db->loadResult();
-
-	$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
-	$db->query();
-	$oldUserId = $db->loadResult();
-
-	if (!isset($oldVendorId) && !isset($oldUserId)) {
-	    $db->setQuery('INSERT `#__vm_users` (`user_id`, `vendor_id`) VALUES ("' . $userId . '", "1")');
-	    if ($db->query() == false) {
-		JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_users');
-	    }
-	    else {
-		JError::raiseNotice(1, 'setStoreOwner INSERT __vm_users ');
-	    }
-	}
-	else {
-	    if (!isset($oldUserId)) {
-		$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
-	    }
-	    else {
-		$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
-	    }
-	    if ($db->query() == false ) {
-			JError::raiseNotice(1, 'Update __vm_users failed. user_id '.$userId);
-	    }
-	}
-
-	$db->setQuery('UPDATE `#__vm_users` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
-	$db->query();
-	if (!$db->query()) {
-	    JError::raiseNotice(1, 'setStoreOwner failed. User with id = ' . $userId . ' not found in table');
-	    return 0;
-	}
-	else {
-	    return $userId;
-	}
+		if (empty($userId)) {
+		    $userId = $this->determineStoreOwner();
+		}
+	
+		$oldUserId	= "";
+		$oldVendorId = "";
+	
+		$db = JFactory::getDBO();
+	
+		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+	
+		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
+		$db->query();
+		$oldUserId = $db->loadResult();
+		
+		if (!isset($oldVendorId) && !isset($oldUserId)) {
+		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`) VALUES ("' . $userId . '", "1","1")');
+		    if ($db->query() == false) {
+				JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_users');
+		    }
+		    else {   	
+		    	return $userId;
+		    }
+		}
+		else {
+		    if (!isset($oldUserId)) {
+				$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'" AND `user_is_vendor` = "1" WHERE `vendor_id` = "1" ');
+		    }
+		    else {
+				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" AND `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'" ');
+		    }
+		    if ($db->query() == false ) {
+				JError::raiseWarning(1, 'Update __vm_users failed. user_id '.$userId);
+		    } else {   	
+		    	return $userId;
+		    }
+		}
 
     }
 
@@ -171,22 +163,22 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function setUserToPermissionGroup($userId=0) {
 	# insert the user <=> group relationship
-	$db = JFactory::getDBO();
-	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
-				SELECT user_id,
-					CASE `perms`
-					    WHEN 'admin' THEN 0
-					    WHEN 'storeadmin' THEN 1
-					    WHEN 'shopper' THEN 2
-					    WHEN 'demo' THEN 3
-					    ELSE 2
-					END
-				FROM #__vm_user_info
-				WHERE address_type='BT' ");
-	$db->query();
-
-	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
-	$db->query();
+//	$db = JFactory::getDBO();
+//	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
+//				SELECT user_id,
+//					CASE `perms`
+//					    WHEN 'admin' THEN 0
+//					    WHEN 'storeadmin' THEN 1
+//					    WHEN 'shopper' THEN 2
+//					    WHEN 'demo' THEN 3
+//					    ELSE 2
+//					END
+//				FROM #__vm_user_info
+//				WHERE address_type='BT' ");
+//	$db->query();
+//
+//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
+//	$db->query();
     }
 
 
@@ -361,7 +353,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	foreach ($tables as $table) {
-		dump($table, 'DROP TABLE ');
+//		dump($table, 'DROP TABLE ');
 	    $db->setQuery('DROP TABLE ' . $table);
 	    $db->query();
 	}
