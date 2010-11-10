@@ -18,6 +18,8 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
+
+echo JText::_('VM_UPDATE_MIGRATION_TOOLS_WARNING');
 ?>
 <table cellpadding="10">
     <tr>
