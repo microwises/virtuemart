@@ -383,7 +383,7 @@ class VirtueMartModelOrders extends JModel {
 					}
 
 					/* Update order item status */
-					if ($update_lines[$order_id] == 1) {
+					if (@$update_lines[$order_id]) {
 						$q = "SELECT order_item_id
 							FROM #__vm_order_item
 							WHERE order_id=".$order_id;
@@ -400,7 +400,7 @@ class VirtueMartModelOrders extends JModel {
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($order_id);
 
 					/* Check if the customer needs to be informed */
-					if (@$notify[$order_id] == 1) $this->notifyCustomer($order, $comments);
+					if (@$notify[$order_id]) $this->notifyCustomer($order, $comments);
 					$updated++;
 				} else {
 					$error++;
@@ -526,9 +526,11 @@ class VirtueMartModelOrders extends JModel {
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if ($_name == 'country_id') {
-				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['country_id']);
+				$_userInfoData->country = $_cart->BT['country_id'];
+//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['country_id']);
 			} elseif ($_name == 'state_id') {
-				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['state_id']);
+				$_userInfoData->state = $_cart->BT['state_id'];
+//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['state_id']);
 			} else {
 				$_userInfoData->$_name = $_cart->BT[$_name];
 			}
@@ -550,9 +552,11 @@ class VirtueMartModelOrders extends JModel {
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
 				if ($_name == 'country_id') {
-					$_userInfoData->country = shopFunctions::getCountryByID($_cart->ST['country_id']);
+					$_userInfoData->country = $_cart->ST['country_id'];
+//					$_userInfoData->country = shopFunctions::getCountryByID($_cart->ST['country_id']);
 				} elseif ($_name == 'state_id') {
-					$_userInfoData->state = shopFunctions::getStateByID($_cart->ST['state_id']);
+					$_userInfoData->state = $_cart->ST['state_id'];
+//					$_userInfoData->state = shopFunctions::getStateByID($_cart->ST['state_id']);
 				} else {
 					$_userInfoData->$_name = $_cart->ST[$_name];
 				}
@@ -835,6 +839,7 @@ class VirtueMartModelOrders extends JModel {
 		$include_comments = JRequest::getVar('include_comment', array());
 
 		/* Get vendor info */
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
 		$vendorModel = new VirtueMartModelVendor();
 		$vendorModel->setId($vendor_id);

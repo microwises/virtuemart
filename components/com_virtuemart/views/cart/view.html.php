@@ -353,24 +353,7 @@ class VirtueMartViewCart extends JView {
 				,'BT'
 			);
 		}
-		
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		$BTaddress['fields']['country_name']['name'] = 'country_name';
-		$BTaddress['fields']['country_name']['title'] = 'Country name';
-		$BTaddress['fields']['country_name']['type'] = 'countryname';
-		$BTaddress['fields']['country_name']['required'] = False;
-		$BTaddress['fields']['country_name']['hidden'] = False;
-		$BTaddress['fields']['country_name']['value'] = shopfunctions::getCountryByID($BTaddress['fields']['country_id']['value']);
-		unset($BTaddress['fields']['country_id']);
-		
-		$BTaddress['fields']['state_name']['name'] = 'state_name';
-		$BTaddress['fields']['country_name']['title'] = 'State name';
-		$BTaddress['fields']['country_name']['type'] = 'statename';
-		$BTaddress['fields']['country_name']['required'] = False;
-		$BTaddress['fields']['country_name']['hidden'] = False;		
-		$BTaddress['fields']['state_name']['value'] = shopfunctions::getStateByID($BTaddress['fields']['state_id']['value']);
-		unset($BTaddress['fields']['state_id']);
-		
+
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 		
 		$STaddress['fields']= array();

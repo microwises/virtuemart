@@ -559,7 +559,6 @@ class VirtueMartModelUserfields extends JModel {
 	{
 
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
-		$shopFunctions = new ShopFunctions();
 		$_return = array(
 				 'fields' => array()
 				,'functions' => array()
@@ -585,28 +584,32 @@ class VirtueMartModelUserfields extends JModel {
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
 				case 'title':
-					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->listUserTitle(
+					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::listUserTitle(
 						$_return['fields'][$_fld->name]['value'], '', $_prefix);
 					break;
 				
 				case 'country_id':
-					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderCountryList(
+					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
 						, array('onchange' => 'changeStateList();'), $_prefix);
 					// The table data can contain the country_id or the country name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
 					}
+					// Translate the value from ID to name
+					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 				
 				case 'state_id':
-					$_return['fields'][$_fld->name]['formcode'] = $shopFunctions->renderStateList(
+					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderStateList(
 						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value']
 						, $_prefix.'country_id', false, $_prefix);
 					// The table data can contain the state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
 					}
+					// Translate the value from ID to name
+					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
 				case 'agreed':
 					$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
