@@ -58,9 +58,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 */
 	function plgVmPaymentPlugin(& $subject, $config) {
 		parent::__construct($subject, $config);
-		
-//		dump($config,'plgPaymentCashondel Constructor $config');
-//		dump($this->params,'plgPaymentCashondel Constructor $this->params');		
+	
 	}
 	
 	/**
@@ -123,7 +121,6 @@ abstract class vmPaymentPlugin extends JPlugin  {
 			if(!$this->_jplugin_id){
 				$mainframe = &JFactory::getApplication();
 				$mainframe->enqueueMessage( 'The Paymentmethod didnt found used payment plugin' );
-	//			dump('Error');
 				return false;	
 			}		
 	 	}else{

@@ -34,6 +34,8 @@ class TableUsergroups extends JTable {
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
 	var $group_level = 750;
+	
+	var $published = 1;
 
 	function __construct(&$db)
 	{

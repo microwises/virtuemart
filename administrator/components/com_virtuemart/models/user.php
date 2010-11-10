@@ -479,21 +479,22 @@ class VirtueMartModelUser extends JModel {
 		}
 
 		//update user table
-		$table = $this->getTable('vm_users');
+		$usertable = $this->getTable('vm_users');
 		$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
-		if (!$table->bind($vmusersData)) {		    
-			$this->setError($table->getError());
+		if (!$usertable->bind($vmusersData)) {		    
+			$this->setError($usertable->getError());
 			return false;
 		}
+
 		// Make sure the record is valid
-		if (!$table->check()) {
+		if (!$usertable->check()) {
 			$this->setError($table->getError());
 			return false;	
 		}
 
 		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
+		if (!$usertable->store()) {
+			$this->setError($usertable->getError());
 			return false;
 		}
 
@@ -525,22 +526,22 @@ class VirtueMartModelUser extends JModel {
 				}else{
 					//Update xref Table
 					$vendor_id = $vendorModel->getId();
-//					dump($vendor_id,'new vendor id '.$_data['vendor_id']);
+
 					//update user table
-					$table = $this->getTable('vm_users');
-					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id);
-					if (!$table->bind($vmusersData)) {		    
+//					$usertable = $this->getTable('vm_users');
+					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+					if (!$usertable->bind($vmusersData)) {		    
 						$this->setError($table->getError());
 						return false;
 					}		
 					// Make sure the record is valid
-					if (!$table->check()) {
+					if (!$usertable->check()) {
 						$this->setError($table->getError());
 						return false;	
 					}
 					
 					// Save the record to the database
-					if (!$table->store()) {
+					if (!$usertable->store()) {
 						$this->setError($table->getError());
 						return false;
 					}

@@ -311,9 +311,7 @@ class VirtueMartControllerCart extends JController {
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = VirtueMartCart::getCart();
 		if($cart ){
-			dump($cart,'before checkout');
 			$cart->checkout();
-			dump($cart,'after checkout');
 		}
 	}
 
@@ -331,9 +329,7 @@ class VirtueMartControllerCart extends JController {
 		$cart = VirtueMartCart::getCart(false);
 		if($cart && $cart->getDataValidated()){ //this test is already done in confirmDone, but prevents it something?
 //		if($cart)
-			dump($cart,'before confirm');
 			$cart->confirmDone();
-			dump($cart,'after confirm');
 		}
 	}
 	

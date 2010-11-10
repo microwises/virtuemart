@@ -130,7 +130,6 @@ class calculationHelper{
 //		} 
 		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
 //		else {
-//			dump($productId,'myProduct');
 ////			`product_price`,`product_currency`,`product_discount_id`,`product_tax_id`,`sales_price`,`override`
 //			$basePrice = $productId->product_price;
 //			$this->productCurrency = $productId->product_currency;
@@ -314,7 +313,6 @@ class calculationHelper{
 		
 
 		foreach ($cart->products as $product){
-//			dump($product,'Product in cart in calc'); 
 			$productId = $product->product_id;
 			if (empty($product->quantity) || empty( $product->product_id )){
 				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->product_id);
@@ -322,7 +320,7 @@ class calculationHelper{
 			}
 			
 			$variantmod = $this->parseModifier($product->variant);
-//			dump($variantmod,'My variant modification in calc');
+
 			$cartproductkey = $productId.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
 //			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);	
@@ -410,7 +408,9 @@ class calculationHelper{
 //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
 
+		if (function_exists('dumpTrace')) {
 //		dump($this -> _cartPrices,"my cart prices");
+		}
 		return $this->_cartPrices;
 	}
 
@@ -447,8 +447,9 @@ class calculationHelper{
 				} else {
 					$price = $cOut;
 				}
-				
-//				dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
+				if (function_exists('dumpTrace')) {
+					dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
+				}
 			}
 		}
 		

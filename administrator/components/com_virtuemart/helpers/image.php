@@ -408,20 +408,22 @@ class VmImage {
 		if($fullImage['error'] == UPLOAD_ERR_OK) {
 			move_uploaded_file( $fullImage['tmp_name'], $imageBaseFolder.$fullImage['name']);
 			$data[$field_image] = $fullImage['name'];
-//			dump($imageBaseFolder.$fullImage['name'],'move uploaded file to');
 		}
 		elseif($data[$field_image_url]){
 			$data[$field_image] = $data[$field_image_url];
 		}
-//		else{
-			
-//		}
 
-		//creating the thumbnail image
-		if( $data['image_action'.$thumbchar] == 1 ){
-			$data[$field_thumb_image] = $this->createThumb(false);
+
+		if( $data['image_action'.$thumbchar] == 0 ){
+			if(empty($data[$field_image])) $data[$field_image] = $data[$field_image_current];
 		}
-
+		//creating the thumbnail image
+		elseif( $data['image_action'.$thumbchar] == 1 ){
+			$data[$field_thumb_image] = $this->createThumb(false);
+			if($field_image!=$field_thumb_image){
+				$data[$field_image] = $data[$field_image_current];
+			}
+		}
 		//deleting image
 		elseif( $data['image_action'.$thumbchar] == 2 ){
 			jimport('joomla.filesystem.file');	 

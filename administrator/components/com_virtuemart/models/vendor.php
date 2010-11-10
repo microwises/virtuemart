@@ -134,7 +134,7 @@ class VirtueMartModelVendor extends JModel {
 //		//	   	$user_table = $this->getTable('user');
 //		//	    $user_table->load((int)$userId);
 //			    $this->_data->jUser = $vendorJUser;
-//		//	    dump($this->_data,'My store info');
+
 //
 //			}
 
@@ -227,7 +227,7 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
 	    $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
 	}
-//	dump($data['vendor_currency_display_style'],'my vendor currency');
+
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -430,7 +430,6 @@ class VirtueMartModelVendor extends JModel {
 		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
 		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
 
-//		dump($_currencyDisplayStyle,'$_currencyDisplayStyle');
 		if (!empty($_currencyDisplayStyle)) {
 			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']

@@ -78,6 +78,7 @@ class VirtuemartViewConfig extends JView {
 		$productLayoutList = $model->getLayoutList('productdetails');
 		$this->assignRef('productLayoutList', $productLayoutList);
 		
+		
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 		$orderStatusList = $model->getOrderStatusList();
@@ -93,5 +94,6 @@ class VirtuemartViewConfig extends JView {
 
 		parent::display($tpl);
 	}
+
 }
 // pure php no closing tag

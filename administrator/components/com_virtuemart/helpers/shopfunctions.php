@@ -29,6 +29,7 @@ class ShopFunctions {
 	
 //	Forget this function!
 //	Oscar sais: No, except if you document which alternative to use!! This function IS called!!!
+//Use shopfunctionsf, the helper in the frontend and there the method sendMail
 	/**
 	* Initialise the mailer object to start sending mails
 	* @author RolandD

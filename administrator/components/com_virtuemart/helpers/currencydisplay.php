@@ -77,7 +77,7 @@ class CurrencyDisplay {
 	$this->thousands = $thousands;
 	$this->positivePos = $positivePos;
 	$this->negativePos = $negativePos;
-//	dump($this,'CurrencyDisplay created');
+
     }
 
     /**

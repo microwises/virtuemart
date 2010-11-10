@@ -953,6 +953,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(128) DEFAULT NULL,
   `group_level` int(11) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
 

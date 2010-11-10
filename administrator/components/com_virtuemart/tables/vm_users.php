@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 	var $user_is_vendor 	= 0;
 	var $vendor_id 			= 0;
 	var $customer_number 	= 0;
-	var $perms				= 'shopper';
+	var $perms				= 0;
 
 
 	/**
@@ -50,7 +50,6 @@ defined('_JEXEC') or die('Restricted access');
  	 * @author Max Milbers
  	 */
  	public function check(){
- 		
 		if (!$this->user_id) {
 			$this->setError(JText::_('Users must have an user id'));
 			return false;
@@ -78,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 		} else {
 			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
 		}
-
+		
 		if (!$returnCode){
 			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
 			return false;
