@@ -133,7 +133,7 @@ class VirtueMartControllerCart extends JController {
 
 	/**
 	 *
-	 *
+	 * @author Max Milbers
 	 */
 	public function setcoupon(){
 
@@ -240,24 +240,21 @@ class VirtueMartControllerCart extends JController {
 			$_retValues = $_dispatcher->trigger('plgVmOnPaymentSelectCheck', array('cart'=>$cart));
 
 			foreach ($_retValues as $_retVal) {
-				if ($_retVal === true) {
+				if ($_retVal === true || is_null($_retVal)) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($_retVal === false) {
 					// TODO Max; what todo of the plugin failed? Just nothing we can set here a msg
 //					if ($redirect) { self::Cart(); } else { return false; } // Plugin failed
-					$msg = 'Plugin failed';
+					$msg = JText::_('VM_CART_SETPAYMENT_PLUGIN_FAILED');
 				} elseif (is_array($_retVal)) {
 					// We got modified cart data back from the plugin
-					$cart = $_retVal;
-					
+//					$cart = $_retVal;		This seems to be a bit evil, does the plugin actually returns a cart?
 					break;
-// Checks below outcommented since we're at the end of out loop anyway :-/
-// Remove comments if newchecks need to be implemented.
 // NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
-//				} elseif ($_retVal === null) {
-//					continue; // This plugin was skipped
-//				} else {
-//					continue; // Other values not yet implemented
+				} elseif (is_null($_retVal)) {
+					continue; // This plugin was skipped
+				} else {
+					continue; // Other values not yet implemented
 				}
 			}
 //			$cart->setDataValidation();	//Not needed already done in the getCart function
@@ -266,11 +263,8 @@ class VirtueMartControllerCart extends JController {
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout',$msg);
 			}
 		}
-//		if($cart->getInCheckOut()){
-//			return false;	
-//		} else {
-//			self::Cart();
-//		}
+		self::Cart();
+
 	}
 
 
@@ -317,7 +311,9 @@ class VirtueMartControllerCart extends JController {
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 		$cart = VirtueMartCart::getCart();
 		if($cart ){
+			dump($cart,'before checkout');
 			$cart->checkout();
+			dump($cart,'after checkout');
 		}
 	}
 
@@ -333,8 +329,11 @@ class VirtueMartControllerCart extends JController {
 
 		//Use false to prevent valid boolean to get deleted
 		$cart = VirtueMartCart::getCart(false);
-		if($cart && $cart->getDataValidated()){
+		if($cart && $cart->getDataValidated()){ //this test is already done in confirmDone, but prevents it something?
+//		if($cart)
+			dump($cart,'before confirm');
 			$cart->confirmDone();
+			dump($cart,'after confirm');
 		}
 	}
 	

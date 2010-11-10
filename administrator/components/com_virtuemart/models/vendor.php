@@ -456,6 +456,7 @@ class VirtueMartModelVendor extends JModel {
 	* @return int Vendor ID
 	*/
 	public function getVendorId($type, $value, $ownerOnly=true){
+		if(empty($value)) return 0;
 		//static call used, so we need our own db instance
 		$db = JFactory::getDBO();
 		switch ($type) {

@@ -46,7 +46,7 @@ class VirtueMartCart  {
 	var $paym_id = 0;
 	var $BT = 0;
 	var $ST = 0;
-	var $tosAccepted = 0;
+	var $tosAccepted = false;
 	var $customer_comment = '';
 	
 	private function __construct() {
@@ -403,7 +403,6 @@ class VirtueMartCart  {
 	}
 
 	function checkout(){
-
 		if($this -> checkoutData()){
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));		
@@ -423,10 +422,10 @@ class VirtueMartCart  {
 	private function checkoutData(){
 
 		$this->_inCheckOut = true;
-		$this->_dataValidated = true;
-		$this->tosAccepted = JRequest::getVar('tosAccepted', '0');
-		$this->customer_comment = JRequest::getVar('customer_comment', '');
-
+//		$this->_dataValidated = true; //this is wrong, I am quite sure, the dataValidated is set at the end of the checkout process
+		$this->tosAccepted = JRequest::getVar('tosAccepted', $this->tosAccepted);
+		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
+		
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 			$_userModel = JModel::getInstance('user', 'VirtueMartModel');

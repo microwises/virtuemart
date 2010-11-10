@@ -60,14 +60,12 @@ function myValidator(f, t)
 	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" /><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
-echo 'Todo: only a rough view to have something to work with, checking for dimensions and country is missing';
-echo '<p>Please select a shipper that fit your needs:</p><br />';
-//echo '<form>';
+echo JText::_('VM_CART_SELECT_SHIPPER');
+
 foreach($this->shippingCarriers as $keyCarr=>$valueCarr){
 	
-	echo 'Shipping rates for '.$keyCarr;
-	echo '<br />';
-	
+	echo sprintf(JText::_('VM_CART_SELECT_SHIPPER_CARRIER',false),$keyCarr);
+
 	foreach($valueCarr as $key=>$value){
 		if(!empty($this->cart->shipping_rate_id) && $this->cart->shipping_rate_id==$value['shipping_rate_id']) $checked='"checked"'; else $checked='';
 		echo '<input type="radio" name="shipping_rate_id" value="'.$value['shipping_rate_id'].' '.$checked.'">'.$value['shipping_rate_name'].' costs by the shipper '.$value['shipping_rate_value'].' our fee '. $value['shipping_rate_package_fee'].'<br />';
