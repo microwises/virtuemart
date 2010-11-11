@@ -57,27 +57,30 @@ class TableOrder_status extends JTable {
 	 */
 	function check()
 	{
-        if (!$this->order_status_code) {
-			$this->setError(JText::_('Order status records must contain an order status code.'));
+        if (empty($this->order_status_code)) {
+			$this->setError(JText::_('VM_ORDER_TABLE_ERROR_CODE'));
 			return false;
 		}
-		if (!$this->order_status_name) {
-			$this->setError(JText::_('Order status records must contain an order status name.'));
+		if (empty($this->order_status_name)) {
+			$this->setError(JText::_('VM_ORDER_TABLE_ERROR_NAME'));
 			return false;
 		}
 
-		if ($this->order_status_id == 0) {
-			$db =& JFactory::getDBO();
+		$db =& JFactory::getDBO();
+		$q = 'SELECT count(*),order_status_id FROM `#__vm_order_status` ';
+		$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
+		$db->setQuery($q); 
 
-			$q = 'SELECT count(*) FROM `#__vm_order_status` ';
-			$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
-			$db->setQuery($q);
-			$rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('The given status code already exists.'));
-				return false;
-			}
+		$row = $db->loadRow();
+		if(is_array($row)){
+			if($row[0]>0){
+				if($row[1] != $this->order_status_id){
+					$this->setError(JText::_('VM_ORDER_TABLE_ERROR_EXISTS'));
+					return false;
+				}
+			}					
 		}
+
 		return true;
 	}
 }

@@ -26,7 +26,7 @@ jimport( 'joomla.application.component.view');
  * HTML View class for the VirtueMart Component
  *
  * @package		VirtueMart
- * @author
+ * @author RolandD,Max Milbers
  */
 class VirtuemartViewProduct extends JView {
 
@@ -320,7 +320,11 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		parent::display($tpl);
 	}
 
-
+	/**
+	 * Renders the list for the tax rules
+	 * 
+	 * @author Max Milbers
+	 */
 	function renderTaxList($selected){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
@@ -336,7 +340,12 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
 		return $listHTML;
 	}
-	
+
+	/**
+	 * Renders the list for the discount rules
+	 * 
+	 * @author Max Milbers
+	 */	
 	function renderDiscountList($selected,$before){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);

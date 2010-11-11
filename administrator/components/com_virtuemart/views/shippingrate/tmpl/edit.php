@@ -146,7 +146,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); ?>											
+				<?php echo $this->taxRates;
+				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
+				?>											
 			</td>
 		</tr>										
 	</table>

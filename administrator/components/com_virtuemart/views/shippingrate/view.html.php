@@ -28,6 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package	VirtueMart
  * @subpackage ShippingRate
  * @author RickG
+ * @author Max Milbers
  */
 class VirtuemartViewShippingRate extends JView {
 
@@ -69,8 +70,9 @@ class VirtuemartViewShippingRate extends JView {
         	$countries = $countrymodel->getCountries(false, true);
         	$this->assignRef('countries', $countries);
 
-			$taxratemodel = $this->getModel('taxrate');
-        	$taxrates = $taxratemodel->getTaxRates(false, true);
+//			$taxratemodel = $this->getModel('taxrate');
+//			dump($shippingRate);
+        	$taxrates = $this->renderTaxList($shippingRate->shipping_rate_vat_id);
         	
         	$this->assignRef('taxRates', $taxrates);
         }
@@ -90,5 +92,25 @@ class VirtuemartViewShippingRate extends JView {
 		parent::display($tpl);
 	}
 
+	/**
+	 * Renders the list for the tax rules
+	 * 
+	 * @author Max Milbers
+	 */
+	function renderTaxList($selected){
+		$this->loadHelper('modelfunctions');
+//		$selected = modelfunctions::prepareTreeSelection($selected);
+		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
+		$taxes = VirtueMartModelCalc::getTaxes();
+
+		$taxrates = array();
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'shipping_rate_vat_id' );
+		foreach($taxes as $tax){
+			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'shipping_rate_vat_id');
+		}
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'shipping_rate_vat_id', 'multiple', 'shipping_rate_vat_id', 'text', $selected );
+		return $listHTML;
+	}
 }
 // pure php no closing tag

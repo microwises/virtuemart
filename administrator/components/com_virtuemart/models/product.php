@@ -639,7 +639,7 @@ class VirtueMartModelProduct extends JModel {
 
 		/* Load the data */
 		$data = JRequest::get('post', 4);
-
+		dump($data);
 		/* Load the old product details first */
 		$product_data->load($data['product_id']);
 
@@ -665,55 +665,6 @@ class VirtueMartModelProduct extends JModel {
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
 
-//		if (JRequest::getWord('product_full_image_action') == 'delete') $data['product_full_image'] = '';
-//		else {
-//			/* Handle the full image */
-//			if (array_key_exists('product_full_image_url', $data) && !empty($data['product_full_image_url'])) {
-//				$data['product_full_image'] = $data['product_full_image_url'];
-//			}
-//			else {
-//				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
-//				$imageProductFolder = implode(DS, $imageRootFolderExp);
-//				$full_image = JRequest::getVar('product_full_image', array(), 'files');
-//				if ($full_image['error'] == UPLOAD_ERR_OK) {
-//					move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
-//					$data['product_full_image'] = $full_image['name'];
-//				}
-//
-//				if (JRequest::getWord('product_full_image_action') == 'auto_resize') {
-//					/* Check if we have an uploaded file */
-//					if ($full_image['error'] == UPLOAD_ERR_NO_FILE) {
-////						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($product_data->product_full_image, VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
-//						$productImage = VmImage::getProductImage($product_data->product_full_image);
-//						$data['product_thumb_image'] = $productImage->createThumb(false);
-//					}
-//					/* Move the file to its final destination */
-//					else if ($full_image['error'] == UPLOAD_ERR_OK) {
-//						move_uploaded_file($full_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.$full_image['name']);
-////						$data['product_thumb_image'] = 'resized/'.basename(VmImage::createResizedImage($full_image['name'], VmConfig::get('media_product_path'), PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
-//						$productImage = VmImage::getProductImage($full_image['name']);
-//						$data['product_thumb_image'] = $productImage->createThumb(false);
-//
-//					}
-//				}
-//				else {
-//					$thumb_image = JRequest::getVar('product_thumb_image', array(), 'files');
-//					if ($full_image['error'] == UPLOAD_ERR_OK) {
-//						move_uploaded_file($thumb_image['tmp_name'], JPATH_SITE.DS.$imageProductFolder.'resized'.DS.$thumb_image['name']);
-//						$data['product_thumb_image'] = 'resized/'.$thumb_image['name'];
-//					}
-//				}
-//			}
-//		}
-//
-//		/* Handle thumb image */
-//		if (JRequest::getWord('product_thumb_image_action') == 'delete') $data['product_thumb_image'] = '';
-//		else {
-//			/* Handle the thumb image URL if there is any */
-//			if (array_key_exists('product_thumb_image_url', $data) && !empty($data['product_thumb_image_url'])) $data['product_thumb_image'] = $data['product_thumb_image_url'];
-//		}
-		
-		
 		/* Get the product data */
 		if (!$product_data->bind($data)) {
 			$this->setError($product_data->getError());
@@ -745,7 +696,8 @@ class VirtueMartModelProduct extends JModel {
 		
 		if(empty($data['product_id'])){
 			$dbv = $product_data->getDBO();
-			$data['product_id'] = $dbv->insertid();
+			//I dont like the solution to use two variables
+			$product_data->product_id = $data['product_id'] = $dbv->insertid();
 		}
 		
 		$product_price_table = $this->getTable('product_price');
@@ -773,12 +725,15 @@ class VirtueMartModelProduct extends JModel {
 
 		
 		/* Update manufacturer link */
-		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
-		$q .= $product_data->product_id.', ';
-		$q .= JRequest::getInt('manufacturer_id').') ';
-		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
-		$this->_db->setQuery($q);
-		$this->_db->query();
+		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		modelfunctions::storeArrayData('#__vm_product_mf_xref','product_id','manufacturer_id',$product_data->product_id,JRequest::getInt('mf_category_id'));
+		
+//		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
+//		$q .= $product_data->product_id.', ';
+//		$q .= JRequest::getInt('manufacturer_id').') ';
+//		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
+//		$this->_db->setQuery($q);
+//		$this->_db->query();
 
 		/* Update waiting list */
 		if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' && $data['product_in_stock_old'] == '500') {

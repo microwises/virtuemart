@@ -187,7 +187,8 @@ defined('_JEXEC') or die('Restricted access');
 			if($i) $i=1; else $i=0;
 		}
 
-		if($this->cartData['coupons']){ ?>
+		if(false){  //just for the beta to avoid questions, we disable coupons
+//		if($this->cartData['coupons']){ ?>
 			<tr class="sectiontableentry2">
 		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>

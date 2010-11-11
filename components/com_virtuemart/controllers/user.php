@@ -168,9 +168,9 @@ class VirtueMartControllerUser extends JController
 	 * 
 	 * @author Oscar van Eijk
 	 */	
-	function cancelCartUser()
-	{
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
+	function cancelCartUser(){
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart', $msg );
 	}
 	
 	/**
@@ -192,8 +192,7 @@ class VirtueMartControllerUser extends JController
 	 * 
 	 * @author Oscar van Eijk
 	 */	
-	function cancelCheckoutUser()
-	{
+	function cancelCheckoutUser(){
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
 	}
 

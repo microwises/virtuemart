@@ -42,8 +42,18 @@ class VirtuemartViewOrders extends JView {
 		
 		if ($layoutName == 'details') {
 			$orderDetails = $orderModel->getOrder();
-			if ($orderDetails['details']['BT']->user_id != $_currentUser->get('id')) {
-				echo JText::_('Restricted access');
+			$cuid = $_currentUser->get('id');
+			if(!empty($cuid)){
+				if(!Permissions::getInstance()->check("admin")) {
+					if(!empty($orderDetails['details']['BT']->user_id)){
+						if ($orderDetails['details']['BT']->user_id != $cuid) {
+							echo JText::_('VM_RESTRICTED_ACCESS');
+							return;
+						}
+					}
+				}
+			} else {
+				echo JText::_('VM_RESTRICTED_ACCESS');
 				return;
 			}
 			$this->assignRef('orderdetails', $orderDetails);

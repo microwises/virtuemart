@@ -135,7 +135,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		if (!isset($oldVendorId) && !isset($oldUserId)) {
 		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`) VALUES ("' . $userId . '", "1","1")');
 		    if ($db->query() == false) {
-				JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_users');
+				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
 		    }
 		    else {   	
 		    	return $userId;
@@ -149,7 +149,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" AND `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'" ');
 		    }
 		    if ($db->query() == false ) {
-				JError::raiseWarning(1, 'Update __vm_users failed. user_id '.$userId);
+				JError::raiseWarning(1, 'UPDATE __vm_users failed for user_id '.$userId);
 		    } else {   	
 		    	return $userId;
 		    }
