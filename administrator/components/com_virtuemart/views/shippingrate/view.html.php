@@ -70,8 +70,6 @@ class VirtuemartViewShippingRate extends JView {
         	$countries = $countrymodel->getCountries(false, true);
         	$this->assignRef('countries', $countries);
 
-//			$taxratemodel = $this->getModel('taxrate');
-//			dump($shippingRate);
         	$taxrates = $this->renderTaxList($shippingRate->shipping_rate_vat_id);
         	
         	$this->assignRef('taxRates', $taxrates);

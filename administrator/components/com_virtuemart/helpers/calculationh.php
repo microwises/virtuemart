@@ -247,7 +247,7 @@ class calculationHelper{
 		$prices['variantModification']=$variant;
 
 		if (function_exists('dumpTrace')) {
-			dump($prices,'$prices');
+//			dump($prices,'$prices');
 	//		echo '<br />The prices:<br />';
 	//		echo '<pre>'.print_r($prices).'</pre>';
 		}
@@ -447,9 +447,9 @@ class calculationHelper{
 				} else {
 					$price = $cOut;
 				}
-				if (function_exists('dumpTrace')) {
-					dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
-				}
+//				if (function_exists('dumpTrace')) {
+//					dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
+//				}
 			}
 		}
 		

@@ -40,21 +40,15 @@ class user_info
 			$_userinfo   = $this->getTable($_table);
 			if (!$_userinfo->bind($_data)) {
 				$this->setError($_userinfo->getError());
-//				dump($_userinfo,'storeAddress bind ERROR $_userinfo');
 				return false;
 			}
 
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
-//				dump($_userinfo,'storeAddress Store ERROR $_userinfo');
 				return false;
 			}	
 		} else {
-//			dump('no table');
 		}
-		
-		
-//		self::saveAddressInCart($_data,self::getUserFields('BT'),'BT');
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		$_shipto = array();
@@ -76,20 +70,14 @@ class user_info
 			if ($_table !== null) {
 				if (!$_userinfo->bind($_shipto)) {
 					$this->setError($_userinfo->getError());
-//					dump($_userinfo,'bindAddress ERROR $_userinfo');
 					return false;
 				}
 				if (!$_userinfo->store()) { // Write data to the DB
 					$this->setError($_userinfo->getError());
-//					dump($_userinfo,'storeAddress ERROR $_userinfo');
 					return false;
 				}
 			}
 
-//			if ($_cart) {
-//				dump ($_shipto,'storeAddress self::saveAddressInCart ST');
-//				self::saveAddressInCart($_shipto,self::getUserFields('ST'),'ST');
-//			}
 		}
 		return true;
 	}
@@ -133,7 +121,6 @@ class user_info
 //				);
 //			}
 		}
-//		dump($_prepareUserFields, 'getUserFields');
 		return $_prepareUserFields;
 	}
 
@@ -148,7 +135,6 @@ class user_info
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
 				$_address[$name] = $_data[$name];
-//				dump($_data,'saveAddressInCart is array '.$name);
 			}
 			
 		} else {
@@ -156,16 +142,14 @@ class user_info
 				$name = $_fld->name;
 				$_address[$name] = $_data->{$name};
 			}
-//			dump($_data,'saveAddressInCart is object');
 		}
-//		dump($_data,'saveAddressInCart');
+
 		$_cart->$_type = $_address;
 		$_cart->setCartIntoSession();
 	}
 
 	function address2cartanonym ($data, $_type)
 	{
-//		$_userFields = self::getTestUserFields($_type);
 		$_userFields = self::getUserFields($_type);
 		self::saveAddressInCart($data, $_userFields, $_type);
 	}

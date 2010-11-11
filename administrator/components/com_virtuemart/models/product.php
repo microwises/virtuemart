@@ -639,7 +639,7 @@ class VirtueMartModelProduct extends JModel {
 
 		/* Load the data */
 		$data = JRequest::get('post', 4);
-		dump($data);
+
 		/* Load the old product details first */
 		$product_data->load($data['product_id']);
 

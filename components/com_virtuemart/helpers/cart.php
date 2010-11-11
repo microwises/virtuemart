@@ -579,6 +579,8 @@ class VirtueMartCart  {
 			$this->_inCheckOut = false;
 			$this->_dataValidated = false;
 			$this->_confirmDone = false;
+			$this->customer_comment = '';
+			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
 
@@ -591,7 +593,7 @@ class VirtueMartCart  {
 	//		$view->display();
 		} else {
 			$mainframe = JFactory::getApplication();
-			JError::raiseNotice(1, 'Validation of Data failed');
+//			JError::raiseNotice(1, 'raiseNotice '.JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
 			
 		}
@@ -620,9 +622,6 @@ class VirtueMartCart  {
 
 		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
-
-//		$store = $this->getModel( 'store', 'VirtuemartModel' );
-//		$view->setModel( $store, true );
 
 		$view->setLayout('mailshopper');
 
