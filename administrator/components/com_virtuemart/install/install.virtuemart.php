@@ -49,7 +49,9 @@ function com_install(){
 	$model->setStoreOwner($id);
 	
 	if ($newInstall) {
-//		$model->setUserToPermissionGroup($id);	
+		// Get the uploaded file information
+//		$userfile = JRequest::getVar('install_package', null, 'files', 'array' );
+//		dump($userfile,'my user file');
 	}
 	
 	$installOk = true;
@@ -59,4 +61,4 @@ function com_install(){
 	return $installOk;
 }
 
-?>
+// pure php no tag

@@ -41,12 +41,11 @@
 		<folder>views</folder>	
 	</files>
 
-	<!-- This are the sampel pictures, NOT the shoppictures -->
-	<media folder="images/stories/virtuemart" destination="../images/stories/virtuemart">	
-		<folder>category</folder>
-		<folder>product</folder>	
-	</media>
-			
+	
+	<media folder="images/stories/virtuemart" destination="../images/stories/virtuemart">
+ 			<folder>category</folder>
+    	<folder>product</folder>
+ </media>
 			
 	<!-- Language files -->
 	<languages folder="language">
@@ -55,7 +54,7 @@
 	
 	<administration>
 		<!-- Administration Menu Section -->
- 		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
+ 		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.virtuemart.php</filename>
@@ -74,7 +73,7 @@
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
-   			<folder>libraries</folder>			
+			<folder>libraries</folder>			
 			<folder>models</folder>
 			<folder>plugins</folder>
 			<folder>tables</folder>	    		

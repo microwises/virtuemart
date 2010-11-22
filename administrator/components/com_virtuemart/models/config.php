@@ -56,7 +56,7 @@ class VirtueMartModelConfig extends JModel {
 		foreach($dirs as $dir){
 			if ($handle = opendir($dir)) {
 			    while (false !== ($file = readdir($handle))) {
-					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html' && $file != '.xml') {
 					    if (filetype($dir.DS.$file) != 'dir') {
 						$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
 					    }

@@ -75,6 +75,7 @@ class VirtueMartControllerCart extends JController {
 	* Add the product to the cart
 	*
 	* @author RolandD
+	* @author Max Milbers
 	* @access public
 	*/
 	public function add() {

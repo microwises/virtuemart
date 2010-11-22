@@ -192,7 +192,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
-
+	
 	$currencyFields = array();
 	$currencyFields[0] = '47'; //EUR
 	$currencyFields[1] = '144'; //USD

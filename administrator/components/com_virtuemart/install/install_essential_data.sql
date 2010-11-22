@@ -162,7 +162,7 @@ INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `func
 -- Dumping data for table `#__vm_menu_admin`
 --
 
-INSERT INTO `jos_vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
+INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
 (1, 1, 0, 'VM_CONFIG', '', '', 'vmicon vmicon-16-config', 2, 1, '', 'config', ''),
 (2, 1, 0, 'VM_USERS', '', '', 'vmicon vmicon-16-user', 4, 1, '', 'user', ''),
 (3, 1, 0, 'VM_USERGROUP_LBL', '', '', 'vmicon vmicon-16-user', 6, 1, '', 'usergroups', ''),
@@ -211,7 +211,7 @@ INSERT INTO `jos_vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`,
 -- Dumping data for table `#__vm_module`
 --
 
-INSERT INTO `jos_vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
+INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'admin', '<h4>ADMINISTRATIVE USERS ONLY</h4>\r\n\r\n<p>Only used for the following:</p>\r\n<OL>\r\n\r\n<LI>User Maintenance</LI>\r\n<LI>Module Maintenance</LI>\r\n<LI>Function Maintenance</LI>\r\n</OL>\r\n', 'admin', 1, '1', 1),
 (2, 'product', '<p>Here you can adminster your online catalog of products.  The Product Administrator allows you to create product categories, create new products, edit product attributes, and add product items for each attribute value.</p>', 'storeadmin,admin', 1, '1', 4),
 (4, 'shopper', '<p>Manage shoppers in your store.  Allows you to create shopper groups.  Shopper groups can be used when setting the price for a product.  This allows you to create different prices for different types of users.  An example of this would be to have a ''wholesale'' group and a ''retail'' group. </p>', 'admin,storeadmin', 1, '1', 5),
