@@ -3,7 +3,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
 *
-* @version 
+* @version $Id$
 * @package VirtueMart
 * @subpackage Report
 * @copyright Copyright (C) VirtueMart Team - All rights reserved.
@@ -33,22 +33,46 @@ class VirtuemartViewReport extends JView {
 	 */
 	function display($tpl = null){
 		
-		// Load the helper(s)
-		$this->loadHelper('adminMenu');
-
-		$model = $this->getModel();
-	
+		$lists = array();
+		$mainframe = JFactory::getApplication();
+		$option = JRequest::getVar('option');
+		$curTask = JRequest::getVar('task');
 		$layoutName = JRequest::getVar('layout','default');
-		
+				
 		JToolbarHelper::title( JText::_('VM_REPORT_MOD'), 'vm_report_48');
 		
+		// Load the helper(s)
+		$this->loadHelper('adminMenu');
+		$this->loadHelper('currencydisplay');
+
+		$model = $this->getModel();
+		
 		$pagination = $model->getPagination();
+		$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
+	    $lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
+	    
 		$this->assignRef('pagination', $pagination);
 		
-		$reports = $model->getReports();
-		$this->assignRef('report', $reports);
+		$myCurrencyDisplay = new CurrencyDisplay();
+		
+		$revenueBasic = $model->getRevenue();
+        if(is_array($revenueBasic)){
+		    foreach($revenueBasic as $i => $j){
+			    $j->revenue = $myCurrencyDisplay->getValue($j->revenue);
+		    }
+            unset($i);
+        }
+        
+		$this->assignRef('revenueBasic', $revenueBasic);
+		
+		$itemsSold = $model->getItemsSold();
+		$this->assignRef('itemsSold', $itemsSold);
+		
+		$productList = $model->getProductList();
+		$this->assignRef('productList', $productList);
+		
+		$this->assignRef('lists', $lists);
 		
 		parent::display($tpl);
 	}
 }
-// pure php no closing tag
