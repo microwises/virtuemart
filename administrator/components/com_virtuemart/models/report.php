@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * Report Model
 *
-* @version 
+* @version $Id$
 * @package VirtueMart
 * @subpackage Report
 * @copyright Copyright (C) VirtueMart Team - All rights reserved.
@@ -45,6 +45,13 @@ class VirtuemartModelReport extends JModel {
 	 */
 	function __construct(){
 		parent::__construct();
+		
+		$mainframe = JFactory::getApplication();
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'limitstart', 'limitstart', 0, 'int');
+		
+		$this->setState('limit', $limit);
+		$this->setState('limitstart', $limitstart);
 		
 	}
 	/**
@@ -90,32 +97,114 @@ class VirtuemartModelReport extends JModel {
 		}
 		return $this->_total;
     }
-
-    /**
+    
+   /**
      * Retrieve a list of report items from the database.
      *
      * @author Wicksj
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects 
      */
-    function getReports( $noLimit = false){
-		if(empty($this->_data)){
-			$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
-			$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
-			$query .= "COUNT(order_id) as number_of_orders, ";
-			$query .= "SUM(order_subtotal) as revenue ";
-			$query .= "FROM `#__vm_orders` ";
-			$query .= "GROUP BY order_date ";
-			$query .= "ORDER BY date_num ASC ";
-			
+    function getRevenue($noLimit = false){
+    	$db = JFactory::getDBO();
+    	
+		$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query .= "COUNT(order_id) as number_of_orders, ";
+		$query .= "SUM(order_subtotal) as revenue ";
+		$query .= "FROM `#__vm_orders` ";
+		//WHERE cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		$query .= "GROUP BY order_date ";
+		$query .= "ORDER BY date_num ASC ";
+		
+		if($noLimit){
+			$this->_data = $this->_getList($query);
 		}
+		else{
+			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+		
 		//Guard against returning null data list
 		if(!$this->_data){
 	    	$this->_data = new stdClass();
 	    	$this->_id = 0;
 	    	$this->_data = null;			
 		}
+
 		return $this->_data;    	
     }
+    
+  /**
+     * Retrieve a list of report items from the database.
+     *
+     * @author Wicksj
+     * @param string $noLimit True if no record count limit is used, false otherwise
+     * @return object List of order objects 
+     */
+    function getItemsSold($noLimit = false){
+    	$db = JFactory::getDBO();
+    	
+		$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query .= "SUM(product_quantity) as items_sold ";
+		$query .= "FROM `#__vm_order_item` ";
+		//WHERE cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		$query .= "GROUP BY order_date ";
+		$query .= "ORDER BY date_num ASC ";
+		
+		if($noLimit){
+			$this->_data = $this->_getList($query);
+		}
+		else{
+			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+		
+		//Guard against returning null data list
+		if(!$this->_data){
+	    	$this->_data = new stdClass();
+	    	$this->_id = 0;
+	    	$this->_data = null;			
+		}
+
+		return $this->_data;    	
+    }
+    
+   /**
+     * Retrieve a list of report items from the database.
+     *
+     * @author Wicksj
+     * @param string $noLimit True if no record count limit is used, false otherwise
+     * @return object List of order objects 
+     */
+    function getProductList($noLimit = false){
+    	$db = JFactory::getDBO();
+    	
+		$query = "SELECT `product_name`, `product_sku`, ";
+		$query .= "FROM_UNIXTIME('i.cdate', '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME('o.cdate',GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query .= "SUM(product_quantity) as items_sold ";
+  		$query .= "FROM #__vm_order_item i, #__vm_orders o, #__vm_product p ";
+		//WHERE #__vm_order_item.cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		//$query .= "AND o.order_id=i.order_id ";
+		$query .= "WHERE o.order_id=i.order_id ";
+  		$query .= "AND i.product_id=p.product_id ";
+  		$query .= "GROUP BY product_sku, product_name, order_date ";
+  		$query .= "ORDER BY date_num, product_name ASC";
+		
+		if($noLimit){
+			$this->_data = $this->_getList($query);
+		}
+		else{
+			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+		
+		//Guard against returning null data list
+		if(!$this->_data){
+	    	$this->_data = new stdClass();
+	    	$this->_id = 0;
+	    	$this->_data = null;			
+		}
+
+		return $this->_data;    	
+    }    
 }
-// pure php no closing tag
