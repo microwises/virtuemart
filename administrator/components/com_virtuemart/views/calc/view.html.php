@@ -88,7 +88,7 @@ class VirtuemartViewCalc extends JView {
 				$calc->calc_vendor_id = $userDetails->vendor_id;
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('VM_CALC_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');

@@ -87,7 +87,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$price = $product_model->getPrice($product_id);
 		
 		echo json_encode ($price);
-		
+		jexit();
 		die;
 		
 	}

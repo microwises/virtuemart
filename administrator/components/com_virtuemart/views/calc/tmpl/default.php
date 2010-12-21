@@ -163,12 +163,12 @@ AdminMenuHelper::startAdminArea();
 						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
 						$publish_up = $date->toFormat($this->dateformat);
 					}
-					echo $publish_up?>
+					echo $publish_up = JText::_('VM_CALC_EVER');?>
 				</td>
 				<td>
 					<?php 
 						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-							$endDate = JText::_('Never');
+							$endDate = JText::_('VM_CALC_NEVER');
 						} else {
 							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 							$endDate = $date->toFormat($this->dateformat);

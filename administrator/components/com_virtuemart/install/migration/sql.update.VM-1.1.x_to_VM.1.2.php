@@ -250,7 +250,7 @@ $db->query("
 
 //For the new admin menu
 $db->query("
-	ALTER TABLE `jos_vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
+	ALTER TABLE `#__vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
 ");
 
 //More decimals for taxrates
@@ -265,7 +265,7 @@ $db->query("
  
 /* contains not anything, need some work @todo is WIP*/
 $db->query("
- ALTER TABLE `jos_vm_payment_method` 
+ ALTER TABLE `#__vm_payment_method` 
  	CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, 
  	CHANGE `vendor_id` `paym_vendor_id` INT(11) NULL DEFAULT NULL,
  	CHANGE `name` `paym_name` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,

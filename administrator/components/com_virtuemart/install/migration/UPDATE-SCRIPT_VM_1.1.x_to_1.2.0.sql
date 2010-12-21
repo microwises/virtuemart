@@ -3,22 +3,22 @@
 # from VirtueMart 1.1.x to VirtueMart 1.2.0
 # $Id$
 #############################################
-UPDATE `jos_components` SET `params` = 'RELEASE=1.2.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';
+UPDATE `#__components` SET `params` = 'RELEASE=1.2.0\nDEV_STATUS=alpha' WHERE `name` = 'virtuemart_version';
 
  # allow manufacturer thumb images
-ALTER TABLE `jos_vm_manufacturer` ADD `mf_thumb_image` VARCHAR( 255 ) default NULL ,
+ALTER TABLE `#__vm_manufacturer` ADD `mf_thumb_image` VARCHAR( 255 ) default NULL ,
 ADD `mf_full_image` VARCHAR( 255 ) default NULL ;
 
 # define modules as administrator-relevant or not
-ALTER TABLE `jos_vm_module` ADD `is_admin` ENUM( '0', '1' ) NOT NULL AFTER `module_publish` ;
-UPDATE `jos_vm_module` SET `is_admin` = '1' 
+ALTER TABLE `#__vm_module` ADD `is_admin` ENUM( '0', '1' ) NOT NULL AFTER `module_publish` ;
+UPDATE `#__vm_module` SET `is_admin` = '1' 
 	WHERE FIND_IN_SET( `module_name` , 'admin,product,vendor,shopper,order,store,tax,repotbasic, zone,shipping,manufacturer,help,coupon' ) >0 ;
 
 # Remove the buggy affiliate module
-DELETE FROM `jos_vm_module` WHERE module_name='affiliate' LIMIT 1;
+DELETE FROM `#__vm_module` WHERE module_name='affiliate' LIMIT 1;
 
 # Make Admin Menu dynamic
-CREATE TABLE IF NOT EXISTS `jos_vm_menu_admin` (
+CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `module_id` int(10) unsigned NOT NULL COMMENT 'The ID of the VM Module, this Item is assigned to',
   `parent_id` int(11) unsigned NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `jos_vm_menu_admin` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM  COMMENT='Administration Menu Items' AUTO_INCREMENT=73 ;
 
-INSERT INTO `jos_vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`) VALUES
+INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`) VALUES
 (1, 1, 0, 'PHPSHOP_CONFIG', 'page=admin.show_cfg', '', 'vmicon vmicon-16-config', 2, '1', ''),
 (2, 1, 0, 'PHPSHOP_USERS', 'page=admin.user_list', '', 'vmicon vmicon-16-user', 4, '1', ''),
 (3, 1, 0, 'VM_USERGROUP_LBL', 'page=admin.usergroup_list', '', 'vmicon vmicon-16-user', 6, '1', ''),
@@ -107,39 +107,39 @@ INSERT INTO `jos_vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`,
 (73, 1, 0, 'Manage Extensions', 'page=admin.extension_list', '', 'vmicon vmicon-16-content', 15, '1', '');
 
 # Coupon start and expiry dates, thank you willowtree (http://forum.virtuemart.net/index.php?topic=41066.0)
-ALTER TABLE `jos_vm_coupons` ADD `coupon_start_date` DATETIME NULL ,
+ALTER TABLE `#__vm_coupons` ADD `coupon_start_date` DATETIME NULL ,
 ADD `coupon_expiry_date` DATETIME NULL ;
 
 #Added for multivendoring 
 #shows in Userlist if user is vendor
-ALTER TABLE `jos_vm_user_info` ADD `user_is_vendor` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `user_id ;
+ALTER TABLE `#__vm_user_info` ADD `user_is_vendor` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `user_id ;
 
 #Possibility for the admin to connect a added vendor to a user
-ALTER TABLE `jos_vm_vendor` ADD `vendor_nick` VARCHAR( 150 ) NOT NULL ;
+ALTER TABLE `#__vm_vendor` ADD `vendor_nick` VARCHAR( 150 ) NOT NULL ;
 #Sharing of Categories
-ALTER TABLE `jos_vm_category_xref` ADD `category_shared` VARCHAR( 1 ) NOT NULL DEFAULT 'Y' ;
+ALTER TABLE `#__vm_category_xref` ADD `category_shared` VARCHAR( 1 ) NOT NULL DEFAULT 'Y' ;
 
 # 15.10.2008 - moved and renamed payment class files
-UPDATE `jos_vm_payment_method` SET `payment_class` = REPLACE( `payment_class` , 'ps_', '' ) ;
-UPDATE `jos_vm_function` SET `function_class` = 'paymentMethod.class' WHERE `function_class` = 'ps_payment_method';
-UPDATE `jos_vm_function` SET `function_class` = 'shippingMethod.class' WHERE `function_class` = 'ps_shipping_method';
+UPDATE `#__vm_payment_method` SET `payment_class` = REPLACE( `payment_class` , 'ps_', '' ) ;
+UPDATE `#__vm_function` SET `function_class` = 'paymentMethod.class' WHERE `function_class` = 'ps_payment_method';
+UPDATE `#__vm_function` SET `function_class` = 'shippingMethod.class' WHERE `function_class` = 'ps_shipping_method';
 
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_class` `element` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_discount` `discount` DECIMAL( 12, 2 ) NULL DEFAULT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_discount_is_percent` `discount_is_percentage` TINYINT( 1 ) NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_discount_max_amount` `discount_max_amount` DECIMAL( 10, 2 ) NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_method_discount_min_amount` `discount_min_amount` DECIMAL( 10, 2 ) NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` DROP `short_code`;
-ALTER TABLE `jos_vm_payment_method` CHANGE `enable_processor` `type` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_enabled` `published` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N' ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_extrainfo` `extra_info` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` CHANGE `payment_passkey` `secret_key` BLOB NOT NULL  ;
-ALTER TABLE `jos_vm_payment_method` ADD `params` TEXT NOT NULL ;
-UPDATE `jos_vm_payment_method` SET `element`='payment' WHERE `element`='';
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_class` `element` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_discount` `discount` DECIMAL( 12, 2 ) NULL DEFAULT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_discount_is_percent` `discount_is_percentage` TINYINT( 1 ) NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_discount_max_amount` `discount_max_amount` DECIMAL( 10, 2 ) NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_method_discount_min_amount` `discount_min_amount` DECIMAL( 10, 2 ) NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` DROP `short_code`;
+ALTER TABLE `#__vm_payment_method` CHANGE `enable_processor` `type` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_enabled` `published` CHAR( 1 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N' ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_extrainfo` `extra_info` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` CHANGE `payment_passkey` `secret_key` BLOB NOT NULL  ;
+ALTER TABLE `#__vm_payment_method` ADD `params` TEXT NOT NULL ;
+UPDATE `#__vm_payment_method` SET `element`='payment' WHERE `element`='';
 
-CREATE TABLE `jos_vm_plugins` (
+CREATE TABLE `#__vm_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL default '',
   `element` varchar(100) NOT NULL default '',
@@ -157,47 +157,47 @@ CREATE TABLE `jos_vm_plugins` (
   KEY `idx_folder` (`published`,`vendor_id`,`folder`)
 ) TYPE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12;
 
-# Data for `jos_vm_plugins`
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(1, 'auspost', 'auspost', 'shipping', 11, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(2, 'canadapost', 'canadapost', 'shipping', 9, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(3, 'dhl', 'dhl', 'shipping', 4, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(4, 'fedex', 'fedex', 'shipping', 3, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(5, 'flex', 'flex', 'shipping', 2, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(6, 'intershipper', 'intershipper', 'shipping', 5, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(7, 'shipvalue', 'shipvalue', 'shipping', 8, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(8, 'standard_shipping', 'standard_shipping', 'shipping', 1, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(9, 'UPS Shipping Module', 'ups', 'shipping', 6, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(10, 'USPS Shipping Module', 'usps', 'shipping', 7, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
-INSERT INTO `jos_vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(11, 'Zone Shipping Module', 'zone_shipping', 'shipping', 10, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+# Data for `#__vm_plugins`
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(1, 'auspost', 'auspost', 'shipping', 11, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(2, 'canadapost', 'canadapost', 'shipping', 9, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(3, 'dhl', 'dhl', 'shipping', 4, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(4, 'fedex', 'fedex', 'shipping', 3, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(5, 'flex', 'flex', 'shipping', 2, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(6, 'intershipper', 'intershipper', 'shipping', 5, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(7, 'shipvalue', 'shipvalue', 'shipping', 8, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(8, 'standard_shipping', 'standard_shipping', 'shipping', 1, 1, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(9, 'UPS Shipping Module', 'ups', 'shipping', 6, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(10, 'USPS Shipping Module', 'usps', 'shipping', 7, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
+INSERT INTO `#__vm_plugins` (`id`, `name`, `element`, `folder`, `ordering`, `published`, `iscore`, `vendor_id`, `shopper_group_id`, `checked_out`, `checked_out_time`, `params`, `secrets`) VALUES(11, 'Zone Shipping Module', 'zone_shipping', 'shipping', 10, 0, 0, 1, 5, 0, '0000-00-00 00:00:00', '', '');
 
-INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
+INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
 	VALUES(195, 1, 'uninstallExtension', 'installer.class', 'uninstall', 'Uninstalls an Extension', 'admin');
-INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
+INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
 	VALUES(196, 1, 'installExtension', 'installer.class', 'install', 'Installs an Extension', 'admin');
-INSERT INTO `jos_vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
+INSERT INTO `#__vm_function` (`function_id`, `module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) 
 	VALUES(197, 1, 'pluginUpdate', 'pluginEntity.class', 'update', 'Updates a VM Plugin and saves all new parameter settings.', 'storeadmin,admin');
 
-ALTER TABLE `jos_vm_payment_method` CHANGE `list_order` `ordering` INT( 11 ) NULL DEFAULT NULL;
+ALTER TABLE `#__vm_payment_method` CHANGE `list_order` `ordering` INT( 11 ) NULL DEFAULT NULL;
 
-ALTER TABLE `jos_vm_product` MODIFY COLUMN product_tax_id int;
+ALTER TABLE `#__vm_product` MODIFY COLUMN product_tax_id int;
 
 #For the admin menues
-ALTER TABLE `jos_vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
+ALTER TABLE `#__vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
 
-UPDATE `jos_vm_menu_admin` SET `view` = 'country' WHERE `jos_vm_menu_admin`.`id` =50 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'currency' WHERE `jos_vm_menu_admin`.`id` =60 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'virtuemart', WHERE `jos_vm_menu_admin`.`id` =90 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'creditcard' WHERE `jos_vm_menu_admin`.`id` =140 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =150 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'coupon' WHERE `jos_vm_menu_admin`.`id` =470 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =480 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'shippingcarrier' WHERE `jos_vm_menu_admin`.`id` =430 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'shippingcarrier', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =440 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'shippingrate' WHERE `jos_vm_menu_admin`.`id` =450 LIMIT 1 ;
-UPDATE `jos_vm_menu_admin` SET `view` = 'shippingrate', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =460 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'country' WHERE `#__vm_menu_admin`.`id` =50 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'currency' WHERE `#__vm_menu_admin`.`id` =60 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'virtuemart', WHERE `#__vm_menu_admin`.`id` =90 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'creditcard' WHERE `#__vm_menu_admin`.`id` =140 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `#__vm_menu_admin`.`id` =150 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'coupon' WHERE `#__vm_menu_admin`.`id` =470 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `#__vm_menu_admin`.`id` =480 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'shippingcarrier' WHERE `#__vm_menu_admin`.`id` =430 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'shippingcarrier', `task` = 'add' WHERE `#__vm_menu_admin`.`id` =440 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'shippingrate' WHERE `#__vm_menu_admin`.`id` =450 LIMIT 1 ;
+UPDATE `#__vm_menu_admin` SET `view` = 'shippingrate', `task` = 'add' WHERE `#__vm_menu_admin`.`id` =460 LIMIT 1 ;
 
 //taxrate Decimals
- ALTER TABLE `jos_vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL ;
+ ALTER TABLE `#__vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL ;
  
  #New published flag for the country table
- ALTER TABLE `jos_vm_country` ADD `published` tinyint(4) NOT NULL default '0';
+ ALTER TABLE `#__vm_country` ADD `published` tinyint(4) NOT NULL default '0';

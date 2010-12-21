@@ -109,6 +109,8 @@ class shopFunctionsF {
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
 		if (VmConfig::get('vm_show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
+			
+			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
 			if ( $use_icon ) {
 				$text = self::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, JText::_('CMN_EMAIL'), JText::_('CMN_EMAIL') );
@@ -123,6 +125,7 @@ class shopFunctionsF {
 		global  $cur_template, $Itemid;
 		if (VmConfig::get('vm_show_printicon', 1) == '1') {
 			if( !$link ) {
+				//Todo this is old stuff and must be adjusted
 				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
 				$link = 'index2.php?'.$query_string.'&amp;pop=1&amp;tmpl=component';
 			}
@@ -171,6 +174,7 @@ class shopFunctionsF {
 	}
 	
 	/**
+	 * //Todo this is old stuff and must be adjusted
 	* Checks to see if an image exists in the current templates image directory
  	* if it does it loads this image.  Otherwise the default image is loaded.
 	* Also can be used in conjunction with the menulist param to create the chosen image

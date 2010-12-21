@@ -33,7 +33,7 @@ INSERT IGNORE INTO `#__vm_calc_shoppergroup_xref` (`id`, `calc_rule_id`, `calc_s
 -- Dumping data for table `#__vm_category`
 --
 
-INSERT INTO `jos_vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `category_thumb_image`, `category_full_image`, `published`, `cdate`, `mdate`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
+INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `category_thumb_image`, `category_full_image`, `published`, `cdate`, `mdate`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
 (1, 1, 'Hand Tools', 'Hand Tools', 'ee024e46399e792cc8ba4bf097d0fa6a.jpg', 'fc2f001413876a374484df36ed9cf775.jpg', 1, 950319905, 960304194, '', '', '', 3, 1, NULL, NULL, NULL, NULL, '', '', '', ''),
 (2, 1, 'Power Tools', 'Power Tools', 'fc8802c7eaa1149bde98a541742217de.jpg', 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', 1, 950319916, 960304104, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
 (3, 1, 'Garden Tools', 'Garden Tools', '702168cd91e8b7bbb7a36be56f86e9be.jpg', '756ff6d140e11079caf56955060f1162.jpg', 1, 950321122, 960304338, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),
