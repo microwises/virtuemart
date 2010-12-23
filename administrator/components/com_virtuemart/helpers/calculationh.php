@@ -305,13 +305,6 @@ class calculationHelper{
 		$this->_cartData['paymentName'] = '';
 		$cartpaymentTax = 0;
 		
-		$this->_cartData['coupons'] = $this->existCoupons();
-		$this->_cartData['couponName'] = 'Coupon Number 777';
-		$this->_cartPrices['couponTax'] = '';
-		$this->_cartPrices['couponValue'] = '';
-		$this->_cartPrices['salesPriceCoupon'] = '';
-		
-
 		foreach ($cart->products as $product){
 			$productId = $product->product_id;
 			if (empty($product->quantity) || empty( $product->product_id )){
@@ -404,14 +397,46 @@ class calculationHelper{
 		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['paymentDiscount'];
 		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax;
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
-		
-//		echo '<br />The prices:<br />';
+
+		// Last step is handling a coupon, if given
+		if (!empty($cart->couponCode)) {
+			$this->couponHandler($cart->couponCode);
+		}
+
+		//		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
 
 		if (function_exists('dumpTrace')) {
 //		dump($this -> _cartPrices,"my cart prices");
 		}
 		return $this->_cartPrices;
+	}
+
+	/**
+	 * Get coupon details and calculate the value
+	 * @author Oscar van Eijk
+	 * @param $_code Coupon code
+	 */
+	private function couponHandler($_code)
+	{
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
+		if (!($_data = CouponHelper::getCouponDetails($_code))) {
+			return; // TODO give some error here
+		}
+		$_value_is_total = ($_data->percent_or_total == 'total');
+		$this->_cartData['couponCode'] = $_code;
+		$this->_cartData['couponDescr'] = ($_value_is_total
+				? $this->priceDisplay($_data->coupon_value)
+				: (round($_data->coupon_value).'%')
+			);
+		$this->_cartPrices['salesPriceCoupon'] = ($_value_is_total
+			? $_data->coupon_value
+			: ($this->_cartPrices['billTotal'] * ($_data->coupon_value / 100))
+		);
+		// TODO Calculate the tax
+		$this->_cartPrices['couponTax'] = 0;
+		$this->_cartPrices['couponValue'] = $this->_cartPrices['salesPriceCoupon'] - $this->_cartPrices['couponTax'];
+		$this->_cartPrices['billTotal'] -= $this->_cartPrices['salesPriceCoupon'];
 	}
 
 	/**
@@ -603,30 +628,26 @@ class calculationHelper{
 		return $testedRules;
 	}
 	
-	/**
-	 * Gathers the effecting coupons for the calculation
-	 * 
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param 	$code 	The Id of the coupon
-	 * @return 	$rules 	ids of the coupons
-	 */
-	function calculateCouponPrices($code=array()){
-		if (empty($code)) return;
-		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
-		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
-			$couponCodesQuery .
-			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
-			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
-		$this->_db->setQuery($q);
-		$rules = $this->_db->loadAssocList();
-		return $rules;
-	}
+//	/**
+//	 * Gathers the effecting coupons for the calculation
+//	 * 
+//	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+//	 * @author Max Milbers
+//	 * @param 	$code 	The Id of the coupon
+//	 * @return 	$rules 	ids of the coupons
+//	 */
+//	function calculateCouponPrices($code=array()){
+//		if (empty($code)) return;
+//		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
+//		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
+//			$couponCodesQuery .
+//			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
+//			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
+//		$this->_db->setQuery($q);
+//		$rules = $this->_db->loadAssocList();
+//		return $rules;
+//	}
 
-	private function existCoupons(){
-	
-		return 1;
-	}
 	/**
 	 * Calculates the effecting Shipment prices for the calculation
 	 * @todo

@@ -152,7 +152,7 @@ class shopFunctionsF {
 		}
 
 	}
-	
+
 	/**
 	* A function to create a XHTML compliant and JS-disabled-safe pop-up link
 	*

@@ -473,14 +473,16 @@ class VirtueMartModelOrders extends JModel {
 		//The user_info_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
 //		$_orderData->user_info_id = 'TODO'; // $_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
-		$_orderData->order_total = $_prices['salesPrice'];
+		$_orderData->order_total = $_prices['billTotal'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
 		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
 		$_orderData->order_shipping = $_prices['shippingValue'];
 		$_orderData->order_shipping_tax = $_prices['shippingTax'];
-		$_orderData->coupon_discount = $_prices['couponValue']; // TODO Coupons not yet implemented
-		$_orderData->coupon_code = $_prices['couponName']; // TODO Coupons not yet implemented
+		if (!empty($_cart->couponCode)) {
+			$_orderData->coupon_code = $_cart->couponCode;
+			$_orderData->coupon_discount = $_prices['salesPriceCoupon'];
+		}
 		$_orderData->order_discount = $_prices['discountAmount'];
 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
 		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
@@ -501,6 +503,12 @@ class VirtueMartModelOrders extends JModel {
 			return 0;
 		}
 		$_orderID = $_orderData->_db->insertid();
+
+		if (!empty($_cart->couponCode)) {
+			// If a gift coupon was used, remove it now
+			CouponHelper::RemoveCoupon($_cart->couponCode);
+		}
+
 		return $_orderID;
 	}
 

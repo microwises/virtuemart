@@ -31,7 +31,6 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
 	</legend>
 
-	  
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
 		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
 	</a><br /><br />
@@ -58,46 +57,37 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 			}
 		} ?>
 </fieldset>
+
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_COMMENT'); ?>
-		<div>
-			<textarea name="customer_comment" cols="50" rows="3"><?php echo $this->cart->customer_comment; ?></textarea>
-		</div>
 	</legend>
+	<div>
+		<textarea name="customer_comment" cols="50" rows="3"><?php echo $this->cart->customer_comment; ?></textarea>
+	</div>
 </fieldset>
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_CART_TOS'); ?>
 	</legend>
 	<div>
-	<?php echo $this->vendor->vendor_terms_of_service; echo '</div>';
+	<?php echo $this->vendor->vendor_terms_of_service;
 	$checked = '';
 	if ($this->cart->tosAccepted) $checked = 'checked="checked"';
 	echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED');
 	?>
+	</div>
 </fieldset>
-<?php
-
-		/** @todo handle coupon field */
-		/* Input Field for the Coupon Code */
-		/**
-		if( PSHOP_COUPONS_ENABLE=='1'
-			&& !@$_SESSION['coupon_redeemed']
-			//&& ($page == "shop.cart" )
-		) {
-			$basket_html .= $tpl->fetch( 'common/couponField.tpl.php' );
-		}
-		*/
+<?php 
 	echo '<div class="cartfooterlinks" >';
-	if ($this->continue_link_html != '') {			
+	if ($this->continue_link_html != '') {
 		echo $this->continue_link_html;
 	}
 	echo $this->checkout_link_html;
 
 	$text = JText::_('VM_ORDER_CONFIRM_MNU');
+	echo '</div>';
 ?>
-</div>
 
 <input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 <input type='hidden' name='option' value='com_virtuemart'/>

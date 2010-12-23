@@ -9,7 +9,6 @@ DROP TABLE
 `#__vm_coupons`, 
 `#__vm_creditcard`, 
 `#__vm_currency`, 
-`#__vm_function`, 
 `#__vm_manufacturer`, 
 `#__vm_manufacturer_category`, 
 `#__vm_menu_admin`, 

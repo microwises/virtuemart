@@ -185,19 +185,25 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<?php 
 			if($i) $i=1; else $i=0;
-		}
-
-		if(false){  //just for the beta to avoid questions, we disable coupons
-//		if($this->cartData['coupons']){ ?>
+		} ?>
+		<?php 
+		if (VmConfig::get('coupons_enable')) {
+		?>
 			<tr class="sectiontableentry2">
-		<?php	/*	<td align="left"><?php echo JText::_('VM_COUPON_DISCOUNT'); ?> </td>  */  ?> 
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
-				<td colspan="3" align="left"><?php echo $this->cartData['couponName']; ?> </td>
-				<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
-				<td align="right"><?php echo $this->prices['couponValue']; ?> </td>	
-				<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
+				<?php if (!empty($this->cartData['couponCode'])) { ?>
+					<td colspan="2" align="left"><?php
+						echo $this->cartData['couponCode'] . ' (' . $this->cartData['couponDescr'] . ')';
+					?> </td>
+					<td align="right"><?php echo $this->prices['couponValue']; ?> </td>	
+					<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
+					<td align="right">&nbsp;</td>	
+					<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
+				<?php } else { ?>
+					<td colspan="6" align="left">&nbsp;</td>
+				<?php } ?>
 			</tr>
-		<?php }   ?>
+		<?php } ?>
 		<tr class="sectiontableentry1">
 				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>

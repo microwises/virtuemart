@@ -133,18 +133,21 @@ class VirtueMartControllerCart extends JController {
 	}
 
 	/**
-	 *
-	 * @author Max Milbers
+	 * Store the coupon code in the cart
+	 * @author Oscar van Eijk
 	 */
 	public function setcoupon(){
-
-		/* Get the coupon_id of the cart */
-		$coupon_id = JRequest::getVar('coupon_id', '0');
-		if($coupon_id){
+		$mainframe = JFactory::getApplication();
+		/* Get the coupon_code of the cart */
+		$coupon_code= JRequest::getVar('coupon_code', '');
+		if($coupon_code){
 			//Now set the shipping rate into the cart
 			$cart = VirtueMartCart::getCart();
 			if($cart){
-				$cart->coupon_id=$coupon_id;
+				$msg = $cart->setCouponCode($coupon_code);
+				if (!empty($msg)) {
+					$mainframe->enqueueMessage($msg, 'error');
+				}
 //				$cart->setDataValidation(); //Not needed already done in the getCart function
 				if($cart->getInCheckOut()){
 					$mainframe = JFactory::getApplication();

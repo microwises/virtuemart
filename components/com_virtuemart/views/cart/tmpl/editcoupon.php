@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Cart
-* @author Max Milbers
+* @author Oscar van Eijk
 *
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -17,7 +17,25 @@
 * @version $Id: cart.php 2458 2010-06-30 18:23:28Z milbo $
 */
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 ?>
 
 
-Here should be the view for choosing coupons.
+<form method="post" id="userForm" name="enterCouponCode" action="<?php echo JRoute::_( 'index.php' ); ?>">
+<div style="text-align: right; width: 100%;">
+	<button class="button" type="submit"><?php echo JText::_('SAVE'); ?></button>
+
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('CANCEL'); ?></button>
+</div>
+
+<?php
+	echo JText::_('VM_COUPON_ENTER_HERE');
+?>
+	<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="coupon_code" value="<?php if (isset($this->cartData['couponCode'])) { echo $this->cartData['couponCode']; } ?>" />
+
+	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="view" value="cart" />
+	<input type="hidden" name="task" value="setcoupon" />
+	<input type="hidden" name="controller" value="cart" />
+</form>

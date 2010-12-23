@@ -47,9 +47,10 @@ class VirtueMartViewCart extends JView {
 
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
-			
+
 		if($layoutName=='editcoupon'){
 		
+			$this->prepareCartData();
 			$this->lSelectCoupon();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTCOUPON'));

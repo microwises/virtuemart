@@ -48,6 +48,7 @@ class VirtueMartCart  {
 	var $ST = 0;
 	var $tosAccepted = false;
 	var $customer_comment = '';
+	var $couponCode = '';
 	
 	private function __construct() {
 				
@@ -409,6 +410,27 @@ class VirtueMartCart  {
 		}
 	}
 
+	/**
+	 * Validate the coupon code. If ok,. set it in the cart
+	 * @param string $coupon_code Coupon code as entered by the user
+	 * @author Oscar van Eijk
+	 * @access public
+	 * @return string On error the message text, otherwise an empty string
+	 */
+	public function setCouponCode($coupon_code) {
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
+		$_prices = $this->getCartPrices();
+		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['billTotal']);
+		if (!empty($_msg)) {
+			$this->couponCode = '';
+			$this->setCartIntoSession();
+			return $_msg;
+		}
+		$this->couponCode = $coupon_code;
+		$this->setCartIntoSession();
+		return '';
+	}
+
 	public function setShippingRate($shipping_rate_id){
 		$this->shipping_rate_id=$shipping_rate_id;
 		$this->setCartIntoSession();
@@ -464,6 +486,17 @@ class VirtueMartCart  {
 			if($redirectMsg){
 //				$this->setCartIntoSession();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST',$redirectMsg);
+			}
+		}
+
+		// Test Coupon
+		if (!empty($this->couponCode)) {
+			$_prices = $this->getCartPrices();
+			$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $_prices['billTotal']);
+			if (!empty($redirectMsg)) {
+				$this->couponCode = '';
+//				$this->setCartIntoSession();
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editcoupon',$redirectMsg);
 			}
 		}
 
@@ -580,6 +613,7 @@ class VirtueMartCart  {
 			$this->_dataValidated = false;
 			$this->_confirmDone = false;
 			$this->customer_comment = '';
+			$this->couponCode = '';
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();

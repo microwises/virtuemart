@@ -243,26 +243,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_currency` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `#__vm_function`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_function` (
-  `function_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` int(11) DEFAULT NULL,
-  `function_name` varchar(32) DEFAULT NULL,
-  `function_class` varchar(32) DEFAULT NULL,
-  `function_method` varchar(32) DEFAULT NULL,
-  `function_description` text,
-  `function_perms` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`function_id`),
-  KEY `idx_function_module_id` (`module_id`),
-  KEY `idx_function_name` (`function_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to map a function alias to a ''real'' class::function' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
 --
 -- Table structure for table `#__vm_manufacturer`
 --
