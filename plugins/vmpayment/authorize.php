@@ -388,7 +388,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_description' => JText::_('VM_ORDER_PRINT_PO_LBL'),
 
 			// Transaction Data
-			'x_amount' => $_priceData['salesPrice'],
+			'x_amount' => $_priceData['billTotal'],
 			'x_currency_code' => $_vendorCurrency,
 			'x_method' => 'CC',
 			'x_type' => AN_TYPE,
