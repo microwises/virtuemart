@@ -16,45 +16,45 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 if( class_exists( 'vmVersion' ) ) {
-	$VMVERSION =& new vmVersion();
+
+	$shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
 	
-	$shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
-		
-	$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
-	. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
+	$myVersion = $shortversion . " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
+	. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
+
 	return;
 }
+
 if( !class_exists( 'vmVersion' ) ) {
 /** Version information */
 class vmVersion {
 	/** @var string Product */
-	var $PRODUCT = 'VirtueMart';
+	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.5.0';
+	static $RELEASE = '1.5.0';
 	/** @var string Development Status */
-	var $DEV_STATUS = 'beta';
+	static $DEV_STATUS = 'beta';
 	/** @var string Codename */
 	// Song by James Taylor
-	var $CODENAME = 'BeNative';
+	static $CODENAME = 'BeNative';
 	/** @var string Date */
-	var $RELDATE = '-';
+	static $RELDATE = '-';
 	/** @var string Time */
-	var $RELTIME = '20:00';
+	static $RELTIME = '20:00';
 	/** @var string Timezone */
-	var $RELTZ = 'GMT';
+	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	var $REVISION = '$Revision: 1755 $';
+	static $REVISION = '$Revision: 1755 $';
 	/** @var string Copyright Text */
-	var $COPYRIGHT = 'Copyright (C) 2005-2010 VirtueMart Development Team - All rights reserved.'; 
+	static $COPYRIGHT = 'Copyright (C) 2005-2010 VirtueMart Development Team - All rights reserved.'; 
 	/** @var string URL */
-	var $URL = '<a href="http://virtuemart.org">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL License.';
+	static $URL = '<a href="http://virtuemart.org">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL License.';
 }
-$VMVERSION =& new vmVersion();
 
-$shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
+$shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
 	
-$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
-	. $VMVERSION->RELTIME . " " . $VMVERSION->RELTZ;
+$myVersion = $shortversion . " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
+	. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
 	
 }
 

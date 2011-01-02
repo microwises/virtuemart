@@ -11,6 +11,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'version.php');
+
 class VmConfig 
 {
 	/**
@@ -78,15 +80,9 @@ class VmConfig
 	 */	
 	function getInstalledVersion($includeDevStatus=false)
 	{
-		// Get the installed version from the XML file
-		$xmlParser = JFactory::getXMLParser('Simple');
-		$xmlParser->loadFile(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.xml');
-		$version = $xmlParser->document->getElementByPath('version')->data();
-		if ($includeDevStatus) {
-			$version .= ' ' . $xmlParser->document->getElementByPath('version')->attributes('status');
-		}
+		// Get the installed version from the wmVersion class.
 		
-		return $version;	
+		return vmVersion::$RELEASE;	
 	}	
 	
 }
