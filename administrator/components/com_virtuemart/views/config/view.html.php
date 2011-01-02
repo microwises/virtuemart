@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 // Load the view framework
 jimport( 'joomla.application.component.view');
 jimport('joomla.html.pane');
+jimport('joomla.version');
 
 /**
  * HTML View class for the configuration maintenance
@@ -53,7 +54,14 @@ class VirtuemartViewConfig extends JView {
 
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
-		$table = JTable::getInstance('component');
+
+		$JVersion = new JVersion();
+		if ( !$JVersion->isCompatible('1.6.0')) {
+			// component table doesn't exist in Joomla! 1.6
+			// and JTable::getInstance displays an ugly error in this case
+			$table = JTable::getInstance('component');
+		}
+			
 		if( !is_object($table)) {
 			$table = JTable::getInstance('extension');
 			//$id = $table->find();
@@ -64,9 +72,18 @@ class VirtuemartViewConfig extends JView {
 		$userparams = new JParameter($table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'config.xml');
 		$this->assignRef('userparams', $userparams);
 
-		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
-		$templateList = array();
-		$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+		if ($JVersion->isCompatible('1.6.0')) {
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
+			$templatesModel = new TemplatesModelTemplates();
+			$templateList = array();
+			$templateList = $templatesModel->getItems();
+			//@TODO remove templates for admin panel.
+		}
+		else {
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+		}
 		$this->assignRef('jTemplateList', $templateList);
 		
 		$vmLayoutList = $model->getLayoutList('virtuemart');

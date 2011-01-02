@@ -33,8 +33,9 @@ class VirtuemartViewOrderstatus extends JView {
 
 	function display($tpl = null) {
 
-		global $mainframe, $option;
-
+		$option = JRequest::getCmd( 'option');
+		$mainframe = JFactory::getApplication() ;
+		
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 

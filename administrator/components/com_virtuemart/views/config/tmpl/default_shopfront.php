@@ -104,7 +104,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <?php
 			    for ($i=0, $n=count($orderByFields); $i < $n; $i++) {
 				$field = $orderByFields[$i];
-				echo VmHTML::checkbox('browse_orderby_fields[]', in_array($field->value, $orderByFieldsArray));
+				echo VmHTML::checkbox('browse_orderby_fields[]', in_array($field->value, $orderByFields));
 				echo $field->text.'<br />';
 			    } ?>
 			</td>

@@ -862,8 +862,9 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function _getOrdering()
 	{
-		global $mainframe, $option;
-
+		$option = JRequest::getCmd( 'option');
+		$mainframe = JFactory::getApplication() ;
+		
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
 

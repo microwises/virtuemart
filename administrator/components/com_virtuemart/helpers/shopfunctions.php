@@ -76,7 +76,7 @@ class ShopFunctions {
 	}
 
 	/**
-	* Creates a Drop Down list of available Shopper Groups
+	* Creates a Drop Down list of available Vendors
 	*
 	* @author Max Milbers, RolandD
 	* @access public
@@ -86,10 +86,11 @@ class ShopFunctions {
 	*/
 	public function renderVendorList($vendorId, $multiple = false) {
 		
-		if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 		$db = JFactory::getDBO();
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
+			if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
+			
 			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();

@@ -444,7 +444,7 @@ class VmImage {
 	 */
 	public function displayImageButton($link, $image, $text) {
 		$button = '<a title="' . $text . '" href="' . $link . '">';
-		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, $text, NULL, $text);
+		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, $text, NULL);
 		$button .= '<br />' . $text.'</a>';
 		echo $button;
 				

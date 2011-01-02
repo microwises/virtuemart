@@ -96,9 +96,18 @@ AdminMenuHelper::startAdminArea();
 		for ($i = 0, $n = count($this->userfieldsList); $i < $n; $i++) {
 			$row =& $this->userfieldsList[$i];
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
-			$checked = ($coreField
-				? '<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'"><img src="images/checked_out.png" border="0" alt="'. JText::_('VM_FIELDMANAGER_COREFIELD') .'" /></span>'
+			
+			$JVersion = new JVersion();
+			if ($JVersion->isCompatible('1.6.0')) {
+				$checked = ($coreField
+				? '<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'">'.JHTML::_('image','admin/checked_out.png', JText::_('VM_FIELDMANAGER_COREFIELD'),null, true) .'</span>'
 				: JHTML::_('grid.id', $i, $row->fieldid));
+			}
+			else {
+				$checked = ($coreField
+				? '<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'"><img src="images/checked_out.png" border="0" alt="'. JText::_('VM_FIELDMANAGER_COREFIELD') .'" /></span>'
+				: JHTML::_('grid.id', $i, $row->fieldid));	
+			}
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->fieldid);
 			$required = $this->toggle($row->required, $i, 'required', $coreField);
 //			$published = JHTML::_('grid.published', $row, $i);

@@ -68,9 +68,16 @@ class VirtuemartViewCategory extends JView {
 			$parent = $model->getParentCategory( $category->category_id );
 			$this->assignRef('parent', $parent);
 			
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			
 			$templateList = array();
-			$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+			$JVersion = new JVersion();
+			if ( ! $JVersion->isCompatible('1.6.0'))
+				//TODO add else for 1.6 Joomla! versions. 
+				// because parseXMLTemplateFiles no longer exists.
+				require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+				$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+			}
+			
 			$this->assignRef('jTemplateList', $templateList);
 			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');

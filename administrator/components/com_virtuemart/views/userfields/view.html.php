@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
+jimport('joomla.version');
 
 /**
  * HTML View class for maintaining the list of order types
@@ -33,8 +34,9 @@ class VirtuemartViewUserfields extends JView {
 
 	function display($tpl = null) {
 
-		global $mainframe, $option;
-
+		$option = JRequest::getCmd( 'option');
+		$mainframe = JFactory::getApplication() ;
+		
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
@@ -182,6 +184,8 @@ class VirtuemartViewUserfields extends JView {
 	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
 	{
 
+		$JVersion = new JVersion();
+		
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
@@ -192,12 +196,19 @@ class VirtuemartViewUserfields extends JView {
 			$alt 	= $field ? JText::_( 'Enabled' ) : JText::_( 'Disabled' );
 			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
 		}
-
+		
+		if ($JVersion->isCompatible('1.6.0')) {
+			$retImgSrc =  JHTML::_('image', 'admin/'. $img, $alt, null, true );
+		}
+		else {
+			$retImgSrc = '<img src="images/'. $img .'" border="0" alt="'. $alt .'" />';
+		}
+		
 		if ($untoggleable) {
-			return ('<img src="images/'. $img .'" border="0" alt="'. $alt .'" />');
+			return ($retImgSrc);
 		} else {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
+				.$retImgSrc. '</a>');
 		}
 	}
 
