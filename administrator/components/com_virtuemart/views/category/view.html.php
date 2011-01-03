@@ -7,7 +7,7 @@
 * @subpackage Category
 * @author RickG, jseros
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -71,7 +71,7 @@ class VirtuemartViewCategory extends JView {
 			
 			$templateList = array();
 			$JVersion = new JVersion();
-			if ( ! $JVersion->isCompatible('1.6.0'))
+			if ( ! $JVersion->isCompatible('1.6.0')) {
 				//TODO add else for 1.6 Joomla! versions. 
 				// because parseXMLTemplateFiles no longer exists.
 				require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
