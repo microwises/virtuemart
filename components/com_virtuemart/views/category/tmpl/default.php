@@ -24,38 +24,39 @@ defined('_JEXEC') or die('Restricted access');
 /* Show child categories */
 if ($this->category->haschildren) {
 	?>
-	<table width="100%" cellspacing="0" cellpadding="0">
+	<div class="category-view width100">
 	<?php
 	$iCol = 1;
-	$categories_per_row = 2;
-	$cellwidth = 25;
+	
+	// calculation of the categories per row
+	$categories_per_row = VmConfig::get('categories_per_row');
+	$cellwidth = 100 / $categories_per_row;
+	$cellwidth = intval($cellwidth);
+	
 	foreach ($this->category->children as $category ) {
-		if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
-			echo "<tr>\n";
-		}
-		?>
-		<td align="center" width="<?php echo $cellwidth ?>%" >
-			<br />
-			<?php
-				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id);
-				$cattext = ''; 
-				if ($category->category_thumb_image) {
 					
-					$cattext .= VmImage::getImageByCat($category)->displayImage();
-					$cattext .= "<br /><br/>\n";
-				}
-				$cattext .= $category->category_name;
-				$cattext .= ' ('.$category->number_of_products.')';
-				echo JHTML::link($caturl, $cattext);
+		if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not ?>
+			<div class="category-row">
+		<?php }
 				?>
-			 <br/>
-		</td>
 		
+		<!-- Category Listing Output -->
+		<div class="width<?php echo $cellwidth ?> floatleft">
+			<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
+			<h2>
+				<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
+				<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
+				<?php if ($category->category_thumb_image) {
+					echo VmImage::getImageByCat($category)->displayImage();
+				} ?>
+				</a>	
+			</h2>
+		</div>
 		
 		<?php
 		// Do we need to close the current row now?
 		if ($iCol == $categories_per_row) { // If the number of products per row has been reached
-			echo "</tr>\n";
+			echo "<div class='clear'></div></div>";
 			$iCol = 1;
 		}
 		else {
@@ -64,10 +65,11 @@ if ($this->category->haschildren) {
 	}
 	// Do we need a final closing row tag?
 	if ($iCol != 1) {
-		echo "</tr>\n";
+		echo "<div class='clear'></div></div>";
 	}
 	?>
-	</table>
+	<div class="clear"></div>
+	</div>
 <?php
 }
 
