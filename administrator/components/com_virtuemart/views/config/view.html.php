@@ -55,23 +55,10 @@ class VirtuemartViewConfig extends JView {
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
 
-		$JVersion = new JVersion();
-		if ( !$JVersion->isCompatible('1.6.0')) {
-			// component table doesn't exist in Joomla! 1.6
-			// and JTable::getInstance displays an ugly error in this case
-			$table = JTable::getInstance('component');
-		}
-			
-		if( !is_object($table)) {
-			$table = JTable::getInstance('extension');
-			//$id = $table->find();
-			$table->load(array('name'=>'com_users'));
-		} else {
-			$table->loadByOption('com_users');
-		}
-		$userparams = new JParameter($table->params, JPATH_ADMINISTRATOR.DS.'components'.DS.'com_users'.DS.'config.xml');
+		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
+		$JVersion = new JVersion();
 		if ($JVersion->isCompatible('1.6.0')) {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
@@ -85,17 +72,17 @@ class VirtuemartViewConfig extends JView {
 			$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 		}
 		$this->assignRef('jTemplateList', $templateList);
-		
+
 		$vmLayoutList = $model->getLayoutList('virtuemart');
 		$this->assignRef('vmLayoutList', $vmLayoutList);
 
 		$categoryLayoutList = $model->getLayoutList('category');
 		$this->assignRef('categoryLayoutList', $categoryLayoutList);
-		
+
 		$productLayoutList = $model->getLayoutList('productdetails');
 		$this->assignRef('productLayoutList', $productLayoutList);
-		
-		
+
+
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 		$orderStatusList = $model->getOrderStatusList();

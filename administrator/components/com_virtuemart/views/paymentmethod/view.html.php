@@ -30,22 +30,22 @@ jimport( 'joomla.application.component.view');
  */
 
 class VirtuemartViewPaymentMethod extends JView {
-	
+
 	function display($tpl = null) {
 
 		// Load the helper(s)
+		$this->addHelperPath(JPATH_COMPONENT_SITE.DS.'helpers');
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('permissions');
+		$this->loadHelper('vmpaymentplugin');
 		$this->assignRef('perms', Permissions::getInstance());
-		
+
 		$model = $this->getModel('paymentmethod');
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
-		
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
-		
+
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
@@ -55,9 +55,9 @@ class VirtuemartViewPaymentMethod extends JView {
 			$this->loadHelper('html');
 			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
-			
+
 			$this->loadHelper('shopFunctions');
-			
+
 			$paym = $model->getPaym();
 			$this->assignRef('paym',	$paym);
 
@@ -93,10 +93,10 @@ class VirtuemartViewPaymentMethod extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();	
+			JToolBarHelper::addNewX();
 
-			$pagination = $model->getPagination();			
-			$this->assignRef('pagination',	$pagination);	
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination',	$pagination);
 
 			$payms = $model->getPayms();
 			$this->assignRef('payms',	$payms);
@@ -109,13 +109,13 @@ class VirtuemartViewPaymentMethod extends JView {
 
 	/**
 	 * Builds a list to choose the Payment type
-	 * 
+	 *
 	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author 		Max Milbers
 	 * @param 	$selected 	the selected values, may be single data or array
-	 * @return 	$list 		list of the Entrypoints  
+	 * @return 	$list 		list of the Entrypoints
 	 */
-	 
+
 	function renderPaymentTypesList($selected){
 		$this->loadHelper('modelfunctions');
 		$selected = modelfunctions::prepareTreeSelection($selected);
@@ -130,9 +130,9 @@ class VirtuemartViewPaymentMethod extends JView {
 		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );
 		return $listHTML;
 	}
-	
+
 	function renderPaymentRadioList($selected){
-		
+
 		$list = array(
 		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_CREDIT')),
 		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
@@ -151,32 +151,32 @@ class VirtuemartViewPaymentMethod extends JView {
 //		echo $listHTML;die;
 		return $listHTML;
 	}
-	
+
 	function renderInstalledPaymentPlugins($selected){
-		
+
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 //		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 //		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
-		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmpayment" AND `published`="1" ';
+		$q = 'SELECT * FROM #__extensions WHERE `folder` = "vmpayment" AND `enabled`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList();
-		
+
 		$listHTML='<select id="paym_jplugin_id" name="paym_jplugin_id">';
-		
+
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
-			if($paym['id']==$selected) $checked='selected="selected"'; else $checked='';
+			if($paym['extension_id']==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['id'].'">'.$paym['name'].'</option>';
-			
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.$paym['name'].'</option>';
+
 		}
 		$listHTML .= '</select>';
-		
+
 		return $listHTML;
 	}
-	
+
 }
 // pure php not tag

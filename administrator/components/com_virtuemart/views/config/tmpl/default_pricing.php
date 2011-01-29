@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-?> 
+defined('_JEXEC') or die('Restricted access');
+?>
 <br />
 <table>
     <tr><td valign="top">
@@ -46,7 +46,13 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('price_access_level_enabled', $this->config->get('price_access_level_enabled')); ?>
 			    <?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
 			    <br />
-			    <?php echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'name', 'text', $this->config->get('price_access_level')); ?>
+			    <?php
+				$selectOptions['list.attr'] = 'size=5';
+				$selectOptions['option.key'] = 'title';
+				$selectOptions['list.select'] = $this->config->get('price_access_level');
+				$selectOptions['option.text.toHtml'] = true;
+				echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
+			//echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -78,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('basePrice', $this->config->get('basePrice')); ?>
 			</td>
 		    </tr>
-		    
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_VARMOD_EXPLAIN'); ?>">
@@ -89,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('variantModification', $this->config->get('variantModification')); ?>
 			</td>
 		    </tr>
-		    
+
 		    		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_VAR_EXPLAIN'); ?>">
@@ -100,7 +106,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('basePriceVariant', $this->config->get('basePriceVariant')); ?>
 			</td>
 		    </tr>
-		    
+
 		    		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_WTAX_EXPLAIN'); ?>">
@@ -111,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('basePriceWithTax', $this->config->get('basePriceWithTax')); ?>
 			</td>
 		    </tr>
-		    
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_DISCPRICE_WOTAX_EXPLAIN'); ?>">
@@ -122,7 +128,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('discountedPriceWithoutTax', $this->config->get('discountedPriceWithoutTax')); ?>
 			</td>
 		    </tr>
-		    
+
 		    		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_WD_EXPLAIN'); ?>">
@@ -133,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('salesPriceWithDiscount', $this->config->get('salesPriceWithDiscount')); ?>
 			</td>
 		    </tr>
-		    
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_EXPLAIN'); ?>">
@@ -177,7 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('taxAmount', $this->config->get('taxAmount')); ?>
 			</td>
 		    </tr>
-    
+
 		</table>
 	    </fieldset>
 	</td></tr>

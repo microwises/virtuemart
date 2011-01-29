@@ -2,7 +2,7 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * ECB Currency Converter Module
-* 
+*
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
@@ -22,22 +22,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * Requires cURL or allow_url_fopen
  */
 class convertECB {
-	
+
 	var $archive = true;
 	var $last_updated = '';
-	
+
 	var $document_address = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
-	
+
 	var $info_address = 'http://www.ecb.int/stats/eurofxref/';
 	var $supplier = 'European Central Bank';
-	
+
 	/**
 	 * Converts an amount from one currency into another using
 	 * the rate conversion table from the European Central Bank
 	 *
 	 * @param float $amountA
 	 * @param string $currA defaults to $vendor_currency
-	 * @param string $currB defaults to 
+	 * @param string $currB defaults to
 	 * @return mixed The converted amount when successful, false on failure
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
@@ -59,34 +59,34 @@ class convertECB {
 			else {
 				$store_path = JPATH_SITE.DS.'media';
 			}
-			  
+
 			$archivefile_name = $store_path.'/daily.xml';
 			$ecb_filename = $this->document_address;
 			$val = '';
 
-		
+
 			if(file_exists($archivefile_name) && filesize( $archivefile_name ) > 0 ) {
 			  	// timestamp for the Filename
-			  	$file_datestamp = date('Ymd', filemtime($archivefile_name)); 
-			  	
+			  	$file_datestamp = date('Ymd', filemtime($archivefile_name));
+
 		    	// check if today is a weekday - no updates on weekends
-		    	if( date( 'w' ) > 0 && date( 'w' ) < 6 
+		    	if( date( 'w' ) > 0 && date( 'w' ) < 6
 		    		// compare filedate and actual date
 		    		&& $file_datestamp != $date_now_local
 		    		// if localtime is greater then ecb-update-time go on to update and write files
 		    		&& $time_now_local > $time_ecb_update) {
-		    		$curr_filename = $ecb_filename;	
+		    		$curr_filename = $ecb_filename;
 		    	}
 		    	else {
 				  	$curr_filename = $archivefile_name;
 		    		$this->last_updated = $file_datestamp;
-				  	$this->archive = false;	
+				  	$this->archive = false;
 		    	}
 			}
 			else {
 				$curr_filename = $ecb_filename;
 			}
-			  
+
 			if( !is_writable( $store_path )) {
 			  $this->archive = false;
 			  JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
@@ -108,25 +108,26 @@ class convertECB {
 					// now write new file
 					file_put_contents( $archivefile_name, $contents );
 				}
-		
+
 				$contents = str_replace ("<Cube currency='USD'", " <Cube currency='EUR' rate='1'/> <Cube currency='USD'", $contents);
-				
+
 				/* XML Parsing */
-				require_once( JPATH_ROOT.DS.'includes'.DS.'domit'.DS.'xml_domit_lite_include.php' );
-				$xmlDoc = new DOMIT_Lite_Document();
-				if( !$xmlDoc->parseXML( $contents, false, true ) ) {
+				$xmlDoc = new DomDocument();
+
+				if( !$xmlDoc->loadXML($contents) ) {
 					//todo
 					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
 					JError::raiseWarning(1,  'The content: '.$contents);
 //					$GLOBALS['product_currency'] = $vendor_currency;
 					return $amountA;
 				}
-				
+
 				$currency_list = $xmlDoc->getElementsByTagName( "Cube" );
 				// Loop through the Currency List
-				for ($i = 0; $i < $currency_list->getLength(); $i++) {
+				$length = $currency_list->length;
+				for ($i = 0; $i < $length; $i++) {
 					$currNode =& $currency_list->item($i);
-					$currency[$currNode->getAttribute("currency")] = $currNode->getAttribute("rate");
+					$currency[$currNode->attributes->getNamedItem("currency")->nodeValue] = $currNode->attributes->getNamedItem("rate")->nodeValue;
 					unset( $currNode );
 				}
 				$globalCurrencyConverter = $currency;
@@ -141,14 +142,14 @@ class convertECB {
 		}
 		$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
 		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
-		
+
 		$val = $amountA * $valB / $valA;
 		//todo
 		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
-		
+
 		return $val;
 	} // end function convertecb
-	
+
 
 }
 // pure php no closing tag

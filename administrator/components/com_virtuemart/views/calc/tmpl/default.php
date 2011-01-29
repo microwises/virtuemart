@@ -15,14 +15,14 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
-      	
+
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
 		<table class="adminlist">
@@ -30,10 +30,10 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<th>
 				<?php echo JText::_( '#' ); ?>
-			</th>		            
+			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
-			</th>			
+			</th>
 			<th width="60">
 				<?php echo JText::_( 'VM_CALC_LIST_NAME' ); ?>
 			</th>
@@ -101,7 +101,7 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 
 		for ($i=0, $n=count( $this->calcs ); $i < $n; $i++) {
-			
+
 			$row = $this->calcs[$i];
 			$checked = JHTML::_('grid.id', $i, $row->calc_id);
 			$published = JHTML::_('grid.published', $row, $i);
@@ -110,14 +110,14 @@ AdminMenuHelper::startAdminArea();
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
 					<?php echo $row->calc_id; ?>
-				</td>			            
+				</td>
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php if($this->perms->check( 'admin' )){?>				
+				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
 					<?php echo JText::_($row->calc_vendor_id); ?>
 				</td>
@@ -127,7 +127,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td>
 					<?php echo JText::_($row->ordering); ?>
-				</td>				
+				</td>
 				<td>
 					<?php echo JText::_($row->calc_kind); ?>
 				</td>
@@ -139,7 +139,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td>
 					<?php echo JText::_($row->currencyName); ?>
-				</td>				
+				</td>
 				<td>
 					<?php echo JText::_($row->calcCategoriesList); ?>
 				</td>
@@ -157,18 +157,18 @@ AdminMenuHelper::startAdminArea();
 					</a>
 				</td>
 				<td>
-					<?php 
+					<?php
 					$publish_up ='';
 					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
 						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
 						$publish_up = $date->toFormat($this->dateformat);
 					}
-					echo $publish_up = JText::_('VM_CALC_EVER');?>
+					echo $publish_up = JText::_('VM_NEVER');?>
 				</td>
 				<td>
-					<?php 
+					<?php
 						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-							$endDate = JText::_('VM_CALC_NEVER');
+							$endDate = JText::_('VM_NEVER');
 						} else {
 							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 							$endDate = $date->toFormat($this->dateformat);
@@ -193,7 +193,7 @@ AdminMenuHelper::startAdminArea();
 				<?php /*
 				<td align="center">
 					<?php echo $row->shared; ?>
-				</td>	*/?>			        																														
+				</td>	*/?>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -205,17 +205,17 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>		
-	</table>	
+		</tfoot>
+	</table>
 </div>
-	        
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="calc" />
-	<input type="hidden" name="view" value="calc" />	
+	<input type="hidden" name="view" value="calc" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-            
-            
-<?php AdminMenuHelper::endAdminArea(); ?> 
+
+
+<?php AdminMenuHelper::endAdminArea(); ?>

@@ -169,11 +169,11 @@ class VirtueMartModelUser extends JModel {
 
 		//This can cause trouble, when you save a new vendor in the form with apply. The new vendor_id is not set then
 		//		if (empty($this->_data)) {
-			
+
 			$this->_data = new stdClass();
-				
+
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			 
+
 			$this->_data = $this->getTable('vm_users');
 			$this->_data->load((int)$this->_id);
 
@@ -183,11 +183,11 @@ class VirtueMartModelUser extends JModel {
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
-				
+
 			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__vm_user_info` WHERE `user_id` = "' . $this->_id.'"');
-				
+
 			$this->_data->userInfo = array ();
-				
+
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
@@ -197,7 +197,7 @@ class VirtueMartModelUser extends JModel {
 			if($this->_data->user_is_vendor){
 				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 				$vendorModel = new VirtueMartModelVendor();
-					
+
 				$vendorModel->setId($this->_data->vendor_id);
 				$this->_data->vendor = $vendorModel->getVendor();
 			}
@@ -239,8 +239,9 @@ class VirtueMartModelUser extends JModel {
 
 			$JVersion = new JVersion();
 			if ($JVersion->isCompatible('1.6.0')){
-				//TODO fix this latter. It's just an workarround to make it working on 1.6 
-				return $_aclObject->getGroupsByUser( $this->_data->JUser->get('id'));
+				//TODO fix this latter. It's just an workarround to make it working on 1.6
+				$gids = $this->_data->JUser->get('groups');
+				return array_flip($gids);
 			}
 
 			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
@@ -376,19 +377,19 @@ class VirtueMartModelUser extends JModel {
 				// But it is possible for admins and storeadmins to save
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );
 				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
-					
+
 				if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
 					JError::raiseError( 403, JText::_( 'Access Forbidden' ));
 					return;
 				}
 				$authorize	=& JFactory::getACL();
-					
+
 				// Initialize new usertype setting
 				$newUsertype = $usersConfig->get( 'new_usertype' );
 				if (!$newUsertype) {
 					$newUsertype = 'Registered';
 				}
-					
+
 				// Set some initial user values
 				$user->set('usertype', $newUsertype);
 				$JVersion = new JVersion();
@@ -548,7 +549,7 @@ class VirtueMartModelUser extends JModel {
 						$this->setError($table->getError());
 						return false;
 					}
-						
+
 					// Save the record to the database
 					if (!$usertable->store()) {
 						$this->setError($table->getError());
@@ -568,7 +569,7 @@ class VirtueMartModelUser extends JModel {
 	  * @author Oscar van Eijk
 	  */
 	 function sendRegistrationEmail($user){
-	 	 
+
 	 	$mainframe = JFactory::getApplication() ;
 	 	$fromMail = $mainframe->getCfg('mailfrom') || $_currentUser->get('email');
 	 	$fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');
@@ -686,7 +687,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function getCustomerNumberById($_id = 0)
 	 {
-	 	$_q = "SELECT `customer_number` FROM `#__vm_shopper_vendor_xref` "
+	 	$_q = "SELECT `customer_number` FROM `#__vm_users` "
 			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
 			$_r = $this->_getList($_q);
 			if(!empty($_r[0])){

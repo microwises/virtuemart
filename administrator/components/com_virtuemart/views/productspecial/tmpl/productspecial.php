@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+defined('_JEXEC') or die('Restricted access');
+AdminMenuHelper::startAdminArea();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -67,8 +67,8 @@ AdminMenuHelper::startAdminArea();
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
-				<?php 
-				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
+				<?php
+				$link = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('EDIT').' '.$product->product_name)); ?></td>
 				<!-- Product SKU -->
@@ -76,21 +76,21 @@ AdminMenuHelper::startAdminArea();
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Product special -->
-				<td><?php 
+				<td><?php
 				if ($product->product_special == 'Y') echo JHTML::_('image', 'administrator/images/tick.png', JText::_('SPECIAL'));
 					else echo JHTML::_('image', 'administrator/images/publish_x.png', JText::_('NOT_SPECIAL'))
 					?>
 				</td>
 				<!-- Product discount -->
-				<td><?php echo $product->product_discount; ?></td>
+				<td><?php // echo $product->product_discount; ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>
-		<?php 
+		<?php
 			$k = 1 - $k;
 			$i++;
 		}
-	}	
+	}
 	?>
 	</tbody>
 	<tfoot>

@@ -131,13 +131,14 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return ObjectList List of recent orders.
 	 */
 	function getRecentCustomers($nbrCusts=5) {
-		$query = 'SELECT `id`, `first_name`, `last_name`, `username` FROM `#__users` as `u` ';
-		$query .= 'JOIN `#__vms` as uvm ON u.id = uvm.user_id';
-		$query .= 'JOIN `#__vm_user_info` as ui ON u.id = ui.user_id';
+		$query = 'SELECT `id` as `user_id`, `first_name`, `last_name`, `order_id` FROM `#__users` as `u` ';
+		$query .= 'JOIN `#__vm_users` as uv ON u.id = uv.user_id ';
+		$query .= 'JOIN `#__vm_user_info` as ui ON u.id = ui.user_id ';
+		$query .= 'JOIN `#__vm_orders` as uo ON u.id = uo.user_id ';
 		$query .= 'WHERE `perms` <> "admin" ';
         $query .= 'AND `perms` <> "storeadmin" ';
         $query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
-        $query .= 'AND id = `user_id`';
+        $query .= 'ORDER BY uo.`cdate` DESC';
         return $this->_getList($query, 0, $nbrCusts);
     }
 }
