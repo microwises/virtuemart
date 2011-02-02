@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 	echo JText::_('VM_COUPON_ENTER_HERE');
 ?>
-	<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="coupon_code" value="<?php if (isset($this->cartData['couponCode'])) { echo $this->cartData['couponCode']; } ?>" />
+	<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="coupon_code" value="<?php echo $this->couponCode; ?>" />
 
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />

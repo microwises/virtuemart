@@ -37,10 +37,10 @@ class VirtuemartViewShippingCarrier extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel();
-        $shippingCarrier = $model->getShippingCarrier();
+		$shippingCarrier = $model->getShippingCarrier();
 
-        $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($shippingCarrier->shipping_carrier_id < 1);
+		$layoutName = JRequest::getVar('layout', 'default');
+		$isNew = ($shippingCarrier->shipping_carrier_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
@@ -48,16 +48,18 @@ class VirtuemartViewShippingCarrier extends JView {
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
-			}
-			else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_CARRIER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
+			$this->loadHelper('shopFunctions');
+			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_vendor_id);
+			$this->assignRef('vendorList', $vendorList);
+			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
-        }
-        else {
+		} else {
 			JToolBarHelper::title( JText::_( 'VM_CARRIER_LIST_LBL' ), 'vm_ups_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
@@ -73,5 +75,29 @@ class VirtuemartViewShippingCarrier extends JView {
 		parent::display($tpl);
 	}
 
+	function renderInstalledShipperPlugins($selected)
+	{
+		$db = JFactory::getDBO();
+
+		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmshipper" AND `published`="1" ';
+		$db->setQuery($q);
+		$result = $db->loadAssocList();
+		
+		$listHTML='<select id="shipping_carrier_jplugin_id" name="shipping_carrier_jplugin_id">';
+		
+		foreach($result as $r)
+		{
+			if ($r['id']==$selected) {
+				$checked='selected="selected"';
+			} else {
+				$checked='';
+			}
+			$listHTML .= '<option '.$checked.' value="'.$r['id'].'">'.$r['name'].'</option>';
+			
+		}
+		$listHTML .= '</select>';
+		return $listHTML;
+	}
+	
 }
 // pure php no closing tag

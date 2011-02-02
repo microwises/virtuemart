@@ -137,6 +137,24 @@ class VirtueMartModelShippingRate extends JModel {
   		return $this->_data;
 	}
 
+	/**
+	 * Get the prices for a given shipping rate
+	 * @param integer $_id Shipping rate ID
+	 * @return Indexed array with the keys shipping_rate_value and shipping_rate_package_fee
+	 * @author Oscar van Eijk
+	 */
+	public function getShippingRatePrices ($_id)
+	{
+		$_q = 'SELECT `shipping_rate_value` '
+			. ',      `shipping_rate_package_fee` '
+			. 'FROM  `#__vm_shipping_rate` '
+			. 'WHERE `shipping_rate_id` = ' . $_id . ' '
+		;
+		$_rates = $this->_getList($_q);
+		return array('shipping_rate_value' => $_rates[0]->shipping_rate_value
+					,'shipping_rate_package_fee' => $_rates[0]->shipping_rate_package_fee)
+		;
+	}
 
 	/**
 	 * Bind the post data to the shipping rate table and save it

@@ -302,6 +302,18 @@ class VirtueMartModelOrders extends JModel {
 		/* Get the list of comments */
 		$comments = JRequest::getVar('order_comment', array());
 
+		// TODO This is not the most logical place for this plugin (or better; the method updateStatus() must be renamed....)
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		JPluginHelper::importPlugin('vmshipper');
+		$_dispatcher =& JDispatcher::getInstance();
+		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
+		foreach ($_returnValues as $_retVal) {
+			if ($_retVal === false) {
+				// Stop as soon as the first active plugin returned a failure status
+				return;
+			}
+		}
+
 		/* Process the orders to update */
 		if ($update) {
 			$updated = 0;
@@ -948,6 +960,17 @@ class VirtueMartModelOrders extends JModel {
 		$data = JRequest::get('post');
 		$curDate = JFactory::getDate();
 		$data['mdate'] = $curDate->toMySql();
+
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		JPluginHelper::importPlugin('vmshipper');
+		$_dispatcher =& JDispatcher::getInstance();
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));
+		foreach ($_returnValues as $_retVal) {
+			if ($_retVal === false) {
+				// Stop as soon as the first active plugin returned a failure status
+				return;
+			}
+		}
 
 		// Bind the form fields to the order item table
 		if (!$table->bind($data)) {

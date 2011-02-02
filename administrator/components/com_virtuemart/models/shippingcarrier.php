@@ -33,6 +33,10 @@ class VirtueMartModelShippingCarrier extends JModel {
 
     /** @var integer Primary key */
     var $_id;
+    /** @var integer Joomla plugin ID */
+    var $jplugin_id;
+    /** @var integer Vendor ID */
+    var $vendor_id;
     /** @var objectlist shipping carrier data */
     var $_data;
     /** @var integer Total number of shipping carriers in the database */
@@ -125,7 +129,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	    $this->_id = 0;
 	    $this->_data = null;
 	}
-
+	
 	return $this->_data;
     }
 
@@ -140,6 +144,10 @@ class VirtueMartModelShippingCarrier extends JModel {
 	$table = $this->getTable('shipping_carrier');
 
 	$data = JRequest::get( 'post' );
+	if($data['vendor_id']) {
+		$data['shipping_carrier_vendor_id'] = $data['vendor_id'];
+	}
+	
 	// Bind the form fields to the shipping carrier table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -216,7 +224,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 
     /**
      * Retireve a list of shipping carriers from the database.
-     *
+     * 
      * @author RickG
      * @return object List of shipping carrier objects
      */
@@ -229,7 +237,7 @@ class VirtueMartModelShippingCarrier extends JModel {
     
     
     /**
-     * 
+     * @deprecated Use the plugins instead
      * @author Max Milbers
      * @return a associative List
      */

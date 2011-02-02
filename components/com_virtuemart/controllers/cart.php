@@ -187,14 +187,13 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function setshipping(){
 
-		/* Get the shipping rate of the cart */
-		$shipping_rate_id = JRequest::getVar('shipping_rate_id', '0');
-		
-		if($shipping_rate_id){
-			//Now set the shipping rate into the cart
+		/* Get the shipper ID from the cart */
+		$shipper_id = JRequest::getVar('shipper_id', '0');
+		if($shipper_id){
+			//Now set the shipper ID into the cart
 			$cart = VirtueMartCart::getCart();
 			if($cart){
-				$cart->setShippingRate($shipping_rate_id);
+				$cart->setShipper($shipper_id);
 				if($cart->getInCheckOut()){
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');

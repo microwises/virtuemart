@@ -55,24 +55,21 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" /><?php echo JText::_('Save'); ?></button>
+	<button class="button" type="submit" ><?php echo JText::_('Save'); ?></button>
 	&nbsp;
-	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" /><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('Cancel'); ?></button>
 </div>
 <?php
-echo JText::_('VM_CART_SELECT_SHIPPER');
+	echo JText::_('VM_CART_SELECT_SHIPPER');
 
-foreach($this->shippingCarriers as $keyCarr=>$valueCarr){
-	
-	echo sprintf(JText::_('VM_CART_SELECT_SHIPPER_CARRIER',false),$keyCarr);
+	$_dispatcher = JDispatcher::getInstance();
+	$_tmp = array('cart'=>$this->cart,'checked'=>$this->selectedShipper);
+	$_html = $_dispatcher->trigger('plgVmOnSelectShipper', $_tmp);
 
-	foreach($valueCarr as $key=>$value){
-		if(!empty($this->cart->shipping_rate_id) && $this->cart->shipping_rate_id==$value['shipping_rate_id']) $checked='"checked"'; else $checked='';
-		echo '<input type="radio" name="shipping_rate_id" value="'.$value['shipping_rate_id'].' '.$checked.'">'.$value['shipping_rate_name'].' costs by the shipper '.$value['shipping_rate_value'].' our fee '. $value['shipping_rate_package_fee'].'<br />';
-
+	foreach($_html as $_item){
+		echo $_item;
 	}
-	echo '<br />';
-}
+
 ?>
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />

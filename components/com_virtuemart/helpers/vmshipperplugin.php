@@ -28,9 +28,8 @@ jimport('joomla.plugin.plugin');
 * 
 * @tutorial All methods are documented, but to make life easier, here's a short overview
 * how the methods can be used in the process order.
-* Methods marked with (*) are required.
-* 	* _createTable()(*) is called by the constructor. Use this method to create or alter the database table.
-* 	* When a shopper selects a shipper, plgOnSelectShipper()(*) is fired. It displays the shipper and can be used
+* 	* _createTable() is called by the constructor. Use this method to create or alter the database table.
+* 	* When a shopper selects a shipper, plgOnSelectShipper() is fired. It displays the shipper and can be used
 * 	for collecting extra - shipper specific - info.
 * 	* After selecting, plgVmShipperSelected() can be used to store extra shipper info in the cart. The selected shipper
 * 	ID will be stored in the cart by the checkout process before this method is fired.
@@ -39,16 +38,20 @@ jimport('joomla.plugin.plugin');
 * 	(or execute the same steps to put all data in the cart)
 * 
 * When a stored order is displayed in the backend, the following events are used:
-* 	* plgVmOnShowOrderShipperBE()(*) collects and displays specific data about (a) shipment(s)
+* 	* plgVmOnShowOrderShipperBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
+* 	OUTSIDE any form!)
 * 	* plgVmOnShowOrderLineShipperBE() can be used to show information about a single orderline, e.g.
-* 	add or display a package code at line level when more packages are shipped.
-* 	* plgVmOnUpdateOrder() is fired from the backend after the order has been saved. If one of the
-* 	show methods above have to option to add or edit info, this method must be used to save the data.
-* 
-* The frontend has 2 similar show methods:
-* 	* plgVmOnShowOrderShipperFE()(*) collects and displays specific data about (a) shipment(s)
-* 	* plgVmOnShowOrderLineShipperFE() can be used to show information about a single orderline, e.g.
 * 	display a package code at line level when more packages are shipped.
+* 	* plgVmOnEditOrderLineShipperBE() can be used add a package code for an order line when more
+* 	packages are shipped.
+* 	* plgVmOnUpdateOrderShipperBE is fired inside a form. It can be used to add shipper data, like package code.
+* 	* plgVmOnSaveOrderShipperBE() is fired from the backend after the order has been saved. If one of the
+* 	show methods above have to option to add or edit info, this method must be used to save the data.
+* 	* plgVmOnUpdateOrderLine() is fired from the backend after an order line has been saved. This method
+* 	must be reimplemented if plgVmOnEditOrderLineShipperBE() is used.
+* 
+* The frontend 1 show method:
+* 	* plgVmOnShowOrderShipperFE() collects and displays specific data about (a) shipment(s)
 * 
 * @package	VirtueMart
 * @subpackage Plugins
@@ -57,11 +60,17 @@ jimport('joomla.plugin.plugin');
 abstract class vmShipperPlugin extends JPlugin
 {
 	/**
-	 * Shipper. This var must be overwritten by all plugins, by adding this code to the constructor:
+	 * @var string Identification of the shipper. This var must be overwritten by all plugins,
+	 * by adding this code to the constructor:
 	 * $this->_selement = basename(__FILE, '.php');
-	 * @var string Identification of the shipper
 	 */
 	protected $_selement = '';
+
+	/**
+	 * @var array List with all carriers the have been implemented with the plugin in the format
+	 * id => name
+	 */
+	protected $carrier;
 
 	/**
 	 * Constructor
@@ -73,6 +82,7 @@ abstract class vmShipperPlugin extends JPlugin
 	function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+		$this->carrier = array();
 	}
 
 	/**
@@ -82,9 +92,97 @@ abstract class vmShipperPlugin extends JPlugin
 	 * @return float Total weight for the order
 	 * @author Oscar van Eijk
 	 */
-	protected function getOrderWeight($_cart)
+	protected function getOrderWeight(VirtueMartCart $_cart)
 	{
-		dump ($_cart, 'Cart in vmshipperplugin on line '.__LINE__);
+		$_weight = 0;
+		foreach ($_cart->products as $_prod) {
+			$_weight += ($_prod->product_weight * $_prod->quantity);
+		}
+		return $_weight;
+	}
+
+	/**
+	 * Translate the country ID to the country code as used in the shipper configuration.
+	 * @param object $_cart Cart object
+	 * @return string 3 charachter country code
+	 * @author Oscar van Eijk
+	 */
+	protected function getShipToCountry(VirtueMartCart $_cart)
+	{
+		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		return ShopFunctions::getCountryByID($_address['country_id'], 'country_3_code');
+	}
+
+	/**
+	 * Get the shipto zip from the cart
+	 * @param object $_cart Cart object
+	 * @return string Zipcode
+	 * @author Oscar van Eijk
+	 */
+	protected function getShipToZipcode(VirtueMartCart $_cart)
+	{
+		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
+		return $_address['zip'];
+	}
+
+	/**
+	 * Fill the array with all carriers found with this plugin for the current vendor
+	 * @return True when carrier(s) was (were) found for this vendor, false otherwise
+	 * @author Oscar van Eijk
+	 */
+	protected function getCarriers($_vendorId)
+	{
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT v.`shipping_carrier_id`   AS id '
+			. ',      v.`shipping_carrier_name` AS name '
+			. 'FROM   #__vm_shipping_carrier v '
+			. ',      #__plugins             j '
+			. 'WHERE j.`element` = "'.$this->_selement.'" '
+			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
+			. 'AND  (v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
+			. ' OR   v.`shipping_carrier_vendor_id` = "0") '
+		;
+		$_db->setQuery($_q);
+		if (!$_res =  $_db->loadAssocList()) {
+			return false;
+		}
+		foreach ($_res as $_r){
+			$this->carrier[$_r['id']] = $_r['name'];
+		}
+		return true;
+	}
+
+	/**
+	 * Check if this shipper has carriers for the current vendor.
+	 * @author Oscar van Eijk
+	 * @param integer $_vendorId The vendor ID taken from the cart.
+	 * @return True when a shipper_id was found for this vendor, false otherwise
+	 */
+	protected function validateVendor($_vendorId)
+	{
+		
+		if (!$_vendorId) {
+			$_vendorId = 1;
+		}
+
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT 1 '
+			. 'FROM   #__vm_shipping_carrier v '
+			. ',      #__plugins             j '
+			. 'WHERE j.`element` = "'.$this->_selement.'" '
+			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
+			. 'AND   v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
+			. 'AND   v.`published` = 1 '
+		 ;
+		$_db->setQuery($_q);
+		$_r =  $_db->loadAssoc();
+
+		if ($_r){
+			return true;
+		} else{
+			return false;
+		}
 	}
 
 	/**
@@ -132,78 +230,155 @@ abstract class vmShipperPlugin extends JPlugin
 	 * one of the available shippers.
 	 * It should display a radio button (name: shipper_id) to select the shipper. In the description,
 	 * the shipping cost can also be displayed, based on the total order weight and the shipto
-	 * country.
-	 * This must be made final during confirmation.
+	 * country (this wil be calculated again during order confirmation)
 	 * 
 	 * @param object $_cart the cart object
-	 * @param boolean $_selected True if this shipper is currently selected in the cart
+	 * @param integer $_selected ID of the shipper currently selected
 	 * @return HTML code to display the form
 	 * @author Oscar van Eijk
 	 */
 	 
-	abstract public function plgVmOnSelectShipper($_cart, $_selected = false);
+	public function plgVmOnSelectShipper(VirtueMartCart $_cart, $_selectedShipper = 0)
+	{
+		if ($this->getCarriers($_cart->vendorId) === false) {
+			return $this->name . ' not valid for ' . $_cart->vendorId . '<br/>';
+		}
+
+		$_html  = "<fieldset>\n";
+		foreach ($this->carrier as $_id => $_name) {
+			if ($_selectedShipper == $_id) {
+				$_checked = '"checked"';
+			} else {
+				$_checked = '';
+			}
+			$_rateID = $this->selectShippingRate($_cart, $_id);
+			$_price = $this->getShippingRate($_rateID);
+			$_html .= '<input type="radio" name="shipper_id" id="shipper_id_'.$_id.'" value="'.$_id.'" '.$_checked.'>'
+					. '<label for="shipper_id_'.$_id.'">'.$_name." ($_price)</label><br/>\n";
+		}
+		$_html .= "</fieldset>\n";
+		return $_html;
+	}
 
 
 	/**
 	 * This event is fired after the shipping method has been selected. It can be used to store
 	 * additional shipper info in the cart.
+	 * This method must be reimplemented.
 	 * 
+	 * @param object $_cart Cart object
+	 * @param integer $_selected ID of the shipper selected
+	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
+	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
 	 * @author Oscar van Eijk
 	 */
-	function plgVmOnShipperSelected($cart)
+	public function plgVmOnShipperSelected(VirtueMartCart $cart, $_selectedShipper = 0)
 	{
-		return null;
+		if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
+			return null; // Another shipper was selected, do nothing
+		}
+		$cart->setShippingRate($this->selectShippingRate($cart));
+		return true;
 	}
-
+	
 	/**
 	 * This event is fired after the payment has been processed; it selects the actual shipping rate
 	 * based on the shipto (country, zip) and/or order weight, and optionally writes extra info
-	 * to the database (in which case this plugin must be reimplemented).
+	 * to the database (in which case this method must be reimplemented).
+	 * Reimplementation is not required, but when done, the following check MUST be made:
+	 * 	if (!$this->selectedThisShipper($this->_selement, $_cart->shipper_id)) {
+	 * 		return null;
+	 * 	}
+	 * 
+	 * Returing parent::plgVmOnConfirmShipper($_cart) is valid but will produce extra overhead!
 	 * 
 	 * @param object $_cart Cart object
-	 * @return boolean True on succes, false otherwise
+	 * @return integer The shipping rate ID
 	 * @author Oscar van Eijk
 	 */
 	public function plgVmOnConfirmShipper(VirtueMartCart $_cart)
 	{
-		$_cart->selectShippingRate($this->selectShippingRate($_cart));
+		return $this->selectShippingRate($_cart);
 	}
 
 	/**
 	 * This method is fired when showing the order details in the backend.
 	 * It displays the shipper-specific data.
-	 * All plugins *must* reimplement this method.
+	 * NOTE, this plugin should NOT be used to display form fields, since it's called outside
+	 * a form! Use plgVmOnUpdateOrderBE() instead!
 	 * 
 	 * @param integer $_orderId The order ID
-	 * @param integer $_shipperId Shipper ID used for this order
+	 * @param integer $_vendorId Vendor ID
+	 * @param object $_shipInfo Object with the properties 'carrier' and 'name' 
 	 * @return mixed Null for shippers that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderShipperBE($_orderId, $_shipperId);
+	public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo)
+	{
+		if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
+			return null;
+		}
+
+		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
+		$_html = '<table class="admintable">'."\n"
+			.	'	<thead>'."\n"
+			.	'		<tr>'."\n"
+			.	'			<td class="key" style="text-align: center;" colspan="2">' . JText::_('VM_ORDER_PRINT_SHIPPING_LBL') . '</td>'."\n"
+			.	'		</tr>'."\n"
+			.	'	</thead>'."\n"
+			.	'	<tr>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') . ': </td>'."\n"
+			.	'		<td align="left">' . $_shipInfo->carrier . '</td>'."\n"
+			.	'	</tr>'."\n"
+			.	'	<tr>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>'."\n"
+			.	'		<td>' . $_shipInfo->name . '</td>'."\n"
+			.	'	</tr>'."\n"
+			.	'	<tr>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>'."\n"
+			.	'		<td align="left">' . $_currency->getFullValue($this->getShippingRateIDForOrder($_orderId)) . '</td>'."\n"
+			.	'	</tr>'."\n"
+			.	'</table>'."\n"
+		;
+		return $_html;
+	}
 
 	/**
-	 * This method is fired when showing the order details in the backend, for every orderline.
-	 * It can be used to add or display line specific package codes
+	 * This method is fired when editing the order line details in the backend.
+	 * It can be used to add line specific package codes
 	 * 
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for shippers that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderLinShipperBE($_orderId, $_lineId)
+	public function plgVmOnEditOrderLineShipperBE($_orderId, $_lineId)
 	{
 		return null;
 	}
 
 	/**
-	 * Save updated order(line) data to the shipper specific table
+	 * Save updated order data to the shipper specific table
 	 * 
-	 * @param object $_cart Cart object
+	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this shipper is not actived.
 	 * @author Oscar van Eijk
 	 */
-	public function plgVmOnUpdateOrder (VirtueMartCart $_cart)
+	public function plgVmOnUpdateOrderShipper ($_formData)
+	{
+		return null;
+	}
+
+	/**
+	 * Save updated orderline data to the shipper specific table
+	 * 
+	 * @param array $_formData Form data
+	 * @return mixed, True on success, false on failures (the rest of the save-process will be
+	 * skipped!), or null when this shipper is not actived.
+	 * @author Oscar van Eijk
+	 */
+	public function plgVmOnUpdateOrderLineShipper ($_formData)
 	{
 		return null;
 	}
@@ -211,13 +386,31 @@ abstract class vmShipperPlugin extends JPlugin
 	/**
 	 * This method is fired when showing the order details in the frontend.
 	 * It displays the shipper-specific data.
-	 * All plugins *must* reimplement this method.
 	 * 
 	 * @param integer $_orderId The order ID
 	 * @return mixed Null for shippers that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderShipperFE($_orderId);
+	public function plgVmOnShowOrderShipperFE($_orderId)
+	{
+		if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
+			return null;
+		}
+		
+		$_shp = '';
+		$_db = &JFactory::getDBO();
+		$_q = 'SELECT r.`shipping_rate_name` AS rate '
+			. ',      c.`shipping_carrier_name` AS carrier '
+			. 'FROM #__vm_shipping_rate r '
+			. ',    #__vm_shipping_carrier c '
+			. 'WHERE r.`shipping_rate_id` = ' . $this->getShippingRateIDForOrder($_orderId) . ' '
+			. 'AND   r.`shipping_rate_carrier_id` = c.`shipping_carrier_id` '
+		;
+		$_db->setQuery($_q);
+		$_r = $_db->loadAssoc();
+		$_shp .= $_r['carrier'] . ' (' . $_r['rate'] . ')';
+		return $_shp;
+	}
 
 	/**
 	 * This method is fired when showing the order details in the frontend, for every orderline.
@@ -229,12 +422,13 @@ abstract class vmShipperPlugin extends JPlugin
 	 * @return mixed Null for shippers that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderLinShipperFE($_orderId, $_lineId)
+	public function plgVmOnShowOrderLineShipperFE($_orderId, $_lineId)
 	{
 		return null;
 	}
 	
 
+	
 	/**
 	 * Get the shipping rate ID for a given order number
 	 * @access protected
@@ -255,6 +449,23 @@ abstract class vmShipperPlugin extends JPlugin
 		return $_r['ship_method_id'];
 	}
 
+	/**
+	 * Get the total price for a shipping rate
+	 * @param integer $_id Shipping rate ID
+	 * @return Price in display format
+	 * @author Oscar van EIjk
+	 */
+	protected function getShippingRate($_id)
+	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'shippingrate.php');
+		$_sRate = new VirtueMartModelShippingRate();
+		$_rates = $_sRate->getShippingRatePrices($_id);
+		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
+		$_calc = calculationHelper::getInstance();
+		return $_calc->priceDisplay($_total);
+	}
+	
+	
 	/**
 	 * Get the shipper ID for a given order number
 	 * @access protected
@@ -281,19 +492,26 @@ abstract class vmShipperPlugin extends JPlugin
 	 * Select the shipping rate ID, based on the selected shipper in combination with the
 	 * shipto address (country and zipcode) and the total order weight.
 	 * @param object $_cart Cart object
-	 * @param int _shipperID Shipper ID
-	 * @return int Shipping rate ID. Only 1 selected ID will be returned; if more ID's match, the
-	 * cheapest will be selected.
+	 * @param int $_shipperID Shipper ID, by default taken from the cart
+	 * @return int Shipping rate ID, -1 when no match is found. Only 1 selected ID will be returned;
+	 * if more ID's match, the cheapest will be selected.
 	 */
-	protected function selectShippingRate(VirtueMartCart $_cart, $_shipperID)
+	protected function selectShippingRate(VirtueMartCart $_cart, $_shipperId = 0)
 	{
+		$_orderWeight = $this->getOrderWeight($_cart);
+		$_stCountry = $this->getShipToCountry($_cart);
+		$_stZipcode = $this->getShipToZipcode($_cart);
+		if ($_shipperId == 0) {
+			$_shipperId = $_cart->shipper_id;
+		}
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_rate_id` '
 			. 'FROM #__vm_shipping_rate '
-			. "WHERE `shipping_rate_carrier_id` = $_shipperID "
+			. "WHERE `shipping_rate_carrier_id` = $_shipperId "
 			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
+			. "AND   '$_stZipcode' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end` "
 			. 'AND   (`shipping_rate_country` = \'\' '
-			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_stCountry.'[[:>:]]\' )'
+			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_stCountry.'[[:>:]]\' ) '
 			. 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) '
 			. 'LIMIT 1';
 		$_db->setQuery($_q);
@@ -309,7 +527,7 @@ abstract class vmShipperPlugin extends JPlugin
 	 * @author Oscar van Eijk
 	 * @return True if the calling plugin has the given payment ID
 	 */
-	final protected function selectedThisMethod($_selement, $_sid)
+	final protected function selectedThisShipper($_selement, $_sid)
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT COUNT(*) AS c '
@@ -320,7 +538,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. "AND   j.element = '$_selement'";
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
-		return ($_r['c'] == 1);
+		return ($_r['c'] >= 1);
 	}
 
 	/**

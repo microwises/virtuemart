@@ -28,13 +28,18 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TableShipping_Carrier extends JTable {
 
-    /** @var int Primary key */
-    var $shipping_carrier_id			= 0;
-    /** @var string Shipping Carrier name*/
-    var $shipping_carrier_name      	= '';
-    /** @var char Shipping Carrier code */
-    var $shipping_carrier_list_order    = 0;
-
+	/** @var int Primary key */
+	var $shipping_carrier_id			= 0;
+	/** @var string Shipping Carrier name*/
+	var $shipping_carrier_name			= '';
+	/** @var int Shipping List order */
+	var $shipping_carrier_list_order	= 0;
+	/** @var int Shipping Joomla plugin I */
+	var $shipping_carrier_jplugin_id	= 0;
+	/** @var int Vendor ID */
+	var $shipping_carrier_vendor_id		= 0;
+	/** @var int Published boolean */
+	var $published						= 1;
 
     /**
      * @author RickG

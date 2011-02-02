@@ -1,13 +1,12 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* The ps_authorize class, containing the payment processing code
-*  for transactions with authorize.net 
+* Payment processing plugin for transactions with authorize.net 
 *
 * @version $Id$
 * @package VirtueMart
-* @subpackage payment
-* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+* @subpackage Plugins - payment
+* @copyright Copyright (C) 2004-2011 VirtueMart Team - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -130,7 +129,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * 
 	 * @author Max Milbers
 	 */
-	function plgVmOnShowList($cart,$checkedPaymId=0){
+	function plgVmOnSelectPayment($cart,$checkedPaymId=0){
 		if(!$this -> setVmParams($cart->vendorId)) return ;
 		
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
@@ -247,9 +246,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 	/**
 	 * Display stored payment data for an order
-	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowStoredOrder()
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowStoredOrder($_order_id, $_paymethod_id)
+	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
 	{
 		
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {

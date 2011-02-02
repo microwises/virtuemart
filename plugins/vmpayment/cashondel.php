@@ -107,9 +107,9 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	
 	/**
 	 * Display stored payment data for an order
-	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowStoredOrder()
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowStoredOrder($_order_id, $_paymethod_id)
+	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
 	{
 		
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {

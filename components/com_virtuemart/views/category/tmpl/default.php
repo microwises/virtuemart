@@ -28,8 +28,12 @@ if ($this->category->haschildren) {
 	<?php
 	$iCol = 1;
 	
-	// calculation of the categories per row
+	// calculation of the categories per row 
 	$categories_per_row = VmConfig::get('categories_per_row');
+	// Prevent a devided by zero warning: make sure is't at least 1
+	if ($categories_per_row <= 0) {
+		$categories_per_row = 1;
+	}
 	$cellwidth = 100 / $categories_per_row;
 	$cellwidth = intval($cellwidth);
 	

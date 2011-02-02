@@ -43,6 +43,7 @@ class VirtueMartCart  {
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
 	var $shipping_rate_id = 0;
+	var $shipper_id = 0;
 	var $paym_id = 0;
 	var $BT = 0;
 	var $ST = 0;
@@ -436,6 +437,34 @@ class VirtueMartCart  {
 		$this->setCartIntoSession();
 	}
 
+	/**
+	 * Check the selected shipper data and store the info in the cart
+	 * @param integer $shipper_id Shipper ID taken from the form data
+	 * @author Oscar van Eijk
+	 */
+	public function setShipper($shipper_id)
+	{
+		JPluginHelper::importPlugin('vmshipper');
+
+		$_dispatcher = JDispatcher::getInstance();
+		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelected', array('cart'=>$this, '_selectedShipper' => $shipper_id));
+		foreach ($_retValues as $_retVal) {
+			if ($_retVal === true) {
+				$this->shipper_id=$shipper_id;
+				$this->setCartIntoSession();
+				break; // Plugin completed succesful; nothing else to do
+			} elseif ($_retVal === false) { // Missing data, ask for it (again)
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');
+//	Remove comments if newchecks need to be implemented.
+//	NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+//				} elseif ($_retVal === null) {
+//					continue; // This plugin was skipped
+//				} else {
+//					continue; // Other values not yet implemented
+			}
+		}
+	}
+
 	public function setPaymentMethod($paym_id){
 		$this->paym_id=$paym_id;
 		$this->setCartIntoSession();
@@ -466,11 +495,10 @@ class VirtueMartCart  {
 				if(!$redirectMsg){
 //					$this->setCartIntoSession();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart',$redirectMsg);
-					
 				}
 			}	
 		}
-		
+
 		//But we check the data again to be sure
 		if(empty($this->BT)){
 			$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
@@ -501,9 +529,25 @@ class VirtueMartCart  {
 		}
 
 		//Test Shipment
-		if(empty($this->shipping_rate_id)){
-
+		if($this->shipper_id == 0){
 //			$this->setCartIntoSession();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
+		}
+		// Ok, a shipper was selected, now make sure we can find a matching shipping rate for
+		// the current order shipto and weight
+		JPluginHelper::importPlugin('vmshipper');
+		$_dispatcher = JDispatcher::getInstance();
+		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
+		$this->shipping_rate_id = -1;
+		foreach ($_retValues as $_retVal) {
+			if ($_retVal !== null) {
+				$this->shipping_rate_id = $_retVal;
+				break; // When we've got a value, it's always a valid one, so we're done now
+			}
+		}
+		if ($this->shipping_rate_id < 0) {
+			$this->shipper_id = 0;
+			$this->setCartIntoSession();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
 		}
 

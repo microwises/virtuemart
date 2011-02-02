@@ -65,7 +65,7 @@ function myValidator(f, t)
 
 	$_dispatcher = JDispatcher::getInstance();
 	$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
-	$html = $_dispatcher->trigger('plgVmOnShowList', $tmp);
+	$html = $_dispatcher->trigger('plgVmOnSelectPayment', $tmp);
 
 	foreach($html as $item){			
 		echo $item;		

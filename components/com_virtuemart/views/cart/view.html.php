@@ -58,6 +58,7 @@ class VirtueMartViewCart extends JView {
 				
 		} else if($layoutName=='selectshipper'){
 			
+			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTSHIPPER'));
@@ -283,22 +284,13 @@ class VirtueMartViewCart extends JView {
 	}
 	
 	private function lSelectCoupon(){
-		
-		//TODO Oscar coupon
+		$_couponCode = (isset($this->cartData['couponCode']) ? $this->cartData['couponCode'] : '');
+		$this->assignRef('couponCode',$_couponCode);
 	}
 	
 	private function lSelectShipper(){
-		//For the selection of the shipper we need the weight and maybe the dimension.
-		//Just for developing
-		$cartweight= '2';
-		$this->assignRef('cartweight', $cartweight);
-		
-		$shippingCarrierModel = $this->getModel('shippingcarrier');
-		$shippingCarriers = $shippingCarrierModel->getShippingCarrierRates($cartweight);
-		
-		$this->assignRef('shippingCarriers',$shippingCarriers);
-		$this->loadHelper('shopfunctions');
-
+		$_selectedShipper = (empty($this->_cart->shipper_id) ? 0 : $this->_cart->shipper_id);
+		$this->assignRef('selectedShipper',$_selectedShipper);
 	}
 	
 	private function lSelectPayment(){

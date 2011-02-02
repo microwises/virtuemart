@@ -43,6 +43,8 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('html');
 
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmorderplugin.php');
+		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 
@@ -106,7 +108,6 @@ class VirtuemartViewOrders extends JView {
 							$_productAttributes[$_item->order_item_id][$_name][] = $_optObj;
 						}
 					}
-
 					foreach ($_attribs as $_attrib) {
 						$_attr = preg_split('/:\s*/', $_attrib);
 						$_itemAttributesUpdateFields[$_item->order_item_id][] = array(

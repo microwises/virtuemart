@@ -38,7 +38,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -48,7 +48,27 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
 			</td>
-		</tr>					
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('VM_CARRIER_CLASS_NAME'); ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->pluginList; ?>
+			</td>
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('VM_CARRIER_VENDOR'); ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->vendorList; ?>
+			</td>
+		</tr>
 	</table>
 	</fieldset>
 </div>

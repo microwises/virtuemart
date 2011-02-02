@@ -3,16 +3,17 @@
  * abstract class for payment plugins
  *
  * @package	VirtueMart
- * @subpackage User
+ * @subpackage Plugins
  * @author Max Milbers
+ * @author Oscar van Eijk
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: user_info.php 2494 2010-07-19 20:50:08Z milbo $
+ * @version $Id$
  */
  
 // Load the helper functions that are needed by all plugins
@@ -22,8 +23,8 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
-abstract class vmPaymentPlugin extends JPlugin  {
-	
+abstract class vmPaymentPlugin extends JPlugin
+{
 	private $_paym_id = 0;
 	private $_paym_name = '';
 	
@@ -33,34 +34,18 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	/** var Must be overriden in every plugin file */
 	var $_pcode = '' ;
 
-	/** var Must be overriden in every plugin file  atm without use, must be choosen while configuration
-	 * 
-	 *  C = Creditcart
-	 *  Y = Payment processor
-	 *  B = Bank debit
-	 *  N = Address only (Cash on delivery)
-	 *  P = HTML form based (paypal)
-	 * 
-	 * ATTENTION: Is now saved in the params !
-	 * */
-	var $paym_type = '' ;
-
 	/**
 	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
 	 *
 	 * @param object $subject The object to observe
 	 * @param array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgVmPaymentPlugin(& $subject, $config) {
+	function __construct(& $subject, $config)
+	{
 		parent::__construct($subject, $config);
-	
 	}
-	
+
 	/**
 	 * Method to create te plugin specific table; must be reimplemented.
 	 * @example 
@@ -146,44 +131,59 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	}
 		
 	/**
-	 * This shows the plugin for choosing in the payment list of the checkout process.
+	 * This event is fired during the checkout process. It allows the shopper to select
+	 * one of the available payment methods.
+	 * It should display a radio button (name: paym_id) to select the payment method. Other
+	 * information (like credit card info) might be selected as well.
 	 * 
 	 * @author Max Milbers
 	 */
 	 
-	function plgVmOnShowList($cart,$checkedPaymId=0){
-		
-		if(!$this -> setVmParams($cart->vendorId)) return ;
-		
-		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
-		
-		$html = '<fieldset>';
+	function plgVmOnSelectPayment($cart,$checkedPaymId=0)
+	{
+		if (!$this->setVmParams($cart->vendorId)) {
+			return;
+		}
+
+		if ($checkedPaymId==$this->paymentMethod->paym_id) {
+			$checked = '"checked"';
+		} else {
+			$checked = '';
+		}
+
+		$html  = '<fieldset>';
 		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
-		$html .= ' </fieldset> ';
+		$html .= '</fieldset> ';
 		return $html;
 	}
 
 	/**
-	 * This is for setting the input data of the payment method, after selecting into the cart
+	 * This event is fired after the payment method has been selected. It can be used to store
+	 * additional payment info in the cart.
 	 * 
 	 * @author Max Milbers
 	 */
-	function plgVmOnPaymentSelectCheck($cart){
-		return null;	
-	}
-	
-	/**
-	 * This is for checking the input data of the payment method within the checkout
-	 * 
-	 * @author Max Milbers
-	 */
-	function plgVmOnCheckoutCheckPaymentData(){
+	function plgVmOnPaymentSelectCheck($cart)
+	{
 		return null;
 	}
-	
+
 	/**
-	 * This method stores the data of the used payment method. The function is made abstract
-	 * since all plugins *must* reimplement it.
+	 * This event is fired during the checkout process. It can be used to validate the
+	 * payment data as entered by the user.
+	 * 
+	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
+	 * @author Max Milbers
+	 */
+	function plgVmOnCheckoutCheckPaymentData()
+	{
+		return null;
+	}
+
+	/**
+	 * This event is fired after the payment has been processed; it stores the payment method-
+	 * specific data.
+	 * All plugins *must* reimplement this method.
 	 * NOTE for Plugin developers:
 	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
 	 *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
@@ -198,7 +198,9 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData);
 	
 	/**
-	 * This method displays the stored data of the transaction
+	 * This method is fired when showing the order details in the backend.
+	 * It displays the the payment method-specific data.
+	 * All plugins *must* reimplement this method.
 	 * 
 	 * @param integer $_order_id The order ID
 	 * @param integer $_paymethod_id Payment method used for this order
@@ -206,10 +208,10 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowStoredOrder($_order_id, $_paymethod_id);
+	abstract function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id);
 
 	/**
-	 * This event is triggered each time the status of an order is changed to Cancelled.
+	 * This event is fired each time the status of an order is changed to Cancelled.
 	 * It can be used to refund payments, void authorization etc.
 	 * Return values are ignored.
 	 * 
@@ -232,7 +234,8 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	}
 
 	/**
-	 * Process a previous transaction, capture the Payment
+	 * This event is fired when the status of an order is changed to Shipped.
+	 * It can be used to confirm or capture payments
 	 *
 	 * Note for plugin developers: you are not required to reimplement this method, but if you
 	 * do so, it MUST start with this code:
@@ -246,7 +249,7 @@ abstract class vmPaymentPlugin extends JPlugin  {
 	 * @param int $_orderID Order ID
 	 * @return mixed True on success, False on failure, Null if this plugin was not activated
 	 */
-	function plgVmOnShipOrder( $_orderID )
+	function plgVmOnShipOrder($_orderID)
 	{
 		return null;
 	}
@@ -358,11 +361,5 @@ abstract class vmPaymentPlugin extends JPlugin  {
 		if (!$_db->query()) {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 		}
-	}
-
-	protected function updateOrderStatus ($_orderID, $_orderStatus)
-	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orders.php');
-		
 	}
 }

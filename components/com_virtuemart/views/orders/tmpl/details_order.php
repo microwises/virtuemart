@@ -23,17 +23,31 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
 	<tr>
 		<td align="left"><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?></td>
-		<td align="lef"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->cdate); ?></td>
+		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->cdate); ?></td>
 	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></td>
-		<td align="lef"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']->order_status]; ?></td>
+		<td align="left"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']->order_status]; ?></td>
 	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('LAST_UPDATED') ?></td>
-		<td align="lef"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->mdate); ?></td>
+		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->mdate); ?></td>
 	</tr>
-
+	<tr>
+		<td align="left"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
+		<td align="left"><?php
+		JPluginHelper::importPlugin('vmshipper');
+		$_dispatcher =& JDispatcher::getInstance();
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
+			 $this->orderdetails['details']['BT']->order_id
+		));
+		foreach ($_returnValues as $_returnValue) {
+			if ($_returnValue !== null) {
+				echo $_returnValue;
+			}
+		}
+		?></td>
+	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?></td>
 		<td align="right"><?php echo $this->currency->getFullValue($this->orderdetails['details']['BT']->order_subtotal); ?></td>

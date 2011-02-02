@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" >
+	<name>VMShipper - Standard</name>
+	<author><![CDATA[Oscar van Eijk]]></author>
+	<creationdate>2011</creationdate>
+	<copyright><![CDATA[VirtueMart Team]]></copyright>
+	<license>GNU/GPL</license>
+	<authoremail></authoremail>
+	<authorurl>http://virtuemart.net</authorurl>
+	<version>1.0</version>
+	<description><![CDATA[Default shipper without tracking and tracing facilities, like regular postal services]]></description>
+
+	<element>standard</element>	
+	<files>
+		<filename plugin="authorize">standard.php</filename>
+	</files>
+	<params />
+</install>

@@ -22,6 +22,11 @@ $document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/
 //$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
 
 AdminMenuHelper::startAdminArea();
+
+// Get the plugins
+JPluginHelper::importPlugin('vmpayment');
+JPluginHelper::importPlugin('vmorderplugin');
+JPluginHelper::importPlugin('vmshipper');
 ?>
 <table class="adminlist" style="table-layout: fixed;">
 	<tr>
@@ -89,6 +94,28 @@ AdminMenuHelper::startAdminArea();
 				</div>
 				</td>
 			</tr>
+
+			<?php
+				// Load additional plugins
+				$_dispatcher =& JDispatcher::getInstance();
+				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBE',array(
+					 $this->orderID
+				));
+				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderShipperBE',array(
+					 $this->orderID
+				));
+				$_returnValues = array_merge($_returnValues1, $_returnValues2);
+				$_plg = '';
+				foreach ($_returnValues as $_returnValue) {
+					if ($_returnValue !== null) {
+						$_plg .= ('	<td colspan="4">' . $_returnValue . "</td>\n");
+					}
+				}
+				if ($_plg !== '') {
+					echo "<tr>\n$_plg</tr>\n";
+				}
+			?>
+
 		</table>
 		</td>
 	</tr>
@@ -192,6 +219,25 @@ AdminMenuHelper::startAdminArea();
 								. '</tr>'
 								. '</table>';
 						}
+						$_dispatcher =& JDispatcher::getInstance();
+						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(
+							 $this->orderID
+							,$item->order_item_id
+						));
+						$_plg = '';
+						foreach ($_returnValues as $_returnValue) {
+							if ($_returnValue !== null) {
+								$_plg .= $_returnValue;
+							}
+						}
+						if ($_plg !== '') {
+							echo '<table border="0" celspacing="0" celpadding="0">'
+								. '<tr>'
+								. '<td width="8px"></td>' // Indent
+								. '<td>'.$_plg.'</td>'
+								. '</tr>'
+								. '</table>';
+						}
 					?>
 				</td>
 				<td>
@@ -240,6 +286,24 @@ AdminMenuHelper::startAdminArea();
 									. '</tr>';
 							}
 							echo '</table>';
+						}
+						$_returnValues = $_dispatcher->trigger('plgVmOnEditOrderLineShipperBE',array(
+							 $this->orderID
+							,$item->order_item_id
+						));
+						$_plg = '';
+						foreach ($_returnValues as $_returnValue) {
+							if ($_returnValue !== null) {
+								$_plg .= $_returnValue;
+							}
+						}
+						if ($_plg !== '') {
+							echo '<table border="0" celspacing="0" celpadding="0">'
+								. '<tr>'
+								. '<td width="8px"></td>' // Indent
+								. '<td>'.$_plg.'</td>'
+								. '</tr>'
+								. '</table>';
 						}
 					?>
 				</td>
@@ -389,31 +453,23 @@ AdminMenuHelper::startAdminArea();
 &nbsp;
 <table width="100%">
 	<tr>
-		<td valign="top">
-		<table class="admintable">
-			<thead>
-				<tr>
-					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></td>
-				</tr>
-			</thead>
-			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </td>
-				<td align="left"><?php echo $this->shippingInfo->carrier; ?></td>
-			</tr>
-			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </td>
-				<td><?php echo $this->shippingInfo->name; ?></td>
-			</tr>
-			<tr>
-				<td class="key"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </td>
-				<td align="left"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
-			</tr>
-		</table>
+		<td valign="top"><?php
+		$_dispatcher =& JDispatcher::getInstance();
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
+			 $this->orderID
+			,$this->orderbt->vendor_id
+			,$this->shippingInfo
+		));
+		foreach ($_returnValues as $_returnValue) {
+			if ($_returnValue !== null) {
+				echo $_returnValue;
+			}
+		}
+		?>
 		</td>
 		<td valign="top"><?php 
-		JPluginHelper::importPlugin('vmpayment');
 		$_dispatcher =& JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnShowStoredOrder',array(
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderPaymentBE',array(
 			 $this->orderID
 			,$this->orderbt->payment_method_id
 		));
