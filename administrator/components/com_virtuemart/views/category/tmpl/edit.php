@@ -171,7 +171,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'name', 'name', $this->category->category_template); ?>								
+											<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'directory', 'name', $this->category->category_template); ?>								
 										</td>
 									</tr>
 									<tr>

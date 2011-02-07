@@ -29,7 +29,7 @@ if ($this->category->haschildren) {
 	$iCol = 1;
 	
 	// calculation of the categories per row 
-	$categories_per_row = VmConfig::get('categories_per_row');
+	$categories_per_row = VmConfig::get('categories_per_row',1);
 	// Prevent a devided by zero warning: make sure is't at least 1
 	if ($categories_per_row <= 0) {
 		$categories_per_row = 1;

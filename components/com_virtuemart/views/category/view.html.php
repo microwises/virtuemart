@@ -64,6 +64,33 @@ class VirtuemartViewCategory extends JView {
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
 	    
+	    if ($category->metadesc) {
+			$document->setDescription( $category->metadesc );
+		}
+		if ($category->metakey) {
+			$document->setMetadata('keywords', $category->metakey);
+		}	
+		if ($category->metarobot) {
+			$document->setMetadata('robots', $category->metarobot);
+		}
+		
+		if ($mainframe->getCfg('MetaTitle') == '1') {
+			$mainframe->addMetaTag('title', $category->category_description);  //Maybe better category_name
+		}
+		if ($mainframe->getCfg('MetaAuthor') == '1') {
+			$mainframe->addMetaTag('author', $category->metaauthor);
+		}
+
+		
+//		$mdata = new JParameter($category->metadata);
+//		$mdata = $mdata->toArray();
+//		foreach ($mdata as $k => $v)
+//		{
+//			if ($v) {
+//				$document->setMetadata($k, $v);
+//			}
+//		}
+		
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 	    
 	    if(empty($category->category_template)){

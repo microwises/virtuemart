@@ -129,6 +129,32 @@ class VirtueMartViewProductdetails extends JView {
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
 
+		if ($product->metadesc) {
+			$document->setDescription( $product->metadesc );
+		}
+		if ($product->metakey) {
+			$document->setMetadata('keywords', $product->metakey);
+		}dump($product,'$product->metarobot');
+		if ($product->metarobot) {
+			$document->setMetadata('robots', $product->metarobot);
+		}
+
+		if ($mainframe->getCfg('MetaTitle') == '1') {
+			$mainframe->addMetaTag('title', $product->product_s_desc);  //Maybe better product_name
+		}
+		if ($mainframe->getCfg('MetaAuthor') == '1') {
+			$mainframe->addMetaTag('author', $product->metaauthor);
+		}
+
+//		$mdata = new JParameter($product->metadata);
+//		$mdata = $mdata->toArray();
+//		foreach ($mdata as $k => $v)
+//		{
+//			if ($v) {
+//				$document->setMetadata($k, $v);
+//			}
+//		}
+		
 	    if(empty($category->category_template)){
 	    	$catTpl = VmConfig::get('categorytemplate');
 	    }else {

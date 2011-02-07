@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');?>
 				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div>
 			</td>
 			<td valign="top">
-				<textarea class="inputbox" name="metakeyword" id="meta_keyword" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>
+				<textarea class="inputbox" name="metakey" id="meta_keyword" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>
 			</td>
 		</tr>
 		<tr>

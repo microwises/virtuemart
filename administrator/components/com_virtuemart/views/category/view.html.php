@@ -72,10 +72,27 @@ class VirtuemartViewCategory extends JView {
 			$templateList = array();
 			$JVersion = new JVersion();
 			if ( ! $JVersion->isCompatible('1.6.0')) {
-				//TODO add else for 1.6 Joomla! versions. 
-				// because parseXMLTemplateFiles no longer exists.
+				$defaulttemplate = array();
+				$defaulttemplate[0] = new stdClass;
+				$defaulttemplate[0] -> name = JText::_('VM_CATEGORY_TEMPLATE_DEFAULT');
+				$defaulttemplate[0] -> directory = 0;
+				
+				
+//				$templateList[] = $defaulttemplate;
+				
 				require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
-				$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+				$templatesList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+				$templateList = array_merge($defaulttemplate,$templatesList);
+//				dump($templateList, 'vor rsort my template list');
+//				rsort($templateList);
+//				dump($templateList, 'nach rsort my template list');
+//				$templateList = rsort($templateList);
+//				$templateList[] = JHTML::_('select.option', JText::_('VM_CATEGORY_TEMPLATE_DEFAULT'), 0, 'name' );
+//				$templateList = rsort($templateList);
+				dump($templateList, 'my template list');
+			} else {
+				//TODO add else for 1.6 Joomla! versions. 
+				// because parseXMLTemplateFiles no longer exists.				
 			}
 			
 			$this->assignRef('jTemplateList', $templateList);

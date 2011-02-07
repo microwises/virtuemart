@@ -127,8 +127,11 @@ class convertECB {
 				$length = $currency_list->length;
 				for ($i = 0; $i < $length; $i++) {
 					$currNode =& $currency_list->item($i);
-					$currency[$currNode->attributes->getNamedItem("currency")->nodeValue] = $currNode->attributes->getNamedItem("rate")->nodeValue;
-					unset( $currNode );
+					if(!empty($currNode) && !empty($currNode->attributes->getNamedItem("currency")->nodeValue)){
+						$currency[$currNode->attributes->getNamedItem("currency")->nodeValue] = $currNode->attributes->getNamedItem("rate")->nodeValue;
+						unset( $currNode );						
+					}
+
 				}
 				$globalCurrencyConverter = $currency;
 			}
