@@ -16,8 +16,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * http://virtuemart.org
 */
-// This is required in order to call the plugins from the backend as well!
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 
 class plgVmShipperStandard extends vmShipperPlugin
 {

@@ -16,8 +16,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * http://virtuemart.org
 */
-// This is required in order to call the plugins from the backend as well!
-require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 
 class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	var $_pelement;
@@ -465,13 +463,13 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	}
 
 	/**
-	 * Reimplementation of vmPaymentPlugin::plgVmOnShipOrder()
+	 * Reimplementation of vmPaymentPlugin::plgVmOnShipOrderPayment()
 	 *
-	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShipOrder()
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShipOrderPayment()
 	 * @author Soeren
 	 * TODO This method must be rewritten !!!
 	 */
-	function plgVmOnShipOrder( &$d )
+	function plgVmOnShipOrderPayment( &$d )
 	{
 		$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {

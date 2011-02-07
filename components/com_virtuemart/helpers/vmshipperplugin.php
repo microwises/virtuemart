@@ -102,31 +102,6 @@ abstract class vmShipperPlugin extends JPlugin
 	}
 
 	/**
-	 * Translate the country ID to the country code as used in the shipper configuration.
-	 * @param object $_cart Cart object
-	 * @return string 3 charachter country code
-	 * @author Oscar van Eijk
-	 */
-	protected function getShipToCountry(VirtueMartCart $_cart)
-	{
-		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
-		return ShopFunctions::getCountryByID($_address['country_id'], 'country_3_code');
-	}
-
-	/**
-	 * Get the shipto zip from the cart
-	 * @param object $_cart Cart object
-	 * @return string Zipcode
-	 * @author Oscar van Eijk
-	 */
-	protected function getShipToZipcode(VirtueMartCart $_cart)
-	{
-		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
-		return $_address['zip'];
-	}
-
-	/**
 	 * Fill the array with all carriers found with this plugin for the current vendor
 	 * @return True when carrier(s) was (were) found for this vendor, false otherwise
 	 * @author Oscar van Eijk
@@ -264,7 +239,6 @@ abstract class vmShipperPlugin extends JPlugin
 	/**
 	 * This event is fired after the shipping method has been selected. It can be used to store
 	 * additional shipper info in the cart.
-	 * This method must be reimplemented.
 	 * 
 	 * @param object $_cart Cart object
 	 * @param integer $_selected ID of the shipper selected
@@ -336,7 +310,7 @@ abstract class vmShipperPlugin extends JPlugin
 			.	'	</tr>'."\n"
 			.	'	<tr>'."\n"
 			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>'."\n"
-			.	'		<td align="left">' . $_currency->getFullValue($this->getShippingRateIDForOrder($_orderId)) . '</td>'."\n"
+			.	'		<td align="left">' . $_currency->getFullValue($this->getShippingRate($this->getShippingRateIDForOrder($_orderId))) . '</td>'."\n"
 			.	'	</tr>'."\n"
 			.	'</table>'."\n"
 		;
@@ -457,6 +431,7 @@ abstract class vmShipperPlugin extends JPlugin
 	 */
 	protected function getShippingRate($_id)
 	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'shippingrate.php');
 		$_sRate = new VirtueMartModelShippingRate();
 		$_rates = $_sRate->getShippingRatePrices($_id);
@@ -499,19 +474,19 @@ abstract class vmShipperPlugin extends JPlugin
 	protected function selectShippingRate(VirtueMartCart $_cart, $_shipperId = 0)
 	{
 		$_orderWeight = $this->getOrderWeight($_cart);
-		$_stCountry = $this->getShipToCountry($_cart);
-		$_stZipcode = $this->getShipToZipcode($_cart);
 		if ($_shipperId == 0) {
 			$_shipperId = $_cart->shipper_id;
 		}
+		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
+
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_rate_id` '
 			. 'FROM #__vm_shipping_rate '
 			. "WHERE `shipping_rate_carrier_id` = $_shipperId "
 			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
-			. "AND   '$_stZipcode' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end` "
+			. "AND   '".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end` "
 			. 'AND   (`shipping_rate_country` = \'\' '
-			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_stCountry.'[[:>:]]\' ) '
+			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) '
 			. 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) '
 			. 'LIMIT 1';
 		$_db->setQuery($_q);

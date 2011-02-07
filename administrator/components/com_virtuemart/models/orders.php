@@ -339,7 +339,7 @@ class VirtueMartModelOrders extends JModel {
 				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher =& JDispatcher::getInstance();
-					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrder',array(
+					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
 									 $order_id
 								)
 						);
@@ -360,7 +360,7 @@ class VirtueMartModelOrders extends JModel {
 				if ($new_status == "X") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher =& JDispatcher::getInstance();
-					$_dispatcher->trigger('plgVmOnCancelOrder',array(
+					$_dispatcher->trigger('plgVmOnCancelPayment',array(
 									 $order_id
 									,$order_status_code
 									,$new_status

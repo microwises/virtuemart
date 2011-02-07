@@ -95,7 +95,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @author Max Milbers
 	 * 
 	 */
-	function setVmParams($vendorId=0,$jplugin_id=0){
+	protected function setVmParams($vendorId=0,$jplugin_id=0){
 		
 		if(!$vendorId) $vendorId = 1;
 	 	$db = &JFactory::getDBO();
@@ -136,10 +136,12 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * It should display a radio button (name: paym_id) to select the payment method. Other
 	 * information (like credit card info) might be selected as well.
 	 * 
+	 * @param object $cart The cart object
+	 * @param integer $checkedPaymId ID of an already selected payment method ID, if any
 	 * @author Max Milbers
 	 */
 	 
-	function plgVmOnSelectPayment($cart,$checkedPaymId=0)
+	public function plgVmOnSelectPayment(VirtueMartCart $cart, $checkedPaymId=0)
 	{
 		if (!$this->setVmParams($cart->vendorId)) {
 			return;
@@ -163,7 +165,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * 
 	 * @author Max Milbers
 	 */
-	function plgVmOnPaymentSelectCheck($cart)
+	public function plgVmOnPaymentSelectCheck($cart)
 	{
 		return null;
 	}
@@ -175,7 +177,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
 	 * @author Max Milbers
 	 */
-	function plgVmOnCheckoutCheckPaymentData()
+	public function plgVmOnCheckoutCheckPaymentData()
 	{
 		return null;
 	}
@@ -228,7 +230,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @param char $_oldStat Previous order status
 	 * @param char $_newStat New order status
 	 */
-	function plgVmOnCancelOrder($_orderID, $_oldStat, $_newStat)
+	function plgVmOnCancelPayment($_orderID, $_oldStat, $_newStat)
 	{
 		return;
 	}
@@ -249,7 +251,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @param int $_orderID Order ID
 	 * @return mixed True on success, False on failure, Null if this plugin was not activated
 	 */
-	function plgVmOnShipOrder($_orderID)
+	public function plgVmOnShipOrderPayment($_orderID)
 	{
 		return null;
 	}

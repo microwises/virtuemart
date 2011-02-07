@@ -158,7 +158,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 //		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 //		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
-		$q = 'SELECT * FROM #__extensions WHERE `folder` = "vmpayment" AND `enabled`="1" ';
+		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmpayment" AND `published`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList();
 
@@ -166,11 +166,11 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
-			if($paym['extension_id']==$selected) $checked='selected="selected"'; else $checked='';
+			if($paym['id']==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.$paym['name'].'</option>';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['id'].'">'.$paym['name'].'</option>';
 
 		}
 		$listHTML .= '</select>';
