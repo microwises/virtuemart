@@ -58,19 +58,9 @@ class VirtuemartViewConfig extends JView {
 		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
-		$JVersion = new JVersion();
-		if ($JVersion->isCompatible('1.6.0')) {
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
-			$templatesModel = new TemplatesModelTemplates();
-			$templateList = array();
-			$templateList = $templatesModel->getItems();
-			//@TODO remove templates for admin panel.
-		}
-		else {
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
-			$templateList = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
-		}
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		$templateList = ShopFunctions::renderTemplateList(JText::_('VM_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
+
 		$this->assignRef('jTemplateList', $templateList);
 
 		$vmLayoutList = $model->getLayoutList('virtuemart');

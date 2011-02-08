@@ -140,25 +140,31 @@ class VirtuemartViewPaymentMethod extends JView {
 		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
 		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
 		);
-//		$listHTML='<div id="paymList">';
+
 		$listHTML='';
 		foreach($list as $item){
 			if($item['paym_type']==$selected) $checked='checked="checked"'; else $checked='';
 			if($item['paym_type']=='Y' || $item['paym_type']=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
 			$listHTML .= '<input id="'.$id.'" type="radio" name="paym_type" value="'.$item['paym_type'].'" '.$checked.'>'.$item['paym_type_name'].' <br />';
 		}
-//		$listHTML .= '</div>';
-//		echo $listHTML;die;
+
 		return $listHTML;
 	}
 
 	function renderInstalledPaymentPlugins($selected){
 
+		$JVersion = new JVersion();
+		if ( $JVersion->isCompatible('1.5')) {
+			$table = '#__plugins';
+		} else {
+			$table = '#__extensions';
+		}
+		
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 //		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 //		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
-		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmpayment" AND `published`="1" ';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `published`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList();
 

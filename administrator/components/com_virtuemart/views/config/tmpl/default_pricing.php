@@ -47,12 +47,17 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
 			    <br />
 			    <?php
-				$selectOptions['list.attr'] = 'size=5';
-				$selectOptions['option.key'] = 'title';
-				$selectOptions['list.select'] = $this->config->get('price_access_level');
-				$selectOptions['option.text.toHtml'] = true;
-				echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
-			//echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level')); ?>
+			    $JVersion = new JVersion();
+				if ( $JVersion->isCompatible('1.5')) {
+					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'name', 'text', $this->config->get('price_access_level')); 		
+				} else {
+					$selectOptions['list.attr'] = 'size=5';
+					$selectOptions['option.key'] = 'text';
+					$selectOptions['option.value'] = 'name';
+					$selectOptions['list.select'] = $this->config->get('price_access_level');
+//					$selectOptions['option.text.toHtml'] = true;
+					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
+				} ?>
 			</td>
 		    </tr>
 		    <tr>

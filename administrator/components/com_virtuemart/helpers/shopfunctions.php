@@ -218,6 +218,45 @@ class ShopFunctions {
 	}
 	
 	/**
+	 * Creates the chooseable template list
+	 * 
+	 * @author Max Milbers, impleri
+	 * 
+	 * @param string defaultText Text for the empty option 
+	 * @param boolean defaultOption you can supress the empty otion setting this to false
+	 * return array of Template objects
+	 */
+	public function renderTemplateList($defaultText = 0,$defaultOption=true){
+		
+		if(empty($defaultText)) $defaultText = JText::_('VM_TEMPLATE_DEFAULT');
+		
+		$templateList = array();
+		
+		$defaulttemplate = array();
+		if($defaultOption){
+			$defaulttemplate[0] = new stdClass;
+			$defaulttemplate[0] -> name = $defaultText;
+			$defaulttemplate[0] -> directory = 0;
+		}
+			
+		$JVersion = new JVersion();
+		if ($JVersion->isCompatible('1.5')) {
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
+			$templateList = array_merge($defaulttemplate,$jtemplates);			
+		} else {
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
+			$templatesModel = new TemplatesModelTemplates();
+			$jtemplates = array();
+			$jtemplates = $templatesModel->getItems();
+			$templateList = array_merge($defaulttemplate,$jtemplates);
+			//@TODO remove templates for admin panel.
+		}
+		return $templateList;
+	}
+	
+	/**
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
@@ -872,6 +911,8 @@ class ShopFunctions {
 
 		return($str);
 	}
+	
+	
 }
 
 //pure php no tag

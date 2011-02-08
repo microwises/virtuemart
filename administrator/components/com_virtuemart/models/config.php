@@ -58,16 +58,12 @@ class VirtueMartModelConfig extends JModel {
 			if ($handle = opendir($dir)) {
 			    while (false !== ($file = readdir($handle))) {
 			    	//Handling directly for extension is much cleaner
-//					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html' ) {	
-//					if (filetype($dir.DS.$file) != 'dir' && $path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
-						$path_info = pathinfo($file);						
-					    if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
+					$path_info = pathinfo($file);						
+					if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
 					    $alreadyAddedFile[] = $file;
 					    //There is nothing to translate here
-//						$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
 						$result[] = JHTML::_('select.option', $file, $path_info['filename']);
-					    }
-//					}
+					}
 			    }
 			}			
 		}
