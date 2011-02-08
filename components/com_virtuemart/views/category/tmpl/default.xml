@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Standard Virtuemart Category Layout">
+		<message>
+			To set the defaut category view
+		</message>
+	</layout>
+	<state>
+		<name>Standard Virtuemart Category Layout</name>
+		<description>To set the defaut category view</description>
+		<url>
+			<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__vm_category" key_field="category_id" value_field="category_name" label="Category" description="Choose a category..." />
+		</url>
+	</state>
+</metadata>
