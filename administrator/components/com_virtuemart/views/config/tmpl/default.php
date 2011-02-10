@@ -48,7 +48,9 @@ echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_FEEDTAB'), 'feed_panel');
 echo $this->loadTemplate('feeds');
 echo $pane->endPanel();
-
+echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SEF'), 'sef_panel');
+echo $this->loadTemplate('sef');
+echo $pane->endPanel();
 echo $pane->endPane();
 ?>
 

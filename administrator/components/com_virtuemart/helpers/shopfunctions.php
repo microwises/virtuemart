@@ -240,7 +240,7 @@ class ShopFunctions {
 		}
 			
 		$JVersion = new JVersion();
-		if ($JVersion->isCompatible('1.5')) {
+		if (!$JVersion->isCompatible('1.6')) {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 			$templateList = array_merge($defaulttemplate,$jtemplates);			
