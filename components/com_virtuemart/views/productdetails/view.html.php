@@ -72,6 +72,9 @@ class VirtueMartViewProductdetails extends JView {
 			return;
 		}
 		$product = $product_model->getProduct($product_id);
+		/* Set Canonic link */
+		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
+		
 		$this->assignRef('product', $product);
 		
 		if(empty($product)){
@@ -99,7 +102,7 @@ class VirtueMartViewProductdetails extends JView {
 			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));	
 		}
 
-		$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
+		//$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem($product->product_name);
 		
 		/* Load the reviews */
