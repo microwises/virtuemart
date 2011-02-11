@@ -19,9 +19,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
-// Require the base controller  Do we need that? there is only a display in there
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controller.php');
-
 // Require specific controller if requested
 if ($controllername = JRequest::getVar('controller')) {
 	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
