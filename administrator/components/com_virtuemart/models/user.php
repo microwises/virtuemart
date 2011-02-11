@@ -15,7 +15,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
+ * @version $Id: user.php 2682 2011-01-29 16:18:03Z impleri $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -393,7 +393,7 @@ class VirtueMartModelUser extends JModel {
 				// Set some initial user values
 				$user->set('usertype', $newUsertype);
 				$JVersion = new JVersion();
-				if ( !$JVersion->isCompatible('1.6.0')){
+				if ( $JVersion->isCompatible('1.5.0')){
 					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 				}
 
@@ -697,6 +697,7 @@ class VirtueMartModelUser extends JModel {
 			}
 
 	 }
+
 	 /**
 	  * Get the number of active Super Admins
 	  *
@@ -842,26 +843,30 @@ class VirtueMartModelUser extends JModel {
 	 	$version = new JVersion();
 
 	 	//TODO check this out
-	 	if (version_compare($version->getShortVersion(), '1.6.0', '>=' ) == 1) {
-	 		$query = 'SELECT `node`.`title`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`title`) - 1)), `node`.`title`) AS `text` ';
-	 		$query .= 'FROM `#__usergroups` AS node, `#__usergroups` AS parent ';
-	 		$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
-	 		$query .= 'GROUP BY `node`.`title` ';
-	 		$query .= 'ORDER BY `node`.`lft`';
+	 	if ($version->isCompatible('1.5.0')) {
+			$name = 'name';
+			$as = '` AS `title`';
+			$table = '#__core_acl_aro_groups';
+	 		$and = 'AND `parent`.`lft` > 2 ';
 	 	}
 	 	else {
-	 		$query = 'SELECT `node`.`name`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`name`) - 1)), `node`.`name`) AS `text` ';
-	 		$query .= 'FROM `#__core_acl_aro_groups` AS node, `#__core_acl_aro_groups` AS parent ';
-	 		$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
-	 		$query .= 'AND `parent`.`lft` > 2 ';
-	 		$query .= 'GROUP BY `node`.`name` ';
-	 		$query .= 'ORDER BY `node`.`lft`';
+			$name = 'title';
+			$as = '`';
+			$table = '#__usergroups';
+			$and = '';
 	 	}
+
+	 	$query = 'SELECT `node`.`' . $name . $as . ', CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`' . $name . '`) - 1)), `node`.`' . $name . '`) AS `text` ';
+	 	$query .= 'FROM `' . $table . '` AS node, `' . $table . '` AS parent ';
+	 	$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
+	 	$query .= $and;
+	 	$query .= 'GROUP BY `node`.`' . $name . '` ';
+	 	$query .= 'ORDER BY `node`.`lft`';
 
 	 	$this->_db->setQuery($query);
 	 	return $this->_db->loadObjectList();
 	 }
-	}
+}
 
 
-	//No Closing tag
+//No Closing tag

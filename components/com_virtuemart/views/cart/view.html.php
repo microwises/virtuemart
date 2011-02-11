@@ -15,7 +15,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: view.html.php 2687 2011-02-02 18:07:50Z oscar $
 */
  
 // Check to ensure this file is included in Joomla!
@@ -40,6 +40,7 @@ class VirtueMartViewCart extends JView {
 	public function display($tpl = null) {	  	    
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
+		$document = JFactory::getDocument();
 
 		$layoutName = $this->getLayout();
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
@@ -54,7 +55,7 @@ class VirtueMartViewCart extends JView {
 			$this->lSelectCoupon();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTCOUPON'));
-			$mainframe->setPageTitle(JText::_('VM_CART_SELECTCOUPON'));	
+			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
 				
 		} else if($layoutName=='selectshipper'){
 			
@@ -62,7 +63,7 @@ class VirtueMartViewCart extends JView {
 			$this->lSelectShipper();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTSHIPPER'));
-			$mainframe->setPageTitle(JText::_('VM_CART_SELECTSHIPPER'));
+			$document->setTitle(JText::_('VM_CART_SELECTSHIPPER'));
 			
 		} else if($layoutName=='selectpayment'){
 
@@ -74,14 +75,14 @@ class VirtueMartViewCart extends JView {
 			$this->lSelectPayment();
 			
 			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));
-			$mainframe->setPageTitle(JText::_('VM_CART_SELECTPAYMENT'));
+			$document->setTitle(JText::_('VM_CART_SELECTPAYMENT'));
 		
 		} else if($layoutName=='orderdone'){
 			
 			$this->lOrderDone();
 			
 			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
-			$mainframe->setPageTitle(JText::_('VM_CART_THANKYOU'));
+			$document->setTitle(JText::_('VM_CART_THANKYOU'));
 		
 		} else if($layoutName=='default' ){
 			
@@ -96,7 +97,7 @@ class VirtueMartViewCart extends JView {
 			$this->prepareVendor();
 			
 			$pathway->addItem(JText::_('VM_CART_OVERVIEW'));
-			$mainframe->setPageTitle(JText::_('VM_CART_OVERVIEW'));
+			$document->setTitle(JText::_('VM_CART_OVERVIEW'));
 			
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
 

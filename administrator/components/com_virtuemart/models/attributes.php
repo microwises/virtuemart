@@ -66,7 +66,7 @@ class VirtueMartModelAttributes extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
 
-			$q = "SELECT #__vm_product_attribute_sku.`attribute_sku_id` ".$this->getAttributesListQuery().$this->getAttributesListFilter();
+			$q = "SELECT a.`attribute_sku_id` ".$this->getAttributesListQuery().$this->getAttributesListFilter();
 			$db->setQuery($q);
 			$fields = $db->loadObjectList('attribute_sku_id');
 

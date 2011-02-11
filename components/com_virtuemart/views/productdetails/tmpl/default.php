@@ -4,7 +4,7 @@
 * Show the product details page
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author Max Milbers
 * @author RolandD
 * @todo handle child products
@@ -15,9 +15,9 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: default.php 2643 2010-11-09 23:16:41Z milbo $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -28,13 +28,13 @@ if (empty($this->product)) {
 }
 else { ?>
 	<div class="buttons_heading">
-		<?php 
+		<?php
 		/** @todo Fix links to MVC */
 		//$pdf_link = "index2.php?option=$option&amp;page=shop.pdf_output&amp;showpage=$page&amp;pop=1&amp;output=pdf&amp;product_id=$product_id&amp;category_id=$category_id";
-		$pdf_link = 'index2.php';
+		$link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id;
 		?>
-		<?php echo shopFunctionsF::PdfIcon( $pdf_link ); ?>
-		<?php echo shopFunctionsF::PrintIcon(); ?>
+		<?php echo shopFunctionsF::PdfIcon( $link.'&output=pdf' ); ?>
+		<?php echo shopFunctionsF::PrintIcon($link.'print=1'); ?>
 		<?php echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
 	</div>
 	<?php
@@ -77,7 +77,7 @@ else { ?>
 		<tr>
 			<td align="left" valign="top" width="220">
 			<?php /** @todo make the image popup */ ?>
-			<div><?php 
+			<div><?php
 				echo $this->productImage->displayImage('','',0,0);
 			?></div>
 			</td>
@@ -124,7 +124,7 @@ else { ?>
 							<input type="button" class="quantity_box_button quantity_box_button_up" onClick="add(<?php echo $this->product->product_id;?>); return false;" />
 							<input type="button" class="quantity_box_button quantity_box_button_down" onClick="minus(<?php echo $this->product->product_id;?>); return false;" />
 							<br /><?php
-							
+
 							/* Add the button */
 							$button_lbl = JText::_('VM_CART_ADD_TO');
 							$button_cls = ''; //$button_cls = 'addtocart_button';
@@ -134,14 +134,14 @@ else { ?>
 							}
 							?>
 							<input id="<?php echo $this->product->product_id;?>" type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-							<?php if($variantExist){ 
+							<?php if($variantExist){
 								?>
 								<input id="<?php echo $this->product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 							<?php } ?>
-							
+
 							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
-							
-							<?php /** @todo Handle the manufacturer view */ ?> 
+
+							<?php /** @todo Handle the manufacturer view */ ?>
 							<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
 							<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
 						</div>
@@ -151,7 +151,7 @@ else { ?>
 		</tr>
 		<tr>
 			<td rowspan="1" colspan="2">
-				<?php 
+				<?php
 					$link = JRoute::_('index2.php?view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&output=lite&option=com_virtuemart');
 					$text = '( '.$this->product->mf_name.' )';
 					/* Avoid JavaScript on PDF Output */
@@ -183,21 +183,21 @@ else { ?>
 					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->prices);
 					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$this->product->prices);
 					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->prices);
-					
+
 				}
 				?><br />
 			</td>
 		</tr>
 		<tr>
 			<td valign="top">
-				<?php 
+				<?php
 				$product_packaging = '';
 				if ($this->product->packaging) {
 					$product_packaging .= JText::_('VM_PRODUCT_PACKAGING1').$this->product->packaging;
 					if ($this->product->box) $product_packaging .= '<br />';
 				}
 				if ($this->product->box) $product_packaging .= JText::_('VM_PRODUCT_PACKAGING2').$this->product->box;
-				
+
 				echo str_replace("{unit}",$this->product->product_unit ? $this->product->product_unit : JText::_('VM_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging);
 				?><br />
 			</td>
@@ -205,7 +205,7 @@ else { ?>
 		<tr>
 		<td ><?php
 				$url = JRoute::_('index.php?view=productdetails&task=askquestion&flypage='.JRequest::getVar('flypage').'&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
-				echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'button'));  
+				echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'button'));
 			?></td>
 		</tr>
 		<tr>
@@ -219,7 +219,7 @@ else { ?>
 					foreach ($this->product->files as $fkey => $file) {
 						if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
 						else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
-						
+
 						/* Show pdf in a new Window, other file types will be offered as download */
 						$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
 						$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
@@ -237,29 +237,29 @@ else { ?>
 							?>
 							<hr/>
 							<h3><?php echo JText::_('VM_RELATED_PRODUCTS_HEADING') ?></h3>
-							 
+
 							<table width="100%" align="center">
 								<tr>
 									<td valign="top">
 										<!-- The product name DIV. -->
 										<div style="height:77px; float:left; width: 100%;line-height:14px;">
-										<?php echo JHTML::_('link', $related->link, $related->product_name); ?> 
+										<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
 										<br />
 										</div>
-										
+
 										<!-- The product image DIV. -->
 										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
-											<?php 
-												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name)); 
+											<?php
+												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
 											?>
 										</div>
-										
+
 										<!-- The product price DIV. -->
 										<div style="width: 100%;float:left;text-align:center;">
 											<?php /** @todo Format pricing */ ?>
 											<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
 										</div>
-										
+
 										<!-- The add to cart DIV. -->
 										<div style="float:left;text-align:center;width: 100%;">
 										<?php
@@ -278,14 +278,14 @@ else { ?>
 											<?php
 										}
 										?>
-										
+
 										</div>
 									</td>
 								</tr>
-							</table> 
+							</table>
 						<?php }
 					}
-				?>	
+				?>
 			</td>
 		</tr>
 		<tr>
@@ -318,7 +318,7 @@ else { ?>
 								?>
 								<br/>
 							</td>
-							
+
 							<?php
 							// Do we need to close the current row now?
 							if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
@@ -342,7 +342,7 @@ else { ?>
 			<td colspan="2">
 				<!-- List of product reviews -->
 				<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
-				
+
 				<?php
 				/** @todo Handle review submission */
 				$alreadycommented = false;
@@ -351,19 +351,19 @@ else { ?>
 					if ($review->userid == $this->user->id) $alreadycommented = true;
 					/**
 					 * Available indexes:
-					 * 
+					 *
 					 * $review->userid => The user ID of the comment author
 					 * $review->username => The username of the comment author
 					 * $review->name => The name of the comment author
 					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
 					 * $review->user_rating => The rating; an integer from 1 - 5
 					 * $review->comment => The comment text
-					 * 
+					 *
 					 */
 					?>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
 					<br />
-					<?php 
+					<?php
 						echo JText::_('VM_RATE_NOM');
 //						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
 //						echo JHTML::image($url, $review->user_rating, array('border' => 0));
@@ -380,7 +380,7 @@ else { ?>
 						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS').'<br />');
 					}
 				}
-				
+
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
@@ -388,7 +388,7 @@ else { ?>
 						<script language="javascript" type="text/javascript">
 						function check_reviewform() {
 							var form = document.getElementById('reviewform');
-						
+
 							var ausgewaehlt = false;
 							for (var i=0; i<form.user_rating.length; i++)
 							   if (form.user_rating[i].checked)
@@ -409,19 +409,19 @@ else { ?>
 							  return true;
 							}
 						}
-						
+
 						function refresh_counter() {
 						  var form = document.getElementById('reviewform');
 						  form.counter.value= form.comment.value.length;
 						}
 						</script>
-					
+
 						<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
 						<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
 						<form method="post" action="<?php echo JRoute::_('index.php');  ?>" name="reviewForm" id="reviewform">
 						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
 						  <tr>
-							<?php $url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'; ?>
+							<?php $url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; ?>
 							<th id="five_stars">
 							<label for="user_rating5"><?php echo JHTML::image($url.'5.gif', JText::_('5_STARS')); ?></label>
 							</th>
@@ -465,16 +465,16 @@ else { ?>
 						<br /><br />
 							<?php
 								$review_comment = sprintf( JText::_('VM_REVIEW_COMMENT'), VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
-								echo $review_comment;  
+								echo $review_comment;
 							?><br />
 						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 						<br />
 						<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
-						
+
 						<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
 						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 						</div>
-						
+
 						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
 						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
@@ -493,10 +493,10 @@ else { ?>
 		<tr>
 			<td colspan="3">
 				<div style="text-align: center;">
-					<?php 
+					<?php
 						$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
 						$text = JText::_('VM_VENDOR_FORM_INFO_LBL');
-						echo shopFunctionsF::vmPopupLink( $link, $text ); 
+						echo shopFunctionsF::vmPopupLink( $link, $text );
 					?><br />
 				</div>
 				<br />

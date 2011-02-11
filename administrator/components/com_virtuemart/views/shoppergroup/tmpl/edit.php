@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('Shopper Group Details'); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
@@ -35,9 +35,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shopper_group_name" id="shopper_group_name" size="50" value="<?php echo $this->shoppergroup->shopper_group_name; ?>" />				
+				<input class="inputbox" type="text" name="shopper_group_name" id="shopper_group_name" size="50" value="<?php echo $this->shoppergroup->shopper_group_name; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="vendor_id">
@@ -45,7 +45,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="5" value="<?php echo $this->shoppergroup->vendor_id; ?>" /> 							
+				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="5" value="<?php echo $this->shoppergroup->vendor_id; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -55,9 +55,11 @@ AdminMenuHelper::startAdminArea();
         </label>
       </td>
       <td>
-        <?php echo JHTML::_('select.booleanlist',  'default', 'class="inputbox"', $this->shoppergroup->default); ?>                
+		<fieldset class="radio">
+        <?php echo JHTML::_('select.booleanlist',  'default', 'class="inputbox"', $this->shoppergroup->default); ?>
+        </fieldset>
       </td>
-    </tr>   			
+    </tr>
 
 		<tr>
 			<td width="110" class="key">
@@ -66,9 +68,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<textarea rows="10" cols="30" name="shopper_group_desc" id="shopper_group_desc"><?php echo $this->shoppergroup->shopper_group_desc; ?></textarea>  				
+				<textarea rows="10" cols="30" name="shopper_group_desc" id="shopper_group_desc"><?php echo $this->shoppergroup->shopper_group_desc; ?></textarea>
 			</td>
-		</tr>					
+		</tr>
 	</table>
 	</fieldset>
 </div>
@@ -80,4 +82,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="controller" value="shoppergroup" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

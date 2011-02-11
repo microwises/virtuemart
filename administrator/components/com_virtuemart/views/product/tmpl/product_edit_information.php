@@ -16,7 +16,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
 <table class="adminform">
@@ -28,7 +28,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('VM_PRODUCT_FORM_PUBLISH') ?>:</div>
 					</td>
 					<td width="79%">
-						<?php echo JHTMLSelect::booleanlist('published', null, $this->product->published); ?> 
+						<fieldset class="radio">
+						<?php echo JHTMLSelect::booleanlist('published', null, $this->product->published); ?>
+						</fieldset>
 					</td>
 				</tr>
 				<tr class="row1">
@@ -172,7 +174,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="79%" >
 					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
-					<?php 
+					<?php
 					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
 					$checked = '';
 					if ($this->override) $checked = 'checked="checked"' ?>
@@ -213,7 +215,7 @@ function doRound(x, places) {
 function getTaxRate() {
 	var selected_value = document.adminForm.product_tax_id.selectedIndex;
 	var parameterVal = document.adminForm.product_tax_id[selected_value].value;
-	
+
 
 	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
 		return tax_rates[parameterVal];

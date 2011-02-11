@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: edit_vendor.php 2638 2010-11-09 13:27:36Z milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 							<td>
 								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
 							</td>
-						</tr>						
+						</tr>
 					</table>
 				</fieldset>
 			</td>
@@ -177,14 +177,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
 			</legend>
 			<table class="admintable">
-			<?php
-				$image = VmImage::getImageByVendor($this->vendor);
-				echo $image -> createImageUploader(false);
-				echo $image -> createImageUploader(true);		
-			?>	
+			<?php $image = VmImage::getImageByVendor($this->vendor) ?>
+			<tr>
+				<th><?php echo JText::_('VM_VENDOR_FORM_FULL_IMAGE') ?></th>
+				<td><?php echo $image->displayImage('','',false,0) ?></td>
+			</tr>
+				<?php echo $image->createImageUploader(false) ?>
+			<tr>
+				<th><?php echo JText::_('VM_VENDOR_FORM_THUMB_IMAGE') ?></th>
+				<td><?php echo $image->displayImage('','',true,0) ?></td>
+			</tr>
+				<?php echo $image->createImageUploader(true) ?>
 			</table>
 		</fieldset>
-		
+
 		</td>
 		</tr>
 		<tr>

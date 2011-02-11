@@ -119,7 +119,9 @@ function gotocontact(id) {
 				<?php echo JText::_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['sendEmail']; ?>
+				</fieldset>
 			</td>
 		</tr>
 

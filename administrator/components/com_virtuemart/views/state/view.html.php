@@ -39,16 +39,18 @@ class VirtuemartViewState extends JView {
 		$model = $this->getModel();
 		$zoneModel = $this->getModel('ShippingZone');
 
-		$state =& $model->getState();
+		$stateId = JRequest::getInt('state_id', null);
+		$model->setId($stateId);
+		$state =& $model->getSingleState();
 
         $layoutName = JRequest::getVar('layout', 'default');
-		$countryId = JRequest::getVar('country_id', '');
-		$published = JRequest::getVar('published', '');
+		$countryId = JRequest::getInt('country_id', null);
+		$published = JRequest::getBool('published', false);
 
 		$this->assignRef('country_id',	$countryId);
  		$this->assignRef('published',	$published);
 
-        $isNew = ($state < 1);
+        $isNew = (count($state) < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

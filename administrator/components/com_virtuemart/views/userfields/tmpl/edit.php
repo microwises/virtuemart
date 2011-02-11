@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -207,7 +207,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['required']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -218,7 +220,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['registration']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -229,7 +233,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['account']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -240,7 +246,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['shipping']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -251,7 +259,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['readonly']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -262,7 +272,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo $this->lists['published']; ?>
+				</fieldset>
 			</td>
 		</tr>
 
@@ -343,7 +355,7 @@ function insertRow() {
 
 function disableAll() {
 	var elem;
-	try{ 
+	try{
 		divValues.slideOut();
 		divColsRows.slideOut();
 		divWeb.slideOut();
@@ -380,7 +392,7 @@ function selType(sType) {
 		case 'age_verification':
 			divAgeVerification.toggle();
 			break;
-		  
+
 		case 'emailaddress':
 		case 'password':
 		case 'text':
@@ -409,7 +421,7 @@ function selType(sType) {
 		break;
 
 		case 'delimiter':
-		default: 
+		default:
 	}
 }
 

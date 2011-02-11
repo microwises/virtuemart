@@ -15,9 +15,9 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');  
+defined('_JEXEC') or die('Restricted access');
 ?>
 <br />
 <fieldset class="adminform">
@@ -25,8 +25,8 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'), JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'), JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
 		<label for="conf_VM_FEED_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE') ?></label>
 		</span>
 	    </td>

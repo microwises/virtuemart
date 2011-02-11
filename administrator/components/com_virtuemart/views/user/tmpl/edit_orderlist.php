@@ -17,7 +17,10 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+$JVersion = new JVersion();
+$j15 = $JVersion->isCompatible('1.5.0');
+?>
 
 <div id="editcell">
 	<table class="adminlist">
@@ -53,8 +56,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 			$print_url = JURI::root().'index.php?option=com_virtuemart&view=orders&task=orderprintdetails&order_id='.$row->order_id.'&format=raw';
 			$print_link = "&nbsp;<a href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">"
-				. JHTML::_('image', 'images/M_images/printButton.png', JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
-			
+				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="center">

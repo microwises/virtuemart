@@ -4,7 +4,7 @@
 * The main product images
 *
 * @package	VirtueMart
-* @subpackage Product 
+* @subpackage Product
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -33,7 +33,8 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
 						$image = VmImage::getImageByProduct($this->product);
 						echo $image -> createImageUploader(false);
 					?>
-					</table> 
+					</table>
+					<?php echo $image->displayImage('','',false,0); ?>
 				</fieldset>
 			</td>
 			<td valign="top">
@@ -44,9 +45,10 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
 						echo $image -> createImageUploader(true);
 					 ?>
 					</table>
+					<?php echo $image->displayImage('','',true,0); ?>
 				</fieldset>
 			</td>
-		</tr>				
+		</tr>
 	</table>
 </div>
 <?php
@@ -61,8 +63,8 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
             <td colspan="2" >
             <?php
             if ($this->product->product_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; 
-            } 
+                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />";
+            }
            ?> <fieldset class="adminform">
 				<legend>
 				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
@@ -71,8 +73,8 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
 			<?php
 				$image = VmImage::getImageByVendor($this->vendor);
 				echo $image -> createImageUploader(false);
-				echo $image -> createImageUploader(true);		
-			?>	
+				echo $image -> createImageUploader(true);
+			?>
 			</table>
 			</fieldset>
 <?php /*            <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';if(this.value!='') { document.adminForm.product_full_image_action[1].checked=true;toggleDisable(document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true) }" size="50" maxlength="255" />
@@ -113,7 +115,7 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php 
+                <?php
 					echo $this->productImage->displayImage('','',0);
                 ?>
               </div>
@@ -161,14 +163,14 @@ echo VmImage::testFolderWriteAble(VmConfig::get('media_product_path'));
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php 
+                <?php
                 	echo $this->productImage->displayImage('','',1,0);
 				?>
               </div>
             </td>
           </tr>
         </table>
-      </td> 
+      </td>
     </tr>
   </table> */ ?>
 <script type="text/javascript">
@@ -195,8 +197,8 @@ function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 }
 
 function toggleFullURL() {
-	if( jQuery('#product_full_image_url').val().length>0) document.adminForm.product_full_image_action[1].checked=false; 
-	else document.adminForm.product_full_image_action[1].checked=true; 
+	if( jQuery('#product_full_image_url').val().length>0) document.adminForm.product_full_image_action[1].checked=false;
+	else document.adminForm.product_full_image_action[1].checked=true;
 	toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );
 	toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );
 }

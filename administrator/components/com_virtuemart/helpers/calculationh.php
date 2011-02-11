@@ -158,9 +158,10 @@ class calculationHelper{
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it 
 			} 
 			if(empty($this->_shopperGroupId)){
-//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');				
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref 
-				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group  
+				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');
+//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref 
+//				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId = $this->_db->loadResult();
 			}
 		}

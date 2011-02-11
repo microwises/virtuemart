@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'VM_MANUFACTURER_CATEGORY_DETAILS' ); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -36,9 +36,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_category_name" id="mf_category_name" size="50" value="<?php echo $this->manufacturerCategory->mf_category_name; ?>" />				
+				<input class="inputbox" type="text" name="mf_category_name" id="mf_category_name" size="50" value="<?php echo $this->manufacturerCategory->mf_category_name; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -46,9 +46,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<textarea rows="20" cols="50" name="mf_category_desc" id="mf_category_desc"><?php echo $this->manufacturerCategory->mf_category_desc; ?></textarea> 
+				<textarea rows="20" cols="50" name="mf_category_desc" id="mf_category_desc"><?php echo $this->manufacturerCategory->mf_category_desc; ?></textarea>
 
-							
+
 			</td>
 		</tr>
 
@@ -59,11 +59,13 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturerCategory->published); ?>							
+				<fieldset class="radio">
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturerCategory->published); ?>
+				</fieldset>
 			</td>
-		</tr>			
+		</tr>
 
-					
+
 	</table>
 	</fieldset>
 </div>
@@ -75,4 +77,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="controller" value="manufacturerCategory" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

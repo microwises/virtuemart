@@ -79,25 +79,23 @@ class VirtuemartViewShippingCarrier extends JView {
 	{
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT * FROM #__plugins WHERE `folder` = "vmshipper" AND `published`="1" ';
-		$db->setQuery($q);
-		$result = $db->loadAssocList();
-		
-		$listHTML='<select id="shipping_carrier_jplugin_id" name="shipping_carrier_jplugin_id">';
-		
-		foreach($result as $r)
-		{
-			if ($r['id']==$selected) {
-				$checked='selected="selected"';
-			} else {
-				$checked='';
-			}
-			$listHTML .= '<option '.$checked.' value="'.$r['id'].'">'.$r['name'].'</option>';
-			
+		$JVersion = new JVersion();
+		if ($JVersion->isCompatible('1.5.0')) {
+			$table = '#__plugins';
+			$enable = 'published';
+			$ext_id = 'id';
 		}
-		$listHTML .= '</select>';
-		return $listHTML;
+		else {
+			$table = '#__extensions';
+			$enable = 'enabled';
+			$ext_id = 'extension_id';
+		}
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipper" AND `'.$enable.'`="1" ';
+		$db->setQuery($q);
+		$result = $db->loadAssocList($ext_id);
+
+		return JHtml::_('select.genericlist', $result, 'shipping_carrier_jplugin_id', null, $ext_id, 'name', $selected);
 	}
-	
+
 }
 // pure php no closing tag

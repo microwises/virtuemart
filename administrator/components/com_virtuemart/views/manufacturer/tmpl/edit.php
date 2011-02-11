@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'VM_MANUFACTURER_DETAILS' ); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -36,9 +36,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="50" value="<?php echo $this->manufacturer->mf_name; ?>" />				
+				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="50" value="<?php echo $this->manufacturer->mf_name; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -46,8 +46,8 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php 
-				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'mf_category_id', '', 'mf_category_id', 'mf_category_name', $this->manufacturer->mf_category_id); ?>			
+				<?php
+				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'mf_category_id', '', 'mf_category_id', 'mf_category_name', $this->manufacturer->mf_category_id); ?>
 			</td>
 		</tr>
 		<tr>
@@ -57,7 +57,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="50" value="<?php echo $this->manufacturer->mf_url; ?>" />			
+				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="50" value="<?php echo $this->manufacturer->mf_url; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -67,9 +67,11 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturer->published); ?>							
+				<fieldset class="radio">
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturer->published); ?>
+				</fieldset>
 			</td>
-		</tr>			
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -77,9 +79,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="50" value="<?php echo $this->manufacturer->mf_email; ?>" />			
+				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="50" value="<?php echo $this->manufacturer->mf_email; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -87,11 +89,11 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				
-				<textarea rows="10" cols="30" name="mf_desc" id="mf_desc"><?php echo $this->manufacturer->mf_desc; ?></textarea>			
+
+				<textarea rows="10" cols="30" name="mf_desc" id="mf_desc"><?php echo $this->manufacturer->mf_desc; ?></textarea>
 			</td>
-		</tr>	
-					
+		</tr>
+
 	</table>
 	</fieldset>
 </div>
@@ -103,4 +105,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="controller" value="manufacturer" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

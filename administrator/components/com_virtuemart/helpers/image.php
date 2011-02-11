@@ -22,18 +22,18 @@ defined('_JEXEC') or die();
  */
 //class VmImage {
 class VmImage {
-	
+
 	var $id = 0;
 	var $media_filename = '';
 	var $media_filename_thumb = '';
-	
+
 	var $media_url = '';
 	var $media_url_thumb = '';
-	
+
 	var $media_path ='';
 	var $media_path_thumb = '';
 //	var $media_path_writeable = 0;
-	
+
 //	var $image_exist = 0;
 //	var $image_exist_resized = 0;
 	var $theme_url = 0;
@@ -45,30 +45,30 @@ class VmImage {
 		}
 		$this->media_url = $media_path_url;
 		$this->media_url_thumb = $media_path_url.'resized/';
-		
+
 		$media_path = str_replace('/',DS,$media_path_url);
 		$media_path = substr($media_path,0,-1);
 		$this->media_path = JPATH_ROOT.DS.$media_path.DS;
 		$this->media_path_thumb = JPATH_ROOT.DS.$media_path.DS.'resized'.DS;
-		
+
 		$this->media_filename = $media_filename;
 		$this->media_filename_thumb = $media_thumb_name;
 	}
-	
-	function getShopImage($filename,$thumb_filename=0){	
+
+	function getShopImage($filename,$thumb_filename=0){
 		return new VmImage( VmConfig::get('media_path'),$filename,$thumb_filename);
 	}
 
 	/**
 	 * For displaying vendor/shop/store images
 	 * Sets the variables of the images object, so that the new resized image path can be saved
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param string $filename name of the full sized image
 	 * @param string $filename name of the thumb image
 	 * @param integer vendor_id for updating the vendor
 	 * @param VmImage an image object with extra product attributes
-	 */	
+	 */
 	function getVendorImage($filename,$thumb_filename=0,$vendor_id=0){
 		$image = new VmImage('components/com_virtuemart/assets/images/vendors/',$filename,$thumb_filename);
 		$image->table = 'vendor';
@@ -80,7 +80,7 @@ class VmImage {
 
 	/**
 	 * Small proxy function for getVendorImage, which just works with the vendor object
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param object vendor object given by §vendorModel->getVendor()
 	 * @return VmImage an image object with extra vendor attributes
@@ -89,11 +89,11 @@ class VmImage {
 		if(empty($vendor)) return JText::_('VM_CANT_CREATE_IMAGE_NO_VENDOR_GIVEN');
 		return self::getVendorImage($vendor->vendor_full_image,$vendor->vendor_thumb_image,$vendor->vendor_id);
 	}
-		
+
 	/**
 	 * For displaying product images
 	 * Sets the variables of the images object, so that the new resized image path can be saved
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param string $filename name of the full sized image
 	 * @param string $filename name of the thumb image
@@ -111,7 +111,7 @@ class VmImage {
 
 	/**
 	 * Small proxy function for getProductImage, which just works with the product object
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param object product object given by §productModel->getProduct()
 	 * @return VmImage an image object with extra product attributes
@@ -120,11 +120,11 @@ class VmImage {
 		if(empty($product)) return JText::_('VM_CANT_CREATE_IMAGE_NO_PRODUCT_GIVEN');
 		return self::getProductImage($product->product_full_image,$product->product_thumb_image,$product->product_id);
 	}
-	
+
 	/**
 	 * For displaying category images
 	 * Sets the variables of the images object, so that the new resized image path can be saved
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param string $filename name of the full sized image
 	 * @param string $filename name of the thumb image
@@ -142,7 +142,7 @@ class VmImage {
 
 	/**
 	 * Small proxy function for getCatImage, which just works with the category object
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param object category object given by §categoryModel->getCategory()
 	 * @return VmImage an image object with extra category attributes
@@ -151,13 +151,13 @@ class VmImage {
 		if(empty($cat)) return JText::_('VM_CANT_CREATE_IMAGE_NO_CATEGORY_GIVEN');
 		return self::getCatImage($cat->category_full_image,$cat->category_thumb_image,$cat->category_id);
 	}
-	
+
 	/**
-	 * This function should display the image, when the image is not already a resized one, 
+	 * This function should display the image, when the image is not already a resized one,
 	 * it tries to get first the resized one, or create a resized one or fallback in case
-	 * 
+	 *
 	 * @author Max Milbers
-	 * 
+	 *
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param string $alt alternative Text to display
 	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
@@ -172,7 +172,7 @@ class VmImage {
 			if($preferResized){
 				if(empty($this->media_filename_thumb)){
 					$this->media_filename_thumb = $this->createThumbName();
-				} 
+				}
 				$completeImageUrl = $this->media_url_thumb.$this->media_filename_thumb;
 				$completeImagePath = $this->media_path_thumb.$this->media_filename_thumb;
 				if(empty($alt)) $alt = $this->media_filename_thumb;
@@ -202,43 +202,43 @@ class VmImage {
 				}
 			} else {
 				$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-				return JHTML::image($url,JText::_('NO_IMAGE_FOUND').' '.$alt);								
-			}		
-		}	
+				return JHTML::image($url,JText::_('NO_IMAGE_FOUND').' '.$alt);
+			}
+		}
 
 		//okey the pictures exist, does we want the resized one? if not, just give the normal picture back
 		if($preferResized){
-			return JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt);
+			return JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt, $imageArgs);
 		} else {
-			return JHTML::image($this->media_url.$this->media_filename, $alt);
+			return JHTML::image($this->media_url.$this->media_filename, $alt, $imageArgs);
 		}
 
 	}
-	
+
 	/**
 	 * a small function that ensures that we always build the thumbnail name with the same method
 	 */
 	private function createThumbName($width=0,$height=0){
-		
+
 		if(empty($this->media_filename)) return false;
 		if(empty($width)) $width = VmConfig::get('img_width', 90);
 		if(empty($height)) $height = VmConfig::get('img_height', 90);
-		
+
 		$origFileInfo = pathinfo($this->media_filename);
 		$this->media_filename_thumb = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
 		return $this->media_filename_thumb;
 	}
-	
+
 	/**
-	 * This function actually creates the thumb 
+	 * This function actually creates the thumb
 	 * and when it is instanciated with one of the getImage function automatically updates the db
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param boolean $save Execute update function
 	 * @return name of the thumbnail
 	 */
 	public function createThumb($update=0) {
-		
+
 		//now lets create the thumbnail, saving is done in this function
 		$width = VmConfig::get('img_width', 90);
 		$height = VmConfig::get('img_height', 90);
@@ -246,54 +246,54 @@ class VmImage {
 		// Don't allow sizes beyond 2000 pixels //I dont think that this is good, should be config
 //		$width = min($width, 2000);
 //		$height = min($height, 2000);
-					
+
 		$maxsize = false;
 		$bgred = 255;
 		$bggreen = 255;
 		$bgblue = 255;
 
 		$fullSizeFilenamePath = $this->media_path.$this->media_filename;
-		
+
 		if(empty($this->media_filename_thumb)) $this->media_filename_thumb = $this->createThumbName();
 		$resizedFilenamePath = $this->media_path_thumb.$this->media_filename_thumb;
-				
+
 		if (file_exists($fullSizeFilenamePath)) {
 
 			$createdImage = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
 			if($createdImage){
 				$this->media_filename_thumb = basename($createdImage->fileout);
-				
+
 				if($update){
 					//We just created a new thumbnail, we should save that
 					if(empty($this->id)){
 						JError::raiseWarning(1,'We just created a thumbnail and not able to store it '.$this->media_filename_thumb);
-					} else {				
+					} else {
 						$query  = 'UPDATE `#__vm_'.$this->table.'` ';
 						$query .= 'SET `'.$this->mfield.'` = "'.$this->media_filename_thumb.'" WHERE `'.$this->idfield.'` = "'.$this->id.'" ';
 						$db = JFactory::getDBO();
 						$db->setQuery($query);
 						if(!$db->query()){
-							JError::raiseWarning(1,'Couldnt update thumb for $query '.$query);	
+							JError::raiseWarning(1,'Couldnt update thumb for $query '.$query);
 						}
-					}				
-				} 
+					}
+				}
 				return $this->media_filename_thumb;
 			} else {
 				return 0;
-			}	
+			}
 		} else {
 			return 0;
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Tests for a given URL, if the path is writeable
-	 * 
+	 *
 	 */
 	public function testFolderWriteAble($media_path_url=0){
-		
+
 		if(!empty($media_path_url)){
 			$media_path = str_replace('/',DS,$media_path_url);
 			$media_path = JPATH_ROOT.DS.substr($media_path,0,-1);
@@ -316,7 +316,7 @@ class VmImage {
 		$result .= '</div>';
 		return $result;
 	}
-	
+
 	/**
 	 * Creates the typicall picture uploader we use everywhere
 	 * @author Max Milbers
@@ -334,77 +334,76 @@ class VmImage {
 		$field_full_image = $this->table.$thumbchar.'_image';
 		$field_full_image_url = $this->table.$thumbchar.'_image_url';
 		$field_full_image_current = $this->table.$thumbchar.'_image_current';
-		
+
 		$html = '<tr> <td class="key"><label for="title">'.JText::_( 'FILE' ).'</label></td>
 				<td>
-					<input type="file" name="'.$field_full_image.'" id="'.$field_full_image.'" size="30" class="inputbox" />		
-					<input type="hidden" name="'.$field_full_image_current.'" id="'.$field_full_image_current.'" value="'.$name.'" />	
+					<input type="file" name="'.$field_full_image.'" id="'.$field_full_image.'" size="30" class="inputbox" />
+					<input type="hidden" name="'.$field_full_image_current.'" id="'.$field_full_image_current.'" value="'.$name.'" />
 				</td></tr>';
 		 if( function_exists('imagecreatefromjpeg') ){
-		 	
+
 		 	$html .= '<tr><td class="key">
 							<label for="image_action'.$thumbchar.'">'.JText::_( 'VM_IMAGE_ACTION' ).'</label>
 							</td>
 						<td>';
 
 			$imageActions[] = JHTML::_('select.option',  '0', JText::_( 'NONE' ) );
-			
+
 			if(!$thumb){
 				$imageActions[] = JHTML::_('select.option',  '1', JText::_( 'VM_FILES_FORM_AUTO_THUMBNAIL' ) );
 			}
 			if(!empty($name)){
 				$imageActions[] = JHTML::_('select.option',  '2', JText::_( 'VM_FORM_IMAGE_DELETE_LBL' ) );
 			}
-										
-			$html .= JHTML::_('select.radiolist', $imageActions, 'image_action'.$thumbchar, '', 'value', 'text', 0, 'image_action'.$thumbchar);
-			$html .= '</td>	</tr>';
-		}			
-	
+
+			$html .= '<fieldset id="image_action'.$thumbchar. '" class="radio">';
+			$html .= JHTML::_('select.radiolist', $imageActions, 'image_action'.$thumbchar, '', 'value', 'text', 0);
+			$html .= '</fieldset></td>	</tr>';
+		}
+
 		$fullImageURL = '';
-								
+
 		if( stripos($name, 'http://') ){
 				$fullImageURL = $name;
 		}
-		
+
 		$html .= '<tr> <td class="key">
 					<label for="image_url">'. JText::_( 'URL' ) .' <em>('.  JText::_( 'CMN_OPTIONAL' ) .')</em></label>
 				</td> <td>';
 		$html .= '<input type="text" name="'.$field_full_image_url.'" id="'.$field_full_image_url.'" size="45" value="'.$fullImageURL.'" class="inputbox" />
-				</td></tr>
-				<tr>
-					<td colspan="2">';
-		
-		$html .= $this->displayImage('','',$thumb,0);
+				</td></tr>';
 
-		$html .'</td></tr>';
-		
+// 		$html .= '<tr><td colspan="2">';
+// 		$html .= $this->displayImage('','',$thumb,0);
+// 		$html .'</td></tr>';
+
 		return $html;
-							
+
 	}
-	
+
 	/**
 	 *  an abstract handler for the pictures
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function saveImage($data,$fullImage,$thumb){
-		
+
 		if($thumb){
-			 $thumbchar = '_thumb'; 
+			 $thumbchar = '_thumb';
 			$imagevRootFolder = $this->media_path_thumb;
 		} else {
 			$thumbchar ='_full';
 			$imagevRootFolder = $this->media_path;
 		}
-		
+
 		$imageRootFolderExp = explode('/', $imagevRootFolder);
 		$imageBaseFolder = implode(DS, $imageRootFolderExp);
-		
+
 		$field_image = $this->table.$thumbchar.'_image';
 		$field_image_url = $this->table.$thumbchar.'_image_url';
 		$field_image_current = $this->table.$thumbchar.'_image_current';
 		$field_thumb_image	= $this->table.'_thumb_image';
-		
+
 		if($fullImage['error'] == UPLOAD_ERR_OK) {
 			move_uploaded_file( $fullImage['tmp_name'], $imageBaseFolder.$fullImage['name']);
 			$data[$field_image] = $fullImage['name'];
@@ -426,14 +425,14 @@ class VmImage {
 		}
 		//deleting image
 		elseif( $data['image_action'.$thumbchar] == 2 ){
-			jimport('joomla.filesystem.file');	 
+			jimport('joomla.filesystem.file');
 			JFile::delete( $imageBaseFolder.$data[$field_image_current] );
 			$data[$field_image] = '';
 		}
 
 		return $data;
 	}
-	
+
 
 	/**
 	 * Display an image icon for the given image and create a link to the given link.
@@ -447,14 +446,14 @@ class VmImage {
 		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, $text, NULL);
 		$button .= '<br />' . $text.'</a>';
 		echo $button;
-				
-	}	
-	
+
+	}
+
 }
 
 /**
 *
-* @version $Id$
+* @version $Id: image.php 2673 2011-01-02 19:41:35Z zbyszek $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
@@ -478,9 +477,9 @@ class VmImage {
 * @author     Soeren Eberhardt <soeren|at|virtuemart.net>
 *@version	1.0b
 *@date       modified 11/22/2004
-*@modifications 
+*@modifications
 *   - added support for GDLib < 2.0.1
-*	- added support for reading gif images 
+*	- added support for reading gif images
 *	- makes jpg thumbnails
 *	- changed several groups of 'if' statements to single 'switch' statements
 *   - commented out original code so modification could be identified.
@@ -490,7 +489,7 @@ class Img2Thumb	{
 // New modification
 /**
 *	private variables - do not use
-*	
+*
 *	@var int $bg_red				0-255 - red color variable for background filler
 *	@var int $bg_green				0-255 - green color variable for background filler
 *	@var int $bg_blue				0-255 - blue color variable for background filler
@@ -507,11 +506,11 @@ class Img2Thumb	{
 
 /**
 *   Constructor - requires following vars:
-*	
+*
 *	@param string $filename			image path
-*	
+*
 *	These are additional vars:
-*	
+*
 *	@param int $newxsize			new maximum image width
 *	@param int $newysize			new maximum image height
 *	@param string $fileout			output image path
@@ -519,12 +518,12 @@ class Img2Thumb	{
 *	@param int $bgred				0-255 - red color variable for background filler
 *	@param int $bggreen				0-255 - green color variable for background filler
 *	@param int $bgblue				0-255 - blue color variable for background filler
-*	
+*
 */
 	function Img2Thumb($filename, $newxsize=60, $newysize=60, $fileout='',
 		$thumbMaxSize=0, $bgred=0, $bggreen=0, $bgblue=0)
-	{		
-		
+	{
+
 		//	New modification - checks color int to be sure within range
 		if($thumbMaxSize)
 		{
@@ -558,12 +557,12 @@ class Img2Thumb	{
 		{
 			$this->bg_blue = 0;
 		}
-		
+
 		$this->NewImgCreate($filename,$newxsize,$newysize,$fileout);
 	}
-	
+
 /**
-*  
+*
 *	private function - do not call
 *
 */
@@ -571,13 +570,13 @@ class Img2Thumb	{
 	{
 
 		$type = $this->GetImgType($filename);
-		
+
 		$pathinfo = pathinfo( $fileout );
 		if( empty( $pathinfo['extension'])) {
 			$fileout .= '.'.$type;
 		}
 		$this->fileout = $fileout;
-		
+
 		switch($type)
 		{
 			case "gif":
@@ -602,7 +601,7 @@ class Img2Thumb	{
 				$orig_img = imagecreatefrompng($filename);
 				break;
 		}
-		
+
 		$new_img =$this->NewImgResize($orig_img,$newxsize,$newysize,$filename);
 
 		if (!empty($fileout))
@@ -613,13 +612,13 @@ class Img2Thumb	{
 		{
 			 $this->NewImgShow($new_img,$type);
 		}
-		
+
 		ImageDestroy($new_img);
 		ImageDestroy($orig_img);
 	}
-	
+
 	/**
-*  
+*
 *	private function - do not call
 *	includes function ImageCreateTrueColor and ImageCopyResampled which are available only under GD 2.0.1 or higher !
 */
@@ -630,12 +629,12 @@ class Img2Thumb	{
 		// [1] = height in pixels
 		// [2] = type
 		// [3] = img tag "width=xx height=xx" values
-		
+
 		$orig_size = getimagesize($filename);
 
 		$maxX = $newxsize;
 		$maxY = $newysize;
-		
+
 		if ($orig_size[0]<$orig_size[1])
 		{
 			$newxsize = $newysize * ($orig_size[0]/$orig_size[1]);
@@ -648,7 +647,7 @@ class Img2Thumb	{
 			$adjustX = 0;
 			$adjustY = ($maxY - $newysize)/2;
 		}
-		
+
 		/* Original code removed to allow for maxSize thumbnails
 		$im_out = ImageCreateTrueColor($newxsize,$newysize);
 		ImageCopyResampled($im_out, $orig_img, 0, 0, 0, 0,
@@ -662,10 +661,10 @@ class Img2Thumb	{
 			  $im_out = imagecreatetruecolor($maxX,$maxY);
 			else
 			  $im_out = imagecreate($maxX,$maxY);
-			  
+
 			// Need to image fill just in case image is transparent, don't always want black background
 			$bgfill = imagecolorallocate( $im_out, $this->bg_red, $this->bg_green, $this->bg_blue );
- 		    
+
 			if( function_exists( "imageAntiAlias" )) {
 				imageAntiAlias($im_out,true);
 			}
@@ -676,7 +675,7 @@ class Img2Thumb	{
 		    if( function_exists( "imagecolorallocatealpha")) {
 		    	$transparent = imagecolorallocatealpha($im_out, 255, 255, 255, 127);
 		    }
-			
+
 			//imagefill( $im_out, 0,0, $bgfill );
 			if( function_exists("imagecopyresampled") ){
 				ImageCopyResampled($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
@@ -684,16 +683,16 @@ class Img2Thumb	{
 			else {
 				ImageCopyResized($im_out, $orig_img, $adjustX, $adjustY, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
 			}
-			
+
 		}
 		else
 		{
-		
+
 			if( function_exists("imagecreatetruecolor") )
 			  $im_out = ImageCreateTrueColor($newxsize,$newysize);
 			else
 			  $im_out = imagecreate($newxsize,$newysize);
-			  
+
 			if( function_exists( "imageAntiAlias" ))
 			  imageAntiAlias($im_out,true);
  		    imagealphablending($im_out, false);
@@ -701,19 +700,19 @@ class Img2Thumb	{
 			  imagesavealpha($im_out,true);
 		    if( function_exists( "imagecolorallocatealpha"))
 			  $transparent = imagecolorallocatealpha($im_out, 255, 255, 255, 127);
-			  
+
 			if( function_exists("imagecopyresampled") )
 			  ImageCopyResampled($im_out, $orig_img, 0, 0, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
 			else
 			  ImageCopyResized($im_out, $orig_img, 0, 0, 0, 0, $newxsize, $newysize,$orig_size[0], $orig_size[1]);
 		}
-		
+
 
 		return $im_out;
 	}
-	
+
 	/**
-*  
+*
 *	private function - do not call
 *
 */
@@ -731,14 +730,14 @@ class Img2Thumb	{
 						$fileout .= ".png";
 					}
 					return imagepng($new_img,$fileout);
-					
+
 				}
 				else {
 					if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".gif") {
 						$fileout .= '.gif';
 					}
 					return imagegif( $new_img, $fileout );
-					
+
 				}
 				break;
 			case "jpg":
@@ -753,9 +752,9 @@ class Img2Thumb	{
 				break;
 		}
 	}
-	
+
 	/**
-*  
+*
 *	private function - do not call
 *
 */
@@ -794,9 +793,9 @@ class Img2Thumb	{
 				break;
 		}
 	}
-	
+
 	/**
-*  
+*
 *	private function - do not call
 *
 *   1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF,
@@ -829,5 +828,5 @@ class Img2Thumb	{
 				return false;
 		}
 	}
-	
+
 }

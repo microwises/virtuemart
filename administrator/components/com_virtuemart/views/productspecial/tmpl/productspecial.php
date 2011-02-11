@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
+$JVersion = new JVersion();
+$j15 = $JVersion->isCompatible('1.5.0');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -77,8 +79,15 @@ AdminMenuHelper::startAdminArea();
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Product special -->
 				<td><?php
-				if ($product->product_special == 'Y') echo JHTML::_('image', 'administrator/images/tick.png', JText::_('SPECIAL'));
-					else echo JHTML::_('image', 'administrator/images/publish_x.png', JText::_('NOT_SPECIAL'))
+				if ($product->product_special == 'Y') {
+					$image = ($j15) ? 'tick.png' : 'admin/tick.png';
+					$alt = 'SPECIAL';
+				}
+				else {
+					$image = ($j15) ? 'tick.publish_x' : 'admin/publish_x.png';
+					$alt = 'NOT_SPECIAL';
+				}
+				echo JHTML::_('image.administrator', $image, null, null, JText::_($alt));
 					?>
 				</td>
 				<!-- Product discount -->

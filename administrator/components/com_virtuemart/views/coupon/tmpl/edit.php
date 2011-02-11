@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Coupon Details' ); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -35,9 +35,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />				
+				<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -45,14 +45,16 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php 
+				<fieldset class="radio">
+				<?php
 				$radioOptions = '';
 				$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('VM_COUPON_PERCENT'));
 				$radioOptions[] = JHTML::_('select.option', 'total', JText::_('VM_COUPON_TOTAL'));
-				echo JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total); 
-				?>							
+				echo JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total);
+				?>
+				</fieldset>
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -60,12 +62,12 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php 
+				<?php
 				$listOptions = '';
 				$listOptions[] = JHTML::_('select.option', 'permanent', JText::_('VM_COUPON_TYPE_PERMANENT'));
 				$listOptions[] = JHTML::_('select.option', 'gift', JText::_('VM_COUPON_TYPE_GIFT'));
-				echo JHTML::_('select.genericlist',  $listOptions, 'coupon_type', '', 'value', 'text', $this->coupon->coupon_type); 
-				?>				
+				echo JHTML::_('select.genericlist',  $listOptions, 'coupon_type', '', 'value', 'text', $this->coupon->coupon_type);
+				?>
 			</td>
 		</tr>
 		<tr>
@@ -75,9 +77,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="coupon_value" id="coupon_value" size="10" value="<?php echo $this->coupon->coupon_value; ?>" />										
+				<input class="inputbox" type="text" name="coupon_value" id="coupon_value" size="10" value="<?php echo $this->coupon->coupon_value; ?>" />
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -85,9 +87,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="coupon_value_valid" id="coupon_value_valid" size="10" value="<?php echo $this->coupon->coupon_value_valid; ?>" />				
+				<input class="inputbox" type="text" name="coupon_value_valid" id="coupon_value_valid" size="10" value="<?php echo $this->coupon->coupon_value_valid; ?>" />
 			</td>
-		</tr>							
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -95,12 +97,12 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php 
+				<?php
                 $mydate = JFactory::getDate($this->coupon->coupon_start_date);
-                echo JHTML::_('calendar', $mydate->toFormat($this->dateformat), "coupon_start_date", "coupon_start_date", $this->dateformat); 
+                echo JHTML::_('calendar', $mydate->toFormat($this->dateformat), "coupon_start_date", "coupon_start_date", $this->dateformat);
                 ?>
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -108,12 +110,12 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php 
+				<?php
                 $expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
-                echo JHTML::_('calendar', $expireDate->toFormat($this->dateformat), "coupon_expiry_date", "coupon_expiry_date", $this->dateformat); 
-                ?>				
+                echo JHTML::_('calendar', $expireDate->toFormat($this->dateformat), "coupon_expiry_date", "coupon_expiry_date", $this->dateformat);
+                ?>
 			</td>
-		</tr>		
+		</tr>
 	</table>
 	</fieldset>
 </div>
@@ -126,4 +128,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

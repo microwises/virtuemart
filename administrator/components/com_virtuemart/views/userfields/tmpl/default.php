@@ -13,13 +13,15 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: default.php 2673 2011-01-02 19:41:35Z zbyszek $
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
+$JVersion = new JVersion();
+$j15 = $JVersion->isCompatible('1.5.0');
 
 ?>
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm">
@@ -40,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 	</div>
 	<br clear="all"/>
 	<div id="editcell">
-		<table class="adminlist">
+		<table class="adminlist jgrid">
 		<thead>
 		<tr>
 			<th width="10">
@@ -96,18 +98,11 @@ AdminMenuHelper::startAdminArea();
 		for ($i = 0, $n = count($this->userfieldsList); $i < $n; $i++) {
 			$row =& $this->userfieldsList[$i];
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
-			
-			$JVersion = new JVersion();
-			if ($JVersion->isCompatible('1.6.0')) {
-				$checked = ($coreField
-				? '<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'">'.JHTML::_('image','admin/checked_out.png', JText::_('VM_FIELDMANAGER_COREFIELD'),null, true) .'</span>'
-				: JHTML::_('grid.id', $i, $row->fieldid));
-			}
-			else {
-				$checked = ($coreField
-				? '<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'"><img src="images/checked_out.png" border="0" alt="'. JText::_('VM_FIELDMANAGER_COREFIELD') .'" /></span>'
-				: JHTML::_('grid.id', $i, $row->fieldid));	
-			}
+			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
+			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('VM_FIELDMANAGER_COREFIELD'));
+			$checked = ($coreField) ?
+				'<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'">'. $image .'</span>' :
+				JHTML::_('grid.id', $i, $row->fieldid);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->fieldid);
 			$required = $this->toggle($row->required, $i, 'required', $coreField);
 //			$published = JHTML::_('grid.published', $row, $i);
@@ -178,4 +173,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="boxchecked" value="0" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

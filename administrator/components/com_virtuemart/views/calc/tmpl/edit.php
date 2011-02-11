@@ -13,13 +13,13 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: edit.php 2627 2010-11-03 17:41:57Z milbo $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'VM_CALC_DETAILS' ); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -35,9 +35,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="calc_name" id="calc_name" size="50" value="<?php echo $this->calc->calc_name; ?>" />				
+				<input class="inputbox" type="text" name="calc_name" id="calc_name" size="50" value="<?php echo $this->calc->calc_name; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -45,7 +45,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->calc->published); ?>
+				</fieldset>
 			</td>
 		</tr>
 		<tr>
@@ -114,7 +116,7 @@ AdminMenuHelper::startAdminArea();
 				<label for="title">
 					<?php echo JText::_('VM_CALC_CATEGORY'); ?>:
 				</label>
-			</td>			
+			</td>
 			<td>
 				<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
 					<?php echo $this->categoryTree; ?>
@@ -126,7 +128,7 @@ AdminMenuHelper::startAdminArea();
 				<label for="title">
 					<?php echo JText::_('VM_CALC_SHOPPER_GROUPS'); ?>:
 				</label>
-			</td>			
+			</td>
 			<td>
 				<?php echo $this->shopperGroupList ?>
 			</td>
@@ -154,7 +156,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'calc_shopper_published', 'class="inputbox"', $this->calc->calc_shopper_published); ?>
+				</fieldset>
 			</td>
 		</tr>
 		<tr>
@@ -164,7 +168,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_published', 'class="inputbox"', $this->calc->calc_vendor_published); ?>
+				</fieldset>
 			</td>
 		</tr>
 		<tr>
@@ -173,8 +179,8 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('start Date'); ?>:
 				</label>
 			</td>
-			<td>			
-				<?php 
+			<td>
+				<?php
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
 					echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
  				?>
@@ -186,8 +192,8 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('end Date'); ?>:
 				</label>
 			</td>
-			<td>			
-				<?php $endDate; 
+			<td>
+				<?php $endDate;
 				if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
 					$endDate = JText::_('VM_NEVER');
 				} else {
@@ -242,4 +248,4 @@ AdminMenuHelper::startAdminArea();
 
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

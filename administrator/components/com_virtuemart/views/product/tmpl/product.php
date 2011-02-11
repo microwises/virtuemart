@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+defined('_JEXEC') or die('Restricted access');
+AdminMenuHelper::startAdminArea();
 
 /* Get the component name */
 $option = JRequest::getWord('option');
@@ -44,9 +44,9 @@ $category_id = JRequest::getInt('category_id', false);
 				</select>
 				<?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
 					<input type="text" value="<?php echo JRequest::getVar('filter_product'); ?>" name="filter_product" size="25" />
-				<?php 
+				<?php
 					echo $this->lists['search_type'];
-					echo $this->lists['search_order']; 
+					echo $this->lists['search_order'];
 					echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
 				?>
 				<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
@@ -59,7 +59,7 @@ $category_id = JRequest::getInt('category_id', false);
 </div>
 <br clear="all" />
 <div style="text-align: left;">
-<?php 
+<?php
 $productlist = $this->productlist;
 $pagination = $this->pagination;
 ?>
@@ -77,8 +77,10 @@ $pagination = $this->pagination;
 		<?php
 		$num_rows = 0;
 		if( $category_id ) { ?>
-			<th><?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?></th>
-			<th><?php echo vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?></th>
+			<th>
+				<?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?>
+				<?php echo JHTML::_('grid.order', $productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
+			</th>
 		<?php } ?>
 		<th><?php echo JHTML::_('grid.sort', 'VM_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
@@ -99,7 +101,7 @@ $pagination = $this->pagination;
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
-				<?php 
+				<?php
 				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				$child_link = '';
 				if ($product->product_parent_id == 0 && $product->haschildren) {
@@ -114,7 +116,7 @@ $pagination = $this->pagination;
 					/* Create URL */
 					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
 				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'includes/js/ThemeOffice/media.png', JTEXT::_('MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
+				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->
@@ -123,17 +125,12 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=product.product_category_form&category_id='.$product->category_id.'&category_parent_id='.$product->category_parent_id.'&option='.$option), $product->category_name); ?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if( $category_id ) { ?>
-					<?php
-					$page = '';
-					$tmp_cell = "<div align=\"center\">"
-					. $pagination->orderUpIcon( $i, $i > 0)
-					. "\n&nbsp;"
-					. $pagination->orderDownIcon( $i, $pagination->total, $i-1 <= count($productlist))
-					. "</div>";
-					?>
-					<td><?php echo $tmp_cell;?></td>
-					
-					<td><?php echo vmCommonHTML::getOrderingField( $product->product_list ); ?></td>
+					<td align="center" class="order">
+						<span><?php echo $pagination->orderUpIcon( $i, $i > 0);?></span>
+						<span><?php echo $pagination->orderDownIcon( $i, $pagination->total, $i-1 <= count($productlist));?></span>
+						<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->product_list; ?>" style="text-align: center" />
+						<?php // echo vmCommonHTML::getOrderingField( $product->product_list ); ?>
+					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
 				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=manufacturer.manufacturer_form&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
@@ -143,11 +140,11 @@ $pagination = $this->pagination;
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>
-		<?php 
+		<?php
 			$k = 1 - $k;
 			$i++;
 		}
-	}	
+	}
 	?>
 	</tbody>
 	<tfoot>
@@ -172,4 +169,4 @@ $pagination = $this->pagination;
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

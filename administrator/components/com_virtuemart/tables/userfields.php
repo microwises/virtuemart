@@ -87,7 +87,7 @@ class TableUserfields extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__vm_orderfields`";
+		$_q = "SHOW COLUMNS FROM `#__vm_userfield`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
@@ -155,7 +155,7 @@ class TableUserfields extends JTable {
 			case 'multiselect':
 			case 'multicheckbox':
 				$_fieldType = 'MEDIUMTEXT';
-				break;	
+				break;
 			case 'letterman_subscription':
 			case 'yanc_subscription':
 			case 'anjel_subscription':
@@ -180,7 +180,7 @@ class TableUserfields extends JTable {
 
 	/**
 	 * Reimplement the store method to return the last inserted ID
-	 * 
+	 *
 	 * @return mixed When a new record was succesfully inserted, return the ID, otherwise the status
 	 */
 	function store()

@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: default_pricing.php 2694 2011-02-08 17:28:47Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -48,14 +48,14 @@ defined('_JEXEC') or die('Restricted access');
 			    <br />
 			    <?php
 			    $JVersion = new JVersion();
-				if ( $JVersion->isCompatible('1.5')) {
-					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'name', 'text', $this->config->get('price_access_level')); 		
+				if ( $JVersion->isCompatible('1.5.0')) {
+					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level'));
 				} else {
 					$selectOptions['list.attr'] = 'size=5';
-					$selectOptions['option.key'] = 'text';
-					$selectOptions['option.value'] = 'name';
+					$selectOptions['option.key'] = 'title';
+					$selectOptions['option.text'] = 'text';
 					$selectOptions['list.select'] = $this->config->get('price_access_level');
-//					$selectOptions['option.text.toHtml'] = true;
+					$selectOptions['option.text.toHtml'] = false;
 					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
 				} ?>
 			</td>

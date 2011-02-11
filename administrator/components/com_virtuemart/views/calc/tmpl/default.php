@@ -20,7 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
-
+$JVersion = new JVersion();
+$j15 = JVersion->isCompatible('1.5.0');
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -148,12 +149,12 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
-						<img src="images/<?php echo ( $row->calc_shopper_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
-						<img src="images/<?php echo ( $row->calc_vendor_published) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
+						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td>

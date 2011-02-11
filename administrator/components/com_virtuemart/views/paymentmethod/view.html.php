@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: view.html.php 2694 2011-02-08 17:28:47Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -154,29 +154,33 @@ class VirtuemartViewPaymentMethod extends JView {
 	function renderInstalledPaymentPlugins($selected){
 
 		$JVersion = new JVersion();
-		if ( $JVersion->isCompatible('1.5')) {
+		if ( $JVersion->isCompatible('1.5.0')) {
 			$table = '#__plugins';
+			$ext_id = 'id';
+			$enable = 'published';
 		} else {
 			$table = '#__extensions';
+			$ext_id = 'extension_id';
+			$enable = 'enabled';
 		}
-		
+
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 //		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 //		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `published`="1" ';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
-		$result = $db->loadAssocList();
+		$result = $db->loadAssocList($ext_id);
 
 		$listHTML='<select id="paym_jplugin_id" name="paym_jplugin_id">';
 
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
-			if($paym['id']==$selected) $checked='selected="selected"'; else $checked='';
+			if($paym[$ext_id]==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['id'].'">'.$paym['name'].'</option>';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym[$ext_id].'">'.$paym['name'].'</option>';
 
 		}
 		$listHTML .= '</select>';

@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -31,7 +31,7 @@ $mainframe = JFactory::getApplication();
 
 <form action="index.php" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
 
-<?php 
+<?php
 	echo $pane->startPane( 'pane' );
 	echo $pane->startPanel(JText::_('VM_CATEGORY_FORM_LBL'), 'category_tab');
 ?>
@@ -44,7 +44,9 @@ $mainframe = JFactory::getApplication();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>			
+				<fieldset class="radio">
+				<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>
+				</fieldset>
 			</td>
 		</tr>
 		<!-- Commented out for future use
@@ -58,10 +60,10 @@ $mainframe = JFactory::getApplication();
 				<?php
 					$categoryShared = isset($this->relationInfo->category_shared) ? $this->relationInfo->category_shared : 1;
 					echo JHTML::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
-				?>			
+				?>
 			</td>
 		</tr>
-		-->		
+		-->
 		<tr>
 			<td class="key">
 				<label for="category_name">
@@ -69,7 +71,7 @@ $mainframe = JFactory::getApplication();
 				</label>
 			</td>
 			<td>
-				<input type="text" name="category_name" id="category_name" size="60" value="<?php echo $this->category->category_name; ?>" class="inputbox" />				
+				<input type="text" name="category_name" id="category_name" size="60" value="<?php echo $this->category->category_name; ?>" class="inputbox" />
 			</td>
 		</tr>
 		<tr>
@@ -79,7 +81,7 @@ $mainframe = JFactory::getApplication();
 				</label>
 			</td>
 			<td>
-				<?php echo $editor->display('category_description', $this->category->category_description, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>	
+				<?php echo $editor->display('category_description', $this->category->category_description, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +101,7 @@ $mainframe = JFactory::getApplication();
 										<td>
 											<?php echo ShopFunctions::getEnumeratedCategories(true, true, $this->parent->category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering); ?>
 										</td>
-									</tr>	
+									</tr>
 									<tr>
 										<td class="key">
 											<label for="category_parent_id">
@@ -120,10 +122,10 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="products_per_row" id="products_per_row" size="5" value="<?php echo $this->category->products_per_row; ?>" class="inputbox" />				
+											<input type="text" name="products_per_row" id="products_per_row" size="5" value="<?php echo $this->category->products_per_row; ?>" class="inputbox" />
 										</td>
 									</tr>
-									
+
 									<tr>
 										<td class="key">
 											<label for="limit_list_start">
@@ -131,7 +133,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="limit_list_start" id="limit_list_start" size="5" value="<?php echo $this->category->limit_list_start; ?>" class="inputbox" />				
+											<input type="text" name="limit_list_start" id="limit_list_start" size="5" value="<?php echo $this->category->limit_list_start; ?>" class="inputbox" />
 										</td>
 									</tr>
 									<tr>
@@ -141,7 +143,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="limit_list_step" id="limit_list_step" size="5" value="<?php echo $this->category->limit_list_step; ?>" class="inputbox" />				
+											<input type="text" name="limit_list_step" id="limit_list_step" size="5" value="<?php echo $this->category->limit_list_step; ?>" class="inputbox" />
 										</td>
 									</tr>
 									<tr>
@@ -151,7 +153,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="limit_list_max" id="limit_list_max" size="5" value="<?php echo $this->category->limit_list_max; ?>" class="inputbox" />				
+											<input type="text" name="limit_list_max" id="limit_list_max" size="5" value="<?php echo $this->category->limit_list_max; ?>" class="inputbox" />
 										</td>
 									</tr>
 									<tr>
@@ -161,7 +163,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="limit_list_initial" id="limit_list_initial" size="5" value="<?php echo $this->category->limit_list_initial; ?>" class="inputbox" />				
+											<input type="text" name="limit_list_initial" id="limit_list_initial" size="5" value="<?php echo $this->category->limit_list_initial; ?>" class="inputbox" />
 										</td>
 									</tr>
 									<tr>
@@ -171,7 +173,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'directory', 'name', $this->category->category_template); ?>								
+											<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'directory', 'name', $this->category->category_template); ?>
 										</td>
 									</tr>
 									<tr>
@@ -181,9 +183,9 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'text', 'text', $this->category->category_layout); ?>								
+											<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'text', 'text', $this->category->category_layout); ?>
 										</td>
-									</tr>									
+									</tr>
 									<tr>
 										<td class="key">
 											<label for="category_flypage">
@@ -208,7 +210,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<textarea class="inputbox" name="metadesc" id="metadesc" cols="35" rows="5"><?php echo $this->category->metadesc; ?></textarea>			
+											<textarea class="inputbox" name="metadesc" id="metadesc" cols="35" rows="5"><?php echo $this->category->metadesc; ?></textarea>
 										</td>
 									</tr>
 									<tr>
@@ -218,7 +220,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<textarea class="inputbox" name="metakey" id="metakey" cols="35" rows="5"><?php echo $this->category->metakey; ?></textarea>					
+											<textarea class="inputbox" name="metakey" id="metakey" cols="35" rows="5"><?php echo $this->category->metakey; ?></textarea>
 										</td>
 									</tr>
 									<tr>
@@ -228,7 +230,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="metarobot" id="metarobot" size="25" value="<?php echo $this->category->metarobot; ?>" class="inputbox" />				
+											<input type="text" name="metarobot" id="metarobot" size="25" value="<?php echo $this->category->metarobot; ?>" class="inputbox" />
 										</td>
 									</tr>
 									<tr>
@@ -238,7 +240,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<input type="text" name="metaauthor" id="metaauthor" size="25" value="<?php echo $this->category->metaauthor; ?>" class="inputbox" />				
+											<input type="text" name="metaauthor" id="metaauthor" size="25" value="<?php echo $this->category->metaauthor; ?>" class="inputbox" />
 										</td>
 									</tr>
 								</table>
@@ -247,10 +249,10 @@ $mainframe = JFactory::getApplication();
 					</tr>
 				</table>
 			</td>
-		</tr>			
+		</tr>
 	</table>
 </div>
-<?php 
+<?php
 	echo $pane->endPanel();
 	echo $pane->startPanel(JText::_('IMAGES'), 'images_tab');
 	echo VmImage::testFolderWriteAble(VmConfig::get('media_category_path'));
@@ -266,7 +268,7 @@ $mainframe = JFactory::getApplication();
 						$image = VmImage::getImageByCat($this->category);
 						echo $image -> createImageUploader(false);
 					?>
-					</table> 
+					</table>
 				</fieldset>
 			</td>
 			<td valign="top">
@@ -279,7 +281,7 @@ $mainframe = JFactory::getApplication();
 					</table>
 				</fieldset>
 			</td>
-		</tr>				
+		</tr>
 	</table>
 </div>
 <?php
@@ -293,4 +295,4 @@ $mainframe = JFactory::getApplication();
 	<input type="hidden" name="controller" value="category" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

@@ -215,7 +215,7 @@ class VirtueMartModelProducttypes extends JModel {
 			$product_type_data->product_type_list_order = $db->loadResult();
 
 			/* Check publish state */
-			if ($product_type_data->product_type_publish != "1") $product_type_data->product_type_publish = "0";
+			if ($product_type_data->published != "1") $product_type_data->published = "0";
 		}
 
 		/* Store the product type */

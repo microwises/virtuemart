@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+defined('_JEXEC') or die('Restricted access');
+AdminMenuHelper::startAdminArea();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -64,26 +64,26 @@ AdminMenuHelper::startAdminArea();
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product type name -->
-				<?php $link = 'index.php?option='.$option.'&view=producttypes&task=edit&cid[]='.$producttype->product_type_id; ?>
+				<?php $link = 'index.php?option=com_virtuemart&view=producttypes&task=edit&cid[]='.$producttype->product_type_id; ?>
 				<td><?php echo JHTML::_('link', $link, $producttype->product_type_name); ?></td>
 				<!-- Product type description -->
 				<td><?php echo $producttype->product_type_description; ?></td>
 				<!-- Parameters -->
-				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=producttypeparameters&product_type_id='.$producttype->product_type_id; ?>
+				<?php $link = 'index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.$producttype->product_type_id; ?>
 				<td><?php echo $producttype->parametercount. " " . JText::_('VM_PARAMETERS_LBL').JHTML::_('link', $link, ' [ '.JText::_('VM_SHOW').' ]'); ?></td>
 				<!-- Products -->
-				<?php $link = 'index.php?option='.$option.'&view=product&task=product&product_type_id='.$producttype->product_type_id; ?>
+				<?php $link = 'index.php?option=com_virtuemart&view=product&task=product&product_type_id='.$producttype->product_type_id; ?>
 				<td><?php echo $producttype->productcount. " " . JText::_('VM_PRODUCTS_LBL').JHTML::_('link', $link, ' [ '.JText::_('VM_SHOW').' ]'); ?></td>
 				<!-- Product type description -->
 				<td><?php echo $producttype->product_type_list_order; ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>
-		<?php 
+		<?php
 			$k = 1 - $k;
 			$i++;
 		}
-	}	
+	}
 	?>
 	</tbody>
 	<tfoot>

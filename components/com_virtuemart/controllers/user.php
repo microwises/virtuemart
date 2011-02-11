@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: user.php 2651 2010-11-11 12:46:16Z milbo $
 */
  
 // Check to ensure this file is included in Joomla!
@@ -78,7 +78,9 @@ class VirtueMartControllerUser extends JController
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$userModel = $this->getModel('user');
 
-		$msg = $userModel->store();
+		$ret = $userModel->store();
+		$msg = (is_array($ret)) ? $ret['message'] : $ret;
+
 		$this->saveToCart();
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=user', $msg );
 	}

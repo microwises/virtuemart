@@ -13,17 +13,17 @@
 
 	<!-- Custom installer -->
 	<installfile>install/install.virtuemart.php</installfile>
-	
+
 	<!-- Custom uninstaller -->
 	<uninstallfile>install/uninstall.virtuemart.php</uninstallfile>
-	
+
 	<!-- SQL queries -->
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">install/install.sql</file>
 		</sql>
 	</install>
-	
+
 	<!-- Site Main File Copy Section -->
 	<files folder="components/com_virtuemart">
 		<filename>controller.php</filename>
@@ -33,25 +33,25 @@
 		<filename>virtuemart.php</filename>
 		<filename>virtuemart_parser.php</filename>
 		<filename>index.html</filename>
-		
+
 		<folder>assets</folder>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
-		<folder>views</folder>	
+		<folder>views</folder>
 	</files>
 
-	
+
 	<media folder="images/stories/virtuemart" destination="../images/stories/virtuemart">
  			<folder>category</folder>
     	<folder>product</folder>
  </media>
-			
+
 	<!-- Language files -->
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 	</languages>
-	
+
 	<administration>
 		<!-- Administration Menu Section -->
  		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">VirtueMart</menu>
@@ -62,30 +62,31 @@
 			<filename>COPYRIGHT.php</filename>
 			<filename>global.php</filename>
 			<filename>header.php</filename>
-			<filename>index.html</filename>					
+			<filename>index.html</filename>
 			<filename>virtuemart.cfg.php</filename>
-			<filename>pear.php</filename>				
+			<filename>pear.php</filename>
 			<filename>toolbar.html.php</filename>
 			<filename>toolbar.php</filename>
 			<filename>version.php</filename>
-			
+
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
-			<folder>libraries</folder>			
+			<folder>libraries</folder>
 			<folder>models</folder>
 			<folder>plugins</folder>
-			<folder>tables</folder>	    		
+			<folder>tables</folder>
    			<folder>views</folder>
 
 		</files>
-		
-		
+
+
 		<!-- Language files -->
 		<languages folder="administrator/language">
 			<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
 		</languages>
 	</administration>
-	
+
 </install>

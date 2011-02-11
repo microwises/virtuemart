@@ -36,7 +36,7 @@ class VirtuemartViewUserfields extends JView {
 
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
-		
+
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
@@ -50,7 +50,7 @@ class VirtuemartViewUserfields extends JView {
 			$editor = JFactory::getEditor();
 
 			$userField = $model->getUserfield();
-			
+
 			if ($userField->fieldid < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 				JToolBarHelper::divider();
@@ -90,7 +90,7 @@ class VirtuemartViewUserfields extends JView {
 			$shoppergroup_model = $this->getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'shopper_group_id', '', 'shopper_group_id', 'shopper_group_name', $model->_params->get('shopper_group_id'));
-			
+
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
@@ -107,7 +107,7 @@ class VirtuemartViewUserfields extends JView {
 
 			// Userfield values
 			if (($n = count($userFieldValues)) < 1) {
-				$lists['userfield_values'] = 
+				$lists['userfield_values'] =
 					 '<tr>'
 					.'<td><input type="text" value="" name="vNames[0]" /></td>'
 					.'<td><input type="text" value="" name="vValues[0]" /></td>'
@@ -116,7 +116,7 @@ class VirtuemartViewUserfields extends JView {
 			} else {
 				$lists['userfield_values'] = '';
 				for ($i = 0; $i < $n; $i++) {
-					$lists['userfield_values'] .= 
+					$lists['userfield_values'] .=
 						 '<tr>'
 						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']" readonly="readonly" /></td>'
 						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
@@ -132,7 +132,7 @@ class VirtuemartViewUserfields extends JView {
 			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			
+
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
@@ -179,13 +179,13 @@ class VirtuemartViewUserfields extends JView {
 	/**
 	 * Additional grid function for custom toggles
 	 *
-	 * @return string HTML code to write the toggle button 
+	 * @return string HTML code to write the toggle button
 	 */
 	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
 	{
 
 		$JVersion = new JVersion();
-		
+
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
@@ -196,14 +196,12 @@ class VirtuemartViewUserfields extends JView {
 			$alt 	= $field ? JText::_( 'Enabled' ) : JText::_( 'Disabled' );
 			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
 		}
-		
+
 		if ($JVersion->isCompatible('1.6.0')) {
-			$retImgSrc =  JHTML::_('image', 'admin/'. $img, $alt, null, true );
+			$img = 'admin/' . $img;
 		}
-		else {
-			$retImgSrc = '<img src="images/'. $img .'" border="0" alt="'. $alt .'" />';
-		}
-		
+		$retImgSrc =  JHTML::_('image.administrator', $img, '/images/', null, null, $alt);
+
 		if ($untoggleable) {
 			return ($retImgSrc);
 		} else {
@@ -214,7 +212,7 @@ class VirtuemartViewUserfields extends JView {
 
 	/**
 	 * Create an array with userfield types and the visible text in the format expected by the Joomla select class
-	 * 
+	 *
 	 * @param string $value If not null, the type of which the text should be returned
 	 * @return mixed array or string
 	 */
@@ -238,7 +236,7 @@ class VirtuemartViewUserfields extends JView {
 
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
 			$types[] = array('type' => 'captcha', 'text' => JText::_('VM_FIELDS_CAPTCHA'));
-		} 
+		}
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php')) {
 			$types[] = array('type' => 'captcha', 'text' => JText::_('VM_FIELDS_CAPTCHA'));
 		}
@@ -255,7 +253,7 @@ class VirtuemartViewUserfields extends JView {
 			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => JText::_('VM_FIELDS_NEWSLETTER').' (ccNewsletter)');
 		}
 		$types[] = array('type' => 'delimiter', 'text' => JText::_('VM_FIELDS_DELIMITER'));
-		
+
 		if ($value === null) {
 			return $types;
 		} else {

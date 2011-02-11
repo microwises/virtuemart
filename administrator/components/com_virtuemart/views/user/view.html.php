@@ -58,7 +58,7 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('shopfunctions');
 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
-				
+
 			$userFieldsModel = $this->getModel('userfields');
 			//			$orderModel = $this->getModel('orders');
 
@@ -131,7 +131,7 @@ class VirtuemartViewUser extends JView {
 					 , array() // Default toggles
 					 , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 					 );
-					 	
+
 					 if (($_addressCount = count($userDetails->userInfo)) == 0) {
 					 	$_userInfoID = null;
 					 	// Set some default values
@@ -156,7 +156,7 @@ class VirtuemartViewUser extends JView {
 
 					 //			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
 					 $lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
-					 	
+
 					 // Load the required scripts
 					 if (count($userFields['scripts']) > 0) {
 					 	foreach ($userFields['scripts'] as $_script => $_path) {
@@ -183,7 +183,7 @@ class VirtuemartViewUser extends JView {
 					 'shipping'
 					 , array() // Default toggles
 					 );
-					 if ($_shipto_id === 0) {
+					 if ($_shipto_id === 0 || empty($userDetails->userInfo)) {
 					 	$_userDetailsList = null;
 					 } else {
 					 	// Find the correct record
@@ -213,15 +213,15 @@ class VirtuemartViewUser extends JView {
 					 } else {
 					 	$orderList = null;
 					 }
-					 	
+
 					 $vendorModel = $this->getModel('vendor');
 					 $vendorModel->setId($userDetails->vendor_id);
-					 	
+
 					 if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 					 	$currency = $vendorModel->getCurrencyDisplay();
 					 	$this->assignRef('currency', $currency);
 					 }
-					 	
+
 					 if (!empty($userDetails->user_is_vendor)) {
 
 					 	$this->assignRef('vendor', $userDetails->vendor);

@@ -11,22 +11,22 @@
  */
 
 class ShopFunctions {
-	
+
 	/**
 	 * @var global database object
 	 */
 	private $_db = null;
-	
-	
+
+
 	/**
 	 * Contructor
 	 */
 	public function __construct(){
-		
+
 		$this->_db = JFactory::getDBO();
 	}
-	
-	
+
+
 //	Forget this function!
 //	Oscar sais: No, except if you document which alternative to use!! This function IS called!!!
 //Use shopfunctionsf, the helper in the frontend and there the method sendMail
@@ -38,7 +38,7 @@ class ShopFunctions {
 	public function loadMailer() {
 		$mainframe = JFactory::getApplication();
 		jimport('joomla.mail.helper');
-		
+
 		/* Start the mailer object */
 		$mailer = JFactory::getMailer();
 		$mailer->isHTML(true);
@@ -46,13 +46,13 @@ class ShopFunctions {
 		//$mailer->From = $mainframe->getCfg('mailfrom');
 		//$mailer->FromName = $mainframe->getCfg('sitename');
 		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-		
+
 		return $mailer;
 	}
-	
+
 	/**
 	 * Creates a Drop Down list of available Creditcards
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function renderCreditCardList($ccId, $multiple = false) {
@@ -66,7 +66,7 @@ class ShopFunctions {
 
 		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($creditcards, $emptyOption);
-			
+
 		if ($multiple){
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
@@ -81,16 +81,16 @@ class ShopFunctions {
 	* @author Max Milbers, RolandD
 	* @access public
 	* @param int $shopper_group_id the shopper group to pre-select
-	* @param bool $multiple if the select list should allow multiple selections 
+	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
 	public function renderVendorList($vendorId, $multiple = false) {
-		
+
 		$db = JFactory::getDBO();
 		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
 			if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
-			
+
 			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
@@ -102,14 +102,14 @@ class ShopFunctions {
 			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
 			$db->setQuery($q);
 			$vendors = $db->loadAssocList();
-						
+
 			$attrs = '';
 			$name = 'vendor_name';
 			$idA = $id = 'vendor_id';
-	
+
 			$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift($vendors, $emptyOption);
-				
+
 			if ($multiple){
 				$attrs = 'multiple="multiple"';
 				$idA .= '[]';
@@ -118,14 +118,14 @@ class ShopFunctions {
 			return $listHTML;
 		}
 	}
-	
+
 	/**
 	* Creates a Drop Down list of available Shopper Groups
 	*
 	* @author Max Milbers, RolandD
 	* @access public
 	* @param int $shopper_group_id the shopper group to pre-select
-	* @param bool $multiple if the select list should allow multiple selections 
+	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
 	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
@@ -137,7 +137,7 @@ class ShopFunctions {
 
 		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
-			
+
 		if ($multiple){
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
@@ -145,11 +145,11 @@ class ShopFunctions {
 		$listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId );
 		return $listHTML;
 	}
-	
+
 	/**
 	* Render a simple country list
 	* @author jseros, Max Milbers
-	* 
+	*
 	* @param int $countryId Selected country id
 	* @param boolean $multiple True if multiple selecions are allowed (default: false)
 	* @param mixed $_attrib string or array with additional attibutes,
@@ -164,10 +164,10 @@ class ShopFunctions {
 		$name = 'country_name';
 		$id = 'country_id';
 		$idA = $_prefix . 'country_id';
-		
+
 		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($countries, $emptyOption);
-		
+
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
@@ -181,81 +181,78 @@ class ShopFunctions {
 		}
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
-	
-	
+
+
 	/**
 	* Render a simple state list
 	* @author jseros
-	* 
+	*
 	* @param int $stateID Selected state id
 	* @param int $countryID Selected country id
 	* @param string $dependentField Parent <select /> ID attribute
 	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false, $_prefix = ''){	
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false, $_prefix = ''){
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		$states = array();
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'state_id';
-		
+
 		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($states, $emptyOption);
-			
+
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		}
-	
+
 		$attrs['class'] = 'dependent['. $dependentField .']';
-		
+
 		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
-		
+
 		$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
 		return $listHTML;
 	}
-	
+
 	/**
 	 * Creates the chooseable template list
-	 * 
+	 *
 	 * @author Max Milbers, impleri
-	 * 
-	 * @param string defaultText Text for the empty option 
+	 *
+	 * @param string defaultText Text for the empty option
 	 * @param boolean defaultOption you can supress the empty otion setting this to false
 	 * return array of Template objects
 	 */
 	public function renderTemplateList($defaultText = 0,$defaultOption=true){
-		
+
 		if(empty($defaultText)) $defaultText = JText::_('VM_TEMPLATE_DEFAULT');
-		
+
 		$templateList = array();
-		
+
 		$defaulttemplate = array();
 		if($defaultOption){
 			$defaulttemplate[0] = new stdClass;
 			$defaulttemplate[0] -> name = $defaultText;
 			$defaulttemplate[0] -> directory = 0;
 		}
-			
+
 		$JVersion = new JVersion();
-		if (!$JVersion->isCompatible('1.6')) {
+		if ($JVersion->isCompatible('1.5.0')) {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
-			$templateList = array_merge($defaulttemplate,$jtemplates);			
 		} else {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
 			$templatesModel = new TemplatesModelTemplates();
-			$jtemplates = array();
 			$jtemplates = $templatesModel->getItems();
-			$templateList = array_merge($defaulttemplate,$jtemplates);
 			//@TODO remove templates for admin panel.
 		}
-		return $templateList;
+		return array_merge($defaulttemplate,$jtemplates);
 	}
-	
+
 	/**
 	 * Creates structured option fields for all categories
 	 *
@@ -271,7 +268,7 @@ class ShopFunctions {
 		static $categoryTree = '';
 		if($level==0){
 			$categoryTree .= '<option value="">'.JText::_('LIST_EMPTY_OPTION').'</option>';
-		}	
+		}
 		$vendor_id = 1;
 
 		$categoryModel = self::getModel('category');
@@ -280,12 +277,12 @@ class ShopFunctions {
 		$records = $categoryModel->getCategoryTree(true, true, $cid);
 		$selected="";
 		foreach ($records as $key => $category) {
-			
+
 			$childId = $category->category_child_id;
 
 			if ($childId != $cid) {
 				if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
-				
+
 				$disabled = '';
 				if( in_array( $childId, $disabledFields )) {
 					$disabled = 'disabled="disabled"';
@@ -301,14 +298,14 @@ class ShopFunctions {
 					$categoryTree .= $category->category_name .'</option>';
 				}
 			}
-			
+
 			self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
 		}
-		
+
 		return $categoryTree;
 	}
 
-    
+
    	/**
 	 * Gets the total number of product for category
 	 *
@@ -316,15 +313,15 @@ class ShopFunctions {
      * @param int $categoryId Own category id
 	 * @return int Total number of products
 	 */
-	public function countProductsByCategory( $categoryId = 0 ) 
+	public function countProductsByCategory( $categoryId = 0 )
 	{
 		$categoryModel = self::getModel('category');
         return $categoryModel->countProducts($categoryId);
-    } 
+    }
 
 	/**
 	* Return the countryname or code of a given countryID
-	* 
+	*
 	* @author Oscar van Eijk
 	* @access public
 	* @param int $_id Country ID
@@ -333,7 +330,7 @@ class ShopFunctions {
 	*/
 	public function getCountryByID ($_id, $_fld = 'country_name')
 	{
-		if (empty($_id) && $_id !== 0) { //It must not be empty and it must be not different than 0 ?? 
+		if (empty($_id) && $_id !== 0) { //It must not be empty and it must be not different than 0 ??
 //		if (empty($_id)){
 		return ""; // Nothing to do
 		}
@@ -347,7 +344,7 @@ class ShopFunctions {
 
 	/**
 	* Return the statename or code of a given countryID
-	* 
+	*
 	* @author Oscar van Eijk
 	* @access public
 	* @param int $_id State ID
@@ -387,34 +384,34 @@ class ShopFunctions {
 	 * Print a select-list with enumerated categories
 	 *
      * @author jseros
-     * 	 
+     *
 	 * @param boolean $onlyPublished Show only published categories?
 	 * @param boolean $withParentId Keep in mind $parentId param?
 	 * @param integer $parentId Show only its childs
 	 * @param string $attribs HTML attributes for the list
 	 * @return string <Select /> HTML
 	 */
-	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null ) 
+	public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null )
 	{
 		$categoryModel = self::getModel('category');
-		
+
 		$categories = $categoryModel->getCategoryTree($onlyPublished, $withParentId, (int)$parentId);
-		
+
 		foreach($categories as $index => $cat){
 			$cat->category_name = $cat->ordering .'. '. $cat->category_name;
 			$categories[$index] = $cat;
 		}
-		
+
 		return JHTML::_('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
     }
 
 	/**
 	* Return model instance. This is a DRY solution!
 	* This is only called within this class
-	* 
+	*
 	* @author jseros
 	* @access private
-	* 
+	*
 	* @param string $name Model name
 	* @return JModel Instance any model
 	*/
@@ -422,12 +419,12 @@ class ShopFunctions {
 
 		$name = strtolower($name);
 		$className = ucfirst($name);
-		
+
 		//retrieving model
 		if( !class_exists('VirtueMartModel'.$className) ){
-			
+
 			$modelPath = JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS."models".DS.$name.".php";
-			
+
 			if( file_exists($modelPath) ){
 				require_once( $modelPath );
 			}
@@ -437,7 +434,7 @@ class ShopFunctions {
 				return false;
 			}
 		}
-		
+
 		$className = 'VirtueMartModel'.$className;
 		//instancing the object
 		$model = new $className();
@@ -448,22 +445,22 @@ class ShopFunctions {
 		}else {
 			return $model;
 		}
-	
+
 	}
 
 	/**
 	* Return the order status name for a given code
-	* 
+	*
 	* @author Oscar van Eijk
 	* @access public
-	* 
+	*
 	* @param char $_code Order status code
 	* @return string The name of the order status
 	*/
 	public function getOrderStatusName ($_code)
 	{
 		$_db = JFactory::getDBO();
-		
+
 		$_q = 'SELECT order_status_name FROM `#__vm_order_status`'
 			. " WHERE order_status_code = '$_code' ";
 		$_db->setQuery($_q);
@@ -484,10 +481,10 @@ class ShopFunctions {
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MRS'), JText::_('VM_REGISTRATION_FORM_MRS'));
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_DR'), JText::_('VM_REGISTRATION_FORM_DR'));
 		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_PROF'), JText::_('VM_REGISTRATION_FORM_PROF'));
-		
+
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}
-	
+
 	/**
 	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range,
 	 * dont use within virtuemart. It is just meant for paymentmethods
@@ -514,12 +511,12 @@ class ShopFunctions {
 	 *
 	 * @param string $list_name The name for the select element
 	 * @param string $selected_item The pre-selected value
-	 * 
+	 *
 	 */
 	function listMonths($list_name, $selected=false) {
 		$options = array();
 		if (!$selected) $selected = date('m');
-		
+
 		$options[] = JHTML::_('select.option', 0, JText::_('MONTH'));
 		$options[] = JHTML::_('select.option', "01", JText::_('JAN'));
 		$options[] = JHTML::_('select.option', "02", JText::_('FEB'));
@@ -553,7 +550,7 @@ class ShopFunctions {
 		}
 		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
 	}
-	
+
 	function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
 		reset( $arr );
 		$html = array();
@@ -583,7 +580,7 @@ class ShopFunctions {
 		}
 		return $html;
 	}
-        
+
 	function checkboxList( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0 ) {
 			return "\n\t".implode("\n\t", vmCommonHTML::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required ))."\n";
 	}
@@ -632,7 +629,7 @@ class ShopFunctions {
 		}
 		return $return;
 	}
-	
+
 	/**
 	 * Prints a JS function to validate all fields
 	 * given in the array $required_fields
@@ -649,7 +646,7 @@ class ShopFunctions {
         $field_list = str_replace( "'username',", '', $field_list );
         $field_list = str_replace( "'password',", '', $field_list );
         $field_list = str_replace( "'password2',", '', $field_list );
-        
+
         echo '
             <script language="javascript" type="text/javascript">//<![CDATA[
             function '.$functioname.'() {
@@ -661,7 +658,7 @@ class ShopFunctions {
                     formelement = eval( \'form.\' + required_fields[i] );
                     ';
        	echo "
-                    if( !formelement ) { 
+                    if( !formelement ) {
                             formelement = document.getElementById( required_fields[i]+'_field0' );
                             var loopIds = true;
                     }
@@ -693,13 +690,13 @@ class ShopFunctions {
                     	}
                     	else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
                             document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
-                        }                               
+                        }
                     }
                     else if( formelement.options ) {
                         if(formelement.selectedIndex.value == '') {
                                 document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
                                 isvalid = false;
-                        } 
+                        }
                         else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
                                 document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
                         }
@@ -722,7 +719,7 @@ class ShopFunctions {
 	    // We have skipped email in the first loop above!
 	    // Now let's handle email address validation
 	    if( isset( $required_fields['email'] )) {
-	    
+
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
 				alert( \''. str_replace("'","\\'",JText::_('REGWARN_MAIL',false)) .'\');
@@ -731,7 +728,7 @@ class ShopFunctions {
 
 		}
 		if( isset( $required_fields['username'] )) {
-		
+
 			echo '
 			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
 				alert( "'. sprintf(JText::_('VALID_AZ09',false), JText::_('USERNAME',false), 2) .'" );
@@ -765,11 +762,11 @@ class ShopFunctions {
 				return false;
 			}';
 		}
-		foreach( $allfields as $field ) {		
+		foreach( $allfields as $field ) {
 			if(  $field->type == 'euvatid' ) {
 				$euvatid = $field->name;
 				break;
-			}			
+			}
 		}
 		if (!empty($euvatid) ) {
 			$document = JFactory::getDocument();
@@ -792,7 +789,7 @@ class ShopFunctions {
 	            //]]>
 	    </script>';
 	}
-	
+
 	/**
 	* Validates an EU-vat number, What is this?
 	* @author RolandD
@@ -804,7 +801,7 @@ class ShopFunctions {
 		$vatcheck = new VmEUVatCheck($euvat);
 		return $vatcheck->validvatid;
 	}
-	
+
 	/**
 	* Validates an email address by using regular expressions
 	* Does not resolve the domain name!
@@ -819,7 +816,7 @@ class ShopFunctions {
 		$valid = preg_match( '/^[\w\.\-]+@\w+[\w\.\-]*?\.\w{1,4}$/', $email );
 		return $valid;
 	}
-	
+
 	/**
 	 * Creates the Quantity Input Boxes/Radio Buttons/Lists for Products
 	 *
@@ -831,7 +828,7 @@ class ShopFunctions {
 	function getQuantityBoxOptions($product, $child = false, $use_parent = 'N') {
 		$session = JFactory::getSession();
 		$cart = $session->get("cart", null);
-		
+
 		if ($child == 'Y') {
 			//We have a child list so get the current quantity;
 			$quantity = 0 ;
@@ -840,48 +837,48 @@ class ShopFunctions {
 					$quantity = $productCart["quantity"];
 				}
 			}
-		} 
+		}
 		else {
 			$quantity = JRequest::getInt('quantity', 1);
 		}
-		
+
 		// Detremine which style to use
 		if ($use_parent == 'Y' && $product->parent_product_id !=0) $id = $product->parent_product_id;
 		else $id = $product->product_id ;
-		
+
 		//Get style to use
 		extract($product->quantity_options);
-		
+
 		//Start output of quantity
 		//Check for incompatabilities and reset to normal
 		$display_type = null;
 		if (VmConfig::get('check_stock') == '1' && ! $product->product_in_stock ) {
 			$display_type = 'hide' ;
 		}
-		if (empty($display_type) 
-			|| ($display_type == "hide" && $child == 'Y') 
-			|| ($display_type == "radio" && $child == 'YM') 
+		if (empty($display_type)
+			|| ($display_type == "hide" && $child == 'Y')
+			|| ($display_type == "radio" && $child == 'YM')
 			|| ($display_type == "radio" && !$child) ) {
 				$display_type = "none" ;
 		}
-		
+
 		//todo what is this?
 		echo '<pre>'.print_r($quantity_options,1).'</pre>';
 		exit;
-		
+
 		$tpl->set( 'prod_id', $prod_id ) ;
 		$tpl->set( 'quantity', $quantity ) ;
 		$tpl->set( 'display_type', $display_type ) ;
 		$tpl->set( 'child', $child ) ;
 		$tpl->set( 'quantity_options', $quantity_options ) ;
-		
+
 		//Determine if label to be used
 		$html = $tpl->fetch( 'product_details/includes/quantity_box_general.tpl.php' ) ;
-		
+
 		return $html ;
-	
+
 	}
-	
+
 	/**
 	* Return $str with all but $display_length at the end as asterisks.
 	* @author gday
@@ -911,8 +908,8 @@ class ShopFunctions {
 
 		return($str);
 	}
-	
-	
+
+
 }
 
 //pure php no tag
