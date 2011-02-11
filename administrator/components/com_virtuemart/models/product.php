@@ -363,32 +363,36 @@ class VirtueMartModelProduct extends JModel {
 			case 'latest':
 				$filter = 'AND `#__vm_product`.`cdate` > '.(time()-(60*60*24*7)).' ';
 				break;
+			case 'random':
+				$filter = '';
+				break;
+			case 'topten';
+				$filter ='';
 		}
-        if ($categoryId) {
-	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
+		
+
+
+
+	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
 	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
-	        $query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
-            $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
+			if ($categoryId) {
+				$query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
+				$query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
+			}
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
 	        if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
-	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
-        }
-        else {
-	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
-	        $query .= 'FROM `#__vm_product` WHERE ';
-	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
-	        $query .= 'AND `#__vm_product`.`published`="1" ';
-	        $query .= $filter;
-	        if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != '1') {
-		        $query .= ' AND `product_in_stock` > 0 ';
-	        }
-	        $query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
-        }
+	        
+			if ( $group =='topten') {
+				$query .= 'ORDER BY product_sales DESC LIMIT 0, '.(int)$nbrReturnProducts;
+			} else {
+				$query .= 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts;
+			}
+
         $this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		

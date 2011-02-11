@@ -111,7 +111,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 					
 			<?php
 						if ($featProduct->product_thumb_image) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id),VmImage::getImageByProduct($featProduct)->displayImage('class="featuredProductImage" border="0"',$featProduct->product_name));
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id.'&category_id='.$featProduct->category_id),VmImage::getImageByProduct($featProduct)->displayImage('class="featuredProductImage" border="0"',$featProduct->product_name));
 						}
 			?>
 
@@ -119,7 +119,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 		
 					<div class="width70 floatright">
 				
-						<h3><?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), $featProduct->product_name, array('title' => $featProduct->product_name)); ?></h3>
+						<h3><?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id.'&category_id='.$featProduct->category_id), $featProduct->product_name, array('title' => $featProduct->product_name)); ?></h3>
 						
 						<?php // Product Short Description
 						if(!empty($featProduct->product_s_desc)) { ?> 
@@ -152,7 +152,7 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 	</div>
 						<div>
 						<?php // Product Details Button
-						echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id), JText::_('PRODUCT_DETAILS'), array('title' => $featProduct->product_name,'class' => 'product-details'));
+						echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$featProduct->product_id.'&category_id='.$featProduct->category_id), JText::_('PRODUCT_DETAILS'), array('title' => $featProduct->product_name,'class' => 'product-details'));
 				?>
 						</div>
 						

@@ -130,9 +130,8 @@ function virtuemartBuildRoute(&$query)
 						}
 					}
 				}
-				
+				$segments[] = $query['category_id'];
 				if (!$ismenu) {
-					$segments[] = $query['category_id'];				
 					$segments[] = getCategoryName($query['category_id'], true, $menuCatid );
 				}
 				unset($query['category_id']);
@@ -165,7 +164,7 @@ function virtuemartParseRoute($segments)
 	$count = count($segments) ;
 	$menu =& JSite::getMenu();
 	$menuItem =& $menu->getActive();
-	$menuCatid	= (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
+	$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
 	$firstSegment = $segments[0]; 
