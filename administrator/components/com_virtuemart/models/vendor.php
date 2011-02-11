@@ -430,6 +430,8 @@ class VirtueMartModelVendor extends JModel {
 		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
 		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
 
+//		$this->loadHelper('currencydisplay');  Does not work :-(
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 		if (!empty($_currencyDisplayStyle)) {
 			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']

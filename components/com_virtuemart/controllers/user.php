@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: user.php 2651 2010-11-11 12:46:16Z milbo $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!
@@ -265,7 +265,9 @@ class VirtueMartControllerUser extends JController
 		/* Create the view */
 		$view = $this->getView('user', 'html');
 		
-		$view->setModel(VirtueMartCart::getCart(), true);
+		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
+		
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$user = $this->getModel( 'user', 'VirtuemartModel' );
 		$view->setModel( $user , false );

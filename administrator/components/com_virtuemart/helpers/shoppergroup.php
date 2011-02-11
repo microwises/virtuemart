@@ -24,15 +24,15 @@ class ShopperGroup {
     	$vendor_id = 1;
     	$db = JFactory::getDBO();
     	
-    	$q =  "SELECT `#__vm_shopper_group`.`shopper_group_id`, `#__vm_shopper_group`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__vm_shopper_group`";
+    	$q =  'SELECT `#__vm_shopper_group`.`shopper_group_id`, `#__vm_shopper_group`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__vm_shopper_group`';
     		
     	if (!empty($id) && !$default_group) {
-      		$q .= ", `#__vm_user_shopper_group_xref`";
-      		$q .= " WHERE `#__vm_user_shopper_group_xref`.`user_id`='".$id."' AND ";
-      		$q .= "`#__vm_shopper_group`.`shopper_group_id`=`#__vm_user_shopper_group_xref`.`shopper_group_id`";
+      		$q .= ', `#__vm_user_shopper_group_xref`';
+      		$q .= ' WHERE `#__vm_user_shopper_group_xref`.`user_id`="'.$id.'" AND ';
+      		$q .= '`#__vm_shopper_group`.`shopper_group_id`=`#__vm_user_shopper_group_xref`.`shopper_group_id`';
     	} 
     	else {
-    		$q .= " WHERE `#__vm_shopper_group`.`vendor_id`='".$vendor_id."' AND `default`='1'";
+    		$q .= ' WHERE `#__vm_shopper_group`.`vendor_id`="'.$vendor_id.'" AND `default`="1"';
     	}
     	$db->setQuery($q);
     	return $db->loadAssoc();

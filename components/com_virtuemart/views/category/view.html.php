@@ -82,14 +82,9 @@ class VirtuemartViewCategory extends JView {
 		}
 
 
-//		$mdata = new JParameter($category->metadata);
-//		$mdata = $mdata->toArray();
-//		foreach ($mdata as $k => $v)
-//		{
-//			if ($v) {
-//				$document->setMetadata($k, $v);
-//			}
-//		}
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+		$this->assignRef('showBasePrice', $showBasePrice);
 
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 

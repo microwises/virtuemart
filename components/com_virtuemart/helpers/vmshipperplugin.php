@@ -436,6 +436,7 @@ abstract class vmShipperPlugin extends JPlugin
 		$_sRate = new VirtueMartModelShippingRate();
 		$_rates = $_sRate->getShippingRatePrices($_id);
 		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$_calc = calculationHelper::getInstance();
 		return $_calc->priceDisplay($_total);
 	}

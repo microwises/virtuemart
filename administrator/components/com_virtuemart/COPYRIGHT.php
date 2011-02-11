@@ -15,7 +15,10 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 ?>
-<pre><strong>Copyright:</strong>
+<pre>
+TODO rework this file
+
+<strong>Copyright:</strong>
 
 VirtueMart derives from copyrighted works licensed under the GNU General
 Public License.  This version has been modified pursuant to the

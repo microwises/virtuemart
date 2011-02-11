@@ -15,7 +15,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: view.html.php 2687 2011-02-02 18:07:50Z oscar $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!
@@ -46,6 +46,7 @@ class VirtueMartViewCart extends JView {
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 
+		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
 
@@ -58,7 +59,7 @@ class VirtueMartViewCart extends JView {
 			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
 				
 		} else if($layoutName=='selectshipper'){
-			
+			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
 			
@@ -69,7 +70,7 @@ class VirtueMartViewCart extends JView {
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
-
+			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
 			$this->lSelectPayment();
@@ -245,6 +246,8 @@ class VirtueMartViewCart extends JView {
 		/* Get the products for the cart */
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
+		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		foreach($product_prices as $k=>$price){

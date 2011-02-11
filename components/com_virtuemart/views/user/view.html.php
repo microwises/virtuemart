@@ -252,6 +252,7 @@ class VirtuemartViewUser extends JView {
 			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
 			
 			if(empty($this->currency)){
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 				$currency = VirtueMartModelVendor::getCurrencyDisplay();;
 				$this->assignRef('currency', $currency);				
 			}
@@ -344,8 +345,12 @@ class VirtuemartViewUser extends JView {
 		$this->loadHelper('shopfunctions');
 		
 		// Shopper info
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
-		if(Permissions::getInstance()->check("admin,storeadmin")){
+		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		if(Permissions::getInstance()->check('admin,storeadmin')){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
 			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
 
@@ -436,6 +441,7 @@ class VirtuemartViewUser extends JView {
 //			if (count($this->_orderList) > 0) {		
 			//Why is this here? should be set for vendors AND shoppers with orders
 			if(empty($this->currency)){
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 				$currency = VirtueMartModelVendor::getCurrencyDisplay();;
 				$this->assignRef('currency', $currency);				
 			}
@@ -456,6 +462,7 @@ class VirtuemartViewUser extends JView {
 		}
 
 		if(empty($currency)){
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 			$currency = new CurrencyDisplay();
 			$this->assignRef('currency', $currency);
 		}

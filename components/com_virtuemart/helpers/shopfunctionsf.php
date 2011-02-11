@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: shopfunctionsf.php 2693 2011-02-07 18:36:00Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -50,6 +50,7 @@ class shopFunctionsF {
 		if(VmConfig::get($name) =='1'){
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
+	 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 	 			$calculator = calculationHelper::getInstance();
 	 			$product_price[$name] = $calculator->priceDisplay($product_price[$name]);
 	 		} else {

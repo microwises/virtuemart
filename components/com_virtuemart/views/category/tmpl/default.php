@@ -149,7 +149,7 @@ foreach ($this->products as $product) {
 			} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
 			//todo add config settings
-			if( Permissions::getInstance()->check('admin')){
+			if( $this->showBasePrice){
 				echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$product->prices);
 				echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$product->prices);
 			}

@@ -135,8 +135,8 @@ if (VmConfig::get('showFeatured', 1) && !empty($this->featuredProducts)) {
 //						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
 //					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
-					//todo add config settings
-					if( Permissions::getInstance()->check('admin')){
+					
+					if( $this->showBasePrice ){
 						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$featProduct->prices);
 						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$featProduct->prices);
 					}

@@ -15,7 +15,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: default.php 2643 2010-11-09 23:16:41Z milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -170,8 +170,8 @@ else { ?>
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
-					//todo add config settings
-					if( Permissions::getInstance()->check('admin')){
+					
+					if( $this->showBasePrice ){
 						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->prices);
 						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
 					}

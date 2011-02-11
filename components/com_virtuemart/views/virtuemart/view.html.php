@@ -69,6 +69,10 @@ class VirtueMartViewVirtueMart extends JView {
 			$this->assignRef('latestProducts', $latestProducts);
 		}
 		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+		$this->assignRef('showBasePrice', $showBasePrice);
+		
 		
 		$template = VmConfig::get('vmtemplate','default');
 		if (is_dir(JPATH_THEMES.DS.$template)) {

@@ -405,6 +405,7 @@ class VirtueMartModelProduct extends JModel {
 				$price = "";
 				if (VmConfig::get('show_prices') == '1') {
 					/* Loads the product price details */
+					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 					$calculator = calculationHelper::getInstance();
 					//Todo check if it is better just to use $featured, but needs redoing the sql above
 					$price = $calculator->getProductPrices((int)$featured->product_id);

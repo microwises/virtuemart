@@ -66,6 +66,7 @@ class VirtueMartModelProductdetails extends JModel {
 			if (VmConfig::get('show_prices') == '1' && $withCalc) {
 				
 				/* Loads the product price details */
+				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				
 				/* Calculate the modificator */
@@ -169,6 +170,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$product->variants = $this->getVariants($product);
 			
 		/* Loads the product price details */
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		
 		$quantityArray = JRequest::getVar('quantity',1,'post');
@@ -299,6 +301,7 @@ class VirtueMartModelProductdetails extends JModel {
 		/* Get the price also */
 		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);

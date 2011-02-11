@@ -16,15 +16,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.org
 */
 
-// Load the configuration file
-// Quickfix by Harry Patterson: 
-//global $mosConfig_absolute_path;
-//$mosConfig_absolute_path=JPATH_ROOT.DS;
-//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
-// Require the base controller
+// Require the base controller  Do we need that? there is only a display in there
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controller.php');
 
 // Require specific controller if requested

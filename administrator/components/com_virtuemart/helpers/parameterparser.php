@@ -23,7 +23,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 class FileUtilities{
 	
-	/**
+	/** TODO obsolete?
 	 * Lists all available payment classes in the payment directory
 	 *
 	 * @param string $name

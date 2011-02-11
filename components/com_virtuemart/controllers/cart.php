@@ -233,6 +233,7 @@ class VirtueMartControllerCart extends JController {
 		//Now set the shipping rate into the cart
 		$cart = VirtueMartCart::getCart();
 		if($cart){
+			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
 			$paym_id= JRequest::getVar('paym_id', '0');

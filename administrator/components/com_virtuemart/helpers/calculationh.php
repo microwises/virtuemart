@@ -54,6 +54,7 @@ class calculationHelper{
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
 //		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 		$this -> _currencyDisplay = VirtueMartModelVendor::getCurrencyDisplay(1);
 		$this -> _debug           = false;
 	}

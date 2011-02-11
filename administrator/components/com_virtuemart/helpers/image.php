@@ -7,20 +7,13 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RickG, RolandD
+ * @author Max Milbers
+ * @author RickG, RolandD 
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
+
 defined('_JEXEC') or die();
 
-/**
- * Image Helper class
- *
- * @package	VirtueMart
- * @subpackage Helpers
- * @author Max Milbers
- * @author RickG, RolandD
- */
-//class VmImage {
 class VmImage {
 
 	var $id = 0;
@@ -453,7 +446,7 @@ class VmImage {
 
 /**
 *
-* @version $Id: image.php 2673 2011-01-02 19:41:35Z zbyszek $
+* @version $Id$
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.

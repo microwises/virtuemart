@@ -115,6 +115,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Check for editing access */
 		/** @todo build edit page */
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('VM_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
@@ -150,15 +151,10 @@ class VirtueMartViewProductdetails extends JView {
 			$document->setMetaData('author', $product->metaauthor);
 		}
 
-//		$mdata = new JParameter($product->metadata);
-//		$mdata = $mdata->toArray();
-//		foreach ($mdata as $k => $v)
-//		{
-//			if ($v) {
-//				$document->setMetadata($k, $v);
-//			}
-//		}
-
+		
+		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+		$this->assignRef('showBasePrice', $showBasePrice);
+		
 	    if(empty($category->category_template)){
 	    	$catTpl = VmConfig::get('categorytemplate');
 	    }else {
