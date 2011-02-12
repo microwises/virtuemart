@@ -36,10 +36,8 @@ function virtuemartBuildRoute(&$query)
 	$menuView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 	$menuCatid	= (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
 	$menuProdId	= (empty($menuItem->query['product_id'])) ? null : $menuItem->query['product_id'];
-	$menuComponent = $menuItem->component ;
-	if (isset($menuItem->id)) $menuId = $menuItem->id ;
+	$menuComponent	= (empty($menuItem->component)) ? null : $menuItem->component;
 
-	
 
 	if(isset($query['view'])){
 		$view = $query['view'];
@@ -58,7 +56,7 @@ function virtuemartBuildRoute(&$query)
 		$menus		= $app->getMenu('site');
 		$component	= JComponentHelper::getComponent('com_virtuemart');
 		$items		= $menus->getItems('componentid', $component->id);
-		// set all category and vrituemart root menu id
+		// set all category and virtuemart root menu id
 		foreach ($items as $item)	{
 			if ( $item->query['view']=='category' && isset( $item->query['category_id'])) {
 				$VirtuemartMenuCat[]  = array_merge( $item->query, array('itemId' => $item->id) );  ;
@@ -80,7 +78,7 @@ function virtuemartBuildRoute(&$query)
 			unset($query['view']);
 		// Shop category view 
 		case 'category';	
-			if(isset( $query['category_id']) && $menuCatid != $query['category_id'] ){
+			if(!empty( $query['category_id']) && $menuCatid != $query['category_id'] ){
 				// to avoid duplicate categorie if a joomla menu ID is set
 				$ismenu = false ;
 				$treeIds = getCategoryRecurse($query['category_id'],true,$menuCatid) ;
@@ -104,6 +102,8 @@ function virtuemartBuildRoute(&$query)
 			} else {
 				unset($query['category_id']);
 			}
+			// Fix for search with no category
+			if (empty( $query['category_id'])) $segments[] = 'search';
 		break;
 		// Shop product details view 
 		case 'productdetails';			
@@ -167,8 +167,13 @@ function virtuemartParseRoute($segments)
 	$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
-	$firstSegment = $segments[0]; 
-
+	
+	if ($segments[0] == 'search') {
+		$vars['view'] = 'category';
+		array_shift($segments);
+	}
+	if  (!$segments) return $vars;
+	
 	if (ctype_digit ($segments[0])) {
 		if (ctype_digit ($segments[1]) ) {
 			$vars['product_id'] = $segments[0];
@@ -181,7 +186,7 @@ function virtuemartParseRoute($segments)
 		}
 	return $vars;
 	} else {
-		$vars['view'] = $firstSegment;
+		$vars['view'] = $segments[0];
 		if ( isset($segments[1]) ) {
 			$vars['task'] = $segments[1] ;
 		}

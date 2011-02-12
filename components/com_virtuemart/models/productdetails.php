@@ -342,7 +342,7 @@ class VirtueMartModelProductdetails extends JModel {
 		
 		$q = 'SELECT comment, `time`, userid, user_rating, username, name 
 			FROM #__vm_product_reviews r
-			LEFT JOIN #__users u
+			LEFT JOIN jos_users u
 			ON u.id = r.userid
 			WHERE product_id = "'.$product_id.'" 
 			AND published = "1" 
@@ -472,11 +472,39 @@ class VirtueMartModelProductdetails extends JModel {
 	* @return array containing product objects 
 	*/
 	public function getProductsInCategory($category_id) {
-		$this->_db = JFactory::getDBO();
+		// a starting point for search and filters
+		if (JRequest::getVar('keyword')) {
+			$keyword = JRequest::getVar('keyword', '');
+			$filtercategory = JRequest::getVar('filter', '1');
+			$group = JRequest::getVar('group', ''); // group by
+			$orderInv = JRequest::getVar('orderInv', ''); // orde DESC ASC;
+			if ($filtercategory) $cat_id = (empty($category_id)) ? JRequest::getVar('category_id', '') : $category_id ;
+			
+			/* Get a filtered list of product ID's */
+			$q = "SELECT DISTINCT #__vm_product.product_id FROM #__vm_product 
+				LEFT JOIN #__vm_product_category_xref ON #__vm_product.product_id = #__vm_product_category_xref.product_id  
+				WHERE (`product_name` LIKE '%".$keyword."%' 
+				or `product_sku` LIKE '%".$keyword."%'  
+				or `product_s_desc` LIKE '%".$keyword."%'  
+				or `product_desc` LIKE '%".$keyword."%') 
+				AND `#__vm_product`.`published`='1' ";
+			if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1')
+				$q .= ' AND `product_in_stock` > 0 ';
+			if ($cat_id)
+				$q .= ' AND category_id = "'.$cat_id.'" ';
+			if ( $group =='topten')
+				$q .= ' ORDER BY product_sales ';
+			if ($orderInv)
+				$q .= ' DESC';
+
+		} else {
+		
 		/* Get a list of product ID's */
 		$q = "SELECT product_id 
 			FROM #__vm_product_category_xref
 			WHERE category_id = ".$category_id;
+		}
+		$this->_db = JFactory::getDBO();
 		$this->_db->setQuery($q);
 		$product_ids = $this->_db->loadResultArray();
 		

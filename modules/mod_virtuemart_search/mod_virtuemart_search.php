@@ -17,22 +17,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 
 // Load the virtuemart main parse code
-if( file_exists(dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' )) {
-	require_once( dirname(__FILE__).'/../../components/com_virtuemart/virtuemart_parser.php' );
-} else {
-	require_once( dirname(__FILE__).'/../components/com_virtuemart/virtuemart_parser.php' );
-}
-
-global $VM_LANG, $mm_action_url, $sess;
-
+$button			 = $params->get('button', '');
+$imagebutton	 = $params->get('imagebutton', '');
+$button_pos		 = $params->get('button_pos', 'left');
+$button_text	 = $params->get('button_text', JText::_('Search'));
+$width			 = intval($params->get('width', 20));
+$maxlength		 = $width > 20 ? $width : 20;
+$text			 = $params->get('text', JText::_('search...'));
+$set_Itemid		 = intval($params->get('set_itemid', 0));
+$moduleclass_sfx = $params->get('moduleclass_sfx', '');
+$category_id 	 = JRequest::getInt('category_id', 0);
+require(JModuleHelper::getLayoutPath('mod_virtuemart_search'));
 ?>
-<!--BEGIN Search Box --> 
-<form action="<?php $sess->purl( $mm_action_url."index.php?page=shop.browse" ) ?>" method="post">
-
-	<p><label for="keyword"><?php echo $VM_LANG->_('PHPSHOP_SEARCH_LBL') ?></label></p>
-	<p>
-		<input name="keyword" type="text" size="12" title="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>" class="inputbox" id="keyword"  />
-		<input class="button" type="submit" name="Search" value="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>" />
-	</p>
-</form>
-<!-- End Search Box --> 
