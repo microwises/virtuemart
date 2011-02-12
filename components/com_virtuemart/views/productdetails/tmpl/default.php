@@ -152,7 +152,7 @@ else { ?>
 		<tr>
 			<td rowspan="1" colspan="2">
 				<?php
-					$link = JRoute::_('index2.php?view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&output=lite&option=com_virtuemart');
+					$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
 					$text = '( '.$this->product->mf_name.' )';
 					/* Avoid JavaScript on PDF Output */
 					if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
