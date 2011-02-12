@@ -40,6 +40,11 @@ else if ($controllername = JRequest::getVar('view')) {
 	}
 }
 
+//Fallback
+if(empty($controllername)){
+	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.'virtuemart.php');
+}
+
 // Create the controller
 $classname	= 'VirtueMartController'.ucfirst($controllername);
 $controller = new $classname();

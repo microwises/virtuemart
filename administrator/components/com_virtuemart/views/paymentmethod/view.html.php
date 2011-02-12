@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: view.html.php 2694 2011-02-08 17:28:47Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -153,8 +153,7 @@ class VirtuemartViewPaymentMethod extends JView {
 
 	function renderInstalledPaymentPlugins($selected){
 
-		$JVersion = new JVersion();
-		if ( $JVersion->isCompatible('1.5.0')) {
+		if ( VmConfig::isJ15()) {
 			$table = '#__plugins';
 			$ext_id = 'id';
 			$enable = 'published';

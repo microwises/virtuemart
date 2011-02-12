@@ -18,8 +18,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$JVersion = new JVersion();
-$j15 = $JVersion->isCompatible('1.5.0');
+
+$j15 = VmConfig::isJ15();
 ?>
 
 <div id="editcell">

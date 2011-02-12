@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: default_pricing.php 2694 2011-02-08 17:28:47Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -47,8 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
 			    <br />
 			    <?php
-			    $JVersion = new JVersion();
-				if ( $JVersion->isCompatible('1.5.0')) {
+				if ( VmConfig::isJ15()) {
 					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level'));
 				} else {
 					$selectOptions['list.attr'] = 'size=5';

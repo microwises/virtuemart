@@ -239,8 +239,7 @@ class ShopFunctions {
 			$defaulttemplate[0] -> directory = 0;
 		}
 
-		$JVersion = new JVersion();
-		if ($JVersion->isCompatible('1.5.')) {
+		if (VmConfig::isJ15()) {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 		} else {

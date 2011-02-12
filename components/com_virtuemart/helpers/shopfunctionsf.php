@@ -92,8 +92,8 @@ class shopFunctionsF {
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
 		if (VmConfig::get('pshop_pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
-			$JVersion = new JVersion();
-			$folder = ($JVersion->isCompatible('1.5.0')) ? '/images/M_images/' : '/media/system/images/';
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('CMN_PDF'));
@@ -112,8 +112,8 @@ class shopFunctionsF {
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
 		if (VmConfig::get('vm_show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
-			$JVersion = new JVersion();
-			$folder = ($JVersion->isCompatible('1.5.0')) ? '/images/M_images/' : '/media/system/images/';
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
@@ -129,8 +129,8 @@ class shopFunctionsF {
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $cur_template, $Itemid;
 		if (VmConfig::get('vm_show_printicon', 1) == '1') {
-			$JVersion = new JVersion();
-			$folder = ($JVersion->isCompatible('1.5.0')) ? '/images/M_images/' : '/media/system/images/';
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			if( !$link ) {
 				//Todo this is old stuff and must be adjusted
 				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));

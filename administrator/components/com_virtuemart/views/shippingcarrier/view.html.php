@@ -79,8 +79,7 @@ class VirtuemartViewShippingCarrier extends JView {
 	{
 		$db = JFactory::getDBO();
 
-		$JVersion = new JVersion();
-		if ($JVersion->isCompatible('1.5.0')) {
+		if (VmConfig::isJ15()) {
 			$table = '#__plugins';
 			$enable = 'published';
 			$ext_id = 'id';

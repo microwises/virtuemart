@@ -304,8 +304,7 @@ class VirtuemartViewUser extends JView {
 			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
 		}
 
-		$JVersion = new JVersion();
-		if ($JVersion->isCompatible('1.6.0')) {
+		if (VmConfig::isAtLeastVersion('1.6.0')) {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 			.JHTML::_('image', 'admin/' .$img, $alt, null, true) .'</a>');
 		}

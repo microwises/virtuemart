@@ -13,15 +13,15 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: default.php 2673 2011-01-02 19:41:35Z zbyszek $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
-$JVersion = new JVersion();
-$j15 = $JVersion->isCompatible('1.5.0');
+
+$j15 = VmConfig::isJ15();
 
 ?>
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm">

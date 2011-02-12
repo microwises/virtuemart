@@ -19,8 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
-$JVersion = new JVersion();
-$j15 = $JVersion->isCompatible('1.5.0');
+
+$j15 = VmConfig::isJ15();
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -81,7 +81,7 @@ $j15 = $JVersion->isCompatible('1.5.0');
 			/* Print view URL */
 			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&order_id=".$order->order_id;
 			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
-			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/', null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 			?>
 		<td><?php echo $details_link; ?></td>
 		<!-- Order date -->

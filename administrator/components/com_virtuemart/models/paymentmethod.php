@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: paymentmethod.php 2642 2010-11-09 20:37:19Z milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -156,8 +156,7 @@ class VirtueMartModelPaymentmethod extends JModel
 			$this->_data->paym_creditcards = $this->_db->loadResultArray();
 
 
-			$version = new JVersion();
-			if ($version->isCompatible('1.5.0')) {
+			if (VmConfig::isJ15()) {
 				$table = '#__plugins';
 				$ext_id = 'id';
 			} else {

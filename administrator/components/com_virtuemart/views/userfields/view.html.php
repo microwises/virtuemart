@@ -184,8 +184,6 @@ class VirtuemartViewUserfields extends JView {
 	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
 	{
 
-		$JVersion = new JVersion();
-
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
@@ -197,7 +195,7 @@ class VirtuemartViewUserfields extends JView {
 			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
 		}
 
-		if ($JVersion->isCompatible('1.6.0')) {
+		if (VmConfig::isAtLeastVersion('1.6.0')) {
 			$img = 'admin/' . $img;
 		}
 		$retImgSrc =  JHTML::_('image.administrator', $img, '/images/', null, null, $alt);

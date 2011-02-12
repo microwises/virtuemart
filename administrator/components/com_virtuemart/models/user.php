@@ -15,7 +15,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: user.php 2682 2011-01-29 16:18:03Z impleri $
+ * @version $Id$
  */
 
 // Check to ensure this file is included in Joomla!
@@ -237,8 +237,7 @@ class VirtueMartModelUser extends JModel {
 		{
 			$_aclObject =& JFactory::getACL();
 
-			$JVersion = new JVersion();
-			if ($JVersion->isCompatible('1.6.0')){
+			if (VmConfig::isAtLeastVersion('1.6.0')){
 				//TODO fix this latter. It's just an workarround to make it working on 1.6
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);
@@ -392,8 +391,8 @@ class VirtueMartModelUser extends JModel {
 
 				// Set some initial user values
 				$user->set('usertype', $newUsertype);
-				$JVersion = new JVersion();
-				if ( $JVersion->isCompatible('1.5.0')){
+
+				if ( VmConfig::isJ15()){
 					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 				}
 
@@ -840,10 +839,9 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function getAclGroupIndentedTree()
 	 {
-	 	$version = new JVersion();
 
 	 	//TODO check this out
-	 	if ($version->isCompatible('1.5.0')) {
+	 	if (VmConfig::isJ15()) {
 			$name = 'name';
 			$as = '` AS `title`';
 			$table = '#__core_acl_aro_groups';

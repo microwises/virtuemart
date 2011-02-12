@@ -20,8 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
-$JVersion = new JVersion();
-$j15 = JVersion->isCompatible('1.5.0');
+
+$j15 = VmConfig::isJ15();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
