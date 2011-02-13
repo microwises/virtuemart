@@ -103,7 +103,11 @@ function virtuemartBuildRoute(&$query)
 				unset($query['category_id']);
 			}
 			// Fix for search with no category
-			if (empty( $query['category_id'])) $segments[] = 'search';
+			if ( isset($query['search'])  ) $segments[] = 'search' ;
+			if ( isset($query['keyword'] )) {
+				$segments[] = $query['keyword'];
+				unset($query['keyword']);
+			}
 		break;
 		// Shop product details view 
 		case 'productdetails';			

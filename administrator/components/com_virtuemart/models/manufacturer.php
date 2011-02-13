@@ -196,7 +196,7 @@ class VirtueMartModelManufacturer extends JModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of manufacturer objects
 	 */
-	function getManufacturers($onlyPublished=false, $noLimit=false) {
+	public function getManufacturers($onlyPublished=false, $noLimit=false) {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$option	= 'com_virtuemart';

@@ -87,7 +87,8 @@ if (!empty($this->products)) {
 
 	// calculation of the categories per row
 	$products_per_row = $this->category->products_per_row;
-	$browsecellwidth = floor( 100 / $products_per_row);
+	$browsecellwidth = 100;
+	if ($products_per_row >0 ) $browsecellwidth = floor( 100 / $products_per_row);
 
 
 

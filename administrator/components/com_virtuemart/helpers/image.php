@@ -155,7 +155,7 @@ class VmImage {
 	 * @param string $alt alternative Text to display
 	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
 	 */
-	function displayImage($imageArgs="",$alt = '', $preferResized=1, $dynCreate=1){
+	function displayImage($imageArgs="",$alt = '', $preferResized=1, $dynCreate=1, $lightbox=''){
 
 
 		if (empty($this->media_filename) && empty($this->media_filename_thumb)) {
@@ -198,7 +198,12 @@ class VmImage {
 				return JHTML::image($url,JText::_('NO_IMAGE_FOUND').' '.$alt);
 			}
 		}
-
+		if($lightbox){
+			$image = JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt, $imageArgs);
+			$lightboxImage = '<a title="'.$alt.'" '.$lightbox.' href="'.$this->media_url.$this->media_filename.'">'.$image.'</a>';
+			
+			return $lightboxImage;
+		}
 		//okey the pictures exist, does we want the resized one? if not, just give the normal picture back
 		if($preferResized){
 			return JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt, $imageArgs);

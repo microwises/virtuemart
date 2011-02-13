@@ -20,7 +20,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+// addon for joomla modal Box
+JHTML::_( 'behavior.modal' );
 /* Let's see if we found the product */
 if (empty($this->product)) {
 	echo JText::_('VM_PRODUCT_NOT_FOUND');
@@ -76,9 +77,11 @@ else { ?>
 		</tr>
 		<tr>
 			<td align="left" valign="top" width="220">
-			<?php /** @todo make the image popup */ ?>
+			<?php /** The image popup with the original Joomla Modal >>
+				only change the code  to change your type of slimbox (and load the javascript of course
+				 class="modal" , Rel="lightbox" at last parameter for lightbox( Or why not a template parameter ? ) */ ?>
 			<div><?php
-				echo $this->productImage->displayImage('','',0,0);
+				echo $this->productImage->displayImage('','',0,0, 'class="modal"');
 			?></div>
 			</td>
 			<td valign="top">
@@ -156,8 +159,12 @@ else { ?>
 					$text = '( '.$this->product->mf_name.' )';
 					/* Avoid JavaScript on PDF Output */
 					if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
-					else echo shopFunctionsF::vmPopupLink( $link, $text );
-				?>
+					else { 
+					?>
+					<a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+					<?PHP 
+					}
+					?>
 				<br />
 			</td>
 		</tr>

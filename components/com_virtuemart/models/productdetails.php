@@ -492,8 +492,32 @@ class VirtueMartModelProductdetails extends JModel {
 				$q .= ' AND `product_in_stock` > 0 ';
 			if ($cat_id)
 				$q .= ' AND category_id = "'.$cat_id.'" ';
-			if ( $group =='topten')
-				$q .= ' ORDER BY product_sales ';
+
+				/* The order By to set :( TO DO for price , find a trick because of the new rules )
+				     if you want more add it here */
+			switch ($group) { 
+				case 'featured':
+					$q = 'AND `#__vm_product`.`product_special`="Y" ';
+					break;
+				case 'stock':
+					$q .= ' ORDER BY product_in_stock ';
+					break;
+				case 'name':
+					$q .= ' ORDER BY product_name ';
+					break;
+				case 'sku':
+					$q .= ' ORDER BY product_sku ';
+					break;
+				case 'date';
+					$q .= ' ORDER BY cdate ';
+					break;
+				case 'topten';
+					$q .= ' ORDER BY product_sales ';
+					break;
+				default ;
+					$q .= ' ORDER BY product_id ';
+					break;
+			}
 			if ($orderInv)
 				$q .= ' DESC';
 
