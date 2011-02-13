@@ -35,7 +35,8 @@ class VirtuemartViewManufacturer extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-
+		$this->loadHelper('image');
+		
 		$mainframe = JFactory::getApplication();
 		global $option;
 		// get necessary models

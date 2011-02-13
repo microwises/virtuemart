@@ -95,10 +95,41 @@ class VirtueMartModelManufacturer extends JModel {
      * @return boolean True is the save was successful, false otherwise.
 	 */
     function store() {
-		$table = $this->getTable('manufacturer');
 
-		$data = JRequest::get('post');
+	/* Setup some place holders */
+	$table = $this->getTable('manufacturer');
 
+	/* Load the data */
+	$data = JRequest::get('post', 4);
+
+	/* Load the old manufacturer details first */
+	$table->load($data['product_id']);
+
+	
+		//$data = JRequest::get('post',4);
+		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
+
+		/* Process the images */
+		//uploading images and creating thumbnails
+		$fullImage = JRequest::getVar('mf_full_image', array(), 'files');	
+		if(!empty($fullImage['name'])){
+			$filename = $fullImage['name'];
+		} else {
+			$filename = $data['mf_full_image_current'];
+		}
+	
+		$thumbImage = JRequest::getVar('mf_thumb_image', array(), 'files');
+		if(!empty($thumbImage['name'])){
+			$filenamethumb = $thumbImage['name'];
+		} else {
+			$filenamethumb = $data['mf_thumb_image_current'];
+		}
+				
+		$image = VmImage::getMfImage($filename,$filenamethumb);
+		if(!empty($image)){
+			$data = $image->saveImage($data,$fullImage,false);
+			$data = $image->saveImage($data,$thumbImage,true);
+		}
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());

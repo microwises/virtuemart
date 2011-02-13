@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
+$editor = JFactory::getEditor();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -89,13 +90,40 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-
-				<textarea rows="10" cols="30" name="mf_desc" id="mf_desc"><?php echo $this->manufacturer->mf_desc; ?></textarea>
+				<?php echo $editor->display('mf_desc', $this->manufacturer->mf_desc, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>
 			</td>
 		</tr>
 
 	</table>
 	</fieldset>
+</div>
+<?php echo VmImage::testFolderWriteAble(VmConfig::get('media_manufacturer_path')); ?>
+<div class="col50">
+	<table class="adminform">
+		<tr>
+			<td style="width: 50%" valign="top">
+				<fieldset>
+					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_FULL_IMAGE' ); ?></legend>
+					<table style="width:100%">
+					<?php
+						$image = VmImage::getImageByMf($this->manufacturer);
+						echo $image -> createImageUploader(false);
+					?>
+					</table>
+				</fieldset>
+			</td>
+			<td valign="top">
+				<fieldset>
+					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_THUMB_IMAGE' ); ?></legend>
+					<table style="width:100%">
+					<?php
+						echo $image -> createImageUploader(true);
+					 ?>
+					</table>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
@@ -104,5 +132,34 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="manufacturer" />
 </form>
+<script type="text/javascript">
+function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
+	try {
+		if( !disableOnChecked ) {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=false;
+			}
+			else {
+				elementDisable.disabled=true;
+			}
+		}
+		else {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=true;
+			}
+			else {
+				elementDisable.disabled=false;
+			}
+		}
+	}
+	catch( e ) {}
+}
 
+function toggleFullURL() {
+	if( jQuery('#mf_full_image_url').val().length>0) document.adminForm.mf_full_image_action[1].checked=false;
+	else document.adminForm.mf_full_image_action[1].checked=true;
+	toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image_url, true );
+	toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image, true );
+}
+</script>
 <?php AdminMenuHelper::endAdminArea(); ?>

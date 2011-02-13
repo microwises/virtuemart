@@ -144,6 +144,37 @@ class VmImage {
 		if(empty($cat)) return JText::_('VM_CANT_CREATE_IMAGE_NO_CATEGORY_GIVEN');
 		return self::getCatImage($cat->category_full_image,$cat->category_thumb_image,$cat->category_id);
 	}
+	
+	/**
+	 * This function should display the image, when the image is not already a resized one, 
+	 * it tries to get first the resized one, or create a resized one or fallback in case
+	 * 
+	 * @author Max Milbers
+	 * 
+	 * @param string $imageArgs Attributes to be included in the <img> tag.
+	 * @param string $alt alternative Text to display
+	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
+	 */
+	function getMfImage($filename,$thumb_filename=0,$mf_id=0){
+		$image =  new VmImage( VmConfig::get('media_manufacturer_path'),$filename,$thumb_filename);
+		$image->table = 'mf';
+		$image->id = $mf_id;
+		$image->idfield = 'manufacturer_id';
+		$image->mfield = 'mf_thumb_image';
+		return $image;
+	}
+
+	/**
+	 * Small proxy function for getMfImage, which just works with the manufacturer object
+	 * 
+	 * @author Max Milbers
+	 * @param object manufacturer object given by §manufacturerModel->getManufacturer()
+	 * @return VmImage an image object with extra manufacturer attributes
+	 */
+	function getImageByMf($mf){
+		if(empty($mf)) return JText::_('VM_CANT_CREATE_IMAGE_NO_MANUFACTURER_GIVEN');
+		return self::getMfImage($mf->mf_full_image,$mf->mf_thumb_image,$mf->manufacturer_id);
+	}
 
 	/**
 	 * This function should display the image, when the image is not already a resized one,
