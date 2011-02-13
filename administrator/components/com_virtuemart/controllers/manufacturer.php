@@ -99,15 +99,12 @@ class VirtuemartControllerManufacturer extends JController {
 	 */
 	function save()
 	{
+
 		/* Load the view object */
 		$view = $this->getView('manufacturer', 'html');
-	
-		/* Waitinglist functions */
-		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
 
 		/* Load some helpers */
 		$view->loadHelper('image');
-		$view->loadHelper('shopFunctions');
 
 		$model = $this->getModel('manufacturer');
 

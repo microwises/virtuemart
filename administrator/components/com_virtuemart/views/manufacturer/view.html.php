@@ -66,7 +66,6 @@ class VirtuemartViewManufacturer extends JView {
 			}
 
 			$this->assignRef('manufacturer',	$manufacturer);
-
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
         }
@@ -84,17 +83,16 @@ class VirtuemartViewManufacturer extends JView {
 
 			$manufacturers = $model->getManufacturers();
 			$this->assignRef('manufacturers',	$manufacturers);
+			$categoryFilter = $categoryModel->getCategoryFilter();
 
+			$list['mf_category_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $mf_category_id );
+			$list['search'] = $search;
+
+			$this->assignRef('list', $list);
 
 
 		}
-		$categoryFilter = $categoryModel->getCategoryFilter();
 
-		$list['mf_category_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $mf_category_id );
-		$list['search'] = $search;
-
-		$this->assignRef('list', $list);
-		$this->assignRef('manufacturers',	$manufacturers);
 
 		parent::display($tpl);
 	}

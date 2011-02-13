@@ -210,6 +210,10 @@ class VirtueMartModelConfig extends JModel {
 		if(empty($media_product_path)){
 			$params->set('media_product_path','images/stories/virtuemart/product/');	
 		}
+		$media_manufacturer_path = $params->get('media_manufacturer_path') ;
+		if(empty($media_manufacturer_path)){
+			$params->set('media_manufacturer_path','images/stories/virtuemart/manufacturer/');	
+		}
 	}
 	else {
 //	    $params = new JParameter('');

@@ -94,31 +94,31 @@ class VirtueMartModelManufacturer extends JModel {
      *
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    function store() {
+	public function store() {
+	
 
+	
 	/* Setup some place holders */
-	$table = $this->getTable('manufacturer');
+	$table = $this->getTable();
 
 	/* Load the data */
 	$data = JRequest::get('post', 4);
-
-	/* Load the old manufacturer details first */
-	$table->load($data['product_id']);
-
-	
-		//$data = JRequest::get('post',4);
-		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
+	$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
 
 		/* Process the images */
 		//uploading images and creating thumbnails
-		$fullImage = JRequest::getVar('mf_full_image', array(), 'files');	
+
+		$fullImage = JRequest::getVar('mf_full_image', null, 'files',array());
+		//$data['imagename'] = $fullImage['name'] ;
+		
 		if(!empty($fullImage['name'])){
 			$filename = $fullImage['name'];
 		} else {
 			$filename = $data['mf_full_image_current'];
 		}
 	
-		$thumbImage = JRequest::getVar('mf_thumb_image', array(), 'files');
+		$thumbImage = JRequest::getVar('mf_thumb_image', null, 'files',array());
+		
 		if(!empty($thumbImage['name'])){
 			$filenamethumb = $thumbImage['name'];
 		} else {
@@ -130,6 +130,7 @@ class VirtueMartModelManufacturer extends JModel {
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
+		dump($data,'my data in store');	
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());

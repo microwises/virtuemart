@@ -23,7 +23,7 @@ AdminMenuHelper::startAdminArea();
 $editor = JFactory::getEditor();
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm">
 
 
 <div class="col50">
@@ -108,8 +108,10 @@ $editor = JFactory::getEditor();
 					<?php
 						$image = VmImage::getImageByMf($this->manufacturer);
 						echo $image -> createImageUploader(false);
+										// dump($this->manufacturer,'my $manufacturer ');
 					?>
 					</table>
+					<?php echo $image->displayImage('','',false,0); ?>
 				</fieldset>
 			</td>
 			<td valign="top">
@@ -120,6 +122,7 @@ $editor = JFactory::getEditor();
 						echo $image -> createImageUploader(true);
 					 ?>
 					</table>
+					<?php echo $image->displayImage('','',true,0); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -156,10 +159,10 @@ function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 }
 
 function toggleFullURL() {
-	if( jQuery('#mf_full_image_url').val().length>0) document.adminForm.mf_full_image_action[1].checked=false;
-	else document.adminForm.mf_full_image_action[1].checked=true;
-	toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image_url, true );
-	toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image, true );
+	if( jQuery('#manufacturer_full_image_url').val().length>0) document.adminForm.manufacturer_full_image_action[1].checked=false;
+	else document.adminForm.manufacturer_full_image_action[1].checked=true;
+	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image_url, true );
+	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image, true );
 }
 </script>
 <?php AdminMenuHelper::endAdminArea(); ?>
