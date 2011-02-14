@@ -43,13 +43,13 @@
 	float: left;
 }
 .stock_low {
-	background: url( '../images/vmgeneral/lowstock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/lowstock.png' ) no-repeat  center transparent;
 }
 .stock_ok {
-	background: url( '../images/vmgeneral/normalstock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/normalstock.png' ) no-repeat  center transparent;
 }
 .stock_out {
-	background: url( '../images/vmgeneral/nostock.gif' ) no-repeat  center transparent;
+	background: url( '../images/vmgeneral/nostock.png' ) no-repeat  center transparent;
 }
 
 .addtocart_button_module {
