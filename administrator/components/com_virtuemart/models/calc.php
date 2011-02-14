@@ -165,7 +165,7 @@ class VirtueMartModelCalc extends JModel
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		foreach ($this->_data as $data){
 
 			/* Write the first 5 categories in the list */
@@ -257,7 +257,7 @@ class VirtueMartModelCalc extends JModel
 		}
 //		echo print_r($data) ; die;
 
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category',$data["calc_id"],$data["calc_categories"]);
 		modelfunctions::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group',$data["calc_id"],$data["shopper_group_id"]);
 		modelfunctions::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country',$data["calc_id"],$data["country_id"]);
@@ -274,7 +274,7 @@ class VirtueMartModelCalc extends JModel
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	public function delete() {
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('cid','calc');
 
 	}	
@@ -289,17 +289,9 @@ class VirtueMartModelCalc extends JModel
      */ 	 
 	public function publish($publishId = false) 
 	{
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','calc',$publishId);
-//		$table = $this->getTable('calc');
-//		$calcIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
-//		
-//        if (!$table->publish($calcIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;        		
-//        }		
-//        
-//		return true;
+
 	}
 
 	

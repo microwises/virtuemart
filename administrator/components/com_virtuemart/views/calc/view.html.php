@@ -85,7 +85,7 @@ class VirtuemartViewCalc extends JView {
 				if(empty($userDetails->vendor_id)){
 					JError::raiseError(403,'Forbidden for non vendors');
 				}
-				$calc->calc_vendor_id = $userDetails->vendor_id;
+				if(empty($calc->calc_vendor_id))$calc->calc_vendor_id = $userDetails->vendor_id;
 			}
 			else {
 				JToolBarHelper::title( JText::_('VM_CALC_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');

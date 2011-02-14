@@ -137,7 +137,21 @@ var VM = (function($){
 						}
 					}
 				}
+				
+				
+				var selectedChar = 'selected="selected"';
+
+				var statesColl = document.getElementsByName('prs_state_id[]');
+				var states = [];
+				for(var i = 0, n = statesColl.length; i < n; i++){
+					if(statesColl[i].value!='' && statesColl[i].value!=0){
+						states[i] = statesColl[i].value;
+						//alert('states['+i+']: '+states[i]+'  statesColl['+i+']: '+statesColl[i].val);
+					}
+						
 					
+				}
+
 				for(var i = 0, n = countries.length; i < n; i++){
 				
 					if( VM.inArray( statesCombo.$countries, countries[i]) === undefined ){
@@ -145,7 +159,13 @@ var VM = (function($){
 						
 						for(var j in statesGroup){
 							if(statesGroup[j].state_id){
-								states2add += '<option value="'+ statesGroup[j].state_id +'">'+ statesGroup[j].state_name +'</option>';
+								
+								var selected ='';
+								if(VM.inArray(states,statesGroup[j].state_id)  !== undefined){
+									selected = selectedChar;
+								}
+								
+								states2add += '<option value="'+ statesGroup[j].state_id +'" '+selected+'>'+ statesGroup[j].state_name +'</option>';
 							}
 						}
 					}
@@ -163,14 +183,16 @@ var VM = (function($){
 				this.className = this.className || '';
 							
 				if( params && params[1]){
-				
-					$('#'+ params[1]).change(function(){
+					var chathing;
+					$('#'+ params[1]).ready(chathing = function(){
 						var countries = $(this).val(),
 						statesCache = VMCache.get('states'), //shortchut to [[this]] and scope solution
 						country = 0,
 						countriesSend = [],
 						cStack = [];
-						
+						if(!countries){	
+							countries = jQuery('#country_id').val() || [];
+						}
 						countries = countries.push ? countries : [countries];
 					
 						$(that).attr('disabled', 'disabled');
@@ -207,8 +229,10 @@ var VM = (function($){
 							populateStates( that, cStack );
 						}
 					});
+					$('#'+ params[1]).change(chathing);
 				}
-			});			
+			});
+			
 			return this;
 		},
 		

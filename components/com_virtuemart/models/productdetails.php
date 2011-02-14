@@ -50,6 +50,7 @@ class VirtueMartModelProductdetails extends JModel {
 			$this->_db->setQuery($q);
 			$product = $this->_db->loadObject();
 			if(empty($product)) return false;
+
 			/* Load the categories the product is in */
 			$product->categories = $this->getCategories();
 			
@@ -102,19 +103,18 @@ class VirtueMartModelProductdetails extends JModel {
 			$product->related = $this->getRelatedProducts($product_id);
 			
 			/* Load the vendor details */
-			/* What is this? the $product has already a vendor_id
-//			$product->vendor_id = VirtueMartModelVendor::getVendorId('product', $product_id); */
+			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 			$product->vendor_name = VirtueMartModelVendor::getVendorName($product->vendor_id);
 
 			/* Check for child products */
 			$product->haschildren = $this->checkChildProducts($product_id);
-			
+
 			/* Check for product types */
 			$product->hasproducttypes = $this->hasProductType($product_id);
-			
+
 			/* Load the custom variants */
 			$product->customvariants = $this->getCustomVariants($product->custom_attribute);
-			
+
 
 			/* Check the order levels */
 			if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -127,14 +127,13 @@ class VirtueMartModelProductdetails extends JModel {
 				/* Get the attributes */
 				// $product->attributes = $this->getAttributes($product);
 			}
-			
+
 			/* Get stock indicator */
 			$product->stock = $this->getStockIndicator($product);
-			
+
 			/* Get the votes */
 			$product->votes = $this->getVotes($product_id);
-			
-			
+
 			return $product;
 		} else{
 			 return false;

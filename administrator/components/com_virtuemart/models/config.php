@@ -216,12 +216,6 @@ class VirtueMartModelConfig extends JModel {
 		}
 	}
 	else {
-//	    $params = new JParameter('');
-
-//	    $q = "INSERT INTO #__vm_config (config) VALUES(".$db->Quote($params->toString()).")";
-//	    $db->setQuery($q);
-//	    $db->query();
-//	    echo $db->getErrorMsg();
 		JError::raiseWarning('No config in database found, dont mind, when you configure the shop the first time');
 	}
 

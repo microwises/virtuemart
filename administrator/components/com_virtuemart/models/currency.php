@@ -110,14 +110,14 @@ class VirtueMartModelCurrency extends JModel {
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author RickG
+     * @author Max Milbers
      */
     function getCurrency() {
 	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
 	    $this->_data = $this->getTable();
-	    $this->_data->load((int)$this->_id);
+		$this->_data->load((int)$this->_id);
 	}
 
 	if (!$this->_data) {
@@ -140,6 +140,18 @@ class VirtueMartModelCurrency extends JModel {
 	$table =& $this->getTable('currency');
 
 	$data = JRequest::get( 'post' );
+	dump($data,'data in store currency');
+
+
+	$modified = JFactory::getDate();
+	$data['mdate']=$modified->toMySQL();
+
+	// Store multiple selectlist entries as a | separated string
+	if (key_exists('currency_display_style', $data) && is_array($data['currency_display_style'])) {
+	    $data['display_style'] = implode('|', $data['currency_display_style']);
+	}
+	
+	$data['currency_symbol'] = $data['currency_display_style'][1];
 	// Bind the form fields to the currency table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -161,36 +173,48 @@ class VirtueMartModelCurrency extends JModel {
 	return true;
     }
 
-
-    /**
-     * Delete all record ids selected
+	/**
+	 * Delete all record ids selected
      *
-     * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-    function delete() {
-	$currencyIds = JRequest::getVar('cid',  0, '', 'array');
-	$table =& $this->getTable('currency');
+     * @author Max Milbers
+     * @return boolean True is the delete was successful, false otherwise.      
+     */ 	 
+	public function delete() {
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::delete('cid','currency');
 
-	foreach($currencyIds as $currencyId) {
-	    if (!$table->delete($currencyId)) {
-		$this->setError($table->getError());
-		return false;
-	    }
+	}	
+	
+	
+	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author Max Milbers
+     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @return boolean True is the delete was successful, false otherwise.      
+     */ 	 
+	public function publish($publishId = false) 
+	{
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','currency',$publishId);
+
 	}
-
-	return true;
-    }
 
 
     /**
      * Retireve a list of currencies from the database.
-     *
-     * @author RickG
+     * This function is used in the backend for the currency listing, therefore no asking if published or not
+     * @author RickG, Max Milbers
      * @return object List of currency objects
      */
-    function getCurrenciesList() {
-	$query = 'SELECT * FROM `#__vm_currency` ';
+    function getCurrenciesList($vendorId=1) {
+    
+    $where = '';
+    require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+    if( !Permissions::getInstance()->check('admin') ){
+    	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+    }
+	$query = 'SELECT * FROM `#__vm_currency` '.$where;
 	$query .= 'ORDER BY `#__vm_currency`.`currency_id`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
@@ -198,13 +222,14 @@ class VirtueMartModelCurrency extends JModel {
 
     /**
      * Retireve a list of currencies from the database.
-     *
-     * @author RolandD
+     * 
+     * This is written to get a list for selecting currencies. Therefore it asks for published
+     * @author RolandD, Max Milbers
      * @return object List of currency objects
      */
-    function getCurrencies() {
+    function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__vm_currency`';
+	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

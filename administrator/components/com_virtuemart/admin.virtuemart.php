@@ -18,9 +18,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
-// Require the base controller
-
-
 // Require specific controller if requested
 if ($controllername = JRequest::getVar('controller')) {
 	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
@@ -32,7 +29,7 @@ if ($controllername = JRequest::getVar('controller')) {
 		$controllername = '';
 	}
 }
-//if 	($controllername == '') 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controller.php');
+
 // Try to find a controller with the same name as the view
 else if ($controllername = JRequest::getVar('view')) {
 	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
@@ -46,6 +43,7 @@ else if ($controllername = JRequest::getVar('view')) {
 
 //Fallback
 if(empty($controllername)){
+	// Require the base controller
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.'virtuemart.php');
 }
 

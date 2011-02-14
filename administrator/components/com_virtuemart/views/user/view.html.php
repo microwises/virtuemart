@@ -73,13 +73,21 @@ class VirtuemartViewUser extends JView {
 			$_toolBar =& JToolBar::getInstance('toolbar');
 
 			if ($_new) { // Insert new user
-				JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+				if($task=='editshop'){
+					JToolBarHelper::title(  JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+				} else {
+					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');					
+				}
 				JToolBarHelper::divider();
 				$_toolBar->appendButton('Custom', $_saveButton);
 				$_toolBar->appendButton('Custom', $_applyButton);
 				JToolBarHelper::cancel();
 			} else { // Update existing user
-				JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+				if($task=='editshop'){
+					JToolBarHelper::title( JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+				} else {
+					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');					
+				}
 				JToolBarHelper::divider();
 				$_toolBar->appendButton('Custom', $_saveButton);
 				$_toolBar->appendButton('Custom', $_applyButton);
@@ -217,19 +225,26 @@ class VirtuemartViewUser extends JView {
 					 $vendorModel = $this->getModel('vendor');
 					 $vendorModel->setId($userDetails->vendor_id);
 
-					 if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
-					 	$currency = $vendorModel->getCurrencyDisplay();
-					 	$this->assignRef('currency', $currency);
-					 }
+						//TODO question for oscar, makes that sense to ask for hte order list?
+//					 if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
+//					 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+//	    				$this->assignRef('currency',CurrencyDisplay::getCurrencyDisplay());
+//					 	$this->assignRef('vendorCurrency', CurrencyDisplay::getCurrencyDisplay());
+//					 	$currency = $vendorModel->getCurrencyDisplay();
+//					 	$this->assignRef('currency', $currency);
+//					 }
 
 					 if (!empty($userDetails->user_is_vendor)) {
 
+//					 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+//						$this->assignRef('vendorCurrency', CurrencyDisplay::getCurrencyDisplay());
+						
 					 	$this->assignRef('vendor', $userDetails->vendor);
 
 					 	$currencyModel = $this->getModel('currency');
 					 	$_currencies = $currencyModel->getCurrencies();
 					 	$this->assignRef('currencies', $_currencies);
-
+						
 					 	//can someone explain me what that should do?
 					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);
@@ -237,7 +252,7 @@ class VirtuemartViewUser extends JView {
 					 	//				//Different currency styles for different vendors are nonsense imho
 					 	//				$currency =	VirtueMartModelVendor::getCurrencyDisplay();
 
-					 	$this->assignRef('vendorCurrency', $currency);
+//					 	$this->assignRef('vendorCurrency', $currency);
 					 }
 
 					 // Implement the Joomla panels. If we need a ShipTo tab, make it the active one.

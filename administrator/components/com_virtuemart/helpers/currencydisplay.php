@@ -1,5 +1,8 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+
+
+
 /**
  *
  * @version $Id$
@@ -79,6 +82,100 @@ class CurrencyDisplay {
 	$this->negativePos = $negativePos;
 
     }
+
+	/**
+	 * 
+	 * Gives back the formate of the currency, gets $style if none is set, with the currency Id, when nothing is found it tries the vendorId.
+	 * When no param is set, you get the format of the mainvendor
+	 * 
+	 * @author unknown
+	 * @author Max Milbers
+	 * @param int 		$currencyId Id of the currency
+	 * @param int 		$vendorId Id of the vendor
+	 * @param string 	$style The vendor_currency_display_code
+	*   FORMAT: 
+    1: id, 
+    2: CurrencySymbol, 
+    3: NumberOfDecimalsAfterDecimalSymbol,
+    4: DecimalSymbol,
+    5: Thousands separator
+    6: Currency symbol position with Positive values :
+									// 0 = '00Symb'
+									// 1 = '00 Symb'
+									// 2 = 'Symb00'
+									// 3 = 'Symb 00'
+    7: Currency symbol position with Negative values :
+									// 0 = '(Symb00)'
+									// 1 = '-Symb00'
+									// 2 = 'Symb-00'
+									// 3 = 'Symb00-'
+									// 4 = '(00Symb)'
+									// 5 = '-00Symb'
+									// 6 = '00-Symb'
+									// 7 = '00Symb-'
+									// 8 = '-00 Symb'
+									// 9 = '-Symb 00'
+									// 10 = '00 Symb-'
+									// 11 = 'Symb 00-'
+									// 12 = 'Symb -00'
+									// 13 = '00- Symb'
+									// 14 = '(Symb 00)'
+									// 15 = '(00 Symb)'
+    	EXAMPLE: ||&euro;|2|,||1|8
+	* @return string
+	*/
+//	public function getCurrencyDisplay($vendorId=1, $style=0){
+	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
+		
+//		if(empty($currencyId)){
+//			$currencyId = 47;  //Todo set this to the currency of the mainvendor, just set to euro
+//		}
+		if(empty($style)){
+			
+			$db = JFactory::getDBO();
+			if(!empty($currencyId)){
+				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+				$db->setQuery($q);
+				$style = $db->loadResult();
+			}
+			if(empty($style)){
+				if(empty($vendorId)){
+					$vendorId = 1;		//Map to mainvendor
+				}
+				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+				$db->setQuery($q);
+				$currencyId = $db->loadResult();
+				dump($db,'my $db id');		
+				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+				$db->setQuery($q);
+				$style = $db->loadResult();	
+			}
+			if(empty($style)){
+				JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+				//would be nice to automatically unpublish the product or so			
+			}
+		}
+		$array = explode( "|", $style );
+		$_currencyDisplayStyle = Array();
+		$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
+		$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
+		$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
+		$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
+		$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
+		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
+		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
+
+		if (!empty($_currencyDisplayStyle)) {
+			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+				, $_currencyDisplayStyle['negative']
+			);
+		} else {
+				$currency = new CurrencyDisplay();
+		}
+		return $currency;
+	}
 
     /**
      * Parse the given currency display string into the currency diplsy values.

@@ -292,8 +292,11 @@ abstract class vmShipperPlugin extends JPlugin
 		if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
 			return null;
 		}
-
-		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
+		
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+		$_currency = CurrencyDisplay::getCurrencyDisplay();  //Todo, set currency of shopper or user?
+		
+//		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
 		$_html = '<table class="admintable">'."\n"
 			.	'	<thead>'."\n"
 			.	'		<tr>'."\n"

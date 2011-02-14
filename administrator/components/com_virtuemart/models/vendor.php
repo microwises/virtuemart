@@ -223,10 +223,6 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
-	// Store multiple selectlist entries as a | separated string
-	if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
-	    $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
-	}
 
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
@@ -273,25 +269,7 @@ class VirtueMartModelVendor extends JModel {
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
 		return $_r->cc;
-	}
-
-	/**
-	 * 
-	 *  
-	 * @author Max Milbers
-	 * @param int $user_id
-	 * returns joomla user email
-	 */
-
-//	function get_juser_email_by_user_id(&$user_id){
-//		if(empty ($user_id))return;
-////		$db =& JFactory::getDBO();
-//		$q = 'SELECT `email` FROM `#__users` WHERE `id`="'.$user_id.'" ';
-//		$this->_db->setQuery($q);
-//		$this->_db->query();
-//		return $this->_db->loadResult();
-//	}
-	
+	}	
 
 	/**
 	 * Retrieve a lost of vendor objects
@@ -367,82 +345,6 @@ class VirtueMartModelVendor extends JModel {
 		return $symbol;
 	}
 
-	/**
-	 * 
-	 * Gives back the formate of the vendor, gets $style if none is set, with the vendorId.
-	 * When no param is set, you get the format of the mainvendor
-	 * 
-	 * @author unknown
-	 * @author Max Milbers
-	 * @param int 		$vendorId Id of hte vendor
-	 * @param string 	$style The vendor_currency_display_code
-	*   FORMAT: 
-    1: id, 
-    2: CurrencySymbol, 
-    3: NumberOfDecimalsAfterDecimalSymbol,
-    4: DecimalSymbol,
-    5: Thousands separator
-    6: Currency symbol position with Positive values :
-									// 0 = '00Symb'
-									// 1 = '00 Symb'
-									// 2 = 'Symb00'
-									// 3 = 'Symb 00'
-    7: Currency symbol position with Negative values :
-									// 0 = '(Symb00)'
-									// 1 = '-Symb00'
-									// 2 = 'Symb-00'
-									// 3 = 'Symb00-'
-									// 4 = '(00Symb)'
-									// 5 = '-00Symb'
-									// 6 = '00-Symb'
-									// 7 = '00Symb-'
-									// 8 = '-00 Symb'
-									// 9 = '-Symb 00'
-									// 10 = '00 Symb-'
-									// 11 = 'Symb 00-'
-									// 12 = 'Symb -00'
-									// 13 = '00- Symb'
-									// 14 = '(Symb 00)'
-									// 15 = '(00 Symb)'
-    	EXAMPLE: ||&euro;|2|,||1|8
-	* @return string
-	*/
-	public function getCurrencyDisplay($vendorId=1, $style=0){
-		
-		if(empty($style)){
-			$db = JFactory::getDBO();
-			$q = 'SELECT `vendor_currency_display_style` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
-			$db->setQuery($q);
-			if($style = $db->loadResult()){
-				
-			} else {
-				JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
-				return 0;	
-			}	
-		}
-		$array = explode( "|", $style );
-		$_currencyDisplayStyle = Array();
-		$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
-		$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
-		$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
-		$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
-		$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
-		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
-		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
-
-//		$this->loadHelper('currencydisplay');  Does not work :-(
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-		if (!empty($_currencyDisplayStyle)) {
-			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-				, $_currencyDisplayStyle['negative']
-			);
-		} else {
-				$currency = new CurrencyDisplay();
-		}
-		return $currency;
-	}
 	
 	/**
 	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 

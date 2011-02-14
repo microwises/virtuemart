@@ -75,6 +75,12 @@ class VirtuemartControllerCurrency extends JController {
 		JRequest::setVar('view', 'currency');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
+		
+		$document =& JFactory::getDocument();
+		$viewType = $document->getType();
+		$view =& $this->getView('currency', $viewType);
+		
+		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
 
 		parent::display();
 	}

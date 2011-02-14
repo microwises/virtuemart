@@ -108,7 +108,11 @@ class modelfunctions{
 		}
 		
 	}		
-				
+
+	/**
+	 * does the deletion of a row
+	 * @author Max Milbers
+	 */				
     function delete($idName,$tablename, $default=0) {
 
 		$table =& $this->getTable($tablename);
@@ -124,7 +128,10 @@ class modelfunctions{
 
     }
 
-
+	/**
+	 * does the publishing of a row
+	 * @author Max Milbers
+	 */
 	function publish($idName, $tablename, $publishId = false) {
 
 		$table = $this->getTable($tablename);
@@ -137,5 +144,52 @@ class modelfunctions{
 		return true;
     }
     
+    /**
+	 * Loads a row from the database and binds the fields to the object properties
+	 * Derived from the joomla table load function
+	 * @author joomlaTeam, Max Milbers
+	 * @access	public
+	 * 
+	 * @param 	JTable the table
+	 * @param	mixed	Optional primary key.  If not specifed, the value of current key is used
+	 * @return	boolean	True if successful
+	 */
+	function loadConsiderDate( $table, $oid=null )
+	{
+		$k = $table->_tbl_key;
+		
+		if ($oid !== null) {
+			$table->$k = $oid;
+		}
+
+		$oid = $table->$k;
+
+		if ($oid === null) {
+			return false;
+		}
+		$table->reset();
+
+		$db =& $table->getDBO();
+
+		$nullDate		= $db->getNullDate();
+		$now			= & JFactory::getDate()->toMySQL();
+			
+		$query = 'SELECT *'
+		. ' FROM '.$table->_tbl
+		. ' WHERE '.$table->_tbl_key.' = '.$db->Quote($oid);
+		$query .= ' AND ( publish_up = '.$db->Quote($nullDate).' OR publish_up <= '.$db->Quote($now).' )' .
+			' AND ( publish_down = '.$db->Quote($nullDate).' OR publish_down >= '.$db->Quote($now).' ) ';
+		
+		$this->_db->setQuery( $query );
+
+		if ($result = $this->_db->loadAssoc( )) {
+			return $table->bind($result);
+		}
+		else
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+	}
 }   
 // pure php no closing tag

@@ -730,7 +730,7 @@ class VirtueMartModelProduct extends JModel {
 
 		
 		/* Update manufacturer link */
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_product_mf_xref','product_id','manufacturer_id',$product_data->product_id,JRequest::getInt('mf_category_id'));
 		
 //		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';

@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: edit.php 2627 2010-11-03 17:41:57Z milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -240,6 +240,9 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
+	<?php foreach($this->calc->calc_states as $state){
+		echo '<input type="hidden" name="prs_state_id[]" value="'.$state.'" />' ;
+	} ?>
 	<input type="hidden" name="calc_id" value="<?php echo $this->calc->calc_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

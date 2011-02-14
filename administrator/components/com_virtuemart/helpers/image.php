@@ -319,7 +319,7 @@ class VmImage {
 
 	/**
 	 * Tests for a given URL, if the path is writeable
-	 *
+	 * @author Max Milbers
 	 */
 	public function testFolderWriteAble($media_path_url=0){
 

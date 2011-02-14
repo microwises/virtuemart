@@ -53,9 +53,9 @@ class calculationHelper{
 		$this -> _now			  = $jnow->toMySQL();
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
-//		$this -> _currencyDisplay = $this->getCurrencyDisplayObject();
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
-		$this -> _currencyDisplay = VirtueMartModelVendor::getCurrencyDisplay(1);
+
+	    require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
 		$this -> _debug           = false;
 	}
 	
@@ -70,7 +70,7 @@ class calculationHelper{
 	}
 
 	function priceDisplay($price=0){
-		if($price) return $this -> _currencyDisplay->getFullValue($price);	
+		if($price ) return $this -> _currencyDisplay->getFullValue($price);	
 	}
 	
 	function getCartPrices(){

@@ -199,7 +199,7 @@ class VirtueMartModelCreditcard extends JModel {
      */ 	 
 	public function publish($publishId = false) 
 	{
-		require_once(JPATH_ADMINISTRATOR.DS."components".DS."com_virtuemart".DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','creditcard',$publishId);
 
 	}

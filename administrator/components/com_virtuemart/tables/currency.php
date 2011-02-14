@@ -24,16 +24,29 @@ defined('_JEXEC') or die('Restricted access');
  * The class is is used to manage the currencies in the shop.
  *
  * @package		VirtueMart
- * @author RickG
+ * @author RickG, Max Milbers
  */
 class TableCurrency extends JTable {
-
+  
 	/** @var int Primary key */
 	var $currency_id				= 0;
+	/** @var int vendor id */
+	var $vendor_id					= 1;
 	/** @var string Currency name*/
 	var $currency_name           	= '';
 	/** @var char Currency code */
-	var $currency_code         		= '';
+	var $currency_code_2			= '';
+	var $currency_code         		= ''; //should be renamed to $currency_code_2
+	/** @var char Currency symbol */
+	var $currency_symbol         	= '';
+	/** @var char Currency rate */
+	var $exchange_rate         		= '';
+	/** @var char display style */
+	var $display_style         		= '';
+	var $cdate         					;
+	var $mdate         					;
+	var $published					= 0;
+	var $shared						= 0;
 
 
 	/**
