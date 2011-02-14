@@ -124,12 +124,8 @@ class CurrencyDisplay {
     	EXAMPLE: ||&euro;|2|,||1|8
 	* @return string
 	*/
-//	public function getCurrencyDisplay($vendorId=1, $style=0){
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
-		
-//		if(empty($currencyId)){
-//			$currencyId = 47;  //Todo set this to the currency of the mainvendor, just set to euro
-//		}
+
 		if(empty($style)){
 			
 			$db = JFactory::getDBO();
@@ -150,30 +146,28 @@ class CurrencyDisplay {
 				$db->setQuery($q);
 				$style = $db->loadResult();	
 			}
-			if(empty($style)){
-				JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
-				//would be nice to automatically unpublish the product or so			
-			}
 		}
-		$array = explode( "|", $style );
-		$_currencyDisplayStyle = Array();
-		$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
-		$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
-		$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
-		$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
-		$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
-		$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
-		$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
-
-		if (!empty($_currencyDisplayStyle)) {
+		if(!empty($style)){
+			$array = explode( "|", $style );
+			$_currencyDisplayStyle = Array();
+			$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
+			$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
+			$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
+			$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
+			$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
+			$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
+			$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';	
 			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
 				, $_currencyDisplayStyle['negative']
-			);
+			);				
 		} else {
-				$currency = new CurrencyDisplay();
+			JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+			//would be nice to automatically unpublish the product or so
+			$currency = new CurrencyDisplay();
 		}
+		
 		return $currency;
 	}
 
