@@ -32,15 +32,31 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewManufacturer extends JView {
 
 	function display($tpl = null) {
+
+		$document = JFactory::getDocument();
+		$mainframe = JFactory::getApplication();
+		$pathway = $mainframe->getPathway();
+
+		/* Set the helper */
+		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
+		$this->loadHelper('image');
+
 		$manufacturer_id = JRequest::getInt('manufacturer_id', 0);
 		$mf_categorie_id = JRequest::getInt('mf_categorie_id', 0);
 		// get necessary models
 		$model = & $this->getModel('manufacturer');
 		if ($manufacturer_id ) {
 			$manufacturer = $model->getManufacturer();
-			$this->assignRef('manufacturer',	$manufacturer);
 			
+			$document->setTitle(JText::_('VM_MANUFACTURER_DETAILS').' '.$manufacturer->mf_name);
+			
+			$manufacturerImage = VmImage::getImageByMf($manufacturer);
+			$this->assignRef('manufacturerImage', $manufacturerImage);
+			$this->assignRef('manufacturer',	$manufacturer);
+			$pathway->addItem($manufacturer->mf_name);
+
 		} else {
+		$document->setTitle(JText::_('VM_MANUFACTURER_PAGE')) ;
 		$manufacturers = $model->getManufacturers(true, true);
 		$this->assignRef('manufacturers',	$manufacturers);
 		}

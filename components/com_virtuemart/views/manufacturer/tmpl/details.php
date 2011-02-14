@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Manufacturer
-* @author vhv_alex
+* @author Kohl Patrick
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -19,20 +19,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-
-	    <?php
-		?>
-		<div>
-		    <a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo $this->manufacturer->mf_name; ?></a>
-
-		</div>
-		<div>
-			<?php echo JText::_($this->manufacturer->mf_email); ?>
-		</div>
-		<div>
-			<?php echo JText::_($this->manufacturer->mf_desc); ?>
-		</div>
-		<div>
-			<?php echo JText::_($this->manufacturer->mf_url); ?>
-		</div>
-
+<H2>
+	<?php echo $this->manufacturer->mf_name; ?>
+</H2>
+<div>
+	<?php echo JText::_($this->manufacturer->mf_email); ?>
+</div>
+<div>
+	<?php echo JText::_($this->manufacturer->mf_desc); ?>
+</div>
+<div>
+	<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo $this->manufacturer->mf_name; ?></a>
+</div>
+<div>
+	<?php echo $this->manufacturerImage->displayImage('','',0,0);?>
+</div>
