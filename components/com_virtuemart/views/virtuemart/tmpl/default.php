@@ -38,6 +38,8 @@ if (VmConfig::get('showFeatured', 1) && $this->featuredProducts) echo $this->loa
 
 /* Recent products */
 if ($this->recentProducts) echo $this->loadTemplate('recentproducts');
+/* Topten products */
+if ($this->toptenProducts) echo $this->loadTemplate('toptenproducts');
 // load categories from front_categories if exist
 if ($this->latestProducts) echo $this->loadTemplate('latestproducts');
 

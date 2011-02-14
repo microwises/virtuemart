@@ -69,7 +69,12 @@ class VirtueMartViewVirtueMart extends JView {
 			$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
 			$this->assignRef('latestProducts', $latestProducts);
 		}
-		
+
+        if (VmConfig::get('showTopten', 1)) {
+			$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);	
+			$this->assignRef('toptenProducts', $toptenProducts);
+		}
+
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
