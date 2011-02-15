@@ -9,7 +9,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2006-2007 soeren - All rights reserved.
+* @copyright (C) 2010 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
@@ -31,22 +31,17 @@ $currency_id = $mainframe->getUserStateFromRequest( "currency_id", 'currency_id'
 
 $vendorId = JRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
-// table vm_vendor
+
+/* table vm_vendor */
 $db = JFactory::getDBO();
 $q = 'SELECT `vendor_accepted_currencies` FROM `#__vm_vendor` WHERE `vendor_id`='.$vendorId;
 $db->setQuery($q);
 $currency_codes = explode(',',$db->loadResult());
-// table vm_currency
+
+/* table vm_currency */
 $q = 'SELECT `currency_id`,`currency_code`,`currency_name` FROM `#__vm_currency` WHERE `currency_code` IN ("'.implode('","',$currency_codes).'") and published =1 ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
-
-$currenciesList = JHTML::_('select.genericlist', $currencies, 'currency_id', 'class="inputbox"', 'currency_id', 'currency_name', $currency_id) ;
+/* load the template */
+require(JModuleHelper::getLayoutPath('mod_virtuemart_currencies'));
     ?>
-<!-- Currency Selector Module -->
-<?php echo $text_before ?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-	<br />
-	<?php echo $currenciesList ?>
-    <input class="button" type="submit" name="submit" value="<?php echo JText::_('Change Currency') ?>" />
-</form>

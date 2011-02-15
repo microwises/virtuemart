@@ -269,6 +269,7 @@ $mainframe = JFactory::getApplication();
 						echo $image -> createImageUploader(false);
 					?>
 					</table>
+					<?php echo $image->displayImage('','',false,0); ?>
 				</fieldset>
 			</td>
 			<td valign="top">
@@ -279,6 +280,7 @@ $mainframe = JFactory::getApplication();
 						echo $image -> createImageUploader(true);
 					 ?>
 					</table>
+					<?php echo $image->displayImage('','',true,0); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -294,5 +296,34 @@ $mainframe = JFactory::getApplication();
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="category" />
 </form>
+<script type="text/javascript">
+function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
+	try {
+		if( !disableOnChecked ) {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=false;
+			}
+			else {
+				elementDisable.disabled=true;
+			}
+		}
+		else {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=true;
+			}
+			else {
+				elementDisable.disabled=false;
+			}
+		}
+	}
+	catch( e ) {}
+}
 
+function toggleFullURL() {
+	if( jQuery('#manufacturer_full_image_url').val().length>0) document.adminForm.manufacturer_full_image_action[1].checked=false;
+	else document.adminForm.manufacturer_full_image_action[1].checked=true;
+	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image_url, true );
+	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image, true );
+}
+</script>
 <?php AdminMenuHelper::endAdminArea(); ?>
