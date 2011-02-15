@@ -232,7 +232,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
 			//$vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
-			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),false),'error');						
+			JApplication::enqueueMessage((JText::_('VM_PAYMENT_ERROR'),false),'error');						
 			return false;
 		}
 		//$db = new ps_DB;

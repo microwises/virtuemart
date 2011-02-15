@@ -537,7 +537,6 @@ class VirtueMartModelCategory extends JModel {
      * @return int category id stored
 	 */
     public function store() {
-		jimport('joomla.filesystem.file');
 
 		$table = $this->getTable();
 		$data = JRequest::get('post');
