@@ -29,8 +29,8 @@ it includes or is derivative of works licensed under the GNU General
 Public License or other free or open source software licenses, including
 works copyrighted by any or all of the following, from 2009 - 2011,
 Max Milbers, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Urs Brülhart, Devendra Kumar Shukla,
-Christopher Roussel, Patrick Kohl, Eugen Stranz, Stephanie Schmidt, John Acosta, Simon Hodgkiss,
-Markus Öhler, Zbigniew Mazur, John Wicks, Fred Bidon, Alexander Kludt
+Christopher Roussel, Patrick Kohl, Eugen Stranz, John Acosta, Markus Öhler, Stephanie Schmidt, Vu Hoang Viet, Simon Hodgkiss,
+ Zbigniew Mazur, John Wicks, Fred Bidon, Alexander Kludt
 
 VirtueMart includes or is derivative of works distributed under the following copyright notices:
 

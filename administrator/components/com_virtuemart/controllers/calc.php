@@ -113,7 +113,7 @@ class VirtuemartControllerCalc extends JController
 //		JRequest::checkToken() or jexit( 'Invalid Token' );
 		
 		$calcModel = $this->getModel('calc');
-		$cmd = JRequest::getCmd('task');
+		
 
 		if ($id = $calcModel->store()) {
 			$msg = JText::_('VM_CALC_SAVED_SUCCESS');
@@ -122,10 +122,10 @@ class VirtuemartControllerCalc extends JController
 			$msg = JText::_($calcModel->getError());
 		}
 
+		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
 			$redirection = 'index.php?option=com_virtuemart&view=calc&task=edit&cid[]='.$id;
-		}
-		else{
+		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=calc';
 		}
 

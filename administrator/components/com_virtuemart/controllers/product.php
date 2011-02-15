@@ -46,6 +46,7 @@ class VirtuemartControllerProduct extends JController {
 		$this->registerTask('unpublish','product');
 		$this->registerTask('publish','product');
 		$this->registerTask('edit','add');
+		$this->registerTask('apply','save');
 	}
 
 	/**
@@ -113,7 +114,7 @@ class VirtuemartControllerProduct extends JController {
 	/**
 	* Save a product
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	*/
 	public function save() {
 		$mainframe = Jfactory::getApplication();
@@ -130,14 +131,20 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
+		if ($product_id = $model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
 		else {
 			$msg = $model->getError();
-//			$msg = JText::_('PRODUCT_NOT_SAVED_SUCCESSFULLY');
-//			$msg = $model->getErrorMsg();
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+		
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply'){ 
+			$redirection = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product_id.'&product_parent_id='.JRequest::getInt('product_parent_id');
+		} else {
+			$redirection = 'index.php?option=com_virtuemart&view=product';
+		}
+		
+		$mainframe->redirect($redirection, $msg, $msgtype); 
 
 	}
 

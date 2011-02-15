@@ -796,7 +796,7 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->query();
 		}
 
-		return true;
+		return $product_data->product_id;
 	}
 
 	/**

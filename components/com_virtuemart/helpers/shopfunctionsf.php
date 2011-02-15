@@ -5,7 +5,9 @@
 *
 * @package	VirtueMart
 * @subpackage Helpers
+*
 * @author RolandD
+* @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -20,7 +22,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 class shopFunctionsF {
-
+	
+	/**
+	 * @author Max Milbers
+	 */
 	public function getLastVisitedCategoryId(){
 
 		$session = JFactory::getSession();
@@ -28,6 +33,9 @@ class shopFunctionsF {
 
 	}
 
+	/**
+	 * @author Max Milbers
+	 */
 	public function setLastVisitedCategoryId($categoryId){
 		$session = JFactory::getSession();
 		return $session->set('vmlastvisitedcategoryid', (int) $categoryId, 'vm');
@@ -56,13 +64,16 @@ class shopFunctionsF {
 	 		} else {
 	 			$vis = "none";
 	 		}
-		return '<div style="display : '.$vis.';" id="'.$name.'D" class="PriceDescr'.$name.'" >'.JText::_($description).'<span id="'.$name.'" class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
+	 	$descr = '';
+	 	if(VmConfig::get($name.'Text')) $descr = JText::_($description);
+		return '<div style="display : '.$vis.';" id="'.$name.'D" class="PriceDescr'.$name.'" >'.$descr.'<span id="'.$name.'" class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 		}
 	}
 
 	/**
 	* function to create a hyperlink
 	*
+	* @author RolandD
 	* @param string $link
 	* @param string $text
 	* @param string $target
@@ -86,7 +97,7 @@ class shopFunctionsF {
 
 	/**
 	 * Writes a PDF icon
-	 *
+	 * @author RolandD, Christopher Roussel
 	 * @param string $link
 	 * @param boolean $use_icon
 	 */
@@ -106,7 +117,7 @@ class shopFunctionsF {
 
 	/**
 	 * Writes an Email icon
-	 *
+	 * @author RolandD, Christopher Roussel
 	 * @param string $link
 	 * @param boolean $use_icon
 	 */
@@ -126,6 +137,9 @@ class shopFunctionsF {
 		}
 	}
 
+	/**
+	 * @author RolandD, Christopher Roussel
+	 */
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $cur_template, $Itemid;
 		if (VmConfig::get('vm_show_printicon', 1) == '1') {
@@ -162,7 +176,8 @@ class shopFunctionsF {
 
 	/**
 	* A function to create a XHTML compliant and JS-disabled-safe pop-up link
-	*
+	* 
+	* @author RolandD
 	* @param string $link The HREF attribute
 	* @param string $text The link text
 	* @param int $popupWidth
@@ -282,7 +297,11 @@ class shopFunctionsF {
 //		}
 
 	}
-
+	
+	/**
+	 * This function sets the right template on the view
+	 * @author Max Milbers
+	 */
 	function setVmTemplate($view,$catTpl=0,$prodTpl=0,$catLayout=0,$prodLayout=0){
 
 		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
@@ -348,6 +367,11 @@ class shopFunctionsF {
 		$view->setLayout(strtolower($layout));
 	}
 
+	/**
+	 * Final setting of template
+	 * 
+	 * @author Max Milbers
+	 */
 	function setTemplate( $template ){
 		if(!empty($template)){
 			if (is_dir(JPATH_THEMES.DS.$template)) {
