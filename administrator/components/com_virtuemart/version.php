@@ -31,7 +31,7 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '1.5.0';
+	static $RELEASE = '1.9.2';
 	/** @var string Development Status */
 	static $DEV_STATUS = 'beta';
 	/** @var string Codename */
@@ -44,9 +44,9 @@ class vmVersion {
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 1755 $';
+	static $REVISION = '$Revision: 2730 $';
 	/** @var string Copyright Text */
-	static $COPYRIGHT = 'Copyright (C) 2005-2010 VirtueMart Development Team - All rights reserved.'; 
+	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team - All rights reserved.'; 
 	/** @var string URL */
 	static $URL = '<a href="http://virtuemart.org">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL License.';
 }

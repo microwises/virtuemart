@@ -61,9 +61,6 @@ class VirtuemartViewCalc extends JView {
 			$isNew = ($calc->calc_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
 				
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
@@ -89,11 +86,13 @@ class VirtuemartViewCalc extends JView {
 			}
 			else {
 				JToolBarHelper::title( JText::_('VM_CALC_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
 
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+				
 			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
 			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
 			

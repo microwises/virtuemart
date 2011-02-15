@@ -119,26 +119,15 @@ class VirtueMartModelState extends JModel {
      *
      * Renamed to getSingleState to avoid overwriting by jseros
      *
-     * @author RickG
+     * @author Max Milbers
      */
-	function getSingleState()
-	{
-		$db =& JFactory::getDBO();
+	function getSingleState(){
 
 		if (empty($this->_data)) {
-			$query = 'SELECT * ';
-			$query .= 'FROM `#__vm_state` ';
-			$query .= 'WHERE `state_id` = ' . (int)$this->_id;
-			$db->setQuery($query);
-			$this->_data = $db->loadObject();
-		}
-
-		if (!$this->_data) {
-			$this->_data = new stdClass();
-			$this->_id = 0;
-			$this->_data = null;
-		}
-
+   			$this->_data = $this->getTable();
+   			$this->_data->load((int)$this->_id);
+  		}
+  		
 		return $this->_data;
 	}
 
@@ -233,7 +222,7 @@ class VirtueMartModelState extends JModel {
 	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @author RickG
+     * @author Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
@@ -241,16 +230,6 @@ class VirtueMartModelState extends JModel {
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','state',$publishId);
-		
-//		$table =& $this->getTable('state');
-//		$stateIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-//
-//        if (!$table->publish($stateIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;
-//        }
-//
-//		return true;
 	}
 
 

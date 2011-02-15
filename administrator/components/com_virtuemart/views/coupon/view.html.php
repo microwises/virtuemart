@@ -46,16 +46,13 @@ class VirtuemartViewCoupon extends JView {
 		if ($layoutName == 'edit') {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_COUPON_NEW_HEADER' ).': <small><small>[ New ]</small></small>', 'vm_coupon_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-			}
-			else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'vm_coupon_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
 			$this->assignRef('coupon',	$coupon);
         }
         else {

@@ -78,22 +78,19 @@ class VirtuemartViewUser extends JView {
 				} else {
 					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');					
 				}
-				JToolBarHelper::divider();
-				$_toolBar->appendButton('Custom', $_saveButton);
-				$_toolBar->appendButton('Custom', $_applyButton);
-				JToolBarHelper::cancel();
 			} else { // Update existing user
 				if($task=='editshop'){
 					JToolBarHelper::title( JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
 				} else {
 					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');					
-				}
-				JToolBarHelper::divider();
-				$_toolBar->appendButton('Custom', $_saveButton);
-				$_toolBar->appendButton('Custom', $_applyButton);
-				JToolBarHelper::cancel('cancel', 'Close');
+				}		
 			}
-
+			
+			JToolBarHelper::divider();
+			$_toolBar->appendButton('Custom', $_applyButton);
+			$_toolBar->appendButton('Custom', $_saveButton);	
+			JToolBarHelper::cancel();
+			
 			// User details
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();

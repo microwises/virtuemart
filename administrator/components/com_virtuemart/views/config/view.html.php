@@ -45,8 +45,8 @@ class VirtuemartViewConfig extends JView {
 
 		JToolBarHelper::title(JText::_('VM_CONFIG'), 'vm_config_48');
 		JToolBarHelper::divider();
-		JToolBarHelper::save();
 		JToolBarHelper::apply();
+		JToolBarHelper::save();
 		JToolBarHelper::cancel('cancel', 'Close');
 
 		$config = $model->getConfig();

@@ -54,17 +54,14 @@ class VirtuemartViewManufacturer extends JView {
 		if ($layoutName == 'edit') {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_MANUFACTURER_FORM_MNU' ).': <small><small>[ New ]</small></small>', 'vm_manufacturer_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-			}
-			else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_MANUFACTURER_FORM_MNU' ).': <small><small>[ Edit ]</small></small>', 'vm_manufacturer_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
-
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+			
 			$this->assignRef('manufacturer',	$manufacturer);
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);

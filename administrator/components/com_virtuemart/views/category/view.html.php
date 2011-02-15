@@ -49,21 +49,19 @@ class VirtuemartViewCategory extends JView {
 
 		if ($layoutName == 'edit') {
 			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
-				JToolBarHelper::save();
-				JToolBarHelper::apply();
-				JToolBarHelper::cancel();
-			}
-			else {
+				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');			
+			} else {
 				JToolBarHelper::title( JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
-				JToolBarHelper::save();
-				JToolBarHelper::apply();
-				JToolBarHelper::cancel('cancel', 'Close');
 
 				$relationInfo = $model->getRelationInfo( $category->category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
 
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+			
 			$parent = $model->getParentCategory( $category->category_id );
 			$this->assignRef('parent', $parent);
 			

@@ -64,17 +64,13 @@ class VirtuemartViewPaymentMethod extends JView {
 			$isNew = ($paym->paym_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_PAYM_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-			}
-			else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_PAYM_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
-
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->paym_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
 

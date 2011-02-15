@@ -210,8 +210,11 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				if ($task == 'add') $text = JText::_( 'ADD_PRODUCT' );
 				else $text = JText::_( 'EDIT_PRODUCT' ).' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
+				JToolBarHelper::divider();
+				JToolBarHelper::apply();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
+
 				break;
 			case 'addproducttype':
 				/* Get the product types that can be chosen */
@@ -225,6 +228,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Toolbar */
 				$text = JText::_( 'VM_PRODUCT_PRODUCT_TYPE_FORM_LBL' ).' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
+				JToolBarHelper::divider();
+				JToolBarHelper::apply('saveproducttype');
 				JToolBarHelper::save('saveproducttype');
 				JToolBarHelper::cancel();
 				break;

@@ -56,6 +56,8 @@ class VirtuemartViewRatings extends JView {
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'VM_RATING_EDIT_TITLE' ).' :: '.$rating->product_name, 'vm_product_48');
+				JToolBarHelper::divider();
+				JToolBarHelper::apply();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 
@@ -75,6 +77,7 @@ class VirtuemartViewRatings extends JView {
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'VM_REVIEWS' ), 'vm_reviews_48');
+				JToolBarHelper::divider();
 				JToolBarHelper::publishList();
 				JToolBarHelper::unpublishList();
 				JToolBarHelper::deleteListX();

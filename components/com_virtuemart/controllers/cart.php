@@ -103,13 +103,17 @@ class VirtueMartControllerCart extends JController {
 		
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
+		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
 				echo (1);
 				jexit();
-
+			} else {
+				echo (2);
 			}
+		} else {
+			echo (3);
 		}
 		jexit();
 

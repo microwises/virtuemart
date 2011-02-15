@@ -52,6 +52,7 @@ class VirtuemartViewUsergroups extends JView {
 
 			JToolBarHelper::title( JText::_('VM_USERGROUPS_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 			JToolBarHelper::divider();
+			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel('cancel', 'Close');
 

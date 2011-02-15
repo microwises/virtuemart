@@ -44,17 +44,14 @@ class VirtuemartViewShopperGroup extends JView {
 			$isNew = ($shoppergroup->shopper_group_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
 			} else {
 				JToolBarHelper::title( JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
-		 
-		  $this->assignRef('shoppergroup',	$shoppergroup);
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+			$this->assignRef('shoppergroup',	$shoppergroup);
 		  
 		} else {
 			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL' ), 'vm_shop_users_48' );

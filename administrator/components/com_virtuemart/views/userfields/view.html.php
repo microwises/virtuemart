@@ -53,9 +53,6 @@ class VirtuemartViewUserfields extends JView {
 
 			if ($userField->fieldid < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
 
 				$this->assignRef('ordering', JText::_('New items default to the last place. Ordering can be changed after this item is saved.'));
 				$userFieldValues = array();
@@ -70,15 +67,16 @@ class VirtuemartViewUserfields extends JView {
 				$this->assignRef('ordering', $ordering);
 
 				JToolBarHelper::title( JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ Edit ]</small></small>');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 
 				$userFieldValues = $model->getUserfieldValues();
 				$lists['type'] = $this->_getTypes($userField->type)
 					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
 			}
-
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+			
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
 
 			// Vendor selection
