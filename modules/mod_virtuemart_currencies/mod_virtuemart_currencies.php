@@ -34,12 +34,13 @@ $text_before = $params->get( 'text_before', '');
 
 /* table vm_vendor */
 $db = JFactory::getDBO();
-$q = 'SELECT `vendor_accepted_currencies` FROM `#__vm_vendor` WHERE `vendor_id`='.$vendorId;
+$q  = 'SELECT `vendor_currency`,`vendor_accepted_currencies` FROM `#__vm_vendor` WHERE `vendor_id`='.$vendorId;
 $db->setQuery($q);
-$currency_codes = explode(',',$db->loadResult());
+$currencies     = $db->loadObject();
+$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
 
 /* table vm_currency */
-$q = 'SELECT `currency_id`,`currency_code`,`currency_name` FROM `#__vm_currency` WHERE `currency_code` IN ("'.implode('","',$currency_codes).'") and published =1 ORDER BY `currency_name`';
+$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__vm_currency` WHERE `currency_code` IN ("'.implode('","',$currency_codes).'") and published =1 and `exchange_rate` IS NOT NULL ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */
