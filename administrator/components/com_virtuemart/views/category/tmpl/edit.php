@@ -267,10 +267,8 @@ $mainframe = JFactory::getApplication();
 					<?php
 						$image = VmImage::getImageByCat($this->category);
 						echo $image -> createImageUploader(false);
-						
 					?>
 					</table>
-					<?php echo $image->displayImage('','',false,0); ?>
 				</fieldset>
 			</td>
 			<td valign="top">
@@ -281,7 +279,6 @@ $mainframe = JFactory::getApplication();
 						echo $image -> createImageUploader(true);
 					 ?>
 					</table>
-					<?php echo $image->displayImage('','',true,0); ?>
 				</fieldset>
 			</td>
 		</tr>

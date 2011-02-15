@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Manufacturer category
-* @author vhv_alex
+* @author Patrick Kohl
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
  * The class is used to manage the manufacturer category in the shop.
  *
  * @package		VirtueMart
- * @author vhv_alex
+ * @author Patrick Kohl
  */
 class TableManufacturer_Category extends JTable {
 
