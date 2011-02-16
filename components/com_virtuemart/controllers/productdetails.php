@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: productdetails.php 2668 2010-12-21 13:39:50Z Milbo $
+* @version $Id$
 */
  
 // Check to ensure this file is included in Joomla!
@@ -73,6 +73,32 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Set the layout */
 		$view->setLayout('askquestion');
 		
+		/* Display it all */
+		$view->display();
+	}
+	/* Add or edit a review 
+	 TODO  control and update in database the review */
+	public function review(){
+		
+		$comment = JRequest::getVar('comment', '');
+
+		$mainframe = JFactory::getApplication();
+		/* Create the view */
+		$view = $this->getView('productdetails', 'html');
+
+		/* Add the default model */
+		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		
+		/* Add the category model */
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+		
+		/* Set the layout */
+		$view->setLayout('productdetails');
+		if ($comment) {
+			$mainframe->enqueueMessage(JText::_('REVIEW_UPDATED_SUCCESSFULLY'));
+		} else { 
+		$mainframe->enqueueMessage(JText::_('REVIEW_NO_COMMENT'));
+		}
 		/* Display it all */
 		$view->display();
 	}

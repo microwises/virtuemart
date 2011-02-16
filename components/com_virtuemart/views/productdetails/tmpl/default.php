@@ -279,7 +279,7 @@ else { ?>
 											<form action="index.php" method="post" name="addtocart" id="addtocart">
 											<input type="hidden" name="option" value="com_virtuemart" />
 											<input type="hidden" name="view" value="cart" />
-											<input type="hidden" name="func" value="cartAdd" />
+											<input type="hidden" name="task" value="add" />
 											<input type="hidden" name="product_id" value="<?php echo $product_id ?>" />
 											<input type="hidden" name="quantity" value="1" />
 											<input type="submit" class="addtocart_button_module" value="<?php echo JText::_('VM_CART_ADD_TO') ?>" title="<?php echo JText::_('VM_CART_ADD_TO') ?>" />
@@ -428,7 +428,7 @@ else { ?>
 
 						<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
 						<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
-						<form method="post" action="<?php echo JRoute::_('index.php');  ?>" name="reviewForm" id="reviewform">
+						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
 						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
 						  <tr>
 							<?php $url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; ?>
@@ -479,16 +479,13 @@ else { ?>
 							?><br />
 						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 						<br />
+						<input type="hidden" name="task" value="review" >
+						<input type="hidden" name="category_id" value="<?phph echo $this->product->category_id ?>" >
 						<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
 
 						<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
 						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 						</div>
-
-						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
-						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
-						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
-						<input type="hidden" name="func" value="addReview" />
 					</form>
 					<?php
 					}
