@@ -1,27 +1,24 @@
 jQuery(document).ready(function() {
-	
-	var carts = document.getElementsByName('addtocart');
-	jQuery(carts).each(function(id) {
-		this.type='button';
-    	jQuery(this).bind('click', sendtocart);
-   	
- 	 });
-	
-	var recalcs = document.getElementsByName('setproducttype');
-	jQuery(recalcs).each(function(id) {
-		this.type = 'button';
-		jQuery(this).bind('click', setproducttype);		
-	});
 
+	jQuery("form[id^='addtocartproduct']").each(function(){
+		var formId = jQuery(this).attr("id");
+		jQuery("[name='addtocart']").click(function(e) { 
+		e.preventDefault();
+		sendtocart(formId);
+		});
+		jQuery("[name='setproducttype']").click(function(e) { 
+		e.preventDefault();
+		setproducttype(formId);
+		});
+	});
 });
 
-
-function sendtocart(){
+function sendtocart(formId){
 	
-	var id = parseInt(this.id);
+	var id = formId;
 
 	if (id != NaN) {
-		jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS', jQuery("#addtocartproduct"+id).serialize(), 
+		jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS', jQuery(id).serialize(), 
 	
 		function(newPrices, textStatus) {
 //			alert(newPrices+' and '+textStatus);
@@ -32,13 +29,15 @@ function sendtocart(){
 			}
 		});
 	}
+	return false; // prevent to reload the page
+
 };
 
-function setproducttype(){
+function setproducttype(formId){
 
-	var id = parseInt(this.id);
+	var id = formId;
 
-	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery("#addtocartproduct"+id).serialize(),
+	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery(id).serialize(),
 	
 		function(newPrices, textStatus) {
 //			jQuery('#basePrice').html(newPrices.basePrice);
@@ -54,6 +53,7 @@ function setproducttype(){
 			togglePriceVisibility(newPrices.taxAmount,'#taxAmount');
 			togglePriceVisibility(newPrices.variantModification,'#variantModification'); 
 		});
+	return false; // prevent to reload the page
 };
 
 function togglePriceVisibility(newPrice,divname){

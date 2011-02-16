@@ -142,6 +142,9 @@ else { ?>
 								<input id="<?php echo $this->product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 							<?php } ?>
 
+							<input type="hidden" name="option" value="com_virtuemart" />
+							<input type="hidden" name="view" value="cart" />
+							<input type="hidden" name="task" value="add" />
 							<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
 
 							<?php /** @todo Handle the manufacturer view */ ?>
@@ -270,7 +273,7 @@ else { ?>
 										<!-- The add to cart DIV. -->
 										<div style="float:left;text-align:center;width: 100%;">
 										<?php
-										if( !empty($addtocart_link) ) {
+										if( $addtocart_link ) {
 											?>
 											<br />
 											<form action="index.php" method="post" name="addtocart" id="addtocart">
@@ -500,10 +503,10 @@ else { ?>
 		<tr>
 			<td colspan="3">
 				<div style="text-align: center;">
-					<?php
+					<?php /* TO DO in Multi-Vendor
 						$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
 						$text = JText::_('VM_VENDOR_FORM_INFO_LBL');
-						echo shopFunctionsF::vmPopupLink( $link, $text );
+						echo shopFunctionsF::vmPopupLink( $link, $text ); */
 					?><br />
 				</div>
 				<br />
