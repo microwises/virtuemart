@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('VM_CURRENCY_LIST_DETAILS'); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -36,7 +36,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_name" id="currency_name" size="50" value="<?php echo $this->currency->currency_name; ?>" />				
+				<input class="inputbox" type="text" name="currency_name" id="currency_name" size="50" value="<?php echo $this->currency->currency_name; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -46,7 +46,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->currency->published); ?>
+				</fieldset>
 			</td>
 		</tr>
 		<tr>
@@ -56,9 +58,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="exchange_rate" id="exchange_rate" size="6" value="<?php echo $this->currency->exchange_rate; ?>" />				
+				<input class="inputbox" type="text" name="exchange_rate" id="exchange_rate" size="6" value="<?php echo $this->currency->exchange_rate; ?>" />
 			</td>
-		</tr>			
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -66,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_code_2" id="currency_code_2" size="2" value="<?php echo $this->currency->currency_code_2; ?>" />				
+				<input class="inputbox" type="text" name="currency_code_2" id="currency_code_2" size="2" value="<?php echo $this->currency->currency_code_2; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -76,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />				
+				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />
 			</td>
 		</tr>
 <?php /*		<tr>
@@ -109,7 +111,7 @@ AdminMenuHelper::startAdminArea();
 				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 			</td>
 		</tr> */ ?>
-	<tr> 
+	<tr>
 		<td class="key">
 			<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
 		</td>
@@ -194,4 +196,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

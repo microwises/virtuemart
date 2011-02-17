@@ -95,7 +95,7 @@ class VmConfig
 	 * @see http://www.php.net/version_compare
 	 */
 	function isAtLeastVersion ( $minimum ) {
-		return (version_compare( JVERSION, $minimum ) == 1);
+		return (version_compare( JVERSION, $minimum, 'ge' ));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="search">
-	<name>Search - Virtuemart Product</name>
+<extension version="1.6" type="plugin" group="search">
+	<name>plg_search_virtuemart</name>
 	<author>P.Kohl - Studio42</author>
 	<creationDate>Febuary 2010</creationDate>
 	<copyright>Copyright (C) 2010 Studio 42. All rights reserved.</copyright>
@@ -12,11 +12,21 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_search_virtuemart.ini</language>
 		<language tag="fr-FR">fr-FR.plg_search_virtuemart.ini</language>
-	</languages>	
+	</languages>
 	<files>
 		<filename plugin="virtuemart">virtuemart.php</filename>
-	</files>	
-	<params>
-		<param name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
-	</params>
-</install>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="search_limit" type="text"
+					size="5"
+					default="50"
+					label="Search Limit"
+					description="Number of Search items to return"
+				/>
+			</fieldset>
+
+		</fields>
+	</config>
+</extension>
