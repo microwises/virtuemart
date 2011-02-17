@@ -86,7 +86,7 @@ class VirtuemartControllerProducttypeparameters extends JController {
 	*
 	* @author RolandD
 	*/
-	public function Save() {
+	public function save() {
 		$mainframe = Jfactory::getApplication();
 
 		/* Load the view object */

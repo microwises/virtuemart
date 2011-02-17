@@ -41,6 +41,7 @@ class VirtuemartControllerShopperGroup extends JController
 
 		// Register Extra tasks
 		$this->registerTask( 'add', 'edit' );
+		$this->registerTask( 'apply', 'save' );
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -90,7 +91,7 @@ class VirtuemartControllerShopperGroup extends JController
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup');
+		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup',JText::_('CANCELLED'));
 	}
 
 
@@ -103,14 +104,19 @@ class VirtuemartControllerShopperGroup extends JController
 	{
 		$model =& $this->getModel('shoppergroup');
 
-		if ($model->store()) {
+		if ($id =$model->store()) {
 			$msg = JText::_('Shopper group saved!');
 		}
 		else {
 			$msg = JText::_($model->getError());
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=shoppergroup&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=shoppergroup';
+
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 

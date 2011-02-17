@@ -58,6 +58,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		parent::__construct();
 
+
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -73,7 +74,7 @@ class VirtueMartModelUserfields extends JModel {
 		// Get the (array of) order status ID(s)
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
 		$this->setId((int)$idArray[0]);
-		
+
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (
 			 'age_verification' => 'minimum_age'
@@ -81,7 +82,7 @@ class VirtueMartModelUserfields extends JModel {
 			,'webaddress'       => 'webaddresstype'
 		);
 	}
-	
+
 	/**
 	* Prepare a user field for database update
 	*/
@@ -180,7 +181,7 @@ class VirtueMartModelUserfields extends JModel {
 
 	/**
 	 * Retrieve the value records for the current $id if available for the current type
-	 * 
+	 *
 	 * @return array List wil values, or an empty array if none exist
 	 */
 	function getUserfieldValues()
@@ -195,7 +196,7 @@ class VirtueMartModelUserfields extends JModel {
 			return array();
 		}
 	}
-	
+
 	/**
 	 * Bind the post data to the userfields table and save it
 	 *
@@ -240,7 +241,7 @@ class VirtueMartModelUserfields extends JModel {
 
 		if (!$field->check(count($fieldValues))) { // Perform data checks
 			$this->setError($field->getError());
-			return false; 
+			return false;
 		}
 
 		// Get the fieldtype for the database
@@ -271,19 +272,19 @@ class VirtueMartModelUserfields extends JModel {
 		if (!$this->storeFieldValues($fieldValues, $_id)) {
 			return false;
 		}
-					
+
 		if ($reorderRequired) {
 			$field->reorder();
 		}
 
 		// Alter the user_info database to hold the values
-		
-		return true;
+
+		return $_id;
 	}
 
 	/**
 	 * Bind and write all value records
-	 * 
+	 *
 	 * @param array $_values
 	 * @param mixed $_id If a new record is being inserted, it contains the fieldid, otherwise the value true
 	 * @return boolean
@@ -315,7 +316,7 @@ class VirtueMartModelUserfields extends JModel {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -377,7 +378,7 @@ class VirtueMartModelUserfields extends JModel {
 				$_q .= "AND sys = 0 ";
 			}
 		}
-		
+
 		if (count($_skip) > 0) {
 			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";
 		}
@@ -479,7 +480,7 @@ class VirtueMartModelUserfields extends JModel {
 
 	/**
 	 * Return an array with userFields in several formats.
-	 * 
+	 *
 	 * @access public
 	 * @param $_selection An array, as returned by getuserFields(), with fields that should be returned.
 	 * @param $_userData Array with userdata holding the values for the fields
@@ -536,18 +537,18 @@ class VirtueMartModelUserfields extends JModel {
 	 *         </td>
 	 *       </tr>
 	 *     </thead>
-	 *      <?php 
+	 *      <?php
 	 *        foreach ($this->shippingfields['fields'] as $_field ) {
 	 *          echo '  <tr>'."\n";
 	 *          echo '    <td class="key">'."\n";
 	 *          echo '      '.$_field['title']."\n";
 	 *          echo '    </td>'."\n";
 	 *          echo '    <td>'."\n";
-	 *          
+	 *
 	 *          echo '      '.$_field['value']."\n";    // Display only
 	 *       Or:
 	 *          echo '      '.$_field['formcode']."\n"; // Input form
-	 *          
+	 *
 	 *          echo '    </td>'."\n";
 	 *          echo '  </tr>'."\n";
 	 *        }
@@ -565,7 +566,7 @@ class VirtueMartModelUserfields extends JModel {
 				,'scripts' => array()
 				,'links' => array()
 		);
-		
+
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_prefix . $_fld->name
@@ -587,7 +588,7 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::listUserTitle(
 						$_return['fields'][$_fld->name]['value'], '', $_prefix);
 					break;
-				
+
 				case 'country_id':
 					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
@@ -599,7 +600,7 @@ class VirtueMartModelUserfields extends JModel {
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
-				
+
 				case 'state_id':
 					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderStateList(
 						$_return['fields']['country_id']['value'], $_return['fields'][$_fld->name]['value']
@@ -638,7 +639,7 @@ class VirtueMartModelUserfields extends JModel {
 							if (!in_array('calendar.js', $_return['scripts'])) {
 								$_return['scripts']['calendar.js'] = $_calendar_path.DS;
 							}
-//							FIXME The language is all lowercase while the filename is mixed case. Is this a Joomla issue? 
+//							FIXME The language is all lowercase while the filename is mixed case. Is this a Joomla issue?
 //							$document = JFactory::getDocument();
 //							if (!in_array('calendar-' . $document->language . '.js', $_return['scripts'])) {
 //								$_return['scripts']['calendar-' . $document->language . '.js'] = $_calendar_path.DS.'lang'.DS;
@@ -702,7 +703,7 @@ class VirtueMartModelUserfields extends JModel {
 								. 'FROM #__vm_userfield_values '
 								. 'WHERE fieldid = ' . $_fld->fieldid . ' '
 								. 'ORDER BY ordering ';
-							$_values = $this->_getList($_qry); 
+							$_values = $this->_getList($_qry);
 							// We need an extra lok here, especially for the Bank info; the values
 							// must be translated.
 							// Don't check on the field name though, since others might be added in the future :-(
@@ -716,7 +717,7 @@ class VirtueMartModelUserfields extends JModel {
 							if ($_fld->required) {
 								$_attribs['class'] = 'required';
 							}
-							
+
 							if ($_fld->type == 'radio') {
 								$_selected = $_return['fields'][$_fld->name]['value'];
 							} else {
@@ -730,7 +731,7 @@ class VirtueMartModelUserfields extends JModel {
 									$_return['fields'][$_fld->name]['formcode'] = '';
 									$_idx = 0;
 									foreach ($_values as $_val) {
-										
+
 										$_return['fields'][$_fld->name]['formcode'] .= '<input type="checkbox" name="'
 											. $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
 											. (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . '<br />';
@@ -760,7 +761,7 @@ class VirtueMartModelUserfields extends JModel {
 
 	/**
 	 * Translate arrays form userfield_values to the format expected by the table class.
-	 * 
+	 *
 	 * @param array $titles List of titles from the formdata
 	 * @param array $values List of values from the formdata
 	 * @param int $fieldid ID of the userfield to relate
@@ -812,7 +813,7 @@ class VirtueMartModelUserfields extends JModel {
 		$value      =& $this->getTable('userfields_values');
 		$userinfo   =& $this->getTable('user_info');
 		$orderinfo  =& $this->getTable('order_user_info');
-		
+
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
 
@@ -827,7 +828,7 @@ class VirtueMartModelUserfields extends JModel {
 				$this->setError($orderinfo->getError());
 				return false;
 			}
-		
+
 			if (!$field->delete($fieldId)) {
 				$this->setError($field->getError());
 				return false;
@@ -837,7 +838,7 @@ class VirtueMartModelUserfields extends JModel {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -864,7 +865,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
-		
+
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
 
@@ -946,7 +947,7 @@ class VirtueMartModelUserfields extends JModel {
 
 	/**
 	 * Switch a toggleable field on or off
-	 * 
+	 *
 	 * @param $field string Database fieldname to toggle
 	 * @param $id array list of primary keys to toggle
 	 * @param $value boolean Value to set

@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_( 'Credit Card Details' ); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -35,9 +35,21 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="creditcard_name" id="creditcard_name" size="50" value="<?php echo $this->creditcard->creditcard_name; ?>" />				
+				<input class="inputbox" type="text" name="creditcard_name" id="creditcard_name" size="50" value="<?php echo $this->creditcard->creditcard_name; ?>" />
 			</td>
-		</tr>		
+		</tr>
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('PUBLISHED'); ?>:
+				</label>
+			</td>
+			<td>
+				<fieldset class="radio">
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->creditcard->published); ?>
+				</fieldset>
+			</td>
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -45,9 +57,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="50" value="<?php echo $this->creditcard->vendor_id; ?>" />										
+				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="50" value="<?php echo $this->creditcard->vendor_id; ?>" />
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -55,9 +67,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />				
+				<input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
 			</td>
-		</tr>					
+		</tr>
 	</table>
 	</fieldset>
 </div>
@@ -70,4 +82,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

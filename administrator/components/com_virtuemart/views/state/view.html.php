@@ -44,27 +44,33 @@ class VirtuemartViewState extends JView {
 		$state =& $model->getSingleState();
 
         $layoutName = JRequest::getVar('layout', 'default');
-		$countryId = JRequest::getInt('country_id', null);
-		$published = JRequest::getBool('published', false);
 
+		$published = JRequest::getBool('published', false);
+		$this->assignRef('published',	$published);
+
+
+		$countryId = JRequest::getInt('country_id', 0);
+		if(empty($countryId)) $countryId = $state->country_id;
 		$this->assignRef('country_id',	$countryId);
- 		$this->assignRef('published',	$published);
+
 
         $isNew = (count($state) < 1);
 
+		if(empty($countryId) && $layoutName == 'edit' && $isNew){
+			JError::raiseWarning(412,'Country id is 0');
+			return false;
+		}
 		if ($layoutName == 'edit') {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_states_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-			}
-			else {
+			} else {
 				JToolBarHelper::title( JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_states_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
 			}
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+
 			$this->assignRef('state', $state);
 
 			$this->assignRef('shippingZones', $zoneModel->getShippingZoneSelectList());
@@ -81,7 +87,7 @@ class VirtuemartViewState extends JView {
 			$this->assignRef('pagination',	$pagination);
 
 			$states = $model->getStates($countryId);
-
+			dump($states,'$countryId');
 			$this->assignRef('states',	$states);
 		}
 

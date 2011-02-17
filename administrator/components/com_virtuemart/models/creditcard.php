@@ -165,7 +165,7 @@ class VirtueMartModelCreditcard extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->creditcard_id;
 	}
 
 
@@ -195,15 +195,15 @@ class VirtueMartModelCreditcard extends JModel {
      *
      * @author Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.      
-     */ 	 
-	public function publish($publishId = false) 
+     * @return boolean True is the delete was successful, false otherwise.
+     */
+	public function publish($publishId = false)
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','creditcard',$publishId);
 
 	}
-	
+
 	/**
 	 * Retireve a list of credit cards from the database.
 	 *
@@ -218,7 +218,7 @@ class VirtueMartModelCreditcard extends JModel {
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
-	
+
 			/**
 	 * Validates the Payment Method (Credit Card Number)
 	 * Adapted From CreditCard Class
@@ -264,7 +264,7 @@ class VirtueMartModelCreditcard extends JModel {
 
 		return true;
 	}
-	
+
 	/*
 	* _strtonum private method
 	*   return formated string - only digits
@@ -278,7 +278,7 @@ class VirtueMartModelCreditcard extends JModel {
 		}
 		return $nstr;
 	}
-	
+
 		/*
 	* mod10 method - Luhn check digit algorithm
 	*   return 0 if true and !0 if false
@@ -333,6 +333,6 @@ class VirtueMartModelCreditcard extends JModel {
 		return ( $result % 10 == 0 );
 
 	}
-	
+
 }
 // pure php no closing tag

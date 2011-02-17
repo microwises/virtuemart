@@ -403,25 +403,25 @@ class vmParameters extends JParameter{
 	* @param string The control name
 	* @return string The html for the element
 	*/
-	function _form_vm_category( $name, $value, &$node, $control_name ) {
-		global $database;
-
-		$multiselect = $node->_attributes( 'multiselect' );
-		if( $multiselect == '1' ) {
-			$multiple = true;
-			$size = 5; 
-		} else {
-			$multiple = false;
-			$size = 1;
-		}
-		require_once( CLASSPATH.'ps_product_category.php');
-		$ps_product_category = new ps_product_category();
-		
-		ob_start();
-		$ps_product_category->list_all(''. $control_name .'['. $name .']', 0, array(), $size, true, $multiple );
-		$category_dropdown = ob_get_clean();
-		return $category_dropdown;
-	}
+//	function _form_vm_category( $name, $value, &$node, $control_name ) {
+//		global $database;
+//
+//		$multiselect = $node->_attributes( 'multiselect' );
+//		if( $multiselect == '1' ) {
+//			$multiple = true;
+//			$size = 5; 
+//		} else {
+//			$multiple = false;
+//			$size = 1;
+//		}
+//		require_once( CLASSPATH.'ps_product_category.php');
+//		$ps_product_category = new ps_product_category();
+//		
+//		ob_start();
+//		$ps_product_category->list_all(''. $control_name .'['. $name .']', 0, array(), $size, true, $multiple );
+//		$category_dropdown = ob_get_clean();
+//		return $category_dropdown;
+//	}
 
 	/**
 	* @param string The name of the form element

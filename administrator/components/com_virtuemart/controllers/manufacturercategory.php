@@ -42,6 +42,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -85,7 +86,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory');
+		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory',JText::_('CANCELLED'));
 	}
 
 
@@ -97,14 +98,18 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	{
 		$model =& $this->getModel('manufacturerCategory');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('VM_MANUFACTURER_CATEGORY_SAVED');
-		}
-		else {
-			$msg = JText::_($model->getError());
+		} else {
+			$model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturercategory&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=manufacturercategory';
+
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 

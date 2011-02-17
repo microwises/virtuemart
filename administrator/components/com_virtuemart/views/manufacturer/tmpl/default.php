@@ -70,7 +70,7 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->manufacturer_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturer&task=edit&manufacturer_id=' . $row->manufacturer_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&manufacturer_id=' . $row->manufacturer_id);
 
 		?>
 	    <tr class="<?php echo "row$k"; ?>">

@@ -150,7 +150,7 @@ class VirtueMartModelCurrency extends JModel {
 	if (key_exists('currency_display_style', $data) && is_array($data['currency_display_style'])) {
 	    $data['display_style'] = implode('|', $data['currency_display_style']);
 	}
-	
+
 	$data['currency_symbol'] = $data['currency_display_style'][1];
 	// Bind the form fields to the currency table
 	if (!$table->bind($data)) {
@@ -170,30 +170,30 @@ class VirtueMartModelCurrency extends JModel {
 	    return false;
 	}
 
-	return true;
+	return $table->currency_id;
     }
 
 	/**
 	 * Delete all record ids selected
      *
      * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.      
-     */ 	 
+     * @return boolean True is the delete was successful, false otherwise.
+     */
 	public function delete() {
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('cid','currency');
 
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.      
-     */ 	 
-	public function publish($publishId = false) 
+     * @return boolean True is the delete was successful, false otherwise.
+     */
+	public function publish($publishId = false)
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','currency',$publishId);
@@ -208,7 +208,7 @@ class VirtueMartModelCurrency extends JModel {
      * @return object List of currency objects
      */
     function getCurrenciesList($vendorId=1) {
-    
+
     $where = '';
     require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
     if( !Permissions::getInstance()->check('admin') ){
@@ -222,7 +222,7 @@ class VirtueMartModelCurrency extends JModel {
 
     /**
      * Retireve a list of currencies from the database.
-     * 
+     *
      * This is written to get a list for selecting currencies. Therefore it asks for published
      * @author RolandD, Max Milbers
      * @return object List of currency objects

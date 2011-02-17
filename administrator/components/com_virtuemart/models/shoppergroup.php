@@ -34,7 +34,7 @@ class VirtueMartModelShopperGroup extends JModel {
     /** @var integer Primary key */
     private $_cid;
     /** @var integer Primary key */
-    private $_id;    
+    private $_id;
     /** @var objectlist Shopper group data */
     private $_data;
     /** @var integer Total number of shopper groups in the database */
@@ -188,7 +188,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	      return false;
 	    }
 
-	    return true;
+	    return $table->shopper_group_id;
     }
 
 
@@ -212,6 +212,6 @@ class VirtueMartModelShopperGroup extends JModel {
 	    return true;
     }
 
-	
+
 }
 // pure php no closing tag

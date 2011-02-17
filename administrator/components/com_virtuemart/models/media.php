@@ -297,8 +297,9 @@ class VirtueMartModelMedia extends JModel {
 	 * Get the list of files from the DOWNLOADROOT
 	 */
 	public function getFilesSelect() {
-		if (JFolder::exists(DOWNLOADROOT)) {
-			$files = JFolder::files(DOWNLOADROOT);
+		$downloadroot = VmConfig::get('downloadroot',JPATH_BASE.DS.'images');  //Todo add config data
+		if (JFolder::exists($downloadroot)) {
+			$files = JFolder::files($downloadroot);
 			if (count($files) > 1) {
 				$filesselect = array(JHTML::_('select.option',  '', '- '. JText::_( 'SELECT_FILE' ) .' -' ));
 				foreach ( $files as $file) {
@@ -462,7 +463,7 @@ class VirtueMartModelMedia extends JModel {
 	function handleFileUpload() {
 		$mainframe = JFactory::getApplication('site');
 		$files = JRequest::get('files');
-		require_once(CLASSPATH.'imageTools.class.php' );
+//		require_once(CLASSPATH.'imageTools.class.php' );
 
 		/* Get the filename */
 		if ($this->_productfile->fileexists) {
@@ -483,7 +484,7 @@ class VirtueMartModelMedia extends JModel {
 
 		switch( JRequest::getVar("upload_dir")) {
 			case "IMAGEPATH":
-				$uploaddir = IMAGEPATH."product".DS;
+				$uploaddir = VmConfig::get('media_product_path');
 				break;
 			case "FILEPATH":
 				$uploaddir = JPATH_SITE.trim(JRequest::getVar("file_path"));
@@ -500,7 +501,7 @@ class VirtueMartModelMedia extends JModel {
 				}
 				break;
 			case "DOWNLOADPATH":
-				$uploaddir = DOWNLOADROOT;
+				$uploaddir = VmConfig::get('download_root');	//Max, I think this path should always been set as absolute path, 
 				break;
 		}
 		if ($this->checkUploadedFile('file_upload')) {
@@ -651,14 +652,23 @@ class VirtueMartModelMedia extends JModel {
 	 * @param int $width
 	 * @return string
 	 */
-	function createThumbImage( $fileName, $section='product', $height=PSHOP_IMG_HEIGHT, $width=PSHOP_IMG_WIDTH) {
-		require_once(CLASSPATH . 'imageTools.class.php' );
+	function createThumbImage( $fileName, $section='product', $height=90, $width=90) {
+		
+//		require_once(CLASSPATH . 'imageTools.class.php' );
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
+		
+		$media_path_url = VmConfig::get('media_product_path');
+		$media_filename = $fileName;
+		$media_thumb_name = $fileName.'_thumb';
+		$image = new VmImage($media_path_url,$media_filename,$media_thumb_name);
+		
 		/* Generate Image Destination File Name */
-		$pathinfo = pathinfo( $fileName );
-		$to_file_thumb = basename( $fileName, '.'.$pathinfo['extension']).".".$pathinfo['extension'];
-		$fileout = IMAGEPATH.$section.DS.'resized'.DS.$to_file_thumb;
-		vmImageTools::ResizeImage( $fileName, $fileout, $height, $width );
-
+//		$pathinfo = pathinfo( $fileName );
+//		$to_file_thumb = basename( $fileName, '.'.$pathinfo['extension']).".".$pathinfo['extension'];
+//		$fileout = IMAGEPATH.$section.DS.'resized'.DS.$to_file_thumb;
+//		vmImageTools::ResizeImage( $fileName, $fileout, $height, $width );
+		$fileout = $image->createThumb();
+		
 		return $fileout;
 
 	}

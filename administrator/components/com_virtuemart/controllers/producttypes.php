@@ -40,6 +40,7 @@ class VirtuemartControllerProducttypes extends JController {
 
 		/* Redirects */
 		$this->registerTask('add','edit');
+		$this->registerTask('apply','save');
 		$this->registerTask('cancel','productTypes');
 	}
 
@@ -79,7 +80,7 @@ class VirtuemartControllerProducttypes extends JController {
 	*
 	* @author RolandD
 	*/
-	public function Save() {
+	public function save() {
 		$mainframe = Jfactory::getApplication();
 
 		/* Load the view object */
@@ -87,12 +88,21 @@ class VirtuemartControllerProducttypes extends JController {
 
 		$model = $this->getModel('producttypes');
 		$msgtype = '';
-		if ($model->saveProductType()) $msg = JText::_('PRODUCTTYPE_SAVED_SUCCESSFULLY');
+		if ($id=$model->saveProductType()) $msg = JText::_('PRODUCTTYPE_SAVED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('PRODUCTTYPE_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=producttypes&task=producttypes', $msg, $msgtype);
+
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply'){
+			$redirection = 'index.php?option=com_virtuemart&view=producttypes&task=edit&cid[]='.$id.';;
+		} else {
+			$redirection = 'index.php?option=com_virtuemart&view=producttypes';
+		}
+
+		$mainframe->redirect($redirection, $msg, $msgtype);
+
 	}
 
 	/**

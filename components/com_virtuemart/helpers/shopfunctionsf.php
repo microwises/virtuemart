@@ -363,8 +363,10 @@ class shopFunctionsF {
 				$layout = $prodLayout;
 			}
 		}
-
+		dump($_SESSION,'session');
 		$view->setLayout(strtolower($layout));
+//		$mainframe = JFactory::getApplication();
+//		$mainframe->set('setLayout', strtolower($layout));
 	}
 
 	/**
@@ -375,9 +377,14 @@ class shopFunctionsF {
 	function setTemplate( $template ){
 		if(!empty($template)){
 			if (is_dir(JPATH_THEMES.DS.$template)) {
-				$mainframe = JFactory::getApplication();
+				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
+				$mainframe = JFactory::getApplication('site');
 				$mainframe->set('setTemplate', $template);
+			} else{
+				JError::raiseWarning('The choosen template couldnt found on the filesystem: '.$template);	
 			}
+		} else{
+				//JError::raiseWarning('No template set : '.$template);	
 		}
 	}
 

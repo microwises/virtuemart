@@ -42,6 +42,7 @@ class VirtuemartControllerCreditcard extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -71,7 +72,7 @@ class VirtuemartControllerCreditcard extends JController {
 	 */
 	function edit()
 	{
-		JRequest::setVar('controller', 'creditcard');
+//		JRequest::setVar('controller', 'creditcard');
 		JRequest::setVar('view', 'creditcard');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
@@ -100,14 +101,18 @@ class VirtuemartControllerCreditcard extends JController {
 	{
 		$model =& $this->getModel( 'creditcard' );
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('Credit card saved!');
-		}
-		else {
-			$msg = JText::_($model->getError());
+		} else {
+			$msg = $model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=creditcard&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=creditcard';
+
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 

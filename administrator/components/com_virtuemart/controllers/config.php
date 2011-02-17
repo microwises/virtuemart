@@ -108,13 +108,13 @@ class VirtuemartControllerConfig extends JController {
 			VmConfig::loadConfig();
 		}
 		else {
-			$msg = JText::_($model->getError());
+			$msg = $model->getError();
 		}
 
 		$this->setRedirect('index.php?option=com_virtuemart', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Handle the apply task
 	 *
@@ -135,7 +135,7 @@ class VirtuemartControllerConfig extends JController {
 		}
 
 		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
-	}	
+	}
 
 
 	/**

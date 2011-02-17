@@ -42,7 +42,7 @@ class VirtuemartControllerCalc extends JController
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
-		$document =& JFactory::getDocument();				
+		$document =& JFactory::getDocument();
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('calc', $viewType);
@@ -56,40 +56,40 @@ class VirtuemartControllerCalc extends JController
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
 	}
-	
+
 	/**
 	 * Display the calculator view
 	 *
-	 * @author RickG	 
+	 * @author RickG
 	 */
 	public function display() {
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the edit task
 	 *
      * @author Max Milbers
 	 */
 	public function edit()
-	{				
+	{
 		JRequest::setVar('controller', 'calc');
 		JRequest::setVar('view', 'calc');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
-		
+
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('calc', $viewType);
-		
+
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
-		
+
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the cancel task
 	 *
@@ -99,27 +99,26 @@ class VirtuemartControllerCalc extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the save task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */	
+	 * @author Max Milbers, Jseros
+	 */
 	public function save(){
-		
+
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$calcModel = $this->getModel('calc');
-		
 
 		if ($id = $calcModel->store()) {
 			$msg = JText::_('VM_CALC_SAVED_SUCCESS');
 		}
 		else {
-			$msg = JText::_($calcModel->getError());
+			$msg = $calcModel->getError();
 		}
 
 		$cmd = JRequest::getCmd('task');
@@ -134,8 +133,8 @@ class VirtuemartControllerCalc extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */		
+	 * @author Max Milbers, Jseros
+	 */
 	public function remove()
 	{
 		// Check token
@@ -164,18 +163,18 @@ class VirtuemartControllerCalc extends JController
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Jseros, Max Milbers	 
-	 */		
+	 * @author Jseros, Max Milbers
+	 */
 	public function publish()
 	{
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(true)) {
 			$msg = JText::_('VM_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
@@ -186,18 +185,18 @@ class VirtuemartControllerCalc extends JController
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */		
+	 * @author Max Milbers, Jseros
+	 */
 	function unpublish()
 	{
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(false)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');

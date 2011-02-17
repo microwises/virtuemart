@@ -321,9 +321,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    else {
 			echo '<tr>
         <td colspan="2"><strong>Dynamic Image Resizing is not available. The GD library seems to be missing.</strong>';
-			echo '<input type="hidden" name="conf_PSHOP_IMG_RESIZE_ENABLE" value="0" />';
-			echo '<input type="hidden" name="conf_PSHOP_IMG_WIDTH" value="'. $this->config->get('img_width') .'" />';
-			echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. $this->config->get('img_height') .'" /></td></tr>';
+			echo '<input type="hidden" name="img_resize_enable" value="0" />';
+			echo '<input type="hidden" name="img_width" value="'. $this->config->get('img_width',90) .'" />';
+			echo '<input type="hidden" name="img_height" value="'. $this->config->get('img_height',90) .'" /></td></tr>';
 		    }
 		    ?>
 			<tr>

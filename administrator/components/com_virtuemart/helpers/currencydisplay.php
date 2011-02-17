@@ -141,7 +141,7 @@ class CurrencyDisplay {
 				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
 				$db->setQuery($q);
 				$currencyId = $db->loadResult();
-				dump($db,'my $db id');		
+		
 				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
 				$db->setQuery($q);
 				$style = $db->loadResult();	

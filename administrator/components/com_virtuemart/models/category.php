@@ -395,7 +395,7 @@ class VirtueMartModelCategory extends JModel {
      * @return boolean True is the publishing was successful, false otherwise.
      */
 	public function publish($publishId = false){
-		
+
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','category',$publishId);
 
@@ -541,12 +541,12 @@ class VirtueMartModelCategory extends JModel {
 
 		$table = $this->getTable();
 		$data = JRequest::get('post');
-		
+
 		/* Vendor */
 		$data['vendor_id'] = 1;
 
 		//uploading images and creating thumbnails
-		$fullImage = JRequest::getVar('category_full_image', array(), 'files');	
+		$fullImage = JRequest::getVar('category_full_image', array(), 'files');
 		if(!empty($fullImage['name'])){
 			$filename = $fullImage['name'];
 		} else {
@@ -559,7 +559,9 @@ class VirtueMartModelCategory extends JModel {
 		} else {
 			$filenamethumb = $data['category_thumb_image_current'];
 		}
-				
+
+		/* Load the image helper */
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 		$image = VmImage::getCatImage($filename,$filenamethumb);
 		if(!empty($image)){
 			$data = $image->saveImage($data,$fullImage,false);

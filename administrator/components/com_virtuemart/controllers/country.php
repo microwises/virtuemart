@@ -42,6 +42,7 @@ class VirtuemartControllerCountry extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -104,14 +105,17 @@ class VirtuemartControllerCountry extends JController {
 	{
 		$model = $this->getModel('country');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('Country saved!');
-		}
-		else {
-			$msg = JText::_($model->getError());
+		} else {
+			$msg = $model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=country', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=country&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=country';
+
+		$this->setRedirect($redirection, $msg);
 	}
 
 	/**

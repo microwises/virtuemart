@@ -74,11 +74,13 @@ $pagination = $this->pagination;
 			/* Create the filename but check if it is a URL first */
 			if (strtolower(substr($productfile->file_name, 0, 4)) == 'http') {
 				$filename = $productfile->file_name;
+				dump($filename,'Media filename mit http');
 			}
 			else{
 				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
 				$imageProductFolder = implode(DS, $imageRootFolderExp);
 				$filename = JPATH_SITE.DS.$imageProductFolder.str_replace(JPATH_SITE, '', $productfile->file_name);
+				dump($filename,'Media filepath ');
 			}
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
 			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
@@ -115,6 +117,7 @@ $pagination = $this->pagination;
 				<td>
 				<?php
 					if ($productfile->file_is_image) {
+
 						$fullimg = $filename;
 						$info = pathinfo( $fullimg );
 						/* Full image */
@@ -123,7 +126,7 @@ $pagination = $this->pagination;
 							if ($imgsize[0] > 800) $imgsize[0] = 800;
 							if ($imgsize[1] > 600) $imgsize[1] = 600;
 							echo JText::_('VM_FILES_LIST_FULL_IMG').": ";
-							echo JHTML::_('link', $productfile->file_url, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.$imgsize[0].', y: '.$imgsize[1].'}}'));
+							echo JHTML::_('link', JURI::root().$productfile->file_url, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.$imgsize[0].', y: '.$imgsize[1].'}}'));
 						}
 						echo '<br />';
 						/* Create the thumbnail file, this should be in the resized folder */
@@ -134,7 +137,7 @@ $pagination = $this->pagination;
 						/* Thumbnail image */
 						if (JFile::exists($thumbimg)) {
 							$imgsize = getimagesize($thumbimg);
-							echo JText::_('VM_FILES_LIST_THUMBNAIL_IMG').": ";
+							echo JText::_('VM_FILES_LIST_THUMBNAIL_IMG');
 							echo JHTML::_('link', JURI::root().str_ireplace(array(JPATH_SITE, '\\'), array('', '/'), $info['dirname']).'/resized/'.$basename, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.($imgsize[0]+20).', y: '.($imgsize[1]+20).'}}'));
 						}
 						else echo JText::_('VM_THUMB_NOT_FOUND').': '.$thumbimg;

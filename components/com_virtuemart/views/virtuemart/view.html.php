@@ -79,16 +79,18 @@ class VirtueMartViewVirtueMart extends JView {
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 		
+		$layoutName = VmConfig::get('vmlayout','default');
 		
+//		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		$template = VmConfig::get('vmtemplate','default');
 		if (is_dir(JPATH_THEMES.DS.$template)) {
 			$mainframe = JFactory::getApplication();
 			$mainframe->set('setTemplate', $template);
 		}
+		
 		$layout = VmConfig::get('vmlayout','default');
 		$this->setLayout($layout);
 
-		
 		parent::display($tpl);
 
 	}

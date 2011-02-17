@@ -32,6 +32,8 @@ class TableState extends JTable {
 	var $state_id				= 0;
 	/** @var integer Country id */
 	var $country_id           	= 0;
+	/** @var integer Zone id */
+	var $zone_id           	= 0;
 	/** @var string State name */
 	var $state_name           	= '';
 	/** @var char 3 character state code */
@@ -61,7 +63,7 @@ class TableState extends JTable {
 	function check()
 	{
         if (!$this->state_name) {
-			$this->setError(JText::_('State records must contain a contry name.'));
+			$this->setError(JText::_('State records must contain a state name.'));
 			return false;
 		}
 		if (!$this->state_2_code) {
@@ -81,7 +83,7 @@ class TableState extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given satte name already exists.'));
+				$this->setError(JText::_('The given state name already exists.'));
 				return false;
 			}
 		}

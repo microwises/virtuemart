@@ -870,6 +870,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
 CREATE TABLE IF NOT EXISTS `#__vm_state` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL DEFAULT '1',
+  `zone_id` int(4) NOT NULL,
   `state_name` varchar(64) DEFAULT NULL,
   `state_3_code` char(3) DEFAULT NULL,
   `state_2_code` char(2) DEFAULT NULL,

@@ -85,8 +85,8 @@ AdminMenuHelper::startAdminArea();
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
         <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
+        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php  echo VmConfig::getVar('img_height',80) ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo VmConfig::getVar('img_width',80)  ?>" class="inputbox" /></div>
         </td>
     </tr>
 	<tr> 

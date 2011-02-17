@@ -43,6 +43,7 @@ class VirtuemartControllerManufacturer extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -103,19 +104,19 @@ class VirtuemartControllerManufacturer extends JController {
 		/* Load the view object */
 		$view = $this->getView('manufacturer', 'html');
 
-		/* Load some helpers */
-		$view->loadHelper('image');
-
 		$model = $this->getModel('manufacturer');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('VM_MANUFACTURER_SAVED');
-		}
-		else {
-			$msg = JText::_($model->getError());
+		} else {
+			$msg = $model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturer', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturer&task=edit&manufacturer_id='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=manufacturer';
+
+		$this->setRedirect($redirection, $msg);
 	}
 
 

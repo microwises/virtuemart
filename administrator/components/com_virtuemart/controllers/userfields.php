@@ -43,12 +43,13 @@ class VirtuemartControllerUserfields extends JController {
 
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
+		$this->registerTask('apply','save');
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('userfields', $viewType);
 		$view->loadHelper('paramhelper');
-		
+
 		// Push a model into the view
 		$model =& $this->getModel('userfields');
 
@@ -78,11 +79,11 @@ class VirtuemartControllerUserfields extends JController {
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('userfields', $viewType);
-		
+
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
-		
+
 		parent::display();
 	}
 
@@ -101,12 +102,18 @@ class VirtuemartControllerUserfields extends JController {
 	{
 		$model =& $this->getModel('userfields');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('Userfield saved!');
 		} else {
-			$msg = JText::_($model->getError());
+			$msg = $model->getError();
 		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
+
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=userfields&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=userfields';
+
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 	/**
@@ -267,7 +274,7 @@ class VirtuemartControllerUserfields extends JController {
 
 	/**
 	 * Switch the given toggle on or off.
-	 * 
+	 *
 	 * @param $field string Toggle set switch
 	 * @param $value boolean on or off
 	 */

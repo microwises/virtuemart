@@ -31,25 +31,25 @@ jimport( 'joomla.application.component.model');
  * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the product_list with the ordering column
  */
 class VirtueMartModelManufacturer extends JModel {
-    
+
 	var $_total;
 	var $_pagination;
-	
+
 	function __construct() {
 		parent::__construct();
-		
+
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
-		
+
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-	}  
-	
+	}
+
 	/**
 	 * Loads the pagination
 	 */
@@ -60,7 +60,7 @@ class VirtueMartModelManufacturer extends JModel {
 		}
 		return $this->_pagination;
 	}
-    
+
 	/**
 	 * Gets the total number of products
 	 */
@@ -69,35 +69,35 @@ class VirtueMartModelManufacturer extends JModel {
     		$db = JFactory::getDBO();
     		$filter = '';
             if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__vm_manufacturer.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
-			$q = "SELECT COUNT(*) 
+			$q = "SELECT COUNT(*)
 				FROM #__vm_manufacturer ".
 				$filter;
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
-        
+
         return $this->_total;
     }
-	
+
     /**
      * Load a single manufacturer
      */
      public function getManufacturer() {
-     	 
+
      	 $row = $this->getTable();
      	 $row->load(JRequest::getInt('manufacturer_id', 0));
      	 return $row;
      }
-     
+
      /**
 	 * Bind the post data to the manufacturer table and save it
      *
      * @return boolean True is the save was successful, false otherwise.
 	 */
 	public function store() {
-	
 
-	
+
+
 	/* Setup some place holders */
 	$table = $this->getTable();
 
@@ -110,27 +110,30 @@ class VirtueMartModelManufacturer extends JModel {
 
 		$fullImage = JRequest::getVar('mf_full_image', null, 'files',array());
 		//$data['imagename'] = $fullImage['name'] ;
-		
+
 		if(!empty($fullImage['name'])){
 			$filename = $fullImage['name'];
 		} else {
 			$filename = $data['mf_full_image_current'];
 		}
-	
+
 		$thumbImage = JRequest::getVar('mf_thumb_image', null, 'files',array());
-		
+
 		if(!empty($thumbImage['name'])){
 			$filenamethumb = $thumbImage['name'];
 		} else {
 			$filenamethumb = $data['mf_thumb_image_current'];
 		}
-				
+
+		/* Load the image helper */
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+
 		$image = VmImage::getMfImage($filename,$filenamethumb);
 		if(!empty($image)){
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
-		dump($data,'my data in store');	
+		dump($data,'my data in store');
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
@@ -149,7 +152,7 @@ class VirtueMartModelManufacturer extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->manufacturer_id;
 	}
 
 
@@ -171,7 +174,7 @@ class VirtueMartModelManufacturer extends JModel {
 
     	return true;
 	}
-    
+
     /**
      * Select the products to list on the product list page
      */
@@ -179,14 +182,14 @@ class VirtueMartModelManufacturer extends JModel {
      	$db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
-     	
+
      	/* Build the query */
-     	$q = "SELECT 
+     	$q = "SELECT
 			";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_id');
     }
-    
+
     /**
      * Returns a dropdown menu with manufacturers
      * @author RolandD
@@ -201,7 +204,7 @@ class VirtueMartModelManufacturer extends JModel {
 		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_( 'Select manufacturer' ) .' -' ));
 		return $options;
 	}
-    
+
     /**
     * Set the publish/unpublish state
     * @return bool true if manufacturers are published or false if manufacturers are not published
@@ -212,15 +215,15 @@ class VirtueMartModelManufacturer extends JModel {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
 			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
-			$q = "UPDATE #__vm_manufacturer 
-				SET product_publish = ".$db->Quote($state)." 
+			$q = "UPDATE #__vm_manufacturer
+				SET product_publish = ".$db->Quote($state)."
 				WHERE product_id IN (".$cids.")";
 			$db->setQuery($q);
 			if ($db->query()) return true;
 			else return false;
 		}
     }
-    
+
     /**
 	 * Retireve a list of countries from the database.
 	 *

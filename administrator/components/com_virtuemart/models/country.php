@@ -191,7 +191,7 @@ class VirtueMartModelCountry extends JModel {
 	    return false;
 	}
 
-	return true;
+	return $table->country_id;
     }
 
     /**
@@ -202,7 +202,7 @@ class VirtueMartModelCountry extends JModel {
      * @return boolean True is the delete was successful, false otherwise.
      */
     function publish($publishId = false) {
-    	
+
     	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','country',$publishId);
 
@@ -229,7 +229,7 @@ class VirtueMartModelCountry extends JModel {
 		else {
 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-	
+
 		return $this->_data;
     }
 }

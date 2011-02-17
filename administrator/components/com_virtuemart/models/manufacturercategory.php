@@ -158,7 +158,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->mf_category_id;
 	}
 
 
@@ -222,7 +222,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 	{
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','manufacturer_category',$publishId);
-		
+
 //		$table = $this->getTable('manufacturer_category');
 //		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
 //

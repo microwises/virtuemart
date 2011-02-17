@@ -64,7 +64,7 @@ class VmImage {
 	 */
 	function getVendorImage($filename,$thumb_filename=0,$vendor_id=0){
 		$image = new VmImage('components/com_virtuemart/assets/images/vendors/',$filename,$thumb_filename);
-		$image->table = 'vendor';
+		$image->table = 'vendor';  //This is the prefix,
 		$image->id = $vendor_id;
 		$image->idfield = 'vendor_id';
 		$image->mfield = 'vendor_thumb_image ';

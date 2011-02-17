@@ -200,7 +200,7 @@ class VirtueMartModelConfig extends JModel {
 
 	    $assets_general_path = $params->get('assets_general_path') ;
 		if(empty($assets_general_path)){
-			$params->set('assets_general_path','components/com_virtuemart/assets');	
+			$params->set('assets_general_path','components/com_virtuemart/assets');	//Hmm there is something wrong here, this are paths, but used with / and not DS.
 		}	    
 	    $media_category_path = $params->get('media_category_path') ;
 		if(empty($media_category_path)){
@@ -214,6 +214,12 @@ class VirtueMartModelConfig extends JModel {
 		if(empty($media_manufacturer_path)){
 			$params->set('media_manufacturer_path','images/stories/virtuemart/manufacturer/');	
 		}
+		$downloadable_goods_path = $params->get('downloadable_goods_path') ;
+		if(empty($downloadable_goods_path)){
+			$params->set('download_root',JPATH_SITE.DS.'media'.DS.'virtuemart');	
+		}		
+		
+		
 	}
 	else {
 		JError::raiseWarning('No config in database found, dont mind, when you configure the shop the first time');

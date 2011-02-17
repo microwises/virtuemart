@@ -43,7 +43,7 @@ class VirtuemartControllerState extends JController {
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
-	    
+
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view =& $this->getView('state', $viewType);
@@ -74,8 +74,7 @@ class VirtuemartControllerState extends JController {
 	 *
      * @author RickG, Max Milbers
 	 */
-	function edit()
-	{
+	function edit(){
 		JRequest::setVar('controller', 'state');
 		JRequest::setVar('view', 'state');
 		JRequest::setVar('layout', 'edit');
@@ -107,14 +106,18 @@ class VirtuemartControllerState extends JController {
 		$data = JRequest::get( 'post' );
 		$model =& $this->getModel( 'state' );
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('State saved!');
-		}
-		else {
-			$msg = JText::_('Error saving state!');
+		} else {
+			$msg = $model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=state&task=edit&state_id='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=state&country_id='.$data['country_id'];
+
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 

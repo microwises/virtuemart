@@ -99,14 +99,11 @@ class VirtuemartControllerCategory extends JController {
 	 */
 	public function save() {
 		$categoryModel = $this->getModel('category');
-		$cmd = JRequest::getCmd('task');
-		
-		/* Load the image helper */
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-		
-		if ($id = $categoryModel->store()) $msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
-		else $msg = JText::_($categoryModel->getError());
 
+		if ($id = $categoryModel->store()) $msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
+		else $msg = $categoryModel->getError();
+
+		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
 		else $redirection = 'index.php?option=com_virtuemart&view=category';
 

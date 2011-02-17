@@ -42,6 +42,7 @@ class VirtuemartControllerCurrency extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -75,11 +76,11 @@ class VirtuemartControllerCurrency extends JController {
 		JRequest::setVar('view', 'currency');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
-		
+
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('currency', $viewType);
-		
+
 		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
 
 		parent::display();
@@ -106,14 +107,17 @@ class VirtuemartControllerCurrency extends JController {
 	{
 		$model =& $this->getModel('currency');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('Currency saved!');
-		}
-		else {
+		} else {
 			$msg = JText::_($model->getError());
 		}
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=currency';
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect($redirection, $msg);
+
 	}
 
 

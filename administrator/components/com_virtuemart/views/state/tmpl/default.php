@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -56,8 +56,8 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->state_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=state&task=edit&cid[]=' . $row->state_id);
-//			$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=country&state_id=' . $row->state_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=state&task=edit&state_id=' . $row->state_id);
+
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -98,9 +98,9 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="view" value="state" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="country_id" value="<?php echo $this->country_id; ?>" value="0" />
+    <input type="hidden" name="country_id" value="<?php echo $this->country_id; ?>" />
 </form>
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

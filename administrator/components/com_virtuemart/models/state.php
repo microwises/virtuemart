@@ -127,7 +127,7 @@ class VirtueMartModelState extends JModel {
    			$this->_data = $this->getTable();
    			$this->_data->load((int)$this->_id);
   		}
-  		
+
 		return $this->_data;
 	}
 
@@ -177,23 +177,23 @@ class VirtueMartModelState extends JModel {
 		$data = JRequest::get( 'post' );
 		// Bind the form fields to the state table
 		if (!$table->bind($data)) {
-			$this->setError($this->getError());
+			$this->setError($table->getError());
 			return false;
 		}
 
 		// Make sure the state record is valid
 		if (!$table->check()) {
-			$this->setError($this->getError());
+			$this->setError($table->getError());
 			return false;
 		}
 
 		// Save the state record to the database
 		if (!$table->store()) {
-			$this->setError($this->getError());
+			$this->setError($table->getError());
 			return false;
 		}
 
-		return true;
+		return $table->state_id;
 	}
 
 
@@ -246,22 +246,22 @@ class VirtueMartModelState extends JModel {
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
-	
+
 	/**
 	 * Tests if a state and country fits together and if they are published
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @return String Attention, this function gives a 0=false back in case of success
 	 */
 	public function testStateCountry($countryId,$stateId)
 	{
 		//Test if id is published
-					
+
 		$db =& JFactory::getDBO();
 		$q = 'SELECT * FROM `#__vm_country` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){
-			//Test if country has states 
+			//Test if country has states
 			$q = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
 			$db->setQuery($q);
 			if($db->loadResult()){
@@ -281,7 +281,7 @@ class VirtueMartModelState extends JModel {
 			return 'country_id';
 		}
 	}
-	
+
 	/**
 	 * Retireve a full list of countries from the database.
 	 *

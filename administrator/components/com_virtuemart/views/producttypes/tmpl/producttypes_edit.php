@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,35 +15,35 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+defined('_JEXEC') or die('Restricted access');
+AdminMenuHelper::startAdminArea();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <table class="adminform">
-	<tr> 
-      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_PUBLISH') ?>:</td>
-      <td width="62%"><?php 
-        if ($this->producttype->published=="1") { 
-          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" checked=\"checked\" />";
-        } 
-        else {
-          echo "<input type=\"checkbox\" name=\"published\" value=\"1\" />";
-        }
-      ?> 
-      </td>
+	<tr>
+		<td width="110px" class="key">
+			<label for="title">
+				<?php echo JText::_('PUBLISHED'); ?>:
+			</label>
+		</td>
+		<td>
+			<fieldset class="radio">
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->producttype->published); ?>
+			</fieldset>
+		</td>
 	</tr>
-	<tr> 
+	<tr>
           <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_NAME') ?>:</td>
-          <td width="62%"> 
+          <td >
             <input type="text" class="inputbox" name="product_type_name" size="60" value="<?php echo $this->producttype->product_type_name; ?>" />
           </td>
 	</tr>
-	<tr> 
+	<tr>
         <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_DESCRIPTION') ?>:</td>
-        <td width="62%" valign="top">
-        	<?php echo $this->editor->display('product_type_description',  $this->producttype->product_type_description, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ; ?>
+        <td valign="top">
+        	<?php echo $this->editor->display('product_type_description',  $this->producttype->product_type_description, '100%;', '200', '75', '20', array('pagebreak', 'readmore') ) ; ?>
   		</td>
 	</tr>
 	<tr>
