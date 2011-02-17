@@ -86,7 +86,7 @@ else { ?>
 			</td>
 			<td valign="top">
 				<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-					<form  method="post" id="addtocartproduct<?php echo $this->product->product_id ?>">
+					<form  method="post" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
 					<div style="text-align: center;">
 						<?php
 							$variantExist=false;
@@ -136,7 +136,7 @@ else { ?>
 								$button_cls = 'notify_button';
 							}
 							?>
-							<input id="<?php echo $this->product->product_id;?>" type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<input type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							<?php if($variantExist){
 								?>
 								<input id="<?php echo $this->product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
@@ -173,6 +173,7 @@ else { ?>
 		</tr>
 		<tr>
 			<td valign="top" align="left">
+				<div class="product-price marginbottom12" id="productPrice<?php echo $this->product->product_id ?>">
 				<?php
 				/** @todo format price */
 				if (VmConfig::get('show_prices') == '1') {
@@ -195,7 +196,8 @@ else { ?>
 					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->prices);
 
 				}
-				?><br />
+				?>
+				<div />
 			</td>
 		</tr>
 		<tr>

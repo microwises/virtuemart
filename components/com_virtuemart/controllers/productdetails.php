@@ -111,6 +111,11 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = $this->getModel('productdetails');
 		
 		$price = $product_model->getPrice($product_id);
+		// Get the document object.
+		$document =& JFactory::getDocument();
+ 
+		// Set the MIME type for JSON output.
+		$document->setMimeEncoding( 'application/json' );
 		
 		echo json_encode ($price);
 		jexit();

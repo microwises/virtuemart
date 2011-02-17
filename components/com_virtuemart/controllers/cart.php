@@ -88,7 +88,8 @@ class VirtueMartControllerCart extends JController {
 		if($cart){
 			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
 			else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');			
+		if (JRequest::getVar('format','') =='raw' ) { echo ' Product added '; return ;}
+			else $mainframe->redirect('index.php?option=com_virtuemart&view=cart');			
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}
@@ -113,11 +114,14 @@ class VirtueMartControllerCart extends JController {
 				jexit();
 			} else {
 				echo (2);
+				jexit();
 			}
 		} else {
 			echo (3);
 		}
 		jexit();
+		$mainframe = JFactory::getApplication();
+		$mainframe->close();
 
 	}
 

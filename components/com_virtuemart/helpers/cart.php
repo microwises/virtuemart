@@ -129,11 +129,11 @@ class VirtueMartCart  {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$post = JRequest::get('post');
-
 		$total_quantity = 0;
 		$total_updated = 0;
 		$total_deleted = 0;
-		$product_ids = $post['product_id'];
+		$product_ids = JRequest::getVar('product_id',array(),'post','array' ) ;
+//		$product_ids = $post['product_id'];
 //		$product_ids = JRequest::get('product_id');
 		
 		if (empty($product_ids)) {
@@ -143,6 +143,7 @@ class VirtueMartCart  {
 		
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($product_ids as $p_key => $product_id) {
+		
 			$product = $this->getProduct($product_id);
 			
 			/* Check if we have a product */

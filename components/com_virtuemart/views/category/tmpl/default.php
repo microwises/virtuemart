@@ -101,7 +101,7 @@ foreach ($this->products as $product) {
 	?>
 
 			<!-- Product Listing Output -->
-			<div class="width<?php echo $browsecellwidth ?> floatleft">
+			<div class="width<?php echo $browsecellwidth ?> floatleft" >
 
 				<div>
 					<div class="width30 floatleft center">
@@ -143,7 +143,7 @@ foreach ($this->products as $product) {
 						<?php } ?>
 
 
-						<div class="product-price marginbottom12">
+						<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
 <?php	if (VmConfig::get('show_prices') == '1') {
 			if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 				echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
@@ -174,7 +174,7 @@ foreach ($this->products as $product) {
 
 
 
-		<!--
+		
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
 		<form  method="post" id="addtocartproduct<?php echo $product->product_id ?>">
 		<div style="text-align: center;">
@@ -182,13 +182,14 @@ foreach ($this->products as $product) {
 				$variantExist=false;
 				/* Show the variants */
 				foreach ($product->variants as $variant_name => $variant) {
-
-					$options = array();
-					foreach ($variant as $name => $price) {
-						if (!empty($price) && $price['basePrice'] > 0) $name .= ' ('.$price['basePrice'].')';
-						$variantExist=true;
-						$options[] = JHTML::_('select.option', $name, $name);
-					}
+								$variantExist=true;
+								$options = array();
+								foreach ($variant as $name => $price) {
+									if (!empty($price)){
+										$name .= ' ('.$price.')';
+									}
+									$options[] = JHTML::_('select.option', $name, $name);
+								}
 					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $product->product_id.$variant_name).'<br />';
 //																				genericlist   ,$arr     , $name               , $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false )
 //					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $variant_name, null,'value','text',NULL,$product->product_id).'<br />';
@@ -220,18 +221,21 @@ foreach ($this->products as $product) {
 
 				/* Add the button */
 				$button_lbl = JText::_('VM_CART_ADD_TO');
-				$button_cls = 'addtocart_button_module';
+				$button_cls = ''; //$button_cls = 'addtocart_button';
 				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
 					$button_lbl = JText::_('VM_CART_NOTIFY');
 					$button_cls = 'notify_button';
 				}
 				?>
-				<input type="submit" id="<?php echo $product->product_id;?>" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+				<input type="submit" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 
-				<?php  if($variantExist){ ?>
+				<?php  if($variantExist){
+					?>
 					<input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 				<?php } ?>
-
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="view" value="cart" />
+				<input type="hidden" name="task" value="add" />
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?>
 				<input type="hidden" name="manufacturer_id" value="<?php echo $product->manufacturer_id ?>" />
@@ -240,7 +244,7 @@ foreach ($this->products as $product) {
 		</form>
 	<?php } ?>
 
-	 -->
+
 
 
 

@@ -1,72 +1,58 @@
 jQuery(document).ready(function() {
 
-	jQuery("form[id^='addtocartproduct']").each(function(){
-		var formId = jQuery(this).attr("id");
 		jQuery("[name='addtocart']").click(function(e) { 
 		e.preventDefault();
-		sendtocart(formId);
+		sendtocart(jQuery(this).parents("form"));
 		});
 		jQuery("[name='setproducttype']").click(function(e) { 
 		e.preventDefault();
-		setproducttype(formId);
+		setproducttype(jQuery(this).parents("form"),jQuery(this).attr('id'));
 		});
-	});
+
 });
 
-function sendtocart(formId){
-	
-	var id = formId;
+function sendtocart(form){
 
-	if (id != NaN) {
-		jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS', jQuery(id).serialize(), 
+	     var datas = jQuery(form).serialize();
+		jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
 	
-		function(newPrices, textStatus) {
-//			alert(newPrices+' and '+textStatus);
-			if(newPrices==1){
-				alert('Product added to cart ');
+		function(datas, textStatus) {
+			alert(datas+' '+textStatus);
+/*			if(datas==1){
+				alert(datas);
 			}else{
 				alert('Product not added to cart, may out of stock ');
+			}*/
+		});
+
+};
+
+function setproducttype(form,id){
+
+	var datas = jQuery(form).serialize();
+
+	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
+	
+		function(datas, textStatus) {
+			var pid= '';
+//	toggle the div Prices
+			for(key in datas) {
+				var value = datas[key];
+				pid= ("#productPrice"+id+" div .Price"+key);
+				togglePriceVisibility(value,pid);
 			}
 		});
-	}
-	return false; // prevent to reload the page
-
-};
-
-function setproducttype(formId){
-
-	var id = formId;
-
-	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate',jQuery(id).serialize(),
-	
-		function(newPrices, textStatus) {
-//			jQuery('#basePrice').html(newPrices.basePrice);
-			togglePriceVisibility(newPrices.basePrice,'#basePrice');
-			togglePriceVisibility(newPrices.variantModification,'#variantModification');
-			togglePriceVisibility(newPrices.basePriceVariant,'#basePriceVariant');
-			togglePriceVisibility(newPrices.basePriceWithTax,'#basePriceWithTax');
-			togglePriceVisibility(newPrices.discountedPriceWithoutTax,'#discountedPriceWithoutTax');
-			togglePriceVisibility(newPrices.salesPriceWithDiscount,'#salesPriceWithDiscount');
-			togglePriceVisibility(newPrices.salesPrice,'#salesPrice');
-			togglePriceVisibility(newPrices.priceWithoutTax,'#priceWithoutTax');
-			togglePriceVisibility(newPrices.discountAmount,'#discountAmount');
-			togglePriceVisibility(newPrices.taxAmount,'#taxAmount');
-			togglePriceVisibility(newPrices.variantModification,'#variantModification'); 
-		});
 	return false; // prevent to reload the page
 };
 
-function togglePriceVisibility(newPrice,divname){
-	div = jQuery(divname+"D");
-	span = jQuery(divname);
+function togglePriceVisibility(newPrice,productDiv){
+	div = jQuery(productDiv);
 	if(newPrice!=0){
 		div.show();
-		span.show();
-		span.html(newPrice);
+		div.html(newPrice);
 	} else {
-		span.html(0);
+		div.html(0);
 		div.hide();
-		span.hide();
 	}
 }
 
