@@ -188,9 +188,9 @@ class CurrencyDisplay {
 			//would be nice to automatically unpublish the product or so
 			$currency =  self::getInstance();
 		}
-		dump($currency,'currency display');
-		dump($currencyId,'id');
-		dump($style,'style');
+//		dump($currency,'currency display');
+//		dump($currencyId,'id');
+//		dump($style,'style');
 		return $currency;
 	}
 

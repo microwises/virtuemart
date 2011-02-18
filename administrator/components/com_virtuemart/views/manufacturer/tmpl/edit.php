@@ -108,7 +108,6 @@ $editor = JFactory::getEditor();
 					<?php
 						$image = VmImage::getImageByMf($this->manufacturer);
 						echo $image -> createImageUploader(false);
-										// dump($this->manufacturer,'my $manufacturer ');
 					?>
 					</table>
 					<?php echo $image->displayImage('','',false,0); ?>

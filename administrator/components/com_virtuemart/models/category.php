@@ -459,7 +459,7 @@ class VirtueMartModelCategory extends JModel {
    			$this->_id = 0;
    			$this->_data = null;
   		}
-		dump($this->_data,'my category');
+//		dump($this->_data,'my category');
   		return $this->_data;
 	}
 
@@ -567,7 +567,7 @@ class VirtueMartModelCategory extends JModel {
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
-		dump($data,'my data in store');
+//		dump($data,'my data in store');
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());

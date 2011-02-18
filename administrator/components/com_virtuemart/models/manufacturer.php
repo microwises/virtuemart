@@ -133,7 +133,7 @@ class VirtueMartModelManufacturer extends JModel {
 			$data = $image->saveImage($data,$fullImage,false);
 			$data = $image->saveImage($data,$thumbImage,true);
 		}
-		dump($data,'my data in store');
+
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());

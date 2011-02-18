@@ -78,7 +78,7 @@ class VirtuemartControllerProducttypes extends JController {
 	/**
 	* Save a product type
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	*/
 	public function save() {
 		$mainframe = Jfactory::getApplication();

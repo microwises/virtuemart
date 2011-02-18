@@ -84,7 +84,7 @@ $pagination = $this->pagination;
 		<?php } ?>
 		<th><?php echo JHTML::_('grid.sort', 'VM_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th width="40px" ><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -114,9 +114,11 @@ $pagination = $this->pagination;
 				<!-- Media -->
 				<?php
 					/* Create URL */
-					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
+				//TODO get media for product working
+//					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
+					$link ='';
 				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
+				<td>without function Beta <?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->

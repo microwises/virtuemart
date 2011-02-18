@@ -87,7 +87,7 @@ class VirtuemartViewState extends JView {
 			$this->assignRef('pagination',	$pagination);
 
 			$states = $model->getStates($countryId);
-			dump($states,'$countryId');
+
 			$this->assignRef('states',	$states);
 		}
 

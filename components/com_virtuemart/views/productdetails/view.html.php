@@ -146,7 +146,7 @@ class VirtueMartViewProductdetails extends JView {
 		if ($product->metakey) {
 			$document->setMetaData('keywords', $product->metakey);
 		}
-// 		dump($product,'$product->metarobot');
+
 		if ($product->metarobot) {
 			$document->setMetaData('robots', $product->metarobot);
 		}
