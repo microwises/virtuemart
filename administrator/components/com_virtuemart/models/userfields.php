@@ -559,7 +559,7 @@ class VirtueMartModelUserfields extends JModel {
 	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{
 
-		require_once_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
 				,'functions' => array()

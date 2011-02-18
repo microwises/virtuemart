@@ -49,7 +49,7 @@
 //				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 //						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
 //					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
-Console::logSpeed('hopFunctionsF::createPriceDiv start');
+// Console::logSpeed('hopFunctionsF::createPriceDiv start');
 
 					if( $this->showBasePrice ){
 						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$featProduct->prices);

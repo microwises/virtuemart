@@ -42,7 +42,6 @@ class VirtueMartControllerVirtuemart extends JController
 
 	function Virtuemart() {
 
-		Console::logSpeed('Virtuemart Controller begin');
 		$view = $this->getView(JRequest::getVar('view', 'virtuemart'), 'html');
 
 		/* Load the backend models */

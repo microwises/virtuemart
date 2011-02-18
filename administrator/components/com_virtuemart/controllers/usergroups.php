@@ -82,6 +82,7 @@ class VirtuemartControllerUsergroups extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit', 'delete' );
+		$this->registerTask( 'apply',  'save' );
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -131,10 +132,10 @@ class VirtuemartControllerUsergroups extends JController {
 		JRequest::setVar('view', 'usergroups');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
-		
+
 		parent::display();
 	}
-	
+
 	/**
 
 	 * Handle the cancel task
@@ -202,7 +203,7 @@ class VirtuemartControllerUsergroups extends JController {
 		} else {
 			$msg = JText::_( 'Usergroup Deleted!');
 		}
-		
+
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);
 
 	}
