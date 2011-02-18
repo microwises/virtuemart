@@ -29,7 +29,7 @@ if ($this->category->haschildren) {
 	$iCol = 1;
 
 	// calculation of the categories per row
-	$categories_per_row = VmConfig::get('categories_per_row',1);
+	$categories_per_row = VmConfig::get('categories_per_row',3);
 	$cellwidth = floor( 100 / $categories_per_row);
 
 

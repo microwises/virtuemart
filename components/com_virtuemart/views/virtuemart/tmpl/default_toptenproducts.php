@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 	<div class="topten-view">
 	<?php
-	$iFeatured = 1;
+	$iTopTen = 1;
 	
 	
 	// calculation of the categories per row
@@ -12,7 +12,7 @@
 	
 	foreach ($this->toptenProducts as $topProduct) {
 		
-		if ($iFeatured == 1) { // this is an indicator wether a row needs to be opened or not ?>
+		if ($iTopTen == 1) { // this is an indicator wether a row needs to be opened or not ?>
 		<div class="topten-row">
 		<?php }
 		?>
@@ -85,16 +85,16 @@
 
 		<?php
 		// Do we need to close the current row now?
-		if ($iFeatured == $topten_products_per_row) { // If the number of products per row has been reached
+		if ($iTopTen == $topten_products_per_row) { // If the number of products per row has been reached
 			echo "<div class='clear'></div></div>";
-			$iFeatured = 1;
+			$iTopTen = 1;
 		}
 		else {
-			$iFeatured++;
+			$iTopTen++;
 	} 
 			} 
 	// Do we need a final closing row tag?
-	if ($iFeatured != 1) {
+	if ($iTopTen != 1) {
 		echo "<div class='clear'></div></div>";
 	}
 	?>

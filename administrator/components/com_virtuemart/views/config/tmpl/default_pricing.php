@@ -77,7 +77,11 @@ defined('_JEXEC') or die('Restricted access');
 	    <fieldset class="adminform">
 		<legend><?php echo JText::_('VM_ADMIN_CFG_PRICES') ?></legend>
 		<table class="admintable">
-
+			<tr>
+				<th></th>
+				<th></th>
+				<th><?php echo JText::_('VM_ADMIN_CFG_PRICES_TEXT'); ?></th>
+			</tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_EXPLAIN'); ?>">
@@ -86,6 +90,9 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('basePrice', $this->config->get('basePrice')); ?>
+			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('basePriceText', $this->config->get('basePriceText',1)); ?>
 			</td>
 		    </tr>
 
@@ -98,6 +105,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			    <?php echo VmHTML::checkbox('variantModification', $this->config->get('variantModification')); ?>
 			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('variantModificationText', $this->config->get('variantModificationText',1)); ?>
+			</td>
 		    </tr>
 
 		    		    <tr>
@@ -108,6 +118,9 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('basePriceVariant', $this->config->get('basePriceVariant')); ?>
+			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('basePriceVariantText', $this->config->get('basePriceVariantText',1)); ?>
 			</td>
 		    </tr>
 
@@ -120,6 +133,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			    <?php echo VmHTML::checkbox('basePriceWithTax', $this->config->get('basePriceWithTax')); ?>
 			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('basePriceWithTaxText', $this->config->get('basePriceWithTaxText',1)); ?>
+			</td>
 		    </tr>
 
 		    <tr>
@@ -130,6 +146,9 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('discountedPriceWithoutTax', $this->config->get('discountedPriceWithoutTax')); ?>
+			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('discountedPriceWithoutTaxText', $this->config->get('discountedPriceWithoutTaxText',1)); ?>
 			</td>
 		    </tr>
 
@@ -142,6 +161,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			    <?php echo VmHTML::checkbox('salesPriceWithDiscount', $this->config->get('salesPriceWithDiscount')); ?>
 			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('salesPriceWithDiscountText', $this->config->get('salesPriceWithDiscountText',1)); ?>
+			</td>
 		    </tr>
 
 		    <tr>
@@ -152,6 +174,9 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('salesPrice', $this->config->get('salesPrice')); ?>
+			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('salesPriceText', $this->config->get('salesPriceText',1)); ?>
 			</td>
 		    </tr>
 
@@ -164,6 +189,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			    <?php echo VmHTML::checkbox('priceWithoutTax', $this->config->get('priceWithoutTax')); ?>
 			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('priceWithoutTaxText', $this->config->get('priceWithoutTaxText',1)); ?>
+			</td>
 		    </tr>
 
 		    <tr>
@@ -175,6 +203,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			    <?php echo VmHTML::checkbox('discountAmount', $this->config->get('discountAmount')); ?>
 			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('discountAmountText', $this->config->get('discountAmountText',1)); ?>
+			</td>
 		    </tr>
 
 		    <tr>
@@ -185,6 +216,9 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('taxAmount', $this->config->get('taxAmount')); ?>
+			</td>
+			<td align="center">
+			    <?php echo VmHTML::checkbox('taxAmountText', $this->config->get('taxAmountText',1)); ?>
 			</td>
 		    </tr>
 

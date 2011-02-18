@@ -1,11 +1,11 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 	<div class="featured-view">
 	<?php
-	$iFeatured = 1;
+	$iTopTen = 1;
 
 
 	// calculation of the categories per row
-	$featured_products_per_row = 3;	//TODO use VmConfig
+	$featured_products_per_row = 3;	
 	$featuredcellwidth = floor( 100 / $featured_products_per_row);
 
 	echo "<h4>".JText::_('VM_FEATURED_PRODUCT')."</h4>";
@@ -13,7 +13,7 @@
 
 	foreach ($this->featuredProducts as $featProduct) {
 
-		if ($iFeatured == 1) { // this is an indicator wether a row needs to be opened or not ?>
+		if ($iTopTen == 1) { // this is an indicator wether a row needs to be opened or not ?>
 		<div class="featured-row">
 		<?php }
 		?>
@@ -49,7 +49,7 @@
 //				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 //						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
 //					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
-// Console::logSpeed('hopFunctionsF::createPriceDiv start');
+
 
 					if( $this->showBasePrice ){
 						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$featProduct->prices);
@@ -63,7 +63,6 @@
 					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$featProduct->prices);
 					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$featProduct->prices);
 					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$featProduct->prices);
-
 } ?>
 	</div>
 						<div>
@@ -87,16 +86,16 @@
 
 		<?php
 		// Do we need to close the current row now?
-		if ($iFeatured == $featured_products_per_row) { // If the number of products per row has been reached
+		if ($iTopTen == $featured_products_per_row) { // If the number of products per row has been reached
 			echo "<div class='clear'></div></div>";
-			$iFeatured = 1;
+			$iTopTen = 1;
 		}
 		else {
-			$iFeatured++;
+			$iTopTen++;
 	}
 			}
 	// Do we need a final closing row tag?
-	if ($iFeatured != 1) {
+	if ($iTopTen != 1) {
 		echo "<div class='clear'></div></div>";
 	}
 	?>
