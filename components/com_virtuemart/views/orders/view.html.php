@@ -39,7 +39,7 @@ class VirtuemartViewOrders extends JView {
 
 		$_currentUser =& JFactory::getUser();
 		$orderModel = $this->getModel('orders');
-		
+
 		if ($layoutName == 'details') {
 			$orderDetails = $orderModel->getOrder();
 			$cuid = $_currentUser->get('id');
@@ -67,7 +67,7 @@ class VirtuemartViewOrders extends JView {
 		} else { // 'list' -. default
 			if ($_currentUser->get('id') == 0) {
 				// getOrdersList() returns all orders when no userID is set (admin function),
-				// so explicetly define an empty array when not logged in. 
+				// so explicetly define an empty array when not logged in.
 				$orderList = array();
 			} else {
 				$orderList = $orderModel->getOrdersList($_currentUser->get('id'), true);
@@ -76,7 +76,7 @@ class VirtuemartViewOrders extends JView {
 		}
 
 		$this->loadHelper('currencydisplay');
-		$currency = new CurrencyDisplay();
+		$currency = CurrencyDisplay::getCurrencyDisplay();;
 		$this->assignRef('currency', $currency);
 
 		// Create a simple indexed array woth ordertatuses
@@ -86,7 +86,7 @@ class VirtuemartViewOrders extends JView {
 			$orderstatuses[$_ordstat->value] = $_ordstat->text;
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
-		
+
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}

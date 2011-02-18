@@ -96,7 +96,7 @@ class VirtuemartControllerProducttypes extends JController {
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=producttypes&task=edit&cid[]='.$id.';;
+			$redirection = 'index.php?option=com_virtuemart&view=producttypes&task=edit&cid[]='.$id;
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=producttypes';
 		}

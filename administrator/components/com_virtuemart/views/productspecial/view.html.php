@@ -44,7 +44,7 @@ class VirtuemartViewProductspecial extends JView {
 		$productlist = $this->get('ProductSpecial');
 
 		/* Apply currency */
-		$currencydisplay = new CurrencyDisplay();
+		$currencydisplay = CurrencyDisplay::getCurrencyDisplay();;
 		foreach ($productlist as $product_id => $product) {
 			$product->product_price_display = $currencydisplay->getValue($product->product_price);
 		}

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* View class for the product 
+* View class for the product
 *
 * @package	VirtueMart
 * @subpackage
@@ -69,9 +69,9 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
-//			JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency); 			
+//			JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency);
 $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
-							
+
 				/* Load the product price */
 				require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
@@ -79,21 +79,21 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				$dbTax = 'Rules Effecting: <br />';
 				foreach($calculator->rules['dBTax'] as $rule){
-					
+
 					$dbTax .= $rule['calc_name']. '<br />';
-				}	
+				}
 				$this->assignRef('dbTaxRules', $dbTax);
 
 				$tax = 'Tax Effecting: <br />';
 				foreach($calculator->rules['tax'] as $rule){
 					$tax .= $rule['calc_name']. '<br />';
-				}	
+				}
 				$this->assignRef('taxRules', $tax);
 
 				$daTax = 'Rules Effecting: <br />';
 				foreach($calculator->rules['dATax'] as $rule){
 					$daTax .= $rule['calc_name']. '<br />';
-				}	
+				}
 				$this->assignRef('daTaxRules', $daTax);
 
 				$this->assignRef('override', $calculator->override);
@@ -106,24 +106,24 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
-				
+
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
 				} else {
 					$imagePath = 'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'availability/';
 				}
 				$this->assignRef('imagePath', $imagePath);
-				
+
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
 				//TODO add here an if so that only the mainvendor or admin gets the list, in other just the name of the given vendor
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
-				
+
 //				$vendor_model->setId($product->vendor_id);
 //				$vendor = $vendor_model->getVendor();
 //				$this->assignRef('vendorCurrency', $vendorCurrency);
-				
+
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
@@ -144,7 +144,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = time();
 				}
-				
+
 				/* Get the minimum and maximum order levels */
 				$min_order = 0;
 				$max_order = 0;
@@ -158,13 +158,13 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$related_products = $product_model->getRelatedProducts($product->product_id);
 				if (!$related_products) $related_products = array();
 				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
-				
+
 				/* Load waiting list */
 				if ($product->product_id) {
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-				
+
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
@@ -186,7 +186,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				$productImage = VmImage::getImageByProduct($product);
 				$this->assignRef('productImage', $productImage);
-				
+
 				/* Assign the values */
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
@@ -276,7 +276,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Check for Media Items and Reviews, set the price*/
 				$media = new VirtueMartModelMedia();
 				$productreviews = new VirtueMartModelRatings();
-				$currencydisplay = new CurrencyDisplay();
+				$currencydisplay = CurrencyDisplay::getCurrencyDisplay();
+
 				foreach ($productlist as $product_id => $product) {
 					$product->mediaitems = $media->countFilesForProduct($product_id);
 					$product->reviews = $productreviews->countReviewsForProduct($product_id);
@@ -327,13 +328,13 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 	/**
 	 * Renders the list for the tax rules
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function renderTaxList($selected){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
-		
+
 		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
 
@@ -348,13 +349,13 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 	/**
 	 * Renders the list for the discount rules
-	 * 
+	 *
 	 * @author Max Milbers
-	 */	
+	 */
 	function renderDiscountList($selected,$before){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
-		
+
 		if($before){
 			$discounts = VirtueMartModelCalc::getDBDiscounts();
 		} else {
@@ -369,8 +370,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		}
 		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;
-		
-	}	
+
+	}
 }
 
 //pure php no closing tag

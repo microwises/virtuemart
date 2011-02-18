@@ -463,7 +463,7 @@ class VirtuemartViewUser extends JView {
 
 		if(empty($currency)){
 			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-			$currency = new CurrencyDisplay();
+			$currency = CurrencyDisplay::getCurrencyDisplay();;
 			$this->assignRef('currency', $currency);
 		}
 

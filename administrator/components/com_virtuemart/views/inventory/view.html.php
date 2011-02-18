@@ -54,7 +54,8 @@ class VirtuemartViewInventory extends JView {
 		$inventorylist = $this->get('Inventory');
 
 		/* Apply currency */
-		$currencydisplay = new CurrencyDisplay();
+		$currencydisplay = CurrencyDisplay::getCurrencyDisplay();;
+
 		foreach ($inventorylist as $product_id => $product) {
 			$product->product_price_display = $currencydisplay->getValue($product->product_price);
 		}
