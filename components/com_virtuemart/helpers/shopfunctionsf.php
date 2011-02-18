@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 class shopFunctionsF {
-	
+
 	/**
 	 * @author Max Milbers
 	 */
@@ -46,7 +46,7 @@ class shopFunctionsF {
 	 * function to create a div to show the prices, is necessary for JS
 	 *
 	 * @author Max Milbers
-	 *
+	 * @author Patrick Kohl
 	 * @param string name of the price
 	 * @param String description key
 	 * @param array the prices of the product
@@ -54,18 +54,18 @@ class shopFunctionsF {
 	 */
 	public function createPriceDiv($name,$description,$product_price){
 
+		Console::logSpeed('hopFunctionsF::createPriceDiv called');
 		//This could be easily extended by product specific settings
 		if(VmConfig::get($name) =='1'){
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
-	 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 	 			$calculator = calculationHelper::getInstance();
 	 			$product_price[$name] = $calculator->priceDisplay($product_price[$name]);
 	 		} else {
 	 			$vis = "none";
 	 		}
 	 	$descr = '';
-	 	if(VmConfig::get($name.'Text')) $descr = JText::_($description);
+	 	if(VmConfig::get($name.'Text',true)) $descr = JText::_($description);
 		return '<div style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 		}
 	}
@@ -176,7 +176,7 @@ class shopFunctionsF {
 
 	/**
 	* A function to create a XHTML compliant and JS-disabled-safe pop-up link
-	* 
+	*
 	* @author RolandD
 	* @param string $link The HREF attribute
 	* @param string $text The link text
@@ -297,7 +297,7 @@ class shopFunctionsF {
 //		}
 
 	}
-	
+
 	/**
 	 * This function sets the right template on the view
 	 * @author Max Milbers
@@ -371,7 +371,7 @@ class shopFunctionsF {
 
 	/**
 	 * Final setting of template
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function setTemplate( $template ){
@@ -381,10 +381,10 @@ class shopFunctionsF {
 				$mainframe = JFactory::getApplication('site');
 				$mainframe->set('setTemplate', $template);
 			} else{
-				JError::raiseWarning('The choosen template couldnt found on the filesystem: '.$template);	
+				JError::raiseWarning(412,'The choosen template couldnt found on the filesystem: '.$template);
 			}
 		} else{
-				//JError::raiseWarning('No template set : '.$template);	
+				//JError::raiseWarning('No template set : '.$template);
 		}
 	}
 

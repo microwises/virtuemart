@@ -37,6 +37,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 // ============================================================
 
 class CurrencyDisplay {
+
+	static $_instance;
+
     var $id      		= "euro";		// string ID related with the currency (ex : language)
     var $symbol    		= "&euro;";	// Printable symbol
     var $nbDecimal 		= 2;	// Number of decimals past colon (or other)
@@ -65,7 +68,7 @@ class CurrencyDisplay {
     // 14 = '(Symb 00)'
     // 15 = '(00 Symb)'
     // ================
-    function __construct (
+	private function __construct (
 	    $id			="euro",  //id is a string?
 	    $symbol		="&euro;",
 	    $nbDecimal	= 2,
@@ -83,19 +86,37 @@ class CurrencyDisplay {
 
     }
 
+	function getInstance(
+	    $id			="euro",  //id is a string?
+	    $symbol		="&euro;",
+	    $nbDecimal	= 2,
+	    $decimal   	= ",",
+	    $thousands 	= " ",
+	    $positivePos= 1,
+	    $negativePos= 8) {
+		if(!is_object(self::$_instance)){
+			self::$_instance = new CurrencyDisplay($id, $symbol, $nbDecimal, $decimal, $thousands, $positivePos, $negativePos);
+		}
+//		else {
+//			$jnow			=& JFactory::getDate();
+//			$this -> _now 	= $jnow->toMySQL();
+//		}
+		return self::$_instance;
+	}
+
 	/**
-	 * 
+	 *
 	 * Gives back the formate of the currency, gets $style if none is set, with the currency Id, when nothing is found it tries the vendorId.
 	 * When no param is set, you get the format of the mainvendor
-	 * 
+	 *
 	 * @author unknown
 	 * @author Max Milbers
 	 * @param int 		$currencyId Id of the currency
 	 * @param int 		$vendorId Id of the vendor
 	 * @param string 	$style The vendor_currency_display_code
-	*   FORMAT: 
-    1: id, 
-    2: CurrencySymbol, 
+	*   FORMAT:
+    1: id,
+    2: CurrencySymbol,
     3: NumberOfDecimalsAfterDecimalSymbol,
     4: DecimalSymbol,
     5: Thousands separator
@@ -127,7 +148,7 @@ class CurrencyDisplay {
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
 		if(empty($style)){
-			
+
 			$db = JFactory::getDBO();
 			if(!empty($currencyId)){
 				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
@@ -141,10 +162,10 @@ class CurrencyDisplay {
 				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
 				$db->setQuery($q);
 				$currencyId = $db->loadResult();
-		
+
 				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
 				$db->setQuery($q);
-				$style = $db->loadResult();	
+				$style = $db->loadResult();
 			}
 		}
 		if(!empty($style)){
@@ -156,16 +177,16 @@ class CurrencyDisplay {
 			$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
 			$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
 			$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
-			$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';	
-			$currency = new CurrencyDisplay($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+			$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
+			$currency = self::getInstance($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
 				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
 				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
 				, $_currencyDisplayStyle['negative']
-			);				
+			);
 		} else {
 			JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
 			//would be nice to automatically unpublish the product or so
-			$currency = new CurrencyDisplay();
+			$currency =  self::getInstance();
 		}
 		dump($currency,'currency display');
 		dump($currencyId,'id');
@@ -175,7 +196,7 @@ class CurrencyDisplay {
 
     /**
      * Parse the given currency display string into the currency diplsy values.
-     * 
+     *
      * This function takes the currency style string as saved in the vendor
      * record and parses it into its appropriate values.  An example style
      * string would be 1|&euro;|2|,|.|0|0
@@ -192,7 +213,7 @@ class CurrencyDisplay {
 	    $this->decimal   = $array[3];
 	    $this->thousands = $array[4];
 	    $this->positivePos = $array[5];
-	    $this->negativePos = $array[6];	    
+	    $this->negativePos = $array[6];
 	}
     }
 
@@ -273,7 +294,7 @@ class CurrencyDisplay {
 	// case, an unwanted ',' is displayed.
 	// That's why we have to do the work ourserlve.
 	// Note : when no decimal il given (i.e. 3 parameters), everything works fine
-	
+
 	if(is_string($nb)) $nb = floatval($nb);
 	if( $decimals === '') {
 	    $decimals = $this->nbDecimal;

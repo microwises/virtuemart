@@ -4,7 +4,7 @@
  * Default data model for Product details
  *
  * @package     VirtueMart
-* @subpackage 
+* @subpackage
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -36,9 +36,9 @@ class VirtueMartModelProductdetails extends JModel {
 	public function getProduct($product_id=false,$withCalc =true) {
 		$this->_db = JFactory::getDBO();
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
-		
+
 		if ($product_id > 0) {
-			$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name 
+			$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name
 				FROM #__vm_product p
 				LEFT JOIN #__vm_product_category_xref x
 				ON x.product_id = p.product_id
@@ -53,23 +53,22 @@ class VirtueMartModelProductdetails extends JModel {
 
 			/* Load the categories the product is in */
 			$product->categories = $this->getCategories();
-			
+
 			if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
-			
+
 			/* Load the attributes */
 			$product->attributes = $this->getAttributes($product);
-			
+
 			/* Load the variants */
 			$product->variants = $this->getVariants($product);
-			
+
 			/* Load the price */
 			$prices = "";
 			if (VmConfig::get('show_prices') == '1' && $withCalc) {
-				
+
 				/* Loads the product price details */
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				
+
 				/* Calculate the modificator */
 				$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
 //				$product_type_modificator = $calculator->parseModifier($product->variants);
@@ -77,12 +76,12 @@ class VirtueMartModelProductdetails extends JModel {
 //				$product->product_id.$variant_name
 				$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 			}
-			
+
 			$product->prices = $prices;
-			
+
 			/* Add the product link  */
 			$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id.'&category_id='.$product->category_id);
-			
+
 			/* Load the neighbours */
 			$product->neighbours = $this->getNeighborProducts($product);
 
@@ -95,13 +94,13 @@ class VirtueMartModelProductdetails extends JModel {
 				$product->packaging = '';
 				$product->box = '';
 			}
-			
+
 			/* Load the extra files */
 			$product->files = $this->getFileList($product_id);
-			
+
 			/* Load the related products */
 			$product->related = $this->getRelatedProducts($product_id);
-			
+
 			/* Load the vendor details */
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 			$product->vendor_name = VirtueMartModelVendor::getVendorName($product->vendor_id);
@@ -118,10 +117,10 @@ class VirtueMartModelProductdetails extends JModel {
 
 			/* Check the order levels */
 			if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
-			
+
 			/* Check the stock level */
 			if (empty($product->product_in_stock)) $product->product_in_stock = 0;
-			
+
 			/* Handle some child product data */
 			if ($product->product_parent_id > 0) {
 				/* Get the attributes */
@@ -139,13 +138,13 @@ class VirtueMartModelProductdetails extends JModel {
 			 return false;
 		}
 	}
-	
+
 	public function getPrice($product_id=false){
-		
+
 		$this->_db = JFactory::getDBO();
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 
-		$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name 
+		$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name
 			FROM #__vm_product p
 			LEFT JOIN #__vm_product_category_xref x
 			ON x.product_id = p.product_id
@@ -156,40 +155,41 @@ class VirtueMartModelProductdetails extends JModel {
 			WHERE p.product_id = ".$product_id;
 		$this->_db->setQuery($q);
 		$product = $this->_db->loadObject();
-		
+
 		/* Load the categories the product is in */
 		$product->categories = $this->getCategories();
-		
+
 		if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
-		
+
 		/* Load the attributes */
 		$product->attributes = $this->getAttributes($product);
-		
+
 		/* Load the variants */
 		$product->variants = $this->getVariants($product);
-			
+
 		/* Loads the product price details */
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
-		
+
 		$quantityArray = JRequest::getVar('quantity',1,'post');
-		
+
 		/* Calculate the modificator */
 		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
 //		$product_type_modificator = $calculator->parseModifier($product->variants);
-		
+
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
-// change display //
-		foreach ($prices as &$value  ){
-			$value = $calculator->priceDisplay($value);
-		}
+
+		//Wrong place, this must not be done in a model, display is guy, therefore it must be done in the view!
+		// change display //
+//		foreach ($prices as &$value  ){
+//			$value = $calculator->priceDisplay($value);
+//		}
 
 		return $prices;
-		
+
 	}
-	
+
 	/**
 	* Load the categories the product is in
 	*
@@ -200,17 +200,17 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$product_id = JRequest::getInt('product_id', 0);
 		$categories = array();
-		
+
 		if ($product_id > 0) {
 			$q = "SELECT category_id FROM #__vm_product_category_xref WHERE product_id = ".$product_id;
 			$this->_db->setQuery($q);
 			$categories = $this->_db->loadResultArray();
 		}
-		
+
 		return $categories;
 	}
-	
-	
+
+
 	/**
 	 * This function retrieves the "neighbor" products of a product specified by $product_id
 	 * Neighbors are the previous and next product in the current list
@@ -222,7 +222,7 @@ class VirtueMartModelProductdetails extends JModel {
 	private function getNeighborProducts($product) {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
-		
+
 		$q = "SELECT x.product_id, product_list, p.product_name
 			FROM #__vm_product_category_xref x
 			LEFT JOIN #__vm_product p
@@ -231,25 +231,25 @@ class VirtueMartModelProductdetails extends JModel {
 			ORDER BY product_list, x.product_id";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('product_id');
-		
+
 		/* Move the internal pointer to the current product */
 		foreach ($products as $product_id => $xref) {
 			if ($product_id == $product->product_id) break;
 		}
-		
+
 		/* Get the neighbours */
 		$neighbours['next'] = current($products);
 		if (!$neighbours['next']) end($products);
 		else prev($products);
 		$neighbours['previous'] = prev($products);
-		
+
 		return $neighbours;
 	}
-	
+
 	/**
 	 * List all published and non-payable files ( not images! )
 	 * @author RolandD
-	 * 
+	 *
 	 * @param int $product_id The ID of the product
 	 * @return array containing all the files and their data
 	 */
@@ -257,19 +257,19 @@ class VirtueMartModelProductdetails extends JModel {
 		jimport('joomla.filesystem.file');
 		$this->_db = JFactory::getDBO();
 		$html = "";
-		$q = "SELECT attribute_value 
-			FROM #__vm_product_attribute 
-			WHERE `product_id` = ".$product_id." 
+		$q = "SELECT attribute_value
+			FROM #__vm_product_attribute
+			WHERE `product_id` = ".$product_id."
 			AND attribute_name='download'";
 		$this->_db->query($q);
 		$exclude_filename = $this->_db->Quote($this->_db->loadResult());
-		
+
 		$sql = "SELECT DISTINCT file_id, file_mimetype, file_title, file_name
-				FROM `#__vm_product_files` 
+				FROM `#__vm_product_files`
 				WHERE ";
 				if ($exclude_filename) $sql .= " file_title != ".$exclude_filename." AND
-				file_product_id = '".$product_id."' 
-				AND file_published = '1' 
+				file_product_id = '".$product_id."'
+				AND file_published = '1'
 				AND file_is_image = '0'";
 		$this->_db->setQuery($sql);
 		$files = $this->_db->loadObjectList();
@@ -281,7 +281,7 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $files;
 	}
-	
+
 	/**
 	* Load any related products
 	*
@@ -292,18 +292,18 @@ class VirtueMartModelProductdetails extends JModel {
 	*/
 	private function getRelatedProducts($product_id) {
 		$this->_db = JFactory::getDBO();
-		$q = "SELECT p.product_id, product_sku, product_name, product_thumb_image, related_products 
-			FROM #__vm_product p, #__vm_product_relations r 
+		$q = "SELECT p.product_id, product_sku, product_name, product_thumb_image, related_products
+			FROM #__vm_product p, #__vm_product_relations r
 			WHERE r.product_id = ".$product_id."
 			AND p.published = 1
 			AND FIND_IN_SET(p.product_id, REPLACE(r.related_products, '|', ',' )) LIMIT 0, 4";
 		$this->_db->setQuery($q);
 		$related_products = $this->_db->loadObjectList();
-		
+
 		/* Get the price also */
 		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+//			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
@@ -311,10 +311,10 @@ class VirtueMartModelProductdetails extends JModel {
 				$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id);
 			}
 		}
-		
+
 		return $related_products;
 	}
-	
+
 	/**
 	* Proxy function to check for children
 	*
@@ -328,7 +328,7 @@ class VirtueMartModelProductdetails extends JModel {
 			$model = JModel::getInstance('Product', 'VirtueMartModel');
 			return $model->checkChildProducts($product_id);
 	}
-	
+
 	/**
 	* Load the product reviews for the given product
 	*
@@ -341,19 +341,19 @@ class VirtueMartModelProductdetails extends JModel {
 	public function getProductReviews($product_id) {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
-		
-		$q = 'SELECT comment, `time`, userid, user_rating, username, name 
+
+		$q = 'SELECT comment, `time`, userid, user_rating, username, name
 			FROM #__vm_product_reviews r
 			LEFT JOIN jos_users u
 			ON u.id = r.userid
-			WHERE product_id = "'.$product_id.'" 
-			AND published = "1" 
+			WHERE product_id = "'.$product_id.'"
+			AND published = "1"
 			ORDER BY `time` DESC ';
 		if (!$showall) $q .= ' LIMIT 0, 5';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	* Get the product details for a product
 	*
@@ -368,7 +368,7 @@ class VirtueMartModelProductdetails extends JModel {
 			$product_type = $ps_product_type->list_product_type( $product_id ) ;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the product is in a Product Type
 	 *
@@ -381,10 +381,10 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$q = "SELECT COUNT(product_id) AS types FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
 		$this->_db->setQuery($q);
-		
+
 		return ($this->_db->loadResult() > 0);
 	}
-	
+
 	/**
 	 * Returns html code for show parameters
 	 * @author RolandD
@@ -395,7 +395,7 @@ class VirtueMartModelProductdetails extends JModel {
 	public function getProductType($product_id) {
 		$this->_db = JFactory::getDBO();
 		$product_types = array();
-		
+
 		/* Get the product types the product is linked to */
 		$q = "SELECT t.*
 			FROM #__vm_product_product_type_xref x
@@ -405,7 +405,7 @@ class VirtueMartModelProductdetails extends JModel {
 			GROUP BY product_type_id";
 		$this->_db->setQuery($q);
 		$product_types = $this->_db->loadObjectList();
-		
+
 		foreach ($product_types as $pkey => $product_type) {
 			/* Load the details */
 			$q = "SELECT * FROM #__vm_product_type_".$product_type->product_type_id." ORDER BY parameter_list_order";
@@ -414,7 +414,7 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $product_types;
 	}
-	
+
 	/**
 	* Load the variants for a product
 	*
@@ -424,14 +424,14 @@ class VirtueMartModelProductdetails extends JModel {
 	* @author RolandD, Max Milbers
 	* @param object $product the product to get attributes for
 	* @param string $extra_ids any extra id's to add to the attributes
-	* @return 
+	* @return
 	*/
 	public function getVariants($product) {
 
 		$this->_db = &JFactory::getDBO();
 		/* Get the variants */
 		$variants_raw = explode(';', $product->attribute);
-		
+
 		/* Get the variant details */
 		foreach ($variants_raw as $vkey => $variant) {
 			$variant_details = explode(',', $variant);
@@ -464,14 +464,14 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $variants;
 	}
-	
+
 	/**
 	* Get the products in a given category
 	*
 	* @author RolandD
 	* @access public
 	* @param int $category_id the category ID where to get the products for
-	* @return array containing product objects 
+	* @return array containing product objects
 	*/
 	public function getProductsInCategory($category_id) {
 		// a starting point for search and filters
@@ -481,14 +481,14 @@ class VirtueMartModelProductdetails extends JModel {
 			$group = JRequest::getVar('group', ''); // group by
 			$orderInv = JRequest::getVar('orderInv', ''); // orde DESC ASC;
 			if ($filtercategory) $cat_id = (empty($category_id)) ? JRequest::getVar('category_id', '') : $category_id ;
-			
+
 			/* Get a filtered list of product ID's */
-			$q = "SELECT DISTINCT #__vm_product.product_id FROM #__vm_product 
-				LEFT JOIN #__vm_product_category_xref ON #__vm_product.product_id = #__vm_product_category_xref.product_id  
-				WHERE (`product_name` LIKE '%".$keyword."%' 
-				or `product_sku` LIKE '%".$keyword."%'  
-				or `product_s_desc` LIKE '%".$keyword."%'  
-				or `product_desc` LIKE '%".$keyword."%') 
+			$q = "SELECT DISTINCT #__vm_product.product_id FROM #__vm_product
+				LEFT JOIN #__vm_product_category_xref ON #__vm_product.product_id = #__vm_product_category_xref.product_id
+				WHERE (`product_name` LIKE '%".$keyword."%'
+				or `product_sku` LIKE '%".$keyword."%'
+				or `product_s_desc` LIKE '%".$keyword."%'
+				or `product_desc` LIKE '%".$keyword."%')
 				AND `#__vm_product`.`published`='1' ";
 			if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1')
 				$q .= ' AND `product_in_stock` > 0 ';
@@ -497,7 +497,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 				/* The order By to set :( TO DO for price , find a trick because of the new rules )
 				     if you want more add it here */
-			switch ($group) { 
+			switch ($group) {
 				case 'featured':
 					$q = 'AND `#__vm_product`.`product_special`="Y" ';
 					break;
@@ -524,16 +524,16 @@ class VirtueMartModelProductdetails extends JModel {
 				$q .= ' DESC';
 
 		} else {
-		
+
 		/* Get a list of product ID's */
-		$q = "SELECT product_id 
+		$q = "SELECT product_id
 			FROM #__vm_product_category_xref
 			WHERE category_id = ".$category_id;
 		}
 		$this->_db = JFactory::getDBO();
 		$this->_db->setQuery($q);
 		$product_ids = $this->_db->loadResultArray();
-		
+
 		/* Collect the product data */
 		$products = array();
 		foreach ($product_ids as $product_id) {
@@ -541,19 +541,19 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $products;
 	}
-	
+
 	/**
 	* Get the stock level for a given product
 	*
 	* @author RolandD
 	* @access public
 	* @param object $product the product to get stocklevel for
-	* @return array containing product objects 
+	* @return array containing product objects
 	*/
 	public function getStockIndicator($product) {
     	$this->_db = JFactory::getDBO();
-	    
-    	/* Assign class to indicator */ 
+
+    	/* Assign class to indicator */
     	$stock_level = $product->product_in_stock;
     	$reorder_level = $product->low_stock_notification;
 		$level = 'normalstock';
@@ -565,13 +565,13 @@ class VirtueMartModelProductdetails extends JModel {
 		if ($stock_level == 0) {
 			$level = 'nostock';
 			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_OUT_TIP');
-		}    	
+		}
     	$stock = new Stdclass();
     	$stock->stock_tip = $stock_tip;
     	$stock->stock_level = $level;
     	return $stock;
     }
-    
+
     /**
 	* Get the votes for a given product
 	*
@@ -585,8 +585,8 @@ class VirtueMartModelProductdetails extends JModel {
 		$result = array();
 		if (VmConfig::get('pshop_allow_reviews', 0) == '1') {
 			$this->_db = JFactory::getDBO();
-			
-			$q = "SELECT `votes`, `allvotes`, `rating` 
+
+			$q = "SELECT `votes`, `allvotes`, `rating`
 				FROM `#__vm_product_votes`
 				WHERE `product_id` = ".$product_id;
 			$this->_db->setQuery($q);
@@ -594,7 +594,7 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Function to create a DB object that holds all information
 	 * from the attribute tables about item $item_id AND/OR product $product_id
@@ -617,14 +617,14 @@ class VirtueMartModelProductdetails extends JModel {
 			}
 			$q .= "AND #__vm_product_attribute.attribute_name = #__vm_product_attribute_sku.attribute_name ";
 			$q .= "ORDER BY attribute_list, #__vm_product_attribute.attribute_name";
-		} 
+		}
 		elseif ($product->product_id) {
 			$q  = "SELECT * FROM #__vm_product_attribute ";
 			$q .= "WHERE product_id = ".$product->product_id." ";
 			if ($attribute_name) {
 				$q .= "AND attribute_name = ".$this->_db->Quote($attribute_name)." ";
 			}
-		} 
+		}
 		elseif ($product->product_parent_id) {
 			$q  = "SELECT * FROM #__vm_product_attribute_sku ";
 			$q .= "WHERE product_id = ".$product->product_parent_id." ";
@@ -632,19 +632,19 @@ class VirtueMartModelProductdetails extends JModel {
 				$q .= "AND #__vm_product_attribute.attribute_name = ".$this->_db->Quote($attribute_name)." ";
 			}
 			$q .= "ORDER BY attribute_list,attribute_name";
-		} 
+		}
 
-		$this->_db->setQuery($q); 
+		$this->_db->setQuery($q);
 		$attributes = $this->_db->loadObjectList();
 		return $attributes;
 	}
-	
+
 	/**
-	* Load the custom variants 
-	* 
-	* @author RolandD 
+	* Load the custom variants
+	*
+	* @author RolandD
 	* @access private
-	* @param string $custom_attr_list containing the custom variants 		
+	* @param string $custom_attr_list containing the custom variants
 	* @return array containing the custom variants
 	*/
 	private function getCustomVariants($custom_attr_list) {
@@ -655,6 +655,6 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $fields;
 	}
-	
+
 }
 // pure php no closing tag

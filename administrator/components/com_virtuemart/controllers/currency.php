@@ -101,16 +101,16 @@ class VirtuemartControllerCurrency extends JController {
 	/**
 	 * Handle the save task
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */
 	function save()
 	{
-		$model =& $this->getModel('currency');
+		$model = $this->getModel('currency');
 
 		if ($id = $model->store()) {
-			$msg = JText::_('Currency saved!');
+			$msg = JText::_('VM_CURRENCY_STORED');
 		} else {
-			$msg = JText::_($model->getError());
+			$msg = $model->getError();
 		}
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$id;

@@ -4,7 +4,7 @@
 * View for the shopping cart
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author Max Milbers
 * @author Oscar van Eijk
 * @author RolandD
@@ -17,7 +17,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -31,13 +31,13 @@ jimport( 'joomla.application.component.view');
 * @author Oscar van Eijk
 */
 class VirtueMartViewCart extends JView {
-	
+
 	private $_cart;
 	private $_user;
 	private $_userDetails;
 	public $lists;
-	
-	public function display($tpl = null) {	  	    
+
+	public function display($tpl = null) {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
@@ -46,91 +46,91 @@ class VirtueMartViewCart extends JView {
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
 
 		if($layoutName=='editcoupon'){
-		
+
 			$this->prepareCartData();
 			$this->lSelectCoupon();
-			
+
 			$pathway->addItem(JText::_('VM_CART_SELECTCOUPON'));
 			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
-				
+
 		} else if($layoutName=='selectshipper'){
-			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
-			
+
 			$pathway->addItem(JText::_('VM_CART_SELECTSHIPPER'));
 			$document->setTitle(JText::_('VM_CART_SELECTSHIPPER'));
-			
+
 		} else if($layoutName=='selectpayment'){
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
-			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
 			$this->lSelectPayment();
-			
+
 			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));
 			$document->setTitle(JText::_('VM_CART_SELECTPAYMENT'));
-		
+
 		} else if($layoutName=='orderdone'){
-			
+
 			$this->lOrderDone();
-			
+
 			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
 			$document->setTitle(JText::_('VM_CART_THANKYOU'));
-		
+
 		} else if($layoutName=='default' ){
-			
+
 			$this->prepareCartData();
-			
+
 			$this->prepareUserData();
-			
+
 			$this->prepareAddressRadioSelection();
-			
+
 			$this->prepareAddressDataInCart();
-			
+
 			$this->prepareVendor();
-			
+
 			$pathway->addItem(JText::_('VM_CART_OVERVIEW'));
 			$document->setTitle(JText::_('VM_CART_OVERVIEW'));
-			
+
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
 
 			$this->prepareCartData();
-			
+
 			$this->prepareUserData();
-			
+
 			$this->prepareMailData();
-			
+
 			//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
 //			$pathway->addItem(JText::_('VM_CART_TITLE'));
 //			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
-			
-		}		
-		
+
+		}
+
 		/* Get a continue link */
 //		$category_id = JRequest::getInt('category_id');
 //		$product_id = JRequest::getInt('product_id');
 //		$manufacturer_id = JRequest::getInt('manufacturer_id');
-//		
+//
 //		if (!empty($category_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
 //		elseif (empty($category_id) && !empty($product_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->get('categoryid'));
 //		elseif (!empty($manufacturer_id)) $continue_link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$manufacturer_id);
 //		else $continue_link = JRoute::_('index.php?option=com_virtuemart');
-		
+
 		$category_id = shopFunctionsF::getLastVisitedCategoryId();
 		$categoryLink='';
 		if($category_id){
 			$categoryLink='&category_id='.$category_id;
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
-		
+
 		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 
@@ -143,34 +143,34 @@ class VirtueMartViewCart extends JView {
 			$checkout_task = 'checkout';
 //			$checkout_link = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout');
 		}
-		
+
 		$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" />'.$text.'</a>';
 		$this->assignRef('checkout_link_html', $checkout_link_html);
 		$this->assignRef('checkout_task', $checkout_task);
-		
+
 		$this->assignRef('lists', $this->lists);
-		
+
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
-	
-	
+
+
 	private function prepareAddressRadioSelection(){
-		
+
 		//Just in case
 		if(!$this->_user){
-			$this->prepareUserData();	
+			$this->prepareUserData();
 		}
 
 		// Shipping address(es)
 		if($this->_user){
 			$_addressBT = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'BT');
-			
+
 			// Overwrite the address name for display purposes
 			$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
-			
+
 			$_addressST = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'ST');
-			
+
 		} else {
 			$_addressBT[0]->address_type_name = '<a href="index.php'
 					.'?option=com_virtuemart'
@@ -184,7 +184,7 @@ class VirtueMartViewCart extends JView {
 		$addressList = array_merge(
 			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
 			, $_addressST );
-		
+
 		if($this->_user){
 			for ($_i = 0; $_i < count($addressList); $_i++) {
 				$addressList[$_i]->address_type_name = '<a href="index.php'
@@ -216,9 +216,9 @@ class VirtueMartViewCart extends JView {
 		$this->lists['billTo'] = empty($addressList[0]->user_info_id)? 0 : $addressList[0]->user_info_id;
 
 	}
-	
+
 	private function prepareUserData(){
-		
+
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
@@ -227,27 +227,27 @@ class VirtueMartViewCart extends JView {
 			$this->_user = $this->getModel('user');
 			$this->_user->setCurrent();
 			if(!$this->_user){
-				
+
 			}else{
 				$this->assignRef('user', $this->_user);
-				
+
 				$this->_userDetails = $this->_user->getUser();
-				
-				//This are other contact details, like used in CB or so. 
+
+				//This are other contact details, like used in CB or so.
 	//			$_contactDetails = $this->_user->getContactDetails();
-				
+
 				$this->assignRef('userDetails', $this->_userDetails);
 			}
 		}
 	}
-		
+
 	private function prepareCartData(){
 
 		/* Get the products for the cart */
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
-		
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+
+//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		foreach($product_prices as $k=>$price){
@@ -256,12 +256,12 @@ class VirtueMartViewCart extends JView {
 					foreach($price as $sk=>$sprice){
 						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
 					}
-					
+
 //				}
 
 			} else {
 				$prices[$k] = $calculator->priceDisplay($price);
-			}		
+			}
 		}
 
 		$this->assignRef('prices', $prices);
@@ -270,7 +270,7 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('calculator',$calculator);
 
 	}
-	
+
 	private function prepareVendor(){
 
 		$vendor = $this->getModel('vendor','VirtuemartModel');
@@ -278,30 +278,30 @@ class VirtueMartViewCart extends JView {
 		$_vendor = $vendor->getVendor();
 		$this->assignRef('vendor',$_vendor);
 	}
-	
+
 	private function prepareMailData(){
 
 		if(empty($this->vendor)) $this->prepareVendor();
 		//TODO add orders, for the orderId
 		//TODO add registering userdata
-		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on	
+		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
 	}
-	
+
 	private function lSelectCoupon(){
 		$_couponCode = (isset($this->cartData['couponCode']) ? $this->cartData['couponCode'] : '');
 		$this->assignRef('couponCode',$_couponCode);
 	}
-	
+
 	private function lSelectShipper(){
 		$_selectedShipper = (empty($this->_cart->shipper_id) ? 0 : $this->_cart->shipper_id);
 		$this->assignRef('selectedShipper',$_selectedShipper);
 	}
-	
+
 	private function lSelectPayment(){
-		
+
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = $this->getModel('paymentmethod');
-		
+
 		$selectedPaym = empty($this->_cart->paym_id) ? 0 : $this->_cart->paym_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
@@ -318,32 +318,32 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('payments',$payments);
 
 	}
-	
+
 	private function lOrderDone(){
-		
+
 		//Show Thank you page or error due payment plugins like paypal express
-		
+
 
 	}
-	
+
 	private function prepareAddressDataInCart(){
-		
+
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-		
+
 		//Here we define the fields to skip
 		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'agreed', 'address_type', 'bank');
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){
-			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
 			$_userFieldsBT = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles
 				,  $skips// Skips
 			);
-					
+
 			$BTaddress = user_info::getAddress(
 				 $userFieldsModel
 				,$_userFieldsBT
@@ -352,16 +352,16 @@ class VirtueMartViewCart extends JView {
 		}
 
 		$this->assignRef('BTaddress',$BTaddress['fields']);
-		
+
 		$STaddress['fields']= array();
 		if(!empty($this->_cart->ST)){
-			require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			$_userFieldsST = $userFieldsModel->getUserFields(
 				'shipping'
 				, array() // Default toggles
 				, $skips
 			);
-			
+
 			$STaddress = user_info::getAddress(
 				 $userFieldsModel
 				,$_userFieldsST
@@ -369,10 +369,10 @@ class VirtueMartViewCart extends JView {
 			);
 
 		}
-		
+
 		$this->assignRef('STaddress',$STaddress['fields']);
 	}
-	
+
 }
 
 //no closing tag

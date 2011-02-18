@@ -2,11 +2,11 @@
 	<div class="category-view">
 	<?php
 	echo "<h4>".JText::_('VM_CATEGORIES')."</h4>";
-	
+
 	$iCol = 1;
-	
+
 	// calculation of the categories per row
-	$categories_per_row = VmConfig::get('categories_per_row',1);
+	$categories_per_row = VmConfig::get('categories_per_row',3);
 	$cellwidth = floor( 100 / $categories_per_row);
 
 
@@ -16,7 +16,7 @@ foreach ($this->categories as $category) {
 		<div class="category-row">
 		<?php }
 			?>
-		
+
 		<!-- Category Listing Output -->
 		<div class="width<?php echo $cellwidth ?> floatleft center">
 			<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
@@ -26,7 +26,7 @@ foreach ($this->categories as $category) {
 				<?php if ($category->category_thumb_image) {
 					echo VmImage::getImageByCat($category)->displayImage();
 				} ?>
-				</a>	
+				</a>
 			</h2>
 		</div>
 

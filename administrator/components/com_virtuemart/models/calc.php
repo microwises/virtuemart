@@ -376,11 +376,18 @@ class VirtueMartModelCalc extends JModel
 		if (!is_array($kind)) $kind = array($kind);
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
+		$nullDate		= $this->_db->getNullDate();
+		$now			=& JFactory::getDate()->toMySQL();
+
+
 		$q = 'SELECT * FROM `#__vm_calc` WHERE ';
 		foreach ($kind as $field){
 			$q .= '`calc_kind`="'.$field.'" OR ';
 		}
 		$q=substr($q,0,-3);
+
+		$q .= ' AND ( publish_up = '.$db->Quote($nullDate).' OR publish_up <= '.$db->Quote($now).' )' .
+			' AND ( publish_down = '.$db->Quote($nullDate).' OR publish_down >= '.$db->Quote($now).' ) ';
 
 		$this->_db->setQuery($q);
 		$data = $this->_db->loadObjectList();

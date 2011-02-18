@@ -164,7 +164,7 @@ class VirtueMartModelOrders extends JModel {
 	{
 		return 'FROM #__vm_orders o
 			LEFT JOIN #__vm_order_user_info u
-			ON u.order_id = o.order_id 
+			ON u.order_id = o.order_id
 			LEFT JOIN #__vm_payment_method m
 			ON o.payment_method_id = m.paym_id';
 	}
@@ -298,7 +298,7 @@ class VirtueMartModelOrders extends JModel {
 
 		/* See where the lines should be updated too */
 		$update_lines = JRequest::getVar('update_lines', array());
-		
+
 		/* Get the list of comments */
 		$comments = JRequest::getVar('order_comment', array());
 
@@ -449,7 +449,7 @@ class VirtueMartModelOrders extends JModel {
 			return false;
 		}
 		$this->_handlePayment($_orderID, $_cart, $_prices);
-		
+
 		return $_orderID;
 	}
 
@@ -469,7 +469,7 @@ class VirtueMartModelOrders extends JModel {
 //		$_prices['shippingValue']		w/out tax
 //		$_prices['shippingTax']			Tax
 //		$_prices['salesPriceShipping']	Total
-//		
+//
 //		Payment:
 //		$_prices['paymentValue']		w/out tax
 //		$_prices['paymentTax']			Tax
@@ -526,7 +526,7 @@ class VirtueMartModelOrders extends JModel {
 
 	/**
 	 * Write the BillTo record, and if set, the ShipTo record
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param integer $_id Order ID
 	 * @param object $_usr User object
@@ -537,7 +537,7 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$_userInfoData =  $this->getTable('order_user_info');
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'userfields.php');
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		require_once_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
 			, array('delimiters'=>true, 'captcha'=>true)
@@ -562,7 +562,7 @@ class VirtueMartModelOrders extends JModel {
 			return false;
 		}
 		$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
-		
+
 		if ($_cart->ST) {
 			$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
@@ -595,7 +595,7 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Handle the selected payment method. If triggered to do so, this method will also
 	 * take care of the stock updates.
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param int $_orderID Order ID
 	 * @param object $_cart Cart object
@@ -626,7 +626,7 @@ class VirtueMartModelOrders extends JModel {
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 		}
 	}
-	
+
 	/**
 	 * Create the ordered item records
 	 *
@@ -765,7 +765,7 @@ class VirtueMartModelOrders extends JModel {
 		$_table->mdate = time();
 		$_table->store();
 	}
-	
+
 	/**
 	 * E-mails the Download-ID to the customer
 	 * or deletes the Download-ID from the product_downloads table
@@ -865,7 +865,7 @@ class VirtueMartModelOrders extends JModel {
 		$vendorModel->setId($vendor_id);
 		$vendor = $vendorModel->getVendor();
 		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
-		
+
 		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
 			FROM #__vm_order_user_info
 			LEFT JOIN #__vm_orders

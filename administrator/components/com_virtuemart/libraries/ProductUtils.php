@@ -38,7 +38,7 @@
 //	 */
 //	function getCategoryImageTag2($image, $args="", $resize=1, $path_appendix='product', $thumb_width=0, $thumb_height=0 ) {
 //		global $mosConfig_live_site, $mosConfig_absolute_path;
-//		require_once( CLASSPATH . 'imageTools.class.php');
+//		require( CLASSPATH . 'imageTools.class.php');
 //		
 //		$border="";
 //		if( strpos( $args, "border=" )===false ) {

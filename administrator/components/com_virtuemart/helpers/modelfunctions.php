@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage  Calculation tool
-* @author Max Milbers 
+* @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,7 +23,7 @@ class modelfunctions{
 
 	/**
 	 * Prepares the selection for the TreeLists
-	 * 
+	 *
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @param $value the selected values, may be single data or array
@@ -43,7 +43,7 @@ class modelfunctions{
 	/**
 	 * Stores arrays in a table
 	 * @author Max Milbers
-	 * 
+	 *
 	 * @param $table the table
 	 * @param $fieldId name of the field, that holds the id
 	 * @param $fieldData name of the field that holds the data
@@ -56,7 +56,7 @@ class modelfunctions{
 		$q  = 'DELETE FROM `'.$table.'` WHERE `'.$fieldId.'` = "'.$id.'" ';
 		$db->setQuery($q);
 		$db->Query();
-		
+
 		if(!is_array($data)) $data=array($data);
 
 		/* Store the new categories */
@@ -64,16 +64,16 @@ class modelfunctions{
 			$q  = 'INSERT INTO `'.$table.'` ';
 			$q .= '('.$fieldId.','.$fieldData.') ';
 			$q .= 'VALUES ("'.$id.'","'. $dataid . '")';
-			$db->setQuery($q); 
+			$db->setQuery($q);
 			$db->query();
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Builds an enlist for information (not chooseable)
 	 * @author Max Milbers
-	 * 
+	 *
 	 * @param $fieldnameXref datafield for the xreftable, where the name is stored
 	 * @param $tableXref xref table
 	 * @param $fieldIdXref datafield for the xreftable, where the id is stored
@@ -84,9 +84,9 @@ class modelfunctions{
 	 * @param $quantity The number of items in the list
 	 * @return List as String
 	 */
-	 
+
 	function buildGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$quantity=4){
-		
+
 		$db = JFactory::getDBO();
 		$q = 'SELECT '.$fieldnameXref.' FROM '.$tableXref.' WHERE '.$fieldIdXref.' = "'.$idXref.'"';
 		$db->setQuery($q);
@@ -106,13 +106,13 @@ class modelfunctions{
 		}else{
 			return '';
 		}
-		
-	}		
+
+	}
 
 	/**
 	 * does the deletion of a row
 	 * @author Max Milbers
-	 */				
+	 */
     function delete($idName,$tablename, $default=0) {
 
 		$table =& $this->getTable($tablename);
@@ -140,16 +140,16 @@ class modelfunctions{
 			$this->setError($table->getError());
 			return false;
 		}
-		
+
 		return true;
     }
-    
+
     /**
 	 * Loads a row from the database and binds the fields to the object properties
 	 * Derived from the joomla table load function
 	 * @author joomlaTeam, Max Milbers
 	 * @access	public
-	 * 
+	 *
 	 * @param 	JTable the table
 	 * @param	mixed	Optional primary key.  If not specifed, the value of current key is used
 	 * @return	boolean	True if successful
@@ -157,7 +157,7 @@ class modelfunctions{
 	function loadConsiderDate( $table, $oid=null )
 	{
 		$k = $table->_tbl_key;
-		
+
 		if ($oid !== null) {
 			$table->$k = $oid;
 		}
@@ -172,14 +172,14 @@ class modelfunctions{
 		$db =& $table->getDBO();
 
 		$nullDate		= $db->getNullDate();
-		$now			= & JFactory::getDate()->toMySQL();
-			
+		$now			=& JFactory::getDate()->toMySQL();
+
 		$query = 'SELECT *'
 		. ' FROM '.$table->_tbl
 		. ' WHERE '.$table->_tbl_key.' = '.$db->Quote($oid);
 		$query .= ' AND ( publish_up = '.$db->Quote($nullDate).' OR publish_up <= '.$db->Quote($now).' )' .
 			' AND ( publish_down = '.$db->Quote($nullDate).' OR publish_down >= '.$db->Quote($now).' ) ';
-		
+
 		$this->_db->setQuery( $query );
 
 		if ($result = $this->_db->loadAssoc( )) {
@@ -191,5 +191,5 @@ class modelfunctions{
 			return false;
 		}
 	}
-}   
+}
 // pure php no closing tag

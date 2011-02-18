@@ -34,6 +34,12 @@ class VirtuemartViewCategory extends JView {
 
 	public function display($tpl = null) {
 
+		$show_prices  = VmConfig::get('show_prices',1);
+		if($show_prices == '1'){
+			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+		}
+		$this->assignRef('show_prices', $show_prices);
+
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmprices.js');
 
@@ -61,6 +67,7 @@ class VirtuemartViewCategory extends JView {
 		$document->setTitle($category->category_name);
 
 	    /* Load the products in the given category */
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
 
@@ -82,7 +89,7 @@ class VirtuemartViewCategory extends JView {
 		}
 
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 

@@ -138,7 +138,7 @@ class Permissions extends JObject{
 		}
 		
 		/* Load the shoppr group values, commented because shoppergroups does not posses rights atm */
-//		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
+//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 //		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
 		
 		/* User has already logged in */

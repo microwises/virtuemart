@@ -42,14 +42,18 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of flypage objects
      */
     function getLayoutList($view) {
-   		
+
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
- 
-		$tplpath = VmConfig::get('vmtemplate',0);
+
+		//This does not work, joomla takes only overrides of their standard template
+//		$tplpath = VmConfig::get('vmtemplate',0);
+		//So we lookf for template overrides in the joomla standard template
+		$app =& JFactory::getApplication('site');
+		$tplpath = $app->getTemplate();
 		if($tplpath){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view)){
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view;
-			}		
+			}
 		}
 
 		$result = '';
@@ -58,18 +62,18 @@ class VirtueMartModelConfig extends JModel {
 			if ($handle = opendir($dir)) {
 			    while (false !== ($file = readdir($handle))) {
 			    	//Handling directly for extension is much cleaner
-					$path_info = pathinfo($file);						
+					$path_info = pathinfo($file);
 					if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
 					    $alreadyAddedFile[] = $file;
 					    //There is nothing to translate here
 						$result[] = JHTML::_('select.option', $file, $path_info['filename']);
 					}
 			    }
-			}			
+			}
 		}
 		return $result;
     }
-    
+
 
     /**
      * Retrieve a list of possible images to be used for the 'no image' image.
@@ -79,19 +83,19 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of image objects
      */
     function getNoImageList() {
-    	
+
     	//TODO set config value here
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
-		
+
 		$tplpath = VmConfig::get('vmtemplate',0);
 		if($tplpath){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
-			}		
+			}
 		}
-		
+
 		$result = '';
-		
+
 		foreach($dirs as $dir){
 			if ($handle = opendir($dir)) {
 			    while (false !== ($file = readdir($handle))) {
@@ -201,25 +205,25 @@ class VirtueMartModelConfig extends JModel {
 	    $assets_general_path = $params->get('assets_general_path') ;
 		if(empty($assets_general_path)){
 			$params->set('assets_general_path','components/com_virtuemart/assets');	//Hmm there is something wrong here, this are paths, but used with / and not DS.
-		}	    
+		}
 	    $media_category_path = $params->get('media_category_path') ;
 		if(empty($media_category_path)){
-			$params->set('media_category_path','images/stories/virtuemart/category/');	
+			$params->set('media_category_path','images/stories/virtuemart/category/');
 		}
 		$media_product_path = $params->get('media_product_path') ;
 		if(empty($media_product_path)){
-			$params->set('media_product_path','images/stories/virtuemart/product/');	
+			$params->set('media_product_path','images/stories/virtuemart/product/');
 		}
 		$media_manufacturer_path = $params->get('media_manufacturer_path') ;
 		if(empty($media_manufacturer_path)){
-			$params->set('media_manufacturer_path','images/stories/virtuemart/manufacturer/');	
+			$params->set('media_manufacturer_path','images/stories/virtuemart/manufacturer/');
 		}
 		$downloadable_goods_path = $params->get('downloadable_goods_path') ;
 		if(empty($downloadable_goods_path)){
-			$params->set('download_root',JPATH_SITE.DS.'media'.DS.'virtuemart');	
-		}		
-		
-		
+			$params->set('download_root',JPATH_SITE.DS.'media'.DS.'virtuemart');
+		}
+
+
 	}
 	else {
 		JError::raiseWarning('No config in database found, dont mind, when you configure the shop the first time');

@@ -58,7 +58,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers, RickG
      */
     function integrateJoomlaUsers() {
-    
+
     $msg = JText::_('Start Syncronizing!');
 	$db = JFactory::getDBO();
 	$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
@@ -72,11 +72,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
 	    }
-		
+
 		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
 		$this->_db->setQuery($q);
 		$default_shopper_group_id=$this->_db->loadResult();
-			
+
 		$query = 'INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
@@ -118,26 +118,26 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		if (empty($userId)) {
 		    $userId = $this->determineStoreOwner();
 		}
-	
+
 		$oldUserId	= "";
 		$oldVendorId = "";
-	
+
 		$db = JFactory::getDBO();
-	
+
 		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
-	
+
 		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
-		
+
 		if (!isset($oldVendorId) && !isset($oldUserId)) {
 		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`) VALUES ("' . $userId . '", "1","1")');
 		    if ($db->query() == false) {
 				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
 		    }
-		    else {   	
+		    else {
 		    	return $userId;
 		    }
 		}
@@ -150,7 +150,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    }
 		    if ($db->query() == false ) {
 				JError::raiseWarning(1, 'UPDATE __vm_users failed for user_id '.$userId);
-		    } else {   	
+		    } else {
 		    	return $userId;
 		    }
 		}
@@ -192,7 +192,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
-	
+
 	$currencyFields = array();
 	$currencyFields[0] = '47'; //EUR
 	$currencyFields[1] = '144'; //USD
@@ -229,7 +229,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';
-	
+
 	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	if (!$usermodel->store($fields)) {
@@ -239,13 +239,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
-		$msg = JText::_('Problems execution of SQL File '.$filename);	
+		$msg = JText::_('Problems execution of SQL File '.$filename);
 	} else {
-		$msg = JText::_('Sample data installed!!');	
+		$msg = JText::_('Sample data installed!!');
 	}
 
 	return $msg;
-	
+
     }
 
 
@@ -261,7 +261,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$this->execSQLFile($filename);
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
-		
+
     }
 
     function restoreSystemCompletly() {
@@ -273,9 +273,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$this->execSQLFile($filename);
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
-		
+
     }
-    
+
     /**
      * Parse a sql file executing each sql statement found.
      *

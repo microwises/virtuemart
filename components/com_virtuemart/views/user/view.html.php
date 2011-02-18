@@ -37,41 +37,41 @@ define ('__VM_USER_USE_SLIDERS', 0);
  */
 class VirtuemartViewUser extends JView {
 
-	
+
 	private $_model;
 	private $_currentUser=0;
 	private $_cuid = 0;
 	private $_userDetails = 0;
 	private $_userFieldsModel = 0;
 	private $_userInfoID = 0;
-	
+
 	private $_list=0;
-	
+
 	private $_orderList=0;
 	private $_openTab=0;
-	
+
 	/**
 	 * Displays the view, collects needed data for the different layouts
-	 * 
+	 *
 	 * Okey I try now a completly new idea.
 	 * We make a function for every tab and the display is getting the right tabs by an own function
 	 * putting that in an array and after that we call the preparedataforlayoutBlub
-	 * 
+	 *
 	 * @author Oscar van Eijk
  	 * @author Max Milbers
-	 */ 
+	 */
 	function display($tpl = null) {
 
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
-		
+
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
 //		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 		$editor = JFactory::getEditor();
-		
+
 		//the cuid is the id of the current user
 		$this->_currentUser =& JFactory::getUser();
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
-		
+
 		//the uid is the id of the user, we wanna edit.
 		//This is nonsene, because the user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
@@ -80,9 +80,9 @@ class VirtuemartViewUser extends JView {
 
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
-		
+
 		$userFields = $this->setUserFieldsForView($layoutName);
-		
+
 		if($layoutName=='edit'){
 			if($this->_model->_id==0 && $this->_cuid==0){
 				$button_lbl = JText::_('Register');
@@ -94,13 +94,13 @@ class VirtuemartViewUser extends JView {
 			$this->shopper($userFields);
 		}
 		$this->generateStAddressList();
-		
+
 		$this->lshipto();
 
 		if($layoutName=='edit'){
 			$this->payment();
 			$this->lOrderlist();
-			$this->lVendor();	
+			$this->lVendor();
 		}
 
 		if ($this->_openTab < 0) {
@@ -120,26 +120,26 @@ class VirtuemartViewUser extends JView {
 
 		$this->assignRef('lists', $this->_lists);
 
-			
+
 		$this->assignRef('editor', $editor);
 		$this->assignRef('pane', $pane);
-		
+
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
-		
+
 		parent::display($tpl);
 	}
 
 	/**
 	 * This sets the userfields we wanna have for the view
 	 * We may move that later to an helper and use a switch to fine grain it
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 */
 	function setUserFieldsForView($layoutName){
 
 		$type = JRequest::getVar('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
-		
+
 		//Here we define the fields to skip
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -148,7 +148,7 @@ class VirtuemartViewUser extends JView {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'agreed', 'address_type', 'bank');
 		}
-		
+
 		//Here we get the fields
 		if ($type == 'BT') {
 			$_userFields = $this->_userFieldsModel->getUserFields(
@@ -163,12 +163,12 @@ class VirtuemartViewUser extends JView {
 				, $skips
 			);
 		}
-		
+
 		 //for register
 		if(empty($this->_userDetailsList)){
 			$this->_userDetailsList=0;
 		}
-		
+
 		$preFix='';
 		//Here we set the data to fill the fields
 		if($type=='BT'){
@@ -191,10 +191,10 @@ class VirtuemartViewUser extends JView {
 //							,$preFix
 							);
 		} else { //the anonymous case
-			
+
 			//We may move this to the helper of course, but for developing I just wanna get it working
-			//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
-		
+			//require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+
 			$userFields = user_info::getAddress(
 				 $this->_userFieldsModel
 				,$_userFields
@@ -202,22 +202,22 @@ class VirtuemartViewUser extends JView {
 			);
 		}
 
-		
+
 		$this->assignRef('userFields', $userFields);
 		return $userFields;
 	}
-	
+
 	/** Gets the userInfoId and the userDetailsList
 	 * TODO there is a problem with the userDetailsList, it is used in different places, sorry do not see through it
 	 */
 	function getUserData($type='BT'){
-		
+
 		$userDetailsList = 0;
 		$userInfoID = 0;
 		if (($addressCount = count($this->_userDetails->userInfo)) == 0) {
 			//TODO I think here is maybe the right position to fill the fields with the cart values, if available
 
-			
+
 		} else {
 			$userDetailsList = current($this->_userDetails->userInfo);
 			for ($_i = 0; $_i < $addressCount; $_i++) {
@@ -226,20 +226,20 @@ class VirtuemartViewUser extends JView {
 					reset($this->_userDetails->userInfo);
 					break;
 				}
-				
+
 				$userDetailsList = next($this->_userDetails->userInfo);
 			}
 			$this->_userInfoID = $userInfoID;
-			
+
 			$this->_userDetailsList = $userDetailsList ;
-			
+
 		}
-		
+
 		$this->assignRef('userInfoID', $userInfoID);
-	
-		$this->assignRef('userDetailsList', $userDetailsList);	
+
+		$this->assignRef('userDetailsList', $userDetailsList);
 	}
-	
+
 	function lOrderlist(){
 		// Check for existing orders for this user
 		$orders = $this->getModel('orders');
@@ -250,26 +250,26 @@ class VirtuemartViewUser extends JView {
 			$this->_orderList = array();
 		} else {
 			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
-			
+
 			if(empty($this->currency)){
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+				require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 				$currency = CurrencyDisplay::getCurrencyDisplay();;
-				$this->assignRef('currency', $currency);				
+				$this->assignRef('currency', $currency);
 			}
 		}
 		$this->assignRef('orderlist', $this->_orderList);
 	}
 
 	function payment(){
-		
+
 	}
-	
+
 	/**
 	 * This generates the list when the user have different ST addresses saved
 	 * @author Oscar van Eijk
 	 */
 	function generateStAddressList (){
-		
+
 		// Shipping address(es)
 		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
 		if (($_c = count($_addressList)) == 0) {
@@ -286,17 +286,17 @@ class VirtuemartViewUser extends JView {
 				.'&cid[]='.$_addressList[$_i]->user_id
 				.'&user_info_id='.$_addressList[$_i]->user_info_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
-					
+
 			}
 			$this->_lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
 		}
-	}	
+	}
 	/**
 	 * For the edit_shipto layout
-	 * 
+	 *
 	 */
 	function lshipto(){
-		
+
 		// The ShipTo address if selected
 		$_shipto_id = JRequest::getVar('user_info_id', 0);
 //		$_shipto_id = JRequest::getVar('shipto', -1);
@@ -305,9 +305,9 @@ class VirtuemartViewUser extends JView {
 			 'shipping'
 			,array() // Default toggles
 		);
-		
+
 		$_userDetailsList = null;
-		
+
 		if(!empty($_shipto_id)){
 			// Contains 0 for new, otherwise a user_info_id
 			$_shipto = $this->_model->getUserAddress($this->_model->_id, $_shipto_id, 'ST');
@@ -327,29 +327,29 @@ class VirtuemartViewUser extends JView {
 				}
 //			}
 		}
-		
+
 		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
 			 $_shiptoFields
 			,$_userDetailsList
 //			,'shipto_'
 			);
-		
+
 		$this->assignRef('shipToFields', $shipToFields);
 		$this->assignRef('shipToID', $_shipto_id);
 	}
-	
+
 	function shopper($userFields){
-		
+
 		$this->loadHelper('permissions');
 		$this->loadHelper('shoppergroup');
 		$this->loadHelper('shopfunctions');
-		
+
 		// Shopper info
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
-		
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 		if(Permissions::getInstance()->check('admin,storeadmin')){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
 			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
@@ -361,11 +361,11 @@ class VirtuemartViewUser extends JView {
 			}
 			$this->_lists['shoppergroups'] .= '<input type="hidden" name="shopper_group_id" value = "' . $_shoppergroup['shopper_group_id'] . '" />';
 
-				
+
 			if(!empty($this->_userDetails->vendor_id)){
 				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
 			}
-				
+
 			if(empty($this->_lists['vendors'])){
 				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');
 			}
@@ -400,7 +400,7 @@ class VirtuemartViewUser extends JView {
 	}
 
 	function lUser(){
-		
+
 		$_groupList = $this->_model->getGroupList();
 
 		if (!is_array($_groupList)) {
@@ -418,7 +418,7 @@ class VirtuemartViewUser extends JView {
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
 		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->_id);
-		
+
 		//TODO I do not understand for what we have that by Max.
 		if ($this->_model->_id < 1) {
 			$this->_lists['register_new'] = 1;
@@ -427,7 +427,7 @@ class VirtuemartViewUser extends JView {
 		}
 
 	}
-	
+
 	function lVendor(){
 
 		$vendorModel = $this->getModel('vendor');
@@ -438,23 +438,23 @@ class VirtuemartViewUser extends JView {
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
-//			if (count($this->_orderList) > 0) {		
+//			if (count($this->_orderList) > 0) {
 			//Why is this here? should be set for vendors AND shoppers with orders
 			if(empty($this->currency)){
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+				require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 				$currency = CurrencyDisplay::getCurrencyDisplay();;
-				$this->assignRef('currency', $currency);				
+				$this->assignRef('currency', $currency);
 			}
 
-			
+
 			$vendorModel->setId($this->_userDetails->vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
-			
+
 			$currencyModel = $this->getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
-			
+
 //			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
 //			$this->assignRef('vendorCategories', $_vendorCats);
 
@@ -462,13 +462,13 @@ class VirtuemartViewUser extends JView {
 		}
 
 		if(empty($currency)){
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 			$currency = new CurrencyDisplay();
 			$this->assignRef('currency', $currency);
 		}
 
 	}
-	
+
 	/**
 	 * Additional grid function for custom toggles
 	 *

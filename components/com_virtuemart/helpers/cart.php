@@ -16,7 +16,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -32,13 +32,13 @@ defined('_JEXEC') or die('Restricted access');
 * @author Max Milbers
 */
 class VirtueMartCart  {
-	
+
 //	var $productIds = array();
 	var $products = array();
 	private $_inCheckOut = false;
 	private $_dataValidated = false;
 	private $_confirmDone = false;
-	
+
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
@@ -50,23 +50,23 @@ class VirtueMartCart  {
 	var $tosAccepted = false;
 	var $customer_comment = '';
 	var $couponCode = '';
-	
+
 	private function __construct() {
-				
+
 		self::setCartIntoSession();
 
 	}
 
 
 	/**
-	* Get the cart from the session 
-	* 
+	* Get the cart from the session
+	*
 	* @author Max Milbers
 	* @access public
 	* @param array $cart the cart to store in the session
 	*/
 	public static function getCart($deleteValidation=true) {
-		
+
 		$session = JFactory::getSession();
 		$cartTemp = $session->get('vmcart', 0, 'vm');
 		if(!empty($cartTemp) ){
@@ -79,10 +79,10 @@ class VirtueMartCart  {
 		}
 		return $cart;
 	}
-	
+
 	/**
-	* Set the cart in the session 
-	* 
+	* Set the cart in the session
+	*
 	* @author RolandD
 	*
 	* @access public
@@ -92,10 +92,10 @@ class VirtueMartCart  {
 		$session = JFactory::getSession();
 		$session->set('vmcart', serialize($this), 'vm');
 	}
-	
+
 	/**
-	* Remove the cart from the session 
-	* 
+	* Remove the cart from the session
+	*
 	* @author Max Milbers
 	* @access public
 	*/
@@ -103,12 +103,12 @@ class VirtueMartCart  {
 		$session = JFactory::getSession();
 		$session->set('vmcart', 0, 'vm');
 	}
-	
+
 	public function setDataValidation($valid=false){
 		$this->_dataValidated = $valid;
 		$this->setCartIntoSession();
 	}
-	
+
 	public function getDataValidated(){
 		return $this->_dataValidated;
 	}
@@ -116,11 +116,11 @@ class VirtueMartCart  {
 	public function getInCheckOut(){
 		return $this->_inCheckOut;
 	}
-		
-	
+
+
 	/**
-	* Add a product to the cart 
-	* 
+	* Add a product to the cart
+	*
 	* @author RolandD
 	* @author Max Milbers
 	* @access public
@@ -135,33 +135,34 @@ class VirtueMartCart  {
 		$product_ids = JRequest::getVar('product_id',array(),'post','array' ) ;
 //		$product_ids = $post['product_id'];
 //		$product_ids = JRequest::get('product_id');
-		
+
 		if (empty($product_ids)) {
 			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_PRODUCT_IDS',false) );
-			return false;	
+			return false;
 		}
-		
+
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($product_ids as $p_key => $product_id) {
-		
+
 			$product = $this->getProduct($product_id);
-			
+
 			/* Check if we have a product */
 			if ($product) {
 				$quantityPost = $post['quantity'][$p_key];
 				$category_idPost = $post['category_id'][$p_key];
 
 				/** @todo Check for child items, variants and attributes */
-				
+
 				/** @todo check for attributes adding to the cart */
-				
-				
+
+
 //				$product->quantity = $quantity;
 				$product->category_id = $category_idPost;
 				$productKey= $product->product_id.':';
 
 //				echo '<pre>'.print_r($quantityPost).'</pre>';die;
-				
+
 //				/* Check for variants being posted */
 				$variants = array();
 				foreach ($product->variants as $variant => $options) {
@@ -172,7 +173,7 @@ class VirtueMartCart  {
 				}
 				$productKey .= ':';
 				$product->variant =  $variants;
-				
+
 				/* Check for custom attributes */
 				$customvariants = array();
 				foreach ($product->customvariants as $cvariant) {
@@ -192,22 +193,22 @@ class VirtueMartCart  {
 					if($this->checkForQuantities($product,$quantityPost))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
 				}
 
-				
-				
+
+
 			}
 			else {
 				$mainframe->enqueueMessage( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
 				return false;
 			}
-		} 
+		}
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
 		return true;
 	}
 
 	/**
-	* Remove a product from the cart 
-	* 
+	* Remove a product from the cart
+	*
 	* @author RolandD
 	* @param array $cart_id the cart IDs to remove from the cart
 	* @access public
@@ -216,7 +217,7 @@ class VirtueMartCart  {
 		/* Check for cart IDs */
 		if (empty($prod_id)) $prod_id = JRequest::getVar('cart_product_id');
 //		$prod_id = JRequest::get();
-		
+
 //		/* Check if the product ID is ok */
 //		if (!$prod_ids || !is_array($prod_ids) || empty($prod_ids)) return;
 //
@@ -225,10 +226,10 @@ class VirtueMartCart  {
 //
 //		if (empty($prod_customvariants)) $cart_ids = array(JRequest::getInt('customvariants'));
 //		if (!$prod_customvariants || !is_array($prod_customvariants) || empty($prod_customvariants)) return;
-//	
+//
 //		/* Load the cart */
 //		$cart = $this->getCart();
-//		
+//
 //		/* Remove the product */
 //		foreach ($cart_ids as $cart_id) {
 //			'P'.$product->product_id.$product->variants.$product->customvariants
@@ -239,35 +240,35 @@ class VirtueMartCart  {
 		$this->setCartIntoSession();
 		return true;
 	}
-	
+
 	/**
-	* Update a product in the cart 
-	* 
+	* Update a product in the cart
+	*
 	* @author Max Milbers
 	* @param array $cart_id the cart IDs to remove from the cart
 	* @access public
 	*/
 	public function updateProductCart($cart_product_id=0) {
-		
+
 		if (empty($cart_product_id)) $cart_product_id = JRequest::getVar('cart_product_id');
 		if (empty($quantity)) $quantity = JRequest::getInt('quantity');
-		
+
 //		foreach($cart_product_ids as $cart_product_id){
 			if (array_key_exists($cart_product_id, $this->products)) {
 				if(!empty($quantity)){
 					if($this->checkForQuantities($this->products[$cart_product_id],$quantity)){
 						$this->products[$cart_product_id]->quantity = $quantity;
-						$updated = true;						
+						$updated = true;
 					}
 				} else {
 					//Todo when quantity is 0,  the product should be removed, maybe necessary to gather in array and execute delete func
 					unset($this->products[$cart_product_id]);
 					$updated = true;
 				}
-				
+
 			}
 //		}
-		
+
 		/* Save the cart */
 		$this->setCartIntoSession();
 		if ($updated) return true;
@@ -275,19 +276,19 @@ class VirtueMartCart  {
 	}
 
 	/**
-	* Function Description 
-	* 
+	* Function Description
+	*
 	* @author Max Milbers
 	* @access public
 	* @param array $cart the cart to get the products for
 	* @return array of product objects
 	*/
 	public function getCartPrices() {
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		return $calculator->getCheckoutPrices($this);
 	}
-	
+
 	/**
 	* Proxy function for getting a product object
 	*
@@ -301,11 +302,11 @@ class VirtueMartCart  {
 		$model = JModel::getInstance('Productdetails', 'VirtueMartModel');
 		return $model->getProduct($product_id, false);
 	}
-	
+
 //	/**
-//	* Function Description 
-//	* 
-//	* @author Max Milbers 
+//	* Function Description
+//	*
+//	* @author Max Milbers
 //	* @access public
 //	* @param array $cart the cart to get the products for
 //	* @return array of product objects
@@ -318,10 +319,10 @@ class VirtueMartCart  {
 //		}
 //		return $products;
 //	}
-	
+
 	/**
-	* Get the category ID from a product ID 
-	* 
+	* Get the category ID from a product ID
+	*
 	* @author RolandD
 	* @access public
 	* @return mixed if found the category ID else null
@@ -333,15 +334,15 @@ class VirtueMartCart  {
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
-	
-		
+
+
 	/**
 	 * Checks if the quantity is correct
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	private function checkForQuantities($product,$quantity=0) {
-		
+
 		$mainframe = JFactory::getApplication();
 		/* Check for a valid quantity */
 		if (!preg_match("/^[0-9]*$/", $quantity)) {
@@ -349,14 +350,14 @@ class VirtueMartCart  {
 			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
 			return false;
 		}
-		
+
 		/* Check for negative quantity */
 		if ($quantity < 0) {
 			$this->_error[] = 'Quantity under zero';
 			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
 			return false;
 		}
-	
+
 		/* Check for the minimum and maximum quantities */
 		list($min,$max) = explode(',', $product->product_order_levels);
 		if ($min != 0 && $quantity < $min) {
@@ -369,10 +370,10 @@ class VirtueMartCart  {
 			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MAX_ORDER'), $max), 'error');
 			return false;
 		}
-		
+
 		$ci = 0;
 		$request_stock = array();
-		
+
 		/* Check to see if checking stock quantity */
 		if (VmConfig::get('check_stock', false)) {
 			if ($quantity > $product->product_in_stock) {
@@ -394,7 +395,7 @@ class VirtueMartCart  {
 	}
 
 	function confirmDone(){
-		
+
 		$this -> checkoutData();
 		if($this->_dataValidated){
 			$this->_confirmDone = true;
@@ -408,7 +409,7 @@ class VirtueMartCart  {
 	function checkout(){
 		if($this -> checkoutData()){
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));		
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 	}
 
@@ -420,7 +421,7 @@ class VirtueMartCart  {
 	 * @return string On error the message text, otherwise an empty string
 	 */
 	public function setCouponCode($coupon_code) {
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
+		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
 		$_prices = $this->getCartPrices();
 		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['billTotal']);
 		if (!empty($_msg)) {
@@ -445,7 +446,7 @@ class VirtueMartCart  {
 	 */
 	public function setShipper($shipper_id)
 	{
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 
 		$_dispatcher = JDispatcher::getInstance();
@@ -458,7 +459,7 @@ class VirtueMartCart  {
 			} elseif ($_retVal === false) { // Missing data, ask for it (again)
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');
 //	Remove comments if newchecks need to be implemented.
-//	NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+//	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 //				} elseif ($_retVal === null) {
 //					continue; // This plugin was skipped
 //				} else {
@@ -471,14 +472,14 @@ class VirtueMartCart  {
 		$this->paym_id=$paym_id;
 		$this->setCartIntoSession();
 	}
-		
+
 	private function checkoutData(){
 
 		$this->_inCheckOut = true;
 //		$this->_dataValidated = true; //this is wrong, I am quite sure, the dataValidated is set at the end of the checkout process
 		$this->tosAccepted = JRequest::getVar('tosAccepted', $this->tosAccepted);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
-		
+
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 			$_userModel = JModel::getInstance('user', 'VirtueMartModel');
@@ -487,18 +488,18 @@ class VirtueMartCart  {
 		}
 
 		$this->setCartIntoSession();
-		
+
 		$mainframe = JFactory::getApplication();
 		if( count($this->products) == 0){
 			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
 		} else {
-			foreach ($this->products as $product){	
+			foreach ($this->products as $product){
 				$redirectMsg = $this->checkForQuantities($product,$product->quantity);
 				if(!$redirectMsg){
 //					$this->setCartIntoSession();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart',$redirectMsg);
 				}
-			}	
+			}
 		}
 
 		//But we check the data again to be sure
@@ -533,11 +534,11 @@ class VirtueMartCart  {
 		//Test Shipment
 		if($this->shipper_id == 0){
 //			$this->setCartIntoSession();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);
 		}
 		// Ok, a shipper was selected, now make sure we can find a matching shipping rate for
 		// the current order shipto and weight
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
@@ -551,15 +552,15 @@ class VirtueMartCart  {
 		if ($this->shipping_rate_id < 0) {
 			$this->shipper_id = 0;
 			$this->setCartIntoSession();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);	
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);
 		}
 
 		//Test Payment and show payment plugin
 		if(empty($this->paym_id)){
 
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
 		} else {
-			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();
@@ -569,11 +570,11 @@ class VirtueMartCart  {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($_retVal === false) { // Missing data, ask for it (again)
 
-					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);	
-					
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
+
 					// Checks below outcommented since we're at the end of out loop anyway :-/
 // 	Remove comments if newchecks need to be implemented.
-// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 //					} elseif ($_retVal === null) {
 //						continue; // This plugin was skipped
 //					} else {
@@ -590,7 +591,7 @@ class VirtueMartCart  {
 
 		return true;
 	}
-	
+
 	/**
 	 * Test userdata if valid
 	 *
@@ -602,7 +603,7 @@ class VirtueMartCart  {
 	 private function validateUserData($type='BT', $_obj = null){
 
 //		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
 		$_userFieldsModel = new VirtueMartModelUserfields();
 //		$_userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
 		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
@@ -621,7 +622,7 @@ class VirtueMartCart  {
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
-					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
+					require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
 					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
 						$redirectMsg = $msg;
 					}
@@ -645,7 +646,7 @@ class VirtueMartCart  {
 
 		//Just to prevent direct call
 		if($this->_dataValidated && $this->_confirmDone){
-			require_once( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
+			require( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
 			$order = new VirtueMartModelOrders();
 			if (($_orderID = $order->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
@@ -667,7 +668,7 @@ class VirtueMartCart  {
 			$this->setCartIntoSession();
 
 			/* Display it all */
-			
+
 //			$view = $this->getView('cart', 'html');
 //			$view->setLayout('orderdone');
 			$mainframe = JFactory::getApplication();
@@ -677,7 +678,7 @@ class VirtueMartCart  {
 			$mainframe = JFactory::getApplication();
 //			JError::raiseNotice(1, 'raiseNotice '.JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
-			
+
 		}
 
 	}
@@ -754,10 +755,10 @@ class VirtueMartCart  {
 //		ob_end_clean();
 //		return $content;
 //	}
-	
+
 	/**
 	* Initialise the cart, ATTENTION, started by Roland but not finished, when someone needs it, dont be shy ;-) note by Max Milbers
-	* 
+	*
 	* @author RolandD
 	* @todo Make sure this gets called when a user is logged in
 	* @access public
@@ -767,19 +768,19 @@ class VirtueMartCart  {
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		$cart = $this->getCart();
-		
+
 		// If the user is logged in, we can try to retrieve the current cart from the database
         // We store the items in a new SESSION var
 		if ($user->id > 0 && empty($cart)) {
-			$q = 'SELECT `cart_content` 
-				FROM `#__vm_cart` 
+			$q = 'SELECT `cart_content`
+				FROM `#__vm_cart`
 				WHERE `user_id` = '.$user->id;
 			$db->setQuery($q);
 			$savedcart = $db->loadObject();
 			if ($savedcart) {
 				// Fill the cart from the contents of the field cart_content, which holds a serialized array
 				$contents = unserialize($savedcart->cart_content);
-				
+
 				// Now check if all products are still published and existant
 				$products_in_cart = array();
 				for ($i=0; $i < $contents["idx"]; $i++) {
@@ -787,14 +788,14 @@ class VirtueMartCart  {
 				}
 				if (!empty($products_in_cart)) {
 					$remove_products = array();
-					$q = 'SELECT `product_id` 
-						FROM #__vm_product 
-						WHERE `product_id` IN ('.implode(',', $products_in_cart ).') 
+					$q = 'SELECT `product_id`
+						FROM #__vm_product
+						WHERE `product_id` IN ('.implode(',', $products_in_cart ).')
 						AND published = 0';
 					$db->setQuery($q);
 					$remove_products = $db->loadResultArray();
 				}
-				
+
 				if (!empty($remove_products)) {
 					for ($i=0; $i < $contents["idx"]; $i++) {
 						if (in_array(intval($contents[$i]['product_id']), $remove_products)) self::removeProductCart(array($i));
@@ -802,13 +803,13 @@ class VirtueMartCart  {
 				}
 			}
 		}
-		
+
 		$this->setCartIntoSession();
 	}
-	
+
 	/**
-	* Save the cart in the database 
-	* 
+	* Save the cart in the database
+	*
 	* @author RolandD
 	* @access public
 	*/
@@ -818,16 +819,16 @@ class VirtueMartCart  {
 		$cart = $this->getCart();
 		if ($user->id > 0) {
 			$cart_contents = serialize($cart);
-			$q = "INSERT INTO `#__vm_cart` (`user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' ) 
+			$q = "INSERT INTO `#__vm_cart` (`user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
 				ON DUPLICATE KEY UPDATE `cart_content` = ".$db->Quote($cart_contents);
 			$db->setQuery($q);
 			$db->query();
 		}
 	}
-	
+
 	/**
 	* This checks if attributes values were chosen by the user
-	* 
+	*
 	* @author RolandD
 	* @access public
 	* @param array $d
@@ -835,7 +836,7 @@ class VirtueMartCart  {
 	*/
 	public function cartGetAttributes( &$d ) {
 		$db = JFactory::getDBO();
-		
+
 		// added for the advanced attributes modification
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array( ) ;
@@ -844,19 +845,19 @@ class VirtueMartCart  {
 		}
 		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='" . (int)$d["prod_id"] . "'" ;
 		$db->query( $q ) ;
-		
+
 		$db->next_record() ;
-		
+
 		if( ! $db->f( "attribute" ) && ! $db->f( "custom_attribute" ) ) {
 			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='" . (int)$d["prod_id"] . "'" ;
-			
+
 			$db->query( $q ) ;
 			$db->next_record() ;
 			$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='" . $db->f( "product_parent_id" ) . "'" ;
 			$db->query( $q ) ;
 			$db->next_record() ;
 		}
-		
+
 		$advanced_attribute_list = $db->f( "attribute" ) ;
 		if( $advanced_attribute_list ) {
 			$fields = explode( ";", $advanced_attribute_list ) ;
@@ -875,46 +876,46 @@ class VirtueMartCart  {
 			$encodefunc = 'strval' ;
 			$decodefunc = 'strval' ;
 		}
-		
+
 		$description = "" ;
 		$attribute_given = false ;
 		// Loop through the simple attributes and check if one of the valid values has been provided
 		foreach( $attributes as $a ) {
-			
+
 			$pagevar = str_replace( " ", "_", $a ) ;
 			$pagevar .= $d['prod_id'] ;
-			
+
 			$pagevar = $encodefunc( $pagevar ) ;
-			
+
 			if( ! empty( $d[$pagevar] ) ) {
 				$attribute_given = true ;
 			}
 			if( $description != '' ) {
 				$description .= "; " ;
 			}
-			
+
 			$description .= $a . ":" ;
 			$description .= empty( $d[$pagevar] ) ? '' : $decodefunc( $d[$pagevar] ) ;
-		
+
 		}
 		rtrim( $description ) ;
 		$d["description"] = $description ;
 		// end advanced attributes modification addition
-		
+
 
 		$custom_attribute_list = $db->f( "custom_attribute" ) ;
 		$custom_attribute_given = false ;
 		// Loop through the custom attribute list and check if a value has been provided
 		if( $custom_attribute_list ) {
 			$fields = explode( ";", $custom_attribute_list ) ;
-			
+
 			$description = $d["description"] ;
-			
+
 			foreach( $fields as $field ) {
 				$pagevar = str_replace( " ", "_", $field ) ;
 				$pagevar .= $d['prod_id'] ;
 				$pagevar = $encodefunc( $pagevar ) ;
-				
+
 				if( ! empty( $d[$pagevar] ) ) {
 					$custom_attribute_given = true ;
 				}
@@ -923,20 +924,20 @@ class VirtueMartCart  {
 				}
 				$description .= $field . ":" ;
 				$description .= empty( $d[$pagevar] ) ? '' : $decodefunc( $d[$pagevar] ) ;
-			
+
 			}
 			rtrim( $description ) ;
 			$d["description"] = $description ;
 			// END add for custom fields by denie van kleef
-		
+
 
 		}
-		
+
 		$result['attribute_given'] = $attribute_given ;
 		$result['advanced_attribute_list'] = $advanced_attribute_list ;
 		$result['custom_attribute_given'] = $custom_attribute_given ;
 		$result['custom_attribute_list'] = $custom_attribute_list ;
-		
+
 		return $result ;
 	}
 

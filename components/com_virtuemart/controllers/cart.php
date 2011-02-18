@@ -41,9 +41,11 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 	}
 
-	
+
 	/**
 	* Show the main page for the cart
 	*
@@ -54,7 +56,6 @@ class VirtueMartControllerCart extends JController {
 	public function Cart() {
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
-
 		/* Add the default model */
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
@@ -83,13 +84,13 @@ class VirtueMartControllerCart extends JController {
 		/* Load the cart helper */
 		//$this->getModel('productdetails');
 		/* Load the cart helper */
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
 			else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
 		if (JRequest::getVar('format','') =='raw' ) { echo ' Product added '; return ;}
-			else $mainframe->redirect('index.php?option=com_virtuemart&view=cart');			
+			else $mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}
@@ -103,10 +104,11 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function addJS(){
-		
+
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
@@ -208,7 +210,7 @@ class VirtueMartControllerCart extends JController {
 					$mainframe = JFactory::getApplication();
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
 				}
-				
+
 			}
 		}
 		self::Cart();
@@ -243,7 +245,7 @@ class VirtueMartControllerCart extends JController {
 		//Now set the shipping rate into the cart
 		$cart = VirtueMartCart::getCart();
 		if($cart){
-			require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
 			$paym_id= JRequest::getVar('paym_id', '0');
@@ -264,7 +266,7 @@ class VirtueMartControllerCart extends JController {
 					// We got modified cart data back from the plugin
 //					$cart = $_retVal;		This seems to be a bit evil, does the plugin actually returns a cart?
 					break;
-// NOTE: inactive plugins will always return null, so that value cannot be used for anything else! 
+// NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				} elseif (is_null($_retVal)) {
 					continue; // This plugin was skipped
 				} else {
@@ -323,6 +325,7 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function checkout(){
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
+
 		$cart = VirtueMartCart::getCart();
 		if($cart ){
 			$cart->checkout();
@@ -330,7 +333,7 @@ class VirtueMartControllerCart extends JController {
 	}
 
 	/**
-	 * Executes the confirmDone task, 
+	 * Executes the confirmDone task,
 	 * cart object checks itself, if the data is valid
 	 *
 	 * @author Max Milbers
@@ -346,7 +349,7 @@ class VirtueMartControllerCart extends JController {
 			$cart->confirmDone();
 		}
 	}
-	
+
 	function cancel(){
 	 	$mainframe = JFactory::getApplication();
 	 	$mainframe->redirect('index.php?option=com_virtuemart&view=cart','Cancelled');

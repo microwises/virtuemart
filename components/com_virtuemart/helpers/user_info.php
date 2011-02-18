@@ -14,7 +14,7 @@
  * other free or open source software licenses.
  * @version $Id$
  */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -23,7 +23,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 
 class user_info
 {
-	
+
 	/**
 	 * Take a data array and save any address info found in the array.
 	 *
@@ -34,7 +34,7 @@ class user_info
 	 */
 	function storeAddress($_data, $_table = null, $new = false)
 	{
-		
+
 		$_data = self::_prepareUserFields($_data, 'BT',$new);
 		if ($_table !== null) {
 			$_userinfo   = $this->getTable($_table);
@@ -46,7 +46,7 @@ class user_info
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
 				return false;
-			}	
+			}
 		} else {
 		}
 
@@ -91,7 +91,7 @@ class user_info
 		foreach ($_prepareUserFields as $_fld) {
 			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name],$data);
 		}
-		
+
 		return $_data;
 	}
 
@@ -127,16 +127,16 @@ class user_info
 
 	function saveAddressInCart($_data, $_fields, $_type) {
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
-		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = VirtueMartCart::getCart();
 		$_address = array();
-		
+
 		if(is_array($_data)){
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
 				$_address[$name] = $_data[$name];
 			}
-			
+
 		} else {
 			foreach ($_fields as $_fld) {
 				$name = $_fld->name;
@@ -155,11 +155,11 @@ class user_info
 	}
 
 
-		
+
 	function getAddress ($_model, $_fields, $_type)
 	{
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
-		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = VirtueMartCart::getCart(false);
 		$_address = new stdClass();
 		if(!empty($_cart->$_type)){

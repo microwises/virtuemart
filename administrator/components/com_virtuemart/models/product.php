@@ -113,10 +113,10 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->product_currency = null;
 		 	 $row->product_price_quantity_start = null;
 		 	 $row->product_price_quantity_end = null;
-		 	 
+
 		 	 $row->product_tax_id = null;
 		 	 $row->product_discount_id = null;
-		 	 
+
 		 	 if(empty($this->_data->paym_vendor_id)){
   		   		require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
    				$row->vendor_id = VirtueMartModelVendor::getLoggedVendor();
@@ -129,13 +129,13 @@ class VirtueMartModelProduct extends JModel {
 		 $this->_db->setQuery($q);
 		 $categories = $this->_db->loadResultArray();
 		 $row->categories = $this->_db->loadResultArray();
-		 
+
 		 if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
 //			$calculator = new calculationHelper();
 //			$row->price = $calculator->getProductPrices($featured->product_id);
 		}
-				
+
      	 return $row;
      }
 
@@ -355,7 +355,7 @@ class VirtueMartModelProduct extends JModel {
 	 * @return object List of  products
 	 */
     public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts) {
-//		$this->_db = JFactory::getDBO();
+
 	    switch ($group) {
 			case 'featured':
 				$filter = 'AND `#__vm_product`.`product_special`="Y" ';
@@ -369,9 +369,6 @@ class VirtueMartModelProduct extends JModel {
 			case 'topten';
 				$filter ='';
 		}
-		
-
-
 
 	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
@@ -386,7 +383,7 @@ class VirtueMartModelProduct extends JModel {
 	        if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
-	        
+
 			if ( $group =='topten') {
 				$query .= 'ORDER BY product_sales DESC LIMIT 0, '.(int)$nbrReturnProducts;
 			} else {
@@ -395,29 +392,32 @@ class VirtueMartModelProduct extends JModel {
 
         $this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		
+
 		/* Check if we have any products */
 		if($result) {
+			if ($show_prices=VmConfig::get('show_prices',1) == '1'){
+				$calculator = calculationHelper::getInstance();
+			}
+
 			/* Add some extra info */
 			foreach ($result as $featured) {
-	
+
 				/* Product price */
 				$price = "";
-				if (VmConfig::get('show_prices') == '1') {
+				if ($show_prices) {
 					/* Loads the product price details */
-					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
-					$calculator = calculationHelper::getInstance();
 					//Todo check if it is better just to use $featured, but needs redoing the sql above
 					$price = $calculator->getProductPrices((int)$featured->product_id);
 				}
 				$featured->prices = $price;
-	
+
 				/* Child products */
 				$featured->haschildren = $this->checkChildProducts($featured->product_id);
-	
+
 				/* Attributes */
 				$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
 			}
+
 		}
 
 		return $result;
@@ -650,20 +650,20 @@ class VirtueMartModelProduct extends JModel {
 
 		/* Process the images */
 		//uploading images and creating thumbnails
-		$fullImage = JRequest::getVar('product_full_image', array(), 'files');	
+		$fullImage = JRequest::getVar('product_full_image', array(), 'files');
 		if(!empty($fullImage['name'])){
 			$filename = $fullImage['name'];
 		} else {
 			$filename = $data['product_full_image_current'];
 		}
-	
+
 		$thumbImage = JRequest::getVar('product_thumb_image', array(), 'files');
 		if(!empty($thumbImage['name'])){
 			$filenamethumb = $thumbImage['name'];
 		} else {
 			$filenamethumb = $data['product_thumb_image_current'];
 		}
-				
+
 		$image = VmImage::getProductImage($filename,$filenamethumb);
 		if(!empty($image)){
 			$data = $image->saveImage($data,$fullImage,false);
@@ -673,7 +673,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Get the product data */
 		if (!$product_data->bind($data)) {
 			$this->setError($product_data->getError());
-			return false;	
+			return false;
 		}
 
 		/* Set the changed date */
@@ -684,27 +684,27 @@ class VirtueMartModelProduct extends JModel {
 
         /* Set the product packaging */
         $product_data->product_packaging = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
-        
+
         /* Set the order levels */
         $product_data->product_order_levels = $data['min_order_level'].','.$data['max_order_level'];
-        
+
         if (!$product_data->check()) {
 			$this->setError($product_data->getError());
-			return false;	
+			return false;
 		}
-		
+
         /* Store the product */
 		if (!$product_data->store()) {
 			$this->setError($product_data->getError());
 			return false;
 		}
-		
+
 		if(empty($data['product_id'])){
 			$dbv = $product_data->getDBO();
 			//I dont like the solution to use two variables
 			$product_data->product_id = $data['product_id'] = $dbv->insertid();
 		}
-		
+
 		$product_price_table = $this->getTable('product_price');
 
 //		//get product_price_id
@@ -714,25 +714,25 @@ class VirtueMartModelProduct extends JModel {
 
 		if (!$product_price_table->bind($data)) {
 			$this->setError($product_price_table->getError());
-			return false;	
+			return false;
 		}
 		// Make sure the calculation record is valid
 		if (!$product_price_table->check()) {
 			$this->setError($product_price_table->getError());
-			return false;	
+			return false;
 		}
-		
+
 		// Save the country record to the database
 		if (!$product_price_table->store()) {
 			$this->setError($product_price_table->getError());
 			return false;
 		}
 
-		
+
 		/* Update manufacturer link */
 		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_product_mf_xref','product_id','manufacturer_id',$product_data->product_id,JRequest::getInt('mf_category_id'));
-		
+
 //		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
 //		$q .= $product_data->product_id.', ';
 //		$q .= JRequest::getInt('manufacturer_id').') ';
@@ -1172,13 +1172,13 @@ class VirtueMartModelProduct extends JModel {
 		if($k == 0) return false;
 		else return true;
     }
-    
+
    	/**
-	* Function Description 
-	* 
-	* @author RolandD 
+	* Function Description
+	*
+	* @author RolandD
 	* @todo
-	* @see 
+	* @see
 	* @access public
 	* @return array list of files
 	*/
@@ -1193,10 +1193,10 @@ class VirtueMartModelProduct extends JModel {
 		}
 		return $options;
 	}
-	
+
 	/**
 	 * Decrease the stock for a given product and increase the sales amount
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Amount sold
@@ -1216,7 +1216,7 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Increase the stock for a given product after an order was cancelled
 	 * and decrease the sales amount
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Amount sold
@@ -1236,7 +1236,7 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Increase the stock for a given product and decrease the sales amount
 	 * after an order cancellation
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Original amount sold
@@ -1255,7 +1255,7 @@ class VirtueMartModelProduct extends JModel {
 
 	/**
 	 * Decrease the stock for a given product, calls _updateStock
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Amount sold
@@ -1268,7 +1268,7 @@ class VirtueMartModelProduct extends JModel {
 
 	/**
 	 * Increase the stock for a given product, calls _updateStock
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Amount sold
@@ -1281,7 +1281,7 @@ class VirtueMartModelProduct extends JModel {
 
 	/**
 	 * Update the stock for a given product
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_id integer Product ID
 	 * @param $_amount integer Amount sold

@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
@@ -29,13 +29,16 @@ if (!empty($this->vendor->vendor_store_desc)) { ?>
 </div>
 <?php } ?>
 
-<?php 
+<?php
+
 // load categories from front_categories if exist
 if ($this->categories) echo $this->loadTemplate('categories');
 
+//Console::logSpeed('Load featured');
 /* Show Featured Products */
 if (VmConfig::get('showFeatured', 1) && $this->featuredProducts) echo $this->loadTemplate('featuredproducts');
 
+//Console::logSpeed('Load recent');
 /* Recent products */
 if ($this->recentProducts) echo $this->loadTemplate('recentproducts');
 /* Topten products */

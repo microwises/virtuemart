@@ -208,7 +208,7 @@ class VirtueMartControllerUser extends JController
 		$data = JRequest::get('post');
 
 		// Load the user_info helper
-		require_once(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
+		require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
 		
 		user_info::address2cartanonym($data, $data['address_type']);
 //		user_info::address2cartanonym($data, 'ST');
@@ -265,7 +265,7 @@ class VirtueMartControllerUser extends JController
 		/* Create the view */
 		$view = $this->getView('user', 'html');
 		
-		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
 		
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );

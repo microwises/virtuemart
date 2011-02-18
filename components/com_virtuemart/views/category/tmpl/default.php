@@ -144,7 +144,7 @@ foreach ($this->products as $product) {
 
 
 						<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
-<?php	if (VmConfig::get('show_prices') == '1') {
+<?php	if ($this->show_prices == '1') {
 			if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 				echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
 			} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
@@ -174,7 +174,7 @@ foreach ($this->products as $product) {
 
 
 
-		
+
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
 		<form  method="post" id="addtocartproduct<?php echo $product->product_id ?>">
 		<div style="text-align: center;">

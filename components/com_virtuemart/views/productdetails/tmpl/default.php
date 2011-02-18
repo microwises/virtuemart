@@ -162,10 +162,10 @@ else { ?>
 					$text = '( '.$this->product->mf_name.' )';
 					/* Avoid JavaScript on PDF Output */
 					if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
-					else { 
+					else {
 					?>
 					<a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
-					<?PHP 
+					<?PHP
 					}
 					?>
 				<br />
@@ -176,12 +176,12 @@ else { ?>
 				<div class="product-price marginbottom12" id="productPrice<?php echo $this->product->product_id ?>">
 				<?php
 				/** @todo format price */
-				if (VmConfig::get('show_prices') == '1') {
+				if ($this->show_prices) {
 					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
 
-					
+
 					if( $this->showBasePrice ){
 						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->prices);
 						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);

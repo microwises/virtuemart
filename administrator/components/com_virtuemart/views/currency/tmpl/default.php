@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -72,21 +72,21 @@ AdminMenuHelper::startAdminArea();
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
 			<?php echo $checked; ?>
-		</td>				
-		<td align="left">
-		    <a href="<?php echo $editlink; ?>"><?php echo JText::_($row->currency_name); ?></a>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->exchange_rate); ?>
+		    <a href="<?php echo $editlink; ?>"><?php echo $row->currency_name; ?></a>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->currency_symbol); ?>
+			<?php echo $row->exchange_rate; ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->currency_code_2); ?>
-		</td>		
+			<?php echo $row->currency_symbol; ?>
+		</td>
 		<td align="left">
-			<?php echo JText::_($row->currency_code); ?>
+			<?php echo $row->currency_code_2; ?>
+		</td>
+		<td align="left">
+			<?php echo $row->currency_code; ?>
 		</td>
 <?php /*		<td>
 			<?php
@@ -105,7 +105,7 @@ AdminMenuHelper::startAdminArea();
 					$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 					$endDate = $date->toFormat($this->dateformat);
 				}
-			echo $endDate 
+			echo $endDate
 		</td> */ ?>
 		<td align="center">
 			<?php echo $published; ?>
@@ -138,4 +138,4 @@ AdminMenuHelper::startAdminArea();
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

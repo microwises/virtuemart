@@ -113,17 +113,10 @@ class VirtueMartModelCurrency extends JModel {
      * @author Max Milbers
      */
     function getCurrency() {
-	//$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
 	    $this->_data = $this->getTable();
 		$this->_data->load((int)$this->_id);
-	}
-
-	if (!$this->_data) {
-	    $this->_data = new stdClass();
-	    $this->_id = 0;
-//	    $this->_data = null; Who added this? What is the sense to create a new object and to set it then to null?
 	}
 
 	return $this->_data;
@@ -134,14 +127,13 @@ class VirtueMartModelCurrency extends JModel {
      * Bind the post data to the currency table and save it
      *
      * @author RickG
+     * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
 	$table =& $this->getTable('currency');
 
 	$data = JRequest::get( 'post' );
-	dump($data,'data in store currency');
-
 
 	$modified = JFactory::getDate();
 	$data['mdate']=$modified->toMySQL();
@@ -151,7 +143,10 @@ class VirtueMartModelCurrency extends JModel {
 	    $data['display_style'] = implode('|', $data['currency_display_style']);
 	}
 
-	$data['currency_symbol'] = $data['currency_display_style'][1];
+	if(!empty($data['currency_display_style']) && !empty($data['currency_display_style'][1])){
+		$data['currency_symbol'] = $data['currency_display_style'][1];
+	}
+
 	// Bind the form fields to the currency table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
