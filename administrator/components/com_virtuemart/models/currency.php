@@ -113,7 +113,7 @@ class VirtueMartModelCurrency extends JModel {
      * @author Max Milbers
      */
     function getCurrency() {
-	$db = JFactory::getDBO();
+	//$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
 	    $this->_data = $this->getTable();

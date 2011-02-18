@@ -38,21 +38,21 @@ function setproducttype(form,id){
 //	toggle the div Prices
 			for(key in datas) {
 				var value = datas[key];
-				pid= ("#productPrice"+id+" div .Price"+key);
+				pid= ("#productPrice"+id+" .Price"+key);
 				togglePriceVisibility(value,pid);
 			}
 		});
 	return false; // prevent to reload the page
 };
 
-function togglePriceVisibility(newPrice,productDiv){
-	div = jQuery(productDiv);
+function togglePriceVisibility(newPrice,spanProduct){
+	span = jQuery(spanProduct);
 	if(newPrice!=0){
-		div.show();
-		div.html(newPrice);
+		span.show();
+		span.html(newPrice);
 	} else {
-		div.html(0);
-		div.hide();
+		span.html(0);
+		span.hide();
 	}
 }
 

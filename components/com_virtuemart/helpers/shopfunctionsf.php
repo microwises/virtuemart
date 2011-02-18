@@ -66,7 +66,7 @@ class shopFunctionsF {
 	 		}
 	 	$descr = '';
 	 	if(VmConfig::get($name.'Text')) $descr = JText::_($description);
-		return '<div style="display : '.$vis.';" id="'.$name.'D" class="PriceDescr'.$name.'" >'.$descr.'<span id="'.$name.'" class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
+		return '<div style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 		}
 	}
 

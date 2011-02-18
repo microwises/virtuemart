@@ -179,7 +179,7 @@ function virtuemartParseRoute($segments)
 	if  (!$segments) return $vars;
 	
 	if (ctype_digit ($segments[0])) {
-		if (ctype_digit ($segments[1]) ) {
+		if (isset($segments[1]) && ctype_digit ($segments[1]) ) {
 			$vars['product_id'] = $segments[0];
 			$vars['category_id'] = $segments[1];
 			$vars['view'] = 'productdetails';

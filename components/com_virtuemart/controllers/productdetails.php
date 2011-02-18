@@ -111,6 +111,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = $this->getModel('productdetails');
 		
 		$price = $product_model->getPrice($product_id);
+		
 		// Get the document object.
 		$document =& JFactory::getDocument();
  

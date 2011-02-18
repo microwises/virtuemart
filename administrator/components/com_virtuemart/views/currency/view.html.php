@@ -73,7 +73,7 @@ class VirtuemartViewCurrency extends JView {
 //			$this->assignRef('vendor_id', $vendorCurrency);
 			
 			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'||||||');
+			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'');
 	    	$this->assignRef('currencyDisplay',$cd);
 			
 //			

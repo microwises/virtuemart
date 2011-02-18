@@ -181,7 +181,10 @@ class VirtueMartModelProductdetails extends JModel {
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
-
+// change display //
+		foreach ($prices as &$value  ){
+			$value = $calculator->priceDisplay($value);
+		}
 
 		return $prices;
 		

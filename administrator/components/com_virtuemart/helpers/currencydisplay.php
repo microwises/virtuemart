@@ -37,17 +37,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 // ============================================================
 
 class CurrencyDisplay {
-    public $id      		= "euro";		// string ID related with the currency (ex : language)
-    public $symbol    		= "&euro;";	// Printable symbol
-    public $nbDecimal 		= 2;	// Number of decimals past colon (or other)
-    public $decimal   		= ",";	// Decimal symbol ('.', ',', ...)
-    public $thousands 		= " "; 	// Thousands separator ('', ' ', ',')
-    public $positivePos	= 1;	// Currency symbol position with Positive values :
+    var $id      		= "euro";		// string ID related with the currency (ex : language)
+    var $symbol    		= "&euro;";	// Printable symbol
+    var $nbDecimal 		= 2;	// Number of decimals past colon (or other)
+    var $decimal   		= ",";	// Decimal symbol ('.', ',', ...)
+    var $thousands 		= " "; 	// Thousands separator ('', ' ', ',')
+    var $positivePos	= 1;	// Currency symbol position with Positive values :
     // 0 = '00Symb'
     // 1 = '00 Symb'
     // 2 = 'Symb00'
     // 3 = 'Symb 00'
-    public $negativePos	= 8;	// Currency symbol position with Negative values :
+    var $negativePos	= 8;	// Currency symbol position with Negative values :
     // 0 = '(Symb00)'
     // 1 = '-Symb00'
     // 2 = 'Symb-00'
@@ -167,7 +167,9 @@ class CurrencyDisplay {
 			//would be nice to automatically unpublish the product or so
 			$currency = new CurrencyDisplay();
 		}
-		
+		dump($currency,'currency display');
+		dump($currencyId,'id');
+		dump($style,'style');
 		return $currency;
 	}
 
