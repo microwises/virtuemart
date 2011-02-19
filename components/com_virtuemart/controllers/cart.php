@@ -41,8 +41,8 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('calculationHelper')) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 	}
 
 
@@ -84,7 +84,7 @@ class VirtueMartControllerCart extends JController {
 		/* Load the cart helper */
 		//$this->getModel('productdetails');
 		/* Load the cart helper */
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		//require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
@@ -107,7 +107,7 @@ class VirtueMartControllerCart extends JController {
 
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		//require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 
 		$cart = VirtueMartCart::getCart();
 		if($cart){

@@ -40,7 +40,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
 

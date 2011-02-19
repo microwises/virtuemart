@@ -46,7 +46,7 @@ class VirtueMartViewCart extends JView {
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
 

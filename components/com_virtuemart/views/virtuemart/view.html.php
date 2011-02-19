@@ -54,7 +54,7 @@ class VirtueMartViewVirtueMart extends JView {
         $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
         $this->assignRef('categories',	$categoryChildren);
 
-        require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+        if(!class_exists('calculationHelper'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 
         /* Load the recent viewed products */
         $this->assignRef('recentProducts', $productModel->getRecentProducts());

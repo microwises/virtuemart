@@ -13,7 +13,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-class calculationHelper{
+class calculationHelper {
 
 	private $_db;
 	private $_shopperGroupId;
@@ -54,7 +54,8 @@ class calculationHelper{
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
 
-	    require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+
+		if(!class_exists('CurrencyDisplay'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
 		$this -> _debug           = false;
 	}

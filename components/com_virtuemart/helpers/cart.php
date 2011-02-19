@@ -141,7 +141,8 @@ class VirtueMartCart  {
 			return false;
 		}
 
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('calculationHelper'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($product_ids as $p_key => $product_id) {
 
