@@ -34,6 +34,7 @@ $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js
 /* Loading stylesheets */
 $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
 
+echo 'This is a svn tet for eugen';
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
 	if (file_exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php')) {
