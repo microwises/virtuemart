@@ -265,7 +265,7 @@ class VirtueMartControllerUser extends JController
 		/* Create the view */
 		$view = $this->getView('user', 'html');
 
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
 
 		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );

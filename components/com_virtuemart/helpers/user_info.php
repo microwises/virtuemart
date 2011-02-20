@@ -18,8 +18,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'user.php' );
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
+if(!class_exists('VirtueMartModelUser')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'user.php' );
+if(!class_exists('VirtueMartModelUserfields')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 
 class user_info
 {
@@ -127,7 +127,7 @@ class user_info
 
 	function saveAddressInCart($_data, $_fields, $_type) {
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = VirtueMartCart::getCart();
 		$_address = array();
 
@@ -159,7 +159,7 @@ class user_info
 	function getAddress ($_model, $_fields, $_type)
 	{
 		//JPATH_COMPONENT does not work, because it is used in FE and BE
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$_cart = VirtueMartCart::getCart(false);
 		$_address = new stdClass();
 		if(!empty($_cart->$_type)){

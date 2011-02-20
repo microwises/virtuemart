@@ -447,7 +447,7 @@ class VirtueMartCart  {
 	 */
 	public function setShipper($shipper_id)
 	{
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 
 		$_dispatcher = JDispatcher::getInstance();
@@ -539,7 +539,7 @@ class VirtueMartCart  {
 		}
 		// Ok, a shipper was selected, now make sure we can find a matching shipping rate for
 		// the current order shipto and weight
-		require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
@@ -561,7 +561,7 @@ class VirtueMartCart  {
 
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
 		} else {
-			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();
@@ -604,7 +604,7 @@ class VirtueMartCart  {
 	 private function validateUserData($type='BT', $_obj = null){
 
 //		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		require(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
 		$_userFieldsModel = new VirtueMartModelUserfields();
 //		$_userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
 		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
