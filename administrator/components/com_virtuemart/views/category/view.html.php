@@ -38,7 +38,7 @@ class VirtuemartViewCategory extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('image');
-		
+
 		$model = $this->getModel();
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();
@@ -49,7 +49,7 @@ class VirtuemartViewCategory extends JView {
 
 		if ($layoutName == 'edit') {
 			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');			
+				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
 			} else {
 				JToolBarHelper::title( JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
 
@@ -61,22 +61,22 @@ class VirtuemartViewCategory extends JView {
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel();
-			
+
 			$parent = $model->getParentCategory( $category->category_id );
 			$this->assignRef('parent', $parent);
-			
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+
+			if(!class_exists('ShopFunctions'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
 			$templateList = ShopFunctions::renderTemplateList(JText::_('VM_CATEGORY_TEMPLATE_DEFAULT'));
-			
+
 			$this->assignRef('jTemplateList', $templateList);
-			
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
+
+			if(!class_exists('VirtueMartModelConfig'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'config.php');
 			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
 			$this->assignRef('categoryLayouts', $categoryLayoutList);
 
 			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 			$this->assignRef('productLayouts', $productLayouts);
-			
+
 			$categorylist = ShopFunctions::categoryListTree(array($parent->category_id));
 
 			$this->assignRef('category', $category);

@@ -375,7 +375,8 @@ class shopFunctionsF {
 	 * @author Max Milbers
 	 */
 	function setTemplate( $template ){
-		if(!empty($template)){
+		dump($template,'hmm');
+		if(!empty($template) && $template!='default'){
 			if (is_dir(JPATH_THEMES.DS.$template)) {
 				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
 				$mainframe = JFactory::getApplication('site');

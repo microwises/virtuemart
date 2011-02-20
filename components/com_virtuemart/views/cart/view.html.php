@@ -336,7 +336,7 @@ class VirtueMartViewCart extends JView {
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){
-			require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			if(!class_exists('user_info'))require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
 			$_userFieldsBT = $userFieldsModel->getUserFields(
 				 'account'
@@ -355,7 +355,7 @@ class VirtueMartViewCart extends JView {
 
 		$STaddress['fields']= array();
 		if(!empty($this->_cart->ST)){
-			require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			if(!class_exists('user_info'))require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
 			$_userFieldsST = $userFieldsModel->getUserFields(
 				'shipping'
 				, array() // Default toggles

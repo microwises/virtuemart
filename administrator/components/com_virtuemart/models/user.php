@@ -31,7 +31,7 @@ jimport('joomla.version');
 // Get the helpers we need here
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
-require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'user_info.php');
+if(!class_exists('user_info'))require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'user_info.php');
 
 /**
  * Model class for shop users

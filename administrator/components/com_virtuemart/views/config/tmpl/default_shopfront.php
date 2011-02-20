@@ -15,9 +15,9 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 $orderByFields = array();
 $orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('VM_DEFAULT'));
@@ -26,7 +26,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('VM_PRODU
 $orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('VM_CART_SKU'));
 $orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('VM_LATEST'));
 $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));
-?> 
+?>
 <br />
 <table>
     <tr><td valign="top">
@@ -169,7 +169,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1', 'name', 'name', $this->config->get('vmtemplate'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1', 'value', 'name', $this->config->get('vmtemplate'));
 			    ?>
 			</td>
 		    </tr>
@@ -193,7 +193,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'categorytemplate', 'size=1', 'name', 'name', $this->config->get('categorytemplate'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'categorytemplate', 'size=1', 'value', 'name', $this->config->get('categorytemplate'));
 			    ?>
 			</td>
 		    </tr>
@@ -221,7 +221,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    ?>
 			</td>
 		    </tr>
-		    
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
@@ -243,7 +243,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
 			</td>
 		    </tr>
-		    
+
 		    <tr>
 				<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">

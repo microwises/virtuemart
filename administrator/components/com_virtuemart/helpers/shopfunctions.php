@@ -237,18 +237,23 @@ class ShopFunctions {
 			$defaulttemplate[0] = new stdClass;
 			$defaulttemplate[0] -> name = $defaultText;
 			$defaulttemplate[0] -> directory = 0;
+			$defaulttemplate[0] -> value = 'default';
 		}
 
 		if (VmConfig::isJ15()) {
-			require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 		} else {
-			require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
-			require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
 			$templatesModel = new TemplatesModelTemplates();
 			$jtemplates = $templatesModel->getItems();
 			//@TODO remove templates for admin panel.
 		}
+		foreach($jtemplates as $template){
+			$template->value = $template->name;
+		}
+
 		return array_merge($defaulttemplate,$jtemplates);
 	}
 

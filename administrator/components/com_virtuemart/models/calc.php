@@ -386,8 +386,8 @@ class VirtueMartModelCalc extends JModel
 		}
 		$q=substr($q,0,-3);
 
-		$q .= ' AND ( publish_up = '.$db->Quote($nullDate).' OR publish_up <= '.$db->Quote($now).' )' .
-			' AND ( publish_down = '.$db->Quote($nullDate).' OR publish_down >= '.$db->Quote($now).' ) ';
+		$q .= ' AND ( publish_up = '.$this->_db->Quote($nullDate).' OR publish_up <= '.$this->_db->Quote($now).' )' .
+			' AND ( publish_down = '.$this->_db->Quote($nullDate).' OR publish_down >= '.$this->_db->Quote($now).' ) ';
 
 		$this->_db->setQuery($q);
 		$data = $this->_db->loadObjectList();
