@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 // Load the helpers
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'paramhelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
 
 
 /**
@@ -559,7 +559,7 @@ class VirtueMartModelUserfields extends JModel {
 	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
 				,'functions' => array()
@@ -585,12 +585,12 @@ class VirtueMartModelUserfields extends JModel {
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
 				case 'title':
-					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::listUserTitle(
+					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::listUserTitle(
 						$_return['fields'][$_fld->name]['value'], '', $_prefix);
 					break;
 
 				case 'country_id':
-					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderCountryList(
+					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false
 						, array('onchange' => 'changeStateList();'), $_prefix);
 					// The table data can contain the country_id or the country name

@@ -373,10 +373,10 @@ class VirtueMartModelOrders extends JModel {
 					$this->_updateOrderHist($order_id, $new_status, $customer_notified, $comment);
 
 					/* Update stock level */
-					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orderstatus.php');
+					require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 					$_updateStock = VirtueMartModelOrderstatus::updateStockAfterStatusChange($new_status, $order_status_code);
 					if ($_updateStock != 0) {
-						require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+						require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
 						$_productModel = new VirtueMartModelProduct();
 						$_q = 'SELECT product_id '
 							.', product_quantity '
@@ -536,8 +536,9 @@ class VirtueMartModelOrders extends JModel {
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
 		$_userInfoData =  $this->getTable('order_user_info');
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'userfields.php');
-		if(!class_exists('shopFunctionsF')) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+
+		//if(!class_exists('shopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
@@ -614,9 +615,9 @@ class VirtueMartModelOrders extends JModel {
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {
 				// We got a new order status; check if the stock should be updated
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'orderstatus.php');
+				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($_returnValue) < 0) {// >0 is not possible for new orders
-					require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'product.php');
+					require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
 					$_productModel = new VirtueMartModelProduct();
 					foreach ($_cart->products as $_prod) {
 						$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
@@ -860,7 +861,7 @@ class VirtueMartModelOrders extends JModel {
 		$include_comments = JRequest::getVar('include_comment', array());
 
 		/* Get vendor info */
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
 		$vendorModel = new VirtueMartModelVendor();
 		$vendorModel->setId($vendor_id);

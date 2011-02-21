@@ -149,7 +149,7 @@ class VirtueMartModelCategory extends JModel {
 		if( $withParentId ){
 			$query .= " AND cx.category_parent_id = ". $this->_db->Quote($parentId);
 		}
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
 			$query .= " AND (c.vendor_id = ". $this->_db->Quote($vendorId) . " OR cx.category_shared = '1') ";
 		}
@@ -396,7 +396,7 @@ class VirtueMartModelCategory extends JModel {
      */
 	public function publish($publishId = false){
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','category',$publishId);
 
 	}

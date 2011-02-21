@@ -94,7 +94,7 @@ class convertECB {
 //			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 //				JError::raiseNotice(1, "Updating currency " );
 				$contents = VmConnector::handleCommunication( $curr_filename );
 				$this->last_updated = date('Ymd');

@@ -41,7 +41,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
 		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
 		

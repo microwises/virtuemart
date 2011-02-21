@@ -29,9 +29,10 @@ jimport('joomla.application.component.model');
 jimport('joomla.version');
 
 // Get the helpers we need here
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shoppergroup.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
-if(!class_exists('user_info'))require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'user_info.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
+if(!class_exists('ShopperGroup')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
+if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+if(!class_exists('user_info'))require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'user_info.php');
 
 /**
  * Model class for shop users
@@ -375,7 +376,7 @@ class VirtueMartModelUser extends JModel {
 				// If user registration is not allowed, show 403 not authorized.
 				// But it is possible for admins and storeadmins to save
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+				if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 				if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
 					JError::raiseError( 403, JText::_( 'Access Forbidden' ));
@@ -515,7 +516,7 @@ class VirtueMartModelUser extends JModel {
 
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 			modelfunctions::storeArrayData('#__vm_user_shopper_group_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 
 			if (!user_info::storeAddress($_data, 'user_info', $new)) {
@@ -526,7 +527,7 @@ class VirtueMartModelUser extends JModel {
 			if($_data['user_is_vendor']){
 
 				//				$_data['vendor_id'] = $_data['my_vendor_id'];
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
 				$vendorModel->setId($_data['vendor_id']);
 				if (!$vendorModel->store($_data)) {

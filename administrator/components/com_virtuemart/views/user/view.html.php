@@ -224,7 +224,7 @@ class VirtuemartViewUser extends JView {
 
 						//TODO question for oscar, makes that sense to ask for hte order list?
 //					 if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
-//					 	require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+//					 	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 //	    				$this->assignRef('currency',CurrencyDisplay::getCurrencyDisplay());
 //					 	$this->assignRef('vendorCurrency', CurrencyDisplay::getCurrencyDisplay());
 //					 	$currency = $vendorModel->getCurrencyDisplay();
@@ -233,7 +233,7 @@ class VirtuemartViewUser extends JView {
 
 					 if (!empty($userDetails->user_is_vendor)) {
 
-//					 	require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+//					 	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 //						$this->assignRef('vendorCurrency', CurrencyDisplay::getCurrencyDisplay());
 						
 					 	$this->assignRef('vendor', $userDetails->vendor);

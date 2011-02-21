@@ -87,7 +87,7 @@ class ShopFunctions {
 	public function renderVendorList($vendorId, $multiple = false) {
 
 		$db = JFactory::getDBO();
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
 			if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 
@@ -427,7 +427,7 @@ class ShopFunctions {
 		//retrieving model
 		if( !class_exists('VirtueMartModel'.$className) ){
 
-			$modelPath = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS."models".DS.$name.".php";
+			$modelPath = JPATH_COMPONENT_ADMINISTRATOR.DS."models".DS.$name.".php";
 
 			if( file_exists($modelPath) ){
 				require( $modelPath );

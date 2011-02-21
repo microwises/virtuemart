@@ -46,7 +46,7 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
    function process_payment($order_number, $order_total, &$d) {
         global $vmLogger;
         
-        require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+        require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
         $vars = array(
              "action" => "ns_quicksale_cc",
              "ecxid"  => $this->params->get('PN_LOGIN'),

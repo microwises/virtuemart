@@ -655,7 +655,7 @@ class VirtueMartModelMedia extends JModel {
 	function createThumbImage( $fileName, $section='product', $height=90, $width=90) {
 		
 //		require_once(CLASSPATH . 'imageTools.class.php' );
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 		
 		$media_path_url = VmConfig::get('media_product_path');
 		$media_filename = $fileName;

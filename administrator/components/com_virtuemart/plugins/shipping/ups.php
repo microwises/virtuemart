@@ -159,7 +159,7 @@ class plgShippingUps extends vmShippingPlugin {
 
 			// echo htmlentities( $xmlPost );
 			$upsURL = "https://www.ups.com:443/ups.app/xml/Rate";
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
 			$error = false;
 

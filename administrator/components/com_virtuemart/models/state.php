@@ -228,7 +228,7 @@ class VirtueMartModelState extends JModel {
      */
 	function publish($publishId = false)
 	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','state',$publishId);
 	}
 

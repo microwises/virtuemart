@@ -55,7 +55,7 @@ class calculationHelper {
 		$this -> _currency 		  = $this->_getCurrencyObject();
 
 
-		if(!class_exists('CurrencyDisplay'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+		if(!class_exists('CurrencyDisplay'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
 		$this -> _debug           = false;
 	}
@@ -715,7 +715,7 @@ class calculationHelper {
 
 //		$code=4;
 		$paymentCosts = 0.0;
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
 		$model = new VirtueMartModelPaymentmethod;
 		$model->setId($paym_id);
@@ -1055,14 +1055,14 @@ class calculationHelper {
 
 		$converterFile  = VmConfig::get('currency_converter_module');
 
-		if (file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
+		if (file_exists( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
 			$module_filename = $converterFile;
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
 			if( class_exists( $module_filename )) {
 				$_currency = new $module_filename();
 			}
 		} else {
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
 			$_currency = new convertECB();
 		}
 		return $_currency;

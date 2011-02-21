@@ -11,7 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'version.php');
+require(JPATH_COMPONENT_ADMINISTRATOR.DS.'version.php');
 
 class VmConfig
 {

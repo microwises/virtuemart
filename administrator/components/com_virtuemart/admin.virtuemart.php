@@ -15,12 +15,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 *
 * http://virtuemart.org
 */
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
 // Require specific controller if requested
 if ($controllername = JRequest::getVar('controller')) {
-	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require $path;
 	}
@@ -32,7 +32,7 @@ if ($controllername = JRequest::getVar('controller')) {
 
 // Try to find a controller with the same name as the view
 else if ($controllername = JRequest::getVar('view')) {
-	$path = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require $path;
 	}
@@ -42,9 +42,10 @@ else if ($controllername = JRequest::getVar('view')) {
 }
 
 //Fallback
-if(empty($controllername)){
+if(empty($controllername) || $controllername = 'virtuemart'){
+	$controllername = 'virtuemart';
 	// Require the base controller
-	require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'controllers'.DS.'virtuemart.php');
+	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'virtuemart.php');
 }
 
 // Create the controller

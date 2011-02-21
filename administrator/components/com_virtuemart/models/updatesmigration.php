@@ -99,7 +99,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function determineStoreOwner() {
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 		if (isset($user_id)) {
 		    $user = JFactory::getUser($user_id);
@@ -230,7 +230,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';
 
-	require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'user.php');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	if (!$usermodel->store($fields)) {
 		$this->setError($usermodel->getError());

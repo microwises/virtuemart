@@ -168,7 +168,7 @@ class VirtueMartModelUsergroups extends JModel {
 
     function delete() {
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('group_id','usergroups');
 
     }
@@ -176,7 +176,7 @@ class VirtueMartModelUsergroups extends JModel {
 
 	function publish($publishId = false) {
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'modelfunctions.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('group_id','usergroups',$publishId);
 		
     }

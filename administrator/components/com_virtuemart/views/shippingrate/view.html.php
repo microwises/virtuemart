@@ -97,7 +97,7 @@ class VirtuemartViewShippingRate extends JView {
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
 		
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'calc.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();

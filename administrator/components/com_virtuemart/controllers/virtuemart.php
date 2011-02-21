@@ -23,7 +23,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtuemartController extends JController
+class VirtuemartControllerVirtuemart extends JController
 {
 	/**
 	 * Method to display the view
@@ -31,18 +31,18 @@ class VirtuemartController extends JController
 	 * @access	public
 	 */
 	function display()
-	{	
+	{
 
-		$document = JFactory::getDocument();	    
+		$document = JFactory::getDocument();
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
 		$view =& $this->getView($viewName, $viewType);
 
-		// Push a model into the view					
+		// Push a model into the view
 		$model =& $this->getModel( 'virtuemart' );
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
-		}	    
-		parent::display();	
+		}
+		parent::display();
 	}
 }

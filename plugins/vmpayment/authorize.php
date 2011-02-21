@@ -195,7 +195,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @author Max Milbers
 	 */
 	function plgVmOnCheckoutCheckPaymentData($cart){
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
 			if(empty($cart->creditcard_id) ||
 				empty($cart->cc_name) ||
@@ -217,9 +217,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnPaymentSelectCheck($cart)
 	{
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
-			require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'creditcard.php');
+			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
 			$cart->creditcard_id= JRequest::getVar('creditcard', '0');
 			$cart->cc_name= JRequest::getVar('cart_cc_name', '');
 			$cart->cc_number= JRequest::getVar('cart_cc_number', '');
@@ -313,7 +313,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_returnValue = 'C'; // TODO Read the status from the parameters
 
 		// Load the required helpers
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
 		$_usr =& JFactory::getUser();
 
@@ -480,7 +480,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		//$database = new ps_DB();
 		$database = JFactory::getDBO();
 
-		require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 		
 		/*CERTIFICATION
 		Visa Test Account           4007000000027
