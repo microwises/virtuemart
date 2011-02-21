@@ -25,7 +25,6 @@ if ($controllername = JRequest::getVar('controller')) {
 		require $path;
 	}
 	else {
-
 		$controllername = '';
 	}
 }
@@ -41,15 +40,16 @@ else if ($controllername = JRequest::getVar('view')) {
 	}
 }
 
-//Fallback
-if(empty($controllername) || $controllername = 'virtuemart'){
+//Fallback to base controller
+if($controllername == '') {
 	$controllername = 'virtuemart';
-	// Require the base controller
-	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'virtuemart.php');
 }
 
 // Create the controller
-$classname	= 'VirtueMartController'.ucfirst($controllername);
+$classname	= 'VirtuemartController'.ucfirst($controllername);
+if (!class_exists($classname)) {
+	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php');
+}
 $controller = new $classname();
 
 // Perform the Request task
