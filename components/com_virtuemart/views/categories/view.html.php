@@ -79,10 +79,8 @@ class VirtuemartViewCategories extends JView {
 
 	    if(empty($category->category_template)){
 	    	$catTpl = VmConfig::get('categorytemplate');
-	    	dump($catTpl,'config');
 	    }else {
 	    	$catTpl = $category->category_template;
-	    	dump($catTpl,'category_template');
 	    }
 
 		//Do we need that here? It should show the general category template or the shop template

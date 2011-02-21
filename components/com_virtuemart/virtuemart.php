@@ -18,11 +18,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 /* Require the config */
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
 /* Front-end helpers */
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
+require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 /* Loading jQuery and VM scripts. */
@@ -43,7 +43,7 @@ if($controller = JRequest::getVar('view', 'virtuemart')) {
 }
 
 //This should be done in the config, only when there are no entries, get them from the file
-//require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart.cfg.php');
+//require(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
 
 
 /* Create the controller */

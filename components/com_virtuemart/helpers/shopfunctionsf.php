@@ -363,10 +363,9 @@ class shopFunctionsF {
 				$layout = $prodLayout;
 			}
 		}
-		dump($_SESSION,'session');
+
 		$view->setLayout(strtolower($layout));
-//		$mainframe = JFactory::getApplication();
-//		$mainframe->set('setLayout', strtolower($layout));
+
 	}
 
 	/**
@@ -375,7 +374,7 @@ class shopFunctionsF {
 	 * @author Max Milbers
 	 */
 	function setTemplate( $template ){
-		dump($template,'hmm');
+
 		if(!empty($template) && $template!='default'){
 			if (is_dir(JPATH_THEMES.DS.$template)) {
 				//$this->addTemplatePath(JPATH_THEMES.DS.$template);

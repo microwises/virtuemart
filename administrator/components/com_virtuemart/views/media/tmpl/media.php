@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 /**
  * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_virtuemart&no_menu=1
  */
@@ -47,7 +47,7 @@ $keyword = JRequest::getVar('keyword', null);
 			<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
 	</div>
 </div>
-<?php 
+<?php
 $productfileslist = $this->productfileslist;
 $roles = $this->productfilesroles;
 $pagination = $this->pagination;
@@ -74,13 +74,13 @@ $pagination = $this->pagination;
 			/* Create the filename but check if it is a URL first */
 			if (strtolower(substr($productfile->file_name, 0, 4)) == 'http') {
 				$filename = $productfile->file_name;
-				dump($filename,'Media filename mit http');
+//				dump($filename,'Media filename mit http');
 			}
 			else{
 				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
 				$imageProductFolder = implode(DS, $imageRootFolderExp);
 				$filename = JPATH_SITE.DS.$imageProductFolder.str_replace(JPATH_SITE, '', $productfile->file_name);
-				dump($filename,'Media filepath ');
+//				dump($filename,'Media filepath ');
 			}
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
 			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
@@ -90,12 +90,12 @@ $pagination = $this->pagination;
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
-				<?php 
+				<?php
 				$link = "index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&product_id=".$productfile->file_product_id."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->product_name); ?></td>
 				<!-- File name -->
-				<?php 
+				<?php
 				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&product_id=".$productfile->file_product_id."&file_id=".$productfile->file_id."&file_role=".$productfile->file_role."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_name, array('title' => JText::_('EDIT').' '.$productfile->file_name)); ?></td>
@@ -133,7 +133,7 @@ $pagination = $this->pagination;
 						if (is_null($productfile->product_thumb_image)) $basename = $info['basename'];
 						else $basename = basename($productfile->product_thumb_image);
 						$thumbimg = $info['dirname'].DS.'resized'.DS.$basename;
-						
+
 						/* Thumbnail image */
 						if (JFile::exists($thumbimg)) {
 							$imgsize = getimagesize($thumbimg);
@@ -151,11 +151,11 @@ $pagination = $this->pagination;
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>
-		<?php 
+		<?php
 			$k = 1 - $k;
 			$i++;
-		} 
-	}	
+		}
+	}
 	?>
 	</tbody>
 	<tfoot>
@@ -179,4 +179,4 @@ $pagination = $this->pagination;
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>
