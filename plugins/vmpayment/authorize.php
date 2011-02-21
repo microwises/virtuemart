@@ -195,7 +195,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @author Max Milbers
 	 */
 	function plgVmOnCheckoutCheckPaymentData($cart){
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+		if (!class_exists('VirtueMartModelPaymentmethod')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+		}
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
 			if(empty($cart->creditcard_id) ||
 				empty($cart->cc_name) ||
@@ -217,7 +219,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnPaymentSelectCheck($cart)
 	{
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+		if (!class_exists('VirtueMartModelPaymentmethod')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+		}
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
 			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
 			$cart->creditcard_id= JRequest::getVar('creditcard', '0');

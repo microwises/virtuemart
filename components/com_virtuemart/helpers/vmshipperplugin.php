@@ -435,11 +435,18 @@ abstract class vmShipperPlugin extends JPlugin
 	 */
 	protected function getShippingRate($_id)
 	{
-		if(!class_exists('VirtueMartModelShippingRate')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
+		if ($_id < 0) {
+			return 0;
+		}
+		if (!class_exists('VirtueMartModelShippingRate')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
+		}
 		$_sRate = new VirtueMartModelShippingRate();
 		$_rates = $_sRate->getShippingRatePrices($_id);
 		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
-		if(!class_exists('calculationHelper'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		if (!class_exists('calculationHelper')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		}
 		$_calc = calculationHelper::getInstance();
 		return $_calc->priceDisplay($_total);
 	}
@@ -488,13 +495,15 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'FROM #__vm_shipping_rate '
 			. "WHERE `shipping_rate_carrier_id` = $_shipperId "
 			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
-			. "AND   '".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end` "
+			. "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') "
+			.	 "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) "
 			. 'AND   (`shipping_rate_country` = \'\' '
 			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) '
 			. 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) '
 			. 'LIMIT 1';
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
+			JError::raiseWarning(500, 'No proper shipping rate found');
 			return -1;
 		}
 		return $_r['shipping_rate_id'];

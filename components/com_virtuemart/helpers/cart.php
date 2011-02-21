@@ -615,7 +615,7 @@ class VirtueMartCart  {
 
 		$redirectMsg=0;
 		foreach($neededFields as $field){
-			if ($_obj !== null) {
+			if ($_obj !== null && is_array($this->{$type})) {
 				$this->{$type}[$field->name] = $_obj->{$field->name};
 			}
 			if(empty($this->{$type}[$field->name]) && $field->name!='state_id'){
@@ -623,7 +623,9 @@ class VirtueMartCart  {
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
-					require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'state.php');
+					if (!class_exists('VirtueMartModelState')) {
+						require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'state.php');
+					}
 					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
 						$redirectMsg = $msg;
 					}
@@ -647,7 +649,9 @@ class VirtueMartCart  {
 
 		//Just to prevent direct call
 		if($this->_dataValidated && $this->_confirmDone){
-			require( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
+			if (!class_exists('VirtueMartModelOrders')) {
+				require( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
+			}
 			$order = new VirtueMartModelOrders();
 			if (($_orderID = $order->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
