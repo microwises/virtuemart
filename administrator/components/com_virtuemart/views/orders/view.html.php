@@ -42,7 +42,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
 		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
 		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
@@ -59,7 +59,7 @@ class VirtuemartViewOrders extends JView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-			$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->vendor_id);
+			$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->vendor_id);
 			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
@@ -179,7 +179,7 @@ class VirtuemartViewOrders extends JView {
 				
 				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {					
-					$_currencies['v'.$order->vendor_id] = VirtueMartModelVendor::getCurrencyDisplay($order->vendor_id);
+					$_currencies['v'.$order->vendor_id] = CurrencyDisplay::getCurrencyDisplay($order->vendor_id);
 				}
 				$order->order_total = $_currencies['v'.$order->vendor_id]->getFullValue($order->order_total);
 			}
