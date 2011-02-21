@@ -303,7 +303,7 @@ class VirtueMartModelOrders extends JModel {
 		$comments = JRequest::getVar('order_comment', array());
 
 		// TODO This is not the most logical place for this plugin (or better; the method updateStatus() must be renamed....)
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
@@ -861,7 +861,7 @@ class VirtueMartModelOrders extends JModel {
 		$include_comments = JRequest::getVar('include_comment', array());
 
 		/* Get vendor info */
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
 		$vendorModel = new VirtueMartModelVendor();
 		$vendorModel->setId($vendor_id);
@@ -963,7 +963,7 @@ class VirtueMartModelOrders extends JModel {
 		$curDate = JFactory::getDate();
 		$data['mdate'] = $curDate->toMySql();
 
-		require_once(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));

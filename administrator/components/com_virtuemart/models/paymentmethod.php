@@ -140,7 +140,7 @@ class VirtueMartModelPaymentmethod extends JModel
   		}
 
   		if(empty($this->_data->paym_vendor_id)){
-  		   	require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'vendor.php');
+  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
    			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
   		}
 

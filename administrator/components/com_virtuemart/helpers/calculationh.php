@@ -429,7 +429,7 @@ class calculationHelper {
 	 */
 	private function couponHandler($_code)
 	{
-		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'coupon.php');
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}

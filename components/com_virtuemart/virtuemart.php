@@ -23,7 +23,7 @@ VmConfig::loadConfig();
 
 /* Front-end helpers */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
-require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
+require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 /* Loading jQuery and VM scripts. */
 $document = JFactory::getDocument();

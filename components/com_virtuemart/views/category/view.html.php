@@ -67,7 +67,7 @@ class VirtuemartViewCategory extends JView {
 		$document->setTitle($category->category_name);
 
 	    /* Load the products in the given category */
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
 

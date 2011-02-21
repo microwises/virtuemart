@@ -422,7 +422,7 @@ class VirtueMartCart  {
 	 * @return string On error the message text, otherwise an empty string
 	 */
 	public function setCouponCode($coupon_code) {
-		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'coupon.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'coupon.php');
 		$_prices = $this->getCartPrices();
 		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['billTotal']);
 		if (!empty($_msg)) {

@@ -44,8 +44,8 @@ class VirtuemartViewOrders extends JView {
 
 		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
-		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
-		require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 

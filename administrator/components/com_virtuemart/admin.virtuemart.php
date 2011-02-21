@@ -25,12 +25,13 @@ if ($controllername = JRequest::getVar('controller')) {
 		require $path;
 	}
 	else {
+
 		$controllername = '';
 	}
 }
 
 // Try to find a controller with the same name as the view
-else if ($controllername = JRequest::getVar('view')) {
+else if ($controllername = JRequest::getVar('view','virtuemart')) {
 	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require $path;
@@ -40,16 +41,8 @@ else if ($controllername = JRequest::getVar('view')) {
 	}
 }
 
-//Fallback to base controller
-if($controllername == '') {
-	$controllername = 'virtuemart';
-}
-
 // Create the controller
-$classname	= 'VirtuemartController'.ucfirst($controllername);
-if (!class_exists($classname)) {
-	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php');
-}
+$classname	= 'VirtueMartController'.ucfirst($controllername);
 $controller = new $classname();
 
 // Perform the Request task

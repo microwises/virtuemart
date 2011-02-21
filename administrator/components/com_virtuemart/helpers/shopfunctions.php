@@ -801,7 +801,7 @@ class ShopFunctions {
 	* @return boolean The result of the validation
 	*/
 	public function validateEUVat($euvat) {
-		require(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'euvatcheck.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
 		$vatcheck = new VmEUVatCheck($euvat);
 		return $vatcheck->validvatid;
 	}
