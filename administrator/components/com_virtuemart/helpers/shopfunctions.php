@@ -334,7 +334,7 @@ class ShopFunctions {
 	*/
 	public function getCountryByID ($_id, $_fld = 'country_name')
 	{
-		if (empty($_id) && $_id !== 0) { //It must not be empty and it must be not different than 0 ??
+		if (empty($_id) && $_id !== 0) { //It must not be empty and it must be not 0 ??
 //		if (empty($_id)){
 		return ""; // Nothing to do
 		}
@@ -342,8 +342,10 @@ class ShopFunctions {
 
 		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_country` WHERE country_id = ' . $_id;
 		$_db->setQuery($_q);
-		$_r = $_db->loadObject();  //why loading as object, this costs time (4 times longer than loading just the result?
-		return $_r->fld;
+		$_r = $_db->loadResult();
+		return $_r;
+//		$_r = $_db->loadObject();  //why loading as object, this costs time (4 times longer than loading just the result?
+//		return $_r->fld;
 	}
 
 	/**

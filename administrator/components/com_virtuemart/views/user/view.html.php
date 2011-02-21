@@ -194,9 +194,13 @@ class VirtuemartViewUser extends JView {
 					 	// Find the correct record
 					 	$_userDetailsList = current($userDetails->userInfo);
 					 	for ($_i = 0; $_i <= count($userDetails->userInfo); $_i++) {
-					 		if ($_userDetailsList->user_info_id == $_shipto_id) {
-					 			reset($userDetails->userInfo);
-					 			break;
+
+					 		// @todo oscar, I just added that, but maybe it breaks the logic, please take a look on it
+					 		if(!empty($_userDetailsList)){
+						 		if ($_userDetailsList->user_info_id == $_shipto_id) {
+						 			reset($userDetails->userInfo);
+						 			break;
+						 		}
 					 		}
 					 		$_userDetailsList = next($userDetails->userInfo);
 					 	}

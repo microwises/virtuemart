@@ -31,7 +31,7 @@ jimport('joomla.version');
 // Get the helpers we need here
 if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
 if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-if(!class_exists('user_info'))require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
+if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
 /**
  * Model class for shop users
@@ -635,10 +635,9 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function getUserList()
 	 {
-	 	//		if (!$this->_data) {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			//		}
+
 			return $this->_data;
 	 }
 
@@ -761,10 +760,10 @@ class VirtueMartModelUser extends JModel {
 			. 'LEFT JOIN #__vm_users AS vmu ON ju.id = vmu.user_id '
 			. 'LEFT JOIN #__vm_user_shopper_group_xref AS vx ON ju.id = vx.user_id '
 			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
-			$query .= $this->_getFilter();
-			$query .= $this->_getOrdering();
+		$query .= $this->_getFilter();
+		$query .= $this->_getOrdering();
 
-			return ($query);
+		return ($query);
 	 }
 
 	 /**
