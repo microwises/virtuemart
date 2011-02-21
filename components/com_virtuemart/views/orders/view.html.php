@@ -88,9 +88,8 @@ class VirtuemartViewOrders extends JView {
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
 
-		if (!class_exists('ShopFunctions')) {
-			if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		}
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}

@@ -438,15 +438,14 @@ abstract class vmShipperPlugin extends JPlugin
 		if ($_id < 0) {
 			return 0;
 		}
-		if (!class_exists('VirtueMartModelShippingRate')) {
-			require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
-		}
+		if (!class_exists('VirtueMartModelShippingRate')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
+
 		$_sRate = new VirtueMartModelShippingRate();
 		$_rates = $_sRate->getShippingRatePrices($_id);
 		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
-		if (!class_exists('calculationHelper')) {
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		}
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+
 		$_calc = calculationHelper::getInstance();
 		return $_calc->priceDisplay($_total);
 	}

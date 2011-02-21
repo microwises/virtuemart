@@ -704,7 +704,7 @@ class calculationHelper {
 //		$code=4;
 		$paymentCosts = 0.0;
 
-		if(!class_exists('VirtueMartModelPaymentmethod'))(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+		if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
 		$model = new VirtueMartModelPaymentmethod();
 		$model->setId($paym_id);
