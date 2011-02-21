@@ -87,10 +87,17 @@ class CurrencyDisplay {
     }
 
 	function getInstance(
-	    $id			="euro",  //id is a string?
-	    $symbol		="&euro;",
+//	    $id			="euro",  //id is a string?
+//	    $symbol		="&euro;",
+//	    $nbDecimal	= 2,
+//	    $decimal   	= ",",
+//	    $thousands 	= " ",
+//	    $positivePos= 1,
+//	    $negativePos= 8) {
+	    $id			="udef",  //id is a string?
+	    $symbol		="udef",
 	    $nbDecimal	= 2,
-	    $decimal   	= ",",
+	    $decimal   	= "",
 	    $thousands 	= " ",
 	    $positivePos= 1,
 	    $negativePos= 8) {
@@ -184,7 +191,17 @@ class CurrencyDisplay {
 				, $_currencyDisplayStyle['negative']
 			);
 		} else {
-			JError::raiseWarning('1', JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'));
+			$app =& JFactory::getApplication('administrator');
+			dump($app,'my web');
+			$uri =& JFactory::getURI();
+
+			if(empty($currencyId)){
+				$link = $uri->getPath().'administrator/index.php?option=com_virtuemart&view=currency';
+			} else{
+				$link = $uri->getPath().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
+			}
+			JError::raiseWarning('1', sprintf(JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'),'<a href="'.$link.'">'.$link.'</a>'));
+
 			//would be nice to automatically unpublish the product or so
 			$currency =  self::getInstance();
 		}
