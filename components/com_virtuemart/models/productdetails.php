@@ -168,6 +168,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$product->variants = $this->getVariants($product);
 
 		/* Loads the product price details */
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		$quantityArray = JRequest::getVar('quantity',1,'post');
