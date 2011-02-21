@@ -41,7 +41,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		
@@ -55,7 +55,7 @@ class VirtuemartViewOrders extends JView {
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-		$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->vendor_id);
+		$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->vendor_id);
 		$this->assignRef('currency', $currency);
 
 		$_userFields = $userFieldsModel->getUserFields(

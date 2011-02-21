@@ -45,14 +45,13 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<fieldset class="radio">
 				<?php
 				$radioOptions = '';
 				$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('VM_COUPON_PERCENT'));
 				$radioOptions[] = JHTML::_('select.option', 'total', JText::_('VM_COUPON_TOTAL'));
 				echo JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total);
+				echo '&nbsp;'.JHTML::tooltip( JText::_('VM_COUPON_PERCTOT_TOOLTIP') );
 				?>
-				</fieldset>
 			</td>
 		</tr>
 		<tr>
@@ -67,6 +66,7 @@ AdminMenuHelper::startAdminArea();
 				$listOptions[] = JHTML::_('select.option', 'permanent', JText::_('VM_COUPON_TYPE_PERMANENT'));
 				$listOptions[] = JHTML::_('select.option', 'gift', JText::_('VM_COUPON_TYPE_GIFT'));
 				echo JHTML::_('select.genericlist',  $listOptions, 'coupon_type', '', 'value', 'text', $this->coupon->coupon_type);
+				echo '&nbsp;'.JHTML::tooltip( JText::_('VM_COUPON_TYPE_TOOLTIP') );
 				?>
 			</td>
 		</tr>
@@ -78,6 +78,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="coupon_value" id="coupon_value" size="10" value="<?php echo $this->coupon->coupon_value; ?>" />
+				<?php echo '&nbsp;'.JHTML::tooltip( JText::_('VM_COUPON_VALUE_TOOLTIP') ); ?>
 			</td>
 		</tr>
 		<tr>

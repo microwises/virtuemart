@@ -146,7 +146,7 @@ class VirtueMartModelOrders extends JModel {
 		if ($_uid > 0) {
 			$_filter[] = ('u.user_id = ' . $_uid);
 		}
-		$q .= $this->getOrdersListFilter()."
+		$q .= $this->getOrdersListFilter($_filter)."
 	";
 		if ($_ignorePagination) {
 			$db->setQuery($q);

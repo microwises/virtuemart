@@ -41,7 +41,8 @@ class VirtuemartControllerShippingCarrier extends JController {
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
-
+		$this->registerTask('apply','save');
+		
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view =& $this->getView('shippingcarrier', $viewType);

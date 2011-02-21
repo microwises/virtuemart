@@ -54,7 +54,7 @@ $j15 = VmConfig::isJ15();
 		foreach ($this->orderlist as $i => $row) {
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $row->order_id);
 
-			$print_url = JURI::root().'index.php?option=com_virtuemart&view=orders&task=orderprintdetails&order_id='.$row->order_id.'&format=raw';
+			$print_url = JURI::base().'?option=com_virtuemart&view=orders&task=orderPrint&order_id='.$row->order_id.'&format=raw';
 			$print_link = "&nbsp;<a href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">"
 				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 

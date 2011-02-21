@@ -75,8 +75,10 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderlist', $orderList);
 		}
 
-		$this->loadHelper('currencydisplay');
-		$currency = CurrencyDisplay::getCurrencyDisplay();;
+		if (!class_exists('CurrencyDisplay')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		}
+		$currency = CurrencyDisplay::getCurrencyDisplay();
 		$this->assignRef('currency', $currency);
 
 		// Create a simple indexed array woth ordertatuses
@@ -87,6 +89,9 @@ class VirtuemartViewOrders extends JView {
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
 
+		if (!class_exists('ShopFunctions')) {
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		}
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
