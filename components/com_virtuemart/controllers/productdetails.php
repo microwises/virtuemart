@@ -79,10 +79,13 @@ class VirtueMartControllerProductdetails extends JController {
 	/* Add or edit a review
 	 TODO  control and update in database the review */
 	public function review(){
-
-		$comment = JRequest::getVar('comment', '');
-
+		
 		$mainframe = JFactory::getApplication();
+		// add the ratings admin model 
+		
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$model = $this->getModel( 'ratings', 'VirtuemartModel' );
+
 		/* Create the view */
 		$view = $this->getView('productdetails', 'html');
 
@@ -94,10 +97,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 		/* Set the layout */
 		$view->setLayout('productdetails');
-		if ($comment) {
-			$mainframe->enqueueMessage(JText::_('REVIEW_UPDATED_SUCCESSFULLY'));
-		} else {
-		$mainframe->enqueueMessage(JText::_('REVIEW_NO_COMMENT'));
+		$msgtype = '';
+		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('RATING_SAVED_SUCCESSFULLY') );
+		else {
+			$mainframe->enqueueMessage( JText::_('RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
 		/* Display it all */
 		$view->display();

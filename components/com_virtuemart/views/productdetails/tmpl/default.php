@@ -372,10 +372,11 @@ if (empty ( $this->product )) {
 					 * $review->name => The name of the comment author
 					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
 					 * $review->user_rating => The rating; an integer from 1 - 5
-					 * $review->comment => The comment text
+					 
 					 * 
 					 */
 					?>
+					<div><?php echo $review->comment; ?></div>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
 		<br />
 					<?php 
@@ -493,7 +494,7 @@ if (empty ( $this->product )) {
 						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
 						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
-						<input type="hidden" name="func" value="addReview" />
+						<input type="hidden" name="task" value="review" />
 					</form>
 					<?php
 					}
