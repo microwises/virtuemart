@@ -141,7 +141,7 @@ class VirtueMartCart  {
 			return false;
 		}
 
-		if(!class_exists('calculationHelper'))require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('calculationHelper'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($product_ids as $p_key => $product_id) {
@@ -285,7 +285,7 @@ class VirtueMartCart  {
 	* @return array of product objects
 	*/
 	public function getCartPrices() {
-//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		return $calculator->getCheckoutPrices($this);
 	}
@@ -623,7 +623,7 @@ class VirtueMartCart  {
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
-					require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'state.php');
+					require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'state.php');
 					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
 						$redirectMsg = $msg;
 					}

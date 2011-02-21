@@ -41,8 +41,8 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-		if(!class_exists('VirtueMartCart')) require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
-		if(!class_exists('calculationHelper')) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('calculationHelper')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 	}
 
 
@@ -57,7 +57,7 @@ class VirtueMartControllerCart extends JController {
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		/* Add the default model */
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
@@ -84,7 +84,7 @@ class VirtueMartControllerCart extends JController {
 		/* Load the cart helper */
 		//$this->getModel('productdetails');
 		/* Load the cart helper */
-		//require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		//require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
@@ -107,7 +107,7 @@ class VirtueMartControllerCart extends JController {
 
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
-		//require_once(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'cart.php');
+		//require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
 
 		$cart = VirtueMartCart::getCart();
 		if($cart){
@@ -245,7 +245,7 @@ class VirtueMartControllerCart extends JController {
 		//Now set the shipping rate into the cart
 		$cart = VirtueMartCart::getCart();
 		if($cart){
-			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
 			$paym_id= JRequest::getVar('paym_id', '0');

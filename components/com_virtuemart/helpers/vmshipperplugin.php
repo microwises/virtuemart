@@ -16,8 +16,9 @@
  */
 
 // Load the helper functions that are needed by all plugins
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'dbscheme.php');
+if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+if(!class_exists('DbScheme')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'dbscheme.php');
+
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -293,7 +294,7 @@ abstract class vmShipperPlugin extends JPlugin
 			return null;
 		}
 
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$_currency = CurrencyDisplay::getCurrencyDisplay();  //Todo, set currency of shopper or user?
 
 //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
@@ -434,11 +435,11 @@ abstract class vmShipperPlugin extends JPlugin
 	 */
 	protected function getShippingRate($_id)
 	{
-		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'shippingrate.php');
+		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
 		$_sRate = new VirtueMartModelShippingRate();
 		$_rates = $_sRate->getShippingRatePrices($_id);
 		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
-//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$_calc = calculationHelper::getInstance();
 		return $_calc->priceDisplay($_total);
 	}

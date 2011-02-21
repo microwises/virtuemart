@@ -38,7 +38,7 @@ class VirtuemartViewManufacturer extends JView {
 		$pathway = $mainframe->getPathway();
 
 		/* Set the helper */
-		$this->addHelperPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers');
+		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
 		$this->loadHelper('image');
 
 		$manufacturer_id = JRequest::getInt('manufacturer_id', 0);

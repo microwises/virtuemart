@@ -59,7 +59,7 @@ class VirtueMartViewCart extends JView {
 			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
 
 		} else if($layoutName=='selectshipper'){
-			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmshipperplugin.php');
+			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
 
@@ -70,7 +70,7 @@ class VirtueMartViewCart extends JView {
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
-			require(JPATH_BASE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmpaymentplugin.php');
+			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
 			$this->lSelectPayment();
@@ -247,7 +247,7 @@ class VirtueMartViewCart extends JView {
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
 
-//		require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		foreach($product_prices as $k=>$price){

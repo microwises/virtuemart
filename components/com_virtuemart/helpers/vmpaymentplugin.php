@@ -15,10 +15,10 @@
  * other free or open source software licenses.
  * @version $Id$
  */
- 
+
 // Load the helper functions that are needed by all plugins
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctions.php');
-require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'dbscheme.php');
+if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+if(!class_exists('DbScheme')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'dbscheme.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -27,10 +27,10 @@ abstract class vmPaymentPlugin extends JPlugin
 {
 	private $_paym_id = 0;
 	private $_paym_name = '';
-	
+
 	/** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
 	var $_pelement = '';
-	
+
 	/** var Must be overriden in every plugin file */
 	var $_pcode = '' ;
 
@@ -48,7 +48,7 @@ abstract class vmPaymentPlugin extends JPlugin
 
 	/**
 	 * Method to create te plugin specific table; must be reimplemented.
-	 * @example 
+	 * @example
 	 * 	$_scheme = DbScheme::get_instance();
 	 * 	$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
 	 * 	$_schemeCols = array(
@@ -90,13 +90,13 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * This functions gets the used and configured payment method
 	 * pelement of this class determines the used jplugin.
 	 * The right payment method is determined by the vendor and the jplugin id.
-	 * 
+	 *
 	 * This function sets the used payment plugin as variable of this class
 	 * @author Max Milbers
-	 * 
+	 *
 	 */
 	protected function setVmParams($vendorId=0,$jplugin_id=0){
-		
+
 		if(!$vendorId) $vendorId = 1;
 	 	$db = &JFactory::getDBO();
 	 	if(!$jplugin_id){
@@ -106,8 +106,8 @@ abstract class vmPaymentPlugin extends JPlugin
 			if(!$this->_jplugin_id){
 				$mainframe = &JFactory::getApplication();
 				$mainframe->enqueueMessage( 'The Paymentmethod didnt found used payment plugin' );
-				return false;	
-			}		
+				return false;
+			}
 	 	}else{
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
@@ -115,13 +115,13 @@ abstract class vmPaymentPlugin extends JPlugin
 		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
-		
+
 		if($result){
-			require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'paymentmethod.php');
+			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 			$this->paymentModel = new VirtueMartModelPaymentmethod();
 			$this->paymentModel->setId($result['paym_id']);
 			$this->paymentMethod = $this->paymentModel->getPaym();
-			return true;	
+			return true;
 		} else{
 	//		$mainframe = &JFactory::getApplication();
 	//		$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
@@ -129,18 +129,18 @@ abstract class vmPaymentPlugin extends JPlugin
 		}
 
 	}
-		
+
 	/**
 	 * This event is fired during the checkout process. It allows the shopper to select
 	 * one of the available payment methods.
 	 * It should display a radio button (name: paym_id) to select the payment method. Other
 	 * information (like credit card info) might be selected as well.
-	 * 
+	 *
 	 * @param object $cart The cart object
 	 * @param integer $checkedPaymId ID of an already selected payment method ID, if any
 	 * @author Max Milbers
 	 */
-	 
+
 	public function plgVmOnSelectPayment(VirtueMartCart $cart, $checkedPaymId=0)
 	{
 		if (!$this->setVmParams($cart->vendorId)) {
@@ -162,7 +162,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	/**
 	 * This event is fired after the payment method has been selected. It can be used to store
 	 * additional payment info in the cart.
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function plgVmOnPaymentSelectCheck($cart)
@@ -173,7 +173,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	/**
 	 * This event is fired during the checkout process. It can be used to validate the
 	 * payment data as entered by the user.
-	 * 
+	 *
 	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
 	 * @author Max Milbers
 	 */
@@ -189,7 +189,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * NOTE for Plugin developers:
 	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
 	 *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
-	 * 
+	 *
 	 * @param int $_orderNr The ordernumber being processed
 	 * @param object $_orderData Data from the cart
 	 * @param array $_priceData Price information for this order
@@ -198,12 +198,12 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @author Oscar van Eijk
 	 */
 	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData);
-	
+
 	/**
 	 * This method is fired when showing the order details in the backend.
 	 * It displays the the payment method-specific data.
 	 * All plugins *must* reimplement this method.
-	 * 
+	 *
 	 * @param integer $_order_id The order ID
 	 * @param integer $_paymethod_id Payment method used for this order
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
@@ -216,17 +216,17 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * This event is fired each time the status of an order is changed to Cancelled.
 	 * It can be used to refund payments, void authorization etc.
 	 * Return values are ignored.
-	 * 
+	 *
 	 * Note for plugin developers: you are not required to reimplement this method, but if you
 	 * do so, it MUST start with this code:
-	 * 
+	 *
 	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
 	 * 	if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
 	 * 		return;
 	 * 	}
 	 *
 	 * @author Oscar van Eijk
-	 * @param int $_orderID 
+	 * @param int $_orderID
 	 * @param char $_oldStat Previous order status
 	 * @param char $_newStat New order status
 	 */
@@ -241,7 +241,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 *
 	 * Note for plugin developers: you are not required to reimplement this method, but if you
 	 * do so, it MUST start with this code:
-	 * 
+	 *
 	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
 	 * 	if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
 	 * 		return null;
@@ -261,7 +261,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * @access protected
 	 * @author Oscar van Eijk
 	 * @param int $_id The order ID
-	 * @return int The payment method ID, or -1 when not found 
+	 * @return int The payment method ID, or -1 when not found
 	 */
 	protected function getPaymentMethodForOrder($_id)
 	{
@@ -313,7 +313,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return ($_r['c'] == 1);
-		
+
 	}
 
 	/**
@@ -332,7 +332,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return $_r['paym_name'];
-		
+
 	}
 	/**
 	 * This method writes all payment plugin specific data to the plugin's table
