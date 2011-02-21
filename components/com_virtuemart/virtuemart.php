@@ -19,20 +19,25 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /* Require the config */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
+$config= new VmConfig();
+$config->loadConfig();
 
 /* Front-end helpers */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 /* Loading jQuery and VM scripts. */
-$document = JFactory::getDocument();
+/*$document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm.js');
-$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');
+$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');*/
+$config->jQuery();
+$config->jPrice();
+$config->jVm();
+$config->cssSite();
 
 /* Loading stylesheets */
-$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
+//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {

@@ -11,7 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'version.php');
+require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'version.php');
 
 class VmConfig
 {
@@ -103,6 +103,76 @@ class VmConfig
 	 */
 	function isJ15(){
 		return (strpos(JVERSION,'1.5') === 0);
+	}
+	/**
+	 * ADD some javascript if needed
+	 * Prevent duplicate load of script
+	 * @ Author KOHL Patrick
+	 */
+		function jQuery()
+	{
+		static $jquery;
+		// If exist exit
+		if ($jquery) return;
+		JHTML::script('jquery.js', 'components/com_virtuemart/assets/js/', false);
+		$loaded = true;
+		return;
+	}
+	// Virtuemart price script
+	function jPrice()
+	{
+		static $jPrice;
+		// If exist exit
+		if ($jPrice) return;
+		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
+		$jPrice = true;
+		return;
+	}
+	// Virtuemart main Js script
+	function jVm()
+	{
+		static $jVm;
+		// If exist exit
+		if ($jVm) return;
+		JHTML::script('vm.js', 'components/com_virtuemart/assets/js/', false);
+		$jVm = true;
+		return;
+	}
+	// Virtuemart Site Js script
+	function jSite()
+	{
+		static $jSite;
+		// If exist exit
+		if ($jSite) return;
+		JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
+		$jSite = true;
+		return;
+	}
+
+	/*	function cssSite()
+	{
+		static $jSite;
+		// If exist exit
+		if ($jSite) return;
+		JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
+		$jSite = true;
+		return;
+	}*/
+	
+	/**
+	 * ADD some CSS if needed
+	 * Prevent duplicate load of CSS stylesheet
+	 * @ Author KOHL Patrick
+	 */
+	
+	function cssSite()
+	{
+		static $cssSite;
+		// If exist exit
+		if ($cssSite) return;
+		JHTML::stylesheet('vmsite.css', 'components/com_virtuemart/assets/css/', false);
+		$cssSite = true;
+		return;
 	}
 }
 // pure php no closing tag
