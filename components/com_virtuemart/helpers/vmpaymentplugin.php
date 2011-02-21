@@ -117,7 +117,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$result =  $db->loadAssoc();
 
 		if($result){
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+			if(!class_exists('VirtueMartModelPaymentmethod') require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 			$this->paymentModel = new VirtueMartModelPaymentmethod();
 			$this->paymentModel->setId($result['paym_id']);
 			$this->paymentMethod = $this->paymentModel->getPaym();
