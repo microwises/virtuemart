@@ -247,7 +247,7 @@ class VirtueMartViewCart extends JView {
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
 
-//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		foreach($product_prices as $k=>$price){

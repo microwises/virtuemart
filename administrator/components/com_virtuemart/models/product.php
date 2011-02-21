@@ -396,6 +396,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Check if we have any products */
 		if($result) {
 			if ($show_prices=VmConfig::get('show_prices',1) == '1'){
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 			}
 

@@ -445,8 +445,8 @@ abstract class vmShipperPlugin extends JPlugin
 		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-
 		$_calc = calculationHelper::getInstance();
+
 		return $_calc->priceDisplay($_total);
 	}
 

@@ -285,7 +285,7 @@ class VirtueMartCart  {
 	* @return array of product objects
 	*/
 	public function getCartPrices() {
-//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+//		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		return $calculator->getCheckoutPrices($this);
 	}

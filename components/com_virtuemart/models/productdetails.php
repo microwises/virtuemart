@@ -67,6 +67,7 @@ class VirtueMartModelProductdetails extends JModel {
 			if (VmConfig::get('show_prices') == '1' && $withCalc) {
 
 				/* Loads the product price details */
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 
 				/* Calculate the modificator */
@@ -181,7 +182,7 @@ class VirtueMartModelProductdetails extends JModel {
 //				$product->product_id.$variant_name
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 
-		//Wrong place, this must not be done in a model, display is guy, therefore it must be done in the view!
+		//Wrong place, this must not be done in a model, display is gui, therefore it must be done in the view!
 		// change display //
 //		foreach ($prices as &$value  ){
 //			$value = $calculator->priceDisplay($value);
@@ -304,7 +305,7 @@ class VirtueMartModelProductdetails extends JModel {
 		/* Get the price also */
 		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
-//			require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
