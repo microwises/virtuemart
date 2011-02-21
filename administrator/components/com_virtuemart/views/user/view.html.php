@@ -76,21 +76,21 @@ class VirtuemartViewUser extends JView {
 				if($task=='editshop'){
 					JToolBarHelper::title(  JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');					
+					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				}
 			} else { // Update existing user
 				if($task=='editshop'){
 					JToolBarHelper::title( JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');					
-				}		
+					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+				}
 			}
-			
+
 			JToolBarHelper::divider();
 			$_toolBar->appendButton('Custom', $_applyButton);
-			$_toolBar->appendButton('Custom', $_saveButton);	
+			$_toolBar->appendButton('Custom', $_saveButton);
 			JToolBarHelper::cancel();
-			
+
 			// User details
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();
@@ -223,9 +223,7 @@ class VirtuemartViewUser extends JView {
 					 $vendorModel->setId($userDetails->vendor_id);
 
 					if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
-						if (!class_exists('CurrencyDisplay')) {
-							require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-						}
+						if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 						$currency = CurrencyDisplay::getCurrencyDisplay();
 						$this->assignRef('currency',$currency);
 						$this->assignRef('vendorCurrency', $currency);
@@ -233,15 +231,15 @@ class VirtuemartViewUser extends JView {
 
 					 if (!empty($userDetails->user_is_vendor)) {
 
-//					 	require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+//					 	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 //						$this->assignRef('vendorCurrency', CurrencyDisplay::getCurrencyDisplay());
-						
+
 					 	$this->assignRef('vendor', $userDetails->vendor);
 
 					 	$currencyModel = $this->getModel('currency');
 					 	$_currencies = $currencyModel->getCurrencies();
 					 	$this->assignRef('currencies', $_currencies);
-						
+
 					 	//can someone explain me what that should do?
 					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);

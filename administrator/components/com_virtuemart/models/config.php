@@ -118,7 +118,7 @@ class VirtueMartModelConfig extends JModel {
      * @return object List of theme objects
      */
     function getCurrencyConverterList() {
-	$dir = JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter';
+	$dir = JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter';
 	$result = '';
 
 	if ($handle = opendir($dir)) {

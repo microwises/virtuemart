@@ -46,9 +46,9 @@ class VirtuemartViewCurrency extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
-			
+
 		if ($layoutName == 'edit') {
-			
+
 			$currency = $model->getCurrency(true);
 			$this->assignRef('currency',	$currency);
 			$isNew = ($currency->currency_id < 1);
@@ -62,7 +62,7 @@ class VirtuemartViewCurrency extends JView {
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel();
-			
+
 			$usermodel = $this->getModel('user', 'VirtuemartModel');
 			$usermodel->setCurrent();
 			$userDetails = $usermodel->getUser();
@@ -71,12 +71,12 @@ class VirtuemartViewCurrency extends JView {
 			}
 			if(empty($currency->vendor_id))$currency->vendor_id = $userDetails->vendor_id;
 //			$this->assignRef('vendor_id', $vendorCurrency);
-			
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
+			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'');
 	    	$this->assignRef('currencyDisplay',$cd);
-			
-//			
+
+//
 //			$userDetails->vendor_id;
         }
         else {

@@ -20,7 +20,7 @@ VmConfig::loadConfig();
 
 // Require specific controller if requested
 if ($controllername = JRequest::getVar('controller')) {
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require $path;
 	}
@@ -32,7 +32,7 @@ if ($controllername = JRequest::getVar('controller')) {
 
 // Try to find a controller with the same name as the view
 else if ($controllername = JRequest::getVar('view','virtuemart')) {
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
+	$path = JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
 	if (file_exists($path)) {
 		require $path;
 	}

@@ -44,7 +44,7 @@ class VirtuemartViewOrders extends JView {
 			$orderDetails = $orderModel->getOrder();
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
-				if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
 					if(!empty($orderDetails['details']['BT']->user_id)){
 						if ($orderDetails['details']['BT']->user_id != $cuid) {
@@ -75,9 +75,8 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderlist', $orderList);
 		}
 
-		if (!class_exists('CurrencyDisplay')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		}
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
 		$currency = CurrencyDisplay::getCurrencyDisplay();
 		$this->assignRef('currency', $currency);
 
@@ -90,7 +89,7 @@ class VirtuemartViewOrders extends JView {
 		$this->assignRef('orderstatuses', $orderstatuses);
 
 		if (!class_exists('ShopFunctions')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		}
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);

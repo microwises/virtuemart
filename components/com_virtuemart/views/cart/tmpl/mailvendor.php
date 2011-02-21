@@ -14,27 +14,27 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* 
+*
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php 
+<?php
 
-	//Hello Shopowner 
+	//Hello Shopowner
 	JText::_('VM_CART_MAIL_VENDOR_TITLE');
 	echo $this->store->vendor_store_name;
 	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
-//	VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
-	
+//	VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false);
+
 	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
 
 
 	//PriceList
-include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
-include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
-	
-	
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
+
+
 	?>

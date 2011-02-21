@@ -140,7 +140,7 @@ class VirtueMartModelPaymentmethod extends JModel
   		}
 
   		if(empty($this->_data->paym_vendor_id)){
-  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
    			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
   		}
 
@@ -201,7 +201,7 @@ class VirtueMartModelPaymentmethod extends JModel
 
 		if(isset($this->_data)){
 
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 			foreach ($this->_data as $data){
 				/* Add the paymentmethod shoppergroups */
 				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
@@ -274,7 +274,7 @@ class VirtueMartModelPaymentmethod extends JModel
 			return false;
 		}
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
 		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
 
@@ -344,7 +344,7 @@ class VirtueMartModelPaymentmethod extends JModel
      */
 	public function publish($publish=false) {
 
-    	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+    	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','payment_method',$publish);
 
 	}
@@ -429,7 +429,7 @@ class VirtueMartModelPaymentmethod extends JModel
 			$creditcardIds = self::getPaymentAcceptedCreditCards();
 		}
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
+		if(!class_exists('VirtueMartModelCreditcard')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
 		$creditcardModel = new VirtueMartModelCreditcard();
 
 		$listHTML='';

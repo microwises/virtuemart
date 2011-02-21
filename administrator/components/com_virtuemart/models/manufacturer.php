@@ -126,7 +126,7 @@ class VirtueMartModelManufacturer extends JModel {
 		}
 
 		/* Load the image helper */
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+		if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
 		$image = VmImage::getMfImage($filename,$filenamethumb);
 		if(!empty($image)){

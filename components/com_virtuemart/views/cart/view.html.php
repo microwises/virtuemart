@@ -46,7 +46,7 @@ class VirtueMartViewCart extends JView {
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 
-		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
 
@@ -59,7 +59,7 @@ class VirtueMartViewCart extends JView {
 			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
 
 		} else if($layoutName=='selectshipper'){
-			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
 
@@ -70,7 +70,7 @@ class VirtueMartViewCart extends JView {
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
-			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
 			$this->lSelectPayment();
@@ -247,7 +247,7 @@ class VirtueMartViewCart extends JView {
 		$prices = array();
 		$product_prices = $this->_cart->getCartPrices();
 
-//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		foreach($product_prices as $k=>$price){
@@ -336,7 +336,7 @@ class VirtueMartViewCart extends JView {
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){
-			if(!class_exists('user_info'))require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			if(!class_exists('user_info'))require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
 			$_userFieldsBT = $userFieldsModel->getUserFields(
 				 'account'
@@ -355,7 +355,7 @@ class VirtueMartViewCart extends JView {
 
 		$STaddress['fields']= array();
 		if(!empty($this->_cart->ST)){
-			if(!class_exists('user_info'))require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			if(!class_exists('user_info'))require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 			$_userFieldsST = $userFieldsModel->getUserFields(
 				'shipping'
 				, array() // Default toggles

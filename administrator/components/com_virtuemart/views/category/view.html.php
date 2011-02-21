@@ -65,12 +65,12 @@ class VirtuemartViewCategory extends JView {
 			$parent = $model->getParentCategory( $category->category_id );
 			$this->assignRef('parent', $parent);
 
-			if(!class_exists('ShopFunctions'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 			$templateList = ShopFunctions::renderTemplateList(JText::_('VM_CATEGORY_TEMPLATE_DEFAULT'));
 
 			$this->assignRef('jTemplateList', $templateList);
 
-			if(!class_exists('VirtueMartModelConfig'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'config.php');
+			if(!class_exists('VirtueMartModelConfig'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
 			$this->assignRef('categoryLayouts', $categoryLayoutList);
 

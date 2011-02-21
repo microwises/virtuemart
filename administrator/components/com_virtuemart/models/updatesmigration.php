@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
 jimport( 'joomla.application.component.model');
-require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+if(!class_exists('VmConnector')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
 
 /**
  * Model class for updates and migrations
@@ -99,7 +99,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function determineStoreOwner() {
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 		if (isset($user_id)) {
 		    $user = JFactory::getUser($user_id);
@@ -230,7 +230,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';
 
-	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'user.php');
+	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	if (!$usermodel->store($fields)) {
 		$this->setError($usermodel->getError());

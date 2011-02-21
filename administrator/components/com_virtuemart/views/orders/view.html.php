@@ -42,10 +42,10 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+//		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
+		if(!class_exists('vmOrderPlugin')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 
@@ -142,7 +142,7 @@ class VirtuemartViewOrders extends JView {
 			$_orderStatusSelect = JHTML::_('select.genericlist', $_orderStats, 'order_status['.$_orderID.']', '', 'value', 'text', $_currentOrderStat, 'order_status');
 			$this->assignRef('orderStatSelect', $_orderStatusSelect);
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
-			
+
 			/* Toolbar */
 			JToolBarHelper::title(JText::_( 'VM_ORDER_EDIT_LBL' ), 'vm_orders_48');
 			JToolBarHelper::back();
@@ -159,7 +159,7 @@ class VirtuemartViewOrders extends JView {
 			$orderLineItem = JRequest::getVar('orderLineId', '');
 			$this->assignRef('order_id', $orderId);
 			$this->assignRef('order_item_id', $orderLineItem);
-			
+
 			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
 			$this->assignRef('orderitem', $orderItem);
 		}
@@ -176,9 +176,9 @@ class VirtuemartViewOrders extends JView {
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
 			foreach ($orderslist as $order_id => $order) {
-				
+
 				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {					
+				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {
 					$_currencies['v'.$order->vendor_id] = CurrencyDisplay::getCurrencyDisplay($order->vendor_id);
 				}
 				$order->order_total = $_currencies['v'.$order->vendor_id]->getFullValue($order->order_total);

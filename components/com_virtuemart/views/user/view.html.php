@@ -193,7 +193,7 @@ class VirtuemartViewUser extends JView {
 		} else { //the anonymous case
 
 			//We may move this to the helper of course, but for developing I just wanna get it working
-			//require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php');
+			//require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
 			$userFields = user_info::getAddress(
 				 $this->_userFieldsModel
@@ -252,10 +252,9 @@ class VirtuemartViewUser extends JView {
 			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
 
 			if(empty($this->currency)){
-				if (!class_exists('CurrencyDisplay')) {
-					require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				}
-				$currency = CurrencyDisplay::getCurrencyDisplay();;
+				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
+				$currency = CurrencyDisplay::getCurrencyDisplay();
 				$this->assignRef('currency', $currency);
 			}
 		}
@@ -347,13 +346,12 @@ class VirtuemartViewUser extends JView {
 		$this->loadHelper('shopfunctions');
 
 		// Shopper info
-		if (!class_exists('ShopperGroup')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-		}
+		if (!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
+
 		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
 
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		if(Permissions::getInstance()->check('admin,storeadmin')){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
 			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
@@ -445,9 +443,8 @@ class VirtuemartViewUser extends JView {
 //			if (count($this->_orderList) > 0) {
 			//Why is this here? should be set for vendors AND shoppers with orders
 			if(empty($this->currency)){
-				if (!class_exists('CurrencyDisplay')) {
-					require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				}
+				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
 				$currency = CurrencyDisplay::getCurrencyDisplay();;
 				$this->assignRef('currency', $currency);
 			}
@@ -468,9 +465,8 @@ class VirtuemartViewUser extends JView {
 		}
 
 		if(empty($currency)){
-			if (!class_exists('CurrencyDisplay')) {
-				require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			}
+			if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
 			$currency = CurrencyDisplay::getCurrencyDisplay();;
 			$this->assignRef('currency', $currency);
 		}

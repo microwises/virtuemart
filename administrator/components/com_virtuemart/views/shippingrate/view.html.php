@@ -69,7 +69,7 @@ class VirtuemartViewShippingRate extends JView {
         	$this->assignRef('countries', $countries);
 
         	$taxrates = $this->renderTaxList($shippingRate->shipping_rate_vat_id);
-        	
+
         	$this->assignRef('taxRates', $taxrates);
         }
         else {
@@ -90,14 +90,14 @@ class VirtuemartViewShippingRate extends JView {
 
 	/**
 	 * Renders the list for the tax rules
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function renderTaxList($selected){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
-		
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'calc.php');
+
+		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();

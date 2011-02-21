@@ -34,7 +34,7 @@ class VirtuemartViewPaymentMethod extends JView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->addHelperPath(JPATH_COMPONENT_SITE.DS.'helpers');
+		$this->addHelperPath(JPATH_VM_SITE.DS.'helpers');
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('permissions');
 		$this->loadHelper('vmpaymentplugin');

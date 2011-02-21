@@ -16,13 +16,13 @@
 * other free or open source software licenses.
 * @version $Id: cart.php 2551 2010-09-30 18:52:40Z milbo $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 //This displays the pricelist MUST be done with tables, because it is also used for the emails
-include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
-	
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+
 ?>
 <form method="post" id=userForm name="checkoutForm" action="<?php echo JRoute::_( 'index.php' ); ?>">
 
@@ -49,10 +49,10 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
 	<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a><br />
-	<?php echo $this->lists['shipTo']; 
+	<?php echo $this->lists['shipTo'];
 		echo '<br /><br />';
-		foreach($this->STaddress as $item){	
-			if(!empty($item['value'])){		
+		foreach($this->STaddress as $item){
+			if(!empty($item['value'])){
 				echo $item['title'].': '.$item['value'].'<br/>';
 			}
 		} ?>
@@ -78,7 +78,7 @@ include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	?>
 	</div>
 </fieldset>
-<?php 
+<?php
 	echo '<div class="cartfooterlinks" >';
 	if ($this->continue_link_html != '') {
 		echo $this->continue_link_html;

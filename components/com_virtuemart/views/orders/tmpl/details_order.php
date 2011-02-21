@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td align="left"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
 		<td align="left"><?php
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperFE',array(

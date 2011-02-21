@@ -175,7 +175,7 @@ class VirtueMartModelCurrency extends JModel {
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function delete() {
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('cid','currency');
 
 	}
@@ -190,7 +190,7 @@ class VirtueMartModelCurrency extends JModel {
      */
 	public function publish($publishId = false)
 	{
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','currency',$publishId);
 
 	}
@@ -205,7 +205,7 @@ class VirtueMartModelCurrency extends JModel {
     function getCurrenciesList($vendorId=1) {
 
     $where = '';
-    if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+    if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
     if( !Permissions::getInstance()->check('admin') ){
     	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
     }

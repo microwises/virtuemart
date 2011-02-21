@@ -141,7 +141,7 @@ class VirtueMartCart  {
 			return false;
 		}
 
-		if(!class_exists('calculationHelper'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($product_ids as $p_key => $product_id) {
@@ -285,7 +285,7 @@ class VirtueMartCart  {
 	* @return array of product objects
 	*/
 	public function getCartPrices() {
-//		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		return $calculator->getCheckoutPrices($this);
 	}
@@ -299,7 +299,7 @@ class VirtueMartCart  {
 	* @return object The product details object
 	*/
 	private function getProduct($product_id) {
-		JModel::addIncludePath(JPATH_COMPONENT.DS.'models');
+		JModel::addIncludePath(JPATH_VM_SITE.DS.'models');
 		$model = JModel::getInstance('Productdetails', 'VirtueMartModel');
 		return $model->getProduct($product_id, false);
 	}
@@ -422,7 +422,7 @@ class VirtueMartCart  {
 	 * @return string On error the message text, otherwise an empty string
 	 */
 	public function setCouponCode($coupon_code) {
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'coupon.php');
+		require(JPATH_VM_SITE.DS.'helpers'.DS.'coupon.php');
 		$_prices = $this->getCartPrices();
 		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['billTotal']);
 		if (!empty($_msg)) {
@@ -447,7 +447,7 @@ class VirtueMartCart  {
 	 */
 	public function setShipper($shipper_id)
 	{
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 
 		$_dispatcher = JDispatcher::getInstance();
@@ -482,7 +482,7 @@ class VirtueMartCart  {
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
-			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
+			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 			$_userModel = JModel::getInstance('user', 'VirtueMartModel');
 			$_stData = $_userModel->getUserAddress(0, $this->selected_shipto, '');
 			$this->validateUserData('ST', $_stData[0]);
@@ -539,7 +539,7 @@ class VirtueMartCart  {
 		}
 		// Ok, a shipper was selected, now make sure we can find a matching shipping rate for
 		// the current order shipto and weight
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
@@ -561,7 +561,7 @@ class VirtueMartCart  {
 
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
 		} else {
-			require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();
@@ -603,8 +603,8 @@ class VirtueMartCart  {
 	 */
 	 private function validateUserData($type='BT', $_obj = null){
 
-//		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'userfields.php');
+//		$this->addModelPath( JPATH_VM_ADMINISTRATOR .DS.'models' );
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$_userFieldsModel = new VirtueMartModelUserfields();
 //		$_userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
 		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
@@ -623,9 +623,8 @@ class VirtueMartCart  {
 			} else {
 				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
 				if($field->name=='state_id'){
-					if (!class_exists('VirtueMartModelState')) {
-						require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'state.php');
-					}
+
+					if(!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'state.php');
 					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
 						$redirectMsg = $msg;
 					}
@@ -649,9 +648,9 @@ class VirtueMartCart  {
 
 		//Just to prevent direct call
 		if($this->_dataValidated && $this->_confirmDone){
-			if (!class_exists('VirtueMartModelOrders')) {
-				require( JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'orders.php' );
-			}
+
+			if (!class_exists('VirtueMartModelOrders'))	require( JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orders.php' );
+
 			$order = new VirtueMartModelOrders();
 			if (($_orderID = $order->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
@@ -703,7 +702,7 @@ class VirtueMartCart  {
 		$view = $this->getView('cart', 'html');
 
 //		$view->setModel(VirtueMartCart::getCart(),true);
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );

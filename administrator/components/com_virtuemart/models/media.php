@@ -228,7 +228,7 @@ class VirtueMartModelMedia extends JModel {
 							product_thumb_image,
 							'0' AS isdownloadable,
 							product_name,
-							CONCAT('". VmConfig::get('media_product_path')."', product_full_image) AS file_url,			
+							CONCAT('". VmConfig::get('media_product_path')."', product_full_image) AS file_url,
 							SUBSTRING(product_full_image, -3, 3) AS file_extension
 					FROM #__vm_product
 					WHERE LENGTH(product_full_image) > 0 ".$filter;
@@ -501,7 +501,7 @@ class VirtueMartModelMedia extends JModel {
 				}
 				break;
 			case "DOWNLOADPATH":
-				$uploaddir = VmConfig::get('download_root');	//Max, I think this path should always been set as absolute path, 
+				$uploaddir = VmConfig::get('download_root');	//Max, I think this path should always been set as absolute path,
 				break;
 		}
 		if ($this->checkUploadedFile('file_upload')) {
@@ -653,22 +653,22 @@ class VirtueMartModelMedia extends JModel {
 	 * @return string
 	 */
 	function createThumbImage( $fileName, $section='product', $height=90, $width=90) {
-		
+
 //		require_once(CLASSPATH . 'imageTools.class.php' );
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-		
+		if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+
 		$media_path_url = VmConfig::get('media_product_path');
 		$media_filename = $fileName;
 		$media_thumb_name = $fileName.'_thumb';
 		$image = new VmImage($media_path_url,$media_filename,$media_thumb_name);
-		
+
 		/* Generate Image Destination File Name */
 //		$pathinfo = pathinfo( $fileName );
 //		$to_file_thumb = basename( $fileName, '.'.$pathinfo['extension']).".".$pathinfo['extension'];
 //		$fileout = IMAGEPATH.$section.DS.'resized'.DS.$to_file_thumb;
 //		vmImageTools::ResizeImage( $fileName, $fileout, $height, $width );
 		$fileout = $image->createThumb();
-		
+
 		return $fileout;
 
 	}

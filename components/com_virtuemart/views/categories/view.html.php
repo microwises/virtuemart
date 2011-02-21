@@ -39,7 +39,7 @@ class VirtuemartViewCategories extends JView {
 		$pathway = $mainframe->getPathway();
 
 		/* Set the helper path */
-		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
+		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 		/* Load helpers */
 		$this->loadHelper('image');

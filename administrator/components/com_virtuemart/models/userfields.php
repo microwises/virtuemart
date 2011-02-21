@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 // Load the helpers
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
+if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
 
 
 /**
@@ -559,7 +559,7 @@ class VirtueMartModelUserfields extends JModel {
 	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{
 
-		if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
 				,'functions' => array()

@@ -7,11 +7,25 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author RickG
+ * @author Max Milbers
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 defined('_JEXEC') or die('Restricted access');
 
-require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'version.php');
+/**
+ *
+ * We need this extra paths to have always the correct path undependent by loaded application, module or plugin
+ * Plugin, module developers must always include this config at start of their application
+ *  $vmConfig= new VmConfig();
+ *  $vmConfig -> loadConfig();
+ *  $vmConfig -> jQuery();
+ *  Then always use the defined paths below to ensure future stability
+ */
+define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
+define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+
+require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
+
 
 class VmConfig
 {
@@ -158,13 +172,13 @@ class VmConfig
 		$jSite = true;
 		return;
 	}*/
-	
+
 	/**
 	 * ADD some CSS if needed
 	 * Prevent duplicate load of CSS stylesheet
 	 * @ Author KOHL Patrick
 	 */
-	
+
 	function cssSite()
 	{
 		static $cssSite;

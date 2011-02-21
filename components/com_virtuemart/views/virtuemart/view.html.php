@@ -21,8 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
-//require(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'CategoryUtils.php');
-//require(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php');
+//require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'CategoryUtils.php');
+//require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php');
 
 
 /**
@@ -54,7 +54,7 @@ class VirtueMartViewVirtueMart extends JView {
         $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
         $this->assignRef('categories',	$categoryChildren);
 
-        if(!class_exists('calculationHelper'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+        if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
         /* Load the recent viewed products */
         $this->assignRef('recentProducts', $productModel->getRecentProducts());
@@ -74,7 +74,7 @@ class VirtueMartViewVirtueMart extends JView {
 			$this->assignRef('toptenProducts', $toptenProducts);
 		}
 
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 

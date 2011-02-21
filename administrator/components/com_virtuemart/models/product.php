@@ -118,7 +118,7 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->product_discount_id = null;
 
 		 	 if(empty($this->_data->paym_vendor_id)){
-  		   		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+  		   		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
    				$row->vendor_id = VirtueMartModelVendor::getLoggedVendor();
   			}
 		 }
@@ -730,7 +730,7 @@ class VirtueMartModelProduct extends JModel {
 
 
 		/* Update manufacturer link */
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		modelfunctions::storeArrayData('#__vm_product_mf_xref','product_id','manufacturer_id',$product_data->product_id,JRequest::getInt('mf_category_id'));
 
 //		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
@@ -1184,7 +1184,7 @@ class VirtueMartModelProduct extends JModel {
 	*/
 	public function getTemplatesList() {
 		jimport('joomla.filesystem.folder');
-		$path = JPATH_COMPONENT_SITE.DS.'views'.DS.'productdetails'.DS.'tmpl';
+		$path = JPATH_VM_SITE.DS.'views'.DS.'productdetails'.DS.'tmpl';
 		$files = JFolder::files($path, '.', false, false, array('index.html'));
 		$options = array();
 		foreach ($files AS $file) {

@@ -1,7 +1,7 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* Payment processing plugin for transactions with authorize.net 
+* Payment processing plugin for transactions with authorize.net
 *
 * @version $Id$
 * @package VirtueMart
@@ -124,18 +124,18 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 	/**
 	 * This shows the plugin for choosing in the payment list of the checkout process.
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function plgVmOnSelectPayment($cart,$checkedPaymId=0){
 		if(!$this -> setVmParams($cart->vendorId)) return ;
-		
+
 		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
-		
+
 		$html = '<fieldset>';
 		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 
-	
+
 		if($this->paymentMethod->paym_creditcards){
 			$html .= '<fieldset>';
 			$html .= ($this->paymentModel->renderCreditCardRadioList($this->selectedCC,$this->paymentMethod->paym_creditcards));
@@ -170,9 +170,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
 		        	<label for="credit_card_code">'. JText::_('VM_CHECKOUT_PAYINFO_CVV2')  .': </label>
-		        </td>		        		
+		        </td>
 		        <td>
-		            <input type="text" class="inputbox" id="cart_cc_code" name="cart_cc_code" value="'. $this->_cc_code.'" autocomplete="off" />   
+		            <input type="text" class="inputbox" id="cart_cc_code" name="cart_cc_code" value="'. $this->_cc_code.'" autocomplete="off" />
 		        </td>
 		    </tr>
 		    <tr>
@@ -183,21 +183,20 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		        $html .= $this->_cc_expire_year;
 		        $html .= shopfunctions::listYears('cart_cc_expire_year', $this->_cc_expire_year);
 		        $html .= '</td>  </tr>  	</table>';
-    	
+
 		$html .= ' </fieldset> </fieldset>';
 		return $html;
-		
+
 	}
 
 	/**
 	 * This is for checking the input data of the payment method within the checkout
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function plgVmOnCheckoutCheckPaymentData($cart){
-		if (!class_exists('VirtueMartModelPaymentmethod')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
-		}
+		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
 			if(empty($cart->creditcard_id) ||
 				empty($cart->cc_name) ||
@@ -210,20 +209,19 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * This is for adding the input data of the payment method to the cart, after selecting
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
 	function plgVmOnPaymentSelectCheck($cart)
 	{
-		if (!class_exists('VirtueMartModelPaymentmethod')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
-		}
+		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+
 		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
+			require_once(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
 			$cart->creditcard_id= JRequest::getVar('creditcard', '0');
 			$cart->cc_name= JRequest::getVar('cart_cc_name', '');
 			$cart->cc_number= JRequest::getVar('cart_cc_number', '');
@@ -252,7 +250,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
 	{
-		
+
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
@@ -291,7 +289,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		if ($payment->order_payment_log) {
 			$_html .= $payment->order_payment_log;
 		} else {
-			$_html .= './.'; 
+			$_html .= './.';
 		}
 		$_html .=  '</td>'."\n";
 		$_html .= '	</tr>'."\n";
@@ -317,7 +315,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_returnValue = 'C'; // TODO Read the status from the parameters
 
 		// Load the required helpers
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
 		$_usr =& JFactory::getUser();
 
@@ -325,8 +323,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_usrST = (($_orderData->ST === null) ? $_orderData->BT : $_orderData->ST);
 
 		$database = JFactory::getDBO();
-		
-		$_vendorID = $_orderData->vendor_id; 
+
+		$_vendorID = $_orderData->vendor_id;
 		$_vendorCurrency = VirtueMartModelVendor::getVendorCurrencyCode($_vendorID);
 
 		// Option to send email to merchant from gateway
@@ -423,12 +421,12 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$_dbValues['order_payment_expire'] = mktime(0, 0, 0, ($_orderData->cc_expire_month+1), 0, $_orderData->cc_expire_year);
 			$_dbValues['order_payment_name'] = $_orderData->cc_name;
 		}
-		
+
 		$_host = 'secure.authorize.net';
 		$_port = 443;
 		$_uri = 'gateway/transact.dll';
 		$_result = VmConnector::handleCommunication( "https://$_host:$_port/$_uri", $_qstring );
-		
+
 		if(!$_result) {
 			JError::raiseError(500, JText::_('The transaction could not be completed.'));
 			$_dbValues['order_payment_status'] = -1;
@@ -479,13 +477,13 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethodID)) {
 			return null;
 		}
-		
+
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		//$database = new ps_DB();
 		$database = JFactory::getDBO();
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
-		
+		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+
 		/*CERTIFICATION
 		Visa Test Account           4007000000027
 		Amex Test Account           370000000000002
@@ -503,7 +501,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		$transaction_key = $this->get_passkey();
 		if( $transaction_key === false ) return false;
-		
+
 		// $db = new ps_DB;
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
@@ -619,16 +617,16 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-		
+
 		$host = 'secure.authorize.net';
-		
+
 		$result = VmConnector::handleCommunication( "https://$host:443/gateway/transact.dll", $poststring );
-		
+
 		if( !$result ) {
 			$vmLogger->err('We\'re sorry, but an error has occured when we tried to communicate with the authorize.net server. Please try again later, thank you.' );
 			return false;
 		}
-		
+
 		$response = explode("|", $result);
 
 		// Approved - Success!

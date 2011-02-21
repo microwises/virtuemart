@@ -47,7 +47,7 @@ class VirtueMartControllerUser extends JController
 		$view = $this->getView('user', 'html');
 
 		/* Add the default model */
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
@@ -75,7 +75,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Max Milbers
 	 */
 	function saveUser(){
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$userModel = $this->getModel('user');
 
 		$ret = $userModel->store();
@@ -89,7 +89,7 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
@@ -113,7 +113,7 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
@@ -139,7 +139,7 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
@@ -208,7 +208,7 @@ class VirtueMartControllerUser extends JController
 		$data = JRequest::get('post');
 
 		// Load the user_info helper
-		if(!class_exists('user_info'))require(JPATH_COMPONENT.DS.'helpers'.DS.'user_info.php' );
+		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php' );
 
 		user_info::address2cartanonym($data, $data['address_type']);
 //		user_info::address2cartanonym($data, 'ST');
@@ -228,7 +228,7 @@ class VirtueMartControllerUser extends JController
 
 		$currentUser =& JFactory::getUser();
 		if($currentUser->id!=0){
-			$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
 			$msg = $userModel->store();
 		}
@@ -265,10 +265,10 @@ class VirtueMartControllerUser extends JController
 		/* Create the view */
 		$view = $this->getView('user', 'html');
 
-		if(!class_exists('VirtueMartCart')) require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'cart.php');
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
 
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$user = $this->getModel( 'user', 'VirtuemartModel' );
 		$view->setModel( $user , false );
 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );

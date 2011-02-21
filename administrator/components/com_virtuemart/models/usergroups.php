@@ -111,7 +111,7 @@ class VirtueMartModelUsergroups extends JModel {
 		    $this->_id = 0;
 		    $this->_data = null;
 		}
-		
+
 		return $this->_data;
     }
 
@@ -120,8 +120,8 @@ class VirtueMartModelUsergroups extends JModel {
 
 		$db = JFactory::getDBO();
 		$query = 'SELECT * FROM `#__vm_perm_groups` ';
-//		if ($onlyPublished) { 
-//			$query .= 'WHERE `#__vm_perm_groups`.`published` = 1';			
+//		if ($onlyPublished) {
+//			$query .= 'WHERE `#__vm_perm_groups`.`published` = 1';
 //		}
 		$query .= ' ORDER BY `#__vm_perm_groups`.`group_name`';
 		if ($noLimit) {
@@ -139,11 +139,11 @@ class VirtueMartModelUsergroups extends JModel {
     function store() {
 
 		$table = $this->getTable('usergroups');
-	
+
 		$data = JRequest::get( 'post' );
 		echo 'store that <pre>'.$data.'</pre>';
 		// Bind the form fields to the extensions table
-	
+
 		if (!$table->bind($data)) {
 		    $this->setError($table->getError());
 		    return false;
@@ -168,7 +168,7 @@ class VirtueMartModelUsergroups extends JModel {
 
     function delete() {
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('group_id','usergroups');
 
     }
@@ -176,9 +176,9 @@ class VirtueMartModelUsergroups extends JModel {
 
 	function publish($publishId = false) {
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('group_id','usergroups',$publishId);
-		
+
     }
 
 

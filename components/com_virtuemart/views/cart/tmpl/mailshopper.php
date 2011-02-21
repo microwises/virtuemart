@@ -14,28 +14,28 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* 
+*
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 	//Header for shopper ?>
 <?php echo $this->store->vendor_store_name; ?>
-<?php 
+<?php
 echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
-//VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false); 
+//VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false);
 //TODO Ordernumber
 
 //PriceList
-include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
-include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
 
 //TODO if silent registration logindata
 //TODO if Paymentmethod needs Bank account data of vendor
 
 //We may wish to integrate later a kind of signature
-//include(JPATH_COMPONENT.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
+//include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
 
 	//Footer for shopper
 ?>

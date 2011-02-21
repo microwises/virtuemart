@@ -20,9 +20,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 define ('PFP_CLIENT_CERTIFICATION_ID', 'bea46ef28cd8693d8b191d2d011b7fd1');
 
 class plgPaymentPayflow_Pro extends vmPaymentPlugin {
-	
+
 	var $payment_code = "PFP";
-	
+
 	/**
 	 * Constructor
 	 *
@@ -58,7 +58,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$ps_checkout = new ps_checkout;
 
 		// connector class
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
 		// Get the Password securely from the database
 		$transactionkey = $this->get_passkey();
@@ -69,7 +69,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 
 		// Get user billing information
-		
+
 		//$dbbt = new ps_DB;
 		$dbbt = JFactory::getDBO();
 		$qt = "SELECT * FROM #__{vm}_user_info WHERE user_id=".$auth["user_id"]." AND address_type='BT'";
@@ -88,13 +88,13 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		else {
 			$dbst = $dbbt;
 		}
-		
+
 		$tempstr = $_SESSION['ccdata']['order_payment_number'] . $order_total . date('YmdGis');
-		$request_id = md5($tempstr);		
-	
+		$request_id = md5($tempstr);
+
 		//Authnet vars to send
 		$formdata = array (
-		
+
 		'PARTNER' =>$this->params->get('PFP_PARTNER'),
 		'VENDOR' => $this->params->get('PFP_VENDOR'),
 		'USER' => $this->params->get('PFP_USER'),
@@ -106,7 +106,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		'TRXTYPE' => 'A', // transaction type: Delayed Capture
 		'TENDER' => 'C', // payment method (C = Credit Card)
 		'CURRENCY' => $vendor_currency,
-		
+
 		// Customer Name and Billing Address
 		'NAME' => strtoupper(substr($dbbt->f("first_name"), 0, 15).substr($dbbt->f("last_name"), 0, 15)),
 		'STREET' => substr($dbbt->f("address_1"), 0, 30),
@@ -131,13 +131,13 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-		
+
 		if($this->params->get('DEBUG')) {
 			$host = 'pilot-payflowpro.verisign.com';
 		} else  {
 			$host = 'payflowpro.verisign.com';
 		}
-		
+
 		$headers[] = "X-VPS-Timeout: 30";
 		$headers[] = "X-VPS-VIT-OS-Name: ".PHP_OS;  // Name of your OS
 		$headers[] = "X-VPS-VIT-OS-Version: ".PHP_OS;  // OS Version
@@ -148,25 +148,25 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Product: ".phpversion()."::cURL";  // For your info, would populate with application name
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
-	
+
 		$result = VmConnector::handleCommunication( "https://$host:443/transaction/", $poststring, $headers );
-		
+
 		if( !$result ) {
 			// $vmLogger->err('The transaction could not be completed.' );
 			JApplication::enqueueMessage('The transaction could not be completed.', 'error');
 			return false;
 		}
-		
+
 		$result = strstr($result, 'RESULT');
-		
+
 		$valArray = explode('&', $result);
 		foreach($valArray as $val) {
 			$valArray2 = explode('=', $val);
 			$pfpro[$valArray2[0]] = $valArray2[1];
 		}
-		
+
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
-		
+
 		//$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
 		$RESULT_CODE = JRequest::getVar('RESULT');
 		//$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
@@ -175,11 +175,11 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$RESPMSG = JRequest::getVar('RESPMSG','');
 		//$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		$CVV2MATCH = JRequest::getVar('CVV2MATCH','');
-		
+
 		$success = false;
-		
+
 		switch($RESULT_CODE) {
-			
+
 			case '0':
 				// Approved - Success!
 				$success = true;
@@ -187,21 +187,21 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$d["order_payment_log"] .= $RESPMSG;
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
-				
+
 			default:
 				$d["order_payment_log"] = $this->getResponseMsg( $RESULT_CODE );
 				if( !empty( $d["order_payment_log"] )) {
 					//$vmLogger->err( $d["order_payment_log"] );
 					JApplication::enqueueMessage($d["order_payment_log"], 'error');
-			
+
 				} else {
 					//$vmLogger->err( 'An unknown Error occured while processing your Payment Request.');
-					JApplication::enqueueMessage('An unknown Error occured while processing your Payment Request.', 'error');					
+					JApplication::enqueueMessage('An unknown Error occured while processing your Payment Request.', 'error');
 				}
 				break;
-			
-		}		
-		
+
+		}
+
 		// Catch Transaction ID
 		$d["order_payment_trans_id"] = $TRANSACTION_ID;
 
@@ -220,11 +220,11 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		// $database = new ps_DB();
 		$database = JFactory::getDBO();
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
-		
+		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+
 		if( empty($d['order_number'])) {
 			//$vmLogger->err("Error: No Order Number provided.");
-			JApplication::enqueueMessage('Error: No Order Number provided.','error');			
+			JApplication::enqueueMessage('Error: No Order Number provided.','error');
 			return false;
 		}
 
@@ -232,7 +232,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
 			//$vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
-			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),false),'error');						
+			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),false),'error');
 			return false;
 		}
 		//$db = new ps_DB;
@@ -277,11 +277,11 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 
 		$tempstr = $dbaccount->f('account_number') . $db->f('order_total') . date('YmdGis');
-		$request_id = md5($tempstr);		
-	
+		$request_id = md5($tempstr);
+
 		//Authnet vars to send
 		$formdata = array (
-		
+
 		'PARTNER' => $this->params->get('PFP_PARTNER'),
 		'VENDOR' => $this->params->get('PFP_VENDOR'),
 		'USER' => $this->params->get('PFP_USER'),
@@ -293,7 +293,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		'TRXTYPE' => 'D', // transaction type: Delayed Capture
 		'TENDER' => 'C', // payment method (C = Credit Card)
 		'CURRENCY' => $vendor_currency,
-		
+
 		// Customer Name and Billing Address
 		'NAME' => strtoupper(substr($dbbt->f("first_name"), 0, 15).substr($dbbt->f("last_name"), 0, 15)),
 		'STREET' => substr($dbbt->f("address_1"), 0, 30),
@@ -319,13 +319,13 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-		
+
 		if($this->params->get('DEBUG')) {
 			$host = 'pilot-payflowpro.verisign.com';
 		} else  {
 			$host = 'payflowpro.verisign.com';
 		}
-		
+
 		$headers[] = "X-VPS-Timeout: 30";
 		$headers[] = "X-VPS-VIT-OS-Name: ".PHP_OS;  // Name of your OS
 		$headers[] = "X-VPS-VIT-OS-Version: ".PHP_OS;  // OS Version
@@ -336,44 +336,44 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Product: ".phpversion()."::cURL";  // For your info, would populate with application name
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
-	
+
 		$result = VmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
-		
+
 		if( !$result ) {
 			//$vmLogger->err('The transaction could not be completed.' );
 			JApplication::enqueueMessage('The transaction could not be completed.' ,'false');
 			return false;
 		}
-		
+
 		$result = strstr($result, 'RESULT');
-		
+
 		$valArray = explode('&', $result);
 		foreach($valArray as $val) {
 			$valArray2 = explode('=', $val);
 			$pfpro[$valArray2[0]] = $valArray2[1];
 		}
-		
+
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
-		
+
 		//$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
 		$RESULT_CODE = JRequest::getVar('RESULT' );
 		//$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
-		$TRANSACTION_ID = JRequest::getVar('PNREF' );		
+		$TRANSACTION_ID = JRequest::getVar('PNREF' );
 		//$RESPMSG = vmGet( $pfpro, 'RESPMSG', '' );
 		$RESPMSG = JRequest::getVar('RESPMSG','');
 		//$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		$CVV2MATCH = JRequest::getVar('CVV2MATCH', '');
-		
+
 		$success = false;
-		
+
 		switch($RESULT_CODE) {
-			
+
 			case '0':
 				// Approved - Success!
 				$success = true;
 				$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
-				
+
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
@@ -381,7 +381,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
-				
+
 			default:
 				$d["order_payment_log"] = payflow_pro::getResponseMsg( $RESULT_CODE );
 				if( !empty( $d["order_payment_log"] )) {
@@ -392,12 +392,12 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 					JApplication::enqueueMessage('An unknown Error occured while capturing the Payment.','error');
 				}
 				break;
-			
+
 		}
 
 		return $success;
 	}
-	
+
 	/**
 	 * Voids a previous transaction with Payflow Pro
 	 *
@@ -409,8 +409,8 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency, $vmLogger;
 		//$database = new ps_DB();
 		$database = JFactory::getDBO();
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
-		
+		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+
 		if( empty($d['order_number'])) {
 			//$vmLogger->err("Error: No Order Number provided.");
 			JApplication::enqueueMessage('Error: No Order Number provided.','error');
@@ -421,7 +421,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
 			// $vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
-			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),'error');			
+			JApplication::enqueueMessage(JText::_('VM_PAYMENT_ERROR'),'error');
 			return false;
 		}
 		//$db = new ps_DB;
@@ -466,11 +466,11 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 
 		$tempstr = $dbaccount->f('account_number') . $db->f('order_total') . date('YmdGis');
-		$request_id = md5($tempstr);		
-	
+		$request_id = md5($tempstr);
+
 		//Authnet vars to send
 		$formdata = array (
-		
+
 		'PARTNER' => $this->params->get('PFP_PARTNER'),
 		'VENDOR' => $this->params->get('PFP_VENDOR'),
 		'USER' => $this->params->get('PFP_USER'),
@@ -482,7 +482,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		'TRXTYPE' => 'V', // transaction type: Void
 		'TENDER' => 'C', // payment method (C = Credit Card)
 		'CURRENCY' => $vendor_currency,
-		
+
 		// Customer Name and Billing Address
 		'NAME' => strtoupper(substr($dbbt->f("first_name"), 0, 15).substr($dbbt->f("last_name"), 0, 15)),
 		'STREET' => substr($dbbt->f("address_1"), 0, 30),
@@ -508,13 +508,13 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-		
+
 		if($this->params->get('DEBUG')) {
 			$host = 'pilot-payflowpro.verisign.com';
 		} else  {
 			$host = 'payflowpro.verisign.com';
 		}
-		
+
 		$headers[] = "X-VPS-Timeout: 30";
 		$headers[] = "X-VPS-VIT-OS-Name: ".PHP_OS;  // Name of your OS
 		$headers[] = "X-VPS-VIT-OS-Version: ".PHP_OS;  // OS Version
@@ -525,25 +525,25 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$headers[] = "X-VPS-VIT-Integration-Product: ".phpversion()."::cURL";  // For your info, would populate with application name
 		$headers[] = "X-VPS-VIT-Integration-Version: 0.01"; // Application version
 		$headers[] = "X-VPS-Request-ID: " . $request_id;
-			
+
 		$result = VmConnector::handleCommunication( "https://$host:443/transaction", $poststring, $headers );
-		
+
 		if( !$result ) {
 			//$vmLogger->err('The transaction could not be completed.' );
 			JApplication::enqueueMessage('The transaction could not be completed.','error');
 			return false;
 		}
-		
+
 		$result = strstr($result, 'RESULT');
-		
+
 		$valArray = explode('&', $result);
 		foreach($valArray as $val) {
 			$valArray2 = explode('=', $val);
 			$pfpro[$valArray2[0]] = $valArray2[1];
 		}
-		
+
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
-		
+
 		//$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
 		$RESULT_CODE = JRequest::getVar('RESULT');
 		//$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
@@ -552,17 +552,17 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$RESPMSG = JRequest::getVar('RESPMSG','');
 		//$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		$CVV2MATCH = JRequest::getVar('RESPMSG','');
-		
+
 		$success = false;
-		
+
 		switch($RESULT_CODE) {
-			
+
 			case '0':
 				// Approved - Success!
 				$success = true;
 				$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
-				
+
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
@@ -570,7 +570,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
-				
+
 			default:
 				$d["order_payment_log"] = $this->getResponseMsg( $RESULT_CODE );
 				if( !empty( $d["order_payment_log"] )) {
@@ -581,12 +581,12 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 					JApplication::enqueueMessage('An unknown Error occured while voiding the transaction.','error');
 				}
 				break;
-			
+
 		}
 
 		return $success;
 	}
-	
+
 	/**
 	 * Returns the error / mesage for the response code returned by Payflow Pro
 	 *
@@ -596,7 +596,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 	function getResponseMsg( $response_code ) {
 		switch ( $response_code ) {
 			case '1':
-				return 'User authentication failed. Error is caused by one or more of the following: a) Login information is incorrect. Verify that USER, VENDOR, PARTNER, and PASSWORD have been entered correctly, 
+				return 'User authentication failed. Error is caused by one or more of the following: a) Login information is incorrect. Verify that USER, VENDOR, PARTNER, and PASSWORD have been entered correctly,
 				b)	Invalid Processor information entered. Contact merchant bank to verify.
 				c) Allowed IP Address" security feature implemented. The transaction is coming from an unknown IP address. See PayPal Manager online help for details on how to use Manager to update the allowed IP addresses.
 				c) You are using a test (not active) account to submit a transaction to the live PayPal servers. Change the URL from test-payflow.paypal.com to payflow.paypal.com.';
@@ -606,7 +606,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				return 'Invalid transaction type. Transaction type is not appropriate for this transaction. For example, you cannot credit an authorization-only transaction.';
 			case '4':
 				return 'Invalid amount format. Use the format: “#####.##” Do not include currency symbols or commas.';
-			case '5': 
+			case '5':
 				return 'Invalid merchant information. Processor does not recognize your merchant account information. Contact your bank account acquirer to resolve this problem.';
 			case '6':
 				return 'Invalid or unsupported currency code';

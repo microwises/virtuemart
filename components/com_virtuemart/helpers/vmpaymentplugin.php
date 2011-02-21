@@ -17,8 +17,8 @@
  */
 
 // Load the helper functions that are needed by all plugins
-if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-if(!class_exists('DbScheme')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'dbscheme.php');
+if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+if(!class_exists('DbScheme')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'dbscheme.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -117,7 +117,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$result =  $db->loadAssoc();
 
 		if($result){
-			if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+			if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 			$this->paymentModel = new VirtueMartModelPaymentmethod();
 			$this->paymentModel->setId($result['paym_id']);
 			$this->paymentMethod = $this->paymentModel->getPaym();

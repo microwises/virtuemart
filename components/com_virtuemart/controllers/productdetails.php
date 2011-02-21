@@ -39,7 +39,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$cart = JRequest::getVar('cart',false,'post');
 //		if($cart){
-//			require(JPATH_COMPONENT.DS.'controllers'.DS.'cart.php');
+//			require(JPATH_VM_SITE.DS.'controllers'.DS.'cart.php');
 //			$controller= new VirtueMartControllerCart();
 //			$controller->add();
 //		}else{

@@ -303,7 +303,7 @@ class VirtueMartModelOrders extends JModel {
 		$comments = JRequest::getVar('order_comment', array());
 
 		// TODO This is not the most logical place for this plugin (or better; the method updateStatus() must be renamed....)
-		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
@@ -373,10 +373,10 @@ class VirtueMartModelOrders extends JModel {
 					$this->_updateOrderHist($order_id, $new_status, $customer_notified, $comment);
 
 					/* Update stock level */
-					require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+					if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 					$_updateStock = VirtueMartModelOrderstatus::updateStockAfterStatusChange($new_status, $order_status_code);
 					if ($_updateStock != 0) {
-						require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
+						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 						$_productModel = new VirtueMartModelProduct();
 						$_q = 'SELECT product_id '
 							.', product_quantity '
@@ -536,9 +536,9 @@ class VirtueMartModelOrders extends JModel {
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
 		$_userInfoData =  $this->getTable('order_user_info');
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 
-		//if(!class_exists('shopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
@@ -615,9 +615,9 @@ class VirtueMartModelOrders extends JModel {
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {
 				// We got a new order status; check if the stock should be updated
-				require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+				if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($_returnValue) < 0) {// >0 is not possible for new orders
-					require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
+					if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 					$_productModel = new VirtueMartModelProduct();
 					foreach ($_cart->products as $_prod) {
 						$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
@@ -861,7 +861,7 @@ class VirtueMartModelOrders extends JModel {
 		$include_comments = JRequest::getVar('include_comment', array());
 
 		/* Get vendor info */
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
 		$vendorModel = new VirtueMartModelVendor();
 		$vendorModel->setId($vendor_id);
@@ -963,7 +963,7 @@ class VirtueMartModelOrders extends JModel {
 		$curDate = JFactory::getDate();
 		$data['mdate'] = $curDate->toMySql();
 
-		require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));

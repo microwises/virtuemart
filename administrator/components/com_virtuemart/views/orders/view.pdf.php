@@ -43,10 +43,10 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		
+		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+
 		// Load addl models
 		$userFieldsModel = $this->getModel('userfields');
 		$productModel = $this->getModel('product');

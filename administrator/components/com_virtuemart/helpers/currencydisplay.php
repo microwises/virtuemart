@@ -192,7 +192,6 @@ class CurrencyDisplay {
 			);
 		} else {
 			$app =& JFactory::getApplication('administrator');
-			dump($app,'my web');
 			$uri =& JFactory::getURI();
 
 			if(empty($currencyId)){

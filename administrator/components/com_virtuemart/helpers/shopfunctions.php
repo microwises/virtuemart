@@ -87,7 +87,7 @@ class ShopFunctions {
 	public function renderVendorList($vendorId, $multiple = false) {
 
 		$db = JFactory::getDBO();
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
 			if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 
@@ -241,7 +241,7 @@ class ShopFunctions {
 		}
 
 		if (VmConfig::isJ15()) {
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
+			if(!class_exists('TemplatesHelper')) require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 		} else {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
@@ -427,7 +427,7 @@ class ShopFunctions {
 		//retrieving model
 		if( !class_exists('VirtueMartModel'.$className) ){
 
-			$modelPath = JPATH_COMPONENT_ADMINISTRATOR.DS."models".DS.$name.".php";
+			$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
 
 			if( file_exists($modelPath) ){
 				require( $modelPath );
@@ -801,7 +801,7 @@ class ShopFunctions {
 	* @return boolean The result of the validation
 	*/
 	public function validateEUVat($euvat) {
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
+		if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
 		$vatcheck = new VmEUVatCheck($euvat);
 		return $vatcheck->validvatid;
 	}

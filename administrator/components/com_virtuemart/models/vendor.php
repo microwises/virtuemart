@@ -75,14 +75,14 @@ class VirtueMartModelVendor extends JModel {
     function getId(){
     	return $this->_id;
     }
-    
+
     /**
 	* name: getLoggedVendor
 	* Checks which $vendorId has the just logged in user.
 	* @author Max Milbers
-	* @param @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner) 
+	* @param @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner)
 	* returns int $vendorId
-	*/	
+	*/
 	function getLoggedVendor($ownerOnly = true){
 		$user = JFactory::getUser();
 		$userId = $user->id;
@@ -93,9 +93,9 @@ class VirtueMartModelVendor extends JModel {
 			JError::raiseNotice(1,'$user_id empty, no user logged in');
 			return 0;
 		}
-		
+
 	}
-	
+
     /**
 	* Retrieve the vendor details from the database.
 	*
@@ -103,12 +103,12 @@ class VirtueMartModelVendor extends JModel {
 	* @return object Vendor details
 	*/
 	function getVendor() {
-		
+
         if (!$this->_data) {
 
 	    	$this->_data = $this->getTable('vendor');
    			$this->_data->load((int)$this->_id);
-   			
+
 		    // Convert ; separated string into array
 		    if ($this->_data->vendor_accepted_currencies) {
 				$this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);
@@ -122,14 +122,14 @@ class VirtueMartModelVendor extends JModel {
 //			    $query .= "WHERE vendor_id = '". $this->_id ."'";
 //			    $this->_db->setQuery($query);
 //			    $userVendor = $this->_db->loadObject();
-//		
+//
 //			    // Get user_info table data
 //			    $this->_data->userId = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
-//			    
+//
 //				$userInfoTable = $this->getTable('user_info');
 //	    		$userInfoTable->load((int)$this->_id);
 //	    		$this->_data->userInfo = $userInfoTable;
-//	    
+//
 //				$vendorJUser = JFactory::getUser($this->_id);
 //		//	   	$user_table = $this->getTable('user');
 //		//	    $user_table->load((int)$userId);
@@ -139,7 +139,7 @@ class VirtueMartModelVendor extends JModel {
 //			}
 
 		}
-		
+
        	if (!$this->_data) {
 	    	$this->_data = new stdClass();
 	    	$this->_id = 0;
@@ -157,7 +157,7 @@ class VirtueMartModelVendor extends JModel {
 	* @return object List of vendors
 	*/
 	public function getVendors() {
-		
+
 		$query = 'SELECT * FROM `#__vm_vendor` ';
 		$query .= 'ORDER BY `#__vm_vendor`.`vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
@@ -178,12 +178,12 @@ class VirtueMartModelVendor extends JModel {
 		else {
 			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`="' . $this->_db->Quote((int)$vendorId) . '" ';
 			$db->setQuery($query);
-			$result = $db->loadResult(); 
+			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);
 		}
 	}
 
-	
+
 	/**
 	 * Bind the post data to the vendor table and save it
      * This function DOES NOT safe information which is in the vm_users or vm_user_info table
@@ -193,13 +193,13 @@ class VirtueMartModelVendor extends JModel {
      * @return boolean True is the save was successful, false otherwise.
 	 */
     function store($data){
-   
+
 	$table = $this->getTable('vendor');
 
-	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
 	//uploading images and creating thumbnails
-	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');	
+	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');
 	if(!empty($fullImage['name'])){
 		$filename = $fullImage['name'];
 	} else {
@@ -212,13 +212,13 @@ class VirtueMartModelVendor extends JModel {
 	} else {
 		$filenamethumb = $data['vendor_thumb_image_current'];
 	}
-			
+
 	$image = VmImage::getVendorImage($filename,$filenamethumb);
 	if(!empty($image)){
 		$data = $image->saveImage($data,$fullImage,false);
 		$data = $image->saveImage($data,$thumbImage,true);
 	}
-		
+
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -242,18 +242,18 @@ class VirtueMartModelVendor extends JModel {
 	    $this->setError($table->getDBO()->getErrorMsg());
 	    return false;
 	}
-	
+
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
-	
+
 	return true;
 
 	}
 
 	/**
 	 * Get the vendor specific currency
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @param $_vendorId Vendor ID
 	 * @return string Currency code
@@ -269,11 +269,11 @@ class VirtueMartModelVendor extends JModel {
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
 		return $_r->cc;
-	}	
+	}
 
 	/**
 	 * Retrieve a lost of vendor objects
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @return Array with all Vendor objects
 	 */
@@ -289,7 +289,7 @@ class VirtueMartModelVendor extends JModel {
 		$q  = "SELECT `user_id` FROM `#__vm_orders` WHERE `order_id`='$order_id'";
 //		$db->query( $q );
 		$this->_db->setQuery($q);
-		
+
 //		if($db->next_record()){
 		if($this->_db->query()){
 //			$user_id = $db->f('user_id');
@@ -299,16 +299,16 @@ class VirtueMartModelVendor extends JModel {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * 		state_id 	country_id 	state_name 	state_3_code 	state_2_code
 	 		1 			223 		Alabama 	ALA 			AL
-	 		
-	 		
+
+
 	 		country_id 	zone_id 	country_name 	country_3_code 	country_2_code
 			1 			1 			Afghanistan 	AFG 			AF
 	 */
-	
+
 
 	/**
 	 * ATM Unused !
@@ -318,19 +318,19 @@ class VirtueMartModelVendor extends JModel {
 	 * @param string $symbol
 	 */
 	function checkCurrencySymbol( $symbol, $convertToEntity=true ) {
-		
+
 		$symbol = str_replace('&amp;', '&', $symbol );
-		
+
 		if( substr( $symbol, 0, 1) == '&' && substr( $symbol, strlen($symbol)-1, 1 ) == ';') {
 			return $symbol;
 		}
 		else {
 			if( $convertToEntity ) {
 				$symbol = htmlentities( $symbol, ENT_QUOTES, 'utf-8' );
-				
+
 				if( substr( $symbol, 0, 1) == '&' && substr( $symbol, strlen($symbol)-1, 1 ) == ';') {
 					return $symbol;
-				}		
+				}
 				// Sometimes htmlentities() doesn't return a valid HTML Entity
 				switch( ord( $symbol ) ) {
 					case 128:
@@ -338,16 +338,16 @@ class VirtueMartModelVendor extends JModel {
 						$symbol = '&euro;';
 						break;
 				}
-						
+
 			}
 		}
-		
+
 		return $symbol;
 	}
 
-	
+
 	/**
-	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 
+	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item
 	* Assigned users cannot change storeinformations
 	* ownerOnly = false should be used for users who are assigned to a vendor
 	* for administrative jobs like execution of orders or managing products
@@ -369,14 +369,14 @@ class VirtueMartModelVendor extends JModel {
 			case 'user':
 				if ($ownerOnly) {
 					$q = 'SELECT `vendor_id`
-						FROM `#__vm_users` `au` 
-						LEFT JOIN `#__vm_user_info` `u` 
-						ON (au.user_id = u.user_id) 
+						FROM `#__vm_users` `au`
+						LEFT JOIN `#__vm_user_info` `u`
+						ON (au.user_id = u.user_id)
 						WHERE `u`.`user_id`=' .$value;
 				}
 				else {
 					$q  = 'SELECT `vendor_id` FROM `#__vm_users` WHERE `user_id`= "' .$value.'" ';
-				}						
+				}
 				break;
 			case 'product':
 				$q = 'SELECT vendor_id FROM #__vm_product WHERE product_id='.$value;
@@ -390,11 +390,11 @@ class VirtueMartModelVendor extends JModel {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * This function gives back the storename for the given vendor.
 	 * This function is just for improving speed. When you need the whole vendor table, use getVendor
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function getVendorName($vendor_id=1){
@@ -406,16 +406,16 @@ class VirtueMartModelVendor extends JModel {
 	/**
 	 * This function gives back the email for the given vendor.
 	 * This function is just for improving speed. When you need the whole vendor data, use getUser in the usermodell
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
-	 
+
  	public function getVendorEmail($vendor_id){
  		$user_id = self::getUserIdByVendorId($vendor_id);
  		if(!empty($user_id)){
   			$query = 'SELECT `email` FROM `#__users` WHERE `vendor_id` = "'.$user_id.'" ';
 			$this->_db->setQuery($query);
-			if($this->_db->query()) return $this->_db->loadResult(); else return '';			
+			if($this->_db->query()) return $this->_db->loadResult(); else return '';
  		}
 		return '';
  	}
@@ -430,7 +430,7 @@ class VirtueMartModelVendor extends JModel {
 	 * @return String
 	 */
 	function formatted_store_address($vendor_id) {
-		
+
 		echo 'Developer notice, you used an old legacy function, you may do it, but correct it first <br />';
 		echo 'But be aware that the class VmStore is obsolete!';die;
 		if(empty($vendor_id)){
@@ -441,7 +441,7 @@ class VirtueMartModelVendor extends JModel {
 			//Todo this query is broken due the changes with the tables
 			$this->_db = JFactory::getDBO();
 			$q = "SELECT vendor_store_name AS storename, address_1, address_2, email, fax,
-				s.state_2_code AS state, s.state_name AS statename, city, zip, 
+				s.state_2_code AS state, s.state_name AS statename, city, zip,
 				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
 				FROM #__vm_vendor v
 				LEFT JOIN #__vm_user_shopper_group_xref x
@@ -456,7 +456,7 @@ class VirtueMartModelVendor extends JModel {
 				AND address_type = 'BT'";
 			$this->_db->setQuery($q);
 			$vendor = $this->_db->loadObject();
-			
+
 //			$vendor_address_format = VmStore::get('vendor_address_format');
 			$vendor_address_format = '';
 			$store_address = str_ireplace('{storename}', $vendor->storename, $vendor_address_format);
@@ -471,28 +471,28 @@ class VirtueMartModelVendor extends JModel {
 			$store_address = str_ireplace('{email}', $vendor->email, $store_address);
 			$store_address = str_ireplace('{fax}', $vendor->fax, $store_address);
 			$store_address = str_ireplace('{url}', $vendor->url, $store_address);
-			
+
 			return nl2br($store_address);
 		}
 	}
-	
+
 //	/**
 //	* Retrieves a DB object with the recordset of the specified fields (as array)
-//	* of vendor_id and ordered by lastparam 
-//	* If no orderby is need just set "" 
-//	* the country the vendor is assigned to    
-//	* 
+//	* of vendor_id and ordered by lastparam
+//	* If no orderby is need just set ""
+//	* the country the vendor is assigned to
+//	*
 //	* @author Max Milbers
 //	* @author RolandD
-//	* @static 
+//	* @static
 //	* @param int $vendor_id
 //	* @param array $fields  "" = Select *
 //	* @param String $orderby to order by, just the columnname Without 'ORDER BY '
 //	* @return ps_DB
 //	*/
-//	 
+//
 //	public function getVendorFields($vendor_id, $fields=array(), $orderby="") {
-//		
+//
 //		JError::raiseNotice(1,'Attention you use the obsolete function getVendorFields');
 //		//used static
 //		$db = JFactory::getDBO();
@@ -530,13 +530,13 @@ class VirtueMartModelVendor extends JModel {
 //						}
 //					}
 //				}
-//			} 
-//			
+//			}
+//
 //			/* Validate the fields */
 //			foreach($fields as $field){
 //					if(!in_array($field, $allowedStrings)){
 //						echo $field;
-//						//JError::raiseNotice(1, 'get_vendor_fields: field not known: '.$field );	
+//						//JError::raiseNotice(1, 'get_vendor_fields: field not known: '.$field );
 //						return;
 //					}
 //					else {
@@ -550,7 +550,7 @@ class VirtueMartModelVendor extends JModel {
 //				/* Check if we need to include the country table */
 //				if(in_array($countryFields,$fields)) $countrytable = true;
 //				else $countrytable = false;
-//				
+//
 //				/* Check the fields string */
 //				$fieldstring = '`'. implode( '`,`', $fields ) . '`';
 //				if(empty($fieldstring)) {
@@ -558,17 +558,17 @@ class VirtueMartModelVendor extends JModel {
 //					return;
 //				}
 //			}
-//		
+//
 //		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
 //		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
 //		if($countrytable) {
-//			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id) 
+//			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id)
 //				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
 //		}
 //		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
-//		
+//
 //		if (!empty($orderby)) $q .= 'ORDER BY '.$orderby.' ';
-//		
+//
 //		$db->setQuery($q);
 //		$vendor_fields = $db->loadObject();
 //		if (!$vendor_fields) {
@@ -579,7 +579,7 @@ class VirtueMartModelVendor extends JModel {
 //		}
 //		else return $vendor_fields;
 //	}
-	
+
 }
 
 //pure php no closing tag

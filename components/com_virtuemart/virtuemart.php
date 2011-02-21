@@ -1,4 +1,4 @@
-<?php 
+<?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
@@ -23,8 +23,8 @@ $config= new VmConfig();
 $config->loadConfig();
 
 /* Front-end helpers */
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
-require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
+require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
+require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 /* Loading jQuery and VM scripts. */
 /*$document = JFactory::getDocument();
@@ -41,14 +41,14 @@ $config->cssSite();
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
-	if (file_exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php')) {
+	if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
-		require (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+		require (JPATH_VM_SITE.DS.'controllers'.DS.$controller.'.php');
 	}
 }
 
 //This should be done in the config, only when there are no entries, get them from the file
-//require(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
+//require(JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg.php');
 
 
 /* Create the controller */

@@ -73,7 +73,7 @@ class VirtuemartViewProduct extends JView {
 $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
 
 				/* Load the product price */
-				require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->product_id);
 
@@ -103,7 +103,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$lists['dbdiscounts'] = $this -> renderDiscountList($product->product_discount_id,1);
 				$lists['dadiscounts'] = $this -> renderDiscountList($product->product_discount_id,0);
 
-				require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'config.php');
+				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 
@@ -335,7 +335,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
 
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'calc.php');
+		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();

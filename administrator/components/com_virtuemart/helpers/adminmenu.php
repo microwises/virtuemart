@@ -60,7 +60,7 @@ class AdminMenuHelper {
 	    function endAdminArea() {
 		if (VmConfig::get('debug') == '1') {
 			//TODO maybe add debuggin again here
-//		    include(JPATH_COMPONENT_ADMINISTRATOR.'debug.php');
+//		    include(JPATH_VM_ADMINISTRATOR.'debug.php');
 		}
 		?>
     </div>

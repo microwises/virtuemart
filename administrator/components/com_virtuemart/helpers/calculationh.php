@@ -55,7 +55,7 @@ class calculationHelper {
 		$this -> _currency 		  = $this->_getCurrencyObject();
 
 
-		if(!class_exists('CurrencyDisplay'))require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
 		$this -> _debug           = false;
 	}
@@ -256,12 +256,6 @@ class calculationHelper {
 
 		$prices['variantModification']=$variant;
 
-		if (function_exists('dumpTrace')) {
-//			dump($prices,'$prices');
-	//		echo '<br />The prices:<br />';
-	//		echo '<pre>'.print_r($prices).'</pre>';
-		}
-
 		return $prices;
 	}
 
@@ -416,9 +410,6 @@ class calculationHelper {
 		//		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
 
-		if (function_exists('dumpTrace')) {
-//		dump($this -> _cartPrices,"my cart prices");
-		}
 		return $this->_cartPrices;
 	}
 
@@ -429,7 +420,7 @@ class calculationHelper {
 	 */
 	private function couponHandler($_code)
 	{
-		require(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'coupon.php');
+		if(!class_exists('CouponHelper')) require(JPATH_VM_SITE.DS.'helpers'.DS.'coupon.php');
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}
@@ -482,9 +473,6 @@ class calculationHelper {
 				} else {
 					$price = $cOut;
 				}
-//				if (function_exists('dumpTrace')) {
-//					dump($rule, 'RulesEffecting $finalprice '.$finalprice.' and $price '.$price);
-//				}
 			}
 		}
 
@@ -716,7 +704,7 @@ class calculationHelper {
 //		$code=4;
 		$paymentCosts = 0.0;
 		if (!class_exists('VirtueMartModelPaymentmethod')) {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
+			if(!class_exists('VirtueMartModelPaymentmethod'))(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 		}
 
 		$model = new VirtueMartModelPaymentmethod;
@@ -1057,14 +1045,14 @@ class calculationHelper {
 
 		$converterFile  = VmConfig::get('currency_converter_module');
 
-		if (file_exists( JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
+		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
 			$module_filename = $converterFile;
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
+			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
 			if( class_exists( $module_filename )) {
 				$_currency = new $module_filename();
 			}
 		} else {
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
 			$_currency = new convertECB();
 		}
 		return $_currency;

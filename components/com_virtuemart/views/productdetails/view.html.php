@@ -40,7 +40,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
-			if(!class_exists('calculationHelper')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
 
@@ -52,7 +52,7 @@ class VirtueMartViewProductdetails extends JView {
 		$task = JRequest::getCmd('task');
 
 		/* Set the helper path */
-		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
+		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 		/* Load helpers */
 		$this->loadHelper('image');
@@ -77,7 +77,7 @@ class VirtueMartViewProductdetails extends JView {
 			self::showLastCategory($tpl);
 			return;
 		}
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($product_id);
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
@@ -122,7 +122,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Check for editing access */
 		/** @todo build edit page */
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('VM_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));

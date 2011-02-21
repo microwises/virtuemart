@@ -28,7 +28,7 @@ class VmEUVatCheck {
 		global $vmLogger;
 
 		/* Load the SOAP library */
-		require(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'nusoap'.DS.'nusoap.php');
+		require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'nusoap'.DS.'nusoap.php');
 
 		/* Check for proxy settings */
 		if (VmConfig::get('vm_proxy_url') != '') {

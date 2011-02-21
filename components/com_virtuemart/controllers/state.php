@@ -15,14 +15,14 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
-require( JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'state.php' );
+if(!class_exists('VirtueMartModelState')) require( JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'state.php' );
 
 class VirtueMartControllerState extends JController
 {
@@ -34,17 +34,17 @@ class VirtueMartControllerState extends JController
 	 */
 	public function __construct() {
 		parent::__construct();
-		
-		$document = JFactory::getDocument();				
+
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view = $this->getView('state', $viewType);		
+		$view = $this->getView('state', $viewType);
 
 		$stateModel = new VirtueMartModelState();
-		
+
 		// Push a model into the view
 		if (!JError::isError($stateModel)) {
 			$view->setModel($stateModel, true);
 		}
 	}
-	
+
 }

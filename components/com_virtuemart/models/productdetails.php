@@ -102,7 +102,7 @@ class VirtueMartModelProductdetails extends JModel {
 			$product->related = $this->getRelatedProducts($product_id);
 
 			/* Load the vendor details */
-			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$product->vendor_name = VirtueMartModelVendor::getVendorName($product->vendor_id);
 
 			/* Check for child products */
@@ -303,7 +303,7 @@ class VirtueMartModelProductdetails extends JModel {
 		/* Get the price also */
 		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
-//			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+//			require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
@@ -324,7 +324,7 @@ class VirtueMartModelProductdetails extends JModel {
 	* @return	bool	True if product has children, false if product has no children
 	*/
 	private function checkChildProducts($product_id) {
-			JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
+			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 			$model = JModel::getInstance('Product', 'VirtueMartModel');
 			return $model->checkChildProducts($product_id);
 	}

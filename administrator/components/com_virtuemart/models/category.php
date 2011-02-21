@@ -149,7 +149,7 @@ class VirtueMartModelCategory extends JModel {
 		if( $withParentId ){
 			$query .= " AND cx.category_parent_id = ". $this->_db->Quote($parentId);
 		}
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
 			$query .= " AND (c.vendor_id = ". $this->_db->Quote($vendorId) . " OR cx.category_shared = '1') ";
 		}
@@ -396,7 +396,7 @@ class VirtueMartModelCategory extends JModel {
      */
 	public function publish($publishId = false){
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','category',$publishId);
 
 	}
@@ -561,7 +561,7 @@ class VirtueMartModelCategory extends JModel {
 		}
 
 		/* Load the image helper */
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+		if(!class_exists('VmImage')) require (JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 		$image = VmImage::getCatImage($filename,$filenamethumb);
 		if(!empty($image)){
 			$data = $image->saveImage($data,$fullImage,false);

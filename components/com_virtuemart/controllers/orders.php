@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -36,13 +36,13 @@ class VirtueMartControllerOrders extends JController
 	}
 
 	/**
-	* Display the order listing 
+	* Display the order listing
 	*/
 	public function orders()
 	{
 		$view = $this->getView('orders', 'html');
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 		$view->setLayout('list');
 
@@ -51,13 +51,13 @@ class VirtueMartControllerOrders extends JController
 	}
 
 	/**
-	* Display the order details 
+	* Display the order details
 	*/
 	public function details()
 	{
 		$view = $this->getView('orders', 'html');
-		
-		$this->addModelPath( JPATH_COMPONENT_ADMINISTRATOR .DS.'models' );
+
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 		$view->setLayout('details');
 

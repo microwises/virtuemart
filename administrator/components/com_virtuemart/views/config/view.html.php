@@ -58,7 +58,7 @@ class VirtuemartViewConfig extends JView {
 		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
-		if(!class_exists('ShopFunctions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$templateList = ShopFunctions::renderTemplateList(JText::_('VM_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
 
 		$this->assignRef('jTemplateList', $templateList);

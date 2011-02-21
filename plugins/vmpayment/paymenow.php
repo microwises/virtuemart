@@ -17,9 +17,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 class plgPaymentPaymenow extends vmPaymentPlugin {
-	
+
 	var $payment_code = "PN";
-	
+
 	/**
 	 * Constructor
 	 *
@@ -34,19 +34,19 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
 	function plgPaymentPaymenow( & $subject, $config ) {
 		parent::__construct( $subject, $config ) ;
 	}
-   
+
   /**************************************************************************
   ** name: process_payment()
   ** created by: ryan
   ** description: process transaction for PayMeNow
   ** parameters: $order_number, the number of the order, we're processing here
   **            $order_total, the total $ of the order
-  ** returns: 
+  ** returns:
   ***************************************************************************/
    function process_payment($order_number, $order_total, &$d) {
         global $vmLogger;
-        
-        require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
+
+        if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
         $vars = array(
              "action" => "ns_quicksale_cc",
              "ecxid"  => $this->params->get('PN_LOGIN'),
@@ -63,9 +63,9 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
 		}
 		// strip off trailing ampersand
 		$poststring = substr($poststring, 0, -1);
-		
+
         $results = VmConnector::handleCommunication("https://trans.atsbank.com/cgi-bin/trans.cgi", $poststring);
-        
+
         if (stristr($results, "Accepted")) {
             #Clean up the cart, send out the emails, and display thankyyou page.
             return true;
@@ -81,10 +81,10 @@ class plgPaymentPaymenow extends vmPaymentPlugin {
             }
             return false;
         }
-        
+
         #echo $results;
 
    }
-   
+
 }
 ?>

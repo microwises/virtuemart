@@ -36,7 +36,7 @@ class VirtuemartViewCategory extends JView {
 
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
-			require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
 
@@ -47,7 +47,7 @@ class VirtuemartViewCategory extends JView {
 		$pathway = $mainframe->getPathway();
 
 		/* Set the helper path */
-		$this->addHelperPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers');
+		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 		/* Load helpers */
 		$this->loadHelper('image');
@@ -67,7 +67,7 @@ class VirtuemartViewCategory extends JView {
 		$document->setTitle($category->category_name);
 
 	    /* Load the products in the given category */
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
 
@@ -88,7 +88,7 @@ class VirtuemartViewCategory extends JView {
 			$document->setMetaData('author', $category->metaauthor);
 		}
 
-		if(!class_exists('Permissions')) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 
