@@ -50,7 +50,7 @@ class VirtueMartCart  {
 	var $tosAccepted = false;
 	var $customer_comment = '';
 	var $couponCode = '';
-
+	var $cartData = null ;
 	private function __construct() {
 
 		self::setCartIntoSession();
@@ -810,7 +810,39 @@ class VirtueMartCart  {
 
 		$this->setCartIntoSession();
 	}
+	/**
+	* prepare display of cart
+	*
+	* @author RolandD
+	* @access public
+	*/
+	public function prepareCartData(){
 
+		/* Get the products for the cart */
+		$prices = array();
+		$product_prices = $this->getCartPrices();
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+
+		foreach($product_prices as $k=>$price){
+//			if(is_int($k)){
+				if(is_array($price)){
+					foreach($price as $sk=>$sprice){
+						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
+					}
+
+//				}
+
+			} else {
+				$prices[$k] = $calculator->priceDisplay($price);
+			}
+		}
+		$this->cartData->prices = $prices;
+		$this->cartData->cartData = $calculator->getCartData();
+		$this->cartData->calculator = $calculator;
+		return $this->cartData ;
+	}
 	/**
 	* Save the cart in the database
 	*

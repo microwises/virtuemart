@@ -45,10 +45,21 @@ class VirtueMartViewCart extends JView {
 		$layoutName = $this->getLayout();
 		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
+		$format = JRequest::getVar('format');
 
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
+		
+		if ($format == 'raw') {
+		$this->prepareCartData();
+		JRequest::setVar( 'layout', 'minicart'  );
+		$this->setLayout('minicart');
+		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
+		parent::display($tpl);
+		return ;
+		}
+		
 
 		if($layoutName=='editcoupon'){
 
@@ -244,30 +255,12 @@ class VirtueMartViewCart extends JView {
 	private function prepareCartData(){
 
 		/* Get the products for the cart */
-		$prices = array();
-		$product_prices = $this->_cart->getCartPrices();
+		$prepareCartData = $this->_cart->prepareCartData();
 
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
+		$this->assignRef('prices', $prepareCartData->prices);
 
-		foreach($product_prices as $k=>$price){
-//			if(is_int($k)){
-				if(is_array($price)){
-					foreach($price as $sk=>$sprice){
-						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
-					}
-
-//				}
-
-			} else {
-				$prices[$k] = $calculator->priceDisplay($price);
-			}
-		}
-
-		$this->assignRef('prices', $prices);
-
-		$this->assignRef('cartData',$calculator->getCartData());
-		$this->assignRef('calculator',$calculator);
+		$this->assignRef('cartData',$prepareCartData->cartData);
+		$this->assignRef('calculator',$prepareCartData->calculator);
 
 	}
 

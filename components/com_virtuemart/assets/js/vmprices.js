@@ -27,7 +27,7 @@ function sendtocart(form){
 	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
 	
 	function(datas, textStatus) {
-		alert(datas+' '+textStatus);
+		alert(datas);
 /*			if(datas==1){
 				alert(datas);
 			}else{

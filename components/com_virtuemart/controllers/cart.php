@@ -87,10 +87,22 @@ class VirtueMartControllerCart extends JController {
 		//require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
-			if ($cart->add()) $mainframe->enqueueMessage(JText::_('PRODUCT_ADDED_SUCCESSFULLY'));
-			else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY'), 'error');
-		if (JRequest::getVar('format','') =='raw' ) { echo ' Product added '; return ;}
-			else $mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+			if ($cart->add()) {
+				$msg = JText::_('PRODUCT_ADDED_SUCCESSFULLY');
+				$mainframe->enqueueMessage($msg);
+				$type = '';
+			} else {
+				$msg = JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY');
+				$type = 'error';
+			}
+			if (JRequest::getVar('format','') =='raw' ) {
+				echo ' Product added '; 
+				//$view->display(); 
+				return ;
+			} else {
+				$mainframe->enqueueMessage($msg, $type );
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+			}
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}
