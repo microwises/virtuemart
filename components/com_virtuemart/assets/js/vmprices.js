@@ -1,6 +1,8 @@
 jQuery(document).ready(function() {
 
-	jQuery("[name='addtocart']").click(function(e) { 
+		//$('element').unbind('click', myhandler).bind('click',myhandler); 
+		//$('#foo').bind('click', function()
+	jQuery("[name='addtocart']").bind('click',function(e) { 
 		e.preventDefault();
 		sendtocart(jQuery(this).parents("form"));
 	});
@@ -10,8 +12,8 @@ jQuery(document).ready(function() {
 	});
 	
 	
-	 jQuery("form[id^=addtocartproduct]").find('select').change(function(e) { 
-		//e.preventDefault();
+	jQuery("form[id^=addtocartproduct]").find('select').change(function(e) { 
+		e.preventDefault();
 		str = jQuery(this).parents("form").attr('id');
 		str = str.substring(16);
 		setproducttype(jQuery(this).parents("form"),str);
@@ -32,7 +34,7 @@ function sendtocart(form){
 				alert('Product not added to cart, may out of stock ');
 			}*/
 	});
-
+	return false;
 };
 
 function setproducttype(form,id){

@@ -32,7 +32,6 @@ $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm.js');
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');*/
 $config->jQuery();
-$config->jPrice();
 $config->jVm();
 $config->cssSite();
 

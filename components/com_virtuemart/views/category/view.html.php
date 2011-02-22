@@ -41,7 +41,8 @@ class VirtuemartViewCategory extends JView {
 		$this->assignRef('show_prices', $show_prices);
 
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmprices.js');
+		// add javascript for price and cart 
+		VmConfig::jPrice();
 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
