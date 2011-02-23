@@ -43,9 +43,9 @@ class VirtueMartViewProductdetails extends JView {
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
-
 		$document = JFactory::getDocument();
-		// add javascript for price and cart 
+
+		/* add javascript for price and cart */
 		VmConfig::jPrice();
 
 		$mainframe = JFactory::getApplication();

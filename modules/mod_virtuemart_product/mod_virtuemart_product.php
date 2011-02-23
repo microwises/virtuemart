@@ -17,20 +17,10 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * www.virtuemart.net
 */
-// have to set only once
-if(!class_exists('VmConfig')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
-if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.DS.'helpers'.DS.'shopfunctionsf.php');
-/* if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-   require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-*/
-if (!class_exists( 'VirtueMartModelProduct' )){
-   JLoader::import( 'product', JPATH_VM_ADMINISTRATOR.DS.'models' );
-}
+/* Load  VM fonction */ 
+require('helper.php');
+
+/* Setting */
 $vendorId = JRequest::getInt('vendorid', 1);
 $productModel = new VirtueMartModelProduct();
 
@@ -48,5 +38,6 @@ if (!$filter_category ) $category_id = null;
 $products = 		$productModel->getGroupProducts($Product_group, $vendorId, $category_id, $max_items);
 $totalProd = 		count( $products);
 if(empty($products)) return false;
+/* load the template */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_featureprod'));
 ?>

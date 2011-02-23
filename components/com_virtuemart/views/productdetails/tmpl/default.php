@@ -195,10 +195,10 @@ if (empty ( $this->product )) {
 				
 					<?php // Display the add to cart button ?>
 					<span class="addtocart-button">
-						<input id="<?php echo $this->product->product_id;?>" type="submit" name="addtocart"  class="addtocart" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+						<input type="submit" name="addtocart"  class="addtocart" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 					</span>
 					<?php // Display the add to cart button END ?>
-
+					<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
 					<input type="hidden" name="option" value="com_virtuemart" />
 					<input type="hidden" name="view" value="cart" />
 					<input type="hidden" name="task" value="add" />

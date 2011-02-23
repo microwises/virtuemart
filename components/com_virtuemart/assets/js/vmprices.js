@@ -1,7 +1,9 @@
+
+
 jQuery(document).ready(function() {
 
-		//$('element').unbind('click', myhandler).bind('click',myhandler); 
-		//$('#foo').bind('click', function()
+		//jQuery('element').unbind('click', myhandler).bind('click',myhandler); 
+		//jQuery('#foo').bind('click', function()
 	jQuery("[name='addtocart']").bind('click',function(e) { 
 		e.preventDefault();
 		sendtocart(jQuery(this).parents("form"));
@@ -26,6 +28,7 @@ jQuery(document).ready(function() {
 	});
 
 });
+jQuery.noConflict();
 
 function sendtocart(form){
 
@@ -35,7 +38,15 @@ function sendtocart(form){
 	function(datas, textStatus) {
 		
 		
-		jQuery("#vmCartModule").html(datas);
+
+		var value = jQuery(form).find("[name='quantity[]']").val() ;
+		var txt = value+" "+jQuery(form).find(".pname").val()+vmCartText;
+		jQuery("#vmCartModule").html(datas+"<div>"+txt+"</div>");
+		jQuery.facebox.settings.closeImage = closeImage ;
+		jQuery.facebox.settings.loadingImage = loadingImage;
+		jQuery.facebox.settings.faceboxHtml = faceboxHtml;
+
+		jQuery.facebox({ text: datas+"<H4>"+txt+"</H4>",}, 'my-groovy-style'); 
 
 /*			if(datas==1){
 				alert(datas);

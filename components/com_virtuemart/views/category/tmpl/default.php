@@ -227,12 +227,14 @@ foreach ($this->products as $product) {
 					$button_cls = 'notify_button';
 				}
 				?>
-				<input type="submit" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-
+				<span class="addtocart-button">
+					<input type="submit" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+				</span>
 				<?php  if($variantExist){
 					?>
 					<input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
 				<?php } ?>
+				<input type="hidden" class="pname" value="<?php echo $product->product_name ?>">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="add" />

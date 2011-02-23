@@ -17,9 +17,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * www.virtuemart.net
 */
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+if (!class_exists( 'VmConfig' )) {
+require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
 //VmConfig::loadConfig();
+VmConfig::jQuery();
 VmConfig::jPrice();
+VmConfig::cssSite();
+
  ?>
 <div id="vmCartModule">
 <?php 

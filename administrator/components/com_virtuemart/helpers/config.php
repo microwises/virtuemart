@@ -138,7 +138,16 @@ class VmConfig
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
+		$closeimage = JURI::root() .'components/com_virtuemart/assets/images/facebox/closelabel.png';
+		$jsVars = "var vmCartText = '". JText::_('VM_MINICART_ADDED') ."' ;  " ;
+		$jsVars .= "var loadingImage = '".JURI::root() ."components/com_virtuemart/assets/images/facebox/loading.gif' ;  " ;
+		$jsVars .= "var closeImage = '{$closeimage}' ; " ;
+		$jsVars .= "var faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='{$closeimage}' title='close' class='close_image' /></a></div></div>\" ; ";
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($jsVars);
+		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
 		$jPrice = true;
 		return;
 	}
