@@ -96,7 +96,8 @@ class VirtueMartControllerCart extends JController {
 				$type = 'error';
 			}
 			if (JRequest::getVar('format','') =='raw' ) {
-				echo ' Product added '; 
+				JRequest::setVar('layout','minicart','POST');
+				$this->cart();
 				//$view->display(); 
 				return ;
 			} else {

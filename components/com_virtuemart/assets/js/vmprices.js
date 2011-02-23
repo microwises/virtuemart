@@ -18,6 +18,12 @@ jQuery(document).ready(function() {
 		str = str.substring(16);
 		setproducttype(jQuery(this).parents("form"),str);
 	});
+	jQuery.ajax({
+	url: 'index.php?option=com_virtuemart&view=cart&format=raw',
+	success: function(datas) {
+		jQuery("#vmCartModule").html(datas);
+		}
+	});
 
 });
 
@@ -27,7 +33,10 @@ function sendtocart(form){
 	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
 	
 	function(datas, textStatus) {
-		alert(datas);
+		
+		
+		jQuery("#vmCartModule").html(datas);
+
 /*			if(datas==1){
 				alert(datas);
 			}else{
