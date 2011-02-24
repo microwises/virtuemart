@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			// UPDATE CART / DELETE FROM CART
 				$product_rows[$i]['update_form'] = $product->quantity;
-				$totalProduct += $product->quantity ; 
+				$totalProduct += $product->quantity ;
 
 			$i++;
 		} // End of for loop through the Cart
@@ -134,9 +134,9 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="10"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
-			<td align="right" valign="top"><?php echo JText::_('VM_TOTAL_PRODUCT') ?>: </td>
+			<td align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_PRODUCT_PRICES_TOTAL') ?> </td>
 			<td align="right"><?php echo $totalProduct ?></td>
-			<td align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?>: </td>
+			<td align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
 		<?php if ( VmConfig::get('show_tax')) { ?>

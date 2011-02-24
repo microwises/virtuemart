@@ -528,7 +528,11 @@ class VirtueMartModelUser extends JModel {
 				//				$_data['vendor_id'] = $_data['my_vendor_id'];
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
-				$vendorModel->setId($_data['vendor_id']);
+
+				//TODO Attention this is set now to vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
+				//So we disable the possibility to store vendors not with vendor_id = 1
+				//$vendorModel->setId($_data['vendor_id']);
+				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
 					return false;

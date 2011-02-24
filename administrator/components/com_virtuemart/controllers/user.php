@@ -48,14 +48,14 @@ class VirtuemartControllerUser extends JController {
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
-		
+
 		// Push a model into the view
 		$model = $this->getModel('user');
 
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}else{
-			echo 'Couldnt load backend model in VirtuemartControllerUser';	
+			echo 'Couldnt load backend model in VirtuemartControllerUser';
 		}
 	}
 
@@ -74,16 +74,16 @@ class VirtuemartControllerUser extends JController {
 		JRequest::setVar('view', 'user');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		//We set here the cid, when no cid is set to 0, for adding a new user
 		//In every other case the cid is sent.
 		$cid = JRequest::getVar('cid');
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
-		
+
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
 		$view =& $this->getView('user', $viewType);
-		
+
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
@@ -94,7 +94,7 @@ class VirtuemartControllerUser extends JController {
 		parent::display();
 	}
 
-	
+
 	function editshop(){
 
 		$user = JFactory::getUser();
@@ -104,8 +104,8 @@ class VirtuemartControllerUser extends JController {
 		JRequest::setVar('cid', (int)$user->id);
 		$this->edit();
 
-	}	
-	
+	}
+
 	/**
 	 * Handle the cancel task
 	 */
@@ -116,7 +116,7 @@ class VirtuemartControllerUser extends JController {
 	function apply(){
 		$this->save();
 	}
-	
+
 	/**
 	 * Handle the save task
 	 */
@@ -149,12 +149,12 @@ class VirtuemartControllerUser extends JController {
 			} else {
 				$redirection = 'index.php?option=com_virtuemart&view=user';
 			}
-			
+
 		}
 		$this->setRedirect($redirection, $msg);
 	}
 
-	
+
 	/**
 	 * Handle the remove task
 	 */
@@ -175,7 +175,9 @@ class VirtuemartControllerUser extends JController {
 	 */
 	function disable_vendor()
 	{
-		self::toggle('user_is_vendor', 0);
+		//TODO is only for single store, take a look on that for multivendor
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
+//		self::toggle('user_is_vendor', 0);
 	}
 
 	/**
@@ -183,12 +185,14 @@ class VirtuemartControllerUser extends JController {
 	 */
 	function enable_vendor()
 	{
-		self::toggle('user_is_vendor', 1);
+		//TODO is only for single store, take a look on that for multivendor
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
+//		self::toggle('user_is_vendor', 1);
 	}
 
 	/**
 	 * Switch the given toggle on or off.
-	 * 
+	 *
 	 * @param $field string Toggle set switch
 	 * @param $value boolean on or off
 	 */

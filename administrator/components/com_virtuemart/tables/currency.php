@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author RickG, Max Milbers
  */
 class TableCurrency extends JTable {
-  
+
 	/** @var int Primary key */
 	var $currency_id				= 0;
 	/** @var int vendor id */
@@ -46,7 +46,7 @@ class TableCurrency extends JTable {
 	var $cdate         					;
 	var $mdate         					;
 	var $published					= 0;
-	var $shared						= 0;
+	var $shared						= 1;
 
 
 	/**

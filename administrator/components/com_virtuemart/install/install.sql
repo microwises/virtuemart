@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
 
 CREATE TABLE IF NOT EXISTS `#__vm_currency` (
   `currency_id` int(11) NOT NULL AUTO_INCREMENT,
-  `vendor_id` int(11) NOT NULL DEFAULT '0',
+  `vendor_id` int(11) NOT NULL DEFAULT '1',
   `currency_name` varchar(64) DEFAULT NULL,
   `currency_code_2` char(2) DEFAULT NULL,
   `currency_code` char(3) DEFAULT NULL,
@@ -306,24 +306,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `#__vm_module`
---
 
-CREATE TABLE IF NOT EXISTS `#__vm_module` (
-  `module_id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_name` varchar(255) DEFAULT NULL,
-  `module_description` text,
-  `module_perms` varchar(255) DEFAULT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `is_admin` enum('0','1') NOT NULL,
-  `list_order` int(11) DEFAULT NULL,
-  PRIMARY KEY (`module_id`),
-  KEY `idx_module_name` (`module_name`),
-  KEY `idx_module_list_order` (`list_order`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `#__vm_orders`

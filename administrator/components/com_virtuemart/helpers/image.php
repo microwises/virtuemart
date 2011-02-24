@@ -8,7 +8,7 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @author RickG, RolandD 
+ * @author RickG, RolandD
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -144,13 +144,13 @@ class VmImage {
 		if(empty($cat)) return JText::_('VM_CANT_CREATE_IMAGE_NO_CATEGORY_GIVEN');
 		return self::getCatImage($cat->category_full_image,$cat->category_thumb_image,$cat->category_id);
 	}
-	
+
 	/**
-	 * This function should display the image, when the image is not already a resized one, 
+	 * This function should display the image, when the image is not already a resized one,
 	 * it tries to get first the resized one, or create a resized one or fallback in case
-	 * 
+	 *
 	 * @author Max Milbers
-	 * 
+	 *
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param string $alt alternative Text to display
 	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
@@ -166,7 +166,7 @@ class VmImage {
 
 	/**
 	 * Small proxy function for getMfImage, which just works with the manufacturer object
-	 * 
+	 *
 	 * @author Max Milbers
 	 * @param object manufacturer object given by §manufacturerModel->getManufacturer()
 	 * @return VmImage an image object with extra manufacturer attributes
@@ -232,7 +232,7 @@ class VmImage {
 		if($lightbox){
 			$image = JHTML::image($this->media_url_thumb.$this->media_filename_thumb, $alt, $imageArgs);
 			$lightboxImage = '<a title="'.$alt.'" '.$lightbox.' href="'.$this->media_url.$this->media_filename.'">'.$image.'</a>';
-			
+
 			return $lightboxImage;
 		}
 		//okey the pictures exist, does we want the resized one? if not, just give the normal picture back
@@ -326,7 +326,7 @@ class VmImage {
 		if(!empty($media_path_url)){
 			$media_path = str_replace('/',DS,$media_path_url);
 			$media_path = JPATH_ROOT.DS.substr($media_path,0,-1);
-			$media_path_thumb = $media_path.'/resized/';
+			$media_path_thumb = $media_path.DS.'resized'.DS;
 		} else {
 			$media_path = $this->media_path;
 			$media_path_thumb = $this->media_path_thumb;

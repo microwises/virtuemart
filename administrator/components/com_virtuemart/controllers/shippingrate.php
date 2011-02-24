@@ -42,7 +42,7 @@ class VirtuemartControllerShippingRate extends JController {
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
-		
+
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view =& $this->getView('shippingrate', $viewType);
@@ -116,14 +116,21 @@ class VirtuemartControllerShippingRate extends JController {
 	{
 		$model =& $this->getModel('shippingrate');
 
-		if ($model->store()) {
+		if ($id = $model->store()) {
 			$msg = JText::_('Shipping Rate saved!');
 		}
 		else {
 			$msg = JText::_($model->getError());
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=shippingrate', $msg);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply'){
+			$redirection = 'index.php?option=com_virtuemart&view=shippingrate&task=edit&cid[]='.$id;
+		} else {
+			$redirection = 'index.php?option=com_virtuemart&view=shippingrate';
+		}
+
+		$this->setRedirect($redirection, $msg);
 	}
 
 

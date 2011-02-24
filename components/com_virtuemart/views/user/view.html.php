@@ -188,7 +188,7 @@ class VirtuemartViewUser extends JView {
 			$userFields = $this->_userFieldsModel->getUserFieldsByUser(
 							 $_userFields
 							,$userAddressData
-//							,$preFix
+							,$preFix
 							);
 		} else { //the anonymous case
 

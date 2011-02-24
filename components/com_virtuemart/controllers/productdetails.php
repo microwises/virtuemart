@@ -79,10 +79,10 @@ class VirtueMartControllerProductdetails extends JController {
 	/* Add or edit a review
 	 TODO  control and update in database the review */
 	public function review(){
-		
+
 		$mainframe = JFactory::getApplication();
-		// add the ratings admin model 
-		
+		// add the ratings admin model
+
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$model = $this->getModel( 'ratings', 'VirtuemartModel' );
 
@@ -124,6 +124,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		//Why we do not have to include the calculatorh.php here?
 		//Because it is already require in the model!
+
 		$calculator = calculationHelper::getInstance();
 		foreach ($prices as &$value  ){
 			$value = $calculator->priceDisplay($value);

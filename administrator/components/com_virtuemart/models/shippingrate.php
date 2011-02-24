@@ -159,7 +159,7 @@ class VirtueMartModelShippingRate extends JModel {
 	/**
 	 * Bind the post data to the shipping rate table and save it
      *
-     * @author RickG
+     * @author RickG, Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
     function store()
@@ -191,7 +191,7 @@ class VirtueMartModelShippingRate extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->shipping_rate_id;
 	}
 
 

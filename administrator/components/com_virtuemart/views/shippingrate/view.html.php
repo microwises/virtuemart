@@ -61,7 +61,7 @@ class VirtuemartViewShippingRate extends JView {
         	$this->assignRef('carriers', $carriers);
 
 			$currencyModel = $this->getModel('currency');
-        	$currencies = $currencyModel->getCurrencies(false, true);
+        	$currencies = $currencyModel->getCurrencies();
         	$this->assignRef('currencies', $currencies);
 
 			$countrymodel = $this->getModel('country');

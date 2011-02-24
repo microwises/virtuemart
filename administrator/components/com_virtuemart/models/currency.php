@@ -210,7 +210,7 @@ class VirtueMartModelCurrency extends JModel {
     	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
     }
 	$query = 'SELECT * FROM `#__vm_currency` '.$where;
-	$query .= 'ORDER BY `#__vm_currency`.`currency_id`';
+	$query .= 'ORDER BY `#__vm_currency`.`currency_name`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
@@ -224,7 +224,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ';
+	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__vm_currency`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

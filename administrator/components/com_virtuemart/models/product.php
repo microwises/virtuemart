@@ -665,6 +665,8 @@ class VirtueMartModelProduct extends JModel {
 			$filenamethumb = $data['product_thumb_image_current'];
 		}
 
+		/* Load the image helper */
+		if(!class_exists('VmImage')) require (JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 		$image = VmImage::getProductImage($filename,$filenamethumb);
 		if(!empty($image)){
 			$data = $image->saveImage($data,$fullImage,false);

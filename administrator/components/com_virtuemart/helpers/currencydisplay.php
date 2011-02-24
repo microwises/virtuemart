@@ -195,18 +195,16 @@ class CurrencyDisplay {
 			$uri =& JFactory::getURI();
 
 			if(empty($currencyId)){
-				$link = $uri->getPath().'administrator/index.php?option=com_virtuemart&view=currency';
+				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency';
 			} else{
-				$link = $uri->getPath().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
+				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
 			}
-			JError::raiseWarning('1', sprintf(JText::_('VM_CONF_WARN_NO_CURRENCY_DEFINED'),'<a href="'.$link.'">'.$link.'</a>'));
+			JError::raiseWarning('1', sprintf(JText::_('VM_CURRENCY_WARN_NO_FORMAT'),'<a href="'.$link.'">'.$link.'</a>'));
 
 			//would be nice to automatically unpublish the product or so
 			$currency =  self::getInstance();
 		}
-//		dump($currency,'currency display');
-//		dump($currencyId,'id');
-//		dump($style,'style');
+
 		return $currency;
 	}
 

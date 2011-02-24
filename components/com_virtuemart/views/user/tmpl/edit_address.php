@@ -60,7 +60,7 @@ function myValidator(f, t)
 	<legend>
 		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
 	</legend>
-<?php 
+<?php
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -101,7 +101,7 @@ function myValidator(f, t)
 		}
 
 		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
+			// A table hasn't been opened as well. We need one here,
 			echo '	<table class="adminform">'."\n";
 			$_table = true;
 		}
@@ -126,15 +126,14 @@ function myValidator(f, t)
 	echo $_hiddenFields;
 ?>
 
-</fieldset> 
-<?php // }  
+</fieldset>
+<?php // }
 if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
 		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
-
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
+	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
 		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 
