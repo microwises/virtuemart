@@ -380,7 +380,7 @@ class VirtueMartModelUserfields extends JModel {
 		}
 
 		if (count($_skip) > 0) {
-			$_q .= "AND FIND_IN_SET (name, '".implode(',', $_skip)."') = 0 ";
+			$_q .= "AND FIND_IN_SET(name, '".implode(',', $_skip)."') = 0 ";
 		}
 		$_q .= 'ORDER BY ordering ';
 		$_fields = $this->_getList($_q);
