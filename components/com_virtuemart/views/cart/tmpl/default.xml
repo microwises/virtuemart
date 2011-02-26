@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VM_SHOPPINGCART_MENU" hidden="true">
+	<layout title="VM_SHOPPINGCART_MENU" hidden="false">
 		<message><![CDATA[VM_SHOPPINGCART_DESC]]></message>
 	</layout>
 </metadata>

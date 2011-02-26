@@ -20,12 +20,13 @@ jQuery(document).ready(function() {
 		str = str.substring(16);
 		setproducttype(jQuery(this).parents("form"),str);
 	});
-	jQuery.ajax({
-	url: 'index.php?option=com_virtuemart&view=cart&format=raw',
-	success: function(datas) {
-		jQuery("#vmCartModule").html(datas);
-		}
-	});
+	//Patrick, why is this here? I outcommented it and add to cart is working in both views
+//	jQuery.ajax({
+//	url: 'index.php?option=com_virtuemart&view=cart&format=raw',
+//	success: function(datas) {
+//		jQuery("#vmCartModule").html(datas);
+//		}
+//	});
 
 });
 jQuery.noConflict();
@@ -33,21 +34,24 @@ jQuery.noConflict();
 function sendtocart(form){
 
 	var datas = jQuery(form).serialize();
-	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
+//	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
+	jQuery.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
 	
 	function(datas, textStatus) {
-		
-		
 
-		var value = jQuery(form).find("[name='quantity[]']").val() ;
-		var txt = value+" "+jQuery(form).find(".pname").val()+vmCartText;
-		jQuery("#vmCartModule").html(datas+"<div>"+txt+"</div>");
-		jQuery.facebox.settings.closeImage = closeImage ;
-		jQuery.facebox.settings.loadingImage = loadingImage;
-		jQuery.facebox.settings.faceboxHtml = faceboxHtml;
-
-		jQuery.facebox({ text: datas+"<H4>"+txt+"</H4>",}, 'my-groovy-style'); 
-
+		if(datas!=0){
+			var value = jQuery(form).find("[name='quantity[]']").val() ;
+			var txt = value+" "+jQuery(form).find(".pname").val()+vmCartText;
+			jQuery("#vmCartModule").html(datas+"<div>"+txt+"</div>");
+			jQuery.facebox.settings.closeImage = closeImage ;
+			jQuery.facebox.settings.loadingImage = loadingImage;
+			jQuery.facebox.settings.faceboxHtml = faceboxHtml;
+	
+			jQuery.facebox({ text: datas+"<H4>"+txt+"</H4>",}, 'my-groovy-style');
+		} else {
+			alert('Product not added to cart, may out of stock ');
+		}
+//		alert(vmCartText);
 /*			if(datas==1){
 				alert(datas);
 			}else{

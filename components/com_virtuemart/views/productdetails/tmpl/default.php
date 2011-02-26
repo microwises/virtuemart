@@ -4,7 +4,7 @@
  * Show the product details page
  *
  * @package	VirtueMart
- * @subpackage 
+ * @subpackage
  * @author Max Milbers
  * @author RolandD
  * @todo handle child products
@@ -50,15 +50,15 @@ if (empty ( $this->product )) {
 
 	<div>
 		<div class="width30 floatleft center">
-		
+
 		<?php // Product Image
-		/** @todo make the image popup */ 
+		/** @todo make the image popup */
 		echo $this->productImage->displayImage('class="product-image"',$this->product->product_name,1,0, 'class="modal"');
 		?>
 		</div>
 
 		<div class="width70 floatleft">
-			
+
 			<div class="width15 floatright center paddingtop5">
 			<?php // PDF - Print - Email Icon
 			$link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id; ?>
@@ -67,30 +67,30 @@ if (empty ( $this->product )) {
 			<?php echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
 			<br style="clear:both;" />
 			</div>
-		
+
 			<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
 
 			<?php // Product Short Description
 			if (!empty($this->product->product_s_desc)) { ?>
 			<p class="short-description">
 				<?php
-				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORE_DESC_LBL').'</span><br />'; 
+				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORE_DESC_LBL').'</span><br />';
 				echo $this->product->product_s_desc ?>
 			</p>
 			<?php } // Product Short Description END ?>
-			
+
 			<?php // Ask a question about this product
-			$url = JRoute::_('index.php?view=productdetails&task=askquestion&flypage='.JRequest::getVar('flypage').'&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
-			echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'ask-a-question')).'<br style="clear:both;" />';  
+			$url = JRoute::_('index.php?view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
+			echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'ask-a-question')).'<br style="clear:both;" />';
 			// Ask a question about this product END ?>
-			
+
 			<div class="margintop8">
-			
-			<?php // TO DO in Multi-Vendor
-			$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
+
+			<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
+/*			$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
 			$text = JText::_('VM_VENDOR_FORM_INFO_LBL');
 			echo '<span class="bold">'. JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
-
+*/ ?>
 			<?php // Manufacturer of the Product
 			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
 			$text = $this->product->mf_name;
@@ -99,7 +99,7 @@ if (empty ( $this->product )) {
 			else { ?>
 			<?php echo '<span class="bold">'. JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
 			<?PHP } ?>
-					
+
 			</div>
 		</div>
 
@@ -110,7 +110,7 @@ if (empty ( $this->product )) {
 
 	<div>
 		<div class="width45 floatleft">
-			
+
 			<div class="product-price marginbottom12" id="productPrice<?php echo $this->product->product_id ?>">
 		<?php
 				/** @todo format price */
@@ -139,12 +139,12 @@ if (empty ( $this->product )) {
 		</div>
 
 		<div class="width55 floatleft">
-			
+
 			<?php // Add To Cart Button
 			if (VmConfig::get('use_as_catalogue') != '1') { ?>
 			<div class="addtocart-area">
 				<form  method="post" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
-		
+
 					<?php // Product Variants Drop Down Box
 					$variantExist=false;
 					/* Show the variants */
@@ -158,11 +158,11 @@ if (empty ( $this->product )) {
 							}
 							$options[] = JHTML::_('select.option', $name, $name);
 						}
-						if (!empty($options)) { 
+						if (!empty($options)) {
 						echo '<span class="variant-name">'.$variant_name.'</span> <span class="variant-dropdown">'.JHTML::_('select.genericlist', $options, $this->product->product_id.$variant_name).'</span><br style="clear:left;" />';
 						}
 					} // Product Variants Drop Down Box END ?>
-			
+
 					<?php // Show the custom attributes
 					foreach($this->product->customvariants as $ckey => $customvariant) { ?>
 					<span class="custom-variant-name">
@@ -183,7 +183,7 @@ if (empty ( $this->product )) {
 						<input type="button" class="quantity-controls quantity-minus" onClick="minus(<?php echo $this->product->product_id;?>); return false;" />
 					</span>
 					<?php // Display the quantity box END ?>
-		
+
 					<?php // Add the button
 					$button_lbl = JText::_('VM_CART_ADD_TO');
 					$button_cls = ''; //$button_cls = 'addtocart_button';
@@ -192,7 +192,7 @@ if (empty ( $this->product )) {
 						$button_cls = 'notify_button';
 					}
 					?>
-				
+
 					<?php // Display the add to cart button ?>
 					<span class="addtocart-button">
 						<input type="submit" name="addtocart"  class="addtocart" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
@@ -201,24 +201,24 @@ if (empty ( $this->product )) {
 					<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
 					<input type="hidden" name="option" value="com_virtuemart" />
 					<input type="hidden" name="view" value="cart" />
-					<input type="hidden" name="task" value="add" />
+			<noscript><input type="hidden" name="task" value="add" /> </noscript>
 					<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
 
 					<?php /** @todo Handle the manufacturer view */ ?>
 					<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
 					<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
 				</form>
-						
-			<div class="clear"></div>			
-			</div>					
+
+			<div class="clear"></div>
+			</div>
 			<?php }  // Add To Cart Button END ?>
 		</div>
-		
+
 	<div class="clear"></div>
 	</div>
 
 	<div class="horizontal-separator margintop15 marginbottom15"></div>
-	
+
 	<?php // Product Description
 	if (!empty($this->product->product_desc)) { ?>
 	<div class="product-description">
@@ -227,12 +227,12 @@ if (empty ( $this->product )) {
 		echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
-	
+
 	<?php // Product Packaging
 	$product_packaging = '';
 	if ($this->product->packaging || $this->product->box) { ?>
 	<div class="product-packaging margintop15">
-		<?php 
+		<?php
 		echo '<span class="bold">'. JText::_('VM_PRODUCT_PACKAGING2'). '</span><br />';
 		if ($this->product->packaging) {
 			$product_packaging .= JText::_('VM_PRODUCT_PACKAGING1').$this->product->packaging;
@@ -249,16 +249,16 @@ if (empty ( $this->product )) {
 					foreach ($this->product->files as $fkey => $file) {
 						if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
 						else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
-						
+
 						/* Show pdf in a new Window, other file types will be offered as download */
 						$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
 						$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
 						echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 					}
 					?>
-					
-	
-	
+
+
+
 	<?php // Related Products
 					if ($this->product->related && !empty($this->product->related)) {
 						foreach ($this->product->related as $rkey => $related) {
@@ -271,14 +271,14 @@ if (empty ( $this->product )) {
 									<td valign="top">
 										<!-- The product name DIV. -->
 										<div style="height:77px; float:left; width: 100%;line-height:14px;">
-										<?php echo JHTML::_('link', $related->link, $related->product_name); ?> 
+										<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
 										<br />
 				</div>
 
 				<!-- The product image DIV. -->
 										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
-											<?php 
-												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name)); 
+											<?php
+												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
 											?>
 										</div>
 
@@ -292,15 +292,15 @@ if (empty ( $this->product )) {
 
 				<!-- The add to cart DIV. -->
 				<div>
-										
-										
+
+
 										</div>
 				</td>
 			</tr>
-		</table> 
+		</table>
 						<?php }
 					}
-				?>				
+				?>
 
 
 
@@ -330,7 +330,7 @@ if (empty ( $this->product )) {
 								?>
 								<br />
 			</td>
-							
+
 							<?php
 							// Do we need to close the current row now?
 							if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
@@ -348,16 +348,16 @@ if (empty ( $this->product )) {
 						?>
 					</table>
 				<?php } ?>
-				
-				
-									
+
+
+
 <table border="0" align="center" style="width: 100%;">
-	
+
 	<tr>
 			<td colspan="2">
 				<!-- List of product reviews -->
 		<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
-				
+
 				<?php
 				/** @todo Handle review submission */
 				$alreadycommented = false;
@@ -366,20 +366,20 @@ if (empty ( $this->product )) {
 					if ($review->userid == $this->user->id) $alreadycommented = true;
 					/**
 					 * Available indexes:
-					 * 
+					 *
 					 * $review->userid => The user ID of the comment author
 					 * $review->username => The username of the comment author
 					 * $review->name => The name of the comment author
 					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
 					 * $review->user_rating => The rating; an integer from 1 - 5
-					 
-					 * 
+
+					 *
 					 */
 					?>
 					<div><?php echo $review->comment; ?></div>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
 		<br />
-					<?php 
+					<?php
 						echo JText::_('VM_RATE_NOM');
 //						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
 //						echo JHTML::image($url, $review->user_rating, array('border' => 0));
@@ -396,7 +396,7 @@ if (empty ( $this->product )) {
 						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS').'<br />');
 					}
 				}
-				
+
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
@@ -404,7 +404,7 @@ if (empty ( $this->product )) {
 						<script language="javascript" type="text/javascript">
 						function check_reviewform() {
 							var form = document.getElementById('reviewform');
-						
+
 							var ausgewaehlt = false;
 							for (var i=0; i<form.user_rating.length; i++)
 							   if (form.user_rating[i].checked)
@@ -425,7 +425,7 @@ if (empty ( $this->product )) {
 							  return true;
 							}
 						}
-						
+
 						function refresh_counter() {
 						  var form = document.getElementById('reviewform');
 						  form.counter.value= form.comment.value.length;
@@ -481,7 +481,7 @@ if (empty ( $this->product )) {
 						<br /><br />
 							<?php
 								$review_comment = sprintf( JText::_('VM_REVIEW_COMMENT'), VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
-								echo $review_comment;  
+								echo $review_comment;
 							?><br />
 						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 		<br />
@@ -506,7 +506,7 @@ if (empty ( $this->product )) {
 				?>
 			</td>
 	</tr>
-	
+
 </table>
 
 </div>

@@ -20,7 +20,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-?>
+ /* ?>
 	<div>
 		<?php echo JText::_('VM_CART_TITLE'); ?>
 	</div>
@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		// Added for the zone shipping module
 		//$vars["zone_qty"] = 0;
-		$weight_total = 0;
+/*		$weight_total = 0;
 		$weight_subtotal = 0;
 
 		//of course, some may argue that the $product_rows should be generated in the view.html.php, but
@@ -45,13 +45,13 @@ defined('_JEXEC') or die('Restricted access');
 			if ($i % 2) $product_rows[$i]['row_color'] = "sectiontableentry2";
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
 
-			/* Create product URL */
+			//Create product URL
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
 
-			/** @todo Add variants */
+			// @todo Add variants
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
-			/* Add the variants */
+			// Add the variants
 			$variant = '';
 			$variantmod = '0';
 			if(!empty($product->variant)){
@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 
-			/* Add the custom variants */
+			// Add the custom variants
 			$cvariant = '';
 			if(!empty($product->customvariant)){
 				$product_rows[$i]['product_customvariant'] = '';
@@ -90,16 +90,16 @@ defined('_JEXEC') or die('Restricted access');
 			}
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
-			/** @todo WEIGHT CALCULATION */
+			//** @todo WEIGHT CALCULATION
 			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
-			/* Product PRICE */
+			// Product PRICE
 			$priceKey = $product->product_id.$variantmod;
 
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
-			/** @todo Format price */
+			//** @todo Format price
 //			$product_rows[$i]['subtotal'] = $this->prices[$i]['priceWithoutTax'] * $product->quantity;
 //			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$i]['taxAmount'] * $product->quantity;
 //			$product_rows[$i]['subtotal_discount'] = $this->prices[$i]['discountAmount'] * $product->quantity;
@@ -140,7 +140,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
 		<?php if ( VmConfig::get('show_tax')) { ?>
-		  <tr class="sectiontableentry1">
+		  <tr class="sectiontableentry2">
 
 				<td align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>: </td>
 				<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
@@ -149,3 +149,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 	</table>
+*/ ?>
+	<a href="<?php echo $this->continue_link; ?>"><?php echo JText::_('VM_CONTINUE_SHOPPING') ?></a>
+	<a style ="float:right;" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>"><?php echo JText::_('VM_CART_SHOW') ?></a>
+<br style="clear:both">

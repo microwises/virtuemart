@@ -232,12 +232,13 @@ foreach ($this->products as $product) {
 				</span>
 				<?php  if($variantExist){
 					?>
-					<input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
-				<?php } ?>
+					<noscript><input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+					</noscript>
+					<?php } ?>
 				<input type="hidden" class="pname" value="<?php echo $product->product_name ?>">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
-				<input type="hidden" name="task" value="add" />
+				<noscript><input type="hidden" name="task" value="add" /></noscript>
 				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
 				<?php /** @todo Handle the manufacturer view */ ?>
 				<input type="hidden" name="manufacturer_id" value="<?php echo $product->manufacturer_id ?>" />

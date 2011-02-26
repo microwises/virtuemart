@@ -54,6 +54,7 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function Cart() {
+		dump($msg,'Used just Cart ');
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		/* Add the default model */
@@ -95,19 +96,19 @@ class VirtueMartControllerCart extends JController {
 				$msg = JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY');
 				$type = 'error';
 			}
-			if (JRequest::getVar('format','') =='raw' ) {
-				JRequest::setVar('layout','minicart','POST');
-				$this->cart();
-				//$view->display(); 
-				return ;
-			} else {
+//			if (JRequest::getVar('format','') =='raw' ) {
+//				JRequest::setVar('layout','minicart','POST');
+//				$this->cart();
+//				//$view->display();
+//				return ;
+//			} else {
 				$mainframe->enqueueMessage($msg, $type );
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
-			}
+//			}
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}
-
+		dump($msg,'Used add cart (no js)');
 	}
 
 	/**
@@ -121,20 +122,29 @@ class VirtueMartControllerCart extends JController {
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
 		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if($cart->add()){
-				echo (1);
-				jexit();
+				// Get a continue link */
+				$category_id = shopFunctionsF::getLastVisitedCategoryId();
+				$categoryLink='';
+				if($category_id){
+					$categoryLink='&category_id='.$category_id;
+				}
+				$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
+
+				$text = '<a href="'.$continue_link.'" >'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+				$text .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('VM_CART_SHOW').'</a>';
+
+				echo ($text);
+
 			} else {
-				echo (2);
-				jexit();
+				echo (0);
 			}
 		} else {
-			echo (3);
+			echo (0);
 		}
-		jexit();
+		jExit();
 		$mainframe = JFactory::getApplication();
 		$mainframe->close();
 

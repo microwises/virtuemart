@@ -148,6 +148,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    else {
 				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" AND `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'" ');
 		    }
+
 		    if ($db->query() == false ) {
 				JError::raiseWarning(1, 'UPDATE __vm_users failed for user_id '.$userId);
 		    } else {
