@@ -414,11 +414,11 @@ if (empty ( $this->product )) {
 							  return false;
 							}
 							else if (form.comment.value.length < <?php echo VmConfig::get('vm_reviews_minimum_comment_length', 100); ?>) {
-								alert('<?php echo sprintf( JText::_('VM_REVIEW_ERR_COMMENT1',false), VmConfig::get('vm_reviews_minimum_comment_length', 100)); ?>');
+								alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('vm_reviews_minimum_comment_length', 100)); ?>');
 							  return false;
 							}
 							else if (form.comment.value.length > <?php echo VmConfig::get('vm_reviews_maximum_comment_length', 2000); ?>) {
-								alert('<?php echo sprintf( JText::_('VM_REVIEW_ERR_COMMENT2',false), VmConfig::get('vm_reviews_maximum_comment_length', 2000)); ?>');
+								alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('vm_reviews_maximum_comment_length', 2000)); ?>');
 							  return false;
 							}
 							else {
@@ -480,7 +480,7 @@ if (empty ( $this->product )) {
 		</table>
 						<br /><br />
 							<?php
-								$review_comment = sprintf( JText::_('VM_REVIEW_COMMENT'), VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
+								$review_comment = JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
 								echo $review_comment;
 							?><br />
 						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>

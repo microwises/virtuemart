@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td>
 				<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->vendor_id; ?>" />
-				<input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->vendorCurrency->getSymbol(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->currency->getSymbol(); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo $this->vendorCurrency->getNbrDecimals(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo $this->currency->getNbrDecimals(); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -106,7 +106,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>:
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo $this->vendorCurrency->getDecimalSymbol(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->getDecimalSymbol(); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>:
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo $this->vendorCurrency->getThousandsSeperator(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo $this->currency->getThousandsSeperator(); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -123,12 +123,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td>
 				<?php
-					$options = array();
-					$options[] = JHTML::_('select.option', '0', JText::_('00Symb') );
-					$options[] = JHTML::_('select.option', '1', JText::_('00 Symb'));
-					$options[] = JHTML::_('select.option', '2', JText::_('Symb00'));
-					$options[] = JHTML::_('select.option', '3', JText::_('Symb 00'));
-					echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[5]', 'size=1', 'value', 'text', $this->vendorCurrency->getPositiveFormat());
+					echo $this->positiveFormat;
 				?>
 			</td>
 		</tr>
@@ -138,22 +133,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td>
 				<?php
-					$options = array();
-					$options[] = JHTML::_('select.option', '0', JText::_('(Symb00)') );
-					$options[] = JHTML::_('select.option', '1', JText::_('-Symb00'));
-					$options[] = JHTML::_('select.option', '2', JText::_('Symb00-'));
-					$options[] = JHTML::_('select.option', '3', JText::_('(00Symb)'));
-					$options[] = JHTML::_('select.option', '4', JText::_('-00Symb') );
-					$options[] = JHTML::_('select.option', '5', JText::_('00-Symb'));
-					$options[] = JHTML::_('select.option', '6', JText::_('00Symb-'));
-					$options[] = JHTML::_('select.option', '7', JText::_('-00 Symb'));
-					$options[] = JHTML::_('select.option', '8', JText::_('-Symb 00'));
-					$options[] = JHTML::_('select.option', '9', JText::_('00 Symb-') );
-					$options[] = JHTML::_('select.option', '10', JText::_('Symb 00-'));
-					$options[] = JHTML::_('select.option', '11', JText::_('Symb -00'));
-					$options[] = JHTML::_('select.option', '12', JText::_('(Symb 00)'));
-					$options[] = JHTML::_('select.option', '13', JText::_('(00 Symb)'));
-					echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[6]', 'size=1', 'value', 'text', $this->vendorCurrency->getNegativeFormat());
+					echo $this->negativeFormat;
 				?>
 			</td>
 		</tr>
@@ -177,10 +157,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		$image = VmImage::getImageByVendor($this->vendor);
 		if($image){
 			echo $image -> createImageUploader(false);
-			echo $image -> createImageUploader(true);			
+			echo $image -> createImageUploader(true);
 		}
-		
-	?>	
+
+	?>
 	</table>
 </fieldset>
 

@@ -363,12 +363,12 @@ class VirtueMartCart  {
 		list($min,$max) = explode(',', $product->product_order_levels);
 		if ($min != 0 && $quantity < $min) {
 			$this->_error[] = 'Quantity reached not minimum';
-			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MIN_ORDER'), $min), 'error');
+			$mainframe->enqueueMessage(JText::sprintf('VM_CART_MIN_ORDER', $min), 'error');
 			return false;
 		}
 		if ($max !=0 && $quantity > $max) {
 			$this->_error[] = 'Quantity reached over maximum';
-			$mainframe->enqueueMessage(sprintf(JText::_('VM_CART_MAX_ORDER'), $max), 'error');
+			$mainframe->enqueueMessage(JText::sprintf('VM_CART_MAX_ORDER', $max), 'error');
 			return false;
 		}
 

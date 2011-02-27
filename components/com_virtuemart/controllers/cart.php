@@ -54,7 +54,6 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function Cart() {
-		dump($msg,'Used just Cart ');
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
 		/* Add the default model */
@@ -108,7 +107,7 @@ class VirtueMartControllerCart extends JController {
 		} else {
 			$mainframe->enqueueMessage('Cart does not exist?', 'error');
 		}
-		dump($msg,'Used add cart (no js)');
+
 	}
 
 	/**

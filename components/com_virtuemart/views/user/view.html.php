@@ -432,7 +432,7 @@ class VirtuemartViewUser extends JView {
 
 	function lVendor(){
 
-		$vendorModel = $this->getModel('vendor');
+
 		// If the current user is a vendor, load the store data
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 		if ($this->_userDetails->user_is_vendor) {
@@ -445,14 +445,17 @@ class VirtuemartViewUser extends JView {
 			if(empty($this->currency)){
 				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
-				$currency = CurrencyDisplay::getCurrencyDisplay();;
-				$this->assignRef('currency', $currency);
+				$this->currency = CurrencyDisplay::getCurrencyDisplay();;
+				$this->assignRef('currency', $this->currency);
 			}
 
-
+			$vendorModel = $this->getModel('vendor');
 			$vendorModel->setId($this->_userDetails->vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
+
+			$this->assignRef('positiveFormat',ShopFunctions::renderPositiveFormatCurrency($this->currency->getPositiveFormat()));
+			$this->assignRef('negativeFormat',ShopFunctions::renderNegativeFormatCurrency($this->currency->getNegativeFormat()));
 
 			$currencyModel = $this->getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
@@ -461,14 +464,14 @@ class VirtuemartViewUser extends JView {
 //			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
 //			$this->assignRef('vendorCategories', $_vendorCats);
 
-			$this->assignRef('vendorCurrency', $currency);
+//			$this->assignRef('vendorCurrency', $currency);
 		}
 
-		if(empty($currency)){
+		if(empty($this->currency)){
 			if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
-			$currency = CurrencyDisplay::getCurrencyDisplay();;
-			$this->assignRef('currency', $currency);
+			$this->currency = CurrencyDisplay::getCurrencyDisplay();;
+			$this->assignRef('currency', $this->currency);
 		}
 
 	}

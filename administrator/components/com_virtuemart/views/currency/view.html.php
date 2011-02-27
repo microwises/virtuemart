@@ -76,6 +76,11 @@ class VirtuemartViewCurrency extends JView {
 			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'');
 	    	$this->assignRef('currencyDisplay',$cd);
 
+	    	$this->loadHelper('shopfunctions');
+	    	$this->assignRef('positiveFormat',ShopFunctions::renderPositiveFormatCurrency($this->currencyDisplay->getPositiveFormat()));
+			$this->assignRef('negativeFormat',ShopFunctions::renderNegativeFormatCurrency($this->currencyDisplay->getNegativeFormat()));
+
+
 //
 //			$userDetails->vendor_id;
         }

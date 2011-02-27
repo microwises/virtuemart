@@ -579,7 +579,7 @@ class VirtueMartModelUser extends JModel {
 	 	$fromSite = $mainframe->getCfg('sitename');
 
 	 	$subject = JText::_('NEW_USER_MESSAGE_SUBJECT');
-	 	$message = sprintf ( JText::_('NEW_USER_MESSAGE')
+	 	$message =  JText::sprintf('NEW_USER_MESSAGE'
 			, $user->get('name')
 			, $fromSite
 			, JURI::root()

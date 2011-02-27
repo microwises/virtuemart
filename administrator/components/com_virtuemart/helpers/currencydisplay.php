@@ -154,58 +154,60 @@ class CurrencyDisplay {
 	*/
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
-		if(empty($style)){
-
-			$db = JFactory::getDBO();
-			if(!empty($currencyId)){
-				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
-				$db->setQuery($q);
-				$style = $db->loadResult();
-			}
+		if(empty(self::$_instance)){
 			if(empty($style)){
-				if(empty($vendorId)){
-					$vendorId = 1;		//Map to mainvendor
+
+				$db = JFactory::getDBO();
+				if(!empty($currencyId)){
+					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$db->setQuery($q);
+					$style = $db->loadResult();
 				}
-				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
-				$db->setQuery($q);
-				$currencyId = $db->loadResult();
+				if(empty($style)){
+					if(empty($vendorId)){
+						$vendorId = 1;		//Map to mainvendor
+					}
+					$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+					$db->setQuery($q);
+					$currencyId = $db->loadResult();
 
-				$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
-				$db->setQuery($q);
-				$style = $db->loadResult();
+					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$db->setQuery($q);
+					$style = $db->loadResult();
+				}
+			}
+			if(!empty($style)){
+				$array = explode( "|", $style );
+				$_currencyDisplayStyle = Array();
+				$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
+				$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
+				$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
+				$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
+				$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
+				$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
+				$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
+				self::$_instance = self::getInstance($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
+					, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
+					, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
+					, $_currencyDisplayStyle['negative']
+				);
+			} else {
+				$app =& JFactory::getApplication('administrator');
+				$uri =& JFactory::getURI();
+
+				if(empty($currencyId)){
+					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
+					JError::raiseWarning('1', JText::sprintf('VM_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+				} else{
+					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
+					JError::raiseWarning('1', JText::sprintf('VM_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+				}
+
+				//would be nice to automatically unpublish the product or so
+				self::$_instance =  self::getInstance();
 			}
 		}
-		if(!empty($style)){
-			$array = explode( "|", $style );
-			$_currencyDisplayStyle = Array();
-			$_currencyDisplayStyle['id'] = !empty($array[0]) ? $array[0] : 0;
-			$_currencyDisplayStyle['symbol'] = !empty($array[1]) ? $array[1] : '';
-			$_currencyDisplayStyle['nbdecimal'] = !empty($array[2]) ? $array[2] : '';
-			$_currencyDisplayStyle['sdecimal'] = !empty($array[3]) ? $array[3] : '';
-			$_currencyDisplayStyle['thousands'] = !empty($array[4]) ? $array[4] : '';
-			$_currencyDisplayStyle['positive'] = !empty($array[5]) ? $array[5] : '';
-			$_currencyDisplayStyle['negative'] = !empty($array[6]) ? $array[6] : '';
-			$currency = self::getInstance($_currencyDisplayStyle['id'], $_currencyDisplayStyle['symbol']
-				, $_currencyDisplayStyle['nbdecimal'], $_currencyDisplayStyle['sdecimal']
-				, $_currencyDisplayStyle['thousands'], $_currencyDisplayStyle['positive']
-				, $_currencyDisplayStyle['negative']
-			);
-		} else {
-			$app =& JFactory::getApplication('administrator');
-			$uri =& JFactory::getURI();
-
-			if(empty($currencyId)){
-				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency';
-			} else{
-				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
-			}
-			JError::raiseWarning('1', sprintf(JText::_('VM_CURRENCY_WARN_NO_FORMAT'),'<a href="'.$link.'">'.$link.'</a>'));
-
-			//would be nice to automatically unpublish the product or so
-			$currency =  self::getInstance();
-		}
-
-		return $currency;
+		return self::$_instance;
 	}
 
     /**

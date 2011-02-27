@@ -258,6 +258,48 @@ class ShopFunctions {
 	}
 
 	/**
+	 *
+	 * Renders the positive format of a currency
+	 * @author Max Milbers
+	 * @param unknown_type $positiveFormat
+	 * @param unknown_type $name
+	 */
+	function renderPositiveFormatCurrency($positiveFormat,$name='vendor_currency_display_style[5]'){
+		$options = array();
+		$options[] = JHTML::_('select.option', '0', JText::_('VM_00Symb') );
+		$options[] = JHTML::_('select.option', '1', JText::_('VM_00_Symb'));
+		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00'));
+		$options[] = JHTML::_('select.option', '3', JText::_('VM_Symb_00'));
+		return JHTML::_('Select.genericlist', $options, $name, 'size=1', 'value', 'text', $positiveFormat);
+	}
+
+	/**
+	 *
+	 * Renders the negative format of a currency
+	 * @author Max Milbers
+	 * @param unknown_type $positiveFormat
+	 * @param unknown_type $name
+	 */
+	function renderNegativeFormatCurrency($negativeFormat,$name = 'vendor_currency_display_style[6]'){
+		$options = array();
+		$options[] = JHTML::_('select.option', '0', JText::_('VM_(Symb00)') );
+		$options[] = JHTML::_('select.option', '1', JText::_('VM_-Symb00'));
+		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00-'));
+		$options[] = JHTML::_('select.option', '3', JText::_('VM_(00Symb)'));
+		$options[] = JHTML::_('select.option', '4', JText::_('VM_-00Symb') );
+		$options[] = JHTML::_('select.option', '5', JText::_('VM_00-Symb'));
+		$options[] = JHTML::_('select.option', '6', JText::_('VM_00Symb-'));
+		$options[] = JHTML::_('select.option', '7', JText::_('VM_-00_Symb'));
+		$options[] = JHTML::_('select.option', '8', JText::_('VM_-Symb_00'));
+		$options[] = JHTML::_('select.option', '9', JText::_('VM_00_Symb-') );
+		$options[] = JHTML::_('select.option', '10', JText::_('VM_Symb_00-'));
+		$options[] = JHTML::_('select.option', '11', JText::_('VM_Symb_-00'));
+		$options[] = JHTML::_('select.option', '12', JText::_('VM_(Symb_00)'));
+		$options[] = JHTML::_('select.option', '13', JText::_('VM_(00_Symb)'));
+		return JHTML::_('Select.genericlist', $options, $name, 'size=1', 'value', 'text', $negativeFormat);
+	}
+
+	/**
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
@@ -728,7 +770,7 @@ class ShopFunctions {
 
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. str_replace("'","\\'",JText::_('REGWARN_MAIL',false)) .'\');
+				alert( \''. str_replace("'","\\'",JText::_('REGWARN_MAIL')) .'\');
 				return false;
 			}';
 
@@ -737,7 +779,7 @@ class ShopFunctions {
 
 			echo '
 			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
-				alert( "'. sprintf(JText::_('VALID_AZ09',false), JText::_('USERNAME',false), 2) .'" );
+				alert( "'. JText::sprintf('VALID_AZ09', JText::_('USERNAME'), 2) .'" );
 				return false;
             }';
         }
@@ -751,7 +793,7 @@ class ShopFunctions {
                     alert( "'. JText::_('REGWARN_VPASS1',false) .'" );
                     return false;
                 } else if (r.exec(form.password.value)'.$optional_check.') {
-                    alert( "'. sprintf( JText::_('VALID_AZ09',false), JText::_('PASSWORD',false), 6 ) .'" );
+                    alert( "'. JText::sprintf('VALID_AZ09', JText::_('PASSWORD'), 6 ) .'" );
                     return false;
                 }';
         	}

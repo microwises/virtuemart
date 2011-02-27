@@ -52,7 +52,6 @@ function com_install(){
 	if ($newInstall) {
 		// Get the uploaded file information
 //		$userfile = JRequest::getVar('install_package', null, 'files', 'array' );
-//		dump($userfile,'my user file');
 	}
 
 	$installOk = true;

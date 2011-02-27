@@ -18,11 +18,11 @@
 * @todo decide to allow or not a JEditor here instead of a textarea
 * @todo comment length check should also occur on the server side (model?)
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -37,7 +37,7 @@ AdminMenuHelper::startAdminArea();
 		</td>
 		<td valign="top">
 		<!-- Rating stars -->
-		<?php 
+		<?php
 		$rating_options = array();
 		for ($i=0;$i<=$this->max_rating;$i++) {
 			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 		</td>
 	</tr>
 		<!-- Review comment -->
-	<tr> 
+	<tr>
 		<td width="24%" align="left" valign="top">
 			<?php echo JTEXT::_('VM_REVIEW'); ?>
         	</td>
@@ -56,8 +56,8 @@ AdminMenuHelper::startAdminArea();
 			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php echo $this->rating->comment; ?></textarea>
 		</td>
 	</tr>
-	<tr> 
-		<!-- Show number of typed in characters --> 
+	<tr>
+		<!-- Show number of typed in characters -->
 		<td width="24%" align="left" valign="top"> &nbsp; </td>
 		<td width="76%" align="left">
 	        <div align="left"><i><?php echo JText::_('VM_REVIEW_COUNT') ?></i>
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JTEXT::_('VM_REVIEW'); ?>
         	</td>
 		<td width="76%" align="left">
-	<?php 
+	<?php
 	$editor = JFactory::getEditor();
 	echo $editor->display('comment', $this->rating->comment, '100%', '100', '60', '20',false);?>
 	</td>
@@ -109,14 +109,14 @@ function refresh_counter() {
 refresh_counter();
 
 function submitbutton(pressbutton) {
-	
+
 	 if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
 	else {
-		if (document.adminForm.counter.value > <?php echo VmConfig::get('comment_max_length'); ?>) alert('<?php echo sprintf(JText::_('VM_REVIEW_ERR_COMMENT2'),VmConfig::get('comment_max_length')); ?>');
-		else if (document.adminForm.counter.value < <?php echo VmConfig::get('comment_min_length'); ?>) alert('<?php echo sprintf(JText::_('VM_REVIEW_ERR_COMMENT1'),VmConfig::get('comment_min_length')); ?>');
+		if (document.adminForm.counter.value > <?php echo VmConfig::get('comment_max_length'); ?>) alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT2',VmConfig::get('comment_max_length')); ?>');
+		else if (document.adminForm.counter.value < <?php echo VmConfig::get('comment_min_length'); ?>) alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT1',VmConfig::get('comment_min_length')); ?>');
 		else submitform( pressbutton );
 		return;
 	}

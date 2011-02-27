@@ -212,7 +212,6 @@ class calculationHelper {
 				$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
 			}
 			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
-//			dump($prices['basePrice'],'my baseprice of variant');
 		}
 
 		//For Profit, margin, and so on
