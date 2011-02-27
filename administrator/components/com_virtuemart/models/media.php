@@ -124,9 +124,9 @@ class VirtueMartModelMedia extends JModel {
 		$db->setQuery($q);
 		$files = $db->loadResult();
 
-		$q = "SELECT IF (LENGTH(`product_full_image`) = 0,
-					IF (LENGTH(`product_thumb_image`) = 0, '0', '1'),
-					IF (LENGTH(`product_thumb_image`) = 0, '1', '2'))
+		$q = "SELECT IF(LENGTH(`product_full_image`) = 0,
+					IF(LENGTH(`product_thumb_image`) = 0, '0', '1'),
+					IF(LENGTH(`product_thumb_image`) = 0, '1', '2'))
 					AS cnt
 				FROM `#__vm_product`
 				WHERE product_id=".intval($pid);
@@ -203,8 +203,8 @@ class VirtueMartModelMedia extends JModel {
 							file_name,
 							file_title,
 							NULL AS product_thumb_image,
-							IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
-							IF (file_is_image = 1, 'isImage', 'isFile') AS file_role,
+							IF(LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
+							IF(file_is_image = 1, 'isImage', 'isFile') AS file_role,
 							product_name
 					FROM #__vm_product_files
 					LEFT JOIN #__vm_product_attribute

@@ -287,7 +287,7 @@ class VirtueMartModelProduct extends JModel {
     */
     public function checkChildProducts($product_id) {
 //     	$this->_db = JFactory::getDBO();
-     	$q  = "SELECT IF (COUNT(product_id) > 0, 'Y', 'N') FROM `#__vm_product` WHERE `product_parent_id` = ".$product_id;
+     	$q  = "SELECT IF(COUNT(product_id) > 0, 'Y', 'N') FROM `#__vm_product` WHERE `product_parent_id` = ".$product_id;
      	$this->_db->setQuery($q);
      	if ($this->_db->loadResult() == 'Y') return true;
      	else if ($this->_db->loadResult() == 'N') return false;
@@ -774,7 +774,7 @@ class VirtueMartModelProduct extends JModel {
 
 			/* Store the new categories */
 			foreach( $data["product_categories"] as $category_id ) {
-				$this->_db->setQuery('SELECT IF (ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__vm_product_category_xref` WHERE `category_id`='.$category_id );
+				$this->_db->setQuery('SELECT IF(ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__vm_product_category_xref` WHERE `category_id`='.$category_id );
 				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__vm_product_category_xref ";

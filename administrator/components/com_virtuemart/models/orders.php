@@ -93,7 +93,7 @@ class VirtueMartModelOrders extends JModel {
 
 		/* Get the order details */
 		$q = "SELECT o.*, u.*,
-				IF (isempty(coupon_code), '-', coupon_code) AS coupon_code,
+				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
 			FROM #__vm_orders o
 			LEFT JOIN #__vm_order_status s

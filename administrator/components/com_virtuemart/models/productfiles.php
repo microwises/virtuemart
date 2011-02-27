@@ -92,7 +92,7 @@ class VirtueMartModelProductFiles extends JModel {
     	if (JRequest::getInt('product_id', 0) > 0) $filter = ' WHERE file_product_id = '.JRequest::getInt('product_id');
     	/* Get the files from the product files table */
     	$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published AS published, file_name, file_title,
-    				IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
+    				IF(LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
     				product_name
     		FROM #__vm_product_files
     		LEFT JOIN #__vm_product_attribute
@@ -186,7 +186,7 @@ class VirtueMartModelProductFiles extends JModel {
 		else {
 			$db = JFactory::getDBO();
 			$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published AS published, file_name, file_title,
-						IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
+						IF(LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
 						product_name
 				FROM #__vm_product_files
 				LEFT JOIN #__vm_product_attribute
