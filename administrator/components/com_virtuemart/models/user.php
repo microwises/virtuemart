@@ -28,11 +28,6 @@ define ('__SUPER_ADMIN_GID', 25);
 jimport('joomla.application.component.model');
 jimport('joomla.version');
 
-// Get the helpers we need here
-if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
-
 /**
  * Model class for shop users
  *
@@ -60,6 +55,12 @@ class VirtueMartModelUser extends JModel {
 	function __construct()
 	{
 		parent::__construct();
+
+		// Get the helpers we need here, This must be in the constructor, for the RC it would be good to place the
+		// "require" nearest at possible to the code, which actually using it
+		if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
