@@ -87,11 +87,11 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
 				<label for="shipping_rate_zip_end">
 					<?php echo JText::_( 'VM_RATE_FORM_ZIP_END' ); ?>:
-					<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
 				</label>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="shipping_rate_zip_end" id="shipping_rate_zip_end" size="10" value="<?php echo $this->rate->shipping_rate_zip_end; ?>" />				
+				<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
 		</tr>				
 		<tr>
