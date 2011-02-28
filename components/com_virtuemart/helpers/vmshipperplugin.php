@@ -502,7 +502,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'LIMIT 1';
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
-			JError::raiseWarning(500, 'No proper shipping rate found');
+			JError::raiseWarning(500, JText::_('VM_CART_NO_SHIPPINGRATE'));
 			return -1;
 		}
 		return $_r['shipping_rate_id'];

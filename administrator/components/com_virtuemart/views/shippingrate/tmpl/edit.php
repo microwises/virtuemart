@@ -36,12 +36,14 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_name" id="shipping_rate_name" size="50" value="<?php echo $this->rate->shipping_rate_name; ?>" />				
+				<label for="shipping_rate_name">
+					<input class="inputbox" type="text" name="shipping_rate_name" id="shipping_rate_name" size="50" value="<?php echo $this->rate->shipping_rate_name; ?>" />
+				</label>				
 			</td>
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_list_order">
 					<?php echo JText::_( 'VM_RATE_FORM_LIST_ORDER' ); ?>:
 				</label>
 			</td>
@@ -51,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>		
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_carrier_id">
 					<?php echo JText::_( 'VM_RATE_FORM_CARRIER' ); ?>:
 				</label>
 			</td>
@@ -61,28 +63,31 @@ AdminMenuHelper::startAdminArea();
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_country">
 					<?php echo JText::_( 'VM_RATE_FORM_COUNTRY' ); ?>:
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country)
+					. '&nbsp;'.JHTML::tooltip( JText::_('VM_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
 			</td>
 		</tr>		
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_zip_start">
 					<?php echo JText::_( 'VM_RATE_FORM_ZIP_START' ); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_zip_start" id="shipping_rate_zip_start" size="10" value="<?php echo $this->rate->shipping_rate_zip_start; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_zip_start" id="shipping_rate_zip_start" size="10" value="<?php echo $this->rate->shipping_rate_zip_start; ?>" />
+				<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_zip_end">
 					<?php echo JText::_( 'VM_RATE_FORM_ZIP_END' ); ?>:
+					<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
 				</label>
 			</td>
 			<td>
@@ -91,7 +96,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>				
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_weight_start">
 					<?php echo JText::_( 'VM_RATE_FORM_WEIGHT_START' ); ?>:
 				</label>
 			</td>
@@ -101,7 +106,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_weight_end">
 					<?php echo JText::_( 'VM_RATE_FORM_WEIGHT_END' ); ?>:
 				</label>
 			</td>
@@ -111,7 +116,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_value">
 					<?php echo JText::_( 'VM_RATE_FORM_VALUE' ); ?>:
 				</label>
 			</td>
@@ -121,7 +126,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_package_fee">
 					<?php echo JText::_( 'VM_RATE_FORM_PACKAGE_FEE' ); ?>:
 				</label>
 			</td>
@@ -131,7 +136,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>	
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_currency_id">
 					<?php echo JText::_( 'VM_RATE_FORM_CURRENCY' ); ?>:
 				</label>
 			</td>
@@ -141,16 +146,16 @@ AdminMenuHelper::startAdminArea();
 		</tr>					
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shipping_rate_vat_id">
 					<?php echo JText::_( 'VM_RATE_FORM_VAT_ID' ); ?>:
 				</label>
 			</td>
 			<td>
 				<?php echo $this->taxRates;
 				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
-				?>											
+				?>
 			</td>
-		</tr>										
+		</tr>
 	</table>
 	</fieldset>
 </div>
