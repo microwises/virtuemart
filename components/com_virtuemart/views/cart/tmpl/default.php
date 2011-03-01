@@ -59,19 +59,16 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 </fieldset>
 
 <fieldset>
-	<legend>
-		<?php echo JText::_('VM_COMMENT'); ?>
-	</legend>
-	<div>
-		<textarea name="customer_comment" cols="50" rows="3"><?php echo $this->cart->customer_comment; ?></textarea>
+	<div class="customer-comment marginbottom15">
+		<span class="bold"><?php echo JText::_('VM_COMMENT'); ?></span><br />
+		<textarea class="customer-comment" name="customer_comment" cols="50" rows="4"><?php echo $this->cart->customer_comment; ?></textarea>
 	</div>
 </fieldset>
 <fieldset>
-	<legend>
-		<?php echo JText::_('VM_CART_TOS'); ?>
-	</legend>
-	<div>
-	<?php echo $this->vendor->vendor_terms_of_service;
+		
+	<div class="marginbottom15">
+	<span class="bold"><?php echo JText::_('VM_CART_TOS'); ?></span><br />
+	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
 	$checked = '';
 	if ($this->cart->tosAccepted) $checked = 'checked="checked"';
 	echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED');
@@ -79,11 +76,12 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	</div>
 </fieldset>
 <?php
-	echo '<div class="cartfooterlinks" >';
+	echo '<div class="paddingbottom20">';
+	echo $this->checkout_link_html;
+	
 	if ($this->continue_link_html != '') {
 		echo $this->continue_link_html;
 	}
-	echo $this->checkout_link_html;
 
 	$text = JText::_('VM_ORDER_CONFIRM_MNU');
 	echo '</div>';

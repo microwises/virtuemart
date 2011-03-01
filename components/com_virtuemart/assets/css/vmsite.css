@@ -86,67 +86,6 @@ input.addtocart_button_module:hover  {
 	white-space: nowrap;
 }
 
-/* The quantity box beneath the "add to cart" button  */
-.quantity_box {	
-	vertical-align: middle;
-}
-.quantity_box_button {
-	width:10px;
-	vertical-align:middle;
-	height:10px;
-	background-repeat: no-repeat;
-	background-position: center;
-   border:1px solid #000;
-}
-.quantity_box_button_down {
-	background-image: url(../images/vmgeneral/down_small.gif);
-}
-.quantity_box_button_up {
-	background-image: url(../images/vmgeneral/up_small.gif);
-}
-
-div.cartfooterlinks {
-	display: block;
-	position: relative;
-	top: 10px;
-	height: 52px;
-}
-a.continue_link,a.checkout_link {
-	position: absolute; bottom: 10px;
-	width: 40%;
-	height: 24px;
-	margin: 10px;
-	padding: 2px 2px 2px 2px;
-	vertical-align: middle;
-	text-align: center;
-	font-weight: bold;
-	font-size: 1.4em;
-}
-
-a.continue_link:link,a.continue_link:visited,a.checkout_link:link, a.checkout_link:visited {
-	border-style: inset;
-	text-decoration: none;
-}
-
-a.continue_link:hover,a.continue_link:focus,a.checkout_link:hover,a.checkout_link:focus {
-	border-style: outset;
-	text-decoration: none;
-}
-
-a.continue_link:active,a.checkout_link:active {
-	border-style: outset;
-	text-decoration: underline;
-}
-
-a.continue_link {
-	left: 5px;
-	background: url( '../images/vmgeneral/back.png' ) no-repeat left;
-}
-
-a.checkout_link {
-	right: 5px;
-	background: url( '../images/vmgeneral/forward.png' ) no-repeat left;
-}
 
 /* This is the text box informing customers about your returns policy */
 .legalinfo {
@@ -741,15 +680,29 @@ button.save-button {margin-right: 12px;}
 button.save-button, button.cancel-button {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;cursor: pointer;}
 button.save-button:hover, button.cancel-button:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
-
-
+/* Input Details */
 table.user-details {}
 table.user-details input {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
 table.user-details input.invalid {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #f00 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
-
 table.user-details input:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
-
 td.key {padding: 0px 6px;}
+
+/*////////////////////////////////////
+//////////// Cart View ///////////////
+////////////////////////////////////*/
+
+.customer-comment {}
+
+textarea.customer-comment {background: #f2f2f2;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
+textarea.customer-comment:hover {color: #000;background: #e8e8e8;}
+
+a.continue_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;margin-right: 16px;}
+a.continue_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
+
+a.checkout_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x; padding: 6px 12px 3px 12px;border: solid #ce0100 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #000;font-size: 12px;font-weight: bold;background-position: 0px -80px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;color: #fff;}
+a.checkout_link span {background: url(../images/vmgeneral/checkout-icon.png) left no-repeat;padding-left: 20px;}
+a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;color: #ccc;}
+
 
 
 /*////////////////////////////////////
@@ -762,6 +715,7 @@ td.key {padding: 0px 6px;}
 .center, span.center {text-align: center}
 .right {text-align: right;}
 span.bold {font-weight: bold;}
+span.red {color: #f00;}
 
 /*////////////////////////////////////
 ///////////// All Width`s ////////////

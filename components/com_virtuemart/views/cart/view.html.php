@@ -120,7 +120,7 @@ class VirtueMartViewCart extends JView {
 			}
 			$this->assignRef('checkout_task', $checkout_task);
 
-			$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" />'.$text.'</a>';
+			$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" /><span>'.$text.'</span></a>';
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
