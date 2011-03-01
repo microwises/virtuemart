@@ -23,17 +23,6 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
-<style type="text/css">
-.invalid {
-	border-color: #f00;
-	background-color: #ffd;
-	color: #000;
-}
-label.invalid {
-	background-color: #fff;
-	color: #f00;
-}
-</style>
 <script language="javascript">
 function myValidator(f, t)
 {
@@ -50,16 +39,16 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
-<div style="text-align: right; width: 100%;">
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('Save'); ?></button>
-	&nbsp;
-	<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('Cancel'); ?></button>
+<div class="floatright">
+	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('Save'); ?></button>
+	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('Cancel'); ?></button>
 </div>
+<br style="clear:both;" />
 
 <fieldset>
-	<legend>
+	<span class="bold">
 		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
-	</legend>
+	</span><br /><br />
 <?php
 	$_k = 0;
 	$_set = false;
@@ -102,7 +91,7 @@ function myValidator(f, t)
 
 		if (!$_table) {
 			// A table hasn't been opened as well. We need one here,
-			echo '	<table class="adminform">'."\n";
+			echo '	<table class="adminform user-details">'."\n";
 			$_table = true;
 		}
 		echo '		<tr>'."\n";
@@ -137,7 +126,7 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 
-	<table class="adminform">
+	<table class="adminform user-details">
 		<tr>
 			<td>
 				<?php echo $this->lists['shipTo']; ?>

@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
 
 		$i=0;
 		foreach ($this->cart->products as $k=>$product){
-
 			// Added for the zone shipping module
 			//$vars["zone_qty"] += $product["quantity"];
 
@@ -50,6 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
+			echo "product name";
 
 			/* Add the variants */
 			$variant = '';
@@ -136,11 +136,11 @@ defined('_JEXEC') or die('Restricted access');
 
 
 		?>
-		<table width="100%" cellspacing="2" cellpadding="4" border="0">
+		<table width="100%" cellspacing="2" cellpadding="0" border="0">
 			<tr align="left" class="sectiontableheader">
 				<th><?php echo JText::_('VM_CART_NAME') ?></th>
 				<th align="left" ><?php echo JText::_('VM_CART_SKU') ?></th>
-				<th align="right" width="60px" ><?php echo JText::_('VM_CART_PRICE') ?></th>
+				<th align="center" width="60px" ><?php echo JText::_('VM_CART_PRICE') ?></th>
 				<th align="right" width="140px" ><?php echo JText::_('VM_CART_QUANTITY') ?> / <?php echo JText::_('VM_CART_ACTION') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('VM_CART_SUBTOTAL') ?></th>
 				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
@@ -151,7 +151,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
 				<td align="left" ><?php echo $prow['product_name'].$prow['product_variant'].$prow['product_customvariant'].$prow['product_attributes']; ?></td>
 				<td align="left" ><?php echo $prow['product_sku'] ?></td>
-				<td align="right" ><?php echo $prow['prices'] ?></td>
+				<td align="center" ><?php echo $prow['prices'] ?></td>
 				<td align="right" ><?php echo $prow['update_form'] ?>
 					<?php echo $prow['delete_form'] ?>
 				</td>

@@ -42,6 +42,15 @@
 	margin-right: 0;
 	float: left;
 }
+.invalid {
+	border-color: #f00;
+	background-color: #ffd;
+	color: #000;
+}
+label.invalid {
+	background-color: #fff;
+	color: #f00;
+}
 .stock_low {
 	background: url( '../images/vmgeneral/lowstock.png' ) no-repeat  center transparent;
 }
@@ -719,6 +728,29 @@ p.product_s_desc {padding: 0px;margin-bottom: 6px;}
 span.stock-level {font-size: 10px;color: #7d7b7b;}
 
 .horizontal-separator {height: 1px;background: #e9e8e8;}
+
+.invalid {border-color: #f00;background-color: #ffd;color: #000;}
+label.invalid {color: #f00;}
+
+/*////////////////////////////////////
+////// User Edit Details View ////////
+////////////////////////////////////*/
+
+/* Save and Cancel Button */
+button.save-button {margin-right: 12px;}
+button.save-button, button.cancel-button {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;cursor: pointer;}
+button.save-button:hover, button.cancel-button:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
+
+
+
+table.user-details {}
+table.user-details input {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
+table.user-details input.invalid {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #f00 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
+
+table.user-details input:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
+
+td.key {padding: 0px 6px;}
+
 
 /*////////////////////////////////////
 ////////////// Basics ////////////////
