@@ -697,11 +697,11 @@ textarea.customer-comment {background: #f2f2f2;padding: 5px 5px 4px 5px;border: 
 textarea.customer-comment:hover {color: #000;background: #e8e8e8;}
 
 a.continue_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;margin-right: 16px;}
-a.continue_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
+a.continue_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
 a.checkout_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x; padding: 6px 12px 3px 12px;border: solid #ce0100 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #000;font-size: 12px;font-weight: bold;background-position: 0px -80px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;color: #fff;}
-a.checkout_link span {background: url(../images/vmgeneral/checkout-icon.png) left no-repeat;padding-left: 20px;}
-a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;color: #ccc;}
+a.checkout_link span {background: url(../images/vmgeneral/checkout-icon.png) left no-repeat;padding-left: 20px;color: #fff;}
+a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;color: #ccc;text-decoration: none;}
 
 
 
