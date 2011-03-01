@@ -87,6 +87,9 @@ class ParamHelper {
 	 */
 	public function parseParam  ($p)
 	{
+		if (!$p) {
+			return;
+		}
 		$_arr = explode($this->_sep, $p);
 		if (count($_arr) == 0) {
 			$this->_data = array();

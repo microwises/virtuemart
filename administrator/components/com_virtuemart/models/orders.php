@@ -302,8 +302,9 @@ class VirtueMartModelOrders extends JModel {
 		/* Get the list of comments */
 		$comments = JRequest::getVar('order_comment', array());
 
-		// TODO This is not the most logical place for this plugin (or better; the method updateStatus() must be renamed....)
+		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
@@ -344,9 +345,9 @@ class VirtueMartModelOrders extends JModel {
 								)
 						);
 					foreach ($_returnValues as $_returnValue) {
-						if ($_returnValue == true) {
+						if ($_returnValue === true) {
 							break; // Plugin was successfull
-						} elseif ($_returnValue == false) {
+						} elseif ($_returnValue === false) {
 							return false; // Plugin failed
 						}
 						// Ignore null status and look for the next returnValue

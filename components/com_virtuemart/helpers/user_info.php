@@ -23,8 +23,6 @@ class user_info
 {
 	function __construct()
 	{
-		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php' );
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 	}
 
 	/**
@@ -87,6 +85,7 @@ class user_info
 
 	function _prepareUserFields($_data, $_type,$new)
 	{
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_prepareUserFields = self::getUserFields($_type);
 		$data =$_data;
@@ -102,6 +101,8 @@ class user_info
 	{
 		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
 		// VirtueMartModelUserfields::getUserFields() won't work
+
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php' );
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		if ($_type == 'ST') {
 			$_prepareUserFields = $_userFieldsModel->getUserFields(
