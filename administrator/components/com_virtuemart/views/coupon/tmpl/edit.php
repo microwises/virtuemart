@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />
+				<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" maxlength="32" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />
 			</td>
 		</tr>
 		<tr>

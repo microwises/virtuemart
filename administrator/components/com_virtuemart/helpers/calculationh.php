@@ -431,7 +431,7 @@ class calculationHelper {
 			);
 		$this->_cartPrices['salesPriceCoupon'] = ($_value_is_total
 			? $_data->coupon_value
-			: ($this->_cartPrices['billTotal'] * ($_data->coupon_value / 100))
+			: ($this->_cartPrices['salesPrice'] * ($_data->coupon_value / 100))
 		);
 		// TODO Calculate the tax
 		$this->_cartPrices['couponTax'] = 0;

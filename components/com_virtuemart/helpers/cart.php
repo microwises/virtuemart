@@ -422,9 +422,11 @@ class VirtueMartCart  {
 	 * @return string On error the message text, otherwise an empty string
 	 */
 	public function setCouponCode($coupon_code) {
-		require(JPATH_VM_SITE.DS.'helpers'.DS.'coupon.php');
+		if (!class_exists('CouponHelper')) {
+			require(JPATH_VM_SITE.DS.'helpers'.DS.'coupon.php');
+		}
 		$_prices = $this->getCartPrices();
-		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['billTotal']);
+		$_msg = CouponHelper::ValidateCouponCode($coupon_code, $_prices['salesPrice']);
 		if (!empty($_msg)) {
 			$this->couponCode = '';
 			$this->setCartIntoSession();
@@ -524,7 +526,10 @@ class VirtueMartCart  {
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			$_prices = $this->getCartPrices();
-			$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $_prices['billTotal']);
+			if (!class_exists('CouponHelper')) {
+				require(JPATH_VM_SITE.DS.'helpers'.DS.'coupon.php');
+			}
+			$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $_prices['salesPrice']);
 			if (!empty($redirectMsg)) {
 				$this->couponCode = '';
 //				$this->setCartIntoSession();
