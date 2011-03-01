@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -35,11 +35,13 @@ class VirtuemartViewShopperGroup extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
+//		$this->assignRef('perms', Permissions::getInstance());
+
 		$model = $this->getModel();
 		//$vendorModel = $this->getModel('Vendor');
 		$layoutName = JRequest::getVar('layout', 'default');
 
-		if ($layoutName == 'edit') {		
+		if ($layoutName == 'edit') {
 			$shoppergroup = $model->getShopperGroup();
 			$isNew = ($shoppergroup->shopper_group_id < 1);
 			if ($isNew) {
@@ -47,12 +49,17 @@ class VirtuemartViewShopperGroup extends JView {
 			} else {
 				JToolBarHelper::title( JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
 			}
+
+			$this->loadHelper('shopfunctions');
+			$vendors = ShopFunctions::renderVendorList($shoppergroup->vendor_id);
+			$this->assignRef('vendorList',	$vendors);
+
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel();
 			$this->assignRef('shoppergroup',	$shoppergroup);
-		  
+
 		} else {
 			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
@@ -65,6 +72,9 @@ class VirtuemartViewShopperGroup extends JView {
 			$shoppergroups = $model->getShopperGroups(false, true);
 
 			$this->assignRef('shoppergroups',	$shoppergroups);
+
+			$this->loadHelper('permissions');
+			$this->assignRef('showVendors',Permissions::getInstance()->check('admin,storeadmin'));
 
 		}
 		parent::display($tpl);

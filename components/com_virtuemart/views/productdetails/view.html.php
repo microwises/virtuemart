@@ -59,9 +59,6 @@ class VirtueMartViewProductdetails extends JView {
 		$this->loadHelper('image');
 		$this->loadHelper('addtocart');
 
-		/* Set the titles */
-		$document->setTitle(JText::_('VM_PRODUCT_DETAILS'));
-		$uri = JURI::getInstance();
 
 		/* Load the product */
 //		$product = $this->get('product');
@@ -82,6 +79,10 @@ class VirtueMartViewProductdetails extends JView {
 		$product = $product_model->getProduct($product_id);
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
+
+		/* Set the titles */
+		$document->setTitle(JText::sprintf('VM_PRODUCT_DETAILS',$product->product_name));
+		$uri = JURI::getInstance();
 
 		$this->assignRef('product', $product);
 

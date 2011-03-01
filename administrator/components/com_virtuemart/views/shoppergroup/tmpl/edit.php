@@ -45,7 +45,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="5" value="<?php echo $this->shoppergroup->vendor_id; ?>" />
+				<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
 		<tr>

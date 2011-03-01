@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Manufacturer details layout">
+		<message>for a view with preselected manufacturer</message>
+	</layout>
+	<state>
+		<name>Manufacturer details layout</name>
+		<description>for a view with preselected manufacturer</description>
+		<url>
+			<param name="manufacturer_id" type="sql" query="SELECT manufacturer_id, mf_name  FROM #__vm_manufacturer" key_field="manufacturer_id" value_field="mf_name" label="Manufacturer" description="Choose a Manufacturer..." />
+		</url>
+	</state>
+</metadata>
