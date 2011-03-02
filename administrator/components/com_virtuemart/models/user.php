@@ -602,7 +602,8 @@ class VirtueMartModelUser extends JModel {
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
 	 	$userInfo =& $this->getTable('user_info');
-	 	$shopper_vendor_xref =& $this->getTable('shopper_vendor_xref');
+	 	$vm_shoppergroup_xref =& $this->getTable('user_shopper_group_xref');
+                $vm_users =& $this->getTable('vm_users');
 	 	$_status = true;
 	 	foreach($userIds as $userId) {
 	 		if ($this->getSuperAdminCount() <= 1) {
@@ -619,8 +620,13 @@ class VirtueMartModelUser extends JModel {
 	 			$this->setError($userInfo->getError());
 	 			return false;
 	 		}
-	 		if (!$shopper_vendor_xref->delete($userId)) {
-	 			$this->setError($shopper_vendor_xref->getError()); // Signal but continue
+	 		if (!$vm_shoppergroup_xref->delete($userId)) {
+	 			$this->setError($vm_shoppergroup_xref->getError()); // Signal but continue
+	 			$_status = false;
+	 			continue;
+	 		}
+                        if (!$vm_users->delete($userId)) {
+	 			$this->setError($vm_users->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
 	 		}
