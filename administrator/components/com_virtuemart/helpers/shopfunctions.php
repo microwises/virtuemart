@@ -266,6 +266,10 @@ class ShopFunctions {
 	 */
 	function renderPositiveFormatCurrency($positiveFormat,$name='vendor_currency_display_style[5]'){
 		$options = array();
+//		$options[] = JHTML::_('select.option', '0', JText::_('VM_00Symb') );
+//		$options[] = JHTML::_('select.option', '1', JText::_('VM_00_Symb'));
+//		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00'));
+//		$options[] = JHTML::_('select.option', '3', JText::_('VM_Symb_00'));
 		$options[] = JHTML::_('select.option', '0', JText::_('VM_00Symb') );
 		$options[] = JHTML::_('select.option', '1', JText::_('VM_00_Symb'));
 		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00'));

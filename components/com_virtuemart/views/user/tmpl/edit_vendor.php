@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
+				<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->vendor->vendor_store_name; ?>" />
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
+				<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
+				<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->vendor->vendor_url; ?>" />
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
+				<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
+				<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
+				<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>
 			</td>
 			<td>
 				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
+				<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>
 			</td>
 			<td>
 				<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->vendor_id; ?>" />
@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
+				<?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo $this->currency->getNbrDecimals(); ?>" />
@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>:
+				<?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->getDecimalSymbol(); ?>" />
@@ -111,7 +111,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>:
+				<?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo $this->currency->getThousandsSeperator(); ?>" />
@@ -119,9 +119,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
+				<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>
 			</td>
 			<td>
+				<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="10" value="<?php echo $this->currencyDisplay->getPositiveFormat(); ?>" />
+
 				<?php
 					echo $this->positiveFormat;
 				?>
@@ -129,20 +131,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
+				<?php // echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>
 			</td>
 			<td>
-				<?php
-					echo $this->negativeFormat;
+
+				<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="20" value="<?php echo $this->currencyDisplay->getNegativeFormat(); ?>" />
+
+				<?php //	echo $this->negativeFormat;
 				?>
 			</td>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
+				<?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=20 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 			</td>
 		</tr>
 	</table>

@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_currency` (
   `currency_code` char(3) DEFAULT NULL,
   `currency_symbol` char(2) DEFAULT NULL,
   `exchange_rate` float(1) DEFAULT NULL,
-  `display_style` varchar(32) DEFAULT NULL,
+  `display_style` varchar(64) DEFAULT NULL,
   `cdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation date',
   `mdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'modified date',
   `published` tinyint(1) NOT NULL DEFAULT '1',

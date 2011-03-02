@@ -149,14 +149,9 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
 		</td>
 		<td>
-			<?php
-				echo $this->positiveFormat;
-//				$options = array();
-//				$options[] = JHTML::_('select.option', '0', JText::_('00Symb') );
-//				$options[] = JHTML::_('select.option', '1', JText::_('00_Symb'));
-//				$options[] = JHTML::_('select.option', '2', JText::_('Symb00'));
-//				$options[] = JHTML::_('select.option', '3', JText::_('Symb_00'));
-//				echo JHTML::_('Select.genericlist', $options, 'currency_display_style[5]', 'size=1', 'value', 'text', $this->currencyDisplay->getPositiveFormat());
+			<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="10" value="<?php echo $this->currencyDisplay->getPositiveFormat(); ?>" />
+
+			<?php echo JText::_( 'VM_CURRENCY_DISPLAY_EXPL' );
 			?>
 		</td>
 	</tr>
@@ -165,25 +160,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
 		</td>
 		<td>
-			<?php
-				echo $this->negativeFormat;
-//				$options = array();
-//				$options[] = JHTML::_('select.option', '0', JText::_('(Symb00)') );
-//				$options[] = JHTML::_('select.option', '1', JText::_('-Symb00'));
-//				$options[] = JHTML::_('select.option', '2', JText::_('Symb00-'));
-//				$options[] = JHTML::_('select.option', '3', JText::_('(00Symb)'));
-//				$options[] = JHTML::_('select.option', '4', JText::_('-00Symb') );
-//				$options[] = JHTML::_('select.option', '5', JText::_('00-Symb'));
-//				$options[] = JHTML::_('select.option', '6', JText::_('00Symb-'));
-//				$options[] = JHTML::_('select.option', '7', JText::_('-00_Symb'));
-//				$options[] = JHTML::_('select.option', '8', JText::_('-Symb_00'));
-//				$options[] = JHTML::_('select.option', '9', JText::_('00_Symb-') );
-//				$options[] = JHTML::_('select.option', '10', JText::_('Symb_00-'));
-//				$options[] = JHTML::_('select.option', '11', JText::_('Symb_-00'));
-//				$options[] = JHTML::_('select.option', '12', JText::_('(Symb_00)'));
-//				$options[] = JHTML::_('select.option', '13', JText::_('(00_Symb)'));
-//				echo JHTML::_('Select.genericlist', $options, 'currency_display_style[6]', 'size=1', 'value', 'text', $this->currencyDisplay->getNegativeFormat());
-			?>
+			<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="10" value="<?php echo $this->currencyDisplay->getNegativeFormat(); ?>" />
 		</td>
 	</tr>
 	</table>
