@@ -172,13 +172,14 @@ class VirtueMartModelRatings extends JModel {
     * Set the publish/unpublish state
     */
     public function setPublish() {
-     	$cid = JRequest::getVar('cid', false);
+     $cid = JRequest::getVar('cid', false);
      	if (is_array($cid)) {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
 	} else {
 		$cids = $cid;
 	}
+
 	if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 	$q = "UPDATE #__vm_product_reviews
 		SET published = ".$db->Quote($state)."
@@ -211,36 +212,41 @@ class VirtueMartModelRatings extends JModel {
 
     /**
     * Save a rating
-    * @author RolandD
+    * @author  Max Milbers
     */
     public function saveRating() {
-		/* Get the product IDs to remove */
-		$cids = array();
-		$cids = JRequest::getVar('cid');
-		if (!is_array($cids)) $cids = array($cids);
 
-		/* First copy the product in the product table */
 		$ratings_data = $this->getTable('ratings');
 
 		/* Get the posted data */
-		$data = JRequest::get('post', 4);
+		$data = JRequest::get('post');
 
 		/* Check if we have a timestamp */
 		/* if ($data['time'] == 0) $data['time'] = time(); */
 		/* Timestamps are always kept up to the latest modification */
 		$data['time'] = time();
-
-		/* Bind the rating details */
-		$ratings_data->bind($data);
+//		$data['userid'] =	time 	user_rating 	review_ok 	review_votes 	published
 
 		/* Check if ratings are auto-published */
-		if (VmConfig::get('autopublish_reviews') == 1) $data['published'] = 1;
+		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
 
-		/* Fix the published field : not useful */
-		// $ratings_data->published = ($data['published'] == 1) ? 'Y' : 'N';
+    	// Bind the form fields to the table
+		if (!$ratings_data->bind($data)) {
+			$this->setError($ratings_data->getError());
+			return false;
+		}
 
-		/* Store the rating */
-		$ratings_data->store();
+		// Make sure the record is valid
+		if (!$ratings_data->check()) {
+			$this->setError($ratings_data->getError());
+			return false;
+		}
+
+		// Save the record to the database
+		if (!$ratings_data->store()) {
+			$this->setError($ratings_data->getError());
+			return false;
+		}
 
 		return true;
     }

@@ -215,7 +215,7 @@ class VirtueMartModelCalc extends JModel
 	/**
 	 * Bind the post data to the calculation table and save it
      *
-     * @author RickG, Max Milbers
+     * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
     public function store() {
@@ -250,7 +250,7 @@ class VirtueMartModelCalc extends JModel
 			return false;
 		}
 
-		// Save the country record to the database
+		// Save the record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
 			return false;

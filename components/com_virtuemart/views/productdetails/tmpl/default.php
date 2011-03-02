@@ -80,7 +80,7 @@ if (empty ( $this->product )) {
 			<?php } // Product Short Description END ?>
 
 			<?php // Ask a question about this product
-			$url = JRoute::_('index.php?view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
+			$url = JRoute::_('index.php?&option=com_virtuemartview=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
 			echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'ask-a-question')).'<br style="clear:both;" />';
 			// Ask a question about this product END ?>
 
@@ -306,7 +306,7 @@ if (empty ( $this->product )) {
 
 <?php
 				/* Child categories */
-				if ($this->category->haschildren && !empty($this->category->children)) {
+				if (!empty($this->category->children)) {
 					$iCol = 1;
 					if (empty($this->category->categories_per_row)) {
 						$this->category->categories_per_row = 4;
@@ -494,6 +494,7 @@ if (empty ( $this->product )) {
 						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
 						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
+						<input type="hidden" name="review_id" value="0" />
 						<input type="hidden" name="task" value="review" />
 					</form>
 					<?php

@@ -60,6 +60,10 @@ class VirtueMartControllerProductdetails extends JController {
 //		}
 	}
 
+	/**
+	 * This feature should now just open an email.
+	 * Atm broken.
+	 */
 	public function askquestion(){
 		/* Create the view */
 		$view = $this->getView('productdetails', 'html');
@@ -76,6 +80,7 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Display it all */
 		$view->display();
 	}
+
 	/* Add or edit a review
 	 TODO  control and update in database the review */
 	public function review(){
@@ -100,6 +105,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$msgtype = '';
 		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('RATING_SAVED_SUCCESSFULLY') );
 		else {
+			$mainframe->enqueueMessage($model->getError());
 			$mainframe->enqueueMessage( JText::_('RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
 		/* Display it all */
