@@ -88,7 +88,7 @@ JPluginHelper::importPlugin('vmshipper');
 			<tr>
 				<td colspan="4"><?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "Update Status"); ?>
 				<a href="#" class="show_element[updateOrderStatus]"> Update Status </a>
-				<div style="display: none;"
+				<div style="display: none; background: white;"
 					class="element-hidden vm-absolute"
 					id="updateOrderStatus"><?php echo $this->loadTemplate('editstatus'); ?>
 				</div>
