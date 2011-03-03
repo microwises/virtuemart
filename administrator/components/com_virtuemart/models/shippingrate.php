@@ -159,8 +159,8 @@ class VirtueMartModelShippingRate extends JModel {
 	/**
 	 * Bind the post data to the shipping rate table and save it
      *
-     * @author RickG, Max Milbers
-     * @return boolean True is the save was successful, false otherwise.
+     * @author RickG, Max Milbers, Oscar van Eijk
+     * @return mixed False if the save was unsuccessful, the shiping rate ID otherwise.
 	 */
     function store()
 	{

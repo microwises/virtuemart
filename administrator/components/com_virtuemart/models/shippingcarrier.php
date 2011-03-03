@@ -137,8 +137,8 @@ class VirtueMartModelShippingCarrier extends JModel {
     /**
      * Bind the post data to the shipping carrier table and save it
      *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
+     * @author RickG, Oscar van Eijk
+     * @return Mixed False if the save was unsuccessful, the shipping carrier ID otherwise.
      */
     function store() {
 	$table = $this->getTable('shipping_carrier');
@@ -166,7 +166,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	    return false;
 	}
 
-	return true;
+	return $table->shipping_carrier_id;
     }
 
 

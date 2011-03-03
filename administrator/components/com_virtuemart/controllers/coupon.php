@@ -101,14 +101,18 @@ class VirtuemartControllerCoupon extends JController {
 	{
 		$model = $this->getModel('coupon');
 
-		if ($model->store()) {
+		if (($_id = $model->store()) === false) {
+			$msg = JText::_($model->getError());
+		} else {
 			$msg = JText::_('Coupon saved!');
 		}
-		else {
-			$msg = JText::_($model->getError());
+
+		$_redir = 'index.php?option=com_virtuemart&view=coupon';
+		if(JRequest::getCmd('task') == 'apply'){
+			$_redir .= '&task=edit&cid[]='.$_id;
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=coupon', $msg);
+		$this->setRedirect($_redir, $msg);
 	}
 
 

@@ -116,11 +116,10 @@ class VirtuemartControllerShippingRate extends JController {
 	{
 		$model =& $this->getModel('shippingrate');
 
-		if ($id = $model->store()) {
-			$msg = JText::_('Shipping Rate saved!');
-		}
-		else {
+		if (($id = $model->store()) === false) {
 			$msg = JText::_($model->getError());
+		} else {
+			$msg = JText::_('Shipping Rate saved!');
 		}
 
 		$cmd = JRequest::getCmd('task');

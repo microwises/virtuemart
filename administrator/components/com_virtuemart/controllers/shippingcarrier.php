@@ -100,14 +100,18 @@ class VirtuemartControllerShippingCarrier extends JController {
 	{
 		$model =& $this->getModel('shippingcarrier');
 
-		if ($model->store()) {
+		if (($_id = $model->store()) === false) {
+			$msg = JText::_($model->getError());
+		} else {
 			$msg = JText::_('Shipping Carrier saved!');
 		}
-		else {
-			$msg = JText::_($model->getError());
+
+		$_redir = 'index.php?option=com_virtuemart&view=shippingcarrier';
+		if(JRequest::getCmd('task') == 'apply'){
+			$_redir .= '&task=edit&cid[]='.$_id;
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier', $msg);
+		$this->setRedirect($_redir, $msg);
 	}
 
 

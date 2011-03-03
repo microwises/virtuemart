@@ -138,8 +138,8 @@ class VirtueMartModelCoupon extends JModel {
 	/**
 	 * Bind the post data to the coupon table and save it
      *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
+     * @author RickG, Oscar van Eijk
+     * @return mixed False if the save was unsuccessful, the coupon ID otherwise.
 	 */
     function store()
 	{
@@ -170,7 +170,7 @@ class VirtueMartModelCoupon extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->coupon_id;
 	}
 
 
