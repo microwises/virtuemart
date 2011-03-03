@@ -100,12 +100,42 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_COUPONS_ENABLE_EXPLAIN'); ?>">
-		<label for="conf_PSHOP_COUPONS_ENABLE"><?php echo JText::_('VM_COUPONS_ENABLE') ?></label>
+		<label for="coupons_enable"><?php echo JText::_('VM_COUPONS_ENABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('coupons_enable', $this->config->get('coupons_enable')); ?>
 	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_COUPONS_EXPIRE_EXPLAIN'); ?>">
+		<label for="coupons_default_expire"><?php echo JText::_('VM_COUPONS_EXPIRE') ?></label>
+		</span>
+	    </td>
+		<td>
+			<select name="coupons_default_expire" class="inputbox">
+				<?php
+					// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
+					$_defaultExpTime = array(
+						 '1,D' => '1 '.JText::_('DAY')
+						,'1,W' => '1 '.JText::_('WEEK')
+						,'2,W' => '2 '.JText::_('WEEKS')
+						,'1,M' => '1 '.JText::_('MONTH')
+						,'3,M' => '3 '.JText::_('MONTHS')
+						,'6,M' => '6 '.JText::_('MONTHS')
+						,'1,Y' => '1 '.JText::_('YEAR')
+					);
+					foreach ($_defaultExpTime as $_v => $_t) {
+						echo '<option value="'.$_v.'"';
+						if ($this->config->get('coupons_default_expire') == $_v) {
+							echo ' selected="selected"';
+						}
+						echo ">$_t</option>\n";
+					}
+				?>
+			</select>
+		</td>
 	</tr>
 	<tr>
 	    <td class="key">
