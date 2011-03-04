@@ -77,6 +77,7 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($product_id);
+
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 

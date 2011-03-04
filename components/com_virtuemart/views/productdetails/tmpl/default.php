@@ -63,7 +63,7 @@ if (empty ( $this->product )) {
 			<?php // PDF - Print - Email Icon
 			$link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id; ?>
 			<?php echo shopFunctionsF::PdfIcon( $link.'&output=pdf' ); ?>
-			<?php echo shopFunctionsF::PrintIcon($link.'print=1'); ?>
+			<?php echo shopFunctionsF::PrintIcon($link.'&print=1'); ?>
 			<?php echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
 			<br style="clear:both;" />
 			</div>
