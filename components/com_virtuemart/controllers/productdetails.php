@@ -32,7 +32,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 	public function __construct() {
 		parent::__construct();
-//		$this->registerTask( 'recalc','productdetails' );
+		$this->registerTask( 'askquestion','askquestion' );
 	}
 
 	public function productdetails() {
@@ -64,9 +64,53 @@ class VirtueMartControllerProductdetails extends JController {
 	 * This feature should now just open an email.
 	 * Atm broken.
 	 */
-	public function askquestion(){
+	public function mailAskquestion(){
 		/* Create the view */
 		$view = $this->getView('productdetails', 'html');
+		/* add vendor model*/
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
+		$VendorEmail = $vendormodel->getVendorEmail(1);
+		$productmodel = $this->getModel( 'product', 'VirtuemartModel' );
+		$productDetails = $productmodel->getProductDetails();
+		
+		/* Add the default model */
+		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+
+		/* Add the category model */
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+
+		
+		/* mail askquestion */
+		$mainframe = JFactory::getApplication() ;
+		$user =& JFactory::getUser();
+		if(empty($user->id)){
+		$fromMail = JRequest::getVar('email');
+		$fromName = JRequest::getVar('name','');
+		
+		}else {
+	 	$fromMail = $user->email;
+	 	$fromName = $user->name;
+	 	}
+		$fromSite = $mainframe->getCfg('sitename');
+		$subject = 'Question About '.$productDetails->product_name .'('.$fromSite.')';
+		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n";
+		$message .= JRequest::getVar('comment');
+		$msgtype = '';
+		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message ) == true ) $mainframe->enqueueMessage( JText::_('MAIL_SEND_SUCCESSFULLY') );
+		else {
+			$mainframe->enqueueMessage( JText::_('MAIL_NOT_SEND_SUCCESSFULLY') );
+		}
+		/* Display it all */
+		$view->display();
+	}
+	/**
+	 * This feature should now just open an email.
+	 * Atm broken.
+	 */
+	public function askquestion(){
+		/* Create the view */
+		$view = $this->getView('askquestion', 'html');
 
 		/* Add the default model */
 		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
@@ -75,7 +119,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 		/* Set the layout */
-		$view->setLayout('askquestion');
+		$view->setLayout('form');
 
 		/* Display it all */
 		$view->display();

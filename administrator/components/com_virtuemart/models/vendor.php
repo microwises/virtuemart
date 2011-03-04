@@ -417,7 +417,7 @@ class VirtueMartModelVendor extends JModel {
  	public function getVendorEmail($vendor_id){
  		$user_id = self::getUserIdByVendorId($vendor_id);
  		if(!empty($user_id)){
-  			$query = 'SELECT `email` FROM `#__users` WHERE `vendor_id` = "'.$user_id.'" ';
+  			$query = 'SELECT `email` FROM `#__users` WHERE `id` = "'.$user_id.'" ';
 			$this->_db->setQuery($query);
 			if($this->_db->query()) return $this->_db->loadResult(); else return '';
  		}

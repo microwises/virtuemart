@@ -15,7 +15,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
-* @version $Id$
+* @version $Id: default.php 2810 2011-03-02 19:08:24Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -28,26 +28,6 @@ if (empty ( $this->product )) {
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
 <div class="productdetails-view">
-	<?php // Product Navigation
-	if (VmConfig::get ( 'product_navigation', 1 )) {
-		?>
-	<div class="marginbottom25">
-		<?php
-		if (! empty ( $this->product->neighbours ['previous'] )) {
-			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['previous'] ['product_id'] . '&category_id=' . $this->product->category_id );
-			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'] ['product_name'], array ('class' => 'previous_page' ) );
-		}
-		if (! empty ( $this->product->neighbours ['next'] )) {
-			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['next'] ['product_id'] . '&category_id=' . $this->product->category_id );
-			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next_page' ) );
-		}
-		echo '<br style="clear: both;" />';
-		?>
-	</div>
-<?php
-	}
-	?>
-
 	<div>
 		<div class="width30 floatleft center">
 
@@ -63,12 +43,12 @@ if (empty ( $this->product )) {
 			<?php // PDF - Print - Email Icon
 			$link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id; ?>
 			<?php echo shopFunctionsF::PdfIcon( $link.'&output=pdf' ); ?>
-			<?php echo shopFunctionsF::PrintIcon($link.'&print=1'); ?>
+			<?php echo shopFunctionsF::PrintIcon($link.'print=1'); ?>
 			<?php echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
 			<br style="clear:both;" />
 			</div>
 
-			<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
+			<h1><?php echo $this->product->product_name ?></h1>
 
 			<?php // Product Short Description
 			if (!empty($this->product->product_s_desc)) { ?>
@@ -78,12 +58,6 @@ if (empty ( $this->product )) {
 				echo $this->product->product_s_desc ?>
 			</p>
 			<?php } // Product Short Description END ?>
-
-			<?php // Ask a question about this product
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
-			echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'ask-a-question')).'<br style="clear:both;" />';
-			// Ask a question about this product END ?>
-
 			<div class="margintop8">
 
 			<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
@@ -118,12 +92,6 @@ if (empty ( $this->product )) {
 					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
 					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
-
-
-					if( $this->showBasePrice ){
-						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->prices);
-						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
-					}
 					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->prices);
 					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->prices);
 					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->prices);
@@ -243,167 +211,21 @@ if (empty ( $this->product )) {
 	</div>
 	<?php } // Product Packaging END ?>
 
-
-
-<?php // Product Files
-					foreach ($this->product->files as $fkey => $file) {
-						if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
-						else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
-
-						/* Show pdf in a new Window, other file types will be offered as download */
-						$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-						$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
-						echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
-					}
-					?>
-
-
-
-	<?php // Related Products
-					if ($this->product->related && !empty($this->product->related)) {
-						foreach ($this->product->related as $rkey => $related) {
-							?>
-							<hr />
-		<h3><?php echo JText::_('VM_RELATED_PRODUCTS_HEADING') ?></h3>
-
-		<table width="100%" align="center">
-			<tr>
-									<td valign="top">
-										<!-- The product name DIV. -->
-										<div style="height:77px; float:left; width: 100%;line-height:14px;">
-										<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
-										<br />
-				</div>
-
-				<!-- The product image DIV. -->
-										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
-											<?php
-												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
-											?>
-										</div>
-
-				<!-- The product price DIV. -->
-				<div style="width: 100%; float: left; text-align: center;">
-											<?php /** @todo Format pricing */ ?>
-											<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
-										</div>
-
-
-
-				<!-- The add to cart DIV. -->
-				<div>
-
-
-										</div>
-				</td>
-			</tr>
-		</table>
-						<?php }
-					}
-				?>
-
-
-
-<?php
-				/* Child categories */
-				if (!empty($this->category->children)) {
-					$iCol = 1;
-					if (empty($this->category->categories_per_row)) {
-						$this->category->categories_per_row = 4;
-					}
-					$cellwidth = intval( 100 / $this->category->categories_per_row );
-					?>
-					<br />
-		<table width="100%" cellspacing="0" cellpadding="0">
-						<?php
-						foreach($this->category->children as $category ) {
-							if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
-								echo "<tr>\n";
-							}
-							?>
-							<td align="center" width="<?php echo $cellwidth ?>%" >
-								<br />
-								<?php //TODO
-								$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
-								//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
-								echo JHTML::link($url, VmImage::getImageByCat($category)->displayImage('',$category->category_name));
-								?>
-								<br />
-			</td>
-
-							<?php
-							// Do we need to close the current row now?
-							if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
-								echo "</tr>\n";
-								$iCol = 1;
-							}
-							else {
-								$iCol++;
-							}
-						}
-						// Do we need a final closing row tag?
-						if ($iCol != 1) {
-							echo "</tr>\n";
-						}
-						?>
-					</table>
-				<?php } ?>
-
-
-
 <table border="0" align="center" style="width: 100%;">
 
 	<tr>
 			<td colspan="2">
 				<!-- List of product reviews -->
-		<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
+		<h4><?php echo JText::_('VM_PRODUCT_ASK_QUESTION') ?>:</h4>
 
 				<?php
-				/** @todo Handle review submission */
-				$alreadycommented = false;
-				foreach($this->product_reviews as $review ) { // Loop through all reviews
-					/* Check if user already commented */
-					if ($review->userid == $this->user->id) $alreadycommented = true;
-					/**
-					 * Available indexes:
-					 *
-					 * $review->userid => The user ID of the comment author
-					 * $review->username => The username of the comment author
-					 * $review->name => The name of the comment author
-					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
-					 * $review->user_rating => The rating; an integer from 1 - 5
-
-					 *
-					 */
-					?>
-					<div><?php echo $review->comment; ?></div>
-					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
-		<br />
-					<?php
-						echo JText::_('VM_RATE_NOM');
-//						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
-//						echo JHTML::image($url, $review->user_rating, array('border' => 0));
-					?>
-					<br />
-					<blockquote><div><?php echo wordwrap($review->comment, 150, "<br/>\n", true ); ?></div></blockquote>
-					<br /><br />
-					<?php
-				}
-				if (count($this->product_reviews) < 1) echo JText::_('VM_NO_REVIEWS')." <br />"; // "There are no reviews for this product"
-				else {
-					/* Show all reviews */
-					if (!JRequest::getBool('showall', false) && count($this->product_reviews) >=5 ) {
-						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS').'<br />');
-					}
-				}
-
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
 						?>
 						<script language="javascript" type="text/javascript">
-						function check_reviewform() {
-							var form = document.getElementById('reviewform');
+						function check_askform() {
+							var form = document.getElementById('askform');
 
 							var ausgewaehlt = false;
 							for (var i=0; i<form.user_rating.length; i++)
@@ -427,57 +249,14 @@ if (empty ( $this->product )) {
 						}
 
 						function refresh_counter() {
-						  var form = document.getElementById('reviewform');
+						  var form = document.getElementById('askform');
 						  form.counter.value= form.comment.value.length;
 						}
 						</script>
 
 		<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
 		<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
-						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
-						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
-			<tr>
-							<?php $url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; ?>
-							<th id="five_stars">
-							<label for="user_rating5"><?php echo JHTML::image($url.'5.gif', JText::_('5_STARS')); ?></label>
-				</th>
-							<th id="four_stars">
-								<label for="user_rating4"><?php echo JHTML::image($url.'4.gif', JText::_('4_STARS')); ?></label>
-				</th>
-							<th id="three_stars">
-								<label for="user_rating3"><?php echo JHTML::image($url.'3.gif', JText::_('3_STARS')); ?></label>
-				</th>
-							<th id="two_stars">
-								<label for="user_rating2"><?php echo JHTML::image($url.'2.gif', JText::_('2_STARS')); ?></label>
-				</th>
-							<th id="one_star">
-								<label for="user_rating1"><?php echo JHTML::image($url.'1.gif', JText::_('1_STARS')); ?></label>
-				</th>
-							<th id="null_stars">
-								<label for="user_rating0"><?php echo JHTML::image($url.'0.gif', JText::_('0_STARS')); ?></label>
-				</th>
-			</tr>
-			<tr>
-							<td headers="five_stars" style="text-align:center;">
-							  <input type="radio" id="user_rating5" name="user_rating" value="5" />
-							</td>
-							<td headers="four_stars" style="text-align:center;">
-								<input type="radio" id="user_rating4" name="user_rating" value="4" />
-							</td>
-							<td headers="three_stars" style="text-align:center;">
-								<input type="radio" id="user_rating3" name="user_rating" value="3" />
-							</td>
-							<td headers="two_stars" style="text-align:center;">
-								<input type="radio" id="user_rating2" name="user_rating" value="2" />
-							</td>
-							<td headers="one_star" style="text-align:center;">
-								<input type="radio" id="user_rating1" name="user_rating" value="1" />
-							</td>
-							<td headers="null_stars" style="text-align:center;">
-								<input type="radio" id="user_rating0" name="user_rating" value="0" />
-							</td>
-			</tr>
-		</table>
+						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="askform" id="askform">
 						<br /><br />
 							<?php
 								$review_comment = JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
@@ -485,7 +264,7 @@ if (empty ( $this->product )) {
 							?><br />
 						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 		<br />
-						<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
+						<input class="button" type="submit" onclick="return( check_askform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
 
 		<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
 						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
@@ -494,7 +273,6 @@ if (empty ( $this->product )) {
 						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
 						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
-						<input type="hidden" name="review_id" value="0" />
 						<input type="hidden" name="task" value="review" />
 					</form>
 					<?php
@@ -511,4 +289,4 @@ if (empty ( $this->product )) {
 </table>
 
 </div>
-<?php } 
+<?php } ?>
