@@ -52,7 +52,7 @@ class VirtuemartViewCoupon extends JView {
 					$_expTime[0] = $_expTime[0] * 7;
 					$_expTime[1] = 'D';
 				}
-				if (!class_exists('DateTime')) {
+				if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 					$_dtArray = getdate(time());
 					if ($_expTime[1] == 'D') {
 						$_dtArray['mday'] += $_expTime[0];

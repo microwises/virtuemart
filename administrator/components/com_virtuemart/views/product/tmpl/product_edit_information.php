@@ -202,7 +202,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <script type="text/javascript">
 var tax_rates = new Array();
 <?php
-if( is_array( $this->taxrates )) {
+if( property_exists($this, 'taxrates') && is_array( $this->taxrates )) {
 	foreach( $this->taxrates as $key => $tax_rate ) {
 		echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
 	}
@@ -214,8 +214,10 @@ function doRound(x, places) {
 
 function getTaxRate() {
 	var selected_value = document.adminForm.product_tax_id.selectedIndex;
-	var parameterVal = document.adminForm.product_tax_id[selected_value].value;
-
+	var parameterVal = -1;
+	if (selected_value >= 0) {
+		parameterVal = document.adminForm.product_tax_id.options[selected_value].value;
+	}
 
 	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
 		return tax_rates[parameterVal];
@@ -263,6 +265,13 @@ function updateDiscountedPrice() {
 		try {
 			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
 			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+			<?php
+				// TODO This one was defined in virtuemart.cfg.php. Cause an error in the JavaScript output
+				// so fixed with a new define here, but where should this come from now???
+				if (!defined('PAYMENT_DISCOUNT_BEFORE')) {
+					define ('PAYMENT_DISCOUNT_BEFORE', 0);
+				}
+			?>
 			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
 			var origPrice = document.adminForm.product_price.value;
 			<?php else : ?>

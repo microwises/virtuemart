@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0">
 					<td style="vertical-align:top;"><br />
 						<?php echo JText::_('VM_PRODUCT_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
+						<div class="jsonSuggestResults" style="width: 322px;">
 						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 						</div>
 					</td>
