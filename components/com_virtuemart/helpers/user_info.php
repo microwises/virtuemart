@@ -102,7 +102,7 @@ class user_info
 		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
 		// VirtueMartModelUserfields::getUserFields() won't work
 
-		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php' );
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		if ($_type == 'ST') {
 			$_prepareUserFields = $_userFieldsModel->getUserFields(
