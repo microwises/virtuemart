@@ -52,9 +52,23 @@ class VirtuemartViewCoupon extends JView {
 					$_expTime[0] = $_expTime[0] * 7;
 					$_expTime[1] = 'D';
 				}
-				$_expDate = new DateTime();
-				$_expDate->add(new DateInterval('P'.$_expTime[0].$_expTime[1]));
-				$coupon->coupon_expiry_date = $_expDate->format("U");
+				if (!class_exists('DateTime')) {
+					$_dtArray = getdate(time());
+					if ($_expTime[1] == 'D') {
+						$_dtArray['mday'] += $_expTime[0];
+					} elseif ($_expTime[1] == 'M') {
+						$_dtArray['mon'] += $_expTime[0];
+					} elseif ($_expTime[1] == 'Y') {
+						$_dtArray['year'] += $_expTime[0];
+					}
+					$coupon->coupon_expiry_date = 
+						  mktime($_dtArray['hours'], $_dtArray['minutes'], $_dtArray['seconds']
+						, $_dtArray['mon'], $_dtArray['mday'], $_dtArray['year']);
+				} else {
+					$_expDate = new DateTime();
+					$_expDate->add(new DateInterval('P'.$_expTime[0].$_expTime[1]));
+					$coupon->coupon_expiry_date = $_expDate->format("U");
+				}
 			} else {
 				JToolBarHelper::title( JText::_('VM_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'vm_coupon_48');
 			}
