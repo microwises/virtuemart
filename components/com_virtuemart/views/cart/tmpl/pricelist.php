@@ -49,7 +49,6 @@ defined('_JEXEC') or die('Restricted access');
 
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
-			echo "product name";
 
 			/* Add the variants */
 			$variant = '';
