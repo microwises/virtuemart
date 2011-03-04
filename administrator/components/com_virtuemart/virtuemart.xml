@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <install type="component" version="1.5.0">
 	<name>VirtueMart</name>
-	<creationDate>May 2009</creationDate>
+	<creationDate>March 2011</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
-	<copyright>	Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights reserved.</copyright>
+	<copyright>	Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version status="alpha">1.5.0</version>
+	<version status="beta">2.0-beta3</version>
 	<description>Online-Shop / Complete E-Commerce system for Joomla 1.5</description>
 
 	<!-- Custom installer -->

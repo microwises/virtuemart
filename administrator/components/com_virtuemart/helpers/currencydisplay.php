@@ -127,6 +127,17 @@ class CurrencyDisplay {
 		}
     }
 
+	/**
+	 * Get the formatted and rounded value for display
+	 * @deprecated Use CurrencyDisplay::getFullValue() instead
+	 * @param fload $nb Amount
+	 * @param integer $decimals r. of decimals
+	 */
+	public function getValue($nb, $decimals='')
+	{
+		return self::getFullValue($nb, $decimals);
+	}
+
     /**
      * Format, Round and Display Value
      * @author Max Milbers
