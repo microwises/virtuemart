@@ -61,12 +61,12 @@ class VirtueMartControllerProductdetails extends JController {
 	}
 
 	/**
-	 * This feature should now just open an email.
-	 * Atm broken.
+	 * Send the ask question email.
+	 * Author Kohl Patrick
 	 */
 	public function mailAskquestion(){
 		/* Create the view */
-		$view = $this->getView('productdetails', 'html');
+		$view = $this->getView('askquestion', 'html');
 		/* add vendor model*/
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
@@ -81,7 +81,10 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 		
-		/* mail askquestion */
+		/* mail asked question 
+		*  TODO use the templating Mail
+		* Author Kohl Patrick
+		*/
 		$mainframe = JFactory::getApplication() ;
 		$user =& JFactory::getUser();
 		if(empty($user->id)){
@@ -102,11 +105,12 @@ class VirtueMartControllerProductdetails extends JController {
 			$mainframe->enqueueMessage( JText::_('MAIL_NOT_SEND_SUCCESSFULLY') );
 		}
 		/* Display it all */
+		$view->setLayout('mailconfirmed');
 		$view->display();
 	}
 	/**
-	 * This feature should now just open an email.
-	 * Atm broken.
+	 *  Ask Question form
+	 * 
 	 */
 	public function askquestion(){
 		/* Create the view */

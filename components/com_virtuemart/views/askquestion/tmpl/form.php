@@ -1,13 +1,11 @@
 <?php
 /**
- *
- * Show the product details page
+ *TODO Improve the CSS , ADD CATCHA ?
+ * Show the form Ask a Question
  *
  * @package	VirtueMart
  * @subpackage
- * @author Max Milbers
- * @author RolandD
- * @todo handle child products
+ * @author Kohl Patrick
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +25,7 @@ if (empty ( $this->product )) {
 	echo JText::_ ( 'VM_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
-<div class="productdetails-view" >
+<div class="productdetails-view" style="margin:20px;">
 	<h4><?php echo JText::_('VM_PRODUCT_ASK_QUESTION')  ?></h4>
 	<div>
 		<div class="width30 floatleft center">
@@ -59,17 +57,6 @@ if (empty ( $this->product )) {
 	</div>
 
 	<div class="horizontal-separator margintop15 marginbottom15"></div>
-
-
-	<?php // Product Description
-	if (!empty($this->product->product_desc)) { ?>
-	<div class="product-description">
-		<?php /** @todo Test if content plugins modify the product description */
-		echo '<span class="bold">'. JText::_('VM_PRODUCT_DESC_TITLE'). '</span><br />';
-		echo $this->product->product_desc; ?>
-	</div>
-	<?php } // Product Description END ?>
-
 <table border="0" align="center" style="width: 100%;">
 
 	<tr>
@@ -110,16 +97,17 @@ if (empty ( $this->product )) {
 						
 					}
 					?>
-				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">
-					<br /><br />
+				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id).'&tmpl=component' ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">
+					 <?php echo JText::_('VM_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  class="required validate-email"/>
+					<br />
 					<?php
 					$ask_comment = JText::sprintf('VM_ASK_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
 					echo $ask_comment;
-					?><br />
+					?>
+					<br />
 					<textarea title="<?php echo $ask_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" OnKeyUp="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 					<br />
 					<input class="button" type="submit" name="submit_ask" title="<?php echo JText::_('VM_ASK_SUBMIT')  ?>" value="<?php echo JText::_('VM_ASK_SUBMIT')  ?>" />
-					<input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  class="required validate-email"/>
 					<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
 						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 					</div>

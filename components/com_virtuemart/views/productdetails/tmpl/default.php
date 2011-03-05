@@ -80,10 +80,10 @@ if (empty ( $this->product )) {
 			<?php } // Product Short Description END ?>
 
 			<?php // Ask a question about this product
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id);
-			echo JHTML::_('link', $url, JText::_('VM_PRODUCT_ENQUIRY_LBL'), array('class' => 'ask-a-question')).'<br style="clear:both;" />';
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
 			// Ask a question about this product END ?>
-
+			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('VM_PRODUCT_ENQUIRY_LBL') ?></a>
+			<br style="clear:both;" />
 			<div class="margintop8">
 
 			<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
