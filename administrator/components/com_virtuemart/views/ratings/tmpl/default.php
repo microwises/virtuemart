@@ -40,6 +40,7 @@ AdminMenuHelper::startAdminArea();
 	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 </div>
 <br clear="all" />
+
 <div style="text-align: left;">
 	<table class="adminlist">
 	<thead>

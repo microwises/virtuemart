@@ -361,7 +361,7 @@ if (empty ( $this->product )) {
 				<?php
 				/** @todo Handle review submission */
 				$alreadycommented = false;
-				$url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
+				$startPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
 				
 				foreach($this->product_reviews as $review ) { // Loop through all reviews
 					/* Check if user already commented */
@@ -376,7 +376,7 @@ if (empty ( $this->product )) {
 					 * $review->user_rating => The rating; an integer from 1 - 5
 					 *
 					 */
-					$ratings = JHTML::image($url.$review->user_rating.'.gif', JText::_($review->user_rating.'_STARS')); 
+					$ratings = JHTML::image($startPath.$review->user_rating.'.gif', JText::_($review->user_rating.'_STARS')); 
 					?>
 					<?php echo $ratings ?> 
 					<div><?php echo $review->comment; ?></div>
@@ -385,8 +385,8 @@ if (empty ( $this->product )) {
 					<br />
 					<?php
 						//echo JText::_('VM_RATE_NOM');
-//						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
-//						echo JHTML::image($url, $review->user_rating, array('border' => 0));
+//						$startPath = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
+//						echo JHTML::image($startPath, $review->user_rating, array('border' => 0));
 				/*	?>
 					<br />
 					<blockquote><div><?php echo wordwrap($review->comment, 150, "<br/>\n", true ); ?></div></blockquote>
@@ -444,45 +444,24 @@ if (empty ( $this->product )) {
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
 						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
 			<tr>
-							<?php $url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; ?>
-							<th id="five_stars">
-							<label for="user_rating5"><?php echo JHTML::image($url.'5.gif', JText::_('5_STARS')); ?></label>
+			<?php $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+			for ($num=$maxrating ; $num>=0; $num--  ) {
+			?>
+				<th id="<?php echo $num ?>_stars">
+					<label for="user_rating<?php echo $num ?>"><?php echo JHTML::image($startPath.$num.'.gif', JText::_($num.'_STARS')); ; ?></label>
 				</th>
-							<th id="four_stars">
-								<label for="user_rating4"><?php echo JHTML::image($url.'4.gif', JText::_('4_STARS')); ?></label>
-				</th>
-							<th id="three_stars">
-								<label for="user_rating3"><?php echo JHTML::image($url.'3.gif', JText::_('3_STARS')); ?></label>
-				</th>
-							<th id="two_stars">
-								<label for="user_rating2"><?php echo JHTML::image($url.'2.gif', JText::_('2_STARS')); ?></label>
-				</th>
-							<th id="one_star">
-								<label for="user_rating1"><?php echo JHTML::image($url.'1.gif', JText::_('1_STARS')); ?></label>
-				</th>
-							<th id="null_stars">
-								<label for="user_rating0"><?php echo JHTML::image($url.'0.gif', JText::_('0_STARS')); ?></label>
-				</th>
+			<?php 
+			} ?>
 			</tr>
 			<tr>
-							<td headers="five_stars" style="text-align:center;">
-							  <input type="radio" id="user_rating5" name="user_rating" value="5" />
+			<?php
+			for ($num=$maxrating ; $num>=0; $num--  ) {
+			?>
+							<td headers="<?php echo $num ?>_stars" style="text-align:center;">
+							  <input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
 							</td>
-							<td headers="four_stars" style="text-align:center;">
-								<input type="radio" id="user_rating4" name="user_rating" value="4" />
-							</td>
-							<td headers="three_stars" style="text-align:center;">
-								<input type="radio" id="user_rating3" name="user_rating" value="3" />
-							</td>
-							<td headers="two_stars" style="text-align:center;">
-								<input type="radio" id="user_rating2" name="user_rating" value="2" />
-							</td>
-							<td headers="one_star" style="text-align:center;">
-								<input type="radio" id="user_rating1" name="user_rating" value="1" />
-							</td>
-							<td headers="null_stars" style="text-align:center;">
-								<input type="radio" id="user_rating0" name="user_rating" value="0" />
-							</td>
+			<?php 
+			} ?>
 			</tr>
 		</table>
 						<br /><br />

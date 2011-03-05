@@ -41,10 +41,7 @@ class VirtuemartViewRatings extends JView {
 		$task = JRequest::getVar('task');
 		//
 		// Figure out maximum rating scale (default is 5 stars)
-		$this->max_rating = VmConfig::get('vm_maximum_rating_scale');
-		if ($this->max_rating == '') {
-		       	$this->max_rating = 5;
-		}
+		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
 
 		switch ($task) {

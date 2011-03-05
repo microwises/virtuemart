@@ -94,7 +94,7 @@ class VirtueMartModelRatings extends JModel {
 			#__vm_product_reviews.published
      			".$this->getRatingsListQuery().$this->getRatingsFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_id');
+     	return $db->loadObjectList();
     }
 
     /**
@@ -230,11 +230,20 @@ class VirtueMartModelRatings extends JModel {
 			$this->setError('PLZ Sign in to rate the product !');
 			return false;
 		}
-		$data['userid'] = $user->id;
-//		$data['userid'] =	time 	user_rating 	review_ok 	review_votes 	published
+		//Check user_rating  
+		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+		if ($data['user_rating'] < 0 ) $data['user_rating'] = 0 ;
+		if ($data['user_rating'] > $maxrating ) $data['user_rating'] = $maxrating ;
+		if ( !$data['review_id'] )  $data['userid'] = $user->id;
+		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+		//set to defaut value not used (prevent hack)
+		$data['review_ok'] = 0 ; 
+		$data['review_votes'] = 0 ;
+		
 
-		/* Check if ratings are auto-published */
+		/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
 		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
+		else $data['published'] = 0;
 
     	// Bind the form fields to the table
 		if (!$ratings_data->bind($data)) {
