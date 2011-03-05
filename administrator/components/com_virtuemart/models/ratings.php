@@ -225,6 +225,12 @@ class VirtueMartModelRatings extends JModel {
 		/* if ($data['time'] == 0) $data['time'] = time(); */
 		/* Timestamps are always kept up to the latest modification */
 		$data['time'] = time();
+		$user =& JFactory::getUser();
+		if(empty($user->id)) {
+			$this->setError('PLZ Sign in to rate the product !');
+			return false;
+		}
+		$data['userid'] = $user->id;
 //		$data['userid'] =	time 	user_rating 	review_ok 	review_votes 	published
 
 		/* Check if ratings are auto-published */

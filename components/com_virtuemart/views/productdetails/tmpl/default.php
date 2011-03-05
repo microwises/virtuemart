@@ -361,6 +361,8 @@ if (empty ( $this->product )) {
 				<?php
 				/** @todo Handle review submission */
 				$alreadycommented = false;
+				$url = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
+				
 				foreach($this->product_reviews as $review ) { // Loop through all reviews
 					/* Check if user already commented */
 					if ($review->userid == $this->user->id) $alreadycommented = true;
@@ -372,31 +374,36 @@ if (empty ( $this->product )) {
 					 * $review->name => The name of the comment author
 					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
 					 * $review->user_rating => The rating; an integer from 1 - 5
-
 					 *
 					 */
+					$ratings = JHTML::image($url.$review->user_rating.'.gif', JText::_($review->user_rating.'_STARS')); 
 					?>
+					<?php echo $ratings ?> 
 					<div><?php echo $review->comment; ?></div>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
-		<br />
+					<br />
+					<br />
 					<?php
-						echo JText::_('VM_RATE_NOM');
+						//echo JText::_('VM_RATE_NOM');
 //						$url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
 //						echo JHTML::image($url, $review->user_rating, array('border' => 0));
-					?>
+				/*	?>
 					<br />
 					<blockquote><div><?php echo wordwrap($review->comment, 150, "<br/>\n", true ); ?></div></blockquote>
 					<br /><br />
-					<?php
+					<?php */
 				}
-				if (count($this->product_reviews) < 1) echo JText::_('VM_NO_REVIEWS')." <br />"; // "There are no reviews for this product"
+				if (count($this->product_reviews) < 1) echo JText::_('VM_NO_REVIEWS'); // "There are no reviews for this product"
 				else {
 					/* Show all reviews */
 					if (!JRequest::getBool('showall', false) && count($this->product_reviews) >=5 ) {
-						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS').'<br />');
+						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS'));
 					}
 				}
-
+				?>
+				<br />
+				<?php
+				
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
