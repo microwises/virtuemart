@@ -26,7 +26,8 @@ JHTML::_( 'behavior.modal' );
 if (empty ( $this->product )) {
 	echo JText::_ ( 'VM_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
-} else { ?>
+	return ;
+}  ?>
 <div class="productdetails-view">
 	<?php // Product Navigation
 	if (VmConfig::get ( 'product_navigation', 1 )) {
@@ -44,7 +45,7 @@ if (empty ( $this->product )) {
 		echo '<br style="clear: both;" />';
 		?>
 	</div>
-<?php
+	<?php
 	}
 	?>
 
@@ -52,7 +53,6 @@ if (empty ( $this->product )) {
 		<div class="width30 floatleft center">
 
 		<?php // Product Image
-		/** @todo make the image popup */
 		echo $this->productImage->displayImage('class="product-image"',$this->product->product_name,1,0, 'class="modal"');
 		?>
 		</div>
@@ -81,7 +81,7 @@ if (empty ( $this->product )) {
 
 			<?php // Ask a question about this product
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
-			// Ask a question about this product END ?>
+			 ?>
 			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('VM_PRODUCT_ENQUIRY_LBL') ?></a>
 			<br style="clear:both;" />
 			<div class="margintop8">
@@ -246,157 +246,147 @@ if (empty ( $this->product )) {
 
 
 <?php // Product Files
-					foreach ($this->product->files as $fkey => $file) {
-						if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
-						else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
+	foreach ($this->product->files as $fkey => $file) {
+		if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
+		else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
 
-						/* Show pdf in a new Window, other file types will be offered as download */
-						$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-						$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
-						echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
-					}
-					?>
+		/* Show pdf in a new Window, other file types will be offered as download */
+		$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
+		$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
+		echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
+	}
+	// Related Products
+	if ($this->product->related && !empty($this->product->related)) {
+		foreach ($this->product->related as $rkey => $related) {
+			?>
+			<hr />
+			<h3><?php echo JText::_('VM_RELATED_PRODUCTS_HEADING') ?></h3>
 
+			<table width="100%" align="center">
+				<tr>
+					<td valign="top">
+						<!-- The product name DIV. -->
+						<div style="height:77px; float:left; width: 100%;line-height:14px;">
+							<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
+							<br />
+						</div>
+						<!-- The product image DIV. -->
+						<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
+								<?php
+								echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
+								?>
+						</div>
+						<!-- The product price DIV. -->
+						<div style="width: 100%; float: left; text-align: center;">
+							<?php /** @todo Format pricing */ ?>
+							<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
+						</div>
+						<!-- The add to cart DIV. -->
+						<div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<?php
+		}
+	}
 
-
-	<?php // Related Products
-					if ($this->product->related && !empty($this->product->related)) {
-						foreach ($this->product->related as $rkey => $related) {
-							?>
-							<hr />
-		<h3><?php echo JText::_('VM_RELATED_PRODUCTS_HEADING') ?></h3>
-
-		<table width="100%" align="center">
-			<tr>
-									<td valign="top">
-										<!-- The product name DIV. -->
-										<div style="height:77px; float:left; width: 100%;line-height:14px;">
-										<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
-										<br />
-				</div>
-
-				<!-- The product image DIV. -->
-										<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
-											<?php
-												echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
-											?>
-										</div>
-
-				<!-- The product price DIV. -->
-				<div style="width: 100%; float: left; text-align: center;">
-											<?php /** @todo Format pricing */ ?>
-											<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
-										</div>
-
-
-
-				<!-- The add to cart DIV. -->
-				<div>
-
-
-										</div>
-				</td>
-			</tr>
-		</table>
-						<?php }
-					}
+	/* Child categories */
+	if (!empty($this->category->children)) {
+			$iCol = 1;
+		if (empty($this->category->categories_per_row)) {
+			$this->category->categories_per_row = 4;
+		}
+		$cellwidth = intval( 100 / $this->category->categories_per_row );
+		?>
+		<br />
+		<table width="100%" cellspacing="0" cellpadding="0">
+			<?php
+			foreach($this->category->children as $category ) {
+				if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
+					echo "<tr>\n";
+				}
 				?>
-
-
-
-<?php
-				/* Child categories */
-				if (!empty($this->category->children)) {
-					$iCol = 1;
-					if (empty($this->category->categories_per_row)) {
-						$this->category->categories_per_row = 4;
-					}
-					$cellwidth = intval( 100 / $this->category->categories_per_row );
+				<td align="center" width="<?php echo $cellwidth ?>%" >
+					<br />
+					<?php //TODO
+					$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
+					//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
+					echo JHTML::link($url, VmImage::getImageByCat($category)->displayImage('',$category->category_name));
 					?>
 					<br />
-		<table width="100%" cellspacing="0" cellpadding="0">
-						<?php
-						foreach($this->category->children as $category ) {
-							if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
-								echo "<tr>\n";
-							}
-							?>
-							<td align="center" width="<?php echo $cellwidth ?>%" >
-								<br />
-								<?php //TODO
-								$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
-								//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
-								echo JHTML::link($url, VmImage::getImageByCat($category)->displayImage('',$category->category_name));
-								?>
-								<br />
-			</td>
-
-							<?php
-							// Do we need to close the current row now?
-							if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
-								echo "</tr>\n";
-								$iCol = 1;
-							}
-							else {
-								$iCol++;
-							}
-						}
-						// Do we need a final closing row tag?
-						if ($iCol != 1) {
-							echo "</tr>\n";
-						}
-						?>
-					</table>
-				<?php } ?>
-
-
-
-<table border="0" align="center" style="width: 100%;">
-
-	<tr>
-			<td colspan="2">
-				<!-- List of product reviews -->
-		<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
-
+				</td>
 				<?php
-				/** @todo Handle review submission */
+				// Do we need to close the current row now?
+				if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
+					echo "</tr>\n";
+					$iCol = 1;
+				} else {
+				$iCol++;
+				}
+			}
+			// Do we need a final closing row tag?
+			if ($iCol != 1) {
+				echo "</tr>\n";
+			}
+			?>
+		</table>
+	<?php
+	} 
+
+	/**
+	* Reviews 
+	* Author max Milbers ?
+	* Author Kohl Patrick
+	* Available indexes:
+	* $review->userid => The user ID of the comment author
+	* $review->username => The username of the comment author
+	* $review->name => The name of the comment author
+	* $review->time => The UNIX timestamp of the comment ("when" it was posted)
+	* $review->user_rating => The rating; an integer from 1 - 5
+	*
+	*/
+	if ( VmConfig::get('allow_reviews') ){
+		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+		$ratingsShow = VmConfig::get('vm_num_ratings_show',2);// TODO add  vm_num_ratings_show in vmConfig
+		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
+		$stars = array();
+		$showall = JRequest::getBool('showall', false);
+		for ($num=0 ; $num <= $maxrating; $num++  ) {
+			$title = (JText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
+			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
+		}
+		
+		?>
+		<table border="0" align="center" style="width: 100%;">
+			<tr>
+				<td colspan="2">
+				<!-- List of product reviews -->
+				<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
+				<?php
 				$alreadycommented = false;
-				$startPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
 				
+				$i=0 ;
 				foreach($this->product_reviews as $review ) { // Loop through all reviews
 					/* Check if user already commented */
-					if ($review->userid == $this->user->id) $alreadycommented = true;
-					/**
-					 * Available indexes:
-					 *
-					 * $review->userid => The user ID of the comment author
-					 * $review->username => The username of the comment author
-					 * $review->name => The name of the comment author
-					 * $review->time => The UNIX timestamp of the comment ("when" it was posted)
-					 * $review->user_rating => The rating; an integer from 1 - 5
-					 *
-					 */
-					$ratings = JHTML::image($startPath.$review->user_rating.'.gif', JText::_($review->user_rating.'_STARS')); 
-					?>
-					<?php echo $ratings ?> 
+					if ($review->userid == $this->user->id) {
+					$alreadycommented = true;
+					}
+					
+					echo $stars[ $review->user_rating ];
+					?> 
 					<div><?php echo $review->comment; ?></div>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
 					<br />
 					<br />
 					<?php
-						//echo JText::_('VM_RATE_NOM');
-//						$startPath = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$review->user_rating.'.gif';
-//						echo JHTML::image($startPath, $review->user_rating, array('border' => 0));
-				/*	?>
-					<br />
-					<blockquote><div><?php echo wordwrap($review->comment, 150, "<br/>\n", true ); ?></div></blockquote>
-					<br /><br />
-					<?php */
+					$i++ ;
+					if ( $i == $ratingsShow && !$showall) break;
 				}
 				if (count($this->product_reviews) < 1) echo JText::_('VM_NO_REVIEWS'); // "There are no reviews for this product"
 				else {
 					/* Show all reviews */
-					if (!JRequest::getBool('showall', false) && count($this->product_reviews) >=5 ) {
+					if (!$showall && count($this->product_reviews) >=$ratingsShow ) {
 						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS'));
 					}
 				}
@@ -407,94 +397,93 @@ if (empty ( $this->product )) {
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
-						?>
-						<script language="javascript" type="text/javascript">
-						function check_reviewform() {
+						$reviewJavascript = "
+							function check_reviewform() {
 							var form = document.getElementById('reviewform');
 
 							var ausgewaehlt = false;
 							for (var i=0; i<form.user_rating.length; i++)
-							   if (form.user_rating[i].checked)
+								if (form.user_rating[i].checked)
 								  ausgewaehlt = true;
-							if (!ausgewaehlt)  {
-							  alert('<?php echo JText::_('VM_REVIEW_ERR_RATE',false)  ?>');
-							  return false;
+								if (!ausgewaehlt)  {
+								  alert('".JText::_('VM_REVIEW_ERR_RATE',false)."');
+								  return false;
+								}
+								else if (form.comment.value.length < ". VmConfig::get('vm_reviews_minimum_comment_length', 100).") {
+									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('vm_reviews_minimum_comment_length', 100))."');
+									return false;
+								}
+								else if (form.comment.value.length > ". VmConfig::get('vm_reviews_maximum_comment_length', 2000).") {
+									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('vm_reviews_maximum_comment_length', 2000))."');
+									return false;
+								}
+								else {
+									return true;
+								}
 							}
-							else if (form.comment.value.length < <?php echo VmConfig::get('vm_reviews_minimum_comment_length', 100); ?>) {
-								alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('vm_reviews_minimum_comment_length', 100)); ?>');
-							  return false;
-							}
-							else if (form.comment.value.length > <?php echo VmConfig::get('vm_reviews_maximum_comment_length', 2000); ?>) {
-								alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('vm_reviews_maximum_comment_length', 2000)); ?>');
-							  return false;
-							}
-							else {
-							  return true;
-							}
-						}
 
 						function refresh_counter() {
-						  var form = document.getElementById('reviewform');
-						  form.counter.value= form.comment.value.length;
-						}
-						</script>
+							var form = document.getElementById('reviewform');
+							form.counter.value= form.comment.value.length;
+						}";
+						$document = &JFactory::getDocument();
+						$document->addScriptDeclaration($reviewJavascript);
+						?>
 
-		<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
-		<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
+						<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
+						<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
-						<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
-			<tr>
-			<?php $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-			for ($num=$maxrating ; $num>=0; $num--  ) {
-			?>
-				<th id="<?php echo $num ?>_stars">
-					<label for="user_rating<?php echo $num ?>"><?php echo JHTML::image($startPath.$num.'.gif', JText::_($num.'_STARS')); ; ?></label>
-				</th>
-			<?php 
-			} ?>
-			</tr>
-			<tr>
-			<?php
-			for ($num=$maxrating ; $num>=0; $num--  ) {
-			?>
-							<td headers="<?php echo $num ?>_stars" style="text-align:center;">
-							  <input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
-							</td>
-			<?php 
-			} ?>
-			</tr>
-		</table>
-						<br /><br />
+							<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
+								<tr>
+								<?php 
+								for ($num=$maxrating ; $num>=0; $num--  ) {
+									?>
+										<th id="<?php echo $num ?>_stars">
+											<label for="user_rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
+										</th>
+									<?php 
+								} ?>
+								</tr>
+								<tr>
+								<?php
+								for ($num=$maxrating ; $num>=0; $num--  ) { ?>
+									<td headers="<?php echo $num ?>_stars" style="text-align:center;">
+										<input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
+									</td>
+								<?php 
+								} ?>
+								</tr>
+							</table>
+							<br /><br />
 							<?php
-								$review_comment = JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
-								echo $review_comment;
-							?><br />
-						<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
-		<br />
-						<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
-
-		<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
-						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
-						</div>
-
-						<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
-						<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
-						<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
-						<input type="hidden" name="review_id" value="0" />
-						<input type="hidden" name="task" value="review" />
-					</form>
-					<?php
+							echo JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
+							?>
+							<br />
+							<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="100"></textarea>
+							<br />
+							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
+							<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
+								<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
+							</div>
+							<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
+							<input type="hidden" name="option" value="com_virtuemart" />
+							<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
+							<input type="hidden" name="review_id" value="0" />
+							<input type="hidden" name="task" value="review" />
+						</form>
+						<?php
 					}
 					else {
+						echo '<strong>'.JText::_('Dear ').$this->user->name.',</strong><br />' ;
 						echo JText::_('VM_REVIEW_ALREADYDONE');
 					}
 				}
 				else echo JText::_('VM_REVIEW_LOGIN'); // Login to write a review!
 				?>
-			</td>
-	</tr>
-
-</table>
-
+				</td>
+			</tr>
+		</table>
+<?php 
+	} ?>
 </div>
-<?php } 
+ 

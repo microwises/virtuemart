@@ -78,6 +78,11 @@ class VirtueMartViewProductdetails extends JView {
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($product_id);
 
+		if(empty($product)){
+			self::showLastCategory($tpl);
+			return;
+		}
+
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
@@ -87,10 +92,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		$this->assignRef('product', $product);
 
-		if(empty($product)){
-			self::showLastCategory($tpl);
-			return;
-		}
+
 
 		$productImage = VmImage::getImageByProduct($product);
 		$this->assignRef('productImage', $productImage);
