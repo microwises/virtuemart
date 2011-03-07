@@ -68,11 +68,11 @@ class VirtueMartModelWaitingList extends JModel {
 
 			foreach ($waiting_users as $key => $waiting_user) {
 				/* Lets make the e-mail up from the info we have */
-				$notice_subject = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
+				$notice_subject = JText::sprintf('PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
 
 				/* Now get the url information */
 				$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
-				$notice_body = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
+				$notice_body = JText::sprintf('PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
 
 				/* Get the mailer start */
 				$mailer = shopFunctions::loadMailer();
