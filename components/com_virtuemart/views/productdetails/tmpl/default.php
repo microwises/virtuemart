@@ -143,7 +143,7 @@ if (empty ( $this->product )) {
 			<?php // Add To Cart Button
 			if (VmConfig::get('use_as_catalogue') != '1') { ?>
 			<div class="addtocart-area">
-				<form  method="post" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
+				<form  method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
 
 					<?php // Product Variants Drop Down Box
 					$variantExist=false;
@@ -179,8 +179,8 @@ if (empty ( $this->product )) {
 						<input type="text" class="quantity-input" id="quantity<?php echo $this->product->product_id;?>" name="quantity[]" value="1" />
 					</span>
 					<span class="quantity-controls">
-						<input type="button" class="quantity-controls quantity-plus" onClick="add(<?php echo $this->product->product_id;?>); return false;" />
-						<input type="button" class="quantity-controls quantity-minus" onClick="minus(<?php echo $this->product->product_id;?>); return false;" />
+						<input type="button" class="quantity-controls quantity-plus" />
+						<input type="button" class="quantity-controls quantity-minus" />
 					</span>
 					<?php // Display the quantity box END ?>
 

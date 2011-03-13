@@ -1,106 +1,118 @@
 
+(function($) {
+	$.fn.product = function(options) {
+		
+		this.each(function(){
+		var cart = $(this),
+			addtocart = cart.find("[name='addtocart']"),
+			plus   = cart.find('.quantity-plus'),
+			minus  = cart.find('.quantity-minus'),
+			select = cart.find('select'),
+			product_id = cart.attr('id').substring(16),
+			quantity = cart.find('#quantity'+product_id);
+			addtocart.bind('click',function(e) { 
+				e.preventDefault();
+				sendtocart(cart);
+			});
+			plus.click(function() {
+				currentVal = parseInt(quantity.val());
+				if (currentVal != NaN) {
+					quantity.val(currentVal + 1);
+				}
+			});
+
+			minus.click(function() {
+				currentVal = parseInt(quantity.val());
+				if (currentVal != NaN && currentVal>0) {
+					quantity.val(currentVal - 1);
+				}
+			});
+			select.change(function(e) { 
+				e.preventDefault();
+				setproducttype(cart,product_id);
+			});
+		});
+
+			function sendtocart(form){
+
+			var datas = $(form).serialize();
+		//	$.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
+			$.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
+			
+			function(datas, textStatus) {
+
+				if(datas!=0){
+					var value = $(form).find("[name='quantity[]']").val() ;
+					var txt = value+" "+$(form).find(".pname").val()+' '+vmCartText;
+					$("#productCartModule").html(datas+"<div>"+txt+"</div>");
+					$.facebox({ text: datas+"<H4>"+txt+"</H4>",
+						closeImage : closeImage,
+						loadingImage : loadingImage,
+						faceboxHtml : faceboxHtml
+						}, 'my-groovy-style');
+				} else {
+					$.facebox({ text: vmCartError,
+					closeImage : closeImage,
+					loadingImage : loadingImage,
+					faceboxHtml : faceboxHtml
+					}, 'my-groovy-style');
+				}
+			});
+			return false;
+		};
+
+		function setproducttype(form,id){
+
+			var datas = $(form).serialize();
+			$("#productPrice"+id).fadeTo("slow", 0.33);
+			$.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
+			
+				function(datas, textStatus) {
+					var pid= '';
+					$("#productPrice"+id).fadeTo("slow", 1);
+		//	toggle the div Prices
+					for(key in datas) {
+						var value = datas[key];
+						pid= ("#productPrice"+id+" div .Price"+key);
+						togglePriceVisibility(value,pid);
+					}
+				});
+			return false; // prevent to reload the page
+		};
+
+		function togglePriceVisibility(newPrice,spanProduct){
+			span = $(spanProduct);
+			if(newPrice!=0){
+				span.show();
+				span.html(newPrice);
+			} else {
+				span.html(0);
+				span.hide();
+			}
+		}
+
+
+
+	}
+
+
+})(jQuery);
 
 jQuery(document).ready(function() {
+	jQuery(".product").product();
 
-		//jQuery('element').unbind('click', myhandler).bind('click',myhandler); 
-		//jQuery('#foo').bind('click', function()
-	jQuery("[name='addtocart']").bind('click',function(e) { 
-		e.preventDefault();
-		sendtocart(jQuery(this).parents("form"));
-	});
-	jQuery("[name='setproducttype']").click(function(e) { 
-		e.preventDefault();
-		setproducttype(jQuery(this).parents("form"),jQuery(this).attr('id'));
-	});
-	
-	
-	jQuery("form[id^=addtocartproduct]").find('select').change(function(e) { 
-		e.preventDefault();
-		str = jQuery(this).parents("form").attr('id');
-		str = str.substring(16);
-		setproducttype(jQuery(this).parents("form"),str);
-	});
-	//Patrick, why is this here? I outcommented it and add to cart is working in both views
+//Patrick, why is this here? 
+// Patrick Kohl : this is the code to update minicart.php in module>>#productCartModule or in slimbox
+// whe have no over place to see if cart is update as when you click the button [  addtocart ]
 //	jQuery.ajax({
 //	url: 'index.php?option=com_virtuemart&view=cart&format=raw',
 //	success: function(datas) {
-//		jQuery("#vmCartModule").html(datas);
+//		jQuery("#productCartModule").html(datas);
 //		}
 //	});
 
 });
+
+
+
 jQuery.noConflict();
-
-function sendtocart(form){
-
-	var datas = jQuery(form).serialize();
-//	jQuery.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
-	jQuery.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
-	
-	function(datas, textStatus) {
-
-		if(datas!=0){
-			var value = jQuery(form).find("[name='quantity[]']").val() ;
-			var txt = value+" "+jQuery(form).find(".pname").val()+vmCartText;
-			jQuery("#vmCartModule").html(datas+"<div>"+txt+"</div>");
-			jQuery.facebox.settings.closeImage = closeImage ;
-			jQuery.facebox.settings.loadingImage = loadingImage;
-			jQuery.facebox.settings.faceboxHtml = faceboxHtml;
-	
-			jQuery.facebox({ text: datas+"<H4>"+txt+"</H4>",}, 'my-groovy-style');
-		} else {
-			alert('Product not added to cart, may out of stock ');
-		}
-//		alert(vmCartText);
-/*			if(datas==1){
-				alert(datas);
-			}else{
-				alert('Product not added to cart, may out of stock ');
-			}*/
-	});
-	return false;
-};
-
-function setproducttype(form,id){
-
-	var datas = jQuery(form).serialize();
-	jQuery("#productPrice"+id).fadeTo("slow", 0.33);
-	jQuery.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
-	
-		function(datas, textStatus) {
-			var pid= '';
-			jQuery("#productPrice"+id).fadeTo("slow", 1);
-//	toggle the div Prices
-			for(key in datas) {
-				var value = datas[key];
-				pid= ("#productPrice"+id+" div .Price"+key);
-				togglePriceVisibility(value,pid);
-			}
-		});
-	return false; // prevent to reload the page
-};
-
-function togglePriceVisibility(newPrice,spanProduct){
-	span = jQuery(spanProduct);
-	if(newPrice!=0){
-		span.show();
-		span.html(newPrice);
-	} else {
-		span.html(0);
-		span.hide();
-	}
-}
-
-function add(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN) {
-		jQuery('#quantity'+nr).val(currentVal + 1);
-	}
-};
-
-function minus(nr) {
-	var currentVal = parseInt(jQuery('#quantity'+nr).val());
-	if (currentVal != NaN && currentVal>0) {
-		jQuery('#quantity'+nr).val(currentVal - 1);
-	}
-};

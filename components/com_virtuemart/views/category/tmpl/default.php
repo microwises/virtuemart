@@ -176,7 +176,7 @@ foreach ($this->products as $product) {
 
 
 	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-		<form  method="post" id="addtocartproduct<?php echo $product->product_id ?>">
+		<form  method="post" class="product" id="addtocartproduct<?php echo $product->product_id ?>">
 		<div style="text-align: center;">
 			<?php
 				$variantExist=false;
@@ -213,15 +213,18 @@ foreach ($this->products as $product) {
 
 				/* Display the quantity box */
 				?>
-				<label for="quantity<?php echo $product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label>
-				<input type="text" class="inputboxquantity" size="4" id="quantity<?php echo $product->product_id;?>" name="quantity[]" value="1" />
-				<input type="button" class="quantity_box_button quantity_box_button_up" onClick="add(<?php echo $product->product_id;?>); return false;" />
-				<input type="button" class="quantity_box_button quantity_box_button_down" onClick="minus(<?php echo $product->product_id;?>); return false;" />
-				<?php
+					<span class="quantity-box">
+						<input type="text" class="quantity-input" id="quantity<?php echo $product->product_id;?>" name="quantity[]" value="1" />
+					</span>
+					<span class="quantity-controls">
+						<input type="button" class="quantity-controls quantity-plus" />
+						<input type="button" class="quantity-controls quantity-minus" />
+					</span>
+					<?php
 
 				/* Add the button */
 				$button_lbl = JText::_('VM_CART_ADD_TO');
-				$button_cls = ''; //$button_cls = 'addtocart_button';
+				$button_cls = 'addtocart';
 				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
 					$button_lbl = JText::_('VM_CART_NOTIFY');
 					$button_cls = 'notify_button';
