@@ -190,9 +190,15 @@ foreach ($this->products as $product) {
 									}
 									$options[] = JHTML::_('select.option', $name, $name);
 								}
-					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $product->product_id.$variant_name).'<br />';
-//																				genericlist   ,$arr     , $name               , $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false )
-//					if (!empty($options)) echo $variant_name.' '.JHTML::_('select.genericlist', $options, $variant_name, null,'value','text',NULL,$product->product_id).'<br />';
+								#
+				if (!empty($options)) {
+					// genericlist have ID and whe want only class ( future use in jQuery, may be)
+					$html    = '<select name="'. $variant_name .'" class="variant">';
+					$html    .= JHTMLSelect::Options( $options, 'value', 'text', NULL, false );
+					$html    .= '</select>';
+					echo $variant_name.' '.$html;
+				}
+
 				}
 				?>
 				<br style="clear: both;" />
@@ -214,7 +220,7 @@ foreach ($this->products as $product) {
 				/* Display the quantity box */
 				?>
 					<span class="quantity-box">
-						<input type="text" class="quantity-input" id="quantity<?php echo $product->product_id;?>" name="quantity[]" value="1" />
+						<input type="text" class="quantity-input" name="quantity[]" value="1" />
 					</span>
 					<span class="quantity-controls">
 						<input type="button" class="quantity-controls quantity-plus" />

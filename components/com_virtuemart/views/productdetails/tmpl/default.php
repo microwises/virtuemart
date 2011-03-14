@@ -159,7 +159,11 @@ if (empty ( $this->product )) {
 							$options[] = JHTML::_('select.option', $name, $name);
 						}
 						if (!empty($options)) {
-						echo '<span class="variant-name">'.$variant_name.'</span> <span class="variant-dropdown">'.JHTML::_('select.genericlist', $options, $this->product->product_id.$variant_name).'</span><br style="clear:left;" />';
+							// genericlist have ID and whe want only class ( future use in jQuery, may be)
+							$html    = '<select name="'. $variant_name .'" class="variant">';
+							$html    .= JHTMLSelect::Options( $options, 'value', 'text', NULL, false );
+							$html    .= '</select>';
+						echo '<span class="variant-name">'.$variant_name.'</span> <span class="variant-dropdown">'.$html.'</span><br style="clear:left;" />';
 						}
 					} // Product Variants Drop Down Box END ?>
 
@@ -176,7 +180,7 @@ if (empty ( $this->product )) {
 					<?php // Display the quantity box ?>
 					<!-- <label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label> -->
 					<span class="quantity-box">
-						<input type="text" class="quantity-input" id="quantity<?php echo $this->product->product_id;?>" name="quantity[]" value="1" />
+						<input type="text" class="quantity-input" name="quantity[]" value="1" />
 					</span>
 					<span class="quantity-controls">
 						<input type="button" class="quantity-controls quantity-plus" />

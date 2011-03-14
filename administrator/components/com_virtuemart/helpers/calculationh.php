@@ -970,7 +970,7 @@ class calculationHelper {
 		$modificatorSum=0.0;
 		$max=array();
 		foreach ($variants as $variant_name => $variant) {
-			$value = JRequest::getVar($product_id.$variant_name,0);
+			$value = JRequest::getVar($variant_name,0);
 //			echo '<br />The Value is now  <pre>'.print_r($value).'</pre>';
 			if(strpos($value,'(')){
 
