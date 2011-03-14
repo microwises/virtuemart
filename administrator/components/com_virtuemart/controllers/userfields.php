@@ -103,7 +103,7 @@ class VirtuemartControllerUserfields extends JController {
 		$model =& $this->getModel('userfields');
 
 		if ($id = $model->store()) {
-			$msg = JText::_('Userfield saved!');
+			$msg = JText::_('VM_USERFIELD_SAVED');
 		} else {
 			$msg = $model->getError();
 		}
@@ -123,9 +123,9 @@ class VirtuemartControllerUserfields extends JController {
 	{
 		$model = $this->getModel('userfields');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more userfields could not be deleted!');
+			$msg = JText::_('VM_ERROR__USERFIELDS_COULD_NOT_BE_DELETED');
 		} else {
-			$msg = JText::_( 'Userfield(s) Deleted!');
+			$msg = JText::_( 'VM_USERFIELD_S_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=userfields', $msg);
@@ -284,7 +284,7 @@ class VirtuemartControllerUserfields extends JController {
 		JArrayHelper::toInteger($id);
 
 		if (count( $id ) < 1) {
-			JError::raiseError(500, JText::_( 'Select an item to unpublish' ) );
+			JError::raiseError(500, JText::_('VM_SELECT_ITEM_TO_UNPUBLISH' ) );
 		}
 
 		$model = $this->getModel('userfields');

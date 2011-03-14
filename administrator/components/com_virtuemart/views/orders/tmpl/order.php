@@ -261,11 +261,11 @@ JPluginHelper::importPlugin('vmshipper');
 			<tr valign="top" style="display: none; width: 100%" id="editItem_<?php echo $item->order_item_id; ?>">
 				<td>
 					<a href="#" onClick="javascript:resetForm(<?php echo $item->order_item_id; ?>);"><?php
-						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('Cancel'));
+						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'));
 					?></a>
 					<a href="#" onClick="javascript:submitForm('updateOrderItem');">
 						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('Save'));
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'));
 					?></a>
 				</td>
 				<td>
@@ -336,14 +336,14 @@ JPluginHelper::importPlugin('vmshipper');
 						&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:submitForm('updateOrderItemStatus');">
 						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('Save'))
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'))
 								. '&nbsp;'
-								. JText::_('Save');
+								. JText::_('VM_SAVE');
 						?></a>&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:resetForm(0);"><?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('Cancel'))
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'))
 							. '&nbsp;'
-							. JText::_('Cancel');
+							. JText::_('VM_CANCEL');
 						?></a>
 					</td>
 			</tr>

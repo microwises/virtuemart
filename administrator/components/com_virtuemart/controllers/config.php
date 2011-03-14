@@ -147,10 +147,10 @@ class VirtuemartControllerConfig extends JController {
 	{
 		$model = $this->getModel('config');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more configs could not be deleted!');
+			$msg = JText::_('VM_ERROR__CONFIGS_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'Configs Deleted!');
+			$msg = JText::_('VM_CONFIGS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=config', $msg);

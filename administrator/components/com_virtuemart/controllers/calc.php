@@ -97,7 +97,7 @@ class VirtuemartControllerCalc extends JController
 	 */
 	public function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
+		$msg = JText::_('VM_OPERATION_CANCELED');
 		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
 	}
 
@@ -147,7 +147,7 @@ class VirtuemartControllerCalc extends JController
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('Select an item to delete');
+			$msg = JText::_('VM_SELECT_ITEM_TO_DELETE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=calc', $msg, 'error');
 			return;
 		}
@@ -227,7 +227,7 @@ class VirtuemartControllerCalc extends JController
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('Select an item to toggle');
+			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=calc', $msg, 'error');
 		}
 
@@ -263,7 +263,7 @@ class VirtuemartControllerCalc extends JController
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('Select an item to toggle');
+			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=calc', $msg, 'error');
 		}
 
@@ -299,7 +299,7 @@ class VirtuemartControllerCalc extends JController
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('No Items Selected') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -307,7 +307,7 @@ class VirtuemartControllerCalc extends JController
 		$model = $this->getModel('calc');
 
 		if ($model->orderCalc($id, -1)) {
-			$msg = JText::_( 'Item Moved Up' );
+			$msg = JText::_('VM_ITEM_MOVED_UP' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -334,7 +334,7 @@ class VirtuemartControllerCalc extends JController
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('No Items Selected') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -342,7 +342,7 @@ class VirtuemartControllerCalc extends JController
 		$model = $this->getModel('calc');
 
 		if ($model->orderCalc($id, 1)) {
-			$msg = JText::_( 'Item Moved Down' );
+			$msg = JText::_('VM_ITEM_MOVED_DOWN' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -365,7 +365,7 @@ class VirtuemartControllerCalc extends JController
 		$model = $this->getModel('calc');
 
 		if ($model->setOrder($cid)) {
-			$msg = JText::_( 'New ordering saved' );
+			$msg = JText::_('VM_NEW_ORDERING_SAVED' );
 		} else {
 			$msg = $model->getError();
 		}

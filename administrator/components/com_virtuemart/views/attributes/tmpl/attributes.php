@@ -31,8 +31,8 @@ $option = JRequest::getWord('option');
 			<td align="left" width="100%">
 			<?php echo JText::_('VM_FILTER') ?>:
 				<input type="text" value="<?php echo JRequest::getVar('filter_attributes'); ?>" name="filter_attributes" size="25" />
-				<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-				<button onclick="document.adminForm.filter_attributes.value='';"><?php echo JText::_('Reset'); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
+				<button onclick="document.adminForm.filter_attributes.value='';"><?php echo JText::_('VM_RESET'); ?></button>
 			</td>
 		</tr>
 	</table>

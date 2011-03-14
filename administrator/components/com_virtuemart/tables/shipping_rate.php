@@ -74,7 +74,7 @@ class TableShipping_Rate extends JTable {
 	function check()
 	{
         if (!$this->shipping_rate_name) {
-			$this->setError(JText::_('Shipping Rate records must contain a rate name.'));
+			$this->setError(JText::_('VM_SHIPPING_RATE_RECORDS_MUST_CONTAIN_RATE_NAME'));
 			return false;
 		}
 
@@ -86,7 +86,7 @@ class TableShipping_Rate extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given shipping rate name already exists.'));
+				$this->setError(JText::_('VM_GIVEN_SHIPPING_RATE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

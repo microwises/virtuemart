@@ -533,7 +533,7 @@ class VirtueMartModelUserfields extends JModel {
 	 *     <thead>
 	 *       <tr>
 	 *         <td class="key" style="text-align: center;"  colspan="2">
-	 *            <?php echo JText::_('Table Header') ?>
+	 *            <?php echo JText::_('VM_TABLE_HEADER') ?>
 	 *         </td>
 	 *       </tr>
 	 *     </thead>

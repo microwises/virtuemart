@@ -50,12 +50,12 @@ class TableUsergroups extends JTable {
 	function check($nrOfValues)
 	{
 		if (!$this->group_name) {
-			$this->setError(JText::_('The permission group must have a name.'));
+			$this->setError(JText::_('VM_PERMISSION_GROUP_MUST_HAVE_NAME'));
 			return false;
 		}
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			$this->setError(JText::_('The name of the permission group contains invalid characters'));
+			$this->setError(JText::_('VM_NAME_OF_PERMISSION_GROUP_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 

@@ -60,7 +60,7 @@ class TableModule extends JTable
 	function check() 
 	{
     if (!$this->module_name) {
-			$this->setError(JText::_('Module records must have a name.'));
+			$this->setError(JText::_('VM_MODULE_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} 
 		

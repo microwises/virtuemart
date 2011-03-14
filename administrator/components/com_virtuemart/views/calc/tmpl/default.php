@@ -30,7 +30,7 @@ $j15 = VmConfig::isJ15();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_( '#' ); ?>
+				<?php echo JText::_('VM_#' ); ?>
 			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
@@ -148,12 +148,12 @@ $j15 = VmConfig::isJ15();
 					<?php echo JText::_($row->calcShoppersList); ?>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>

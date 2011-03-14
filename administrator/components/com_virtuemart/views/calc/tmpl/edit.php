@@ -152,7 +152,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Visible for shopper'); ?>:
+					<?php echo JText::_('VM_VISIBLE_FOR_SHOPPER'); ?>:
 				</label>
 			</td>
 			<td>
@@ -164,7 +164,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Visible for vendor'); ?>:
+					<?php echo JText::_('VM_VISIBLE_FOR_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>
@@ -176,7 +176,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('start Date'); ?>:
+					<?php echo JText::_('VM_START_DATE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -189,7 +189,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('end Date'); ?>:
+					<?php echo JText::_('VM_END_DATE'); ?>:
 				</label>
 			</td>
 			<td>

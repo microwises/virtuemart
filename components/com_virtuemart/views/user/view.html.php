@@ -85,7 +85,7 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='edit'){
 			if($this->_model->_id==0 && $this->_cuid==0){
-				$button_lbl = JText::_('Register');
+				$button_lbl = JText::_('VM_REGISTER');
 			} else {
 				$button_lbl = JText::_('Save');
 			}
@@ -487,12 +487,12 @@ class VirtuemartViewUser extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_( 'Published' ) : JText::_( 'Unpublished' );
-			$action = $field ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
+			$alt 	= $field ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED' );
+			$action = $field ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_( 'Enabled' ) : JText::_( 'Disabled' );
-			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
+			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
+			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
 		}
 
 		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'

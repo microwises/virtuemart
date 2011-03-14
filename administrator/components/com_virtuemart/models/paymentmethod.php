@@ -294,8 +294,8 @@ class VirtueMartModelPaymentmethod extends JModel
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
 		$task 	= $row->$variable ? 'unpublish' : 'publish';
-		$alt 	= $row->$variable ? JText::_( 'Published' ) : JText::_( 'Unpublished' );
-		$action = $row->$variable ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
+		$alt 	= $row->$variable ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED' );
+		$action = $row->$variable ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
 
 		$href = '
 		<a title="'. $action .'">

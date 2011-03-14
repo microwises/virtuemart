@@ -104,7 +104,7 @@ class VirtuemartControllerCoupon extends JController {
 		if (($_id = $model->store()) === false) {
 			$msg = JText::_($model->getError());
 		} else {
-			$msg = JText::_('Coupon saved!');
+			$msg = JText::_('VM_COUPON_SAVED');
 		}
 
 		$_redir = 'index.php?option=com_virtuemart&view=coupon';
@@ -125,10 +125,10 @@ class VirtuemartControllerCoupon extends JController {
 	{
 		$model = $this->getModel('coupon');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more coupons could not be deleted!');
+			$msg = JText::_('VM_ERROR__COUPONS_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'Coupons Deleted!');
+			$msg = JText::_('VM_COUPONS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=coupon', $msg);

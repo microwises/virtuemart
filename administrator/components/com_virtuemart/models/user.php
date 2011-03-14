@@ -379,7 +379,7 @@ class VirtueMartModelUser extends JModel {
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 				if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
-					JError::raiseError( 403, JText::_( 'Access Forbidden' ));
+					JError::raiseError( 403, JText::_('VM_ACCESS_FORBIDDEN' ));
 					return;
 				}
 				$authorize	=& JFactory::getACL();
@@ -440,7 +440,7 @@ class VirtueMartModelUser extends JModel {
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
 				$this->setError('Was not able to save the virtuemart user data');
-				JError::raiseWarning('', JText::_( 'used RaiseWarning: Was not able to save the virtuemart user data'));
+				JError::raiseWarning('', JText::_('VM_USED_RAISEWARNING_WAS_NOT_ABLE_TO_SAVE_VIRTUEMART_USER_DATA'));
 			}
 
 			// Send registration confirmation mail
@@ -457,7 +457,7 @@ class VirtueMartModelUser extends JModel {
 					$message = JText::_( 'REG_COMPLETE' );
 				}
 			} else {
-				$message = JText::_( 'User data stored' );	//TODO write right keystring
+				$message = JText::_('VM_USER_DATA_STORED' );	//TODO write right keystring
 			}
 
 			return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
@@ -818,7 +818,7 @@ class VirtueMartModelUser extends JModel {
 	 	$_missingUsers = $this->validateUsers($id);
 	 	$id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
 	 	foreach ($_missingUsers as $_uid => $_username) {
-	 		JError::raiseWarning(500, JText::_( 'User '. $_username . ' has an incomplete profile') );
+	 		JError::raiseWarning(500, JText::sprintf( 'VM_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
 	 	}
 	 	if (count($id) > 0)
 	 	{

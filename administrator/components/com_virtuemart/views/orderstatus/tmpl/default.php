@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->orderStatusList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_( '#' ); ?>
+				<?php echo JText::_('VM_#' ); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'

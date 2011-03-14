@@ -171,7 +171,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model =& $this->getModel('usergroups');
 
 		if ($model->store()) {
-			$msg = JText::_('Usergroup saved!');
+			$msg = JText::_('VM_USERGROUP_SAVED');
 		} else {
 			$msg = JText::_($model->getError());
 		}
@@ -199,9 +199,9 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more usergroups could not be deleted!');
+			$msg = JText::_('VM_ERROR__USERGROUPS_COULD_NOT_BE_DELETED');
 		} else {
-			$msg = JText::_( 'Usergroup Deleted!');
+			$msg = JText::_('VM_USERGROUP_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);
@@ -227,7 +227,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->publish(true)) {
-			$msg = JText::_('Error: One or more extensions could not be published!');
+			$msg = JText::_('VM_ERROR__EXTENSIONS_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);
@@ -253,7 +253,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->publish(false)) {
-			$msg = JText::_('Error: One or more extensions could not be unpublished!');
+			$msg = JText::_('VM_ERROR__EXTENSIONS_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);

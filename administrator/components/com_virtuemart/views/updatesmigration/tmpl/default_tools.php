@@ -71,10 +71,10 @@ echo JText::_('VM_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <br />
 	    Remove<br />Virtuemart Tables
 	</td>
-    </tr>
+  
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('This deletes all tables of Virtuemart and makes a fresh install (no files). Are you sure?'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_DELETES_ALL_VM_TABLES_OF_VIRTUEMART_AND_FRESH'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />

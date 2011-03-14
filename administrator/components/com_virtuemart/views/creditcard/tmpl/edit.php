@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Credit Card Details' ); ?></legend>
+	<legend><?php echo JText::_('VM_CREDIT_CARD_DETAILS' ); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Credit Card Name' ); ?>:
+					<?php echo JText::_('VM_CREDIT_CARD_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Vendor Id' ); ?>:
+					<?php echo JText::_('VM_VENDOR_ID' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -63,7 +63,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Credit Card Code' ); ?>:
+					<?php echo JText::_('VM_CREDIT_CARD_CODE' ); ?>:
 				</label>
 			</td>
 			<td>

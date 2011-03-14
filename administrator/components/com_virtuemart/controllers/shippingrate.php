@@ -119,7 +119,7 @@ class VirtuemartControllerShippingRate extends JController {
 		if (($id = $model->store()) === false) {
 			$msg = JText::_($model->getError());
 		} else {
-			$msg = JText::_('Shipping Rate saved!');
+			$msg = JText::_('VM_SHIPPING_RATE_SAVED');
 		}
 
 		$cmd = JRequest::getCmd('task');
@@ -142,10 +142,10 @@ class VirtuemartControllerShippingRate extends JController {
 	{
 		$model = $this->getModel('shippingrate');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more shipping rates could not be deleted!');
+			$msg = JText::_('VM_ERROR__SHIPPING_RATES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'Shipping rates deleted!');
+			$msg = JText::_('VM_SHIPPING_RATES_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingrate', $msg);

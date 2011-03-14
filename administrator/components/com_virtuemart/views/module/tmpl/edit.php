@@ -26,7 +26,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('Shopper Group Details'); ?></legend>
+	<legend><?php echo JText::_('VM_SHOPPER_GROUP_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">

@@ -57,14 +57,14 @@
 	<tr>
 		<td colspan="2" align="center" class="key">
 		<a href="#" onClick="javascript:document.orderStatForm.submit();"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('Save'))
+			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'))
 				. '&nbsp;'
-				. JText::_('Save');
+				. JText::_('VM_SAVE');
 		?></a>&nbsp;&nbsp;&nbsp;
 		<a href="#" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('Cancel'))
+			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'))
 				. '&nbsp;'
-				. JText::_('Cancel');
+				. JText::_('VM_CANCEL');
 		?></a>
 		</td>
 <!-- 

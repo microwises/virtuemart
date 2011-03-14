@@ -61,15 +61,15 @@ class TableCountry extends JTable {
 	function check()
 	{
         if (!$this->country_name) {
-			$this->setError(JText::_('Country records must contain a contry name.'));
+			$this->setError(JText::_('VM_COUNTRY_RECORDS_MUST_CONTAIN_CONTRY_NAME'));
 			return false;
 		}
 		if (!$this->country_2_code) {
-			$this->setError(JText::_('Country records must contain a 2 symbol code.'));
+			$this->setError(JText::_('VM_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
 			return false;
 		}
 		if (!$this->country_3_code) {
-			$this->setError(JText::_('Country records must contain a 3 symbol code.'));
+			$this->setError(JText::_('VM_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
 			return false;
 		}
 
@@ -81,7 +81,7 @@ class TableCountry extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given country name already exists.'));
+				$this->setError(JText::_('VM_GIVEN_COUNTRY_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

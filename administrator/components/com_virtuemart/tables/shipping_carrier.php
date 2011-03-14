@@ -58,7 +58,7 @@ class TableShipping_Carrier extends JTable {
      */
     function check() {
 	if (!$this->shipping_carrier_name) {
-	    $this->setError(JText::_('Shipping Carrier records must contain a carrier name.'));
+	    $this->setError(JText::_('VM_SHIPPING_CARRIER_RECORDS_MUST_CONTAIN_CARRIER_NAME'));
 	    return false;
 	}
 
@@ -70,7 +70,7 @@ class TableShipping_Carrier extends JTable {
 	    $db->setQuery($q);
 	    $rowCount = $db->loadResult();
 	    if ($rowCount > 0) {
-		$this->setError(JText::_('The given shipping carrier name already exists.'));
+		$this->setError(JText::_('VM_GIVEN_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
 		return false;
 	    }
 	}

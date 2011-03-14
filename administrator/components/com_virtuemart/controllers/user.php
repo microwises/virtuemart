@@ -134,7 +134,7 @@ class VirtuemartControllerUser extends JController {
 		} else {
 			$model =& $this->getModel('user');
 			if ($ret=$model->store()) {
-				$msg = JText::_('User saved!');
+				$msg = JText::_('VM_USER_SAVED');
 			} else {
 				$msg = JText::_($model->getError());
 			}
@@ -164,7 +164,7 @@ class VirtuemartControllerUser extends JController {
 		if (!$model->delete()) {
 			$msg = JText::_($model->getError());
 		} else {
-			$msg = JText::_( 'User(s) Deleted!');
+			$msg = JText::_( 'VM_USER_S_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=user', $msg);
@@ -201,7 +201,7 @@ class VirtuemartControllerUser extends JController {
 		$id = JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($id);
 		if (count( $id ) < 1) {
-			JError::raiseWarning(500, JText::_( 'Select a user to modify' ) );
+			JError::raiseWarning(500, JText::_('VM_SELECT_USER_TO_MODIFY' ) );
 		}
 
 		$model = $this->getModel('user');

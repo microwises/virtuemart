@@ -54,7 +54,7 @@ class VirtuemartViewUserfields extends JView {
 			if ($userField->fieldid < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 
-				$this->assignRef('ordering', JText::_('New items default to the last place. Ordering can be changed after this item is saved.'));
+				$this->assignRef('ordering', JText::_('VM_NEW_ITEMS_DEFAULT_TO_LAST_PLACE_ORDERING_CAN_BE_CHANGED_AFTER_THIS_ITEM_IS_SAVED'));
 				$userFieldValues = array();
 				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
@@ -189,8 +189,8 @@ class VirtuemartViewUserfields extends JView {
 			$action = $field ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_( 'Enabled' ) : JText::_( 'Disabled' );
-			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
+			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
+			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
 		}
 
 		if (VmConfig::isAtLeastVersion('1.6.0')) {

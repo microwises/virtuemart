@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('Userfield Details'); ?></legend>
+	<legend><?php echo JText::_('VM_USERFIELD_DETAILS'); ?></legend>
 	<table class="admintable">
 
 		<tr>
@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 			<td colspan="2" style="text-align:left;height: 0px;overflow: auto;">
 				<div id="divText">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('Textfield attributes'); ?></legend>
+					<legend><?php echo JText::_('VM_TEXTFIELD_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divColsRows">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('Textarea attributes'); ?></legend>
+					<legend><?php echo JText::_('VM_TEXTAREA_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
@@ -92,7 +92,7 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divShopperGroups">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_FIELDS_EUVATID') . ' ' . JText::_('attributes'); ?></legend>
+					<legend><?php echo JText::_('VM_FIELDS_EUVATID') . ' ' . JText::_('VM_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
@@ -110,7 +110,7 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divAgeVerification">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_FIELDS_AGEVERIFICATION') . ' ' . JText::_('attributes'); ?></legend>
+					<legend><?php echo JText::_('VM_FIELDS_AGEVERIFICATION') . ' ' . JText::_('VM_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">

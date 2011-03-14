@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('Shipping Rate Details'); ?></legend>
+	<legend><?php echo JText::_('VM_SHIPPING_RATE_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">

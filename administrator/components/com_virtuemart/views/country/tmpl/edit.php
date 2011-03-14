@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Country Details' ); ?></legend>
+	<legend><?php echo JText::_('VM_COUNTRY_DETAILS' ); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Country Name' ); ?>:
+					<?php echo JText::_('VM_COUNTRY_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Published'); ?>:
+					<?php echo JText::_('VM_PUBLISHED'); ?>:
 				</label>
 			</td>
 			<td>
@@ -52,7 +52,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('Shipping Zone'); ?>:
+					<?php echo JText::_('VM_SHIPPING_ZONE'); ?>:
 				</label>
 			</td>
 			<td>

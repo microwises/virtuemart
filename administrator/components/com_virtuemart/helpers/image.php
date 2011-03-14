@@ -376,7 +376,7 @@ class VmImage {
 							</td>
 						<td>';
 
-			$imageActions[] = JHTML::_('select.option',  '0', JText::_( 'NONE' ) );
+			$imageActions[] = JHTML::_('select.option',  '0', JText::_('VM_NONE' ) );
 
 			if(!$thumb){
 				$imageActions[] = JHTML::_('select.option',  '1', JText::_( 'VM_FILES_FORM_AUTO_THUMBNAIL' ) );

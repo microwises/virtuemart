@@ -99,7 +99,7 @@ class VirtuemartControllerOrderstatus extends JController {
 		$model =& $this->getModel('orderstatus');
 
 		if ($model->store()) {
-			$msg = JText::_('Order status saved!');
+			$msg = JText::_('VM_ORDER_STATUS_SAVED');
 		} else {
 			$msg = JText::_($model->getError());
 		}
@@ -113,9 +113,9 @@ class VirtuemartControllerOrderstatus extends JController {
 	{
 		$model = $this->getModel('orderstatus');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more order statuses could not be deleted!');
+			$msg = JText::_('VM_ERROR__ORDER_STATUSES_COULD_NOT_BE_DELETED');
 		} else {
-			$msg = JText::_( 'Order statuses Deleted!');
+			$msg = JText::_('VM_ORDER_STATUSES_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=orderstatus', $msg);

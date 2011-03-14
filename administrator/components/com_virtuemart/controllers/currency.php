@@ -130,10 +130,10 @@ class VirtuemartControllerCurrency extends JController {
 	{
 		$model = $this->getModel('currency');
 		if (!$model->delete()) {
-			$msg = JText::_('Error: One or more currencies could not be deleted!');
+			$msg = JText::_('VM_ERROR__CURRENCIES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'Currencies Deleted!');
+			$msg = JText::_('VM_CURRENCIES_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
@@ -149,7 +149,7 @@ class VirtuemartControllerCurrency extends JController {
 	{
 		$model = $this->getModel('currency');
 		if (!$model->publish(true)) {
-			$msg = JText::_('Error: One or more currencies could not be published!');
+			$msg = JText::_('VM_ERROR__CURRENCIES_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
@@ -165,7 +165,7 @@ class VirtuemartControllerCurrency extends JController {
 	{
 		$model = $this->getModel('currency');
 		if (!$model->publish(false)) {
-			$msg = JText::_('Error: One or more currencies could not be unpublished!');
+			$msg = JText::_('VM_ERROR__CURRENCIES_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);

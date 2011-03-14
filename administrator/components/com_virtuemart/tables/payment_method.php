@@ -85,12 +85,12 @@ class TablePayment_method extends JTable
 	function check() {
 		
         if (!$this->paym_name) {
-			$this->setError(JText::_('Paymentmethods records must contain a name.'));
+			$this->setError(JText::_('VM_PAYMENTMETHODS_RECORDS_MUST_CONTAIN_NAME'));
 			return false;
 		}
 
         if (!$this->paym_vendor_id) {
-			$this->setError(JText::_('Paymentmethods records must have a vendor.'));
+			$this->setError(JText::_('VM_PAYMENTMETHODS_RECORDS_MUST_HAVE_VENDOR'));
 			return false;
 		}
 		
@@ -102,7 +102,7 @@ class TablePayment_method extends JTable
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given paymentmethod name already exists.'));
+				$this->setError(JText::_('VM_GIVEN_PAYMENTMETHOD_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

@@ -69,17 +69,17 @@ class TableProduct_price extends JTable {
 	function check (){
 		
 		if (!$this->product_id) {
-			$this->setError(JText::_('Impossible to save product prices without product_id'));
+			$this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_ID'));
 			return false;
 		}
 		
 //		if (!$this->product_price) {
-//			$this->setError(JText::_('Impossible to save product prices without product_price'));
+//			$this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));
 //			return false;
 //		}
 
 //		if (!$this->product_currency) {
-//			$this->setError(JText::_('Impossible to save product prices without product_currency'));
+//			$this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_CURRENCY'));
 //			return false;
 //		}
 		return true;

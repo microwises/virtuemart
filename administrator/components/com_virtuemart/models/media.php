@@ -691,7 +691,7 @@ class VirtueMartModelMedia extends JModel {
 			$row->load($cids);
 			if ($row->delete()) $deleted++;
 		}
-		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('DELETED_{X}_MEDIA_ITEMS')));
+		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('VM_DELETED_X_MEDIA_ITEMS')));
 		/* Redirect so the user cannot reload the delete action */
 		$url = 'index.php?option=com_virtuemart&view=media';
 		$productid = JRequest::getInt('product_id', false);

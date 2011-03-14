@@ -79,7 +79,7 @@ if (empty ( $this->product )) {
 						var msg = '';
 						//Example on how to test specific fields
 						if($('email').hasClass('invalid')){
-							msg += "\n\n\t<?php echo JText::_('PLEASE ENTER A VALID E-MAIL ADDRESS.')  ?>";
+							msg += "\n\n\t<?php echo JText::_('VM_ENTER_A_VALID_EMAIL_ADDRESS')  ?>";
 						}
 						alert(msg);
 					}

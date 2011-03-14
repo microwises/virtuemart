@@ -128,7 +128,7 @@ class VirtuemartControllerCategory extends JController {
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('Select an item to delete');
+			$msg = JText::_('VM_SELECT_ITEM_TO_DELETE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 			return;
 		}
@@ -203,7 +203,7 @@ class VirtuemartControllerCategory extends JController {
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('Select an item to toggle');
+			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 		}
 
@@ -239,7 +239,7 @@ class VirtuemartControllerCategory extends JController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('No Items Selected') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -247,7 +247,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->orderCategory($id, -1)) {
-			$msg = JText::_( 'Item Moved Up' );
+			$msg = JText::_('VM_ITEM_MOVED_UP' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -274,7 +274,7 @@ class VirtuemartControllerCategory extends JController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('No Items Selected') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -282,7 +282,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->orderCategory($id, 1)) {
-			$msg = JText::_( 'Item Moved Down' );
+			$msg = JText::_('VM_ITEM_MOVED_DOWN' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -305,7 +305,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->setOrder($cid)) {
-			$msg = JText::_( 'New ordering saved' );
+			$msg = JText::_('VM_NEW_ORDERING_SAVED' );
 		} else {
 			$msg = $model->getError();
 		}

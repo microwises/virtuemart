@@ -59,11 +59,11 @@ class TableCreditcard extends JTable {
 	function check()
 	{
         if (!$this->creditcard_name) {
-			$this->setError(JText::_('Credit card records must contain a name.'));
+			$this->setError(JText::_('VM_CREDIT_CARD_RECORDS_MUST_CONTAIN_NAME'));
 			return false;
 		}
 		if (!$this->creditcard_code) {
-			$this->setError(JText::_('Credit card records must contain a code.'));
+			$this->setError(JText::_('VM_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE'));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ class TableCreditcard extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given credit card name already exists.'));
+				$this->setError(JText::_('VM_GIVEN_CREDIT_CARD_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

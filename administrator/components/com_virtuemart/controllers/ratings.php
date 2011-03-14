@@ -73,10 +73,10 @@ class VirtuemartControllerRatings extends JController {
 		$model = $this->getModel('ratings');
 		$msgtype = '';
 		if ($model->setPublish()) {
-			$msg = JText::_('RATING_'.strtoupper($this->getTask()).'_SUCCESSFULLY');
+			$msg = JText::sprintf('RATING_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
 		}
 		else {
-			$msg = JText::_('RATING_NOT_'.strtoupper($this->getTask()).'_SUCCESSFULLY');
+			$msg = JText::strintf('RATING_NOT_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
 			$msgtype = 'error';
 		}
 

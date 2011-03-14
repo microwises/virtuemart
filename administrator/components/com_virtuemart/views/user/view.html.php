@@ -67,9 +67,9 @@ class VirtuemartViewUser extends JView {
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
-			. '<span title="' . JText::_('Save' ) . '" class="icon-32-save"></span>' . JText::_('Save' ) . '</a>';
+			. '<span title="' . JText::_('VM_SAVE' ) . '" class="icon-32-save"></span>' . JText::_('VM_SAVE' ) . '</a>';
 			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
-			. '<span title="' . JText::_('Apply' ) . '" class="icon-32-apply"></span>' . JText::_('Apply' ) . '</a>';
+			. '<span title="' . JText::_('VM_APPLY' ) . '" class="icon-32-apply"></span>' . JText::_('VM_APPLY' ) . '</a>';
 			$_toolBar =& JToolBar::getInstance('toolbar');
 
 			if ($_new) { // Insert new user
@@ -310,12 +310,12 @@ class VirtuemartViewUser extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_( 'Published' ) : JText::_( 'Unpublished' );
-			$action = $field ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
+			$alt 	= $field ? JText::_( 'Published' ) : JText::_('VM_UNPUBLISHED' );
+			$action = $field ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_( 'Enabled' ) : JText::_( 'Disabled' );
-			$action = $field ? JText::_( 'Disable Item' ) : JText::_( 'Enable item' );
+			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
+			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
 		}
 
 		if (VmConfig::isAtLeastVersion('1.6.0')) {

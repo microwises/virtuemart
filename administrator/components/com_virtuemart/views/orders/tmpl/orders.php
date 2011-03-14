@@ -29,10 +29,10 @@ $j15 = VmConfig::isJ15();
 	    <table>
 		<tr>
 		    <td align="left" width="100%">
-			<?php echo JText::_('Filter'); ?>:
+			<?php echo JText::_('VM_FILTER'); ?>:
 			<input type="text" name="filter_orders" value="<?php echo JRequest::getVar('filter_orders', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-			<button onclick="document.adminForm.filter_orders.value='';"><?php echo JText::_('Reset'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
+			<button onclick="document.adminForm.filter_orders.value='';"><?php echo JText::_('VM_RESET'); ?></button>
 		    </td>
 		</tr>
 	    </table>

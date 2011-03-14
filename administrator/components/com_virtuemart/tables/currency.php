@@ -68,11 +68,11 @@ class TableCurrency extends JTable {
 	function check()
 	{
         if (!$this->currency_name) {
-			$this->setError(JText::_('Currency records must contain a currency name.'));
+			$this->setError(JText::_('VM_CURRENCY_RECORDS_MUST_CONTAIN_CURRENCY_NAME'));
 			return false;
 		}
 		if (!$this->currency_code) {
-			$this->setError(JText::_('Currency records must contain a currency code.'));
+			$this->setError(JText::_('VM_CURRENCY_RECORDS_MUST_CONTAIN_CURRENCY_CODE'));
 			return false;
 		}
 
@@ -84,7 +84,7 @@ class TableCurrency extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('The given currency name already exists.'));
+				$this->setError(JText::_('VM_GIVEN_CURRENCY_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

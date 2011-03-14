@@ -53,7 +53,7 @@ class VirtuemartViewOrderstatus extends JView {
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 
-				$this->assignRef('ordering', JText::_('New items default to the last place. Ordering can be changed after this item is saved.'));
+				$this->assignRef('ordering', JText::_('VM_NEW_ITEMS_DEFAULT_TO_LAST_PLACE_ORDERING_CAN_BE_CHANGED_AFTER_THIS_ITEM_IS_SAVED'));
 			} else {
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, order_status_name AS text'

@@ -44,7 +44,7 @@ class AdminMenuHelper {
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	?>
 <div class="vm-block vm-main-container">
-    <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('Close')?>"><?php echo JText::_('Close')?></a>
+    <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('VM_CLOSE')?>"><?php echo JText::_('VM_CLOSE')?></a>
     <div class="vm-block vm-layout-left">
 		<?php  AdminMenuHelper::showAdminMenu(); ?>
     </div>
