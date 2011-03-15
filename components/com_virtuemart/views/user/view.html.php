@@ -87,7 +87,7 @@ class VirtuemartViewUser extends JView {
 			if($this->_model->_id==0 && $this->_cuid==0){
 				$button_lbl = JText::_('VM_REGISTER');
 			} else {
-				$button_lbl = JText::_('Save');
+				$button_lbl = JText::_('VM_SAVE');
 			}
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();

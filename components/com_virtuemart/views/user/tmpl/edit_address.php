@@ -40,8 +40,8 @@ function myValidator(f, t)
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
 <div class="floatright">
-	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('Save'); ?></button>
-	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('Cancel'); ?></button>
+	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('VM_SAVE'); ?></button>
+	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 <br style="clear:both;" />
 

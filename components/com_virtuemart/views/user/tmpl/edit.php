@@ -59,7 +59,7 @@ function myValidator(f, t)
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('Cancel'); ?></button>
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 <?php
 
