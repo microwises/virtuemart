@@ -41,7 +41,7 @@ class VirtuemartControllerCalc extends JController
 
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
+	        $this->registerTask( 'apply',  'save' );
 		$document =& JFactory::getDocument();
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();

@@ -62,7 +62,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Country (3) Code' ); ?>:
+					<?php echo JText::_( 'VM_COUNTRY_3_CODE' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -72,7 +72,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'Country (2) Code' ); ?>:
+					<?php echo JText::_( 'VM_COUNTRY_2_CODE' ); ?>:
 				</label>
 			</td>
 			<td>

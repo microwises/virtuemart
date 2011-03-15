@@ -123,7 +123,7 @@ class VirtuemartControllerUserfields extends JController {
 	{
 		$model = $this->getModel('userfields');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_ERROR__USERFIELDS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_USERFIELDS_COULD_NOT_BE_DELETED');
 		} else {
 			$msg = JText::_( 'VM_USERFIELD_S_DELETED');
 		}

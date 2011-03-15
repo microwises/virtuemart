@@ -199,7 +199,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->delete()) {
-			$msg = JText::_('VM_ERROR__USERGROUPS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_USERGROUPS_COULD_NOT_BE_DELETED');
 		} else {
 			$msg = JText::_('VM_USERGROUP_DELETED');
 		}
@@ -227,7 +227,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->publish(true)) {
-			$msg = JText::_('VM_ERROR__EXTENSIONS_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('VM_ERROR_EXTENSIONS_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);
@@ -253,7 +253,7 @@ class VirtuemartControllerUsergroups extends JController {
 		$model = $this->getModel('usergroups');
 
 		if (!$model->publish(false)) {
-			$msg = JText::_('VM_ERROR__EXTENSIONS_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('VM_ERROR_EXTENSIONS_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=usergroups', $msg);

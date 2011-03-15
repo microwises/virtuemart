@@ -237,8 +237,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$options = array();
-		$options[] = JHTML::_('select.option', 'ENCODE', JText::_('ENCODE (insecure)'));
-		$options[] = JHTML::_('select.option', 'AES_ENCRYPT', JText::_('AES_ENCRYPT (strong security)'));
+		$options[] = JHTML::_('select.option', 'ENCODE', JText::_('VM_ENCODE_INSECURE'));
+		$options[] = JHTML::_('select.option', 'AES_ENCRYPT', JText::_('VM_AES_ENCRYPT_STRONG_SECURITY'));
 		echo JHTML::_('Select.genericlist', $options, 'encrypt_function', 'size=1', 'value', 'text', $this->config->get('encrypt_function'));
 		?>
 	    </td>

@@ -129,7 +129,7 @@ class VirtuemartControllerShopperGroup extends JController
 	{
 		$model = $this->getModel('shoppergroup');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_ERROR__SHOPPER_GROUPS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_SHOPPER_GROUPS_COULD_NOT_BE_DELETED');
 		}
 		else {
 			$msg = JText::_('VM_SHOPPER_GROUPS_DELETED');

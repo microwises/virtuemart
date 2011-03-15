@@ -125,7 +125,7 @@ class VirtuemartControllerCoupon extends JController {
 	{
 		$model = $this->getModel('coupon');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_ERROR__COUPONS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_COUPONS_COULD_NOT_BE_DELETED');
 		}
 		else {
 			$msg = JText::_('VM_COUPONS_DELETED');
