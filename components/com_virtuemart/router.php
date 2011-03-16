@@ -50,6 +50,7 @@ function virtuemartBuildRoute(&$query)
 	static $firsttime=true ;
 	static $VirtuemartMenuCat = array();
 	static $VirtuemartMenuVM = array();
+	static $manufacturerMenuVM = array();
 	if ($firsttime) {
 	$firsttime = false ;
 		$app		= JFactory::getApplication();
@@ -61,17 +62,17 @@ function virtuemartBuildRoute(&$query)
 			if ( $item->query['view']=='category' && isset( $item->query['category_id'])) {
 				$VirtuemartMenuCat[]  = array_merge( $item->query, array('itemId' => $item->id) );  ;
 				
-			}
-			if ( $item->query['view']=='virtuemart' ) {
+			} elseif ( $item->query['view']=='virtuemart' ) {
 				$VirtuemartMenuVM[]  = array_merge($item->query, array('itemId' => $item->id) ); 
+			} elseif ( $item->query['view']=='manufacturer' ) {
+				$manufacturerMenuVM = $item->id ;
 			}
 			
 		}
-
 	}
 
 	// give the 1st Virtuemart menu ID if no categories are set in joomla menu
-	if ($menuComponent != 'com_virtuemart' ) $query['Itemid'] = $VirtuemartMenuVM[0]['itemId'] ;
+	
 	
 	switch ($view) {
 		case 'virtuemart';
@@ -81,7 +82,7 @@ function virtuemartBuildRoute(&$query)
 			if(!empty( $query['category_id']) && $menuCatid != $query['category_id'] ){
 				// to avoid duplicate categorie if a joomla menu ID is set
 				$ismenu = false ;
-				$treeIds = getCategoryRecurse($query['category_id'],true,$menuCatid) ;
+				$treeIds = getCategoryRecurse($query['category_id'],$menuCatid) ;
 				foreach ($VirtuemartMenuCat as $menuId) {
 					foreach ($treeIds as $treeId) {
 						if ($menuId['category_id'] == $treeId && $ismenu == false ) {
@@ -95,8 +96,8 @@ function virtuemartBuildRoute(&$query)
 				}
 				
 				if (!$ismenu) {
-					$segments[] = $query['category_id'];				
-					$segments[] = getCategoryName($query['category_id'], true, $menuCatid );
+					$segments[] = $query['category_id'];
+					$segments[] = getCategoryName($query['category_id'], $menuCatid );
 				}
 				unset($query['category_id']);
 			} else {
@@ -112,42 +113,56 @@ function virtuemartBuildRoute(&$query)
 		// Shop product details view 
 		case 'productdetails';			
 			$product_id_exists = false;
+			$menuCatid = 0 ;
 			if(isset($query['product_id'])) {
 				$segments[] = $query['product_id'];
 				$product_id_exists = true;
 				$product_id = $query['product_id'];
 				unset($query['product_id']);
 			}
-			if(isset( $query['category_id'])){
-				// to avoid duplicate categorie if a joomla menu ID is set 
-				if ($menuCatid != $query['category_id'] ){
+			if(!empty( $query['category_id'])){
 				$ismenu = false ;
-				$treeIds = getCategoryRecurse($query['category_id'],true,$menuCatid) ;
+				$CatParentIds = getCategoryRecurse($query['category_id'],0) ;
+				// control if category is joomla menu
 				foreach ($VirtuemartMenuCat as $menuId) {
-					foreach ($treeIds as $treeId) {
-						if ($menuId['category_id'] == $treeId && $ismenu == false ) {
+					if ($query['category_id'] ==  $menuId['category_id']) {
+						$ismenu = true;
+						$query['Itemid'] = $menuId['itemId'] ;
+						break;
+					}
+					/* control if parent categories are joomla menu */
+					foreach ($CatParentIds as $CatParentId) {
+						// No ? then find te parent menu categorie !
+						if ($menuId['category_id'] == $CatParentId ) {
 							$query['Itemid'] = $menuId['itemId'] ;
-							if ($query['category_id'] ==  $treeId) {
-								$ismenu = true ;
-							
-							}
+							$menuCatid = $CatParentId;
 						}
 					}
 				}
-				$segments[] = $query['category_id'];
-				if (!$ismenu) {
-					$segments[] = getCategoryName($query['category_id'], true, $menuCatid );
+				if ($ismenu==false) {
+					$segments[] = $query['category_id'];
+					$segments[] = getCategoryName($query['category_id'], $menuCatid );
+					if ($menuCatid == 0 ) $query['Itemid'] = $VirtuemartMenuVM[0]['itemId'] ;
 				}
 				unset($query['category_id']);
-				} else {
-					$segments[] = $query['category_id'];
+				/*} else {
+					//$segments[] = $query['category_id'];
 					unset($query['category_id']);
-				}
+				}*/
 			}
 			if($product_id_exists)	{
 				$segments[] = getProductName($product_id);
 			}
 		break;
+		case 'manufacturer';
+			if ( isset($manufacturerMenuVM) ) $query['Itemid'] = $manufacturerMenuVM;
+			$segments[] = $view;
+			if(isset($query['manufacturer_id'])) {
+				$segments[] = $query['manufacturer_id'];
+				unset($query['manufacturer_id']);
+			}
+		break;
+		
 		// sef only view	
 		default ;
 		$segments[] = $view;
@@ -158,54 +173,93 @@ function virtuemartBuildRoute(&$query)
 	if (isset($query['task'])) {
 		$segments[] = $query['task'] ;
 		unset($query['task']);
+	}	// sef the task
+	if (isset($query['tmpl'])) {
+		if ( $query['tmpl'] = 'component') $segments[] = 'detail' ;
+		unset($query['tmpl']);
 	}
+	if (empty ($query['Itemid'])) $query['Itemid'] = $VirtuemartMenuVM[0]['itemId'] ;
+
 	return $segments;
 }
 
 function virtuemartParseRoute($segments)
 {
 	$vars = array();
-	$count = count($segments) ;
+
 	$menu =& JSite::getMenu();
 	$menuItem =& $menu->getActive();
 	$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
-	
+	$count = count($segments)-1;	
 	if ($segments[0] == 'search') {
 		$vars['view'] = 'category';
 		array_shift($segments);
+		$count--;
 	}
-	if  (!$segments) return $vars;
 	
-	if (ctype_digit ($segments[0])) {
-		if (isset($segments[1]) && ctype_digit ($segments[1]) ) {
+	if ($segments[$count] == 'detail') {
+		$vars['tmpl'] = 'component';
+		array_pop($segments);
+		$count--;
+	}	
+	if ($segments[$count] == 'askquestion') {
+		$vars['task'] = array_pop($segments);
+		
+		$count--;
+	}
+	if ($segments[0] == 'manufacturer') {
+		$vars['view'] = 'manufacturer';
+		unset ($segments[0]);
+		$count--;
+		if (isset($segments[0])  && ctype_digit ($segments[0])) {
+			$vars['manufacturer_id'] = $segments[0];
+			unset ($segments[0]);
+		}
+		$count--;
+		//return $vars;
+	}
+
+	if  ($count<1 ) return $vars;
+	//uppercase first (trick for product details )
+	if ($segments[$count][0] == ucfirst($segments[$count][0]) ){
+		$vars['view'] = 'productdetails';
+		if (ctype_digit ($segments[1])){
 			$vars['product_id'] = $segments[0];
 			$vars['category_id'] = $segments[1];
-			$vars['view'] = 'productdetails';
+		} else {
+			$vars['product_id'] = $segments[0];
+			$vars['category_id'] = $menuCatid ;
 		}
-		else {
-			$vars['category_id'] = $segments[0];
-			$vars['view'] = 'category';
-		}
-	return $vars;
-	} else {
+		return $vars;
+	} elseif (isset($segments[0]) && ctype_digit ($segments[0]) || $menuCatid>0 ) {
+		$vars['category_id'] = $segments[0];
+		$vars['view'] = 'category';
+		return $vars;
+	} elseif ($menuCatid >0 && $vars['view'] != 'productdetails') {
+		$vars['category_id'] = $menuCatid ;
+		$vars['view'] = 'category';
+		return $vars;
+	} 
+
 		$vars['view'] = $segments[0];
 		if ( isset($segments[1]) ) {
 			$vars['task'] = $segments[1] ;
 		}
-	}
+
 	return $vars;
 }
 
 
 // This function returns category/subcatgory alias string
 
-function getCategoryName($category_id,$catMenuId=0,$menu){
+function getCategoryName($category_id,$catMenuId=0){
 
 	$strings = array();
 	$db = & JFactory::getDBO();
-	$parents_id = getCategoryRecurse($category_id,true,$catMenuId,$menu) ;
+	$parents_id = array_reverse(getCategoryRecurse($category_id,$catMenuId)) ;
+	
 	foreach ($parents_id as $id ) {
 		$q = "SELECT `category_name` as name
 				FROM  `#__vm_category` 
@@ -236,7 +290,7 @@ function getCategoryName($category_id,$catMenuId=0,$menu){
 
 }
 
-function getCategoryRecurse($category_id,$first,$catMenuId ) {
+function getCategoryRecurse($category_id,$catMenuId,$first=true ) {
 	static $idsArr = array();
 	if($first) {
 		$idsArr = array();
@@ -248,15 +302,13 @@ function getCategoryRecurse($category_id,$first,$catMenuId ) {
 			WHERE `xref`.`category_child_id`= ".$category_id;
 	$db->setQuery($q);
 	$ids = $db->loadObject();
+	if ($ids->child) $idsArr[] = $ids->child;
 	if($ids->parent != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
-		getCategoryRecurse($ids->parent,false,$catMenuId);
+		getCategoryRecurse($ids->parent,$catMenuId,false);
 	} 
-	$idsArr[] = $ids->child;
 	
-	if($first) {
+	
 		return $idsArr;
-	}
-	return;
 }
 
 function getProductName($id){
@@ -284,7 +336,7 @@ function getProductName($id){
 			$string = preg_replace($replace,$with,$string);
 			
 		}
-	return $string;
+	return ucfirst($string);
 }
 
 // pure php no closing tag

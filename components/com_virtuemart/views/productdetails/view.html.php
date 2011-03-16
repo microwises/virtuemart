@@ -111,7 +111,10 @@ class VirtueMartViewProductdetails extends JView {
 		if($category_model){
 			$category = $category_model->getCategory($category_id);
 			$this->assignRef('category', $category);
-			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));
+			foreach ($category->parents as $c){
+			$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+			}
+			//$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));
 		}
 
 		//$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));

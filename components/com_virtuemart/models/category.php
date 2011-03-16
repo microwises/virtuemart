@@ -51,7 +51,10 @@ class VirtueMartModelCategory extends JModel {
 		
 		/* Get the product count */
 		$row->productcount = $this->getProductCount($category_id);
-		
+
+		/* Get parent for breatcrumb */
+		$row->parents = $this->getparentsList($category_id);
+
 		return $row;
 	}
 	
@@ -101,7 +104,58 @@ class VirtueMartModelCategory extends JModel {
 		}
 		
 		return $childs;
+	}	
+	/**
+	 * Creates a bulleted of the childen of this category if they exist
+	 *
+	 * @author RolandD
+	 * @todo Add vendor ID
+	 * @param int $category_id the category ID to create the list of
+	 * @return array containing the child categories
+	 */
+	public function getparentsList($category_id) {
+
+		$db = & JFactory::getDBO();
+		$menu = &JSite::getMenu();
+		$parents = array();
+		if (empty($query['Itemid'])) {
+			$menuItem = &$menu->getActive();
+		} else {
+			$menuItem = &$menu->getItem($query['Itemid']);
+		}
+		$menuCatid	= (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
+		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
+		foreach ($parents_id as $id ) {
+			$q = "SELECT `category_name`,`category_id` 
+				FROM  `#__vm_category` 
+				WHERE  `category_id`=".$id;
+			
+			$db->setQuery($q);
+			
+			$parents[] = $db->loadObject();
+		}
+		return $parents;
 	}
+
+	function getCategoryRecurse($category_id,$catMenuId,$first=true ) {
+		static $idsArr = array();
+		if($first) {
+			$idsArr = array();
+		}
+
+		$db = & JFactory::getDBO();
+		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent` 
+			FROM  #__vm_category_xref AS `xref`
+			WHERE `xref`.`category_child_id`= ".$category_id;
+		$db->setQuery($q);
+		$ids = $db->loadObject();
+		if ($ids->child) $idsArr[] = $ids->child;
+		if($ids->child != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
+			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
+		} 
+		return $idsArr;
+	}
+
 	
 	/**
 	 * Function to calculate and return the number of products in category $category_id

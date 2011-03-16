@@ -59,9 +59,11 @@ class VirtuemartViewCategory extends JView {
 	    $vendorId = 1;
 
 	    $category = $categoryModel->getCategory($categoryId);
-
+		foreach ($category->parents as $c){
+			$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+		}
 	    /* Add the category name to the pathway */
-		$pathway->addItem($category->category_name);
+		//$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
 
 	    /* Set the titles */
