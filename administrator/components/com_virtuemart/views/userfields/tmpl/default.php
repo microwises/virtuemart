@@ -33,7 +33,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo JText::_( 'Filter' ); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 					<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'VM_RESET' ); ?></button>
 				</td>
 			</tr>
 		</table>

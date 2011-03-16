@@ -54,7 +54,7 @@ class VirtuemartViewUserfields extends JView {
 			if ($userField->fieldid < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 
-				$this->assignRef('ordering', JText::_('VM_NEW_ITEMS_DEFAULT_TO_LAST_PLACE_ORDERING_CAN_BE_CHANGED_AFTER_THIS_ITEM_IS_SAVED'));
+				$this->assignRef('ordering', JText::_('VM_NEW_ITEMS_DEFAULT_LAST_PLACE_ORDERING_CHANGED_AFTER'));
 				$userFieldValues = array();
 				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);

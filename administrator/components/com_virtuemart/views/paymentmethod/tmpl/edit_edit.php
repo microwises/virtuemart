@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: edit_edit.php 2521 2010-08-26 18:14:48Z milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -53,8 +53,7 @@ defined('_JEXEC') or die('Restricted access');
       </td>
     </tr>
     */ ?>
-
-    <tr class="row0" id=creditcardlist style="display : "none";" >
+    <tr class="row0" id=creditcardlist style="display : none;" >
       <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_CREDITCARD_LIST') ?>:</td>
       <td width="69%" ><?php
 		echo $this->creditCardList ?>
