@@ -122,20 +122,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="10" value="<?php echo $this->currencyDisplay->getPositiveFormat(); ?>" />
+				<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="20" value="<?php echo $this->currency->getPositiveFormat(); ?>" />
 
 				<?php
-					echo $this->positiveFormat;
+					// OLD FORMAT ? Patrick Kohl
+					// echo $this->positiveFormat;
 				?>
 			</td>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php // echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>
+				<?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>
 			</td>
 			<td>
 
-				<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="20" value="<?php echo $this->currencyDisplay->getNegativeFormat(); ?>" />
+				<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="20" value="<?php echo $this->currency->getNegativeFormat(); ?>" />
 
 				<?php //	echo $this->negativeFormat;
 				?>

@@ -4,7 +4,7 @@
 		
 		this.each(function(){
 			var cart = $(this),
-			addtocart = cart.find('.addtocart'),
+			addtocart = cart.find('form.addtocart'),
 			plus   = cart.find('.quantity-plus'),
 			minus  = cart.find('.quantity-minus'),
 			select = cart.find('select'),
@@ -98,5 +98,3 @@
 jQuery(document).ready(function() {
 	jQuery(".product").product();
 });
-
-jQuery.noConflict();
