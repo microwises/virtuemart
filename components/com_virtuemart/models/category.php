@@ -123,7 +123,8 @@ class VirtueMartModelCategory extends JModel {
 		} else {
 			$menuItem = &$menu->getItem($query['Itemid']);
 		}
-		$menuCatid	= (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
+		$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
+		if ($menuCatid == $category_id) return ;
 		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
 			$q = "SELECT `category_name`,`category_id` 
