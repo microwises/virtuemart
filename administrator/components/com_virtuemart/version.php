@@ -31,14 +31,14 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.0-beta2';
+	static $RELEASE = '2.0.0-beta3';
 	/** @var string Development Status */
 	static $DEV_STATUS = 'beta';
 	/** @var string Codename */
 	// Song by James Taylor
 	static $CODENAME = 'BeNative';
 	/** @var string Date */
-	static $RELDATE = 'Feb 28, 2011';
+	static $RELDATE = 'Mar 4, 2011';
 	/** @var string Time */
 	static $RELTIME = '13:30';
 	/** @var string Timezone */
