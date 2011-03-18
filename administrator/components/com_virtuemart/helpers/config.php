@@ -189,12 +189,17 @@ class VmConfig
 	 * @ Author KOHL Patrick
 	 */
 
-	function cssSite()
-	{
+	function cssSite() {
 		static $cssSite;
+		// Get the Page direction for right to left support
+		$document = & JFactory::getDocument ();
+		$direction = $document->getDirection ();
+		$cssFile = 'vmsite-' . $direction . '.css';
+		
 		// If exist exit
-		if ($cssSite) return;
-		JHTML::stylesheet('vmsite.css', 'components/com_virtuemart/assets/css/', false);
+		if ($cssSite)
+			return;
+		JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
 		$cssSite = true;
 		return;
 	}

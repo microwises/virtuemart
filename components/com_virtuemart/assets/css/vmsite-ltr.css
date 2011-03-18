@@ -608,12 +608,13 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 ////////////////////////////////////*/
 
 .category-view {}
-.category-view a {display: block;}
-.category-view a:hover {text-decoration: none;}
-.category-view h2 {font-size: 16px;margin: 0px;padding: 12px;}
-.category-view h3 {font-size: 16px;margin: 0px;padding: 12px;}
-.category-view span {font-size: 11px;color: #666;}
-.category-view img {margin-top: 8px;max-width: 100%;height: auto;}
+.category-view h4 {margin: 0px;padding: 0px;font-size: 14px;}
+.category-view .row {}
+.category-view .row .category {}
+.category-view .row .category .spacer {padding: 6px;}
+.category-view .row .category .spacer h2 {margin: 0px;padding: 0px;}
+.category-view .row .category .spacer h2 a {font-size: 14px;display: block;text-align: center;}
+.category-view .row .category .spacer h2 a img {margin-top: 6px;max-width: 100%;height: auto;}
 
 /*////////////////////////////////////
 ////// Featured Products View ////////
