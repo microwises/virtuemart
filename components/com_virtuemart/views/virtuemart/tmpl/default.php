@@ -23,7 +23,6 @@ defined('_JEXEC') or die('Restricted access');
 <?php // Vendor Store Description
 if (!empty($this->vendor->vendor_store_desc)) { ?>
 <div class="vendor-store-desc">
-	<h1><?php echo JText::_('VM_STORE_FORM_DESCRIPTION') ?></h1>
 	<?php /** @todo Add vendor description */
 	echo $this->vendor->vendor_store_desc; ?>
 </div>

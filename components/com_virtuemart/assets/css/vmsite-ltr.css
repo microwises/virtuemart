@@ -548,7 +548,7 @@ ul.pagination li {
 //////// Virtuemart View /////////////
 ////////////////////////////////////*/
 
-.vendor-store-desc {}
+.vendor-store-desc {margin-bottom: 25px;}
 
 /*////////////////////////////////////
 /////// Product Details View /////////
@@ -607,7 +607,7 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 ////////// Category View /////////////
 ////////////////////////////////////*/
 
-.category-view {}
+.category-view {margin-bottom: 25px;}
 .category-view h4 {margin: 0px;padding: 0px;font-size: 14px;}
 .category-view .row {}
 .category-view .row .category {}
@@ -620,25 +620,27 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 ////// Featured Products View ////////
 ////////////////////////////////////*/
 
-.featured-view {}
-.featured-view .featured-row {margin-bottom: 30px;}
-.featured-view a {}
-.featured-view a:hover {}
-.featured-view h3 {font-size: 16px;margin: 0px 0px 6px 0px;padding: 0px;}
-.featured-view span {font-size: 11px;color: #666;}
-.featured-view img {max-width: 90%;height: auto;}
+.featured-view {margin-bottom: 25px;}
+.featured-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
+.featured-view .row {}
+.featured-view .row .product {}
+.featured-view .row .product .spacer {padding: 6px;}
+.featured-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
+.featured-view .row .product .spacer span {font-size: 11px;color: #666;}
+.featured-view .row .product .spacer img {max-width: 90%;height: auto;}
 
 /*////////////////////////////////////
 ////// Top Ten Products View /////////
 ////////////////////////////////////*/
 
-.topten-view {}
-.topten-view .topten-row {margin-bottom: 30px;}
-.topten-view a {}
-.topten-view a:hover {}
-.topten-view h3 {font-size: 16px;margin: 0px 0px 6px 0px;padding: 0px;}
-.topten-view span {font-size: 11px;color: #666;}
-.topten-view img {max-width: 90%;height: auto;}
+.topten-view {margin-bottom: 25px;}
+.topten-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
+.topten-view .row {}
+.topten-view .row .product {}
+.topten-view .row .product .spacer {padding: 6px;}
+.topten-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
+.topten-view .row .product .spacer span {font-size: 11px;color: #666;}
+.topten-view .row .product .spacer img {max-width: 90%;height: auto;}
 
 /*////////////////////////////////////
 //////// Browsepage View /////////////
@@ -656,7 +658,7 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 ////////// General Buttons ///////////
 ////////////////////////////////////*/
 
-a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
+a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
 
 a.product-details:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
@@ -667,7 +669,7 @@ a.product-details:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds
 p.product_s_desc {padding: 0px;margin-bottom: 6px;}
 span.stock-level {font-size: 10px;color: #7d7b7b;}
 
-.horizontal-separator {height: 1px;background: #e9e8e8;}
+.horizontal-separator {height: 1px;background: #e9e8e8;margin: 10px 0px;}
 
 .invalid {border-color: #f00;background-color: #ffd;color: #000;}
 label.invalid {color: #f00;}

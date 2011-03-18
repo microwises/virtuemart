@@ -297,21 +297,21 @@ if (empty ( $this->product )) {
 
 	/* Child categories */
 	if (!empty($this->category->children)) {
-			$iCol = 1;
+			$iTopTenCol = 1;
 		if (empty($this->category->categories_per_row)) {
 			$this->category->categories_per_row = 4;
 		}
-		$cellwidth = intval( 100 / $this->category->categories_per_row );
+		$TopTen_cellwidth = intval( 100 / $this->category->categories_per_row );
 		?>
 		<br />
 		<table width="100%" cellspacing="0" cellpadding="0">
 			<?php
 			foreach($this->category->children as $category ) {
-				if ($iCol == 1) { // this is an indicator wether a row needs to be opened or not
+				if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not
 					echo "<tr>\n";
 				}
 				?>
-				<td align="center" width="<?php echo $cellwidth ?>%" >
+				<td align="center" width="<?php echo $TopTen_cellwidth ?>%" >
 					<br />
 					<?php //TODO
 					$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
@@ -322,15 +322,15 @@ if (empty ( $this->product )) {
 				</td>
 				<?php
 				// Do we need to close the current row now?
-				if ($iCol == $this->category->categories_per_row) { // If the number of products per row has been reached
+				if ($iTopTenCol == $this->category->categories_per_row) { // If the number of products per row has been reached
 					echo "</tr>\n";
-					$iCol = 1;
+					$iTopTenCol = 1;
 				} else {
-				$iCol++;
+				$iTopTenCol++;
 				}
 			}
 			// Do we need a final closing row tag?
-			if ($iCol != 1) {
+			if ($iTopTenCol != 1) {
 				echo "</tr>\n";
 			}
 			?>

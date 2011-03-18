@@ -7,7 +7,7 @@ $iCategory = 1;
 
 // Calculating Categories Per Row
 $categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
-$cellwidth = ' width'.floor ( 100 / $categories_per_row );
+$category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
 
 // Separator
 $verticalseparator = " vertical-separator";
@@ -41,7 +41,7 @@ foreach ( $this->categories as $category ) {
 	$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
 		
 		// Show Category ?>
-		<div class="category floatleft<?php echo $cellwidth . $show_vertical_separator ?>">
+		<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
 				<h2>
 					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
