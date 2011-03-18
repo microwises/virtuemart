@@ -25,13 +25,13 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_ENABLE_TIP'), JText::_('VM_ADMIN_CFG_SEO_ENABLE_TIP')); ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_ENABLE_TIP'); ?>">
-		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_SEO_ENABLE') ?></label>
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP'), JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP')); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP'); ?>">
+		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_SEO_DISABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('seo_enabled', $this->config->get('seo_enabled')); ?>
+		<?php echo VmHTML::checkbox('seo_disabled', $this->config->get('seo_disabled')); ?>
 	    </td>
 	</tr>
 	<tr>

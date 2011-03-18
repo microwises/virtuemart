@@ -2,7 +2,6 @@
 if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: 1.9 beta1
 * @package VirtueMart
 * @Author Kohl Patrick
 * @subpackage html
@@ -24,11 +23,13 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
 
 function virtuemartBuildRoute(&$query) {
 
+	$segments = array();
 	$helper = vmrouterHelper::getInstance();
+	if ($helper->router_disabled) return $segments;
 	$lang = &$helper->lang ;
 
 	$view = '';
-	$segments = array();
+	
 
 	$menuView		= $helper->activeMenu->view;
 	$menuCatid		= $helper->activeMenu->category_id;
@@ -135,6 +136,7 @@ function virtuemartParseRoute($segments)
 {
 	$vars = array();
 	$helper = vmrouterHelper::getInstance();
+	if ($helper->router_disabled) return $vars;
 	$lang = &$helper->lang ;
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
@@ -255,10 +257,16 @@ class vmrouterHelper {
 	/* Joomla active menu( itemId ) object */
 	public $activeMenu = null ;
 
-	/*$use_id type boolean
-	  *Use Id of categorie or not
+	/* 
+	  * $use_id type boolean
+	  * Use the Id's of categorie and product or not
 	  */
 	public $use_id = false ;
+	/* 
+	  * $use_id type boolean
+	  * true  = don't Use the router
+	  */
+	public $router_disabled = false ;
 
 	/* instance of class */
 	private static $_instance = null;	
@@ -270,6 +278,7 @@ class vmrouterHelper {
 		self::setMenuItemId();
 		self::setActiveMenu();
 		$this->use_id = VmConfig::get('seo_use_id', false);
+		$this->router_disabled = VmConfig::get('seo_disabled', false) ;
 	}
 
 	public static function getInstance() {
@@ -278,6 +287,7 @@ class vmrouterHelper {
 		}
 		return self::$_instance;
 	}
+
 	/* Get Joomla menu item and the route for category */
 	public function getCategoryRoute($category_id){
 		$category = new stdClass();
