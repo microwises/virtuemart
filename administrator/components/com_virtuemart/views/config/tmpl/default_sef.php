@@ -45,5 +45,16 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo VmHTML::checkbox('seo_translate', $this->config->get('seo_translate')); ?>
 		</td>
 	</tr>
+	<tr>
+	    <td class="key">
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP'), JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP')); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP'); ?>">
+		<label for="conf_VM_SEO_USE_ID"><?php echo JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP') ?></label>
+		</span>
+	    </td>
+		<td>
+			<?php echo VmHTML::checkbox('seo_use_id', $this->config->get('seo_use_id')); ?>
+		</td>
+	</tr>
  </table>
 </fieldset>

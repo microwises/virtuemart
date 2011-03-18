@@ -85,8 +85,8 @@ AdminMenuHelper::startAdminArea();
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
         <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php  echo VmConfig::getVar('img_height',80) ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo VmConfig::getVar('img_width',80)  ?>" class="inputbox" /></div>
+        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php  echo VmConfig::get('img_height',80) ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo VmConfig::get('img_width',80)  ?>" class="inputbox" /></div>
         </td>
     </tr>
 	<tr> 
@@ -120,8 +120,6 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="media" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <script type="text/javascript">

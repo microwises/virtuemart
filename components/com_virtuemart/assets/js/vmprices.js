@@ -10,7 +10,7 @@
 			select = cart.find('select'),
 			product_id = cart.find('input[name="product_id[]"]').val(),
 			quantity = cart.find('.quantity-input');
-			console.log(product_id);
+			//console.log(product_id);
 			
 			addtocart.bind('click',function(e) { 
 				e.preventDefault();
