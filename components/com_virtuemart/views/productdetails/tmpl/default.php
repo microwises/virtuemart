@@ -478,7 +478,7 @@ if (empty ( $this->product )) {
 						<?php
 					}
 					else {
-						echo '<strong>'.JText::_('VM_DEAR ').$this->user->name.',</strong><br />' ;
+						echo '<strong>'.JText::_('VM_DEAR').$this->user->name.',</strong><br />' ;
 						echo JText::_('VM_REVIEW_ALREADYDONE');
 					}
 				}
