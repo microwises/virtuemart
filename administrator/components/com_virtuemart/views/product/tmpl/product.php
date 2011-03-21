@@ -49,7 +49,7 @@ $category_id = JRequest::getInt('category_id', false);
 					echo $this->lists['search_order'];
 					echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
 				?>
-				<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
 				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('VM_RESET'); ?></button>
 			</td>
 		</tr>

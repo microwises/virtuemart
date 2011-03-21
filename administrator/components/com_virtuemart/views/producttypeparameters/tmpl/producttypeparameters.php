@@ -26,9 +26,9 @@ AdminMenuHelper::startAdminArea();
 	<table>
 	  <tr>
 		 <td align="left" width="100%">
-			<?php echo JText::_('Filter'); ?>:
+			<?php echo JText::_('VM_FILTER'); ?>:
 			<input type="text" name="filter_producttypeparameters" value="<?php echo JRequest::getVar('filter_producttypeparameters', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
 			<button onclick="document.adminForm.filter_producttypes.value='';"><?php echo JText::_('VM_RESET'); ?></button>
 		 </td>
 	  </tr>

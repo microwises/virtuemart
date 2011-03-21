@@ -30,9 +30,9 @@ $j15 = VmConfig::isJ15();
 		<table>
 			<tr>
 				<td width="100%">
-					<?php echo JText::_( 'Filter' ); ?>:
+					<?php echo JText::_( 'VM_FILTER' ); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
+					<button onclick="this.form.submit();"><?php echo JText::_( 'VM_GO' ); ?></button>
 					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'VM_RESET' ); ?></button>
 				</td>
 			</tr>
@@ -49,7 +49,7 @@ $j15 = VmConfig::isJ15();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userfieldsList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_( '#' ); ?>
+				<?php echo JText::_('VM_#'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'

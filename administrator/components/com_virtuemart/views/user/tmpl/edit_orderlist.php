@@ -27,7 +27,7 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	<tr>
 		<th width="10">
-			<?php echo JText::_('#'); ?>
+			<?php echo JText::_('VM_#'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('VM_ORDER_LIST_ID'); ?>

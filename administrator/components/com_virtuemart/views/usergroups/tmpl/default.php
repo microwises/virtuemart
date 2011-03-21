@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_( '#' ); ?>
+				<?php echo JText::_('VM_#'); ?>
 			</th>		            
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->usergroups); ?>);" />
