@@ -149,7 +149,9 @@ class VirtueMartModelCategory extends JModel {
 			FROM  #__vm_category_xref AS `xref`
 			WHERE `xref`.`category_child_id`= ".$category_id;
 		$db->setQuery($q);
-		$ids = $db->loadObject();
+		if (!$ids = $db->loadObject()) {
+			return $idsArr;
+		}
 		if ($ids->child) $idsArr[] = $ids->child;
 		if($ids->child != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
 			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
