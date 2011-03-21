@@ -123,22 +123,22 @@ class VirtueMartControllerCart extends JController {
 		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		if($cart){
-			if($cart->add()){
-				// Get a continue link */
-				$category_id = shopFunctionsF::getLastVisitedCategoryId();
-				$categoryLink='';
-				if($category_id){
-					$categoryLink='&category_id='.$category_id;
-				}
-				$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
+			// Get a continue link */
+			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$categoryLink='';
+			if($category_id){
+				$categoryLink='&category_id='.$category_id;
+			}
+			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
+			if($cart->add()){
 				$text = '<a href="'.$continue_link.'" >'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
 				$text .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('VM_CART_SHOW').'</a>';
-
-				echo ($text);
-
+				echo json_encode (array('stat'=>1,'msg'=>$text));
 			} else {
-				echo (0);
+				$text = '<p>'.$cart->getError().'</p>';
+				$text .= '<a href="'.$continue_link.'" >'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+				echo json_encode (array('stat'=>0,'msg'=>$text));
 			}
 		} else {
 			echo (0);

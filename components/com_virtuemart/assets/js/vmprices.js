@@ -38,26 +38,25 @@
 
 			var datas = form.serialize();
 		//	$.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
-			$.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
-			
-		function(datas, textStatus) {
-
-				if(datas!=0){
-					var value = form.find('.quantity-input').val() ;
-					var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
-					// $("#productCartModule").html(datas+"<div>"+txt+"</div>"); This is for module . not implemented @ Patrick Kohl
-					$.facebox({ text: datas+"<H4>"+txt+"</H4>",
-						closeImage : closeImage,
-						loadingImage : loadingImage,
-						faceboxHtml : faceboxHtml
+//			$.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
+			$.getJSON('index.php?option=com_virtuemart&controller=cart&task=addJS&format=json',encodeURIComponent(datas),
+				function(datas, textStatus) {
+					if(datas['stat']!=0){
+						var value = form.find('.quantity-input').val() ;
+						var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
+//						$("#productCartModule").html(datas+"<div>"+txt+"</div>"); This is for module . not implemented @ Patrick Kohl
+						$.facebox({ text: datas['msg']+"<H4>"+txt+"</H4>",
+							closeImage : closeImage,
+							loadingImage : loadingImage,
+							faceboxHtml : faceboxHtml
 						}, 'my-groovy-style');
-				} else {
-					$.facebox({ text: vmCartError,
-					closeImage : closeImage,
-					loadingImage : loadingImage,
-					faceboxHtml : faceboxHtml
-					}, 'my-groovy-style');
-				}
+					} else {
+						$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas['msg'],
+							closeImage : closeImage,
+							loadingImage : loadingImage,
+							faceboxHtml : faceboxHtml
+						}, 'my-groovy-style');
+					}
 			});
 			return false;
 		};

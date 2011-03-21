@@ -38,6 +38,7 @@ class VirtueMartCart  {
 	private $_inCheckOut = false;
 	private $_dataValidated = false;
 	private $_confirmDone = false;
+	private $_lastError = null; // Used to pass errmsg to the cart using addJS()
 
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
@@ -117,6 +118,26 @@ class VirtueMartCart  {
 		return $this->_inCheckOut;
 	}
 
+	/**
+	 * Set the last error that occured.
+	 * This is used on error to pass back to the cart when addJS() is invoked.
+	 * @param string $txt Error message
+	 * @author Oscar van Eijk
+	 */
+	private function setError ($txt)
+	{
+		$this->_lastError = $txt;
+	}
+
+	/**
+	 * Retrieve the last error message
+	 * @return string The last error message that occured
+	 * @author Oscar van Eijk
+	 */
+	public function getError ()
+	{
+		return ($this->_lastError);
+	}
 
 	/**
 	* Add a product to the cart
@@ -128,11 +149,11 @@ class VirtueMartCart  {
 	public function add() {
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		$post = JRequest::get('post');
+		$post = JRequest::get('default');
 		$total_quantity = 0;
 		$total_updated = 0;
 		$total_deleted = 0;
-		$product_ids = JRequest::getVar('product_id',array(),'post','array' ) ;
+		$product_ids = JRequest::getVar('product_id',array(),'default','array' ) ;
 //		$product_ids = $post['product_id'];
 //		$product_ids = JRequest::get('product_id');
 
@@ -187,11 +208,19 @@ class VirtueMartCart  {
 
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
-					if($this->checkForQuantities($product,$this->products[$productKey]->quantity))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
+					if($this->checkForQuantities($product,$this->products[$productKey]->quantity)) {
+						$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
+					} else {
+						return false;
+					}
 				} else {
 					$this->products[$productKey] = $product;
 					$product->quantity = $quantityPost;
-					if($this->checkForQuantities($product,$quantityPost))	$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
+					if($this->checkForQuantities($product,$quantityPost)) {
+						$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
+					} else {
+						return false;
+					}
 				}
 
 
@@ -347,28 +376,36 @@ class VirtueMartCart  {
 		$mainframe = JFactory::getApplication();
 		/* Check for a valid quantity */
 		if (!preg_match("/^[0-9]*$/", $quantity)) {
-			$this->_error[] = 'Quantity was not a number';
-			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+			$_error = JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false);
+//			$this->_error[] = 'Quantity was not a number';
+			$this->setError($_error);
+			$mainframe->enqueueMessage();
 			return false;
 		}
 
 		/* Check for negative quantity */
 		if ($quantity < 0) {
-			$this->_error[] = 'Quantity under zero';
-			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+//			$this->_error[] = 'Quantity under zero';
+			$_error = JText::_('VM_CART_ERROR_NO_NEGATIVE',false);
+			$this->setError($_error);
+			$mainframe->enqueueMessage($_error);
 			return false;
 		}
 
 		/* Check for the minimum and maximum quantities */
 		list($min,$max) = explode(',', $product->product_order_levels);
 		if ($min != 0 && $quantity < $min) {
-			$this->_error[] = 'Quantity reached not minimum';
-			$mainframe->enqueueMessage(JText::sprintf('VM_CART_MIN_ORDER', $min), 'error');
+//			$this->_error[] = 'Quantity reached not minimum';
+			$_error = JText::sprintf('VM_CART_MIN_ORDER', $min);
+			$this->setError($_error);
+			$mainframe->enqueueMessage($_error, 'error');
 			return false;
 		}
 		if ($max !=0 && $quantity > $max) {
-			$this->_error[] = 'Quantity reached over maximum';
-			$mainframe->enqueueMessage(JText::sprintf('VM_CART_MAX_ORDER', $max), 'error');
+//			$this->_error[] = 'Quantity reached over maximum';
+			$_error = JText::sprintf('VM_CART_MAX_ORDER', $max);
+			$this->setError($_error);
+			$mainframe->enqueueMessage($_error, 'error');
 			return false;
 		}
 
@@ -382,13 +419,15 @@ class VirtueMartCart  {
 				$request_stock[$ci]['product_id'] = $product->product_id;
 				$request_stock[$ci]['quantity'] = $quantity;
 				$ci++;
-				$this->_error[] = 'Quantity reached stock limit '.$product->product_id;
+//				$this->_error[] = 'Quantity reached stock limit '.$product->product_id;
 				continue;
 			}
 		}
 		if(count($request_stock)!=0){
 			foreach($request_stock as $rstock){
-				$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_OUT_OF_STOCK'), 'error');
+				$_error = JText::_('VM_CART_PRODUCT_OUT_OF_STOCK');
+				$this->setError($_error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+				$mainframe->enqueueMessage($_error, 'error');
 			}
 			return false;
 		}
