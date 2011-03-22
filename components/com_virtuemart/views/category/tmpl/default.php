@@ -78,16 +78,18 @@ if ($this->category->haschildren) {
 
 <?php // Show child categories
 if (!empty($this->products)) {
-	
+	$search='';
 	if (!empty($this->keyword)) { 
+		$search ='&search=true&keyword='.$this->keyword;
 		?>
 		<h3><?php echo $this->keyword; ?></h3>
 		<?php 
 	}
 	?>
 	<div><?php echo $this->pagination->getResultsCounter();?></div>
-	<form method="post" action="<?php JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->category->category_id); ?>">
+	<form method="get" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->category->category_id.$search); ?>">
 	<br>
+	<!--  TODO add settings in back-end for this select list-->
 	<select class="inputbox" name="group">
 		<option value="featured">Featured Products</option>
 		<option value="date">Latest Products</option>

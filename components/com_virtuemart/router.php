@@ -25,7 +25,18 @@ function virtuemartBuildRoute(&$query) {
 
 	$segments = array();
 	$helper = vmrouterHelper::getInstance();
-	if ($helper->router_disabled) return $segments;
+	if ($helper->router_disabled) {
+		foreach ($query as $key => $value){
+			if  ($key != 'option')  {
+				if ($key != 'Itemid') {
+					$segments[]=$key.'/'.$value;
+					unset($query[$key]);
+				}
+			}
+		
+		}
+		return $segments;
+	}
 	$lang = &$helper->lang ;
 
 	$view = '';
@@ -45,7 +56,23 @@ function virtuemartBuildRoute(&$query) {
 		case 'virtuemart';
 			unset($query['view']);
 		// Shop category view 
-		case 'category';	
+		case 'category';
+			// Fix for search with no category
+			if ( isset($query['start'] )) {
+				$segments[] = $lang->page ;
+				global $mainframe ;
+				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+				$segments[] = floor($query['start']/$limit)+1;
+				unset($query['start']);
+			}
+			if ( isset($query['search'])  ) {
+				$segments[] = $lang->search ;
+				unset($query['search']);
+			}
+			if ( isset($query['keyword'] )) {
+				$segments[] = $query['keyword'];
+				unset($query['keyword']);
+			}	
 			if(!empty( $query['category_id']) && $menuCatid != $query['category_id'] ){
 				$categoryRoute = $helper->getCategoryRoute($query['category_id']);
 				if ($categoryRoute->route) $segments[] = $categoryRoute->route;
@@ -56,15 +83,8 @@ function virtuemartBuildRoute(&$query) {
 				elseif (isset ($helper->menu->virtuemart))$query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
 				unset($query['category_id']);
 			}
-			// Fix for search with no category
-			if ( isset($query['search'])  ) {
-				$segments[] = $lang->search ;
-				unset($query['search']);
-			}
-			if ( isset($query['keyword'] )) {
-				$segments[] = $query['keyword'];
-				unset($query['keyword']);
-			}
+
+
 		break;
 		// Shop product details view 
 		case 'productdetails';			
@@ -139,20 +159,38 @@ function virtuemartParseRoute($segments)
 {
 	$vars = array();
 	$helper = vmrouterHelper::getInstance();
-	if ($helper->router_disabled) return $vars;
+	if ($helper->router_disabled) {
+		$total = count($segments);
+		for ($i = 0; $i < $total; $i=$i+2) {
+		$vars[ $segments[$i] ] = $segments[$i+1];
+		}
+		return $vars;
+	}
 	$lang = &$helper->lang ;
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
-	$count = count($segments)-1;	
+	
+	if ($segments[0] == $lang->page) {
+		array_shift($segments);
+		
+		global $mainframe ;
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
+
+	}
 	if ($segments[0] == $lang->search) {
 		$vars['search'] = 'true';
-		if ( isset ($segments[1]) ) $vars['keyword'] = $segments[1];
 		array_shift($segments);
+		if ( isset ($segments[0]) ) {
+			$vars['keyword'] = array_shift($segments);
+			
+		}
 		$vars['view'] = 'category';
-		array_shift($segments);
-		$count--;
-		if ($count <1) return $vars;
+		
 	}
+	$count = count($segments)-1;
+	if ($count <0) return $vars;
+	//print_r($segments);
 	if ($segments[$count] == 'detail') {
 		$vars['tmpl'] = 'component';
 		array_pop($segments);
@@ -469,18 +507,20 @@ class vmrouterHelper {
 			$this->lang->cart         = $lang->_('VM_SEF_CART');
 			$this->lang->editaddresscartBT  = $lang->_('VM_SEF_EDITADRESSCART_BILL');
 			$this->lang->editaddresscartST  = $lang->_('VM_SEF_EDITADRESSCART_SHIP');
-			$this->lang->search = $lang->_('VM_SEF_SEARCH');
+			$this->lang->search       = $lang->_('VM_SEF_SEARCH');
+			$this->lang->page       = $lang->_('VM_SEF_PAGE');
 		} else {
 			/* use default */
 			$this->lang->editshipping = 'editshipping';
 			$this->lang->manufacturer = 'manufacturer';
 			$this->lang->askquestion  = 'askquestion';
 			$this->lang->editpayment  = 'editpayment';
-			$this->lang->user  = 'user';
-			$this->lang->cart  = 'cart';
+			$this->lang->user         = 'user';
+			$this->lang->cart         = 'cart';
 			$this->lang->editaddresscartBT  = 'edit_cart_bill_to';
 			$this->lang->editaddresscartBT  = 'edit_cart_ship_to';
-			$this->lang->search = "search";
+			$this->lang->search       = 'search';
+			$this->lang->page         = 'page';
 			
 		}  
 	}
