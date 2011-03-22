@@ -37,7 +37,7 @@ class VirtuemartViewCurrency extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel();
-        $layoutName = JRequest::getVar('layout', 'default');
+                $layoutName = JRequest::getVar('layout', 'default');
 
 		$db = JFactory::getDBO();
 		$config =& JFactory::getConfig();
@@ -74,10 +74,10 @@ class VirtuemartViewCurrency extends JView {
 
 			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'');
-	    	$this->assignRef('currencyDisplay',$cd);
+	    	        $this->assignRef('currencyDisplay',$cd);
 
-	    	$this->loadHelper('shopfunctions');
-	    	$this->assignRef('positiveFormat',ShopFunctions::renderPositiveFormatCurrency($this->currencyDisplay->getPositiveFormat()));
+	    	       $this->loadHelper('shopfunctions');
+	    	       $this->assignRef('positiveFormat',ShopFunctions::renderPositiveFormatCurrency($this->currencyDisplay->getPositiveFormat()));
 			$this->assignRef('negativeFormat',ShopFunctions::renderNegativeFormatCurrency($this->currencyDisplay->getNegativeFormat()));
 
 
@@ -86,6 +86,8 @@ class VirtuemartViewCurrency extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CURRENCY_LIST_LBL' ), 'vm_currency_48' );
+                        JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
