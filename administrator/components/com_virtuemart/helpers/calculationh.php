@@ -78,7 +78,8 @@ class calculationHelper {
 	 * return string formatted price
 	 */
 	function priceDisplay($price=0){
-		if($price ) return $this -> _currencyDisplay->getFullValue($price);
+		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
+		return $this -> _currencyDisplay->getFullValue($price);
 	}
 
 	function getCartPrices(){
@@ -662,10 +663,18 @@ class calculationHelper {
 		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
 
-		//@Todo could be speed optimized
-		$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
-		$this->_db->setQuery($q);
-		$shipping = $this->_db->loadAssoc();
+//		$_dispatcher = JDispatcher::getInstance();
+//		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelected',
+//			array('_selectedRate' => $ship_id));
+
+		if (!class_exists('VirtueMartModelShippingRate')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
+		$_sRate = new VirtueMartModelShippingRate();
+		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
+
+		// Outcommented (Oscar); use th model instead
+//		$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
+//		$this->_db->setQuery($q);
+//		$shipping = $this->_db->loadAssoc();
 
 		$this->_cartPrices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];

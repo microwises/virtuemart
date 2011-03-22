@@ -544,6 +544,11 @@ class VirtueMartCart  {
 			}
 		}
 
+		// Check if a minimun purchase value is set
+		if (($_msg = $this->checkPurchaseValue()) != null) {
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart', $_msg);
+		}
+		
 		//But we check the data again to be sure
 		if(empty($this->BT)){
 			$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
@@ -635,6 +640,30 @@ class VirtueMartCart  {
 		$this->setCartIntoSession();
 
 		return true;
+	}
+
+	/**
+	 * Check if a minimum purchase value for this order has been set, and if so, if the current
+	 * value is equal or hight than that value.
+	 * @author Oscar van Eijk
+	 * @return An error message when a minimum value was set that was not eached, null otherwise
+	 */
+	private function checkPurchaseValue()
+	{
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		$_vendor = new VirtueMartModelVendor();
+		$_vendor->setId($this->vendorId);
+		$_store = $_vendor->getVendor();
+		if ($_store->vendor_min_pov > 0) {
+			$_prices = $this->getCartPrices();
+			if ($_prices['salesPrice'] < $_store->vendor_min_pov) {
+				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+				$_currency = CurrencyDisplay::getCurrencyDisplay();
+				$_minValue = $_currency->getFullValue($_min);
+				return JText::sprintf('VM_CART_MIN_PURCHASE', $_currency->getFullValue($_store->vendor_min_pov));
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -738,7 +767,7 @@ class VirtueMartCart  {
 	 *
 	 * @param CartArray $cart
 	 * @param boolean When one email does not work, it gives a false back
-	 *
+	 * @deprecated Function is not called anymore, can it be removed?
 	 */
 	private function doEmail($_orderID){
 

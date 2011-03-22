@@ -438,18 +438,45 @@ abstract class vmShipperPlugin extends JPlugin
 		if ($_id < 0) {
 			return 0;
 		}
-		if (!class_exists('VirtueMartModelShippingRate')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
 
-		$_sRate = new VirtueMartModelShippingRate();
-		$_rates = $_sRate->getShippingRatePrices($_id);
-		$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
+//		$_total = 0.00;
+//		if ($this->freeShipping() !== true) {
+			if (!class_exists('VirtueMartModelShippingRate')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
 
+			$_sRate = new VirtueMartModelShippingRate();
+			$_rates = $_sRate->getShippingRatePrices($_id, true);
+			$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
+//		}
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$_calc = calculationHelper::getInstance();
 
 		return $_calc->priceDisplay($_total);
 	}
 
+	/**
+	 * Check the order total to see if this order is valid for free shipping.
+	 * @access protected
+	 * @final
+	 * @return boolean; true when shipping is free
+	 * @author Oscar van Eijk
+	 */
+	final protected function freeShipping()
+	{
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$_cart = VirtueMartCart::getCart();
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		$_vendor = new VirtueMartModelVendor();
+		$_vendor->setId($_cart->vendorId);
+		$_store = $_vendor->getVendor();
+
+		if ($_store->vendor_freeshipping > 0) {
+			$_prices = $_cart->getCartPrices();
+			if ($_prices['salesPrice'] > $_store->vendor_freeshipping) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Get the shipper ID for a given order number

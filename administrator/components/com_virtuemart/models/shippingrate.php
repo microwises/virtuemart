@@ -140,22 +140,63 @@ class VirtueMartModelShippingRate extends JModel {
 	/**
 	 * Get the prices for a given shipping rate
 	 * @param integer $_id Shipping rate ID
+	 * @param boolean $_checkFree true if the order total should be checked for free shipping, default is false
 	 * @return Indexed array with the keys shipping_rate_value and shipping_rate_package_fee
 	 * @author Oscar van Eijk
 	 */
-	public function getShippingRatePrices ($_id)
+	public function getShippingRatePrices ($_id, $_checkFree = false)
 	{
-		$_q = 'SELECT `shipping_rate_value` '
-			. ',      `shipping_rate_package_fee` '
-			. 'FROM  `#__vm_shipping_rate` '
+		$_q = 'SELECT * '
+			. 'FROM  `#__vm_shipping_rate` AS r '
+			. ',     `#__vm_shipping_carrier` AS c '
 			. 'WHERE `shipping_rate_id` = ' . $_id . ' '
+			. 'AND   r.shipping_rate_carrier_id = c.shipping_carrier_id '
 		;
-		$_rates = $this->_getList($_q);
-		return array('shipping_rate_value' => $_rates[0]->shipping_rate_value
-					,'shipping_rate_package_fee' => $_rates[0]->shipping_rate_package_fee)
-		;
+		$this->_db->setQuery($_q);
+		$_rates = $this->_db->loadAssoc();
+		if ($_checkFree === true) {
+			if ($this->freeShipping()) {
+				$_rates['shipping_rate_value'] = 0.00;
+				$_rates['shipping_rate_package_fee'] = 0.00;
+			}
+		}
+		
+		return $_rates;
 	}
+	
+	/**
+	 * Check the order total to see if this order is valid for free shipping.
+	 * @access private
+	 * @return boolean; true when shipping is free
+	 * @author Oscar van Eijk
+	 */
+	private function freeShipping()
+	{
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$_cart = VirtueMartCart::getCart();
+		if (!$_cart) {
+			return false;
+		}
+		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		$_vendor = new VirtueMartModelVendor();
+		$_vendor->setId($_cart->vendorId);
+		$_store = $_vendor->getVendor();
 
+		if ($_store->vendor_freeshipping > 0) {
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$_calc = calculationHelper::getInstance();
+			$_prices = $_calc->getCartPrices();
+			if ($_prices == null) {
+				// When called from the plugin
+				$_prices = $_cart->getCartPrices(); // ... but causes a loop from the cart itself!
+			}
+			if ($_prices['salesPrice'] > $_store->vendor_freeshipping) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Bind the post data to the shipping rate table and save it
      *
