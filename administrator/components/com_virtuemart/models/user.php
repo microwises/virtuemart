@@ -192,7 +192,17 @@ class VirtueMartModelUser extends JModel {
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-
+				/* 
+				 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
+				 * from the cart. I don't know is this is the only location, but it can be fixed by
+				 * making sure the user_is_vendor field is in the BT dataset.
+				 * I make this hack here, since I'm not sure if it causes problems on more locations.
+				 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
+				 */
+				if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
+					$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
+				}
+				// End hack
 				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 			}
 			if($this->_data->user_is_vendor){

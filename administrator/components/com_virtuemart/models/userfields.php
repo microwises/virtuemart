@@ -336,7 +336,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * @author Oscar van Eijk
 	 * @return array
 	 */
-	function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
+	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
 		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
 
@@ -426,7 +426,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_user_is_vendor->ordering = 0;
 			$_user_is_vendor->cols = 0;
 			$_user_is_vendor->rows = 0;
-			$_user_is_vendor->value = '';
+			$_user_is_vendor->value = 0;
 			$_user_is_vendor->default = 0;
 			$_user_is_vendor->published = 1;
 			$_user_is_vendor->registration = 1;
@@ -556,9 +556,8 @@ class VirtueMartModelUserfields extends JModel {
 	 *    </table>
 	 * </pre>
 	 */
-	function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
+	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
 	{
-
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
@@ -570,7 +569,7 @@ class VirtueMartModelUserfields extends JModel {
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_prefix . $_fld->name
-					,'value' => (($_userData == null)
+					,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 						? $_fld->default
 						: @$_userData->{$_fld->name})
 					,'title' => self::_userFieldFormat(
