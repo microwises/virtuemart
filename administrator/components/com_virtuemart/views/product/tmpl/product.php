@@ -163,6 +163,7 @@ $pagination = $this->pagination;
 <input type="hidden" name="task" value="product" />
 <input type="hidden" name="view" value="product" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
+<input type="hidden" name="product_price_id" value="<?php echo $this->product_price_id; ?>" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="page" value="product.product_list" />
 <input type="hidden" name="func" value="" />

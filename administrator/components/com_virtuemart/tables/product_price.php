@@ -97,7 +97,7 @@ class TableProduct_price extends JTable {
 	{
 		$_qry = 'SELECT product_id '
 				. 'FROM #__vm_product_price '
-				. 'WHERE product_id = ' . $this->product_price_id
+				. 'WHERE product_price_id = ' . $this->product_price_id
 		;
 		$this->_db->setQuery($_qry);
 		$_count = $this->_db->loadResultArray();
