@@ -64,17 +64,30 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
 			}
 		}
+		
 	    /* Add the category name to the pathway */
 		//$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
 
 	    /* Set the titles */
 		$document->setTitle($category->category_name);
-
+		/* set keyword */
+		if ($keyword = JRequest::getVar('keyword', '')) {
+			$pathway->addItem($keyword);
+			$document->setTitle($category->category_name.' '.$keyword);
+			$this->assignRef('keyword', $keyword);
+		}
+	
 	    /* Load the products in the given category */
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
+
+	    $total = $productModel->getTotalProductsInCategory($categoryId);
+	    $this->assignRef('total', $total);
+
+	    $pagination = $productModel->getPagination($categoryId);
+	    $this->assignRef('pagination', $pagination);
 
 	    if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );

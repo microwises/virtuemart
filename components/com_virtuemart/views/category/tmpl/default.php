@@ -78,7 +78,27 @@ if ($this->category->haschildren) {
 
 <?php // Show child categories
 if (!empty($this->products)) {
+	
+	if (!empty($this->keyword)) { 
+		?>
+		<h3><?php echo $this->keyword; ?></h3>
+		<?php 
+	}
 	?>
+	<div><?php echo $this->pagination->getResultsCounter();?></div>
+	<form method="post" action="<?php JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->category->category_id); ?>">
+	<br>
+	<select class="inputbox" name="group">
+		<option value="featured">Featured Products</option>
+		<option value="date">Latest Products</option>
+		<option value="random">Random Products</option>
+		<option value="topten">Best Sales</option>
+		<option value="stock">Stock level</option>
+		<option value="name">Product Name</option>
+		<option value="id">Product id</option>
+		<option value="sku">Product sku</option>
+		</select>    <input type="submit" value="order By" name="submit" class="button">
+</form>
 	<div class="browse-view">
 		<h1><?php echo $this->category->category_name; ?></h1>
 <?php
@@ -94,6 +114,7 @@ if (!empty($this->products)) {
 
 
 foreach ($this->products as $product) {
+		
 
 		if ($iBrowse == 1) { // this is an indicator wether a row needs to be opened or not ?>
 		<div class="browse-row">
@@ -290,5 +311,9 @@ foreach ($this->products as $product) {
 	}
 	?>
 	<div class="clear"></div>
+		<form  method="post" >
+		<input type="hidden" name="keyword" value="<?php echo JRequest::getVar('keyword') ?>" >
+	<?php echo $this->pagination->getListFooter(); ?>
+			</form>
 	</div>
 <?php } ?>

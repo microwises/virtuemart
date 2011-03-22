@@ -30,6 +30,40 @@ jimport( 'joomla.application.component.model');
  *
  */
 class VirtueMartModelProductdetails extends JModel {
+
+	/**
+	  * products object
+	  * @var integer
+	  */
+	var $products  = array();
+
+	/**
+	  * Items total
+	  * @var integer
+	  */
+	var $_total = null;
+
+	/**
+	  * Pagination object
+	  * @var object
+	  */
+	var $_pagination = null;
+
+	function __construct()
+	{
+		parent::__construct();
+	
+		global $mainframe, $option;
+		// Get pagination request variables
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+		// In case limit has been changed, adjust it
+		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+		$this->setState('limit', $limit);
+		$this->setState('limitstart', $limitstart);
+		
+	}
+
 	/**
 	* Load the product details
 	*/
@@ -467,22 +501,15 @@ class VirtueMartModelProductdetails extends JModel {
 		return $variants;
 	}
 
-	/**
-	* Get the products in a given category
-	*
-	* @author RolandD
-	* @access public
-	* @param int $category_id the category ID where to get the products for
-	* @return array containing product objects
-	*/
-	public function getProductsInCategory($category_id) {
-		// a starting point for search and filters
-		if (JRequest::getVar('keyword')) {
-			$keyword = JRequest::getVar('keyword', '');
-			$filtercategory = JRequest::getVar('filter', '1');
+	function _buildQuery($category_id) {
+		
+		$keyword = JRequest::getVar('keyword', '');
+				// a starting point for search and filters
+		if ($keyword !='') {
+			$filtercategory = JRequest::getVar('filter', '0');
 			$group = JRequest::getVar('group', ''); // group by
 			$orderInv = JRequest::getVar('orderInv', ''); // orde DESC ASC;
-			if ($filtercategory) $cat_id = (empty($category_id)) ? JRequest::getVar('category_id', '') : $category_id ;
+			if ($filtercategory) $cat_id = (empty($category_id)) ? JRequest::getVar('category_id', 0) : $category_id ;
 
 			/* Get a filtered list of product ID's */
 			$q = "SELECT DISTINCT #__vm_product.product_id FROM #__vm_product
@@ -494,7 +521,7 @@ class VirtueMartModelProductdetails extends JModel {
 				AND `#__vm_product`.`published`='1' ";
 			if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1')
 				$q .= ' AND `product_in_stock` > 0 ';
-			if ($cat_id)
+			if (isset ($cat_id))
 				$q .= ' AND category_id = "'.$cat_id.'" ';
 
 				/* The order By to set :( TO DO for price , find a trick because of the new rules )
@@ -532,17 +559,50 @@ class VirtueMartModelProductdetails extends JModel {
 			FROM #__vm_product_category_xref
 			WHERE category_id = ".$category_id;
 		}
-		$this->_db = JFactory::getDBO();
-		$this->_db->setQuery($q);
-		$product_ids = $this->_db->loadResultArray();
-
-		/* Collect the product data */
-		$products = array();
-		foreach ($product_ids as $product_id) {
-			$products[] = $this->getProduct($product_id);
-		}
-		return $products;
+		return $q;
 	}
+
+	/**
+	* Get the products in a given category
+	*
+	* @author RolandD
+	* @access public
+	* @param int $category_id the category ID where to get the products for
+	* @return array containing product objects
+	*/
+	public function getProductsInCategory($category_id) {
+
+		if (empty($this->products)) {
+
+			$query = $this->_buildQuery($category_id);
+			$product_ids = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit')); 
+
+			/* Collect the product data */
+			
+			foreach ($product_ids as $product_id) {
+				$this->products[] = $this->getProduct($product_id->product_id);
+			}
+		}
+		return $this->products;
+	}
+  function getTotalProductsInCategory($category_id)
+  {
+        // Load the content if it doesn't already exist
+        if (empty($this->_total)) {
+            $query = $this->_buildQuery($category_id);
+            $this->_total = $this->_getListCount($query);    
+        }
+        return $this->_total;
+  }
+  function getPagination($category_id)
+  {
+        // Load the content if it doesn't already exist
+        if (empty($this->_pagination)) {
+            jimport('joomla.html.pagination');
+            $this->_pagination = new JPagination($this->getTotalProductsInCategory($category_id), $this->getState('limitstart'), $this->getState('limit') );
+        }
+        return $this->_pagination;
+  }
 
 	/**
 	* Get the stock level for a given product

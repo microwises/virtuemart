@@ -57,7 +57,10 @@ function virtuemartBuildRoute(&$query) {
 				unset($query['category_id']);
 			}
 			// Fix for search with no category
-			if ( isset($query['search'])  ) $segments[] = 'search' ;
+			if ( isset($query['search'])  ) {
+				$segments[] = $lang->search ;
+				unset($query['search']);
+			}
 			if ( isset($query['keyword'] )) {
 				$segments[] = $query['keyword'];
 				unset($query['keyword']);
@@ -141,7 +144,10 @@ function virtuemartParseRoute($segments)
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
 	$count = count($segments)-1;	
-	if ($segments[0] == 'search') {
+	if ($segments[0] == $lang->search) {
+		$vars['search'] = 'true';
+		if ( isset ($segments[1]) ) $vars['keyword'] = $segments[1];
+		array_shift($segments);
 		$vars['view'] = 'category';
 		array_shift($segments);
 		$count--;
@@ -463,6 +469,7 @@ class vmrouterHelper {
 			$this->lang->cart         = $lang->_('VM_SEF_CART');
 			$this->lang->editaddresscartBT  = $lang->_('VM_SEF_EDITADRESSCART_BILL');
 			$this->lang->editaddresscartST  = $lang->_('VM_SEF_EDITADRESSCART_SHIP');
+			$this->lang->search = $lang->_('VM_SEF_SEARCH');
 		} else {
 			/* use default */
 			$this->lang->editshipping = 'editshipping';
@@ -473,6 +480,7 @@ class vmrouterHelper {
 			$this->lang->cart  = 'cart';
 			$this->lang->editaddresscartBT  = 'edit_cart_bill_to';
 			$this->lang->editaddresscartBT  = 'edit_cart_ship_to';
+			$this->lang->search = "search";
 			
 		}  
 	}
