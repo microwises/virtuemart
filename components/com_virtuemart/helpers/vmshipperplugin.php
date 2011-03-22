@@ -110,7 +110,8 @@ abstract class vmShipperPlugin extends JPlugin
 	protected function getCarriers($_vendorId)
 	{
 		$_db = &JFactory::getDBO();
-		$_q = 'SELECT v.`shipping_carrier_id`   AS id '
+                if(version_compare(JVERSION,'1.6.0') < ''){
+                        $_q = 'SELECT v.`shipping_carrier_id`   AS id '
 			. ',      v.`shipping_carrier_name` AS name '
 			. 'FROM   #__vm_shipping_carrier v '
 			. ',      #__plugins             j '
@@ -119,6 +120,20 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'AND  (v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
 			. ' OR   v.`shipping_carrier_vendor_id` = "0") '
 		;
+		} else {
+			$_q = 'SELECT v.`shipping_carrier_id`   AS id '
+			. ',      v.`shipping_carrier_name` AS name '
+			. 'FROM   #__vm_shipping_carrier AS v '
+			. ',      #__extensions    AS      j '
+			. 'WHERE j.`folder` = "vmshipper" '
+                        . 'AND j.`element` = "'.$this->_selement.'" '
+			. 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
+			. 'AND  (v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
+			. ' OR   v.`shipping_carrier_vendor_id` = "0") '
+		;
+		}
+
+                
 		$_db->setQuery($_q);
 		if (!$_res =  $_db->loadAssocList()) {
 			return false;
@@ -143,7 +158,9 @@ abstract class vmShipperPlugin extends JPlugin
 		}
 
 		$_db = &JFactory::getDBO();
-		$_q = 'SELECT 1 '
+		
+                if(version_compare(JVERSION,'1.6.0') < ''){
+                       $_q = 'SELECT 1 '
 			. 'FROM   #__vm_shipping_carrier v '
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
@@ -151,6 +168,22 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'AND   v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
 			. 'AND   v.`published` = 1 '
 		 ;
+		} else {
+                      $_q = 'SELECT 1 '
+			. 'FROM   #__vm_shipping_carrier AS v '
+		        . ',      #__extensions   AS     j '
+                        . 'WHERE j.`folder` = "vmshipper" '
+			. 'AND j.`element` = "'.$this->_selement.'" '
+			. 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
+			. 'AND   v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
+			. 'AND   v.`published` = 1 '
+		 ;
+
+		}
+
+
+
+
 		$_db->setQuery($_q);
 		$_r =  $_db->loadAssoc();
 
@@ -544,13 +577,30 @@ abstract class vmShipperPlugin extends JPlugin
 	final protected function selectedThisShipper($_selement, $_sid)
 	{
 		$_db = &JFactory::getDBO();
-		$_q = 'SELECT COUNT(*) AS c '
+		 
+		  if(version_compare(JVERSION,'1.6.0') < ''){
+                     $_q = 'SELECT COUNT(*) AS c '
 			. 'FROM #__vm_shipping_carrier AS vm '
 			. ',    #__plugins AS j '
 			. "WHERE vm.shipping_carrier_id = '$_sid' "
 			. 'AND   vm.shipping_carrier_jplugin_id = j.id '
 			. "AND   j.element = '$_selement'";
-		$_db->setQuery($_q);
+		} else {
+                    $_q = 'SELECT COUNT(*) AS c '
+			. 'FROM #__vm_shipping_carrier AS vm '
+			. ',      #__extensions    AS      j '
+			. 'WHERE j.`folder` = "vmshipper" '
+                        . "AND vm.shipping_carrier_id = '$_sid' "
+			. 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
+			. "AND   j.element = '$_selement'";                    
+		}
+
+
+
+
+
+
+                $_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return ($_r['c'] >= 1);
 	}

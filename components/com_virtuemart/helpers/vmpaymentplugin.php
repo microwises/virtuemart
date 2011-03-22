@@ -99,10 +99,14 @@ abstract class vmPaymentPlugin extends JPlugin
 
 		if(!$vendorId) $vendorId = 1;
 	 	$db = &JFactory::getDBO();
-	 	if(!$jplugin_id){
-			$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$this->_pelement.'"';
-			$db->setQuery($q);
-			$this->_jplugin_id = $db->loadResult();
+                 if (!$jplugin_id) {
+            if (version_compare(JVERSION, '1.6.0') < '') {
+                $q = 'SELECT `id` FROM #__plugins WHERE `element` = "' . $this->_pelement . '"';
+            } else {
+                $q = 'SELECT `extension_id` FROM #__extensions  WHERE `element` = "' . $this->_pelement . '"';
+            }
+            $db->setQuery($q);
+            $this->_jplugin_id = $db->loadResult();
 			if(!$this->_jplugin_id){
 				$mainframe = &JFactory::getApplication();
 				$mainframe->enqueueMessage( 'The Paymentmethod didnt found used payment plugin' );
@@ -303,13 +307,24 @@ abstract class vmPaymentPlugin extends JPlugin
 	 */
 	final protected function selectedThisMethod($_pelement, $_pid)
 	{
-		$_db = &JFactory::getDBO();
-		$_q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__vm_payment_method AS vm '
-			. ',    #__plugins AS j '
-			. "WHERE vm.paym_id='$_pid' "
-			. 'AND   vm.paym_jplugin_id = j.id '
-			. "AND   j.element = '$_pelement'";
+            $_db = &JFactory::getDBO();
+
+        if (version_compare(JVERSION, '1.6.0') < '') {
+            $_q = 'SELECT COUNT(*) AS c '
+                    . 'FROM #__vm_payment_method AS vm '
+                    . ',    #__plugins AS j '
+                    . "WHERE vm.paym_id='$_pid' "
+                    . 'AND   vm.paym_jplugin_id = j.id '
+                    . "AND   j.element = '$_pelement'";
+        } else {
+            $_q = 'SELECT COUNT(*) AS c '
+                    . 'FROM #__vm_payment_method AS vm '
+                    . ',    #__extensions AS j '
+                    . "WHERE vm.paym_id='$_pid' "
+                    . 'AND   vm.paym_jplugin_id = j.extension_id '
+                    . "AND   j.element = '$_pelement'";
+        }
+
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return ($_r['c'] == 1);
@@ -324,14 +339,18 @@ abstract class vmPaymentPlugin extends JPlugin
 	 */
 	final protected function getThisMethodName($_pid)
 	{
-		$_db = &JFactory::getDBO();
-		$_q = 'SELECT `paym_name` '
-			. 'FROM #__vm_payment_method '
-			. ',    #__plugins AS j '
-			. "WHERE paym_id='$_pid' ";
-		$_db->setQuery($_q);
-		$_r = $_db->loadAssoc(); // TODO Error check
-		return $_r['paym_name'];
+            $_db = &JFactory::getDBO();
+
+
+                $_q = 'SELECT `paym_name` '
+                        . 'FROM #__vm_payment_method '                     
+                        . "WHERE paym_id='$_pid' ";
+           
+
+
+            $_db->setQuery($_q);
+            $_r = $_db->loadAssoc(); // TODO Error check
+            return $_r['paym_name'];
 
 	}
 	/**
