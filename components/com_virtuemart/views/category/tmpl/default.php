@@ -89,17 +89,8 @@ if (!empty($this->products)) {
 	<div><?php echo $this->pagination->getResultsCounter();?></div>
 	<form method="get" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->category->category_id.$search); ?>">
 	<br>
-	<!--  TODO add settings in back-end for this select list-->
-	<select class="inputbox" name="group">
-		<option value="featured">Featured Products</option>
-		<option value="date">Latest Products</option>
-		<option value="random">Random Products</option>
-		<option value="topten">Best Sales</option>
-		<option value="stock">Stock level</option>
-		<option value="name">Product Name</option>
-		<option value="id">Product id</option>
-		<option value="sku">Product sku</option>
-		</select>    <input type="submit" value="order By" name="submit" class="button">
+	<?php echo $this->orderByList; ?>
+
 </form>
 	<div class="browse-view">
 		<h1><?php echo $this->category->category_name; ?></h1>

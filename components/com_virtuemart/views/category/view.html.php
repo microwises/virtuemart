@@ -88,6 +88,12 @@ class VirtuemartViewCategory extends JView {
 
 	    $pagination = $productModel->getPagination($categoryId);
 	    $this->assignRef('pagination', $pagination);
+	    $orderByList = $productModel->getOrderByList();
+	    $this->assignRef('orderByList', $orderByList);
+		//$sortOrderButton = $productModel->getsortOrderButton();
+		//$this->assignRef('sortOrder', $sortOrderButton);
+		
+		
 
 	    if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );

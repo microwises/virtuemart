@@ -49,6 +49,13 @@ class VirtueMartModelProductdetails extends JModel {
 	  */
 	var $_pagination = null;
 
+	/**
+	  * product category search query 
+	  * var to prevent to reload 2 time same query
+	  * @var 
+	  */
+	var $_query = null;
+
 	function __construct()
 	{
 		parent::__construct();
@@ -64,6 +71,7 @@ class VirtueMartModelProductdetails extends JModel {
 		
 	}
 
+
 	/**
 	* Load the product details
 	*/
@@ -72,15 +80,15 @@ class VirtueMartModelProductdetails extends JModel {
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 
 		if ($product_id > 0) {
-			$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name
-				FROM #__vm_product p
-				LEFT JOIN #__vm_product_category_xref x
-				ON x.product_id = p.product_id
-				LEFT JOIN #__vm_product_mf_xref mx
-				ON mx.product_id = p.product_id
-				LEFT JOIN #__vm_manufacturer m
-				ON m.manufacturer_id = mx.manufacturer_id
-				WHERE p.product_id = ".$product_id;
+			$q = "SELECT `p`.*, x.`category_id`, x.product_list, m.manufacturer_id, m.mf_name
+				FROM `#__vm_product` p
+				LEFT JOIN `#__vm_product_category_xref` x
+				ON x.`product_id` = `p`.`product_id`
+				LEFT JOIN `#__vm_product_mf_xref` mx
+				ON mx.`product_id` = `p`.`product_id`
+				LEFT JOIN `#__vm_manufacturer` `m`
+				ON `m`.`manufacturer_id` = `mx`.`manufacturer_id`
+				WHERE `p`.`product_id` = ".$product_id;
 			$this->_db->setQuery($q);
 			$product = $this->_db->loadObject();
 			if(empty($product)) return false;
@@ -179,15 +187,15 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 
-		$q = "SELECT p.*, x.category_id, x.product_list, m.manufacturer_id, m.mf_name
-			FROM #__vm_product p
-			LEFT JOIN #__vm_product_category_xref x
-			ON x.product_id = p.product_id
-			LEFT JOIN #__vm_product_mf_xref mx
-			ON mx.product_id = p.product_id
-			LEFT JOIN #__vm_manufacturer m
-			ON m.manufacturer_id = mx.manufacturer_id
-			WHERE p.product_id = ".$product_id;
+		$q = "SELECT `p`.*, `x`.`category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
+			FROM `#__vm_product` `p`
+			LEFT JOIN `#__vm_product_category_xref` x
+			ON `x`.`product_id` = `p`.`product_id`
+			LEFT JOIN `#__vm_product_mf_xref` `mx`
+			ON `mx`.`product_id` = `p`.`product_id`
+			LEFT JOIN `#__vm_manufacturer` `m`
+			ON `m`.`manufacturer_id` = `mx`.`manufacturer_id`
+			WHERE `p`.`product_id` = ".$product_id;
 		$this->_db->setQuery($q);
 		$product = $this->_db->loadObject();
 
@@ -238,7 +246,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$categories = array();
 
 		if ($product_id > 0) {
-			$q = "SELECT category_id FROM #__vm_product_category_xref WHERE product_id = ".$product_id;
+			$q = "SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = ".$product_id;
 			$this->_db->setQuery($q);
 			$categories = $this->_db->loadResultArray();
 		}
@@ -259,12 +267,12 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
 
-		$q = "SELECT x.product_id, product_list, p.product_name
-			FROM #__vm_product_category_xref x
-			LEFT JOIN #__vm_product p
-			ON p.product_id = x.product_id
-			WHERE category_id = ".$product->category_id."
-			ORDER BY product_list, x.product_id";
+		$q = "SELECT x.`product_id`, product_list, `p`.product_name
+			FROM `#__vm_product_category_xref` x
+			LEFT JOIN `#__vm_product` `p`
+			ON `p`.`product_id` = `x`.`product_id`
+			WHERE `category_id` = ".$product->category_id."
+			ORDER BY `product_list`, `x`.`product_id`";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('product_id');
 
@@ -294,9 +302,9 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$html = "";
 		$q = "SELECT attribute_value
-			FROM #__vm_product_attribute
+			FROM `#__vm_product_attribute`
 			WHERE `product_id` = ".$product_id."
-			AND attribute_name='download'";
+			AND `attribute_name`='download'";
 		$this->_db->query($q);
 		$exclude_filename = $this->_db->Quote($this->_db->loadResult());
 
@@ -328,11 +336,11 @@ class VirtueMartModelProductdetails extends JModel {
 	*/
 	private function getRelatedProducts($product_id) {
 		$this->_db = JFactory::getDBO();
-		$q = "SELECT p.product_id, product_sku, product_name, product_thumb_image, related_products
-			FROM #__vm_product p, #__vm_product_relations r
-			WHERE r.product_id = ".$product_id."
-			AND p.published = 1
-			AND FIND_IN_SET(p.product_id, REPLACE(r.related_products, '|', ',' )) LIMIT 0, 4";
+		$q = "SELECT `p`.`product_id`, `product_sku`, `product_name`,`product_thumb_image`, related_products
+			FROM `#__vm_product` p, `#__vm_product_relations` `r`
+			WHERE `r`.`product_id` = ".$product_id."
+			AND `p`.published = 1
+			AND FIND_IN_SET(`p`.`product_id`, REPLACE(`r`.`related_products`, '|', ',' )) LIMIT 0, 4";
 		$this->_db->setQuery($q);
 		$related_products = $this->_db->loadObjectList();
 
@@ -378,11 +386,11 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 
-		$q = 'SELECT comment, `time`, userid, user_rating, username, name
-			FROM #__vm_product_reviews r
-			LEFT JOIN jos_users u
-			ON u.id = r.userid
-			WHERE product_id = "'.$product_id.'"
+		$q = 'SELECT comment, `time`, `userid`, `user_rating`, `username, `name`
+			FROM `#__vm_product_reviews` `r`
+			LEFT JOIN `jos_users` `u`
+			ON `u`.`id` = `r`.`userid`
+			WHERE `product_id` = "'.$product_id.'"
 			AND published = "1"
 			ORDER BY `time` DESC ';
 		if (!$showall) $q .= ' LIMIT 0, 5';
@@ -415,7 +423,7 @@ class VirtueMartModelProductdetails extends JModel {
 	 */
 	private function hasProductType($product_id) {
 		$this->_db = JFactory::getDBO();
-		$q = "SELECT COUNT(product_id) AS types FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
+		$q = "SELECT COUNT(`product_id`) AS types FROM `#__vm_product_product_type_xref` WHERE `product_id` = ".$product_id;
 		$this->_db->setQuery($q);
 
 		return ($this->_db->loadResult() > 0);
@@ -433,18 +441,18 @@ class VirtueMartModelProductdetails extends JModel {
 		$product_types = array();
 
 		/* Get the product types the product is linked to */
-		$q = "SELECT t.*
-			FROM #__vm_product_product_type_xref x
-			LEFT JOIN #__vm_product_type t
-			ON t.product_type_id = x.product_type_id
-			WHERE product_id = ".$product_id."
-			GROUP BY product_type_id";
+		$q = "SELECT `t`.*
+			FROM `#__vm_product_product_type_xref` `x`
+			LEFT JOIN `#__vm_product_type` `t`
+			ON `t`.`product_type_id` = `x`.`product_type_id`
+			WHERE `product_id` = ".$product_id."
+			GROUP BY `product_type_id`";
 		$this->_db->setQuery($q);
 		$product_types = $this->_db->loadObjectList();
 
 		foreach ($product_types as $pkey => $product_type) {
 			/* Load the details */
-			$q = "SELECT * FROM #__vm_product_type_".$product_type->product_type_id." ORDER BY parameter_list_order";
+			$q = "SELECT * FROM `#__vm_product_type_".$product_type->product_type_id."` ORDER BY `parameter_list_order`";
 			$this->_db->setQuery($q);
 			$product_types[$pkey]->product_type = $this->_db->loadObjectList();
 		}
@@ -501,67 +509,88 @@ class VirtueMartModelProductdetails extends JModel {
 		return $variants;
 	}
 
-	function _buildQuery($category_id) {
-		
-		$keyword = JRequest::getVar('keyword', '');
-				// a starting point for search and filters
-		if ($keyword !='') {
-			$filtercategory = JRequest::getVar('filter', '0');
-			$group = JRequest::getVar('group', ''); // group by
-			$orderInv = JRequest::getVar('orderInv', ''); // orde DESC ASC;
-			if ($filtercategory) $cat_id = (empty($category_id)) ? JRequest::getVar('category_id', 0) : $category_id ;
+	function _buildQuery($category_id = 0)
+	{
+		global $mainframe, $option;
 
-			/* Get a filtered list of product ID's */
-			$q = "SELECT DISTINCT #__vm_product.product_id FROM #__vm_product
-				LEFT JOIN #__vm_product_category_xref ON #__vm_product.product_id = #__vm_product_category_xref.product_id
-				WHERE (`product_name` LIKE '%".$keyword."%'
-				or `product_sku` LIKE '%".$keyword."%'
-				or `product_s_desc` LIKE '%".$keyword."%'
-				or `product_desc` LIKE '%".$keyword."%')
-				AND `#__vm_product`.`published`='1' ";
-			if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1')
-				$q .= ' AND `product_in_stock` > 0 ';
-			if (isset ($cat_id))
-				$q .= ' AND category_id = "'.$cat_id.'" ';
+		$filter_order		= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
+		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
 
-				/* The order By to set :( TO DO for price , find a trick because of the new rules )
-				     if you want more add it here */
-			switch ($group) {
-				case 'featured':
-					$q = 'AND `#__vm_product`.`product_special`="Y" ';
-					break;
-				case 'stock':
-					$q .= ' ORDER BY product_in_stock ';
-					break;
-				case 'name':
-					$q .= ' ORDER BY product_name ';
-					break;
-				case 'sku':
-					$q .= ' ORDER BY product_sku ';
-					break;
-				case 'date';
-					$q .= ' ORDER BY cdate ';
-					break;
-				case 'topten';
-					$q .= ' ORDER BY product_sales ';
-					break;
-				default ;
-					$q .= ' ORDER BY product_id ';
-					break;
+		$search = JRequest::getVar('search', false );
+		$joinCategory = false ;
+		$joinMf = false ;
+		$joinPrice = false ;
+		$where[] = " `#__vm_product`.`published`='1' ";
+
+		/* search fields filters set */
+		if ( $search == 'true') {
+			$keyword = trim( str_replace(' ', '%', JRequest::getVar('keyword', '') ) );
+			$searchFields = VmConfig::get('browse_search_fields');
+			foreach ($searchFields as $searchField) {
+				if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
+				if ($searchField == 'mf_name') $joinMf = true ;
+				if ($searchField == 'product_price') $joinPrice = true ;
+				$filter_search[] = " `".$searchField."` LIKE '%".$keyword."%' ";
 			}
-			if ($orderInv)
-				$q .= ' DESC';
-
-		} else {
-
-		/* Get a list of product ID's */
-		$q = "SELECT product_id
-			FROM #__vm_product_category_xref
-			WHERE category_id = ".$category_id;
+			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+		} 
+		if ($category_id>0){ 
+			$joinCategory = true ;
+			$where[] = ' `#__vm_product_category_xref`.`category_id` = '.$category_id;
 		}
-		return $q;
-	}
+		// sanitize $filter_order and dir
+		if (!in_array($filter_order, VmConfig::get('browse_orderby_fields'))) {
+			$filter_order = VmConfig::get('browse_orderby_field');
+		}
+		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
+			$filter_order_Dir = '';
+		}
 
+		/* search Order fields set */
+		
+		if (VmConfig::get('check_stock') && Vmconfig::getVar('show_out_of_stock_products') != '1')
+			$where[] = ' `product_in_stock` > 0 ';
+		// special  orders case
+		switch ($filter_order) {
+			case 'product_special':
+				$where[] = ' `#__vm_product`.`product_special`="Y" ';// Change  to  a  individual checkbox or button
+				break;
+			case 'category_name':
+				$orderBy = ' ORDER BY `category_name` ';
+				$joinCategory = true ;
+				break;
+			case 'category_description':
+				$orderBy = ' ORDER BY `category_description` ';
+				$joinCategory = true ;
+				break;
+			case 'mf_name':
+				$orderBy = ' ORDER BY `mf_name` ';
+				$joinMf = true ;
+				break;
+			case 'product_price':
+				$orderBy = ' ORDER BY `product_price` ';
+				$joinPrice = true ;
+				break;
+			default ;
+				$orderBy = ' ORDER BY `#__vm_product`.`'.$filter_order.'` ';
+				break;
+		}
+		
+		$query = "SELECT `#__vm_product`.`product_id` FROM `#__vm_product` ";
+		if ($joinCategory == true) {
+			$query .= ' LEFT JOIN `#__vm_product_category_xref` ON `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
+			 LEFT JOIN `#__vm_category` ON `#__vm_category`.`category_id` = `#__vm_product_category_xref`.`category_id`';
+		}
+		if ($joinMf == true) {
+			$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product`.`product_id` = `#__vm_product_mf_xref`.`product_id`
+			 LEFT JOIN `#__vm_manufacturer` ON `#__vm_manufacturer`.`manufacturer_id` = `#__vm_product_mf_xref`.`manufacturer_id` ';
+		}			
+		if ($joinPrice == true) {
+			$query .= ' LEFT JOIN `#__vm_product_price` ON `#__vm_product`.`product_id` = `#__vm_product_price`.`product_id` ';
+		}
+		$query .= ' WHERE '.implode(" AND ", $where ).' GROUP BY `#__vm_product`.`product_id` '. $orderBy .$filter_order_Dir ;
+		return $query ;
+	}
 	/**
 	* Get the products in a given category
 	*
@@ -574,8 +603,8 @@ class VirtueMartModelProductdetails extends JModel {
 
 		if (empty($this->products)) {
 
-			$query = $this->_buildQuery($category_id);
-			$product_ids = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit')); 
+			if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+			$product_ids = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit')); 
 
 			/* Collect the product data */
 			
@@ -589,8 +618,8 @@ class VirtueMartModelProductdetails extends JModel {
   {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
-            $query = $this->_buildQuery($category_id);
-            $this->_total = $this->_getListCount($query);    
+            if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+            $this->_total = $this->_getListCount($this->_query);    
         }
         return $this->_total;
   }
@@ -604,6 +633,39 @@ class VirtueMartModelProductdetails extends JModel {
         return $this->_pagination;
   }
 
+	/**
+	* Get the Order By Select List
+	*
+	* @author Kohl Patrick
+	* @access public
+	* @param $fieds from config Back-end
+	* @return $orderBy genericlist 
+	*/  
+  function getOrderByList() {
+
+	$fields = VmConfig::get('browse_orderby_fields');
+	$orderByFields = array();
+	$orderby = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field'));
+	foreach ($fields as $field) {
+		$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
+		$orderByFields[] = JHTML::_('select.option', $field, $text) ;
+	}
+	$orderBy = JHTML::_('Select.genericlist', $orderByFields, 'orderby', 'size=1 onchange="this.form.submit();"', 'value', 'text', $orderby);
+	$order = JRequest::getVar('order', '');
+	if ($order =='ASC') {
+		$value = 'DESC' ;
+		$text = JText::_('VM_SEARCH_ORDER_DESC');
+	}
+	else {
+		$order ='DESC';
+		$value = 'ASC';
+		$text = JText::_('VM_SEARCH_ORDER_ASC');
+	}
+	$orderBy .= '<input type="hidden" value="'.$order.'" name="order">';
+	$orderBy .= '<input type="submit" value="'.$text.'" name="changeorder" onClick="this.form.order.value=\''.$value.'\';"  class="button">';
+	return $orderBy ;
+  }
+	
 	/**
 	* Get the stock level for a given product
 	*
@@ -671,29 +733,29 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$attributes = array();
 		if ($product->product_id && $product->product_parent_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute, #__vm_product_attribute_sku ";
-			$q .= "WHERE #__vm}_product_attribute.product_id = ".$product->product_id." ";
-			$q .= "AND #__vm}_product_attribute_sku.product_id = ".$product->product_parent_id." ";
+			$q  = "SELECT * FROM `#__vm_product_attribute`, `#__vm_product_attribute_sku` ";
+			$q .= "WHERE `#__vm_product_attribute`.`product_id` = ".$product->product_id." ";
+			$q .= "AND `#__vm_product_attribute_sku`.`product_id` = ".$product->product_parent_id." ";
 			if ($attribute_name) {
-				$q .= "AND #__vm_product_attribute.attribute_name = ".$this->_db->Quote($attribute_name)." ";
+				$q .= "AND `#__vm_product_attribute`.`attribute_name` = ".$this->_db->Quote($attribute_name)." ";
 			}
-			$q .= "AND #__vm_product_attribute.attribute_name = #__vm_product_attribute_sku.attribute_name ";
-			$q .= "ORDER BY attribute_list, #__vm_product_attribute.attribute_name";
+			$q .= "AND `#__vm_product_attribute`.`attribute_name` = `#__vm_product_attribute_sku`.attribute_name ";
+			$q .= "ORDER BY attribute_list, `#__vm_product_attribute`.`attribute_name`";
 		}
 		elseif ($product->product_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute ";
-			$q .= "WHERE product_id = ".$product->product_id." ";
+			$q  = "SELECT * FROM `#__vm_product_attribute` ";
+			$q .= "WHERE  `product_id` = ".$product->product_id." ";
 			if ($attribute_name) {
-				$q .= "AND attribute_name = ".$this->_db->Quote($attribute_name)." ";
+				$q .= "AND `attribute_name` = ".$this->_db->Quote($attribute_name)." ";
 			}
 		}
 		elseif ($product->product_parent_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute_sku ";
+			$q  = "SELECT * FROM `#__vm_product_attribute_sku` ";
 			$q .= "WHERE product_id = ".$product->product_parent_id." ";
 			if ($attribute_name) {
-				$q .= "AND #__vm_product_attribute.attribute_name = ".$this->_db->Quote($attribute_name)." ";
+				$q .= "AND `#__vm_product_attribute`.`attribute_name` = ".$this->_db->Quote($attribute_name)." ";
 			}
-			$q .= "ORDER BY attribute_list,attribute_name";
+			$q .= "ORDER BY attribute_list,`attribute_name`";
 		}
 
 		$this->_db->setQuery($q);

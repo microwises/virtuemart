@@ -18,14 +18,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$orderByFieldsArray = $this->config->get('browse_orderby_fields');
+/*$orderByFieldsArray = $this->config->get('browse_orderby_fields');
 $orderByFields = array();
 $orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('VM_DEFAULT'));
 $orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('VM_PRODUCT_NAME_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('VM_PRODUCT_PRICE_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('VM_CART_SKU'));
 $orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('VM_LATEST'));
-$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));
+$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));*/
 ?>
 <br />
 <table>
@@ -91,7 +91,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    </span>
 			</td>
 			<td>
-			    <?php echo JHTML::_('Select.genericlist', $orderByFields, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field')); ?>
+
+			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field')); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -101,12 +102,17 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    </span>
 			</td>
 			<td>
-			    <?php
-			    for ($i=0, $n=count($orderByFields); $i < $n; $i++) {
-				$field = $orderByFields[$i];
-				echo VmHTML::checkbox('browse_orderby_fields[]', in_array($field->value, $orderByFields));
-				echo $field->text.'<br />';
-			    } ?>
+			    <?php echo $this->orderByFields->checkbox ; ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_SEARCH_FIELDS_LBL_TIP'); ?>">
+			    <?php echo JText::_('VM_BROWSE_SEARCH_FIELDS_LBL') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo $this->searchFields ; ?>
 			</td>
 		    </tr>
 		    <tr>

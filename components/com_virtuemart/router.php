@@ -410,10 +410,12 @@ class vmrouterHelper {
 				WHERE `xref`.`category_child_id`= ".$category_id;
 		$db->setQuery($q);
 		$ids = $db->loadObject();
-		if ($ids->child) $idsArr[] = $ids->child;
-		if($ids->parent != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
-			self::getCategoryRecurse($ids->parent,$catMenuId,false);
-		} 
+		if (isset ($ids->child)) {
+			$idsArr[] = $ids->child;
+			if($ids->parent != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
+				self::getCategoryRecurse($ids->parent,$catMenuId,false);
+			} 
+		}
 		return $idsArr ;
 	}
 	/* return id of categories
