@@ -60,7 +60,7 @@ function virtuemartBuildRoute(&$query) {
 			// Fix for search with no category
 			if ( isset($query['start'] )) {
 				$segments[] = $lang->page ;
-				global $mainframe ;
+				$mainframe = Jfactory::getApplication(); ;
 				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 				$segments[] = floor($query['start']/$limit)+1;
 				unset($query['start']);
@@ -173,7 +173,7 @@ function virtuemartParseRoute($segments)
 	if ($segments[0] == $lang->page) {
 		array_shift($segments);
 		
-		global $mainframe ;
+		$mainframe = Jfactory::getApplication(); ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
 

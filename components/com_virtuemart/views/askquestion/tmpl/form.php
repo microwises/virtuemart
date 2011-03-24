@@ -22,7 +22,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 JHTML::_('behavior.formvalidation');
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_ ( 'VM_PRODUCT_NOT_FOUND' );
+	echo JText::_( 'VM_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
 <div class="productdetails-view" style="margin:20px;">
@@ -43,7 +43,7 @@ if (empty ( $this->product )) {
 			if (!empty($this->product->product_s_desc)) { ?>
 			<p class="short-description">
 				<?php
-				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORE_DESC_LBL').'</span><br />';
+				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
 				echo $this->product->product_s_desc ?>
 			</p>
 			<?php } // Product Short Description END ?>
@@ -108,7 +108,7 @@ if (empty ( $this->product )) {
 					<textarea title="<?php echo $ask_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" OnKeyUp="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
 					<br />
 					<input class="button" type="submit" name="submit_ask" title="<?php echo JText::_('VM_ASK_SUBMIT')  ?>" value="<?php echo JText::_('VM_ASK_SUBMIT')  ?>" />
-					<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
+					<div align="right"><?php echo JText::_('VM_ASK_COUNT')  ?>
 						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 					</div>
 					<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('product_id'); ?>" />

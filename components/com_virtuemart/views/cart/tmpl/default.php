@@ -19,12 +19,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+JHtml::_('behavior.formvalidation');
 //This displays the pricelist MUST be done with tables, because it is also used for the emails
 include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
 ?>
-<form method="post" id=userForm name="checkoutForm" action="<?php echo JRoute::_( 'index.php' ); ?>">
+<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart' ); ?>">
 
 <fieldset>
 	<legend>

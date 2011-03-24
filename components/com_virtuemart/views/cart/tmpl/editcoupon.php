@@ -24,9 +24,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <form method="post" id="userForm" name="enterCouponCode" action="<?php echo JRoute::_( 'index.php' ); ?>">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit"><?php echo JText::_('SAVE'); ?></button>
+	<button class="button" type="submit"><?php echo JText::_('VM_SAVE'); ?></button>
 
-	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('CANCEL'); ?></button>
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 
 <?php

@@ -56,9 +56,9 @@ function myValidator(f, t)
 </script>
 <form method="post" id="userForm" name="choosePaymentRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit"><?php echo JText::_('SAVE'); ?></button>
+	<button class="button" type="submit"><?php echo JText::_('VM_SAVE'); ?></button>
 
-	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('CANCEL'); ?></button>
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 <?php
 	echo JText::_('VM_CART_SELECT_PAYMENT');

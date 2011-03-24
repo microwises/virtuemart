@@ -69,11 +69,12 @@ class VirtueMartControllerProductdetails extends JController {
 		$view = $this->getView('askquestion', 'html');
 		/* add vendor model*/
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
-		$VendorEmail = $vendormodel->getVendorEmail(1);
+
 		$productmodel = $this->getModel( 'product', 'VirtuemartModel' );
 		$productDetails = $productmodel->getProductDetails();
-		
+                
+		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
+		$VendorEmail = $vendormodel->getVendorEmail($productDetails->vendor_id);
 		/* Add the default model */
 		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
 
@@ -88,15 +89,15 @@ class VirtueMartControllerProductdetails extends JController {
 		$mainframe = JFactory::getApplication() ;
 		$user =& JFactory::getUser();
 		if(empty($user->id)){
-		$fromMail = JRequest::getVar('email');
-		$fromName = JRequest::getVar('name','');
+                    $fromMail = JRequest::getVar('email');
+                    $fromName = JRequest::getVar('name','');
 		
 		}else {
-	 	$fromMail = $user->email;
-	 	$fromName = $user->name;
+                    $fromMail = $user->email;
+                    $fromName = $user->name;
 	 	}
 		$fromSite = $mainframe->getCfg('sitename');
-		$subject = 'Question About '.$productDetails->product_name .'('.$fromSite.')';
+		$subject = Jtext::_('VM_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
 		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n";
 		$message .= JRequest::getVar('comment');
 		$msgtype = '';

@@ -24,7 +24,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 JHTML::_( 'behavior.modal' );
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_ ( 'VM_PRODUCT_NOT_FOUND' );
+	echo JText::_( 'VM_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 	return ;
 }  ?>
@@ -74,7 +74,7 @@ if (empty ( $this->product )) {
 			if (!empty($this->product->product_s_desc)) { ?>
 			<p class="short-description">
 				<?php
-				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORE_DESC_LBL').'</span><br />';
+				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
 				echo $this->product->product_s_desc ?>
 			</p>
 			<?php } // Product Short Description END ?>

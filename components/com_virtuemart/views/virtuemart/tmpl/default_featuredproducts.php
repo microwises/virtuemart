@@ -15,7 +15,7 @@ $verticalseparator = " vertical-separator";
 
 <div class="featured-view">
 
-	<h4><?php echo JText::_ ( 'VM_FEATURED_PRODUCT' ) ?></h4>
+	<h4><?php echo JText::_( 'VM_FEATURED_PRODUCT' ) ?></h4>
 	
 <?php // Start the Output
 foreach ( $this->featuredProducts as $featProduct ) {
@@ -86,7 +86,7 @@ foreach ( $this->featuredProducts as $featProduct ) {
 				
 					<div>
 					<?php // Product Details Button
-					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), JText::_ ( 'PRODUCT_DETAILS' ), array ('title' => $featProduct->product_name, 'class' => 'product-details' ) );
+					echo JHTML::link ( JRoute::_( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), JText::_ ( 'PRODUCT_DETAILS' ), array ('title' => $featProduct->product_name, 'class' => 'product-details' ) );
 					?>
 					</div>
 				</div>

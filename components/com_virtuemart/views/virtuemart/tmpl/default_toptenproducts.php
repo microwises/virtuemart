@@ -15,7 +15,7 @@ $verticalseparator = " vertical-separator";
 
 <div class="topten-view">
 
-	<h4><?php echo JText::_ ( 'VM_TOPTEN_PRODUCT' ) ?></h4>
+	<h4><?php echo JText::_( 'VM_TOPTEN_PRODUCT' ) ?></h4>
 	
 <?php // Start the Output
 foreach ( $this->toptenProducts as $topProduct ) {
