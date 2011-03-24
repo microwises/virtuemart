@@ -60,7 +60,8 @@ class VirtueMartModelProductdetails extends JModel {
 	{
 		parent::__construct();
 	
-		global $mainframe, $option;
+		$mainframe = Jfactory::getApplication();
+
 		// Get pagination request variables
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
@@ -386,7 +387,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 
-		$q = 'SELECT comment, `time`, `userid`, `user_rating`, `username, `name`
+		$q = 'SELECT `comment`, `time`, `userid`, `user_rating`, `username`, `name`
 			FROM `#__vm_product_reviews` `r`
 			LEFT JOIN `jos_users` `u`
 			ON `u`.`id` = `r`.`userid`
@@ -511,7 +512,8 @@ class VirtueMartModelProductdetails extends JModel {
 
 	function _buildQuery($category_id = 0)
 	{
-		global $mainframe, $option;
+		$mainframe = Jfactory::getApplication();
+                $option = JRequest::getWord('option');
 
 		$filter_order		= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
 		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
