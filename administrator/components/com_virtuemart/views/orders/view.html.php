@@ -33,7 +33,7 @@ class VirtuemartViewOrders extends JView {
 	function display($tpl = null) {
 
 		$mainframe = JFactory::getApplication();
-		$option = JRequest::getVar('option');
+		$option = JRequest::getWord('option');
 		$lists = array();
 
 		/* Load helpers */

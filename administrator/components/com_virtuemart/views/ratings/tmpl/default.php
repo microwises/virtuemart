@@ -21,7 +21,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
+/* Get the component name */
+$option = JRequest::getWord('option');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
