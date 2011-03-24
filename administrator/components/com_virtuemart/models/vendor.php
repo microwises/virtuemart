@@ -176,7 +176,7 @@ class VirtueMartModelVendor extends JModel {
 		$db = JFactory::getDBO();
 		if (empty($vendorId)) return;
 		else {
-			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`="' . $this->_db->Quote((int)$vendorId) . '" ';
+			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);
