@@ -56,7 +56,7 @@ INSERT IGNORE INTO `#__vm_category_xref` (`category_parent_id`, `category_child_
 --
 
 INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `mf_thumb_image`, `mf_full_image`) VALUES
-(1, 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', 1, 'http://www.a-url.com', '', '');
+(1, 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', 1, 'http://www.example.org', '', '');
 
 
 --
