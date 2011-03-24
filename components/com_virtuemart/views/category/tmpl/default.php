@@ -21,6 +21,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/* javascript for list Slide
+  Only here for the order list
+  can be changed by the template maker
+*/
+$js = "
+jQuery(document).ready(function () { 
+	jQuery('.orderlistcontainer').hover( 
+		function() {
+		orderlist = jQuery(this).find('.orderlist') ;
+		orderlist.stop().show()},
+		function() {
+		orderlist = jQuery(this).find('.orderlist') ;
+		orderlist.stop().hide()}
+	)
+});
+";
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
+
 /* Show child categories */
 if ($this->category->haschildren) {
 	?>
@@ -87,11 +106,9 @@ if (!empty($this->products)) {
 	}
 	?>
 	<div><?php echo $this->pagination->getResultsCounter();?></div>
-	<form method="get" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$this->category->category_id.$search); ?>">
-	<br>
+
 	<?php echo $this->orderByList; ?>
 
-</form>
 	<div class="browse-view">
 		<h1><?php echo $this->category->category_name; ?></h1>
 <?php

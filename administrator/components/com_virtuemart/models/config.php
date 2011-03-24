@@ -195,6 +195,7 @@ class VirtueMartModelConfig extends JModel {
     function getOrderByFields( $orderByChecked ) {
 
 	if (empty ($orderByChecked)) $orderByChecked = array('product_sku','category_name','mf_name','product_name');
+	else if (!is_array($orderByChecked)) $orderByChecked = array($orderByChecked);
 	$orderByFields = new stdClass();
 	$orderByFields->checkbox ='';
 
@@ -221,6 +222,7 @@ class VirtueMartModelConfig extends JModel {
     function getSearchFields( $searchChecked ) {
 
 	if (empty ($searchChecked)) $searchChecked = array('product_sku','category_name','category_description','mf_name','product_name', 'product_s_desc');
+	else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
 	$searchFields = '';
 	$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'cdate', 'mdate',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 	foreach ($searchFieldsArray as $field ) {

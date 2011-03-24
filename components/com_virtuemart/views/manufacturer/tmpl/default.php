@@ -18,20 +18,30 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-foreach ($this->manufacturers as $manufacturer) {
-	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
-	$manufacturerImage = VmImage::getImageByMf($manufacturer);
+$i = 1 ;
 	?>
-	<div>
-	    <a href="<?php echo $link; ?>"><?php echo $manufacturer->mf_name; ?></a>
-	</div>
-	<div>
-		<a href="<?php echo $link; ?>"><?php echo $manufacturerImage->displayImage('','',1,1);?></a>
-	</div>
-	<div>
-		<?php echo $manufacturer->mf_desc ?>
-	</div>
-<?php
-}
-?>
+<div class="category-row">
+	<?php
+	foreach ($this->manufacturers as $manufacturer) {
+		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
+		$manufacturerImage = VmImage::getImageByMf($manufacturer);
+		$productlink = JROUTE::_('index.php?option=com_virtuemart&view=category&manufacturer_id=' . $manufacturer->manufacturer_id);
+		?>
+		
+		<!-- Category Listing Output -->
+		<div class="width33 floatleft center">
+			<h3>
+				<a href="<?php echo $link; ?>"><?php echo $manufacturer->mf_name; ?></a>
+			
+			<br />
+				<a href="<?php echo $link; ?>"><?php echo $manufacturerImage->displayImage('','',1,1);?></a>
+			</h3>
+		</div>
+
+		<?php
+		if ($i==3){
+		}
+		$i++;
+	}
+	?>
+</div>

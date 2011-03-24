@@ -683,6 +683,13 @@ button.save-button {margin-right: 12px;}
 button.save-button, button.cancel-button {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;cursor: pointer;}
 button.save-button:hover, button.cancel-button:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
+/* Order list & container */
+.orderlistcontainer {margin-right: 12px;}
+.orderlistcontainer{background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
+.orderlistcontainer div.activeOrder {padding:0px 24px 0px 12px; background: #FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);border: solid #ccc 1px; }
+.orderlistcontainer a {text-decoration:none;}
+.orderlistcontainer div.orderlist {display:none;position:absolute ;padding: 2px 12px 1px 12px;border: solid #ccc 1px;background: #FFF; }
+
 /* Input Details */
 table.user-details {}
 table.user-details input {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
