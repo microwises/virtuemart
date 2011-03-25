@@ -65,6 +65,10 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = floor($query['start']/$limit)+1;
 				unset($query['start']);
 			}
+			if ( isset($query['manufacturer_id'])  ) {
+				$segments[] = $lang->manufacturer.'/'.$query['manufacturer_id'].'/'.$helper->getManufacturerName($query['manufacturer_id']) ;
+				unset($query['manufacturer_id']);
+			}
 			if ( isset($query['search'])  ) {
 				$segments[] = $lang->search ;
 				unset($query['search']);
@@ -72,7 +76,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['keyword'] )) {
 				$segments[] = $query['keyword'];
 				unset($query['keyword']);
-			}	
+			}
 			if(!empty( $query['category_id']) && $menuCatid != $query['category_id'] ){
 				$categoryRoute = $helper->getCategoryRoute($query['category_id']);
 				if ($categoryRoute->route) $segments[] = $categoryRoute->route;
@@ -176,7 +180,19 @@ function virtuemartParseRoute($segments)
 		$mainframe = Jfactory::getApplication(); ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
-
+		if (empty($segments)) return $vars;
+	}
+	
+	if ( $segments[0] == $lang->manufacturer) {
+		array_shift($segments);
+		$vars['manufacturer_id'] = $segments[0];
+		array_shift($segments);
+		array_shift($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['category_id'] = '0';
+			return $vars;
+		}
 	}
 	if ($segments[0] == $lang->search) {
 		$vars['search'] = 'true';
@@ -186,10 +202,9 @@ function virtuemartParseRoute($segments)
 			
 		}
 		$vars['view'] = 'category';
-		
+		if (empty($segments)) return $vars;
 	}
 	$count = count($segments)-1;
-	if ($count <0) return $vars;
 	//print_r($segments);
 	if ($segments[$count] == 'detail') {
 		$vars['tmpl'] = 'component';
@@ -492,6 +507,13 @@ class vmrouterHelper {
 		/* WARNING product name must be unique or you can't acces the product */
 		return $product ; 
 	}
+	public function getManufacturerName($manufacturer_id ){
+	$db = JFactory::getDBO();
+	$query = 'SELECT `mf_name` FROM `#__vm_manufacturer` WHERE manufacturer_id='.$manufacturer_id;
+	$db->setQuery($query);
+	return $db->loadResult();
+
+	}
 	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
 	private function setLang(){
 
@@ -510,7 +532,8 @@ class vmrouterHelper {
 			$this->lang->editaddresscartBT  = $lang->_('VM_SEF_EDITADRESSCART_BILL');
 			$this->lang->editaddresscartST  = $lang->_('VM_SEF_EDITADRESSCART_SHIP');
 			$this->lang->search       = $lang->_('VM_SEF_SEARCH');
-			$this->lang->page       = $lang->_('VM_SEF_PAGE');
+			$this->lang->manufacturer = $lang->_('VM_SEF_MANUFACTURER');
+			$this->lang->page         = $lang->_('VM_SEF_PAGE');
 		} else {
 			/* use default */
 			$this->lang->editshipping = 'editshipping';
@@ -522,6 +545,7 @@ class vmrouterHelper {
 			$this->lang->editaddresscartBT  = 'edit_cart_bill_to';
 			$this->lang->editaddresscartBT  = 'edit_cart_ship_to';
 			$this->lang->search       = 'search';
+			$this->lang->manufacturer       = 'manufacturer';
 			$this->lang->page         = 'page';
 			
 		}  

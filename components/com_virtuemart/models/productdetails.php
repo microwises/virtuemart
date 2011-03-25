@@ -654,12 +654,16 @@ class VirtueMartModelProductdetails extends JModel {
 	**/  
   function getOrderByList() {
 
+	$mainframe = Jfactory::getApplication();
+	$option = JRequest::getWord('option');
+
+
 	$orderTxt ='';
-	$order = JRequest::getVar('order', '');
+	$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
 	if ($order != '' ) $orderTxt .= '&order='.$order;
 
 	$orderbyTxt ='';
-	$orderby = JRequest::getVar('orderby','');
+	$orderby	= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
 	if ($orderby != '' ) $orderbyTxt = '&orderby='.$orderby;
 
 	$fieldLink = '&category_id='.JRequest::getInt('category_id', 0 );
@@ -668,7 +672,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 	/* manufacturer link list*/
 	$manufacturerTxt ='';
-	$manufacturer_id = JRequest::getVar('manufacturer_id','');
+	$manufacturer_id = JRequest::getVar('manufacturer_id',0);
 	if ($manufacturer_id != '' ) $manufacturerTxt ='&manufacturer_id='.$manufacturer_id;
 	$db = JFactory::getDBO();
 	$query = 'SELECT `mf_name`,`manufacturer_id` FROM `#__vm_manufacturer`';// WHERE manufacturer_id '$manufacturer_id;
@@ -678,12 +682,13 @@ class VirtueMartModelProductdetails extends JModel {
 	$manufacturerLink='';
 	if (count($manufacturers)>1) {
 		$manufacturerLink ='<div class="orderlist">';
+		if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('VM_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
 		foreach ($manufacturers as $mf) {
 			$link = JRoute::_('index.php?option=com_virtuemart&view=category&manufacturer_id='.$mf->manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
 			if ($mf->manufacturer_id != $manufacturer_id) {
 				$manufacturerLink .='<div><a title="'.$mf->mf_name.'" href="'.$link.'">'.$mf->mf_name.'</a></div>';
 			}
-			else $currentManufacturerLink ='<div>'.$mf->mf_name.'</div>';
+			else $currentManufacturerLink =$mf->mf_name;
 		}
 		$manufacturerLink .='</div>';
 	}
@@ -721,7 +726,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 	$orderByList ='<div class="orderlistcontainer"><div class="activeOrder"><a title="'.$text.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$text.'</a> <div class="orderlistcontainerButton"></div></div>';
 	$orderByList .= $orderByLink.'</div>';
-	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = ('VM_SEARCH_SELECT_MANUFACTURER');
+	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = JText::_('VM_SEARCH_SELECT_MANUFACTURER');
 	$orderByList .='<div class="orderlistcontainer"><div class="activeOrder">'.$currentManufacturerLink.'<div class="orderlistcontainerButton"></div></div>';
 	$orderByList .= $manufacturerLink.'</div>';
 
