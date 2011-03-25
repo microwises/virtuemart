@@ -460,7 +460,7 @@ if (empty ( $this->product )) {
 							</table>
 							<br /><br />
 							<?php
-							echo JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
+							echo JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
 							?>
 							<br />
 							<textarea title="<?php echo JText::_('VM_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"></textarea>
