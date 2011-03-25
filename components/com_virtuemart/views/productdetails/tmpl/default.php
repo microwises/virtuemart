@@ -391,7 +391,7 @@ if (empty ( $this->product )) {
 				else {
 					/* Show all reviews */
 					if (!$showall && count($this->product_reviews) >=$ratingsShow ) {
-						echo JHTML::link($this->more_reviews, JText::_('MORE_REVIEWS'));
+						echo JHTML::link($this->more_reviews, JText::_('VM_MORE_REVIEWS'));
 					}
 				}
 				?>
@@ -463,7 +463,7 @@ if (empty ( $this->product )) {
 							echo JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('vm_reviews_minimum_comment_length', 100), VmConfig::get('vm_reviews_maximum_comment_length', 2000));
 							?>
 							<br />
-							<textarea title="<?php echo $review_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="100"></textarea>
+							<textarea title="<?php echo JText::_('VM_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"></textarea>
 							<br />
 							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
 							<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
