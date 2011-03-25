@@ -413,12 +413,12 @@ if (empty ( $this->product )) {
 								  alert('".JText::_('VM_REVIEW_ERR_RATE',false)."');
 								  return false;
 								}
-								else if (form.comment.value.length < ". VmConfig::get('vm_reviews_minimum_comment_length', 100).") {
-									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('vm_reviews_minimum_comment_length', 100))."');
+								else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
+									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('reviews_minimum_comment_length', 100))."');
 									return false;
 								}
-								else if (form.comment.value.length > ". VmConfig::get('vm_reviews_maximum_comment_length', 2000).") {
-									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('vm_reviews_maximum_comment_length', 2000))."');
+								else if (form.comment.value.length > ". VmConfig::get('reviews_maximum_comment_length', 2000).") {
+									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('reviews_maximum_comment_length', 2000))."');
 									return false;
 								}
 								else {
