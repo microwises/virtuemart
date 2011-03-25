@@ -60,9 +60,9 @@ class TableConfig extends JTable {
 	/** @var tinyint Autopublish reviews flag */
 	var $autopublish_reviews		= 0;
 	/** @var int Autopublish reviews flag */
-	var $comment_min_length			= 100;
+	var $reviews_minimum_comment_length			= 100;
 	/** @var int Autopublish reviews flag */
-	var $comment_max_length			= 2000;
+	var $reviews_maximum_comment_length			= 2000;
 	/** @var tinyint Virtual tax flag */
 	var $virtual_tax				= 1;
 	/** @var tinyint Tax mode id */

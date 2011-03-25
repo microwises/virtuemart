@@ -164,7 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input type="text" size="6" id="reviews_minimum_comment_length" name="comment_min_length" class="inputbox" value="<?php echo $this->config->get('comment_min_length'); ?>" />
+		<input type="text" size="6" id="reviews_minimum_comment_length" name="reviews_minimum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_minimum_comment_length'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -174,7 +174,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input type="text" size="6" id="reviews_maximum_comment_length" name="comment_max_length" class="inputbox" value="<?php echo $this->config->get('comment_max_length'); ?>" />
+		<input type="text" size="6" id="reviews_maximum_comment_length" name="reviews_maximum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
 	    </td>
 	</tr>
 	<tr>
