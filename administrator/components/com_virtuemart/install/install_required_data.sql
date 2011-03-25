@@ -380,7 +380,7 @@ INSERT INTO `#__vm_currency` (`currency_id`, `currency_name`, `currency_code`) V
 (111, 'Papua New Guinea Kina', 'PGK'),
 (112, 'Philippine Peso', 'PHP'),
 (113, 'Pakistan Rupee', 'PKR'),
-(114, 'Polish Z?oty', 'PLN'),
+(114, 'Polish Złoty', 'PLN'),
 (116, 'Paraguay Guarani', 'PYG'),
 (117, 'Qatari Rial', 'QAR'),
 (118, 'Romanian Leu', 'RON'),
