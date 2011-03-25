@@ -621,6 +621,8 @@ class VirtueMartModelProductdetails extends JModel {
 			foreach ($product_ids as $product_id) {
 				$this->products[] = $this->getProduct($product_id->product_id);
 			}
+
+			
 		}
 		return $this->products;
 	}
@@ -666,21 +668,32 @@ class VirtueMartModelProductdetails extends JModel {
 	$orderby	= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
 	if ($orderby != '' ) $orderbyTxt = '&orderby='.$orderby;
 
-	$fieldLink = '&category_id='.JRequest::getInt('category_id', 0 );
+	$category_id = JRequest::getInt('category_id', 0 );
+	$fieldLink = '&category_id='.$category_id;
 	$search = JRequest::getVar('search', '' );
 	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getVar('keyword', '' );
+
+	
+	/* Collect the product IDS for manufacturer list */
+	if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+	$product_ids = $this->_getList($this->_query);
+	$mf_product_ids = array();
+	foreach ($product_ids as $product_id) $mf_product_ids[] = $product_id->product_id ;
 
 	/* manufacturer link list*/
 	$manufacturerTxt ='';
 	$manufacturer_id = JRequest::getVar('manufacturer_id',0);
 	if ($manufacturer_id != '' ) $manufacturerTxt ='&manufacturer_id='.$manufacturer_id;
 	$db = JFactory::getDBO();
-	$query = 'SELECT `mf_name`,`manufacturer_id` FROM `#__vm_manufacturer`';// WHERE manufacturer_id '$manufacturer_id;
+	$query = 'SELECT DISTINCT `#__vm_manufacturer`.`mf_name`,`#__vm_manufacturer`.`manufacturer_id` FROM `#__vm_manufacturer`';
+	$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_manufacturer`.`manufacturer_id` = `#__vm_product_mf_xref`.`manufacturer_id` ';
+	$query .= ' WHERE `#__vm_product_mf_xref`.`product_id` in ('.implode (',', $mf_product_ids ).') ';
 	$query .= ' ORDER BY `#__vm_manufacturer`.`mf_name`';
 	$db->setQuery($query);
 	$manufacturers = $db->loadObjectList();
+
 	$manufacturerLink='';
-	if (count($manufacturers)>1) {
+	if (count($manufacturers)>0) {
 		$manufacturerLink ='<div class="orderlist">';
 		if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('VM_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
 		foreach ($manufacturers as $mf) {
