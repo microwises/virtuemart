@@ -75,13 +75,13 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $checked; ?>
 				</td>
 				<td width="10">
-					<?php echo JText::_($row->order_status_id); ?>
+					<?php echo $row->order_status_id; ?>
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->order_status_name); ?></a>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->order_status_code); ?>
+					<?php echo $row->order_status_code; ?>
 				</td>
 				<td align="left">
 					<?php echo JText::_($row->order_status_description); ?>

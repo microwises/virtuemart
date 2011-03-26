@@ -120,32 +120,32 @@ $j15 = VmConfig::isJ15();
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
-					<?php echo JText::_($row->calc_vendor_id); ?>
+					<?php echo $row->calc_vendor_id; ?>
 				</td>
 				<?php } ?>
 				<td>
-					<?php echo JText::_($row->calc_descr); ?>
+					<?php echo $row->calc_descr; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->ordering); ?>
+					<?php echo $row->ordering; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_kind); ?>
+					<?php echo $row->calc_kind; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_value_mathop); ?>
+					<?php echo $row->calc_value_mathop; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_value); ?>
+					<?php echo $row->calc_value; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->currencyName); ?>
+					<?php echo $row->currencyName; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calcCategoriesList); ?>
+					<?php echo $row->calcCategoriesList; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calcShoppersList); ?>
+					<?php echo $row->calcShoppersList; ?>
 				</td>
 				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
@@ -177,7 +177,7 @@ $j15 = VmConfig::isJ15();
 					echo $endDate?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_amount_cond); ?>
+					<?php echo $row->calc_amount_cond; ?>
 				</td>
 				<td>
 					<?php echo JText::_($row->calc_amount_dimunit); ?>

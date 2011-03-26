@@ -177,6 +177,63 @@ class VmImage {
 	}
 
 	/**
+	 * This function should return the image Url, when the image is not already a resized one,
+	 * it tries to get first the resized one, or create a resized one or fallback in case
+	 * original code from displayImage()
+	 * @author Max Milbers
+	 * @author Kohl Patrick 
+	 * @param boolean $preferResized Try to get the resided image, when in config allowed, create a thumbnail and update the db
+	 */
+	function imageUrl( $preferResized=1, $dynCreate=1){
+
+
+		if (empty($this->media_filename) && empty($this->media_filename_thumb)) {
+			$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
+			return $url ;
+		} else {
+			if($preferResized){
+				if(empty($this->media_filename_thumb)){
+					$this->media_filename_thumb = $this->createThumbName();
+				}
+				$completeImageUrl = $this->media_url_thumb.$this->media_filename_thumb;
+				$completeImagePath = $this->media_path_thumb.$this->media_filename_thumb;
+			} else {
+				if(empty($this->media_filename)){
+					$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
+					return $url;
+				}
+				$completeImageUrl = $this->media_url.$this->media_filename;
+				$completeImagePath = $this->media_path.$this->media_filename;
+			}
+		}
+
+		// Remote image URL
+		if( substr( $completeImageUrl, 0, 4) == "http" ) {
+			return $completeImageUrl;
+		}
+
+		if (!file_exists($completeImagePath)) {
+
+			if($dynCreate && VmConfig::get('img_resize_enable') == '1' && $preferResized){
+				$newFileName = $this->createThumb($dynCreate);
+				if($newFileName){
+					$completeImagePath = $this->media_path.$newFileName;
+					$this->media_filename_thumb = $newFileName;
+				}
+			} else {
+				$url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+				return $url;
+			}
+		}
+		//okey the pictures exist, does we want the resized one? if not, just give the normal picture back
+		if($preferResized){
+			return $this->media_url_thumb.$this->media_filename_thumb;
+		} else {
+			return $this->media_url.$this->media_filename;
+		}
+
+	}
+	/**
 	 * This function should display the image, when the image is not already a resized one,
 	 * it tries to get first the resized one, or create a resized one or fallback in case
 	 *

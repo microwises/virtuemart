@@ -126,7 +126,7 @@ class AdminMenuHelper {
 						    }
 						    ?>
 				<li class="item-smenu vmicon <?php echo $link['icon_class']; ?>">
-				    <a href="<?php echo $url; ?>"><?php echo JText::_($link['name']) ? JText::_($link['name']) : JText::_($link['name']); ?></a>
+				    <a href="<?php echo $url; ?>"><?php echo JText::_($link['name']) ?></a>
 				</li><?php
 						}
 					    } ?>

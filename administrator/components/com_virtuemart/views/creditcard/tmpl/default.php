@@ -59,7 +59,7 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->creditcard_name; ?></a>
 		</td>
 		<td>
-			<?php echo JText::_($row->creditcard_code); ?>
+			<?php echo $row->creditcard_code; ?>
 		</td>
 		<td align="center">
 			<?php echo $published; ?>

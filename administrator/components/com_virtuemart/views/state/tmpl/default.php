@@ -67,13 +67,13 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->state_name; ?></a>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->zone_id); ?>
+			<?php echo $row->zone_id; ?>
 		</td>
 		<td>
-			<?php echo JText::_($row->state_2_code); ?>
+			<?php echo $row->state_2_code; ?>
 		</td>
 		<td>
-			<?php echo JText::_($row->state_3_code); ?>
+			<?php echo $row->state_3_code; ?>
 		</td>
 		<td>
 			<?php echo $published; ?>

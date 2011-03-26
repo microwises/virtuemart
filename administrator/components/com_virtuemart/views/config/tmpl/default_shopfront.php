@@ -41,7 +41,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			</span>
 			</td>
 			<td>
-			    <input type="text" name="errorpage" class="inputbox" value="<?php echo JText::_($this->config->get('errorpage')); ?>" />
+			    <input type="text" name="errorpage" class="inputbox" value="<?php echo $this->config->get('errorpage'); ?>" />
 			</td>
 		    </tr>
 		    <tr>

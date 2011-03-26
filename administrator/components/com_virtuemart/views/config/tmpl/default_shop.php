@@ -253,7 +253,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 	    <td>
-		<input type="text" name="encode_key" class="inputbox" size="40" value="<?php echo JText::_($this->config->get('encode_key')); ?>" />
+		<input type="text" name="encode_key" class="inputbox" size="40" value="<?php echo $this->config->get('encode_key'); ?>" />
 	    </td>
 	</tr>
 	<tr>

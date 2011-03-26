@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input size="40" type="text" name="secureurl" class="inputbox" value="<?php echo JText::_($this->config->get('secureurl')); ?>" />
+		<input size="40" type="text" name="secureurl" class="inputbox" value="<?php echo $this->config->get('secureurl'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -150,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_url')); ?>" />
+		<input size="40" type="text" name="proxy_url" class="inputbox" value="<?php echo $this->config->get('proxy_url'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -160,7 +160,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input type="text" name="proxy_port" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_port')); ?>" />
+		<input type="text" name="proxy_port" class="inputbox" value="<?php echo $this->config->get('proxy_port'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -170,7 +170,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input type="text" name="proxy_user" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_user'));
+		<input type="text" name="proxy_user" class="inputbox" value="<?php echo $this->config->get('proxy_user');
 		       ; ?>" />
 	    </td>
 	</tr>
@@ -181,7 +181,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input autocomplete="off" type="password" name="proxy_pass" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_pass')); ?>" />
+		<input autocomplete="off" type="password" name="proxy_pass" class="inputbox" value="<?php echo $this->config->get('proxy_pass'); ?>" />
 	    </td>
 	</tr>
     </table>

@@ -82,13 +82,13 @@ AdminMenuHelper::startAdminArea();
 
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->mf_email); ?>
+			<?php echo $row->mf_email; ?>
 		</td>
 		<td>
-			<?php echo JText::_($row->mf_desc); ?>
+			<?php echo $row->mf_desc; ?>
 		</td>
 		<td>
-			<?php echo JText::_($row->mf_url); ?>
+			<?php echo $row->mf_url; ?>
 		</td>
 		<td align="center">
 			<?php echo $published; ?>
