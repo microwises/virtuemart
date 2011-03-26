@@ -23,10 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->manufacturer->mf_name; ?>
 </H2>
 <div>
-	<?php echo JText::_($this->manufacturer->mf_email); ?>
+	<?php echo $this->manufacturer->mf_email; ?>
 </div>
 <div>
-	<?php echo JText::_($this->manufacturer->mf_desc); ?>
+	<?php echo $this->manufacturer->mf_desc; ?>
 </div>
 <div>
 	<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo $this->manufacturer->mf_name; ?></a>

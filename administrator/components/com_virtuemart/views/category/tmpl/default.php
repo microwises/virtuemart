@@ -100,7 +100,7 @@ if( $this->pagination->limit < $nrows ){
 					<a href="<?php echo $editlink;?>"><?php echo $this->escape($row->category_name);?></a>
 				</td>					
 				<td align="left">
-					<?php echo JText::_($row->category_description); ?>
+					<?php echo $row->category_description; ?>
 				</td>				
 				<td>
 					<?php echo ShopFunctions::countProductsByCategory($row->category_id);?>

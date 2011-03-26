@@ -59,18 +59,22 @@ function virtuemartBuildRoute(&$query) {
 		case 'category';
 			// Fix for search with no category
 			if ( isset($query['start'] )) {
-				$segments[] = $lang->page ;
+				$segments[] = $lang['page'] ;
 				$mainframe = Jfactory::getApplication(); ;
 				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 				$segments[] = floor($query['start']/$limit)+1;
 				unset($query['start']);
 			}
+			if ( isset($query['order']) ) {
+				if ($query['order'] =='DESC') $segments[] = $lang['orderDesc'] ;
+				unset($query['order']);
+			}
 			if ( isset($query['manufacturer_id'])  ) {
-				$segments[] = $lang->manufacturer.'/'.$query['manufacturer_id'].'/'.$helper->getManufacturerName($query['manufacturer_id']) ;
+				$segments[] = $lang['manufacturer'].'/'.$query['manufacturer_id'].'/'.$helper->getManufacturerName($query['manufacturer_id']) ;
 				unset($query['manufacturer_id']);
 			}
 			if ( isset($query['search'])  ) {
-				$segments[] = $lang->search ;
+				$segments[] = $lang['search'] ;
 				unset($query['search']);
 			}
 			if ( isset($query['keyword'] )) {
@@ -112,7 +116,7 @@ function virtuemartBuildRoute(&$query) {
 		break;
 		case 'manufacturer';
 			if ( isset($helper->menu->manufacturer_id) ) $query['Itemid'] = $helper->menu->manufacturer_id;
-			else $segments[] = $lang->manufacturer;
+			else $segments[] = $lang['manufacturer'];
 			if(isset($query['manufacturer_id'])) {
 				$segments[] = $query['manufacturer_id'];
 				unset($query['manufacturer_id']);
@@ -120,20 +124,20 @@ function virtuemartBuildRoute(&$query) {
 		break;
 		case 'user';
 			if ( isset($helper->menu->user_id) ) $query['Itemid'] = $helper->menu->user_id;
-			else $segments[] = $lang->user ;
+			else $segments[] = $lang['user'] ;
 			if (isset($query['task'])) {
-				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $lang->editaddresscartBT ;
-				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $lang->editaddresscartST ;
+				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartBT'] ;
+				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartST'] ;
 				else $segments[] = $query['task'] ;
 				unset ($query['task'] , $query['addrtype']);
 			}
 		break;
 		case 'cart';
 			if ( isset($helper->menu->cart_id) ) $query['Itemid'] = $helper->menu->cart_id;
-			else $segments[] = $lang->cart ;
+			else $segments[] = $lang['cart'] ;
 			if (isset($query['task'])) {
-				if ($query['task'] == 'editshipping') $segments[] = $lang->editshipping ;
-				elseif ($query['task'] == 'editpayment') $segments[] = $lang->editpayment;
+				if ($query['task'] == 'editshipping') $segments[] = $lang['editshipping'] ;
+				elseif ($query['task'] == 'editpayment') $segments[] = $lang['editpayment'];
 				unset($query['task']);
 			}
 		break;
@@ -146,7 +150,7 @@ function virtuemartBuildRoute(&$query) {
 	} 
 	// sef the task
 	if (isset($query['task'])) {
-		if ($query['task'] == 'askquestion') $segments[] = $lang->askquestion;
+		if ($query['task'] == 'askquestion') $segments[] = $lang['askquestion'];
 		else $segments[] = $query['task'] ;
 		unset($query['task']);
 	}	// sef the task
@@ -173,17 +177,21 @@ function virtuemartParseRoute($segments)
 	$lang = &$helper->lang ;
 
 	$segments[0]=str_replace(":", "-",$segments[0]);
-	
-	if ($segments[0] == $lang->page) {
+	//array_search('green', $array);
+	if ($segments[0] == $lang['page']) {
 		array_shift($segments);
 		
-		$mainframe = Jfactory::getApplication(); ;
+		$mainframe = Jfactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
 		if (empty($segments)) return $vars;
 	}
+	if ( $segments[0] == $lang['orderDesc'] ) {
+		$vars['order'] ='DESC' ;
+		array_shift($segments);
+	}
 	
-	if ( $segments[0] == $lang->manufacturer) {
+	if ( $segments[0] == $lang['manufacturer']) {
 		array_shift($segments);
 		$vars['manufacturer_id'] = $segments[0];
 		array_shift($segments);
@@ -194,7 +202,7 @@ function virtuemartParseRoute($segments)
 			return $vars;
 		}
 	}
-	if ($segments[0] == $lang->search) {
+	if ($segments[0] == $lang['search']) {
 		$vars['search'] = 'true';
 		array_shift($segments);
 		if ( isset ($segments[0]) ) {
@@ -211,42 +219,42 @@ function virtuemartParseRoute($segments)
 		array_pop($segments);
 		$count--;
 	}
-	if ($segments[$count] == $lang->askquestion) {
+	if ($segments[$count] == $lang['askquestion']) {
 		$vars['task'] = 'askquestion';
 		array_pop($segments);
 		$count--;
 	}
-	if ($segments[0] == $lang->user || $helper->activeMenu->view == 'user') {
+	if ($segments[0] == $lang['user'] || $helper->activeMenu->view == 'user') {
 		$vars['view'] = 'user';
-		if ($segments[0] == $lang->user) {
+		if ($segments[0] == $lang['user']) {
 			array_shift($segments);
 			$count--;
 		}
 		if ( isset($segments[0]) ) {
-			if ( $segments[0] == $lang->editaddresscartBT ) {
+			if ( $segments[0] == $lang['editaddresscartBT'] ) {
 				$vars['addrtype'] = 'BT' ;
 				$vars['task'] = 'editaddresscart' ;
 			}
-			elseif ( $segments[0] == $lang->editaddresscartST ) {
+			elseif ( $segments[0] == $lang['editaddresscartST'] ) {
 				$vars['addrtype'] = 'ST' ;
 				$vars['task'] = 'editaddresscart' ;
 				} else $vars['task'] = $segments[0] ;
 		}
 		return $vars;
 	}
-	if ($segments[0] == $lang->cart || $helper->activeMenu->view == 'cart') {
+	if ($segments[0] == $lang['cart'] || $helper->activeMenu->view == 'cart') {
 		$vars['view'] = 'cart';
-		if ($segments[0] == $lang->cart) {
+		if ($segments[0] == $lang['cart']) {
 			array_shift($segments);
 			$count--;
 		}
-		if ($segments[0] == $lang->editshipping ) $vars['task'] = 'editshipping' ;
-		elseif ($segments[0] == $lang->editpayment ) $vars['task'] = 'editpayment' ;
+		if ($segments[0] == $lang['editshipping'] ) $vars['task'] = 'editshipping' ;
+		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
 		return $vars;
 	}
 
 
-	if ($segments[0] == $lang->manufacturer || $helper->activeMenu->view == 'manufacturer') {
+	if ($segments[0] == $lang['manufacturer'] || $helper->activeMenu->view == 'manufacturer') {
 		$vars['view'] = 'manufacturer';
 		if ($segments[0] == $lang->manufacturer) {
 			array_shift($segments);
@@ -258,9 +266,6 @@ function virtuemartParseRoute($segments)
 
 		return $vars;
 	}
-
-
-	//if  ($count<1 ) return $vars;
 	//uppercase first (trick for product details )
 
 	if ($segments[$count][0] == ucfirst($segments[$count][0]) ){
@@ -523,30 +528,33 @@ class vmrouterHelper {
 			$extension = 'com_virtuemart';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
-			$this->lang->editshipping = $lang->_('VM_SEF_EDITSHIPPING');
-			$this->lang->manufacturer = $lang->_('VM_SEF_MANUFACTURER');
-			$this->lang->askquestion  = $lang->_('VM_SEF_ASKQUESTION');
-			$this->lang->editpayment  = $lang->_('VM_SEF_EDITPAYMENT');
-			$this->lang->user         = $lang->_('VM_SEF_USER');
-			$this->lang->cart         = $lang->_('VM_SEF_CART');
-			$this->lang->editaddresscartBT  = $lang->_('VM_SEF_EDITADRESSCART_BILL');
-			$this->lang->editaddresscartST  = $lang->_('VM_SEF_EDITADRESSCART_SHIP');
-			$this->lang->search       = $lang->_('VM_SEF_SEARCH');
-			$this->lang->manufacturer = $lang->_('VM_SEF_MANUFACTURER');
-			$this->lang->page         = $lang->_('VM_SEF_PAGE');
+			$this->lang['editshipping'] = $lang->_('VM_SEF_EDITSHIPPING');
+			$this->lang['manufacturer'] = $lang->_('VM_SEF_MANUFACTURER');
+			$this->lang['askquestion']  = $lang->_('VM_SEF_ASKQUESTION');
+			$this->lang['editpayment']  = $lang->_('VM_SEF_EDITPAYMENT');
+			$this->lang['user'] = $lang->_('VM_SEF_USER');
+			$this->lang['cart'] = $lang->_('VM_SEF_CART');
+			$this->lang['editaddresscartBT']  = $lang->_('VM_SEF_EDITADRESSCART_BILL');
+			$this->lang['editaddresscartST']  = $lang->_('VM_SEF_EDITADRESSCART_SHIP');
+			$this->lang['search']		= $lang->_('VM_SEF_SEARCH');
+			$this->lang['manufacturer'] = $lang->_('VM_SEF_MANUFACTURER');
+			$this->lang['page']			= $lang->_('VM_SEF_PAGE');
+			$this->lang['orderDesc']	= $lang->_('VM_SEF_ORDER_DESC');
+
 		} else {
 			/* use default */
-			$this->lang->editshipping = 'editshipping';
-			$this->lang->manufacturer = 'manufacturer';
-			$this->lang->askquestion  = 'askquestion';
-			$this->lang->editpayment  = 'editpayment';
-			$this->lang->user         = 'user';
-			$this->lang->cart         = 'cart';
-			$this->lang->editaddresscartBT  = 'edit_cart_bill_to';
-			$this->lang->editaddresscartBT  = 'edit_cart_ship_to';
-			$this->lang->search       = 'search';
-			$this->lang->manufacturer       = 'manufacturer';
-			$this->lang->page         = 'page';
+			$this->lang['editshipping'] = 'editshipping';
+			$this->lang['manufacturer'] = 'manufacturer';
+			$this->lang['askquestion']  = 'askquestion';
+			$this->lang['editpayment']  = 'editpayment';
+			$this->lang['user']			= 'user';
+			$this->lang['cart']			= 'cart';
+			$this->lang['editaddresscartBT'] = 'edit_cart_bill_to';
+			$this->lang['editaddresscartBT'] = 'edit_cart_ship_to';
+			$this->lang['search'] = 'search';
+			$this->lang['manufacturer'] = 'manufacturer';
+			$this->lang['page']			= 'page';
+			$this->lang['orderDesc'] 	= 'desc';
 			
 		}  
 	}

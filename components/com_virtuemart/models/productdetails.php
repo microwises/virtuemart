@@ -512,11 +512,13 @@ class VirtueMartModelProductdetails extends JModel {
 
 	function _buildQuery($category_id = 0)
 	{
-		$mainframe = Jfactory::getApplication();
-                $option = JRequest::getWord('option');
-
-		$filter_order		= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
+		//$mainframe = Jfactory::getApplication();
+		//$option = JRequest::getWord('option');
+		//$mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' ) );
+		
+		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field'));
+		
+		$filter_order_Dir = JRequest::getVar('order', 'ASC');
 
 		$search = JRequest::getVar('search', false );
 		$joinCategory = false ;
@@ -545,9 +547,6 @@ class VirtueMartModelProductdetails extends JModel {
 		if (!is_array($browse_orderby_fields)) $browse_orderby_fields = array($browse_orderby_fields);
 		if (!in_array($filter_order, $browse_orderby_fields)) {
 			$filter_order = VmConfig::get('browse_orderby_field');
-		}
-		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC'))) {
-			$filter_order_Dir = '';
 		}
 
 		$manufacturer_id = JRequest::getInt('manufacturer_id', false );
@@ -656,17 +655,19 @@ class VirtueMartModelProductdetails extends JModel {
 	**/  
   function getOrderByList() {
 
-	$mainframe = Jfactory::getApplication();
-	$option = JRequest::getWord('option');
-
+	//$mainframe = Jfactory::getApplication();
+	//$option = JRequest::getWord('option');
+	//$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
 
 	$orderTxt ='';
-	$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
-	if ($order != '' ) $orderTxt .= '&order='.$order;
+
+	$order = JRequest::getVar('order', 'ASC');
+	if ($order == 'DESC' ) $orderTxt .= '&order='.$order;
 
 	$orderbyTxt ='';
-	$orderby	= $mainframe->getUserStateFromRequest( $option.'orderby','orderby',''	,'cmd'  );
-	if ($orderby != '' ) $orderbyTxt = '&orderby='.$orderby;
+	$orderby = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field'));
+	$orderbyCfg 	= VmConfig::get('browse_orderby_field');
+	if ($orderby != '' && $orderby != $orderbyCfg ) $orderbyTxt = '&orderby='.$orderby;
 
 	$category_id = JRequest::getInt('category_id', 0 );
 	$fieldLink = '&category_id='.$category_id;
@@ -714,30 +715,29 @@ class VirtueMartModelProductdetails extends JModel {
 		foreach ($fields as $field) {
 			if ($field != $orderby) {
 				$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
-				$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$manufacturerTxt.'&orderby='.$field ) ;
+				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
+				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';
 			}
 		}
 		$orderByLink .='</div>';
 	}
 
-	/* order value set*/
-	if ($order =='DESC') {
-		$order ='DESC';
-		$value = 'ASC';
-		$text = JText::_('VM_SEARCH_ORDER_ASC');
-	}
-	else {
-		$value = 'DESC' ;
-		$text = JText::_('VM_SEARCH_ORDER_DESC');
+	/* invert order value set*/
+	if ($order =='ASC') {
+		$orderlink ='&order=DESC';
+		$orderTxt = JText::_('VM_SEARCH_ORDER_ASC');
+	} else {
+		$orderTxt = JText::_('VM_SEARCH_ORDER_DESC');
+		$orderlink ='';
 	}
 
 	/* full string list */
-	if ($orderby=='') $orderby=VmConfig::get('browse_orderby_field');
+	if ($orderby=='') $orderby=$orderbyCfg;
 	$orderby=strtoupper($orderby);
-	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.'&order='.$value.$orderbyTxt.$manufacturerTxt) ;
+	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
 
-	$orderByList ='<div class="orderlistcontainer"><div class="activeOrder"><a title="'.$text.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$text.'</a> <div class="orderlistcontainerButton"></div></div>';
+	$orderByList ='<div class="orderlistcontainer"><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a> <div class="orderlistcontainerButton"></div></div>';
 	$orderByList .= $orderByLink.'</div>';
 	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = JText::_('VM_SEARCH_SELECT_MANUFACTURER');
 	$orderByList .='<div class="orderlistcontainer"><div class="activeOrder">'.$currentManufacturerLink.'<div class="orderlistcontainerButton"></div></div>';
