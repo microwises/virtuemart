@@ -68,6 +68,9 @@ class VirtuemartViewCategory extends JView {
 	    /* Add the category name to the pathway */
 		//$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
+		
+		/* Set Canonic link */
+		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$categoryId) , 'canonical', 'rel', '' );
 
 	    /* Set the titles */
 		$document->setTitle($category->category_name);
@@ -79,7 +82,7 @@ class VirtuemartViewCategory extends JView {
 		}
 	
 	    /* Load the products in the given category */
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		//if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $this->assignRef('products', $products);
 

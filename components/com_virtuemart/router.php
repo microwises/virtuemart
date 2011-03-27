@@ -65,7 +65,10 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = floor($query['start']/$limit)+1;
 				unset($query['start']);
 			}
-			if ( isset($query['order']) ) {
+			if ( isset($query['orderby']) ) {
+				$segments[] = $lang['orderby'].','.$lang[ $query['orderby'] ] ;
+				unset($query['orderby']);
+			}			if ( isset($query['order']) ) {
 				if ($query['order'] =='DESC') $segments[] = $lang['orderDesc'] ;
 				unset($query['order']);
 			}
@@ -81,11 +84,13 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $query['keyword'];
 				unset($query['keyword']);
 			}
-			if(!empty( $query['category_id']) && $menuCatid != $query['category_id'] ){
-				$categoryRoute = $helper->getCategoryRoute($query['category_id']);
-				if ($categoryRoute->route) $segments[] = $categoryRoute->route;
-				if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
-				unset($query['category_id']);
+			if ( isset($query['category_id']) ) {
+				if ( $query['category_id']>0 || $menuCatid != $query['category_id'] ){
+					$categoryRoute = $helper->getCategoryRoute($query['category_id']);
+					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
+					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
+					unset($query['category_id']);
+				}
 			} else {
 				if (isset ($helper->menu->no_category_id))$query['Itemid'] = $helper->menu->no_category_id;
 				elseif (isset ($helper->menu->virtuemart))$query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
@@ -186,9 +191,27 @@ function virtuemartParseRoute($segments)
 		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
 		if (empty($segments)) return $vars;
 	}
+	$orderby = explode(',',$segments[0]);
+	if ( $orderby[0] == $lang['orderby'] ) {
+		$key = array_search($orderby[1],$lang );
+		if ( $key ) {
+			$vars['orderby'] =$key ;
+			array_shift($segments);
+		}
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['category_id'] = $helper->activeMenu->category_id ;
+			return $vars;
+		}
+	}
 	if ( $segments[0] == $lang['orderDesc'] ) {
 		$vars['order'] ='DESC' ;
 		array_shift($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['category_id'] = $helper->activeMenu->category_id ;
+			return $vars;
+		}
 	}
 	
 	if ( $segments[0] == $lang['manufacturer']) {
@@ -198,7 +221,7 @@ function virtuemartParseRoute($segments)
 		array_shift($segments);
 		if (empty($segments)) {
 			$vars['view'] = 'category';
-			$vars['category_id'] = '0';
+			$vars['category_id'] = $helper->activeMenu->category_id ;
 			return $vars;
 		}
 	}
@@ -210,6 +233,7 @@ function virtuemartParseRoute($segments)
 			
 		}
 		$vars['view'] = 'category';
+		$vars['category_id'] = $helper->activeMenu->category_id ;
 		if (empty($segments)) return $vars;
 	}
 	$count = count($segments)-1;
@@ -256,7 +280,7 @@ function virtuemartParseRoute($segments)
 
 	if ($segments[0] == $lang['manufacturer'] || $helper->activeMenu->view == 'manufacturer') {
 		$vars['view'] = 'manufacturer';
-		if ($segments[0] == $lang->manufacturer) {
+		if ($segments[0] == $lang['manufacturer'] ) {
 			array_shift($segments);
 		}
 		if (isset($segments[0])  && ctype_digit ($segments[0])) {
@@ -540,6 +564,12 @@ class vmrouterHelper {
 			$this->lang['manufacturer'] = $lang->_('VM_SEF_MANUFACTURER');
 			$this->lang['page']			= $lang->_('VM_SEF_PAGE');
 			$this->lang['orderDesc']	= $lang->_('VM_SEF_ORDER_DESC');
+			$this->lang['orderby']	= $lang->_('VM_SEF_BY');
+			$this->lang['product_name']	= $lang->_('VM_SEF_BY_PRODUCT_NAME');
+			$this->lang['product_sku']	= $lang->_('VM_SEF_BY_PRODUCT_SKU');
+			$this->lang['product_desc']	= $lang->_('VM_SEF_BY_PRODUCT_DESC');
+			$this->lang['product_price']	= $lang->_('VM_SEF_BY_PRODUCT_PRICE');
+			$this->lang['category_name']	= $lang->_('VM_SEF_BY_CATEGORY_NAME');
 
 		} else {
 			/* use default */
@@ -555,7 +585,12 @@ class vmrouterHelper {
 			$this->lang['manufacturer'] = 'manufacturer';
 			$this->lang['page']			= 'page';
 			$this->lang['orderDesc'] 	= 'desc';
-			
+			$this->lang['orderby']	= 'order_by';
+			$this->lang['product_name']	= 'name';
+			$this->lang['product_sku']	= 'sku';
+			$this->lang['product_desc']	= 'description';
+			$this->lang['product_price']	= 'price';
+			$this->lang['category_name']	= 'category';
 		}  
 	}
 
