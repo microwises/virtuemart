@@ -706,8 +706,8 @@ class VirtueMartModelProductdetails extends JModel {
 				}
 				else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
 			}
-		} elseif ($manufacturer_id > 0) $currentManufacturerLink ='<div class="activeOrder">'.$manufacturers[0]->mf_name.'</div>';
-		else $currentManufacturerLink ='<div >'.$manufacturers[0]->mf_name.'</div>';
+		} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
+		else $currentManufacturerLink ='<div >'.JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
 		$manufacturerLink .='</div>';
 	}
 
@@ -730,9 +730,9 @@ class VirtueMartModelProductdetails extends JModel {
 	/* invert order value set*/
 	if ($order =='ASC') {
 		$orderlink ='&order=DESC';
-		$orderTxt = JText::_('VM_SEARCH_ORDER_ASC');
-	} else {
 		$orderTxt = JText::_('VM_SEARCH_ORDER_DESC');
+	} else {
+		$orderTxt = JText::_('VM_SEARCH_ORDER_ASC');
 		$orderlink ='';
 	}
 
@@ -741,11 +741,11 @@ class VirtueMartModelProductdetails extends JModel {
 	$orderby=strtoupper($orderby);
 	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
 
-	$orderByList ='<div class="orderlistcontainer"><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a> <div class="orderlistcontainerButton"></div></div>';
+	$orderByList ='<div class="orderlistcontainer"><div>'.JText::_('VM_ORDERBY').'</div><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a></div>';
 	$orderByList .= $orderByLink.'</div>';
-	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = '<div class="activeOrder">'.JText::_('VM_SEARCH_SELECT_MANUFACTURER').'</div>';
-	$orderByList .='<div class="orderlistcontainer">'.$currentManufacturerLink;
-	$orderByList .= $manufacturerLink.'</div>';
+	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'.JText::_('VM_SEARCH_SELECT_MANUFACTURER').'</div>';
+	$orderByList .=' <div class="orderlistcontainer">'.$currentManufacturerLink;
+	$orderByList .= $manufacturerLink.'</div><div class="clear"></div>';
 
 	return $orderByList ;
   }
