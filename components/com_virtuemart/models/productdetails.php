@@ -687,29 +687,31 @@ class VirtueMartModelProductdetails extends JModel {
 	$manufacturerTxt ='';
 	$manufacturer_id = JRequest::getVar('manufacturer_id',0);
 	if ($manufacturer_id != '' ) $manufacturerTxt ='&manufacturer_id='.$manufacturer_id;
-	$query = 'SELECT DISTINCT `#__vm_manufacturer`.`mf_name`,`#__vm_manufacturer`.`manufacturer_id` FROM `#__vm_manufacturer`';
-	$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_manufacturer`.`manufacturer_id` = `#__vm_product_mf_xref`.`manufacturer_id` ';
-	$query .= ' WHERE `#__vm_product_mf_xref`.`product_id` in ('.implode (',', $mf_product_ids ).') ';
-	$query .= ' ORDER BY `#__vm_manufacturer`.`mf_name`';
-	$db->setQuery($query);
-	$manufacturers = $db->loadObjectList();
+	if ($mf_product_ids) {
+		$query = 'SELECT DISTINCT `#__vm_manufacturer`.`mf_name`,`#__vm_manufacturer`.`manufacturer_id` FROM `#__vm_manufacturer`';
+		$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_manufacturer`.`manufacturer_id` = `#__vm_product_mf_xref`.`manufacturer_id` ';
+		$query .= ' WHERE `#__vm_product_mf_xref`.`product_id` in ('.implode (',', $mf_product_ids ).') ';
+		$query .= ' ORDER BY `#__vm_manufacturer`.`mf_name`';
+		$db->setQuery($query);
+		$manufacturers = $db->loadObjectList();
 
-	$manufacturerLink='';
-	if (count($manufacturers)>0) {
-		$manufacturerLink ='<div class="orderlist">';
-		if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('VM_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
-		if (count($manufacturers)>1) {
-			foreach ($manufacturers as $mf) {
-				$link = JRoute::_('index.php?option=com_virtuemart&view=category&manufacturer_id='.$mf->manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
-				if ($mf->manufacturer_id != $manufacturer_id) {
-					$manufacturerLink .='<div><a title="'.$mf->mf_name.'" href="'.$link.'">'.$mf->mf_name.'</a></div>';
+		$manufacturerLink='';
+		if (count($manufacturers)>0) {
+			$manufacturerLink ='<div class="orderlist">';
+			if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('VM_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
+			if (count($manufacturers)>1) {
+				foreach ($manufacturers as $mf) {
+					$link = JRoute::_('index.php?option=com_virtuemart&view=category&manufacturer_id='.$mf->manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
+					if ($mf->manufacturer_id != $manufacturer_id) {
+						$manufacturerLink .='<div><a title="'.$mf->mf_name.'" href="'.$link.'">'.$mf->mf_name.'</a></div>';
+					}
+					else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
 				}
-				else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
-			}
-		} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
-		else $currentManufacturerLink ='<div >'.JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
-		$manufacturerLink .='</div>';
-	}
+			} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
+			else $currentManufacturerLink ='<div >'.JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
+			$manufacturerLink .='</div>';
+		}
+	} else $manufacturerLink = "" ;
 
 	/* order by link list*/
 	$orderByLink ='';
