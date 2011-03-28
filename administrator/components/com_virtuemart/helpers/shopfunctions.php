@@ -196,7 +196,8 @@ class ShopFunctions {
 	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false, $_prefix = ''){
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
-		$states = array();
+		// Must be done here also (despite the AJAX selector) to make the current dbselection visible
+		$states = $stateModel->getStates($countryId);
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'state_id';
@@ -390,8 +391,27 @@ class ShopFunctions {
 		$_db->setQuery($_q);
 		$_r = $_db->loadResult();
 		return $_r;
-//		$_r = $_db->loadObject();  //why loading as object, this costs time (4 times longer than loading just the result?
-//		return $_r->fld;
+	}
+
+	/**
+	* Return the countryID of a given country name
+	*
+	* @author Oscar van Eijk
+	* @access public
+	* @param string $_name Country name
+	* @return int Country ID
+	*/
+	public function getCountryIDByName ($_name = '')
+	{
+		if ($_name == '') {
+			return 0;
+		}
+		$_db = JFactory::getDBO();
+
+		$_q = "SELECT `country_id` FROM `#__vm_country` WHERE `country_name` = '$_name'";
+		$_db->setQuery($_q);
+		$_r = $_db->loadResult();
+		return $_r;
 	}
 
 	/**

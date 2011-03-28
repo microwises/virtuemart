@@ -18,35 +18,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
-// Require specific controller if requested
-if ($controllername = JRequest::getVar('controller')) {
-	$path = JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
-	if (file_exists($path)) {
-		require $path;
-	}
-	else {
-
-		$controllername = '';
-	}
-}
-
-// Try to find a controller with the same name as the view
-else if ($controllername = JRequest::getVar('view','virtuemart')) {
-	$path = JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$controllername.'.php';
-	if (file_exists($path)) {
-		require $path;
-	}
-	else {
-		$controllername = '';
+/* Require specific controller if requested */
+if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {
+	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
+		// Only if the file exists, since it might be a Joomla view we're requesting...
+		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
 	}
 }
 
 // Create the controller
-$classname	= 'VirtueMartController'.ucfirst($controllername);
-$controller = new $classname();
+$_class = 'VirtueMartController'.ucfirst($_controller);
+$controller = new $_class();
 
 // Perform the Request task
-$controller->execute(JRequest::getVar('task', $controllername));
+$controller->execute(JRequest::getVar('task', $_controller));
 $controller->redirect();
 
 // pure php no closing tag
