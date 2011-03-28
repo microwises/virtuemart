@@ -227,6 +227,16 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			    ?>
 			</td>
 		    </tr>
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
+			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_CATEGORY') ?>
+			    </span>
+			</td>
+			<td>
+			   <?php echo VmHTML::checkbox('showCategory', $this->config->get('showCategory',1)); ?>
+			</td>
+		    </tr>
 
 		    <tr>
 			<td class="key">

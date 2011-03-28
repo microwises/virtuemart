@@ -41,57 +41,62 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
 
 /* Show child categories */
-if ($this->category->haschildren) {
-	?>
-	<div class="category-view">
-	<?php
-	$iTopTenCol = 1;
 
-	// calculation of the categories per row
-	$categories_per_row = VmConfig::get('categories_per_row',3);
-	$TopTen_cellwidth = floor( 100 / $categories_per_row);
+if ( VmConfig::get('showCategory',1) ) {
+	if ($this->category->haschildren ) {
+		?>
+		<div class="category-view">
+		<?php
+		$iTopTenCol = 1;
+
+		// calculation of the categories per row
+		$categories_per_row = VmConfig::get('categories_per_row',3);
+		$TopTen_cellwidth = floor( 100 / $categories_per_row);
 
 
-	foreach ($this->category->children as $category ) {
+		foreach ($this->category->children as $category ) {
 
-		if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not ?>
-			<div class="category-row">
-		<?php }
-				?>
+			if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not ?>
+				<div class="category-row">
+			<?php }
+					?>
 
-		<!-- Category Listing Output -->
-		<div class="width<?php echo $TopTen_cellwidth ?> floatleft center">
-			<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
-			<h3>
-				<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
-				<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
-				<?php if ($category->category_thumb_image) {
-					echo VmImage::getImageByCat($category)->displayImage();
-				} ?>
-				</a>
-			</h3>
+			<!-- Category Listing Output -->
+			<div class="width<?php echo $TopTen_cellwidth ?> floatleft center">
+				<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
+				<h3>
+					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
+					<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
+					<?php if ($category->category_thumb_image) {
+						echo VmImage::getImageByCat($category)->displayImage();
+					} ?>
+					</a>
+				</h3>
+			</div>
+
+			<?php
+			// Do we need to close the current row now?
+			if ($iTopTenCol == $categories_per_row) { // If the number of products per row has been reached
+				echo "<div class='clear'></div></div>";
+				$iTopTenCol = 1;
+			}
+			else {
+				$iTopTenCol++;
+			}
+		}
+		// Do we need a final closing row tag?
+		if ($iTopTenCol != 1) {
+			echo "<div class='clear'></div></div>";
+		}
+		?>
+		<div class="clear"></div>
 		</div>
 
-		<?php
-		// Do we need to close the current row now?
-		if ($iTopTenCol == $categories_per_row) { // If the number of products per row has been reached
-			echo "<div class='clear'></div></div>";
-			$iTopTenCol = 1;
-		}
-		else {
-			$iTopTenCol++;
-		}
+	<div class="horizontal-separator margintop20 marginbottom20"></div>
+	<?php 
 	}
-	// Do we need a final closing row tag?
-	if ($iTopTenCol != 1) {
-		echo "<div class='clear'></div></div>";
-	}
-	?>
-	<div class="clear"></div>
-	</div>
-
-<div class="horizontal-separator margintop20 marginbottom20"></div>
-<?php } ?>
+} 
+?>
 
 
 

@@ -31,6 +31,8 @@ jimport( 'joomla.application.component.model');
  */
 class VirtueMartModelCategory extends JModel {
 	
+	/* array container for category tree ID*/
+	var $container = array();
 	/**
 	* Load a category and it's details
 	*
@@ -41,7 +43,7 @@ class VirtueMartModelCategory extends JModel {
 		$db = JFactory::getDBO();
 		$row = $this->getTable('category');
 		$row->load($category_id);
-		
+		if (VmConfig::get('showCategory',1)) {
 		/* Check for children */
 		$row->haschildren = $this->hasChildren($category_id);
 		
@@ -51,7 +53,7 @@ class VirtueMartModelCategory extends JModel {
 		
 		/* Get the product count */
 		$row->productcount = $this->getProductCount($category_id);
-
+		}
 		/* Get parent for breatcrumb */
 		$row->parents = $this->getparentsList($category_id);
 
@@ -159,7 +161,47 @@ class VirtueMartModelCategory extends JModel {
 		return $idsArr;
 	}
 
-	
+	/*
+	* Returns an array of the categories recursively for a given category
+	* @author Kohl Patrick
+	* @param int $id
+	* @param int $maxLevel
+	 * @Object $this->container 
+	*/
+	function treeCat($id=0,$maxLevel =0) { 
+		static $level = 0;
+		static $num = -1 ;
+		$db = & JFactory::getDBO();
+		$q = 'SELECT category_child_id,category_name FROM #__vm_category_xref
+		LEFT JOIN #__vm_category on #__vm_category.category_id=#__vm_category_xref.category_child_id
+		WHERE category_parent_id='.$id; 
+		$db->setQuery($q);
+		$num ++;
+		// if it is a leaf (no data underneath it) then return
+		$childs = $db->loadObjectList();
+		
+		if ($childs) {
+			$level++;
+			foreach ($childs as $child) {
+				$this->container[$num]->id = $child->category_child_id;
+				$this->container[$num]->name = $child->category_name;
+				$this->container[$num]->level = $level;
+				self::untreeCat($child->category_child_id);
+			}
+			$level--;
+		}
+	} 
+	/**
+	 * @author Kohl Patrick
+	 * @param  $maxlevel the number of level
+	 * @param  $id the root category id
+ 	 * @Object $this->container 
+	 * @ return categories id, name and level in container
+	 */
+	function GetTreeCat($id=0,$maxLevel) {
+		self::untreeCat($id ,$maxLevel) ;
+		return $this->container ;
+	}
 	/**
 	 * Function to calculate and return the number of products in category $category_id
 	 * @author RolandD
