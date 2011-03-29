@@ -510,11 +510,12 @@ class VirtueMartModelProductdetails extends JModel {
 		return $variants;
 	}
 
-	function _buildQuery($category_id = 0)
+	function _buildQuery()
 	{
 		//$mainframe = Jfactory::getApplication();
 		//$option = JRequest::getWord('option');
 		//$mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' ) );
+		$category_id = JRequest::getInt('category_id', 0 );
 		
 		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field'));
 		
@@ -608,11 +609,11 @@ class VirtueMartModelProductdetails extends JModel {
 	* @param int $category_id the category ID where to get the products for
 	* @return array containing product objects
 	*/
-	public function getProductsInCategory($category_id) {
+	public function getProductsInCategory() {
 
 		if (empty($this->products)) {
 
-			if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+			if (empty($this->_query)) $this->_query = $this->_buildQuery();
 			$product_ids = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit')); 
 
 			/* Collect the product data */
@@ -625,21 +626,21 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 		return $this->products;
 	}
-  function getTotalProductsInCategory($category_id)
+  function getTotalProductsInCategory()
   {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
-            if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+            if (empty($this->_query)) $this->_query = $this->_buildQuery();
             $this->_total = $this->_getListCount($this->_query);    
         }
         return $this->_total;
   }
-  function getPagination($category_id)
+  function getPagination()
   {
         // Load the content if it doesn't already exist
         if (empty($this->_pagination)) {
             jimport('joomla.html.pagination');
-            $this->_pagination = new JPagination($this->getTotalProductsInCategory($category_id), $this->getState('limitstart'), $this->getState('limit') );
+            $this->_pagination = new JPagination($this->getTotalProductsInCategory(), $this->getState('limitstart'), $this->getState('limit') );
         }
         return $this->_pagination;
   }
@@ -677,7 +678,7 @@ class VirtueMartModelProductdetails extends JModel {
 	
 	/* Collect the product IDS for manufacturer list */
 	$db = JFactory::getDBO();
-	if (empty($this->_query)) $this->_query = $this->_buildQuery($category_id);
+	if (empty($this->_query)) $this->_query = $this->_buildQuery();
 	$db->setQuery($this->_query);
 	$mf_product_ids = $db->loadResultArray();
 	//$mf_product_ids = array();
