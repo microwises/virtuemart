@@ -35,7 +35,7 @@ class VirtueMartModelProductdetails extends JModel {
 	  * products object
 	  * @var integer
 	  */
-	var $products  = array();
+	var $products  = null ;
 
 	/**
 	  * Items total
@@ -517,7 +517,7 @@ class VirtueMartModelProductdetails extends JModel {
 		//$mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' ) );
 		$category_id = JRequest::getInt('category_id', 0 );
 		
-		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field'));
+		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field','product_id'));
 		
 		$filter_order_Dir = JRequest::getVar('order', 'ASC');
 

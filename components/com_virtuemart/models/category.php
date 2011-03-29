@@ -168,7 +168,7 @@ class VirtueMartModelCategory extends JModel {
 	* @param int $maxLevel
 	 * @Object $this->container 
 	*/
-	function treeCat($id=0,$maxLevel =0) { 
+	function treeCat($id=0,$maxLevel =1000) { 
 		static $level = 0;
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
@@ -179,14 +179,14 @@ class VirtueMartModelCategory extends JModel {
 		$num ++;
 		// if it is a leaf (no data underneath it) then return
 		$childs = $db->loadObjectList();
-		
+		if ($level==$maxLevel) return;
 		if ($childs) {
 			$level++;
 			foreach ($childs as $child) {
 				$this->container[$num]->id = $child->category_child_id;
 				$this->container[$num]->name = $child->category_name;
 				$this->container[$num]->level = $level;
-				self::untreeCat($child->category_child_id);
+				self::treeCat($child->category_child_id,$maxLevel );
 			}
 			$level--;
 		}
@@ -197,9 +197,12 @@ class VirtueMartModelCategory extends JModel {
 	 * @param  $id the root category id
  	 * @Object $this->container 
 	 * @ return categories id, name and level in container
+	 * if you set Maxlevel to 0, then you see nothing
+	 * max level =1 for simple category,2 for category and child cat ....
+	 * don't set it for all (1000 levels)
 	 */
-	function GetTreeCat($id=0,$maxLevel) {
-		self::untreeCat($id ,$maxLevel) ;
+	function GetTreeCat($id=0,$maxLevel = 1000) {
+		self::treeCat($id ,$maxLevel) ;
 		return $this->container ;
 	}
 	/**
