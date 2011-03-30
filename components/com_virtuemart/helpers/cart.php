@@ -632,7 +632,9 @@ class VirtueMartCart  {
 				}
 			}
 		}
-		if(!$this->tosAccepted) $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
+		if(VmConfig::get('agree_to_tos_onorder') && !$this->tosAccepted) {
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
+		}
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
 		$this->_dataValidated = true;

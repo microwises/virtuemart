@@ -30,5 +30,27 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo VmHTML::checkbox('check_stock', $this->config->get('check_stock')); ?>
 			</td>
 		</tr>
+
+		<tr>
+			<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
+					<?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
+				</span>
+			</td>
+		<td>
+			<?php echo VmHTML::checkbox('agree_to_tos_onorder', $this->config->get('agree_to_tos_onorder')); ?>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="key">
+			<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
+				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
+			</span>
+		</td>
+			<td>
+				<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
+			</td>
+		</tr>
 	</table>
 </fieldset>

@@ -177,26 +177,6 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="text" size="6" id="reviews_maximum_comment_length" name="reviews_maximum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
 	    </td>
 	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
-		    <?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
-		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('agree_to_tos_onorder', $this->config->get('agree_to_tos_onorder')); ?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
-		    <label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
-		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
-	    </td>
-	</tr>
     </table>
 </fieldset>
 

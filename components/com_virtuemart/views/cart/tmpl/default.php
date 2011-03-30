@@ -69,9 +69,11 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	<div class="marginbottom15">
 	<span class="bold"><?php echo JText::_('VM_CART_TOS'); ?></span><br />
 	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
-	$checked = '';
-	if ($this->cart->tosAccepted) $checked = 'checked="checked"';
-	echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED');
+		if (VmConfig::get('agree_to_tos_onorder')) {
+			$checked = '';
+			if ($this->cart->tosAccepted) $checked = 'checked="checked"';
+			echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('VM_CART_TOS_READ_AND_ACCEPTED');
+		}
 	?>
 	</div>
 </fieldset>
