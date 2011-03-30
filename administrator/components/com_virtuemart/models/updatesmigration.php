@@ -67,7 +67,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, 0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, '.VmConfig::get('default_vendor_id').',null,"shopper")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );

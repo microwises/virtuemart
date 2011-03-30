@@ -106,6 +106,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::checkbox('show_remember_me_box', $this->config->get('show_remember_me_box')); ?>
 	    </td>
 	</tr>
+
+	<tr>
+		<td class="key">
+			<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_REGISTRATION_DEFAULT_VENDOR_TIP'); ?>">
+				<?php echo JText::_('VM_CFG_REGISTRATION_DEFAULT_VENDOR') ?>
+			</span>
+		</td>
+		<td>
+			<?php echo $this->vendorList; ?>
+		</td>
+	</tr>
+
 	<tr>
 	    <td class="key">
 		<?php echo 'Joomla! ' . JText::_('VM_ADMIN_CFG_ALLOW_REGISTRATION'); ?>

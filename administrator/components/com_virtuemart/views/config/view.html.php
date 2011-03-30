@@ -66,12 +66,16 @@ class VirtuemartViewConfig extends JView {
 		$vmLayoutList = $model->getLayoutList('virtuemart');
 		$this->assignRef('vmLayoutList', $vmLayoutList);
 
+		$vendorList = ShopFunctions::renderVendorList($config->get('default_vendor_id'));
+		// We must replace the fieldname and ID 'vendor_id' to 'default_vendor'
+		$vendorList = preg_replace('/"vendor_id"/', '"default_vendor_id"', $vendorList);
+		$this->assignRef('vendorList', $vendorList);
+
 		$categoryLayoutList = $model->getLayoutList('category');
 		$this->assignRef('categoryLayoutList', $categoryLayoutList);
 
 		$productLayoutList = $model->getLayoutList('productdetails');
 		$this->assignRef('productLayoutList', $productLayoutList);
-
 
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
