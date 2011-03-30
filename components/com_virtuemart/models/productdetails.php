@@ -558,7 +558,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 		/* search Order fields set */
 		
-		if (VmConfig::get('check_stock') && Vmconfig::getVar('show_out_of_stock_products') != '1')
+		if (VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != '1')
 			$where[] = ' `product_in_stock` > 0 ';
 		// special  orders case
 		switch ($filter_order) {
