@@ -650,6 +650,16 @@ class VirtueMartModelUserfields extends JModel {
 							if (!in_array('calendar-mos.css', $_return['links'])) {
 								$_return['links']['calendar-mos.css'] = $_calendar_path.DS;
 							}
+							/*
+							 * TODO We must add the joomla.javascript here that contains the calendar,
+							 * since Joomla does not load it when there's no user logged in.
+							 * Gotta find out why... some security issue or a bug???
+							 * Note by Oscar
+							 */
+							if ($_userData === null) { // Not logged in
+								$_doc = JFactory::getDocument();
+								$_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
+							}
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
 								. $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
 								. ($_fld->required ? ' class="required"' : '')
