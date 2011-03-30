@@ -178,7 +178,11 @@ class VirtuemartViewUser extends JView {
 		} else {
 			$preFix='shipto_';
 			$userInfoID = JRequest::getVar('user_info_id', 0);
-			if(!empty($userInfoID)) $userAddressData = $this->_userDetails->userInfo[$userInfoID];
+			if(!empty($userInfoID)) {
+				$userAddressData = $this->_userDetails->userInfo[$userInfoID];
+			} else {
+				$userAddressData = null; // New address being added
+			}
 			$this->assignRef('userInfoID', $userInfoID);
 		}
 
