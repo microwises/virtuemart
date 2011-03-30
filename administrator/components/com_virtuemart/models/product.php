@@ -7,7 +7,7 @@
 * @subpackage
 * @author RolandD
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -380,7 +380,7 @@ class VirtueMartModelProduct extends JModel {
 			}
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
-	        if (VmConfig::get('check_stock') && Vconfig::getVar('show_out_of_stock_products') != '1') {
+	        if (VmConfig::get('check_stock') && VmConfig::get('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
 			$query .= ' group by `#__vm_product`.`product_id` ';
