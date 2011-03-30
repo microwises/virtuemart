@@ -32,78 +32,60 @@ class VirtuemartViewMedia extends JView {
 
 	function display($tpl = null) {
 
-		/* Load the menu */
+		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
-		/* Get the task */
-		$task = JRequest::getCmd('task');
+		$model = $this->getModel('media');
+		$this->loadHelper('permissions');
+		$this->assignRef('perms', Permissions::getInstance());
 
-		/*  */
-		switch ($task) {
-			case 'save':
-				$this->get('SaveMedia');
-				break;
-			case 'remove':
-				$this->get('DeleteMedia');
-				break;
-			case 'publish':
-			case 'unpublish':
-				$this->get('PublishMedia');
-				break;
-		}
+		//@todo should be depended by loggedVendor
+		$vendorId=1;
+		$this->assignRef('vendorId', $vendorId);
 
-		/* Load the page data */
-		switch ($task) {
-			case 'add':
-			case 'edit':
+		$layoutName = JRequest::getVar('layout', 'default');
+		$task = JRequest::getVar('task', '');
+		if ($task == 'edit') {
 
-				/* Get the file details */
-				$productfile = $this->get('ImageDetails');
-				$this->assignRef('productfile', $productfile);
+			$media = $model->getFile();
+			$this->assignRef('media',	$media);
 
-				/* Get the list of files from the downloadroot */
-				$this->assignRef('filesselect', $this->get('FilesSelect'));
+			$isNew = ($media->file_id < 1);
+			if ($isNew) {
+				JToolBarHelper::title(  JText::_('VM_MEDIA_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
 
-				/* Set selected file type */
-				/* Add the dropdown options */
-				$file_type_options=array();
-				$file_type_options[] = JHTML::_('select.option','product_images', 'VM_FILES_FORM_PRODUCT_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','product_full_image', 'VM_PRODUCT_FORM_FULL_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','product_thumb_image', 'VM_PRODUCT_FORM_THUMB_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','downloadable_file', 'VM_FILES_FORM_DOWNLOADABLE');
-				$file_type_options[] = JHTML::_('select.option','image', 'VM_FILES_FORM_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','file', 'VM_FILES_FORM_FILE');
-
-				/* Find out which type the image is */
-				$file_type_selected = $this->get('SelectedFileType');
-				$this->assignRef('file_type_selected', $file_type_selected);
-
-				$file_types = JHTML::_('select.genericlist', $file_type_options, 'file_type', 'onchange="checkThumbnailing();" class="inputbox"', 'value', 'text', $file_type_selected);
-				$this->assignRef('file_types', $file_types);
-
-				/* Set up the toolbar */
-				JToolBarHelper::title(JText::_( 'VM_FILES_FORM' ).' '.$productfile->product_name, 'vm_media_48');
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-				break;
-			case 'save':
-			default:
-				$this->assignRef('productfileslist', $this->get('ProductFilesList'));
-				$this->assignRef('productfilesroles', $this->get('ProductFilesRoles'));
-
-				/* Get the pagination */
-				$pagination = $this->get('Pagination');
-				$this->assignRef('pagination', $pagination);
-
-				/* Set up the toolbar */
-				/* Create the toolbar */
-				if (JRequest::getInt('product_id', false)) {
-					JToolBarHelper::title(JText::_('MEDIA_LIST').' :: '.$this->productfileslist[0]->product_name, 'vm_media_48');
+				$usermodel = $this->getModel('user', 'VirtuemartModel');
+				$usermodel->setCurrent();
+				$userDetails = $usermodel->getUser();
+				if(empty($userDetails->vendor_id)){
+					JError::raiseError(403,'Forbidden for non vendors');
 				}
-				else JToolBarHelper::title(JText::_( 'MEDIA_LIST' ), 'vm_media_48');
-				JToolBarHelper::deleteList();
-				if (JRequest::getInt('product_id', false)) JToolBarHelper::addNew();
-				break;
+				if(empty($media->vendor_id))$media->vendor_id = $userDetails->vendor_id;
+			}
+			else {
+				JToolBarHelper::title( JText::_('VM_MEDIA_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+			}
+
+			JToolBarHelper::divider();
+			JToolBarHelper::apply();
+			JToolBarHelper::save();
+			JToolBarHelper::cancel();
+
+        }
+        else {
+			JToolBarHelper::title( JText::_( 'VM_MEDIA_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
+			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::editListX();
+			JToolBarHelper::addNewX();
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination',	$pagination);
+
+			$files = $model->getFiles();
+			$this->assignRef('files',	$files);
+
 		}
 
 		parent::display($tpl);

@@ -19,7 +19,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 // Added the ability to add manufacturer images
 $db->query( "ALTER TABLE `#__{vm}_manufacturer` ADD `mf_thumb_image` VARCHAR( 255 ) default NULL ,
-ADD `mf_full_image` VARCHAR( 255 ) default NULL");
+ADD `file_ids` VARCHAR( 255 ) default NULL");
 
 # define modules as administrator-relevant or not
 $db->query( "ALTER TABLE `#__{vm}_module` ADD `is_admin` ENUM( '0', '1' ) NOT NULL AFTER `published`");

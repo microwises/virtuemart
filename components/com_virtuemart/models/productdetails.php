@@ -50,16 +50,16 @@ class VirtueMartModelProductdetails extends JModel {
 	var $_pagination = null;
 
 	/**
-	  * product category search query 
+	  * product category search query
 	  * var to prevent to reload 2 time same query
-	  * @var 
+	  * @var
 	  */
 	var $_query = null;
 
 	function __construct()
 	{
 		parent::__construct();
-	
+
 		$mainframe = Jfactory::getApplication();
 
 		// Get pagination request variables
@@ -69,7 +69,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-		
+
 	}
 
 
@@ -260,7 +260,7 @@ class VirtueMartModelProductdetails extends JModel {
 	 * This function retrieves the "neighbor" products of a product specified by $product_id
 	 * Neighbors are the previous and next product in the current list
 	 *
-	 * @author RolandD
+	 * @author RolandD, Max Milbers
 	 * @param object $product The product to find the neighours of
 	 * @return array
 	 */
@@ -278,17 +278,19 @@ class VirtueMartModelProductdetails extends JModel {
 		$products = $this->_db->loadAssocList('product_id');
 
 		/* Move the internal pointer to the current product */
-		foreach ($products as $product_id => $xref) {
-			if ($product_id == $product->product_id) break;
+		if(!empty($products)){
+			foreach ($products as $product_id => $xref) {
+				if ($product_id == $product->product_id) break;
+			}
+			/* Get the neighbours */
+			$neighbours['next'] = current($products);
+			if (!$neighbours['next']) end($products);
+			else prev($products);
+			$neighbours['previous'] = prev($products);
+			return $neighbours;
 		}
 
-		/* Get the neighbours */
-		$neighbours['next'] = current($products);
-		if (!$neighbours['next']) end($products);
-		else prev($products);
-		$neighbours['previous'] = prev($products);
-
-		return $neighbours;
+		return false;
 	}
 
 	/**
@@ -298,34 +300,35 @@ class VirtueMartModelProductdetails extends JModel {
 	 * @param int $product_id The ID of the product
 	 * @return array containing all the files and their data
 	 */
-	private function getFileList($product_id) {
-		jimport('joomla.filesystem.file');
-		$this->_db = JFactory::getDBO();
-		$html = "";
-		$q = "SELECT attribute_value
-			FROM `#__vm_product_attribute`
-			WHERE `product_id` = ".$product_id."
-			AND `attribute_name`='download'";
-		$this->_db->query($q);
-		$exclude_filename = $this->_db->Quote($this->_db->loadResult());
-
-		$sql = "SELECT DISTINCT file_id, file_mimetype, file_title, file_name
-				FROM `#__vm_product_files`
-				WHERE ";
-				if ($exclude_filename) $sql .= " file_title != ".$exclude_filename." AND
-				file_product_id = '".$product_id."'
-				AND file_published = '1'
-				AND file_is_image = '0'";
-		$this->_db->setQuery($sql);
-		$files = $this->_db->loadObjectList();
-
-		foreach ($files as $fkey => $file) {
-			$filename = JPATH_ROOT.DS.'media'.DS.str_replace(JPATH_ROOT.DS.'media'.DS, '', $file->file_name);
-			if (JFile::exists($filename)) $files[$fkey]->filesize = @filesize($filename) / 1048000;
-			else $files[$fkey]->filesize = false;
-		}
-		return $files;
-	}
+//	private function getFileList($product_id) {
+//		jimport('joomla.filesystem.file');
+////		$this->_db = JFactory::getDBO();
+////		$html = "";
+////		$q = "SELECT attribute_value
+////			FROM `#__vm_product_attribute`
+////			WHERE `product_id` = ".$product_id."
+////			AND `attribute_name`='download'";
+////		$this->_db->query($q);
+////		$exclude_filename = $this->_db->Quote($this->_db->loadResult());
+////
+////		$sql = "SELECT DISTINCT file_id, file_mimetype, file_title, file_name
+////				FROM `#__vm_product_files`
+////				WHERE ";
+////				if ($exclude_filename) $sql .= " file_title != ".$exclude_filename." AND
+////				file_product_id = '".$product_id."'
+////				AND file_published = '1'
+////				AND file_is_image = '0'";
+////		$this->_db->setQuery($sql);
+////		$files = $this->_db->loadObjectList();
+////
+////		foreach ($files as $fkey => $file) {
+////			$filename = JPATH_ROOT.DS.'media'.DS.str_replace(JPATH_ROOT.DS.'media'.DS, '', $file->file_name);
+////			if (JFile::exists($filename)) $files[$fkey]->filesize = @filesize($filename) / 1048000;
+////			else $files[$fkey]->filesize = false;
+////		}
+////		return $files;
+//		return array();
+//	}
 
 	/**
 	* Load any related products
@@ -337,7 +340,7 @@ class VirtueMartModelProductdetails extends JModel {
 	*/
 	private function getRelatedProducts($product_id) {
 		$this->_db = JFactory::getDBO();
-		$q = "SELECT `p`.`product_id`, `product_sku`, `product_name`,`product_thumb_image`, related_products
+		$q = "SELECT `p`.`product_id`, `product_sku`, `product_name`, related_products
 			FROM `#__vm_product` p, `#__vm_product_relations` `r`
 			WHERE `r`.`product_id` = ".$product_id."
 			AND `p`.published = 1
@@ -516,9 +519,9 @@ class VirtueMartModelProductdetails extends JModel {
 		//$option = JRequest::getWord('option');
 		//$mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' ) );
 		$category_id = JRequest::getInt('category_id', 0 );
-		
+
 		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field','product_id'));
-		
+
 		$filter_order_Dir = JRequest::getVar('order', 'ASC');
 
 		$search = JRequest::getVar('search', false );
@@ -538,8 +541,8 @@ class VirtueMartModelProductdetails extends JModel {
 				$filter_search[] = " `".$searchField."` LIKE '%".$keyword."%' ";
 			}
 			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-		} 
-		if ($category_id>0){ 
+		}
+		if ($category_id>0){
 			$joinCategory = true ;
 			$where[] = ' `#__vm_product_category_xref`.`category_id` = '.$category_id;
 		}
@@ -557,7 +560,7 @@ class VirtueMartModelProductdetails extends JModel {
 		}
 
 		/* search Order fields set */
-		
+
 		if (VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != '1')
 			$where[] = ' `product_in_stock` > 0 ';
 		// special  orders case
@@ -585,7 +588,7 @@ class VirtueMartModelProductdetails extends JModel {
 				$orderBy = ' ORDER BY `#__vm_product`.`'.$filter_order.'` ';
 				break;
 		}
-		
+
 		$query = "SELECT `#__vm_product`.`product_id` FROM `#__vm_product` ";
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__vm_product_category_xref` ON `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
@@ -594,7 +597,7 @@ class VirtueMartModelProductdetails extends JModel {
 		if ($joinMf == true) {
 			$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product`.`product_id` = `#__vm_product_mf_xref`.`product_id`
 			 LEFT JOIN `#__vm_manufacturer` ON `#__vm_manufacturer`.`manufacturer_id` = `#__vm_product_mf_xref`.`manufacturer_id` ';
-		}			
+		}
 		if ($joinPrice == true) {
 			$query .= ' LEFT JOIN `#__vm_product_price` ON `#__vm_product`.`product_id` = `#__vm_product_price`.`product_id` ';
 		}
@@ -614,15 +617,15 @@ class VirtueMartModelProductdetails extends JModel {
 		if (empty($this->products)) {
 
 			if (empty($this->_query)) $this->_query = $this->_buildQuery();
-			$product_ids = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit')); 
+			$product_ids = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 
 			/* Collect the product data */
-			
+
 			foreach ($product_ids as $product_id) {
 				$this->products[] = $this->getProduct($product_id->product_id);
 			}
 
-			
+
 		}
 		return $this->products;
 	}
@@ -631,7 +634,7 @@ class VirtueMartModelProductdetails extends JModel {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
             if (empty($this->_query)) $this->_query = $this->_buildQuery();
-            $this->_total = $this->_getListCount($this->_query);    
+            $this->_total = $this->_getListCount($this->_query);
         }
         return $this->_total;
   }
@@ -653,7 +656,7 @@ class VirtueMartModelProductdetails extends JModel {
 	* @param $fieds from config Back-end
 	* @return $orderByList
 	* Order,order By, manufacturer and category link List to echo Out
-	**/  
+	**/
   function getOrderByList() {
 
 	//$mainframe = Jfactory::getApplication();
@@ -675,7 +678,7 @@ class VirtueMartModelProductdetails extends JModel {
 	$search = JRequest::getVar('search', '' );
 	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getVar('keyword', '' );
 
-	
+
 	/* Collect the product IDS for manufacturer list */
 	$db = JFactory::getDBO();
 	if (empty($this->_query)) $this->_query = $this->_buildQuery();
@@ -752,7 +755,7 @@ class VirtueMartModelProductdetails extends JModel {
 
 	return $orderByList ;
   }
-	
+
 	/**
 	* Get the stock level for a given product
 	*
@@ -867,5 +870,21 @@ class VirtueMartModelProductdetails extends JModel {
 		return $fields;
 	}
 
+	/**
+	 * Since a product dont need always an image, we can attach them to the product with this function
+	 * The parameter takes a single product or arrays of products, look for FE/views/virtuemart/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $products
+	 */
+	public function addImagesToProducts($products=0){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($products,'file_ids','product','image');
+
+	}
 }
 // pure php no closing tag

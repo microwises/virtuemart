@@ -115,10 +115,10 @@ $pagination = $this->pagination;
 				<?php
 					/* Create URL */
 				//TODO get media for product working
-//					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
-					$link ='';
+					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
+//					$link ='';
 				?>
-				<td>without function Beta <?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
+				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('VM_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->
@@ -164,9 +164,7 @@ $pagination = $this->pagination;
 <input type="hidden" name="view" value="product" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
 <input type="hidden" name="product_price_id" value="<?php echo $this->product_price_id; ?>" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="page" value="product.product_list" />
-<input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />

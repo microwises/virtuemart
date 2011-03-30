@@ -40,10 +40,8 @@ class TableProduct extends JTable {
 	var $product_s_desc		= null;
     /** @var string File extension */
 	var $product_desc			= null;
-	/** @var string File mime type */
-	var $product_thumb_image			= null;
 	/** @var string File URL */
-	var $product_full_image				= null;
+	var $file_ids				= null;
 	/** @var int File published or not */
 	var $published		= null;
 	/** @var int File is an image or other */

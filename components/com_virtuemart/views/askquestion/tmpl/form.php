@@ -32,7 +32,7 @@ if (empty ( $this->product )) {
 
 		<?php // Product Image
 		/** @todo make the image popup */
-		echo $this->productImage->displayImage('class="product-image"',$this->product->product_name,1,0, 'class="modal"');
+		echo $this->product->images[0]->displayMediaThumb('class="product-image"'); //4th param was 'class="modal"'
 		?>
 		</div>
 
@@ -67,14 +67,14 @@ if (empty ( $this->product )) {
 					if (f.comment.value.length < <?php echo VmConfig::get('vm_asks_minimum_comment_length', 50); ?>) {
 						alert('<?php echo JText::sprintf('VM_ASK_ERR_COMMENT1', VmConfig::get('vm_asks_minimum_comment_length', 50)); ?>');
 						return false;
-					} else 
+					} else
 					if (f.comment.value.length > <?php echo VmConfig::get('vm_asks_maximum_comment_length', 2000); ?>) {
 						alert('<?php echo JText::sprintf('VM_ASK_ERR_COMMENT2', VmConfig::get('vm_asks_maximum_comment_length', 2000)); ?>');
 						 return false;
 					}
 					if (document.formvalidator.isValid(f)) {
 						f.check.value='<?php echo JUtility::getToken(); ?>'; //send token
-						return true; 
+						return true;
 					} else {
 						var msg = '';
 						//Example on how to test specific fields
@@ -92,9 +92,9 @@ if (empty ( $this->product )) {
 				}
 				</script>
 					<?php
-					if (!empty($this->user->id)) { 
+					if (!empty($this->user->id)) {
 						$user =& JFactory::getUser();
-						
+
 					}
 					?>
 				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id).'&tmpl=component' ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">

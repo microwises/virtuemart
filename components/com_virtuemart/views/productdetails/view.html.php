@@ -34,7 +34,7 @@ class VirtueMartViewProductdetails extends JView {
 	/**
 	* Collect all data to show on the template
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	*/
 	function display($tpl = null) {
 
@@ -77,6 +77,7 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($product_id);
+		$product_model->addImagesToProducts($product);
 
 		if(empty($product)){
 			self::showLastCategory($tpl);
@@ -93,11 +94,6 @@ class VirtueMartViewProductdetails extends JView {
 		$this->assignRef('product', $product);
 
 
-
-		$productImage = VmImage::getImageByProduct($product);
-		$this->assignRef('productImage', $productImage);
-
-
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
@@ -110,13 +106,15 @@ class VirtueMartViewProductdetails extends JView {
 
 		if($category_model){
 			$category = $category_model->getCategory($category_id);
+			$category_model->addImagesToCategories($category);
 			$this->assignRef('category', $category);
-		if ($category->parents) {
-			foreach ($category->parents as $c){
-				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+
+			if ($category->parents) {
+				foreach ($category->parents as $c){
+					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+				}
 			}
-		}
-			//$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));
+			if($category->children)	$category_model->addImagesToCategories($category->children);
 		}
 
 		//$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
@@ -178,8 +176,6 @@ class VirtueMartViewProductdetails extends JView {
 	    	$catTpl = $category->category_template;
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
-
-
 
 		/* Display it all */
 		parent::display($tpl);

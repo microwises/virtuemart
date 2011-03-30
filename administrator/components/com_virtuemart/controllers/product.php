@@ -47,6 +47,12 @@ class VirtuemartControllerProduct extends JController {
 		$this->registerTask('publish','product');
 		$this->registerTask('edit','add');
 		$this->registerTask('apply','save');
+
+		/* Create the view object */
+		$view = $this->getView('product', 'html');
+		/* Set the layout */
+		$view->setLayout('product');
+
 	}
 
 	/**
@@ -75,7 +81,7 @@ class VirtuemartControllerProduct extends JController {
 	/**
 	 * Shows the product add/edit screen
 	 */
-	public function Add() {
+	public function add() {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
 
@@ -117,6 +123,7 @@ class VirtuemartControllerProduct extends JController {
 	* @author RolandD, Max Milbers
 	*/
 	public function save() {
+
 		$mainframe = Jfactory::getApplication();
 
 		/* Load the view object */
@@ -131,20 +138,22 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($product_id = $model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
+		if ($product_id = $model->saveProduct()){
+			 $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
+		}
 		else {
 			$msg = $model->getError();
 			$msgtype = 'error';
 		}
-		
+
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply'){ 
+		if($cmd == 'apply'){
 			$redirection = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product_id.'&product_parent_id='.JRequest::getInt('product_parent_id');
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=product';
 		}
-		
-		$mainframe->redirect($redirection, $msg, $msgtype); 
+
+		$mainframe->redirect($redirection, $msg, $msgtype);
 
 	}
 

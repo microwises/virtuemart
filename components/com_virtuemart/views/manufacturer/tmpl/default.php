@@ -24,17 +24,17 @@ $i = 1 ;
 	<?php
 	foreach ($this->manufacturers as $manufacturer) {
 		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
-		$manufacturerImage = VmImage::getImageByMf($manufacturer);
+
 		$productlink = JROUTE::_('index.php?option=com_virtuemart&view=category&manufacturer_id=' . $manufacturer->manufacturer_id);
 		?>
-		
+
 		<!-- Category Listing Output -->
 		<div class="width33 floatleft center">
 			<h3>
 				<a href="<?php echo $link; ?>"><?php echo $manufacturer->mf_name; ?></a>
-			
+
 			<br />
-				<a href="<?php echo $link; ?>"><?php echo $manufacturerImage->displayImage('','',1,1);?></a>
+				<a href="<?php echo $link; ?>"><?php echo $manufacturerImage->images[0]->displayMediaThumb();?></a>
 			</h3>
 		</div>
 

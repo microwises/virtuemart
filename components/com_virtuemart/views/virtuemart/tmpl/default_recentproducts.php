@@ -7,14 +7,14 @@
 		foreach ($this->recentProducts as $recent ) { // Loop through all recent products
 			/**
 			 * Available indexes:
-			 * 
+			 *
 			 * $recent["product_name"] => The user ID of the comment author
 			 * $recent["category_name"] => The username of the comment author
-			 * $recent["product_thumb_image"] => The name of the comment author
+			 * ?$recent["product_thumb_image"] => The name of the comment author?
 			 * $recent["product_url"] => The UNIX timestamp of the comment ("when" it was posted)
 			 * $recent["category_url"] => The rating; an integer from 1 - 5
 			 * $recent["product_s_desc"] => The comment text
-			 * 
+			 *
 			 */
 				?>
 			<li>

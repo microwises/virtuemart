@@ -192,7 +192,7 @@ class VirtueMartModelUser extends JModel {
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 				$_ui_id = $_ui[$i]->user_info_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-				/* 
+				/*
 				 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
 				 * from the cart. I don't know is this is the only location, but it can be fixed by
 				 * making sure the user_is_vendor field is in the BT dataset.
@@ -536,7 +536,7 @@ class VirtueMartModelUser extends JModel {
 
 			if($_data['user_is_vendor']){
 
-				//				$_data['vendor_id'] = $_data['my_vendor_id'];
+				//	$_data['vendor_id'] = $_data['my_vendor_id'];
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
 
@@ -569,6 +569,7 @@ class VirtueMartModelUser extends JModel {
 						$this->setError($table->getError());
 						return false;
 					}
+
 				}
 				//			}
 			}

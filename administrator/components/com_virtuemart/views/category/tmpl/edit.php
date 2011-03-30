@@ -255,36 +255,15 @@ $mainframe = JFactory::getApplication();
 <?php
 	echo $pane->endPanel();
 	echo $pane->startPanel(JText::_('IMAGES'), 'images_tab');
-	echo VmImage::testFolderWriteAble(VmConfig::get('media_category_path'));
+
 ?>
 <div class="col50">
-	<table class="adminform">
-		<tr>
-			<td style="width: 50%" valign="top">
-				<fieldset>
-					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_FULL_IMAGE' ); ?></legend>
-					<table style="width:100%">
-					<?php
-						$image = VmImage::getImageByCat($this->category);
-						echo $image -> createImageUploader(false);
-					?>
-					</table>
-					<?php echo $image->displayImage('','',false,0); ?>
-				</fieldset>
-			</td>
-			<td valign="top">
-				<fieldset>
-					<legend><?php echo JText::_( 'VM_PRODUCT_FORM_THUMB_IMAGE' ); ?></legend>
-					<table style="width:100%">
-					<?php
-						echo $image -> createImageUploader(true);
-					 ?>
-					</table>
-					<?php echo $image->displayImage('','',true,0); ?>
-				</fieldset>
-			</td>
-		</tr>
-	</table>
+			<?php
+//				foreach($this->category->images as $image){
+					echo $this->category->images[0]->displayFilesHandler($this->category->file_ids);
+//				}
+//				echo $this->category->images[0]->displayFileHandler();
+			?>
 </div>
 <?php
 	echo $pane->endPanel();

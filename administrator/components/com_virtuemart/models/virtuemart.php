@@ -39,7 +39,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT category_id, category_thumb_image, category_child_id, category_name ";
+		$query = "SELECT category_id, category_child_id, category_name ";
 		$query .= "FROM #__vm_category, #__vm_category_xref ";
 		$query .= "WHERE #__vm_category_xref.category_parent_id = '$category_id' ";
 		$query .= "AND #__vm_category.category_id = #__vm_category_xref.category_child_id ";

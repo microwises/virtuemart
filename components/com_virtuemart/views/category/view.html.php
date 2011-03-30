@@ -41,7 +41,7 @@ class VirtuemartViewCategory extends JView {
 		$this->assignRef('show_prices', $show_prices);
 
 		$document = JFactory::getDocument();
-		// add javascript for price and cart 
+		// add javascript for price and cart
 		VmConfig::jPrice();
 
 		$mainframe = JFactory::getApplication();
@@ -64,11 +64,12 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
 			}
 		}
-		
+		if($category->children)	$categoryModel->addImagesToCategories($category->children);
+
 	    /* Add the category name to the pathway */
 		//$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
-		
+
 		/* Set Canonic link */
 		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$categoryId) , 'canonical', 'rel', '' );
 
@@ -80,10 +81,10 @@ class VirtuemartViewCategory extends JView {
 			$document->setTitle($category->category_name.' '.$keyword);
 			$this->assignRef('keyword', $keyword);
 		}
-	
+
 	    /* Load the products in the given category */
-		//if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	    $products = $productModel->getProductsInCategory($categoryId);
+	    $productModel->addImagesToProducts($products);
 	    $this->assignRef('products', $products);
 
 	    $total = $productModel->getTotalProductsInCategory($categoryId);
@@ -95,8 +96,8 @@ class VirtuemartViewCategory extends JView {
 	    $this->assignRef('orderByList', $orderByList);
 		//$sortOrderButton = $productModel->getsortOrderButton();
 		//$this->assignRef('sortOrder', $sortOrderButton);
-		
-		
+
+
 
 	    if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );

@@ -124,13 +124,17 @@ class VirtueMartModelProduct extends JModel {
 		 }
 
 
-		 /* Add the product categories */
-		 $q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;
-		 $this->_db->setQuery($q);
-		 $categories = $this->_db->loadResultArray();
-		 $row->categories = $this->_db->loadResultArray();
+		/* Add the product categories */
+		$q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;
+		$this->_db->setQuery($q);
+		$categories = $this->_db->loadResultArray();
+		$row->categories = $this->_db->loadResultArray();
 
-		 if (VmConfig::get('show_prices') == '1') {
+		if($row->file_ids){
+			$row->file_ids = explode(',',$row->file_ids);
+		}
+
+		if (VmConfig::get('show_prices') == '1') {
 			/* Loads the product price details */
 //			$calculator = new calculationHelper();
 //			$row->price = $calculator->getProductPrices($featured->product_id);
@@ -138,6 +142,22 @@ class VirtueMartModelProduct extends JModel {
 
      	 return $row;
      }
+
+    /**
+	 * Since a product dont need always an image, we can attach them to the product with this function
+	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
+	 * for an exampel using it
+	 * @author Max Milbers
+	 * @param object $products
+	 */
+	public function addImagesToProducts($products=0){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($products,'file_ids','product','image');
+
+	}
 
      /**
      * Get the simple product info
@@ -193,8 +213,9 @@ class VirtueMartModelProduct extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT #__vm_product.`product_id`,
-     				#__vm_product.`product_parent_id`,
+     	$q = "SELECT `#__vm_product`.`product_id`,
+     				`#__vm_product`.`product_parent_id`,
+     				`#__vm_product`.`file_ids`,
      				`product_name`,
      				`vendor_name`,
      				`product_sku`,
@@ -370,7 +391,7 @@ class VirtueMartModelProduct extends JModel {
 				$filter ='';
 		}
 
-	        $query  = 'SELECT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
+	        $query  = 'SELECT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `#__vm_product`.`file_ids`, `product_in_stock`, `product_url` ';
 	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
 	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
 	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
@@ -650,30 +671,6 @@ class VirtueMartModelProduct extends JModel {
 		/* Load the old product details first */
 		$product_data->load($data['product_id']);
 
-		/* Process the images */
-		//uploading images and creating thumbnails
-		$fullImage = JRequest::getVar('product_full_image', array(), 'files');
-		if(!empty($fullImage['name'])){
-			$filename = $fullImage['name'];
-		} else {
-			$filename = $data['product_full_image_current'];
-		}
-
-		$thumbImage = JRequest::getVar('product_thumb_image', array(), 'files');
-		if(!empty($thumbImage['name'])){
-			$filenamethumb = $thumbImage['name'];
-		} else {
-			$filenamethumb = $data['product_thumb_image_current'];
-		}
-
-		/* Load the image helper */
-		if(!class_exists('VmImage')) require (JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-		$image = VmImage::getProductImage($filename,$filenamethumb);
-		if(!empty($image)){
-			$data = $image->saveImage($data,$fullImage,false);
-			$data = $image->saveImage($data,$thumbImage,true);
-		}
-
 		/* Get the product data */
 		if (!$product_data->bind($data)) {
 			$this->setError($product_data->getError());
@@ -708,6 +705,23 @@ class VirtueMartModelProduct extends JModel {
 			//I dont like the solution to use two variables
 			$product_data->product_id = $data['product_id'] = $dbv->insertid();
 		}
+
+		// Process the images
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel->storeMedia($data,$product_data,'product');
+//		/* Process the images */
+//		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+//		$mediaModel = new VirtueMartModelMedia();
+//		$mediaModel -> setId($product_data->product_id);
+//		if(!$mediaModel->store('product')){
+//			$app =& JFactory::getApplication();
+//			if($errs = $mediaModel->getErrors()){
+//				foreach($errs as $err){
+//					$app->enqueueMessage($err);
+//				}
+//			}
+//		}
 
 		$product_price_table = $this->getTable('product_price');
 
@@ -1144,7 +1158,7 @@ class VirtueMartModelProduct extends JModel {
 			if ($k < $maxitems) {
 				$prod_id = $recentproducts[$i]['product_id'];
 				$category_id = $recentproducts[$i]['category_id'];
-				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc,product_thumb_image ";
+				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
 				$q .= "FROM #__vm_product as p,#__vm_category as c,#__vm_product_category_xref as cx ";
 				$q .= "WHERE p.product_id = '".$prod_id."' ";
 				$q .= "AND c.category_id = '".$category_id."' ";
@@ -1165,7 +1179,7 @@ class VirtueMartModelProduct extends JModel {
 					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
 					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
 					$recent[$k]['category_name'] = $product->category_name;
-					$recent[$k]['product_thumb_image'] = $product->product_thumb_image;
+//					$recent[$k]['file_ids'] = $product->file_ids;
 				}
 				$k++;
 			}

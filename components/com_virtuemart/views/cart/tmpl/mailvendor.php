@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
 	//Hello Shopowner
 	JText::_('VM_CART_MAIL_VENDOR_TITLE');
 	echo $this->store->vendor_store_name;
-	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
-//	VmImage::generateImageHtml($this->store->vendor_full_image, VmConfig::get('media_path'), 'alt="Shop Image"', false);
+	echo $this->vendor->images[0]->displayMediaThumb();
+//	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
+//	VmImage::generateImageHtml($this->store->file_ids, VmConfig::get('media_path'), 'alt="Shop Image"', false);
 
 	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
 

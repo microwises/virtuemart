@@ -260,6 +260,7 @@ class VirtueMartViewCart extends JView {
 		$vendor = $this->getModel('vendor','VirtuemartModel');
 		$vendor->setId($this->_cart->vendorId);
 		$_vendor = $vendor->getVendor();
+		$vendor->addImagesToVendor($_vendor);
 		$this->assignRef('vendor',$_vendor);
 	}
 

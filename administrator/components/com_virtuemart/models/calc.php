@@ -146,7 +146,7 @@ class VirtueMartModelCalc extends JModel
 	 * Retireve a list of calculation rules from the database.
 	 *
      * @author Max Milbers
-     * @param string $onlyPuiblished True to only retreive the publish Calculation rules, false otherwise
+     * @param string $onlyPuiblished True to only retreive the published Calculation rules, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
@@ -219,8 +219,8 @@ class VirtueMartModelCalc extends JModel
      * @return boolean True is the save was successful, false otherwise.
 	 */
     public function store() {
-		$table = $this->getTable('calc');
 
+		$table = $this->getTable('calc');
 		$data = JRequest::get('post');
 
 		// Convert selected dates to MySQL format for storing.

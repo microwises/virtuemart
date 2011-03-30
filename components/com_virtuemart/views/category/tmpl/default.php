@@ -26,8 +26,8 @@ defined('_JEXEC') or die('Restricted access');
   can be changed by the template maker
 */
 $js = "
-jQuery(document).ready(function () { 
-	jQuery('.orderlistcontainer').hover( 
+jQuery(document).ready(function () {
+	jQuery('.orderlistcontainer').hover(
 		function() {
 		orderlist = jQuery(this).find('.orderlist') ;
 		orderlist.stop().show()},
@@ -67,9 +67,9 @@ if ( VmConfig::get('showCategory',1) ) {
 				<h3>
 					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
 					<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
-					<?php if ($category->category_thumb_image) {
-						echo VmImage::getImageByCat($category)->displayImage();
-					} ?>
+					<?php
+						echo $category->images[0]->displayMediaThumb();
+					 ?>
 					</a>
 				</h3>
 			</div>
@@ -93,9 +93,9 @@ if ( VmConfig::get('showCategory',1) ) {
 		</div>
 
 	<div class="horizontal-separator margintop20 marginbottom20"></div>
-	<?php 
+	<?php
 	}
-} 
+}
 ?>
 
 
@@ -103,11 +103,11 @@ if ( VmConfig::get('showCategory',1) ) {
 <?php // Show child categories
 if (!empty($this->products)) {
 	$search='';
-	if (!empty($this->keyword)) { 
+	if (!empty($this->keyword)) {
 		$search ='&search=true&keyword='.$this->keyword;
 		?>
 		<h3><?php echo $this->keyword; ?></h3>
-		<?php 
+		<?php
 	}
 	?>
 	<div><?php echo $this->pagination->getResultsCounter();?></div>
@@ -129,7 +129,7 @@ if (!empty($this->products)) {
 
 
 foreach ($this->products as $product) {
-		
+
 
 		if ($iBrowse == 1) { // this is an indicator wether a row needs to be opened or not ?>
 		<div class="browse-row">
@@ -143,8 +143,7 @@ foreach ($this->products as $product) {
 					<div class="width30 floatleft center">
 
 						<?php /** @todo make image popup */
-						//todo add the attributes 'class="browseProductImage" border="0" title="'.$product->product_name.'" alt="'.$product->product_name .'"');
-						echo VmImage::getImageByProduct($product)->displayImage('class="browseProductImage" border="0" title="'.$product->product_name.'" ',$product->product_name);
+							echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0" title="'.$product->product_name.'" ');
 						?>
 
 

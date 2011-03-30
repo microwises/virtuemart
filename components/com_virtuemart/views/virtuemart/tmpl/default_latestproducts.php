@@ -4,7 +4,7 @@
 	$product_per_row = 2;
 	//Set the cell width
 	$TopTen_cellwidth = intval( (100 / $product_per_row) - 2 );
-	
+
 	echo "<h3>".JText::_('VM_LATEST_PRODUCT')."</h3>";
 	foreach ($this->latestProducts as $latestProduct ) {
 		?>
@@ -32,14 +32,14 @@
 					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$latestProduct->prices);
 					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$latestProduct->prices);
 			}
-				if ($latestProduct->product_thumb_image) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$latestProduct->product_id.'&category_id='.$latestProduct->category_id), 
-						VmImage::getImageByProduct($latestProduct)->displayImage('class="browseProductImage" border="0"',$latestProduct->product_name));
+				if ($latestProduct->file_ids) {
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$latestProduct->product_id.'&category_id='.$latestProduct->category_id),
+						$featProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"'));
 				?>
 				<br /><br/>
 				<?php } ?>
 				<?php echo $latestProduct->product_s_desc; ?><br />
-				
+
 				<?php echo addToCart($latestProduct); ?>
 		</div>
 		<?php

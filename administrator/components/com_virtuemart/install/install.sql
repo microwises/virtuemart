@@ -1,4 +1,4 @@
--- VirtueMart table SQL script
+-- VirtueMart table SQL script 
 -- This will install all the tables need to run VirtueMart
 
 -- --------------------------------------------------------
@@ -125,8 +125,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `category_name` varchar(128) NOT NULL DEFAULT '',
   `category_description` text,
-  `category_thumb_image` varchar(255) DEFAULT NULL,
-  `category_full_image` varchar(255) DEFAULT NULL,
+  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL, 	 	 	
@@ -261,8 +260,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_desc` text,
   `mf_category_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
-  `mf_thumb_image` varchar(255) DEFAULT NULL,
-  `mf_full_image` varchar(255) DEFAULT NULL,
+  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=1 ;
@@ -536,8 +534,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   `product_sku` varchar(64) NOT NULL DEFAULT '',
   `product_s_desc` varchar(255) DEFAULT NULL,
   `product_desc` text,
-  `product_thumb_image` varchar(255) DEFAULT NULL,
-  `product_full_image` varchar(255) DEFAULT NULL,
+  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `product_weight` decimal(10,4) DEFAULT NULL,
   `product_weight_uom` varchar(32) DEFAULT 'pounds.',
@@ -644,26 +641,28 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_files`
+-- Table structure for table `#__vm_product_media` (was  `#__vm_product_files`)
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_files` (
+CREATE TABLE IF NOT EXISTS `#__vm_media` (
   `file_id` int(19) NOT NULL AUTO_INCREMENT,
-  `file_product_id` int(11) NOT NULL DEFAULT '0',
-  `file_name` varchar(128) NOT NULL DEFAULT '',
-  `file_title` varchar(128) NOT NULL DEFAULT '',
-  `file_description` mediumtext NOT NULL,
-  `file_extension` varchar(128) NOT NULL DEFAULT '',
-  `file_mimetype` varchar(64) NOT NULL DEFAULT '',
-  `file_url` varchar(254) NOT NULL DEFAULT '',
-  `file_published` tinyint(1) NOT NULL DEFAULT '0',
-  `file_is_image` tinyint(1) NOT NULL DEFAULT '0',
-  `file_image_height` int(11) NOT NULL DEFAULT '0',
-  `file_image_width` int(11) NOT NULL DEFAULT '0',
-  `file_image_thumb_height` int(11) NOT NULL DEFAULT '50',
-  `file_image_thumb_width` int(11) NOT NULL DEFAULT '0',
+  `vendor_id` int(11) NOT NULL,
+  `file_title` varchar(126) NOT NULL DEFAULT '',
+  `file_description` varchar(254) NOT NULL,
+  `file_meta` varchar(254) NOT NULL,
+  `file_mimetype` varchar(64) NOT NULL,
+  `file_url` varchar(254) NOT NULL,
+  `file_url_thumb` varchar(254) NOT NULL,
+  `cdate` int(11) DEFAULT NULL,
+  `mdate` int(11) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL,
+  `file_is_product_image` tinyint(1) NOT NULL,
+  `file_is_downloadable` tinyint(1) NOT NULL,
+  `file_is_forSale` tinyint(1) NOT NULL,
+  `shared` tinyint(1) NOT NULL,
+  `file_params` text,
   PRIMARY KEY (`file_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1031,8 +1030,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   `vendor_store_name` varchar(128) NOT NULL DEFAULT '',
   `vendor_store_desc` text,
 --  `vendor_category_id` int(11) DEFAULT NULL,
-  `vendor_thumb_image` varchar(255) DEFAULT NULL,
-  `vendor_full_image` varchar(255) DEFAULT NULL,
+  `file_ids` varchar(255) DEFAULT NULL,
   `vendor_currency` varchar(16) DEFAULT NULL,
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL,

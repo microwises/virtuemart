@@ -463,19 +463,13 @@ class VirtuemartViewUser extends JView {
 			$vendorModel = $this->getModel('vendor');
 			$vendorModel->setId($this->_userDetails->vendor_id);
 			$vendor = $vendorModel->getVendor();
+			$vendorModel->addImagesToVendor($vendor);
 			$this->assignRef('vendor', $vendor);
-
-			$this->assignRef('positiveFormat',ShopFunctions::renderPositiveFormatCurrency($this->currency->getPositiveFormat()));
-			$this->assignRef('negativeFormat',ShopFunctions::renderNegativeFormatCurrency($this->currency->getNegativeFormat()));
 
 			$currencyModel = $this->getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
 
-//			$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $vendor->vendor_category_id);
-//			$this->assignRef('vendorCategories', $_vendorCats);
-
-//			$this->assignRef('vendorCurrency', $currency);
 		}
 
 		if(empty($this->currency)){

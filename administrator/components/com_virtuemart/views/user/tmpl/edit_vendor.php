@@ -103,19 +103,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<legend>
 				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
 			</legend>
-			<table class="admintable">
-			<?php $image = VmImage::getImageByVendor($this->vendor) ?>
-			<tr>
-				<th><?php echo JText::_('VM_VENDOR_FORM_FULL_IMAGE') ?></th>
-				<td><?php echo $image->displayImage('','',false,0) ?></td>
-			</tr>
-				<?php echo $image->createImageUploader(false) ?>
-			<tr>
-				<th><?php echo JText::_('VM_VENDOR_FORM_THUMB_IMAGE') ?></th>
-				<td><?php echo $image->displayImage('','',true,0) ?></td>
-			</tr>
-				<?php echo $image->createImageUploader(true) ?>
-			</table>
+			<?php
+				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->file_ids);
+			?>
+
+
 		</fieldset>
 
 		</td>

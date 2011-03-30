@@ -222,7 +222,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
-	$fields['vendor_full_image'] =  'c19970d6f2970cb0d1b13bea3af3144a.gif';
+	$fields['file_ids'] =  '1';
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
@@ -329,7 +329,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	/**
 	 * Read the file vm_config.dat from the install directory, compose the SQL to write
 	 * the config record and store it to the dabase.
-	 * 
+	 *
 	 * @param $_section Section from the virtuemart_defaults.cfg file to be parsed. Currently, only 'config' is implemented
 	 * @return Boolean; true on success, false otherwise
 	 * @author Oscar van Eijk

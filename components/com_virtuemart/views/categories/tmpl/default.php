@@ -46,9 +46,9 @@ if ($this->category->haschildren) {
 			<h3>
 				<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
 				<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
-				<?php if ($category->category_thumb_image) {
-					echo VmImage::getImageByCat($category)->displayImage();
-				} ?>
+			<?php
+					echo $category->images[0]->displayMediaThumb();
+				?>
 				</a>
 			</h3>
 		</div>

@@ -37,24 +37,22 @@ class TableCategory extends JTable {
 	var $category_name		=  '';
 	/** @var string Category description */
 	var $category_description		= '';
-    /** @var string Category thumb image */
-	var $category_thumb_image		= null;
-    /** @var string Category full image */
-	var $category_full_image		= null;
+    /** @var string Category media */
+	var $file_ids		= null;
 	/** @var integer Category publish or not */
 	var $published			= 1;
 	/** @var date Category creation date */
 	var $cdate				= null;
 	/** @var date Category last modification date */
 	var $mdate	= null;
-	
+
 	/** @var string Category browse page layout */
 	var $category_template = null;
 	/** @var string Category browse page layout */
 	var $category_layout = null;
 	/** @var int Category flypage */
 	var $category_product_layout		= null;
-	
+
 	/** @var integer Products to show per row  */
 	var $products_per_row		= null;
 	/** @var int Category order */

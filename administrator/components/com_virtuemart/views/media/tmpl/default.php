@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author
+* @author Max Milbers, Roland?
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -48,8 +48,8 @@ $keyword = JRequest::getVar('keyword', null);
 	</div>
 </div>
 <?php
-$productfileslist = $this->productfileslist;
-$roles = $this->productfilesroles;
+$productfileslist = $this->files;
+//$roles = $this->productfilesroles;
 $pagination = $this->pagination;
 ?>
 	<table class="adminlist">
@@ -57,10 +57,10 @@ $pagination = $this->pagination;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
 		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></th>
 		<th><?php echo JText::_('VM_FILES_LIST_ROLE'); ?></th>
 		<th><?php echo JText::_('VM_VIEW'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></th>
+		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></th>
 		<th><?php echo JText::_('PUBLISH'); ?></th>
 	</tr>
@@ -71,81 +71,42 @@ $pagination = $this->pagination;
 		$i = 0;
 		$k = 0;
 		foreach ($productfileslist as $key => $productfile) {
-			/* Create the filename but check if it is a URL first */
-			if (strtolower(substr($productfile->file_name, 0, 4)) == 'http') {
-				$filename = $productfile->file_name;
-//				dump($filename,'Media filename mit http');
-			}
-			else{
-				$imageRootFolderExp = explode('/', VmConfig::get('media_product_path'));
-				$imageProductFolder = implode(DS, $imageRootFolderExp);
-				$filename = JPATH_SITE.DS.$imageProductFolder.str_replace(JPATH_SITE, '', $productfile->file_name);
-//				dump($filename,'Media filepath ');
-			}
+
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
 			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
-				<td><?php echo $checked; ?></td>
+				<td><?php echo $checked; echo $productfile->file_id; ?></td>
 				<!-- Product name -->
 				<?php
-				$link = "index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&product_id=".$productfile->file_product_id."&option=".$option;
+				$link = "index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->product_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
 				<?php
-				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&product_id=".$productfile->file_product_id."&file_id=".$productfile->file_id."&file_role=".$productfile->file_role."&option=".$option;
+				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&file_id=".$productfile->file_id."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_name, array('title' => JText::_('EDIT').' '.$productfile->file_name)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->
 				<td><?php
-					if ($productfile->isdownloadable) {
-						$role = 'isDownloadable';
-					}
-					else if (substr($productfile->file_name, 0, 4) == 'http') {
-						$role = 'isRemoteFile';
-					}
-					else {
-						$role = $productfile->file_role;
-					}
-					echo JHTML::_('image', $roles[$role], JTEXT::_($role), array('title' => JText::_($role)));
+					//Just to have something, we could make this nicer with Icons
+					if(!empty($productfile->file_is_product_image)) echo 'File is product image';
+					if(!empty($productfile->file_is_downloadable)) echo 'File is downloadable';
+					if(!empty($productfile->file_is_forSale)) echo 'File is for Sale';
+
 					?>
 				</td>
 				<!-- Preview -->
 				<td>
 				<?php
-					if ($productfile->file_is_image) {
+					echo $productfile->displayMediaThumb();
 
-						$fullimg = $filename;
-						$info = pathinfo( $fullimg );
-						/* Full image */
-						if (JFile::exists($fullimg) || (strtolower(substr($productfile->file_name, 0, 4)) == 'http')) {
-							$imgsize = getimagesize($fullimg);
-							if ($imgsize[0] > 800) $imgsize[0] = 800;
-							if ($imgsize[1] > 600) $imgsize[1] = 600;
-							echo JText::_('VM_FILES_LIST_FULL_IMG').": ";
-							echo JHTML::_('link', JURI::root().$productfile->file_url, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.$imgsize[0].', y: '.$imgsize[1].'}}'));
-						}
-						echo '<br />';
-						/* Create the thumbnail file, this should be in the resized folder */
-						if (is_null($productfile->product_thumb_image)) $basename = $info['basename'];
-						else $basename = basename($productfile->product_thumb_image);
-						$thumbimg = $info['dirname'].DS.'resized'.DS.$basename;
-
-						/* Thumbnail image */
-						if (JFile::exists($thumbimg)) {
-							$imgsize = getimagesize($thumbimg);
-							echo JText::_('VM_FILES_LIST_THUMBNAIL_IMG');
-							echo JHTML::_('link', JURI::root().str_ireplace(array(JPATH_SITE, '\\'), array('', '/'), $info['dirname']).'/resized/'.$basename, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.($imgsize[0]+20).', y: '.($imgsize[1]+20).'}}'));
-						}
-						else echo JText::_('VM_THUMB_NOT_FOUND').': '.$thumbimg;
-					}
 				?>
 				</td>
 				<!-- File title -->
-				<td><?php echo $productfile->file_title; ?></td>
+				<td><?php echo $productfile->file_name; ?></td>
 				<!-- File extension -->
 				<td><?php echo $productfile->file_extension; ?></td>
 				<!-- Published -->

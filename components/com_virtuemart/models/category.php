@@ -4,7 +4,7 @@
 * Category model for Virtuemart
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.model');
  *
  */
 class VirtueMartModelCategory extends JModel {
-	
+
 	/* array container for category tree ID*/
 	var $container = array();
 	/**
@@ -46,11 +46,11 @@ class VirtueMartModelCategory extends JModel {
 		if (VmConfig::get('showCategory',1)) {
 		/* Check for children */
 		$row->haschildren = $this->hasChildren($category_id);
-		
+
 		/* Get children if they exist */
 		if ($row->haschildren) $row->children = $this->getChildrenList($category_id);
 		else $row->children = null;
-		
+
 		/* Get the product count */
 		$row->productcount = $this->getProductCount($category_id);
 		}
@@ -59,7 +59,7 @@ class VirtueMartModelCategory extends JModel {
 
 		return $row;
 	}
-	
+
 	/**
 	* Checks for children of the category $category_id
 	*
@@ -69,15 +69,15 @@ class VirtueMartModelCategory extends JModel {
 	*/
 	public function hasChildren($category_id) {
 		$db = JFactory::getDBO();
-		$q = "SELECT category_child_id 
+		$q = "SELECT category_child_id
 			FROM #__vm_category_xref
 			WHERE category_parent_id = ".$category_id;
-		$db->setQuery($q);   
+		$db->setQuery($q);
 		$db->query();
 		if ($db->getAffectedRows() > 0) return true;
 		else return false;
 	}
-	
+
 	/**
 	 * Creates a bulleted of the childen of this category if they exist
 	 *
@@ -89,8 +89,8 @@ class VirtueMartModelCategory extends JModel {
 	public function getChildrenList($category_id) {
 		$db = JFactory::getDBO();
 		$childs = array();
-		
-		$q = "SELECT category_id, category_full_image, category_thumb_image, category_child_id, category_name 
+
+		$q = "SELECT category_id, file_ids, category_child_id, category_name
 			FROM #__vm_category, #__vm_category_xref
 			WHERE #__vm_category_xref.category_parent_id = ".$category_id."
 			AND #__vm_category.category_id=#__vm_category_xref.category_child_id
@@ -99,14 +99,38 @@ class VirtueMartModelCategory extends JModel {
 			ORDER BY #__vm_category.ordering, #__vm_category.category_name ASC";
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
-		
+
 		/* Get the products in the category */
 		foreach ($childs as $ckey => $child) {
 			$childs[$ckey]->number_of_products = $this->getProductCount($child->category_child_id);
 		}
-		
+
 		return $childs;
-	}	
+	}
+
+	/**
+	 * Since a category dont need always an image, we can attach them to the category with this function.
+	 * The parameter takes a single category or arrays of category, look at FE/views/category/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $products
+	 */
+	public function addImagesToCategories($cats=0){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($cats,'file_ids','category','image');
+//		if(!empty($cats)){
+//			if(!is_array($cats)) $cats = array($cats);
+//			foreach($cats as $cat){
+//				$this->mediaModel->setId($cat->file_ids);
+//				$cat->images = $this->mediaModel->getFile('category','image');
+//			}
+//		}
+	}
+
 	/**
 	 * Creates a bulleted of the childen of this category if they exist
 	 *
@@ -129,12 +153,12 @@ class VirtueMartModelCategory extends JModel {
 		if ($menuCatid == $category_id) return ;
 		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
-			$q = "SELECT `category_name`,`category_id` 
-				FROM  `#__vm_category` 
+			$q = "SELECT `category_name`,`category_id`
+				FROM  `#__vm_category`
 				WHERE  `category_id`=".$id;
-			
+
 			$db->setQuery($q);
-			
+
 			$parents[] = $db->loadObject();
 		}
 		return $parents;
@@ -147,7 +171,7 @@ class VirtueMartModelCategory extends JModel {
 		}
 
 		$db = & JFactory::getDBO();
-		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent` 
+		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 			FROM  #__vm_category_xref AS `xref`
 			WHERE `xref`.`category_child_id`= ".$category_id;
 		$db->setQuery($q);
@@ -157,7 +181,7 @@ class VirtueMartModelCategory extends JModel {
 		if ($ids->child) $idsArr[] = $ids->child;
 		if($ids->child != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
 			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
-		} 
+		}
 		return $idsArr;
 	}
 
@@ -166,15 +190,15 @@ class VirtueMartModelCategory extends JModel {
 	* @author Kohl Patrick
 	* @param int $id
 	* @param int $maxLevel
-	 * @Object $this->container 
+	 * @Object $this->container
 	*/
-	function treeCat($id=0,$maxLevel =1000) { 
+	function treeCat($id=0,$maxLevel =1000) {
 		static $level = 0;
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
 		$q = 'SELECT category_child_id,category_name FROM #__vm_category_xref
 		LEFT JOIN #__vm_category on #__vm_category.category_id=#__vm_category_xref.category_child_id
-		WHERE category_parent_id='.$id; 
+		WHERE category_parent_id='.$id;
 		$db->setQuery($q);
 		$num ++;
 		// if it is a leaf (no data underneath it) then return
@@ -190,12 +214,12 @@ class VirtueMartModelCategory extends JModel {
 			}
 			$level--;
 		}
-	} 
+	}
 	/**
 	 * @author Kohl Patrick
 	 * @param  $maxlevel the number of level
 	 * @param  $id the root category id
- 	 * @Object $this->container 
+ 	 * @Object $this->container
 	 * @ return categories id, name and level in container
 	 * if you set Maxlevel to 0, then you see nothing
 	 * max level =1 for simple category,2 for category and child cat ....
@@ -208,16 +232,16 @@ class VirtueMartModelCategory extends JModel {
 	/**
 	 * Function to calculate and return the number of products in category $category_id
 	 * @author RolandD
-	 * 
+	 *
 	 * @todo Add vendor
 	 * @param int $category_id the category ID to count products for
 	 * @return int the number of products found
 	 */
 	public function getProductCount($category_id) {
 		$db = JFactory::getDBO();
-		$q = "SELECT count(#__vm_product.product_id) AS num_rows 
-			FROM #__vm_product, #__vm_product_category_xref, #__vm_category 
-			WHERE #__vm_product.vendor_id = 1 
+		$q = "SELECT count(#__vm_product.product_id) AS num_rows
+			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
+			WHERE #__vm_product.vendor_id = 1
 			AND #__vm_product_category_xref.category_id = ".$category_id."
 			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
 			AND #__vm_product.product_id = #__vm_product_category_xref.product_id

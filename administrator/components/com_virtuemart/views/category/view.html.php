@@ -43,11 +43,15 @@ class VirtuemartViewCategory extends JView {
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $category = $model->getCategory();
-
-        $isNew = ($category->category_id < 1);
 
 		if ($layoutName == 'edit') {
+
+	        $category = $model->getCategory();
+
+	       	$model->addImagesToCategories($category);
+
+        	$isNew = ($category->category_id < 1);
+
 			if ( $isNew ) {
 				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
 			} else {

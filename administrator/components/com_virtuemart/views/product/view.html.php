@@ -107,6 +107,9 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 
+				/* Load Images */
+				$product_model->addImagesToProducts($product);
+
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
 				} else {
@@ -116,6 +119,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
+
 				//TODO add here an if so that only the mainvendor or admin gets the list, in other just the name of the given vendor
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
@@ -183,9 +187,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 					$images_label = JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
 					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
-
-				$productImage = VmImage::getImageByProduct($product);
-				$this->assignRef('productImage', $productImage);
 
 				/* Assign the values */
 				$this->assignRef('pane', $pane);
@@ -274,12 +275,18 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				}
 
 				/* Check for Media Items and Reviews, set the price*/
+				if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 				$media = new VirtueMartModelMedia();
+
+				if(!class_exists('VirtueMartModelRatings')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'ratings.php');
 				$productreviews = new VirtueMartModelRatings();
 				$currencydisplay = CurrencyDisplay::getCurrencyDisplay();
 
 				foreach ($productlist as $product_id => $product) {
-					$product->mediaitems = $media->countFilesForProduct($product_id);
+//					$product->mediaitems = $media->getProductDownloadables($product_id);
+//					$media->setProductId($product_id);
+					$file_ids = explode(',',$product->file_ids);
+					$product->mediaitems = count($file_ids);
 					$product->reviews = $productreviews->countReviewsForProduct($product_id);
 					$product->product_price_display = $currencydisplay->getValue($product->product_price);
 				}

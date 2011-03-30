@@ -24,12 +24,13 @@ jimport( 'joomla.application.component.view');
 //require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'CategoryUtils.php');
 //require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php');
 
-
 /**
  * Default HTML View class for the VirtueMart Component
 * @todo Find out how to use the front-end models instead of the backend models
  */
 class VirtueMartViewVirtueMart extends JView {
+
+	var $mediaModel = null;
 
 	public function display($tpl = null) {
 
@@ -52,25 +53,32 @@ class VirtueMartViewVirtueMart extends JView {
 
 	    $categoryId = JRequest::getInt('catid', 0);
         $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+        $categoryModel->addImagesToCategories($categoryChildren);
+
         $this->assignRef('categories',	$categoryChildren);
 
         if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
         /* Load the recent viewed products */
-        $this->assignRef('recentProducts', $productModel->getRecentProducts());
+        $recentProducts = $productModel->getRecentProducts();
+        $productModel->addImagesToProducts($recentProducts);
+        $this->assignRef('recentProducts', $recentProducts);
 
         if (VmConfig::get('showFeatured', 1)) {
 			$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);
+			$productModel->addImagesToProducts($featuredProducts);
 			$this->assignRef('featuredProducts', $featuredProducts);
 		}
 
 		if (VmConfig::get('showlatest', 1)) {
 			$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
+			$productModel->addImagesToProducts($latestProducts);
 			$this->assignRef('latestProducts', $latestProducts);
 		}
 
         if (VmConfig::get('showTopten', 1)) {
 			$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);
+			$productModel->addImagesToProducts($toptenProducts);
 			$this->assignRef('toptenProducts', $toptenProducts);
 		}
 
@@ -89,10 +97,12 @@ class VirtueMartViewVirtueMart extends JView {
 		$layout = VmConfig::get('vmlayout','default');
 		$this->setLayout($layout);
 
+		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
 
 		parent::display($tpl);
 
 	}
+
 }
 // pure php no closing tag

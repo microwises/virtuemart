@@ -89,8 +89,11 @@ class ShopFunctions {
 		$db = JFactory::getDBO();
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			if(empty($vendorId)) JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
-
+			if(empty($vendorId)){
+				$vendorId = 1;
+				//Dont delete this message, we need it later for multivendor
+				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
+			}
 			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
@@ -256,52 +259,6 @@ class ShopFunctions {
 		}
 
 		return array_merge($defaulttemplate,$jtemplates);
-	}
-
-	/**
-	 *
-	 * Renders the positive format of a currency
-	 * @author Max Milbers
-	 * @param unknown_type $positiveFormat
-	 * @param unknown_type $name
-	 */
-	function renderPositiveFormatCurrency($positiveFormat,$name='vendor_currency_display_style[5]'){
-		$options = array();
-//		$options[] = JHTML::_('select.option', '0', JText::_('VM_00Symb') );
-//		$options[] = JHTML::_('select.option', '1', JText::_('VM_00_Symb'));
-//		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00'));
-//		$options[] = JHTML::_('select.option', '3', JText::_('VM_Symb_00'));
-		$options[] = JHTML::_('select.option', '0', JText::_('VM_00Symb') );
-		$options[] = JHTML::_('select.option', '1', JText::_('VM_00_Symb'));
-		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00'));
-		$options[] = JHTML::_('select.option', '3', JText::_('VM_Symb_00'));
-		return JHTML::_('Select.genericlist', $options, $name, 'size=1', 'value', 'text', $positiveFormat);
-	}
-
-	/**
-	 *
-	 * Renders the negative format of a currency
-	 * @author Max Milbers
-	 * @param unknown_type $positiveFormat
-	 * @param unknown_type $name
-	 */
-	function renderNegativeFormatCurrency($negativeFormat,$name = 'vendor_currency_display_style[6]'){
-		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_('VM_(Symb00)') );
-		$options[] = JHTML::_('select.option', '1', JText::_('VM_-Symb00'));
-		$options[] = JHTML::_('select.option', '2', JText::_('VM_Symb00-'));
-		$options[] = JHTML::_('select.option', '3', JText::_('VM_(00Symb)'));
-		$options[] = JHTML::_('select.option', '4', JText::_('VM_-00Symb') );
-		$options[] = JHTML::_('select.option', '5', JText::_('VM_00-Symb'));
-		$options[] = JHTML::_('select.option', '6', JText::_('VM_00Symb-'));
-		$options[] = JHTML::_('select.option', '7', JText::_('VM_-00_Symb'));
-		$options[] = JHTML::_('select.option', '8', JText::_('VM_-Symb_00'));
-		$options[] = JHTML::_('select.option', '9', JText::_('VM_00_Symb-') );
-		$options[] = JHTML::_('select.option', '10', JText::_('VM_Symb_00-'));
-		$options[] = JHTML::_('select.option', '11', JText::_('VM_Symb_-00'));
-		$options[] = JHTML::_('select.option', '12', JText::_('VM_(Symb_00)'));
-		$options[] = JHTML::_('select.option', '13', JText::_('VM_(00_Symb)'));
-		return JHTML::_('Select.genericlist', $options, $name, 'size=1', 'value', 'text', $negativeFormat);
 	}
 
 	/**

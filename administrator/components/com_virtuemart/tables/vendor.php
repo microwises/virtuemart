@@ -40,10 +40,8 @@ class TableVendor extends JTable {
     var $vendor_store_desc   		= '';
     /** @var int Category Id */
 //    var $vendor_category_id   		= '';
-    /** @var varchar Vendor thumb image */
-    var $vendor_thumb_image   		= '';
     /** @var varchar Vendor full image */
-    var $vendor_full_image   		= '';
+    var $file_ids   		= '';
     /** @var varchar Currency */
     var $vendor_currency	  		= '';
     /** @var int Vendor created date */
@@ -87,7 +85,7 @@ class TableVendor extends JTable {
     function check() {
 		if (($this->vendor_name) && ($this->vendor_id == 0)) {
 		    $db = JFactory::getDBO();
-	
+
 		    $q = 'SELECT count(*) FROM `#__vm_vendor` ';
 		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
 		    $db->setQuery($q);
@@ -104,7 +102,7 @@ class TableVendor extends JTable {
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even
 	 * if the primary key is set. Therefore we need to overload the store() function.
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 * @see libraries/joomla/database/JTable#store($updateNulls)

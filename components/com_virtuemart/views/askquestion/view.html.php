@@ -34,7 +34,7 @@ class VirtueMartViewAskquestion extends JView {
 	/**
 	* Collect all data to show on the template
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	*/
 	function display($tpl = null) {
 
@@ -91,8 +91,7 @@ class VirtueMartViewAskquestion extends JView {
 			return;
 		}
 
-		$productImage = VmImage::getImageByProduct($product);
-		$this->assignRef('productImage', $productImage);
+		$product_model->addImagesToProducts($product);
 
 
 		/* Load the category */
@@ -113,7 +112,7 @@ class VirtueMartViewAskquestion extends JView {
 
 		//$pathway->addItem(JText::_('PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&category_id='.$category_id.'&product_id='.$product->product_id));
-		
+
 		// for askquestion
 		$pathway->addItem( JText::_('VM_PRODUCT_ASK_QUESTION'));
 

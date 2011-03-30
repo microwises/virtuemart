@@ -36,7 +36,7 @@ class VirtuemartViewManufacturer extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
-		
+
 		$mainframe = JFactory::getApplication();
 		global $option;
 		// get necessary models
@@ -46,12 +46,14 @@ class VirtuemartViewManufacturer extends JView {
         $mf_category_id	= $mainframe->getUserStateFromRequest( $option.'mf_category_id', 'mf_category_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
-		$manufacturer = $model->getManufacturer();
 
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($manufacturer->manufacturer_id < 1);
 
 		if ($layoutName == 'edit') {
+
+			$manufacturer = $model->getManufacturer();
+       		$isNew = ($manufacturer->manufacturer_id < 1);
+
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('VM_MANUFACTURER_FORM_MNU' ).': <small><small>[ New ]</small></small>', 'vm_manufacturer_48');
 			} else {
@@ -61,8 +63,15 @@ class VirtuemartViewManufacturer extends JView {
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel();
-			
+
+			$model->addImagesToManufacturer($manufacturer);
 			$this->assignRef('manufacturer',	$manufacturer);
+//			 /* Process the images */
+//			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+//			$mediaModel = new VirtueMartModelMedia();
+//			$mediaModel -> setId($manufacturer->file_ids);
+//			$image = $mediaModel->getFile('manufacturer','image');
+
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
         }

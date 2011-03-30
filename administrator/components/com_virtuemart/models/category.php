@@ -101,7 +101,7 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
 
-		$query = 'SELECT `category_id`, `category_full_image`,`category_thumb_image`, `category_child_id`, `category_name` ';
+		$query = 'SELECT `category_id`, `file_ids`, `category_child_id`, `category_name` ';
 		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
@@ -445,7 +445,7 @@ class VirtueMartModelCategory extends JModel {
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author RickG, jseros
+     * @author RickG, jseros, Max Milbers
      */
 	public function getCategory(){
 
@@ -454,13 +454,12 @@ class VirtueMartModelCategory extends JModel {
    			$this->_data->load((int)$this->_id);
   		}
 
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-   			$this->_data = null;
+  		if($this->_data->file_ids){
+  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
   		}
-//		dump($this->_data,'my category');
+
   		return $this->_data;
+
 	}
 
 
@@ -533,7 +532,7 @@ class VirtueMartModelCategory extends JModel {
     /**
 	 * Bind the post data to the category table and save it
      *
-     * @author jseros, RolandD
+     * @author jseros, RolandD, Max Milbers
      * @return int category id stored
 	 */
     public function store() {
@@ -545,30 +544,7 @@ class VirtueMartModelCategory extends JModel {
 		/* Vendor */
 		$data['vendor_id'] = 1;
 
-		//uploading images and creating thumbnails
-		$fullImage = JRequest::getVar('category_full_image', array(), 'files');
-		if(!empty($fullImage['name'])){
-			$filename = $fullImage['name'];
-		} else {
-			$filename = $data['category_full_image_current'];
-		}
-
-		$thumbImage = JRequest::getVar('category_thumb_image', array(), 'files');
-		if(!empty($thumbImage['name'])){
-			$filenamethumb = $thumbImage['name'];
-		} else {
-			$filenamethumb = $data['category_thumb_image_current'];
-		}
-
-		/* Load the image helper */
-		if(!class_exists('VmImage')) require (JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-		$image = VmImage::getCatImage($filename,$filenamethumb);
-		if(!empty($image)){
-			$data = $image->saveImage($data,$fullImage,false);
-			$data = $image->saveImage($data,$thumbImage,true);
-		}
-//		dump($data,'my data in store');
-		// Bind the form fields to the country table
+		// Bind the form fields to the category table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
 			return false;
@@ -580,7 +556,7 @@ class VirtueMartModelCategory extends JModel {
 			return false;
 		}
 
-		// Save the country record to the database
+		// Save the category record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
 			return false;
@@ -588,9 +564,7 @@ class VirtueMartModelCategory extends JModel {
 
 		//store category relation
 		if( !$data['category_id'] ){ //is new
-
 			$id = $this->_db->insertid();
-
 			$query = 'INSERT INTO #__vm_category_xref(category_parent_id, category_child_id, category_shared)
 					  VALUES(
 					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
@@ -615,6 +589,11 @@ class VirtueMartModelCategory extends JModel {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
+
+		// Process the images
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel->storeMedia($data,$table,'category');
 
 		return $id;
 	}
@@ -680,4 +659,21 @@ class VirtueMartModelCategory extends JModel {
 
 		return true;
     }
+
+	/**
+	 * Since a category dont need always an image, we can attach them to the category with this function.
+	 * The parameter takes a single category or arrays of categories, look at FE/views/virtuemart/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $categories
+	 */
+	public function addImagesToCategories($cats){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($cats,'file_ids','category','image');
+
+	}
 }

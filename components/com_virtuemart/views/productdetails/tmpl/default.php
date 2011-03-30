@@ -53,7 +53,7 @@ if (empty ( $this->product )) {
 		<div class="width30 floatleft center">
 
 		<?php // Product Image
-		echo $this->productImage->displayImage('class="product-image"',$this->product->product_name,1,0, 'class="modal"');
+		echo $this->product->images[0]->displayMediaFull('class="product-image"'); //'class="modal"'
 		?>
 		</div>
 
@@ -277,7 +277,7 @@ if (empty ( $this->product )) {
 						<!-- The product image DIV. -->
 						<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
 								<?php
-								echo JHTML::_('link', $related->link, VmImage::getImageByProduct($related)->displayImage('title="'.$related->product_name.'"',$related->product_name));
+								echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
 								?>
 						</div>
 						<!-- The product price DIV. -->
@@ -316,7 +316,7 @@ if (empty ( $this->product )) {
 					<?php //TODO
 					$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
 					//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
-					echo JHTML::link($url, VmImage::getImageByCat($category)->displayImage('',$category->category_name));
+					echo JHTML::link($url, $category->images[0]->displayMediaThumb());
 					?>
 					<br />
 				</td>
@@ -336,10 +336,10 @@ if (empty ( $this->product )) {
 			?>
 		</table>
 	<?php
-	} 
+	}
 
 	/**
-	* Reviews 
+	* Reviews
 	* Author max Milbers ?
 	* Author Kohl Patrick
 	* Available indexes:
@@ -353,14 +353,14 @@ if (empty ( $this->product )) {
 	if ( VmConfig::get('allow_reviews') ){
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',2);// TODO add  vm_num_ratings_show in vmConfig
-		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/'; 
+		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
 			$title = (JText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
 			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
 		}
-		
+
 		?>
 		<table border="0" align="center" style="width: 100%;">
 			<tr>
@@ -369,16 +369,16 @@ if (empty ( $this->product )) {
 				<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
 				<?php
 				$alreadycommented = false;
-				
+
 				$i=0 ;
 				foreach($this->product_reviews as $review ) { // Loop through all reviews
 					/* Check if user already commented */
 					if ($review->userid == $this->user->id) {
 					$alreadycommented = true;
 					}
-					
+
 					echo $stars[ $review->user_rating ];
-					?> 
+					?>
 					<div><?php echo $review->comment; ?></div>
 					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
 					<br />
@@ -397,7 +397,7 @@ if (empty ( $this->product )) {
 				?>
 				<br />
 				<?php
-				
+
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
 						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
@@ -439,13 +439,13 @@ if (empty ( $this->product )) {
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
 							<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
 								<tr>
-								<?php 
+								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) {
 									?>
 										<th id="<?php echo $num ?>_stars">
 											<label for="user_rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 										</th>
-									<?php 
+									<?php
 								} ?>
 								</tr>
 								<tr>
@@ -454,7 +454,7 @@ if (empty ( $this->product )) {
 									<td headers="<?php echo $num ?>_stars" style="text-align:center;">
 										<input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
 									</td>
-								<?php 
+								<?php
 								} ?>
 								</tr>
 							</table>
@@ -487,7 +487,6 @@ if (empty ( $this->product )) {
 				</td>
 			</tr>
 		</table>
-<?php 
+<?php
 	} ?>
 </div>
- 

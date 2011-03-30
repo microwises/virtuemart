@@ -116,7 +116,9 @@ class VirtueMartModelVendor extends JModel {
 		    else{
 				$this->_data->vendor_accepted_currencies = array();
 		    }
-
+          	if($this->_data->file_ids){
+  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
+  			}
 //			if($withUserData){
 //			    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
 //			    $query .= "WHERE vendor_id = '". $this->_id ."'";
@@ -196,29 +198,6 @@ class VirtueMartModelVendor extends JModel {
 
 	$table = $this->getTable('vendor');
 
-	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-
-	//uploading images and creating thumbnails
-	$fullImage = JRequest::getVar('vendor_full_image', array(), 'files');
-	if(!empty($fullImage['name'])){
-		$filename = $fullImage['name'];
-	} else {
-		$filename = $data['vendor_full_image_current'];
-	}
-
-	$thumbImage = JRequest::getVar('vendor_thumb_image', array(), 'files');
-	if(!empty($thumbImage['name'])){
-		$filenamethumb = $thumbImage['name'];
-	} else {
-		$filenamethumb = $data['vendor_thumb_image_current'];
-	}
-
-	$image = VmImage::getVendorImage($filename,$filenamethumb);
-	if(!empty($image)){
-		$data = $image->saveImage($data,$fullImage,false);
-		$data = $image->saveImage($data,$thumbImage,true);
-	}
-
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -247,7 +226,34 @@ class VirtueMartModelVendor extends JModel {
 	$dbv = $table->getDBO();
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 
-	return true;
+	/* Process the images */
+//	if(!empty($table->file_ids)){
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel->storeMedia($data,$table,'vendor');
+
+//		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+//		$mediaModel = new VirtueMartModelMedia();
+//		$mediaModel -> setId( $data['file_id'] );
+//		$table->file_ids = false;
+//		$table->file_ids = $mediaModel->store('vendor');
+//		if(!$table->file_ids){
+//			$app =& JFactory::getApplication();
+//			if($errs = $mediaModel->getErrors()){
+//				foreach($errs as $err){
+//					$app->enqueueMessage($err);
+//				}
+//			}
+//		} else {
+//			// Save the category record to the database
+//			if (!$table->store()) {
+//				$this->setError($table->getError());
+//				return false;
+//			}
+//		}
+//	}
+
+	return $this->_id;
 
 	}
 
@@ -480,6 +486,25 @@ class VirtueMartModelVendor extends JModel {
 		}
 	}
 
+	/**
+	 * Since a category dont need always an image, we can attach them to the category with this function.
+	 * The parameter takes a single category or arrays of categories, look at FE/views/virtuemart/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $categories
+	 */
+	public function addImagesToVendor($vendor=0){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($vendor,'file_ids','vendor','image');
+
+	}
+
+}
+//pure php no closing tag
 //	/**
 //	* Retrieves a DB object with the recordset of the specified fields (as array)
 //	* of vendor_id and ordered by lastparam
@@ -584,6 +609,5 @@ class VirtueMartModelVendor extends JModel {
 //		else return $vendor_fields;
 //	}
 
-}
+//}
 
-//pure php no closing tag

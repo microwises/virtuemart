@@ -124,10 +124,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td>
 				<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="20" value="<?php echo $this->currency->getPositiveFormat(); ?>" />
 
-				<?php
-					// OLD FORMAT ? Patrick Kohl
-					// echo $this->positiveFormat;
-				?>
 			</td>
 		</tr>
 		<tr>
@@ -137,9 +133,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td>
 
 				<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="20" value="<?php echo $this->currency->getNegativeFormat(); ?>" />
-
-				<?php //	echo $this->negativeFormat;
-				?>
 			</td>
 		</tr>
 		<tr>
@@ -159,12 +152,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</legend>
 	<table class="admintable">
 	<?php
-		$image = VmImage::getImageByVendor($this->vendor);
-		if($image){
-			echo $image -> createImageUploader(false);
-			echo $image -> createImageUploader(true);
-		}
-
+		echo $this->vendor->images[0]->displayFileHandler();
 	?>
 	</table>
 </fieldset>

@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Manufacturer
-* @author RolandD, Patrick Kohl
+* @author RolandD, Patrick Kohl, Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package VirtueMart
  * @subpackage Manufacturer
- * @author RolandD
+ * @author RolandD, Max Milbers
  * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the product_list with the ordering column
  */
 class VirtueMartModelManufacturer extends JModel {
@@ -84,55 +84,29 @@ class VirtueMartModelManufacturer extends JModel {
      */
      public function getManufacturer() {
 
-     	 $row = $this->getTable();
-     	 $row->load(JRequest::getInt('manufacturer_id', 0));
-     	 return $row;
+     	$this->_data = $this->getTable();
+     	$this->_data->load(JRequest::getInt('manufacturer_id', 0));
+       	if($this->_data->file_ids){
+  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
+  		}
+     	return $this->_data;
      }
 
      /**
 	 * Bind the post data to the manufacturer table and save it
      *
+     * @author Roland
+     * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
 	public function store() {
 
+		/* Setup some place holders */
+		$table = $this->getTable();
 
-
-	/* Setup some place holders */
-	$table = $this->getTable();
-
-	/* Load the data */
-	$data = JRequest::get('post', 4);
-	$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
-
-		/* Process the images */
-		//uploading images and creating thumbnails
-
-		$fullImage = JRequest::getVar('mf_full_image', null, 'files',array());
-		//$data['imagename'] = $fullImage['name'] ;
-
-		if(!empty($fullImage['name'])){
-			$filename = $fullImage['name'];
-		} else {
-			$filename = $data['mf_full_image_current'];
-		}
-
-		$thumbImage = JRequest::getVar('mf_thumb_image', null, 'files',array());
-
-		if(!empty($thumbImage['name'])){
-			$filenamethumb = $thumbImage['name'];
-		} else {
-			$filenamethumb = $data['mf_thumb_image_current'];
-		}
-
-		/* Load the image helper */
-		if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-
-		$image = VmImage::getMfImage($filename,$filenamethumb);
-		if(!empty($image)){
-			$data = $image->saveImage($data,$fullImage,false);
-			$data = $image->saveImage($data,$thumbImage,true);
-		}
+		/* Load the data */
+		$data = JRequest::get('post', 4);
+		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
 
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
@@ -151,6 +125,11 @@ class VirtueMartModelManufacturer extends JModel {
 			$this->setError($table->getError());
 			return false;
 		}
+
+		// Process the images //		$fullImage = JRequest::getVar('file_id', null, 'files',array());
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel->storeMedia($data,$table,'manufacturer');
 
 		return $table->manufacturer_id;
 	}
@@ -266,6 +245,22 @@ class VirtueMartModelManufacturer extends JModel {
 
 		return $this->_data;
 	}
+
+	public function addImagesToManufacturer($manus){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($manus,'file_ids','vendor','image');
+
+//		if(!empty($manus)){
+//			if(!is_array($cats)) $cats = array($cats);
+//			foreach($cats as $cat){
+//				$this->mediaModel -> setId($manus->file_ids );
+//				$manus->images = $this->mediaModel->getFile('vendor','image');
+//			}
+//		}
+}
 
 }
 // pure php no closing tag
