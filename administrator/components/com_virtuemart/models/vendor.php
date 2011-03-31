@@ -392,12 +392,13 @@ class VirtueMartModelVendor extends JModel {
 		$vendor_id = $db->loadResult();
 		if ($vendor_id) return $vendor_id;
 		else {
-			if($type!='user'){
-				return 0;
-			} else {
-				JError::raiseNotice(1, 'No vendor_id found for '.$value.' on '.$type.' check.');
-				return 0;
-			}
+			return 0;
+//			if($type!='user'){
+//				return 0;
+//			} else {
+//				JError::raiseNotice(1, 'No vendor_id found for '.$value.' on '.$type.' check.');
+//				return 0;
+//			}
 		}
 	}
 

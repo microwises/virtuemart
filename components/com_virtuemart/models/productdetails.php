@@ -140,7 +140,7 @@ class VirtueMartModelProductdetails extends JModel {
 			}
 
 			/* Load the extra files */
-			$product->files = $this->getFileList($product_id);
+//			$product->files = $this->getFileList($product_id);
 
 			/* Load the related products */
 			$product->related = $this->getRelatedProducts($product_id);
@@ -293,42 +293,6 @@ class VirtueMartModelProductdetails extends JModel {
 		return false;
 	}
 
-	/**
-	 * List all published and non-payable files ( not images! )
-	 * @author RolandD
-	 *
-	 * @param int $product_id The ID of the product
-	 * @return array containing all the files and their data
-	 */
-//	private function getFileList($product_id) {
-//		jimport('joomla.filesystem.file');
-////		$this->_db = JFactory::getDBO();
-////		$html = "";
-////		$q = "SELECT attribute_value
-////			FROM `#__vm_product_attribute`
-////			WHERE `product_id` = ".$product_id."
-////			AND `attribute_name`='download'";
-////		$this->_db->query($q);
-////		$exclude_filename = $this->_db->Quote($this->_db->loadResult());
-////
-////		$sql = "SELECT DISTINCT file_id, file_mimetype, file_title, file_name
-////				FROM `#__vm_product_files`
-////				WHERE ";
-////				if ($exclude_filename) $sql .= " file_title != ".$exclude_filename." AND
-////				file_product_id = '".$product_id."'
-////				AND file_published = '1'
-////				AND file_is_image = '0'";
-////		$this->_db->setQuery($sql);
-////		$files = $this->_db->loadObjectList();
-////
-////		foreach ($files as $fkey => $file) {
-////			$filename = JPATH_ROOT.DS.'media'.DS.str_replace(JPATH_ROOT.DS.'media'.DS, '', $file->file_name);
-////			if (JFile::exists($filename)) $files[$fkey]->filesize = @filesize($filename) / 1048000;
-////			else $files[$fkey]->filesize = false;
-////		}
-////		return $files;
-//		return array();
-//	}
 
 	/**
 	* Load any related products
