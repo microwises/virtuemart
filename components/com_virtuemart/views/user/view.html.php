@@ -377,7 +377,7 @@ class VirtuemartViewUser extends JView {
 //						?VmConfig::get('default_vendor_id')
 //						: $this->_userDetails->vendor_id
 //					 ).'"/>';
-				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR') . $_setVendor;
+				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
 		}
 
