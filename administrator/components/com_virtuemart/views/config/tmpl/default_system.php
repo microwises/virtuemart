@@ -107,6 +107,8 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	</tr>
 
+<?php if (0) { ?>
+<!-- Outcommented to revert rev. 2916 -->
 	<tr>
 		<td class="key">
 			<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_REGISTRATION_DEFAULT_VENDOR_TIP'); ?>">
@@ -117,6 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo $this->vendorList; ?>
 		</td>
 	</tr>
+<?php } ?>
 
 	<tr>
 	    <td class="key">

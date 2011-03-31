@@ -366,20 +366,17 @@ class VirtuemartViewUser extends JView {
 			}
 			$this->_lists['shoppergroups'] .= '<input type="hidden" name="shopper_group_id" value = "' . $_shoppergroup['shopper_group_id'] . '" />';
 
-// Looks a bit strange to me.... a vendor ID is required for each used, but the storeadmin
-// permission already identified is this user is a vendor.
-// If not... one must be assigned... right?
-// (Note by Oscar; see below for my change)
-//			if(!empty($this->_userDetails->vendor_id)){
-//				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
-//			}
+			if(!empty($this->_userDetails->vendor_id)){
+				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
+			}
 
 			if(empty($this->_lists['vendors'])){
-				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
-					.(empty($this->_userDetails->vendor_id)
-						?VmConfig::get('default_vendor_id')
-						: $this->_userDetails->vendor_id
-					 ).'"/>';
+// Outcommented to revert rev. 2916 
+//				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
+//					.(empty($this->_userDetails->vendor_id)
+//						?VmConfig::get('default_vendor_id')
+//						: $this->_userDetails->vendor_id
+//					 ).'"/>';
 				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR') . $_setVendor;
 			}
 		}
