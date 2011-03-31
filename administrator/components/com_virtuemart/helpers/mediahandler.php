@@ -282,7 +282,7 @@ class VmMediaHandler {
 
 			//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			$query = 'UPDATE `#_vm_media SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__vm_media`.`file_id` = "'.$this->file_id.'" ';
+			$query = 'UPDATE `#__vm_media` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__vm_media`.`file_id` = "'.$this->file_id.'" ';
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}

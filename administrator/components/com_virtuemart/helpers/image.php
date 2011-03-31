@@ -133,7 +133,7 @@ class VmImage extends VmMediaHandler {
 			if (!class_exists('Img2Thumb')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'img2thumb.php');
 			$createdImage = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
 			if($createdImage){
-				dump($createdImage,'Thumb created');
+//				dump($createdImage,'Thumb created');
 				return $this->file_url_folder_thumb.$this->file_name_thumb.'.'.$this->file_extension;
 			} else {
 				return 0;
