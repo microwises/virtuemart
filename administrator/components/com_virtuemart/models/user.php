@@ -85,16 +85,14 @@ class VirtueMartModelUser extends JModel {
 				//				dump($user->id,'cid was null, therefore user->id is used');
 			} else {
 				if($idArray[0] != $user->id){
-					//
 					if(Permissions::getInstance()->check("admin,storeadmin")) {
 						$this->setId((int)$idArray[0]);
-						//						dump($idArray[0],'The Person is admin and can do what he want');
 					} else {
-						JError::raiseWarning(1,'Hacking attempt');
+//						JError::raiseWarning(1,'Hacking attempt');
+						$this->setId((int)$user->id);
 					}
 				}else {
 					$this->setId((int)$user->id);
-					//					dump($idArray[0],'User called his own profile with correct cid');
 				}
 			}
 		}
