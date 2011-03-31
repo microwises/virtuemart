@@ -96,6 +96,7 @@ class ParamHelper {
 			return;
 		}
 		foreach ($_arr as $_p) {
+			$_p = trim($_p);
 			list($k, $v) = explode('=', $_p, 2);
 			$this->_data[$k] = $v;
 		}
