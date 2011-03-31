@@ -355,6 +355,8 @@ class VirtueMartModelUserfields extends JModel {
 			if ($_switches['published'] !== false ) {
 				$_q .= 'AND published = 1 ';
 			}
+		} else {
+			$_q .= 'AND published = 1 ';
 		}
 		if(array_key_exists('required',$_switches)){
 			if ($_switches['required'] === true ) {
