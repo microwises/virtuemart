@@ -57,7 +57,8 @@
 							faceboxHtml : faceboxHtml
 						}, 'my-groovy-style');
 					}
-			});
+					if ($(".vmCartModule")) $().productUpdate(); 
+				});
 			return false;
 		};
 
@@ -92,6 +93,52 @@
 			}
 		}
 	}
+	
+	$.fn.productUpdate = function() {
+	jQuery.getJSON("index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
+		function(datas, textStatus) {
+						
+			if (datas.totalProduct >0) {
+				product = productDisplay (datas.products) ;
+				// jQuery(".vmCartModule .products").html(product);
+				
+				jQuery(".vmCartModule .total").html(datas.billTotal);
+				jQuery(".vmCartModule .show_cart").html(datas.cart_show);
+				//jQuery(".vmCartModule .ajax_msg").html(datas.ajax_msg+" "+cart_add_to);
+			}
+			jQuery(".vmCartModule .total_products").html(datas.totalProductTxt);
+			/*if (datas.view == 0 ) { 
+				jQuery.facebox({ text: "<H4>"+datas.ajax_msg+" "+cart_add_to+"</H4><div class=\'showcart\' >"+show_cart+"<div>",
+					closeImage : closeImage,
+					loadingImage : loadingImage ,
+					faceboxHtml : faceboxHtml
+				}, "my-groovy-style");
+			} else {
+				 jQuery.facebox({ text: "<H4>"+product+"</H4><div class=\'showcart\' >"+show_cart+"<div>",
+					closeImage : closeImage,
+					loadingImage : loadingImage ,
+					faceboxHtml : faceboxHtml
+				}, "my-groovy-style");
+			}*/
+			jQuery.ajaxSetup({ cache: true });
+		});
+
+		function productDisplay (products) {
+			
+			var items = "";
+			$(".vmCartModule .vm_cart_products").html("");
+			$.each(products, function(key, val) {
+				$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
+				$.each(val, function(key, val) {
+				if ($("#hiddencontainer .container ."+key).text() == "1")
+					$(".vmCartModule .vm_cart_products ."+key+":last").html(val) ;
+					
+				});
+			});
+			return $(".vmCartModule .vm_cart_products").html();
+		}
+	}
+
 })(jQuery);
 
 jQuery(document).ready(function() {

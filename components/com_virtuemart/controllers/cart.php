@@ -148,6 +148,32 @@ class VirtueMartControllerCart extends JController {
 		$mainframe->close();
 
 	}
+	/**
+	* Add the product to the cart, with JS
+	*
+	* @author Max Milbers
+	* @access public
+	*/
+	public function viewJS(){
+
+		/* Create the view */
+		$view = $this->getView('cart', 'json');
+		/* Add the default model */
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), false );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+
+		/* Set the layout */
+		$layoutName = JRequest::getVar('layout', 'default');
+		$view->setLayout($layoutName);
+
+		/* Display it all */
+		$view->display();
+
+	}
 
 	/**
 	 * For selecting couponcode to use, opens a new layout
