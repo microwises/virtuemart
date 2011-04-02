@@ -32,5 +32,5 @@ defined('_JEXEC') or die('Restricted access');
 	<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo $this->manufacturer->mf_name; ?></a>
 </div>
 <div>
-	<?php echo $this->manufacturerImage->displayImage('','',0,0);?>
+	<?php echo $this->manufacturer->images[0]->displayMediaThumb('','',0,0);?>
 </div>

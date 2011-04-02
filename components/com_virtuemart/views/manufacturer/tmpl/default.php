@@ -34,7 +34,7 @@ $i = 1 ;
 				<a href="<?php echo $link; ?>"><?php echo $manufacturer->mf_name; ?></a>
 
 			<br />
-				<a href="<?php echo $link; ?>"><?php echo $manufacturerImage->images[0]->displayMediaThumb();?></a>
+				<a href="<?php echo $link; ?>"><?php echo $manufacturer->images[0]->displayMediaThumb();?></a>
 			</h3>
 		</div>
 
