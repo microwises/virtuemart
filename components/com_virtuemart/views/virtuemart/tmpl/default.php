@@ -18,6 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+JHTML::_( 'behavior.modal' );
 ?>
 
 <?php // Vendor Store Description

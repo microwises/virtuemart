@@ -20,7 +20,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+JHTML::_( 'behavior.modal' );
 /* javascript for list Slide
   Only here for the order list
   can be changed by the template maker
@@ -68,7 +68,7 @@ if ( VmConfig::get('showCategory',1) ) {
 					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
 					<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
 					<?php
-						echo $category->images[0]->displayMediaThumb();
+						echo $category->images[0]->displayMediaThumb(0,false);
 					 ?>
 					</a>
 				</h3>

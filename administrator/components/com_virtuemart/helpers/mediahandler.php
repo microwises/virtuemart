@@ -324,7 +324,10 @@ class VmMediaHandler {
 
 		if($lightbox){
 			$image = JHTML::image($file_url, $file_alt, $imageArgs);
-			$lightboxImage = '<a title="'.$file_alt.'" '.$lightbox.' href="'.$file_url.'">'.$image.'</a>';
+			$class = "class='modal'" ;
+			if ($this->file_url) $href = JURI::root() .$this->file_url ;
+			else $href = $image ;
+			$lightboxImage = '<a title="'.$file_alt.'" '.$class.' href="'.$href.'">'.$image.'</a>';
 			return $lightboxImage;
 		} else {
 			return JHTML::image($file_url, $file_alt, $imageArgs);
