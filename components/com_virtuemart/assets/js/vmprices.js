@@ -57,7 +57,10 @@
 							faceboxHtml : faceboxHtml
 						}, 'my-groovy-style');
 					}
-					if ($(".vmCartModule")) $().productUpdate(); 
+					if ($(".vmCartModule")) {
+						jQuery.ajaxSetup({ cache: false })
+						$().productUpdate();
+					}
 				});
 			return false;
 		};
@@ -130,7 +133,7 @@
 			$.each(products, function(key, val) {
 				$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
 				$.each(val, function(key, val) {
-				if ($("#hiddencontainer .container ."+key).text() == "1")
+				if ($("#hiddencontainer .container ."+key))
 					$(".vmCartModule .vm_cart_products ."+key+":last").html(val) ;
 					
 				});

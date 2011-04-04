@@ -35,27 +35,39 @@ VmConfig::jPrice();
 VmConfig::cssSite();
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($jsVars);
-
+$show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
+$show_product_list = (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
  ?>
 <div class="vmCartModule">
- <div id="hiddencontainer" style=" display: none; ">
-	<div class="container">
-		<div class="product_row">
-			<span class="productquantity">1</span>&nbsp;x&nbsp;<span class="product_name">1</span>
-		</div>
-		<div class="prices">1</div>
-		<div class="product_attributes">1</div>
-	</div>
-</div>
-<div class="vm_cart_products">
-<noscript>
-<?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
-</noscript> 
 <?php 
-// ALL THE DISPLAY IS IN CART TMPL FOLDER OF VIRTUEMART COMPONENT Done by Ajax
+if ($show_product_list) {
+	?>
+	<div id="hiddencontainer" style=" display: none; ">
+		<div class="container">
+			<div class="product_row">
+				<span class="quantity"></span>&nbsp;x&nbsp;<span class="product_name"></span>
+			</div>
+			<?php if ($show_price) { ?>
+				<div class="prices"></div>
+			<?php } ?>
+			<div class="product_attributes"></div>
+		</div>
+	</div>
+
+<div class="vm_cart_products">
+
+<?php 
+// ALL THE DISPLAY IS Done by Ajax in hiddencontainer
 ?>
 </div>
+<?php 
+}
+?>
 <div class="total"></div>
 <div class="total_products"><?php echo JText::_('VM_AJAX_CART_WAITING') ?></div>
 <div class="show_cart"></div>
+<noscript>
+<?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
+</noscript> 
 </div>
+

@@ -59,14 +59,43 @@ class VirtuemartViewCategory extends JView {
 	    $vendorId = 1;
 
 	    $category = $categoryModel->getCategory($categoryId);
+	    /* Add the category name to the pathway */
 		if ($category->parents) {
 			foreach ($category->parents as $c){
 				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
 			}
 		}
 		if($category->children)	$categoryModel->addImagesToCategories($category->children);
+/*
+		JHTML::script('jquery.droppy.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::stylesheet ('droppy.css', 'components/com_virtuemart/assets/css/', false );
+		$document->addScriptDeclaration("
+			jQuery(document).ready(function() {
+			jQuery('#nav').droppy({speed: 300});
+			});
+		");
+	    $categoryTree = $categoryModel->GetTreeCat($categoryId,2);
+		$catLevel = 1;
+		$total = count ($categoryTree)-1;
 
-	    /* Add the category name to the pathway */
+		echo "\n<ul id='nav'>\n\t<li class='B1'>";
+			foreach ($categoryTree as $cat) {
+				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->id);
+				?><a href="<?php echo $caturl ?>" title="<?php echo $cat->name ?>"><?php echo $cat->name ?></a><?php
+				if ($total) {
+				if ($cat->level > $catLevel) {
+					echo "\n<ul class='LV".$cat->level."'>\n\t\t<li class='B".$cat->level."'>";
+				} else if ($cat->level < $catLevel) {
+					echo "</li></ul></li>\n\t<li class='B".$cat->level."'>";
+				} else echo "</li>\n\t<li class='B".$cat->level."'>";
+				$total--;
+				}
+				$catLevel = $cat->level;
+			}
+			for ($i =1;$i<$catLevel;$i++) {?> 	
+				</li></ul><?php } ?>
+</ul><?php */
+
 		//$pathway->addItem($category->category_name);
 	    $this->assignRef('category', $category);
 

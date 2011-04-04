@@ -19,8 +19,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /* Require the config */
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-$config= new VmConfig();
-$config->loadConfig();
+$config= VmConfig::getInstance();
 
 /* Front-end helpers */
 require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
