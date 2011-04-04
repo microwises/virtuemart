@@ -158,7 +158,7 @@ class VirtueMartCart  {
 //		$product_ids = JRequest::get('product_id');
 
 		if (empty($product_ids)) {
-			$mainframe->enqueueMessage( JText::_('VM_CART_ERROR_NO_PRODUCT_IDS',false) );
+			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS',false) );
 			return false;
 		}
 
@@ -209,7 +209,7 @@ class VirtueMartCart  {
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
 					if($this->checkForQuantities($product,$this->products[$productKey]->quantity)) {
-						$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_UPDATED'));
+						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
 						return false;
 					}
@@ -217,7 +217,7 @@ class VirtueMartCart  {
 					$this->products[$productKey] = $product;
 					$product->quantity = $quantityPost;
 					if($this->checkForQuantities($product,$quantityPost)) {
-						$mainframe->enqueueMessage(JText::_('VM_CART_PRODUCT_ADDED'));
+						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
 						return false;
 					}
@@ -227,7 +227,7 @@ class VirtueMartCart  {
 
 			}
 			else {
-				$mainframe->enqueueMessage( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
+				$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_PRODUCT_NOTEXIST',false) );
 				return false;
 			}
 		}
@@ -376,7 +376,7 @@ class VirtueMartCart  {
 		$mainframe = JFactory::getApplication();
 		/* Check for a valid quantity */
 		if (!preg_match("/^[0-9]*$/", $quantity)) {
-			$_error = JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false);
+			$_error = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY',false);
 //			$this->_error[] = 'Quantity was not a number';
 			$this->setError($_error);
 			$mainframe->enqueueMessage();
@@ -386,7 +386,7 @@ class VirtueMartCart  {
 		/* Check for negative quantity */
 		if ($quantity < 0) {
 //			$this->_error[] = 'Quantity under zero';
-			$_error = JText::_('VM_CART_ERROR_NO_NEGATIVE',false);
+			$_error = JText::_('COM_VIRTUEMART_CART_ERROR_NO_NEGATIVE',false);
 			$this->setError($_error);
 			$mainframe->enqueueMessage($_error);
 			return false;
@@ -396,14 +396,14 @@ class VirtueMartCart  {
 		list($min,$max) = explode(',', $product->product_order_levels);
 		if ($min != 0 && $quantity < $min) {
 //			$this->_error[] = 'Quantity reached not minimum';
-			$_error = JText::sprintf('VM_CART_MIN_ORDER', $min);
+			$_error = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
 			$this->setError($_error);
 			$mainframe->enqueueMessage($_error, 'error');
 			return false;
 		}
 		if ($max !=0 && $quantity > $max) {
 //			$this->_error[] = 'Quantity reached over maximum';
-			$_error = JText::sprintf('VM_CART_MAX_ORDER', $max);
+			$_error = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
 			$this->setError($_error);
 			$mainframe->enqueueMessage($_error, 'error');
 			return false;
@@ -425,7 +425,7 @@ class VirtueMartCart  {
 		}
 		if(count($request_stock)!=0){
 			foreach($request_stock as $rstock){
-				$_error = JText::_('VM_CART_PRODUCT_OUT_OF_STOCK');
+				$_error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 				$this->setError($_error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
 				$mainframe->enqueueMessage($_error, 'error');
 			}
@@ -442,14 +442,14 @@ class VirtueMartCart  {
 			$this->confirmedOrder();
 		} else {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
 	function checkout(){
 		if($this -> checkoutData()){
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 	}
 
@@ -533,7 +533,7 @@ class VirtueMartCart  {
 
 		$mainframe = JFactory::getApplication();
 		if( count($this->products) == 0){
-			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('VM_CART_NO_PRODUCT'));
+			$mainframe->redirect('index.php?option=com_virtuemart',JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
 			foreach ($this->products as $product){
 				$redirectMsg = $this->checkForQuantities($product,$product->quantity);
@@ -633,7 +633,7 @@ class VirtueMartCart  {
 			}
 		}
 		if(VmConfig::get('agree_to_tos_onorder') && !$this->tosAccepted) {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_PLEASE_ACCEPT_TOS'));
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
 		}
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
@@ -662,7 +662,7 @@ class VirtueMartCart  {
 				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 				$_currency = CurrencyDisplay::getCurrencyDisplay();
 				$_minValue = $_currency->getFullValue($_min);
-				return JText::sprintf('VM_CART_MIN_PURCHASE', $_currency->getFullValue($_store->vendor_min_pov));
+				return JText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $_currency->getFullValue($_store->vendor_min_pov));
 			}
 		}
 		return null;
@@ -751,12 +751,12 @@ class VirtueMartCart  {
 //			$view = $this->getView('cart', 'html');
 //			$view->setLayout('orderdone');
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('VM_CART_ORDERDONE_THANK_YOU'));
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 	//		$view->display();
 		} else {
 			$mainframe = JFactory::getApplication();
-//			JError::raiseNotice(1, 'raiseNotice '.JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('VM_CART_ORDERDONE_DATA_NOT_VALID'));
+//			JError::raiseNotice(1, 'raiseNotice '.JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
 		}
 

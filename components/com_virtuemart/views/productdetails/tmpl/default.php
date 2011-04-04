@@ -24,7 +24,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 JHTML::_( 'behavior.modal' );
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_( 'VM_PRODUCT_NOT_FOUND' );
+	echo JText::_( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 	return ;
 }  ?>
@@ -74,7 +74,7 @@ if (empty ( $this->product )) {
 			if (!empty($this->product->product_s_desc)) { ?>
 			<p class="short-description">
 				<?php
-				echo '<span class="bold">'.JText::_('VM_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
+				echo '<span class="bold">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
 				echo $this->product->product_s_desc ?>
 			</p>
 			<?php } // Product Short Description END ?>
@@ -82,14 +82,14 @@ if (empty ( $this->product )) {
 			<?php // Ask a question about this product
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
 			 ?>
-			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('VM_PRODUCT_ENQUIRY_LBL') ?></a>
+			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 			<br style="clear:both;" />
 			<div class="margintop8">
 
 			<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
 /*			$link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
-			$text = JText::_('VM_VENDOR_FORM_INFO_LBL');
-			echo '<span class="bold">'. JText::_('VM_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
+			$text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
+			echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 */ ?>
 			<?php // Manufacturer of the Product
 			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
@@ -97,7 +97,7 @@ if (empty ( $this->product )) {
 			/* Avoid JavaScript on PDF Output */
 			if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
 			else { ?>
-			<?php echo '<span class="bold">'. JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+			<?php echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
 			<?PHP } ?>
 
 			</div>
@@ -116,22 +116,22 @@ if (empty ( $this->product )) {
 				/** @todo format price */
 				if ($this->show_prices) {
 					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
-					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+						echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$this->product->product_unit."):</strong>";
+					} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 
 					if( $this->showBasePrice ){
-						echo shopFunctionsF::createPriceDiv('basePrice','VM_PRODUCT_BASEPRICE',$this->product->prices);
-						echo shopFunctionsF::createPriceDiv('basePriceVariant','VM_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
+						echo shopFunctionsF::createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$this->product->prices);
+						echo shopFunctionsF::createPriceDiv('basePriceVariant','COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT',$this->product->prices);
 					}
-					echo shopFunctionsF::createPriceDiv('variantModification','VM_PRODUCT_VARIANT_MOD',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('basePriceWithTax','VM_PRODUCT_BASEPRICE_WITHTAX',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','VM_PRODUCT_DISCOUNTED_PRICE',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('salesPrice','VM_PRODUCT_SALESPRICE',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('priceWithoutTax','VM_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('discountAmount','VM_PRODUCT_DISCOUNT_AMOUNT',$this->product->prices);
-					echo shopFunctionsF::createPriceDiv('taxAmount','VM_PRODUCT_TAX_AMOUNT',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('variantModification','COM_VIRTUEMART_PRODUCT_VARIANT_MOD',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('basePriceWithTax','COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('salesPrice','COM_VIRTUEMART_PRODUCT_SALESPRICE',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$this->product->prices);
+					echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$this->product->prices);
 
 				}
 				?>
@@ -178,7 +178,7 @@ if (empty ( $this->product )) {
 					<?php } // Show the custom attributes END ?>
 
 					<?php // Display the quantity box ?>
-					<!-- <label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('VM_CART_QUANTITY'); ?>: </label> -->
+					<!-- <label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 					<span class="quantity-box">
 						<input type="text" class="quantity-input" name="quantity[]" value="1" />
 					</span>
@@ -189,10 +189,10 @@ if (empty ( $this->product )) {
 					<?php // Display the quantity box END ?>
 
 					<?php // Add the button
-					$button_lbl = JText::_('VM_CART_ADD_TO');
+					$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
 					$button_cls = ''; //$button_cls = 'addtocart_button';
 					if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
-						$button_lbl = JText::_('VM_CART_NOTIFY');
+						$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 						$button_cls = 'notify_button';
 					}
 					?>
@@ -227,7 +227,7 @@ if (empty ( $this->product )) {
 	if (!empty($this->product->product_desc)) { ?>
 	<div class="product-description">
 		<?php /** @todo Test if content plugins modify the product description */
-		echo '<span class="bold">'. JText::_('VM_PRODUCT_DESC_TITLE'). '</span><br />';
+		echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE'). '</span><br />';
 		echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
@@ -237,13 +237,13 @@ if (empty ( $this->product )) {
 	if ($this->product->packaging || $this->product->box) { ?>
 	<div class="product-packaging margintop15">
 		<?php
-		echo '<span class="bold">'. JText::_('VM_PRODUCT_PACKAGING2'). '</span><br />';
+		echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING2'). '</span><br />';
 		if ($this->product->packaging) {
-			$product_packaging .= JText::_('VM_PRODUCT_PACKAGING1').$this->product->packaging;
+			$product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING1').$this->product->packaging;
 			if ($this->product->box) $product_packaging .= '<br />';
 		}
-		if ($this->product->box) $product_packaging .= JText::_('VM_PRODUCT_PACKAGING2').$this->product->box;
-		echo str_replace("{unit}",$this->product->product_unit ? $this->product->product_unit : JText::_('VM_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging); ?>
+		if ($this->product->box) $product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING2').$this->product->box;
+		echo str_replace("{unit}",$this->product->product_unit ? $this->product->product_unit : JText::_('COM_VIRTUEMART_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging); ?>
 	</div>
 	<?php } // Product Packaging END ?>
 
@@ -265,7 +265,7 @@ if (empty ( $this->product )) {
 		foreach ($this->product->related as $rkey => $related) {
 			?>
 			<hr />
-			<h3><?php echo JText::_('VM_RELATED_PRODUCTS_HEADING') ?></h3>
+			<h3><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h3>
 
 			<table width="100%" align="center">
 				<tr>
@@ -367,7 +367,7 @@ if (empty ( $this->product )) {
 			<tr>
 				<td colspan="2">
 				<!-- List of product reviews -->
-				<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
+				<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?>:</h4>
 				<?php
 				$alreadycommented = false;
 
@@ -388,11 +388,11 @@ if (empty ( $this->product )) {
 					$i++ ;
 					if ( $i == $ratingsShow && !$showall) break;
 				}
-				if (count($this->product_reviews) < 1) echo JText::_('VM_NO_REVIEWS'); // "There are no reviews for this product"
+				if (count($this->product_reviews) < 1) echo JText::_('COM_VIRTUEMART_NO_REVIEWS'); // "There are no reviews for this product"
 				else {
 					/* Show all reviews */
 					if (!$showall && count($this->product_reviews) >=$ratingsShow ) {
-						echo JHTML::link($this->more_reviews, JText::_('VM_MORE_REVIEWS'));
+						echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
 					}
 				}
 				?>
@@ -401,7 +401,7 @@ if (empty ( $this->product )) {
 
 				if (!empty($this->user->id)) {
 					if (!$alreadycommented) {
-						echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
+						echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
 						$reviewJavascript = "
 							function check_reviewform() {
 							var form = document.getElementById('reviewform');
@@ -411,15 +411,15 @@ if (empty ( $this->product )) {
 								if (form.user_rating[i].checked)
 								  ausgewaehlt = true;
 								if (!ausgewaehlt)  {
-								  alert('".JText::_('VM_REVIEW_ERR_RATE',false)."');
+								  alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
 								  return false;
 								}
 								else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
-									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT1', VmConfig::get('reviews_minimum_comment_length', 100))."');
+									alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1', VmConfig::get('reviews_minimum_comment_length', 100))."');
 									return false;
 								}
 								else if (form.comment.value.length > ". VmConfig::get('reviews_maximum_comment_length', 2000).") {
-									alert('". JText::sprintf('VM_REVIEW_ERR_COMMENT2', VmConfig::get('reviews_maximum_comment_length', 2000))."');
+									alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2', VmConfig::get('reviews_maximum_comment_length', 2000))."');
 									return false;
 								}
 								else {
@@ -435,10 +435,10 @@ if (empty ( $this->product )) {
 						$document->addScriptDeclaration($reviewJavascript);
 						?>
 
-						<h4><?php echo JText::_('VM_WRITE_REVIEW')  ?></h4>
-						<br /><?php echo JText::_('VM_REVIEW_RATE')  ?>
+						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
+						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
-							<table cellpadding="5" summary="<?php echo JText::_('VM_REVIEW_RATE') ?>">
+							<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 								<tr>
 								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) {
@@ -461,13 +461,13 @@ if (empty ( $this->product )) {
 							</table>
 							<br /><br />
 							<?php
-							echo JText::sprintf('VM_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
+							echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
 							?>
 							<br />
-							<textarea title="<?php echo JText::_('VM_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"></textarea>
+							<textarea title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"></textarea>
 							<br />
-							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('VM_REVIEW_SUBMIT')  ?>" />
-							<div align="right"><?php echo JText::_('VM_REVIEW_COUNT')  ?>
+							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
+							<div align="right"><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT')  ?>
 								<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 							</div>
 							<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
@@ -479,11 +479,11 @@ if (empty ( $this->product )) {
 						<?php
 					}
 					else {
-						echo '<strong>'.JText::_('VM_DEAR').$this->user->name.',</strong><br />' ;
-						echo JText::_('VM_REVIEW_ALREADYDONE');
+						echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
+						echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 					}
 				}
-				else echo JText::_('VM_REVIEW_LOGIN'); // Login to write a review!
+				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 				</td>
 			</tr>

@@ -28,11 +28,11 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_BILLTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
 	</legend>
 
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
-		<?php echo JText::_('VM_USER_FORM_EDIT_BILLTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 	</a><br /><br />
 <?php 	foreach($this->BTaddress as $item){
 			if(!empty($item['value'])){
@@ -44,10 +44,10 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
-	<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
+	<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a><br />
 	<?php echo $this->lists['shipTo'];
 		echo '<br /><br />';
@@ -60,14 +60,14 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
 <fieldset>
 	<div class="customer-comment marginbottom15">
-		<span class="bold"><?php echo JText::_('VM_COMMENT'); ?></span><br />
+		<span class="bold"><?php echo JText::_('COM_VIRTUEMART_COMMENT'); ?></span><br />
 		<textarea class="customer-comment" name="customer_comment" cols="50" rows="4"><?php echo $this->cart->customer_comment; ?></textarea>
 	</div>
 </fieldset>
 <fieldset>
 		
 	<div class="marginbottom15">
-	<span class="bold"><?php echo JText::_('VM_CART_TOS'); ?></span><br />
+	<span class="bold"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span><br />
 	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
 		if (VmConfig::get('agree_to_tos_onorder')) {
 			$checked = '';
@@ -85,7 +85,7 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 		echo $this->continue_link_html;
 	}
 
-	$text = JText::_('VM_ORDER_CONFIRM_MNU');
+	$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 	echo '</div>';
 ?>
 

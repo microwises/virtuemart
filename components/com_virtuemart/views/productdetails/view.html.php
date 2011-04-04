@@ -88,7 +88,7 @@ class VirtueMartViewProductdetails extends JView {
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
 		/* Set the titles */
-		$document->setTitle(JText::sprintf('VM_PRODUCT_DETAILS',$product->product_name));
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name));
 		$uri = JURI::getInstance();
 
 		$this->assignRef('product', $product);
@@ -133,7 +133,7 @@ class VirtueMartViewProductdetails extends JView {
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
-			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('VM_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
+			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
 		}
 		else {
 			$edit_link = "";
@@ -189,7 +189,7 @@ class VirtueMartViewProductdetails extends JView {
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
-			$continue_link_html = '<a href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+			$continue_link_html = '<a href="'.$continue_link.'" />'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
 			$this->assignRef('continue_link_html', $continue_link_html);
 			/* Display it all */
 			parent::display($tpl);

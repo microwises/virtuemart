@@ -97,13 +97,13 @@ class VirtueMartControllerProductdetails extends JController {
                     $fromName = $user->name;
 	 	}
 		$fromSite = $mainframe->getCfg('sitename');
-		$subject = Jtext::_('VM_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
+		$subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
 		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n";
 		$message .= JRequest::getVar('comment');
 		$msgtype = '';
-		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message ) == true ) $mainframe->enqueueMessage( JText::_('MAIL_SEND_SUCCESSFULLY') );
+		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message ) == true ) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY') );
 		else {
-			$mainframe->enqueueMessage( JText::_('MAIL_NOT_SEND_SUCCESSFULLY') );
+			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY') );
 		}
 		/* Display it all */
 		$view->setLayout('mailconfirmed');
@@ -152,10 +152,10 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Set the layout */
 		$view->setLayout('productdetails');
 		$msgtype = '';
-		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('RATING_SAVED_SUCCESSFULLY') );
+		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
 		else {
 			$mainframe->enqueueMessage($model->getError());
-			$mainframe->enqueueMessage( JText::_('RATING_NOT_SAVED_SUCCESSFULLY') );
+			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
 		/* Display it all */
 		$view->display();

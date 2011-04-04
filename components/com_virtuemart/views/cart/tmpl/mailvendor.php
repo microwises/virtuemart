@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 
 	//Hello Shopowner
-	JText::_('VM_CART_MAIL_VENDOR_TITLE');
+	JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE');
 	echo $this->store->vendor_store_name;
 	echo $this->vendor->images[0]->displayMediaThumb();
 //	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);

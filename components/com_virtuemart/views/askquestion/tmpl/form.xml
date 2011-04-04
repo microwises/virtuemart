@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VM_ASKQUESTION_MENU" hidden="false">
-		<message><![CDATA[VM_ASKQUESTION_DESC]]></message>
+	<layout title="COM_VIRTUEMART_ASKQUESTION_MENU" hidden="false">
+		<message><![CDATA[COM_VIRTUEMART_ASKQUESTION_DESC]]></message>
 	</layout>
 </metadata>

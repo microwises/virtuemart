@@ -666,7 +666,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$manufacturerLink='';
 		if (count($manufacturers)>0) {
 			$manufacturerLink ='<div class="orderlist">';
-			if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('VM_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
+			if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
 			if (count($manufacturers)>1) {
 				foreach ($manufacturers as $mf) {
 					$link = JRoute::_('index.php?option=com_virtuemart&view=category&manufacturer_id='.$mf->manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
@@ -675,8 +675,8 @@ class VirtueMartModelProductdetails extends JModel {
 					}
 					else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
 				}
-			} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
-			else $currentManufacturerLink ='<div >'.JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
+			} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
+			else $currentManufacturerLink ='<div >'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
 			$manufacturerLink .='</div>';
 		}
 	} else $manufacturerLink = "" ;
@@ -688,7 +688,7 @@ class VirtueMartModelProductdetails extends JModel {
 		$orderByLink ='<div class="orderlist">';
 		foreach ($fields as $field) {
 			if ($field != $orderby) {
-				$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
+				$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
 				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
 				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';
@@ -700,9 +700,9 @@ class VirtueMartModelProductdetails extends JModel {
 	/* invert order value set*/
 	if ($order =='ASC') {
 		$orderlink ='&order=DESC';
-		$orderTxt = JText::_('VM_SEARCH_ORDER_DESC');
+		$orderTxt = JText::_('COM_VIRTUEMART_SEARCH_ORDER_DESC');
 	} else {
-		$orderTxt = JText::_('VM_SEARCH_ORDER_ASC');
+		$orderTxt = JText::_('COM_VIRTUEMART_SEARCH_ORDER_ASC');
 		$orderlink ='';
 	}
 
@@ -711,9 +711,9 @@ class VirtueMartModelProductdetails extends JModel {
 	$orderby=strtoupper($orderby);
 	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
 
-	$orderByList ='<div class="orderlistcontainer"><div>'.JText::_('VM_ORDERBY').'</div><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('VM_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a></div>';
+	$orderByList ='<div class="orderlistcontainer"><div>'.JText::_('COM_VIRTUEMART_ORDERBY').'</div><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a></div>';
 	$orderByList .= $orderByLink.'</div>';
-	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = JText::_('VM_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'.JText::_('VM_SEARCH_SELECT_MANUFACTURER').'</div>';
+	if (empty ($currentManufacturerLink) ) $currentManufacturerLink = JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_MANUFACTURER').'</div>';
 	$orderByList .=' <div class="orderlistcontainer">'.$currentManufacturerLink;
 	$orderByList .= $manufacturerLink.'</div><div class="clear"></div>';
 
@@ -735,14 +735,14 @@ class VirtueMartModelProductdetails extends JModel {
     	$stock_level = $product->product_in_stock;
     	$reorder_level = $product->low_stock_notification;
 		$level = 'normalstock';
-		$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
+		$stock_tip = JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
 		if ($stock_level <= $reorder_level) {
 			$level = 'lowstock';
-			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_LOW_TIP');
+			$stock_tip = JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_LOW_TIP');
 		}
 		if ($stock_level == 0) {
 			$level = 'nostock';
-			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_OUT_TIP');
+			$stock_tip = JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_OUT_TIP');
 		}
     	$stock = new Stdclass();
     	$stock->stock_tip = $stock_tip;

@@ -81,7 +81,7 @@ class VirtueMartViewAskquestion extends JView {
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
 		/* Set the titles */
-		$document->setTitle(JText::sprintf('VM_PRODUCT_DETAILS',$product->product_name.' - '.JText::_('VM_PRODUCT_ASK_QUESTION')));
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name.' - '.JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 		$uri = JURI::getInstance();
 
 		$this->assignRef('product', $product);
@@ -114,7 +114,7 @@ class VirtueMartViewAskquestion extends JView {
 		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&category_id='.$category_id.'&product_id='.$product->product_id));
 
 		// for askquestion
-		$pathway->addItem( JText::_('VM_PRODUCT_ASK_QUESTION'));
+		$pathway->addItem( JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
 		/* Check for editing access */
 		/** @todo build edit page */
@@ -151,7 +151,7 @@ class VirtueMartViewAskquestion extends JView {
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
-			$continue_link_html = '<a href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+			$continue_link_html = '<a href="'.$continue_link.'" />'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
 			$this->assignRef('continue_link_html', $continue_link_html);
 			/* Display it all */
 			parent::display($tpl);

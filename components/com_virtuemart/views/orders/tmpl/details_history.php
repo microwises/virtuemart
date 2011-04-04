@@ -22,9 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
 	<tr align="left" class="sectiontableheader">
-		<th align="left" ><?php echo JText::_('VM_DATE') ?></th>
-		<th align="left" ><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
-		<th align="left" ><?php echo JText::_('VM_COMMENT') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_DATE') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_COMMENT') ?></th>
 	</tr>
 <?php
 	foreach($this->orderdetails['history'] as $_hist) {

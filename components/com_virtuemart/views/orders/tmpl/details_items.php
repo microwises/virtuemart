@@ -22,12 +22,12 @@ defined('_JEXEC') or die('Restricted access');
 
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
 	<tr align="left" class="sectiontableheader">
-		<th align="left" ><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
-		<th align="right" ><?php echo JText::_('VM_ORDER_PRINT_QTY') ?></th>
-		<th align="left" colspan="2"><?php echo JText::_('VM_PRODUCT_NAME_TITLE') ?></th>
-		<th align="right" ><?php echo JText::_('VM_ORDER_PRINT_PRICE') ?></th>
-		<th align="right" ><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
-		<th align="left" ><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
+		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
+		<th align="left" colspan="2"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
+		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
+		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
 	</tr>
 <?php
 	foreach($this->orderdetails['items'] as $_item) {
