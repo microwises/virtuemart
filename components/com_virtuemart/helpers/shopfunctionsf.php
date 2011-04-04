@@ -102,7 +102,7 @@ class shopFunctionsF {
 	 * @param boolean $use_icon
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
-		if (VmConfig::get('pshop_pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			$link .= '&amp;pop=1';
@@ -122,7 +122,7 @@ class shopFunctionsF {
 	 * @param boolean $use_icon
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
-		if (VmConfig::get('vm_show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
+		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
@@ -142,7 +142,7 @@ class shopFunctionsF {
 	 */
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $cur_template, $Itemid;
-		if (VmConfig::get('vm_show_printicon', 1) == '1') {
+		if (VmConfig::get('show_printicon', 1) == '1') {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			if( !$link ) {

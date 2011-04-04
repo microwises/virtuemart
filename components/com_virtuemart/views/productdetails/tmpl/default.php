@@ -250,14 +250,15 @@ if (empty ( $this->product )) {
 
 
 <?php // Product Files
-	foreach ($this->product->files as $fkey => $file) {
-		if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
-		else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
+	foreach ($this->product->images as $fkey => $file) {
+		//Todo add downloadable files again
+//		if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
+//		else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
 
 		/* Show pdf in a new Window, other file types will be offered as download */
-		$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-		$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
-		echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
+//		$target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
+//		$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
+//		echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	}
 	// Related Products
 	if ($this->product->related && !empty($this->product->related)) {

@@ -109,6 +109,7 @@ class VmImage extends VmMediaHandler {
 	 */
 	public function createThumb() {
 
+		if(!VmConfig::get('img_resize_enable')) return;
 		//now lets create the thumbnail, saving is done in this function
 		$width = VmConfig::get('img_width', 90);
 		$height = VmConfig::get('img_height', 90);
