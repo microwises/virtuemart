@@ -27,7 +27,7 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	<tr>
 		<th width="10">
-			<?php echo JText::_('COM_VIRTUEMART_#'); ?>
+			<?php echo JText::_('#'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>

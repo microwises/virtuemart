@@ -36,7 +36,7 @@ if( $this->pagination->limit < $nrows ){
 		<thead>
 		<tr>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_#' ); ?>
+				<?php echo JText::_('#' ); ?>
 			</th>		            
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />

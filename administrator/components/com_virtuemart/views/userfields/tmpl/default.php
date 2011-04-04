@@ -49,7 +49,7 @@ $j15 = VmConfig::isJ15();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userfieldsList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
+				<?php echo JText::_('#'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
