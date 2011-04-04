@@ -162,7 +162,7 @@ function virtuemartBuildRoute(&$query) {
 		if ( $query['tmpl'] = 'component') $segments[] = 'detail' ;
 		unset($query['tmpl']);
 	}
-	if (empty ($query['Itemid'])) $query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
+	if (empty ($query['Itemid']) && isset($helper->menu->virtuemart[0]['itemId'])) $query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
 
 	return $segments;
 }
@@ -270,7 +270,7 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'cart';
 		if ($segments[0] == $lang['cart']) {
 			array_shift($segments);
-			$count--;
+			if (empty($segments)) return $vars;
 		}
 		if ($segments[0] == $lang['editshipping'] ) $vars['task'] = 'editshipping' ;
 		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
@@ -411,18 +411,20 @@ class vmrouterHelper {
 		$ismenu = false ;
 		$CatParentIds = self::getCategoryRecurse($category_id,0) ;
 		// control if category is joomla menu
-		foreach ($this->menu->category_id as $menuId) {
-			if ($category_id ==  $menuId['category_id']) {
-				$ismenu = true;
-				$category->itemId = $menuId['itemId'] ;
-				break;
-			}
-			/* control if parent categories are joomla menu */
-			foreach ($CatParentIds as $CatParentId) {
-				// No ? then find te parent menu categorie !
-				if ($menuId['category_id'] == $CatParentId ) {
+		if (isset($this->menu->category_id)) {
+			foreach ($this->menu->category_id as $menuId) {
+				if ($category_id ==  $menuId['category_id']) {
+					$ismenu = true;
 					$category->itemId = $menuId['itemId'] ;
-					$menuCatid = $CatParentId;
+					break;
+				}
+				/* control if parent categories are joomla menu */
+				foreach ($CatParentIds as $CatParentId) {
+					// No ? then find te parent menu categorie !
+					if ($menuId['category_id'] == $CatParentId ) {
+						$category->itemId = $menuId['itemId'] ;
+						$menuCatid = $CatParentId;
+					}
 				}
 			}
 		}
@@ -432,7 +434,7 @@ class vmrouterHelper {
 				$this->CategoryName[$category_id] = self::getCategoryNames($category_id, $menuCatid );
 			}
 			$category->route .= $this->CategoryName[$category_id] ;
-			if ($menuCatid == 0 ) $category->itemId = $this->menu->virtuemart[0]['itemId'] ;
+			if ($menuCatid == 0  && isset($this->menu->virtuemart[0]['itemId'])) $category->itemId = $this->menu->virtuemart[0]['itemId'] ;
 		}
 		return $category ;
 	}
@@ -561,8 +563,6 @@ class vmrouterHelper {
 			LEFT JOIN `jos_vm_product_category_xref` AS `xref` ON `p`.`product_id` = `xref`.`product_id`
 			WHERE `p`.`product_name` LIKE '".$productName."'
 			AND `xref`.`category_id` in (".$product['category_id'].") ";
-					echo $productName;
-			echo $q;
 		$db->setQuery($q);
 		$product['product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */
@@ -644,10 +644,13 @@ class vmrouterHelper {
 			$this->lang['user']			= 'user';
 			$this->lang['cart']			= 'cart';
 			$this->lang['editaddresscartBT'] = 'edit_cart_bill_to';
-			$this->lang['editaddresscartBT'] = 'edit_cart_ship_to';
+			$this->lang['editaddresscartST'] = 'edit_cart_ship_to';
 			$this->lang['search'] = 'search';
 			$this->lang['page']			= 'page';
 			$this->lang['orderDesc'] 	= 'desc';
+			$this->lang['product_id'] 		=  'product_id';
+			$this->lang['product_sku'] 		=  'product_sku';
+			$this->lang['product_price']	=  'product_price';
 			$this->lang['orderby']	= 'order_by';
 			$this->lang['category_name'] = 'category_name';
 			$this->lang['category_description'] = 'category_description';
