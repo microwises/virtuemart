@@ -873,7 +873,7 @@ class calculationHelper {
 			$db->setQuery($q);
 			$curr = $db->loadResult();
 			if(empty($curr)){
-				JError::raiseWarning('Attention, couldnt find currency code in the table');
+				JError::raiseWarning('','Attention, couldnt find currency code in the table');
 			}
 		}
 		return $curr;
