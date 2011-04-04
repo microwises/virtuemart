@@ -26,21 +26,21 @@ AdminMenuHelper::startAdminArea();
 
 <a name="warning"></a>
 <div class="shop_warning">
-	<span style="font-style: italic;"><?php echo JText::_('VM_UPDATE_WARNING_TITLE') ?></span><br />
-	<?php echo JText::_('VM_UPDATE_WARNING_TEXT'); ?>
+	<span style="font-style: italic;"><?php echo JText::_('COM_VIRTUEMART_UPDATE_WARNING_TITLE') ?></span><br />
+	<?php echo JText::_('COM_VIRTUEMART_UPDATE_WARNING_TEXT'); ?>
 </div>
 <div class="shop_info">
-	<span style="font-style: italic;"><?php echo JText::_('VM_UPDATE_PATCH_DETAILS') ?></span><br />
+	<span style="font-style: italic;"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DETAILS') ?></span><br />
 	<ul>
-		<li><?php echo JText::_('VM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
-		<li><?php echo JText::_('VM_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
+		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
+		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
 <table class="adminlist">
 	<thead>
 	  <tr>
-	    <th class="title"><?php echo JText::_('VM_UPDATE_PATCH_FILESTOUPDATE') ?></th>
-	    <th class="title"><?php echo JText::_('VM_UPDATE_PATCH_STATUS') ?></th>
+	    <th class="title"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_FILESTOUPDATE') ?></th>
+	    <th class="title"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_STATUS') ?></th>
 	  </tr>
 	  </thead>
 	  <tbody>
@@ -75,7 +75,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
   	}
   	echo '<tr><td>'.$file.'</td>';
   	$class = $is_writable ? 'writable' : 'unwritable';
-  	$msg = $is_writable ? JText::_('VM_UPDATE_PATCH_WRITABLE') : JText::_('VM_UPDATE_PATCH_UNWRITABLE');
+  	$msg = $is_writable ? JText::_('COM_VIRTUEMART_UPDATE_PATCH_WRITABLE') : JText::_('COM_VIRTUEMART_UPDATE_PATCH_UNWRITABLE');
   	echo '<td class="'.$class.'">'.$msg."</td></tr>\n";
   	
 } ?>
@@ -84,7 +84,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
 
 <?php
 if( !empty($packageContents['queryArr'])) {
-	echo '<table class="adminlist"><thead><tr><th class="title">' . JText::_('VM_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
+	echo '<table class="adminlist"><thead><tr><th class="title">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
 	echo '<tbody>';
 	foreach($packageContents['queryArr'] as $query) {
 		echo '<tr><td><pre>'.$query. "</pre></td></tr>";
@@ -94,13 +94,13 @@ if( !empty($packageContents['queryArr'])) {
 if( $valid ) {
 	echo '<div align="center">
 	<input type="checkbox" name="confirm_update" id="confirm_update">
-		<label for="confirm_update">' . JText::_('VM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
+		<label for="confirm_update">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
-	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . JText::_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
-	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.JText::_('CMN_CANCEL').'" />
+	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
+	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.JText::_('COM_VIRTUEMART_CANCEL').'" />
 	</div>';
 } else {
-	echo '<div class="shop_error">' . JText::_('VM_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';
+	echo '<div class="shop_error">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';
 }
 $formObj->finishForm('applypatchpackage', 'admin.update_result');
  ?>
@@ -109,7 +109,7 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  	if( document.adminForm.confirm_update.checked ) {
  		return true;
  	}
- 	alert( "<?php echo JText::_('VM_UPDATE_PATCH_PLEASEMARK') ?>" );
+ 	alert( "<?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_PLEASEMARK') ?>" );
  	return false;
  }
  </script>

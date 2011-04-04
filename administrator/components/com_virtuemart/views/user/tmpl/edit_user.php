@@ -32,14 +32,14 @@ function gotocontact(id) {
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_LEGEND_USERDETAILS'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS'); ?>
 	</legend>
 	<table class="admintable" cellspacing="1">
 
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo JText::_('VM_USER_FORM_NAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -50,7 +50,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="username">
-					<?php echo JText::_('VM_USER_FORM_USERNAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_USERNAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -61,7 +61,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="email">
-					<?php echo JText::_('VM_USER_FORM_EMAIL'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL'); ?>
 				</label>
 			</td>
 			<td>
@@ -72,7 +72,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="password">
-					<?php echo JText::_('VM_USER_FORM_NEWPASSWORD'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NEWPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -83,7 +83,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="password2">
-					<?php echo JText::_('VM_USER_FORM_VERIFYPASSWORD'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_VERIFYPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -94,7 +94,7 @@ function gotocontact(id) {
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
-					<?php echo JText::_('VM_USER_FORM_GROUP'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_GROUP'); ?>
 				</label>
 			</td>
 			<td>
@@ -105,7 +105,7 @@ function gotocontact(id) {
 		<?php if ($this->lists['canBlock']) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_BLOCKUSER'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BLOCKUSER'); ?>
 			</td>
 			<td>
 				<?php echo $this->lists['block']; ?>
@@ -116,7 +116,7 @@ function gotocontact(id) {
 		<?php if ($this->lists['canSetMailopt']) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
 			</td>
 			<td>
 				<fieldset class="radio">
@@ -132,7 +132,7 @@ function gotocontact(id) {
 		<?php if( $this->userDetails->JUser ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_REGISTERDATE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_REGISTERDATE'); ?>
 			</td>
 			<td>
 				<?php echo $this->userDetails->JUser->get('registerDate');?>
@@ -141,7 +141,7 @@ function gotocontact(id) {
 
 		<tr>
 			<td class="key">
-				<?php echo JText::_('VM_USER_FORM_LASTVISITDATE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LASTVISITDATE'); ?>
 			</td>
 			<td>
 				<?php echo $this->userDetails->JUser->get('lastvisitDate'); ?>
@@ -153,7 +153,7 @@ function gotocontact(id) {
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_LEGEND_PARAMETERS'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_PARAMETERS'); ?>
 		</legend>
 	<table class="admintable" cellspacing="1">
 		<tr>
@@ -170,16 +170,16 @@ function gotocontact(id) {
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_LEGEND_CONTACTINFO'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_CONTACTINFO'); ?>
 	</legend>
 	<?php if ( !$this->contactDetails ) : ?>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
 				<br />
-				<?php echo JText::_('VM_USER_FORM_NOCONTACTDETAILS_1'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NOCONTACTDETAILS_1'); ?>
 				<br />
-				<?php echo JText::_('VM_USER_FORM_NOCONTACTDETAILS_2'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NOCONTACTDETAILS_2'); ?>
 				<br /><br />
 			</td>
 		</tr>
@@ -188,7 +188,7 @@ function gotocontact(id) {
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td width="15%">
-				<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_NAME'); ?>:
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_NAME'); ?>:
 			</td>
 			<td>
 				<strong><?php echo $this->contactDetails->name;?></strong>
@@ -196,7 +196,7 @@ function gotocontact(id) {
 		</tr>
 		<tr>
 			<td>
-				<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_POSITION'); ?>:
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_POSITION'); ?>:
 			</td>
 			<td >
 				<strong><?php echo $this->contactDetails->con_position;?></strong>
@@ -204,7 +204,7 @@ function gotocontact(id) {
 		</tr>
 		<tr>
 			<td>
-				<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_TELEPHONE'); ?>:
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_TELEPHONE'); ?>:
 			</td>
 			<td >
 				<strong><?php echo $this->contactDetails->telephone;?></strong>
@@ -212,7 +212,7 @@ function gotocontact(id) {
 		</tr>
 		<tr>
 			<td>
-				<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_FAX'); ?>:
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_FAX'); ?>:
 			</td>
 			<td >
 				<strong><?php echo $this->contactDetails->fax;?></strong>
@@ -235,7 +235,7 @@ function gotocontact(id) {
 		<tr>
 			<td colspan="2">
 				<br />
-				<input class="button" type="button" value="<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON'); ?>" onclick="javascript: gotocontact( '<?php echo $this->contactDetails->id; ?>' )">
+				<input class="button" type="button" value="<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CONTACTDETAILS_CHANGEBUTTON'); ?>" onclick="javascript: gotocontact( '<?php echo $this->contactDetails->id; ?>' )">
 			</td>
 		</tr>
 	</table>

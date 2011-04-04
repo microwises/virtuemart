@@ -25,11 +25,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td valign="top">
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
+						<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 					</legend>
 					<table class="admintable">
 							<td class="key">
-								<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
+								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STORE_NAME'); ?>:
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->vendor->vendor_store_name; ?>" />
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
-								<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
+								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_COMPANY_NAME'); ?>:
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
-								<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
+								<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL'); ?>:
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->vendor->vendor_url; ?>" />
@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
-								<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
+								<?php echo JText::_( 'COM_VIRTUEMART_STORE_FORM_MPOV' ); ?>:
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
-								<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
+								<?php echo JText::_( 'COM_VIRTUEMART_FREE_SHIPPING_AMOUNT' ); ?>:
 							</td>
 							<td>
 								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
@@ -74,12 +74,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td valign="top">
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('VM_CURRENCY_DISPLAY') ?>
+						<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY') ?>
 					</legend>
 					<table class="admintable">
 						<tr>
 							<td class="key">
-								<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
+								<?php echo JText::_( 'COM_VIRTUEMART_STORE_FORM_CURRENCY' ); ?>:
 							</td>
 							<td>
 								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 						<tr>
 							<td class="key">
-								<?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
+								<?php echo JText::_( 'COM_VIRTUEMART_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
 							</td>
 							<td>
 								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td colspan="2">
 		<fieldset class="adminform">
 			<legend>
-				<?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?>
+				<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 			</legend>
 			<?php
 				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->file_ids);
@@ -116,7 +116,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td colspan="2">
 				<fieldset>
 					<legend>
-						<?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?>
+						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_DESCRIPTION');?>
 					</legend>
 					<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 220, 70, 15)?>
 				</fieldset>
@@ -126,7 +126,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td colspan="2">
 				<fieldset>
 					<legend>
-						<?php echo JText::_('VM_STORE_FORM_TOS');?>
+						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_TOS');?>
 					</legend>
 					<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 220, 70, 15)?>
 				</fieldset>

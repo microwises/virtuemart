@@ -21,12 +21,12 @@ defined('_JEXEC') or die('Restricted access');
 ?> 
 <br />
 <fieldset class="adminform">
-    <legend><?php echo JText::_('VM_ADMIN_CFG_SHOP_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
-		<?php echo JText::_('VM_ADMIN_CFG_SHOP_OFFLINE',false); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE',false); ?>
 		</span>
 	    </td>
 	    <td>
@@ -34,15 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	</tr>
 	<tr>
-	    <td class="key"><?php echo JText::_('VM_ADMIN_CFG_SHOP_OFFLINE_MSG') ?></td>
+	    <td class="key"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG') ?></td>
 	    <td>
 		<textarea rows="6" cols="35" name="offline_message"><?php echo $this->config->get('offline_message'); ?></textarea>
 	    </td>
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
-		<?php echo JText::_('VM_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
 		</span>
 	    </td>
 	    <td>
@@ -51,8 +51,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
-		<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
 		</span>
 	    </td>
 	    <td valign="top">
@@ -62,8 +62,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CURRENCY_MODULE_TIP'); ?>">
-		<?php echo JText::_('VM_CFG_CURRENCY_MODULE') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE') ?>
 		</span>
 	    </td>
 	    <td>
@@ -72,25 +72,25 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
-		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT') ?>
 		</span>
 		</td>
 	    <td>
 		<select name="order_mail_html" class="inputbox">
 		    <option value="0" <?php if ($this->config->get('order_mail_html') == '0') echo 'selected="selected"'; ?>>
-			<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
+			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
 		    </option>
 		    <option value="1" <?php if ($this->config->get('order_mail_html') == '1') echo 'selected="selected"'; ?>>
-			<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
+			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
 		    </option>
 		</select>
 	    </td>
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
-		<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
+		<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -99,8 +99,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_COUPONS_ENABLE_EXPLAIN'); ?>">
-		<label for="coupons_enable"><?php echo JText::_('VM_COUPONS_ENABLE') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
+		<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -109,8 +109,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_COUPONS_EXPIRE_EXPLAIN'); ?>">
-		<label for="coupons_default_expire"><?php echo JText::_('VM_COUPONS_EXPIRE') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
+		<label for="coupons_default_expire"><?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE') ?></label>
 		</span>
 	    </td>
 		<td>
@@ -118,13 +118,13 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
 					$_defaultExpTime = array(
-						 '1,D' => '1 '.JText::_('DAY')
-						,'1,W' => '1 '.JText::_('WEEK')
-						,'2,W' => '2 '.JText::_('WEEKS')
-						,'1,M' => '1 '.JText::_('MONTH')
-						,'3,M' => '3 '.JText::_('MONTHS')
-						,'6,M' => '6 '.JText::_('MONTHS')
-						,'1,Y' => '1 '.JText::_('YEAR')
+						 '1,D' => '1 '.JText::_('COM_VIRTUEMART_DAY')
+						,'1,W' => '1 '.JText::_('COM_VIRTUEMART_WEEK')
+						,'2,W' => '2 '.JText::_('COM_VIRTUEMART_WEEKS')
+						,'1,M' => '1 '.JText::_('COM_VIRTUEMART_MONTH')
+						,'3,M' => '3 '.JText::_('COM_VIRTUEMART_MONTHS')
+						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTHS')
+						,'1,Y' => '1 '.JText::_('COM_VIRTUEMART_YEAR')
 					);
 					foreach ($_defaultExpTime as $_v => $_t) {
 						echo '<option value="'.$_v.'"';
@@ -139,8 +139,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-		<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('VM_ADMIN_CFG_REVIEW') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+		<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -149,8 +149,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_REVIEWS_AUTOPUBLISH_TIP'); ?>">
-		<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('VM_REVIEWS_AUTOPUBLISH') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
+		<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -159,8 +159,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
-		<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
+		<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -169,8 +169,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
-		<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
+		<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -181,12 +181,12 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform">
-    <legend><?php echo JText::_('VM_ADMIN_SECURITY_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_SECURITY_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_MODULES_FORCE_HTTPS_TIP'); ?>">
-		<?php echo JText::_('VM_MODULES_FORCE_HTTPS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_MODULES_FORCE_HTTPS_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_MODULES_FORCE_HTTPS') ?>
 		</span>
 	    </td>
 	    <td>
@@ -198,8 +198,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_GENERALLY_PREVENT_HTTPS_TIP'); ?>">
-		<?php echo JText::_('VM_GENERALLY_PREVENT_HTTPS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_GENERALLY_PREVENT_HTTPS_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_GENERALLY_PREVENT_HTTPS') ?>
 		</span>
 	    </td>
 	    <td>
@@ -210,15 +210,15 @@ defined('_JEXEC') or die('Restricted access');
 	//if( version_compare( $database->getVersion(), '4.0.2', '>=') ) { ?>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ENCRYPTION_FUNCTION_TIP'); ?>">
-		<?php echo JText::_('VM_ADMIN_ENCRYPTION_FUNCTION') ?>&nbsp;&nbsp;
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_FUNCTION_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_FUNCTION') ?>&nbsp;&nbsp;
 		</span>
 	    </td>
 	    <td>
 		<?php
 		$options = array();
-		$options[] = JHTML::_('select.option', 'ENCODE', JText::_('VM_ENCODE_INSECURE'));
-		$options[] = JHTML::_('select.option', 'AES_ENCRYPT', JText::_('VM_AES_ENCRYPT_STRONG_SECURITY'));
+		$options[] = JHTML::_('select.option', 'ENCODE', JText::_('COM_VIRTUEMART_ENCODE_INSECURE'));
+		$options[] = JHTML::_('select.option', 'AES_ENCRYPT', JText::_('COM_VIRTUEMART_AES_ENCRYPT_STRONG_SECURITY'));
 		echo JHTML::_('Select.genericlist', $options, 'encrypt_function', 'size=1', 'value', 'text', $this->config->get('encrypt_function'));
 		?>
 	    </td>
@@ -228,8 +228,8 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ENCRYPTION_KEY_TIP'); ?>">
-		<?php echo JText::_('VM_ADMIN_ENCRYPTION_KEY') ?>&nbsp;&nbsp;
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_KEY_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_KEY') ?>&nbsp;&nbsp;
 		</span>
 		</td>
 	    <td>
@@ -238,7 +238,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<?php echo JText::_('VM_ADMIN_STORE_CREDITCARD_DATA'); ?>&nbsp;&nbsp;
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_STORE_CREDITCARD_DATA'); ?>&nbsp;&nbsp;
 	    </td>
 	    <td>
 		<?php echo VmHTML::checkbox('store_creditcard_data', $this->config->get('store_creditcard_data')); ?>
@@ -248,8 +248,8 @@ defined('_JEXEC') or die('Restricted access');
 	if (stristr(JFactory::getUser()->usertype, "admin")) { ?>
 	<tr>
 	    <td  class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN'); ?>">
-		    <?php echo JText::_('VM_ADMIN_CFG_FRONTENDAMDIN') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN'); ?>">
+		    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONTENDAMDIN') ?>
 		</span>
 	    </td>
 	    <td>

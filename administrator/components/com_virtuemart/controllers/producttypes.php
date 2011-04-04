@@ -88,9 +88,9 @@ class VirtuemartControllerProducttypes extends JController {
 
 		$model = $this->getModel('producttypes');
 		$msgtype = '';
-		if ($id=$model->saveProductType()) $msg = JText::_('PRODUCTTYPE_SAVED_SUCCESSFULLY');
+		if ($id=$model->saveProductType()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('PRODUCTTYPE_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 
@@ -117,9 +117,9 @@ class VirtuemartControllerProducttypes extends JController {
 
 		$model = $this->getModel('disocunts');
 		$msgtype = '';
-		if ($model->removeDiscount()) $msg = JText::_('DISOUNCT_REMOVED_SUCCESSFULLY');
+		if ($model->removeDiscount()) $msg = JText::_('COM_VIRTUEMART_DISCOUNT_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('DISCOUNT_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_DISCOUNT_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 

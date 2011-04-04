@@ -50,7 +50,7 @@ class VirtuemartViewUsergroups extends JView {
 			$usergroup = $model->getUsergroup();
 			$this->assignRef('usergroup',	$usergroup);
 
-			JToolBarHelper::title( JText::_('VM_USERGROUPS_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
@@ -59,7 +59,7 @@ class VirtuemartViewUsergroups extends JView {
 		} else {
 //			$db = JFactory::getDBO();
 			
-			JToolBarHelper::title( JText::_( 'VM_USERGROUPS_LIST' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_USERGROUPS_LIST' ), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
@@ -113,10 +113,10 @@ class VirtuemartViewUsergroups extends JView {
 //	function renderPaymentTypesList($selected){
 //		$selected = self::prepareTreeSelection($selected);
 //		$list = array(
-//		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
-//		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
-//		'2' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
-//		'3' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+//		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
+//		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
+//		'2' => array('paym_type' => 'N', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
+//		'3' => array('paym_type' => 'P', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
 //		);
 //
 //		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );

@@ -30,8 +30,8 @@ class free_shipping {
 	function list_rates( &$d ) {
 		global $vendor_name ;
 		
-		$html = "<strong>" . JText::_( 'VM_FREE_SHIPPING_CUSTOMER_TEXT' ) . "</strong><br/>\n" ;
-		$html .= "<input type=\"hidden\" name=\"shipping_rate_id\" value=\"free_shipping|$vendor_name|" . JText::_( 'VM_FREE_SHIPPING' ) . "|0|1\" />" ;
+		$html = "<strong>" . JText::_( 'COM_VIRTUEMART_FREE_SHIPPING_CUSTOMER_TEXT' ) . "</strong><br/>\n" ;
+		$html .= "<input type=\"hidden\" name=\"shipping_rate_id\" value=\"free_shipping|$vendor_name|" . JText::_( 'COM_VIRTUEMART_FREE_SHIPPING' ) . "|0|1\" />" ;
 		
 		echo $html ;
 		return true ;

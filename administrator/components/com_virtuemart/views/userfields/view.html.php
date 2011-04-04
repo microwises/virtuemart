@@ -52,9 +52,9 @@ class VirtuemartViewUserfields extends JView {
 			$userField = $model->getUserfield();
 
 			if ($userField->fieldid < 1) { // Insert new userfield
-				JToolBarHelper::title(  JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 
-				$this->assignRef('ordering', JText::_('VM_NEW_ITEMS_DEFAULT_LAST_PLACE_ORDERING_CHANGED_AFTER'));
+				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_DEFAULT_LAST_PLACE_ORDERING_CHANGED_AFTER'));
 				$userFieldValues = array();
 				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
@@ -66,7 +66,7 @@ class VirtuemartViewUserfields extends JView {
 				$ordering = JHTML::_('list.specificordering',  $userField, $userField->fieldid, $qry);
 				$this->assignRef('ordering', $ordering);
 
-				JToolBarHelper::title( JText::_('VM_USERFIELD_FORM_LBL' ).': <small><small>[ Edit ]</small></small>');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL' ).': <small><small>[ Edit ]</small></small>');
 
 				$userFieldValues = $model->getUserfieldValues();
 				$lists['type'] = $this->_getTypes($userField->type)
@@ -92,14 +92,14 @@ class VirtuemartViewUserfields extends JView {
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
-				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('CMN_YEARS'));
+				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('COM_VIRTUEMART_YEARS'));
 			}
 			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $model->_params->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
-				 array('key' => 0, 'value' => JText::_('VM_USERFIELDS_URL_ONLY'))
-				,array('key' => 2, 'value' => JText::_('VM_USERFIELDS_HYPERTEXT_URL'))
+				 array('key' => 0, 'value' => JText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
+				,array('key' => 2, 'value' => JText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
 			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $model->_params->get('webaddresstype'));
 
@@ -124,33 +124,33 @@ class VirtuemartViewUserfields extends JView {
 			$this->assignRef('valueCount', --$i);
 
 			// Toggles
-			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'JYES', 'JNO');
+			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'JYES', 'JNO');
+			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'JYES', 'JNO');
+			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'JYES', 'JNO');
+			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'JYES', 'JNO');
+			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'JYES', 'JNO');
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
 		} else {
-			JToolBarHelper::title( JText::_('VM_MANAGE_USER_FIELDS'));
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'));
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_required', 'publish','','VM_FIELDMANAGER_REQUIRE');
-			JToolBarHelper::custom('disable_required', 'unpublish','','VM_FIELDMANAGER_UNREQUIRE');
+			JToolBarHelper::custom('enable_required', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
+			JToolBarHelper::custom('disable_required', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_registration', 'publish','','VM_FIELDMANAGER_SHOW_REGISTRATION');
-			JToolBarHelper::custom('disable_registration', 'unpublish','','VM_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('enable_shipping', 'publish','','VM_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('disable_shipping', 'unpublish','','VM_FIELDMANAGER_HIDE_SHIPPING');
-			JToolBarHelper::custom('enable_account', 'publish','','VM_FIELDMANAGER_SHOW_ACCOUNT');
-			JToolBarHelper::custom('disable_account', 'unpublish','','VM_FIELDMANAGER_HIDE_ACCOUNT');
+			JToolBarHelper::custom('enable_registration', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
+			JToolBarHelper::custom('disable_registration', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
+			JToolBarHelper::custom('enable_shipping', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			JToolBarHelper::custom('disable_shipping', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			JToolBarHelper::custom('enable_account', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
+			JToolBarHelper::custom('disable_account', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
@@ -185,12 +185,12 @@ class VirtuemartViewUserfields extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED');
-			$action = $field ? JText::_('VM_UNPUBLISH_ITEM') : JText::_('VM_PUBLISH_ITEM');
+			$alt 	= $field ? JText::_('JPUBLISHEDED' ) : JText::_('JUNPUBLISHED');
+			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('JPUBLISHED_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
-			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED' ) : JText::_('COM_VIRTUEMART_DISABLED' );
+			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM' ) : JText::_('COM_VIRTUEMART_ENABLE_ITEM' );
 		}
 
 		if (VmConfig::isAtLeastVersion('1.6.0')) {
@@ -215,40 +215,40 @@ class VirtuemartViewUserfields extends JView {
 	function _getTypes ($value = null)
 	{
 		$types = array(
-			 array('type' => 'text'             , 'text' => JText::_('VM_FIELDS_TEXTFIELD'))
-			,array('type' => 'checkbox'         , 'text' => JText::_('VM_FIELDS_CHECKBOX_SINGLE'))
-			,array('type' => 'multicheckbox'    , 'text' => JText::_('VM_FIELDS_CHECKBOX_MULTIPLE'))
-			,array('type' => 'date'             , 'text' => JText::_('VM_FIELDS_DATE'))
-			,array('type' => 'age_verification' , 'text' => JText::_('VM_FIELDS_AGEVERIFICATION'))
-			,array('type' => 'select'           , 'text' => JText::_('VM_FIELDS_DROPDOWN_SINGLE'))
-			,array('type' => 'multiselect'      , 'text' => JText::_('VM_FIELDS_DROPDOWN_MULTIPLE'))
-			,array('type' => 'emailaddress'     , 'text' => JText::_('VM_FIELDS_EMAIL'))
-			,array('type' => 'euvatid'          , 'text' => JText::_('VM_FIELDS_EUVATID'))
-			,array('type' => 'editorta'         , 'text' => JText::_('VM_FIELDS_EDITORAREA'))
-			,array('type' => 'textarea'         , 'text' => JText::_('VM_FIELDS_TEXTAREA'))
-			,array('type' => 'radio'            , 'text' => JText::_('VM_FIELDS_RADIOBUTTON'))
-			,array('type' => 'webaddress'       , 'text' => JText::_('VM_FIELDS_WEBADDRESS'))
+			 array('type' => 'text'             , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTFIELD'))
+			,array('type' => 'checkbox'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_SINGLE'))
+			,array('type' => 'multicheckbox'    , 'text' => JText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_MULTIPLE'))
+			,array('type' => 'date'             , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DATE'))
+			,array('type' => 'age_verification' , 'text' => JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION'))
+			,array('type' => 'select'           , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_SINGLE'))
+			,array('type' => 'multiselect'      , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_MULTIPLE'))
+			,array('type' => 'emailaddress'     , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EMAIL'))
+			,array('type' => 'euvatid'          , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EUVATID'))
+			,array('type' => 'editorta'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EDITORAREA'))
+			,array('type' => 'textarea'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
+			,array('type' => 'radio'            , 'text' => JText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
+			,array('type' => 'webaddress'       , 'text' => JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
 		);
 
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('VM_FIELDS_CAPTCHA'));
+			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
 		}
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('VM_FIELDS_CAPTCHA'));
+			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_yanc'.DS.'yanc.php')) {
-			$types[] = array('type' => 'yanc_subscription', 'text' => JText::_('VM_FIELDS_NEWSLETTER').' (YaNC)');
+			$types[] = array('type' => 'yanc_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (YaNC)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_anjel'.DS.'anjel.php')) {
-			$types[] = array('type' => 'anjel_subscription', 'text' => JText::_('VM_FIELDS_NEWSLETTER').' (ANJEL)');
+			$types[] = array('type' => 'anjel_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ANJEL)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_letterman'.DS.'letterman.php')) {
-			$types[] = array('type' => 'letterman_subscription', 'text' => JText::_('VM_FIELDS_NEWSLETTER').' (Letterman)');
+			$types[] = array('type' => 'letterman_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (Letterman)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_ccnewsletter'.DS.'ccnewsletter.php')) {
-			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => JText::_('VM_FIELDS_NEWSLETTER').' (ccNewsletter)');
+			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ccNewsletter)');
 		}
-		$types[] = array('type' => 'delimiter', 'text' => JText::_('VM_FIELDS_DELIMITER'));
+		$types[] = array('type' => 'delimiter', 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'));
 
 		if ($value === null) {
 			return $types;

@@ -45,9 +45,9 @@ class VirtuemartViewShopperGroup extends JView {
 			$shoppergroup = $model->getShopperGroup();
 			$isNew = ($shoppergroup->shopper_group_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
 			}
 
 			$this->loadHelper('shopfunctions');
@@ -61,7 +61,7 @@ class VirtuemartViewShopperGroup extends JView {
 			$this->assignRef('shoppergroup',	$shoppergroup);
 
 		} else {
-			JToolBarHelper::title( JText::_( 'VM_SHOPPER_GROUP_LIST_LBL' ), 'vm_shop_users_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_SHOPPER_GROUP_LIST_LBL' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

@@ -53,9 +53,9 @@ class VirtuemartViewCategory extends JView {
         	$isNew = ($category->category_id < 1);
 
 			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
 
 				$relationInfo = $model->getRelationInfo( $category->category_id );
 				$this->assignRef('relationInfo', $relationInfo);
@@ -70,7 +70,7 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('parent', $parent);
 
 			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-			$templateList = ShopFunctions::renderTemplateList(JText::_('VM_CATEGORY_TEMPLATE_DEFAULT'));
+			$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
 
 			$this->assignRef('jTemplateList', $templateList);
 
@@ -87,15 +87,15 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('categorylist', $categorylist);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_CATEGORY_LIST_LBL' ), 'vm_categories_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_CATEGORY_LIST_LBL' ), 'vm_categories_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			/**
 			* Commented out for future use
-			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_SHARE'), true);
-			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_UNSHARE'), true);
+			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
+			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
 			*/
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 

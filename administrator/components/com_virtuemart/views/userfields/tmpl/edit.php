@@ -27,13 +27,13 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('VM_USERFIELD_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
 	<table class="admintable">
 
 		<tr>
 			<td width="110" class="key">
 				<label for="type">
-					<?php echo JText::_('VM_FIELDMANAGER_TYPE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>:
 				</label>
 			</td>
 			<td>
@@ -46,12 +46,12 @@ AdminMenuHelper::startAdminArea();
 			<td colspan="2" style="text-align:left;height: 0px;overflow: auto;">
 				<div id="divText">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_TEXTFIELD_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTFIELD_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
 									<label for="maxlength">
-										<?php echo JText::_('VM_USERFIELDS_MAXLENGTH'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_MAXLENGTH'); ?>:
 									</label>
 								</td>
 								<td>
@@ -64,12 +64,12 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divColsRows">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_TEXTAREA_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTAREA_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
 									<label for="cols">
-										<?php echo JText::_('VM_USERFIELDS_COLUMNS'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_COLUMNS'); ?>:
 									</label>
 								</td>
 								<td>
@@ -79,7 +79,7 @@ AdminMenuHelper::startAdminArea();
 							<tr>
 								<td width="110" class="key">
 									<label for="rows">
-										<?php echo JText::_('VM_USERFIELDS_ROWS'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ROWS'); ?>:
 									</label>
 								</td>
 								<td>
@@ -92,12 +92,12 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divShopperGroups">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_FIELDS_EUVATID') . ' ' . JText::_('VM_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID') . ' ' . JText::_('COM_VIRTUEMART_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
 									<label for="shopper_group_id">
-										<?php echo JText::_('VM_USERFIELDS_EUVATID_MOVESHOPPER'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER'); ?>:
 									</label>
 								</td>
 								<td>
@@ -110,12 +110,12 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divAgeVerification">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_FIELDS_AGEVERIFICATION') . ' ' . JText::_('VM_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION') . ' ' . JText::_('COM_VIRTUEMART_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
 									<label for="minimum_age">
-										<?php echo JText::_('VM_FIELDS_AGEVERIFICATION_MINIMUM'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM'); ?>:
 									</label>
 								</td>
 								<td>
@@ -128,12 +128,12 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divWeb">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_FIELDS_WEBADDRESS'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
 									<label for="webaddresstype">
-										<?php echo JText::_('VM_FIELDMANAGER_TYPE'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE'); ?>:
 									</label>
 								</td>
 								<td>
@@ -146,13 +146,13 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('VM_USERFIELDS_ADDVALUES_TIP'); ?></legend>
-						<input type="button" class="button" onclick="insertRow();" value="<?php echo JText::_('VM_USERFIELDS_ADDVALUE') ?>" />
+					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
+						<input type="button" class="button" onclick="insertRow();" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
-									<th class="title" width="20%"><?php echo JText::_('VM_USERFIELDS_TITLE') ?></th>
-									<th class="title" width="80%"><?php echo JText::_('VM_USERFIELDS_VALUE') ?></th>
+									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_TITLE') ?></th>
+									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_VALUE') ?></th>
 								</tr>
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
@@ -166,7 +166,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="name">
-					<?php echo JText::_('VM_FIELDMANAGER_NAME') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_NAME') ?>:
 				</label>
 			</td>
 			<td>
@@ -181,7 +181,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('VM_FIELDMANAGER_TITLE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE') ?>:
 				</label>
 			</td>
 			<td>
@@ -192,7 +192,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="description">
-					<?php echo JText::_('VM_USERFIELDS_DESCRIPTION') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_DESCRIPTION') ?>:
 				</label>
 			</td>
 			<td>
@@ -203,7 +203,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="required">
-					<?php echo JText::_('VM_FIELDMANAGER_REQUIRED') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED') ?>?:
 				</label>
 			</td>
 			<td>
@@ -216,7 +216,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="registration">
-					<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:
 				</label>
 			</td>
 			<td>
@@ -229,7 +229,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="account">
-					<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:
 				</label>
 			</td>
 			<td>
@@ -242,7 +242,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping">
-					<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_SHIPPING') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING') ?>?:
 				</label>
 			</td>
 			<td>
@@ -255,7 +255,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="readonly">
-					<?php echo JText::_('VM_USERFIELDS_READONLY') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_READONLY') ?>?:
 				</label>
 			</td>
 			<td>
@@ -268,7 +268,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="published">
-					<?php echo JText::_('VM_FIELDMANAGER_PUBLISHED') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>:
 				</label>
 			</td>
 			<td>
@@ -281,7 +281,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="size">
-					<?php echo JText::_('VM_USERFIELDS_SIZE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_SIZE') ?>:
 				</label>
 			</td>
 			<td>
@@ -292,7 +292,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="vendor_id">
-					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>

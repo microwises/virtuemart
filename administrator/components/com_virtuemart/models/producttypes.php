@@ -306,7 +306,7 @@ class VirtueMartModelProducttypes extends JModel {
     	$db = JFactory::getDBO();
     	$options = array();
 		if (!$product_type_id) {
-			return JText::_('CMN_NEW_ITEM_LAST');
+			return JText::_('COM_VIRTUEMART_NEW_ITEM_LAST');
 		}
 		else {
 

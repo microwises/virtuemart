@@ -57,10 +57,10 @@ class TableShopperGroup extends JTable
 	function check() 
 	{
     if (!$this->shopper_group_name) {
-			$this->setError(JText::_('VM_SHOPPER_GROUPS_RECORDS_MUST_HAVE_NAME'));
+			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} else if (mb_strlen($this->shopper_group_name) > 32) {
-			$this->setError(JText::_('VM_SHOPPER_GROUPS_NAMES_MUST_NOT_BE_LONGER_THAN_32_CHARACTERS'));
+			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_NAMES_MUST_NOT_BE_LONGER_THAN_32_CHARACTERS'));
       return false;
 		}
 
@@ -81,7 +81,7 @@ class TableShopperGroup extends JTable
 		  $rowCount = $db->loadResult();	
 		  	
 			if ($rowCount > 0) {
-				$this->setError(JText::_('VM_GIVEN_SHOPPER_GROUP_NAME_ALREADY_EXISTS_FOR_GIVEN_VENDOR'));
+				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_SHOPPER_GROUP_NAME_ALREADY_EXISTS_FOR_GIVEN_VENDOR'));
 				return false;
 			}
 			

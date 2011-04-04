@@ -21,16 +21,16 @@
 <table class="admintable" width="100%">
 	<tr>
 		<td align="center" colspan="2">
-		<h1><?php echo JText::_('VM_ORDER_PRINT_ITEMEDIT_LBL') ?></h1>
+		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_ITEMEDIT_LBL') ?></h1>
 		</td>
 	</tr>
 	<tr>
-		<td class="key"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></td>
+		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
 		<td><?php echo $this->orderStatSelect; ?>
 		</td>
 	</tr>
 	<tr>
-		<td class="key"><?php echo JText::_('VM_COMMENT') ?></td>
+		<td class="key"><?php echo JText::_('COM_VIRTUEMART_COMMENT') ?></td>
 		<td><textarea rows="6" cols="35"
 			name="<?php
 				echo 'order_comment['.$this->orderID.']';
@@ -38,18 +38,18 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="key"><?php echo JText::_('VM_ORDER_LIST_NOTIFY') ?></td>
+		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY') ?></td>
 		<td><?php echo VmHTML::checkbox('notify_customer['.$this->orderID.']', true); ?>
 		</td>
 	</tr>
 	<tr>
-		<td class="key"><?php echo JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT') ?></td>
+		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT') ?></td>
 		<td><br />
 		<?php echo VmHTML::checkbox('include_comment['.$this->orderID.']', true); ?>
 		</td>
 	</tr>
 	<tr>
-		<td class="key"><?php echo JText::_('VM_ORDER_UPDATE_LINESTATUS') ?></td>
+		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS') ?></td>
 		<td><br />
 		<?php echo VmHTML::checkbox('update_lines['.$this->orderID.']', true); ?>
 		</td>
@@ -57,21 +57,21 @@
 	<tr>
 		<td colspan="2" align="center" class="key">
 		<a href="#" onClick="javascript:document.orderStatForm.submit();"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'))
+			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('JSAVE'))
 				. '&nbsp;'
-				. JText::_('VM_SAVE');
+				. JText::_('JSAVE');
 		?></a>&nbsp;&nbsp;&nbsp;
 		<a href="#" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'))
+			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('JCANCEL'))
 				. '&nbsp;'
-				. JText::_('VM_CANCEL');
+				. JText::_('JCANCEL');
 		?></a>
 		</td>
 <!-- 
-		<input type="submit" value="<?php echo JText::_('SAVE');?>" style="font-size: 10px" />
+		<input type="submit" value="<?php echo JText::_('JSAVE');?>" style="font-size: 10px" />
 		<input type="button"
 			onclick="javascript: window.parent.document.getElementById( 'sbox-window' ).close();"
-			value="<?php echo JText::_('CANCEL');?>" style="font-size: 10px" /></td>
+			value="<?php echo JText::_('JCANCEL');?>" style="font-size: 10px" /></td>
  -->
 	</tr>
 </table>

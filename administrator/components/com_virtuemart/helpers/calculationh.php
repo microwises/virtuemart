@@ -656,7 +656,7 @@ class calculationHelper {
 	 */
 	function calculateShipmentPrice($ship_id){
 
-		$this->_cartData['shippingName'] = JText::_('VM_CART_NO_SHIPMENT_SELECTED');
+		$this->_cartData['shippingName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingTax'] = 0;
 		$this->_cartPrices['shippingTotal'] = 0;
@@ -718,7 +718,7 @@ class calculationHelper {
 		$model->setId($paym_id);
 		$paym = $model->getPaym();
 
-		$this->_cartData['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('VM_CART_NO_PAYM_SELECTED');
+		$this->_cartData['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('COM_VIRTUEMART_CART_NO_PAYM_SELECTED');
 		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentDiscount'] = 0;

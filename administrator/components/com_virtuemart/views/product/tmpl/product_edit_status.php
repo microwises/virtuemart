@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_IN_STOCK') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?>:</div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row1">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_( 'VM_LOW_STOCK_NOTIFICATION' ); ?>:
+							<?php echo JText::_( 'COM_VIRTUEMART_LOW_STOCK_NOTIFICATION' ); ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('VM_PRODUCT_FORM_MIN_ORDER') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MIN_ORDER') ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row1"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('VM_PRODUCT_FORM_MAX_ORDER') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MAX_ORDER') ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0"> 
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('VM_PRODUCT_FORM_AVAILABLE_DATE') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABLE_DATE') ?>:
 						</div>
 					</td>
 					<td width="79%" >
@@ -76,29 +76,29 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr>
 					<td valign="top" width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('VM_AVAILABILITY') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>:
 						</div>
 					</td>
 					<td width="79%" >
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
-						<?php echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); ?>
+						<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('COM_VIRTUEMART_AVAILABILITY'), 'tooltip.png', '', '', false); ?>
 						<script type="text/javascript">
 							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })
 						</script>
 						<?php
 						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $this->imagePath);
-						echo JHTML::tooltip(str_replace('%s', $this->imagePath, JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); 
+						echo JHTML::tooltip(str_replace('%s', $this->imagePath, JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('COM_VIRTUEMART_AVAILABILITY'), 'tooltip.png', '', '', false); 
 						?> 
 					</td>
 				</tr>
 				<tr>
 					<td width="21%">&nbsp;</td>
-					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$this->imagePath.$this->product->product_availability;?>"/></td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$this->imagePath.$this->product->product_availability;?>"/></td>
 				</tr>
 				<tr class="row1">
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_SPECIAL') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?>:</div>
 					</td>
 					<td width="79%" >
 						<?php
@@ -115,11 +115,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td width="50%" valign="top">
 			<table class="adminform">
 				<tr class="row1">
-					<td colspan="3"><h2><?php echo JText::_('VM_RELATED_PRODUCTS'); ?></h2></td>
+					<td colspan="3"><h2><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h2></td>
 				</tr>
 				<tr class="row0">
 					<td style="vertical-align:top;"><br />
-						<?php echo JText::_('VM_PRODUCT_RELATED_SEARCH'); ?>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 						<div class="jsonSuggestResults" style="width: 322px;">
 						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 						</div>

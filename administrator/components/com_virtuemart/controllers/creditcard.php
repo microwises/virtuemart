@@ -102,7 +102,7 @@ class VirtuemartControllerCreditcard extends JController {
 		$model =& $this->getModel( 'creditcard' );
 
 		if ($id = $model->store()) {
-			$msg = JText::_('VM_CREDIT_CARD_SAVED');
+			$msg = JText::_('COM_VIRTUEMART_CREDIT_CARD_SAVED');
 		} else {
 			$msg = $model->getError();
 		}
@@ -125,10 +125,10 @@ class VirtuemartControllerCreditcard extends JController {
 	{
 		$model = $this->getModel('creditcard');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_ERROR_CREDIT_CARDS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('VM_CREDIT_CARDS_DELETED');
+			$msg = JText::_('COM_VIRTUEMART_CREDIT_CARDS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
@@ -144,7 +144,7 @@ class VirtuemartControllerCreditcard extends JController {
 	{
 		$model = $this->getModel('creditcard');
 		if (!$model->publish(true)) {
-			$msg = JText::_('VM_ERROR_CREDIT_CARDS_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
@@ -160,7 +160,7 @@ class VirtuemartControllerCreditcard extends JController {
 	{
 		$model = $this->getModel('creditcard');
 		if (!$model->publish(false)) {
-			$msg = JText::_('VM_ERROR_CREDIT_CARDS_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);

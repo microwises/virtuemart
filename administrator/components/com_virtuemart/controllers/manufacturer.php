@@ -107,7 +107,7 @@ class VirtuemartControllerManufacturer extends JController {
 		$model = $this->getModel('manufacturer');
 
 		if ($id = $model->store()) {
-			$msg = JText::_('VM_MANUFACTURER_SAVED');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_SAVED');
 		} else {
 			$msg = $model->getError();
 		}
@@ -128,10 +128,10 @@ class VirtuemartControllerManufacturer extends JController {
 	{
 		$model = $this->getModel('manufacturer');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_MANUFACTURER_DELETE_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_ERROR');
 		}
 		else {
-			$msg = JText::_( 'VM_MANUFACTURER_DELETE_SUCCESS');
+			$msg = JText::_( 'COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
@@ -146,7 +146,7 @@ class VirtuemartControllerManufacturer extends JController {
 	{
 		$model = $this->getModel('manufacturer');
 		if (!$model->publish(true)) {
-			$msg = JText::_('VM_MANUFACTURER_PUBLISH_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_PUBLISH_ERROR');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
@@ -161,7 +161,7 @@ class VirtuemartControllerManufacturer extends JController {
 	{
 		$model = $this->getModel('manufacturer');
 		if (!$model->publish(false)) {
-			$msg = JText::_('VM_MANUFACTURER_UNPUBLISH_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_UNPUBLISH_ERROR');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);

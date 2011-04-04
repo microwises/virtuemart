@@ -67,22 +67,22 @@ class VirtuemartViewUser extends JView {
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
-			. '<span title="' . JText::_('VM_SAVE' ) . '" class="icon-32-save"></span>' . JText::_('VM_SAVE' ) . '</a>';
+			. '<span title="' . JText::_('COM_VIRTUEMART_SAVE' ) . '" class="icon-32-save"></span>' . JText::_('COM_VIRTUEMART_SAVE' ) . '</a>';
 			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
-			. '<span title="' . JText::_('VM_APPLY' ) . '" class="icon-32-apply"></span>' . JText::_('VM_APPLY' ) . '</a>';
+			. '<span title="' . JText::_('COM_VIRTUEMART_APPLY' ) . '" class="icon-32-apply"></span>' . JText::_('COM_VIRTUEMART_APPLY' ) . '</a>';
 			$_toolBar =& JToolBar::getInstance('toolbar');
 
 			if ($_new) { // Insert new user
 				if($task=='editshop'){
-					JToolBarHelper::title(  JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STORE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title(  JText::_('VM_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USER_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_user_48.png');
 				}
 			} else { // Update existing user
 				if($task=='editshop'){
-					JToolBarHelper::title( JText::_('VM_STORE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title( JText::_('COM_VIRTUEMART_STORE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title( JText::_('VM_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
 				}
 			}
 
@@ -103,8 +103,8 @@ class VirtuemartViewUser extends JView {
 			$lists['canBlock'] = ($_currentUser->authorize('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $_currentUser->get('id'))); // Can't block myself
 			$lists['canSetMailopt'] = $_currentUser->authorize('workflow', 'email_events');
-			$lists['block'] = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+			$lists['block'] = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'JYES', 'JNO');
+			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'JYES', 'JNO');
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
@@ -115,7 +115,7 @@ class VirtuemartViewUser extends JView {
 			// Shipping address(es)
 			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
 			if (($_c = count($_addressList)) == 0) {
-				$lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
+				$lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 			} else {
 				$_shipTo = array();
 				for ($_i = 0; $_i < $_c; $_i++) {
@@ -267,12 +267,12 @@ class VirtuemartViewUser extends JView {
 					 $this->assignRef('editor', $editor);
 					 $this->assignRef('pane', $pane);
 		} else {
-			JToolBarHelper::title( JText::_('VM_USER_LIST_LBL'), 'vm_user_48.png');
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_LIST_LBL'), 'vm_user_48.png');
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_vendor', 'publish','','VM_USER_ISVENDOR');
-			JToolBarHelper::custom('disable_vendor', 'unpublish','','VM_USER_ISNOTVENDOR');
+			JToolBarHelper::custom('enable_vendor', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
+			JToolBarHelper::custom('disable_vendor', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
@@ -307,12 +307,12 @@ class VirtuemartViewUser extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('VM_PUBLISHED') : JText::_('VM_UNPUBLISHED' );
-			$action = $field ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
+			$alt 	= $field ? JText::_('JPUBLISHEDED') : JText::_('JUNPUBLISHED' );
+			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM' ) : JText::_('JPUBLISHED_ITEM' );
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
-			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED' ) : JText::_('COM_VIRTUEMART_DISABLED' );
+			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM' ) : JText::_('COM_VIRTUEMART_ENABLE_ITEM' );
 		}
 
 		if (VmConfig::isAtLeastVersion('1.6.0')) {

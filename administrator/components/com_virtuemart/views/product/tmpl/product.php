@@ -37,20 +37,20 @@ $category_id = JRequest::getInt('category_id', false);
 	<table>
 		<tr>
 			<td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER') ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
 				<select class="inputbox" id="category_id" name="category_id" onchange="document.adminForm.submit(); return false;">
-					<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
+					<option value=""><?php echo JText::_('COM_VIRTUEMART_SEL_CATEGORY') ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>
-				<?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
 					<input type="text" value="<?php echo JRequest::getVar('filter_product'); ?>" name="filter_product" size="25" />
 				<?php
 					echo $this->lists['search_type'];
 					echo $this->lists['search_order'];
 					echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
 				?>
-				<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('VM_RESET'); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 			</td>
 		</tr>
 	</table>
@@ -67,24 +67,24 @@ $pagination = $this->pagination;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('VM_PRODUCT_LIST_MEDIA'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_MEDIA'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
 		if( $category_id ) { ?>
 			<th>
-				<?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
 				<?php echo JHTML::_('grid.order', $productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
-		<th><?php echo JHTML::_('grid.sort', 'VM_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
-		<th width="40px" ><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS'); ?></th>
+		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -105,10 +105,10 @@ $pagination = $this->pagination;
 				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				$child_link = '';
 				if ($product->product_parent_id == 0 && $product->haschildren) {
-					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
 				}
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('EDIT').' '.$product->product_name)).$child_link; ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link; ?></td>
 				<!-- Vendor name -->
 				<td><?php echo $product->vendor_name; ?></td>
 				<!-- Media -->
@@ -138,7 +138,7 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=manufacturer.manufacturer_form&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&product_id='.$product->product_id; ?>
-				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']'); ?></td>
+				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>

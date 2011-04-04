@@ -36,26 +36,26 @@ if( $this->pagination->limit < $nrows ){
 		<thead>
 		<tr>
 			<th width="20">
-				<?php echo JText::_('VM_#' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#' ); ?>
 			</th>		            
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>			
 			<th>
-				<?php echo JHTML::_('grid.sort', 'VM_CATEGORY_FORM_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_FORM_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>				
 			<th>
-				<?php echo JHTML::_('grid.sort', 'VM_CATEGORY_FORM_DESCRIPTION', 'c.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_FORM_DESCRIPTION', 'c.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>						
 			<th width="11%">
-				<?php echo JText::_( 'VM_PRODUCTS_LBL' ); ?>
+				<?php echo JText::_( 'COM_VIRTUEMART_PRODUCTS_LBL' ); ?>
 			</th>	
 			<th width="5%">
-				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<!-- Commented out for future use
 			<th width="5%">
-				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SHARED', 'cx.category_shared', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_SHARED', 'cx.category_shared', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			-->
 			<th width="13%">
@@ -104,15 +104,15 @@ if( $this->pagination->limit < $nrows ){
 				</td>				
 				<td>
 					<?php echo ShopFunctions::countProductsByCategory($row->category_id);?>
-					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('SHOW');?> ]</a>
+					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>	
 				<td align="center">
 					<?php echo $published;?>
 				</td>
 				<!-- Commented out for future use
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShared')" title="<?php echo ( $row->category_shared == 'Y' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
-						<img src="images/<?php echo ( $row->category_shared) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->category_shared == 'Y' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>" />
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShared')" title="<?php echo ( $row->category_shared == 'Y' ) ? JText::_('JYES' ) : JText::_('COM_VIRTUEMART_NO' );?>">
+						<img src="images/<?php echo ( $row->category_shared) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->category_shared == 'Y' ) ? JText::_('JYES' ) : JText::_('COM_VIRTUEMART_NO' );?>" />
 					</a>
 				</td>
 				-->

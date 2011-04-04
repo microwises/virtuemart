@@ -387,7 +387,7 @@ class VirtueMartModelUser extends JModel {
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 				if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
-					JError::raiseError( 403, JText::_('VM_ACCESS_FORBIDDEN' ));
+					JError::raiseError( 403, JText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN' ));
 					return;
 				}
 				$authorize	=& JFactory::getACL();
@@ -422,7 +422,7 @@ class VirtueMartModelUser extends JModel {
 			// If an exising superadmin gets a new group, make sure enough admins are left...
 			if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
 				if ($this->getSuperAdminCount() <= 1) {
-					$this->setError(JText::_('VM_USER_ERR_ONLYSUPERADMIN'));
+					$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
 					return false;
 				}
 			}
@@ -447,8 +447,8 @@ class VirtueMartModelUser extends JModel {
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
-				$this->setError('Was not able to save the virtuemart user data');
-				JError::raiseWarning('', JText::_('VM_USED_RAISEWARNING_WAS_NOT_ABLE_TO_SAVE_VIRTUEMART_USER_DATA'));
+				$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_VM_USER_DATA'));
+				JError::raiseWarning('', JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_VM_USER_DATA'));
 			}
 
 			// Send registration confirmation mail
@@ -460,12 +460,12 @@ class VirtueMartModelUser extends JModel {
 			// Everything went fine, set relevant message depending upon user activation state and display message
 			if ($new) {
 				if ( $useractivation == 1 ) {
-					$message  = JText::_( 'REG_COMPLETE_ACTIVATE' );
+					$message  = JText::_( 'COM_VIRTUEMART_REG_COMPLETE_ACTIVATE' );
 				} else {
-					$message = JText::_( 'REG_COMPLETE' );
+					$message = JText::_( 'COM_VIRTUEMART_REG_COMPLETE' );
 				}
 			} else {
-				$message = JText::_('VM_USER_DATA_STORED' );	//TODO write right keystring
+				$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED' );	//TODO write right keystring
 			}
 
 			return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
@@ -588,8 +588,8 @@ class VirtueMartModelUser extends JModel {
 	 	$fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');
 	 	$fromSite = $mainframe->getCfg('sitename');
 
-	 	$subject = JText::_('NEW_USER_MESSAGE_SUBJECT');
-	 	$message =  JText::sprintf('NEW_USER_MESSAGE'
+	 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
+	 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE'
 			, $user->get('name')
 			, $fromSite
 			, JURI::root()
@@ -619,7 +619,7 @@ class VirtueMartModelUser extends JModel {
 	 			// Prevent deletion of the only Super Admin
 	 			$_u =& JUser::getInstance($userId);
 	 			if ($_u->get('gid') == __SUPER_ADMIN_GID) {
-	 				$this->setError(JText::_('VM_USER_ERR_LASTSUPERADMIN'));
+	 				$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 	 				$_status = false;
 	 				continue;
 	 			}
@@ -827,7 +827,7 @@ class VirtueMartModelUser extends JModel {
 	 	$_missingUsers = $this->validateUsers($id);
 	 	$id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
 	 	foreach ($_missingUsers as $_uid => $_username) {
-	 		JError::raiseWarning(500, JText::sprintf( 'VM_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
+	 		JError::raiseWarning(500, JText::sprintf( 'COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
 	 	}
 	 	if (count($id) > 0)
 	 	{

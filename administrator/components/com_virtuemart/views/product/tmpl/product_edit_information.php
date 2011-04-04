@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<table width="100%" border="0">
 				<tr class="row0">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_PUBLISH') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?>:</div>
 					</td>
 					<td width="79%">
 						<fieldset class="radio">
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row1">
 					<td width="21%" >
-						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?>:</div>
+						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?>:</div>
 					</td>
 					<td width="79%" height="2">
 						<input type="text" class="inputbox" name="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row0">
 					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_NAME') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>:</div>
 					</td>
 					<td width="79%" height="18" >
 						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row1">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_URL') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?>:</div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row0">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:</div>
 					</td>
 				<td width="79%">
 					<?php echo $this->lists['vendors'];?>
@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MANUFACTURER') ?>:</div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['manufacturers'];?>
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_CATEGORIES') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORIES') ?>:</div>
 				</td>
 				<td width="71%" >
 					<select class="inputbox" id="product_categories" name="product_categories[]" multiple="multiple" size="10">
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_DETAILS_PAGE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?>:</div>
 				</td>
 				<td width="79%">
 					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
@@ -99,11 +99,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<td>
 		<!-- Product pricing -->
 		<fieldset>
-		<legend><?php echo JText::_('VM_PRODUCT_FORM_PRICES'); ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_CURRENCY') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CURRENCY') ?>:</div>
 				</td>
 				<td width="71%">
 					<?php // echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency); ?>
@@ -112,40 +112,40 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_COST') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>:</div>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
-					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
+					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_BASE') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>:</div>
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
-					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
+					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
 				<td width="71%">
 					<input type="text" readonly value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
-					<?php echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
+					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>
 			</tr>
 		</table>
 		</fieldset>
 		<!-- Product rules overrides -->
 		<fieldset>
-		<legend><?php echo JText::_('VM_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?>:</div>
 				</td>
 				<td width="71%" >
 					<?php echo $this->lists['taxrates']; echo $this->taxRules ?>
@@ -153,7 +153,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['dbdiscounts']; echo $this->dbTaxRules;  ?>
@@ -161,7 +161,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DADISCOUNT_TYPE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DADISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['dadiscounts']; echo $this->daTaxRules ?>
@@ -170,12 +170,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
 				</td>
 				<td width="79%" >
 					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
 					<?php
-					 echo JHTML::tooltip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
+					 echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
 					$checked = '';
 					if ($this->override) $checked = 'checked="checked"' ?>
 					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
@@ -186,7 +186,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<table class="adminform">
 			<tr>
 				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES'); ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?>:</div>
 				</td>
 				<td width="71%" valign="top">
 					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>

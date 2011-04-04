@@ -32,19 +32,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->coupons); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUPON_CODE_HEADER' ); ?>
+			<?php echo JText::_( 'COM_VIRTUEMART_COUPON_CODE_HEADER' ); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUPON_PERCENT_TOTAL' ); ?>
+			<?php echo JText::_( 'COM_VIRTUEMART_COUPON_PERCENT_TOTAL' ); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUPON_TYPE' ); ?>
+			<?php echo JText::_( 'COM_VIRTUEMART_COUPON_TYPE' ); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUPON_VALUE_HEADER' ); ?>
+			<?php echo JText::_( 'COM_VIRTUEMART_COUPON_VALUE_HEADER' ); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUPON_VALUE_VALID_AT' ); ?>
+			<?php echo JText::_( 'COM_VIRTUEMART_COUPON_VALUE_VALID_AT' ); ?>
 		    </th>
 		</tr>
 	    </thead>

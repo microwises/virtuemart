@@ -28,10 +28,10 @@ $j15 = VmConfig::isJ15();
 	<table>
 	  <tr>
 		 <td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER'); ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 			<input type="text" name="filter_productspecial" value="<?php echo JRequest::getVar('filter_productspecial', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-			<button onclick="document.adminForm.filter_productspecial.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_productspecial.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
 		 <td>
 		 	<?php echo $this->lists['search_type']; ?>
@@ -47,11 +47,11 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->inventorylist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_INVENTORY_PRICE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_FEATURED', 'product_special', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PAYMENT_METHOD_LIST_DISCOUNT', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_INVENTORY_PRICE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FEATURED', 'product_special', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'CMN_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
@@ -72,7 +72,7 @@ $j15 = VmConfig::isJ15();
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('EDIT').' '.$product->product_name)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->

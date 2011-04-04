@@ -51,7 +51,7 @@ AdminMenuHelper::startAdminArea();
 
 	<fieldset class="adminform">
 
-	<legend><?php echo JText::_('VM_USERGROUP_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_USERGROUP_DETAILS'); ?></legend>
 
 	<table class="admintable">			
 
@@ -61,7 +61,7 @@ AdminMenuHelper::startAdminArea();
 
 				<label for="title">
 
-					<?php echo JText::_( 'VM_USERGROUPS_LIST_NAME' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_USERGROUPS_LIST_NAME' ); ?>:
 
 				</label>
 
@@ -81,7 +81,7 @@ AdminMenuHelper::startAdminArea();
 
 				<label for="title">
 
-					<?php echo JText::_( 'VM_USERGROUPS_LEVEL' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_USERGROUPS_LEVEL' ); ?>:
 
 				</label>
 

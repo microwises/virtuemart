@@ -40,8 +40,8 @@
             <option value="ARB">AirBorne</option>
           </param>
 		<param name="CARRIER1_INVOICE" label="Carrier 1 - direct Invoice?" type="radio" default="0" description="Specifies whether or not you are invoiced directly from the carrier">
-            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</param>
 		<param type="text" name="CARRIER1_ACCOUNT" label="Carrier 1 Account No. (optional)" description="Your carrier account number -> to take advantage of any special discounts or offers" />
 		  
@@ -55,8 +55,8 @@
             <option value="ARB">AirBorne</option>
           </param>
 		<param name="CARRIER2_INVOICE" label="Carrier 2 - direct Invoice?" type="radio" default="0" description="Specifies whether or not you are invoiced directly from the carrier">
-            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</param>
 		<param type="text" name="CARRIER2_ACCOUNT" label="Carrier 2 Account No. (optional)" description="Your carrier account number -> to take advantage of any special discounts or offers" />
 		  
@@ -70,8 +70,8 @@
             <option value="ARB">AirBorne</option>
           </param>
 		<param name="CARRIER3_INVOICE" label="Carrier 1 - direct Invoice?" type="radio" default="0" description="Specifies whether or not you are invoiced directly from the carrier">
-            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</param>
 		<param type="text" name="CARRIER3_ACCOUNT" label="Carrier 3 Account No. (optional)" description="Your carrier account number -> to take advantage of any special discounts or offers" />
 		  
@@ -85,8 +85,8 @@
             <option value="ARB">AirBorne</option>
           </param>
 		<param name="CARRIER4_INVOICE" label="Carrier 4 - direct Invoice?" type="radio" default="0" description="Specifies whether or not you are invoiced directly from the carrier">
-            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</param>
 		<param type="text" name="CARRIER4_ACCOUNT" label="Carrier 4 Account No. (optional)" description="Your carrier account number -> to take advantage of any special discounts or offers" />
 		  
@@ -100,8 +100,8 @@
             <option value="ARB">AirBorne</option>
           </param>
 		<param name="CARRIER5_INVOICE" label="Carrier 5 - direct Invoice?" type="radio" default="0" description="Specifies whether or not you are invoiced directly from the carrier">
-            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</param>
 		<param type="text" name="CARRIER5_ACCOUNT" label="Carrier 5 Account No. (optional)" description="Your carrier account number -> to take advantage of any special discounts or offers" />
 		  <param name="@spacer" type="spacer" default="Classes of Service" />		

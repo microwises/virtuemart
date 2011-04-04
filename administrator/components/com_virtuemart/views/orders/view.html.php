@@ -144,7 +144,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::title(JText::_( 'VM_ORDER_EDIT_LBL' ), 'vm_orders_48');
+			JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_ORDER_EDIT_LBL' ), 'vm_orders_48');
 			JToolBarHelper::back();
 		}
 		else if ($curTask == 'editOrderItem') {
@@ -190,13 +190,13 @@ class VirtuemartViewOrders extends JView {
 			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 			/* Toolbar */
-			JToolBarHelper::title(JText::_( 'VM_ORDER_LIST_LBL' ), 'vm_orders_48');
+			JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_ORDER_LIST_LBL' ), 'vm_orders_48');
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
 			 * the arguments.
 			 */
-			JToolBarHelper::save('editOrderStatus', JText::_('VM_UPDATE_STATUS'));
+			JToolBarHelper::save('editOrderStatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 
 			/* Assign the data */

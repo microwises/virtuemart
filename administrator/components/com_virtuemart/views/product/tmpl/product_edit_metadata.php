@@ -19,17 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
-	<legend><?php echo JText::_('VM_META_INFORMATION') ?></legend>		
+	<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION') ?></legend>		
 	<table valign="top">
 		<tr>
-			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
+			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_META_DESC'); ?>: </div></td>
 			<td valign="top">
 				<textarea class="inputbox" name="metadesc" id="meta_desc" cols="60" rows="6"><?php echo $this->product->metadesc; ?></textarea>
 			</td>
 		</tr>
 		<tr>
 			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div>
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_META_KEYWORDS'); ?>: </div>
 			</td>
 			<td valign="top">
 				<textarea class="inputbox" name="metakey" id="meta_keyword" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<tr>
 			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_ROBOTS'); ?>: </div>
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_META_ROBOTS'); ?>: </div>
 			</td>
 			<td valign="top">
 				<input type="text" class="inputbox" size="60" name="metarobot" value="<?php echo $this->product->metarobot ?>" />
@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<tr>
 			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_AUTHOR'); ?>: </div>
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_META_AUTHOR'); ?>: </div>
 			</td>
 			<td valign="top">
 				<input type="text" class="inputbox" size="60" name="metaauthor" value="<?php echo $this->product->metaauthor ?>" />

@@ -25,8 +25,8 @@ AdminMenuHelper::startAdminArea();
 	<tr>
 		<td width="100px" nowrap>
 			<div align="right">
-				<?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME') ?>
-				<?php echo JHTML::tooltip(JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION'), JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_NAME'), 'tooltip.png', '', '', false); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_NAME') ?>
+				<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_NAME_DESCRIPTION'), JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_NAME'), 'tooltip.png', '', '', false); ?>
 			</div>
 		</td>
 		<td >
@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_LABEL') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_LABEL') ?>:</div>
 		</td>
 		<td >
 			<textarea class="inputbox" name="parameter_label" cols="60" rows="3" ><?php echo $this->parameter->parameter_label; ?></textarea>
@@ -43,7 +43,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td width="100px" nowrap valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION') ?>:</div>
 		</td>
 		<td valign="top">
 			<?php echo $this->editor->display('parameter_description',  $this->parameter->parameter_description, '100%;', '100', '75', '20', array('pagebreak', 'readmore') ) ; ?>
@@ -51,7 +51,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td>
-			<div align="right"><?php echo JText::_('VM_MODULE_LIST_ORDER') ?>: </div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_MODULE_LIST_ORDER') ?>: </div>
 		</td>
 		<td valign="top">
 			<?php
@@ -65,7 +65,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td>
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE') ?>: </div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE') ?>: </div>
 		</td>
 		<td valign="top">
 			<?php echo $this->lists['parameter_type']; ?>
@@ -74,7 +74,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td width="100px" nowrap valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_VALUES') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_VALUES') ?>:</div>
 		</td>
 		<td valign="top">
 			<input type="text" class="inputbox" name="parameter_values" size="60" value="<?php echo $this->parameter->parameter_values; ?>" />
@@ -82,11 +82,11 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION') ?></td>
+		<td><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_VALUES_DESCRIPTION') ?></td>
 	</tr>
 	<tr>
 		<td width="100px" nowrap valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_MULTISELECT') ?>:</div>
 		</td>
 		<td  valign="top">
 			<input type="checkbox" name="parameter_multiselect" value="Y" <?php if ($this->parameter->parameter_multiselect == "Y") echo "checked"; ?>/>
@@ -99,7 +99,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr>
 		<td width="25%" nowrap valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT') ?>:</div>
 		</td>
 		<td width="75%" valign="top">
 			<input type="text" class="inputbox" name="parameter_default" size="60" value="<?php echo $this->parameter->parameter_default; ?>" />
@@ -108,12 +108,12 @@ AdminMenuHelper::startAdminArea();
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT') ?>
+			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT_HELP_TEXT') ?>
 		</td>
 	</tr>
 	<tr>
 		<td width="25%" nowrap valign="top">
-			<div align="right"><?php echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_UNIT') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_UNIT') ?>:</div>
 		</td>
 		<td width="75%" valign="top">
 			<input type="text" class="inputbox" name="parameter_unit" size="60" value="<?php echo $this->parameter->parameter_unit; ?>" />

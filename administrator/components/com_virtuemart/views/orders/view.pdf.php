@@ -119,7 +119,7 @@ class VirtuemartViewOrders extends JView {
 		$this->assignRef('shippingInfo', $_shippingInfo);
 
 		$_doc = JFactory::getDocument();
-		$_doc->setTitle(JText::_('VM_ORDER_PRINT_PO_LBL'). ' ' . $_orderID);
+		$_doc->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $_orderID);
 		$_doc->setName('Order' . $_orderID);
 
 		error_reporting(0);

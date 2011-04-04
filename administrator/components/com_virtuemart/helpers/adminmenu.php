@@ -44,7 +44,7 @@ class AdminMenuHelper {
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	?>
 <div class="vm-block vm-main-container">
-    <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('VM_CLOSE')?>"><?php echo JText::_('VM_CLOSE')?></a>
+    <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('COM_VIRTUEMART_CLOSE')?>"><?php echo JText::_('COM_VIRTUEMART_CLOSE')?></a>
     <div class="vm-block vm-layout-left">
 		<?php  AdminMenuHelper::showAdminMenu(); ?>
     </div>
@@ -91,7 +91,7 @@ class AdminMenuHelper {
 				//TODO The link should be done better
 				echo JHTML::_('link', 'http://virtuemart.net', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
 				?>
-			<h2><?php echo JText::_('VM_ADMIN')	?></h2>
+			<h2><?php echo JText::_('COM_VIRTUEMART_ADMIN')	?></h2>
 		    </center>
 		    <div class="status-divider">
 		    </div>
@@ -136,9 +136,9 @@ class AdminMenuHelper {
 				} ?>
 		    </div>
 		    <div class="align-center">
-			<h5><?php echo JText::_('VM_YOUR_VERSION') ?></h5>
+			<h5><?php echo JText::_('COM_VIRTUEMART_YOUR_VERSION') ?></h5>
 				<?php $release = VmConfig::getInstalledVersion(false); ?>
-			<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('VM_VERSIONCHECK_TITLE') ?>" target="_blank">
+			<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('COM_VIRTUEMART_VERSIONCHECK_TITLE') ?>" target="_blank">
 				    <?php
 				    echo 'Virtuemart&nbsp;'. VmConfig::getInstalledVersion(true);
 				    ?>
@@ -180,7 +180,7 @@ class AdminMenuHelper {
 //		echo '<pre>'.print_r($query,1).'</pre>';
 	for ($i=0, $n=count( $result ); $i < $n; $i++) {
 	    $row =& $result[$i];
-	    $menuArr[$row->module_name]['title'] = 'VM_'.strtoupper($row->module_name).'_MOD';
+	    $menuArr[$row->module_name]['title'] = 'COM_VIRTUEMART_'.strtoupper($row->module_name).'_MOD';
 	    $menuArr[$row->module_name]['items'][] = array('name' => $row->name,
 		    'link' => $row->link,
 		    'depends' => $row->depends,

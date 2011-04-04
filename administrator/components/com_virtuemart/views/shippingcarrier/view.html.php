@@ -44,9 +44,9 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CARRIER_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CARRIER_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_ups_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_CARRIER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -59,7 +59,7 @@ class VirtuemartViewShippingCarrier extends JView {
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
 		} else {
-			JToolBarHelper::title( JText::_( 'VM_CARRIER_LIST_LBL' ), 'vm_ups_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_CARRIER_LIST_LBL' ), 'vm_ups_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();

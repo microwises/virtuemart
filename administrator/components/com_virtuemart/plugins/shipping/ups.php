@@ -166,7 +166,7 @@ class plgShippingUps extends vmShippingPlugin {
 			$xmlResult = VmConnector::handleCommunication($upsURL, $xmlPost );
 
 			if( !$xmlResult) {
-				$vmLogger->err( JText::_('VM_INTERNAL_ERROR',false)." UPS.com" );
+				$vmLogger->err( JText::_('COM_VIRTUEMART_INTERNAL_ERROR',false)." UPS.com" );
 				$error = true;
 			}
 			else {
@@ -186,9 +186,9 @@ class plgShippingUps extends vmShippingPlugin {
 					$error_desc = $error_desc->item(0);
 					$error_desc = $error_desc->getText();
 
-					$vmLogger->err( JText::_('VM_UPS_RESPONSE_ERROR',false).'. '
-					. JText::_('VM_ERROR_CODE').": ".$error_code .', '
-					. JText::_('VM_ERROR_DESC').": ".$error_desc);
+					$vmLogger->err( JText::_('COM_VIRTUEMART_UPS_RESPONSE_ERROR',false).'. '
+					. JText::_('COM_VIRTUEMART_ERROR_CODE').": ".$error_code .', '
+					. JText::_('COM_VIRTUEMART_ERROR_DESC').": ".$error_desc);
 				}
 
 			}
@@ -367,8 +367,8 @@ class plgShippingUps extends vmShippingPlugin {
 				$_SESSION[$shipping_rate_id] = 1;
 				
 				if (DEBUG) {
-					$value['ServiceName'] .= " - ".JText::_('VM_PRODUCT_FORM_WEIGHT').": ".$order_weight." ". $weight_measure.
-					", ".JText::_('VM_RATE_FORM_VALUE').": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
+					$value['ServiceName'] .= " - ".JText::_('COM_VIRTUEMART_PRODUCT_FORM_WEIGHT').": ".$order_weight." ". $weight_measure.
+					", ".JText::_('COM_VIRTUEMART_RATE_FORM_VALUE').": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
 				}
 				
 				$rateArr = array('shipping_rate_id' => $shipping_rate_id,
@@ -381,7 +381,7 @@ class plgShippingUps extends vmShippingPlugin {
 				// DELIVERY QUOTE
 				if ($this->params->get('SHOW_DELIVERY_DAYS_QUOTE') == 1) {
 					if( !empty($value['GuaranteedDaysToDelivery'])) {
-						$rateArr['rate_name'] .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".JText::_('VM_UPS_SHIPPING_GUARANTEED_DAYS');
+						$rateArr['rate_name'] .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".JText::_('COM_VIRTUEMART_UPS_SHIPPING_GUARANTEED_DAYS');
 					}
 				}
 				if ($this->params->get('SHOW_DELIVERY_ETA_QUOTE') == 1) {

@@ -24,7 +24,7 @@ AdminMenuHelper::startAdminArea();
 <table class="adminform">
 	<tr> 
 		<td width="23%" height="20" valign="top"> 
-			<div align="right"><?php echo JText::_('VM_ATTRIBUTE_FORM_NAME') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_ATTRIBUTE_FORM_NAME') ?>:</div>
 		</td>
 		<td width="77%" height="20"> 
 			<input type="text" class="inputbox" name="attribute_name" value="<?php echo $this->attribute->attribute_name; ?>" size="32" maxlength="255" />
@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 	</tr>
 	<tr> 
 		<td width="23%" height="10" valign="top"> 
-			<div align="right"><?php echo JText::_('VM_ATTRIBUTE_FORM_ORDER') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_ATTRIBUTE_FORM_ORDER') ?>:</div>
 		</td>
 		<td width="77%" height="10"> 
 			<?php echo $this->lists['listorder']; ?>

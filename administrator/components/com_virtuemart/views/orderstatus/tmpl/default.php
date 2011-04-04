@@ -31,28 +31,28 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->orderStatusList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_('VM_#' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#' ); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_ORDER_STATUS_LIST_NAME')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_NAME')
 					, 'order_status_name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_ORDER_STATUS_LIST_CODE')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_CODE')
 					, 'order_status_code'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
-				<?php echo JText::_('VM_MANUFACTURER_FORM_DESCRIPTION'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_DESCRIPTION'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_ORDER_STATUS_FORM_LIST_ORDER')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_LIST_ORDER')
 					, 'ordering'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>

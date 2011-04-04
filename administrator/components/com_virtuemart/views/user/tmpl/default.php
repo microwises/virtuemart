@@ -28,10 +28,10 @@ AdminMenuHelper::startAdminArea();
 		<table>
 			<tr>
 				<td width="100%">
-					<?php echo JText::_('VM_FILTER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'VM_RESET' ); ?></button>
+					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'COM_VIRTUEMART_RESET' ); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -47,31 +47,31 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_('VM_#'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_USER_LIST_USERNAME')
+					, JText::_('COM_VIRTUEMART_USER_LIST_USERNAME')
 					, 'username'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_USER_LIST_FULL_NAME')
+					, JText::_('COM_VIRTUEMART_USER_LIST_FULL_NAME')
 					, 'name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th width="80">
-			<?php echo JText::_('VM_USER_LIST_VENDOR'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_USER_LIST_VENDOR'); ?>
 			</th>
 			<th>
-			<?php echo JText::_('VM_USER_LIST_GROUP'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_USER_LIST_GROUP'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_SHOPPER_FORM_GROUP')
+					, JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP')
 					, 'shopper_group_name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>

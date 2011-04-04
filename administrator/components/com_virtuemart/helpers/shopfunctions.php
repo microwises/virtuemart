@@ -506,10 +506,10 @@ class ShopFunctions {
 	 */
 	public function listUserTitle($t, $extra="", $_prefix = '') {
 		$options = array();
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MR'), JText::_('VM_REGISTRATION_FORM_MR'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MRS'), JText::_('VM_REGISTRATION_FORM_MRS'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_DR'), JText::_('VM_REGISTRATION_FORM_DR'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_PROF'), JText::_('VM_REGISTRATION_FORM_PROF'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'));
 
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}
@@ -751,7 +751,7 @@ class ShopFunctions {
 
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. str_replace("'","\\'",JText::_('REGWARN_MAIL')) .'\');
+				alert( \''. str_replace("'","\\'",JText::_('COM_VIRTUEMART_REGWARN_MAIL')) .'\');
 				return false;
 			}';
 
@@ -760,7 +760,7 @@ class ShopFunctions {
 
 			echo '
 			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
-				alert( "'. JText::sprintf('VALID_AZ09', JText::_('USERNAME'), 2) .'" );
+				alert( "'. JText::sprintf('VALID_AZ09', JText::_('COM_VIRTUEMART_USERNAME'), 2) .'" );
 				return false;
             }';
         }
@@ -768,13 +768,13 @@ class ShopFunctions {
 			if( JRequest::getVar('view') == 'checkout.index') {
                 echo '
                 if (form.password.value.length < 6 '.$optional_check.') {
-                    alert( "'.JText::_('REGWARN_PASS',false) .'" );
+                    alert( "'.JText::_('COM_VIRTUEMART_REGWARN_PASS',false) .'" );
 					return false;
                 } else if (form.password2.value == ""'.$optional_check.') {
-                    alert( "'. JText::_('REGWARN_VPASS1',false) .'" );
+                    alert( "'. JText::_('COM_VIRTUEMART_REGWARN_VPASS1',false) .'" );
                     return false;
                 } else if (r.exec(form.password.value)'.$optional_check.') {
-                    alert( "'. JText::sprintf('VALID_AZ09', JText::_('PASSWORD'), 6 ) .'" );
+                    alert( "'. JText::sprintf('COM_VIRTUEMART_VALID_AZ09', JText::_('COM_VIRTUEMART_PASSWORD'), 6 ) .'" );
                     return false;
                 }';
         	}
@@ -787,7 +787,7 @@ class ShopFunctions {
         if( isset( $required_fields['agreed'] )) {
 			echo '
             if (!form.agreed.checked) {
-				alert( "'. JText::_('VM_AGREE_TO_TOS',false) .'" );
+				alert( "'. JText::_('COM_VIRTUEMART_AGREE_TO_TOS',false) .'" );
 				return false;
 			}';
 		}
@@ -803,7 +803,7 @@ class ShopFunctions {
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {
-					alert( \''.addslashes(JText::_('VALID_EUVATID',false)).'\' );
+					alert( \''.addslashes(JText::_('COM_VIRTUEMART_VALID_EUVATID',false)).'\' );
 					return false;
 				}
 			}';
@@ -811,7 +811,7 @@ class ShopFunctions {
 		// Finish the validation function
 		echo '
 			if( !isvalid) {
-				alert("'.addslashes( JText::_('CONTACT_FORM_NC',false) ) .'" );
+				alert("'.addslashes( JText::_('COM_VIRTUEMART_CONTACT_FORM_NC',false) ) .'" );
 			}
 			return isvalid;
 		}

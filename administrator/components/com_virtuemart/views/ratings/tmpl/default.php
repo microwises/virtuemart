@@ -31,10 +31,10 @@ $option = JRequest::getWord('option');
 	<table>
 	  <tr>
 		 <td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER'); ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 			<input type="text" name="filter_ratings" value="<?php echo JRequest::getVar('filter_ratings', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-			<button onclick="document.adminForm.filter_ratings.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_ratings.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
 	  </tr>
 	</table>
@@ -48,11 +48,11 @@ $option = JRequest::getWord('option');
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_REVIEW_LIST_NAME', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_REVIEW_LIST_DATE', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_RATE_NOM', 'user_rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_NAME', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'user_rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'CMN_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
@@ -71,16 +71,16 @@ $option = JRequest::getWord('option');
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$review->product_id.'&product_parent_id='.$review->product_parent_id; ?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('EDIT').' '.$review->product_name)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit&review_id='.$review->review_id; ?>
-				<td><?php echo JHTML::_('link', $link, $review->username,array("title" => JText::_('VM_RATING_EDIT_TITLE'))); ?></td>
-				<td><?php echo JHTML::_('link', $link, $review->reviewDate, array("title" => JText::_('VM_RATING_EDIT_TITLE'))); ?></td>
+				<td><?php echo JHTML::_('link', $link, $review->username,array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<td><?php echo JHTML::_('link', $link, $review->reviewDate, array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Comment -->
 				<td><?php echo substr($review->comment, 0, 150); ?></td>
 				<!-- Stars rating -->
 				<td>
-				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$review->user_rating.'.gif',$review->user_rating,array("title" => (JText::_('VM_RATING_TITLE').' : '. $review->user_rating . '/' . $this->max_rating))); ?>
+				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$review->user_rating.'.gif',$review->user_rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->user_rating . '/' . $this->max_rating))); ?>
 				</td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>

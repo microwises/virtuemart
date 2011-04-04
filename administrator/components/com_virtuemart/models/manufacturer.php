@@ -180,7 +180,7 @@ class VirtueMartModelManufacturer extends JModel {
 				FROM #__vm_manufacturer";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
-		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('VM_SELECT_MANUFACTURER' ) .' -' ));
+		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER' ) .' -' ));
 		return $options;
 	}
 

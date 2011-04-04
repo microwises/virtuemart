@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('VM_SHIPPING_RATE_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_RATE_FORM_NAME' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_list_order">
-					<?php echo JText::_( 'VM_RATE_FORM_LIST_ORDER' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_LIST_ORDER' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_carrier_id">
-					<?php echo JText::_( 'VM_RATE_FORM_CARRIER' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_CARRIER' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -64,40 +64,40 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_country">
-					<?php echo JText::_( 'VM_RATE_FORM_COUNTRY' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_COUNTRY' ); ?>:
 				</label>
 			</td>
 			<td>
 				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country)
-					. '&nbsp;'.JHTML::tooltip( JText::_('VM_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
+					. '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
 			</td>
 		</tr>		
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_zip_start">
-					<?php echo JText::_( 'VM_RATE_FORM_ZIP_START' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_ZIP_START' ); ?>:
 				</label>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="shipping_rate_zip_start" id="shipping_rate_zip_start" size="10" value="<?php echo $this->rate->shipping_rate_zip_start; ?>" />
-				<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
+				<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
 		</tr>					
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_zip_end">
-					<?php echo JText::_( 'VM_RATE_FORM_ZIP_END' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_ZIP_END' ); ?>:
 				</label>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="shipping_rate_zip_end" id="shipping_rate_zip_end" size="10" value="<?php echo $this->rate->shipping_rate_zip_end; ?>" />				
-				<?php echo JHTML::tooltip( JText::_('VM_RATE_FORM_ZIP_TOOLTIP') ); ?>
+				<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
 		</tr>				
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_weight_start">
-					<?php echo JText::_( 'VM_RATE_FORM_WEIGHT_START' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_WEIGHT_START' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -107,7 +107,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_weight_end">
-					<?php echo JText::_( 'VM_RATE_FORM_WEIGHT_END' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_WEIGHT_END' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -117,7 +117,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_value">
-					<?php echo JText::_( 'VM_RATE_FORM_VALUE' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_VALUE' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -127,7 +127,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_package_fee">
-					<?php echo JText::_( 'VM_RATE_FORM_PACKAGE_FEE' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_PACKAGE_FEE' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -137,7 +137,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_currency_id">
-					<?php echo JText::_( 'VM_RATE_FORM_CURRENCY' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_CURRENCY' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -147,7 +147,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_vat_id">
-					<?php echo JText::_( 'VM_RATE_FORM_VAT_ID' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_RATE_FORM_VAT_ID' ); ?>:
 				</label>
 			</td>
 			<td>

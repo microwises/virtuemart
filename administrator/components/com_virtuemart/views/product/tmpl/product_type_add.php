@@ -24,7 +24,7 @@ AdminMenuHelper::startAdminArea();
 <table class="adminform">
 	<tr> 
 		<td width="23%" height="20" valign="middle" > 
-			<div align="right"><?php echo JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE') ?>:</div>
+			<div align="right"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE') ?>:</div>
 		</td>
 		<td width="77%" height="10" >
 			<?php echo $this->producttypes; ?> 

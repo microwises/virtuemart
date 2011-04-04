@@ -207,7 +207,7 @@ class VirtueMartModelConfig extends JModel {
 		else {
 			$checked = '';
 		}
-		$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
+		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
 		$orderByFields->select[] = JHTML::_('select.option', $field, $text) ;
 		$orderByFields->checkbox.= '<input type="checkbox" id="' .$field. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
 	}
@@ -232,7 +232,7 @@ class VirtueMartModelConfig extends JModel {
 		else {
 			$checked = '';
 		}
-		$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
+		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
 		$searchFields.= '<input type="checkbox" id="' .$field. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
 	}
 	return $searchFields;

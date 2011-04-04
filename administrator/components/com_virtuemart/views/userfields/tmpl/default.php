@@ -30,10 +30,10 @@ $j15 = VmConfig::isJ15();
 		<table>
 			<tr>
 				<td width="100%">
-					<?php echo JText::_( 'VM_FILTER' ); ?>:
+					<?php echo JText::_( 'COM_VIRTUEMART_FILTER' ); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();"><?php echo JText::_( 'VM_GO' ); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'VM_RESET' ); ?></button>
+					<button onclick="this.form.submit();"><?php echo JText::_( 'COM_VIRTUEMART_GO' ); ?></button>
+					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_( 'COM_VIRTUEMART_RESET' ); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -49,43 +49,43 @@ $j15 = VmConfig::isJ15();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userfieldsList); ?>);" />
 			</th>
 			<th width="10">
-				<?php echo JText::_('VM_#'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_FIELDMANAGER_NAME')
+					, JText::_('COM_VIRTUEMART_FIELDMANAGER_NAME')
 					, 'name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
-			<?php echo JText::_('VM_FIELDMANAGER_TITLE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_FIELDMANAGER_TYPE')
+					, JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE')
 					, 'type'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('VM_FIELDMANAGER_REQUIRED'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('VM_FIELDMANAGER_PUBLISHED'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_REGISTRATION'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_SHIPPING'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('VM_FIELDMANAGER_SHOW_ON_ACCOUNT'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('VM_FIELDMANAGER_REORDER')
+					, JText::_('COM_VIRTUEMART_FIELDMANAGER_REORDER')
 					, 'ordering'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
@@ -99,9 +99,9 @@ $j15 = VmConfig::isJ15();
 			$row =& $this->userfieldsList[$i];
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('VM_FIELDMANAGER_COREFIELD'));
+			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
 			$checked = ($coreField) ?
-				'<span class="editlinktip hasTip" title="'. JText::_( 'VM_FIELDMANAGER_COREFIELD' ).'">'. $image .'</span>' :
+				'<span class="editlinktip hasTip" title="'. JText::_( 'COM_VIRTUEMART_FIELDMANAGER_COREFIELD' ).'">'. $image .'</span>' :
 				JHTML::_('grid.id', $i, $row->fieldid);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->fieldid);
 			$required = $this->toggle($row->required, $i, 'required', $coreField);
