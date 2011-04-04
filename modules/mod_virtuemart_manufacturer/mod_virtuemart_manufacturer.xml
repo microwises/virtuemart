@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
+<install type="module" version="1.5.0">
+	<name>VirtueMart Manufacturers Show</name>
+	<creationDate>February 2008</creationDate>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>cyber__fr|at|hotmail.com</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>
+		Copyright (C) 2010 Kohl Patrick . All rights
+		reserved.
+	</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.1.0</version>
+	<description>Shows manufacturers from VirtueMart.</description>
+	<files>
+		<filename module="mod_virtuemart_manufacturer">mod_virtuemart_manufacturer.php</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+	</files>
+	<params>
+		<param name="show" type="list" default="all"
+			label="Show"
+			description="Here you can decide, What you want to see in the module">
+			<option value="all">image &amp; name</option>
+			<option value="image">thumb image</option>
+			<option value="text">manufacturers name</option>
+		</param>
+		<param name="display_style" type="list" default="list"
+			label="Display Style"
+			description="Here you can decide wether the manufacturers are shown ">
+			<option value="list">List based ul-li</option>
+			<option value="div">Div based</option>
+		</param>
+				<param name="manufacturers_per_row" type="text" default=""
+			label="manufacturers per row"
+			description="The Number of columns per row for the manufacturers snapshots." />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="headerText" type="text" default=""
+			label="Header Text"
+			description="Add a Text before list of Manufacturers." />
+		<param name="footerText" type="text" default=""
+			label="Footer Text"
+			description="Add a Text after list of Manufacturers." />
+	</params>
+	<params group="advanced">
+		<param name="cache" type="radio" default="0"
+			label="Enable Cache"
+			description="Select whether to cache the content of this module">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default=""
+			label="Module Class Suffix"
+			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="class_sfx" type="text" default=""
+			label="Menu Class Suffix"
+			description="A suffix to be applied to the css class of the menu items" />
+	</params>
+</install>
