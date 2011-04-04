@@ -16,7 +16,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.org
 */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
+$config= VmConfig::getInstance();
 
 /* Require specific controller if requested */
 if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {

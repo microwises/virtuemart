@@ -16,9 +16,8 @@ defined('_JEXEC') or die('Restricted access');
  *
  * We need this extra paths to have always the correct path undependent by loaded application, module or plugin
  * Plugin, module developers must always include this config at start of their application
- *  $vmConfig= new VmConfig();
- *  $vmConfig -> loadConfig();
- *  $vmConfig -> jQuery();
+ *   $vmConfig = VmConfig::getInstance(); // load the config and create an instance
+ *  $vmConfig -> jQuery(); // for use of jQuery
  *  Then always use the defined paths below to ensure future stability
  */
 define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
@@ -29,13 +28,20 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
 class VmConfig
 {
+	/* instance of class */
+	private static $_instance = null;	
+
+	private function __construct() {
+	self::loadConfig();
+	}
+
 	/**
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
 	 *
 	 * @author RickG
 	 */
-	function loadConfig() {
+	private function loadConfig() {
 		$db = JFactory::getDBO();
 		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = '1'";
 		$db->setQuery($query);
@@ -44,6 +50,14 @@ class VmConfig
 		$session = JFactory::getSession();
 		$session->clear('vmconfig');
 		$session->set('vmconfig', $config,'vm');
+	}
+	
+	/* Get always the same VmConfig */
+	public static function getInstance() {
+		if(is_null(self::$_instance)) {
+			self::$_instance = new VmConfig();
+		}
+		return self::$_instance;
 	}
 
 
@@ -139,11 +153,11 @@ class VmConfig
 		// If exist exit
 		if ($jPrice) return;
 		$closeimage = JURI::root() .'components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = "var vmCartText = '". JText::_('VM_MINICART_ADDED') ."' ;  " ;
-		$jsVars .= "var vmCartError = '". JText::_('VM_MINICART_ERROR') ."' ;  " ;
-		$jsVars .= "var loadingImage = '".JURI::root() ."components/com_virtuemart/assets/images/facebox/loading.gif' ;  " ;
-		$jsVars .= "var closeImage = '{$closeimage}' ; " ;
-		$jsVars .= "var faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='{$closeimage}' title='close' class='close_image' /></a></div></div>\" ; ";
+		$jsVars  = "vmCartText = '". JText::_('VM_MINICART_ADDED') ."' ;\n" ;
+		$jsVars .= "vmCartError = '". JText::_('VM_MINICART_ERROR') ."' ;\n" ;
+		$jsVars .= "loadingImage = '".JURI::root() ."components/com_virtuemart/assets/images/facebox/loading.gif' ; ;\n" ;
+		$jsVars .= "closeImage = '{$closeimage}' ; \n";
+		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='{$closeimage}' title='close' class='close_image' /></a></div></div>\" ;\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
 		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);

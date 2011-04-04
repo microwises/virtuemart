@@ -291,9 +291,13 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	//uppercase first (trick for product details )
+	/*
+	 * uppercase first (trick for product details )
+	 * Product must begin with A-Z
+	 */
+	$ascii = ord ( $segments[$count] );
 
-	if ($segments[$count][0] == ucfirst($segments[$count][0]) ){
+	if ($ascii >65 && $ascii<90  ){ 
 		$vars['view'] = 'productdetails';
 		if (!$helper->use_id && ($helper->activeMenu->view == 'category' || ($helper->activeMenu->view == 'virtuemart') ) ) { 
 			$product = $helper->getProductId ($segments ,$helper->activeMenu->category_id);
@@ -357,7 +361,29 @@ class vmrouterHelper {
 	public $router_disabled = false ;
 
 	/* instance of class */
-	private static $_instance = null;	
+	private static $_instance = null;
+
+	public $CategoryName = array();
+	
+	private $Chars = array(
+    'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 
+    'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 
+    'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 
+    'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 
+    'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 
+    'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 
+    'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f'
+);
+
+	function cleanForShortURL($toClean) {
+		$toClean     =     str_replace('&', '-and-', $toClean);
+		$toClean     =    trim(preg_replace('/[^\w\d_ -]/si', ' ', $toClean));//remove all illegal chars
+		$toClean     =     str_replace(' ', '-', $toClean);
+		$toClean     =     str_replace('--', '-', $toClean);
+		
+		return strtr($toClean, $this->Chars);
+	}
+
 
 	private function __construct() {
 
@@ -402,13 +428,17 @@ class vmrouterHelper {
 		}
 		if ($ismenu==false) {
 			if ( $this->use_id ) $category->route = $category_id.'/';
-			$category->route .= self::getCategoryName($category_id, $menuCatid );
+			if (!isset ($this->CategoryName[$category_id])) {
+				$this->CategoryName[$category_id] = self::getCategoryNames($category_id, $menuCatid );
+			}
+			$category->route .= $this->CategoryName[$category_id] ;
 			if ($menuCatid == 0 ) $category->itemId = $this->menu->virtuemart[0]['itemId'] ;
 		}
 		return $category ;
 	}
+	
 	/*get url safe names of category and parents categories  */
-	public function getCategoryName($category_id,$catMenuId=0){
+	public function getCategoryNames($category_id,$catMenuId=0){
 
 		$strings = array();
 		$db = & JFactory::getDBO();
@@ -430,7 +460,7 @@ class vmrouterHelper {
 				$accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
 				$string_encoded = htmlentities($string,ENT_NOQUOTES,'UTF-8');
 				$string = preg_replace($accents,'$1',$string_encoded);
-				
+				$string = str_replace('&micro', ' ', $string);
 				// clean out the rest
 				$replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
 				$with = array('-','-','-','-','-','-');
@@ -466,25 +496,23 @@ class vmrouterHelper {
 	 * $names are segments
 	 * $category_ids is joomla menu category_id
 	 */
-	public function getCategoryId($names,$category_ids = NULL ){
-		
+	public function getCategoryId($names,$category_ids ){
+		if ($category_ids == null) $category_ids = 0 ;
 		$db = & JFactory::getDBO();
-		$parentIds = array();
-		//$category_ids = null;
 		foreach ($names as $name) {
 			$name = str_replace('-', '%', $name);
 			$name = str_replace(':', '%', $name);
-			$q = "SELECT `c`.`category_id` 
-				FROM  `#__vm_category` AS `c` ";
-			if (isset ($category_ids)) $q .= ", #__vm_category_xref as `xref`";
+			$q = "SELECT distinct `c`.`category_id` 
+				FROM  `#__vm_category` AS `c` , `#__vm_category_xref` as `xref`";
 			$q .=" WHERE `c`.`category_name` LIKE '".$name."' ";
-			if (isset ($category_ids)) $q .=" AND `xref`.`category_parent_id` in (".$category_ids.")";
-
+			$q .=" AND `xref`.`category_child_id`=`c`.`category_id`";
+			$q .=" AND `xref`.`category_parent_id` in (".$category_ids.") ";
 			$db->setQuery($q);
 			$result = $db->loadResultArray();
 			$category_ids = implode(',',$result);
 		}
-		/* WARNING name in last category must be unique or you have more then 1 ID */
+		
+		/* WARNING name in same category must be unique or you have more then 1 ID */
 		return $category_ids ;
 	}
 
@@ -502,12 +530,14 @@ class vmrouterHelper {
 			if ( ctype_digit($string)){
 				return $string ;
 			}
-			else {	
+			else {
+				//$string = str_replace('µ', ' ', $string);
 				// accented chars converted
 				$accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
-				$string_encoded = htmlentities($string,ENT_NOQUOTES,'UTF-8');
+				$string_encoded = htmlentities($product_name,ENT_NOQUOTES,'UTF-8');
 				$string = preg_replace($accents,'$1',$string_encoded);
-				
+				$string = str_replace('&micro', ' ', $string);
+
 				// clean out the rest
 				$replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
 				$with = array('-','-','-','-','-','-');
@@ -531,6 +561,8 @@ class vmrouterHelper {
 			LEFT JOIN `jos_vm_product_category_xref` AS `xref` ON `p`.`product_id` = `xref`.`product_id`
 			WHERE `p`.`product_name` LIKE '".$productName."'
 			AND `xref`.`category_id` in (".$product['category_id'].") ";
+					echo $productName;
+			echo $q;
 		$db->setQuery($q);
 		$product['product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */

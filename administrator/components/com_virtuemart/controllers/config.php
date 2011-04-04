@@ -105,7 +105,7 @@ class VirtuemartControllerConfig extends JController {
 		if ($model->store($data)) {
 			$msg = JText::_('VM_CONFIG_SAVED');
 			// Load the newly saved values into the session.
-			VmConfig::loadConfig();
+			VmConfig::getInstance();
 		}
 		else {
 			$msg = $model->getError();
@@ -128,7 +128,7 @@ class VirtuemartControllerConfig extends JController {
 		if ($model->store($data)) {
 			$msg = JText::_('VM_CONFIG_SAVED');
 			// Load the newly saved values into the session.
-			VmConfig::loadConfig();
+			VmConfig::getInstance();
 		}
 		else {
 			$msg = JText::_($model->getError());
