@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: contacts.php 14401 2010-01-26 14:10:00Z louis $
+ * @version		$Id: virtuemart.php 2789 2011-02-28 12:41:01Z oscar $
  * @package		Joomla
  * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * @license		GNU/GPL, see LICENSE.php

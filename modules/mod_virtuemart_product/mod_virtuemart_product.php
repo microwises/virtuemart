@@ -3,7 +3,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 /*
 * featured/Latest/Topten/Random Products Module
 *
-* @version $Id: mod_virtuemart_product.php 2010-02-11 01:30:30Z  $
+* @version $Id: mod_virtuemart_product.php 2941 2011-04-04 15:15:14Z Electrocity $
 * @package VirtueMart
 * @subpackage modules
 *
@@ -36,8 +36,10 @@ $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
 if (!$filter_category ) $category_id = null;
 $products = 		$productModel->getGroupProducts($Product_group, $vendorId, $category_id, $max_items);
-$totalProd = 		count( $products);
 if(empty($products)) return false;
+$totalProd = 		count( $products);
+$productModel->addImagesToProducts($products);
+
 /* load the template */
-require(JModuleHelper::getLayoutPath('mod_virtuemart_featureprod'));
+require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
 ?>

@@ -44,12 +44,12 @@ if ($display_style =="div") { ?>
 <ul class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php
 foreach ($manufacturers as $manufacturer) { 
-	$link = JROUTE::_('index.php?option=com_virtuemart&view=category&&manufacturer_id=' . $manufacturer->manufacturer_id);
+	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
 	?>
 	<li><a href="<?php echo $link; ?>">
 		<?php
 		if ($manufacturer->images && ($show == 'image' or $show == 'all' )) { ?>
-			<?php echo $manufacturer->images[0]->displayMediaThumb(0,true);?>
+			<?php echo $manufacturer->images[0]->displayMediaThumb();?>
 		<?php
 		}
 		if ($show == 'text' or $show == 'all' ) { ?>
