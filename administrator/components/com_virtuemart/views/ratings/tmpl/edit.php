@@ -29,11 +29,11 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 <fieldset class="adminform">
-<legend><?php echo JText::_( 'COM_VIRTUEMART_REVIEW' ); ?></legend>
-<table class="admintable" summary="<?php echo JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE');?>">
+<legend><?php echo JText::_( 'VM_REVIEW' ); ?></legend>
+<table class="admintable" summary="<?php echo JText::_('VM_RATING_EDIT_TITLE');?>">
 	<tr>
 		<td width="24%" align="left" valign="top">
-			<?php echo JText::_('COM_VIRTUEMART_RATING_TITLE'); ?>
+			<?php echo JText::_('VM_RATING_TITLE'); ?>
 		</td>
 		<td valign="top">
 		<!-- Rating stars -->
@@ -50,7 +50,7 @@ AdminMenuHelper::startAdminArea();
 		<!-- Review comment -->
 	<tr>
 		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
+			<?php echo JTEXT::_('VM_REVIEW'); ?>
         	</td>
 		<td width="76%" align="left">
 			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php echo $this->rating->comment; ?></textarea>
@@ -60,7 +60,7 @@ AdminMenuHelper::startAdminArea();
 		<!-- Show number of typed in characters -->
 		<td width="24%" align="left" valign="top"> &nbsp; </td>
 		<td width="76%" align="left">
-	        <div align="left"><i><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?></i>
+	        <div align="left"><i><?php echo JText::_('VM_REVIEW_COUNT') ?></i>
                 	<input type="text" value="150" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
             	</div>
 		</td>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 <!-- todo?? To be used with HTML editor (with some more restrictions)
 	<tr>
 		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
+			<?php echo JTEXT::_('VM_REVIEW'); ?>
         	</td>
 		<td width="76%" align="left">
 	<?php
@@ -80,7 +80,7 @@ AdminMenuHelper::startAdminArea();
 	<tr>
 		<!-- Published status -->
 		<td>
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+			<?php echo JText::_('PUBLISHED'); ?>
 		</td>
 		<td>
 			<?php echo JHTML::_('select.booleanlist', 'published', '', $this->rating->published); ?>
@@ -115,8 +115,8 @@ function submitbutton(pressbutton) {
 		return;
 	}
 	else {
-		if (document.adminForm.counter.value > <?php echo VmConfig::get('reviews_maximum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2',VmConfig::get('reviews_maximum_comment_length')); ?>');
-		else if (document.adminForm.counter.value < <?php echo VmConfig::get('reviews_minimum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1',VmConfig::get('reviews_minimum_comment_length')); ?>');
+		if (document.adminForm.counter.value > <?php echo VmConfig::get('reviews_maximum_comment_length'); ?>) alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT2',VmConfig::get('reviews_maximum_comment_length')); ?>');
+		else if (document.adminForm.counter.value < <?php echo VmConfig::get('reviews_minimum_comment_length'); ?>) alert('<?php echo JText::sprintf('VM_REVIEW_ERR_COMMENT1',VmConfig::get('reviews_minimum_comment_length')); ?>');
 		else submitform( pressbutton );
 		return;
 	}

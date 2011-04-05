@@ -30,71 +30,71 @@ $j15 = VmConfig::isJ15();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_('#' ); ?>
+				<?php echo JText::_('VM_#' ); ?>
 			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
 			<th width="60">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_LIST_NAME' ); ?>
+				<?php echo JText::_( 'VM_CALC_LIST_NAME' ); ?>
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_VENDOR' );  ?>
+				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
 			</th><?php }?>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_DESCR' ); ?>
+				<?php echo JText::_( 'VM_CALC_DESCR' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_ORDERING' ); ?>
+				<?php echo JText::_( 'VM_CALC_ORDERING' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_KIND' ); ?>
+				<?php echo JText::_( 'VM_CALC_KIND' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_VALUE_MATHOP' ); ?>
+				<?php echo JText::_( 'VM_CALC_VALUE_MATHOP' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_VALUE' ); ?>
+				<?php echo JText::_( 'VM_CALC_VALUE' ); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_CURRENCY' ); ?>
+				<?php echo JText::_( 'VM_CALC_CURRENCY' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_CATEGORY' ); ?>
+				<?php echo JText::_( 'VM_CALC_CATEGORY' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_SHOPPER_GROUPS' ); ?>
+				<?php echo JText::_( 'VM_CALC_SHOPPER_GROUPS' ); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_VIS_SHOPPER' ); ?>
+				<?php echo JText::_( 'VM_CALC_VIS_SHOPPER' ); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_VIS_VENDOR' ); ?>
+				<?php echo JText::_( 'VM_CALC_VIS_VENDOR' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_START_DATE' ); ?>
+				<?php echo JText::_( 'VM_CALC_START_DATE' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_END_DATE' ); ?>
+				<?php echo JText::_( 'VM_CALC_END_DATE' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_AMOUNT_COND' ); ?>
+				<?php echo JText::_( 'VM_CALC_AMOUNT_COND' ); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT' ); ?>
+				<?php echo JText::_( 'VM_CALC_AMOUNT_DIMUNIT' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_COUNTRIES' ); ?>
+				<?php echo JText::_( 'VM_CALC_COUNTRIES' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_STATES' ); ?>
+				<?php echo JText::_( 'VM_CALC_STATES' ); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_PUBLISHED' ); ?>
+				<?php echo JText::_( 'PUBLISHED' ); ?>
 			</th>
 		<?php /*	<th width="10">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_SHARED' ); ?>
+				<?php echo JText::_( 'VM_CALC_SHARED' ); ?>
 			</th> */ ?>
 		</tr>
 		</thead>
@@ -148,12 +148,12 @@ $j15 = VmConfig::isJ15();
 					<?php echo $row->calcShoppersList; ?>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('JYES' ) : JText::_('JNO' );?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('JYES' ) : JText::_('JNO' );?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('VM_YES' ) : JText::_('VM_NO' );?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
@@ -164,12 +164,12 @@ $j15 = VmConfig::isJ15();
 						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
 						$publish_up = $date->toFormat($this->dateformat);
 					}
-					echo $publish_up = JText::_('JNEVER');?>
+					echo $publish_up = JText::_('VM_NEVER');?>
 				</td>
 				<td>
 					<?php
 						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-							$endDate = JText::_('JNEVER');
+							$endDate = JText::_('VM_NEVER');
 						} else {
 							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 							$endDate = $date->toFormat($this->dateformat);

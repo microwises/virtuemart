@@ -21,13 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <br />
 <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('VM_ADMIN_CFG_SEO_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP')); ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP'); ?>">
-		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE') ?></label>
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP'), JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP')); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_DISABLE_TIP'); ?>">
+		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_SEO_DISABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
@@ -36,9 +36,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP')); ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP'); ?>">
-		<label for="conf_VM_SEO_TRANSLATE"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE') ?></label>
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_TRANSLATE_TIP'), JText::_('VM_ADMIN_CFG_SEO_TRANSLATE_TIP')); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_TRANSLATE_TIP'); ?>">
+		<label for="conf_VM_SEO_TRANSLATE"><?php echo JText::_('VM_ADMIN_CFG_SEO_TRANSLATE') ?></label>
 		</span>
 	    </td>
 		<td>
@@ -47,9 +47,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP')); ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP'); ?>">
-		<label for="conf_VM_SEO_USE_ID"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP') ?></label>
+		<?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP'), JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP')); ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP'); ?>">
+		<label for="conf_VM_SEO_USE_ID"><?php echo JText::_('VM_ADMIN_CFG_SEO_USE_ID_TIP') ?></label>
 		</span>
 	    </td>
 		<td>

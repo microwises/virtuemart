@@ -207,7 +207,7 @@ class VirtueMartModelConfig extends JModel {
 		else {
 			$checked = '';
 		}
-		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
+		$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
 		$orderByFields->select[] = JHTML::_('select.option', $field, $text) ;
 		$orderByFields->checkbox.= '<input type="checkbox" id="' .$field. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
 	}
@@ -232,7 +232,7 @@ class VirtueMartModelConfig extends JModel {
 		else {
 			$checked = '';
 		}
-		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
+		$text = JText::_('VM_SEARCH_ORDER_'.strtoupper($field)) ;
 		$searchFields.= '<input type="checkbox" id="' .$field. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
 	}
 	return $searchFields;
@@ -255,8 +255,7 @@ class VirtueMartModelConfig extends JModel {
 		if ($config) {
 			return new JParameter($config);
 		} else {
-                        $internal_code="";
-			JError::raiseWarning($internal_code,'COM_VIRTUEMART_NO_DATABASE');
+			JError::raiseWarning('There is no configuration in the database yet. This messages should not appear again once you configured youir shop for the first time.');
 			// ... which is nonsense since is has been loaded during install (vm_config.dat), so probably there is in error...
 			return null;
 		}

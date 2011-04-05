@@ -117,7 +117,7 @@ class plgShippingCanadapost extends vmShippingPlugin {
 		
 		$this->xml_request = "<?phpxml version=\"1.0\" ?>
 <eparcel>
-	<language>" . JText::_( 'COM_VIRTUEMART_CANADAPOST_SEND_LANGUAGE_CODE' ) . "</language>
+	<language>" . JText::_( 'VM_CANADAPOST_SEND_LANGUAGE_CODE' ) . "</language>
 	<ratesAndServicesRequest>
 		<merchantCPCID>" . $this->merchant_cpcid . "</merchantCPCID>
 		<lineItems>" ;
@@ -206,11 +206,11 @@ class plgShippingCanadapost extends vmShippingPlugin {
 	<tr class="sectiontableheader">
 		<th>&nbsp;</th>
 		<th><?php
-			echo JText::_( 'COM_VIRTUEMART_ISSHIP_LIST_CARRIER_LBL' ) ?></th>
+			echo JText::_( 'VM_ISSHIP_LIST_CARRIER_LBL' ) ?></th>
 		<th><?php
-			echo JText::_( 'COM_VIRTUEMART_CANADAPOST_FORM_HANDLING_DATE' ) ?><sup>1</sup></th>
+			echo JText::_( 'VM_CANADAPOST_FORM_HANDLING_DATE' ) ?><sup>1</sup></th>
 		<th><?php
-			echo JText::_( 'COM_VIRTUEMART_CANADAPOST_FORM_HANDLING_LBL' ) ?><sup>2</sup></th>
+			echo JText::_( 'VM_CANADAPOST_FORM_HANDLING_LBL' ) ?><sup>2</sup></th>
 	</tr>
       <?php
       		$returnArr = array();
@@ -224,7 +224,7 @@ class plgShippingCanadapost extends vmShippingPlugin {
 				if( ($timestamp = strtotime( $delivery_date )) === - 1 ) {
 					$delivery_date = html_entity_decode( $m["deliveryDate"] ) ;
 				} else {
-					if( JText::_( 'COM_VIRTUEMART_CANADAPOST_SEND_LANGUAGE_CODE' ) == "FR" ) {
+					if( JText::_( 'VM_CANADAPOST_SEND_LANGUAGE_CODE' ) == "FR" ) {
 						setlocale( LC_TIME, 'fr' ) ;
 						$delivery_date = strftime( '%A %d %B %Y', $timestamp ) ;
 					} else {						

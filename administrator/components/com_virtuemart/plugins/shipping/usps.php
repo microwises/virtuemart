@@ -189,7 +189,7 @@ class plgShippingUsps extends vmShippingPlugin {
 					$error = curl_error( $CR );
 					if( !empty( $error )) {
 						$vmLogger->err( curl_error( $CR ) );
-						$vmLogger->info( JText::_('COM_VIRTUEMART_INTERNAL_ERROR')." USPS.com" );
+						$vmLogger->info( JText::_('VM_INTERNAL_ERROR')." USPS.com" );
 						$error = true;
 					}
 					else {
@@ -204,12 +204,12 @@ class plgShippingUsps extends vmShippingPlugin {
 							$error_code = $xmlDoc->getElementsByTagName( "Number" );
 							$error_code = $error_code->item(0);
 							$error_code = $error_code->getText();
-							$message = JText::_('COM_VIRTUEMART_ERROR_CODE').": ".$error_code.". ";
+							$message = JText::_('VM_ERROR_CODE').": ".$error_code.". ";
 
 							$error_desc = $xmlDoc->getElementsByTagName( "Description" );
 							$error_desc = $error_desc->item(0);
 							$error_desc = $error_desc->getText();
-							$message .= JText::_('COM_VIRTUEMART_ERROR_DESC').": ".$error_desc;
+							$message .= JText::_('VM_ERROR_DESC').": ".$error_desc;
 							$vmLogger->err( $message );
 						}
 					}
@@ -220,7 +220,7 @@ class plgShippingUsps extends vmShippingPlugin {
 					$fp = fsockopen($protocol."://".$host, $errno, $errstr, $timeout = 60);
 					if( !$fp ) {
 						$error = true;
-						$vmLogger->debug( JText::_('COM_VIRTUEMART_INTERNAL_ERROR').": $errstr ($errno)");
+						$vmLogger->debug( JText::_('VM_INTERNAL_ERROR').": $errstr ($errno)");
 					}
 					else {
 						//send the server request
@@ -349,7 +349,7 @@ class plgShippingUsps extends vmShippingPlugin {
 					$error = curl_error( $CR );
 					if( !empty( $error )) {
 						$vmLogger->err( curl_error( $CR ) );
-						$vmLogger->info(JText::_('COM_VIRTUEMART_INTERNAL_ERROR')." USPS.com" );
+						$vmLogger->info(JText::_('VM_INTERNAL_ERROR')." USPS.com" );
 						$error = true;
 					}
 					else {
@@ -364,12 +364,12 @@ class plgShippingUsps extends vmShippingPlugin {
 							$error_code = $xmlDoc->getElementsByTagName( "Number" );
 							$error_code = $error_code->item(0);
 							$error_code = $error_code->getText();
-							$message = JText::_('COM_VIRTUEMART_ERROR_CODE').": ".$error_code.". ";
+							$message = JText::_('VM_ERROR_CODE').": ".$error_code.". ";
 
 							$error_desc = $xmlDoc->getElementsByTagName( "Description" );
 							$error_desc = $error_desc->item(0);
 							$error_desc = $error_desc->getText();
-							$message .= JText::_('COM_VIRTUEMART_ERROR_DESC').": ".$error_desc.".";
+							$message .= JText::_('VM_ERROR_DESC').": ".$error_desc.".";
 							$vmLogger->debug ($message );
 
 						}
@@ -383,7 +383,7 @@ class plgShippingUsps extends vmShippingPlugin {
 					$fp = fsockopen($protocol."://".$host, $errno, $errstr, $timeout = 60);
 					if( !$fp ) {
 						$error = true;
-						$vmLogger->debug( JText::_('COM_VIRTUEMART_INTERNAL_ERROR').": $errstr ($errno)");
+						$vmLogger->debug( JText::_('VM_INTERNAL_ERROR').": $errstr ($errno)");
 					}
 					else {
 						//send the server request

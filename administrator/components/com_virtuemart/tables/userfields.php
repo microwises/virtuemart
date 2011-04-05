@@ -106,20 +106,20 @@ class TableUserfields extends JTable {
 	function check($nrOfValues)
 	{
 		if (!$this->name) {
-			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
+			$this->setError(JText::_('VM_USERFIELD_MUST_HAVE_NAME'));
 			return false;
 		}
 		if (!$this->title) {
-			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
+			$this->setError(JText::_('VM_USERFIELD_MUST_HAVE_TITLE'));
 			return false;
 		}
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
+			$this->setError(JText::_('VM_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 		$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
 		if (in_array($this->type, $reqValues) && $nrOfValues == 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
+			$this->setError(JText::_('VM_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
 		if ($this->fieldid == 0) {
@@ -131,7 +131,7 @@ class TableUserfields extends JTable {
 			$_c = $this->_db->loadResultArray();
 
 			if ($_c[0] > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
+				$this->setError(JText::_('VM_USERFIELD_ERR_ALREADY', $this->name));
 				return false;
 			}
 		}

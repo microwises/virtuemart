@@ -45,9 +45,9 @@ class VirtuemartViewShippingRate extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_RATE_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shipping_rates_48');
+				JToolBarHelper::title(  JText::_('VM_RATE_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shipping_rates_48');
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shipping_rates_48');
+				JToolBarHelper::title( JText::_('VM_RATE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shipping_rates_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -73,7 +73,7 @@ class VirtuemartViewShippingRate extends JView {
         	$this->assignRef('taxRates', $taxrates);
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_LIST_LBL' ), 'vm_shipping_rates_48');
+			JToolBarHelper::title( JText::_('VM_RATE_LIST_LBL' ), 'vm_shipping_rates_48');
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
@@ -101,7 +101,7 @@ class VirtuemartViewShippingRate extends JView {
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();
-		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'shipping_rate_vat_id' );
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'shipping_rate_vat_id' );
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'shipping_rate_vat_id');
 		}

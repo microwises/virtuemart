@@ -68,11 +68,11 @@ class VirtueMartModelWaitingList extends JModel {
 
 			foreach ($waiting_users as $key => $waiting_user) {
 				/* Lets make the e-mail up from the info we have */
-				$notice_subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
+				$notice_subject = JText::sprintf('PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
 
 				/* Now get the url information */
 				$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
-				$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
+				$notice_body = JText::sprintf('PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
 
 				/* Get the mailer start */
 				$mailer = shopFunctions::loadMailer();
@@ -128,19 +128,19 @@ class VirtueMartModelWaitingList extends JModel {
 //		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
 //		$db->query($q);
 //		if ($db->next_record()) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_ALREADY') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_ALREADY') );
 //			return False;
 //		}
 //		if (!$d["notify_email"]) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_EMAIL_ENTER') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 //			return False;
 //		}
 //		if (!vmValidateEmail($d["notify_email"])) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_EMAIL_NOTVALID') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_NOTVALID') );
 //			return False;
 //		}
 //		if (!$d["product_id"]) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_PRODUCT') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_PRODUCT') );
 //			return False;
 //		}
 //		return True;
@@ -150,15 +150,15 @@ class VirtueMartModelWaitingList extends JModel {
 //		global $vmLogger;
 //
 //		if (!$d["notify_email"]) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_DELETE_SELECT') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_DELETE_SELECT') );
 //			return False;
 //		}
 //		if (!vmValidateEmail($d["notify_email"])) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_EMAIL_ENTER') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 //			return False;
 //		}
 //		if (!$d["product_id"]) {
-//			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_DELETE_ERR_PRODUCT') );
+//			$vmLogger->err( JText::_('VM_WAITING_LIST_DELETE_ERR_PRODUCT') );
 //			return False;
 //		}
 //		return True;
@@ -245,11 +245,11 @@ class VirtueMartModelWaitingList extends JModel {
 //			$product_name = $ps_product->get_field($product_id, "product_name");
 //
 //			// lets make the e-mail up from the info we have
-//			$notice_subject = sprintf(JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
+//			$notice_subject = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
 //
 //			// now get the url information
 //			$url = URL . "index.php?page=shop.product_details&flypage=shop.flypage&product_id=$product_id&option=$option&Itemid=".$sess->getShopItemid();
-//			$notice_body = sprintf(JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
+//			$notice_body = sprintf(JText::_('PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
 //
 //			// send the e-mail
 //			$shopper_email = $db->f("notify_email");

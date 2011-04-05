@@ -66,20 +66,20 @@
 	
 		<param label="Show Delivery Days Quote?" type="radio" name="SHOW_DELIVERY_DAYS_QUOTE" default="1"
 			description="Enable the Quote-to-Delivery Note next to each Shipping Method that shows the days.">
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 		
 		<param label="Show Delivery ETA Quote?" type="radio" name="SHOW_DELIVERY_ETA_QUOTE" default="1"
 			description="Enable the Quote-to-Delivery Note next to each Shipping Method that shows the ETA, or Estimated Time of Arrival.">
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 		
 		<param label="Show Delivery Warning?" type="radio" name="SHOW_DELIVERY_WARNING" default="1"
 			description="Enable the Quote-to-Delivery Warning under each Shipping Method that shows the message from the shipper.">
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 
 		<param name="@spacer" type="spacer" default="Enable each UPS shipping method you would like to offer to customers. Then enter a  in percent. (ex. 12.50%)" />

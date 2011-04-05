@@ -33,14 +33,14 @@ $mainframe = JFactory::getApplication();
 
 <?php
 	echo $pane->startPane( 'pane' );
-	echo $pane->startPanel(JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL'), 'category_tab');
+	echo $pane->startPanel(JText::_('VM_CATEGORY_FORM_LBL'), 'category_tab');
 ?>
 <div class="col50">
 	<table class="adminform">
 		<tr>
 			<td class="key" style="width: 150px;">
 				<label for="published">
-					<?php echo JText::_( 'COM_VIRTUEMART_PUBLISHED' ); ?>:
+					<?php echo JText::_( 'PUBLISHED' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="shared">
-					<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_SHARED' ); ?>:
+					<?php echo JText::_( 'VM_CATEGORY_FORM_SHARED' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -67,7 +67,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_name">
-					<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_NAME' ); ?>:
+					<?php echo JText::_( 'VM_CATEGORY_FORM_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -77,7 +77,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_description">
-					<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_DESCRIPTION' ); ?>:
+					<?php echo JText::_( 'VM_CATEGORY_FORM_DESCRIPTION' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -90,12 +90,12 @@ $mainframe = JFactory::getApplication();
 					<tr>
 						<td valign="top" style="width: 50%;">
 							<fieldset>
-								<legend><?php echo JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+								<legend><?php echo JText::_('DETAILS'); ?></legend>
 								<table>
 									<tr>
 										<td class="key">
 											<label for="ordering">
-												<?php echo JText::_('COM_VIRTUEMART_ORDERING') ?>:
+												<?php echo JText::_('ORDERING') ?>:
 											</label>
 										</td>
 										<td>
@@ -105,12 +105,12 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="category_parent_id">
-												<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?>:
+												<?php echo JText::_('VM_CATEGORY_FORM_PARENT'); ?>:
 											</label>
 										</td>
 										<td>
 											<select name="category_parent_id" id="category_parent_id" class="inputbox">
-												<option value=""><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL'); ?></option>
+												<option value=""><?php echo JText::_('VM_CATEGORY_FORM_TOP_LEVEL'); ?></option>
 												<?php echo $this->categorylist;?>
 											</select>
 										</td>
@@ -118,7 +118,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="products_per_row">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_PRODUCTS_PER_ROW' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_PRODUCTS_PER_ROW' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -129,7 +129,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="limit_list_start">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_START' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_LIMIT_LIST_START' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -139,7 +139,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="limit_list_step">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_STEP' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_LIMIT_LIST_STEP' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -149,7 +149,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="limit_list_max">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_MAX' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_LIMIT_LIST_MAX' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -159,7 +159,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="limit_list_initial">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -169,7 +169,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="category_browsepage">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_TEMPLATE' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_TEMPLATE' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -179,7 +179,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="category_browsepage">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_BROWSE_LAYOUT' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_BROWSE_LAYOUT' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -189,7 +189,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="category_flypage">
-												<?php echo JText::_( 'COM_VIRTUEMART_CATEGORY_FORM_FLYPAGE' ); ?>:
+												<?php echo JText::_( 'VM_CATEGORY_FORM_FLYPAGE' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -201,12 +201,12 @@ $mainframe = JFactory::getApplication();
 						</td>
 						<td valign="top">
 							<fieldset>
-								<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION'); ?></legend>
+								<legend><?php echo JText::_('VM_META_INFORMATION'); ?></legend>
 								<table>
 									<tr>
 										<td class="key">
 											<label for="metadesc">
-												<?php echo JText::_( 'COM_VIRTUEMART_META_DESC' ); ?>:
+												<?php echo JText::_( 'VM_META_DESC' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -216,7 +216,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="metakey">
-												<?php echo JText::_( 'COM_VIRTUEMART_META_KEYWORDS' ); ?>:
+												<?php echo JText::_( 'VM_META_KEYWORDS' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -226,7 +226,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="metarobot">
-												<?php echo JText::_( 'COM_VIRTUEMART_META_ROBOTS' ); ?>:
+												<?php echo JText::_( 'VM_META_ROBOTS' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -236,7 +236,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="metaauthor">
-												<?php echo JText::_( 'COM_VIRTUEMART_META_AUTHOR' ); ?>:
+												<?php echo JText::_( 'VM_META_AUTHOR' ); ?>:
 											</label>
 										</td>
 										<td>
@@ -254,7 +254,7 @@ $mainframe = JFactory::getApplication();
 </div>
 <?php
 	echo $pane->endPanel();
-	echo $pane->startPanel(JText::_('COM_VIRTUEMART_IMAGES'), 'images_tab');
+	echo $pane->startPanel(JText::_('IMAGES'), 'images_tab');
 
 ?>
 <div class="col50">

@@ -103,7 +103,7 @@ class VirtuemartControllerConfig extends JController {
 		$data = JRequest::get('post');
 
 		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+			$msg = JText::_('VM_CONFIG_SAVED');
 			// Load the newly saved values into the session.
 			VmConfig::getInstance();
 		}
@@ -126,7 +126,7 @@ class VirtuemartControllerConfig extends JController {
 		$data = JRequest::get('post');
 
 		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+			$msg = JText::_('VM_CONFIG_SAVED');
 			// Load the newly saved values into the session.
 			VmConfig::getInstance();
 		}
@@ -147,10 +147,10 @@ class VirtuemartControllerConfig extends JController {
 	{
 		$model = $this->getModel('config');
 		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('COM_VIRTUEMART_CONFIGS_DELETED');
+			$msg = JText::_('VM_CONFIGS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=config', $msg);

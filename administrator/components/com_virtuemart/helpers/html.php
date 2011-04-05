@@ -157,7 +157,7 @@ class VmHTML{
         }
         reset( $arr );
         $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('COM_VIRTUEMART_SELECT')."</option>";
+        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('VM_SELECT')."</option>";
         $n=count( $arr );
         for ($i=0; $i < $n; $i++ ) {
 

@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
  	 */
  	public function check(){
 		if (!$this->user_id) {
-			$this->setError(JText::_('COM_VIRTUEMART_USERS_MUST_HAVE_USER_ID'));
+			$this->setError(JText::_('VM_USERS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 		return true;

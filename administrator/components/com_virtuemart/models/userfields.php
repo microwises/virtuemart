@@ -467,13 +467,13 @@ class VirtueMartModelUserfields extends JModel {
 				}
 				// TODO Handling Agreed field
 				$_r->title = '<script type="text/javascript">//<![CDATA[
-						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-						document.write(\' ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS') .')</a>\');
+						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('VM_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+						document.write(\' ('.JText::_('VM_STORE_FORM_TOS') .')</a>\');
 					//]]></script>
 					<noscript>
-					<label for="agreed_field">'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'</label>
-					<a target="_blank" href="/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'">
-					 ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS').')
+					<label for="agreed_field">'. JText::_('VM_I_AGREE_TO_TOS') .'</label>
+					<a target="_blank" href="/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('VM_I_AGREE_TO_TOS') .'">
+					 ('.JText::_('VM_STORE_FORM_TOS').')
 					</a></noscript>';
 				break;
 		}
@@ -535,7 +535,7 @@ class VirtueMartModelUserfields extends JModel {
 	 *     <thead>
 	 *       <tr>
 	 *         <td class="key" style="text-align: center;"  colspan="2">
-	 *            <?php echo JText::_('COM_VIRTUEMART_TABLE_HEADER') ?>
+	 *            <?php echo JText::_('VM_TABLE_HEADER') ?>
 	 *         </td>
 	 *       </tr>
 	 *     </thead>

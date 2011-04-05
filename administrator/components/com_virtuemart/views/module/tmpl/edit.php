@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus ï¿½hler
+* @author Markus Öhler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('VM_SHOPPER_GROUP_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
-					<?php echo JText::_( 'COM_VIRTUEMART_SHOPPER_GROUP_FORM_NAME' ); ?>:
+					<?php echo JText::_( 'VM_SHOPPER_GROUP_FORM_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
+					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>
@@ -51,7 +51,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
       <td width="110" class="key">
         <label for="default">
-          <?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>:
+          <?php echo JText::_('VM_DEFAULT'); ?>:
         </label>
       </td>
       <td>
@@ -61,7 +61,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_discount">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_DISCOUNT'); ?>:
+					<?php echo JText::_('VM_SHOPPER_GROUP_FORM_DISCOUNT'); ?>:
 				</label>
 			</td>
 			<td>
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="show_price_including_tax">
-					<?php echo JText::_( 'COM_VIRTUEMART_ADMIN_CFG_PRICES_INCLUDE_TAX' ); ?>:
+					<?php echo JText::_( 'VM_ADMIN_CFG_PRICES_INCLUDE_TAX' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -81,7 +81,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_DESC'); ?>:
+					<?php echo JText::_('VM_SHOPPER_GROUP_FORM_DESC'); ?>:
 				</label>
 			</td>
 			<td>

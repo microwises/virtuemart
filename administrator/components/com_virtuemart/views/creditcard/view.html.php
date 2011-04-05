@@ -45,9 +45,9 @@ class VirtuemartViewCreditcard extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_credit_48');
+				JToolBarHelper::title(  JText::_('VM_CREDITCARD_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_credit_48');
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_credit_48');
+				JToolBarHelper::title( JText::_('VM_CREDITCARD_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_credit_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -56,7 +56,7 @@ class VirtuemartViewCreditcard extends JView {
 			$this->assignRef('creditcard',	$creditcard);
         }
         else {
-			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_CREDITCARD_LIST_LBL' ), 'vm_credit_48' );
+			JToolBarHelper::title( JText::_( 'VM_CREDITCARD_LIST_LBL' ), 'vm_credit_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

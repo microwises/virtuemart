@@ -27,10 +27,10 @@ JHTML::_('behavior.tooltip');
 $pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
 echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_PAYM_FORM'), 'paym_edit');
+echo $pane->startPanel(JText::_('VM_ADMIN_PAYM_FORM'), 'paym_edit');
 echo $this->loadTemplate('edit');
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_PAYM_CONFIGURATION'), 'paym_config');
+echo $pane->startPanel(JText::_('VM_ADMIN_PAYM_CONFIGURATION'), 'paym_config');
 echo $this->loadTemplate('config');
 echo $pane->endPanel();
 

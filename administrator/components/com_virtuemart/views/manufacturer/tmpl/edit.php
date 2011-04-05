@@ -28,12 +28,12 @@ $editor = JFactory::getEditor();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'COM_VIRTUEMART_MANUFACTURER_DETAILS' ); ?></legend>
+	<legend><?php echo JText::_( 'VM_MANUFACTURER_DETAILS' ); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'COM_VIRTUEMART_MANUFACTURER_NAME' ); ?>:
+					<?php echo JText::_( 'VM_MANUFACTURER_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -43,7 +43,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>:
+					<?php echo JText::_('VM_MANUFACTURER_CATEGORY'); ?>:
 				</label>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>:
+					<?php echo JText::_('VM_MANUFACTURER_URL'); ?>:
 				</label>
 			</td>
 			<td>
@@ -64,7 +64,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
+					<?php echo JText::_('VM_PUBLISH'); ?>:
 				</label>
 			</td>
 			<td>
@@ -76,7 +76,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>:
+					<?php echo JText::_('VM_MANUFACTURER_EMAIL'); ?>:
 				</label>
 			</td>
 			<td>
@@ -86,7 +86,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESC'); ?>:
+					<?php echo JText::_('VM_MANUFACTURER_DESC'); ?>:
 				</label>
 			</td>
 			<td>

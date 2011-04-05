@@ -64,16 +64,16 @@ class VirtueMartViewCart extends JView {
 			$this->prepareCartData();
 			$this->lSelectCoupon();
 
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTCOUPON'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTCOUPON'));
+			$pathway->addItem(JText::_('VM_CART_SELECTCOUPON'));
+			$document->setTitle(JText::_('VM_CART_SELECTCOUPON'));
 
 		} else if($layoutName=='selectshipper'){
 			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
 
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
+			$pathway->addItem(JText::_('VM_CART_SELECTSHIPPER'));
+			$document->setTitle(JText::_('VM_CART_SELECTSHIPPER'));
 
 		} else if($layoutName=='selectpayment'){
 
@@ -84,15 +84,15 @@ class VirtueMartViewCart extends JView {
 
 			$this->lSelectPayment();
 
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
+			$pathway->addItem(JText::_('VM_CART_SELECTPAYMENT'));
+			$document->setTitle(JText::_('VM_CART_SELECTPAYMENT'));
 
 		} else if($layoutName=='orderdone'){
 
 			$this->lOrderDone();
 
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
+			$pathway->addItem(JText::_('VM_CART_THANKYOU'));
+			$document->setTitle(JText::_('VM_CART_THANKYOU'));
 
 		} else if($layoutName=='default' ){
 
@@ -106,16 +106,16 @@ class VirtueMartViewCart extends JView {
 
 			$this->prepareVendor();
 
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_OVERVIEW'));
+			$pathway->addItem(JText::_('VM_CART_OVERVIEW'));
+			$document->setTitle(JText::_('VM_CART_OVERVIEW'));
 
 			$this->prepareContinueLink();
 
 			if($this->_cart->getDataValidated()){
-				$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+				$text = JText::_('VM_ORDER_CONFIRM_MNU');
 				$checkout_task = 'confirm';
 			} else {
-				$text = JText::_('COM_VIRTUEMART_CHECKOUT_TITLE');
+				$text = JText::_('VM_CHECKOUT_TITLE');
 				$checkout_task = 'checkout';
 			}
 			$this->assignRef('checkout_task', $checkout_task);
@@ -132,8 +132,8 @@ class VirtueMartViewCart extends JView {
 			$this->prepareMailData();
 
 			//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
-//			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_TITLE'));
-//			$mainframe->setPageTitle(JText::_('COM_VIRTUEMART_CART_TITLE'));
+//			$pathway->addItem(JText::_('VM_CART_TITLE'));
+//			$mainframe->setPageTitle(JText::_('VM_CART_TITLE'));
 
 		}
 
@@ -152,7 +152,7 @@ class VirtueMartViewCart extends JView {
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
-		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 		$this->assignRef('continue_link', $continue_link);
 	}
@@ -169,7 +169,7 @@ class VirtueMartViewCart extends JView {
 			$_addressBT = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'BT');
 
 			// Overwrite the address name for display purposes
-			$_addressBT[0]->address_type_name = JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
+			$_addressBT[0]->address_type_name = JText::_('VM_ACC_BILL_DEF');
 
 			$_addressST = $this->_user->getUserAddressList($this->_userDetails->JUser->get('id') , 'ST');
 
@@ -179,7 +179,7 @@ class VirtueMartViewCart extends JView {
 					.'&view=user'
 					.'&task=editaddresscart'
 					.'&addrtype=BT'
-				. '">'.JText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a>'.'<br />';
+				. '">'.JText::_('VM_ACC_BILL_DEF').'</a>'.'<br />';
 				$_addressST = array();
 		}
 

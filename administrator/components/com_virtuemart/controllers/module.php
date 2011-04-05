@@ -100,7 +100,7 @@ class VirtuemartControllerModule extends JController
 		$model =& $this->getModel('module');
 
 		if ($model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_MODULE_SAVED');
+			$msg = JText::_('VM_MODULE_SAVED');
 		}
 		else {
 			$msg = JText::_($model->getError());
@@ -119,10 +119,10 @@ class VirtuemartControllerModule extends JController
 	{
 		$model = $this->getModel('module');
 		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_MODULES_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_MODULES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('COM_VIRTUEMART_MODULE_DELETED');
+			$msg = JText::_('VM_MODULE_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=module', $msg);

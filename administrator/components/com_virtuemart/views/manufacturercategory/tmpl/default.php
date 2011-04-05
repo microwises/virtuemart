@@ -32,17 +32,17 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturerCategories); ?>);" />
 			</th>			
 			<th>
-				<?php echo JText::_( 'COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME' ); ?>
+				<?php echo JText::_( 'VM_MANUFACTURER_CATEGORY_NAME' ); ?>
 			</th>				
 				
 			<th>
-				<?php echo JText::_( 'COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESC' ); ?>
+				<?php echo JText::_( 'VM_MANUFACTURER_CATEGORY_DESC' ); ?>
 			</th>								
 			<th>
-				<?php echo JText::_( 'COM_VIRTUEMART_MANUFACTURER_LIST' ); ?>
+				<?php echo JText::_( 'VM_MANUFACTURER_LIST' ); ?>
 			</th>	
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_PUBLISHED' ); ?>
+				<?php echo JText::_( 'VM_PUBLISH' ); ?>
 			</th>													
 		</tr>
 		</thead>

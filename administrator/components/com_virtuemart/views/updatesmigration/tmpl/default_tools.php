@@ -19,13 +19,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
+echo JText::_('VM_UPDATE_MIGRATION_TOOLS_WARNING');
 ?>
 <table cellpadding="10">
     <tr>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_INSTALLSAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_INSTALLSAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
 	    </span>
 	    <br />
@@ -49,7 +49,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
     <tr>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=restoreSystemDefaults'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_RESTOREDEFAULTS_CONFIRM'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_RESTOREDEFAULTS_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_cpanel_48.png">
 	    </span>
 	    <br />
@@ -57,7 +57,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmData'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_REMOVEDATA_CONFIRM'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_REMOVEDATA_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />
@@ -65,7 +65,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmTables'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_REMOVETABLES_CONFIRM'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_UPDATE_REMOVETABLES_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />
@@ -74,7 +74,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
   
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_OF_VIRTUEMART_AND_FRESH'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('VM_DELETES_ALL_VM_TABLES_OF_VIRTUEMART_AND_FRESH'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />

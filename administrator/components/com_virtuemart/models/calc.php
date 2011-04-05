@@ -201,8 +201,8 @@ class VirtueMartModelCalc extends JModel
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
 		$task 	= $row->$variable ? 'unpublish' : 'publish';
-		$alt 	= $row->$variable ? JText::_('JPUBLISHEDED' ) : JText::_('JUNPUBLISHED' );
-		$action = $row->$variable ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM' ) : JText::_('JPUBLISHED_ITEM' );
+		$alt 	= $row->$variable ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED' );
+		$action = $row->$variable ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
 
 		$href = '
 		<a title="'. $action .'">
@@ -227,7 +227,7 @@ class VirtueMartModelCalc extends JModel
 		$startDate = JFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toMySQL();
 //		if ($data['publish_down'] == '' or $data['publish_down']==0){
-		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('JNEVER')){
+		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('VM_NEVER')){
 			$this->_db = JFactory::getDBO();
 			$data['publish_down']	= $this->_db->getNullDate();
 		} else {

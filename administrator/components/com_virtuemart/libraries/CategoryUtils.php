@@ -83,7 +83,7 @@
 //						}
 //					}
 //				}
-//				$url = str_replace( basename( $url ), $GLOBALS['COM_VIRTUEMART_LANG']->convert(basename($url)), $url );
+//				$url = str_replace( basename( $url ), $GLOBALS['VM_LANG']->convert(basename($url)), $url );
 //			}
 //		}
 //		else {

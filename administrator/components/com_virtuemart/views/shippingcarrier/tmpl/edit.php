@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER'); ?></legend>
+	<legend><?php echo JText::_('VM_SHIPPING_CARRIER'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'COM_VIRTUEMART_CARRIER_FORM_NAME' ); ?>:
+					<?php echo JText::_( 'VM_CARRIER_FORM_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'COM_VIRTUEMART_CARRIER_FORM_LIST_ORDER' ); ?>:
+					<?php echo JText::_( 'VM_CARRIER_FORM_LIST_ORDER' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -52,7 +52,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CARRIER_CLASS_NAME'); ?>:
+					<?php echo JText::_('VM_CARRIER_CLASS_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -62,7 +62,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CARRIER_VENDOR'); ?>:
+					<?php echo JText::_('VM_CARRIER_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>

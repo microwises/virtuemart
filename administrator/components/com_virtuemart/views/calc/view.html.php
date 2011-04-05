@@ -60,7 +60,7 @@ class VirtuemartViewCalc extends JView {
 			
 			$isNew = ($calc->calc_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CALC_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('VM_CALC_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
 				
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
@@ -85,7 +85,7 @@ class VirtuemartViewCalc extends JView {
 				if(empty($calc->calc_vendor_id))$calc->calc_vendor_id = $userDetails->vendor_id;
 			}
 			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('VM_CALC_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();
@@ -129,7 +129,7 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
-			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_CALC_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_( 'VM_CALC_LIST_LBL' ), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
@@ -166,12 +166,12 @@ class VirtuemartViewCalc extends JView {
 		$selected = modelfunctions::prepareTreeSelection($selected);
 		//MathOp array
 		$entryPoints = array(
-		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAX')),
-		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAX')),
-		'2' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAX')),
-		'3' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAXBILL')),
-		'4' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAXBILL')),
-		'5' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
+		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAX')),
+		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAX')),
+		'2' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAX')),
+		'3' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_TAXBILL')),
+		'4' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DBTAXBILL')),
+		'5' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('VM_CALC_EPOINT_DATAXBILL')),
 		
 		);
 

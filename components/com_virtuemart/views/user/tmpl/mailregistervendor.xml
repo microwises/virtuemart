@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_MAILREGISTERVENDOR_MENU" hidden="true">
-		<message><![CDATA[COM_VIRTUEMART_MAILREGISTERVENDOR_DESC]]></message>
+	<layout title="VM_MAILREGISTERVENDOR_MENU" hidden="true">
+		<message><![CDATA[VM_MAILREGISTERVENDOR_DESC]]></message>
 	</layout>
 </metadata>

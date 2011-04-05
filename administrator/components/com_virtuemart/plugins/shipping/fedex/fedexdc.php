@@ -430,7 +430,7 @@ class FedExDC extends FedExTags{
 		$fp = fsockopen(FEDEX_URI, $port, $errno, $errstr, FEDEX_REQUEST_TIMEOUT);
 		if( !$fp ) {
 			$error = true;
-			$html = JText::_('COM_VIRTUEMART_INTERNAL_ERROR').": $errstr ($errno)";
+			$html = JText::_('VM_INTERNAL_ERROR').": $errstr ($errno)";
 			return false;
 		}
 		else {

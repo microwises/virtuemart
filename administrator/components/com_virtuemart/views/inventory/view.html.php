@@ -67,13 +67,13 @@ class VirtuemartViewInventory extends JView {
 
 		/* Create filter */
 		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
-		$options[] = JHTML::_('select.option', 0, JText::_('COM_VIRTUEMART_LIST_ALL_PRODUCTS'));
-		$options[] = JHTML::_('select.option', 1, JText::_('COM_VIRTUEMART_HIDE_OUT_OF_STOCK'));
+		$options[] = JHTML::_('select.option', '', JText::_('SELECT'));
+		$options[] = JHTML::_('select.option', 0, JText::_('VM_LIST_ALL_PRODUCTS'));
+		$options[] = JHTML::_('select.option', 1, JText::_('VM_HIDE_OUT_OF_STOCK'));
 		$lists['stockfilter'] = JHTML::_('select.genericlist', $options, 'stockfilter', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('stockfilter'));
 
 		/* Toolbar */
-		JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_PRODUCT_INVENTORY_LBL' ), 'vm_inventory_48');
+		JToolBarHelper::title(JText::_( 'VM_PRODUCT_INVENTORY_LBL' ), 'vm_inventory_48');
 		JToolBarHelper::publish();
 		JToolBarHelper::unpublish();
 

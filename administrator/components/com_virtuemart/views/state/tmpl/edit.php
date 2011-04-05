@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_STATE_DETAILS' ); ?></legend>
+	<legend><?php echo JText::_('VM_STATE_DETAILS' ); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_STATE_NAME' ); ?>:
+					<?php echo JText::_('VM_STATE_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
+					<?php echo JText::_('PUBLISHED'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 		<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_SHIPPING_ZONE'); ?>:
+					<?php echo JText::_('VM_SHIPPING_ZONE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -63,7 +63,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'COM_VIRTUEMART_STATE_3_CODE' ); ?>:
+					<?php echo JText::_( 'VM_STATE_3_CODE' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -73,7 +73,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'COM_VIRTUEMART_STATE_2_CODE' ); ?>:
+					<?php echo JText::_( 'VM_STATE_2_CODE' ); ?>:
 				</label>
 			</td>
 			<td>

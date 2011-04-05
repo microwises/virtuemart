@@ -85,9 +85,9 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='edit'){
 			if($this->_model->_id==0 && $this->_cuid==0){
-				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
+				$button_lbl = JText::_('VM_REGISTER');
 			} else {
-				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
+				$button_lbl = JText::_('VM_SAVE');
 			}
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
@@ -278,7 +278,7 @@ class VirtuemartViewUser extends JView {
 		// Shipping address(es)
 		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
 		if (($_c = count($_addressList)) == 0) {
-			$this->_lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+			$this->_lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
 		} else {
 			$_shipTo = array();
 			for ($_i = 0; $_i < $_c; $_i++) {
@@ -371,7 +371,13 @@ class VirtuemartViewUser extends JView {
 			}
 
 			if(empty($this->_lists['vendors'])){
-				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');
+// Outcommented to revert rev. 2916 
+//				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
+//					.(empty($this->_userDetails->vendor_id)
+//						?VmConfig::get('default_vendor_id')
+//						: $this->_userDetails->vendor_id
+//					 ).'"/>';
+				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
 		}
 
@@ -416,8 +422,8 @@ class VirtuemartViewUser extends JView {
 		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
 		&& ($this->_model->_id != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
-		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'COM_VIRTUEMART_ADMIN_CFG_YES', 'COM_VIRTUEMART_ADMIN_CFG_NO');
-		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_ADMIN_CFG_YES', 'COM_VIRTUEMART_ADMIN_CFG_NO');
+		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
 
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
@@ -483,12 +489,12 @@ class VirtuemartViewUser extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED' ) : JText::_('COM_VIRTUEMART_UNPUBLISHED' );
-			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM' ) : JText::_('COM_VIRTUEMART_PUBLISH_ITEM' );
+			$alt 	= $field ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED' );
+			$action = $field ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED' ) : JText::_('COM_VIRTUEMART_DISABLED' );
-			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM' ) : JText::_('COM_VIRTUEMART_ENABLE_ITEM' );
+			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
+			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
 		}
 
 		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'

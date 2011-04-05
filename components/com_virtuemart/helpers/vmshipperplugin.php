@@ -334,19 +334,19 @@ abstract class vmShipperPlugin extends JPlugin
 		$_html = '<table class="admintable">'."\n"
 			.	'	<thead>'."\n"
 			.	'		<tr>'."\n"
-			.	'			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_LBL') . '</td>'."\n"
+			.	'			<td class="key" style="text-align: center;" colspan="2">' . JText::_('VM_ORDER_PRINT_SHIPPING_LBL') . '</td>'."\n"
 			.	'		</tr>'."\n"
 			.	'	</thead>'."\n"
 			.	'	<tr>'."\n"
-			.	'		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') . ': </td>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') . ': </td>'."\n"
 			.	'		<td align="left">' . $_shipInfo->carrier . '</td>'."\n"
 			.	'	</tr>'."\n"
 			.	'	<tr>'."\n"
-			.	'		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>'."\n"
 			.	'		<td>' . $_shipInfo->name . '</td>'."\n"
 			.	'	</tr>'."\n"
 			.	'	<tr>'."\n"
-			.	'		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>'."\n"
+			.	'		<td class="key">' . JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>'."\n"
 			.	'		<td align="left">' . $_currency->getFullValue($this->getShippingRate($this->getShippingRateIDForOrder($_orderId))) . '</td>'."\n"
 			.	'	</tr>'."\n"
 			.	'</table>'."\n"
@@ -562,7 +562,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'LIMIT 1';
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
-			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_CART_NO_SHIPPINGRATE'));
+			JError::raiseWarning(500, JText::_('VM_CART_NO_SHIPPINGRATE'));
 			return -1;
 		}
 		return $_r['shipping_rate_id'];

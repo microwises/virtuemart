@@ -107,11 +107,11 @@ class shopFunctionsF {
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
+				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('CMN_PDF'));
 			} else {
-				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
+				$text = JText::_('CMN_PDF') .'&nbsp;';
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
+			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('CMN_PDF'));
 		}
 	}
 
@@ -129,11 +129,11 @@ class shopFunctionsF {
 			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
 			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('JGLOBAL_EMAIL'));
+				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('CMN_EMAIL'));
 			} else {
-				$text = '&nbsp;'. JText::_('JGLOBAL_EMAIL');
+				$text = '&nbsp;'. JText::_('CMN_EMAIL');
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('JGLOBAL_EMAIL'), 'screenX=100,screenY=200');
+			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('CMN_EMAIL'), 'screenX=100,screenY=200');
 		}
 	}
 

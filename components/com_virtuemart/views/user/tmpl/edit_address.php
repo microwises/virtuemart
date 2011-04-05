@@ -31,7 +31,7 @@ function myValidator(f, t)
 		f.submit();
 		return true;
 	} else {
-		var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
+		var msg = '<?php echo JText::_('VM_USER_FORM_MISSING_REQUIRED'); ?>';
 		alert (msg);
 	}
 	return false;
@@ -40,14 +40,14 @@ function myValidator(f, t)
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
 <div class="floatright">
-	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
-	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('VM_SAVE'); ?></button>
+	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 <br style="clear:both;" />
 
 <fieldset>
 	<span class="bold">
-		<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
+		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
 	</span><br /><br />
 <?php
 	$_k = 0;
@@ -120,10 +120,10 @@ function myValidator(f, t)
 if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
+		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 
 	<table class="adminform user-details">

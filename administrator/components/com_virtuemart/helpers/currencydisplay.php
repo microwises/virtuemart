@@ -91,10 +91,10 @@ class CurrencyDisplay {
 
 				if(empty($currencyId)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
-					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+					JError::raiseWarning('1', JText::sprintf('VM_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
-					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+					JError::raiseWarning('1', JText::sprintf('VM_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				}
 				//would be nice to automatically unpublish the product/currency or so
 			}

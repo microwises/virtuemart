@@ -58,7 +58,7 @@ class TableUserfields_values extends JTable {
 	function check()
 	{
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldtitle) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
+			$this->setError(JText::_('VM_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 

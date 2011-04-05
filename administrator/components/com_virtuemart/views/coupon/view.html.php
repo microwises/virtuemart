@@ -45,7 +45,7 @@ class VirtuemartViewCoupon extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_COUPON_NEW_HEADER' ).': <small><small>[ New ]</small></small>', 'vm_coupon_48');
+				JToolBarHelper::title(  JText::_('VM_COUPON_NEW_HEADER' ).': <small><small>[ New ]</small></small>', 'vm_coupon_48');
 				// Set a default expiration date
 				$_expTime = explode(',', VmConfig::get('coupons_default_expire'));
 				if ($_expTime[1] == 'W') {
@@ -70,7 +70,7 @@ class VirtuemartViewCoupon extends JView {
 					$coupon->coupon_expiry_date = $_expDate->format("U");
 				}
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'vm_coupon_48');
+				JToolBarHelper::title( JText::_('VM_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'vm_coupon_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -79,7 +79,7 @@ class VirtuemartViewCoupon extends JView {
 			$this->assignRef('coupon',	$coupon);
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUPON_LIST'), 'vm_coupon_48');
+			JToolBarHelper::title( JText::_('VM_COUPON_LIST'), 'vm_coupon_48');
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();

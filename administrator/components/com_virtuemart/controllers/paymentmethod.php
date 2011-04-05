@@ -94,7 +94,7 @@ class VirtuemartControllerPaymentmethod extends JController
 	 */
 	public function cancel()
 	{
-		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
+		$msg = JText::_('VM_OPERATION_CANCELED');
 		$this->setRedirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
 	}	
 	
@@ -109,7 +109,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$cmd = JRequest::getCmd('task');
 
 		if ($id = $paymModel->store()) {
-			$msg = JText::_('COM_VIRTUEMART_PAYM_SAVED_SUCCESS');
+			$msg = JText::_('VM_PAYM_SAVED_SUCCESS');
 		}
 		else {
 			$msg = JText::_($paymModel->getError());
@@ -141,7 +141,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
+			$msg = JText::_('VM_SELECT_ITEM_TO_DELETE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
 			return;
 		}
@@ -149,10 +149,10 @@ class VirtuemartControllerPaymentmethod extends JController
 		$paymModel = $this->getModel('paymentmethod');
 
 		if (!$paymModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'COM_VIRTUEMART_CALC_DELETED_SUCCESS');
+			$msg = JText::_( 'VM_CALC_DELETED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -168,10 +168,10 @@ class VirtuemartControllerPaymentmethod extends JController
 	{
 		$paymModel = $this->getModel('paymentmethod');
 		if (!$paymModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('VM_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_PUBLISHED_SUCCESS');
+			$msg = JText::_('VM_CALC_PUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -187,10 +187,10 @@ class VirtuemartControllerPaymentmethod extends JController
 	{
 		$paymModel = $this->getModel('paymentmethod');
 		if (!$paymModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');
+			$msg = JText::_('VM_CALC_UNPUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -215,7 +215,7 @@ class VirtuemartControllerPaymentmethod extends JController
 //		JArrayHelper::toInteger($cid);
 //
 //		if(count($cid) < 1) {
-//			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
+//			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 //			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
 //		}
 //
@@ -223,10 +223,10 @@ class VirtuemartControllerPaymentmethod extends JController
 //		$status = $paymModel->shopperPublish($cid);
 //
 //		if( $status == 1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_SUCCESS');
+//			$msg = JText::_('VM_CALC_SHOPPER_PUBLISH_SUCCESS');
 //		}
 //		elseif( $status == -1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_SHOPPER_UNPUBLISH_SUCCESS');
+//			$msg = JText::_('VM_CALC_SHOPPER_UNPUBLISH_SUCCESS');
 //		}
 //
 //		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -251,7 +251,7 @@ class VirtuemartControllerPaymentmethod extends JController
 //		JArrayHelper::toInteger($cid);
 //
 //		if(count($cid) < 1) {
-//			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
+//			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 //			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
 //		}
 //
@@ -259,10 +259,10 @@ class VirtuemartControllerPaymentmethod extends JController
 //		$status = $paymModel->vendorPublish($cid);
 //
 //		if( $status == 1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_SUCCESS');
+//			$msg = JText::_('VM_CALC_VENDOR_PUBLISH_SUCCESS');
 //		}
 //		elseif( $status == -1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_VENDOR_UNPUBLISH_SUCCESS');
+//			$msg = JText::_('VM_CALC_VENDOR_UNPUBLISH_SUCCESS');
 //		}
 //
 //		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -287,7 +287,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -295,7 +295,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$model = $this->getModel('paymentmethod');
 
 		if ($model->orderCalc($id, -1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP' );
+			$msg = JText::_('VM_ITEM_MOVED_UP' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -322,7 +322,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -330,7 +330,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$model = $this->getModel('paymentmethod');
 
 		if ($model->orderCalc($id, 1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN' );
+			$msg = JText::_('VM_ITEM_MOVED_DOWN' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -353,7 +353,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$model = $this->getModel('paymentmethod');
 
 		if ($model->setOrder($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED' );
+			$msg = JText::_('VM_NEW_ORDERING_SAVED' );
 		} else {
 			$msg = $model->getError();
 		}

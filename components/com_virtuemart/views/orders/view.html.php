@@ -48,13 +48,13 @@ class VirtuemartViewOrders extends JView {
 				if(!Permissions::getInstance()->check("admin")) {
 					if(!empty($orderDetails['details']['BT']->user_id)){
 						if ($orderDetails['details']['BT']->user_id != $cuid) {
-							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+							echo JText::_('VM_RESTRICTED_ACCESS');
 							return;
 						}
 					}
 				}
 			} else {
-				echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+				echo JText::_('VM_RESTRICTED_ACCESS');
 				return;
 			}
 			$this->assignRef('orderdetails', $orderDetails);

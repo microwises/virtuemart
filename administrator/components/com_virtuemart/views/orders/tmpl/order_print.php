@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 echo '<link rel="stylesheet" href="'.'templates'.DS.'system'.DS.'css'.DS.'system.css'.'" type="text/css" />'."\n";
 echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'template.css'.'" type="text/css" />'."\n";
 ?>
-<title><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $this->orderID; ?></title>
+<title><?php echo JText::_('VM_ORDER_PRINT_PO_LBL'). ' ' . $this->orderID; ?></title>
 </head>
 <body onload="javascript:print();">
 <table class="adminlist">
@@ -31,20 +31,20 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<td valign="top" width="50%">
 		<table class="adminlist">
 			<tr>
-				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
+				<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
 				<td><?php printf("%08d", $this->orderbt->order_id);?></td>
 			</tr>
 			<tr>
-				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
+				<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</strong></td>
 				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->cdate);?></td>
 			</tr>
 			<tr>
-				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
+				<td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
 				<td><?php echo $this->orderbt->order_status_name; ?></td>
 			</tr>
 			<?php if (VmConfig::get('enable_coupons') == '1') { ?>
 			<tr>
-				<td><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_COUPON_HEADER') ?>:</strong></td>
+				<td><strong><?php echo JText::_('VM_COUPON_COUPON_HEADER') ?>:</strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>
 			</tr>
 			<?php } ?>
@@ -56,7 +56,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 <table class="adminlist">
 	<tr>
 		<td valign="top">
-			<strong><em><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></em></strong><br/>
+			<strong><em><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></em></strong><br/>
 			<table border="0"><?php 
 				foreach ($this->userfields['fields'] as $_field ) {
 					if (!empty($_field['value'])) {
@@ -67,7 +67,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 			?></table>
 		</td>
 		<td valign="top">
-			<strong><em><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></em></strong><br/>
+			<strong><em><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></em></strong><br/>
 			<table border="0"><?php 
 				foreach ($this->shippingfields['fields'] as $_field ) {
 					if (!empty($_field['value'])) {
@@ -86,13 +86,13 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th class="title" width="47" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?></th>
-					<th class="title" width="*" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></th>
-					<th class="title" width="10%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-					<th class="title" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
-					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_NET') ?></th>
-					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_GROSS') ?></th>
-					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
+					<th class="title" width="47" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
+					<th class="title" width="*" align="left"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
+					<th class="title" width="10%" align="left"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
+					<th class="title" width="10%"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
+					<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
+					<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?></th>
+					<th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
 				</tr>
 			</thead>
 			<?php foreach ($this->order['items'] as $item) { ?>
@@ -125,7 +125,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<tr>
 				<td align="right" colspan="5">
-				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
+				<div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_subtotal); ?></td>
@@ -137,8 +137,8 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 					?>
 			<tr>
 				<td align="right" colspan="5"><strong> <?php
-				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_FEE');
+				if ($this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+				else echo JText::_('VM_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
@@ -150,7 +150,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				if ($this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				echo "- ".$this->orderbt->coupon_discount; ?></td>
 			</tr>
@@ -158,15 +158,15 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				}
 			}?>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_tax); ?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping_tax); ?></td>
 			</tr>
 			<?php
@@ -175,8 +175,8 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 					?>
 			<tr>
 				<td align="right" colspan="5"><strong><?php
-				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_FEE');
+				if( $this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+				else echo JText::_('VM_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				if ($this->orderbt->order_discount > 0 )
@@ -189,7 +189,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				if( $this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->getFullValue($this->orderbt->coupon_discount); ?></td>
 			</tr>
 			<?php
@@ -197,7 +197,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 			}
 			?>
 			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>:</strong></td>
+				<td align="right" colspan="5"><strong><?php echo JText::_('VM_CART_TOTAL') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->getFullValue($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
@@ -222,19 +222,19 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<td style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_LBL') ?></td>
+					<td style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?></td>
 				</tr>
 			</thead>
 			<tr>
-				<td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>:</td>
+				<td><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>:</td>
 				<td align="left"><?php echo $this->shippingInfo->carrier; ?></td>
 			</tr>
 			<tr>
-				<td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') ?>:</td>
+				<td><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>:</td>
 				<td><?php echo $this->shippingInfo->name; ?></td>
 			</tr>
 			<tr>
-				<td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>:</td>
+				<td><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>:</td>
 				<td align="left"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
 			</tr>
 		</table>
@@ -259,7 +259,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+					<th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 				</tr>
 			</thead>
 			<tr>

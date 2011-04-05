@@ -43,7 +43,7 @@ class VirtuemartViewConfig extends JView {
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');
 
-		JToolBarHelper::title(JText::_('COM_VIRTUEMART_CONFIG'), 'vm_config_48');
+		JToolBarHelper::title(JText::_('VM_CONFIG'), 'vm_config_48');
 		JToolBarHelper::divider();
 		JToolBarHelper::apply();
 		JToolBarHelper::save();
@@ -59,7 +59,7 @@ class VirtuemartViewConfig extends JView {
 		$this->assignRef('userparams', $userparams);
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
+		$templateList = ShopFunctions::renderTemplateList(JText::_('VM_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
 
 		$this->assignRef('jTemplateList', $templateList);
 

@@ -228,7 +228,7 @@ class VmConnector {
 
 	    // If didnt get content-lenght, something is wrong, return false.
 	    if ( trim($data) == '' ) {
-			JError::raiseWarning('','An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
+			JError::raiseWarning('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 			return false;
 	    }
 	    $result = trim( $data );

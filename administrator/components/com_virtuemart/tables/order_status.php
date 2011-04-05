@@ -58,11 +58,11 @@ class TableOrder_status extends JTable {
 	function check()
 	{
         if (empty($this->order_status_code)) {
-			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
+			$this->setError(JText::_('VM_ORDER_TABLE_ERROR_CODE'));
 			return false;
 		}
 		if (empty($this->order_status_name)) {
-			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
+			$this->setError(JText::_('VM_ORDER_TABLE_ERROR_NAME'));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ class TableOrder_status extends JTable {
 		if(is_array($row)){
 			if($row[0]>0){
 				if($row[1] != $this->order_status_id){
-					$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_EXISTS'));
+					$this->setError(JText::_('VM_ORDER_TABLE_ERROR_EXISTS'));
 					return false;
 				}
 			}					

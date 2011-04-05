@@ -60,7 +60,7 @@ class TableModule extends JTable
 	function check() 
 	{
     if (!$this->module_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_MODULE_RECORDS_MUST_HAVE_NAME'));
+			$this->setError(JText::_('VM_MODULE_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} 
 		

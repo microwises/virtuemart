@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('VM_ORDER_STATUS_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_NAME'); ?>:
+					<?php echo JText::_('VM_ORDER_STATUS_LIST_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_CODE'); ?>:
+					<?php echo JText::_('VM_ORDER_STATUS_LIST_CODE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_DESCRIPTION'); ?>:
+					<?php echo JText::_('VM_MANUFACTURER_FORM_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
+					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>
@@ -75,7 +75,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_LIST_ORDER'); ?>:
+					<?php echo JText::_('VM_ORDER_STATUS_FORM_LIST_ORDER'); ?>:
 				</label>
 			</td>
 			<td>

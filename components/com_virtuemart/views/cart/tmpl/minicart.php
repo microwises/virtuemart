@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
  /* ?>
 	<div>
-		<?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?>
+		<?php echo JText::_('VM_CART_TITLE'); ?>
 	</div>
 <?php
 
@@ -134,15 +134,15 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="10"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
-			<td align="right" valign="top"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL') ?> </td>
+			<td align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_PRODUCT_PRICES_TOTAL') ?> </td>
 			<td align="right"><?php echo $totalProduct ?></td>
-			<td align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?> </td>
+			<td align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		  <tr class="sectiontableentry2">
 
-				<td align="right" valign="top"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>: </td>
+				<td align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>: </td>
 				<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
 		  </tr>
 		<?php } ?>
@@ -150,6 +150,6 @@ defined('_JEXEC') or die('Restricted access');
 
 	</table>
 */ ?>
-	<a href="<?php echo $this->continue_link; ?>"><?php echo JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') ?></a>
-	<a style ="float:right;" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>"><?php echo JText::_('COM_VIRTUEMART_CART_SHOW') ?></a>
+	<a href="<?php echo $this->continue_link; ?>"><?php echo JText::_('VM_CONTINUE_SHOPPING') ?></a>
+	<a style ="float:right;" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>"><?php echo JText::_('VM_CART_SHOW') ?></a>
 <br style="clear:both">

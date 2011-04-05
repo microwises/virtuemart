@@ -33,28 +33,28 @@ JPluginHelper::importPlugin('vmshipper');
 		<td valign="top">
 		<table class="admintable" width="100%">
 			<tr>
-				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
+				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
 				<td><?php printf("%08d", $this->orderbt->order_id);?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</strong></td>
 				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->cdate);?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
 				<td><?php echo $this->orderbt->order_status_name; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
 				<td><?php $this->orderbt->ip_address; ?></td>
 			</tr>
 			<?php
 			if (VmConfig::get('enable_coupons') == '1') { ?>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_COUPON_HEADER') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('VM_COUPON_COUPON_HEADER') ?>:</strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>
 			</tr>
 			<?php } ?>
@@ -64,10 +64,10 @@ JPluginHelper::importPlugin('vmshipper');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_DATE_ADDED') ?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS') ?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_COMMENT') ?></th>
+					<th><?php echo JText::_('VM_ORDER_HISTORY_DATE_ADDED') ?></th>
+					<th><?php echo JText::_('VM_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
+					<th><?php echo JText::_('VM_ORDER_LIST_STATUS') ?></th>
+					<th><?php echo JText::_('VM_COMMENT') ?></th>
 				</tr>
 			</thead>
 			<?php
@@ -127,7 +127,7 @@ JPluginHelper::importPlugin('vmshipper');
 		<table class="admintable" width="100%">
 			<thead>
 				<tr>
-					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></td>
+					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></td>
 				</tr>
 			</thead>
 
@@ -150,7 +150,7 @@ JPluginHelper::importPlugin('vmshipper');
 		<table class="admintable" width="100%">
 			<thead>
 				<tr>
-					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></td>
+					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></td>
 				</tr>
 			</thead>
 
@@ -179,15 +179,15 @@ JPluginHelper::importPlugin('vmshipper');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th class="title" width="5%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th>
+					<th class="title" width="5%" align="left"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th>
 					<th class="title" width="3" align="left">&nbsp;</th>
-					<th class="title" width="47" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?></th>
-					<th class="title" width="*" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></th>
-					<th class="title" width="10%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-					<th class="title" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
-					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_NET') ?></th>
-					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_GROSS') ?></th>
-					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
+					<th class="title" width="47" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
+					<th class="title" width="*" align="left"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
+					<th class="title" width="10%" align="left"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
+					<th class="title" width="10%"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
+					<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
+					<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?></th>
+					<th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
 				</tr>
 			</thead>
 		<?php foreach ($this->order['items'] as $item) { ?>
@@ -261,11 +261,11 @@ JPluginHelper::importPlugin('vmshipper');
 			<tr valign="top" style="display: none; width: 100%" id="editItem_<?php echo $item->order_item_id; ?>">
 				<td>
 					<a href="#" onClick="javascript:resetForm(<?php echo $item->order_item_id; ?>);"><?php
-						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'));
+						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'));
 					?></a>
 					<a href="#" onClick="javascript:submitForm('updateOrderItem');">
 						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'));
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'));
 					?></a>
 				</td>
 				<td>
@@ -336,14 +336,14 @@ JPluginHelper::importPlugin('vmshipper');
 						&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:submitForm('updateOrderItemStatus');">
 						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'))
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('VM_SAVE'))
 								. '&nbsp;'
-								. JText::_('COM_VIRTUEMART_SAVE');
+								. JText::_('VM_SAVE');
 						?></a>&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:resetForm(0);"><?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'))
+							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('VM_CANCEL'))
 							. '&nbsp;'
-							. JText::_('COM_VIRTUEMART_CANCEL');
+							. JText::_('VM_CANCEL');
 						?></a>
 					</td>
 			</tr>
@@ -361,7 +361,7 @@ JPluginHelper::importPlugin('vmshipper');
 				<!-- <a href="<?php echo $editLineLink; ?>" class="modal"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "New Item"); ?>
 				New Item </a>--></td>
 				<td align="right">
-				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
+				<div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_subtotal); ?></td>
@@ -373,8 +373,8 @@ JPluginHelper::importPlugin('vmshipper');
 					?>
 			<tr>
 				<td align="right" colspan="7"><strong> <?php
-				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_FEE');
+				if ($this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+				else echo JText::_('VM_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
@@ -386,7 +386,7 @@ JPluginHelper::importPlugin('vmshipper');
 				if ($this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				echo "- ".$this->orderbt->coupon_discount; ?></td>
 			</tr>
@@ -394,15 +394,15 @@ JPluginHelper::importPlugin('vmshipper');
 				}
 			}?>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_tax); ?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping_tax); ?></td>
 			</tr>
 			<?php
@@ -411,8 +411,8 @@ JPluginHelper::importPlugin('vmshipper');
 					?>
 			<tr>
 				<td align="right" colspan="7"><strong><?php
-				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_FEE');
+				if( $this->orderbt->order_discount > 0) echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+				else echo JText::_('VM_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				if ($this->orderbt->order_discount > 0 )
@@ -425,7 +425,7 @@ JPluginHelper::importPlugin('vmshipper');
 				if( $this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->getFullValue($this->orderbt->coupon_discount); ?></td>
 			</tr>
 			<?php
@@ -433,7 +433,7 @@ JPluginHelper::importPlugin('vmshipper');
 			}
 			?>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('VM_CART_TOTAL') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->getFullValue($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
@@ -486,7 +486,7 @@ JPluginHelper::importPlugin('vmshipper');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+					<th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 				</tr>
 			</thead>
 			<tr>
@@ -502,7 +502,7 @@ JPluginHelper::importPlugin('vmshipper');
 <script type="text/javascript">
 <!--
 function confirmation(destnUrl) {
-	var answer = confirm("<?php echo JText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_MSG'); ?>");
+	var answer = confirm("<?php echo JText::_('VM_ORDER_DELETE_ITEM_MSG'); ?>");
 	if (answer) {
 		window.location = destnUrl;
 	}

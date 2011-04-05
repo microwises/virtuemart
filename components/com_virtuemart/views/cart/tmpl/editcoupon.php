@@ -24,15 +24,15 @@ defined('_JEXEC') or die('Restricted access');
 
 <form method="post" id="userForm" name="enterCouponCode" action="<?php echo JRoute::_( 'index.php' ); ?>">
 <div style="text-align: right; width: 100%;">
-	<button class="button" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+	<button class="button" type="submit"><?php echo JText::_('VM_SAVE'); ?></button>
 
-	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('VM_CANCEL'); ?></button>
 </div>
 
 <?php
-	echo JText::_('COM_VIRTUEMART_COUPON_ENTER_HERE');
+	echo JText::_('VM_COUPON_ENTER_HERE');
 ?>
-	<input type="text" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" class="inputbox" size="20" maxlength="32" name="coupon_code" value="<?php echo $this->couponCode; ?>" />
+	<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="20" maxlength="32" name="coupon_code" value="<?php echo $this->couponCode; ?>" />
 
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />

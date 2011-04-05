@@ -106,7 +106,7 @@ class VirtuemartControllerCountry extends JController {
 		$model = $this->getModel('country');
 
 		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_COUNTRY_SAVED');
+			$msg = JText::_('VM_COUNTRY_SAVED');
 		} else {
 			$msg = $model->getError();
 		}
@@ -127,7 +127,7 @@ class VirtuemartControllerCountry extends JController {
 	{
 		$model = $this->getModel('country');
 		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_COUNTRIES_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('VM_ERROR_COUNTRIES_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
@@ -143,7 +143,7 @@ class VirtuemartControllerCountry extends JController {
 	{
 		$model = $this->getModel('country');
 		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_COUNTRIES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('VM_ERROR_COUNTRIES_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);

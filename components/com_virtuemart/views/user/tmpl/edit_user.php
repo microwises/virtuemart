@@ -21,14 +21,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS'); ?>
+		<?php echo JText::_('VM_USER_FORM_LEGEND_USERDETAILS'); ?>
 	</legend>
 	<table class="admintable" cellspacing="1">
 
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME'); ?>
+					<?php echo JText::_('VM_USER_FORM_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 			<td class="key">
 				<label for="username">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_USERNAME'); ?>
+					<?php echo JText::_('VM_USER_FORM_USERNAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 			<td class="key">
 				<label for="email">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL'); ?>
+					<?php echo JText::_('VM_USER_FORM_EMAIL'); ?>
 				</label>
 			</td>
 			<td>
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 			<td class="key">
 				<label for="password">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NEWPASSWORD'); ?>
+					<?php echo JText::_('VM_USER_FORM_NEWPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 			<td class="key">
 				<label for="password2">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_VERIFYPASSWORD'); ?>
+					<?php echo JText::_('VM_USER_FORM_VERIFYPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_GROUP'); ?>
+					<?php echo JText::_('VM_USER_FORM_GROUP'); ?>
 				</label>
 			</td>
 			<td>
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php if ($this->lists['canBlock']) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BLOCKUSER'); ?>
+				<?php echo JText::_('VM_USER_FORM_BLOCKUSER'); ?>
 			</td>
 			<td>
 				<?php echo $this->lists['block']; ?>
@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php if ($this->lists['canSetMailopt']) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
+				<?php echo JText::_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
 			</td>
 			<td>
 				<?php echo $this->lists['sendEmail']; ?>
@@ -129,7 +129,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php if( $this->userDetails->JUser ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_REGISTERDATE'); ?>
+				<?php echo JText::_('VM_USER_FORM_REGISTERDATE'); ?>
 			</td>
 			<td>
 				<?php echo $this->userDetails->JUser->get('registerDate');?>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LASTVISITDATE'); ?>
+				<?php echo JText::_('VM_USER_FORM_LASTVISITDATE'); ?>
 			</td>
 			<td>
 				<?php echo $this->userDetails->JUser->get('lastvisitDate'); ?>
@@ -151,7 +151,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_PARAMETERS'); ?>
+		<?php echo JText::_('VM_USER_FORM_LEGEND_PARAMETERS'); ?>
 		</legend>
 	<table class="admintable" cellspacing="1">
 		<tr>

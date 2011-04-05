@@ -39,7 +39,7 @@ class VirtuemartViewReport extends JView {
 		$curTask = JRequest::getVar('task');
 		$layoutName = JRequest::getVar('layout','default');
 
-		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT_MOD'), 'vm_report_48');
+		JToolbarHelper::title( JText::_('VM_REPORT_MOD'), 'vm_report_48');
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');

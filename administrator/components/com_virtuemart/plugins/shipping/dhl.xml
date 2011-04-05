@@ -38,50 +38,50 @@
 		<param type="text" name="DHL_TOO_LATE" label="PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE" 
 			description="PHPSHOP_SHIPPING_METHOD_DHL_TOO_LATE_TOOLTIP" default="1600" />	
 		<param name="DEBUG" label="PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE" type="radio" default="0" description="PHPSHOP_SHIPPING_METHOD_DHL_TEST_MODE_TOOLTIP">
-            <option value="1">JYES</option>
-			<option value="0">JNO</option>
+            <option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 
 		<param name="DHL_EXPRESS_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_EXPRESS_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 
 		<param name="DHL_NEXT_AFTERNOON_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_NEXT_AFTERNOON_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 		
 		<param name="DHL_SECOND_DAY_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_SECOND_DAY_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 
 		<param name="DHL_GROUND_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_GROUND_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 
 		<param name="DHL_1030_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_1030_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 	
 		<param name="DHL_SATURDAY_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_SATURDAY_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 	
 		<param name="DHL_INTERNATIONAL_ENABLED" label="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED" type="radio" default="TRUE" 
 				description="PHPSHOP_SHIPPING_METHOD_DHL_INTERNATIONAL_ENABLED_TOOLTIP">
-            <option value="TRUE">JYES</option>
-			<option value="FALSE">JNO</option>
+            <option value="TRUE">PHPSHOP_ADMIN_CFG_YES</option>
+			<option value="FALSE">PHPSHOP_ADMIN_CFG_NO</option>
 		</param>
 		
 		<param name="DHL_DOMESTIC_PACKAGE" label="PHPSHOP_SHIPPING_METHOD_DHL_DOMESTIC_PACKAGE" type="radio" default="P" 

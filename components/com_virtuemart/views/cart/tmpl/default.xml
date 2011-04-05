@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_SHOPPINGCART_MENU" hidden="false">
-		<message><![CDATA[COM_VIRTUEMART_SHOPPINGCART_DESC]]></message>
+	<layout title="VM_SHOPPINGCART_MENU" hidden="false">
+		<message><![CDATA[VM_SHOPPINGCART_DESC]]></message>
 	</layout>
 </metadata>

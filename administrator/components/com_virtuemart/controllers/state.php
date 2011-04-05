@@ -107,7 +107,7 @@ class VirtuemartControllerState extends JController {
 		$model =& $this->getModel( 'state' );
 
 		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_STATE_SAVED');
+			$msg = JText::_('VM_STATE_SAVED');
 		} else {
 			$msg = $model->getError();
 		}
@@ -131,10 +131,10 @@ class VirtuemartControllerState extends JController {
 		$data = JRequest::get( 'post' );
 		$model = $this->getModel('state');
 		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_STATES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('COM_VIRTUEMART_STATES_DELETED');
+			$msg = JText::_('VM_STATES_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
@@ -151,7 +151,7 @@ class VirtuemartControllerState extends JController {
 		$data = JRequest::get( 'post' );
 		$model = $this->getModel('state');
 		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('VM_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
@@ -168,7 +168,7 @@ class VirtuemartControllerState extends JController {
 		$data = JRequest::get( 'post' );
 		$model = $this->getModel('state');
 		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('VM_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);

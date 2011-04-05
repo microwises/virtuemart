@@ -459,7 +459,7 @@ class VirtueMartModelProduct extends JModel {
     	/* Check if all the entries are numbers */
 		foreach( $order as $list_id ) {
 			if( !is_numeric( $list_id ) ) {
-				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_SORT_ERR_NUMBERS_ONLY'), 'error');
+				$mainframe->enqueueMessage(JText::_('VM_SORT_ERR_NUMBERS_ONLY'), 'error');
 				return false;
 			}
 		}
@@ -725,10 +725,10 @@ class VirtueMartModelProduct extends JModel {
 
 		$product_price_table = $this->getTable('product_price');
 
- 		//we need the product_price_id to save the new price
- 		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
- 		$this->_db->setQuery($q);
-		$data['product_price_id'] = $this->_db->loadResult();
+//		//get product_price_id
+//		$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE product_id = "'.$data['product_id'].'" ';
+//		$this->_db->setQuery($q);
+//		$data['product_price_id'] = $this->_db->loadResult();
 
 		if (!$product_price_table->bind($data)) {
 			$this->setError($product_price_table->getError());

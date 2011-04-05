@@ -44,12 +44,12 @@ class VirtuemartViewModule extends JView {
 
 		if ($layoutName == 'edit') {
 		  if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MODULE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
+				JToolBarHelper::title(  JText::_('VM_MODULE_FORM_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shop_users_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 		  } else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MODULE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
+				JToolBarHelper::title( JText::_('VM_MODULE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shop_users_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -57,7 +57,7 @@ class VirtuemartViewModule extends JView {
 		  $this->assignRef('shoppergroup',	$module);
 		  //$this->assignRef('vendors',	$zoneModel->getShippingZoneSelectList());
 		}	else {
-			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_MODULE_LIST_LBL ' ), 'vm_shop_users_48' );
+			JToolBarHelper::title( JText::_( 'VM_MODULE_LIST_LBL ' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

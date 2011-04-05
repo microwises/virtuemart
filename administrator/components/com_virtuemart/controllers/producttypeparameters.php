@@ -42,7 +42,7 @@ class VirtuemartControllerProducttypeparameters extends JController {
 		/* Check if there is a product type ID, if not do not continue */
 		if (JRequest::getInt('product_type_id', 0) < 1) {
 			$mainframe = Jfactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=producttypes', JText::_('COM_VIRTUEMART_NO_PRODUCT_TYPE_SET'), 'notice');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=producttypes', JText::_('NO_PRODUCT_TYPE_SET'), 'notice');
 		}
 
 		/* Redirects */
@@ -94,9 +94,9 @@ class VirtuemartControllerProducttypeparameters extends JController {
 
 		$model = $this->getModel('producttypeparameters');
 		$msgtype = '';
-		if ($model->saveProductTypeParameter()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPEPARAMETER_SAVED_SUCCESSFULLY');
+		if ($model->saveProductTypeParameter()) $msg = JText::_('PRODUCTTYPEPARAMETER_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPEPARAMETER_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('PRODUCTTYPEPARAMETER_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.JRequest::getInt('product_type_id', 0), $msg, $msgtype);
@@ -114,9 +114,9 @@ class VirtuemartControllerProducttypeparameters extends JController {
 
 		$model = $this->getModel('producttypeparameters');
 		$msgtype = '';
-		if ($model->removeProductTypeParameter()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPEPARAMETER_REMOVED_SUCCESSFULLY');
+		if ($model->removeProductTypeParameter()) $msg = JText::_('PRODUCTTYPEPARAMETER_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPEPARAMETER_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('PRODUCTTYPEPARAMETER_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 

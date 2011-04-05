@@ -366,13 +366,13 @@ class vmrouterHelper {
 	public $CategoryName = array();
 	
 	private $Chars = array(
-    'ï¿½'=>'S', 'ï¿½'=>'s', 'ï¿½'=>'Dj','ï¿½'=>'Z', 'ï¿½'=>'z', 'ï¿½'=>'A', 'ï¿½'=>'A', 'ï¿½'=>'A', 'ï¿½'=>'A', 'ï¿½'=>'A', 
-    'ï¿½'=>'A', 'ï¿½'=>'A', 'ï¿½'=>'C', 'ï¿½'=>'E', 'ï¿½'=>'E', 'ï¿½'=>'E', 'ï¿½'=>'E', 'ï¿½'=>'I', 'ï¿½'=>'I', 'ï¿½'=>'I', 
-    'ï¿½'=>'I', 'ï¿½'=>'N', 'ï¿½'=>'O', 'ï¿½'=>'O', 'ï¿½'=>'O', 'ï¿½'=>'O', 'ï¿½'=>'O', 'ï¿½'=>'O', 'ï¿½'=>'U', 'ï¿½'=>'U', 
-    'ï¿½'=>'U', 'ï¿½'=>'U', 'ï¿½'=>'Y', 'ï¿½'=>'B', 'ï¿½'=>'Ss','ï¿½'=>'a', 'ï¿½'=>'a', 'ï¿½'=>'a', 'ï¿½'=>'a', 'ï¿½'=>'a', 
-    'ï¿½'=>'a', 'ï¿½'=>'a', 'ï¿½'=>'c', 'ï¿½'=>'e', 'ï¿½'=>'e', 'ï¿½'=>'e', 'ï¿½'=>'e', 'ï¿½'=>'i', 'ï¿½'=>'i', 'ï¿½'=>'i', 
-    'ï¿½'=>'i', 'ï¿½'=>'o', 'ï¿½'=>'n', 'ï¿½'=>'o', 'ï¿½'=>'o', 'ï¿½'=>'o', 'ï¿½'=>'o', 'ï¿½'=>'o', 'ï¿½'=>'o', 'ï¿½'=>'u', 
-    'ï¿½'=>'u', 'ï¿½'=>'u', 'ï¿½'=>'y', 'ï¿½'=>'y', 'ï¿½'=>'b', 'ï¿½'=>'y', 'ï¿½'=>'f'
+    'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 
+    'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 
+    'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 
+    'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 
+    'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 
+    'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 
+    'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f'
 );
 
 	function cleanForShortURL($toClean) {
@@ -533,7 +533,7 @@ class vmrouterHelper {
 				return $string ;
 			}
 			else {
-				//$string = str_replace('ï¿½', ' ', $string);
+				//$string = str_replace('µ', ' ', $string);
 				// accented chars converted
 				$accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
 				$string_encoded = htmlentities($product_name,ENT_NOQUOTES,'UTF-8');
@@ -587,51 +587,51 @@ class vmrouterHelper {
 			$extension = 'com_virtuemart';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
-			$this->lang['editshipping'] 	= $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING');
-			$this->lang['manufacturer'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURER');
-			$this->lang['manufacturers'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURERS');
-			$this->lang['askquestion']  	= $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION');
-			$this->lang['editpayment']  	= $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT');
-			$this->lang['user'] 			= $lang->_('COM_VIRTUEMART_SEF_USER');
-			$this->lang['cart'] 			= $lang->_('COM_VIRTUEMART_SEF_CART');
-			$this->lang['editaddresscartBT']= $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL');
-			$this->lang['editaddresscartST']= $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_SHIP');
-			$this->lang['search']			= $lang->_('COM_VIRTUEMART_SEF_SEARCH');
-			$this->lang['page']				= $lang->_('COM_VIRTUEMART_SEF_PAGE');
-			$this->lang['orderDesc']		= $lang->_('COM_VIRTUEMART_SEF_ORDER_DESC');
-			$this->lang['orderby']			= $lang->_('COM_VIRTUEMART_SEF_BY');
-			$this->lang['product_id'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_ID');
-			$this->lang['product_sku'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_SKU');
-			$this->lang['product_price']	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_PRICE');
-			$this->lang['category_name']	= $lang->_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME');
-			$this->lang['category_description'] = $lang->_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION');
-			$this->lang['mf_name'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_MF_NAME');
-			$this->lang['product_s_desc'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC');
-			$this->lang['product_desc'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC');
-			$this->lang['product_weight'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT');
-			$this->lang['product_weight_uom']= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT_UOM');
-			$this->lang['product_length'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_LENGTH');
-			$this->lang['product_width'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_WIDTH');
-			$this->lang['product_height'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_HEIGHT');
-			$this->lang['product_lwh_uom'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_LWH_UOM');
-			$this->lang['product_in_stock'] = $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_IN_STOCK');
-			$this->lang['low_stock_notification'] = $lang->_('COM_VIRTUEMART_SEF_BY_LOW_STOCK_NOTIFICATION');
-			$this->lang['product_available_date'] = $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABLE_DATE');
-			$this->lang['product_availability']   = $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABILITY');
-			$this->lang['product_special'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_SPECIAL');
-			$this->lang['ship_code_id'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_SHIP_CODE_ID');
-			$this->lang['cdate'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_CDATE');
-			$this->lang['mdate'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_MDATE');
-			$this->lang['product_name'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_NAME');
-			$this->lang['product_sales'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_SALES');
-			$this->lang['product_unit'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_UNIT');
-			$this->lang['product_packaging']= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_PACKAGING');
-			$this->lang['product_order_levels']    = $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_ORDER_LEVELS');
-			$this->lang['intnotes'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_INTNOTES');
-			$this->lang['metadesc'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_METADESC');
-			$this->lang['metakey'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_METAKEY');
-			$this->lang['metarobot'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_METAROBOT');
-			$this->lang['metaauthor'] 		= $lang->_('COM_VIRTUEMART_SEF_BY_METAAUTHOR');
+			$this->lang['editshipping'] 	= $lang->_('VM_SEF_EDITSHIPPING');
+			$this->lang['manufacturer'] 	= $lang->_('VM_SEF_MANUFACTURER');
+			$this->lang['manufacturers'] 	= $lang->_('VM_SEF_MANUFACTURERS');
+			$this->lang['askquestion']  	= $lang->_('VM_SEF_ASKQUESTION');
+			$this->lang['editpayment']  	= $lang->_('VM_SEF_EDITPAYMENT');
+			$this->lang['user'] 			= $lang->_('VM_SEF_USER');
+			$this->lang['cart'] 			= $lang->_('VM_SEF_CART');
+			$this->lang['editaddresscartBT']= $lang->_('VM_SEF_EDITADRESSCART_BILL');
+			$this->lang['editaddresscartST']= $lang->_('VM_SEF_EDITADRESSCART_SHIP');
+			$this->lang['search']			= $lang->_('VM_SEF_SEARCH');
+			$this->lang['page']				= $lang->_('VM_SEF_PAGE');
+			$this->lang['orderDesc']		= $lang->_('VM_SEF_ORDER_DESC');
+			$this->lang['orderby']			= $lang->_('VM_SEF_BY');
+			$this->lang['product_id'] 		= $lang->_('VM_SEF_BY_PRODUCT_ID');
+			$this->lang['product_sku'] 		= $lang->_('VM_SEF_BY_PRODUCT_SKU');
+			$this->lang['product_price']	= $lang->_('VM_SEF_BY_PRODUCT_PRICE');
+			$this->lang['category_name']	= $lang->_('VM_SEF_BY_CATEGORY_NAME');
+			$this->lang['category_description'] = $lang->_('VM_SEF_BY_CATEGORY_DESCRIPTION');
+			$this->lang['mf_name'] 			= $lang->_('VM_SEF_BY_MF_NAME');
+			$this->lang['product_s_desc'] 	= $lang->_('VM_SEF_BY_PRODUCT_S_DESC');
+			$this->lang['product_desc'] 	= $lang->_('VM_SEF_BY_PRODUCT_DESC');
+			$this->lang['product_weight'] 	= $lang->_('VM_SEF_BY_PRODUCT_WEIGHT');
+			$this->lang['product_weight_uom']= $lang->_('VM_SEF_BY_PRODUCT_WEIGHT_UOM');
+			$this->lang['product_length'] 	= $lang->_('VM_SEF_BY_PRODUCT_LENGTH');
+			$this->lang['product_width'] 	= $lang->_('VM_SEF_BY_PRODUCT_WIDTH');
+			$this->lang['product_height'] 	= $lang->_('VM_SEF_BY_PRODUCT_HEIGHT');
+			$this->lang['product_lwh_uom'] 	= $lang->_('VM_SEF_BY_PRODUCT_LWH_UOM');
+			$this->lang['product_in_stock'] = $lang->_('VM_SEF_BY_PRODUCT_IN_STOCK');
+			$this->lang['low_stock_notification'] = $lang->_('VM_SEF_BY_LOW_STOCK_NOTIFICATION');
+			$this->lang['product_available_date'] = $lang->_('VM_SEF_BY_PRODUCT_AVAILABLE_DATE');
+			$this->lang['product_availability']   = $lang->_('VM_SEF_BY_PRODUCT_AVAILABILITY');
+			$this->lang['product_special'] 	= $lang->_('VM_SEF_BY_PRODUCT_SPECIAL');
+			$this->lang['ship_code_id'] 	= $lang->_('VM_SEF_BY_SHIP_CODE_ID');
+			$this->lang['cdate'] 			= $lang->_('VM_SEF_BY_CDATE');
+			$this->lang['mdate'] 			= $lang->_('VM_SEF_BY_MDATE');
+			$this->lang['product_name'] 	= $lang->_('VM_SEF_BY_PRODUCT_NAME');
+			$this->lang['product_sales'] 	= $lang->_('VM_SEF_BY_PRODUCT_SALES');
+			$this->lang['product_unit'] 	= $lang->_('VM_SEF_BY_PRODUCT_UNIT');
+			$this->lang['product_packaging']= $lang->_('VM_SEF_BY_PRODUCT_PACKAGING');
+			$this->lang['product_order_levels']    = $lang->_('VM_SEF_BY_PRODUCT_ORDER_LEVELS');
+			$this->lang['intnotes'] 		= $lang->_('VM_SEF_BY_INTNOTES');
+			$this->lang['metadesc'] 		= $lang->_('VM_SEF_BY_METADESC');
+			$this->lang['metakey'] 			= $lang->_('VM_SEF_BY_METAKEY');
+			$this->lang['metarobot'] 		= $lang->_('VM_SEF_BY_METAROBOT');
+			$this->lang['metaauthor'] 		= $lang->_('VM_SEF_BY_METAAUTHOR');
 			
 
 		} else {

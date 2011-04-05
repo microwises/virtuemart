@@ -266,7 +266,7 @@ class Permissions extends JObject{
 		arsort( $perms );
 		
 		if( $size==1 ) {
-			$values[0] = JText::_('COM_VIRTUEMART_SELECT');
+			$values[0] = JText::_('VM_SELECT');
 		}
 		while( list($key,$value) = each( $perms ) ) {
 			// Display only those permission that this user can set
@@ -277,7 +277,7 @@ class Permissions extends JObject{
 		
 		if( $size > 1 ) {
 			$name .= '[]';
-			$values['none'] = JText::_('COM_VIRTUEMART_NO_RESTRICTION');
+			$values['none'] = JText::_('NO_RESTRICTION');
 		}
 		
 		echo VmHTML::selectList( $name, $group_name, $values, $size, $multi );

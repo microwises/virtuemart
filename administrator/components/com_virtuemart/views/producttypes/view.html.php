@@ -51,7 +51,7 @@ class VirtuemartViewProducttypes extends JView {
 				$editor = JFactory::getEditor();
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_PRODUCT_TYPE_FORM_LBL' ), 'vm_product_types_48');
+				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_FORM_LBL' ), 'vm_product_types_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();
 				JToolBarHelper::save();
@@ -79,7 +79,7 @@ class VirtuemartViewProducttypes extends JView {
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LIST_LBL'), 'vm_product_types_48');
+				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_LIST_LBL'), 'vm_product_types_48');
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();

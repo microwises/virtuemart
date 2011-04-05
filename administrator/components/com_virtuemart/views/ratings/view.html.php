@@ -52,7 +52,7 @@ class VirtuemartViewRatings extends JView {
 				$rating = $this->get('Rating');
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_RATING_EDIT_TITLE' ).' :: '.$rating->product_name, 'vm_product_48');
+				JToolBarHelper::title(JText::_( 'VM_RATING_EDIT_TITLE' ).' :: '.$rating->product_name, 'vm_product_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();
 				JToolBarHelper::save();
@@ -73,7 +73,7 @@ class VirtuemartViewRatings extends JView {
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_REVIEWS' ), 'vm_reviews_48');
+				JToolBarHelper::title(JText::_( 'VM_REVIEWS' ), 'vm_reviews_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::publishList();
 				JToolBarHelper::unpublishList();

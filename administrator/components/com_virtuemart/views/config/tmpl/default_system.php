@@ -21,12 +21,12 @@ defined('_JEXEC') or die('Restricted access');
 ?> 
 <br />
 <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SYSTEM_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('VM_ADMIN_CFG_SYSTEM_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_URLSECURE') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_URLSECURE') ?>
 		</span>
 	    </td>
 	    <td>
@@ -35,8 +35,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_DEBUG') ?>
 		</span>
 	    </td>
 	    <td>
@@ -45,8 +45,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ENABLED') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ENABLED') ?>
 		</span>
 	    </td>
 	    <td>
@@ -55,8 +55,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ADDRESS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS') ?>
 		</span>
 	    </td>
 	    <td>
@@ -65,8 +65,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_COOKIE_CHECK') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK') ?>
 		</span>
 	    </td>
 	    <td>
@@ -77,29 +77,29 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USER_REGISTRATION_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('VM_ADMIN_CFG_USER_REGISTRATION_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE_TIP'); ?>">
-		    <?php echo JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_REGISTRATION_TYPE_TIP'); ?>">
+		    <?php echo JText::_('VM_CFG_REGISTRATION_TYPE') ?>
 		</span>
 	    </td>
 	    <td>
 		<?php
 		$options = array();
-		$options[] = JHTML::_('select.option', 'NORMAL_REGISTRATION', JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') );
-		$options[] = JHTML::_('select.option', 'SILENT_REGISTRATION', JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION'));
-		$options[] = JHTML::_('select.option', 'OPTIONAL_REGISTRATION', JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION'));
-		$options[] = JHTML::_('select.option', 'NO_REGISTRATION', JText::_('COM_VIRTUEMART_CFG_REGISTRATION_TYPE_NO_REGISTRATION'));
+		$options[] = JHTML::_('select.option', 'NORMAL_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') );
+		$options[] = JHTML::_('select.option', 'SILENT_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION'));
+		$options[] = JHTML::_('select.option', 'OPTIONAL_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION'));
+		$options[] = JHTML::_('select.option', 'NO_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION'));
 		echo JHTML::_('Select.genericlist', $options, 'registration_type', 'size=1', 'value', 'text', $this->config->get('registration_type'));
 		?>
 	    </td>
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOW_REMEMBER_ME_BOX_TIP'); ?>">
-		    <?php echo JText::_('COM_VIRTUEMART_SHOW_REMEMBER_ME_BOX') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX_TIP'); ?>">
+		    <?php echo JText::_('VM_SHOW_REMEMBER_ME_BOX') ?>
 		</span>
 	    </td>
 	    <td>
@@ -123,32 +123,32 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 	    <td class="key">
-		<?php echo 'Joomla! ' . JText::_('COM_VIRTUEMART_ADMIN_CFG_ALLOW_REGISTRATION'); ?>
+		<?php echo 'Joomla! ' . JText::_('VM_ADMIN_CFG_ALLOW_REGISTRATION'); ?>
 	    </td>
 	    <td><?php
 		if ($this->userparams->get('allowUserRegistration') == '1' ) {
-		    echo '<span style="color:green;">'.JText::_('JYES').'</span>';
+		    echo '<span style="color:green;">'.JText::_('VM_ADMIN_CFG_YES').'</span>';
 		}
 		else {
-		    echo '<span style="color:red;font-weight:bold;">'.JText::_('JNO').'</span>';
+		    echo '<span style="color:red;font-weight:bold;">'.JText::_('VM_ADMIN_CFG_NO').'</span>';
 		}
 		$link = JROUTE::_('index.php?option=com_config');
-		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('COM_VIRTUEMART_UPDATE').']');
+		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('VM_UPDATE').']');
 		?></td>
 	</tr>
 	<tr>
 	    <td class="key">
-		<?php echo 'Joomla! ' . JText::_('COM_VIRTUEMART_ADMIN_CFG_ACCOUNT_ACTIVATION'); ?>
+		<?php echo 'Joomla! ' . JText::_('VM_ADMIN_CFG_ACCOUNT_ACTIVATION'); ?>
 	    </td>
 	    <td><?php
 		if ($this->userparams->get('useractivation') == '0' ) {
-		    echo '<span style="color:green;">'.JText::_('JNO').'</span>';
+		    echo '<span style="color:green;">'.JText::_('VM_ADMIN_CFG_NO').'</span>';
 		}
 		else {
-		    echo '<span style="color:red;font-weight:bold;">'.JText::_('JYES').'</span>';
+		    echo '<span style="color:red;font-weight:bold;">'.JText::_('VM_ADMIN_CFG_YES').'</span>';
 		}
 		$link = JROUTE::_('index.php?option=com_config');
-		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('COM_VIRTUEMART_UPDATE').']');
+		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('VM_UPDATE').']');
 		?>
 	    </td>
 	</tr>
@@ -156,12 +156,12 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_SETTINGS') ?></legend>
+    <legend><?php echo JText::_('VM_ADMIN_CFG_PROXY_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_URL_TIP'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_URL') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL_TIP'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL') ?>
 		</span>
 	    </td>
 	    <td>
@@ -170,8 +170,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_PORT_TIP'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_PORT') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT_TIP'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT') ?>
 		</span>
 	    </td>
 	    <td>
@@ -180,8 +180,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_USER_TIP'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_USER') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER_TIP'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER') ?>
 		</span>
 	    </td>
 	    <td>
@@ -191,8 +191,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_PASS_TIP'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_PASS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS_TIP'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS') ?>
 		</span>
 	    </td>
 	    <td>
@@ -203,12 +203,12 @@ defined('_JEXEC') or die('Restricted access');
 </fieldset>
 
 <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_HEADER') ?></legend>
+    <legend><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_HEADER') ?></legend>
     <table class="admintable">
         <tr>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_ENABLED') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED') ?>
 		</span>
             </td>
             <td>
@@ -217,8 +217,8 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_NAME') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME') ?>
 		</span>
             </td>
             <td>
@@ -227,22 +227,22 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL') ?>
 		</span>
 	    </td>
 	    <td>
-		<?php if (!defined('COM_VIRTUEMART_LOGFILE_LEVEL')) define('COM_VIRTUEMART_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
+		<?php if (!defined('VM_LOGFILE_LEVEL')) define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
                 <select class="inputbox" name="logfile_level">
-		    <option value="PEAR_LOG_TIP" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
-		    <option value="PEAR_LOG_DEBUG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
-		    <option value="PEAR_LOG_INFO" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
-		    <option value="PEAR_LOG_NOTICE" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
-		    <option value="PEAR_LOG_WARNING" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
-		    <option value="PEAR_LOG_ERR" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
-		    <option value="PEAR_LOG_CRIT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
-		    <option value="PEAR_LOG_ALERT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
-		    <option value="PEAR_LOG_EMERG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
+		    <option value="PEAR_LOG_TIP" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
+		    <option value="PEAR_LOG_DEBUG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
+		    <option value="PEAR_LOG_INFO" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
+		    <option value="PEAR_LOG_NOTICE" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
+		    <option value="PEAR_LOG_WARNING" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
+		    <option value="PEAR_LOG_ERR" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
+		    <option value="PEAR_LOG_CRIT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
+		    <option value="PEAR_LOG_ALERT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
+		    <option value="PEAR_LOG_EMERG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
 		</select>
 	    </td>
 	</tr>
@@ -255,8 +255,8 @@ defined('_JEXEC') or die('Restricted access');
 	    }
 	    ?>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_FORMAT') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT') ?>
 		</span>
             </td>
             <td>
@@ -266,7 +266,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
 	    <td>&nbsp;</td>
 	    <td>
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA') ?>
+		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA') ?>
 	    </td>
         </tr>
     </table>

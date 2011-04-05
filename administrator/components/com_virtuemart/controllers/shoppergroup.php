@@ -91,7 +91,7 @@ class VirtuemartControllerShopperGroup extends JController
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup',JText::_('COM_VIRTUEMART_CANCELLED'));
+		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup',JText::_('CANCELLED'));
 	}
 
 
@@ -105,7 +105,7 @@ class VirtuemartControllerShopperGroup extends JController
 		$model =& $this->getModel('shoppergroup');
 
 		if ($id =$model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_SHOPPER_GROUP_SAVED');
+			$msg = JText::_('VM_SHOPPER_GROUP_SAVED');
 		}
 		else {
 			$msg = JText::_($model->getError());
@@ -129,10 +129,10 @@ class VirtuemartControllerShopperGroup extends JController
 	{
 		$model = $this->getModel('shoppergroup');
 		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_SHOPPER_GROUPS_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_SHOPPER_GROUPS_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_DELETED');
+			$msg = JText::_('VM_SHOPPER_GROUPS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shoppergroup', $msg);

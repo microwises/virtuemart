@@ -25,7 +25,7 @@ AdminMenuHelper::startAdminArea();
 	<tr>
 		<td width="110px" class="key">
 			<label for="title">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
+				<?php echo JText::_('PUBLISHED'); ?>:
 			</label>
 		</td>
 		<td>
@@ -35,19 +35,19 @@ AdminMenuHelper::startAdminArea();
 		</td>
 	</tr>
 	<tr>
-          <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_NAME') ?>:</td>
+          <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_NAME') ?>:</td>
           <td >
             <input type="text" class="inputbox" name="product_type_name" size="60" value="<?php echo $this->producttype->product_type_name; ?>" />
           </td>
 	</tr>
 	<tr>
-        <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_DESCRIPTION') ?>:</td>
+        <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_DESCRIPTION') ?>:</td>
         <td valign="top">
         	<?php echo $this->editor->display('product_type_description',  $this->producttype->product_type_description, '100%;', '200', '75', '20', array('pagebreak', 'readmore') ) ; ?>
   		</td>
 	</tr>
 	<tr>
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_MODULE_LIST_ORDER') ?>: </td>
+      <td class="labelcell"><?php echo JText::_('VM_MODULE_LIST_ORDER') ?>: </td>
       <td valign="top"><?php
       	echo $this->producttype->list_order;
          echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$this->producttype->product_type_list_order."\" />";
@@ -58,14 +58,14 @@ AdminMenuHelper::startAdminArea();
       <td colspan="2"><br /></td>
 	</tr>
 	<tr>
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('COM_VIRTUEMART_LEAVE_BLANK') ?>: </td>
+      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('VM_LEAVE_BLANK') ?>: </td>
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_browsepage" value="<?php echo $this->producttype->product_type_browsepage; ?>" />
       </td>
 	</tr>
 	<tr>
       <td class="labelcell">
-        <?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_FLYPAGE') ." ". JText::_('COM_VIRTUEMART_LEAVE_BLANK') ?>:
+        <?php echo JText::_('VM_PRODUCT_TYPE_FORM_FLYPAGE') ." ". JText::_('VM_LEAVE_BLANK') ?>:
       </td>
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_flypage" value="<?php echo $this->producttype->product_type_flypage; ?>" />

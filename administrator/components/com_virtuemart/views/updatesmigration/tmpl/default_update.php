@@ -33,7 +33,7 @@ $linkDoNothing =JROUTE::_('index2.php');
 <br />
 <table class="admintable">
     <tr>
-	<td class="key"><?php echo JText::_('COM_VIRTUEMART_UPDATE_CHECK_VERSION_INSTALLED'); ?></td>
+	<td class="key"><?php echo JText::_('VM_UPDATE_CHECK_VERSION_INSTALLED'); ?></td>
 	<td>
 	    <h1 style="display:inline">
 		<?php echo VmConfig::getInstalledVersion(); ?>
@@ -41,7 +41,7 @@ $linkDoNothing =JROUTE::_('index2.php');
 	</td>
     </tr>
     <tr>
-	<td class="key"><?php echo JText::_('COM_VIRTUEMART_UPDATE_CHECK_LATEST_VERSION'); ?></td>
+	<td class="key"><?php echo JText::_('VM_UPDATE_CHECK_LATEST_VERSION'); ?></td>
 	<td>
 	    <?php
 	    if ($this->latestVersion) {
@@ -49,7 +49,7 @@ $linkDoNothing =JROUTE::_('index2.php');
 	    }
 	    else {?>
 	    <a href="<?php echo $checkLatestVerisonLink; ?>">
-		&nbsp;[<?php echo JText::_('COM_VIRTUEMART_UPDATE_CHECK_CHECKNOW'); ?>]</a>
+		&nbsp;[<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>]</a>
 		<?php
 	    }
 	    ?>
@@ -57,12 +57,12 @@ $linkDoNothing =JROUTE::_('index2.php');
 	    if ($this->latestVersion) {
 		if (version_compare($this->latestVersion, VmConfig::getInstalledVersion(), '>') == 1) {
 		    ?>
-	    <input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('COM_VIRTUEMART_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
+	    <input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
 		    <?php
 		}
 		else {
 		    // need something in the lanuage file here
-		    echo '&nbsp;&nbsp;' . JText::_('COM_VIRTUEMART_UPDATE_NONEWVERSION');
+		    echo '&nbsp;&nbsp;' . JText::_('VM_UPDATE_NONEWVERSION');
 		}
 	    }
 	    ?>

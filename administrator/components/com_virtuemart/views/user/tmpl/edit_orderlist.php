@@ -27,25 +27,25 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	<tr>
 		<th width="10">
-			<?php echo JText::_('#'); ?>
+			<?php echo JText::_('VM_#'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>
+			<?php echo JText::_('VM_ORDER_LIST_ID'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_CHECK_OUT_THANK_YOU_PRINT_VIEW'); ?>
+			<?php echo JText::_('VM_CHECK_OUT_THANK_YOU_PRINT_VIEW'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
+			<?php echo JText::_('VM_ORDER_LIST_CDATE'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
+			<?php echo JText::_('VM_ORDER_LIST_MDATE'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
+			<?php echo JText::_('VM_ORDER_LIST_STATUS'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
+			<?php echo JText::_('VM_ORDER_LIST_TOTAL'); ?>
 		</th>
 	</thead>
 	<?php
@@ -56,7 +56,7 @@ $j15 = VmConfig::isJ15();
 
 			$print_url = JURI::base().'?option=com_virtuemart&view=orders&task=orderPrint&order_id='.$row->order_id.'&format=raw';
 			$print_link = "&nbsp;<a href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">"
-				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 
 			?>
 			<tr class="<?php echo "row$k"; ?>">

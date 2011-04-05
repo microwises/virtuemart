@@ -86,7 +86,6 @@ class VirtuemartViewMedia extends JView {
 			$files = $model->getFiles();
 			$this->assignRef('files',	$files);
 
-
 		}
 
 		parent::display($tpl);

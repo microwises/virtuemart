@@ -56,15 +56,15 @@ class VirtuemartViewProductspecial extends JView {
 
 		/* Add filters */
 		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
-		$options[] = JHTML::_('select.option', 'all', JText::_('COM_VIRTUEMART_LIST_ALL_PRODUCTS'));
-		$options[] = JHTML::_('select.option', 'featured_and_discounted', JText::_('COM_VIRTUEMART_SHOW_FEATURED_AND_DISCOUNTED'));
-		$options[] = JHTML::_('select.option', 'featured', JText::_('COM_VIRTUEMART_SHOW_FEATURED'));
-		$options[] = JHTML::_('select.option', 'discounted', JText::_('COM_VIRTUEMART_SHOW_DISCOUNTED'));
+		$options[] = JHTML::_('select.option', '', JText::_('SELECT'));
+		$options[] = JHTML::_('select.option', 'all', JText::_('VM_LIST_ALL_PRODUCTS'));
+		$options[] = JHTML::_('select.option', 'featured_and_discounted', JText::_('VM_SHOW_FEATURED_AND_DISCOUNTED'));
+		$options[] = JHTML::_('select.option', 'featured', JText::_('VM_SHOW_FEATURED'));
+		$options[] = JHTML::_('select.option', 'discounted', JText::_('VM_SHOW_DISCOUNTED'));
 		$lists['search_type'] = JHTML::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('search_type'));
 
 		/* Toolbar */
-		JToolBarHelper::title(JText::_( 'COM_VIRTUEMART_FEATURED_PRODUCTS_LIST_LBL' ), 'vm_product_48');
+		JToolBarHelper::title(JText::_( 'VM_FEATURED_PRODUCTS_LIST_LBL' ), 'vm_product_48');
 
 		/* Assign the data */
 		$this->assignRef('productlist', $productlist);

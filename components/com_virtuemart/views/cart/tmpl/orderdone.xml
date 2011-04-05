@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_ORDERDONE_MENU" hidden="true">
-		<message><![CDATA[COM_VIRTUEMART_ORDERDONE_DESC]]></message>
+	<layout title="VM_ORDERDONE_MENU" hidden="true">
+		<message><![CDATA[VM_ORDERDONE_DESC]]></message>
 	</layout>
 </metadata>

@@ -95,12 +95,12 @@ class TableCalc extends JTable
 		}
 		
         if (!$this->calc_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME'));
+			$this->setError(JText::_('VM_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME'));
 			return false;
 		}
 
         if (!$this->calc_kind) {
-			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND'));
+			$this->setError(JText::_('VM_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND'));
 			return false;
 		}
 
@@ -112,7 +112,7 @@ class TableCalc extends JTable
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('VM_GIVEN_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

@@ -55,7 +55,7 @@ class TableManufacturer_Category extends JTable {
 	function check()
 	{
         if (!$this->mf_category_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_IS_EMPTY'));
+			$this->setError(JText::_('VM_MANUFACTURER_CATEGORY_NAME_IS_EMPTY'));
 			return false;
 		}
 
@@ -67,7 +67,7 @@ class TableManufacturer_Category extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('VM_GIVEN_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

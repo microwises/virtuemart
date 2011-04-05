@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 	<div class="vmRecent">
 		<!-- List of recent products -->
-		<h3><?php echo JText::_('COM_VIRTUEMART_RECENT_PRODUCTS') ?></h3>
+		<h3><?php echo JText::_('VM_RECENT_PRODUCTS') ?></h3>
 		<ul class="vmRecentDetail">
 				<?php
 		foreach ($this->recentProducts as $recent ) { // Loop through all recent products
@@ -19,7 +19,7 @@
 				?>
 			<li>
 			<a href="<?php echo $recent["product_url"]; ?>" >
-			<?php echo $recent["product_name"]; ?></a>&nbsp;(<?php echo JText::_('COM_VIRTUEMART_CATEGORY') ?>:&nbsp;
+			<?php echo $recent["product_name"]; ?></a>&nbsp;(<?php echo JText::_('VM_CATEGORY') ?>:&nbsp;
 			<a href="<?php echo $recent["category_url"]; ?>" ><?php echo $recent["category_name"]; ?></a>)
 			</li>
 			<?php

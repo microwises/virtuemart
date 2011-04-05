@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
-<h2><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h2>
+<h2><?php echo JText::_('VM_ACC_ORDER_INFO'); ?></h2>
 
 <div style="float: left; max-width:40%; overflow: auto; padding: 0px; margin: 0px; spacing: 0px;">
 <?php
@@ -32,11 +32,11 @@ echo $this->loadTemplate('order');
 <?php
 echo $this->pane->startPane("order-pane");
 
-echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_HISTORY'), 'details_history' );
+echo $this->pane->startPanel( JText::_('VM_ORDER_HISTORY'), 'details_history' );
 echo $this->loadTemplate('history');
 echo $this->pane->endPanel();
 
-echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_ITEM'), 'details_items' );
+echo $this->pane->startPanel( JText::_('VM_ORDER_ITEM'), 'details_items' );
 echo $this->loadTemplate('items');
 echo $this->pane->endPanel();
 

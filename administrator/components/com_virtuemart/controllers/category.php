@@ -100,7 +100,7 @@ class VirtuemartControllerCategory extends JController {
 	public function save() {
 		$categoryModel = $this->getModel('category');
 
-		if ($id = $categoryModel->store()) $msg = JText::_('COM_VIRTUEMART_CATEGORY_SAVED_SUCCESS');
+		if ($id = $categoryModel->store()) $msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
 		else $msg = $categoryModel->getError();
 
 		$cmd = JRequest::getCmd('task');
@@ -128,7 +128,7 @@ class VirtuemartControllerCategory extends JController {
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
+			$msg = JText::_('VM_SELECT_ITEM_TO_DELETE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 			return;
 		}
@@ -136,10 +136,10 @@ class VirtuemartControllerCategory extends JController {
 		$categoryModel = $this->getModel('category');
 
 		if (!$categoryModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
+			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'COM_VIRTUEMART_CATEGORY_DELETED_SUCCESS');
+			$msg = JText::_( 'VM_CATEGORY_DELETED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
@@ -155,10 +155,10 @@ class VirtuemartControllerCategory extends JController {
 	{
 		$categoryModel = $this->getModel('category');
 		if (!$categoryModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_PUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_PUBLISHED_SUCCESS');
+			$msg = JText::_('VM_CATEGORY_PUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
@@ -174,10 +174,10 @@ class VirtuemartControllerCategory extends JController {
 	{
 		$categoryModel = $this->getModel('category');
 		if (!$categoryModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_UNPUBLISHED_SUCCESS');
+			$msg = JText::_('VM_CATEGORY_UNPUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
@@ -203,7 +203,7 @@ class VirtuemartControllerCategory extends JController {
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
+			$msg = JText::_('VM_SELECT_ITEM_TO_TOGGLE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 		}
 
@@ -211,10 +211,10 @@ class VirtuemartControllerCategory extends JController {
 		$status = $categoryModel->share($cid);
 
 		if( $status == 1 ){
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_SHARED_SUCCESS');
+			$msg = JText::_('VM_CATEGORY_SHARED_SUCCESS');
 		}
 		elseif( $status == -1 ){
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_UNSHARED_SUCCESS');
+			$msg = JText::_('VM_CATEGORY_UNSHARED_SUCCESS');
 		}
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg);
@@ -239,7 +239,7 @@ class VirtuemartControllerCategory extends JController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -247,7 +247,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->orderCategory($id, -1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP' );
+			$msg = JText::_('VM_ITEM_MOVED_UP' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -274,7 +274,7 @@ class VirtuemartControllerCategory extends JController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=category', JText::_('VM_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -282,7 +282,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->orderCategory($id, 1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN' );
+			$msg = JText::_('VM_ITEM_MOVED_DOWN' );
 		} else {
 			$msg = $model->getError();
 		}
@@ -305,7 +305,7 @@ class VirtuemartControllerCategory extends JController {
 		$model = $this->getModel('category');
 
 		if ($model->setOrder($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED' );
+			$msg = JText::_('VM_NEW_ORDERING_SAVED' );
 		} else {
 			$msg = $model->getError();
 		}

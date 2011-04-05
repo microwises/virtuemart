@@ -506,7 +506,7 @@ class vmParameters extends JParameter{
 				
 			return '<a class="button" id="changekey" href="'
 			. JRoute::_($_SERVER['SCRIPT_NAME']."?page=store.payment_method_keychange&pshop_mode=admin&element=$name") .'" >'
-			. JText::_('COM_VIRTUEMART_CHANGE_TRANSACTION_KEY') 
+			. JText::_('VM_CHANGE_TRANSACTION_KEY') 
 			.'<a/>';
 			
 	}
