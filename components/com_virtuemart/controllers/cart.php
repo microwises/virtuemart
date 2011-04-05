@@ -375,7 +375,7 @@ class VirtueMartControllerCart extends JController {
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
 
 		$cart = VirtueMartCart::getCart();
-		if($cart ){
+		if($cart && !VmConfig::get('use_as_catalog',0)){
 			$cart->checkout();
 		}
 	}

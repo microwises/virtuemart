@@ -111,6 +111,14 @@ class calculationHelper {
 	 */
 	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
 
+		if(!VmConfig::get('show_prices',0)){
+			return array();
+		}
+		if(VmConfig::get('price_access_level_enabled',0)){
+			//Todo check for ACL groups
+			return array();
+		}
+
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){

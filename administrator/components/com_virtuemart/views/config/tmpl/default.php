@@ -15,21 +15,21 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
 ?>
 <form action="index.php" method="post" name="adminForm">
 <?php
 
-$pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
+$pane = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SYSTEMTAB'), 'system_panel');
-echo $this->loadTemplate('system');
-echo $pane->endPanel();
+//echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SYSTEMTAB'), 'system_panel');
+//echo $this->loadTemplate('system');
+//echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SHOPTAB'), 'shop_panel');
 echo $this->loadTemplate('shop');
 echo $pane->endPanel();

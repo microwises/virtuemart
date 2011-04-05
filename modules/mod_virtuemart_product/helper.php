@@ -1,7 +1,7 @@
 <?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
-* Module Helper 
+* Module Helper
 *
 * @package VirtueMart
 * @copyright (C) 2010 - Patrick Kohl
@@ -21,6 +21,6 @@ if (!class_exists( 'VirtueMartModelVendor' )) require(JPATH_VM_ADMINISTRATOR.DS.
 if (!class_exists( 'VmImage' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 if (!class_exists( 'shopFunctionsF' )) require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
 if (!class_exists( 'VirtueMartModelProduct' )) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+//JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 
 ?>

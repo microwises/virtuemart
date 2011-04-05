@@ -54,6 +54,7 @@ class shopFunctionsF {
 	 */
 	public function createPriceDiv($name,$description,$product_price){
 
+		if(empty($product_price)) return '';
 		//Console::logSpeed('hopFunctionsF::createPriceDiv called');
 		//This could be easily extended by product specific settings
 		if(VmConfig::get($name) =='1'){

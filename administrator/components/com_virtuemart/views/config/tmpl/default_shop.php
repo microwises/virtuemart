@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-?> 
+defined('_JEXEC') or die('Restricted access');
+?>
 <br />
 <fieldset class="adminform">
     <legend><?php echo JText::_('VM_ADMIN_CFG_SHOP_SETTINGS') ?></legend>
@@ -179,7 +179,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
     </table>
 </fieldset>
-
+<?php /*
 <fieldset class="adminform">
     <legend><?php echo JText::_('VM_ADMIN_SECURITY_SETTINGS') ?></legend>
     <table class="admintable">
@@ -261,6 +261,6 @@ defined('_JEXEC') or die('Restricted access');
 	else {
 	    echo '<input type="hidden" name="allow_frontendadmin_for_nonbackenders" value="'.$this->config->get('allow_frontendadmin_for_nonbackenders').'" />';
 	}
-	?>
+
     </table>
-</fieldset>
+</fieldset> 	*/ ?>

@@ -34,6 +34,7 @@ class VirtueMartViewVirtueMart extends JView {
 
 	public function display($tpl = null) {
 
+		if(!VmConfig::get('shop_is_offline',0)){
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
 
@@ -86,19 +87,23 @@ class VirtueMartViewVirtueMart extends JView {
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 
-		$layoutName = VmConfig::get('vmlayout','default');
-
-		$template = VmConfig::get('vmtemplate','default');
-		if (is_dir(JPATH_THEMES.DS.$template)) {
-			$mainframe = JFactory::getApplication();
-			$mainframe->set('setTemplate', $template);
-		}
+//		$layoutName = VmConfig::get('vmlayout','default');
 
 		$layout = VmConfig::get('vmlayout','default');
 		$this->setLayout($layout);
 
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
+
+		} else {
+			$this->setLayout('offline');
+		}
+
+		$template = VmConfig::get('vmtemplate','default');
+		if (is_dir(JPATH_THEMES.DS.$template)) {
+			$mainframe = JFactory::getApplication();
+			$mainframe->set('setTemplate', $template);
+		}
 
 		parent::display($tpl);
 

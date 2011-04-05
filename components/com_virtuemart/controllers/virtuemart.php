@@ -32,12 +32,13 @@ class VirtueMartControllerVirtuemart extends JController
 
 	function __construct() {
 		parent::__construct();
-		if (VmConfig::get('vm_is_offline') == '1') {
+		if (VmConfig::get('shop_is_offline') == '1') {
 		    JRequest::setVar( 'layout', 'offline' );
 	    }
 	    else {
 		    JRequest::setVar( 'layout', 'default' );
 	    }
+
 	}
 
 	function Virtuemart() {
@@ -57,7 +58,7 @@ class VirtueMartControllerVirtuemart extends JController
 		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
 
 		/* Set the layout */
-		$view->setLayout(JRequest::getVar('layout','default'));
+//		$view->setLayout(JRequest::getVar('layout','default'));
 
 
 		/* Display it all */

@@ -47,6 +47,7 @@ class VirtueMartModelProduct extends JModel {
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
+		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'media.php');
 	}
 
 	/**

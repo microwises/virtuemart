@@ -111,6 +111,7 @@ class VirtueMartViewCart extends JView {
 
 			$this->prepareContinueLink();
 
+
 			if($this->_cart->getDataValidated()){
 				$text = JText::_('VM_ORDER_CONFIRM_MNU');
 				$checkout_task = 'confirm';
@@ -120,7 +121,11 @@ class VirtueMartViewCart extends JView {
 			}
 			$this->assignRef('checkout_task', $checkout_task);
 
-			$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" /><span>'.$text.'</span></a>';
+			if(!VmConfig::get('use_as_catalog')){
+				$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" /><span>'.$text.'</span></a>';
+			} else {
+				$checkout_link_html = '';
+			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 
 		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){

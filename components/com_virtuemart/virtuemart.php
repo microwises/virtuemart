@@ -20,34 +20,31 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /* Require the config */
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 $config= VmConfig::getInstance();
+if(VmConfig::get('shop_is_offline',0)){
+	$_controller = 'virtuemart';
+	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
+//	JRequest::setVar('task','showOffLine');
+} else {
+	/* Front-end helpers */
+	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
+	require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
-/* Front-end helpers */
-require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
-require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
+	/* Loading jQuery and VM scripts. */
+	$config->jQuery();
+	$config->jVm();
+	$config->cssSite();
+	/* Loading stylesheets */
+	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
 
-/* Loading jQuery and VM scripts. */
-/*$document = JFactory::getDocument();
-$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
-$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm.js');
-$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmsite.js');*/
-$config->jQuery();
-$config->jVm();
-$config->cssSite();
-
-/* Loading stylesheets */
-//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
-
-/* Require specific controller if requested */
-if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {
-	if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
-		// Only if the file exists, since it might be a Joomla view we're requesting...
-		require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
+	/* Require specific controller if requested */
+	if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {
+		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
+			// Only if the file exists, since it might be a Joomla view we're requesting...
+			require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
+		}
 	}
+
 }
-
-//This should be done in the config, only when there are no entries, get them from the file
-//require(JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg.php');
-
 
 /* Create the controller */
 $_class = 'VirtuemartController'.ucfirst($_controller);
