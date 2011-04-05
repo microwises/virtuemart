@@ -17,7 +17,7 @@ if ($display_style =="div") { ?>
 			<a href="<?php echo $link; ?>">
 		<?php
 		if ($manufacturer->images && ($show == 'image' or $show == 'all' )) { ?>
-			<?php echo $manufacturer->images[0]->displayMediaThumb();?>
+			<?php echo $manufacturer->images[0]->displayMediaThumb('',false);?>
 		<?php
 		}
 		if ($show == 'text' or $show == 'all' ) { ?>
@@ -49,7 +49,7 @@ foreach ($manufacturers as $manufacturer) {
 	<li><a href="<?php echo $link; ?>">
 		<?php
 		if ($manufacturer->images && ($show == 'image' or $show == 'all' )) { ?>
-			<?php echo $manufacturer->images[0]->displayMediaThumb();?>
+			<?php echo $manufacturer->images[0]->displayMediaThumb('',false);?>
 		<?php
 		}
 		if ($show == 'text' or $show == 'all' ) { ?>

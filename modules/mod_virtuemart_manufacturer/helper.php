@@ -18,6 +18,5 @@ VmConfig::getInstance();
 if (!class_exists( 'VmImage' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'image.php');
 if (!class_exists( 'VirtueMartModelManufacturer' )){
    JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
-JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables'); 
 }
 ?>

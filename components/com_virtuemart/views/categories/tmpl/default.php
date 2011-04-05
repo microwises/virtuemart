@@ -47,7 +47,7 @@ if ($this->category->haschildren) {
 				<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
 				<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
 			<?php
-					echo $category->images[0]->displayMediaThumb();
+					echo $category->images[0]->displayMediaThumb('',false);
 				?>
 				</a>
 			</h3>

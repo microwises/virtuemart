@@ -258,7 +258,7 @@ class VmMediaHandler {
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param boolean $lightbox alternative display method
 	 */
-	function displayMediaThumb($imageArgs=0,$lightbox=true){
+	function displayMediaThumb($imageArgs='',$lightbox=true){
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -290,6 +290,7 @@ class VmMediaHandler {
 		if (empty($this->file_url_thumb) || !file_exists($media_path)) {
 			return $this->getIcon($imageArgs,$lightbox);
 		}
+
 
 		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
 
