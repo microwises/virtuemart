@@ -78,7 +78,7 @@ class TableUserfields extends JTable {
 	function __construct(&$db)
 	{
 		self::loadFields($db);
-		parent::__construct('#__vm_userfield', 'fieldid', $db);
+		parent::__construct('#__COM_VIRTUEMART_userfield', 'fieldid', $db);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class TableUserfields extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__vm_userfield`";
+		$_q = "SHOW COLUMNS FROM `#__COM_VIRTUEMART_userfield`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
@@ -124,14 +124,14 @@ class TableUserfields extends JTable {
 		}
 		if ($this->fieldid == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
-					. 'FROM `#__vm_userfield`'
+					. 'FROM `#__COM_VIRTUEMART_userfield`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
 
 			$this->_db->setQuery($_sql);
 			$_c = $this->_db->loadResultArray();
 
 			if ($_c[0] > 0) {
-				$this->setError(JText::_('VM_USERFIELD_ERR_ALREADY', $this->name));
+				$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
 				return false;
 			}
 		}

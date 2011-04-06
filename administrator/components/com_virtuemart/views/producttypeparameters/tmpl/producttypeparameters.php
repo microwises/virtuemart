@@ -43,10 +43,10 @@ AdminMenuHelper::startAdminArea();
 	<tr>
 		<th>#</th>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->producttypeparameterslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_TYPE_PARAMETER_FORM_LABEL', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_TYPE_PARAMETER_FORM_NAME', 'is_percent', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_TYPE_FORM_DESCRIPTION', 'start_date', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_MODULE_LIST_ORDER', 'list_order', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_LABEL', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_NAME', 'is_percent', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_TYPE_FORM_DESCRIPTION', 'start_date', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MODULE_LIST_ORDER', 'list_order', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>

@@ -232,7 +232,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php if (!defined('VM_LOGFILE_LEVEL')) define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
+		<?php if (!defined('COM_VIRTUEMART_LOGFILE_LEVEL')) define('COM_VIRTUEMART_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
                 <select class="inputbox" name="logfile_level">
 		    <option value="PEAR_LOG_TIP" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
 		    <option value="PEAR_LOG_DEBUG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>

@@ -50,7 +50,7 @@ AdminMenuHelper::startAdminArea();
 		<!-- Review comment -->
 	<tr>
 		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('VM_REVIEW'); ?>
+			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
         	</td>
 		<td width="76%" align="left">
 			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php echo $this->rating->comment; ?></textarea>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 <!-- todo?? To be used with HTML editor (with some more restrictions)
 	<tr>
 		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('VM_REVIEW'); ?>
+			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
         	</td>
 		<td width="76%" align="left">
 	<?php

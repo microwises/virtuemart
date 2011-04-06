@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
       <td width="69%" >
 		<fieldset class="radio">
 		<?php
-		echo JHTML::_('select.booleanlist',  'is_discount', 'class="inputbox"', $this->paym->discount_is_percentage, 'VM_PRODUCT_DISCOUNT_ISTOTAL', 'VM_PRODUCT_DISCOUNT_ISPERCENT');
+		echo JHTML::_('select.booleanlist',  'is_discount', 'class="inputbox"', $this->paym->discount_is_percentage, 'COM_VIRTUEMART_PRODUCT_DISCOUNT_ISTOTAL', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_ISPERCENT');
 		echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?>
 		</fieldset>
       </td>

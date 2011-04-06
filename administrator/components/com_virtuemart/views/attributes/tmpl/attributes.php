@@ -49,9 +49,9 @@ $pagination = $this->pagination;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($attributeslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ATTRIBUTE_LIST_NAME', 'a.attribute_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ATTRIBUTE_LIST_ORDER', 'a.attribute_list', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'PRODUCT_NAME', 'p.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort','COM_VIRTUEMART_ATTRIBUTE_LIST_NAME', 'a.attribute_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ATTRIBUTE_LIST_ORDER', 'a.attribute_list', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME', 'p.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>

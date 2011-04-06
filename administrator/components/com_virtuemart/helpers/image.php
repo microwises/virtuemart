@@ -21,15 +21,15 @@ class VmImage extends VmMediaHandler {
 
 		parent::addMediaActionByType();
 		if( function_exists('imagecreatefromjpeg')){
-			$this->addMediaAction('upload_create_thumb','VM_FORM_MEDIA_UPLOAD_CREATE_THUMBNAIL');
-			$this->addMediaAction('create_thumb','VM_FORM_MEDIA_CREATE_THUMBNAIL');
+			$this->addMediaAction('upload_create_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_CREATE_THUMBNAIL');
+			$this->addMediaAction('create_thumb','COM_VIRTUEMART_FORM_MEDIA_CREATE_THUMBNAIL');
 		}
 	}
 
 	function addMediaAttributesByType(){
 
 		parent::addMediaAttributesByType();
-		$this->addMediaAttributes('file_is_product_image','VM_FORM_MEDIA_PRODUCT_IMAGE');
+		$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
 
 	}
 
