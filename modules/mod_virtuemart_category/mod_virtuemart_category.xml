@@ -19,7 +19,10 @@
 	</files>
 	<params>
 		<param name="Parent_Category_id" type="text" default="0" label="Parent category id" description="This defines the category to list (0 For root dir)." />
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+		<param name="Accordeon" type="radio" default="0" label="Accordeon Menu" description="Use the Accordeon effect">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>

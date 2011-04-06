@@ -17,7 +17,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 $config= VmConfig::getInstance();
 if (!class_exists( 'VirtueMartModelVendor' )) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 if (!class_exists( 'VmImage' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
-if (!class_exists( 'shopFunctionsF' )) require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
-if (!class_exists( 'VirtueMartModelCategory' )) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'category.php');
+//if (!class_exists( 'shopFunctionsF' )) require(JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'shopfunctionsf.php');
+if (!class_exists( 'VirtueMartModelCategory' )) require(JPATH_VM_SITE.DS.'models'.DS.'category.php');
 
 ?>
