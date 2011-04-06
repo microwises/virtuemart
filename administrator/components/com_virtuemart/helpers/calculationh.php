@@ -50,6 +50,7 @@ class calculationHelper {
 	{
 		$this->_db = &JFactory::getDBO();
 		$jnow		=& JFactory::getDate();
+		$this->_app = JFactory::getApplication();
 		$this -> _now			  = $jnow->toMySQL();
 		$this -> _nullDate		  = $this->_db->getNullDate();
 		$this -> _currency 		  = $this->_getCurrencyObject();
@@ -79,6 +80,7 @@ class calculationHelper {
 	 */
 	function priceDisplay($price=0){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
+		$price = $this->convertCurrencyToShopperCurrency($price);
 		return $this -> _currencyDisplay->getFullValue($price);
 	}
 
@@ -840,6 +842,29 @@ class calculationHelper {
 
 	}
 
+	function convertCurrencyToShopperCurrency($price){
+
+
+		$currency = $this->_app->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
+
+		if(empty($currency)){
+			return $price;
+		}
+
+		// If both currency codes match, do nothing
+		if( $currency == $this->vendorCurrency ) {
+			return $price;
+		}
+
+		if(empty($this ->_currency)){
+			// @TODO Why is this check here?
+			$this -> _currency = $this->_getCurrencyObject();
+		}
+
+		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+
+		return $price;
+	}
 
 	function convertCurrencyToShopDefault($currency, $price){
 		if(empty($currency)){
@@ -860,9 +885,8 @@ class calculationHelper {
 			$this -> _currency = $this->_getCurrencyObject();
 		}
 
-//		if(!strcmp($this->vendorCurrency, $currency)){
-			$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
-//		}
+		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+
 		return $price;
 	}
 

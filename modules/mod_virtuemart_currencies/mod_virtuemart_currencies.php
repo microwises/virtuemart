@@ -23,7 +23,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * in the cart:
  * 	currency_id: ID of the user selected currenct
  * 	currency_rate: Actual rate compared to the shop currency
- * 	
+ *
  * Prices in the orders are saved in the shop currency; these fields are required
  * to show the prices to the user in a later stadium.
   */
@@ -39,7 +39,7 @@ $db->setQuery($q);
 $currency_codes    = $db->loadResult();
 
 /* table vm_currency */
-$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency_codes.') and published =1 and `exchange_rate` IS NOT NULL ORDER BY `currency_name`';
+$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency_codes.') and published =1 ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */

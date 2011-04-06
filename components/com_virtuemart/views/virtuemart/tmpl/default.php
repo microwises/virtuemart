@@ -36,14 +36,14 @@ if ($this->categories) echo $this->loadTemplate('categories');
 
 //Console::logSpeed('Load featured');
 /* Show Featured Products */
-if (VmConfig::get('showFeatured', 1) && $this->featuredProducts) echo $this->loadTemplate('featuredproducts');
+if (VmConfig::get('show_featured', 1) && $this->featuredProducts) echo $this->loadTemplate('featuredproducts');
 
 //Console::logSpeed('Load recent');
 /* Recent products */
-if ($this->recentProducts) echo $this->loadTemplate('recentproducts');
+if (VmConfig::get('show_recent', 1) && $this->recentProducts) echo $this->loadTemplate('recentproducts');
 /* Topten products */
-if ($this->toptenProducts) echo $this->loadTemplate('toptenproducts');
+if (VmConfig::get('show_topTen', 1) && $this->toptenProducts) echo $this->loadTemplate('toptenproducts');
 // load categories from front_categories if exist
-if ($this->latestProducts) echo $this->loadTemplate('latestproducts');
+if (VmConfig::get('show_latest', 1) && $this->latestProducts) echo $this->loadTemplate('latestproducts');
 
 ?>
