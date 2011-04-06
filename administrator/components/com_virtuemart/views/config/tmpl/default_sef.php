@@ -24,8 +24,7 @@ defined('_JEXEC') or die('Restricted access');
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
-	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP')); ?>
+	    <td class="key">		 
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP'); ?>">
 		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE') ?></label>
 		</span>
@@ -36,7 +35,6 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP')); ?>
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE_TIP'); ?>">
 		<label for="conf_VM_SEO_TRANSLATE"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_TRANSLATE') ?></label>
 		</span>
@@ -46,10 +44,9 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 	</tr>
 	<tr>
-	    <td class="key">
-		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP')); ?>
+	    <td class="key">		
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP'); ?>">
-		<label for="conf_VM_SEO_USE_ID"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID_TIP') ?></label>
+		<label for="conf_VM_SEO_USE_ID"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_USE_ID') ?></label>
 		</span>
 	    </td>
 		<td>
