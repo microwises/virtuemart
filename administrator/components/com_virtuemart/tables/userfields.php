@@ -87,7 +87,7 @@ class TableUserfields extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__COM_VIRTUEMART_userfield`";
+		$_q = "SHOW COLUMNS FROM `#__vm_userfield`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
