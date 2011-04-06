@@ -30,7 +30,7 @@ $categoryModel = new VirtueMartModelCategory();
 $category_id = $params->get('Parent_Category_id', '0');
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
-$Accordeon = $params->get('Accordeon','1');
+$layout = $params->get('layout','default');
 $active_category_id = JRequest::getInt('category_id', '0');
 $vendorId = '1';
 
@@ -46,23 +46,8 @@ $categories = $categoryModel->getChildrenList($category_id) ;
 $db->setQuery($q);
 $categories = $db->loadObjectList();*/
 if(empty($categories)) return false;
-if ($Accordeon) {
-/* ID for jQuery dropdown */ 
-$ID = str_replace('.', '_', substr(microtime(true), -8, 8));
-$js = "jQuery(document).ready(function() {
-	jQuery('#VMmenu".$ID." li.inactive ul').hide();
-	jQuery('#VMmenu".$ID." li .VmArrowdown').click(
-	function() {
-		if (jQuery(this).parent().next('ul').is(':hidden')) {
-			jQuery('#VMmenu".$ID." ul:visible').slideToggle(500,'linear');
-			jQuery(this).parent().next('ul').slideToggle(500,'linear');
-		}
-	});
-});" ; 
 
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($js);
-}
+
 foreach ($categories as $category) {
 $category->childs = $categoryModel->getChildrenList($category->category_id) ;
 }
@@ -72,5 +57,5 @@ $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 
 
 /* Laod tmpl default */
-require(JModuleHelper::getLayoutPath('mod_virtuemart_category'));
+require(JModuleHelper::getLayoutPath('mod_virtuemart_category',$layout));
 ?>
