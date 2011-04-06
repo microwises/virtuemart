@@ -78,7 +78,7 @@ class TableUserfields extends JTable {
 	function __construct(&$db)
 	{
 		self::loadFields($db);
-		parent::__construct('#__COM_VIRTUEMART_userfield', 'fieldid', $db);
+		parent::__construct('#__vm_userfield', 'fieldid', $db);
 	}
 
 	/**
