@@ -21,6 +21,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 /* thank you for the ask question mail  */ ?>
 
 <div class="productdetails-view">
-	<?php echo JText::_( 'VM_ASK_QUESTION_THANK_YOU' ); ?>
-	<button onclick="window.parent.document.getElementById('sbox-window').close();" type="button"><?php echo JText::_( 'VM_CLOSE' ); ?></button>
+	<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_THANK_YOU'); ?>
+	<button onclick="window.parent.document.getElementById('sbox-window').close();" type="button"><?php echo JText::_('COM_VIRTUEMART_CLOSE'); ?></button>
 </div>

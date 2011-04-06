@@ -15,7 +15,7 @@ $verticalseparator = " vertical-separator";
 
 <div class="topten-view">
 
-	<h4><?php echo JText::_( 'VM_TOPTEN_PRODUCT' ) ?></h4>
+	<h4><?php echo JText::_('COM_VIRTUEMART_TOPTEN_PRODUCT') ?></h4>
 
 <?php // Start the Output
 foreach ( $this->toptenProducts as $topProduct ) {
@@ -66,8 +66,8 @@ foreach ( $this->toptenProducts as $topProduct ) {
 					<?php
 					if (VmConfig::get ( 'show_prices' ) == '1') {
 					//				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-					//						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
-					//					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+					//						echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
+					//					} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 					if ($this->showBasePrice) {
 						echo shopFunctionsF::createPriceDiv ( 'basePrice', 'VM_PRODUCT_BASEPRICE', $topProduct->prices );

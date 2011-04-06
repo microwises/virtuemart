@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $this->store->vendor_store_name; ?>
 <?php
 echo $this->vendor->images[0]->displayMediaThumb();
-//echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('VM_VENDOR_IMAGE_ALT'),1,1);
+//echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('COM_VIRTUEMART_VENDOR_IMAGE_ALT'),1,1);
 //VmImage::generateImageHtml($this->store->file_ids, VmConfig::get('media_path'), 'alt="Shop Image"', false);
 //TODO Ordernumber
 

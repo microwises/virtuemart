@@ -108,11 +108,11 @@ class shopFunctionsF {
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			$link .= '&amp;pop=1';
 			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('CMN_PDF'));
+				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_CMN_PDF'));
 			} else {
-				$text = JText::_('CMN_PDF') .'&nbsp;';
+				$text = JText::_('COM_VIRTUEMART_CMN_PDF') .'&nbsp;';
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('CMN_PDF'));
+			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_CMN_PDF'));
 		}
 	}
 
@@ -130,11 +130,11 @@ class shopFunctionsF {
 			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
 			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('CMN_EMAIL'));
+				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_CMN_EMAIL'));
 			} else {
-				$text = '&nbsp;'. JText::_('CMN_EMAIL');
+				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_CMN_EMAIL');
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('CMN_EMAIL'), 'screenX=100,screenY=200');
+			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_CMN_EMAIL'), 'screenX=100,screenY=200');
 		}
 	}
 
@@ -154,22 +154,22 @@ class shopFunctionsF {
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
 				$filter = JFilterInput::getInstance();
-				$text = JHtml::_('image.site', 'printButton.png', $folder, null, null, JText::_('CMN_PRINT'));
+				$text = JHtml::_('image.site', 'printButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_CMN_PRINT'));
 				$text .= $filter->clean($add_text);
 			} else {
-				$text = '|&nbsp;'. JText::_('CMN_PRINT'). '&nbsp;|';
+				$text = '|&nbsp;'. JText::_('COM_VIRTUEMART_CMN_PRINT'). '&nbsp;|';
 			}
 			$isPopup = JRequest::getVar( 'pop' );
 			if ( $isPopup ) {
 				// Print Preview button - used when viewing page
 				$html = '<span class="vmNoPrint">
-				<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. JText::_('CMN_PRINT').'">
+				<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. JText::_('COM_VIRTUEMART_CMN_PRINT').'">
 				'. $text .'
 				</a></span>';
 				return $html;
 			} else {
 				// Print Button - used in pop-up window
-				return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('CMN_PRINT'));
+				return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_CMN_PRINT'));
 			}
 		}
 

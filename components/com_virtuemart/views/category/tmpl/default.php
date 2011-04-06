@@ -149,19 +149,19 @@ foreach ($this->products as $product) {
 
 						<!-- The "Average Customer Rating" Part -->
 						<?php if (VmConfig::get('pshop_allow_reviews') == 1) { ?>
-						<span class="contentpagetitle"><?php echo JText::_('VM_CUSTOMER_RATING') ?>:</span>
+						<span class="contentpagetitle"><?php echo JText::_('COM_VIRTUEMART_CUSTOMER_RATING') ?>:</span>
 						<br />
 						<?php
 						// $img_url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$product->votes->rating.'.gif';
-						// echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('REVIEW_STARS'));
-						// echo JText::_('VM_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
+						// echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('COM_VIRTUEMART_REVIEW_STARS'));
+						// echo JText::_('COM_VIRTUEMART_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 						<?php } ?>
 
 
 						<div class="paddingtop8">
 						<?php // Show Stock Status
 						echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/vmgeneral/'.$product->stock->stock_level.'.png', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
-						echo '<br /><span class="stock-level">'.JText::_('VM_STOCK_LEVEL_DISPLAY_TITLE_TIP').'</span>';
+						echo '<br /><span class="stock-level">'.JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP').'</span>';
 						?>
 						</div>
 
@@ -181,8 +181,8 @@ foreach ($this->products as $product) {
 						<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
 <?php	if ($this->show_prices == '1') {
 			if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-				echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
-			} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+				echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
+			} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 			//todo add config settings
 			if( $this->showBasePrice){
@@ -201,7 +201,7 @@ foreach ($this->products as $product) {
 	</div>
 						<p>
 						<?php // Product Details Button
-						echo JHTML::link($product->link, JText::_('PRODUCT_DETAILS'), array('title' => $product->product_name,'class' => 'product-details'));
+						echo JHTML::link($product->link, JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name,'class' => 'product-details'));
 		?>
 						</p>
 
@@ -264,10 +264,10 @@ foreach ($this->products as $product) {
 					<?php
 
 				/* Add the button */
-				$button_lbl = JText::_('VM_CART_ADD_TO');
+				$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
 				$button_cls = 'addtocart';
 				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
-					$button_lbl = JText::_('VM_CART_NOTIFY');
+					$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 					$button_cls = 'notify_button';
 				}
 				?>
@@ -276,7 +276,7 @@ foreach ($this->products as $product) {
 				</span>
 				<?php  if($variantExist){
 					?>
-					<noscript><input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('VM_SET_PRODUCT_TYPE'); ?>" />
+					<noscript><input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE'); ?>" />
 					</noscript>
 					<?php } ?>
 				<input type="hidden" class="pname" value="<?php echo $product->product_name ?>">

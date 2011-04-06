@@ -5,7 +5,7 @@
 	//Set the cell width
 	$TopTen_cellwidth = intval( (100 / $product_per_row) - 2 );
 
-	echo "<h3>".JText::_('VM_LATEST_PRODUCT')."</h3>";
+	echo "<h3>".JText::_('COM_VIRTUEMART_LATEST_PRODUCT')."</h3>";
 	foreach ($this->latestProducts as $latestProduct ) {
 		?>
 		<div style="float:left;width:<?php echo $TopTen_cellwidth ?>%;text-align:top;padding:0px;" >
@@ -15,8 +15,8 @@
 				<h4><?php echo $latestProduct->product_name; ?></h4>
 				<?php 			if (VmConfig::get('show_prices') == '1') {
 //				if( $latestProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-//						echo "<strong>". JText::_('VM_CART_PRICE_PER_UNIT').' ('.$latestProduct->product_unit."):</strong>";
-//					} else echo "<strong>". JText::_('VM_CART_PRICE'). ": </strong>";
+//						echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$latestProduct->product_unit."):</strong>";
+//					} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 					//todo add config settings
 					if( Permissions::getInstance()->check('admin')){

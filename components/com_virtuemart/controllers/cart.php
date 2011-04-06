@@ -88,11 +88,11 @@ class VirtueMartControllerCart extends JController {
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if ($cart->add()) {
-				$msg = JText::_('PRODUCT_ADDED_SUCCESSFULLY');
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
 				$mainframe->enqueueMessage($msg);
 				$type = '';
 			} else {
-				$msg = JText::_('PRODUCT_NOT_ADDED_SUCCESSFULLY');
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 				$type = 'error';
 			}
 //			if (JRequest::getVar('format','') =='raw' ) {
@@ -132,12 +132,12 @@ class VirtueMartControllerCart extends JController {
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
 			if($cart->add()){
-				$text = '<a href="'.$continue_link.'" >'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
-				$text .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('VM_CART_SHOW').'</a>';
+				$text = '<a href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+				$text .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('COM_VIRTUEMART_CART_SHOW').'</a>';
 				echo json_encode (array('stat'=>1,'msg'=>$text));
 			} else {
 				$text = '<p>'.$cart->getError().'</p>';
-				$text .= '<a href="'.$continue_link.'" >'.JText::_('VM_CONTINUE_SHOPPING').'</a>';
+				$text .= '<a href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
 				echo json_encode (array('stat'=>0,'msg'=>$text));
 			}
 		} else {
@@ -309,7 +309,7 @@ class VirtueMartControllerCart extends JController {
 				} elseif ($_retVal === false) {
 					// TODO Max; what todo of the plugin failed? Just nothing we can set here a msg
 //					if ($redirect) { self::Cart(); } else { return false; } // Plugin failed
-					$msg = JText::_('VM_CART_SETPAYMENT_PLUGIN_FAILED');
+					$msg = JText::_('COM_VIRTUEMART_CART_SETPAYMENT_PLUGIN_FAILED');
 				} elseif (is_array($_retVal)) {
 					// We got modified cart data back from the plugin
 //					$cart = $_retVal;		This seems to be a bit evil, does the plugin actually returns a cart?
@@ -342,8 +342,8 @@ class VirtueMartControllerCart extends JController {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
 		$cart = VirtueMartCart::getCart();
-		if ($cart->removeProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_REMOVED_SUCCESSFULLY'));
-		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
+		if ($cart->removeProductCart()) $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY'));
+		else $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 	}
@@ -358,8 +358,8 @@ class VirtueMartControllerCart extends JController {
 		$mainframe = JFactory::getApplication();
 		/* Load the cart helper */
 		$cartModel = VirtueMartCart::getCart();
-		if ($cartModel->updateProductCart()) $mainframe->enqueueMessage(JText::_('PRODUCT_UPDATED_SUCCESSFULLY'));
-		else $mainframe->enqueueMessage(JText::_('PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
+		if ($cartModel->updateProductCart()) $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY'));
+		else $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 	}

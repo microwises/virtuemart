@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_CART_TITLE'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?>
 	</legend>
 <?php
 
@@ -113,18 +113,18 @@ defined('_JEXEC') or die('Restricted access');
 			if($this->layoutName=='default'){
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
-				<input type="text" title="'. JText::_('VM_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
+				<input type="text" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
 				<input type="hidden" name="cart_product_id" value="'.$k.'" />
-				<input type="image" name="update" title="'. JText::_('VM_CART_UPDATE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/update_quantity_cart.png" alt="'. JText::_('VM_UPDATE') .'" align="middle" />
+				<input type="image" name="update" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/update_quantity_cart.png" alt="'. JText::_('COM_VIRTUEMART_UPDATE') .'" align="middle" />
 			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="delete" />
 				<input type="hidden" name="cart_product_id" value="'.$k.'" />
-				<input type="image" name="delete" title="'. JText::_('VM_CART_DELETE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/remove_from_cart.png" alt="'. JText::_('VM_CART_DELETE') .'" align="middle" />
+				<input type="image" name="delete" title="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/remove_from_cart.png" alt="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" align="middle" />
 			  </form>';
 			} else {
 				$product_rows[$i]['update_form'] = $product->quantity;
@@ -137,14 +137,14 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<table width="100%" cellspacing="2" cellpadding="0" border="0">
 			<tr align="left" class="sectiontableheader">
-				<th><?php echo JText::_('VM_CART_NAME') ?></th>
-				<th align="left" ><?php echo JText::_('VM_CART_SKU') ?></th>
-				<th align="center" width="60px" ><?php echo JText::_('VM_CART_PRICE') ?></th>
-				<th align="right" width="140px" ><?php echo JText::_('VM_CART_QUANTITY') ?> / <?php echo JText::_('VM_CART_ACTION') ?></th>
-				<th align="right" width="70px"><?php echo JText::_('VM_CART_SUBTOTAL') ?></th>
-				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
-				<th align="right" width="60px"><?php echo JText::_('VM_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
-				<th align="right" width="70px"><?php echo JText::_('VM_CART_TOTAL') ?></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
+				<th align="left" ><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
+				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
+				<th align="right" width="140px" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?> / <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
+				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL') ?></th>
+				<th align="right" width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
+				<th align="right" width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
 		<?php foreach( $product_rows as $prow ) { ?>
 			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
@@ -166,7 +166,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="4"><hr /></td>
 		</tr>
 		  <tr class="sectiontableentry1">
-			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
+			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 			<td align="right"><?php echo $this->prices['priceWithoutTax'] ?></td>
 			<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
 			<td align="right"><?php echo $this->prices['discountAmount'] ?></td>
@@ -189,7 +189,7 @@ defined('_JEXEC') or die('Restricted access');
 		if (VmConfig::get('coupons_enable')) {
 		?>
 			<tr class="sectiontableentry2">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('VM_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
 				<?php if (!empty($this->cartData['couponCode'])) { ?>
 					<td colspan="2" align="left"><?php
 						echo $this->cartData['couponCode'] . ' (' . $this->cartData['couponDescr'] . ')';
@@ -204,8 +204,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('VM_CART_EDIT_SHIPPING')); ?> </td>
-		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING'); ?> </td> */?>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING')); ?> </td>
+		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>
@@ -214,8 +214,8 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('VM_CART_EDIT_PAYMENT')); ?> </td>
-		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
+				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT')); ?> </td>
+		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentTax']; ?> </td>
@@ -253,7 +253,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="4"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
-			<td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?>: </td>
+			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?>: </td>
 			<td align="right"> <?php echo $this->prices['billSub'] ?> </td>
 			<td align="right"> <?php echo $this->prices['billTaxAmount'] ?> </td>
 			<td align="right"> <?php echo $this->prices['billDiscountAmount'] ?> </td>
@@ -261,7 +261,7 @@ defined('_JEXEC') or die('Restricted access');
 		  </tr>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		  <tr class="sectiontableentry1">
-				<td colspan="4" align="right" valign="top"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>: </td>
+				<td colspan="4" align="right" valign="top"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>: </td>
 				<td colspan="4" align="right"><?php echo $this->prices['taxAmount'] ?></td>
 		  </tr>
 		<?php } ?>

@@ -85,9 +85,9 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='edit'){
 			if($this->_model->_id==0 && $this->_cuid==0){
-				$button_lbl = JText::_('VM_REGISTER');
+				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
 			} else {
-				$button_lbl = JText::_('VM_SAVE');
+				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
 			}
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
@@ -278,7 +278,7 @@ class VirtuemartViewUser extends JView {
 		// Shipping address(es)
 		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
 		if (($_c = count($_addressList)) == 0) {
-			$this->_lists['shipTo'] = JText::_('VM_USER_NOSHIPPINGADDR');
+			$this->_lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 		} else {
 			$_shipTo = array();
 			for ($_i = 0; $_i < $_c; $_i++) {
@@ -377,7 +377,7 @@ class VirtuemartViewUser extends JView {
 //						?VmConfig::get('default_vendor_id')
 //						: $this->_userDetails->vendor_id
 //					 ).'"/>';
-				$this->_lists['vendors'] = JText::_('VM_USER_NOT_A_VENDOR');// . $_setVendor;
+				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
 		}
 
@@ -489,12 +489,12 @@ class VirtuemartViewUser extends JView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('VM_PUBLISHED' ) : JText::_('VM_UNPUBLISHED' );
-			$action = $field ? JText::_('VM_UNPUBLISH_ITEM' ) : JText::_('VM_PUBLISH_ITEM' );
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
+			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('VM_ENABLED' ) : JText::_('VM_DISABLED' );
-			$action = $field ? JText::_('VM_DISABLE_ITEM' ) : JText::_('VM_ENABLE_ITEM' );
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
+			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
 		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'

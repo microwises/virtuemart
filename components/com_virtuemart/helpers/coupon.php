@@ -40,17 +40,17 @@ abstract class CouponHelper
 		$_db->setQuery($_q);
 		$_couponData = $_db->loadObject();
 		if (!$_couponData) {
-			return JText::_('VM_COUPON_CODE_INVALID');
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 		}
 		if (!$_couponData->started) {
-			return JText::_('VM_COUPON_CODE_NOTYET') . $_couponData->coupon_start_date;
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $_couponData->coupon_start_date;
 		}
 		if ($_couponData->ended) {
 			self::RemoveCoupon($_code, true);
-			return JText::_('VM_COUPON_CODE_EXPIRED');
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
 		if ($_billTotal < $_couponData->coupon_value_valid) {
-			return JText::_('VM_COUPON_CODE_TOOLOW') . $_couponData->coupon_value_valid;
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . $_couponData->coupon_value_valid;
 		}
 		return '';
 	}
