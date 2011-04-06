@@ -52,7 +52,7 @@ class VirtuemartViewMedia extends JView {
 
 			$isNew = ($media->file_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_MEDIA_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MEDIA_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_countries_48');
 
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
@@ -63,7 +63,7 @@ class VirtuemartViewMedia extends JView {
 				if(empty($media->vendor_id))$media->vendor_id = $userDetails->vendor_id;
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_MEDIA_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_LIST_EDIT').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();
@@ -73,7 +73,7 @@ class VirtuemartViewMedia extends JView {
 
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_MEDIA_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

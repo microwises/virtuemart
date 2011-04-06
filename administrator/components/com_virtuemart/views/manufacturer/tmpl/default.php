@@ -27,10 +27,10 @@ AdminMenuHelper::startAdminArea();
     <table>
 	<tr>
 	    <td width="100%">
-		<?php echo JText::_( 'VM_MANUFACTURER_FILTER' ); ?>:
+		<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FILTER'); ?>:
 		<input type="text" name="search" id="search" value="<?php echo $this->list['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-		<button onclick="this.form.submit();"><?php echo JText::_( 'VM_MANUFACTURER_GO_BTN' ); ?></button>
-		<button onclick="document.getElementById('search').value='';document.getElementById('mf_category_id').value='0';this.form.submit();"><?php echo JText::_( 'VM_MANUFACTURER_RESET_BTN' ); ?></button>
+		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_GO_BTN'); ?></button>
+		<button onclick="document.getElementById('search').value='';document.getElementById('mf_category_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
 	    </td>
 	    <td nowrap="nowrap">
 		<?php
@@ -47,19 +47,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_MANUFACTURER_NAME' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_MANUFACTURER_EMAIL' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_MANUFACTURER_DESC' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESC'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_MANUFACTURER_URL' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_( 'VM_PUBLISH' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
 		    </th>
 		</tr>
 	    </thead>

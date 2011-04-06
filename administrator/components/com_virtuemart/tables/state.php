@@ -63,15 +63,15 @@ class TableState extends JTable {
 	function check()
 	{
         if (!$this->state_name) {
-			$this->setError(JText::_('VM_STATE_RECORDS_MUST_CONTAIN_STATE_NAME'));
+			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_STATE_NAME'));
 			return false;
 		}
 		if (!$this->state_2_code) {
-			$this->setError(JText::_('VM_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
+			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
 			return false;
 		}
 		if (!$this->state_3_code) {
-			$this->setError(JText::_('VM_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
+			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
 			return false;
 		}
 
@@ -83,7 +83,7 @@ class TableState extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('VM_GIVEN_STATE_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_STATE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

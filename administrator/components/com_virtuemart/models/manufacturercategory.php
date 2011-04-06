@@ -271,7 +271,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 				.' FROM #__vm_manufacturer_category';
 		$db->setQuery($query);
 
-		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. JText::_( 'VM_SELECT_MANUFACTURER_CATEGORY' ) .' -' );
+		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );
 
 		$categoryFilter = array_merge($categoryFilter, $db->loadObjectList());
 

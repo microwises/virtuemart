@@ -139,7 +139,7 @@ class VirtuemartControllerProduct extends JController {
 		$model = $this->getModel('product');
 		$msgtype = '';
 		if ($product_id = $model->saveProduct()){
-			 $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
+			 $msg = JText::_('COM_VIRTUEMART_PRODUCT_SAVED_SUCCESSFULLY');
 		}
 		else {
 			$msg = $model->getError();
@@ -170,9 +170,9 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($model->cloneProduct()) $msg = JText::_('PRODUCT_CLONED_SUCCESSFULLY');
+		if ($model->cloneProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('PRODUCT_NOT_CLONED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
@@ -191,9 +191,9 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($model->removeProduct()) $msg = JText::_('PRODUCT_REMOVED_SUCCESSFULLY');
+		if ($model->removeProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('PRODUCT_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 
@@ -260,9 +260,9 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($model->saveProductType()) $msg = JText::_('PRODUCT_TYPE_LINK_SAVED_SUCCESSFULLY');
+		if ($model->saveProductType()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LINK_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('PRODUCT_TYPE_LINK_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LINK_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);

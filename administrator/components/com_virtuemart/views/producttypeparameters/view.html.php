@@ -55,21 +55,21 @@ class VirtuemartViewProducttypeparameters extends JView {
 
 				/* Parameter types */
 				$options = array();
-				$options[] = JHTML::_('select.option', 'I', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'));
-				$options[] = JHTML::_('select.option', 'T', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'));
-				$options[] = JHTML::_('select.option', 'S', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'));
-				$options[] = JHTML::_('select.option', 'F', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'));
-				$options[] = JHTML::_('select.option', 'C', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'));
-				$options[] = JHTML::_('select.option', 'D', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME'));
-				$options[] = JHTML::_('select.option', 'A', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE'));
-				$options[] = JHTML::_('select.option', 'M', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME'));
-				$options[] = JHTML::_('select.option', 'V', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'));
-				$options[] = JHTML::_('select.option', 'B', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK'));
+				$options[] = JHTML::_('select.option', 'I', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'));
+				$options[] = JHTML::_('select.option', 'T', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'));
+				$options[] = JHTML::_('select.option', 'S', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'));
+				$options[] = JHTML::_('select.option', 'F', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'));
+				$options[] = JHTML::_('select.option', 'C', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'));
+				$options[] = JHTML::_('select.option', 'D', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME'));
+				$options[] = JHTML::_('select.option', 'A', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE'));
+				$options[] = JHTML::_('select.option', 'M', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME'));
+				$options[] = JHTML::_('select.option', 'V', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'));
+				$options[] = JHTML::_('select.option', 'B', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK'));
 
 				$lists['parameter_type'] = JHTML::_('select.genericlist', $options, 'parameter_type', 'class="inputbox"', 'value', 'text', $parameter->parameter_type);
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_PARAMETER_FORM_LBL' ), 'vm_product_type_parameters_48');
+				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_LBL'), 'vm_product_type_parameters_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();
 				JToolBarHelper::save();
@@ -93,7 +93,7 @@ class VirtuemartViewProducttypeparameters extends JView {
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_PARAMETER_LIST_LBL').'::'.$product_type_name, 'vm_product_type_parameters_48');
+				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_LIST_LBL').'::'.$product_type_name, 'vm_product_type_parameters_48');
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();

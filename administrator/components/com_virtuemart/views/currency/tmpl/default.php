@@ -32,31 +32,31 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
 		    </th>
 		    <th >
-			<?php echo JText::_( 'VM_CURRENCY_LIST_NAME' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NAME'); ?>
 		    </th>
 		    <th width="80">
-			<?php echo JText::_( 'VM_CURRENCY_LIST_EXCHANGE_RATE' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_EXCHANGE_RATE'); ?>
 		    </th>
 		    <th width="10">
-			<?php echo JText::_( 'VM_CURRENCY_LIST_SYMBOL' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_SYMBOL'); ?>
 		    </th>
 		    <th width="10">
-			<?php echo JText::_( 'VM_CURRENCY_LIST_CODE_2' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_( 'VM_CURRENCY_LIST_CODE_3' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_3'); ?>
 		    </th>
 <?php /*		    <th >
-				<?php echo JText::_( 'VM_CURRENCY_START_DATE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_START_DATE'); ?>
 			</th>
 			<th >
-				<?php echo JText::_( 'VM_CURRENCY_END_DATE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_END_DATE'); ?>
 			</th> */?>
 			<th width="10">
-				<?php echo JText::_( 'PUBLISHED' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 		<?php /*	<th width="10">
-				<?php echo JText::_( 'VM_CALC_SHARED' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th> */ ?>
 		</tr>
 	    </thead>
@@ -95,12 +95,12 @@ AdminMenuHelper::startAdminArea();
 				$date = JFactory::getDate($row->publish_up, $this->tzoffset);
 				$publish_up = $date->toFormat($this->dateformat);
 			}
-			echo $publish_up = JText::_('VM_NEVER');?>
+			echo $publish_up = JText::_('COM_VIRTUEMART_NEVER');?>
 		</td>
 		<td>
 			<?php
 				if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-					$endDate = JText::_('VM_NEVER');
+					$endDate = JText::_('COM_VIRTUEMART_NEVER');
 				} else {
 					$date = JFactory::getDate($row->publish_down,$this->tzoffset);
 					$endDate = $date->toFormat($this->dateformat);

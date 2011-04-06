@@ -32,10 +32,10 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingCarriers); ?>);" />
 			</th>			            		
 			<th>
-				<?php echo JText::_( 'VM_CARRIER_LIST_NAME_LBL' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_NAME_LBL'); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'VM_CARRIER_LIST_ORDER_LBL' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_ORDER_LBL'); ?>
 			</th>																		
 		</tr>
 		</thead>

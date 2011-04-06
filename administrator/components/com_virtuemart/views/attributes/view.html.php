@@ -52,7 +52,7 @@ class VirtuemartViewAttributes extends JView {
 				$attribute = $this->get('Attribute');
 
 				/* Load the list order */
-				if ($task == 'add') $lists['listorder'] = JText::_('CMN_NEW_ITEM_LAST');
+				if ($task == 'add') $lists['listorder'] = JText::_('COM_VIRTUEMART_CMN_NEW_ITEM_LAST');
 				else {
 					$listorder = $this->get('ListOrder');
 					$lists['listorder'] = JHTML::_('select.genericlist', $listorder, 'listorder', '', 'value', 'text', $attribute->attribute_list);
@@ -63,9 +63,9 @@ class VirtuemartViewAttributes extends JView {
 				$this->assignRef('lists', $lists);
 
 				/* Toolbar */
-				if ($task == 'add') $text = JText::_( 'ADD_ATTRIBUTE' );
+				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE');
 				else {
-					$text = JText::_( 'EDIT_ATTRIBUTE' );
+					$text = JText::_('COM_VIRTUEMART_EDIT_ATTRIBUTE');
 					JRequest::setVar('cid', $attribute->product_id);
 					$product = $this->get('ProductDetails', 'product');
 				}
@@ -85,7 +85,7 @@ class VirtuemartViewAttributes extends JView {
 				/* Toolbar */
 				if ($product) $text = ' :: '.$product->product_sku.' :: '.$product->product_name;
 				else $text = '';
-				JToolBarHelper::title(JText::_( 'ATTRIBUTES_LIST' ).$text, 'vm_product_48');
+				JToolBarHelper::title(JText::_('COM_VIRTUEMART_ATTRIBUTES_LIST').$text, 'vm_product_48');
 				JToolBarHelper::deleteListX();
 				if (JRequest::getInt('product_id') > 0) JToolBarHelper::addNew();
 

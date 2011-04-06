@@ -86,7 +86,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory',JText::_('CANCELLED'));
+		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory',JText::_('COM_VIRTUEMART_CANCELLED'));
 	}
 
 
@@ -99,7 +99,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 		$model =& $this->getModel('manufacturerCategory');
 
 		if ($id = $model->store()) {
-			$msg = JText::_('VM_MANUFACTURER_CATEGORY_SAVED');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_SAVED');
 		} else {
 			$model->getError();
 		}
@@ -121,10 +121,10 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	{
 		$model = $this->getModel('manufacturerCategory');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_MANUFACTURER_CATEGORY_DELETE_WARNING');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DELETE_WARNING');
 		}
 		else {
-			$msg = JText::_( 'VM_MANUFACTURER_DELETE_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
@@ -139,7 +139,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	{
 		$model = $this->getModel('manufacturerCategory');
 		if (!$model->publish(true)) {
-			$msg = JText::_('VM_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
@@ -154,7 +154,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	{
 		$model = $this->getModel('manufacturerCategory');
 		if (!$model->publish(false)) {
-			$msg = JText::_('VM_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);

@@ -115,7 +115,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 	$model = $this->getModel('updatesMigration');
 	$model->restoreSystemDefaults();
 	
-	$msg = JText::_('VM_SYSTEM_DEFAULTS_RESTORED');
+	$msg = JText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
 	$msg .= ' User id of the main vendor is '.$model->setStoreOwner();
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
     }

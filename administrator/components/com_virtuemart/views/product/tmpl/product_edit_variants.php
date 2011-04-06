@@ -23,12 +23,12 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 	<table class="adminlist">
 		<thead>
 		<tr class="row1">
-			<th colspan="<?php echo count($this->product->attribute_names)+2; ?>"><?php echo JText::_('VM_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></th>
+			<th colspan="<?php echo count($this->product->attribute_names)+2; ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></th>
 		</tr>
 		<!-- Child products -->
 		<tr class="row0">
-			<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_NAME') ?></th>
-			<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?></th>
 			<?php
 				foreach ($this->product->attribute_names as $key => $attribute_title) {
 					?>
@@ -65,7 +65,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td colspan="2"><strong><?php echo JText::_('VM_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
+			<td colspan="2"><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
 		</tr>
 		<?php foreach ($this->product->attribute_names as $key => $attribute_title) { ?>
 				<tr>
@@ -85,17 +85,17 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 	?>
 	<table class="adminform">
 		<tr class="row0">
-			<td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_ATTRIBUTE_LIST') ?>:</div></td>
+			<td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_LIST') ?>:</div></td>
 			<td width="79%" id="attribute_container">
 			<?php
 			// ATTRIBUTE EXTENSION by Tobias (eaxs)
 			// ps_product_attribute::loadAttributeExtension($db->sf("attribute"));
-			echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'VM_PRODUCT_FORM_TITLE' ) . '" />
-		      <input type="hidden" name="js_lbl_property" value="' . JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) . '" />
-		      <input type="hidden" name="js_lbl_property_new" value="' . JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) . '" />
-		      <input type="hidden" name="js_lbl_attribute_new" value="' . JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) . '" />
-		      <input type="hidden" name="js_lbl_attribute_delete" value="' . JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) . '" />
-		      <input type="hidden" name="js_lbl_price" value="' . JText::_( 'VM_CART_PRICE' ) . '" />' ;
+			echo '<input type="hidden" name="js_lbl_title" value="' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_TITLE') . '" />
+		      <input type="hidden" name="js_lbl_property" value="' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY') . '" />
+		      <input type="hidden" name="js_lbl_property_new" value="' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY_NEW') . '" />
+		      <input type="hidden" name="js_lbl_attribute_new" value="' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_NEW') . '" />
+		      <input type="hidden" name="js_lbl_attribute_delete" value="' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_DELETE') . '" />
+		      <input type="hidden" name="js_lbl_price" value="' . JText::_('COM_VIRTUEMART_CART_PRICE') . '" />' ;
 		
 		      
 			// product has no attributes
@@ -105,24 +105,24 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 					<tbody style="width: 30%;">
 						<tr>
 							<td width="5%"><?php
-							echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ;
+							echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_TITLE') ;
 							?></td>
 							<td align="left" colspan="2"><input type="text"
 								name="attributeX[0][name]" value="" size="60" /></td>
 							<td colspan="3" align="left">
-								<a href="javascript: newAttribute(1)"><?php echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ; ?></a> | <a href="javascript: newProperty(0)"><?php echo JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) ; ?></a>
+								<a href="javascript: newAttribute(1)"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_NEW') ; ?></a> | <a href="javascript: newProperty(0)"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY_NEW') ; ?></a>
 							</td>
 						</tr>
 						<tr id="attributeX_tr_0_0">
 							<td width="5%">&nbsp;</td>
 							<td width="10%" align="left"><?php
-							echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
+							echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY') ;
 							?></td>
 							<td align="left" width="20%">
 								<input type="text" name="attributeX[0][value][]" value="" size="40" />
 							</td>
 							<td align="left" width="5%">
-								<?php echo JText::_( 'VM_PRODUCT_PRICE_TITLE' ) ; ?>
+								<?php echo JText::_('COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?>
 							</td>
 							<td align="left" width="60%">
 								<input type="text" name="attributeX[0][price][]" size="10" value="" />
@@ -146,18 +146,18 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 						<tbody style="width: 30%">
 							<tr>
 								<td width="5%">
-									<?php echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ; ?>
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_TITLE') ; ?>
 								</td>
 								<td align="left" colspan="2">
 									<input type="text" name="attributeX[<?php echo $i ; ?>][name]" value="<?php echo $dropdown_name ; ?>" size="60" />
 								</td>
 								<td colspan="3" align="left">
-									<a href="javascript:newAttribute(<?php echo ($i + 1) ; ?>)"><?php echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ; ?></a> | 
+									<a href="javascript:newAttribute(<?php echo ($i + 1) ; ?>)"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_NEW') ; ?></a> | 
 									<?php
 										if( $i != 0 ) {
-											?><a href="javascript:deleteAttribute(<?php echo ($i) ; ?>)"><?php echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) ; ?></a> | 
+											?><a href="javascript:deleteAttribute(<?php echo ($i) ; ?>)"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_DELETE') ; ?></a> | 
 										<?php }	?>
-										<a href="javascript:newProperty(<?php echo ($i) ; ?>)"><?php echo JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) ; ?></a>
+										<a href="javascript:newProperty(<?php echo ($i) ; ?>)"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY_NEW') ; ?></a>
 								</td>
 							</tr>
 							<?php
@@ -173,7 +173,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 								?>">
 								<td width="5%">&nbsp;</td>
 								<td width="10%" align="left"><?php
-										echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
+										echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY') ;
 										?></td>
 								<td align="left" width="20%"><input type="text"
 									name="attributeX[<?php
@@ -183,7 +183,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 										echo $value_price[0] ;
 										?>" size="40" /></td>
 								<td align="left" width="5%"><?php
-										echo JText::_( 'VM_CART_PRICE' ) ;
+										echo JText::_('COM_VIRTUEMART_CART_PRICE') ;
 										?></td>
 								<td align="left" width="60%"><input type="text"
 									name="attributeX[<?php
@@ -205,7 +205,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 										?>">
 								<td width="5%">&nbsp;</td>
 								<td width="10%" align="left"><?php
-										echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
+										echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PROPERTY') ;
 										?></td>
 								<td align="left" width="20%"><input type="text"
 									name="attributeX[<?php
@@ -215,7 +215,7 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 										echo $value ;
 										?>" size="40" /></td>
 								<td align="left" width="5%"><?php
-										echo JText::_( 'VM_CART_PRICE' ) ;
+										echo JText::_('COM_VIRTUEMART_CART_PRICE') ;
 										?></td>
 								<td align="left" width="60%"><input type="text"
 									name="attributeX[<?php
@@ -237,19 +237,19 @@ if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_par
 		</tr>
 		<tr class="row0">
 			<td>&nbsp;</td>
-			<td><?php echo JText::_('VM_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
+			<td><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
 		</tr>
 		<tr class="row0">
 			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr class="row1">
-			<td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') ?>:</div></td>
+			<td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') ?>:</div></td>
 			<td width="79%" >
 				<input class="inputbox" type="text" name="custom_attribute" value="<?php echo $this->product->custom_attribute; ?>" size="100" />
 		</tr>
 		<tr class="row1">
 			<td>&nbsp;</td>
-			<td><?php echo JText::_('VM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
+			<td><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
 		</tr>
 </table>
 <script type="text/javascript">

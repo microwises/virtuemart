@@ -32,19 +32,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUNTRY_LIST_NAME' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_NAME'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_ZONE_ASSIGN_CURRENT_LBL' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUNTRY_LIST_2_CODE' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_2_CODE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_( 'VM_COUNTRY_LIST_3_CODE' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_3_CODE'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_( 'PUBLISH' ); ?>
+			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
 		    </th>
 		</tr>
 	    </thead>

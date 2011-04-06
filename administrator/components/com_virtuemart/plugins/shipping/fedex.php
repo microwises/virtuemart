@@ -59,7 +59,7 @@ class plgShippingFedex extends vmShippingPlugin {
 		// Get the meter number
 		if( $this->params->get('FEDEX_METER_NUMBER')=='') {
 			if( !$this->update_meter_number() ) {
-				$vmLogger->err( JText::_('VM_FEDEX_ERR_METER_NUMBER',false) );
+				$vmLogger->err( JText::_('COM_VIRTUEMART_FEDEX_ERR_METER_NUMBER',false) );
 				return false;
 			}
 		}

@@ -30,44 +30,44 @@ AdminMenuHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_('VM_#'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>		            
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payms); ?>);" />
 			</th>			
 			<th width="60">
-				<?php echo JText::_( 'VM_PAYM_LIST_NAME' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_LIST_NAME'); ?>
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_( 'VM_CALC_VENDOR' );  ?>
+				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
 			</th><?php }?>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_ELEMENT' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_ELEMENT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_SHOPPERGROUPS' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_SHOPPERGROUPS'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_DISCOUNT' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_DISCOUNT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_IS_PERCENTAGE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_IS_PERCENTAGE'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_MIN_DISCOUNT' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_MIN_DISCOUNT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_MAX_DISCOUNT' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_MAX_DISCOUNT'); ?>
 			</th>
 <?php /*			<th width="20">
-				<?php echo JText::_( 'VM_PAYM_TYPE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYM_TYPE'); ?>
 			</th>  */?>
 			<th width="10">
-				<?php echo JText::_( 'PUBLISHED' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_( 'VM_CALC_SHARED' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th>
 		</tr>
 		</thead>
@@ -118,19 +118,19 @@ AdminMenuHelper::startAdminArea();
 					<?php 
 					switch($row->paym_type) { 
 						case "Y": 
-							$tmp_cell = JText::_('VM_PAYMENT_FORM_USE_PP');
+							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP');
 							break;
 						case "N":
-							$tmp_cell = JText::_('VM_PAYMENT_FORM_AO');
+							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO');
 							break;
 						case "B":
-							$tmp_cell = JText::_('VM_PAYMENT_FORM_BANK_DEBIT');
+							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT');
 							break;
 						case "P":
-							$tmp_cell = JText::_('VM_PAYMENT_FORM_FORMBASED');
+							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED');
 							break;
 						default:
-							$tmp_cell = JText::_('VM_PAYMENT_FORM_CC');
+							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_CC');
 							break;
 					}
 					echo $tmp_cell; ?>

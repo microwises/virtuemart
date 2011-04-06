@@ -26,10 +26,10 @@ AdminMenuHelper::startAdminArea();
 	<table>
 	  <tr>
 		 <td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER'); ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 			<input type="text" name="filter_producttypes" value="<?php echo JRequest::getVar('filter_producttypes', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-			<button onclick="document.adminForm.filter_producttypes.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_producttypes.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
 	  </tr>
 	</table>
@@ -70,10 +70,10 @@ AdminMenuHelper::startAdminArea();
 				<td><?php echo $producttype->product_type_description; ?></td>
 				<!-- Parameters -->
 				<?php $link = 'index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.$producttype->product_type_id; ?>
-				<td><?php echo $producttype->parametercount. " " . JText::_('VM_PARAMETERS_LBL').JHTML::_('link', $link, ' [ '.JText::_('VM_SHOW').' ]'); ?></td>
+				<td><?php echo $producttype->parametercount. " " . JText::_('COM_VIRTUEMART_PARAMETERS_LBL').JHTML::_('link', $link, ' [ '.JText::_('COM_VIRTUEMART_SHOW').' ]'); ?></td>
 				<!-- Products -->
 				<?php $link = 'index.php?option=com_virtuemart&view=product&task=product&product_type_id='.$producttype->product_type_id; ?>
-				<td><?php echo $producttype->productcount. " " . JText::_('VM_PRODUCTS_LBL').JHTML::_('link', $link, ' [ '.JText::_('VM_SHOW').' ]'); ?></td>
+				<td><?php echo $producttype->productcount. " " . JText::_('COM_VIRTUEMART_PRODUCTS_LBL').JHTML::_('link', $link, ' [ '.JText::_('COM_VIRTUEMART_SHOW').' ]'); ?></td>
 				<!-- Product type description -->
 				<td><?php echo $producttype->product_type_list_order; ?></td>
 				<!-- Published -->

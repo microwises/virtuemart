@@ -153,8 +153,8 @@ class VmConfig
 		// If exist exit
 		if ($jPrice) return;
 		$closeimage = JURI::root() .'components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = "vmCartText = '". JText::_('VM_MINICART_ADDED') ."' ;\n" ;
-		$jsVars .= "vmCartError = '". JText::_('VM_MINICART_ERROR') ."' ;\n" ;
+		$jsVars  = "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
+		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root() ."components/com_virtuemart/assets/images/facebox/loading.gif' ; ;\n" ;
 		$jsVars .= "closeImage = '{$closeimage}' ; \n";
 		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='{$closeimage}' title='close' class='close_image' /></a></div></div>\" ;\n";

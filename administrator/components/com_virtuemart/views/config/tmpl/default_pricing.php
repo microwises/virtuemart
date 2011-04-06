@@ -24,12 +24,12 @@ defined('_JEXEC') or die('Restricted access');
     <tr><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_PRICES') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES') ?>
 			    </span>
 			</td>
 			<td>
@@ -38,13 +38,13 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
 			    </span>
 			</td>
 			<td>
 			    <?php echo VmHTML::checkbox('price_access_level_enabled', $this->config->get('price_access_level_enabled')); ?>
-			    <?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
+			    <?php echo JText::_('COM_VIRTUEMART_CFG_ENABLE_FEATURE'); ?>
 			    <br />
 			    <?php
 				if ( VmConfig::isJ15()) {
@@ -61,8 +61,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
 			    </span>
 			</td>
 			<td>
@@ -75,17 +75,17 @@ defined('_JEXEC') or die('Restricted access');
 	</td><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_PRICES') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
 		<table class="admintable">
 			<tr>
 				<th></th>
 				<th></th>
-				<th><?php echo JText::_('VM_ADMIN_CFG_PRICES_TEXT'); ?></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
 			</tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -98,8 +98,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_VARMOD_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_VARMOD') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -112,8 +112,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_VAR_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_VAR') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -126,8 +126,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_WTAX_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_BASEPRICE_WTAX') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -140,8 +140,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_DISCPRICE_WOTAX_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_DISCPRICE_WOTAX') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -154,8 +154,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_WD_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_WD') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -168,8 +168,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -182,8 +182,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_WOTAX_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_SALESPRICE_WOTAX') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -196,8 +196,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_DISC_AMOUNT_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_DISC_AMOUNT') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -210,8 +210,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_TAX_AMOUNT_EXPLAIN'); ?>">
-			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_PRICE_TAX_AMOUNT') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT_EXPLAIN'); ?>">
+			    <label for="conf_TAX_VIRTUAL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT') ?></label>
 			    </span>
 			</td>
 			<td>

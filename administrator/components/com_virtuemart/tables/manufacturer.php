@@ -63,7 +63,7 @@ class TableManufacturer extends JTable {
 	function check()
 	{
         if (!$this->mf_name) {
-			$this->setError(JText::_('VM_MANUFACTURER_RECORDS_MUST_CONTAIN_NAME'));
+			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_RECORDS_MUST_CONTAIN_NAME'));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ class TableManufacturer extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('VM_GIVEN_MANUFACTURER_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_MANUFACTURER_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

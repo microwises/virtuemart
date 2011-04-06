@@ -256,7 +256,7 @@ class VirtueMartModelCreditcard extends JModel {
 		}*/
 
 		if(empty($this->number) || !self::mod10($this->number)){
-			JError::raiseWarning('', JText::_( 'VM_CC_ENUMBER'));
+			JError::raiseWarning('', JText::_('COM_VIRTUEMART_CC_ENUMBER'));
 //			$this->errno = CC_ENUMBER;
 //			$d['error'] = $this->errno;
 			return false;

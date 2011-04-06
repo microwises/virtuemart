@@ -284,7 +284,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
 				$db->setQuery($q);
 				$mainframe->enqueueMessage($db->getQuery());
 				if ($db->query() === false ) {
-					$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED'), 'error');
+					$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_ADDING_FAILED'), 'error');
 					return false;
 				}
 
@@ -307,7 +307,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
 				}
 			}
 		}
-		$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDED'));
+		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_ADDED'));
 		return true ;
     }
 
@@ -321,7 +321,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
     	$db = JFactory::getDBO();
     	$options = array();
 		if (empty($parameter_name)) {
-			return JText::_( 'CMN_NEW_ITEM_LAST' );
+			return JText::_('COM_VIRTUEMART_CMN_NEW_ITEM_LAST');
 		}
 		else {
 

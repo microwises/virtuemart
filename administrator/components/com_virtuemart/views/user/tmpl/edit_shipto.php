@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_SHOPPER_FORM_SHIPTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 <?php 
 	$_k = 0;

@@ -20,24 +20,24 @@
 defined('_JEXEC') or die('Restricted access');
 /*$orderByFieldsArray = $this->config->get('browse_orderby_fields');
 $orderByFields = array();
-$orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('VM_DEFAULT'));
-$orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('VM_PRODUCT_NAME_TITLE'));
-$orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('VM_PRODUCT_PRICE_TITLE'));
-$orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('VM_CART_SKU'));
-$orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('VM_LATEST'));
-$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));*/
+$orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('COM_VIRTUEMART_DEFAULT'));
+$orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE'));
+$orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('COM_VIRTUEMART_PRODUCT_PRICE_TITLE'));
+$orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('COM_VIRTUEMART_CART_SKU'));
+$orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('COM_VIRTUEMART_LATEST'));
+$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRTUEMART_SALES'));*/
 ?>
 <br />
 <table>
     <tr><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE') ?>
 			</span>
 			</td>
 			<td>
@@ -46,8 +46,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" >
-			    <?php echo JText::_('VM_ADMIN_CFG_PDF_BUTTON') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON') ?>
 			</span>
 			</td>
 			<td>
@@ -56,8 +56,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
-			    <label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
+			    <label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -66,8 +66,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>" >
-			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('VM_ADMIN_SHOW_PRINTICON') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON_TIP'); ?>" >
+			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON') ?></label>
 			    </span>
 			    </td>
 			<td>
@@ -76,8 +76,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
-			    <?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP') ?>
 			    </span>
 			</td>
 			<td>
@@ -86,8 +86,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
-			    <?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
 			    </span>
 			</td>
 			<td>
@@ -97,8 +97,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
-			    <?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL') ?>
 			    </span>
 			</td>
 			<td>
@@ -107,8 +107,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_SEARCH_FIELDS_LBL_TIP'); ?>">
-			    <?php echo JText::_('VM_BROWSE_SEARCH_FIELDS_LBL') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL') ?>
 			    </span>
 			</td>
 			<td>
@@ -117,8 +117,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?>
 			    </span>
 			    </td>
 			<td>
@@ -127,8 +127,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
 			    </span>
 			</td>
 			<td>
@@ -139,8 +139,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_NOIMAGEFOUND') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
 			    </span>
 			</td>
 			<td>
@@ -151,8 +151,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION') ?>
 			    </span>
 			</td>
 			<td>
@@ -165,12 +165,12 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 	</td><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_DEFAULT_SHOP_TEMPLATE_TIP'); ?>">
-			    <?php echo JText::_('VM_SELECT_DEFAULT_SHOP_TEMPLATE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE') ?>
 			    </span>
 			</td>
 			<td>
@@ -181,8 +181,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_MAIN_LAYOUT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT') ?>
 			    </span>
 			</td>
 			<td>
@@ -193,8 +193,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
 			    </span>
 			</td>
 			<td>
@@ -205,8 +205,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 			<tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORY_LAYOUT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT') ?>
 			    </span>
 			</td>
 			<td>
@@ -217,8 +217,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCT_LAYOUT_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_PRODUCT_LAYOUT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT') ?>
 			    </span>
 			</td>
 			<td>
@@ -229,8 +229,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 			<tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_SHOW_CATEGORY') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY') ?>
 			    </span>
 			</td>
 			<td>
@@ -240,8 +240,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
 			    </span>
 			</td>
 			<td>
@@ -251,8 +251,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    <tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
 			<td>
@@ -262,8 +262,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
 			<td>
@@ -273,8 +273,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    
 		     <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
 			<td>
@@ -284,8 +284,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
 			    </span>
 				</td>
 				<td>
@@ -293,8 +293,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 				</td>
 		    </tr>		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
 			    </span>
 				</td>
 				<td>
@@ -303,8 +303,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
 			    </span>
 				</td>
 				<td>
@@ -313,8 +313,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('VM_ADMIN_CFG_MEDIA_MANUFACTURER_PATH') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH') ?>
 			    </span>
 				</td>
 				<td>
@@ -326,8 +326,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 			?>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
-			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
+			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -336,8 +336,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
-				<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
 				</span>
 			</td>
 			<td>
@@ -346,8 +346,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
-				<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
 				</span>
 			</td>
 			<td>
@@ -366,8 +366,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		    ?>
 			<tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
-				<?php echo JText::_('VM_ADMIN_CFG_DATEFORMAT') ?>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
 				</span>
 			</td>
 			<td>

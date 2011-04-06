@@ -18,25 +18,25 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');?>
-<h2><?php echo JText::_('PRODUCT_WAITING_LIST_USERLIST');?>:</h2>
+<h2><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');?>:</h2>
 <input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
 <input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> 
-<label for="notify_users"><?php echo JText::_('PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
+<label for="notify_users"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
 <br /><br />
 <table class="adminlist">
 	<thead>
 		<tr>
-			<th class="title"><?php echo JText::_('NAME');?></th>
-			<th class="title"><?php echo JText::_('USERNAME');?></th>
-			<th class="title"><?php echo JText::_('EMAIL');?></th>
-			<th class="title"><?php echo JText::_('NOTIFIED');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_NAME');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_USERNAME');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_EMAIL');?></th>
+			<th class="title"><?php echo JText::_('COM_VIRTUEMART_NOTIFIED');?></th>
 		</tr>
 	</thead>
 	<tbody>
 	<?php
 	foreach ($this->waitinglist as $key => $wait) {
 		if ($wait->notified == 1) {
-			$waiting_notified = JText::_('PRODUCT_WAITING_LIST_NOTIFIED') . ' ' . $wait->notify_date;
+			$waiting_notified = JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFIED') . ' ' . $wait->notify_date;
 		} else {
 			$waiting_notified = '';
 		}

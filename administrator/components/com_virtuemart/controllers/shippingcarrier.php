@@ -103,7 +103,7 @@ class VirtuemartControllerShippingCarrier extends JController {
 		if (($_id = $model->store()) === false) {
 			$msg = JText::_($model->getError());
 		} else {
-			$msg = JText::_('VM_SHIPPING_CARRIER_SAVED');
+			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_SAVED');
 		}
 
 		$_redir = 'index.php?option=com_virtuemart&view=shippingcarrier';
@@ -124,10 +124,10 @@ class VirtuemartControllerShippingCarrier extends JController {
 	{
 		$model = $this->getModel('shippingcarrier');
 		if (!$model->delete()) {
-			$msg = JText::_('VM_SHIPPING_CARRIERS_DELETED_ERROR');
+			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED_ERROR');
 		}
 		else {
-			$msg = JText::_( 'VM_SHIPPING_CARRIERS_DELETED');
+			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);

@@ -59,7 +59,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function integrateJoomlaUsers() {
 
-    $msg = JText::_('VM_START_SYNCRONIZING');
+    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
 	$db = JFactory::getDBO();
 	$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
 	$db->setQuery($query);
@@ -91,7 +91,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
 	    }
 	}
-	$msg = JText::_('VM_USERS_SYNCRONIZED');
+	$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
 	return $msg;
     }
 
@@ -243,7 +243,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!$this->execSQLFile($filename)){
 		$msg = JText::_('Problems execution of SQL File '.$filename);
 	} else {
-		$msg = JText::_('VM_SAMPLE_DATA_INSTALLED');
+		$msg = JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
 	}
 
 	return $msg;
@@ -317,7 +317,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    if ($query != '' && $query{0} != '#') {
 		$db->setQuery($query);
 		if (!$db->query()) {
-		    JError::raiseWarning(1, 'JInstaller::install: '.JText::_('VM_SQL_ERROR')." ".$db->stderr(true));
+		    JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 		    return false;
 		}
 	    }
@@ -394,7 +394,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$_db = JFactory::getDBO();
 		$_db->setQuery($_qry);
 		if (!$_db->query()) {
-			JError::raiseWarning(1, 'JInstaller::install: '.JText::_('VM_SQL_ERROR').' '.$_db->stderr(true));
+			JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
 			return false;
 		}
 		return true;

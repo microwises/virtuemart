@@ -47,9 +47,9 @@ class VirtuemartViewManufacturerCategory extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_MANUFACTURER_CATEGORY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_manufacturer_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_manufacturer_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_MANUFACTURER_CATEGORY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_manufacturer_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_LIST_ADD').': <small><small>[ Edit ]</small></small>', 'vm_manufacturer_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -58,7 +58,7 @@ class VirtuemartViewManufacturerCategory extends JView {
 			$this->assignRef('manufacturerCategory',	$manufacturerCategory);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_MANUFACTURER_LIST_LBL' ), 'vm_manufacturer_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_LIST_LBL'), 'vm_manufacturer_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

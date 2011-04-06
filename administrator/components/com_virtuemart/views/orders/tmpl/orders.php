@@ -30,10 +30,10 @@ $option = JRequest::getWord('option');
 	    <table>
 		<tr>
 		    <td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER'); ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 			<input type="text" name="filter_orders" value="<?php echo JRequest::getVar('filter_orders', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-			<button onclick="document.adminForm.filter_orders.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_orders.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		    </td>
 		</tr>
 	    </table>
@@ -72,7 +72,7 @@ $option = JRequest::getWord('option');
 			<?php
 			$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
 			?>
-		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('EDIT').' '.$order->order_id)); ?></td>
+		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->order_id)); ?></td>
 		<!-- Name -->
 		<td><?php echo $order->order_name; ?></td>
 		<!-- Payment method -->
@@ -82,7 +82,7 @@ $option = JRequest::getWord('option');
 			/* Print view URL */
 			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&order_id=".$order->order_id;
 			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
-			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 			?>
 		<td><?php echo $details_link; ?></td>
 		<!-- Order date -->
@@ -95,18 +95,18 @@ $option = JRequest::getWord('option');
 			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
 			    echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
 			    echo '<br />';
-			    echo JHTML::_('link', '#', JText::_('ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->order_id.']'));
+			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->order_id.']'));
 			    echo '<textarea class="element-hidden vm-absolute vm-showable" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
 			    ?>
 		</td>
 		<!-- Update -->
 		<td>
 			    <?php
-			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'.JText::_('VM_ORDER_LIST_NOTIFY');
+			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY');
 			    echo '<br />';
-			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT');
+			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT');
 			    echo '<br />';
-			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->order_id.']"  checked="checked" />'.JText::_('VM_ORDER_UPDATE_LINESTATUS');
+			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->order_id.']"  checked="checked" />'.JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS');
 			    ?>
 		</td>
 		<!-- Total -->

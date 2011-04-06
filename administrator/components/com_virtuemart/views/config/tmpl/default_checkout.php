@@ -18,12 +18,12 @@ defined('_JEXEC') or die('Restricted access');
 ?> 
 <br />
 <fieldset class="adminform">
-	<legend><?php echo JText::_('VM_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
-					<label for="coupons_enable"><?php echo JText::_('VM_ADMIN_CFG_CHECK_STOCK') ?></label>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
+					<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
 				</span>
 			</td>
 			<td>
@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		<tr>
 			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
-					<?php echo JText::_('VM_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
 				</span>
 			</td>
 		<td>
@@ -44,8 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 		<td class="key">
-			<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
-				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
+			<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
+				<label for="conf_VM_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
 			</span>
 		</td>
 			<td>

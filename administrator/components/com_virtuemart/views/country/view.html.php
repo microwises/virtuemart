@@ -45,11 +45,11 @@ class VirtuemartViewCountry extends JView {
 			$country = $model->getCountry();
 			$isNew = ($country->country_id < 1);
 		    if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_COUNTRY_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_countries_48');
 
 		    }
 		    else {
-				JToolBarHelper::title( JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_ADD').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 		    }
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -60,7 +60,7 @@ class VirtuemartViewCountry extends JView {
 		    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
 		}
 		else {
-			JToolBarHelper::title( JText::_( 'VM_COUNTRY_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::editListX();

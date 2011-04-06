@@ -21,7 +21,7 @@ class VmMediaHandler {
 
 		$this->file_id = $id;
 
-		$this->theme_url = VmConfig::get('vm_themeurl',0);
+		$this->theme_url = VmConfig::get('COM_VIRTUEMART_themeurl',0);
 		if(empty($this->theme_url)){
 			$this->theme_url = JURI::root().'components/com_virtuemart/';
 		}
@@ -231,8 +231,8 @@ class VmMediaHandler {
 		foreach( $this->_foldersToTest as $dir ) {
 			$result .= $dir . ' :: ';
 			$result .= is_writable( $dir )
-				 ? '<span style="font-weight:bold;color:green;">'.JText::_('VM_WRITABLE').'</span>'
-				 : '<span style="font-weight:bold;color:red;">'.JText::_('VM_UNWRITABLE').'</span>';
+				 ? '<span style="font-weight:bold;color:green;">'.JText::_('COM_VIRTUEMART_WRITABLE').'</span>'
+				 : '<span style="font-weight:bold;color:red;">'.JText::_('COM_VIRTUEMART_UNWRITABLE').'</span>';
 			$result .= '<br/>';
 		}
 		$result .= '</div>';
@@ -352,17 +352,17 @@ class VmMediaHandler {
 				$path_folder = str_replace('/',DS,$urlfolder);
 				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path.DS.$media['name']);
 				$this->file_mimetype = $media['type'];
-	      		$app->enqueueMessage(JText::sprintf('VM_FILE_UPLOAD_OK',$media['name']));
+	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',$media['name']));
 	      		return $media['name'];
 
 			case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-				$app->enqueueMessage(JText::sprintf('VM_PRODUCT_FILES_ERR_UPLOAD_MAX_FILESIZE',$media['name'],$media['tmp_name']), 'warning');
+				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_UPLOAD_MAX_FILESIZE',$media['name'],$media['tmp_name']), 'warning');
 				break;
 			case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-				$app->enqueueMessage(JText::sprintf('VM_PRODUCT_FILES_ERR_MAX_FILE_SIZE',$media['name'],$media['tmp_name']), 'warning');
+				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_MAX_FILE_SIZE',$media['name'],$media['tmp_name']), 'warning');
 				break;
 			case 3: //uploaded file was only partially uploaded
-				$app->enqueueMessage(JText::sprintf('VM_PRODUCT_FILES_ERR_PARTIALLY',$media['name'],$media['tmp_name']), 'warning');
+				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_PARTIALLY',$media['name'],$media['tmp_name']), 'warning');
 				break;
 			case 4: //no file was uploaded
 				//$vmLogger->warning( "You have not selected a file/image for upload." );
@@ -481,20 +481,20 @@ class VmMediaHandler {
 	 */
 	function addMediaActionByType(){
 
-		$this->addMediaAction(0,'VM_NONE');
+		$this->addMediaAction(0,'COM_VIRTUEMART_NONE');
 
 		if(empty($this->file_url)){
-			$this->addMediaAction('upload','VM_FORM_MEDIA_UPLOAD');
+			$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
 		} else {
-			$this->addMediaAction('upload_delete','VM_FORM_MEDIA_UPLOAD_DELETE');
-			$this->addMediaAction('delete','VM_FORM_MEDIA_DELETE');
+			$this->addMediaAction('upload_delete','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE');
+			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');
 		}
 
 		if(empty($this->file_url_thumb)){
-			$this->addMediaAction('upload_thumb','VM_FORM_MEDIA_UPLOAD_THUMB');
+			$this->addMediaAction('upload_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_THUMB');
 		} else {
-			$this->addMediaAction('upload_delete_thumb','VM_FORM_MEDIA_UPLOAD_DELETE_THUMB');
-			$this->addMediaAction('delete_thumb','VM_FORM_MEDIA_DELETE_THUMB');
+			$this->addMediaAction('upload_delete_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
+			$this->addMediaAction('delete_thumb','COM_VIRTUEMART_FORM_MEDIA_DELETE_THUMB');
 		}
 
 	}
@@ -520,9 +520,9 @@ class VmMediaHandler {
 	 */
 	public function addMediaAttributesByType(){
 
-		$this->addMediaAttributes(0,'VM_FORM_MEDIA_NO_ATTRIB');
-		$this->addMediaAttributes('file_is_downloadable','VM_FORM_MEDIA_DOWNLOADABLE');
-		$this->addMediaAttributes('file_is_forSale','VM_FORM_MEDIA_FOR_SALE');
+		$this->addMediaAttributes(0,'COM_VIRTUEMART_FORM_MEDIA_NO_ATTRIB');
+		$this->addMediaAttributes('file_is_downloadable','COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE');
+		$this->addMediaAttributes('file_is_forSale','COM_VIRTUEMART_FORM_MEDIA_FOR_SALE');
 	}
 
 
@@ -577,10 +577,10 @@ class VmMediaHandler {
 			$options[] = JHTML::_('select.option', $file->file_id, $file->file_title, 'file_id' );
 		}
 
-		$text = 'VM_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
+		$text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		foreach($fileIds as $k=>$id){
 			$html .= JText::sprintf($text).JHTML::_('select.genericlist', $options,'file_ids[]',null,'file_id','text',$id).'<br />';
-			if(empty($k)) $text = 'VM_FILES_FORM_ALREADY_ATTACHED_FILE';
+			if(empty($k)) $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE';
 		}
 		$html .= 'Option for add new with link to media view or filehandler';
 		return $html;
@@ -644,7 +644,7 @@ class VmMediaHandler {
 		if ($this->published) $checked =  "checked=\"checked\""; else $checked ='';
 		$html .= '<tr>
 	<td class="labelcell">
-		<label for="published">'. JText::_('VM_FILES_FORM_FILE_PUBLISHED') .'</label>
+		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
 	<td>
 		<input type="checkbox" class="inputbox" id="published" name="published'.$identify.'" value="1" '.$checked.' size="16" />
@@ -657,31 +657,31 @@ class VmMediaHandler {
 $html .= '</tr>';
 
 		$html .= '<tr>
-	<td class="labelcell">'. JText::_('VM_FILES_FORM_CURRENT_FILE') .'</td>
+	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
 </tr>';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
-		$html .= $this->displayRow('VM_FILES_FORM_FILE_TITLE','file_title');
-		$html .= $this->displayRow('VM_FILES_FORM_FILE_DESCRIPTION','file_description');
-		$html .= $this->displayRow('VM_FILES_FORM_FILE_META','file_meta');
-		$html .= $this->displayRow('VM_FILES_FORM_FILE_URL','file_url',$readonly);
-		$html .= $this->displayRow('VM_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_TITLE','file_title');
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_DESCRIPTION','file_description');
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_META','file_meta');
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
+		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 		$this->addMediaAttributesByType();
 		$html .= '<tr>
-		<td class="labelcell">'.JText::_('VM_FILES_FORM_ROLE').'</td>
+		<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
 		<td>'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</td></tr>';
 
 		$html .= '</table>';
 
 		$this->addMediaActionByType();
 
-		$html .= JText::_('VM_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br />';
+		$html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br />';
 
 
-		$html .= JText::_('VM_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
+		$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 		$html .= $this->displayMediaFull($imageArgs);
 

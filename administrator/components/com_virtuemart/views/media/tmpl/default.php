@@ -35,16 +35,16 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('VM_PRODUCT_FILES_LIST_RETURN'));
+	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
 	<div style="float: right;">
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<?php echo JText::_('VM_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
+		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
 			<input type="text" value="" name="keyword" size="25" class="inputbox" />
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="page" value="product.file_list" />
-			<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
+			<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
 	</div>
 </div>
 <?php
@@ -56,13 +56,13 @@ $pagination = $this->pagination;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
-		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_ROLE'); ?></th>
-		<th><?php echo JText::_('VM_VIEW'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></th>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></th>
-		<th><?php echo JText::_('PUBLISH'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_NAME'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETITLE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_ROLE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -88,7 +88,7 @@ $pagination = $this->pagination;
 				<?php
 				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&file_id=".$productfile->file_id."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('EDIT').' '.$productfile->file_title)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons

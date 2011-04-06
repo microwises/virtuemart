@@ -73,7 +73,7 @@ class VirtuemartControllerRatings extends JController {
 		$model = $this->getModel('ratings');
 		$msgtype = '';
 		if ($model->setPublish()) {
-			$msg = JText::sprintf('RATING_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
+			$msg = JText::sprintf('COM_VIRTUEMART_RATING_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
 		}
 		else {
 			$msg = JText::strintf('RATING_NOT_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
@@ -110,9 +110,9 @@ class VirtuemartControllerRatings extends JController {
 
 		$model = $this->getModel('ratings');
 		$msgtype = '';
-		if ($model->saveRating()) $msg = JText::_('RATING_SAVED_SUCCESSFULLY');
+		if ($model->saveRating()) $msg = JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('RATING_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=ratings', $msg, $msgtype);
@@ -130,9 +130,9 @@ class VirtuemartControllerRatings extends JController {
 
 		$model = $this->getModel('ratings');
 		$msgtype = '';
-		if ($model->removeRating()) $msg = JText::_('RATING_REMOVED_SUCCESSFULLY');
+		if ($model->removeRating()) $msg = JText::_('COM_VIRTUEMART_RATING_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('RATING_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_RATING_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 

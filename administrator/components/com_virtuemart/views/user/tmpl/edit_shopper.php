@@ -23,13 +23,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_SHOPPER_FORM_LBL') ?>
+		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
 	</legend>
 	<table class="adminform">
 		<tr>
 			<td class="key">
 				<label for="vendor_id">
-					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:
 				</label>
 			</td>
 			<td>
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="perms">
-					<?php echo JText::_('VM_USER_FORM_PERMS') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_PERMS') ?>:
 				</label>
 			</td>
 			<td>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="customer_number">
-					<?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CUSTOMER_NUMBER') ?>:
 				</label>
 			</td>
 			<td>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="shopper_group_id">
-					<?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?>:
 				</label>
 			</td>
 			<td>
@@ -75,11 +75,11 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->userDetails->JUser->get('id') ) { ?>
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_USER_FORM_SHIPTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 
 	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
-		<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 
 	<table class="adminform">
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('VM_USERFIELDS_FORM_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
 	</legend>
 <?php 
 	$_k = 0;

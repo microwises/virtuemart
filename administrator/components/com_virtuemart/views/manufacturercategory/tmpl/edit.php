@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'VM_MANUFACTURER_CATEGORY_DETAILS' ); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_MANUFACTURER_CATEGORY_NAME' ); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('VM_MANUFACTURER_CATEGORY_DESC'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESC'); ?>:
 				</label>
 			</td>
 			<td>
@@ -55,7 +55,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('VM_PUBLISH'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>:
 				</label>
 			</td>
 			<td>

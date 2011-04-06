@@ -48,16 +48,16 @@ AdminMenuHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th>
-				<?php echo JText::_('VM_#'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>		            
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->usergroups); ?>);" />
 			</th>
 			<th width="60">
-				<?php echo JText::_( 'VM_USERGROUPS_LIST_NAME' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USERGROUPS_LIST_NAME'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_USERGROUPS_LEVEL' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_USERGROUPS_LEVEL'); ?>
 			</th>
 		</tr>
 		</thead>

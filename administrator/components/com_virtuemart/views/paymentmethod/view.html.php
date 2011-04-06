@@ -63,9 +63,9 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$isNew = ($paym->paym_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_PAYM_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_countries_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_PAYM_LIST_EDIT' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_LIST_EDIT').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -84,7 +84,7 @@ class VirtuemartViewPaymentMethod extends JView {
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_PAYM_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
@@ -116,11 +116,11 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->loadHelper('modelfunctions');
 		$selected = modelfunctions::prepareTreeSelection($selected);
 		$list = array(
-		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_CREDIT')),
-		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
-		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
-		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
-		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_CREDIT')),
+		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
+		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
+		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
+		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );
@@ -130,11 +130,11 @@ class VirtuemartViewPaymentMethod extends JView {
 	function renderPaymentRadioList($selected){
 
 		$list = array(
-		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_CREDIT')),
-		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_USE_PP')),
-		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_BANK_DEBIT')),
-		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_AO')),
-		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('VM_PAYMENT_FORM_FORMBASED'))
+		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_CREDIT')),
+		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
+		'2' => array('paym_type' => 'B', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
+		'3' => array('paym_type' => 'N', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
+		'4' => array('paym_type' => 'P', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
 		);
 
 		$listHTML='';

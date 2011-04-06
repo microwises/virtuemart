@@ -32,22 +32,22 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingRates); ?>);" />
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_CARRIER_LBL' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_LIST_CARRIER_LBL'); ?>
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_NAME' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_LIST_RATE_NAME'); ?>
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_RATE_FORM_VALUE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VALUE'); ?>
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_RATE_FORM_PACKAGE_FEE' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_PACKAGE_FEE'); ?>
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_WSTART' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_LIST_RATE_WSTART'); ?>
 			</th>
 			<th>
-				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_WEND' ); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_LIST_RATE_WEND'); ?>
 			</th>
 		</tr>
 		</thead>

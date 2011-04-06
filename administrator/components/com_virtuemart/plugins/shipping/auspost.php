@@ -60,7 +60,7 @@ class plgShippingAuspost extends vmShippingPlugin {
 		$q = "SELECT country,zip FROM #__{vm}_user_info WHERE user_info_id = '" . $d["ship_to_info_id"] . "'" ;
 		$dbu->query( $q ) ;
 		if( ! $dbu->next_record() ) {
-			/*$vmLogger->err( JText::_('VM_CHECKOUT_ERR_SHIPTO_NOT_FOUND',false) );
+			/*$vmLogger->err( JText::_('COM_VIRTUEMART_CHECKOUT_ERR_SHIPTO_NOT_FOUND',false) );
 			return False;*/
 		}
 		

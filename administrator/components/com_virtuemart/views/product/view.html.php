@@ -171,21 +171,21 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
-					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
-					$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
-					$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
-					$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
-					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
+					$info_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL');
+					$status_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_STATUS_LBL');
+					$dim_weight_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
+					$images_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_IMAGES_LBL');
+					$delete_message = JText::_('COM_VIRTUEMART_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
-					if ($task == 'add') $action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
-					else $action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+					if ($task == 'add') $action = JText::_('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL');
+					else $action = JText::_('COM_VIRTUEMART_PRODUCT_FORM_UPDATE_ITEM_LBL');
 
-					$info_label = JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL');
-					$status_label = JText::_('VM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
-					$dim_weight_label = JText::_('VM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
-					$images_label = JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
-					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
+					$info_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL');
+					$status_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL');
+					$dim_weight_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
+					$images_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
+					$delete_message = JText::_('COM_VIRTUEMART_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
 
 				/* Assign the values */
@@ -208,8 +208,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$this->assignRef('delete_message', $delete_message);
 
 				/* Toolbar */
-				if ($task == 'add') $text = JText::_( 'ADD_PRODUCT' );
-				else $text = JText::_( 'EDIT_PRODUCT' ).' :: '.$product->product_sku.' :: '.$product->product_name;
+				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_ADD_PRODUCT');
+				else $text = JText::_('COM_VIRTUEMART_EDIT_PRODUCT').' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();
@@ -227,7 +227,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$this->assignRef('product', $product);
 
 				/* Toolbar */
-				$text = JText::_( 'VM_PRODUCT_PRODUCT_TYPE_FORM_LBL' ).' :: '.$product->product_sku.' :: '.$product->product_name;
+				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply('saveproducttype');
@@ -299,27 +299,27 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Create filter */
 				/* Search type */
 				$options = array();
-				$options[] = JHTML::_('select.option', '', JText::_('SELECT'));
-				$options[] = JHTML::_('select.option', 'product', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'));
-				$options[] = JHTML::_('select.option', 'price', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'));
-				$options[] = JHTML::_('select.option', 'withoutprice', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE'));
+				$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
+				$options[] = JHTML::_('select.option', 'product', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'));
+				$options[] = JHTML::_('select.option', 'price', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'));
+				$options[] = JHTML::_('select.option', 'withoutprice', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE'));
 				$lists['search_type'] = JHTML::_('select.genericlist', $options, 'search_type', '', 'value', 'text', JRequest::getVar('search_type'));
 
 				/* Search order */
 				$options = array();
-				$options[] = JHTML::_('select.option', 'bf', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'));
-				$options[] = JHTML::_('select.option', 'af', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER'));
+				$options[] = JHTML::_('select.option', 'bf', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'));
+				$options[] = JHTML::_('select.option', 'af', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER'));
 				$lists['search_order'] = JHTML::_('select.genericlist', $options, 'search_order', '', 'value', 'text', JRequest::getVar('search_order'));
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
-				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('ADD_ATTRIBUTE'), true);
-				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('ADD_PRODUCT_TYPE'), true);
-				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('ADD_RATING'), true);
+				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE'), true);
+				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_PRODUCT_TYPE'), true);
+				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				JToolBarHelper::divider();
 				JToolBarHelper::publish();
 				JToolBarHelper::unpublish();
-				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('VM_PRODUCT_CLONE'), true);
+				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::addNew();
 
@@ -346,7 +346,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();
-		$taxrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
 		}
@@ -370,8 +370,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 		}
 
 		$discountrates = array();
-		$discountrates[] = JHTML::_('select.option', '0', JText::_('VM_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
-//		$discountrates[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
+		$discountrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
+//		$discountrates[] = JHTML::_('select.option', 'override', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
 		foreach($discounts as $discount){
 			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
 		}

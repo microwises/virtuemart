@@ -24,8 +24,8 @@ defined('_JEXEC') or die('Restricted access');
 	        echo $rendered = $parameters->render();
         }
         echo '<br />
-<strong>'.JText::_('VM_PAYMENT_EXTRAINFO').':';
-		echo JHTML::tooltip( JText::_('VM_PAYMENT_EXTRAINFO_TIP') ) 
+<strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':';
+		echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP') ) 
 	?>
 <br />
 <textarea class="inputbox" name="paym_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 <script type="text/javascript">
 function check() {
    if (document.adminForm.type[0].checked == true || document.adminForm.type[1].checked == true) {
-      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo JText::_('VM_PAYMENT_ACCEPTED_CREDITCARDS') ?>:';
+      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo JText::_('COM_VIRTUEMART_PAYMENT_ACCEPTED_CREDITCARDS') ?>:';
       if (document.getElementById('accepted_creditcards_store').innerHTML != '')
         document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
       else

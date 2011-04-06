@@ -71,16 +71,16 @@ class TableProduct_price extends JTable {
     function check() {
 
         if (!$this->product_id) {
-            $this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_ID'));
+            $this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_ID'));
             return false;
         }
 
 //		if (!$this->product_price) {
-//			$this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));
+//			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));
 //			return false;
 //		}
 //		if (!$this->product_currency) {
-//			$this->setError(JText::_('VM_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_CURRENCY'));
+//			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_CURRENCY'));
 //			return false;
 //		}
         return true;

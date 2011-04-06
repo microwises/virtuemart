@@ -54,9 +54,9 @@ class VirtuemartViewCurrency extends JView {
 			$isNew = ($currency->currency_id < 1);
 
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_currency_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CURRENCY_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_currency_48');
 			} else {
-				JToolBarHelper::title( JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_currency_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_LIST_ADD').': <small><small>[ Edit ]</small></small>', 'vm_currency_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
@@ -78,7 +78,7 @@ class VirtuemartViewCurrency extends JView {
 
        }
         else {
-			JToolBarHelper::title( JText::_( 'VM_CURRENCY_LIST_LBL' ), 'vm_currency_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_LIST_LBL'), 'vm_currency_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

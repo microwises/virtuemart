@@ -82,7 +82,7 @@ class TableMedia extends JTable {
 				$this->setError('Title too long '.strlen($this->file_title).' for database field, allowed 126');
 			}
 		} else{
-			$this->setError(JText::_('Media files must have a title'));
+			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_TITLE'));
 			$ok = false;
 		}
 
@@ -91,7 +91,7 @@ class TableMedia extends JTable {
 				$this->setError('Description too long '.strlen($this->file_title).' for database field, allowed 254');
 			}
 		} else{
-//			$this->setError(JText::_('Media files must have a description'));
+//			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_DESCRIPTION'));
 //			$ok = false;
 		}
 
@@ -100,7 +100,7 @@ class TableMedia extends JTable {
 //				$this->setError('Url to long '.strlen($this->file_title).' for database field, allowed 254');
 //			}
 		} else{
-			$this->setError(JText::_('Media files should have a mimetype'));
+			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_SHOULD_HAVE_MIMETYPE'));
 			$notice = true;
 		}
 
@@ -109,7 +109,7 @@ class TableMedia extends JTable {
 				$this->setError('Url too long '.strlen($this->file_title).' for database field, allowed 254');
 			}
 		} else{
-			$this->setError(JText::_('Media files must have an url'));
+			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_URL'));
 			$ok = false;
 		}
 

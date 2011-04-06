@@ -29,10 +29,10 @@ $option = JRequest::getWord('option');
 	<table>
 		<tr>
 			<td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER') ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
 				<input type="text" value="<?php echo JRequest::getVar('filter_attributes'); ?>" name="filter_attributes" size="25" />
-				<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-				<button onclick="document.adminForm.filter_attributes.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+				<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+				<button onclick="document.adminForm.filter_attributes.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 			</td>
 		</tr>
 	</table>
@@ -69,7 +69,7 @@ $pagination = $this->pagination;
 				<?php 
 				$link = 'index.php?option='.$option.'&view=attributes&task=edit&attribute_sku_id='.$attribute->attribute_sku_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $attribute->attribute_name, array('title' => JText::_('EDIT').' '.$attribute->attribute_name)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $attribute->attribute_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$attribute->attribute_name)); ?></td>
 				<!-- List order -->
 				<td><?php echo $attribute->attribute_list; ?></td>
 				<!-- Product name -->

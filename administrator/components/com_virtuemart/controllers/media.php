@@ -84,7 +84,7 @@ class VirtuemartControllerMedia extends JController {
 		$fileModel = $this->getModel('media');
 
 		if ($id = $fileModel->store()) {
-			$msg = JText::_('VM_FILE_SAVED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
 		}
 		else {
 			$msg = $fileModel->getError();
@@ -107,7 +107,7 @@ class VirtuemartControllerMedia extends JController {
 	 */
 	public function cancel()
 	{
-		$msg = JText::_('VM_OPERATION_CANCELED');
+		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
 		//Todo, in case redirect to product
 		$this->setRedirect('index.php?option=com_virtuemart&view=media', $msg);
 	}
@@ -129,7 +129,7 @@ class VirtuemartControllerMedia extends JController {
 		JArrayHelper::toInteger($cid);
 
 		if(count($cid) < 1) {
-			$msg = JText::_('VM_SELECT_ITEM_TO_DELETE');
+			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=media', $msg, 'error');
 			return;
 		}
@@ -137,10 +137,10 @@ class VirtuemartControllerMedia extends JController {
 		$mediaModel = $this->getModel('media');
 
 		if (!$mediaModel->delete($cid)) {
-			$msg = JText::_('VM_ERROR_MEDIA_COULD_NOT_BE_DELETED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_MEDIA_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_( 'VM_MEDIA_DELETED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_MEDIA_DELETED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=media', $msg);
@@ -158,10 +158,10 @@ class VirtuemartControllerMedia extends JController {
 
 		$mediaModel = $this->getModel('media');
 		if (!$mediaModel->publish(true)) {
-			$msg = JText::_('VM_ERROR_MEDIA_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_MEDIA_COULD_NOT_BE_PUBLISHED');
 		}
 		else{
-			$msg = JText::_('VM_MEDIA_PUBLISHED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_MEDIA_PUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=media', $msg);

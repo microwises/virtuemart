@@ -26,10 +26,10 @@ AdminMenuHelper::startAdminArea();
 	<table>
 	  <tr>
 		 <td align="left" width="100%">
-			<?php echo JText::_('VM_FILTER'); ?>:
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 			<input type="text" name="filter_producttypeparameters" value="<?php echo JRequest::getVar('filter_producttypeparameters', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('VM_GO'); ?></button>
-			<button onclick="document.adminForm.filter_producttypes.value='';"><?php echo JText::_('VM_RESET'); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_producttypes.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
 	  </tr>
 	</table>

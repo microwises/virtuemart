@@ -108,9 +108,9 @@ class VirtuemartControllerAttributes extends JController {
 
 		$model = $this->getModel('attributes');
 		$msgtype = '';
-		if ($model->saveAttribute()) $msg = JText::_('ATTRIBUTE_SAVED_SUCCESSFULLY');
+		if ($model->saveAttribute()) $msg = JText::_('COM_VIRTUEMART_ATTRIBUTE_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ATTRIBUTE_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_ATTRIBUTE_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&product_id='.JRequest::getInt('product_id'), $msg, $msgtype);
@@ -129,9 +129,9 @@ class VirtuemartControllerAttributes extends JController {
 
 		$model = $this->getModel('attributes');
 		$msgtype = '';
-		if ($model->removeAttribute()) $msg = JText::_('ATTRIBUTE_REMOVED_SUCCESSFULLY');
+		if ($model->removeAttribute()) $msg = JText::_('COM_VIRTUEMART_ATTRIBUTE_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ATTRIBUTE_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_ATTRIBUTE_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 

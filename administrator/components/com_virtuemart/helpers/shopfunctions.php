@@ -64,7 +64,7 @@ class ShopFunctions {
 		$name = 'creditcard_name';
 		$idA = $id = 'creditcard_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($creditcards, $emptyOption);
 
 		if ($multiple){
@@ -138,7 +138,7 @@ class ShopFunctions {
 		$name = 'shopper_group_name';
 		$idA = $id = 'shopper_group_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
 
 		if ($multiple){
@@ -168,7 +168,7 @@ class ShopFunctions {
 		$id = 'country_id';
 		$idA = $_prefix . 'country_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($countries, $emptyOption);
 
 		if($multiple){
@@ -205,7 +205,7 @@ class ShopFunctions {
 		$name = 'state_name';
 		$idA = $id = $_prefix.'state_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($states, $emptyOption);
 
 		if($multiple){
@@ -232,7 +232,7 @@ class ShopFunctions {
 	 */
 	public function renderTemplateList($defaultText = 0,$defaultOption=true){
 
-		if(empty($defaultText)) $defaultText = JText::_('VM_TEMPLATE_DEFAULT');
+		if(empty($defaultText)) $defaultText = JText::_('COM_VIRTUEMART_TEMPLATE_DEFAULT');
 
 		$templateList = array();
 
@@ -506,10 +506,10 @@ class ShopFunctions {
 	 */
 	public function listUserTitle($t, $extra="", $_prefix = '') {
 		$options = array();
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MR'), JText::_('VM_REGISTRATION_FORM_MR'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MRS'), JText::_('VM_REGISTRATION_FORM_MRS'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_DR'), JText::_('VM_REGISTRATION_FORM_DR'));
-		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_PROF'), JText::_('VM_REGISTRATION_FORM_PROF'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'));
 
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}
@@ -787,7 +787,7 @@ class ShopFunctions {
         if( isset( $required_fields['agreed'] )) {
 			echo '
             if (!form.agreed.checked) {
-				alert( "'. JText::_('VM_AGREE_TO_TOS',false) .'" );
+				alert( "'. JText::_('COM_VIRTUEMART_AGREE_TO_TOS',false) .'" );
 				return false;
 			}';
 		}
@@ -826,7 +826,7 @@ class ShopFunctions {
 	* @return boolean The result of the validation
 	*/
 	public function validateEUVat($euvat) {
-		if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
+		if(!class_exists('VmEUVatCheck')) require(JPATH_COM_VIRTUEMART_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
 		$vatcheck = new VmEUVatCheck($euvat);
 		return $vatcheck->validvatid;
 	}
