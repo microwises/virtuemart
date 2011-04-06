@@ -11,7 +11,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>Shows a list of currencies, so your customers can select a currency for the prices.</description>
+	<description>MOD_VIRTUEMART_CURRENCIES_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_currencies">mod_virtuemart_currencies.php</filename>
 		<filename module="mod_virtuemart_currencies">index.html</filename>
@@ -19,12 +19,9 @@
 		<filename module="mod_virtuemart_currencies">tmpl/index.html</filename>
 	</files>
 	<params>
-		<param name="text_before" type="textarea" cols="40" rows="3"
-			default="" label="Pre-text"
-			description="This is the Text or HTML that is displayed at the beginning of the Module" />
-		<param name="product_currency" type="text" default=""
-			label="The currencies to display:"
-			description="The selected currencies are shown in the module so the customer can select one of those currencies." />
+		<param name="button_label" type="text" default=""
+			label="CURRENCIES_BUTTON_TXT"
+			description="CURRENCIES_BUTTON_TXT_DESC" />
 		<param name="cache" type="radio" default="0"
 			label="Enable Cache"
 			description="Select whether to cache the content of this module">

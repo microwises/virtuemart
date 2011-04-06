@@ -12,17 +12,17 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>Shows a 2 level category list from VirtueMart.</description>
+	<description>MOD_VIRTUEMART_CATEGORY_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_category">mod_virtuemart_category.php</filename>
 		<folder>tmpl/</folder>
 	</files>
 	<params>
-		<param name="Parent_Category_id" type="text" default="0" label="Parent category id" description="This defines the category to list (0 For root dir)." />
-		<param name="layout" type="radio" default="default" label="Menu Type" description="Menu with accordeon, only open active category, open all children category ">
-			<option value="current">active category only</option>
-			<option value="default">accordeon</option>
-			<option value="all">all children category</option>
+		<param name="Parent_Category_id" type="text" default="0" label="PARENT_CATEGORY_ID" description="PARENT_CATEGORY_ID_DESC" />
+		<param name="layout" type="radio" default="default" label="CHILD_CAT_MENU_TYPE" description="CHILD_CAT_MENU_TYPE_DESC">
+			<option value="current">CURRENT</option>
+			<option value="default">ACCORDEON</option>
+			<option value="all">ALL_CHILD</option>
 		</param>		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

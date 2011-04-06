@@ -30,7 +30,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 $currency_id = $mainframe->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
 
 $vendorId = JRequest::getInt('vendorid', 1);
-$text_before = $params->get( 'text_before', '');
+$button_label = $params->get( 'button_label', 'CHANGE_CURRENCIES');
 
 /* table vm_vendor */
 $db = JFactory::getDBO();
