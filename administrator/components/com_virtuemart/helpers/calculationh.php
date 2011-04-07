@@ -80,7 +80,17 @@ class calculationHelper {
 	 */
 	function priceDisplay($price=0){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
-		$price = $this->convertCurrencyToShopperCurrency($price);
+
+		$currencyId = $this->_app->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
+
+		$vendorId = 1 ;
+		if($this->_currencyDisplay->id!=$currencyId){
+			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
+		}
+		dump($this -> _currencyDisplay,'my currency display');dump($price,'Price before convert');
+		$price = $this->convertCurrencyToShopperCurrency($currencyId,$price);dump($price,'Price after convert');
+//		if(empty($this->_currencyDisplay)) $this -> _currencyDisplayShopper = CurrencyDisplay::getCurrencyDisplay(1,$currencyId);
+//		return $this -> _currencyDisplayShopper->getFullValue($price);
 		return $this -> _currencyDisplay->getFullValue($price);
 	}
 
@@ -842,10 +852,7 @@ class calculationHelper {
 
 	}
 
-	function convertCurrencyToShopperCurrency($price){
-
-
-		$currency = $this->_app->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
+	function convertCurrencyToShopperCurrency($currency,$price){
 
 		if(empty($currency)){
 			return $price;
@@ -861,7 +868,8 @@ class calculationHelper {
 			$this -> _currency = $this->_getCurrencyObject();
 		}
 
-		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+//		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+		$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
 
 		return $price;
 	}

@@ -281,6 +281,7 @@ class VirtueMartModelMedia extends JModel {
 			$data['file_id']=$file_id;
 
 			if(is_array($file_ids)){
+				$file_ids = array_unique($file_ids);
 				$data['file_ids'] = implode(',',$file_ids);
 			} else {
 				$data['file_ids'] = $file_ids;

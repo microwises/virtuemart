@@ -41,7 +41,9 @@ class convertECB {
 	 * @return mixed The converted amount when successful, false on failure
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
-
+		dump($amountA,'Amount a');
+		dump($currA,'$currA');
+		dump($currB,'$currB');
 		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 		if( empty($globalCurrencyConverter)) {
 			setlocale(LC_TIME, "en-GB");
@@ -138,6 +140,7 @@ class convertECB {
 			else {
 				$globalCurrencyConverter = -1;
 				JError::raiseWarning(1, 'Failed to retrieve the Currency Converter XML document.');
+				dump($amountA,'NO content');
 //				$GLOBALS['product_currency'] = $vendor_currency;
 				return $amountA;
 			}
@@ -145,6 +148,10 @@ class convertECB {
 		}
 		$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
 		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
+
+		dump($amountA,'Amount a');
+		dump($currA,'$valA');
+		dump($currB,'$valB');
 
 		$val = $amountA * $valB / $valA;
 		//todo

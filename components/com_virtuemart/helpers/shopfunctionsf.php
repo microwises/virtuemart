@@ -260,8 +260,8 @@ class shopFunctionsF {
 		//This is now just without multivendor
 		$config =& JFactory::getConfig();
 		$sender = array(
-    		$config->getValue( 'config.mailfrom' ),
-    		$config->getValue( 'config.fromname' ) );
+    	$config->getValue( 'config.mailfrom' ),
+    	$config->getValue( 'config.fromname' ) );
 
 		$mailer->setSender($sender);
 

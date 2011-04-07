@@ -60,7 +60,7 @@ class CurrencyDisplay {
 	*/
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
-		if(empty(self::$_instance)){
+		if(empty(self::$_instance) || $currencyId!=self::$_instance->id){
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
@@ -84,7 +84,7 @@ class CurrencyDisplay {
 			self::$_instance = new CurrencyDisplay();
 
 			if(!empty($style)){
-				self::$_instance->setCurrencyDisplayToStyleStr($style);
+				self::$_instance->setCurrencyDisplayToStyleStr($currencyId,$style);
 			} else {
 				$app =& JFactory::getApplication('administrator');
 				$uri =& JFactory::getURI();
@@ -113,11 +113,12 @@ class CurrencyDisplay {
      * @author Max Milbers
      * @param String $currencyStyle String containing the currency display settings
      */
-    public function setCurrencyDisplayToStyleStr($currencyStyle='') {
+    public function setCurrencyDisplayToStyleStr($currencyId, $currencyStyle='') {
 
 		if ($currencyStyle) {
 		    $array = explode("|", $currencyStyle);
-		    if(!empty($array[0])) $this->id = $array[0];
+//		    if(!empty($array[0])) $this->id = $array[0];
+			$this->id =	$currencyId;
 		    if(!empty($array[1])) $this->symbol = $array[1];
 		    if(!empty($array[2])) $this->nbDecimal = $array[2];
 		    if(!empty($array[3])) $this->decimal = $array[3];
