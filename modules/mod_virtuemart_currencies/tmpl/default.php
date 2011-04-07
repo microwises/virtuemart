@@ -2,8 +2,11 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <!-- Currency Selector Module -->
-<?php echo $text_before ?>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+<?php 
+echo $text_before ;
+$url =& JFactory::getURI();
+?>
+<form action="<?php echo $url->toString(); ?>" method="post">
 	<br />
 	<?php
 	 echo JHTML::_('select.genericlist', $currencies, 'currency_id', 'class="inputbox"', 'currency_id', 'currency_txt', $currency_id) ;

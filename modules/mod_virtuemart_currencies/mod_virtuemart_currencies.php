@@ -31,6 +31,7 @@ $currency_id = $mainframe->getUserStateFromRequest( "currency_id", 'currency_id'
 
 $vendorId = JRequest::getInt('vendorid', 1);
 $button_label = $params->get( 'button_label', 'CHANGE_CURRENCIES');
+$text_before = $params->get( 'text_before', '');
 
 /* table vm_vendor */
 $db = JFactory::getDBO();
