@@ -40,6 +40,8 @@ jQuery(document).ready(function () {
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
 
+echo "hallo";
+
 /* Show child categories */
 
 if ( VmConfig::get('showCategory',1) ) {
