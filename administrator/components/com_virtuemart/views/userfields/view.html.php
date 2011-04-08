@@ -124,12 +124,12 @@ class VirtuemartViewUserfields extends JView {
 			$this->assignRef('valueCount', --$i);
 
 			// Toggles
-			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
-			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'VM_ADMIN_CFG_YES', 'VM_ADMIN_CFG_NO');
+			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'JYES', 'JNO');
+			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'JYES', 'JNO');
+			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'JYES', 'JNO');
+			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'JYES', 'JNO');
+			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'JYES', 'JNO');
+			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'JYES', 'JNO');
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
