@@ -112,7 +112,7 @@ class TableCalc extends JTable
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

@@ -21,7 +21,7 @@ class VmMediaHandler {
 
 		$this->file_id = $id;
 
-		$this->theme_url = VmConfig::get('COM_VIRTUEMART_themeurl',0);
+		$this->theme_url = VmConfig::get('vm_themeurl',0);
 		if(empty($this->theme_url)){
 			$this->theme_url = JURI::root().'components/com_virtuemart/';
 		}
@@ -263,7 +263,7 @@ class VmMediaHandler {
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
-			$file_alt = JText::_('NO_IMAGE_SET').' '.$this->file_description;
+			$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
 			return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
 		}
 
@@ -308,7 +308,7 @@ class VmMediaHandler {
 	function getIcon($imageArgs,$lightbox){
 		//we can later add here icons for different types
 		$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-		$file_alt = JText::_('NO_IMAGE_FOUND').' '.$this->file_description;
+		$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
 		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
 	}
 

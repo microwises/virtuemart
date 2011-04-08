@@ -83,7 +83,7 @@ class TableState extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_STATE_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('COM_VIRTUEMART_STATE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

@@ -30,9 +30,11 @@ AdminMenuHelper::startAdminArea();
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
+                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_HEADER_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_COUPON_HEADER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_HEADER'); ?>:
 				</label>
+                              </span>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" maxlength="32" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />
@@ -40,45 +42,54 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
+                            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>:
 				</label>
+                            </pan>
 			</td>
 			<td>
+
 				<?php
+
 				$radioOptions = '';
 				$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('COM_VIRTUEMART_COUPON_PERCENT'));
 				$radioOptions[] = JHTML::_('select.option', 'total', JText::_('COM_VIRTUEMART_COUPON_TOTAL'));
 				echo JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total);
-				echo '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP') );
+
 				?>
 			</td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
+                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>:
 				</label>
+                              </span>
 			</td>
 			<td>
+
 				<?php
 				$listOptions = '';
 				$listOptions[] = JHTML::_('select.option', 'permanent', JText::_('COM_VIRTUEMART_COUPON_TYPE_PERMANENT'));
 				$listOptions[] = JHTML::_('select.option', 'gift', JText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
 				echo JHTML::_('select.genericlist',  $listOptions, 'coupon_type', '', 'value', 'text', $this->coupon->coupon_type);
-				echo '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP') );
+
 				?>
 			</td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
+                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE'); ?>:
 				</label>
+                              </span>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="coupon_value" id="coupon_value" size="10" value="<?php echo $this->coupon->coupon_value; ?>" />
-				<?php echo '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP') ); ?>
+
 			</td>
 		</tr>
 		<tr>
@@ -93,9 +104,11 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
+                             <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>:
 				</label>
+                             </span>
 			</td>
 			<td>
 				<?php
@@ -106,9 +119,11 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
+                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>:
 				</label>
+                              </span>
 			</td>
 			<td>
 				<?php

@@ -255,7 +255,7 @@ class VirtueMartModelConfig extends JModel {
 		if ($config) {
 			return new JParameter($config);
 		} else {
-			JError::raiseWarning('There is no configuration in the database yet. This messages should not appear again once you configured youir shop for the first time.');
+			JError::raiseWarning(E_WARNING,'There is no configuration in the database yet. This messages should not appear again once you configured youir shop for the first time.');
 			// ... which is nonsense since is has been loaded during install (vm_config.dat), so probably there is in error...
 			return null;
 		}

@@ -70,7 +70,7 @@ class TableShipping_Carrier extends JTable {
 	    $db->setQuery($q);
 	    $rowCount = $db->loadResult();
 	    if ($rowCount > 0) {
-		$this->setError(JText::_('COM_VIRTUEMART_GIVEN_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
+		$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
 		return false;
 	    }
 	}

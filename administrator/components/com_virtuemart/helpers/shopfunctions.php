@@ -826,7 +826,7 @@ class ShopFunctions {
 	* @return boolean The result of the validation
 	*/
 	public function validateEUVat($euvat) {
-		if(!class_exists('VmEUVatCheck')) require(JPATH_COM_VIRTUEMART_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
+		if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
 		$vatcheck = new VmEUVatCheck($euvat);
 		return $vatcheck->validvatid;
 	}

@@ -75,7 +75,7 @@ class TableManufacturer extends JTable {
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_MANUFACTURER_NAME_ALREADY_EXISTS'));
+				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}

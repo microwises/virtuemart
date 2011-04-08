@@ -81,7 +81,7 @@ class TableShopperGroup extends JTable
 		  $rowCount = $db->loadResult();	
 		  	
 			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_GIVEN_SHOPPER_GROUP_NAME_ALREADY_EXISTS_FOR_GIVEN_VENDOR'));
+				$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME_ALREADY_EXISTS_FOR_GIVEN_VENDOR'));
 				return false;
 			}
 			
