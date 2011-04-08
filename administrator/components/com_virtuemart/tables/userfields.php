@@ -124,7 +124,7 @@ class TableUserfields extends JTable {
 		}
 		if ($this->fieldid == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
-					. 'FROM `#__COM_VIRTUEMART_userfield`'
+					. 'FROM `#__vm_userfield`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
 
 			$this->_db->setQuery($_sql);

@@ -227,7 +227,7 @@ class VirtueMartModelRatings extends JModel {
 		$data['time'] = time();
 		$user =& JFactory::getUser();
 		if(empty($user->id)) {
-			$this->setError('PLZ Sign in to rate the product !');
+			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
 			return false;
 		}
 		//Check user_rating  

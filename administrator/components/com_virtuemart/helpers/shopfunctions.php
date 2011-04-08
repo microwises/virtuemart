@@ -110,7 +110,7 @@ class ShopFunctions {
 			$name = 'vendor_name';
 			$idA = $id = 'vendor_id';
 
-			$emptyOption = JHTML::_('select.option','', JText::_('LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift($vendors, $emptyOption);
 
 			if ($multiple){
@@ -275,7 +275,7 @@ class ShopFunctions {
 
 		static $categoryTree = '';
 		if($level==0){
-			$categoryTree .= '<option value="">'.JText::_('LIST_EMPTY_OPTION').'</option>';
+			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</option>';
 		}
 		$vendor_id = 1;
 
