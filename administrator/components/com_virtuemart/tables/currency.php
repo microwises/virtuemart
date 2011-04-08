@@ -38,7 +38,8 @@ class TableCurrency extends JTable {
 	var $currency_code_2			= '';
 	var $currency_code         		= ''; //should be renamed to $currency_code_2
 	/** @var char Currency symbol */
-	var $currency_symbol         	= '';
+	var $currency_numeric_code = 0;
+        var $currency_symbol         	= '';
 	/** @var char Currency rate */
 	var $exchange_rate         		= '';
 	/** @var char display style */

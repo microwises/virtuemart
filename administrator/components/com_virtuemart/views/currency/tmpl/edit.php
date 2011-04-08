@@ -78,6 +78,16 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
+				<input class="inputbox" type="text" name="currency_numeric_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_numeric_code; ?>" />
+			</td>
+		</tr>
+                <tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>:
+				</label>
+			</td>
+			<td>
 				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />
 			</td>
 		</tr>

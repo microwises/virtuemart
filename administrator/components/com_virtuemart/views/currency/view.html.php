@@ -67,7 +67,7 @@ class VirtuemartViewCurrency extends JView {
 			$usermodel->setCurrent();
 			$userDetails = $usermodel->getUser();
 			if(empty($userDetails->vendor_id)){
-				JError::raiseError(403,'Forbidden for non vendors');
+				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
 			}
 			if(empty($currency->vendor_id))$currency->vendor_id = $userDetails->vendor_id;
 //			$this->assignRef('vendor_id', $vendorCurrency);

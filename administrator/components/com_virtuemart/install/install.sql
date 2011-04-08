@@ -231,14 +231,16 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
 -- Table structure for table `#__vm_currency`
 -- 
 
-CREATE TABLE IF NOT EXISTS `#__vm_currency` (
+
+CREATE TABLE `#__vm_currency` (
   `currency_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '1',
   `currency_name` varchar(64) DEFAULT NULL,
   `currency_code_2` char(2) DEFAULT NULL,
   `currency_code` char(3) DEFAULT NULL,
+  `currency_numeric_code` int(4) NOT NULL,
   `currency_symbol` char(2) DEFAULT NULL,
-  `exchange_rate` float(1) DEFAULT NULL,
+  `exchange_rate` float DEFAULT NULL,
   `display_style` varchar(128) DEFAULT NULL,
   `cdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation date',
   `mdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'modified date',
@@ -246,7 +248,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_currency` (
   `shared` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`currency_id`),
   KEY `idx_currency_code` (`currency_code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
+
 
 -- --------------------------------------------------------
 --
