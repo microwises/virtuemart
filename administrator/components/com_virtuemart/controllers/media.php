@@ -61,16 +61,10 @@ class VirtuemartControllerMedia extends JController {
 
 		/* Set the layout */
 //		switch (JRequest::getCmd('task')) {
-//			case 'add':
-//
-//			case 'edit':
-				$this->view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), true );
-				$this->view->setLayout('media_edit');
-//				break;
-//			default:
-//				$this->view->setLayout('media');
-//				break;
-//		}
+
+		$this->view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), true );
+		$this->view->setLayout('media_edit');
+
 
 		/* Now display the view. */
 		$this->view->display();
@@ -79,16 +73,42 @@ class VirtuemartControllerMedia extends JController {
 	function save(){
 
 		// Check token, how does this really work?
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
 		$fileModel = $this->getModel('media');
 
-		if ($id = $fileModel->store()) {
+		//Now we try to determine to which this media should be long to
+		$data = JRequest::get('post');
+		if($data['product_id']){
+			$table = $this->getTable('product');
+			$type = 'product';
+		} else if ($data['category_id']){
+			$table = $this->getTable('category');
+			$type = 'category';
+		} else if ($data['manufacturer_id']){
+			$table = $this->getTable('manufacturer');
+			$type = 'manufacturer';
+//		} else if ($data['vendor_id']){
+//			$table = $this->getTable('vendor');
+//			$type = 'vendor';
+		} else {
+
+		}
+
+		if(empty($table)){
+			if ($id = $fileModel->store()) {
+				$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
+			} else {
+				$msg = $fileModel->getError();
+			}
+		} else {
+			if ($id = $fileModel->storeMedia($data,$table,$type)) {
 			$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
+			} else {
+				$msg = $fileModel->getError();
+			}
 		}
-		else {
-			$msg = $fileModel->getError();
-		}
+
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
@@ -120,7 +140,7 @@ class VirtuemartControllerMedia extends JController {
 	public function remove()
 	{
 		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken() or jexit( 'Invalid Token, trying deleting media' );
 
 		$mainframe = JFactory::getApplication();
 		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );

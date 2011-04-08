@@ -43,9 +43,9 @@ class VirtuemartViewMedia extends JView {
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
 
-		$layoutName = JRequest::getVar('layout', 'default');
-		$task = JRequest::getVar('task', '');
-		if ($task == 'edit' || $task= 'add' ) {
+//		$layoutName = JRequest::getVar('layout', 'default');
+		$task = JRequest::getCmd('task', '');
+		if ($task == 'edit' || $task== 'add' ) {
 
 			$media = $model->getFile();
 			$this->assignRef('media',	$media);

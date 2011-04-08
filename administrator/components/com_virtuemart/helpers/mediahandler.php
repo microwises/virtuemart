@@ -351,9 +351,9 @@ class VmMediaHandler {
 		switch ($media['error']) {
 			case 0:
 				$path_folder = str_replace('/',DS,$urlfolder);
-				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path.DS.$media['name']);
+				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
 				$this->file_mimetype = $media['type'];
-	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',$media['name']));
+	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
 	      		return $media['name'];
 
 			case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
@@ -384,7 +384,13 @@ class VmMediaHandler {
 
 		jimport('joomla.filesystem.file');
 		$file_path = str_replace('/',DS,$url);
-		return JFile::delete( JPATH_ROOT.DS.$file_path );
+		$app =& JFactory::getApplication();
+		if($res = JFile::delete( JPATH_ROOT.DS.$file_path )){
+			$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$file_path));
+		} else {
+			$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res));
+		}
+		return ;
 	}
 
 	/**
@@ -404,7 +410,7 @@ class VmMediaHandler {
 			$oldFileUrl = $data['file_url'];
 			$file_name = $this->uploadFile($this->file_url_folder);
 			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
-				$this->deleteFile($oldFileUrl);
+				$this->deleteFile($oldFileUrl);dump($oldFileUrl,'called delete');
 			}
 			$this->file_url = $this->file_url_folder.$file_name;
 			$this->file_name = $file_name;

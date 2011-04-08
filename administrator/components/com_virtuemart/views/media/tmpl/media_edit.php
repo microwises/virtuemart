@@ -23,6 +23,12 @@ echo '<fieldset class="adminform">';
 $this->media->addHidden('view','media');
 $this->media->addHidden('task','');
 
+$product_id = JRequest::getVar('product_id', '');
+if(!empty($product_id)) $this->media->addHidden('product_id',$product_id);
+
+$category_id = JRequest::getVar('category_id', '');
+if(!empty($category_id)) $this->media->addHidden('category_id',$category_id);
+
 echo $this->media->displayFileHandler();
 echo '</fieldset>';
 /*?>

@@ -54,9 +54,6 @@ class VirtueMartModelMedia extends JModel {
 		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
 
-		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
@@ -254,6 +251,7 @@ class VirtueMartModelMedia extends JModel {
 		return $this->_data;
     }
 
+
     /**
      * This function stores a media and updates then the refered table
      *
@@ -366,12 +364,14 @@ class VirtueMartModelMedia extends JModel {
 
 	/**
 	 * Delete an image file
+	 * @author unknow, maybe Roland Dalmulder
+	 * @author Max Milbers
 	 */
-	public function getDeleteMedia() {
+	public function delete($cids) {
 		$mainframe = Jfactory::getApplication('site');
-		$deleted = 0;
+//		$deleted = 0;
 	 	$row = $this->getTable('media');
-	 	$cids = JRequest::getVar('cid');
+//	 	$cids = JRequest::getVar('cid');
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
 				$row->load($cid);
@@ -383,11 +383,14 @@ class VirtueMartModelMedia extends JModel {
 			if ($row->delete()) $deleted++;
 		}
 		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS')));
+
+		//TODO update table belonging, category, product, venodor
+		//delete media from server
 		/* Redirect so the user cannot reload the delete action */
-		$url = 'index.php?option=com_virtuemart&view=media';
-		$productid = JRequest::getInt('product_id', false);
-		if ($productid) $url .= '&product_id='.$productid;
-		$mainframe->redirect($url);
+//		$url = 'index.php?option=com_virtuemart&view=media';
+//		$productid = JRequest::getInt('product_id', false);
+//		if ($productid) $url .= '&product_id='.$productid;
+//		$mainframe->redirect($url);
 	}
 
 	/**
