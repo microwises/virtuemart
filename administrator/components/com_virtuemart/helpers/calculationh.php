@@ -33,6 +33,10 @@ class calculationHelper {
 	public $productVendorId;
 	public $productCurrency;
 
+	private $vendorCurrency = 0;
+	private $exchangeRateVendor = 0;
+	private $exchangeRateShopper= 0;
+
 	static $_instance;
 
 //	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
@@ -87,8 +91,8 @@ class calculationHelper {
 		if($this->_currencyDisplay->id!=$currencyId){
 			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
 		}
-		dump($this -> _currencyDisplay,'my currency display');dump($price,'Price before convert');
-		$price = $this->convertCurrencyToShopperCurrency($currencyId,$price);dump($price,'Price after convert');
+
+		$price = $this->convertCurrencyTo($currencyId,$price,false);
 //		if(empty($this->_currencyDisplay)) $this -> _currencyDisplayShopper = CurrencyDisplay::getCurrencyDisplay(1,$currencyId);
 //		return $this -> _currencyDisplayShopper->getFullValue($price);
 		return $this -> _currencyDisplay->getFullValue($price);
@@ -222,7 +226,7 @@ class calculationHelper {
 
 
 		$prices['costPrice']  = $costPrice;
-		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyToShopDefault($this->productCurrency, $costPrice));
+		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyTo($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
 
 		if(isset($variant)){
@@ -831,7 +835,7 @@ class calculationHelper {
 				}
 			} else {
 
-				$value = $this->convertCurrencyToShopDefault($currency, $value);
+				$value = $this->convertCurrencyTo($currency, $value);
 				return $price + $value ;
 			}
 
@@ -843,7 +847,7 @@ class calculationHelper {
 					return $price * (1-$value/100.0);
 				}
 			} else {
-				$value = $this->convertCurrencyToShopDefault($currency, $value);
+				$value = $this->convertCurrencyTo($currency, $value);
 				return $price - $value ;
 			}
 		}else if(!strcmp($sign,'=')){
@@ -852,7 +856,7 @@ class calculationHelper {
 
 	}
 
-	function convertCurrencyToShopperCurrency($currency,$price){
+	function convertCurrencyTo($currency,$price,$shop=true){
 
 		if(empty($currency)){
 			return $price;
@@ -863,40 +867,95 @@ class calculationHelper {
 			return $price;
 		}
 
-		if(empty($this ->_currency)){
-			// @TODO Why is this check here?
-			$this -> _currency = $this->_getCurrencyObject();
+		if($shop){
+			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
+//			$exchangeRate = &$this->exchangeRateVendor;
+			$exchangeRate = 0;
+		} else {
+			//caches the exchangeRate between shopper and vendor
+			$exchangeRate = &$this->exchangeRateShopper;
 		}
 
-//		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
-		$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
+		if(empty($exchangeRate)){
+//			if(is_Int($currency)){
+				$q = 'SELECT `exchange_rate`
+				FROM `#__vm_currency` WHERE `currency_id` ="'.$currency.'" ';
+				$this->_db->setQuery($q);
+				if(	$exch = $this->_db->loadResult()){
+					$exchangeRate = $this->_db->loadResult();
+				} else {
+					$exchangeRate = FALSE;
+				}
 
+//			}
+		}
+
+		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
+			$price = $price * $exchangeRate;
+		} else {
+			if($shop){
+				$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+			} else {
+				$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
+			}
+
+		}
 		return $price;
 	}
 
-	function convertCurrencyToShopDefault($currency, $price){
-		if(empty($currency)){
-			return $price;
-		}
-
-//		if(!$this->vendorCurrency){
+//	function convertCurrencyToShopperCurrency($currency,$price){
+//
+//		if(empty($currency)){
+//			return $price;
+//		}
+//
+//		// If both currency codes match, do nothing
+//		if( $currency == $this->vendorCurrency ) {
+//			return $price;
+//		}
+//
+//		if(empty($this->exchangeRateShopper)){
+//			if(is_Int($currency)){
+//				$q = 'SELECT `exchange_rate`
+//				FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency.')';
+//				$db->setQuery($q);
+//				if(	$exch = $db->loadResult()){
+//					$this->exchangeRateShopper = $exch;
+//				}
+//			}
 //
 //		}
-
-		// If both currency codes match, do nothing
-		if( $currency == $this->vendorCurrency ) {
-			return $price;
-		}
-
-		if(empty($this ->_currency)){
-			// @TODO Why is this check here?
-			$this -> _currency = $this->_getCurrencyObject();
-		}
-
-		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
-
-		return $price;
-	}
+//
+//		if(!empty($this->exchangeRateShopper)){
+//			$price = $price * $this->exchangeRateShopper;
+//		} else {
+//			$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
+//		}
+//
+//		return $price;
+//	}
+//
+//	function convertCurrencyToShopDefault($currency, $price){
+//
+//		if(empty($currency)){
+//			return $price;
+//		}
+//
+//
+//		// If both currency codes match, do nothing
+//		if( $currency == $this->vendorCurrency ) {
+//			return $price;
+//		}
+//
+////		if(empty($this ->_currency)){
+////			// @TODO Why is this check here?
+////			$this -> _currency = $this->_getCurrencyObject();
+////		}
+//
+//		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+//
+//		return $price;
+//	}
 
 	/**
 	 * Changes the currency_id into the right currency_code
@@ -908,10 +967,10 @@ class calculationHelper {
 	function ensureUsingCurrencyCode($curr){
 
 		if(is_numeric($curr)){
-			$db = JFactory::getDBO();
+			$this->_db = JFactory::getDBO();
 			$q= 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
-			$db->setQuery($q);
-			$curr = $db->loadResult();
+			$this->_db->setQuery($q);
+			$curr = $this->_db->loadResult();
 			if(empty($curr)){
 				JError::raiseWarning('Attention, couldnt find currency code in the table');
 			}

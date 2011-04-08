@@ -53,6 +53,7 @@ class VmMediaHandler {
 		if(empty($path)) {
 			$app =& JFactory::getApplication();
 			$app->enqueueMessage('cant creat media of unknown type, a programmers error, used type'.$type);
+			$path = VmConfig::get('media_path');
 		}
 		return $path;
 	}

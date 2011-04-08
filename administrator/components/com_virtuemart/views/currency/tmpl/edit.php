@@ -117,7 +117,7 @@ AdminMenuHelper::startAdminArea();
 		</td>
 		<td>
 			<input type="hidden" name="currency_display_style[0]" value="<?php echo $this->currency->vendor_id; ?>" />
-			<input class="inputbox" type="text" name="currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->currencyDisplay->getSymbol(); ?>" />
+			<input class="inputbox" type="text" name="currency_display_style[1]" id="currency_symbol" size="20" value="<?php echo $this->currencyDisplay->getSymbol(); ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -125,7 +125,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>:
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo $this->currencyDisplay->getNbrDecimals(); ?>" />
+			<input class="inputbox" type="text" name="currency_display_style[2]" id="currency_nbr_decimals" size="20" value="<?php echo $this->currencyDisplay->getNbrDecimals(); ?>" />
 		</td>
 	</tr>
 	<tr>

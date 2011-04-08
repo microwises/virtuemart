@@ -55,7 +55,7 @@ class VirtueMartModelMedia extends JModel {
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
 
 		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
@@ -194,6 +194,7 @@ class VirtueMartModelMedia extends JModel {
 	    	if ($onlyPublished) {
 				$whereItems[] = '`#__vm_media`.`published` = 1';
 			}
+//			if(empty($whereItems)) $whereItems[] = ' 1 ';
 			$oderby = '`#__vm_media`.`mdate`';
     	}
 
@@ -208,8 +209,9 @@ class VirtueMartModelMedia extends JModel {
 			$where = substr($where,0,strlen($where)-5);
 			$where .= ')';
 			$query .= $where;
-			$query .= ' ORDER BY '.$oderby;
 		}
+
+		$query .= ' ORDER BY '.$oderby;
 
 		$app =& JFactory::getApplication();
 
@@ -220,6 +222,7 @@ class VirtueMartModelMedia extends JModel {
 			$this->_data = $this->_getList($query);
 		} else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+//			$this->_data = $this->_getList($query);
 		}
 
 		$errMsg = $this->_db->getErrorMsg();
