@@ -22,6 +22,8 @@ AdminMenuHelper::startAdminArea();
 echo '<fieldset class="adminform">';
 $this->media->addHidden('view','media');
 $this->media->addHidden('task','');
+$this->media->addHidden(JUtility::getToken(),1);
+
 
 $product_id = JRequest::getVar('product_id', '');
 if(!empty($product_id)) $this->media->addHidden('product_id',$product_id);

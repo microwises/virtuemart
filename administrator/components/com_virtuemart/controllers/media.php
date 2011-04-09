@@ -72,21 +72,18 @@ class VirtuemartControllerMedia extends JController {
 
 	function save(){
 
-		// Check token, how does this really work?
-//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
-
 		$fileModel = $this->getModel('media');
 
 		//Now we try to determine to which this media should be long to
 		$data = JRequest::get('post');
 		if($data['product_id']){
-			$table = $this->getTable('product');
+			$table = $fileModel->getTable('product');
 			$type = 'product';
 		} else if ($data['category_id']){
-			$table = $this->getTable('category');
+			$table = $fileModel->getTable('category');
 			$type = 'category';
 		} else if ($data['manufacturer_id']){
-			$table = $this->getTable('manufacturer');
+			$table = $fileModel->getTable('manufacturer');
 			$type = 'manufacturer';
 //		} else if ($data['vendor_id']){
 //			$table = $this->getTable('vendor');

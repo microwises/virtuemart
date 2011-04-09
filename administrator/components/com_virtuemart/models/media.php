@@ -262,6 +262,9 @@ class VirtueMartModelMedia extends JModel {
      */
 	function storeMedia($data,$table,$type){
 
+		// Check token, how does this really work?
+//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
+
 		$oldId = $data['file_id'];
 		$this -> setId($oldId);
 		$file_id = $this->store($type,$data);
@@ -315,7 +318,7 @@ class VirtueMartModelMedia extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store($type,$data=0) {
+	private function store($type,$data=0) {
 
 		$table = $this->getTable('media');
 		if(empty($data))$data = JRequest::get('post');

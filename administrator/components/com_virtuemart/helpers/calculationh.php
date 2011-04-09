@@ -85,8 +85,11 @@ class calculationHelper {
 	function priceDisplay($price=0){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
 
-		$currencyId = $this->_app->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
-
+		$currencyId = $this->_app->getUserStateFromRequest( 'currency_id', 'currency_id',$this->vendorCurrency );
+		if(empty($currencyId)){
+			$currencyId = $this->vendorCurrency;
+		}
+//		dump($this,'my calculator');
 		$vendorId = 1 ;
 		if($this->_currencyDisplay->id!=$currencyId){
 			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
@@ -903,59 +906,7 @@ class calculationHelper {
 		return $price;
 	}
 
-//	function convertCurrencyToShopperCurrency($currency,$price){
-//
-//		if(empty($currency)){
-//			return $price;
-//		}
-//
-//		// If both currency codes match, do nothing
-//		if( $currency == $this->vendorCurrency ) {
-//			return $price;
-//		}
-//
-//		if(empty($this->exchangeRateShopper)){
-//			if(is_Int($currency)){
-//				$q = 'SELECT `exchange_rate`
-//				FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency.')';
-//				$db->setQuery($q);
-//				if(	$exch = $db->loadResult()){
-//					$this->exchangeRateShopper = $exch;
-//				}
-//			}
-//
-//		}
-//
-//		if(!empty($this->exchangeRateShopper)){
-//			$price = $price * $this->exchangeRateShopper;
-//		} else {
-//			$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
-//		}
-//
-//		return $price;
-//	}
-//
-//	function convertCurrencyToShopDefault($currency, $price){
-//
-//		if(empty($currency)){
-//			return $price;
-//		}
-//
-//
-//		// If both currency codes match, do nothing
-//		if( $currency == $this->vendorCurrency ) {
-//			return $price;
-//		}
-//
-////		if(empty($this ->_currency)){
-////			// @TODO Why is this check here?
-////			$this -> _currency = $this->_getCurrencyObject();
-////		}
-//
-//		$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
-//
-//		return $price;
-//	}
+
 
 	/**
 	 * Changes the currency_id into the right currency_code
@@ -970,10 +921,11 @@ class calculationHelper {
 			$this->_db = JFactory::getDBO();
 			$q= 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
 			$this->_db->setQuery($q);
-			$curr = $this->_db->loadResult();
-			if(empty($curr)){
-				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table');
+			$currInt = $this->_db->loadResult();
+			if(empty($currInt)){
+				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table '.$curr);
 			}
+			return $currInt;
 		}
 		return $curr;
 	}
