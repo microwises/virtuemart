@@ -279,7 +279,7 @@ INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`,
 -- Dumping data for table `#__vm_currency`
 --
 
-INSERT INTO `jos_vm_currency` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `cdate`, `mdate`, `published`, `shared`) VALUES
+INSERT INTO `#__vm_currency` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `cdate`, `mdate`, `published`, `shared`) VALUES
 (1, 1, 'Afghani', '', 'AFN', 971, '', 0, '', '2008-04-11 13:46:00', '0000-00-00 00:00:00', 1, 1),
 (2, 1, 'Algerian Dinar', '', 'DZD', 12, '', 0, '', '2008-04-11 13:46:00', '0000-00-00 00:00:00', 1, 1),
 (3, 1, 'Argentine Peso', '', 'ARS', 32, '', 0, '', '2008-04-11 13:46:00', '0000-00-00 00:00:00', 1, 1),
