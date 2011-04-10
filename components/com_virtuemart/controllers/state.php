@@ -35,16 +35,20 @@ class VirtueMartControllerState extends JController
 	public function __construct() {
 		parent::__construct();
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('state', $viewType);
-
 		$stateModel = new VirtueMartModelState();
 
-		// Push a model into the view
-		if (!JError::isError($stateModel)) {
-			$view->setModel($stateModel, true);
+		$states = array();
+
+		//retrieving countries id
+		$countries = JRequest::getString('country_id');
+		$countries = explode(',', $countries);
+
+		foreach($countries as $country){
+			$states[$country] = $stateModel->getFullStates( JFilterInput::clean($country, 'INTEGER') );
 		}
+		echo json_encode($states);
+
+		jExit();
 	}
 
 }

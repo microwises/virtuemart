@@ -120,15 +120,15 @@ abstract class vmPaymentPlugin extends JPlugin
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 
-		if($result){
+		if(!empty($result)){
 			if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 			$this->paymentModel = new VirtueMartModelPaymentmethod();
 			$this->paymentModel->setId($result['paym_id']);
 			$this->paymentMethod = $this->paymentModel->getPaym();
 			return true;
 		} else{
-	//		$mainframe = &JFactory::getApplication();
-	//		$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
+//			$mainframe = &JFactory::getApplication();
+//			$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
 			return false;
 		}
 
@@ -147,6 +147,7 @@ abstract class vmPaymentPlugin extends JPlugin
 
 	public function plgVmOnSelectPayment(VirtueMartCart $cart, $checkedPaymId=0)
 	{
+		dump($cart->vendorId,'test plgVmOnSelectPayment');
 		if (!$this->setVmParams($cart->vendorId)) {
 			return;
 		}
@@ -160,6 +161,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$html  = '<fieldset>';
 		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 		$html .= '</fieldset> ';
+
 		return $html;
 	}
 
@@ -343,9 +345,9 @@ abstract class vmPaymentPlugin extends JPlugin
 
 
                 $_q = 'SELECT `paym_name` '
-                        . 'FROM #__vm_payment_method '                     
+                        . 'FROM #__vm_payment_method '
                         . "WHERE paym_id='$_pid' ";
-           
+
 
 
             $_db->setQuery($_q);

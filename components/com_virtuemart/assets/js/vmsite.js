@@ -28,7 +28,7 @@
 
 	VMConfig.set({
 		//URL to country/state AJAX Request
-		countryStateURL: 'index.php?option=com_virtuemart&view=state&format=json&country_id='
+		countryStateURL: 'index.php?option=com_virtuemart&controller=state&format=json&country_id='
 	});
 	
 })(jQuery);

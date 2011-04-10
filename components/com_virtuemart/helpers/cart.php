@@ -328,7 +328,7 @@ class VirtueMartCart  {
 	* @return object The product details object
 	*/
 	private function getProduct($product_id) {
-		JModel::addIncludePath(JPATH_VM_SITE.DS.'models');
+		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$model = JModel::getInstance('Productdetails', 'VirtueMartModel');
 		return $model->getProduct($product_id, false);
 	}
@@ -561,7 +561,7 @@ class VirtueMartCart  {
 		if (($_msg = $this->checkPurchaseValue()) != null) {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart', $_msg);
 		}
-		
+
 		//But we check the data again to be sure
 		if(empty($this->BT)){
 			$mainframe->redirect('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT');
@@ -653,7 +653,7 @@ class VirtueMartCart  {
 		$this->_dataValidated = true;
 
 		$this->setCartIntoSession();
-
+		dump($this,'my cart checkoutData');
 		return true;
 	}
 
@@ -759,16 +759,11 @@ class VirtueMartCart  {
 
 			$this->setCartIntoSession();
 
-			/* Display it all */
-
-//			$view = $this->getView('cart', 'html');
-//			$view->setLayout('orderdone');
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-	//		$view->display();
+
 		} else {
 			$mainframe = JFactory::getApplication();
-//			JError::raiseNotice(1, 'raiseNotice '.JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
 		}

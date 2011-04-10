@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -29,20 +29,20 @@ jimport( 'joomla.application.component.view');
  * @subpackage State
  * @author RolandD, jseros
  */
-class VirtuemartViewState extends JView {
-	
-	function display($tpl = null) {
-		$stateModel = $this->getModel();
-		$states = array();
-		
-		//retrieving countries id
-		$countries = JRequest::getString('country_id');
-		$countries = explode(',', $countries);
-		
-		foreach($countries as $country){
-			$states[$country] = $stateModel->getFullStates( JFilterInput::clean($country, 'INTEGER') );
-		}
-		echo json_encode($states);
-	}
-}
+//class VirtuemartViewState extends JView {
+//
+//	function display($tpl = null) {
+//		$stateModel = $this->getModel();
+//		$states = array();
+//
+//		//retrieving countries id
+//		$countries = JRequest::getString('country_id');
+//		$countries = explode(',', $countries);
+//
+//		foreach($countries as $country){
+//			$states[$country] = $stateModel->getFullStates( JFilterInput::clean($country, 'INTEGER') );
+//		}
+//		echo json_encode($states);
+//	}
+//}
 // pure php no closing tag

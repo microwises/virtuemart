@@ -39,7 +39,7 @@ $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Pric
 $show_product_list = (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
  ?>
 <div class="vmCartModule">
-<?php 
+<?php
 if ($show_product_list) {
 	?>
 	<div id="hiddencontainer" style=" display: none; ">
@@ -56,11 +56,11 @@ if ($show_product_list) {
 
 <div class="vm_cart_products">
 
-<?php 
+<?php
 // ALL THE DISPLAY IS Done by Ajax in hiddencontainer
 ?>
 </div>
-<?php 
+<?php
 }
 ?>
 <div class="total"></div>
@@ -68,6 +68,6 @@ if ($show_product_list) {
 <div class="show_cart"></div>
 <noscript>
 <?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
-</noscript> 
+</noscript>
 </div>
 

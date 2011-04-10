@@ -133,7 +133,7 @@ abstract class vmShipperPlugin extends JPlugin
 		;
 		}
 
-                
+
 		$_db->setQuery($_q);
 		if (!$_res =  $_db->loadAssocList()) {
 			return false;
@@ -158,7 +158,7 @@ abstract class vmShipperPlugin extends JPlugin
 		}
 
 		$_db = &JFactory::getDBO();
-		
+
                 if(version_compare(JVERSION,'1.6.0') < ''){
                        $_q = 'SELECT 1 '
 			. 'FROM   #__vm_shipping_carrier v '
@@ -553,11 +553,12 @@ abstract class vmShipperPlugin extends JPlugin
 		$_q = 'SELECT `shipping_rate_id` '
 			. 'FROM #__vm_shipping_rate '
 			. "WHERE `shipping_rate_carrier_id` = $_shipperId "
-			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
-			. "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') "
-			.	 "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) "
-			. 'AND   (`shipping_rate_country` = \'\' '
-			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) '
+			//TODO This does not work properly, ... (by Max)
+//			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
+//			. "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') "
+//			.	 "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) "
+//			. 'AND   (`shipping_rate_country` = \'\' '
+//			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) '
 			. 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) '
 			. 'LIMIT 1';
 		$_db->setQuery($_q);
@@ -577,7 +578,7 @@ abstract class vmShipperPlugin extends JPlugin
 	final protected function selectedThisShipper($_selement, $_sid)
 	{
 		$_db = &JFactory::getDBO();
-		 
+
 		  if(version_compare(JVERSION,'1.6.0') < ''){
                      $_q = 'SELECT COUNT(*) AS c '
 			. 'FROM #__vm_shipping_carrier AS vm '
@@ -592,7 +593,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'WHERE j.`folder` = "vmshipper" '
                         . "AND vm.shipping_carrier_id = '$_sid' "
 			. 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
-			. "AND   j.element = '$_selement'";                    
+			. "AND   j.element = '$_selement'";
 		}
 
 

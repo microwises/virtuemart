@@ -33,8 +33,6 @@ if(VmConfig::get('shop_is_offline',0)){
 	$config->jQuery();
 	$config->jVm();
 	$config->cssSite();
-	/* Loading stylesheets */
-	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vmsite.css');
 
 	/* Require specific controller if requested */
 	if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {

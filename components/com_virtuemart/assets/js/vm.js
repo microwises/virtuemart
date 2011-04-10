@@ -13,8 +13,7 @@ var VM = (function($){
 				
 			//Regular Expr to parse parent list
 			dependentExpr: /dependent\[(.*)\]/i,
-			
-			countryStateURL: 'administrator/index.php?option=com_virtuemart&view=state&task=getList&format=json&country_id='
+			countryStateURL: 'index.php?option=com_virtuemart&view=state&format=json&country_id='
 		};
 		
 		return {

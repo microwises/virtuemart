@@ -67,10 +67,10 @@ function myValidator(f, t)
 	$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
 	$html = $_dispatcher->trigger('plgVmOnSelectPayment', $tmp);
 
-	foreach($html as $item){			
-		echo $item;		
+	foreach($html as $item){
+		echo $item;
 	}
-		
+
 ?>	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="cart" />
 	<input type="hidden" name="task" value="setpayment" />

@@ -392,9 +392,11 @@ class VirtueMartControllerCart extends JController {
 
 		//Use false to prevent valid boolean to get deleted
 		$cart = VirtueMartCart::getCart(false);
-		if($cart && $cart->getDataValidated()){ //this test is already done in confirmDone, but prevents it something?
-//		if($cart)
+		if($cart){
 			$cart->confirmDone();
+		} else {
+	 		$mainframe = JFactory::getApplication();
+	 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart','Cart data not valid');
 		}
 	}
 
