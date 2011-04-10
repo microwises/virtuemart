@@ -113,6 +113,10 @@ function virtuemartBuildRoute(&$query) {
 				if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 				if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
 				unset($query['category_id']);
+			} else {
+				if (isset ($helper->menu->no_category_id))$query['Itemid'] = $helper->menu->no_category_id;
+				elseif (isset ($helper->menu->virtuemart))$query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
+				unset($query['category_id']);
 			}
 			if($product_id_exists)	{
 				$segments[] = $helper->getProductName($product_id);
@@ -365,25 +369,6 @@ class vmrouterHelper {
 
 	public $CategoryName = array();
 	
-	private $Chars = array(
-    '�'=>'S', '�'=>'s', '�'=>'Dj','�'=>'Z', '�'=>'z', '�'=>'A', '�'=>'A', '�'=>'A', '�'=>'A', '�'=>'A', 
-    '�'=>'A', '�'=>'A', '�'=>'C', '�'=>'E', '�'=>'E', '�'=>'E', '�'=>'E', '�'=>'I', '�'=>'I', '�'=>'I', 
-    '�'=>'I', '�'=>'N', '�'=>'O', '�'=>'O', '�'=>'O', '�'=>'O', '�'=>'O', '�'=>'O', '�'=>'U', '�'=>'U', 
-    '�'=>'U', '�'=>'U', '�'=>'Y', '�'=>'B', '�'=>'Ss','�'=>'a', '�'=>'a', '�'=>'a', '�'=>'a', '�'=>'a', 
-    '�'=>'a', '�'=>'a', '�'=>'c', '�'=>'e', '�'=>'e', '�'=>'e', '�'=>'e', '�'=>'i', '�'=>'i', '�'=>'i', 
-    '�'=>'i', '�'=>'o', '�'=>'n', '�'=>'o', '�'=>'o', '�'=>'o', '�'=>'o', '�'=>'o', '�'=>'o', '�'=>'u', 
-    '�'=>'u', '�'=>'u', '�'=>'y', '�'=>'y', '�'=>'b', '�'=>'y', '�'=>'f'
-);
-
-	function cleanForShortURL($toClean) {
-		$toClean     =     str_replace('&', '-and-', $toClean);
-		$toClean     =    trim(preg_replace('/[^\w\d_ -]/si', ' ', $toClean));//remove all illegal chars
-		$toClean     =     str_replace(' ', '-', $toClean);
-		$toClean     =     str_replace('--', '-', $toClean);
-		
-		return strtr($toClean, $this->Chars);
-	}
-
 
 	private function __construct() {
 

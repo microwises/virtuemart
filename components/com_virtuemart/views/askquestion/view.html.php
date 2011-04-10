@@ -95,7 +95,7 @@ class VirtueMartViewAskquestion extends JView {
 
 
 		/* Load the category */
-		$category_model = $this->getModel('category');
+		$category_model = $this->getModel('categorydetails');
 		/* Get the category ID */
 		$category_id = JRequest::getInt('category_id');
 		if ($category_id == 0 && !empty($product)) {

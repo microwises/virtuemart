@@ -258,8 +258,9 @@ class VmMediaHandler {
 	 *
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
 	 * @param boolean $lightbox alternative display method
+	 * @param string $effect alternative lightbox display
 	 */
-	function displayMediaThumb($imageArgs='',$lightbox=true){
+	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'"){
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -293,7 +294,7 @@ class VmMediaHandler {
 		}
 
 
-		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect);
 
 	}
 
@@ -322,14 +323,14 @@ class VmMediaHandler {
 	 * @param string $imageArgs attributes for displaying the images
 	 * @param boolean $lightbox use lightbox
 	 */
-	function displayIt($file_url, $file_alt, $imageArgs,$lightbox){
+	function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'"){
 
 		if($lightbox){
 			$image = JHTML::image($file_url, $file_alt, $imageArgs);
-			$class = "class='modal'" ;
+			if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 			if ($this->file_url) $href = JURI::root() .$this->file_url ;
 			else $href = $image ;
-			$lightboxImage = '<a title="'.$file_alt.'" '.$class.' href="'.$href.'">'.$image.'</a>';
+			$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
 			return $lightboxImage;
 		} else {
 			return JHTML::image($file_url, $file_alt, $imageArgs);
@@ -439,6 +440,7 @@ class VmMediaHandler {
 		}
 
 		if(empty($this->file_title) && !empty($file_name)) $this->file_title = $file_name;
+		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
 
 		return $data;
 	}

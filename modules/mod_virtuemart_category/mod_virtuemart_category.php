@@ -26,7 +26,7 @@ $config->jQuery();
 $config->cssSite();
 
 /* Setting */
-$categoryModel = new VirtueMartModelCategory();
+$categoryModel = new VirtueMartModelCategorydetails();
 $category_id = $params->get('Parent_Category_id', '0');
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
@@ -52,8 +52,6 @@ foreach ($categories as $category) {
 $category->childs = $categoryModel->getChildrenList($category->category_id) ;
 }
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
-
-	/* Unique ID for Jquery */
 
 
 /* Laod tmpl default */

@@ -51,8 +51,9 @@ class VirtueMartControllerCategories extends JController {
 		/* Create the view */
 		$view = $this->getView('categories', 'html');
 		
+		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 		/* Add the default model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
+		$view->setModel($this->getModel('categorydetails', 'VirtuemartModel'), true);
 		
 		/* Set the layout */
 		//$view->setLayout('category');

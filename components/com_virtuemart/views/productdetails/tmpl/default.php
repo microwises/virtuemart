@@ -53,7 +53,8 @@ if (empty ( $this->product )) {
 		<div class="width30 floatleft center">
 
 		<?php // Product Image
-		echo $this->product->images[0]->displayMediaThumb('class="product-image"'); //'class="modal"'
+		foreach ($this->product->images as $image)
+		echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
 		?>
 		</div>
 

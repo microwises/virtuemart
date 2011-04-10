@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: category.php 2922 2011-03-30 19:54:17Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.model');
  * @author RolandD
  *
  */
-class VirtueMartModelCategory extends JModel {
+class VirtueMartModelCategorydetails extends JModel {
 
 	/* array container for category tree ID*/
 	var $container = array();

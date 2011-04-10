@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			if ($i % 2) $product_rows[$i]['row_color'] = "sectiontableentry2";
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
-
+			$product->category_id = $this->cart->getCardCategoryId($product->product_id);
 			/* Create product URL */
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
 

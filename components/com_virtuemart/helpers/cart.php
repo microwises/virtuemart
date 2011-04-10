@@ -363,6 +363,19 @@ class VirtueMartCart  {
 		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
+	}	/**
+
+	* Get the category ID from a product ID
+	*
+	* @author Patrick Kohl
+	* @access public
+	* @return mixed if found the category ID else null
+	*/
+	public function getCardCategoryId($product_id) {
+		$db = JFactory::getDBO();
+		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$db->setQuery($q);
+		return $db->loadResult();
 	}
 
 

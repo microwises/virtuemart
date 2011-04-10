@@ -57,7 +57,7 @@
 							faceboxHtml : faceboxHtml
 						}, 'my-groovy-style');
 					}
-					if ($(".vmCartModule")) {
+					if ($(".vmCartModule")[0]) {
 						jQuery.ajaxSetup({ cache: false })
 						$().productUpdate();
 					}

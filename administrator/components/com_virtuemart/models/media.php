@@ -132,7 +132,7 @@ class VirtueMartModelMedia extends JModel {
 
     	$medias = array();
     	if(!empty($file_ids)){
-    		if(!is_array($file_ids)) $file_ids = array($file_ids);
+    		if(!is_array($file_ids)) $file_ids = explode(',',$file_ids);
 
     	    foreach($file_ids as $file_id){
 	    		$data = $this->getTable('Media');

@@ -53,7 +53,7 @@ class VirtuemartViewCategory extends JView {
 		/* Load helpers */
 		$this->loadHelper('image');
 
-		$categoryModel = $this->getModel('category');
+		$categoryModel = $this->getModel('categorydetails');
 		$productModel = $this->getModel('productdetails');
 	    $categoryId = JRequest::getInt('category_id', 0);
 	    $vendorId = 1;
