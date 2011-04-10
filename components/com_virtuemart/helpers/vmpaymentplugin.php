@@ -147,7 +147,7 @@ abstract class vmPaymentPlugin extends JPlugin
 
 	public function plgVmOnSelectPayment(VirtueMartCart $cart, $checkedPaymId=0)
 	{
-		dump($cart->vendorId,'test plgVmOnSelectPayment');
+
 		if (!$this->setVmParams($cart->vendorId)) {
 			return;
 		}

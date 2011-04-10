@@ -653,7 +653,7 @@ class VirtueMartCart  {
 		$this->_dataValidated = true;
 
 		$this->setCartIntoSession();
-		dump($this,'my cart checkoutData');
+
 		return true;
 	}
 
