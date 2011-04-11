@@ -212,10 +212,8 @@ class ShopFunctions {
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		}
-
+		VmConfig::JcountryStateList() ;
 		$attrs['class'] = 'dependent['. $dependentField .']';
-
-		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
 
 		$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
 		return $listHTML;

@@ -31,7 +31,7 @@ if(VmConfig::get('shop_is_offline',0)){
 
 	/* Loading jQuery and VM scripts. */
 	$config->jQuery();
-	$config->jVm();
+	$config->jSite();
 	$config->cssSite();
 
 	/* Require specific controller if requested */

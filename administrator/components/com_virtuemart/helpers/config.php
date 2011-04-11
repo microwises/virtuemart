@@ -143,7 +143,7 @@ class VmConfig
 		// If exist exit
 		if ($jquery) return;
 		JHTML::script('jquery.js', 'components/com_virtuemart/assets/js/', false);
-		$loaded = true;
+		$jquery = true;
 		return;
 	}
 	// Virtuemart price script
@@ -166,16 +166,7 @@ class VmConfig
 		$jPrice = true;
 		return;
 	}
-	// Virtuemart main Js script
-	function jVm()
-	{
-		static $jVm;
-		// If exist exit
-		if ($jVm) return;
-		JHTML::script('vm.js', 'components/com_virtuemart/assets/js/', false);
-		$jVm = true;
-		return;
-	}
+
 	// Virtuemart Site Js script
 	function jSite()
 	{
@@ -187,6 +178,15 @@ class VmConfig
 		return;
 	}
 
+	function JcountryStateList() {
+		static $JcountryStateList;
+		// If exist exit
+		if ($JcountryStateList) return;
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
+		$JcountryStateList = true;
+		return;
+	}
 	/*	function cssSite()
 	{
 		static $jSite;
