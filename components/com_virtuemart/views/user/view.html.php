@@ -77,6 +77,7 @@ class VirtuemartViewUser extends JView {
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+		dump($this->_userFieldsModel,'my userfield model');
 
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
@@ -371,7 +372,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 			if(empty($this->_lists['vendors'])){
-// Outcommented to revert rev. 2916 
+// Outcommented to revert rev. 2916
 //				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
 //					.(empty($this->_userDetails->vendor_id)
 //						?VmConfig::get('default_vendor_id')

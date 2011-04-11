@@ -74,6 +74,7 @@ class VirtueMartModelWaitingList extends JModel {
 				$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
 				$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
 
+				//TODO mail
 				/* Get the mailer start */
 				$mailer = shopFunctions::loadMailer();
 				//by Max Milbers

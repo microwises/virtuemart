@@ -202,6 +202,7 @@ class shopFunctionsF {
  	* if it does it loads this image.  Otherwise the default image is loaded.
 	* Also can be used in conjunction with the menulist param to create the chosen image
 	* load the default or use no image
+	* @deprecated
 	*/
 	function ImageCheck( $file, $directory='/images/M_images/', $param=NULL, $param_directory='/images/M_images/', $alt=NULL, $name=NULL, $type=1, $align='middle', $title=NULL, $admin=NULL ) {
 		$mainframe = JFactory::getApplication();
@@ -244,6 +245,68 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * With this function you can use a controller and a called view to sent it by email.
+	 * Just use a task in a controller todo the rendering of the email.
+	 *
+	 * @param string $controller for exampel user, cart
+	 * @param string $task for exampel renderRegisterMailToUser
+	 * @param string $recipient shopper@whatever.com
+	 * @param string $subject You bought an article
+	 * @param int $vendor_id for exampel 1
+	 * @param boolean $mediaToSend Should there be attachments?
+	 */
+	function renderAndSentVmMail($_controller,$task,$fromMail=0,$fromName=0,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false){
+
+		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
+
+			/* Create the controller */
+			$class = 'VirtuemartController'.ucfirst($_controller);
+			if(!class_exists($class)) require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
+
+			$controller = new $class();
+
+			ob_start();
+			$controller->execute($task);
+			$body = ob_get_contents();
+			ob_end_clean();
+
+			$mailer =& JFactory::getMailer();
+			if(empty($fromMail) || empty($fromName)){
+				$config =& JFactory::getConfig();
+				if(empty($fromMail)){
+					$fromMail = $config->getValue( 'config.mailfrom' );
+				}
+				if(empty($fromName)){
+					$fromName = $config->getValue( 'config.fromname' );
+				}
+			}
+
+			$mailer->setSender(array($fromMail,$fromName));
+
+			$mailer->addRecipient($recipient);
+
+			$mailer->isHTML(VmConfig::getValue('html_email',true));
+			$mailer->setBody($body);
+
+			// Optional file attached  //this information must come from the cart
+			if($mediaToSend){
+				//Test if array, if not make an array out of it
+				foreach ($mediaToSend as $media){
+					//Todo test and such things.
+					$mailer->addAttachment($media);
+				}
+			}
+
+			return $mailer->Send();
+
+		} else {
+			$app =& JFactory::getApplication();
+			$app->enqueueMessage('View not found for sending email');
+		}
+
+	}
+
+	/**
 	 * Sends the mail joomla conform
 	 * TODO people often send media with emails. Like pictures, serials,...
 	 *
@@ -252,8 +315,9 @@ class shopFunctionsF {
 	 * @param $recipient the recipients of the mail, can be array also
 	 * @param $mediaToSend an array for the paths which holds the files which should be sent to
 	 * @param $vendorId default is 1 (mainstore)
+	 * @deprecated
 	 */
-	function sendMail($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
+	function sendVmMail($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
 
 		$mailer =& JFactory::getMailer();
 

@@ -746,7 +746,7 @@ class VirtueMartCart  {
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 			}
 			$this->order_id= $_orderID;
-//			$this->doEmail($_orderID);
+			$this->doEmail($_orderID);
 
 			//We delete the old stuff
 			$this->products = array();
@@ -777,56 +777,62 @@ class VirtueMartCart  {
 	 *
 	 * @param CartArray $cart
 	 * @param boolean When one email does not work, it gives a false back
-	 * @deprecated Function is not called anymore, can it be removed?
+	 *
 	 */
 	private function doEmail($_orderID){
 
-		/* Create the view */
-		$view = $this->getView('cart', 'html');
 
-//		$view->setModel(VirtueMartCart::getCart(),true);
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
+	 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
-		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+		$res = shopFunctionsF::renderAndSentVmMail('user','renderConfirmedMailToShopper',$fromMail, $fromName, $_orderID->get('email'), $subject);
 
-		$view->setLayout('mailshopper');
-
-		$error=false;
-		/* Render it all */
-		ob_start();
-		$view->display();
-		$bodyShopper = ob_get_contents();
-		ob_end_clean();
-		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$this->BT['email']); //TODO MX set vendorId
-		if ( $sendShopper !== true ) {
-			$error=true;
-			//TODO set message, must be a raising one
-		}
-
-		$view->setLayout('mailvendor');
-
-		/* Render it all */
-		ob_start();
-		$view->display();
-		$bodyVendor = ob_get_contents();
-		ob_end_clean();
-
-		$store->setId($this->vendorId);
-		$vendor=$store->getStore();
-		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
-		if ( $sendShopper !== true ) {
-			$error=true;
-			//TODO set message, must be a raising one
-		}
-
-
-		//Just for developing
-		echo '<br />$bodyShopper '.$bodyShopper;
-		echo '<br />$bodyVendor '.$bodyVendor;
+		$res = shopFunctionsF::renderAndSentVmMail('user','renderConfirmedMailToVendor',$fromMail, $fromName, $_orderID->get('email'), $subject);
+		//		/* Create the view */
+//		$view = $this->getView('cart', 'html');
+//
+////		$view->setModel(VirtueMartCart::getCart(),true);
+//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
+//
+//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+//
+//		$view->setLayout('mailshopper');
+//
+//		$error=false;
+//		/* Render it all */
+//		ob_start();
+//		$view->display();
+//		$bodyShopper = ob_get_contents();
+//		ob_end_clean();
+//		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$this->BT['email']); //TODO MX set vendorId
+//		if ( $sendShopper !== true ) {
+//			$error=true;
+//			//TODO set message, must be a raising one
+//		}
+//
+//		$view->setLayout('mailvendor');
+//
+//		/* Render it all */
+//		ob_start();
+//		$view->display();
+//		$bodyVendor = ob_get_contents();
+//		ob_end_clean();
+//
+//		$store->setId($this->vendorId);
+//		$vendor=$store->getStore();
+//		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendor->jUser->email); //TODO MX set vendorId
+//		if ( $sendShopper !== true ) {
+//			$error=true;
+//			//TODO set message, must be a raising one
+//		}
+//
+//
+//		//Just for developing
+//		echo '<br />$bodyShopper '.$bodyShopper;
+//		echo '<br />$bodyVendor '.$bodyVendor;
 		return $error;
 	}
 

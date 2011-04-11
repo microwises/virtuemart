@@ -906,6 +906,7 @@ class VirtueMartModelOrders extends JModel {
 		$message .= VmConfig::get('url')."\n";
 		$message .= $vendor->email;
 
+		//TODO mail
 		$mailer = shopFunctions::loadMailer();
 		$mailer->From = $vendor->email;
 		$mailer->FromName = $vendor->vendor_name;

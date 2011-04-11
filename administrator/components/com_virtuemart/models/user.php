@@ -576,26 +576,41 @@ class VirtueMartModelUser extends JModel {
 
 
 	 /**
-	  * Sends a standard registration email.
-	  * It would better to have this function in the usercontroller, so that people can easily customize the layout of the mail.
+	  * This uses the shopfunctionsF::renderAndSentVmMail function, which uses a controller and task to render the content
+	  * and sents it then.
+	  *
+	  * deprecated: Sends a standard registration email.
 	  *
 	  * @author Oscar van Eijk
+	  * @author Max Milbers
 	  */
 	 function sendRegistrationEmail($user){
 
 	 	$mainframe = JFactory::getApplication() ;
-	 	$fromMail = $mainframe->getCfg('mailfrom') || $_currentUser->get('email');
-	 	$fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');
+	 	$fromMail = $mainframe->getCfg('mailfrom') || $_currentUser->get('email');		//For Patrick, I dont know if this makes actually sense,
+	 	$fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');		// since I cant finde $_currenUser. But maybe the idea of oscar isnt too bad.
 	 	$fromSite = $mainframe->getCfg('sitename');
 
+	 	//@author Max Milbers
 	 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
-	 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE', $user->get('name')
-			, $fromSite
-			, JURI::root()
-			, $user->get('username')
-			, $user->password_clear
-			);
-			JUtility::sendMail( $fromMail, $fromName, $user->get('email'), $subject, $message );
+	 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+
+		$res = shopFunctionsF::renderAndSentVmMail('user','renderRegisterMailToUser',$fromMail, $fromName, $user->get('email'), $subject);
+
+		$vendorId = 1;
+		if(!class_exists('VirtueMartModelVendor')) require (JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		$vendorModel = new VirtueMartModelVendor();
+
+		$res = shopFunctionsF::renderAndSentVmMail('user','renderRegisterMailToVendor',$fromMail, $fromName, $vendorModel->getVendorEmail($vendorId) , $subject);
+
+		//@author Oscar van Eijk
+//	 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE', $user->get('name')
+//			, $fromSite
+//			, JURI::root()
+//			, $user->get('username')
+//			, $user->password_clear
+//			);
+//			JUtility::sendMail( $fromMail, $fromName, $user->get('email'), $subject, $message );
 
 			//Using of $_data['user_id'] isnt good. It just adds new data, we have to manage, but the data is already in the JUser object. Notice by Max Milbers
 			//		$_data['user_id'] = $user->get('id');

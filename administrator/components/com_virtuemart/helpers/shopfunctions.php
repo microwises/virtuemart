@@ -33,7 +33,7 @@ class ShopFunctions {
 	/**
 	* Initialise the mailer object to start sending mails
 	* @author RolandD
-	* @todo Add vendor data
+	* @deprecated
 	*/
 	public function loadMailer() {
 		$mainframe = JFactory::getApplication();

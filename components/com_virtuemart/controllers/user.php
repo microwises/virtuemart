@@ -238,6 +238,50 @@ class VirtueMartControllerUser extends JController
 	}
 
 
+	public function renderRegisterMailToUser(){
+
+		/* Create the view */
+		$view = $this->getView('user', 'html');
+
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+//		$view->setModel(VirtueMartCart::getCart());		//I must admit that looks a bit strange, because it is a not a model, but an object
+//		$view->assignRef('cart', VirtueMartCart::getCart());
+
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$user = $this->getModel( 'user', 'VirtuemartModel' );
+		$view->setModel( $user );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+		$view->setModel( $vendor );
+
+		$view->setLayout('mailregisteruser');
+
+		$view->display();
+
+	}
+
+	public function renderRegisterMailToVendor(){
+
+		/* Create the view */
+		$view = $this->getView('user', 'html');
+
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$user = $this->getModel( 'user', 'VirtuemartModel' );
+		$view->setModel( $user  );
+		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
+		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+		$view->setModel( $vendor );
+
+		$view->setLayout('mailregistervendor');
+
+		$view->display();
+
+	}
+
 	/**
 	 * Prepares the email body for shopper and vendor, renders them and sends directly the emails
 	 *
