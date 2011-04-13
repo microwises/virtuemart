@@ -675,7 +675,8 @@ class vmrouterHelper {
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu('site');
 		$component	= JComponentHelper::getComponent('com_virtuemart');
-		$items		= $menus->getItems('componentid', $component->id);
+		if ( VmConfig::isJ15() ) $items = $menus->getItems('componentid', $component->id);
+		else $items = $menus->getItems('component_id', $component->id);
 		// Search  Virtuemart itemID in joomla menu 
 		foreach ($items as $item)	{
 			if ( $item->query['view']=='category' && isset( $item->query['category_id'])) {
