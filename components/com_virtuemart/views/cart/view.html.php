@@ -134,8 +134,9 @@ class VirtueMartViewCart extends JView {
 
 			$this->prepareUserData();
 
-			$this->prepareMailData();
+			$this->prepareAddressDataInCart();
 
+//			$this->prepareMailData();
 			//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
 //			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_TITLE'));
 //			$mainframe->setPageTitle(JText::_('COM_VIRTUEMART_CART_TITLE'));
@@ -145,6 +146,8 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('lists', $this->lists);
 
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
+
+		dump($this,'everything in my cart view');
 		parent::display($tpl);
 	}
 

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Layout for the shopping cart
+* Layout for the shopping cart, look in mailshopper for more details
 *
 * @package	VirtueMart
 * @subpackage Cart
@@ -16,23 +16,17 @@
 * other free or open source software licenses.
 *
 */
-dump($this,'my mailvendor');
+//dump($this,'my mailvendor');
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
-<?php
 
-	//Hello Shopowner
+
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
-	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->prices['billTotal']);
+	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->prices['billTotal'],$this->order['details']['BT']->order_number);
 
-//	echo $this->vendor->vendor_store_name;
-//	echo $this->vendor->images[0]->displayMediaThumb();
-//	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('COM_VIRTUEMART_VENDOR_IMAGE_ALT'),1,1);
-//	VmImage::generateImageHtml($this->store->file_ids, VmConfig::get('media_path'), 'alt="Shop Image"', false);
-
-//	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
-
+if(!empty($this->order['details']['BT']->customer_note)){
+	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
+}
 
 	//PriceList
 include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');

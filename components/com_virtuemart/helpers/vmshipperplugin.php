@@ -549,7 +549,6 @@ abstract class vmShipperPlugin extends JPlugin
 		}
 		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
 
-		dump($_address,'selectShippingRate');
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_rate_id` '
 			. 'FROM #__vm_shipping_rate '

@@ -17,7 +17,8 @@
 dump($this,'Data in mail for user');
 if(VmConfig::get('html_email',true)){
 	$li = '<br />';
-} else {
+}
+else {
 	$li = "\n";
 }
 ?>
@@ -38,4 +39,5 @@ Your entered adress <?php echo $li ?>
 }
 echo $li;
 echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=user').$li;
-echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id).$li;
+//Multi-X
+//echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id).$li;

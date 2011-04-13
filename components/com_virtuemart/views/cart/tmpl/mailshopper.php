@@ -1,7 +1,17 @@
 <?php
 /**
 *
-* Layout for the Footer of the mails
+* Layout for the shopper mail, when he confirmed an ordner
+*
+* The addresses are reachable with $this->BTaddress, take a look for an exampel at shopperadresses.php
+*
+* With $this->cartData->paymentName or shippingName, you get the name of the used paymentmethod/shippmentmethod
+*
+* In the array order you have details and items ($this->order['details']), the items gather the products, but that is done directly from the cart data
+*
+* $this->order['details'] contains the raw address data (use the formatted ones, like BTaddress). Interesting informatin here is,
+* order_number ($this->order['details']['BT']->order_number), coupon_code, order_status, order_status_name,
+* user_currency_rate, cdate, customer_note, ip_address
 *
 * @package	VirtueMart
 * @subpackage Cart
@@ -16,16 +26,24 @@
 * other free or open source software licenses.
 *
 */
+
 dump($this,'my mailshopper');
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-	//Header for shopper ?>
 
-<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',$this->shopperName,$this->vendor->vendor_store_name,$this->prices['billTotal']) ?>
-<?php
-echo $this->vendor->images[0]->displayMediaThumb();
+echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
+						$this->shopperName,
+						$this->vendor->vendor_store_name,
+						$this->order['details']['BT']->order_total,
+						$this->order['details']['BT']->order_number,
+						$this->order['details']['BT']->cdate);
 
-//TODO Ordernumber
+echo '<img src="'.JURI::root().$this->vendor->images[0]->file_url.'" />';
+echo 'Link to view your order'; echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=orders');
+if(!empty($this->order['details']['BT']->customer_note)){
+	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
+}
 
 //PriceList
 include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');

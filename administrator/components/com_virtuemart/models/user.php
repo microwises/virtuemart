@@ -621,7 +621,7 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			$view->setLayout('mailregisteruser');
-			$res = shopFunctionsF::renderAndSentVmMail($view, $user->get('email'), $subject,$vendorModel->getVendorEmail($vendorId));
+			$res = shopFunctionsF::renderAndSentVmMail($view, $user->get('email'), $subject,$vendorModel->getVendorEmail($vendorId),$this->vendor->images[0]);
 
 			$view->setLayout('mailregistervendor');
 			$res = shopFunctionsF::renderAndSentVmMail($view, $vendorModel->getVendorEmail($vendorId) , $subject,$user->get('email'));

@@ -20,6 +20,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
+
 //This displays the pricelist MUST be done with tables, because it is also used for the emails
 include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
@@ -65,7 +66,7 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 	</div>
 </fieldset>
 <fieldset>
-		
+
 	<div class="marginbottom15">
 	<span class="bold"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span><br />
 	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
@@ -80,7 +81,7 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 <?php
 	echo '<div class="paddingbottom20">';
 	echo $this->checkout_link_html;
-	
+
 	if ($this->continue_link_html != '') {
 		echo $this->continue_link_html;
 	}

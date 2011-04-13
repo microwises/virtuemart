@@ -25,28 +25,25 @@ defined('_JEXEC') or die('Restricted access');
 <fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
-	</legend><br />
-
-<?php 	foreach($this->cart->BT as $k=>$v){
-			if(!empty($v)){
-				echo $k.': '.$v.'<br/>';
+	</legend>
+<?php 	foreach($this->BTaddress as $item){
+			if(!empty($item['value'])){
+				echo $item['title'].': '.$item['value'].'<br/>';
 			}
 		} ?>
+
 </fieldset>
 
-<fieldset>
-	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
-	</legend>
-<br />
-	<?php // echo $this->lists['shipTo'];
-		echo '<br /><br />';
-		if(!empty($this->cart->ST)){
-			foreach($this->cart->ST as $k=>$v){
-			if(!empty($v)){
-				echo $k.': '.$v.'<br/>';
-			}
-		}
-		}
- ?>
-</fieldset>
+<?php
+if(!empty($this->STaddress)){ ?>
+	<fieldset>
+		<legend>
+			<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+		</legend>
+	<?php 	foreach($this->STaddress as $item){
+				if(!empty($item['value'])){
+					echo $item['title'].': '.$item['value'].'<br/>';
+				}
+			} ?>
+	</fieldset>
+<?php } ?>

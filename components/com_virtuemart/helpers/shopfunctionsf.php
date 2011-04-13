@@ -254,47 +254,45 @@ class shopFunctionsF {
 	 * @param int $vendor_id for exampel 1
 	 * @param boolean $mediaToSend Should there be attachments?
 	 */
-//	function renderAndSentVmMail($_controller,$task,$fromMail=0,$fromName=0,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false){
-	function renderAndSentVmMail($view,$recipient,$subject='TODO set subject', $replyTo=array(), $mediaToSend = array()){
+	function renderAndSentVmMail($view,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
 
-			ob_start();
-			$view->display();
-			$body = ob_get_contents();
-			ob_end_clean();
+		ob_start();
+		$view->display();
+		$body = ob_get_contents();
+		ob_end_clean();
 
-			$mailer =& JFactory::getMailer();
-
-			$config =& JFactory::getConfig();
-			$mailer->setSender(array($config->getValue( 'config.mailfrom' ),$config->getValue( 'config.fromname' )));
-
-			if(!empty($replyTo)) $mailer->addReplyTo($replyTo);
-
-			$mailer->addRecipient($recipient);
-
-			$mailer->setSubject($subject);
-
-			$mailer->isHTML(VmConfig::get('html_email',true));
-			$mailer->setBody($body);
-
-//			$mailer->FromName = $mainframe->getCfg('sitename');
-
-			// Optional file attached  //this information must come from the cart
-			if(!empty($mediaToSend)){
-				//Test if array, if not make an array out of it
-				foreach ($mediaToSend as $media){
-					//Todo test and such things.
-					$mailer->addAttachment($media);
-				}
-			}
-
-			return $mailer->Send();
-
-//		} else {
-//			$app =& JFactory::getApplication();
-//			$app->enqueueMessage('View not found for sending email');
-//		}
+		$this->sendVmMail($body,$recipient,$subject, $replyTo, $mediaToSend);
 
 	}
+
+	function sendVmMail($body,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
+
+		$mailer =& JFactory::getMailer();
+
+		$config =& JFactory::getConfig();
+		$mailer->setSender(array($config->getValue( 'config.mailfrom' ),$config->getValue( 'config.fromname' )));
+
+		if(!empty($replyTo)) $mailer->addReplyTo($replyTo);
+
+		$mailer->addRecipient($recipient);
+
+		$mailer->setSubject($subject);
+
+		$mailer->isHTML(VmConfig::get('html_email',true));
+		$mailer->setBody($body);
+
+		// Optional file attached  //this information must come from the cart
+		if(!empty($mediaToSend)){
+			//Test if array, if not make an array out of it
+			foreach ($mediaToSend as $media){
+				//Todo test and such things.
+				$mailer->addAttachment($media);
+			}
+		}
+
+		return $mailer->Send();
+	}
+
 
 	/**
 	 * Sends the mail joomla conform
@@ -307,7 +305,7 @@ class shopFunctionsF {
 	 * @param $vendorId default is 1 (mainstore)
 	 * @deprecated
 	 */
-	function sendVmMail($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
+	function sendVmMailold($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
 
 		$mailer =& JFactory::getMailer();
 

@@ -758,7 +758,7 @@ class VirtueMartCart  {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
-
+			dump($this,'done with it');
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 
@@ -788,21 +788,39 @@ class VirtueMartCart  {
 			$vendorModel = $controller->getModel( 'vendor' );
 			$vendorId = 1;
 			$vendorModel->setId($vendorId);
+			$vendor = $vendorModel->getVendor();
+			$vendorModel->addImagesToVendor($vendor);
 			$view->setModel( $vendorModel );
 
+			$userFieldsModel = $controller->getModel('userfields', 'VirtuemartModel');
+			$view->setModel( $userFieldsModel );
+
 			$view->setLayout('mailshopper');
-			dump($order,'my order');
 
 			$shopperName =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
 			$view->assignRef('shopperName', $shopperName);
-		 	$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',$vendorModel->getVendorName($vendorId));
-			$res = shopFunctionsF::renderAndSentVmMail($view, $order['details']['BT']->email, $subject);
+			$view->assignRef('order', $order);
+			$view->assignRef('vendor', $vendor);
+
+			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$vendor->vendor_store_name,
+																			$order['details']['BT']->order_total,
+																			$order['details']['BT']->order_number);
+			$res = shopFunctionsF::renderAndSentVmMail(	$view,
+														$order['details']['BT']->email,
+														$subject,
+														array($vendorModel->getVendorEmail($vendorId),$vendor->vendor_store_name)
+														);
 
 			$view->setLayout('mailvendor');
-
-			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',$shopperName,$order['details']['BT']->order_total);
-			$res = shopFunctionsF::renderAndSentVmMail($view,$vendorModel->getVendorEmail($vendorId), $subject);
+			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$shopperName,
+																			$order['details']['BT']->order_total,
+																			$order['details']['BT']->order_number);
+			$res = shopFunctionsF::renderAndSentVmMail(	$view,
+														$vendorModel->getVendorEmail($vendorId),
+														$subject,
+														array($order['details']['BT']->email,$shopperName)
+														);
 //		} else {
 //			//Todo version without html
 //		}
@@ -865,6 +883,7 @@ class VirtueMartCart  {
 	* prepare display of cart
 	*
 	* @author RolandD
+	* @author Max Milbers
 	* @access public
 	*/
 	public function prepareCartData(){
@@ -882,7 +901,6 @@ class VirtueMartCart  {
 					foreach($price as $sk=>$sprice){
 						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
 					}
-
 //				}
 
 			} else {
@@ -892,6 +910,11 @@ class VirtueMartCart  {
 		$this->cartData->prices = $prices;
 		$this->cartData->cartData = $calculator->getCartData();
 		$this->cartData->calculator = $calculator;
+
+//		$this->cartData = $calculator->getCartData();
+//		$this->cartData['prices'] = $prices;
+////		$this->cartData->calculator = $calculator;
+
 		return $this->cartData ;
 	}
 	/**
