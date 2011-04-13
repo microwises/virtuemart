@@ -556,11 +556,11 @@ abstract class vmShipperPlugin extends JPlugin
 			//TODO This does not work properly, ... (by Max)
 			if(!empty($_orderWeight)){
 				$_q .= 'AND ("'.$_orderWeight.'" BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end`) ';
-				$_q .= 'OR (`shipping_rate_weight_start`<="'.$_orderWeight.'" AND `shipping_rate_weight_end`="0.000" )';
+				$_q .= 'OR (`shipping_rate_weight_start`<= "'.$_orderWeight.'" AND `shipping_rate_weight_end`="0.000" )';
 			}
 			if(!empty($_address['zip'])){
-				$_q .= "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') ";
-				$_q .= "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) ";
+				$_q .= 'AND ("'.$_address['zip'].'" BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end` ) ';
+				$_q .= 'OR  (`shipping_rate_zip_start` <= "'.$_address['zip'].'" AND `shipping_rate_zip_end` = "" ) ';
 			}
 			$_q .= 'AND (`shipping_rate_country` = \'\' ';
 			$_q .= 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) ';

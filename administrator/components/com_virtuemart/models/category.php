@@ -564,14 +564,13 @@ class VirtueMartModelCategory extends JModel {
 
 		//store category relation
 		if( !$data['category_id'] ){ //is new
-			$id = $this->_db->insertid();
+			$data['category_id'] = $this->_db->insertid();
 			$query = 'INSERT INTO #__vm_category_xref(category_parent_id, category_child_id, category_shared)
 					  VALUES(
 					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-					  	'. $this->_db->Quote( (int)$id ) .',
+					  	'. $this->_db->Quote( (int)$data['category_id'] ) .',
 					  	'. $this->_db->Quote( (int)$data['shared'] ) .'
 					  )';
-
 		}
 		else{
 			$id = $data['category_id'];
