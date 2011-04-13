@@ -566,7 +566,7 @@ ul.pagination li {
 .productdetails-view img.product-image {max-width: 98%;height: auto;}
 .productdetails-view p.short-description {margin: 0px 0px 6px 0px;padding: 0px;}
 
-.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
+.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: block;float: left;text-decoration: none;margin-bottom: 8px;}
 
 .ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
@@ -576,18 +576,17 @@ ul.pagination li {
 .addtocart-area {}
 
 span.variant-name {width: 100px;float:left;display: block;margin-bottom: 5px;}
-span.variant-dropdown {width: 100px;float: left;display: block;margin-bottom: 5px;}
+span.variant-dropdown {width: 150px;float: left;display: block;margin-bottom: 5px;}
 span.variant-dropdown select {width: 150px;}
 
 span.custom-variant-name {width: 100px;float:left;display: block;margin-bottom: 5px;}
-span.custom-variant-inputbox {width: 100px;float: left;display: block;margin-bottom: 5px;}
-span.custom-variant-inputbox input.custom-attribute {width: 140px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;}
+span.custom-variant-inputbox {width: 152px;float: left;display: block;margin-bottom: 5px;}
+span.custom-variant-inputbox input.custom-attribute {width: 140px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;}
 span.custom-variant-inputbox input.custom-attribute:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
 /* Quantity Box */
 span.quantity-box {float: left;width: 27px;margin: 15px 0px 0px 30px;padding-top: 4px;}
-span.quantity-box input.quantity-input {height: 23px;width: 27px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 0px 2px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;text-align: center;font-weight: bold;
-box-shadow: inset 0 2px 6px #b9b9b9;-webkit-box-shadow: inset 0 2px 6px #b9b9b9;-moz-box-shadow: inset 1px 1px 2px #b9b9b9;
+span.quantity-box input.quantity-input {height: 23px;width: 27px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 0px 2px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;text-align: center;font-weight: bold;
 }
 span.quantity-box input.quantity-input:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
@@ -599,7 +598,7 @@ span.quantity-controls input.quantity-minus {background: url(../images/vmgeneral
 
 /* Add To Cart Button */
 span.addtocart-button {width: 160px;float: left;margin: 15px 0px 0px 10px;}
-span.addtocart-button input.addtocart {width: 160px;padding: 4px 5px;background: #ce0100 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -80px;color: #fff;border: none;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer;text-shadow: 1px 1px 1px #000;height: 34px;text-align: center;box-shadow: 0 2px 6px #b9b9b9;-webkit-box-shadow: 0 2px 6px #b9b9b9;-moz-box-shadow: 0 2px 6px #b9b9b9;}
+span.addtocart-button input.addtocart {width: 160px;padding: 4px 5px;background: #ce0100 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -80px;color: #fff;border: none;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer;text-shadow: 1px 1px 1px #000;height: 34px;text-align: center;}
 span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;}
 
 
@@ -646,19 +645,20 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 //////// Browsepage View /////////////
 ////////////////////////////////////*/
 
-.browse-view {}
-.browse-view .browse-row {margin-bottom: 30px;}
-.browse-view a {}
-.browse-view a:hover {}
-.browse-view h2 {font-size: 16px;margin: 0px 0px 6px 0px;padding: 0px;}
-.browse-view span {font-size: 11px;color: #666;}
-.browse-view img {max-width: 90%;height: auto;}
+.browse-view {margin-bottom: 25px;}
+.browse-view h1 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 16px;}
+.browse-view .row {}
+.browse-view .row .product {}
+.browse-view .row .product .spacer {padding: 6px;}
+.browse-view .row .product .spacer h2 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
+.browse-view .row .product .spacer span {font-size: 11px;color: #666;}
+.browse-view .row .product .spacer img {max-width: 90%;height: auto;}
 
 /*////////////////////////////////////
 ////////// General Buttons ///////////
 ////////////////////////////////////*/
 
-a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
+a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: block;float: left;text-decoration: none;}
 
 a.product-details:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
@@ -673,6 +673,12 @@ span.stock-level {font-size: 10px;color: #7d7b7b;}
 
 .invalid {border-color: #f00;background-color: #ffd;color: #000;}
 label.invalid {color: #f00;}
+
+/* Display # Products Input box */
+display-number {text-align: right;}
+
+/* Page Resutls */
+.page-results {margin-top: 25px;text-align: right;}
 
 /*////////////////////////////////////
 ////// User Edit Details View ////////
@@ -708,10 +714,10 @@ td.key {padding: 0px 6px;}
 textarea.customer-comment {background: #f2f2f2;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
 textarea.customer-comment:hover {color: #000;background: #e8e8e8;}
 
-a.continue_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;margin-right: 16px;}
+a.continue_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: block;float: right;text-decoration: none;margin-right: 16px;}
 a.continue_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
-a.checkout_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x; padding: 6px 12px 3px 12px;border: solid #ce0100 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #000;font-size: 12px;font-weight: bold;background-position: 0px -80px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: right;text-decoration: none;color: #fff;}
+a.checkout_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x; padding: 6px 12px 3px 12px;border: solid #ce0100 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #000;font-size: 12px;font-weight: bold;background-position: 0px -80px;display: block;float: right;text-decoration: none;color: #fff;}
 a.checkout_link span {background: url(../images/vmgeneral/checkout-icon.png) left no-repeat;padding-left: 20px;color: #fff;}
 a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;color: #ccc;text-decoration: none;}
 

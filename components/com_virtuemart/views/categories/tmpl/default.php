@@ -21,56 +21,78 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/* Show child categories */
 if ($this->category->haschildren) {
-	?>
-	<div class="category-view">
-	<?php
-	$iTopTenCol = 1;
 
-	// calculation of the categories per row
-	$categories_per_row = VmConfig::get('categories_per_row',3);
-	$TopTen_cellwidth = floor( 100 / $categories_per_row);
+// Category and Columns Counter
+$iCol = 1;
+$iCategory = 1;
 
+// Calculating Categories Per Row
+$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
+$category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
 
-	foreach ($this->category->children as $category ) {
+// Separator
+$verticalseparator = " vertical-separator";
+?>
 
-		if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not ?>
-			<div class="category-row">
-		<?php }
-				?>
+<div class="category-view">
 
-		<!-- Category Listing Output -->
-		<div class="width<?php echo $TopTen_cellwidth ?> floatleft center">
-			<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
-			<h3>
-				<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
-				<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
-			<?php
-					echo $category->images[0]->displayMediaThumb('',false);
-				?>
-				</a>
-			</h3>
+<?php // Start the Output
+foreach ( $this->category->children as $category ) {
+
+	// Show the horizontal seperator
+	if ($iCol == 1 && $iCategory > $categories_per_row) { ?>
+	<div class="horizontal-separator"></div>
+	<?php }
+
+	// this is an indicator wether a row needs to be opened or not
+	if ($iCol == 1) { ?>
+	<div class="row">
+	<?php }
+
+	// Show the vertical seperator
+	if ($iCategory == $categories_per_row or $iCategory % $categories_per_row == 0) {
+		$show_vertical_separator = ' ';
+	} else {
+		$show_vertical_separator = $verticalseparator;
+	}
+
+	// Category Link
+	$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
+
+		// Show Category ?>
+		<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
+			<div class="spacer">
+				<h2>
+					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
+					<?php echo $category->category_name ?>
+					<br />
+					<?php // if ($category->ids) {
+						echo $category->images[0]->displayMediaThumb(0,false);
+					//} ?>
+					</a>
+				</h2>
+			</div>
 		</div>
+	<?php
+	$iCategory ++;
 
-		<?php
-		// Do we need to close the current row now?
-		if ($iTopTenCol == $categories_per_row) { // If the number of products per row has been reached
-			echo "<div class='clear'></div></div>";
-			$iTopTenCol = 1;
-		}
-		else {
-			$iTopTenCol++;
-		}
-	}
-	// Do we need a final closing row tag?
-	if ($iTopTenCol != 1) {
-		echo "<div class='clear'></div></div>";
-	}
-	?>
+	// Do we need to close the current row now?
+	if ($iCol == $categories_per_row) { ?>
 	<div class="clear"></div>
 	</div>
-
-<div class="horizontal-separator margintop20 marginbottom20"></div>
+		<?php
+		$iCol = 1;
+	} else {
+		$iCol ++;
+	}
+}
+// Do we need a final closing row tag?
+if ($iCol != 1) { ?>
+	<div class="clear"></div>
+	</div>
+<?php
+}
+?>
+</div>
 <?php } ?>
-

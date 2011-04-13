@@ -50,7 +50,8 @@ if (empty ( $this->product )) {
 	?>
 
 	<div>
-		<div class="width30 floatleft center">
+		<div class="width49 floatleft">
+			<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
 
 		<?php // Product Image
 		foreach ($this->product->images as $image)
@@ -58,7 +59,7 @@ if (empty ( $this->product )) {
 		?>
 		</div>
 
-		<div class="width70 floatleft">
+		<div class="width49 floatright">
 
 			<div class="width15 floatright center paddingtop5">
 			<?php // PDF - Print - Email Icon
@@ -69,22 +70,6 @@ if (empty ( $this->product )) {
 			<br style="clear:both;" />
 			</div>
 
-			<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
-
-			<?php // Product Short Description
-			if (!empty($this->product->product_s_desc)) { ?>
-			<p class="short-description">
-				<?php
-				echo '<span class="bold">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
-				echo $this->product->product_s_desc ?>
-			</p>
-			<?php } // Product Short Description END ?>
-
-			<?php // Ask a question about this product
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
-			 ?>
-			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
-			<br style="clear:both;" />
 			<div class="margintop8">
 
 			<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
@@ -92,28 +77,8 @@ if (empty ( $this->product )) {
 			$text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
 			echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 */ ?>
-			<?php // Manufacturer of the Product
-			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
-			$text = $this->product->mf_name;
-			/* Avoid JavaScript on PDF Output */
-			if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
-			else { ?>
-			<?php echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
-			<?PHP } ?>
-
-			</div>
-		</div>
-
-	<div class="clear"></div>
-	</div>
-
-	<div class="horizontal-separator margintop15 marginbottom15"></div>
-
-	<div>
-		<div class="width45 floatleft">
-
 			<div class="product-price marginbottom12" id="productPrice<?php echo $this->product->product_id ?>">
-		<?php
+				<?php
 				/** @todo format price */
 				if ($this->show_prices) {
 					if( $this->product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
@@ -137,13 +102,10 @@ if (empty ( $this->product )) {
 				}
 				?>
 			</div>
-		</div>
-
-		<div class="width55 floatleft">
-
+			
 			<?php // Add To Cart Button
 			if (VmConfig::get('use_as_catalogue') != '1') { ?>
-			<div class="addtocart-area">
+			<div class="addtocart-area marginbottom20">
 				<form  method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
 
 					<?php // Product Variants Drop Down Box
@@ -217,6 +179,23 @@ if (empty ( $this->product )) {
 			<div class="clear"></div>
 			</div>
 			<?php }  // Add To Cart Button END ?>
+			
+			<?php // Ask a question about this product
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
+			 ?>
+			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+			<br style="clear:both;" />
+			
+			<?php // Manufacturer of the Product
+			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
+			$text = $this->product->mf_name;
+			/* Avoid JavaScript on PDF Output */
+			if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
+			else { ?>
+			<?php echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+			<?PHP } ?>
+
+			</div>
 		</div>
 
 	<div class="clear"></div>

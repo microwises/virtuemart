@@ -40,69 +40,86 @@ jQuery(document).ready(function () {
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
 
-echo "hallo";
-
 /* Show child categories */
 
 if ( VmConfig::get('showCategory',1) ) {
-	if ($this->category->haschildren ) {
+	if ($this->category->haschildren) {
+
+		// Category and Columns Counter
+		$iCol = 1;
+		$iCategory = 1;
+
+		// Calculating Categories Per Row
+		$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
+		$category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
+
+		// Separator
+		$verticalseparator = " vertical-separator";
 		?>
+
 		<div class="category-view">
-		<?php
-		$iTopTenCol = 1;
 
-		// calculation of the categories per row
-		$categories_per_row = VmConfig::get('categories_per_row',3);
-		$TopTen_cellwidth = floor( 100 / $categories_per_row);
+		<?php // Start the Output
+		foreach ( $this->category->children as $category ) {
 
-
-		foreach ($this->category->children as $category ) {
-
-			if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not ?>
-				<div class="category-row">
+			// Show the horizontal seperator
+			if ($iCol == 1 && $iCategory > $categories_per_row) { ?>
+			<div class="horizontal-separator"></div>
 			<?php }
-					?>
 
-			<!-- Category Listing Output -->
-			<div class="width<?php echo $TopTen_cellwidth ?> floatleft center">
-				<?php $caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id); ?>
-				<h3>
-					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
-					<?php echo $category->category_name ?><span><?php echo ' ('.$category->number_of_products.')'?></span><br />
-					<?php
-						echo $category->images[0]->displayMediaThumb('',false);
-					 ?>
-					</a>
-				</h3>
-			</div>
+			// this is an indicator wether a row needs to be opened or not
+			if ($iCol == 1) { ?>
+			<div class="row">
+			<?php }
 
+			// Show the vertical seperator
+			if ($iCategory == $categories_per_row or $iCategory % $categories_per_row == 0) {
+				$show_vertical_separator = ' ';
+			} else {
+				$show_vertical_separator = $verticalseparator;
+			}
+
+			// Category Link
+			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
+
+				// Show Category ?>
+				<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
+					<div class="spacer">
+						<h2>
+							<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
+							<?php echo $category->category_name ?>
+							<br />
+							<?php // if ($category->ids) {
+								echo $category->images[0]->displayMediaThumb(0,false);
+							//} ?>
+							</a>
+						</h2>
+					</div>
+				</div>
 			<?php
-			// Do we need to close the current row now?
-			if ($iTopTenCol == $categories_per_row) { // If the number of products per row has been reached
-				echo "<div class='clear'></div></div>";
-				$iTopTenCol = 1;
-			}
-			else {
-				$iTopTenCol++;
-			}
-		}
-		// Do we need a final closing row tag?
-		if ($iTopTenCol != 1) {
-			echo "<div class='clear'></div></div>";
-		}
-		?>
+			$iCategory ++;
+
+		// Do we need to close the current row now?
+		if ($iCol == $categories_per_row) { ?>
 		<div class="clear"></div>
 		</div>
-
-	<div class="horizontal-separator margintop20 marginbottom20"></div>
-	<?php
+			<?php
+			$iCol = 1;
+		} else {
+			$iCol ++;
+		}
 	}
+
+	// Do we need a final closing row tag?
+	if ($iCol != 1) { ?>
+		<div class="clear"></div>
+		</div>
+	<?php } ?>
+</div>
+<?php }
 }
-?>
 
-
-
-<?php // Show child categories
+// Show child categories
 if (!empty($this->products)) {
 	$search='';
 	if (!empty($this->keyword)) {
@@ -112,39 +129,61 @@ if (!empty($this->products)) {
 		<?php
 	}
 	?>
-	<div><?php echo $this->pagination->getResultsCounter();?></div>
 
-	<?php echo $this->orderByList; ?>
+<?php // Category and Columns Counter
+$iBrowseCol = 1;
+$iBrowseProduct = 1;
 
-	<div class="browse-view">
-		<h1><?php echo $this->category->category_name; ?></h1>
-<?php
-	$iBrowse = 1;
+// Calculating Products Per Row
+$BrowseProducts_per_row = $this->category->products_per_row ;
+$Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 
+// Separator
+$verticalseparator = " vertical-separator";
+?>
 
-	// calculation of the categories per row
-	$products_per_row = $this->category->products_per_row;
-	$browsecellwidth = 100;
-	if ($products_per_row >0 ) $browsecellwidth = floor( 100 / $products_per_row);
+<div class="browse-view">
 
+	<h1><?php echo $this->category->category_name; ?></h1>
+	
+	<div>
+		<div class="width70 floatleft">
+			<?php echo $this->orderByList; ?>
+		</div>
+		<div class="width30 floatright display-number">
+			<form  method="post" >
+				<input type="hidden" name="keyword" value="<?php echo JRequest::getVar('keyword') ?>" >
+				<?php echo $this->pagination->getListFooter(); ?>
+			</form>
+		</div>
+	<div class="clear"></div>
+	</div>
 
+<?php // Start the Output
+foreach ( $this->products as $product ) {
 
+	// Show the horizontal seperator
+	if ($iBrowseCol == 1 && $iBrowseProduct > $BrowseProducts_per_row) { ?>
+	<div class="horizontal-separator"></div>
+	<?php }
 
-foreach ($this->products as $product) {
+	// this is an indicator wether a row needs to be opened or not
+	if ($iBrowseCol == 1) { ?>
+	<div class="row">
+	<?php }
 
+	// Show the vertical seperator
+	if ($iBrowseProduct == $BrowseProducts_per_row or $iBrowseProduct % $BrowseProducts_per_row == 0) {
+		$show_vertical_separator = ' ';
+	} else {
+		$show_vertical_separator = $verticalseparator;
+	}
 
-		if ($iBrowse == 1) { // this is an indicator wether a row needs to be opened or not ?>
-		<div class="browse-row">
-		<?php }
-	?>
-
-			<!-- Product Listing Output -->
-			<div class="width<?php echo $browsecellwidth ?> floatleft" >
-
-				<div>
-					<div class="width30 floatleft center">
-
-						<?php /** @todo make image popup */
+		// Show Products ?>
+		<div class="product floatleft<?php echo $Browsecellwidth . $show_vertical_separator ?>">
+			<div class="spacer">
+				<div class="width30 floatleft center">
+					<?php /** @todo make image popup */
 							echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0" title="'.$product->product_name.'" ');
 						?>
 
@@ -166,11 +205,11 @@ foreach ($this->products as $product) {
 						echo '<br /><span class="stock-level">'.JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP').'</span>';
 						?>
 						</div>
+				</div>
 
-					</div>
+				<div class="width70 floatright">
 
-					<div class="width70 floatright">
-						<h2><?php echo JHTML::link($product->link, $product->product_name); ?></h2>
+					<h2><?php echo JHTML::link($product->link, $product->product_name); ?></h2>
 
 						<?php // Product Short Description
 						if(!empty($product->product_s_desc)) { ?>
@@ -180,156 +219,59 @@ foreach ($this->products as $product) {
 						<?php } ?>
 
 
-						<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
-<?php	if ($this->show_prices == '1') {
-			if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-				echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
-			} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
+					<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
+					<?php	
+					if ($this->show_prices == '1') {
+						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
+							echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
+						}
 
-			//todo add config settings
-			if( $this->showBasePrice){
-				echo shopFunctionsF::createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$product->prices);
-				echo shopFunctionsF::createPriceDiv('basePriceVariant','COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT',$product->prices);
-			}
-			echo shopFunctionsF::createPriceDiv('variantModification','COM_VIRTUEMART_PRODUCT_VARIANT_MOD',$product->prices);
-			echo shopFunctionsF::createPriceDiv('basePriceWithTax','COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX',$product->prices);
-			echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE',$product->prices);
-			echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
-			echo shopFunctionsF::createPriceDiv('salesPrice','COM_VIRTUEMART_PRODUCT_SALESPRICE',$product->prices);
-			echo shopFunctionsF::createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$product->prices);
-			echo shopFunctionsF::createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$product->prices);
-			echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$product->prices);
-		} ?>
-	</div>
-						<p>
-						<?php // Product Details Button
-						echo JHTML::link($product->link, JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name,'class' => 'product-details'));
-		?>
-						</p>
-
-
-
-
-
-
-	<?php if (VmConfig::get('use_as_catalogue') != '1') { ?>
-		<form  method="post" class="product" id="addtocartproduct<?php echo $product->product_id ?>">
-		<div style="text-align: center;">
-			<?php
-				$variantExist=false;
-				/* Show the variants */
-				foreach ($product->variants as $variant_name => $variant) {
-								$variantExist=true;
-								$options = array();
-								foreach ($variant as $name => $price) {
-									if (!empty($price)){
-										$name .= ' ('.$price.')';
-									}
-									$options[] = JHTML::_('select.option', $name, $name);
-								}
-								#
-				if (!empty($options)) {
-					// genericlist have ID and whe want only class ( future use in jQuery, may be)
-					$html    = '<select name="'. $variant_name .'" class="variant">';
-					$html    .= JHTMLSelect::Options( $options, 'value', 'text', NULL, false );
-					$html    .= '</select>';
-					echo $variant_name.' '.$html;
-				}
-
-				}
-				?>
-				<br style="clear: both;" />
-				<?php
-				/* Show the custom attributes */
-				foreach($product->customvariants as $ckey => $customvariant) {
+						//todo add config settings
+						if( $this->showBasePrice){
+							echo shopFunctionsF::createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$product->prices);
+							echo shopFunctionsF::createPriceDiv('basePriceVariant','COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT',$product->prices);
+						}
+						echo shopFunctionsF::createPriceDiv('variantModification','COM_VIRTUEMART_PRODUCT_VARIANT_MOD',$product->prices);
+						echo shopFunctionsF::createPriceDiv('basePriceWithTax','COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX',$product->prices);
+						echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE',$product->prices);
+						echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
+						echo shopFunctionsF::createPriceDiv('salesPrice','COM_VIRTUEMART_PRODUCT_SALESPRICE',$product->prices);
+						echo shopFunctionsF::createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$product->prices);
+						echo shopFunctionsF::createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$product->prices);
+						echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$product->prices);
+					} ?>
+					</div>
+					
+					<p>
+					<?php // Product Details Button
+					echo JHTML::link($product->link, JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name,'class' => 'product-details'));
 					?>
-					<div class="vmAttribChildDetail" style="float: left;width:30%;text-align:right;margin:3px;">
-					<label for="<?php echo $customvariant ?>_field"><?php echo $customvariant ?>
-					</label>:
-					</div>
-					<div class="vmAttribChildDetail" style="float:left;width:60%;margin:3px;">
-					<input type="text" class="inputboxattrib" id="<?php echo $customvariant ?>_field" size="30" name="<?php echo $product->product_id.$customvariant; ?>" />
-					</div>
-					<br style="clear: both;" />
-				<?php
-				}
+					</p>
 
-				/* Display the quantity box */
-				?>
-					<span class="quantity-box">
-						<input type="text" class="quantity-input" name="quantity[]" value="1" />
-					</span>
-					<span class="quantity-controls">
-						<input type="button" class="quantity-controls quantity-plus" />
-						<input type="button" class="quantity-controls quantity-minus" />
-					</span>
-					<?php
-
-				/* Add the button */
-				$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
-				$button_cls = 'addtocart';
-				if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
-					$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
-					$button_cls = 'notify_button';
-				}
-				?>
-				<span class="addtocart-button">
-					<input type="submit" name="addtocart" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-				</span>
-				<?php  if($variantExist){
-					?>
-					<noscript><input id="<?php echo $product->product_id;?>" type="submit" name="setproducttype" class="setproducttype"  value="<?php echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE'); ?>" title="<?php echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE'); ?>" />
-					</noscript>
-					<?php } ?>
-				<input type="hidden" class="pname" value="<?php echo $product->product_name ?>">
-				<input type="hidden" name="option" value="com_virtuemart" />
-				<input type="hidden" name="view" value="cart" />
-				<noscript><input type="hidden" name="task" value="add" /></noscript>
-				<input type="hidden" name="product_id[]" value="<?php echo $product->product_id ?>" />
-				<?php /** @todo Handle the manufacturer view */ ?>
-				<input type="hidden" name="manufacturer_id" value="<?php echo $product->manufacturer_id ?>" />
-				<input type="hidden" name="category_id[]" value="<?php echo $product->category_id ?>" />
-			</div>
-		</form>
-	<?php } ?>
-
-
-
-
-
-
-
-
-					</div>
-
-
-
-
-				<div class="clear"></div>
 				</div>
-
-
+			<div class="clear"></div>
 			</div>
+		</div>
+	<?php
+	$iBrowseProduct ++;
 
-		<?php
-		// Do we need to close the current row now?
-		if ($iBrowse == $products_per_row) { // If the number of products per row has been reached
-			echo "<div class='clear'></div></div>";
-			$iBrowse = 1;
-		}
-		else {
-			$iBrowse++;
-		}
-	}
-	// Do we need a final closing row tag?
-	if ($iBrowse != 1) {
-		echo "<div class='clear'></div></div>";
-	}
-	?>
+	// Do we need to close the current row now?
+	if ($iBrowseCol == $BrowseProducts_per_row) { ?>
 	<div class="clear"></div>
-		<form  method="post" >
-		<input type="hidden" name="keyword" value="<?php echo JRequest::getVar('keyword') ?>" >
-	<?php echo $this->pagination->getListFooter(); ?>
-			</form>
 	</div>
+		<?php
+		$iBrowseCol = 1;
+	} else {
+		$iBrowseCol ++;
+	}
+}
+// Do we need a final closing row tag?
+if ($iBrowseCol != 1) { ?>
+	<div class="clear"></div>
+	</div>
+<?php
+}
+?>
+	<div class="page-results"><?php echo $this->pagination->getResultsCounter();?></div>
+</div>
 <?php } ?>
