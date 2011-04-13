@@ -34,5 +34,5 @@ Entered adress <?php echo $li ?>
 	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
 }
 echo $li;
-echo JURI::root().'index.php?option=com_virtuemart&controller=user&user_id='.$this->_models['user']->_id).$li;
-echo JURI::root().'index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id).$li;
+echo JURI::root().'index.php?option=com_virtuemart&controller=user&user_id='.$this->_models['user']->_id.' '.$li;
+echo JURI::root().'index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id.' '.$li;

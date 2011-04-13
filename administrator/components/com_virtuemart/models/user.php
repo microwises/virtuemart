@@ -587,7 +587,6 @@ class VirtueMartModelUser extends JModel {
 	 function sendRegistrationEmail($user){
 
 	 	if(VmConfig::get('html_email',true)){
-		 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
 		 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		 	/* Create the view */
@@ -620,11 +619,21 @@ class VirtueMartModelUser extends JModel {
 				$view->assignRef('activationLink',$activationLink);
 			}
 
+		 	$subject = JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name);
 			$view->setLayout('mailregisteruser');
-			$res = shopFunctionsF::renderAndSentVmMail($view, $user->get('email'), $subject,$vendorModel->getVendorEmail($vendorId),$this->vendor->images[0]);
+			$res = shopFunctionsF::renderAndSentVmMail(	$view,
+														$user->get('email'),
+														$subject,
+														array($vendorModel->getVendorEmail($vendorId), $vendor->vendor_store_name)
+														);
 
+			$subject = JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT',$user->get('email'));
 			$view->setLayout('mailregistervendor');
-			$res = shopFunctionsF::renderAndSentVmMail($view, $vendorModel->getVendorEmail($vendorId) , $subject,$user->get('email'));
+			$res = shopFunctionsF::renderAndSentVmMail(	$view,
+														$vendorModel->getVendorEmail($vendorId),
+														$subject,
+														array($user->get('email'),$user->get('email'))
+														);
 	 	} else {
 
 	 		$mainframe = JFactory::getApplication() ;

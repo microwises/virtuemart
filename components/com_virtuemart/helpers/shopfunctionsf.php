@@ -261,7 +261,7 @@ class shopFunctionsF {
 		$body = ob_get_contents();
 		ob_end_clean();
 
-		$this->sendVmMail($body,$recipient,$subject, $replyTo, $mediaToSend);
+		self::sendVmMail($body,$recipient,$subject, $replyTo, $mediaToSend);
 
 	}
 
