@@ -85,11 +85,11 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Load a single order
 	 */
-	public function getOrder()
+	public function getOrder($order_id='')
 	{
 		$db = JFactory::getDBO();
 		$order = array();
-		$order_id = JRequest::getInt('order_id');
+		if(empty($order_id))$order_id = JRequest::getInt('order_id');
 
 		/* Get the order details */
 		$q = "SELECT o.*, u.*,

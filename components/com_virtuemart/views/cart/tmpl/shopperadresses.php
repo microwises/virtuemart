@@ -22,7 +22,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php echo $this->vendor->vendor_store_name; ?>
-<?php
-//echo $this->store->images[0]->displayMediaThumb();
-  ?>
+<fieldset>
+	<legend>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
+	</legend><br />
+
+<?php 	foreach($this->cart->BT as $k=>$v){
+			if(!empty($v)){
+				echo $k.': '.$v.'<br/>';
+			}
+		} ?>
+</fieldset>
+
+<fieldset>
+	<legend>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+	</legend>
+<br />
+	<?php // echo $this->lists['shipTo'];
+		echo '<br /><br />';
+		if(!empty($this->cart->ST)){
+			foreach($this->cart->ST as $k=>$v){
+			if(!empty($v)){
+				echo $k.': '.$v.'<br/>';
+			}
+		}
+		}
+ ?>
+</fieldset>

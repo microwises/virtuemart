@@ -62,7 +62,11 @@ class VirtuemartViewUser extends JView {
 	 */
 	function display($tpl = null) {
 
-		$layoutName = JRequest::getVar('layout', $this->getLayout());
+		$layoutName = $this->getLayout();
+		if(empty($layoutName)){
+			$layoutName = JRequest::getVar('layout','default');
+		}
+//		$layoutName = JRequest::getVar('layout', $this->getLayout());
 
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
 //		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
@@ -77,7 +81,7 @@ class VirtuemartViewUser extends JView {
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-		dump($this->_userFieldsModel,'my userfield model');
+//		dump($this->_userFieldsModel,'my userfield model');
 
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
@@ -124,6 +128,13 @@ class VirtuemartViewUser extends JView {
 
 		$this->assignRef('editor', $editor);
 		$this->assignRef('pane', $pane);
+
+		if($layoutName=='mailregisteruser'){
+			$vendorModel = $this->getModel('vendor');
+//			$vendorModel->setId($this->_userDetails->vendor_id);
+			$vendor = $vendorModel->getVendor();
+			$this->assignRef('vendor', $vendor);
+		}
 
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 

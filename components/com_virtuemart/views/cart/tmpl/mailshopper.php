@@ -16,15 +16,15 @@
 * other free or open source software licenses.
 *
 */
-
+dump($this,'my mailshopper');
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 	//Header for shopper ?>
-<?php echo $this->store->vendor_store_name; ?>
+
+<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',$this->shopperName,$this->vendor->vendor_store_name,$this->prices['billTotal']) ?>
 <?php
 echo $this->vendor->images[0]->displayMediaThumb();
-//echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('COM_VIRTUEMART_VENDOR_IMAGE_ALT'),1,1);
-//VmImage::generateImageHtml($this->store->file_ids, VmConfig::get('media_path'), 'alt="Shop Image"', false);
+
 //TODO Ordernumber
 
 //PriceList

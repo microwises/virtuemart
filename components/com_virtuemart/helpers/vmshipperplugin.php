@@ -549,21 +549,27 @@ abstract class vmShipperPlugin extends JPlugin
 		}
 		$_address = (($_cart->ST == 0) ? $_cart->BT : $_cart->ST);
 
+		dump($_address,'selectShippingRate');
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_rate_id` '
 			. 'FROM #__vm_shipping_rate '
-			. "WHERE `shipping_rate_carrier_id` = $_shipperId "
+			. 'WHERE `shipping_rate_carrier_id` = "'.$_shipperId.'" ' ;
 			//TODO This does not work properly, ... (by Max)
-//			. "AND   $_orderWeight BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end` "
-//			. "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') "
-//			.	 "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) "
-//			. 'AND   (`shipping_rate_country` = \'\' '
-//			.	 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) '
-			. 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) '
-			. 'LIMIT 1';
+			if(!empty($_orderWeight)){
+				$_q .= 'AND ("'.$_orderWeight.'" BETWEEN `shipping_rate_weight_start` AND `shipping_rate_weight_end`) ';
+				$_q .= 'OR (`shipping_rate_weight_start`<="'.$_orderWeight.'" AND `shipping_rate_weight_end`="0.000" )';
+			}
+			if(!empty($_address['zip'])){
+				$_q .= "AND   ((`shipping_rate_zip_start` = '' AND `shipping_rate_zip_end` = '') ";
+				$_q .= "OR   ('".$_address['zip']."' BETWEEN `shipping_rate_zip_start` AND `shipping_rate_zip_end`)) ";
+			}
+			$_q .= 'AND (`shipping_rate_country` = \'\' ';
+			$_q .= 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) ';
+			$_q .= 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) ';
+			$_q .= 'LIMIT 1';
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
-			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_CART_NO_SHIPPINGRATE'));
+			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_CART_NO_SHIPPINGRATE').$_q);
 			return -1;
 		}
 		return $_r['shipping_rate_id'];

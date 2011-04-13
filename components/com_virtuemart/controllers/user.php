@@ -238,49 +238,49 @@ class VirtueMartControllerUser extends JController
 	}
 
 
-	public function renderRegisterMailToUser(){
-
-		/* Create the view */
-		$view = $this->getView('user', 'html');
-
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-//		$view->setModel(VirtueMartCart::getCart());		//I must admit that looks a bit strange, because it is a not a model, but an object
-//		$view->assignRef('cart', VirtueMartCart::getCart());
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$user = $this->getModel( 'user', 'VirtuemartModel' );
-		$view->setModel( $user );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
-		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
-		$view->setModel( $vendor );
-
-		$view->setLayout('mailregisteruser');
-
-		$view->display();
-
-	}
-
-	public function renderRegisterMailToVendor(){
-
-		/* Create the view */
-		$view = $this->getView('user', 'html');
-
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$user = $this->getModel( 'user', 'VirtuemartModel' );
-		$view->setModel( $user  );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
-		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
-		$view->setModel( $vendor );
-
-		$view->setLayout('mailregistervendor');
-
-		$view->display();
-
-	}
+//	public function renderRegisterMailToUser(){
+//
+//		/* Create the view */
+//		$view = $this->getView('user', 'html');
+//
+//		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+////		$view->setModel(VirtueMartCart::getCart());		//I must admit that looks a bit strange, because it is a not a model, but an object
+////		$view->assignRef('cart', VirtueMartCart::getCart());
+//
+//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+//		$user = $this->getModel( 'user', 'VirtuemartModel' );
+//		$view->setModel( $user );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+//		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+//		$view->setModel( $vendor );
+//
+//		$view->setLayout('mailregisteruser');
+//
+//		$view->display();
+//
+//	}
+//
+//	public function renderRegisterMailToVendor(){
+//
+//		/* Create the view */
+//		$view = $this->getView('user', 'html');
+//
+//		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+//
+//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+//		$user = $this->getModel( 'user', 'VirtuemartModel' );
+//		$view->setModel( $user  );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+//		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+//		$view->setModel( $vendor );
+//
+//		$view->setLayout('mailregistervendor');
+//
+//		$view->display();
+//
+//	}
 
 	/**
 	 * Prepares the email body for shopper and vendor, renders them and sends directly the emails
@@ -293,70 +293,70 @@ class VirtueMartControllerUser extends JController
 	 * @param boolean When one email does not work, it gives a false back
 	 *
 	 */
-	private function doRegisterEmail($user, $password){
-
-		if(empty($user)){
-			echo 'Internal error doRegisterEmail user object empty';
-			return false;
-		}
-		if(empty($password)){
-			echo 'Internal error doRegisterEmail email empty';
-			return false;
-		} else {
-			$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-		}
-
-		/* Create the view */
-		$view = $this->getView('user', 'html');
-
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$user = $this->getModel( 'user', 'VirtuemartModel' );
-		$view->setModel( $user , false );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the order_number in the mail
-		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
-		$view->setModel( $vendor, true );
-
-		$view->setLayout('mailregisteruser');
-
-		$ok=true;
-		/* Render it all */
-		ob_start();
-		$view->display();
-		$bodyShopper = ob_get_contents();
-		ob_end_clean();
-		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$user->email);
-		if ( $sendShopper !== true ) {
-			$ok=false;
-			//TODO set message, must be a raising one
-		}
-
-		$view->setLayout('mailregistervendor');
-
-		/* Render it all */
-		ob_start();
-		$view->display();
-		$bodyVendor = ob_get_contents();
-		ob_end_clean();
-
-		$vendor->setId(1);  //TODO MaX at the moment is the new registered email for the vendor always send to the main store
-//		$vendor=$vendor->getVendor(true);
-		$vendorData = $user->getUser($vendor->getUserIdByVendorId());
-		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendorData->jUser->email); //TODO MX set vendorId
-		if ( $sendShopper !== true ) {
-			$ok=false;
-			//TODO set message, must be a raising one
-		}
-
-
-		//Just for developing
-		echo '<br />$bodyUser '.$bodyShopper;
-		echo '<br />$bodyVendor '.$bodyVendor;
-		return $ok;
-	}
+//	private function doRegisterEmail($user, $password){
+//
+//		if(empty($user)){
+//			echo 'Internal error doRegisterEmail user object empty';
+//			return false;
+//		}
+//		if(empty($password)){
+//			echo 'Internal error doRegisterEmail email empty';
+//			return false;
+//		} else {
+//			$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+//		}
+//
+//		/* Create the view */
+//		$view = $this->getView('user', 'html');
+//
+//		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+//		$view->setModel(VirtueMartCart::getCart(), true);		//I must admit that looks a bit strange, because it is a not a model, but an object
+//
+//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+//		$user = $this->getModel( 'user', 'VirtuemartModel' );
+//		$view->setModel( $user , false );
+//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );  //TODO we need the order_number in the mail
+//		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
+//		$view->setModel( $vendor, true );
+//
+//		$view->setLayout('mailregisteruser');
+//
+//		$ok=true;
+//		/* Render it all */
+//		ob_start();
+//		$view->display();
+//		$bodyShopper = ob_get_contents();
+//		ob_end_clean();
+//		$sendShopper = shopFunctionsF::sendMail($bodyShopper,$user->email);
+//		if ( $sendShopper !== true ) {
+//			$ok=false;
+//			//TODO set message, must be a raising one
+//		}
+//
+//		$view->setLayout('mailregistervendor');
+//
+//		/* Render it all */
+//		ob_start();
+//		$view->display();
+//		$bodyVendor = ob_get_contents();
+//		ob_end_clean();
+//
+//		$vendor->setId(1);  //TODO MaX at the moment is the new registered email for the vendor always send to the main store
+////		$vendor=$vendor->getVendor(true);
+//		$vendorData = $user->getUser($vendor->getUserIdByVendorId());
+//		$sendVendor = shopFunctionsF::sendMail($bodyVendor,$vendorData->jUser->email); //TODO MX set vendorId
+//		if ( $sendShopper !== true ) {
+//			$ok=false;
+//			//TODO set message, must be a raising one
+//		}
+//
+//
+//		//Just for developing
+//		echo '<br />$bodyUser '.$bodyShopper;
+//		echo '<br />$bodyVendor '.$bodyVendor;
+//		return $ok;
+//	}
 
 	/**
 	 * Action cancelled; return to the previous view

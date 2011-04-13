@@ -245,51 +245,41 @@ class shopFunctionsF {
 	}
 
 	/**
-	 * With this function you can use a controller and a called view to sent it by email.
+	 * With this function you can use a view to sent it by email.
 	 * Just use a task in a controller todo the rendering of the email.
 	 *
-	 * @param string $controller for exampel user, cart
-	 * @param string $task for exampel renderRegisterMailToUser
+	 * @param string $view for exampel user, cart
 	 * @param string $recipient shopper@whatever.com
 	 * @param string $subject You bought an article
 	 * @param int $vendor_id for exampel 1
 	 * @param boolean $mediaToSend Should there be attachments?
 	 */
-	function renderAndSentVmMail($_controller,$task,$fromMail=0,$fromName=0,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false){
-
-		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
-
-			/* Create the controller */
-			$class = 'VirtuemartController'.ucfirst($_controller);
-			if(!class_exists($class)) require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
-
-			$controller = new $class();
+//	function renderAndSentVmMail($_controller,$task,$fromMail=0,$fromName=0,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false){
+	function renderAndSentVmMail($view,$recipient,$subject='TODO set subject', $replyTo=array(), $mediaToSend = array()){
 
 			ob_start();
-			$controller->execute($task);
+			$view->display();
 			$body = ob_get_contents();
 			ob_end_clean();
 
 			$mailer =& JFactory::getMailer();
-			if(empty($fromMail) || empty($fromName)){
-				$config =& JFactory::getConfig();
-				if(empty($fromMail)){
-					$fromMail = $config->getValue( 'config.mailfrom' );
-				}
-				if(empty($fromName)){
-					$fromName = $config->getValue( 'config.fromname' );
-				}
-			}
 
-			$mailer->setSender(array($fromMail,$fromName));
+			$config =& JFactory::getConfig();
+			$mailer->setSender(array($config->getValue( 'config.mailfrom' ),$config->getValue( 'config.fromname' )));
+
+			if(!empty($replyTo)) $mailer->addReplyTo($replyTo);
 
 			$mailer->addRecipient($recipient);
 
-			$mailer->isHTML(VmConfig::getValue('html_email',true));
+			$mailer->setSubject($subject);
+
+			$mailer->isHTML(VmConfig::get('html_email',true));
 			$mailer->setBody($body);
 
+//			$mailer->FromName = $mainframe->getCfg('sitename');
+
 			// Optional file attached  //this information must come from the cart
-			if($mediaToSend){
+			if(!empty($mediaToSend)){
 				//Test if array, if not make an array out of it
 				foreach ($mediaToSend as $media){
 					//Todo test and such things.
@@ -299,10 +289,10 @@ class shopFunctionsF {
 
 			return $mailer->Send();
 
-		} else {
-			$app =& JFactory::getApplication();
-			$app->enqueueMessage('View not found for sending email');
-		}
+//		} else {
+//			$app =& JFactory::getApplication();
+//			$app->enqueueMessage('View not found for sending email');
+//		}
 
 	}
 

@@ -586,34 +586,62 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function sendRegistrationEmail($user){
 
-	 	$mainframe = JFactory::getApplication() ;
-	 	$fromMail = $mainframe->getCfg('mailfrom') || $_currentUser->get('email');		//For Patrick, I dont know if this makes actually sense,
-	 	$fromName = $mainframe->getCfg('fromname') || $_currentUser->get('name');		// since I cant finde $_currenUser. But maybe the idea of oscar isnt too bad.
-	 	$fromSite = $mainframe->getCfg('sitename');
+	 	if(VmConfig::get('html_email',true)){
+		 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
+		 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
-	 	//@author Max Milbers
-	 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
-	 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		 	/* Create the view */
+			$controller = new VirtueMartControllerUser();
+			$view = $controller->getView('user', 'html');
 
-		$res = shopFunctionsF::renderAndSentVmMail('user','renderRegisterMailToUser',$fromMail, $fromName, $user->get('email'), $subject);
+			$view->setModel( $this );
+			$view->setModel( $controller->getModel( 'userfields' ) );
 
-		$vendorId = 1;
-		if(!class_exists('VirtueMartModelVendor')) require (JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$vendorModel = new VirtueMartModelVendor();
+			$vendorModel = $controller->getModel( 'vendor' );
+			$vendorId = 1;
+			$vendorModel->setId($vendorId);
+			$vendor = $vendorModel->getVendor();
+			$vendorModel->addImagesToVendor($vendor);
+			dump($vendor,'My vendor in sent email');
+			$view->setModel( $vendorModel );
 
-		$res = shopFunctionsF::renderAndSentVmMail('user','renderRegisterMailToVendor',$fromMail, $fromName, $vendorModel->getVendorEmail($vendorId) , $subject);
+			// Send registration confirmation mail
+			$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+			$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+			$view->assignRef('password',$password);
 
-		//@author Oscar van Eijk
-//	 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE', $user->get('name')
-//			, $fromSite
-//			, JURI::root()
-//			, $user->get('username')
-//			, $user->password_clear
-//			);
-//			JUtility::sendMail( $fromMail, $fromName, $user->get('email'), $subject, $message );
+		 	// If user activation is turned on, we need to set the activation information
+		 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
+			$useractivation = $usersConfig->get( 'useractivation' );
+			if ($useractivation == '1')
+			{
+				jimport('joomla.user.helper');
+				$activationLink = "index.php?option=com_user&task=activate&activation=".$user->get('activation');
+				$view->assignRef('activationLink',$activationLink);
+			}
 
-			//Using of $_data['user_id'] isnt good. It just adds new data, we have to manage, but the data is already in the JUser object. Notice by Max Milbers
-			//		$_data['user_id'] = $user->get('id');
+			$view->setLayout('mailregisteruser');
+			$res = shopFunctionsF::renderAndSentVmMail($view, $user->get('email'), $subject,$vendorModel->getVendorEmail($vendorId));
+
+			$view->setLayout('mailregistervendor');
+			$res = shopFunctionsF::renderAndSentVmMail($view, $vendorModel->getVendorEmail($vendorId) , $subject,$user->get('email'));
+	 	} else {
+
+	 		$mainframe = JFactory::getApplication() ;
+		 	$fromMail = $mainframe->getCfg('mailfrom');
+		 	$fromName = $mainframe->getCfg('fromname');
+		 	$fromSite = $mainframe->getCfg('sitename');
+
+		 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
+		 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE', $user->get('name')
+				, $fromSite
+				, JURI::root()
+				, $user->get('username')
+				, $user->password_clear
+				);
+			JUtility::sendMail( $fromMail, $fromName, $user->get('email'), $subject, $message );
+	 	}
+
 	 }
 
 	 /**

@@ -16,20 +16,22 @@
 * other free or open source software licenses.
 *
 */
-
+dump($this,'my mailvendor');
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php
 
 	//Hello Shopowner
-	JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE');
-	echo $this->store->vendor_store_name;
-	echo $this->vendor->images[0]->displayMediaThumb();
+//	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
+	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->prices['billTotal']);
+
+//	echo $this->vendor->vendor_store_name;
+//	echo $this->vendor->images[0]->displayMediaThumb();
 //	echo VmImage::getImageByVendor($this->vendor)->displayImage('',JText::_('COM_VIRTUEMART_VENDOR_IMAGE_ALT'),1,1);
 //	VmImage::generateImageHtml($this->store->file_ids, VmConfig::get('media_path'), 'alt="Shop Image"', false);
 
-	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
+//	echo '<br />The shopper '.$this->cart['BT']['first_name'].' '.$this->cart['BT']['last_name'].' bought some stuff';
 
 
 	//PriceList
