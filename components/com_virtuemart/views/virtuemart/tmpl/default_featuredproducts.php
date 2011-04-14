@@ -58,7 +58,7 @@ foreach ( $this->featuredProducts as $featProduct ) {
 					<?php // Product Short Description
 					if (! empty ( $featProduct->product_s_desc )) { ?>
 					<p class="product_s_desc">
-					<?php echo $featProduct->product_s_desc; ?>
+					<?php echo shopFunctionsF::limitStringByWord($featProduct->product_s_desc, 40, '...') ?>
 					</p>
 					<?php } ?>
 

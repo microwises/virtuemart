@@ -214,10 +214,9 @@ foreach ( $this->products as $product ) {
 						<?php // Product Short Description
 						if(!empty($product->product_s_desc)) { ?>
 						<p class="product_s_desc">
-						<?php echo $product->product_s_desc; ?>
+						<?php echo shopFunctionsF::limitStringByWord($product->product_s_desc, 40, '...') ?>
 						</p>
 						<?php } ?>
-
 
 					<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
 					<?php	

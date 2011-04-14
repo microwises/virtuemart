@@ -38,7 +38,8 @@
 				?>
 				<br /><br/>
 				<?php } ?>
-				<?php echo $latestProduct->product_s_desc; ?><br />
+				<?php echo shopFunctionsF::limitStringByWord($latestProduct->product_s_desc, 40, '...') ?>
+				<br />
 
 				<?php echo addToCart($latestProduct); ?>
 		</div>

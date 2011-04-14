@@ -441,13 +441,16 @@ class shopFunctionsF {
 				//JError::raiseWarning('No template set : '.$template);
 		}
 	}
-
-	public function limitStringByWord($string, $maxlength, $suffix=''){
-		$index = strrpos($string, ' ',$maxlength);
-		if($index===FALSE){
+	
+	public function limitStringByWord($string, $maxlength, $suffix = '') {
+		if (strlen ( $string ) <= $maxlength)
 			return $string;
-		} else{
-			return substr($string,0,$index).$suffix;
+		$string = substr ( $string, 0, $maxlength );
+		$index = strrpos ( $string, ' ' );
+		if ($index === FALSE) {
+			return $string;
+		} else {
+			return substr ( $string, 0, $index ) . $suffix;
 		}
 	}
 

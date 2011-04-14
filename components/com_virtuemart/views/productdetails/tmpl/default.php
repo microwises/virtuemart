@@ -29,10 +29,10 @@ if (empty ( $this->product )) {
 	return ;
 }  ?>
 <div class="productdetails-view">
+	
 	<?php // Product Navigation
-	if (VmConfig::get ( 'product_navigation', 1 )) {
-		?>
-	<div class="marginbottom25">
+	if (VmConfig::get ( 'product_navigation', 1 )) {?>
+		<div class="product-neighbours">
 		<?php
 		if (! empty ( $this->product->neighbours ['previous'] )) {
 			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['previous'] ['product_id'] . '&category_id=' . $this->product->category_id );
@@ -42,26 +42,45 @@ if (empty ( $this->product )) {
 			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['next'] ['product_id'] . '&category_id=' . $this->product->category_id );
 			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next_page' ) );
 		}
-		echo '<br style="clear: both;" />';
 		?>
-	</div>
-	<?php
-	}
-//	echo $this->product->event->afterDisplayTitle;
-//	echo $this->product->event->beforeDisplayContent;
-	?>
+			<br style="clear: both;" />
+		</div>
+	<?php } ?>
+	
+	<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
 
 	<div>
 		<div class="width49 floatleft">
-			<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
-
-		<?php // Product Image
-		foreach ($this->product->images as $image)
-		echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
-		?>
+		<?php // Product Main Image
+		if (!empty($this->product->images[0])) { ?>
+			<div class="main-image">
+			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"'); ?>
+			</div>
+		<?php } ?>
+		
+		<?php //Showing the additional images ?>
+		
+		<?php
+		if(!empty($this->product->images)) { ?>
+			<div class="additional-images">
+			<?php // List all Images
+			foreach ($this->product->images as $image) { 
+				echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
+			} ?>
+			</div>
+		<?php } ?>
 		</div>
 
 		<div class="width49 floatright">
+
+			<?php // Product Description
+			if (!empty($this->product->product_s_desc)) { ?>
+			<div class="product-description">
+			<?php /** @todo Test if content plugins modify the product description */
+			echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_SHORT_DESC_LBL'). '</span><br />';
+			echo $this->product->product_s_desc; ?>
+			</div>
+			<?php } // Product Description END ?>
 
 			<div class="width15 floatright center paddingtop5">
 			<?php // PDF - Print - Email Icon
@@ -278,48 +297,85 @@ if (empty ( $this->product )) {
 		}
 	}
 
-	/* Child categories */
-	if (!empty($this->category->children)) {
-			$iTopTenCol = 1;
-		if (empty($this->category->categories_per_row)) {
-			$this->category->categories_per_row = 4;
-		}
-		$TopTen_cellwidth = intval( 100 / $this->category->categories_per_row );
+	/* Show child categories */
+if ( VmConfig::get('showCategory',1) ) {
+	if ($this->category->haschildren) {
+
+		// Category and Columns Counter
+		$iCol = 1;
+		$iCategory = 1;
+
+		// Calculating Categories Per Row
+		$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
+		$category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
+
+		// Separator
+		$verticalseparator = " vertical-separator";
 		?>
-		<br />
-		<table width="100%" cellspacing="0" cellpadding="0">
+
+		<div class="category-view">
+
+		<?php // Start the Output
+		foreach ( $this->category->children as $category ) {
+
+			// Show the horizontal seperator
+			if ($iCol == 1 && $iCategory > $categories_per_row) { ?>
+			<div class="horizontal-separator"></div>
+			<?php }
+
+			// this is an indicator wether a row needs to be opened or not
+			if ($iCol == 1) { ?>
+			<div class="row">
+			<?php }
+
+			// Show the vertical seperator
+			if ($iCategory == $categories_per_row or $iCategory % $categories_per_row == 0) {
+				$show_vertical_separator = ' ';
+			} else {
+				$show_vertical_separator = $verticalseparator;
+			}
+
+			// Category Link
+			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
+
+				// Show Category ?>
+				<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
+					<div class="spacer">
+						<h2>
+							<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
+							<?php echo $category->category_name ?>
+							<br />
+							<?php // if ($category->ids) {
+								echo $category->images[0]->displayMediaThumb(0,false);
+							//} ?>
+							</a>
+						</h2>
+					</div>
+				</div>
 			<?php
-			foreach($this->category->children as $category ) {
-				if ($iTopTenCol == 1) { // this is an indicator wether a row needs to be opened or not
-					echo "<tr>\n";
-				}
-				?>
-				<td align="center" width="<?php echo $TopTen_cellwidth ?>%" >
-					<br />
-					<?php //TODO
-					$url = JRoute::_('index.php?option=com_virtuemart&view=category&task=browse&category_id='.$category->category_id);
-					//Todo add this 'alt="'.$category->category_name.'"', false).'<br /><br />'.$category->category_name.' ('.$category->number_of_products.')');
-					echo JHTML::link($url, $category->images[0]->displayMediaThumb());
-					?>
-					<br />
-				</td>
-				<?php
-				// Do we need to close the current row now?
-				if ($iTopTenCol == $this->category->categories_per_row) { // If the number of products per row has been reached
-					echo "</tr>\n";
-					$iTopTenCol = 1;
-				} else {
-				$iTopTenCol++;
-				}
-			}
-			// Do we need a final closing row tag?
-			if ($iTopTenCol != 1) {
-				echo "</tr>\n";
-			}
-			?>
-		</table>
-	<?php
+			$iCategory ++;
+
+		// Do we need to close the current row now?
+		if ($iCol == $categories_per_row) { ?>
+		<div class="clear"></div>
+		</div>
+			<?php
+			$iCol = 1;
+		} else {
+			$iCol ++;
+		}
 	}
+
+	// Do we need a final closing row tag?
+	if ($iCol != 1) { ?>
+		<div class="clear"></div>
+		</div>
+	<?php } ?>
+	</div>
+
+<div class="horizontal-separator"></div>
+<?php } 
+} 
 
 	/**
 	* Reviews
@@ -335,7 +391,7 @@ if (empty ( $this->product )) {
 	*/
 	if ( VmConfig::get('allow_reviews') ){
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		$ratingsShow = VmConfig::get('vm_num_ratings_show',2);// TODO add  vm_num_ratings_show in vmConfig
+		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
 		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
@@ -345,40 +401,53 @@ if (empty ( $this->product )) {
 		}
 
 		?>
-		<table border="0" align="center" style="width: 100%;">
-			<tr>
-				<td colspan="2">
 				<!-- List of product reviews -->
-				<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?>:</h4>
+				<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
 				<?php
-				$alreadycommented = false;
-
-				$i=0 ;
-				foreach($this->product_reviews as $review ) { // Loop through all reviews
+				$alreadycommented = false;?>
+				
+				<div class="list-reviews">
+				<?php // Loop through all reviews
+				$i=0;
+				foreach($this->product_reviews as $review ) { 
+					
+					if ($i % 2 == 0) {
+   						$color = 'normal';
+					} else {
+						$color = 'highlight';
+					}
+					
 					/* Check if user already commented */
 					if ($review->userid == $this->user->id) {
-					$alreadycommented = true;
-					}
-
-					echo $stars[ $review->user_rating ];
-					?>
-					<div><?php echo $review->comment; ?></div>
-					<strong><?php echo $review->username.'&nbsp;&nbsp;('.JHTML::date($review->time, JText::_('DATE_FORMAT_LC')).')'; ?></strong>
-					<br />
-					<br />
+						$alreadycommented = true;
+					} ?>
+					
+					<div class="<?php echo $color ?>">
+						<span class="date"><?php echo JHTML::date($review->time, JText::_('DATE_FORMAT_LC')); ?></span>
+						<?php echo $stars[ $review->user_rating ] ?>
+						
+						<blockquote><?php echo $review->comment; ?></blockquote>
+						<span class="bold"><?php echo $review->username ?></span>
+					</div>
 					<?php
 					$i++ ;
 					if ( $i == $ratingsShow && !$showall) break;
 				}
+				
 				if (count($this->product_reviews) < 1) echo JText::_('COM_VIRTUEMART_NO_REVIEWS'); // "There are no reviews for this product"
 				else {
 					/* Show all reviews */
 					if (!$showall && count($this->product_reviews) >=$ratingsShow ) {
-						echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
+						$attribute = array('class'=>'product-details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
+						echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
 					}
 				}
 				?>
-				<br />
+				<div class="clear"></div>
+				</div>
+				
+				
+				
 				<?php
 
 				if (!empty($this->user->id)) {
@@ -467,11 +536,9 @@ if (empty ( $this->product )) {
 				}
 				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
-				</td>
-			</tr>
-		</table>
+			
 <?php
 	}
-// echo $this->product->event->afterDisplayContent;
+
 	?>
 </div>
