@@ -47,8 +47,8 @@ if (empty ( $this->product )) {
 	</div>
 	<?php
 	}
-	echo $this->product->event->afterDisplayTitle;
-	echo $this->product->event->beforeDisplayContent;
+//	echo $this->product->event->afterDisplayTitle;
+//	echo $this->product->event->beforeDisplayContent;
 	?>
 
 	<div>
@@ -472,6 +472,6 @@ if (empty ( $this->product )) {
 		</table>
 <?php
 	}
-echo $this->product->event->afterDisplayContent;
+// echo $this->product->event->afterDisplayContent;
 	?>
 </div>

@@ -38,6 +38,10 @@ class VirtueMartViewProductdetails extends JView {
 	*/
 	function display($tpl = null) {
 
+		//TODO get plugins running
+//		$dispatcher	=& JDispatcher::getInstance();
+//		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -177,24 +181,26 @@ class VirtueMartViewProductdetails extends JView {
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
-		/*
-		 * Process the prepare content plugins
-		 */
-		JPluginHelper::importPlugin('content');
-		$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, $limitstart));
-
-		/*
-		 * Handle display events
-		 */
-		$article->event = new stdClass();
-		$results = $dispatcher->trigger('onAfterDisplayTitle', array (&$product, &$params, $limitstart));
-		$article->event->afterDisplayTitle = trim(implode("\n", $results));
-
-		$results = $dispatcher->trigger('onBeforeDisplayContent', array (&$product, &$params, $limitstart));
-		$article->event->beforeDisplayContent = trim(implode("\n", $results));
-
-		$results = $dispatcher->trigger('onAfterDisplayContent', array (&$product, &$params, $limitstart));
-		$article->event->afterDisplayContent = trim(implode("\n", $results));
+		//TODO add params, add event
+//		$params = new JParameter();
+//		/*
+//		 * Process the prepare content plugins
+//		 */
+//		JPluginHelper::importPlugin('content');
+//		$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, $limitstart));
+//
+//		/*
+//		 * Handle display events
+//		 */
+//		$article->event = new stdClass();
+//		$results = $dispatcher->trigger('onAfterDisplayTitle', array (&$product, &$params, $limitstart));
+//		$article->event->afterDisplayTitle = trim(implode("\n", $results));
+//
+//		$results = $dispatcher->trigger('onBeforeDisplayContent', array (&$product, &$params, $limitstart));
+//		$article->event->beforeDisplayContent = trim(implode("\n", $results));
+//
+//		$results = $dispatcher->trigger('onAfterDisplayContent', array (&$product, &$params, $limitstart));
+//		$article->event->afterDisplayContent = trim(implode("\n", $results));
 
 
 		/* Display it all */
