@@ -80,7 +80,7 @@ class VirtueMartModelWaitingList extends JModel {
 				$result = shopFunctionsF::sendVmMail($notice_body,
 													$waiting_user->notify_email,
 													$notice_subject,
-													array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')
+													array($mainframe->getCfg('mailfrom'),$mainframe->getCfg('sitename'))
 													);
 //				//TODO mail
 //				/* Get the mailer start */
