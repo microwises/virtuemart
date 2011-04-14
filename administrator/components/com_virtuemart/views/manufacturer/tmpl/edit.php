@@ -99,7 +99,9 @@ $editor = JFactory::getEditor();
 </div>
 
 <div class="col50">
+	<div class="selectimage">
 		<?php echo $this->manufacturer->images[0]->displayFilesHandler($this->manufacturer->file_ids); ?>
+	</div>
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />

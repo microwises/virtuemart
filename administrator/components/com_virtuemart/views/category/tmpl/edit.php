@@ -258,12 +258,14 @@ $mainframe = JFactory::getApplication();
 
 ?>
 <div class="col50">
+	<div class="selectimage">
 			<?php
 //				foreach($this->category->images as $image){
 					echo $this->category->images[0]->displayFilesHandler($this->category->file_ids);
 //				}
 //				echo $this->category->images[0]->displayFileHandler();
 			?>
+	</div>
 </div>
 <?php
 	echo $pane->endPanel();
