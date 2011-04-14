@@ -68,7 +68,7 @@ class VmImage extends VmMediaHandler {
 		// Remote image URL
 		if( substr( $this->file_url, 0, 4) == "http" ) {
 			$file_url = $this->file_url;
-			$file_alt = $this->file_description;
+			$file_alt = $this->file_title;
 		}
 
 		$rel_path = str_replace('/',DS,$this->file_url_folder);

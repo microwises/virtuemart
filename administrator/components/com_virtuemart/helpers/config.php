@@ -204,10 +204,13 @@ class VmConfig
 					var data = jQuery(this).val();
 					//alert('Handler for .change() called.'+data);
 					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&file_id='+data ,
-					function(datas, textStatus) { jQuery('#vm_display_image').attr('src', datas);
-						
-						}
-					);
+					function(datas, textStatus) { 
+						if (datas.msg =='OK') {
+							jQuery('#vm_display_image').attr('src', datas.file_url);
+							jQuery('#vm_display_image').attr('alt', datas.file_title);
+							jQuery('#file_title').html(datas.file_title);
+						} else jQuery('#file_title').html(datas.msg);
+					});
 					//if (jQuery('.selectimage select:eq(1)').length) 
 					//jQuery('.selectimage select:last').remove();
 				});

@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author
+* @author  Patrick Kohl
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,20 +23,31 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the VirtueMart Component
+ * Json View class for the VirtueMart Component
  *
  * @package		VirtueMart
- * @author
+ * @author  Patrick Kohl
  */
 class VirtuemartViewMedia extends JView {
 
+	/* json object */
+	private $json = null;
+	
 	function display($tpl = null) {
 
 		$file_id = JRequest::getVar('file_id');
 		$db = JFactory::getDBO();
-		$query='SELECT `file_url` FROM `#__vm_media` where `file_id`='.$file_id;
+		$query='SELECT `file_url`,`file_title` FROM `#__vm_media` where `file_id`='.$file_id;
 		$db->setQuery( $query );
-		echo json_encode(JURI::root() .$db->loadResult());
+		$json = $db->loadObject();
+		if (isset($json->file_url)) { 
+			$json->file_url = JURI::root().$json->file_url;
+			$json->msg =  'OK';
+			echo json_encode($json);
+		} else {
+			$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
+			echo json_encode($json);
+		}
 	}
 
 }

@@ -653,7 +653,8 @@ class VmMediaHandler {
 
 		$html = $this->displayFoldersWriteAble();
 
-		$html .= $this->displayMediaFull($imageArgs);
+		$html .= '<div id="file_title">'.$this->file_title.'</div>';
+		$html .= $this->displayMediaFull($imageArgs,false);
 
 		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 
