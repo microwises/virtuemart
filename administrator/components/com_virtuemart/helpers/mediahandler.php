@@ -419,6 +419,7 @@ class VmMediaHandler {
 		}
 		else if( $data['media_action'] == 'delete' ){
 			$this->deleteFile($this->file_url);
+			unset($data['file_id']);
 		}
 		else if( $data['media_action'] == 'upload_thumb' ){
 			$file_name = $this->uploadFile($this->file_url_folder_thumb);
@@ -568,7 +569,7 @@ class VmMediaHandler {
 	public function displayFilesHandler($fileIds=array(0)){
 
 		$html = $this->displayFileSelection($fileIds);
-		$html .= $this->displayFileHandler();
+		$html .= $this->displayFileHandler('id="vm_display_image"');
 		return $html;
 	}
 
@@ -652,6 +653,8 @@ class VmMediaHandler {
 
 		$html = $this->displayFoldersWriteAble();
 
+		$html .= $this->displayMediaFull($imageArgs);
+
 		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 
 		$html .= ' <table class="adminform"> ';
@@ -697,8 +700,6 @@ $html .= '</tr>';
 
 
 		$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
-
-		$html .= $this->displayMediaFull($imageArgs);
 
 		$html .= $this->displayHidden();
 		$html .= '</form>';

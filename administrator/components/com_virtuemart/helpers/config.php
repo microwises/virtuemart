@@ -194,11 +194,22 @@ class VmConfig
 			$js = "
 			jQuery(document).ready(function() {
 				jQuery('#addnewselectimage').click(function() {
-					jQuery('.selectimage select:first').clone().insertAfter('.selectimage select:last');
+					jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
 				});
 				jQuery('.detachselectimage').click(function() {
 					if (jQuery('.selectimage select:eq(1)').length) 
 					jQuery('.selectimage select:last').remove();
+				});
+				jQuery('.selectimage select').change(function() {
+					var data = jQuery(this).val();
+					//alert('Handler for .change() called.'+data);
+					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&file_id='+data ,
+					function(datas, textStatus) { jQuery('#vm_display_image').attr('src', datas);
+						
+						}
+					);
+					//if (jQuery('.selectimage select:eq(1)').length) 
+					//jQuery('.selectimage select:last').remove();
 				});
 			});";
 			$document = JFactory::getDocument();

@@ -69,6 +69,20 @@ class VirtuemartControllerMedia extends JController {
 		/* Now display the view. */
 		$this->view->display();
 	}
+	/**
+	 * for ajax call media
+	 */
+	function viewJson() {
+
+		/* Create the view object. */
+		$view = $this->getView('media', 'json');
+
+		/* Standard model */
+		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+
+		/* Now display the view. */
+		$view->display(null);
+	}
 
 	function save(){
 
