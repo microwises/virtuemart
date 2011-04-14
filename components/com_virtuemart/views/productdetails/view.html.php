@@ -177,6 +177,26 @@ class VirtueMartViewProductdetails extends JView {
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
+		/*
+		 * Process the prepare content plugins
+		 */
+		JPluginHelper::importPlugin('content');
+		$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, $limitstart));
+
+		/*
+		 * Handle display events
+		 */
+		$article->event = new stdClass();
+		$results = $dispatcher->trigger('onAfterDisplayTitle', array (&$product, &$params, $limitstart));
+		$article->event->afterDisplayTitle = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onBeforeDisplayContent', array (&$product, &$params, $limitstart));
+		$article->event->beforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onAfterDisplayContent', array (&$product, &$params, $limitstart));
+		$article->event->afterDisplayContent = trim(implode("\n", $results));
+
+
 		/* Display it all */
 		parent::display($tpl);
 	}

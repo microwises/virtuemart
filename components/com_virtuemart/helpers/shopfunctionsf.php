@@ -442,6 +442,14 @@ class shopFunctionsF {
 		}
 	}
 
+	public function limitStringByWord($string, $maxlength, $suffix=''){
+		$index = strrpos($string, ' ',$maxlength);
+		if($index===FALSE){
+			return $string;
+		} else{
+			return substr($string,0,$index).$suffix;
+		}
+	}
 
 	function dumpIt($var,$desc){
 		global $dumper;

@@ -47,6 +47,8 @@ if (empty ( $this->product )) {
 	</div>
 	<?php
 	}
+	echo $this->product->event->afterDisplayTitle;
+	echo $this->product->event->beforeDisplayContent;
 	?>
 
 	<div>
@@ -102,7 +104,7 @@ if (empty ( $this->product )) {
 				}
 				?>
 			</div>
-			
+
 			<?php // Add To Cart Button
 			if (VmConfig::get('use_as_catalogue') != '1') { ?>
 			<div class="addtocart-area marginbottom20">
@@ -179,13 +181,13 @@ if (empty ( $this->product )) {
 			<div class="clear"></div>
 			</div>
 			<?php }  // Add To Cart Button END ?>
-			
+
 			<?php // Ask a question about this product
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
 			 ?>
 			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 			<br style="clear:both;" />
-			
+
 			<?php // Manufacturer of the Product
 			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
 			$text = $this->product->mf_name;
@@ -469,5 +471,7 @@ if (empty ( $this->product )) {
 			</tr>
 		</table>
 <?php
-	} ?>
+	}
+echo $this->product->event->afterDisplayContent;
+	?>
 </div>
