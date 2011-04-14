@@ -565,7 +565,7 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFilesHandler($fileIds=array()){
+	public function displayFilesHandler($fileIds=array(0)){
 
 		$html = $this->displayFileSelection($fileIds);
 		$html .= $this->displayFileHandler();
@@ -578,17 +578,16 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFileSelection($fileIds=array()){
+	public function displayFileSelection($fileIds=array(0)){
 
 		$html='';
 		$result = $this->getImagesList();
+		$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
+		$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div><br/ > ';
+		VmConfig::JimageSelectlist();
+		print_r ($fileIds);
 
-		if ($result) {
-			$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
-			$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div> ';
-			VmConfig::JimageSelectlist();
-		}
-
+		$options[] = JHTML::_('select.option', '0' , '--Attach Existing image--', 'file_id' );
 		foreach($result as $file){
 			$options[] = JHTML::_('select.option', $file->file_id, $file->file_title, 'file_id' );
 		}

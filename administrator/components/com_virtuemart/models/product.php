@@ -677,9 +677,10 @@ class VirtueMartModelProduct extends JModel {
 			$this->setError($product_data->getError());
 			return false;
 		}
-
 		/* Set the changed date */
 		$product_data->mdate = time();
+		
+
 
 		/* Get the attribute */
 		$product_data->attribute = $this->formatAttributeX();

@@ -41,7 +41,7 @@ class VirtueMartModelCategorydetails extends JModel {
 	*/
 	public function getCategory($category_id=0) {
 		$db = JFactory::getDBO();
-		$row = $this->getTable('category');
+		$row =& $this->getTable('category');
 		$row->load($category_id);
 		if (VmConfig::get('showCategory',1)) {
 		/* Check for children */
@@ -59,6 +59,22 @@ class VirtueMartModelCategorydetails extends JModel {
 
 		return $row;
 	}
+		/**
+	* Load a category and it's details
+	*
+	* @author RolandD
+	* @return object containing the category
+	*/
+	public function getCategoryFull($category_id=0) {
+		$db = JFactory::getDBO();
+		$q = "SELECT *
+			FROM #__vm_category
+			WHERE category_id = ".$category_id ;
+		$db->setQuery($q);
+		$category = $db->loadObject();
+		return $category;
+	}
+	
 
 	/**
 	* Checks for children of the category $category_id
@@ -86,7 +102,7 @@ class VirtueMartModelCategorydetails extends JModel {
 	 * @param int $category_id the category ID to create the list of
 	 * @return array containing the child categories
 	 */
-	public function getChildrenList($category_id) {
+	public function getChildrenList($category_id,$limit=false) {
 		$db = JFactory::getDBO();
 		$childs = array();
 
@@ -97,6 +113,7 @@ class VirtueMartModelCategorydetails extends JModel {
 			AND #__vm_category.vendor_id = 1
 			AND #__vm_category.published = 1
 			ORDER BY #__vm_category.ordering, #__vm_category.category_name ASC";
+		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
 

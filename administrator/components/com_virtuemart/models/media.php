@@ -269,8 +269,12 @@ class VirtueMartModelMedia extends JModel {
 		$this -> setId($oldId);
 		$file_id = $this->store($type,$data);
 
+		/* add the file_id & delete 0 and '' from $data */
+		$data['file_ids'] = array_merge( (array)$data['file_id'],$data['file_ids']);
+		$file_ids = array_diff($data['file_ids'],array('0',''));
+		//$product_data->file_ids = implode(',',$file_ids);
 //		if($data['file_id']!=$file_id){
-			$file_ids = $data['file_ids'];
+			/*$file_ids = $data['file_ids'];
 			if(is_array($file_ids)){
 				$key = array_search($data['file_id'],$file_ids);
 				if(!$key){
@@ -289,7 +293,9 @@ class VirtueMartModelMedia extends JModel {
 				$data['file_ids'] = implode(',',$file_ids);
 			} else {
 				$data['file_ids'] = $file_ids;
-			}
+			}*/
+			$file_ids = array_unique($file_ids);
+			$data['file_ids']= implode(',',$file_ids);
 
 			// Bind the form fields to the country table
 			if (!$table->bind($data)) {

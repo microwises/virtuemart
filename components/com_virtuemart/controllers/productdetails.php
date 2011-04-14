@@ -99,10 +99,11 @@ class VirtueMartControllerProductdetails extends JController {
 	 	}
 		$fromSite = $mainframe->getCfg('sitename');
 		$subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
-		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n";
-		$message .= JRequest::getVar('comment');
+//		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n\n";
+//		$message .= JRequest::getVar('comment');
 		$msgtype = '';
-		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message ) == true ) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY') );
+		$message = JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_MSG', $productDetails->product_name ,JRequest::getVar('comment'));
+		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message, true ) == true ) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY') );
 		else {
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY') );
 		}
@@ -118,11 +119,13 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Create the view */
 		$view = $this->getView('askquestion', 'html');
 
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+
 		/* Add the default model */
 		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
 
 		/* Add the category model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+		$view->setModel($this->getModel('categorydetails', 'VirtuemartModel'));
 
 		/* Set the layout */
 		$view->setLayout('form');
