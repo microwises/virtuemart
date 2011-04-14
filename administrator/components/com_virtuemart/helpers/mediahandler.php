@@ -597,7 +597,7 @@ class VmMediaHandler {
 		foreach($fileIds as $k=>$id){
 			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'file_ids[]',null,'file_id','text',$id).'<br />';
 			if(empty($k)) $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE';
-			
+
 		}
 
 		return $html;

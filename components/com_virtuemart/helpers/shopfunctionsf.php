@@ -265,7 +265,7 @@ class shopFunctionsF {
 
 	}
 
-	function sendVmMail($body,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
+	public function sendVmMail($body,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
 
 		$mailer =& JFactory::getMailer();
 
@@ -284,6 +284,7 @@ class shopFunctionsF {
 		// Optional file attached  //this information must come from the cart
 		if(!empty($mediaToSend)){
 			//Test if array, if not make an array out of it
+			if(!is_array($mediaToSend)) $mediaToSend = array($mediaToSend);
 			foreach ($mediaToSend as $media){
 				//Todo test and such things.
 				$mailer->addAttachment($media);

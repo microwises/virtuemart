@@ -66,28 +66,36 @@ class VirtueMartModelWaitingList extends JModel {
 			$db->setQuery($q);
 			$product_name = $db->loadResult();
 
+			/* Lets make the e-mail up from the info we have */
+			$notice_subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
+
+			/* Now get the url information */
+			$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
+			$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
+
 			foreach ($waiting_users as $key => $waiting_user) {
-				/* Lets make the e-mail up from the info we have */
-				$notice_subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
 
-				/* Now get the url information */
-				$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
-				$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
 
-				//TODO mail
-				/* Get the mailer start */
-				$mailer = shopFunctions::loadMailer();
-				//by Max Milbers
-				//$from_email = ps_vendor::get_vendor_fields(1,array("email"),"");
-				$mailer->From = $mainframe->getCfg('mailfrom');
-				$mailer->FromName = $mainframe->getCfg('sitename');
-				$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-				$mailer->AddAddress($waiting_user->notify_email);
-				$mailer->setBody($notice_body);
-				$mailer->setSubject($notice_subject);
+				if (!class_exists('shopFunctionsF')) require( JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php' );
+				$result = shopFunctionsF::sendVmMail($notice_body,
+													$waiting_user->notify_email,
+													$notice_subject,
+													array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')
+													);
+//				//TODO mail
+//				/* Get the mailer start */
+//				$mailer = shopFunctions::loadMailer();
+//				//by Max Milbers
+//				//$from_email = ps_vendor::get_vendor_fields(1,array("email"),"");
+//				$mailer->From = $mainframe->getCfg('mailfrom');
+//				$mailer->FromName = $mainframe->getCfg('sitename');
+//				$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+//				$mailer->AddAddress($waiting_user->notify_email);
+//				$mailer->setBody($notice_body);
+//				$mailer->setSubject($notice_subject);
 
 				/* Send the mail */
-				if (!$mailer->Send()) {
+				if (!$result) {
 
 				}
 				else {

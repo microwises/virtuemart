@@ -318,7 +318,7 @@ class VirtueMartModelMedia extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-	private function store($type,$data=0) {
+	public function store($type,$data=0) {
 
 		$table = $this->getTable('media');
 		if(empty($data))$data = JRequest::get('post');

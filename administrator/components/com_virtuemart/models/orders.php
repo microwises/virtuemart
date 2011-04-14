@@ -906,16 +906,22 @@ class VirtueMartModelOrders extends JModel {
 		$message .= VmConfig::get('url')."\n";
 		$message .= $vendor->email;
 
-		//TODO mail
-		$mailer = shopFunctions::loadMailer();
-		$mailer->From = $vendor->email;
-		$mailer->FromName = $vendor->vendor_name;
-		$mailer->AddReplyTo(array($vendor->email, $vendor->vendor_name));
-		$mailer->AddAddress($user->email);
-		$mailer->setBody(nl2br(str_replace( "{order_id}", $order->order_id, $message)));
-		$mailer->setSubject(str_replace( "{order_id}", $order->order_id, JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ')));
+		if (!class_exists('shopFunctionsF')) require( JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php' );
+		$result = shopFunctionsF::sendVmMail($message,
+											$user->email,
+											str_replace( "{order_id}", $order->order_id, JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ')),
+											array($vendor->email, $vendor->vendor_name)
+											);
 
-		$result = $mailer->Send();
+//		$mailer = shopFunctions::loadMailer();
+//		$mailer->From = $vendor->email;
+//		$mailer->FromName = $vendor->vendor_name;
+//		$mailer->AddReplyTo(array($vendor->email, $vendor->vendor_name));
+//		$mailer->AddAddress($user->email);
+//		$mailer->setBody(nl2br(str_replace( "{order_id}", $order->order_id, $message)));
+//		$mailer->setSubject(str_replace( "{order_id}", $order->order_id, JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ')));
+//
+//		$result = $mailer->Send();
 
 		/* Send the email */
 		if ($result) {
