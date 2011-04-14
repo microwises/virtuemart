@@ -187,6 +187,25 @@ class VmConfig
 		$JcountryStateList = true;
 		return;
 	}
+
+	function JimageSelectlist() {
+		static $JimageSelectlist;
+		if ($JimageSelectlist) return;
+			$js = "
+			jQuery(document).ready(function() {
+				jQuery('#addnewselectimage').click(function() {
+					jQuery('.selectimage select:first').clone().insertAfter('.selectimage select:last');
+				});
+				jQuery('.detachselectimage').click(function() {
+					if (jQuery('.selectimage select:eq(1)').length) 
+					jQuery('.selectimage select:last').remove();
+				});
+			});";
+			$document = JFactory::getDocument();
+			$document->addScriptDeclaration($js);
+		$JimageSelectlist = true;
+		return;
+	}
 	/*	function cssSite()
 	{
 		static $jSite;

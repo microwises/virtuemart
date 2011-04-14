@@ -99,3 +99,13 @@
 .vm-absolute{
 	position: absolute;
 }
+.detachselectimage , #addnewselectimage {   border-style: solid;
+	background-repeat : no-repeat;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline;
+    line-height: 16px;
+    padding-left: 16px;
+	padding-right: 4px;
+	margin : 2px;
+}

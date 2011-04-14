@@ -582,16 +582,24 @@ class VmMediaHandler {
 
 		$html='';
 		$result = $this->getImagesList();
+
+		if ($result) {
+			$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
+			$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div> ';
+			VmConfig::JimageSelectlist();
+		}
+
 		foreach($result as $file){
 			$options[] = JHTML::_('select.option', $file->file_id, $file->file_title, 'file_id' );
 		}
 
 		$text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		foreach($fileIds as $k=>$id){
-			$html .= JText::sprintf($text).JHTML::_('select.genericlist', $options,'file_ids[]',null,'file_id','text',$id).'<br />';
+			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'file_ids[]',null,'file_id','text',$id).'<br />';
 			if(empty($k)) $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE';
+			
 		}
-		$html .= 'Option for add new with link to media view or filehandler';
+
 		return $html;
 	}
 

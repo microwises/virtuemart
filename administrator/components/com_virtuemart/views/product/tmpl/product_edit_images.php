@@ -23,14 +23,16 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div class="col50">
-
+	<div class="selectimage">
 	<?php
 //	foreach($this->product->images as $image){
 		if(empty($this->product->images[0]->file_id)) $this->product->images[0]->addHidden('file_is_product_image','1');
 		echo $this->product->images[0]->displayFilesHandler($this->product->file_ids);
+		
+
 //	}
 	?>
-
+	</div>
 </div>
 <script type="text/javascript">
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
