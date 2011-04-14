@@ -585,7 +585,6 @@ class VmMediaHandler {
 		$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
 		$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div><br/ > ';
 		VmConfig::JimageSelectlist();
-		print_r ($fileIds);
 
 		$options[] = JHTML::_('select.option', '0' , '--Attach Existing image--', 'file_id' );
 		foreach($result as $file){
