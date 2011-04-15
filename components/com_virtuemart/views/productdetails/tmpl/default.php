@@ -229,7 +229,7 @@ if (empty ( $this->product )) {
 	<div class="product-description">
 		<?php /** @todo Test if content plugins modify the product description */
 		echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE'). '</span><br />';
-		echo shopFunctionsF::limitStringByWord($this->product->product_desc,50,'...'); //$this->product->product_desc; ?>
+		echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
 
