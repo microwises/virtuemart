@@ -319,14 +319,30 @@ class VirtueMartModelProductdetails extends JModel {
 			$calculator = calculationHelper::getInstance();
 			foreach ($related_products as $rkey => $related) {
 				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
+				$related->category_id = $this->getProductCategory($related->product_id);
 				/* Add the product link  */
-				$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id);
+				$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$related->product_id.'&category_id='.$related->category_id);
 			}
 		}
 
 		return $related_products;
 	}
+	/**
+	* Load  the product category
+	*
+	* @author Kohl Patrick
+	* @return array list of categories product is in
+	*/
+	private function getProductCategory($product_id) {
+		$this->_db = JFactory::getDBO();
+		if ($product_id > 0) {
+			$q = "SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = ".$product_id;
+			$this->_db->setQuery($q);
+			$category_id = $this->_db->loadResult();
+		}
 
+		return $category_id;
+	}
 	/**
 	* Proxy function to check for children
 	*
