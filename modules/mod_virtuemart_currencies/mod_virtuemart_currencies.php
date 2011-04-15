@@ -27,6 +27,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * Prices in the orders are saved in the shop currency; these fields are required
  * to show the prices to the user in a later stadium.
   */
+$mainframe = JFactory::getApplication();
 $currency_id = $mainframe->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
 
 $vendorId = JRequest::getInt('vendorid', 1);
