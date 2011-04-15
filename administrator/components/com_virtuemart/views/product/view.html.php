@@ -67,11 +67,6 @@ class VirtuemartViewProduct extends JView {
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				/* Load the currencies */
-				$currency_model = $this->getModel('currency');
-//			JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency);
-$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
-
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
@@ -124,9 +119,14 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
 
-//				$vendor_model->setId($product->vendor_id);
-//				$vendor = $vendor_model->getVendor();
-//				$this->assignRef('vendorCurrency', $vendorCurrency);
+				/* Load the currencies */
+				$currency_model = $this->getModel('currency');
+				if(empty($product->product_currency)){
+					$vendor_model->setId($product->vendor_id);
+					$vendor = $vendor_model->getVendor();
+					$product->product_currency = $vendor->vendor_currency;
+				}
+$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
 
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');

@@ -805,7 +805,9 @@ class VirtueMartCart  {
 
 			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$vendor->vendor_store_name,
 																			$order['details']['BT']->order_total,
-																			$order['details']['BT']->order_number);
+																			$order['details']['BT']->order_number,
+																			$order['details']['BT']->order_pass
+																			);
 			$res = shopFunctionsF::renderAndSentVmMail(	$view,
 														$order['details']['BT']->email,
 														$subject,

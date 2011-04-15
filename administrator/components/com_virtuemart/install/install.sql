@@ -335,6 +335,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
   `user_id` int(11) NOT NULL DEFAULT '0',
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `order_number` varchar(32) DEFAULT NULL,
+  `order_pass` varchar(8) DEFAULT NULL,
   `user_info_id` varchar(32) DEFAULT NULL,
   `order_total` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_subtotal` decimal(15,5) DEFAULT NULL,

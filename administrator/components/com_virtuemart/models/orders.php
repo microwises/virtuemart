@@ -83,6 +83,26 @@ class VirtueMartModelOrders extends JModel {
 	}
 
 	/**
+	 * This function gets the orderId, for anonymous users
+	 *
+	 */
+	public function getOrderIdByOrderPass(){
+
+		$orderNumber = JRequest::getVar('order_number',0);
+//		if(empty($orderNumber)) return 0;
+		$orderPass = JRequest::getVar('order_pass',0);
+//		if(empty($orderPass)) return 0;
+
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT `order_id` FROM `#__vm_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
+		$db->setQuery($q);
+		$oderId = $db->loadResult();dump($oderId,'my $oderId'); dump($this,'my model');
+		return $oderId;
+
+	}
+
+	/**
 	 * Load a single order
 	 */
 	public function getOrder($order_id='')
@@ -482,6 +502,7 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->user_id = $_usr->get('id');
 		$_orderData->vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
+		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'),8);
 		//Note as long we do not have an extra table only storing addresses, the user_info_id is not needed.
 		//The user_info_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -717,7 +738,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @param integer $_uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($_uid = 0)
+	private function generateOrderNumber($_uid = 0,$length=32)
 	{
 		return substr(
 				 $_uid
@@ -727,7 +748,7 @@ class VirtueMartModelOrders extends JModel {
 						.(string) time()
 					)
 				,0
-				,32
+				,$length
 		);
 	}
 

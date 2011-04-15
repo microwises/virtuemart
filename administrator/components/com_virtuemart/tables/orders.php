@@ -36,6 +36,7 @@ class TableOrders extends JTable {
 	var $vendor_id = 0;
 	/** @var int Order number */
 	var $order_number = NULL;
+	var $order_pass = NULL;
 	/** @var int User info ID */
 	var $user_info_id = NULL;
 	/** @var decimal Order total */
@@ -82,7 +83,7 @@ class TableOrders extends JTable {
 	/**
 	 * Overloaded delete() to delete records from order_user_info and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)
-	 * 
+	 *
 	 * @var integer Order id
 	 * @return boolean True on success
 	 * @author Oscar van Eijk
@@ -119,8 +120,8 @@ class TableOrders extends JTable {
 		$this->_db->setQuery($_q);
 		$this->_db->query(); // Ignore error here
 		return parent::delete($id);
-		
+
 	}
-	
+
 }
 

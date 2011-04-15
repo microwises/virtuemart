@@ -251,7 +251,7 @@ class VirtueMartControllerUser extends JController
 //		$user = $this->getModel( 'user', 'VirtuemartModel' );
 //		$view->setModel( $user );
 //		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );
 //		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
 //		$view->setModel( $vendor );
 //
@@ -272,7 +272,7 @@ class VirtueMartControllerUser extends JController
 //		$user = $this->getModel( 'user', 'VirtuemartModel' );
 //		$view->setModel( $user  );
 //		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );  //TODO we need the order_number in the mail
+//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );
 //		$vendor = $this->getModel( 'vendor', 'VirtuemartModel' );
 //		$view->setModel( $vendor );
 //

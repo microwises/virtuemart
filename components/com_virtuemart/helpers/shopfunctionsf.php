@@ -441,16 +441,16 @@ class shopFunctionsF {
 				//JError::raiseWarning('No template set : '.$template);
 		}
 	}
-	
-	public function limitStringByWord($string, $maxlength, $suffix = '') {
-		if (strlen ( $string ) <= $maxlength)
+
+	public function limitStringByWord($string, $maxlength, $suffix=''){
+
+		if(strlen($string)<=$maxlength) return $string;
+		$string = substr($string,0,$maxlength);
+		$index = strrpos($string, ' ');
+		if($index===FALSE){
 			return $string;
-		$string = substr ( $string, 0, $maxlength );
-		$index = strrpos ( $string, ' ' );
-		if ($index === FALSE) {
-			return $string;
-		} else {
-			return substr ( $string, 0, $index ) . $suffix;
+		} else{
+			return substr($string,0,$index).$suffix;
 		}
 	}
 
