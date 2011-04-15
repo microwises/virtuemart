@@ -48,10 +48,12 @@ class VirtuemartControllerProduct extends JController {
 		$this->registerTask('edit','add');
 		$this->registerTask('apply','save');
 
+		/* dont SET THE HTML View and layout in constructor or json view is broken
 		/* Create the view object */
-		$view = $this->getView('product', 'html');
+		/*$view = $this->getView('product', 'html');
 		/* Set the layout */
-		$view->setLayout('product');
+		/*$view->setLayout('product');
+		  **/
 
 	}
 
@@ -205,16 +207,15 @@ class VirtuemartControllerProduct extends JController {
 	* @author RolandD
 	*/
 	public function getData() {
-		/* Create the view object */
+
+		/* Create the view object. */
 		$view = $this->getView('product', 'json');
 
-		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-
-		$view->setLayout('product');
+		/* Standard model */
+		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 
 		/* Now display the view. */
-		$view->display();
+		$view->display(null);
 	}
 
 	/**

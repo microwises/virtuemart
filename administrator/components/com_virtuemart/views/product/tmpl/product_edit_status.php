@@ -138,7 +138,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <script type="text/javascript">
 jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts', {
 		mustMatch: false,
+		max : 50,
 		dataType: "json",
+		minChars:2,
 		parse: function(data) {
 			return jQuery.map(data, function(row) {
 				return {

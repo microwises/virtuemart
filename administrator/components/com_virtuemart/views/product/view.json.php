@@ -33,15 +33,19 @@ class VirtuemartViewProduct extends JView {
 	function display($tpl = null) {
 
 		/* Get the task */
-		$type = JRequest::getVar('type');
+		
 
-		switch ($type) {
-			case 'relatedproducts':
-				$related_products = $this->get('ProductListJson');
-				echo json_encode($related_products);
-				break;
+		$db = JFactory::getDBO();
+		$filter = JRequest::getVar('q', false);
+		$query = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+			FROM #__vm_product";
+		if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
+		$db->setQuery($query);
+		$json = $db->loadObjectList();
+				
+		echo json_encode($json);
 
-		}
+
 	}
 }
 // pure php no closing tag
