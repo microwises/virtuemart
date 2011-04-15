@@ -177,6 +177,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_idArray = JRequest::getVar('product_id',0);
 		$product_id = $product_idArray[0];
 
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$product_model = $this->getModel('productdetails');
 
 		$prices = $product_model->getPrice($product_id);
