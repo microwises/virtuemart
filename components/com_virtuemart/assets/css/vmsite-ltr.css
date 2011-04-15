@@ -674,14 +674,27 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 .browse-view .row .product .spacer img {max-width: 90%;height: auto;}
 
 /*////////////////////////////////////
+////// Related Products View ////////
+////////////////////////////////////*/
+
+.related-products-view {margin: 25px 0px;}
+.related-products-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
+.related-products-view.row {}
+.related-products-view .row .product {text-align: center;}
+.related-products-view .row .product .spacer {padding: 6px;}
+.related-products-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
+.related-products-view .row .product .spacer span {font-size: 11px;color: #666;}
+.related-products-view .row .product .spacer img {max-width: 90%;height: auto;}
+
+/*////////////////////////////////////
 ////////// General Buttons ///////////
 ////////////////////////////////////*/
 
-a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: block;float: left;text-decoration: none;}
+a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
 
 a.product-details:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
-.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: block;float: left;text-decoration: none;margin-bottom: 8px;}
+.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: inline-block;text-decoration: none;margin-bottom: 8px;}
 
 .ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 

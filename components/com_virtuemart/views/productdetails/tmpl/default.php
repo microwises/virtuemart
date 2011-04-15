@@ -261,41 +261,100 @@ if (empty ( $this->product )) {
 //		$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
 //		echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	}
-	// Related Products
-	if ($this->product->related && !empty($this->product->related)) {
-		foreach ($this->product->related as $rkey => $related) {
-			?>
-			<hr />
-			<h3><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h3>
+	
+	
 
-			<table width="100%" align="center">
-				<tr>
-					<td valign="top">
-						<!-- The product name DIV. -->
-						<div style="height:77px; float:left; width: 100%;line-height:14px;">
-							<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
-							<br />
-						</div>
-						<!-- The product image DIV. -->
-						<div style="height:90px;width: 100%;float:left;margin-top:-15px;">
-								<?php
-								echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
-								?>
-						</div>
-						<!-- The product price DIV. -->
-						<div style="width: 100%; float: left; text-align: center;">
-							<?php /** @todo Format pricing */ ?>
-							<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
-						</div>
-						<!-- The add to cart DIV. -->
-						<div>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<?php
-		}
+// Related Products
+if ($this->product->related && !empty($this->product->related)) {
+	
+// Category and Columns Counter
+$iRelatedCol = 1;
+$iRelatedProduct = 1;
+
+// Calculating Products Per Row
+$RelatedProducts_per_row = 4 ;
+$Relatedcellwidth = ' width'.floor ( 100 / $RelatedProducts_per_row );
+
+// Separator
+$verticalseparator = " vertical-separator";
+?>
+
+<div class="related-products-view">
+
+	<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h4>
+
+<?php // Start the Output
+foreach ($this->product->related as $rkey => $related) {
+
+	// Show the horizontal seperator
+	if ($iRelatedCol == 1 && $iRelatedProduct > $RelatedProducts_per_row) { ?>
+	<div class="horizontal-separator"></div>
+	<?php }
+
+	// this is an indicator wether a row needs to be opened or not
+	if ($iRelatedCol == 1) { ?>
+	<div class="row">
+	<?php }
+
+	// Show the vertical seperator
+	if ($iRelatedProduct == $RelatedProducts_per_row or $iRelatedProduct % $RelatedProducts_per_row == 0) {
+		$show_vertical_separator = ' ';
+	} else {
+		$show_vertical_separator = $verticalseparator;
 	}
+
+		// Show Products ?>
+		<div class="product floatleft<?php echo $Relatedcellwidth . $show_vertical_separator ?>">
+			<div class="spacer">
+				<div>
+					<h3>
+					<?php echo JHTML::_('link', $related->link, $related->product_name); ?>
+					</h3>
+
+					<?php
+					// echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
+					?>
+
+					<div class="product-price marginbottom12">
+					<?php /** @todo Format pricing */ ?>
+					<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
+					</div>
+
+					<div>
+					<?php // Product Details Button
+					echo JHTML::link($related->link, JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $related->product_name, 'class' => 'product-details' ) );
+					?>
+					</div>
+				</div>
+			<div class="clear"></div>
+			</div>
+		</div>
+	<?php
+	$iRelatedProduct ++;
+
+	// Do we need to close the current row now?
+	if ($iRelatedCol == $RelatedProducts_per_row) { ?>
+	<div class="clear"></div>
+	</div>
+		<?php
+		$iRelatedCol = 1;
+	} else {
+		$iRelatedCol ++;
+	}
+}
+// Do we need a final closing row tag?
+if ($iRelatedCol != 1) { ?>
+	<div class="clear"></div>
+	</div>
+<?php
+}
+?>
+</div>
+<?php
+}
+
+	
+	
 
 	/* Show child categories */
 if ( VmConfig::get('showCategory',1) ) {
