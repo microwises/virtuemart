@@ -569,7 +569,7 @@ class VmMediaHandler {
 	public function displayFilesHandler($fileIds=array(0)){
 
 		$html = $this->displayFileSelection($fileIds);
-		$html = $this->displayFileHandler('id="vm_display_image"');
+		$html .= $this->displayFileHandler('id="vm_display_image"');
 		return $html;
 	}
 
