@@ -21,8 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
-//require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'CategoryUtils.php');
-//require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php');
 
 /**
  * Default HTML View class for the VirtueMart Component

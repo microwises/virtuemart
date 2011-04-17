@@ -53,8 +53,8 @@ class VirtuemartViewCategory extends JView {
 		/* Load helpers */
 		$this->loadHelper('image');
 
-		$categoryModel = $this->getModel('categorydetails');
-		$productModel = $this->getModel('productdetails');
+		$categoryModel = $this->getModel('category');
+		$productModel = $this->getModel('product');
 	    $categoryId = JRequest::getInt('category_id', 0);
 	    $vendorId = 1;
 
@@ -92,7 +92,7 @@ class VirtuemartViewCategory extends JView {
 				}
 				$catLevel = $cat->level;
 			}
-			for ($i =1;$i<$catLevel;$i++) {?> 	
+			for ($i =1;$i<$catLevel;$i++) {?>
 				</li></ul><?php } ?>
 </ul><?php */
 
@@ -116,7 +116,8 @@ class VirtuemartViewCategory extends JView {
 	    $productModel->addImagesToProducts($products);
 	    $this->assignRef('products', $products);
 
-	    $total = $productModel->getTotalProductsInCategory($categoryId);
+//	    $total = $productModel->getTotalProductsInCategory($categoryId);
+	    $total = $categoryModel->countProducts($categoryId);
 	    $this->assignRef('total', $total);
 
 	    $pagination = $productModel->getPagination($categoryId);

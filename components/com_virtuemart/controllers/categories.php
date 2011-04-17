@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id: category.php 2641 2010-11-09 19:25:13Z milbo $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -31,7 +31,7 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerCategories extends JController {
 
     /**
-    * Method Description 
+    * Method Description
     *
     * @access public
     * @author RolandD
@@ -42,22 +42,22 @@ class VirtueMartControllerCategories extends JController {
    	}
 
 	/**
-	* Function Description 
-	* 
+	* Function Description
+	*
 	* @author Max Milbers
-	* @access public 
+	* @access public
 	*/
 	public function Categories() {
 		/* Create the view */
 		$view = $this->getView('categories', 'html');
-		
+
 		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 		/* Add the default model */
-		$view->setModel($this->getModel('categorydetails', 'VirtuemartModel'), true);
-		
+		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
+
 		/* Set the layout */
 		//$view->setLayout('category');
-		
+
 		/* Display it all */
 		$view->display();
 	}

@@ -29,7 +29,7 @@ if (empty ( $this->product )) {
 	return ;
 }  ?>
 <div class="productdetails-view">
-	
+
 	<?php // Product Navigation
 	if (VmConfig::get ( 'product_navigation', 1 )) {?>
 		<div class="product-neighbours">
@@ -46,7 +46,7 @@ if (empty ( $this->product )) {
 			<br style="clear: both;" />
 		</div>
 	<?php } ?>
-	
+
 	<h1><?php echo $this->product->product_name.' '.$this->edit_link; ?></h1>
 
 	<div>
@@ -57,14 +57,14 @@ if (empty ( $this->product )) {
 			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"'); ?>
 			</div>
 		<?php } ?>
-		
+
 		<?php //Showing the additional images ?>
-		
+
 		<?php
 		if(!empty($this->product->images)) { ?>
 			<div class="additional-images">
 			<?php // List all Images
-			foreach ($this->product->images as $image) { 
+			foreach ($this->product->images as $image) {
 				echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
 			} ?>
 			</div>
@@ -261,12 +261,12 @@ if (empty ( $this->product )) {
 //		$link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
 //		echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	}
-	
-	
+
+
 
 // Related Products
 if ($this->product->related && !empty($this->product->related)) {
-	
+
 // Category and Columns Counter
 $iRelatedCol = 1;
 $iRelatedProduct = 1;
@@ -353,8 +353,8 @@ if ($iRelatedCol != 1) { ?>
 <?php
 }
 
-	
-	
+
+
 
 	/* Show child categories */
 if ( VmConfig::get('showCategory',1) ) {
@@ -433,8 +433,8 @@ if ( VmConfig::get('showCategory',1) ) {
 	</div>
 
 <div class="horizontal-separator"></div>
-<?php } 
-} 
+<?php }
+}
 
 	/**
 	* Reviews
@@ -464,27 +464,27 @@ if ( VmConfig::get('showCategory',1) ) {
 				<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
 				<?php
 				$alreadycommented = false;?>
-				
+
 				<div class="list-reviews">
 				<?php // Loop through all reviews
 				$i=0;
-				foreach($this->product_reviews as $review ) { 
-					
+				foreach($this->product_reviews as $review ) {
+
 					if ($i % 2 == 0) {
    						$color = 'normal';
 					} else {
 						$color = 'highlight';
 					}
-					
+
 					/* Check if user already commented */
 					if ($review->userid == $this->user->id) {
 						$alreadycommented = true;
 					} ?>
-					
+
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date($review->time, JText::_('DATE_FORMAT_LC')); ?></span>
 						<?php echo $stars[ $review->user_rating ] ?>
-						
+
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->username ?></span>
 					</div>
@@ -492,7 +492,7 @@ if ( VmConfig::get('showCategory',1) ) {
 					$i++ ;
 					if ( $i == $ratingsShow && !$showall) break;
 				}
-				
+
 				if (count($this->product_reviews) < 1) echo JText::_('COM_VIRTUEMART_NO_REVIEWS'); // "There are no reviews for this product"
 				else {
 					/* Show all reviews */
@@ -504,9 +504,9 @@ if ( VmConfig::get('showCategory',1) ) {
 				?>
 				<div class="clear"></div>
 				</div>
-				
-				
-				
+
+
+
 				<?php
 
 				if (!empty($this->user->id)) {
@@ -595,7 +595,7 @@ if ( VmConfig::get('showCategory',1) ) {
 				}
 				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
-			
+
 <?php
 	}
 

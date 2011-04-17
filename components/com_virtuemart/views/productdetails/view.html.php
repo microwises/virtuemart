@@ -66,7 +66,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Load the product */
 //		$product = $this->get('product');
-		$product_model = $this->getModel('productdetails');
+		$product_model = $this->getModel('product');
 
 		$product_idArray = JRequest::getVar('product_id');
 		if(is_array($product_idArray)){
@@ -79,7 +79,7 @@ class VirtueMartViewProductdetails extends JView {
 			self::showLastCategory($tpl);
 			return;
 		}
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//		dump($this,'wie?');
 		$product = $product_model->getProduct($product_id);
 		$product_model->addImagesToProducts($product);
 
@@ -99,7 +99,7 @@ class VirtueMartViewProductdetails extends JView {
 
 
 		/* Load the category */
-		$category_model = $this->getModel('categorydetails');
+		$category_model = $this->getModel('category');
 		/* Get the category ID */
 		$category_id = JRequest::getInt('category_id');
 		if ($category_id == 0 && !empty($product)) {

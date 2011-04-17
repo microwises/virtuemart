@@ -46,7 +46,7 @@ class VirtuemartViewCategory extends JView {
 
 		if ($layoutName == 'edit') {
 
-	        $category = $model->getCategory();
+	        $category = $model->getCategory('',false);
 
 	       	$model->addImagesToCategories($category);
 

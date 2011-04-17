@@ -62,7 +62,7 @@ class VirtueMartViewAskquestion extends JView {
 
 		/* Load the product */
 //		$product = $this->get('product');
-		$product_model = $this->getModel('productdetails');
+		$product_model = $this->getModel('product');
 
 		$product_idArray = JRequest::getVar('product_id');
 		if(is_array($product_idArray)){
@@ -95,7 +95,7 @@ class VirtueMartViewAskquestion extends JView {
 
 
 		/* Load the category */
-		$category_model = $this->getModel('categorydetails');
+		$category_model = $this->getModel('category');
 		/* Get the category ID */
 		$category_id = JRequest::getInt('category_id');
 		if ($category_id == 0 && !empty($product)) {

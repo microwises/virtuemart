@@ -92,6 +92,97 @@ class VirtueMartModelCategory extends JModel {
         $this->_data = null;
     }
 
+	/**
+	 * Gets the total number of categories
+	 *
+     * @author RickG, jseros
+	 * @return int Total number of categories in the database
+	 */
+	public function _getTotal(){
+    	if (empty($this->_total)) {
+			$query = 'SELECT `category_id` FROM `#__vm_category`';
+			$this->_total = $this->_getListCount($query);
+        }
+        return $this->_total;
+    }
+
+   	/**
+	 * Loads the pagination for the category table
+	 *
+     * @author RickG, jseros
+     * @return JPagination Pagination for the current list of categories
+	 */
+    public function getPagination(){
+		if (empty($this->_pagination)) {
+			jimport('joomla.html.pagination');
+			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+		}
+		return $this->_pagination;
+	}
+
+    /**
+     * Retrieve the detail record for the current $id if the data has not already been loaded.
+     *
+     * @author RickG, jseros, RolandD, Max Milbers
+     */
+	public function getCategory($category_id=0,$childs=TRUE){
+
+		if(!empty($category_id)) $this->setId((int)$category_id);
+
+  		if (empty($this->_data)) {
+   			$this->_data = $this->getTable();
+   			$this->_data->load((int)$this->_id);
+  		}
+
+  		if($this->_data->file_ids){
+  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
+		}
+
+  		if($childs){
+  			$this->_data->haschildren = $this->hasChildren($this->_id);
+
+  			/* Get children if they exist */
+			if ($this->_data->haschildren) $this->_data->children = $this->getChildrenList($this->_id);
+			else $this->_data->children = null;
+
+			/* Get the product count */
+			$this->_data->productcount = $this->countProducts($this->_id);
+
+			/* Get parent for breatcrumb */
+			$this->_data->parents = $this->getparentsList($this->_id);
+
+  		}
+
+  		return $this->_data;
+
+	}
+
+//	/**
+//	* Load a category and it's details
+//	*
+//	* @author RolandD
+//	* @return object containing the category
+//	*/
+//	public function getCategory($category_id=0) {
+//		$db = JFactory::getDBO();
+//		$row =& $this->getTable('category');
+//		$row->load($category_id);
+//		if (VmConfig::get('showCategory',1)) {
+//		/* Check for children */
+//		$row->haschildren = $this->hasChildren($category_id);
+//
+//		/* Get children if they exist */
+//		if ($row->haschildren) $row->children = $this->getChildrenList($category_id);
+//		else $row->children = null;
+//
+//		/* Get the product count */
+//		$row->productcount = $this->getProductCount($category_id);
+//		}
+//		/* Get parent for breatcrumb */
+//		$row->parents = $this->getparentsList($category_id);
+//
+//		return $row;
+//	}
 
     /**
 	 * Get the list of child categories for a given category
@@ -270,11 +361,27 @@ class VirtueMartModelCategory extends JModel {
 	 *
      * @author jseros
 	 * @return int Total number of products
+	 *
 	 */
 	public function countProducts( $categoryId = 0 ){
 		$categoryId = intval($categoryId);
-		$query = 'SELECT COUNT(category_id) as total FROM #__vm_product_category_xref
-				  WHERE category_id = '. $this->_db->Quote($categoryId);
+
+		//by jseros
+//		$query = 'SELECT COUNT(category_id) as total FROM #__vm_product_category_xref
+//				  WHERE category_id = '. $this->_db->Quote($categoryId);
+
+		$vendorId = 1;
+		//by RolandD
+		$query = 'SELECT count(#__vm_product.product_id) AS total
+			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
+			WHERE #__vm_product.vendor_id = "'.$vendorId.'"
+			AND #__vm_product_category_xref.category_id = "'.$this->_db->Quote($categoryId).'"
+			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
+			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
+			AND #__vm_product.published = "1" ';				//TODO I think this is legacy and need adjusted
+			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != '1') {
+				$q .= ' AND product_in_stock > 0 ';
+			}
 
     	$this->_db->setQuery($query);
     	$result = $this->_db->loadObject();
@@ -282,35 +389,30 @@ class VirtueMartModelCategory extends JModel {
         return $result->total;
     }
 
-
 	/**
-	 * Loads the pagination for the category table
+	 * NOT USED,
+	 * Function to calculate and return the number of products in category $category_id
+	 * @author RolandD
 	 *
-     * @author RickG, jseros
-     * @return JPagination Pagination for the current list of categories
+	 * @todo Add vendor
+	 * @param int $category_id the category ID to count products for
+	 * @return int the number of products found
 	 */
-    public function getPagination(){
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of categories
-	 *
-     * @author RickG, jseros
-	 * @return int Total number of categories in the database
-	 */
-	public function _getTotal(){
-    	if (empty($this->_total)) {
-			$query = 'SELECT `category_id` FROM `#__vm_category`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
+//	public function getProductCount($category_id) {
+//		$db = JFactory::getDBO();
+//		$q = "SELECT count(#__vm_product.product_id) AS num_rows
+//			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
+//			WHERE #__vm_product.vendor_id = 1
+//			AND #__vm_product_category_xref.category_id = ".$category_id."
+//			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
+//			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
+//			AND #__vm_product.published = 1";
+//			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
+//				$q .= " AND product_in_stock > 0 ";
+//			}
+//		$db->setQuery($q);
+//		return $db->loadResult();
+//	}
 
 
     /**
@@ -390,7 +492,7 @@ class VirtueMartModelCategory extends JModel {
 	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @author RickG, jseros
+     * @author RickG, jseros, Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the publishing was successful, false otherwise.
      */
@@ -440,28 +542,6 @@ class VirtueMartModelCategory extends JModel {
 
 		return ($share ? 1 : -1);
 	}
-
-
-    /**
-     * Retrieve the detail record for the current $id if the data has not already been loaded.
-     *
-     * @author RickG, jseros, Max Milbers
-     */
-	public function getCategory(){
-
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
-   			$this->_data->load((int)$this->_id);
-  		}
-
-  		if($this->_data->file_ids){
-  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
-  		}
-
-  		return $this->_data;
-
-	}
-
 
 
     /**
@@ -675,4 +755,162 @@ class VirtueMartModelCategory extends JModel {
 		$this->mediaModel->attachImages($cats,'file_ids','category','image');
 
 	}
+
+
+	/**
+	 * Stuff of categorydetails
+	 */
+
+	/* array container for category tree ID*/
+	var $container = array();
+
+
+	/**
+	* Checks for children of the category $category_id
+	*
+	* @author RolandD
+	* @param int $category_id the category ID to check
+	* @return boolean true when the category has childs, false when not
+	*/
+	public function hasChildren($category_id) {
+		$db = JFactory::getDBO();
+		$q = "SELECT category_child_id
+			FROM #__vm_category_xref
+			WHERE category_parent_id = ".$category_id;
+		$db->setQuery($q);
+		$db->query();
+		if ($db->getAffectedRows() > 0) return true;
+		else return false;
+	}
+
+	/**
+	 * Creates a bulleted of the childen of this category if they exist
+	 *
+	 * @author RolandD
+	 * @todo Add vendor ID
+	 * @param int $category_id the category ID to create the list of
+	 * @return array containing the child categories
+	 */
+	public function getChildrenList($category_id,$limit=false) {
+		$db = JFactory::getDBO();
+		$childs = array();
+
+		$q = "SELECT category_id, file_ids, category_child_id, category_name
+			FROM #__vm_category, #__vm_category_xref
+			WHERE #__vm_category_xref.category_parent_id = ".$category_id."
+			AND #__vm_category.category_id=#__vm_category_xref.category_child_id
+			AND #__vm_category.vendor_id = 1
+			AND #__vm_category.published = 1
+			ORDER BY #__vm_category.ordering, #__vm_category.category_name ASC";
+		if ($limit) $q .=' limit 0,'.$limit;
+		$db->setQuery($q);
+		$childs = $db->loadObjectList();
+
+		/* Get the products in the category */
+		foreach ($childs as $ckey => $child) {
+			$childs[$ckey]->number_of_products = $this->countProducts($child->category_child_id);
+		}
+
+		return $childs;
+	}
+
+	/**
+	 * Creates a bulleted of the childen of this category if they exist
+	 *
+	 * @author RolandD
+	 * @todo Add vendor ID
+	 * @param int $category_id the category ID to create the list of
+	 * @return array containing the child categories
+	 */
+	public function getparentsList($category_id) {
+
+		$db = & JFactory::getDBO();
+		$menu = &JSite::getMenu();
+		$parents = array();
+		if (empty($query['Itemid'])) {
+			$menuItem = &$menu->getActive();
+		} else {
+			$menuItem = &$menu->getItem($query['Itemid']);
+		}
+		$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
+		if ($menuCatid == $category_id) return ;
+		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
+		foreach ($parents_id as $id ) {
+			$q = "SELECT `category_name`,`category_id`
+				FROM  `#__vm_category`
+				WHERE  `category_id`=".$id;
+
+			$db->setQuery($q);
+
+			$parents[] = $db->loadObject();
+		}
+		return $parents;
+	}
+
+	function getCategoryRecurse($category_id,$catMenuId,$first=true ) {
+		static $idsArr = array();
+		if($first) {
+			$idsArr = array();
+		}
+
+		$db = & JFactory::getDBO();
+		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
+			FROM  #__vm_category_xref AS `xref`
+			WHERE `xref`.`category_child_id`= ".$category_id;
+		$db->setQuery($q);
+		if (!$ids = $db->loadObject()) {
+			return $idsArr;
+		}
+		if ($ids->child) $idsArr[] = $ids->child;
+		if($ids->child != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
+			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
+		}
+		return $idsArr;
+	}
+
+	/*
+	* Returns an array of the categories recursively for a given category
+	* @author Kohl Patrick
+	* @param int $id
+	* @param int $maxLevel
+	 * @Object $this->container
+	*/
+	function treeCat($id=0,$maxLevel =1000) {
+		static $level = 0;
+		static $num = -1 ;
+		$db = & JFactory::getDBO();
+		$q = 'SELECT category_child_id,category_name FROM #__vm_category_xref
+		LEFT JOIN #__vm_category on #__vm_category.category_id=#__vm_category_xref.category_child_id
+		WHERE category_parent_id='.$id;
+		$db->setQuery($q);
+		$num ++;
+		// if it is a leaf (no data underneath it) then return
+		$childs = $db->loadObjectList();
+		if ($level==$maxLevel) return;
+		if ($childs) {
+			$level++;
+			foreach ($childs as $child) {
+				$this->container[$num]->id = $child->category_child_id;
+				$this->container[$num]->name = $child->category_name;
+				$this->container[$num]->level = $level;
+				self::treeCat($child->category_child_id,$maxLevel );
+			}
+			$level--;
+		}
+	}
+	/**
+	 * @author Kohl Patrick
+	 * @param  $maxlevel the number of level
+	 * @param  $id the root category id
+ 	 * @Object $this->container
+	 * @ return categories id, name and level in container
+	 * if you set Maxlevel to 0, then you see nothing
+	 * max level =1 for simple category,2 for category and child cat ....
+	 * don't set it for all (1000 levels)
+	 */
+	function GetTreeCat($id=0,$maxLevel = 1000) {
+		self::treeCat($id ,$maxLevel) ;
+		return $this->container ;
+	}
+
 }

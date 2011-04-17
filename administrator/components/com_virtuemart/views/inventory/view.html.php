@@ -42,7 +42,7 @@ class VirtuemartViewInventory extends JView {
 			case 'publish':
 			case 'unpublish':
 				$product_model = $this->getModel('product');
-				$product_model->getPublish();
+				$product_model->publish();
 				break;
 		}
 

@@ -20,13 +20,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * and displays it wherever you want
 *----------------------------------------------------------------------
 */
-/* Load  VM fonction */ 
+/* Load  VM fonction */
 require('helper.php');
 $config->jQuery();
 $config->cssSite();
 
 /* Setting */
-$categoryModel = new VirtueMartModelCategorydetails();
+$categoryModel = new VirtueMartModelCategory();
 $category_id = $params->get('Parent_Category_id', '0');
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
@@ -36,7 +36,7 @@ $vendorId = '1';
 
 $categories = $categoryModel->getChildrenList($category_id) ;
 
-/*		$q = "SELECT category_id, category_name 
+/*		$q = "SELECT category_id, category_name
 			FROM #__vm_category, #__vm_category_xref
 			WHERE #__vm_category_xref.category_parent_id = ".$category_id."
 			AND #__vm_category.category_id=#__vm_category_xref.category_child_id

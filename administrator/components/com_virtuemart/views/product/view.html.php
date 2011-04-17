@@ -60,7 +60,8 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load the product */
 				$product_model = $this->getModel('product');
-				$product = $this->get('Product');
+//				$product = $this->get('Product');
+				$product = $product_model->getProductSingle('',false,false);
 
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -261,10 +262,10 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				/* Get the category tree */
 				$categoryId = JRequest::getInt('category_id');
-				if(!empty($categoryId)){
+//				if(!empty($categoryId)){
 					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 					$this->assignRef('category_tree', $category_tree);
-				}
+//				}
 
 
 				/* Check for child products if it is a parent item */

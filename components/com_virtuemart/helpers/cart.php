@@ -322,15 +322,15 @@ class VirtueMartCart  {
 	/**
 	* Proxy function for getting a product object
 	*
-	* @author RolandD
+	* @author Max Milbers
 	* @todo Find out if the include path belongs here? For now it works.
 	* @param int $product_id The product ID to get the object for
 	* @return object The product details object
 	*/
 	private function getProduct($product_id) {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
-		$model = JModel::getInstance('Productdetails', 'VirtueMartModel');
-		return $model->getProduct($product_id, false);
+		$model = JModel::getInstance('Product', 'VirtueMartModel');
+		return $model->getProduct($product_id, true, false);
 	}
 
 //	/**

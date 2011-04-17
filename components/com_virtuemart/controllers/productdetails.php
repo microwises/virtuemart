@@ -48,10 +48,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 			$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 			/* Add the default model */
-			$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+			$view->setModel($this->getModel('product','VirtuemartModel'), true);
 
 			/* Add the category model */
-			$view->setModel($this->getModel('categorydetails', 'VirtuemartModel'));
+			$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 			/* Set the layout */
 //			$view->setLayout('productdetails');
@@ -73,17 +73,17 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$productmodel = $this->getModel( 'product', 'VirtuemartModel' );
 		$productDetails = $productmodel->getProductDetails();
-                
+
 		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
 		$VendorEmail = $vendormodel->getVendorEmail($productDetails->vendor_id);
 		/* Add the default model */
-		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		$view->setModel($this->getModel('product','VirtuemartModel'), true);
 
 		/* Add the category model */
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
-		
-		/* mail asked question 
+
+		/* mail asked question
 		*  TODO use the templating Mail
 		* Author Kohl Patrick
 		*/
@@ -92,7 +92,7 @@ class VirtueMartControllerProductdetails extends JController {
 		if(empty($user->id)){
                     $fromMail = JRequest::getVar('email');
                     $fromName = JRequest::getVar('name','');
-		
+
 		}else {
                     $fromMail = $user->email;
                     $fromName = $user->name;
@@ -113,7 +113,7 @@ class VirtueMartControllerProductdetails extends JController {
 	}
 	/**
 	 *  Ask Question form
-	 * 
+	 *
 	 */
 	public function askquestion(){
 		/* Create the view */
@@ -122,10 +122,10 @@ class VirtueMartControllerProductdetails extends JController {
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 
 		/* Add the default model */
-		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		$view->setModel($this->getModel('product','VirtuemartModel'), true);
 
 		/* Add the category model */
-		$view->setModel($this->getModel('categorydetails', 'VirtuemartModel'));
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 		/* Set the layout */
 		$view->setLayout('form');
@@ -148,7 +148,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$view = $this->getView('productdetails', 'html');
 
 		/* Add the default model */
-		$view->setModel($this->getModel('productdetails','VirtuemartModel'), true);
+		$view->setModel($this->getModel('product','VirtuemartModel'), true);
 
 		/* Add the category model */
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
@@ -178,10 +178,10 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_id = $product_idArray[0];
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$product_model = $this->getModel('productdetails');
+		$product_model = $this->getModel('product');
 
 		$prices = $product_model->getPrice($product_id);
-
+		dump($prices,'my prices');
 		//Why we do not have to include the calculatorh.php here?
 		//Because it is already require in the model!
 

@@ -43,8 +43,8 @@ class VirtuemartControllerProduct extends JController {
 		$this->registerTask('saveorder','product');
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
-		$this->registerTask('unpublish','product');
-		$this->registerTask('publish','product');
+//		$this->registerTask('unpublish','product');
+//		$this->registerTask('publish','product');
 		$this->registerTask('edit','add');
 		$this->registerTask('apply','save');
 
@@ -80,6 +80,37 @@ class VirtuemartControllerProduct extends JController {
 		$view->display();
 	}
 
+	/**
+	 * Handle the publish task
+	 *
+	 * @author Max Milbers
+	 */
+	public function publish(){
+		$model = $this->getModel('product');
+		if (!$model->publish(true)) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_PUBLISHED');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_PUBLISHED_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
+	}
+
+	/**
+	 * Handle the publish task
+	 *
+	 * @author RickG, jseros
+	 */
+	public function unpublish(){
+		$model = $this->getModel('product');
+		if (!$model->publish(false)) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_UNPUBLISHED');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_UNPUBLISHED_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
+	}
 	/**
 	 * Shows the product add/edit screen
 	 */
