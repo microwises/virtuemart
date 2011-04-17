@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,12 +15,12 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
 /* Load some behaviour */
-$document = JFactory::getDocument();				
+$document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
 $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
 ?>
@@ -58,10 +58,12 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jque
 ?>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="product" />
+<input type="hidden" name="controller" value="product" />
 <input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

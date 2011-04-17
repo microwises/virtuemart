@@ -569,7 +569,7 @@ class VmMediaHandler {
 	public function displayFilesHandler($fileIds=array(0)){
 
 		$html = $this->displayFileSelection($fileIds);
-		$html .= $this->displayFileHandler('id="vm_display_image"');
+		$html = $this->displayFileHandler('id="vm_display_image"');
 		return $html;
 	}
 
@@ -656,7 +656,8 @@ class VmMediaHandler {
 		$html .= '<div id="file_title">'.$this->file_title.'</div>';
 		$html .= $this->displayMediaFull($imageArgs,false);
 
-		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
+		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
+//		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 
 		$html .= ' <table class="adminform"> ';
 
@@ -666,12 +667,11 @@ class VmMediaHandler {
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
 	<td>
-		<input type="checkbox" class="inputbox" id="published" name="published'.$identify.'" value="1" '.$checked.' size="16" />
+		<input type="checkbox" class="inputbox" id="published" name="published'.$identify.'" '.$checked.' size="16" />
 	</td>';
 		$html .= '<td rowspan = 5>';
 		$html .= JHTML::image($this->file_url_thumb, $this->file_meta.' thumbnail', 'style="overflow: auto; float: right;"');
 		$html .= '</td>';
-//		$html .= $this->displayMediaThumb();
 
 $html .= '</tr>';
 
@@ -703,7 +703,7 @@ $html .= '</tr>';
 		$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 		$html .= $this->displayHidden();
-		$html .= '</form>';
+//		$html .= '</form>';
 
 		return $html;
 	}
