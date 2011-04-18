@@ -97,7 +97,7 @@ class VirtueMartModelOrders extends JModel {
 		$db = JFactory::getDBO();
 		$q = 'SELECT `order_id` FROM `#__vm_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
 		$db->setQuery($q);
-		$oderId = $db->loadResult();dump($oderId,'my $oderId'); dump($this,'my model');
+		$oderId = $db->loadResult();
 		return $oderId;
 
 	}

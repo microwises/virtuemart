@@ -411,7 +411,7 @@ class VmMediaHandler {
 			$oldFileUrl = $data['file_url'];
 			$file_name = $this->uploadFile($this->file_url_folder);
 			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
-				$this->deleteFile($oldFileUrl);dump($oldFileUrl,'called delete');
+				$this->deleteFile($oldFileUrl);
 			}
 			$this->file_url = $this->file_url_folder.$file_name;
 			$this->file_name = $file_name;

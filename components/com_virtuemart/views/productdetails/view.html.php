@@ -81,12 +81,13 @@ class VirtueMartViewProductdetails extends JView {
 		}
 //		dump($this,'wie?');
 		$product = $product_model->getProduct($product_id);
-		$product_model->addImagesToProducts($product);
 
 		if(empty($product)){
 			self::showLastCategory($tpl);
 			return;
 		}
+		$product_model->addImagesToProducts($product);
+		$this->assignRef('product', $product);dump($product,'$product');
 
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
@@ -94,8 +95,6 @@ class VirtueMartViewProductdetails extends JView {
 		/* Set the titles */
 		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name));
 		$uri = JURI::getInstance();
-
-		$this->assignRef('product', $product);
 
 
 		/* Load the category */
@@ -125,7 +124,7 @@ class VirtueMartViewProductdetails extends JView {
 		$pathway->addItem($product->product_name);
 
 		/* Load the reviews */
-		if (VmConfig::get('pshop_allow_reviews', 1) == '1') {
+		if (VmConfig::get('allow_reviews', 1) == '1') {
 			$model = $this->getModel();
 			/* Show all reviews available */
 			$product_reviews = $model->getProductReviews($product->product_id);

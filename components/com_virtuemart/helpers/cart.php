@@ -758,7 +758,7 @@ class VirtueMartCart  {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
-			dump($this,'done with it');
+
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 

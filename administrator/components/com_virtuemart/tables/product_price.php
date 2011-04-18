@@ -43,7 +43,7 @@ class TableProduct_price extends JTable {
     var $product_currency = null;
 
     var $product_price_vdate = null;
-    
+
     var $product_price_edate = null;
     /** @var string Creation date */
     var $cdate = null;
@@ -62,6 +62,7 @@ class TableProduct_price extends JTable {
      */
     function __construct(&$db) {
         parent::__construct('#__vm_product_price', 'product_price_id', $db);
+//        parent::__construct('#__vm_product_price', 'product_id', $db);
     }
 
     /**
@@ -83,6 +84,7 @@ class TableProduct_price extends JTable {
 //			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_CURRENCY'));
 //			return false;
 //		}
+		dump($this,'table check');
         return true;
     }
 
@@ -95,14 +97,17 @@ class TableProduct_price extends JTable {
      * @see libraries/joomla/database/JTable#store($updateNulls)
      */
     public function store() {
-        $_qry = 'SELECT product_id '
+//        $_qry = 'SELECT product_id '
+//                . 'FROM #__vm_product_price '
+//                . 'WHERE product_price_id = ' . $this->product_price_id
+        $_qry = 'SELECT product_price_id '
                 . 'FROM #__vm_product_price '
-                . 'WHERE product_price_id = ' . $this->product_price_id
-        ;
+                . 'WHERE product_id = ' . $this->product_id;
         $this->_db->setQuery($_qry);
-        $_count = $this->_db->loadResultArray();
+        $id = $this->_db->loadResult();
+        $this->product_price_id = $id;
 
-        if (count($_count) > 0) {
+        if ( $id > 0) {
             $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
         } else {
             $returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);

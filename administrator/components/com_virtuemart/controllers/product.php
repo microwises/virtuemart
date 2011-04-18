@@ -191,9 +191,35 @@ class VirtuemartControllerProduct extends JController {
 	}
 
 	/**
+	 * This task creates a child by a given product id
+	 *
+	 * @author Max Milbers
+	 */
+	public function createChild(){
+		$app = Jfactory::getApplication();
+
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
+
+		$model = $this->getModel('product');
+
+		$cids = JRequest::getVar('cid');
+		if ($id=$model->createChild($cids)){
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+			$redirect = 'index.php?option=com_virtuemart&controller=product&task=edit&product_parent_id='.$cids.'&product_id='.$id;
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
+			$msgtype = 'error';
+			$redirect = 'index.php?option=com_virtuemart&controller=product';
+		}
+		$app->redirect($redirect, $msg, $msgtype);
+
+	}
+
+	/**
 	* Clone a product
 	*
-	* @author RolandD
+	* @author RolandD, Max Milbers
 	*/
 	public function CloneProduct() {
 		$mainframe = Jfactory::getApplication();
@@ -203,7 +229,8 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($model->cloneProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+		$cids = JRequest::getVar('cid'); dump($cids,'my cids');
+		if ($model->createClone($cids[0])) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
 			$msgtype = 'error';

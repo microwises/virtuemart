@@ -89,15 +89,12 @@ class calculationHelper {
 		if(empty($currencyId)){
 			$currencyId = $this->vendorCurrency;
 		}
-//		dump($this,'my calculator');
 		$vendorId = 1 ;
 		if($this->_currencyDisplay->id!=$currencyId){
 			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
 		}
 
 		$price = $this->convertCurrencyTo($currencyId,$price,false);
-//		if(empty($this->_currencyDisplay)) $this -> _currencyDisplayShopper = CurrencyDisplay::getCurrencyDisplay(1,$currencyId);
-//		return $this -> _currencyDisplayShopper->getFullValue($price);
 		return $this -> _currencyDisplay->getFullValue($price);
 	}
 
@@ -144,12 +141,19 @@ class calculationHelper {
 			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc();
 			if($row){
-				$costPrice = $row['product_price'];
-				$this->productCurrency=$row['product_currency'];
-				$this->override=$row['override'];
-				$this->product_override_price=$row['product_override_price'];
-				$this->product_tax_id=$row['product_tax_id'];
-				$this->product_discount_id=$row['product_discount_id'];
+				if(!empty($row['product_price'])){
+					$costPrice = $row['product_price'];
+					$this->productCurrency=$row['product_currency'];
+					$this->override=$row['override'];
+					$this->product_override_price=$row['product_override_price'];
+					$this->product_tax_id=$row['product_tax_id'];
+					$this->product_discount_id=$row['product_discount_id'];
+
+				} else{
+					$app = Jfactory::getApplication();
+					$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
+					return false;
+				}
 			}
 			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
 			$single = $this->_db->loadResult();
@@ -241,7 +245,7 @@ class calculationHelper {
 			}
 			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
 		}
-
+		if(empty($prices['basePrice'])) return $prices;
 		//For Profit, margin, and so on
 //		if(count($calcRules)!==0){
 //			$prices['profit'] =
@@ -279,7 +283,6 @@ class calculationHelper {
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
 //		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
-
 
 		$prices['variantModification']=$variant;
 
@@ -894,7 +897,7 @@ class calculationHelper {
 		}
 
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
-			$price = $price * $exchangeRate;
+			$price = $price * $exchangeRate;dump($exchangeRate,'Use fixed rate ');
 		} else {
 			if($shop){
 				$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
@@ -903,6 +906,7 @@ class calculationHelper {
 			}
 
 		}
+
 		return $price;
 	}
 

@@ -601,7 +601,6 @@ class VirtueMartModelUser extends JModel {
 			$vendorModel->setId($vendorId);
 			$vendor = $vendorModel->getVendor();
 			$vendorModel->addImagesToVendor($vendor);
-			dump($vendor,'My vendor in sent email');
 			$view->setModel( $vendorModel );
 
 			// Send registration confirmation mail

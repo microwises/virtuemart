@@ -71,7 +71,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product->product_id);
+				$product->prices = $calculator -> getProductPrices($product->product_id); dump($product);
 
 				$dbTax = 'Rules Effecting: <br />';
 				foreach($calculator->rules['dBTax'] as $rule){
@@ -116,7 +116,6 @@ class VirtuemartViewProduct extends JView {
 				/* Load the vendors */
 				$vendor_model = $this->getModel('vendor');
 
-				//TODO add here an if so that only the mainvendor or admin gets the list, in other just the name of the given vendor
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
 
@@ -141,11 +140,12 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Load the attribute values */
 				$product->attribute_values = $this->get('ProductAttributeValues');
 
-				/* Load the child products */
-				if ($product->product_id > 0 && $product->product_parent_id == 0) {
-					$product->child_products = $product_model->getChildAttributes($product->product_id);
-				}
-				else $product->child_products = null;
+				/* TODO Load the child products */
+//				if ($product->product_id > 0 && $product->product_parent_id == 0) {
+//					$product->child_products = $product_model->getChildAttributes($product->product_id);
+//				} else
+				$product->child_products = null;
+
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = time();
 				}
@@ -314,13 +314,14 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
+				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE'), true);
 				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_PRODUCT_TYPE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				JToolBarHelper::divider();
 				JToolBarHelper::publish();
 				JToolBarHelper::unpublish();
-				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::addNew();
 

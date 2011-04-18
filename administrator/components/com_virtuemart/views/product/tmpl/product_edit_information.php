@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_CATEGORIES') ?>:</div>
 				</td>
 				<td width="71%" >
-					<select class="inputbox" id="product_categories" name="product_categories[]" multiple="multiple" size="10">
+					<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">
 						<?php echo $this->category_tree; ?>
 					</select>
 				</td>
@@ -133,7 +133,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
 				<td width="71%">
-					<input type="text" readonly value="<?php echo $this->product->prices['salesPrice']; ?>" class="inputbox" name="product_price_incl_tax" size="10"  />
+					<?php echo $this->product->prices['salesPrice']; ?>
+					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
 					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>
 			</tr>
@@ -208,88 +209,88 @@ if( property_exists($this, 'taxrates') && is_array( $this->taxrates )) {
 	}
 }
 ?>
-function doRound(x, places) {
-	return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
-}
-
-function getTaxRate() {
-	var selected_value = document.adminForm.product_tax_id.selectedIndex;
-	var parameterVal = -1;
-	if (selected_value >= 0) {
-		parameterVal = document.adminForm.product_tax_id.options[selected_value].value;
-	}
-
-	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
-		return tax_rates[parameterVal];
-	} else {
-		return 0;
-	}
-}
-
-function updateGross() {
-	if( document.adminForm.product_price.value != '' ) {
-		var taxRate = getTaxRate();
-
-		var r = new RegExp("\,", "i");
-		document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
-
-		var grossValue = document.adminForm.product_price.value;
-
-		if (taxRate > 0) {
-			grossValue = grossValue * (taxRate + 1);
-		}
-
-		document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
-	}
-}
-
-function updateNet() {
-	if( document.adminForm.product_price_incl_tax.value != '' ) {
-		var taxRate = getTaxRate();
-
-		var r = new RegExp("\,", "i");
-		document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
-
-		var netValue = document.adminForm.product_price_incl_tax.value;
-
-		if (taxRate > 0) {
-			netValue = netValue / (taxRate + 1);
-		}
-
-		document.adminForm.product_price.value = doRound(netValue, 5);
-	}
-}
-
-function updateDiscountedPrice() {
-	if( document.adminForm.product_price.value != '' ) {
-		try {
-			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
-			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
-			<?php
-				// TODO This one was defined in virtuemart.cfg.php. Cause an error in the JavaScript output
-				// so fixed with a new define here, but where should this come from now???
-				if (!defined('PAYMENT_DISCOUNT_BEFORE')) {
-					define ('PAYMENT_DISCOUNT_BEFORE', 0);
-				}
-			?>
-			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
-			var origPrice = document.adminForm.product_price.value;
-			<?php else : ?>
-			var origPrice = document.adminForm.product_price_incl_tax.value;
-			<?php endif; ?>
-
-			if( discountCalc ) {
-				eval( 'var discPrice = ' + origPrice + discountCalc );
-				if( discPrice != origPrice ) {
-					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
-				} else {
-					document.adminForm.discounted_price_override.value = '';
-				}
-			}
-		}
-		catch( e ) { }
-	}
-}
-updateGross();
-updateDiscountedPrice();
+//function doRound(x, places) {
+//	return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
+//}
+//
+//function getTaxRate() {
+//	var selected_value = document.adminForm.product_tax_id.selectedIndex;
+//	var parameterVal = -1;
+//	if (selected_value >= 0) {
+//		parameterVal = document.adminForm.product_tax_id.options[selected_value].value;
+//	}
+//
+//	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
+//		return tax_rates[parameterVal];
+//	} else {
+//		return 0;
+//	}
+//}
+//
+//function updateGross() {
+//	if( document.adminForm.product_price.value != '' ) {
+//		var taxRate = getTaxRate();
+//
+//		var r = new RegExp("\,", "i");
+//		document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
+//
+//		var grossValue = document.adminForm.product_price.value;
+//
+//		if (taxRate > 0) {
+//			grossValue = grossValue * (taxRate + 1);
+//		}
+//
+//		document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
+//	}
+//}
+//
+//function updateNet() {
+//	if( document.adminForm.product_price_incl_tax.value != '' ) {
+//		var taxRate = getTaxRate();
+//
+//		var r = new RegExp("\,", "i");
+//		document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
+//
+//		var netValue = document.adminForm.product_price_incl_tax.value;
+//
+//		if (taxRate > 0) {
+//			netValue = netValue / (taxRate + 1);
+//		}
+//
+//		document.adminForm.product_price.value = doRound(netValue, 5);
+//	}
+//}
+//
+//function updateDiscountedPrice() {
+//	if( document.adminForm.product_price.value != '' ) {
+//		try {
+//			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
+//			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+//			<?php
+//				// TODO This one was defined in virtuemart.cfg.php. Cause an error in the JavaScript output
+//				// so fixed with a new define here, but where should this come from now???
+//				if (!defined('PAYMENT_DISCOUNT_BEFORE')) {
+//					define ('PAYMENT_DISCOUNT_BEFORE', 0);
+//				}
+//			?>
+//			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
+//			var origPrice = document.adminForm.product_price.value;
+//			<?php else : ?>
+//			var origPrice = document.adminForm.product_price_incl_tax.value;
+//			<?php endif; ?>
+//
+//			if( discountCalc ) {
+//				eval( 'var discPrice = ' + origPrice + discountCalc );
+//				if( discPrice != origPrice ) {
+//					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+//				} else {
+//					document.adminForm.discounted_price_override.value = '';
+//				}
+//			}
+//		}
+//		catch( e ) { }
+//	}
+//}
+//updateGross();
+//updateDiscountedPrice();
 </script>
