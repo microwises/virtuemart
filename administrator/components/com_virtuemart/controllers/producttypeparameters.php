@@ -47,6 +47,7 @@ class VirtuemartControllerProducttypeparameters extends JController {
 
 		/* Redirects */
 		$this->registerTask('add','edit');
+		$this->registerTask('apply','save');
 		$this->registerTask('cancel','productTypeParameters');
 	}
 
@@ -99,7 +100,15 @@ class VirtuemartControllerProducttypeparameters extends JController {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPEPARAMETER_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.JRequest::getInt('product_type_id', 0), $msg, $msgtype);
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'apply'){
+			$redirection = 'index.php?option=com_virtuemart&view=producttypeparameters&task=edit&product_type_id='.JRequest::getInt('product_type_id', 0).'&cid[]='.JRequest::getInt('cid', 0);
+		} else {
+			$redirection = 'index.php?option=com_virtuemart&view=producttypeparameters';
+		}
+
+		$mainframe->redirect($redirection, $msg, $msgtype);
+		//$mainframe->redirect('index.php?option=com_virtuemart&view=producttypeparameters&task=producttypeparameters&product_type_id='.JRequest::getInt('product_type_id', 0), $msg, $msgtype);
 	}
 
 	/**

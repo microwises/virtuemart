@@ -169,6 +169,10 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
+				/* Load product types lists */
+				$productTypes = $this->get('productTypes');
+				$this->assignRef('productTypes', $productTypes);
+				
 
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {

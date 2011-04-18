@@ -23,8 +23,9 @@ AdminMenuHelper::startAdminArea();
 $document = JFactory::getDocument();
 $document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
 $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
+VmConfig::JvalideForm();
 ?>
-<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
+<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminform">
 <?php
 	echo $this->pane->startPane("product-pane");
 	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'product_information' );
@@ -52,6 +53,9 @@ $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jque
 	}
 	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_META_INFORMATION'), 'product_metadata' );
 		echo $this->loadTemplate('metadata');
+	echo $this->pane->endPanel();
+	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_TYPES_TAB'), 'product_types' );
+		echo $this->loadTemplate('types');
 	echo $this->pane->endPanel();
 	echo $this->pane->endPane();
 

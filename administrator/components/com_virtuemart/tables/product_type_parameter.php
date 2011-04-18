@@ -27,6 +27,8 @@ defined('_JEXEC') or die('Restricted access');
 class TableProduct_type_parameter extends JTable {
 
 	/** @var int Primary key */
+	var $parameter_id = 0;
+	/** @var int  */
 	var $product_type_id = 0;
 	/** @var string Parameter name */
 	var $parameter_name = null;
@@ -52,7 +54,7 @@ class TableProduct_type_parameter extends JTable {
 	* @param database A database connector object
 	 */
 	function __construct($db) {
-		parent::__construct('#__vm_product_type_parameter', 'product_type_id', $db );
+		parent::__construct('#__vm_product_type_parameter', 'parameter_id', $db );
 	}
 
 	/**

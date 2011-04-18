@@ -1105,6 +1105,15 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
+		/* Update product types
+		* 'product_type_tables' are all types tables in product edit view
+		*/
+		if (array_key_exists('product_type_tables', $data)) {
+			if(!class_exists('VirtueMartModelProducttypes')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'producttypes.php');
+			$ProducttypesModel = new VirtueMartModelProducttypes();
+			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
+		}
+
 
 		return $product_data->product_id;
 	}
@@ -1803,37 +1812,30 @@ class VirtueMartModelProduct extends JModel {
     }
 
 
-    /**
-	* Get the product details for a product
-	*
-	* @author RolandD
-	*
-	* @param int $product_id the ID of the product to get product types for
-	* @return array of objects with product types
-	*/
-	public function getProductTypes($product_id) {
-		$this->_db = JFactory::getDBO();
-		if ($product_id > 0 && !$this->productHasProductType($product_id)) {
-			$product_type = $ps_product_type->list_product_type( $product_id ) ;
+  /**
+     * AUthor Kohl Patrick
+     * Load the types and parameter for a product
+     * return Object product type , parameters & value
+     */
+     public function getproductTypes() {
+		$product_id = JRequest::getInt('product_id', false);
+		
+		 if ($this->hasProductType($product_id )) {
+		 
+			if(!class_exists('VirtueMartModelProducttypes')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'producttypes.php');
+			$ProducttypesModel = new VirtueMartModelProducttypes();
+		return $ProducttypesModel->getProductProducttypes($product_id);
 		}
-	}
-
-	/**
-	 * Returns true if the product is in a Product Type
-	 *
-	 * @author Zdenek Dvorak
-	 *
-	 * @param int $product_id the product to check
-	 * @return boolean
-	 */
+		return ;
+     }
+	 
+	/* look if whe have a product type */
 	private function hasProductType($product_id) {
 		$this->_db = JFactory::getDBO();
 		$q = "SELECT COUNT(`product_id`) AS types FROM `#__vm_product_product_type_xref` WHERE `product_id` = ".$product_id;
 		$this->_db->setQuery($q);
-
 		return ($this->_db->loadResult() > 0);
 	}
-
 
 	// **************************************************
 	//Attributes

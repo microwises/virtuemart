@@ -63,6 +63,21 @@ class VirtuemartViewProducttypes extends JView {
 				$this->assignRef('lists', $lists);
 				break;
 			default:
+				switch ($task) {
+					case 'publish':
+					case 'unpublish':
+						$this->get('Publish');
+					break;
+					case 'saveorder':
+						$this->get('SaveOrder');
+					break;
+					case 'orderup':
+						$this->get('OrderUp');
+					break;
+					case 'orderdown':
+						$this->get('OrderDown');
+					break;
+				}
 				/* Get the data */
 				$producttypeslist = $this->get('ProductTypes');
 
@@ -80,6 +95,8 @@ class VirtuemartViewProducttypes extends JView {
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LIST_LBL'), 'vm_product_types_48');
+				JToolBarHelper::publish();
+				JToolBarHelper::unpublish();
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();

@@ -164,18 +164,19 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		$cids = array();
 		$cids = JRequest::getVar('cid');
 		if (!is_array($cids)) $cids = array($cids);
+		$parameter_id = JRequest::getInt('parameter_id');
 		$product_type_id = JRequest::getInt('product_type_id');
 
 		/* Start removing */
 		foreach ($cids as $key => $product_type_name) {
 			$q = "SELECT parameter_type FROM #__vm_product_type_parameter
-				WHERE product_type_id = ".$product_type_id." AND parameter_name = ".$db->Quote($product_type_name);
+				WHERE parameter_id = ".$parameter_id." AND parameter_name = ".$db->Quote($product_type_name);
 			$db->setQuery($q);
 			$parameter_type = $db->loadResult();
 
 			/* If there is no parameter type, make it B as it might be non-existing */
 			$q = "DELETE FROM #__vm_product_type_parameter
-				WHERE product_type_id = ".$product_type_id." AND parameter_name = ".$db->Quote($product_type_name);
+				WHERE parameter_id = ".$parameter_id." AND parameter_name = ".$db->Quote($product_type_name);
 			$db->setQuery($q);
 			$db->query();
 

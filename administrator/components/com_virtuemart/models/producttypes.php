@@ -296,7 +296,23 @@ class VirtueMartModelProducttypes extends JModel {
 		$db->setQuery($count);
 		return $db->loadResult();
     }
-
+    /**
+    * Set the publish/unpublish state
+    */
+    public function getPublish() {
+     	$cid = JRequest::getVar('cid', false);
+     	if (is_array($cid)) {
+//     		$this->_db = JFactory::getDBO();
+     		$cids = implode( ',', $cid );
+			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
+			$q = "UPDATE #__vm_product_type
+				SET `published` = ".$this->_db->Quote($state)."
+				WHERE `product_type_id` IN (".$cids.")";
+			$this->_db->setQuery($q);
+			if ($this->_db->query()) return true;
+			else return false;
+		}
+    }
     /**
     * Get the position where the product type needs to be
     * @author RolandD
@@ -324,5 +340,49 @@ class VirtueMartModelProducttypes extends JModel {
 			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
 		}
     }
+	
+	/* Add product types in product */
+	public function  getProductProducttypes($product_id) {
+		/* get types of product*/
+		 $q = "SELECT x.product_type_id , product_type_name, product_type_description
+			 FROM `#__vm_product_product_type_xref` as x
+			 LEFT JOIN #__vm_product_type on #__vm_product_type.product_type_id = x.product_type_id
+			 WHERE published = 1 and product_id = ".$product_id."
+			 ORDER BY product_type_list_order";
+		$this->_db->setQuery($q);
+		$types = $this->_db->loadObjectList();
+
+		foreach ($types as $type) {
+		/* get each parameter details*/
+			$q  = 'SELECT * FROM #__vm_product_type_parameter WHERE 
+				product_type_id='.$type->product_type_id.' 
+				ORDER BY parameter_list_order';	
+			$this->_db->setQuery($q);
+			$type->parameter = $this->_db->loadObjectList();
+			
+			/* get parameter value of product */
+			$q = "SELECT * FROM `#__vm_product_type_".$type->product_type_id."` 
+				WHERE product_id = ".$product_id;
+			$this->_db->setQuery($q);
+			$type->value = $this->_db->loadAssocList();
+		}
+		return $types;
+	}
+	public function  saveProductProducttypes($tables) {
+		foreach ($tables as $key => $table) {
+			/* Insert type Fields and value */
+			$fields = implode(',' ,array_keys($table) );
+			foreach ($table as & $value) {
+				if (is_array($value)) $value = implode(";", $value);
+			}
+			$values = implode("','", $table);
+			
+			$q = 'REPLACE INTO #__vm_product_type_'.$key.' ( product_id,'.$fields.' )';
+			$q .= " VALUES( '".$product_data->product_id."', '". $values ."') ";
+			$this->_db->setQuery($q);
+			$this->_db->query();
+		}
+		
+	}
 }
 // pure php no closing tag

@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product type parameter label -->
-				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=edit&&product_type_id='.JRequest::getInt('product_type_id').'&cid[]='.$producttypeparameter->product_type_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=edit&product_type_id='.JRequest::getInt('product_type_id').'&cid[]='.$producttypeparameter->parameter_id; ?>
 				<td><?php echo JHTML::_('link', $link, $producttypeparameter->parameter_label); ?></td>
 				<!-- Product type parameter name -->
 				<td><?php echo $producttypeparameter->parameter_name; ?></td>

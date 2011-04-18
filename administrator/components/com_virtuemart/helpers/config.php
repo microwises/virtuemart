@@ -143,6 +143,9 @@ class VmConfig
 		// If exist exit
 		if ($jquery) return;
 		JHTML::script('jquery.js', 'components/com_virtuemart/assets/js/', false);
+		/*$document = JFactory::getDocument();
+		$document->addScriptDeclaration('jQuery.noConflict();');*/
+		
 		$jquery = true;
 		return;
 	}
@@ -218,6 +221,28 @@ class VmConfig
 			$document = JFactory::getDocument();
 			$document->addScriptDeclaration($js);
 		$JimageSelectlist = true;
+		return;
+	}
+	function JvalideForm()
+	{
+		static $jvalideForm;
+		// If exist exit
+		if ($jvalideForm) return;
+		$lg = &JFactory::getLanguage();
+		$lang = substr($lg->getTag(), 0, 2);
+		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
+		if (!in_array($lang, $existingLang)) $lang ="en";
+		JHTML::script('jquery.validationEngine.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('jquery.validationEngine-'.$lang.'.js', 'components/com_virtuemart/assets/js/languages/', false);
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration( "
+			
+			jQuery(document).ready(function() {
+				jQuery('#adminform').validationEngine(); 
+			});"  );
+		JHTML::stylesheet ( 'validationEngine.template.css', 'components/com_virtuemart/assets/css/', false );
+		JHTML::stylesheet ( 'validationEngine.jquery.css', 'components/com_virtuemart/assets/css/', false );
+		$jvalideForm = true;
 		return;
 	}
 	/*	function cssSite()

@@ -39,6 +39,11 @@ class VirtuemartControllerProducttypes extends JController {
 		parent::__construct();
 
 		/* Redirects */
+		$this->registerTask('saveorder','productTypes');
+		$this->registerTask('orderup','productTypes');
+		$this->registerTask('orderdown','productTypes');
+		$this->registerTask('unpublish','productTypes');
+		$this->registerTask('publish','productTypes');
 		$this->registerTask('add','edit');
 		$this->registerTask('apply','save');
 		$this->registerTask('cancel','productTypes');
