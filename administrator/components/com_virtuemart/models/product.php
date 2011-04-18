@@ -154,7 +154,7 @@ class VirtueMartModelProduct extends JModel {
 		$i = 0;
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
-    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, $withCalc);
+    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, $withCalc,false);
     	    $attribs = get_object_vars($parentProduct);
 
 	    	foreach($attribs as $k=>$v){
@@ -177,7 +177,7 @@ class VirtueMartModelProduct extends JModel {
     	return $child;
     }
 
-    public function getProductSingle($product_id = null,$front=true, $withCalc = true){
+    public function getProductSingle($product_id = null,$front=true, $withCalc = true, $onlyPublished=true){
     	if (empty($product_id)) {
 			$product_id = JRequest::getInt('product_id', 0);
 		}
@@ -209,18 +209,24 @@ class VirtueMartModelProduct extends JModel {
 
    			$product = $this->getTable('product');
    			$product->load((int)$this->_id);
+   			if($onlyPublished){
+   				if(empty($product->published)){
+   					return $this->fillVoidProduct($product,$front);
+   				}
+   			}
+
 			if(!empty($product->file_ids)){
 				$product->file_ids = explode(',',$product->file_ids);
 			}
 
-   			if(!$front){
+//   			if(!$front){
     			$ppTable = $this->getTable('product_price');
     			$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE `product_id` = "'.(int)$this->_id.'" ';
 				$this->_db->setQuery($q);
     			$ppId = $this->_db->loadResult();
    				$ppTable->load($ppId);
 				$product = (object) array_merge((array) $ppTable, (array) $product);
-   			}
+//   			}
 
    			$q = 'SELECT `manufacturer_id` FROM `#__vm_product_mf_xref` WHERE `product_id` = "'.(int)$this->_id.'" ';
    			$this->_db->setQuery($q);
@@ -245,7 +251,8 @@ class VirtueMartModelProduct extends JModel {
 
 				/* Load the price */
 				$prices = "";
-				if (VmConfig::get('show_prices') == '1' && $withCalc) {
+//				if (VmConfig::get('show_prices',1) == '1' && $withCalc) {
+				if ($withCalc) {
 
 					/* Loads the product price details */
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -314,24 +321,48 @@ class VirtueMartModelProduct extends JModel {
 
 				}
 			} else {
-			 	 /* Load an empty product */
-			 	 $product = $this->getTable();
-			 	 $product->load();
-
-			 	 /* Add optional fields */
-			 	 $product->manufacturer_id = null;
-			 	 $product->product_price_id = null;
-			 	 $product->product_price = null;
-			 	 $product->product_currency = null;
-			 	 $product->product_price_quantity_start = null;
-			 	 $product->product_price_quantity_end = null;
-
-			 	 $product->product_tax_id = null;
-			 	 $product->product_discount_id = null;
+				return $this->fillVoidProduct($product,$front);
 			}
 //		}
 		dump( $product,'my getProduct');
 		return $product;
+    }
+
+    private function fillVoidProduct($product,$front=true){
+
+		/* Load an empty product */
+	 	 $product = $this->getTable();
+	 	 $product->load();
+
+	 	 /* Add optional fields */
+	 	 $product->manufacturer_id = null;
+	 	 $product->product_price_id = null;
+	 	 $product->product_price = null;
+	 	 $product->product_currency = null;
+	 	 $product->product_price_quantity_start = null;
+	 	 $product->product_price_quantity_end = null;
+
+	 	 $product->product_tax_id = null;
+	 	 $product->product_discount_id = null;
+	 	 if($front){
+	 	 	$product->link = '';
+	 	 	$product->categories = array();
+	 	 	$product->prices = array();
+
+	 	 	$product->variants = array();
+	 	 	$product->customvariants = array();
+
+	 	 	$product->category_id = 0;
+	 	 	$product->customvariants = array();
+
+	 	 	$product->mf_name = '';
+	 	 	$product->packaging = '';
+	 	 	$product->related = '';
+	 	 	$product->box = '';
+
+	 	 }
+
+	 	 return $product;
     }
 
 	/**
@@ -1101,8 +1132,8 @@ class VirtueMartModelProduct extends JModel {
 
 	public function createClone($id){
 		$product = $this->getProduct($id);
-		$product->product_id = 0; dump($product,'createClone');
-		$this->saveProduct($product);
+		$product->product_id = 0;
+		$this->saveProduct($product,true,true,false);
 		return $this->_id;
 	}
 

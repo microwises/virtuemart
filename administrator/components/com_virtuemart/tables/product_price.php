@@ -105,9 +105,10 @@ class TableProduct_price extends JTable {
                 . 'WHERE product_id = ' . $this->product_id;
         $this->_db->setQuery($_qry);
         $id = $this->_db->loadResult();
-        $this->product_price_id = $id;
+
 
         if ( $id > 0) {
+        	$this->product_price_id = $id;
             $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
         } else {
             $returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);

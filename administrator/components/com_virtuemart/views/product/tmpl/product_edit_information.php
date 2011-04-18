@@ -133,7 +133,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
 				</td>
 				<td width="71%">
-					<?php echo $this->product->prices['salesPrice']; ?>
 					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
 					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>

@@ -61,7 +61,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product */
 				$product_model = $this->getModel('product');
 //				$product = $this->get('Product');
-				$product = $product_model->getProductSingle('',false,false);
+				$product = $product_model->getProductSingle('',false,false,false);
 
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);

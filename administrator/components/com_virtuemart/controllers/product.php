@@ -205,10 +205,10 @@ class VirtuemartControllerProduct extends JController {
 
 		$cids = JRequest::getVar('cid');
 		if ($id=$model->createChild($cids)){
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
 			$redirect = 'index.php?option=com_virtuemart&controller=product&task=edit&product_parent_id='.$cids.'&product_id='.$id;
 		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
 			$msgtype = 'error';
 			$redirect = 'index.php?option=com_virtuemart&controller=product';
 		}
