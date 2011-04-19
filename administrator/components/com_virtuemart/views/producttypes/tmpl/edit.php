@@ -19,6 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
+$document = JFactory::getDocument();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <table class="adminform">
@@ -30,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		</td>
 		<td>
 			<fieldset class="radio">
-				<?php echo JHTMLSelect::booleanlist('published', null, $this->producttype->published); ?>
+				<?php echo JHTML::_( 'select.booleanlist',  'published', 'class="inputbox"', $this->producttype->published); ?>
 			</fieldset>
 		</td>
 	</tr>

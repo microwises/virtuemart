@@ -81,9 +81,11 @@ class VirtuemartViewProducttypes extends JView {
 
 				/* Get some statistics */
 				$model = $this->getModel();
-				foreach ($producttypeslist as $key => $producttype) {
-					$producttypeslist[$key]->productcount = $model->getProductCount($producttype->product_type_id);
-					$producttypeslist[$key]->parametercount = $model->getParameterCount($producttype->product_type_id);
+				if (!empty($producttypeslist)) {
+					foreach ($producttypeslist as $key => $producttype) {
+						$producttypeslist[$key]->productcount = $model->getProductCount($producttype->product_type_id);
+						$producttypeslist[$key]->parametercount = $model->getParameterCount($producttype->product_type_id);
+					}
 				}
 
 				/* Get the pagination */

@@ -187,7 +187,7 @@ class VirtuemartControllerProducttypes extends JController {
 
 		$model = $this->getModel('producttypes');
 		$msgtype = '';
-		if ($model->removeProducttypes()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_REMOVED_SUCCESSFULLY');
+		if ($model->removeProducttype()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_REMOVED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
