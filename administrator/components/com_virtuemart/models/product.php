@@ -1216,6 +1216,19 @@ class VirtueMartModelProduct extends JModel {
 			$q  = "DELETE FROM #__vm_product_relations WHERE product_id = ".$product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
+			/* find and delete Product Types */
+			$q = "SELECT product_type_id FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
+			$this->_db->setQuery($q);
+			/* TODO  don't delete the product from this tables !!*/
+			$product_type_ids = $this->_db->loadResultArray();
+			foreach ($product_type_ids as $product_type_id)
+			$q  = "DELETE FROM #__vm_product_type_".$product_type_id." WHERE product_id = ".$product_id;
+			$this->_db->setQuery($q); $this->_db->query();
+
+			/* Delete Product Types xref */
+			$q  = "DELETE FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
+			$this->_db->setQuery($q); $this->_db->query();
+
 			/* Delete Prices */
 			$q  = "DELETE FROM #__vm_product_price WHERE product_id = ".$product_id;
 			$this->_db->setQuery($q);
