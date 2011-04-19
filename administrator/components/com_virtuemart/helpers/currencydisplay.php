@@ -30,8 +30,8 @@ class CurrencyDisplay {
     var $nbDecimal 		= 2;	// Number of decimals past colon (or other)
     var $decimal   		= ",";	// Decimal symbol ('.', ',', ...)
     var $thousands 		= " "; 	// Thousands separator ('', ' ', ',')
-    var $positivePos	= '*sig**numb**symb*';	// Currency symbol position with Positive values :
-    var $negativePos	= '*sig**numb**symb*';	// Currency symbol position with Negative values :
+    var $positivePos	= '{sign}{num}{symb}';	// Currency symbol position with Positive values :
+    var $negativePos	= '{sign}{num}{symb}';	// Currency symbol position with Negative values :
 
     private function __construct (){
 
@@ -156,7 +156,7 @@ class CurrencyDisplay {
     	}
 
     	$res = $this->formatNumber($nb, $nbDecimal, $this->thousands, $this->decimal);
-    	$search = array('*sig*', '*numb*', '*symb*');
+    	$search = array('{sign}', '{num}', '{symb}');
     	$replace = array($sign, $res, $this->symbol);
     	$formattedRounded = str_replace ($search,$replace,$format);
 
