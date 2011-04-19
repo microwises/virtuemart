@@ -69,12 +69,12 @@ class VirtuemartViewProducttypes extends JView {
 					case 'saveorder':
 						$this->get('SaveOrder');
 					break;
-					case 'orderup':
+					/*case 'orderup':
 						$this->get('OrderUp');
 					break;
 					case 'orderdown':
 						$this->get('OrderDown');
-					break;
+					break;*/
 				}
 				/* Get the data */
 				$producttypeslist = $this->get('ProductTypes');

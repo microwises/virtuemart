@@ -39,9 +39,9 @@ class VirtuemartControllerProducttypes extends JController {
 		parent::__construct();
 
 		/* Redirects */
-		$this->registerTask('saveorder','productTypes');
-		$this->registerTask('orderup','productTypes');
-		$this->registerTask('orderdown','productTypes');
+//		$this->registerTask('saveorder','productTypes');
+		$this->registerTask('orderup','reorder');
+		$this->registerTask('orderdown','reorder');
 //		$this->registerTask('unpublish','productTypes');
 //		$this->registerTask('publish','productTypes');
 		$this->registerTask('add','edit');
@@ -64,6 +64,42 @@ class VirtuemartControllerProducttypes extends JController {
 
 		/* Now display the view. */
 		$view->display();
+	}
+	/**
+	 * orderup
+	 *
+	 * @author Kohl Patrick
+	 */
+	public function reorder(){
+
+		$model = $this->getModel('producttypes');
+
+		$cmd = JRequest::getCmd('task');
+		if($cmd == 'orderup') $dir = -1 ;
+		else $dir= 1 ;
+		if (!$model->orderChange( $dir )) {
+			$msg = JText::_('COM_VIRTUEMART_TYPES_REORDER_ERROR');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_TYPES_REORDER_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=producttypes', $msg);
+	}	/**
+	 * orderup
+	 *
+	 * @author Kohl Patrick
+	 */
+	public function saveOrder(){
+
+		$model = $this->getModel('producttypes');
+
+		if (!$model->saveOrder()) {
+			$msg = JText::_('COM_VIRTUEMART_TYPES_SAVE_ORDER_ERROR');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_TYPES_SAVE_ORDER_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=producttypes', $msg);
 	}
 	/**
 	 * Handle the publish task

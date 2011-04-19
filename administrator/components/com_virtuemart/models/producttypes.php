@@ -312,6 +312,41 @@ class VirtueMartModelProducttypes extends JModel {
 		return modelfunctions::publish('cid','product_type',$publishId);
 
 	}
+
+	/* 
+	 *MOVE selected row
+	 */
+	public function orderChange( $inc = 1){
+
+	$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
+	$row = $this->getTable('product_type' );
+	$row->load( $cid[0] );
+	return ($row->move( $inc ));
+	}
+	/* 
+	 * reorder all rows
+	 * 
+	 */
+	public function saveOrder( ){
+
+	$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
+	$total		= count( $cid );
+	$order 		= JRequest::getVar( 'order', array(0), 'post', 'array' );
+	JArrayHelper::toInteger($order, array(0));
+	$row = $this->getTable('product_type' );
+		// update ordering values
+	for( $i=0; $i < $total; $i++ ) {
+		$row->load( (int) $cid[$i] );
+		if ($row->ordering != $order[$i]) {
+			$row->ordering = $order[$i];
+			if (!$row->store()) {
+				JError::raiseError(500, $db->getErrorMsg());
+			}
+		}
+	}
+		$row->reorder();
+	return true ;
+	}
     /**
     * Get the position where the product type needs to be
     * @author RolandD
