@@ -56,7 +56,7 @@ AdminMenuHelper::startAdminArea();
 		<td valign="top">
 			<?php
 				echo $this->parameter->list_order;
-				echo "<inputn type=\"hidden\" name=\"currentpos\" value=\"".$this->parameter->parameter_list_order."\" />";
+				echo "<inputn type=\"hidden\" name=\"currentpos\" value=\"".$this->parameter->ordering."\" />";
 			?>
 		</td>
 	</tr>

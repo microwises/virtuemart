@@ -37,7 +37,7 @@ class TableProduct_type_parameter extends JTable {
 	/** @var string Description */
 	var $parameter_description = null;
 	/** @var int The order to list the product types in */
-	var $parameter_list_order = null;
+	var $ordering = null;
 	/** @var string Type of parameter */
 	var $parameter_type = null;
 	/** @var string Values for the parameter */

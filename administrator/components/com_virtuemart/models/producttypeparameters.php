@@ -101,8 +101,8 @@ class VirtueMartModelProducttypeparameters extends JModel {
     */
     private function getProductTypeParametersFilter() {
     	$db = JFactory::getDBO();
-    	$filter_order = JRequest::getCmd('filter_order', 'parameter_list_order');
-		if ($filter_order == '') $filter_order = 'parameter_list_order';
+    	$filter_order = JRequest::getCmd('filter_order', 'ordering');
+		if ($filter_order == '') $filter_order = 'ordering';
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 
@@ -145,7 +145,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		/* Load the rating */
 		if ($cids) {
 			$parameter_data->load($cids[0]);
-			$parameter_data->list_order = $this->getListOrderParameter($cids[0], $parameter_data->parameter_name, $parameter_data->parameter_list_order);
+			$parameter_data->list_order = $this->getListOrderParameter($cids[0], $parameter_data->parameter_name, $parameter_data->ordering);
 		}
 		else {
 			$parameter_data->list_order = $this->getListOrderParameter();
@@ -228,9 +228,9 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		/* Set the list order for new parameters */
 		if ($cids[0] == 0) {
 			/* Let's find out the last Product Type */
-			$q = "SELECT MAX(parameter_list_order)+1 AS list_order FROM #__vm_product_type_parameter WHERE product_type_id = ".$data['product_type_id'];
+			$q = "SELECT MAX(ordering)+1 AS list_order FROM #__vm_product_type_parameter WHERE product_type_id = ".$data['product_type_id'];
 			$db->setQuery($q);
-			$parameter_data->parameter_list_order = $db->loadResult();
+			$parameter_data->ordering = $db->loadResult();
 		}
 
 		/* Store the parameter */
@@ -326,15 +326,15 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		}
 		else {
 
-			$q = "SELECT parameter_list_order,parameter_label,parameter_name FROM #__vm_product_type_parameter " ;
+			$q = "SELECT ordering,parameter_label,parameter_name FROM #__vm_product_type_parameter " ;
 			if ($product_type_id) {
 				$q .= 'WHERE product_type_id='.$product_type_id;
 			}
-			$q .= " ORDER BY parameter_list_order ASC" ;
+			$q .= " ORDER BY ordering ASC" ;
 			$db->setQuery($q) ;
 			$parameters = $db->loadObjectList();
 			foreach ($parameters as $key => $parameter) {
-				$options[] = JHTML::_('select.option', $parameter->parameter_list_order, $parameter->parameter_list_order.". ".$parameter->parameter_label.' ('.$parameter->parameter_name.')');
+				$options[] = JHTML::_('select.option', $parameter->ordering, $parameter->ordering.". ".$parameter->parameter_label.' ('.$parameter->parameter_name.')');
 			}
 			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
 		}

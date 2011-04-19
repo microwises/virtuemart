@@ -103,8 +103,8 @@ class VirtueMartModelProducttypes extends JModel {
     */
     private function getProductTypesFilter() {
     	$db = JFactory::getDBO();
-    	$filter_order = JRequest::getCmd('filter_order', 'product_type_list_order');
-		if ($filter_order == '') $filter_order = 'product_type_list_order';
+    	$filter_order = JRequest::getCmd('filter_order', 'ordering');
+		if ($filter_order == '') $filter_order = 'ordering';
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 
@@ -135,7 +135,7 @@ class VirtueMartModelProducttypes extends JModel {
 		/* Load the rating */
 		if ($cids) {
 			$product_type_data->load($cids[0]);
-			$product_type_data->list_order = $this->getListOrder($cids[0], $product_type_data->product_type_list_order);
+			$product_type_data->list_order = $this->getListOrder($cids[0], $product_type_data->ordering);
 		}
 		else {
 			$product_type_data->list_order = $this->getListOrder();
@@ -212,9 +212,9 @@ class VirtueMartModelProducttypes extends JModel {
 
 		if ($cids[0] == 0) {
 			/* Let's find out the last Product Type */
-			$q = "SELECT MAX(product_type_list_order)+1 AS list_order FROM #__vm_product_type";
+			$q = "SELECT MAX(ordering)+1 AS list_order FROM #__vm_product_type";
 			$db->setQuery($q);
-			$product_type_data->product_type_list_order = $db->loadResult();
+			$product_type_data->ordering = $db->loadResult();
 
 			/* Check publish state */
 			if ($product_type_data->published != "1") $product_type_data->published = "0";
@@ -235,7 +235,7 @@ class VirtueMartModelProducttypes extends JModel {
 			$db->query();
 		}
 
-		/* Re-Order the Product Type table IF the list_order has been changed */
+		/* Re-Order the Product Type table IF the ordering has been changed */
 		if ($cids[0] > 0 && intval($data['list_order']) != intval($data['currentpos'])) {
 			$db = JFactory::getDBO();
 
@@ -243,11 +243,11 @@ class VirtueMartModelProducttypes extends JModel {
 			if( intval($data['list_order']) < intval($data['currentpos']) ) {
 				$q  = "SELECT product_type_id FROM #__vm_product_type WHERE ";
 				$q .= "product_type_id <> '" . $data["product_type_id"] . "' ";
-				$q .= "AND product_type_list_order >= '" . intval($data["list_order"]) . "'";
+				$q .= "AND ordering >= '" . intval($data["list_order"]) . "'";
 				$db->setQuery($q);
 				$moveup = $db->loadObjectList();
 				foreach ($moveup as $key => $move) {
-					$db->setQuery("UPDATE #__vm_product_type SET product_type_list_order=product_type_list_order+1 WHERE product_type_id='".$move->product_type_id."'");
+					$db->setQuery("UPDATE #__vm_product_type SET ordering=ordering+1 WHERE product_type_id='".$move->product_type_id."'");
 					$db->query();
 				}
 			}
@@ -255,12 +255,12 @@ class VirtueMartModelProducttypes extends JModel {
 			else {
 				$q = "SELECT product_type_id FROM #__vm_product_type WHERE ";
 				$q .= "product_type_id <> '".$data["product_type_id"] . "' ";
-				$q .= "AND product_type_list_order > '".intval($data["currentpos"])."'";
-				$q .= "AND product_type_list_order <= '".intval($data["list_order"])."'";
+				$q .= "AND ordering > '".intval($data["currentpos"])."'";
+				$q .= "AND ordering <= '".intval($data["list_order"])."'";
 				$db->setQuery($q);
 				$movedown = $db->loadObjectList();
 				foreach ($movedown as $key => $move) {
-					$db->setQuery("UPDATE #__vm_product_type SET product_type_list_order=product_type_list_order-1 WHERE product_type_id='".$move->product_type_id."'");
+					$db->setQuery("UPDATE #__vm_product_type SET ordering=ordering-1 WHERE product_type_id='".$move->product_type_id."'");
 					$db->query();
 				}
 
@@ -325,16 +325,16 @@ class VirtueMartModelProducttypes extends JModel {
 		}
 		else {
 
-			$q  = "SELECT product_type_list_order, product_type_name FROM #__vm_product_type ";
-			if ($product_type_id) {
+			$q  = "SELECT ordering, product_type_name FROM #__vm_product_type ";
+			/*if ($product_type_id) {
 				$q .= 'WHERE product_type_id='.$product_type_id;
-			}
-			$q .= " ORDER BY product_type_list_order ASC";
+			}*/
+			$q .= " ORDER BY ordering ASC";
 			$db->setQuery($q);
 			$producttypes = $db->loadObjectList();
 
 			foreach ($producttypes as $key => $producttype) {
-				$options[] = JHTML::_('select.option', $producttype->product_type_list_order, $producttype->product_type_list_order.". ".$producttype->product_type_name);
+				$options[] = JHTML::_('select.option', $producttype->ordering, $producttype->ordering.". ".$producttype->product_type_name);
 			}
 			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
 		}
@@ -347,7 +347,7 @@ class VirtueMartModelProducttypes extends JModel {
 			 FROM `#__vm_product_product_type_xref` as x
 			 LEFT JOIN #__vm_product_type on #__vm_product_type.product_type_id = x.product_type_id
 			 WHERE published = 1 and product_id = ".$product_id."
-			 ORDER BY product_type_list_order";
+			 ORDER BY ordering";
 		$this->_db->setQuery($q);
 		$types = $this->_db->loadObjectList();
 
@@ -355,7 +355,7 @@ class VirtueMartModelProducttypes extends JModel {
 		/* get each parameter details*/
 			$q  = 'SELECT * FROM #__vm_product_type_parameter WHERE 
 				product_type_id='.$type->product_type_id.' 
-				ORDER BY parameter_list_order';	
+				ORDER BY ordering';	
 			$this->_db->setQuery($q);
 			$type->parameter = $this->_db->loadObjectList();
 			

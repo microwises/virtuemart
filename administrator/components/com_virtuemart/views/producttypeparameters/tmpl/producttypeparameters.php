@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 				<!-- Description -->
 				<td><?php echo $producttypeparameter->parameter_description; ?></td>
 				<!-- List order -->
-				<td><?php echo $producttypeparameter->parameter_list_order; ?></td>
+				<td><?php echo $producttypeparameter->ordering; ?></td>
 			</tr>
 		<?php 
 			$k = 1 - $k;

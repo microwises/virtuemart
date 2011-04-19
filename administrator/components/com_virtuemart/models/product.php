@@ -1773,39 +1773,6 @@ class VirtueMartModelProduct extends JModel {
 		}
 	}
 
-	// **************************************************
-	//Product types
-	//
-	/**
-	 * Returns html code for show parameters
-	 * @author RolandD
-	 *
-	 * @param int $product_id
-	 * @return array containing all product type info for the requested product
-	 */
-//	public function getProductType($product_id) {
-//		$this->_db = JFactory::getDBO();
-//		$product_types = array();
-//
-//		/* Get the product types the product is linked to */
-//		$q = "SELECT `t`.*
-//			FROM `#__vm_product_product_type_xref` `x`
-//			LEFT JOIN `#__vm_product_type` `t`
-//			ON `t`.`product_type_id` = `x`.`product_type_id`
-//			WHERE `product_id` = ".$product_id."
-//			GROUP BY `product_type_id`";
-//		$this->_db->setQuery($q);
-//		$product_types = $this->_db->loadObjectList();
-//
-//		foreach ($product_types as $pkey => $product_type) {
-//			/* Load the details */
-//			$q = "SELECT * FROM `#__vm_product_type_".$product_type->product_type_id."` ORDER BY `parameter_list_order`";
-//			$this->_db->setQuery($q);
-//			$product_types[$pkey]->product_type = $this->_db->loadObjectList();
-//		}
-//		return $product_types;
-//	}
-
 	/**
     * Get a list of product types to assign the product to
     * @author RolandD
@@ -1820,7 +1787,7 @@ class VirtueMartModelProduct extends JModel {
 			LEFT JOIN #__vm_product_product_type_xref x
 			ON x.product_type_id = t.product_type_id
 			WHERE (product_id != ".$cids[0]." OR product_id IS NULL)
-			ORDER BY product_type_list_order ASC";
+			ORDER BY `ordering` ASC";
 		$this->_db->setQuery($q);
 		return $this->_db->loadObjectList();
     }

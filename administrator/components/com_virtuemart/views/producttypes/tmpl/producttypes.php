@@ -84,7 +84,7 @@ if( $this->pagination->limit < $nrows ){
 				<!-- Product type description -->
 				<td>
 					<?php $disabled = $this->lists['filter_order'] ?  '' : 'disabled="disabled"'; ?>
-					<input type="text" name="order[]" size="5" value="<?php echo $producttype->product_type_list_order;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
+					<input type="text" name="order[]" size="5" value="<?php echo $producttype->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 					<span><?php echo  $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->lists['filter_order'] ); ?></span>
 					<span><?php echo  $this->pagination->orderDownIcon( $i, $nrows, true, 'orderdown', 'Move Down', $this->lists['filter_order'] ); ?></span>
 				</td>

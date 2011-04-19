@@ -50,7 +50,7 @@ AdminMenuHelper::startAdminArea();
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_MODULE_LIST_ORDER') ?>: </td>
       <td valign="top"><?php
       	echo $this->producttype->list_order;
-         echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$this->producttype->product_type_list_order."\" />";
+         echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$this->producttype->ordering."\" />";
       ?>
       </td>
 	</tr>
