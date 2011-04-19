@@ -39,7 +39,7 @@ class VirtueMartModelProducttypes extends JModel {
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int' );
+		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -144,6 +144,14 @@ class VirtueMartModelProducttypes extends JModel {
 		return $product_type_data;
     }
 
+	/* load the Parameter for this product type */
+	public function getProducttypeParameter() {
+		$cids = JRequest::getVar('cid', false);
+		$q = 'SELECT * FROM `#__vm_product_type_parameter` WHERE `product_type_id`='.$cids[0];
+		$this->_db->setQuery($q);
+
+		return $this->_db->loadObjectList();
+	}
     /**
     * Delete a product type
     * @author RolandD
@@ -162,12 +170,6 @@ class VirtueMartModelProducttypes extends JModel {
 			$db->setQuery($q);
 			$parameter_names = $db->loadObjectList();
 			foreach ($parameter_names as $key => $name) {
-				/**
-				if( !isset($ps_product_type_parameter)) { $ps_product_type_parameter = new ps_product_type_parameter(); }
-				$arr['product_type_id'] = $record_id;
-				$arr['parameter_name'] = $db->f('parameter_name');
-				$ps_product_type_parameter->delete_parameter( $arr );
-				*/
 			}
 
 			$q = "DELETE FROM #__vm_product_type WHERE product_type_id = ".$product_type_id;
@@ -296,23 +298,20 @@ class VirtueMartModelProducttypes extends JModel {
 		$db->setQuery($count);
 		return $db->loadResult();
     }
-    /**
-    * Set the publish/unpublish state
-    */
-    public function getPublish() {
-     	$cid = JRequest::getVar('cid', false);
-     	if (is_array($cid)) {
-//     		$this->_db = JFactory::getDBO();
-     		$cids = implode( ',', $cid );
-			if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
-			$q = "UPDATE #__vm_product_type
-				SET `published` = ".$this->_db->Quote($state)."
-				WHERE `product_type_id` IN (".$cids.")";
-			$this->_db->setQuery($q);
-			if ($this->_db->query()) return true;
-			else return false;
-		}
-    }
+
+	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author Max Milbers
+     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @return boolean True is the publishing was successful, false otherwise.
+     */
+	public function publish($publishId = false){
+
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::publish('cid','product_type',$publishId);
+
+	}
     /**
     * Get the position where the product type needs to be
     * @author RolandD

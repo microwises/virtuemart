@@ -76,6 +76,7 @@ class TableMedia extends JTable {
 	    if (!$this->vendor_id) {
 			$this->vendor_id = 1; //default to mainvendor
 		}
+		if(empty($this->file_title)) $this->file_title = $this->file_name ;
 
 		if(!empty($this->file_title)){
 			if(strlen($this->file_title)>126){

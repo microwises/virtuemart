@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: producttypes_edit.php 2978 2011-04-06 14:21:19Z alatak $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -30,7 +30,7 @@ AdminMenuHelper::startAdminArea();
 		</td>
 		<td>
 			<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->producttype->published); ?>
+				<?php echo JHTMLSelect::booleanlist('published', null, $this->producttype->published); ?>
 			</fieldset>
 		</td>
 	</tr>
@@ -57,7 +57,7 @@ AdminMenuHelper::startAdminArea();
 	<tr>
       <td colspan="2"><br /></td>
 	</tr>
-	<tr>
+<?php /*	<tr>
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('COM_VIRTUEMART_LEAVE_BLANK') ?>: </td>
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_browsepage" value="<?php echo $this->producttype->product_type_browsepage; ?>" />
@@ -70,7 +70,10 @@ AdminMenuHelper::startAdminArea();
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_flypage" value="<?php echo $this->producttype->product_type_flypage; ?>" />
       </td>
-	</tr>
+	</tr> */ ?>
+	<?php foreach ( $this->producttypeParameter as $parameter ){
+	}
+	?>
 </table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="producttypes" />

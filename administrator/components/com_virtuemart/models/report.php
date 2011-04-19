@@ -48,7 +48,7 @@ class VirtuemartModelReport extends JModel {
 		
 		$mainframe = JFactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'limitstart', 'limitstart', 0, 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'limitstart', 'limitstart', 0, 'int');
 		
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);

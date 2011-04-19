@@ -21,7 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <h2><?php echo JText::_('COM_VIRTUEMART_TYPES');?>:</h2>
-<?php foreach ($this->productTypes as $key=>$type) { 
-	include 'product_edit_type.php';
-} ?>
+<?php
+if ($this->productTypes) {
+	foreach ($this->productTypes as $key=>$type) { 
+		include 'product_edit_type.php';
+	}
+} else {
+echo jText::_( 'COM_VIRTUEMART_TYPES_NO_TYPES') ;
+}
+?>
 <div style="clear:both;"></div>

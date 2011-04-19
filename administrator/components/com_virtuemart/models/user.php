@@ -65,7 +65,7 @@ class VirtueMartModelUser extends JModel {
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
 
 		// Set the state pagination variables
 		$this->setState('limit', $limit);
@@ -803,8 +803,8 @@ class VirtueMartModelUser extends JModel {
 	 	$option = JRequest::getCmd( 'option');
 	 	$mainframe = JFactory::getApplication() ;
 
-	 	$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-	 	$filter_order     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
+	 	$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+	 	$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'id', 'cmd' );
 
 	 	// FIXME this is a dirty hack since we don't have an ordering field yet...
 	 	if ($filter_order == 'ordering') $filter_order = 'id';

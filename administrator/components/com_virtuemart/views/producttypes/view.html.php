@@ -46,6 +46,7 @@ class VirtuemartViewProducttypes extends JView {
 			case 'edit':
 				/* Get the data */
 				$producttype = $this->get('ProductType');
+				$producttypeParameter = $this->get('ProductTypeParameter');
 
 				/* Load the editor */
 				$editor = JFactory::getEditor();
@@ -59,15 +60,12 @@ class VirtuemartViewProducttypes extends JView {
 
 				/* Assign the data */
 				$this->assignRef('producttype', $producttype);
+				$this->assignRef('producttypeParameter', $producttypeParameter);
 				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
 				break;
 			default:
 				switch ($task) {
-					case 'publish':
-					case 'unpublish':
-						$this->get('Publish');
-					break;
 					case 'saveorder':
 						$this->get('SaveOrder');
 					break;

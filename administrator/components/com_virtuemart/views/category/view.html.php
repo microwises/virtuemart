@@ -43,6 +43,7 @@ class VirtuemartViewCategory extends JView {
         $layoutName = JRequest::getVar('layout', 'default');
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $view = JRequest::getCmd('view');
 
 		if ($layoutName == 'edit') {
 
@@ -105,8 +106,8 @@ class VirtuemartViewCategory extends JView {
 			$pagination = $model->getPagination();
 
 			$lists = array();
-			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
-			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
+			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.$view.'filter_order', 'filter_order', '', 'cmd');
+			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.$view.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 			$this->assignRef('pagination',	$pagination);
 			$this->assignRef('categories', $categoriesSorted['categories']);

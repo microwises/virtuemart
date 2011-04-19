@@ -42,8 +42,8 @@ class VirtuemartControllerProducttypes extends JController {
 		$this->registerTask('saveorder','productTypes');
 		$this->registerTask('orderup','productTypes');
 		$this->registerTask('orderdown','productTypes');
-		$this->registerTask('unpublish','productTypes');
-		$this->registerTask('publish','productTypes');
+//		$this->registerTask('unpublish','productTypes');
+//		$this->registerTask('publish','productTypes');
 		$this->registerTask('add','edit');
 		$this->registerTask('apply','save');
 		$this->registerTask('cancel','productTypes');
@@ -65,16 +65,45 @@ class VirtuemartControllerProducttypes extends JController {
 		/* Now display the view. */
 		$view->display();
 	}
+	/**
+	 * Handle the publish task
+	 *
+	 * @author Max Milbers
+	 */
+	public function publish(){
+		$model = $this->getModel('producttypes');
+		if (!$model->publish(true)) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_PUBLISHED');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_PUBLISHED_SUCCESS');
+		}
 
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=producttypes', $msg);
+	}
+
+	/**
+	 * Handle the publish task
+	 *
+	 * @author RickG, jseros
+	 */
+	public function unpublish(){
+		$model = $this->getModel('producttypes');
+		if (!$model->publish(false)) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTTYPE_COULD_NOT_BE_UNPUBLISHED');
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_UNPUBLISHED_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=producttypes', $msg);
+	}
 	/**
 	 * Handle the edit task
 	 *
      * @author RolandD
 	 */
 	function edit() {
-		JRequest::setVar('controller', 'producttypes');
 		JRequest::setVar('view', 'producttypes');
-		JRequest::setVar('layout', 'producttypes_edit');
+		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 
 		parent::display();
@@ -118,17 +147,17 @@ class VirtuemartControllerProducttypes extends JController {
 		$mainframe = Jfactory::getApplication();
 
 		/* Load the view object */
-		$view = $this->getView('discounts', 'html');
+		$view = $this->getView('producttypes', 'html');
 
-		$model = $this->getModel('disocunts');
+		$model = $this->getModel('producttypes');
 		$msgtype = '';
-		if ($model->removeDiscount()) $msg = JText::_('COM_VIRTUEMART_DISOUNCT_REMOVED_SUCCESSFULLY');
+		if ($model->removeProducttypes()) $msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('COM_VIRTUEMART_DISCOUNT_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_PRODUCTTYPE_NOT_REMOVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=discounts&task=discounts', $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=producttypes', $msg, $msgtype);
 	}
 }
 // pure php no closing tag

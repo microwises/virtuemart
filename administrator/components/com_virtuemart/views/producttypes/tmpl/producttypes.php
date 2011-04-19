@@ -19,6 +19,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
+$nrows = count( $this->producttypeslist );
+
+if( $this->pagination->limit < $nrows ){
+	if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
+		$nrows = $this->pagination->limitstart + $this->pagination->limit;
+	}
+}
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -46,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_TYPE_FORM_DESCRIPTION', 'is_percent', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_TYPE_FORM_PARAMETERS', 'start_date', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCTS_LBL', 'end_date', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MODULE_LIST_ORDER', 'list_order', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MODULE_LIST_ORDER', 'list_order', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?><?php echo JHTML::_('grid.order', $nrows, 'filesave.png', 'saveOrder' ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
@@ -75,7 +82,12 @@ AdminMenuHelper::startAdminArea();
 				<?php $link = 'index.php?option=com_virtuemart&view=product&task=product&product_type_id='.$producttype->product_type_id; ?>
 				<td><?php echo $producttype->productcount. " " . JText::_('COM_VIRTUEMART_PRODUCTS_LBL').JHTML::_('link', $link, ' [ '.JText::_('COM_VIRTUEMART_SHOW').' ]'); ?></td>
 				<!-- Product type description -->
-				<td><?php echo $producttype->product_type_list_order; ?></td>
+				<td>
+					<?php $disabled = $this->lists['filter_order'] ?  '' : 'disabled="disabled"'; ?>
+					<input type="text" name="order[]" size="5" value="<?php echo $producttype->product_type_list_order;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
+					<span><?php echo  $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $this->lists['filter_order'] ); ?></span>
+					<span><?php echo  $this->pagination->orderDownIcon( $i, $nrows, true, 'orderdown', 'Move Down', $this->lists['filter_order'] ); ?></span>
+				</td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>

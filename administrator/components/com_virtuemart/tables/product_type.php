@@ -39,7 +39,7 @@ class TableProduct_type extends JTable {
 	/** @var string Name of the flypage to use */
 	var $product_type_flypage = null;
 	/** @var int The order to list the product types in */
-	var $product_type_list_order = null;
+	var $product_type_list_order = 0;
 
 	/**
 	* @param database A database connector object
