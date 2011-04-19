@@ -68,7 +68,7 @@ $pagination = $this->pagination;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_MEDIA'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -110,7 +110,7 @@ $pagination = $this->pagination;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link; ?></td>
 				<!-- Vendor name -->
-				<td><?php echo $product->vendor_name; ?></td>
+				<td><?php echo $product->product_id; // echo $product->vendor_name; ?></td>
 				<!-- Media -->
 				<?php
 					/* Create URL */
@@ -124,7 +124,7 @@ $pagination = $this->pagination;
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Category name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=product.product_category_form&category_id='.$product->category_id.'&category_parent_id='.$product->category_parent_id.'&option='.$option), $product->category_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&category_id='.$product->category_id.'&option='.$option), $product->category_name); ?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if( $category_id ) { ?>
 					<td align="center" class="order">
@@ -135,7 +135,7 @@ $pagination = $this->pagination;
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=manufacturer.manufacturer_form&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&product_id='.$product->product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>

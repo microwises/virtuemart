@@ -76,6 +76,9 @@ class TableProduct_price extends JTable {
             return false;
         }
 
+       	if(empty($this->cdate)) $this->cdate = time();
+       	$this->mdate = time();
+
 //		if (!$this->product_price) {
 //			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));
 //			return false;

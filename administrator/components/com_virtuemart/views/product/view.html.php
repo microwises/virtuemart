@@ -132,7 +132,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
 //				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
-				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
+				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'manufacturer_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
 
 				/* Load the attribute names */
 				$product->attribute_names = $this->get('ProductAttributeNames');
@@ -172,7 +172,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Load product types lists */
 				$productTypes = $this->get('productTypes');
 				$this->assignRef('productTypes', $productTypes);
-				
+
 
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
@@ -290,8 +290,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				foreach ($productlist as $product_id => $product) {
 //					$product->mediaitems = $media->getProductDownloadables($product_id);
 //					$media->setProductId($product_id);
-					$file_ids = explode(',',$product->file_ids);
-					$product->mediaitems = count($file_ids);
+//					$file_ids = explode(',',$product->file_ids);
+					$product->mediaitems = count($product->file_ids);
 					$product->reviews = $productreviews->countReviewsForProduct($product_id);
 					$product->product_price_display = $currencydisplay->getValue($product->product_price);
 				}
