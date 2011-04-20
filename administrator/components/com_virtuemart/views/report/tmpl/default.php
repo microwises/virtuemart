@@ -25,8 +25,8 @@ $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $order_id = JRequest::getInt('order_id', false);
-
-$rows = count( $this->revenueBasic );
+$format = '%m-%d-%Y';
+$rows = count( $this->report );
 
 if( $this->pagination->limit < $rows ){
 	if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
@@ -37,10 +37,17 @@ if( $this->pagination->limit < $rows ){
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
+        <h2><?php echo JHTML::_('date', $this->from_period, $format) . ' - ' . JHTML::_('date', $this->until_period, $format); ?></h2>
         <div id="filterbox" style="float: left">
+            
             <table>
                 <tr>
                     <td align="left" width="100%">
+                        <?php echo $this->lists['select_date']; ?>
+                        <?php echo JHTML::_('calendar', $this->from_period, 'from_period', 'from-period', '%m-%d-%Y'); ?>
+                        <?php echo JHTML::_('calendar', $this->until_period, 'until_period', 'until-period', '%m-%d-%Y'); ?>
+                        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?>
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -80,7 +87,7 @@ if( $this->pagination->limit < $rows ){
                 <?php 
 	    $i = 0;
 	    for ($j =0; $j < $rows; ++$j ){
-	    	$r = $this->revenueBasic[$j];
+	    	$r = $this->report[$j];
 	    	$is = $this->itemsSold[$j];
 	    	$s = 0;
 	    	?>
