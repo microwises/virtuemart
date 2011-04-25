@@ -43,6 +43,38 @@ class shopFunctionsF {
 	}
 
 	/**
+	 *
+	 * @author Max Milbers
+	 */
+	public function addProductToRecent($productId){
+		$session = JFactory::getSession();
+		$products_ids = $session->get('vmlastvisitedproductids', array(), 'vm');
+		$key = array_search($productId,$products_ids);
+		if($key!==FALSE){
+			unset($products_ids[$key]);
+		}
+		array_unshift($products_ids,$productId);
+		$products_ids = array_unique($products_ids);
+
+		$maxSize = VmConfig::get('max_recent_products',3);
+		if(count($products_ids)>$maxSize){
+			array_splice($products_ids,$maxSize);
+		}
+
+		return $session->set('vmlastvisitedproductids', $products_ids, 'vm');
+	}
+
+	/**
+	 *
+	 * Enter description here ...
+	 * @author Max Milbers
+	 */
+	public function getRecentProductIds(){
+		$session = JFactory::getSession();
+		return $session->get('vmlastvisitedproductids', array(), 'vm');
+	}
+
+	/**
 	 * function to create a div to show the prices, is necessary for JS
 	 *
 	 * @author Max Milbers

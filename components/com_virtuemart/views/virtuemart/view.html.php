@@ -7,7 +7,7 @@
 * @subpackage
 * @author
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -59,7 +59,8 @@ class VirtueMartViewVirtueMart extends JView {
         if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
         /* Load the recent viewed products */
-        $recentProducts = $productModel->getRecentProducts();
+        $recentProductIds = shopFunctionsF::getRecentProductIds();
+        $recentProducts = $productModel->getProducts($recentProductIds);
         $productModel->addImagesToProducts($recentProducts);
         $this->assignRef('recentProducts', $recentProducts);
 
@@ -96,6 +97,11 @@ class VirtueMartViewVirtueMart extends JView {
 		} else {
 			$this->setLayout('offline');
 		}
+
+		/* Set the titles */
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
+
 
 		$template = VmConfig::get('vmtemplate','default');
 		if (is_dir(JPATH_THEMES.DS.$template)) {

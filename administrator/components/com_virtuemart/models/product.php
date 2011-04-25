@@ -397,6 +397,26 @@ class VirtueMartModelProduct extends JModel {
 	}
 
 	/**
+	 * Returns products for given array of ids
+	 *
+	 * @author Max Milbers
+	 * @param unknown_type $productIds
+	 * @param unknown_type $front
+	 * @param unknown_type $withCalc
+	 * @param unknown_type $onlyPublished
+	 */
+	public function getProducts($productIds, $front=true, $withCalc = true, $onlyPublished = true){
+
+		$products=array();
+		foreach($productIds as $id){
+			if($product = $this->getProduct($id)){
+				$products[] = $product;
+			}
+		}
+		return $products;
+	}
+
+	/**
 	* Load any related products
 	*
 	* @author RolandD
@@ -1276,104 +1296,104 @@ class VirtueMartModelProduct extends JModel {
 	}
 
 
-    /**
-    * Add a product to the recent products list
-    * @author RolandD
-    */
-    public function addRecentProduct($product_id, $category_id, $maxviewed) {
-    	$session = JFactory::getSession();
-		$recentproducts = $session->get("recentproducts", null);
-		if (empty($recentproducts)) $recentproducts['idx'] = 0;
-
-    	//Check to see if we alread have recent
-    	if ($recentproducts['idx'] !=0) {
-    		for($i=0; $i < $recentproducts['idx']; $i++){
-    			//Check if it already exists and remove and reorder array
-    			if ($recentproducts[$i]['product_id'] == $product_id) {
-    				for($k=$i; $k < $recentproducts['idx']-1; $k++){
-    					$recentproducts[$k] = $recentproducts[$k+1];
-    				}
-    				array_pop($recentproducts);
-    				$recentproducts['idx']--;
-    			}
-    		}
-    	}
-    	// add product to recently viewed
-    	$recentproducts[$recentproducts['idx']]['product_id'] = $product_id;
-    	$recentproducts[$recentproducts['idx']]['category_id'] = $category_id;
-    	$recentproducts['idx']++;
-    	//Check to see if we have reached are limit and remove first item
-    	if($recentproducts['idx'] > $maxviewed+1) {
-    		for($k=0; $k < $recentproducts['idx']-1;$k++){
-    			$recentproducts[$k] = $recentproducts[$k+1];
-    		}
-    		array_pop($recentproducts);
-    		$recentproducts['idx']--;
-    	}
-    	$session->set("recentproducts", $recentproducts);
-    }
-
-    /**
-    * Load a list of recent products
-    * @author RolandD
-    * @todo Should we setup a session initiator and include the recent products?
-    *
-    * @param  int $product_id the ID of the product currently being viewed, don't want it in the list
-    * @param  int $maxitems the number of items to retrieve
-	* @return boolean true if there are recent products, false if there are no recent products
-    */
-    public function getRecentProducts($product_id=null, $maxitems=5) {
-    	if ($maxitems == 0) return;
-
-//    	$this->_db = JFactory::getDBO();
-    	$session = JFactory::getSession();
-		$recentproducts = $session->get("recentproducts", null);
-		if (empty($recentproducts)) $recentproducts['idx'] = 0;
-
-		$k=0;
-		$recent = array();
-		// Iterate through loop backwards (newest to oldest)
-		for($i = $recentproducts['idx']-1; $i >= 0; $i--) {
-			//Check if on current product and don't display
-			if($recentproducts[$i]['product_id'] == $product_id){
-				continue;
-			}
-			// If we have not reached max products add the next product
-			if ($k < $maxitems) {
-				$prod_id = $recentproducts[$i]['product_id'];
-				$category_id = $recentproducts[$i]['category_id'];
-				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
-				$q .= "FROM #__vm_product as p,#__vm_category as c,#__vm_product_category_xref as cx ";
-				$q .= "WHERE p.product_id = '".$prod_id."' ";
-				$q .= "AND c.category_id = '".$category_id."' ";
-				$q .= "AND p.product_id = cx.product_id ";
-				$q .= "AND c.category_id=cx.category_id ";
-				$q .= "AND p.published='1' ";
-				$q .= "AND c.published='1' ";
-				$q .= "LIMIT 0,1";
-				$this->_db->setQuery($q);
-				$product = $this->_db->loadObject();
-
-				if ($this->_db->getAffectedRows() > 0) {
-					$recent[$k]['product_s_desc'] = $product->product_s_desc;
-					$flypage = $product->category_flypage;
-					if (empty($flypage)) $flypage = VmConfig::get('flypage');
-
-					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
-					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
-					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
-					$recent[$k]['category_name'] = $product->category_name;
-//					$recent[$k]['file_ids'] = $product->file_ids;
-				}
-				$k++;
-			}
-		}
-
-		$session->set("recentproducts", $recent);
-
-		if($k == 0) return false;
-		else return true;
-    }
+//    /**
+//    * Add a product to the recent products list
+//    * @author RolandD
+//    */
+//    public function addRecentProduct($product_id, $category_id, $maxviewed) {
+//    	$session = JFactory::getSession();
+//		$recentproducts = $session->get("recentproducts", null);
+//		if (empty($recentproducts)) $recentproducts['idx'] = 0;
+//
+//    	//Check to see if we alread have recent
+//    	if ($recentproducts['idx'] !=0) {
+//    		for($i=0; $i < $recentproducts['idx']; $i++){
+//    			//Check if it already exists and remove and reorder array
+//    			if ($recentproducts[$i]['product_id'] == $product_id) {
+//    				for($k=$i; $k < $recentproducts['idx']-1; $k++){
+//    					$recentproducts[$k] = $recentproducts[$k+1];
+//    				}
+//    				array_pop($recentproducts);
+//    				$recentproducts['idx']--;
+//    			}
+//    		}
+//    	}
+//    	// add product to recently viewed
+//    	$recentproducts[$recentproducts['idx']]['product_id'] = $product_id;
+//    	$recentproducts[$recentproducts['idx']]['category_id'] = $category_id;
+//    	$recentproducts['idx']++;
+//    	//Check to see if we have reached are limit and remove first item
+//    	if($recentproducts['idx'] > $maxviewed+1) {
+//    		for($k=0; $k < $recentproducts['idx']-1;$k++){
+//    			$recentproducts[$k] = $recentproducts[$k+1];
+//    		}
+//    		array_pop($recentproducts);
+//    		$recentproducts['idx']--;
+//    	}
+//    	$session->set("recentproducts", $recentproducts);
+//    }
+//
+//    /**
+//    * Load a list of recent products
+//    * @author RolandD
+//    * @todo Should we setup a session initiator and include the recent products?
+//    *
+//    * @param  int $product_id the ID of the product currently being viewed, don't want it in the list
+//    * @param  int $maxitems the number of items to retrieve
+//	* @return boolean true if there are recent products, false if there are no recent products
+//    */
+//    public function getRecentProducts($product_id=null, $maxitems=5) {
+//    	if ($maxitems == 0) return;
+//
+////    	$this->_db = JFactory::getDBO();
+//    	$session = JFactory::getSession();
+//		$recentproducts = $session->get("recentproducts", null);
+//		if (empty($recentproducts)) $recentproducts['idx'] = 0;
+//
+//		$k=0;
+//		$recent = array();
+//		// Iterate through loop backwards (newest to oldest)
+//		for($i = $recentproducts['idx']-1; $i >= 0; $i--) {
+//			//Check if on current product and don't display
+//			if($recentproducts[$i]['product_id'] == $product_id){
+//				continue;
+//			}
+//			// If we have not reached max products add the next product
+//			if ($k < $maxitems) {
+//				$prod_id = $recentproducts[$i]['product_id'];
+//				$category_id = $recentproducts[$i]['category_id'];
+//				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
+//				$q .= "FROM #__vm_product as p,#__vm_category as c,#__vm_product_category_xref as cx ";
+//				$q .= "WHERE p.product_id = '".$prod_id."' ";
+//				$q .= "AND c.category_id = '".$category_id."' ";
+//				$q .= "AND p.product_id = cx.product_id ";
+//				$q .= "AND c.category_id=cx.category_id ";
+//				$q .= "AND p.published='1' ";
+//				$q .= "AND c.published='1' ";
+//				$q .= "LIMIT 0,1";
+//				$this->_db->setQuery($q);
+//				$product = $this->_db->loadObject();
+//
+//				if ($this->_db->getAffectedRows() > 0) {
+//					$recent[$k]['product_s_desc'] = $product->product_s_desc;
+//					$flypage = $product->category_flypage;
+//					if (empty($flypage)) $flypage = VmConfig::get('flypage');
+//
+//					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
+//					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
+//					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
+//					$recent[$k]['category_name'] = $product->category_name;
+////					$recent[$k]['file_ids'] = $product->file_ids;
+//				}
+//				$k++;
+//			}
+//		}
+//
+//		$session->set("recentproducts", $recent);
+//
+//		if($k == 0) return false;
+//		else return true;
+//    }
 
    	/**
 	* Function Description

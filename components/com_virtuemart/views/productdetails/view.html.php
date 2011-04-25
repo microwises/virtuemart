@@ -61,7 +61,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Load helpers */
 		$this->loadHelper('image');
-		$this->loadHelper('addtocart');
+		$this->loadHelper('addtocart');		//Which helper is this and where is it and what is it doing?
 
 
 		/* Load the product */
@@ -89,13 +89,6 @@ class VirtueMartViewProductdetails extends JView {
 		$product_model->addImagesToProducts($product);
 		$this->assignRef('product', $product);dump($product,'$product');
 
-		/* Set Canonic link */
-		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
-
-		/* Set the titles */
-		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name));
-		$uri = JURI::getInstance();
-
 
 		/* Load the category */
 		$category_model = $this->getModel('category');
@@ -120,6 +113,13 @@ class VirtueMartViewProductdetails extends JView {
 			if($category->children)	$category_model->addImagesToCategories($category->children);
 		}
 
+		/* Set Canonic link */
+		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
+
+		/* Set the titles */
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name));
+
+		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem($product->product_name);
 
@@ -180,6 +180,7 @@ class VirtueMartViewProductdetails extends JView {
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
+		shopFunctionsF::addProductToRecent($product_id);
 		//TODO add params, add event
 //		$params = new JParameter();
 //		/*
