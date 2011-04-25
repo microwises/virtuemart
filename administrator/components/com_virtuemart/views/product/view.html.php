@@ -263,7 +263,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				/* Get the list of products */
 				$productlist = $this->get('ProductList');
 
-
 				/* Get the category tree */
 				$categoryId = JRequest::getInt('category_id');
 //				if(!empty($categoryId)){
@@ -287,13 +286,23 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$productreviews = new VirtueMartModelRatings();
 				$currencydisplay = CurrencyDisplay::getCurrencyDisplay();
 
+				/* Load the product price */
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+
+				$calculator = calculationHelper::getInstance();
+				$vendor_model = $this->getModel('vendor');
+				$vendor_model->setId($product->vendor_id);
+				$vendor = $vendor_model->getVendor();
+				$calculator->setVendorCurrency($vendor->vendor_currency);
+
 				foreach ($productlist as $product_id => $product) {
+					dump($product->product_currency,'my produt');
 //					$product->mediaitems = $media->getProductDownloadables($product_id);
 //					$media->setProductId($product_id);
 //					$file_ids = explode(',',$product->file_ids);
 					$product->mediaitems = count($product->file_ids);
 					$product->reviews = $productreviews->countReviewsForProduct($product_id);
-					$product->product_price_display = $currencydisplay->getValue($product->product_price);
+					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
 
 				/* Get the pagination */

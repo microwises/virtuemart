@@ -72,6 +72,8 @@ class VirtuemartControllerProduct extends JController {
 		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ));
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
+		/* Vendor functions */
+		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
 		/* Set the layout */
 		$view->setLayout('product');

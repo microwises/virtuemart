@@ -55,7 +55,7 @@ INSERT IGNORE INTO `#__vm_category_xref` (`category_parent_id`, `category_child_
 -- Dumping data for table `#__vm_manufacturer`
 --
 
-INSERT INTO `jos_vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `file_ids`, `published`) VALUES
+INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `file_ids`, `published`) VALUES
 (1, 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', 1, 'http://www.example.org', '', 1);
 
 

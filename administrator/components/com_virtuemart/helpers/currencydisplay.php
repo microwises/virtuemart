@@ -34,7 +34,7 @@ class CurrencyDisplay {
     var $negativePos	= '{sign}{num}{symb}';	// Currency symbol position with Negative values :
 
     private function __construct (){
-
+		dump($this, 'CurrencyDisplay constructor');
 	}
 
 	/**
@@ -61,7 +61,7 @@ class CurrencyDisplay {
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
 		if(empty(self::$_instance) || $currencyId!=self::$_instance->id){
-
+			dump(self::$_instance,'getCurrencyDisplay start id '.$currencyId);
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
@@ -73,9 +73,11 @@ class CurrencyDisplay {
 					if(empty($vendorId)){
 						$vendorId = 1;		//Map to mainvendor
 					}
-					$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
-					$db->setQuery($q);
-					$currencyId = $db->loadResult();
+					if(empty($currencyId)){
+						$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+						$db->setQuery($q);
+						$currencyId = $db->loadResult();
+					}
 
 					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
@@ -84,25 +86,27 @@ class CurrencyDisplay {
 			}
 
 			self::$_instance = new CurrencyDisplay();
-
+			dump(self::$_instance,'after new currencyDisplay id '.$currencyId);
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($currencyId,$style);
 			} else {
-				$app =& JFactory::getApplication('administrator');
+//				$app =& JFactory::getApplication('administrator');
 				$uri =& JFactory::getURI();
 
 				if(empty($currencyId)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
 					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
-					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
-					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+					if(JRequest::getVar('view')!='currency'){
+						$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
+						JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+					}
 				}
 				self::$_instance->setCurrencyDisplayToStyleStr($currencyId);
 				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
-
+		dump(self::$_instance,'get currency id '.$currencyId);
 		return self::$_instance;
 	}
 

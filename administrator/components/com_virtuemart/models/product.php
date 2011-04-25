@@ -1487,7 +1487,7 @@ class VirtueMartModelProduct extends JModel {
 
 		$q = 'SELECT `comment`, `time`, `userid`, `user_rating`, `username`, `name`
 			FROM `#__vm_product_reviews` `r`
-			LEFT JOIN `jos_users` `u`
+			LEFT JOIN `#__users` `u`
 			ON `u`.`id` = `r`.`userid`
 			WHERE `product_id` = "'.$product_id.'"
 			AND published = "1"

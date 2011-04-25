@@ -59,6 +59,12 @@ class VirtuemartViewCategory extends JView {
 	    $vendorId = 1;
 
 	    $category = $categoryModel->getCategory($categoryId);
+	    if(empty($category->vendor_id)){
+
+	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
+	    	$mainframe -> redirect( 'index.php');
+	    }
+
 	    /* Add the category name to the pathway */
 		if ($category->parents) {
 			foreach ($category->parents as $c){

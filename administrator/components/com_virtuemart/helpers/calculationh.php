@@ -65,7 +65,7 @@ class calculationHelper {
 		$this -> _debug           = false;
 	}
 
-	function getInstance(){
+	public function getInstance(){
 		if(!is_object(self::$_instance)){
 			self::$_instance = new calculationHelper();
 		}else {
@@ -75,34 +75,42 @@ class calculationHelper {
 		return self::$_instance;
 	}
 
+	public function setVendorCurrency($id){
+		$this->vendorCurrency = $id;
+	}
+
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
 	 *
 	 * @param float $price
+	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	function priceDisplay($price=0){
+	public function priceDisplay($price=0, $currencyId=0,$shop = false){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
 
-		$currencyId = $this->_app->getUserStateFromRequest( 'currency_id', 'currency_id',$this->vendorCurrency );
 		if(empty($currencyId)){
-			$currencyId = $this->vendorCurrency;
+			$currencyId = $this->_app->getUserStateFromRequest( 'currency_id', 'currency_id',$this->vendorCurrency );
+			if(empty($currencyId)){
+				$currencyId = $this->vendorCurrency;
+			}
 		}
+
 		$vendorId = 1 ;
 		if($this->_currencyDisplay->id!=$currencyId){
 			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
 		}
 
-		$price = $this->convertCurrencyTo($currencyId,$price,false);
+		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
 		return $this -> _currencyDisplay->getFullValue($price);
 	}
 
-	function getCartPrices(){
+	public function getCartPrices(){
 		return $this->_cartPrices;
 	}
 
-	function getCartData(){
+	public function getCartData(){
 		return $this->_cartData;
 	}
 
@@ -125,7 +133,7 @@ class calculationHelper {
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 *
 	 */
-	function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
+	public function getProductPrices($productId,$catIds=0,$variant=0.0,$amount=0,$ignoreAmount=true,$currencydisplay=true){
 
 		if(!VmConfig::get('show_prices',0)){
 			return array();
@@ -314,7 +322,7 @@ class calculationHelper {
 	 *
 	 */
 //	function getCheckoutPrices($productIds,$variantMods=array(), $cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
-	function getCheckoutPrices($cart){
+	public function getCheckoutPrices($cart){
 
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
 //		echo '<br />shipping_rate_id '.$cart->shipping_rate_id.'<br />';
@@ -923,11 +931,11 @@ class calculationHelper {
 
 		if(is_numeric($curr)){
 			$this->_db = JFactory::getDBO();
-			$q= 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
+			$q = 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table '.$curr);
+				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table for id = '.$curr);
 			}
 			return $currInt;
 		}

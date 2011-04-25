@@ -166,7 +166,7 @@ class VirtueMartViewProductdetails extends JView {
 		}
 
 		if ($mainframe->getCfg('MetaTitle') == '1') {
-			$document->setMetaData('title', $product->product_s_desc);  //Maybe better product_name
+			$document->setMetaData('title', $product->product_name);  //Maybe better product_name
 		}
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $product->metaauthor);
