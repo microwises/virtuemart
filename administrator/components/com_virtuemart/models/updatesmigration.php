@@ -133,8 +133,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->query();
 		$oldUserId = $db->loadResult();
 
-		if (!isset($oldVendorId) && !isset($oldUserId)) {
-		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`) VALUES ("' . $userId . '", "1","1")');
+		if (empty($oldVendorId) && empty($oldUserId)) {
+		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
 				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
 		    }
@@ -143,11 +143,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    }
 		}
 		else {
-		    if (!isset($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'" AND `user_is_vendor` = "1" WHERE `vendor_id` = "1" ');
+		    if (empty($oldUserId)) {
+				$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1" AND `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
@@ -378,7 +378,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			}
 			$_configData[] = $_line;
 		}
-		fclose ($_datafile);
+
+		fclose ($_data);
 
 		$_value = join('\n', $_configData);
 		if (!$_value) {

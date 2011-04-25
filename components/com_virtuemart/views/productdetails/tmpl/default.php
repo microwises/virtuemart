@@ -61,7 +61,7 @@ if (empty ( $this->product )) {
 		<?php //Showing the additional images ?>
 
 		<?php
-		if(!empty($this->product->images)) { ?>
+		if(!empty($this->product->images) && count($this->product->images)>1) { ?>
 			<div class="additional-images">
 			<?php // List all Images
 			foreach ($this->product->images as $image) {
@@ -125,7 +125,8 @@ if (empty ( $this->product )) {
 			</div>
 
 			<?php // Add To Cart Button
-			if (VmConfig::get('use_as_catalogue') != '1') { ?>
+
+			if (!VmConfig::get('use_as_catalog',0)) { ?>
 			<div class="addtocart-area marginbottom20">
 				<form  method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
 
@@ -208,13 +209,17 @@ if (empty ( $this->product )) {
 			<br style="clear:both;" />
 
 			<?php // Manufacturer of the Product
-			$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
-			$text = $this->product->mf_name;
-			/* Avoid JavaScript on PDF Output */
-			if (strtolower(JRequest::getVar('output')) == "pdf") echo JHTML::_('link', $link, $text);
-			else { ?>
-			<?php echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
-			<?PHP } ?>
+			if(VmConfig::get('show_manufacturer',1) && !empty($this->product->manufacturer_id)){
+
+				$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
+				$text = $this->product->mf_name;
+				/* Avoid JavaScript on PDF Output */
+				if (strtolower(JRequest::getVar('output')) == "pdf"){
+					echo JHTML::_('link', $link, $text);
+				} else {
+					echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+			<?PHP }
+			}?>
 
 			</div>
 		</div>

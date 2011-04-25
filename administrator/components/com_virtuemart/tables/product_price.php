@@ -87,7 +87,7 @@ class TableProduct_price extends JTable {
 //			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_CURRENCY'));
 //			return false;
 //		}
-		dump($this,'table check');
+
         return true;
     }
 

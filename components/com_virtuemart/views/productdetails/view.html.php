@@ -47,6 +47,8 @@ class VirtueMartViewProductdetails extends JView {
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
 		$this->assignRef('show_prices', $show_prices);
+
+
 		$document = JFactory::getDocument();
 
 		/* add javascript for price and cart */
@@ -61,11 +63,10 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Load helpers */
 		$this->loadHelper('image');
-		$this->loadHelper('addtocart');		//Which helper is this and where is it and what is it doing?
 
 
 		/* Load the product */
-//		$product = $this->get('product');
+//		$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 		$product_model = $this->getModel('product');
 
 		$product_idArray = JRequest::getVar('product_id');
@@ -75,19 +76,21 @@ class VirtueMartViewProductdetails extends JView {
 			$product_id=$product_idArray;
 		}
 
-		if(empty($product_id)){
-			self::showLastCategory($tpl);
-			return;
-		}
-//		dump($this,'wie?');
 		$product = $product_model->getProduct($product_id);
 
-		if(empty($product)){
-			self::showLastCategory($tpl);
+		if(empty($product->product_id)){
+			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
+			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$categoryLink='';
+			if($category_id){
+				$categoryLink='&category_id='.$category_id;
+			}
+			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink));
+
 			return;
 		}
 		$product_model->addImagesToProducts($product);
-		$this->assignRef('product', $product);dump($product,'$product');
+		$this->assignRef('product', $product);
 
 
 		/* Load the category */

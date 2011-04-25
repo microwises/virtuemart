@@ -38,7 +38,6 @@ class VirtueMartControllerCategories extends JController {
     */
     public function __construct() {
      	 parent::__construct();
-
    	}
 
 	/**

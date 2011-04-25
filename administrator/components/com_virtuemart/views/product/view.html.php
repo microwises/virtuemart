@@ -71,7 +71,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product->product_id); dump($product);
+				$product->prices = $calculator -> getProductPrices($product->product_id);
 
 				$dbTax = 'Rules Effecting: <br />';
 				foreach($calculator->rules['dBTax'] as $rule){

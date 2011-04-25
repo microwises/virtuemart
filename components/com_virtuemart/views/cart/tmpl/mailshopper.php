@@ -27,7 +27,7 @@
 *
 */
 
-dump($this,'my mailshopper');
+//dump($this,'my mailshopper');
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');

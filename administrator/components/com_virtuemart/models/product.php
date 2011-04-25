@@ -147,7 +147,6 @@ class VirtueMartModelProduct extends JModel {
 		$this->setId($product_id);
 
     	$child = $this->getProductSingle($product_id,$front, $withCalc,$onlyPublished);
-		dump($child,'my id getProduct '.$product_id);
 
     	//store the original parent id
 		$pId = $child->product_id;
@@ -159,7 +158,7 @@ class VirtueMartModelProduct extends JModel {
     	while(!empty($child->product_parent_id)){
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, $withCalc,$onlyPublished);
     	    $attribs = get_object_vars($parentProduct);
-			dump($attribs,'my $$attribs '.$child->product_parent_id);
+
 	    	foreach($attribs as $k=>$v){
 				if(is_array($child->$k)){
 					if(!is_array($v)) $v =array($v);
@@ -170,7 +169,7 @@ class VirtueMartModelProduct extends JModel {
 					}
 				}
 	    	}
-			dump($child,'my $child with Parent level '.$i++);
+//			dump($child,'my $child with Parent level '.$i++);
 			$child->product_parent_id = $parentProduct->product_parent_id;
     	}
 		$child->published = $published;
@@ -706,7 +705,7 @@ class VirtueMartModelProduct extends JModel {
 
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	$productIdList = $this->_db->loadResultArray();
-		dump($this->_db,'product Id List');
+//		dump($this->_db,'product Id List');
      	$products = array();
      	foreach ($productIdList as $id){
 //     		dump($id, 'My id');
@@ -1016,7 +1015,6 @@ class VirtueMartModelProduct extends JModel {
 		} else{
 			$data = JRequest::get('post', 4);
 		}
-		dump($data,'my data saveProduct');
 
 		/* Setup some place holders */
 		$product_data = $this->getTable('product');

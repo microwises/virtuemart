@@ -147,7 +147,7 @@ class VirtueMartViewCart extends JView {
 
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
-		dump($this,'everything in my cart view');
+//		dump($this,'everything in my cart view');
 		parent::display($tpl);
 	}
 
@@ -299,6 +299,10 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('selectedPaym',$selectedPaym);
 
 		$payments = $paymentModel->getPayms(false,true);
+		if(empty($payments)){
+			$app = JFactory::getApplication();
+			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED'));
+		}
 //		$withCC=false;
 //		foreach($payments as $item){
 //			if(isset($item->accepted_creditcards)){

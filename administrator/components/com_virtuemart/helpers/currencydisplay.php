@@ -61,6 +61,7 @@ class CurrencyDisplay {
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
 		if(empty(self::$_instance) || $currencyId!=self::$_instance->id){
+
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
@@ -81,6 +82,7 @@ class CurrencyDisplay {
 					$style = $db->loadResult();
 				}
 			}
+
 			self::$_instance = new CurrencyDisplay();
 
 			if(!empty($style)){
@@ -96,6 +98,7 @@ class CurrencyDisplay {
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
 					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				}
+				self::$_instance->setCurrencyDisplayToStyleStr($currencyId);
 				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
@@ -115,10 +118,10 @@ class CurrencyDisplay {
      */
     public function setCurrencyDisplayToStyleStr($currencyId, $currencyStyle='') {
 
+    	$this->id =	$currencyId;
 		if ($currencyStyle) {
 		    $array = explode("|", $currencyStyle);
 //		    if(!empty($array[0])) $this->id = $array[0];
-			$this->id =	$currencyId;
 		    if(!empty($array[1])) $this->symbol = $array[1];
 		    if(!empty($array[2])) $this->nbDecimal = $array[2];
 		    if(!empty($array[3])) $this->decimal = $array[3];

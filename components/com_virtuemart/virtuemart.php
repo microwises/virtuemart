@@ -23,7 +23,8 @@ $config= VmConfig::getInstance();
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-//	JRequest::setVar('task','showOffLine');
+	JRequest::setVar('view', 'virtuemart');
+
 } else {
 	/* Front-end helpers */
 	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view

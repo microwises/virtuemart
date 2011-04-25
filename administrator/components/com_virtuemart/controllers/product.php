@@ -229,7 +229,7 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		$cids = JRequest::getVar('cid'); dump($cids,'my cids');
+		$cids = JRequest::getVar('cid');
 		if ($model->createClone($cids[0])) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');

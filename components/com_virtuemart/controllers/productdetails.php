@@ -181,7 +181,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = $this->getModel('product');
 
 		$prices = $product_model->getPrice($product_id);
-		dump($prices,'my prices');
+
 		//Why we do not have to include the calculatorh.php here?
 		//Because it is already require in the model!
 

@@ -39,6 +39,7 @@ class VirtueMartControllerVirtuemart extends JController
 		    JRequest::setVar( 'layout', 'default' );
 	    }
 
+
 	}
 
 	function Virtuemart() {

@@ -41,8 +41,14 @@ class VirtueMartControllerCart extends JController {
     */
 	public function __construct() {
 		parent::__construct();
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		if (VmConfig::get('use_as_catalog',0)) {
+			$app = JFactory::getApplication();
+		    $app->redirect('index.php');
+		} else {
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		}
+
 	}
 
 
@@ -81,10 +87,11 @@ class VirtueMartControllerCart extends JController {
 	*/
 	public function add() {
 		$mainframe = JFactory::getApplication();
-		/* Load the cart helper */
-		//$this->getModel('productdetails');
-		/* Load the cart helper */
-		//require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		if (VmConfig::get('use_as_catalog',0)) {
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
+			$type = 'error';
+		    $mainframe->redirect('index.php',$msg,$type);
+		}
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			if ($cart->add()) {

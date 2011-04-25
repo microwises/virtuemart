@@ -14,7 +14,7 @@
  * @version $Id: view.html.php 2459 2010-07-02 17:30:23Z milbo $
  */
 
-dump($this,'Data in mail for user');
+//dump($this,'Data in mail for user');
 if(VmConfig::get('html_email',true)){
 	$li = '<br />';
 }

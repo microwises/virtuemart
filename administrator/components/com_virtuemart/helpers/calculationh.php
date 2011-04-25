@@ -897,7 +897,7 @@ class calculationHelper {
 		}
 
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
-			$price = $price * $exchangeRate;dump($exchangeRate,'Use fixed rate ');
+			$price = $price * $exchangeRate;
 		} else {
 			if($shop){
 				$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));

@@ -227,7 +227,7 @@ class VirtueMartCart  {
 
 			}
 			else {
-				$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_PRODUCT_NOTEXIST',false) );
+				$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND',false) );
 				return false;
 			}
 		}

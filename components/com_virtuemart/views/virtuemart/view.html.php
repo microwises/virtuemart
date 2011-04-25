@@ -32,10 +32,6 @@ class VirtueMartViewVirtueMart extends JView {
 
 	public function display($tpl = null) {
 
-		if(!VmConfig::get('shop_is_offline',0)){
-		$categoryModel = $this->getModel('category');
-		$productModel = $this->getModel('product');
-
 	    /* MULTI-X
 	    * $this->loadHelper('vendorHelper');
 	    * $vendorModel = new Vendor;
@@ -49,6 +45,10 @@ class VirtueMartViewVirtueMart extends JView {
 	    $vendorModel->setId(1);
 	    $vendor = $vendorModel->getVendor();
 	    $this->assignRef('vendor',$vendor);
+
+		if(!VmConfig::get('shop_is_offline',0)){
+		$categoryModel = $this->getModel('category');
+		$productModel = $this->getModel('product');
 
 	    $categoryId = JRequest::getInt('catid', 0);
         $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);

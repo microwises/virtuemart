@@ -166,7 +166,10 @@ class VirtuemartViewPaymentMethod extends JView {
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
-
+		if(empty($result)){
+			$app = JFactory::getApplication();
+			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
+		}
 		$listHTML='<select id="paym_jplugin_id" name="paym_jplugin_id">';
 
 		foreach($result as $paym){

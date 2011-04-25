@@ -31,7 +31,7 @@ class AdminMenuHelper {
      */
     function startAdminArea() {
 	$document = JFactory::getDocument();
-	$mainframe = JFactory::getApplication();
+//	$mainframe = JFactory::getApplication();
 
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
