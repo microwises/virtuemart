@@ -71,7 +71,7 @@ INSERT INTO `#__vm_manufacturer_category` (`mf_category_id`, `mf_category_name`,
 -- Dumping data for table `#__vm_media`
 --
 
-INSERT INTO `#__vm_media` (`file_id`, `vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_url`, `file_url_thumb`, `cdate`, `mdate`, `published`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `shared`, `file_params`) VALUES
+INSERT INTO `#__vm_media` (`file_id`, `vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_url`, `file_url_thumb`, `cdate`, `mdate`, `media_published`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `shared`, `file_params`) VALUES
 (1, 1, 'black shovel', '', '', 'image/jpeg', 'images/stories/virtuemart/category/fc2f001413876a374484df36ed9cf775.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (2, 1, 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', '', 'image/jpeg', 'images/stories/virtuemart/category/fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (3, 1, 'green shovel', '', '', 'image/jpeg', 'images/stories/virtuemart/category/756ff6d140e11079caf56955060f1162.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),

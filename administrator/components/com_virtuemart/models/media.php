@@ -189,7 +189,7 @@ class VirtueMartModelMedia extends JModel {
 	    	}
 
 	    	if ($onlyPublished) {
-				$whereItems[] = '`#__vm_media`.`published` = 1';
+				$whereItems[] = '`#__vm_media`.`media_published` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
 			$oderby = '`#__vm_media`.`mdate`';

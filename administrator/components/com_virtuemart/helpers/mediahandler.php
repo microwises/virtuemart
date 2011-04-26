@@ -613,7 +613,7 @@ class VmMediaHandler {
     function getImagesList() {
 
     	$vendorId=1;
-    	$q='SELECT * FROM `#__vm_media` WHERE `published`=1
+    	$q='SELECT * FROM `#__vm_media` WHERE `media_published`=1
     	AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
@@ -661,13 +661,13 @@ class VmMediaHandler {
 
 		$html .= ' <table class="adminform"> ';
 
-		if ($this->published) $checked =  "checked=\"checked\""; else $checked ='';
+		if ($this->media_published) $checked =  "checked=\"checked\""; else $checked ='';
 		$html .= '<tr>
 	<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
 	<td>
-		<input type="checkbox" class="inputbox" id="published" name="published'.$identify.'" '.$checked.' size="16" />
+		<input type="checkbox" class="inputbox" id="published" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 	</td>';
 		$html .= '<td rowspan = 5>';
 		$html .= JHTML::image($this->file_url_thumb, $this->file_meta.' thumbnail', 'style="overflow: auto; float: right;"');

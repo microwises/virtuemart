@@ -46,7 +46,7 @@ class TableMedia extends JTable {
 	var $file_url_thumb			= '';
 
 	/** @var int File published or not */
-	var $published			= 0;
+	var $media_published			= 0;
 	/** @var int File is an image or other */
 	var $file_is_downloadable	= 0;
 	var $file_is_forSale		= 0;

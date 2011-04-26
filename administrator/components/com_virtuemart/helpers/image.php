@@ -50,7 +50,7 @@ class VmImage extends VmMediaHandler {
 				$oldFileUrlThumb = $this->file_url_thumb;
 				$this->file_url_thumb = $this->createThumb();
 				if($this->file_url_thumb!=$oldFileUrlThumb){
-					$this->deleteFile($this->$oldFileUrlThumb);
+					$this->deleteFile($oldFileUrlThumb);
 				}
 			}
 		} //creating the thumbnail image
