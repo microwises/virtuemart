@@ -687,16 +687,45 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 .related-products-view .row .product .spacer img {max-width: 90%;height: auto;}
 
 /*////////////////////////////////////
+//////// Ask A Question View /////////
+////////////////////////////////////*/
+
+.ask-a-question-view {}
+.ask-a-question-view .spacer {padding: 30px;}
+.ask-a-question-view h1 {font-size: 18px;margin: 0px;padding: 0px;}
+.ask-a-question-view .product-summary {margin: 25px 0px 0px 0px;border-bottom: solid #CAC9C9 1px;padding: 0px 0px 10px 0px;}
+.ask-a-question-view .product-summary h2 {font-size: 16px;margin: 0px;padding: 0px;}
+.ask-a-question-view .product-summary .short-description {margin-top: 6px;}
+.ask-a-question-view .product-summary img.product-image {max-width: 100%;max-height: 100%;width: auto;height: auto;}
+.ask-a-question-view .form-field {margin: 25px 0px 0px 0px;}
+.ask-a-question-view .form-field input#email {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;display: inline-block;margin: 0px 0px 0px 10px;}
+.ask-a-question-view .form-field input#email:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
+.ask-a-question-view .form-field textarea.field {width: 394px;background: #fff url(../images/vmgeneral/default_bg.jpg) bottom repeat-x;padding: 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;text-align: left;}
+.ask-a-question-view .form-field textarea.field:hover {background: #fff url(../images/vmgeneral/default_hover_bg.jpg) top repeat-x;color: #000;}
+.ask-a-question-view .form-field .submit {width: 418px;}
+.ask-a-question-view .form-field .submit input.counter {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;display: inline-block;margin: 0px 0px 0px 10px;}
+.ask-a-question-view .form-field .submit input.counter:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
+
+
+
+/*////////////////////////////////////
 ////////// General Buttons ///////////
 ////////////////////////////////////*/
 
 a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
 
-a.product-details:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
+a.product-details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
 .ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: inline-block;text-decoration: none;margin-bottom: 8px;}
 
 .ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
+
+input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;}
+input.highlight-button:hover {background-position: 0px -200px;color: #f2f2f2;}
+input.highlight-button:visited {color: #fff;}
+
+
+
 
 /*////////////////////////////////////
 /////////////// Other ////////////////

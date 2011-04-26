@@ -18,99 +18,71 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+
 // addon for joomla form validator
-JHTML::_('behavior.formvalidation');
+JHTML::_ ( 'behavior.formvalidation' );
+
+// Loading Modal Box Effects
+JHTML::_ ( 'behavior.modal' );
+
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
+	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
-<div class="productdetails-view" style="margin:20px;">
-	<h4><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h4>
-	<div>
-		<div class="width30 floatleft center">
 
-		<?php // Product Image
-		/** @todo make the image popup */
-		echo $this->product->images[0]->displayMediaThumb('class="product-image"'); //4th param was 'class="modal"'
-		?>
-		</div>
+<div class="ask-a-question-view">
+	<div class="spacer">
+		<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
+		
+		<div class="product-summary">
+			<div class="width70 floatleft">
+				<h2><?php echo $this->product->product_name ?></h2>
 
-		<div class="width70 floatleft">
-			<h1><?php echo $this->product->product_name ?></h1>
-
-			<?php // Product Short Description
-			if (!empty($this->product->product_s_desc)) { ?>
-			<p class="short-description">
-				<?php
-				echo '<span class="bold">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_SHORT_DESC_LBL').'</span><br />';
-				echo $this->product->product_s_desc ?>
-			</p>
-			<?php } // Product Short Description END ?>
-			<div class="margintop8">
-			<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL')?></span><?php echo $this->product->mf_name; ?>
-
+				<?php // Product Short Description
+				if (!empty($this->product->product_s_desc)) { ?>
+					<div class="short-description">
+						<?php echo $this->product->product_s_desc ?>
+					</div>
+				<?php } // Product Short Description END ?>
+			
 			</div>
+		
+			<div class="width30 floatleft center">
+				<?php // Product Image
+				echo $this->product->images[0]->displayMediaThumb('class="modal product-image"'); ?>
+			</div>
+
+		<div class="clear"></div>
 		</div>
+		
+		<?php // Get User
+		if (!empty($this->user->id)) {
+			$user =& JFactory::getUser();
+		} ?>
+		
+		<div class="form-field">
 
-	<div class="clear"></div>
-	</div>
-
-	<div class="horizontal-separator margintop15 marginbottom15"></div>
-<table border="0" align="center" style="width: 100%;">
-
-	<tr>
-		<td colspan="2">
-		<!-- List of product ASKs -->
-				<script language="javascript" type="text/javascript">
-				function myValidate(f) {
-					if (f.comment.value.length < <?php echo VmConfig::get('vm_asks_minimum_comment_length', 50); ?>) {
-						alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT1', VmConfig::get('vm_asks_minimum_comment_length', 50)); ?>');
-						return false;
-					} else
-					if (f.comment.value.length > <?php echo VmConfig::get('vm_asks_maximum_comment_length', 2000); ?>) {
-						alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT2', VmConfig::get('vm_asks_maximum_comment_length', 2000)); ?>');
-						 return false;
-					}
-					if (document.formvalidator.isValid(f)) {
-						f.check.value='<?php echo JUtility::getToken(); ?>'; //send token
-						return true;
-					} else {
-						var msg = '';
-						//Example on how to test specific fields
-						if($('email').hasClass('invalid')){
-							msg += "\n\n\t<?php echo JText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS')  ?>";
-						}
-						alert(msg);
-					}
-					return false;
-				}
-
-				function refresh_counter() {
-					var form = document.getElementById('askform');
-					form.counter.value= form.comment.value.length;
-				}
-				</script>
-					<?php
-					if (!empty($this->user->id)) {
-						$user =& JFactory::getUser();
-
-					}
-					?>
-				<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id).'&tmpl=component' ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">
-					 <?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  class="required validate-email"/>
-					<br />
+			<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id).'&tmpl=component' ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">
+				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  class="required validate-email"/>
+					<br /><br />
 					<?php
 					$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
 					echo $ask_comment;
 					?>
 					<br />
-					<textarea title="<?php echo $ask_comment ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" OnKeyUp="refresh_counter();" name="comment" rows="10" cols="55"></textarea>
-					<br />
-					<input class="button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
-					<div align="right"><?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
-						<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
+					<textarea title="<?php echo $ask_comment ?>" class="field" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" OnKeyUp="refresh_counter();" name="comment" rows="10"></textarea>
+					<br /><br />
+					
+					<div class="submit">
+						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+						
+						<div class="width50 floatright right paddingtop">
+							<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+							<input type="text" value="0" size="4" class="counter" name="counter" maxlength="4" readonly="readonly" />
+						</div>
 					</div>
+					
 					<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('product_id'); ?>" />
 					<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
@@ -118,10 +90,39 @@ if (empty ( $this->product )) {
 					<input type="hidden" name="task" value="mailAskquestion" />
 					<?php echo JHTML::_( 'form.token' ); ?>
 				</form>
-
-		</td>
-	</tr>
-
-</table>
+		
+		</div>
+	</div>	
 </div>
+
 <?php } ?>
+
+<script language="javascript" type="text/javascript">
+	function myValidate(f) {
+		if (f.comment.value.length < <?php echo VmConfig::get('vm_asks_minimum_comment_length', 50); ?>) {
+			alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT1', VmConfig::get('vm_asks_minimum_comment_length', 50)); ?>');
+			return false;
+		} else
+		if (f.comment.value.length > <?php echo VmConfig::get('vm_asks_maximum_comment_length', 2000); ?>) {
+			alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT2', VmConfig::get('vm_asks_maximum_comment_length', 2000)); ?>');
+			return false;
+		}
+		if (document.formvalidator.isValid(f)) {
+			f.check.value='<?php echo JUtility::getToken(); ?>'; //send token
+			return true;
+		} else {
+			var msg = '';
+			//Example on how to test specific fields
+			if($('email').hasClass('invalid')){
+				msg += "\n\n\t<?php echo JText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS')  ?>";
+			}
+		alert(msg);
+		}
+			return false;
+		}
+
+		function refresh_counter() {
+			var form = document.getElementById('askform');
+			form.counter.value= form.comment.value.length;
+		}
+</script>

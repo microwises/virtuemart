@@ -205,7 +205,7 @@ if (empty ( $this->product )) {
 			<?php // Ask a question about this product
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
 			 ?>
-			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 450}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+			<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 			<br style="clear:both;" />
 
 			<?php // Manufacturer of the Product
@@ -317,7 +317,8 @@ foreach ($this->product->related as $rkey => $related) {
 					</h3>
 
 					<?php
-					// echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
+					dump($this,'jojo');
+					//echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
 					?>
 
 					<div class="product-price marginbottom12">
