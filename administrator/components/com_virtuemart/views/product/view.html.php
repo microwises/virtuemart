@@ -291,9 +291,6 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 
 				$calculator = calculationHelper::getInstance();
 				$vendor_model = $this->getModel('vendor');
-				$vendor_model->setId($product->vendor_id);
-				$vendor = $vendor_model->getVendor();
-				$calculator->setVendorCurrency($vendor->vendor_currency);
 
 				foreach ($productlist as $product_id => $product) {
 					dump($product->product_currency,'my produt');
@@ -302,7 +299,14 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 //					$file_ids = explode(',',$product->file_ids);
 					$product->mediaitems = count($product->file_ids);
 					$product->reviews = $productreviews->countReviewsForProduct($product_id);
-					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
+
+					$vendor_model->setId($product->vendor_id);
+					$vendor = $vendor_model->getVendor();
+					$calculator->setVendorCurrency($vendor->vendor_currency);
+					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->vendor_id,$vendor->vendor_currency);
+					$price = $calculator->convertCurrencyTo($product->product_currency,$product->product_price,true);
+					$product->product_price_display = $currencyDisplay->getFullValue($price);
+//					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
 
 				/* Get the pagination */

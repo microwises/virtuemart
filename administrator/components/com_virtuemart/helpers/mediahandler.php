@@ -402,7 +402,7 @@ class VmMediaHandler {
 	 * @param arraybyform $data
 	 */
 	function processAction($data){
-
+//		dump($data,'my data in process Action');
 		if( $data['media_action'] == 'upload' ){
 			$file_name = $this->uploadFile($this->file_url_folder);
 			$this->file_url = $this->file_url_folder.$file_name;
@@ -417,6 +417,18 @@ class VmMediaHandler {
 			$this->file_name = $file_name;
 
 		}
+//		else if( $data['media_action'] == 'upload_attach' ){
+//			$oldFileUrl = $data['file_url'];
+//			$file_name = $this->uploadFile($this->file_url_folder);
+////			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
+////				$this->deleteFile($oldFileUrl);
+////			}
+//			$this->file_url = $this->file_url_folder.$file_name;
+//			$this->file_name = $file_name;
+//			$data['file_ids'][] = $this->file_id;
+//
+//			dump($data,'my data in process Action upload_attach');
+//		}
 		else if( $data['media_action'] == 'delete' ){
 			$this->deleteFile($this->file_url);
 			unset($data['file_id']);
@@ -493,8 +505,9 @@ class VmMediaHandler {
 
 		$this->addMediaAction(0,'COM_VIRTUEMART_NONE');
 
-		if(empty($this->file_url)){
+		if(empty($this->file_name)){
 			$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
+//			$this->addMediaAction('upload_attach','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_ATTACH');
 		} else {
 			$this->addMediaAction('upload_delete','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE');
 			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');

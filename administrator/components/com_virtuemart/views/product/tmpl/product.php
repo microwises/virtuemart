@@ -114,9 +114,7 @@ $pagination = $this->pagination;
 				<!-- Media -->
 				<?php
 					/* Create URL */
-				//TODO get media for product working
 					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
-//					$link ='';
 				?>
 				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('COM_VIRTUEMART_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
 				<!-- Product SKU -->

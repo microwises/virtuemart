@@ -331,6 +331,7 @@ class VirtueMartModelProduct extends JModel {
 
 				}
 			} else {
+				$product = new stdClass();
 				return $this->fillVoidProduct($product,$front);
 			}
 //		}
@@ -438,13 +439,16 @@ class VirtueMartModelProduct extends JModel {
 			/* Loads the product price details */
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
-			foreach ($related_products as $rkey => $related) {
-				$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
-				$cats = $this->getProductCategories($related->product_id);
-				if(!empty($cats))$related->category_id = $cats[0]; //else $related->category_id = 0;
-				/* Add the product link  */
-				$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$related->product_id.'&category_id='.$related->category_id);
+			if(!empty($related_products)){
+				foreach ($related_products as $rkey => $related) {
+					$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
+					$cats = $this->getProductCategories($related->product_id);
+					if(!empty($cats))$related->category_id = $cats[0]; //else $related->category_id = 0;
+					/* Add the product link  */
+					$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$related->product_id.'&category_id='.$related->category_id);
+				}
 			}
+
 		}
 
 		return $related_products;

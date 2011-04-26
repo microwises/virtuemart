@@ -106,7 +106,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CURRENCY') ?>:</div>
 				</td>
 				<td width="71%">
-					<?php // echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->product->product_currency); ?>
 					<?php echo $this->currencies; ?>
 				</td>
 			</tr>

@@ -98,13 +98,14 @@ class calculationHelper {
 		}
 
 		$vendorId = 1 ;
-		if($this->_currencyDisplay->id!=$currencyId){
+//		if($this->_currencyDisplay->id!=$currencyId){
 			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
-		}
+//		}
 
 		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
 		return $this -> _currencyDisplay->getFullValue($price);
 	}
+
 
 	public function getCartPrices(){
 		return $this->_cartPrices;
@@ -253,7 +254,9 @@ class calculationHelper {
 			}
 			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
 		}
-		if(empty($prices['basePrice'])) return $prices;
+		if(empty($prices['basePrice'])){
+			return $this->fillVoidPrices($prices);
+		}
 		//For Profit, margin, and so on
 //		if(count($calcRules)!==0){
 //			$prices['profit'] =
@@ -294,9 +297,24 @@ class calculationHelper {
 
 		$prices['variantModification']=$variant;
 
+
 		return $prices;
 	}
 
+	private function fillVoidPrices(){
+
+		if(!isset($prices['basePrice'])) $prices['basePrice'] = null;
+		if(!isset($prices['basePriceVariant'])) $prices['basePriceVariant'] = null;
+		if(!isset($prices['basePriceWithTax'])) $prices['basePriceWithTax'] = null;
+		if(!isset($prices['discountedPriceWithoutTax'])) $prices['discountedPriceWithoutTax'] = null;
+		if(!isset($prices['priceBeforeTax'])) $prices['priceBeforeTax'] = null;
+		if(!isset($prices['taxAmount'])) $prices['taxAmount'] = null;
+		if(!isset($prices['salesPriceWithDiscount'])) $prices['salesPriceWithDiscount'] = null;
+		if(!isset($prices['salesPrice'])) $prices['salesPrice'] = null;
+		if(!isset($prices['discountAmount'])) $prices['discountAmount'] = null;
+		if(!isset($prices['priceWithoutTax'])) $prices['priceWithoutTax'] = null;
+		if(!isset($prices['variantModification'])) $prices['variantModification'] = null;
+	}
 
 	/** function to start the calculation, here it is for the invoice in the checkout
 	 * This function is partly implemented !
@@ -873,6 +891,13 @@ class calculationHelper {
 
 	}
 
+	/**
+	 *
+	 * @author Max Milbers
+	 * @param unknown_type $currency
+	 * @param unknown_type $price
+	 * @param unknown_type $shop
+	 */
 	function convertCurrencyTo($currency,$price,$shop=true){
 
 		if(empty($currency)){

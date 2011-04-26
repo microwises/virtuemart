@@ -270,7 +270,8 @@ class VirtueMartModelMedia extends JModel {
 		$file_id = $this->store($type,$data);
 
 		/* add the file_id & delete 0 and '' from $data */
-		$data['file_ids'] = array_merge( (array)$data['file_id'],$data['file_ids']);
+//		$data['file_ids'] = array_merge( (array)$data['file_id'],$data['file_ids']);
+		$data['file_ids'] = array_merge( (array)$file_id,$data['file_ids']);
 		$file_ids = array_diff($data['file_ids'],array('0',''));
 		//$product_data->file_ids = implode(',',$file_ids);
 //		if($data['file_id']!=$file_id){
