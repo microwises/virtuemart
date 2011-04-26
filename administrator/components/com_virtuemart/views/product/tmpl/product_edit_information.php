@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<table width="100%" border="0">
 				<tr class="row0">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
 					</td>
 					<td width="79%">
 						<fieldset class="radio">
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row1">
 					<td width="21%" >
-						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?>:</div>
+						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?></div>
 					</td>
 					<td width="79%" height="2">
 						<input type="text" class="inputbox" name="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row0">
 					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?></div>
 					</td>
 					<td width="79%" height="18" >
 						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row1">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?></div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr class="row0">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?></div>
 					</td>
 				<td width="79%">
 					<?php echo $this->lists['vendors'];?>
@@ -67,13 +67,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MANUFACTURER') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MANUFACTURER') ?></div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['manufacturers'];?>
 				</td>
 			</tr>
-			<?php if (!$this->product->product_parent_id) { ?>
+			<?php //if (!$this->product->product_parent_id) { ?>
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
 				</td>
 			</tr>
-			<?php } ?>
+			<?php // } ?>
 		</table>
 	</td>
 	<td>

@@ -142,7 +142,7 @@ class VirtueMartModelShippingRate extends JModel {
 	 * @param integer $_id Shipping rate ID
 	 * @param boolean $_checkFree true if the order total should be checked for free shipping, default is false
 	 * @return Indexed array with the keys shipping_rate_value and shipping_rate_package_fee
-	 * @author Oscar van Eijk
+	 * @author Oscar van Eijk, Max Milbers
 	 */
 	public function getShippingRatePrices ($_id, $_checkFree = false)
 	{
