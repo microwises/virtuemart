@@ -19,18 +19,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<H2>
-	<?php echo $this->manufacturer->mf_name; ?>
-</H2>
-<div>
-	<?php echo $this->manufacturer->mf_email; ?>
-</div>
-<div>
-	<?php echo $this->manufacturer->mf_desc; ?>
-</div>
-<div>
-	<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo $this->manufacturer->mf_name; ?></a>
-</div>
-<div>
-	<?php echo $this->manufacturer->images[0]->displayMediaThumb('','',0,0);?>
+
+<div class="manufacturer-details-view">
+	<div class="spacer">
+	
+		<?php // Manufacturer Image
+		echo $this->manufacturer->images[0]->displayMediaThumb('','',0,0);?>
+		
+		<h1><?php echo $this->manufacturer->mf_name; ?></h1>
+		
+		<?php if(!empty($this->manufacturer->mf_email) || !empty($this->manufacturer->mf_url)) { ?>
+		<div class="email-weblink">
+		<?php 
+		// TO DO Make The Email Visible Within The Lightbox
+		// echo JHtml::_('email.cloak', $this->manufacturer->mf_email,true,JText::_('COM_VIRTUEMART_EMAIL'),false) ?>
+		<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE') ?></a>
+		</div>
+		<?php } ?>
+		
+		<?php if(!empty($this->manufacturer->mf_desc)) { ?>
+		<div class="description">
+		<?php echo $this->manufacturer->mf_desc; ?>
+		</div>
+		<?php } ?>
+
+	</div>	
 </div>

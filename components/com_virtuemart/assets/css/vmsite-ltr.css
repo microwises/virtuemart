@@ -706,7 +706,17 @@ span.addtocart-button input.addtocart:hover {background: #fe1900 url(../images/v
 .ask-a-question-view .form-field .submit input.counter {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;display: inline-block;margin: 0px 0px 0px 10px;}
 .ask-a-question-view .form-field .submit input.counter:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
+/*////////////////////////////////////
+///// Manufacturer Details View //////
+////////////////////////////////////*/
 
+.manufacturer-details-view {}
+.manufacturer-details-view .spacer {padding: 30px;}
+.manufacturer-details-view h1 {font-size: 18px;margin: 0px;padding: 0px;}
+.manufacturer-details-view img {float: right;margin: 0px 0px 10px 20px;}
+.manufacturer-details-view .email-weblink {margin: 10px 0px 0px 0px;}
+.manufacturer-details-view .email-weblink a {margin-right: 15px;}
+.manufacturer-details-view .description {margin: 10px 0px 0px 0px;}
 
 /*////////////////////////////////////
 ////////// General Buttons ///////////
