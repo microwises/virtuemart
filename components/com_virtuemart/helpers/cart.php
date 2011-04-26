@@ -785,6 +785,9 @@ class VirtueMartCart  {
 			$controller = new VirtueMartControllerCart();
 			$view = $controller->getView('cart', 'html');
 
+			$userModel = $controller->getModel( 'user' );
+			$view->setModel( $userModel );
+
 			$vendorModel = $controller->getModel( 'vendor' );
 			$vendorId = 1;
 			$vendorModel->setId($vendorId);

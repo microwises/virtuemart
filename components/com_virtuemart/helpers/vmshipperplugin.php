@@ -136,6 +136,8 @@ abstract class vmShipperPlugin extends JPlugin
 
 		$_db->setQuery($_q);
 		if (!$_res =  $_db->loadAssocList()) {
+//			$app = JFactory::getApplication();
+//			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
 			return false;
 		}
 		foreach ($_res as $_r){
@@ -250,7 +252,14 @@ abstract class vmShipperPlugin extends JPlugin
 	public function plgVmOnSelectShipper(VirtueMartCart $_cart, $_selectedShipper = 0)
 	{
 		if ($this->getCarriers($_cart->vendorId) === false) {
-			return $this->name . ' not valid for ' . $_cart->vendorId . '<br/>';
+			if(empty($this->name)){
+				$app = JFactory::getApplication();
+				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
+				return ;
+			} else {
+				return $this->name . ' not valid for ' . $_cart->vendorId . '<br/>';
+			}
+
 		}
 
 		$_html  = "<fieldset>\n";
@@ -568,7 +577,7 @@ abstract class vmShipperPlugin extends JPlugin
 			$_q .= 'LIMIT 1';
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
-			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_CART_NO_SHIPPINGRATE').$_q);
+			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_CART_NO_SHIPPINGRATE'));
 			return -1;
 		}
 		return $_r['shipping_rate_id'];

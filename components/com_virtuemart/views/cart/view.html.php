@@ -300,8 +300,15 @@ class VirtueMartViewCart extends JView {
 
 		$payments = $paymentModel->getPayms(false,true);
 		if(empty($payments)){
+
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			if (Permissions::getInstance()->check("admin,storeadmin")) {
+				$uri =& JFactory::getURI();
+				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=paymentmethod';
+				$text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK','<a href="'.$link.'">'.$link.'</a>');
+			}
 			$app = JFactory::getApplication();
-			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED'));
+			$app -> enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED',$text));
 		}
 //		$withCC=false;
 //		foreach($payments as $item){

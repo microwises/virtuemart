@@ -160,10 +160,15 @@ class VirtueMartModelShippingRate extends JModel {
 				$_rates['shipping_rate_package_fee'] = 0.00;
 			}
 		}
-		
+		if(!isset($_rates['shipping_rate_value'])) $_rates['shipping_rate_value'] = 0.0;
+		if(!isset($_rates['shipping_rate_package_fee'])) $_rates['shipping_rate_package_fee'] = 0.0;
+		if(!isset($_rates['shipping_carrier_name'])) $_rates['shipping_carrier_name'] = 'No carrier name given, please configure your shipper properly';
+		if(!isset($_rates['shipping_rate_name'])) $_rates['shipping_rate_name'] = 'No shipping rate name given, please configure your shipping rate properly';
+		if(!isset($_rates['shipping_rate_vat_id'])) $_rates['shipping_rate_vat_id'] = 0;
+
 		return $_rates;
 	}
-	
+
 	/**
 	 * Check the order total to see if this order is valid for free shipping.
 	 * @access private
@@ -196,7 +201,7 @@ class VirtueMartModelShippingRate extends JModel {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Bind the post data to the shipping rate table and save it
      *

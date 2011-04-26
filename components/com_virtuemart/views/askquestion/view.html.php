@@ -81,7 +81,7 @@ class VirtueMartViewAskquestion extends JView {
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
 		/* Set the titles */
-		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name.' - '.JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE',$product->product_name.' - '.JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 		$uri = JURI::getInstance();
 
 		$this->assignRef('product', $product);

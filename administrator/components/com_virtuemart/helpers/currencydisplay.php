@@ -34,7 +34,7 @@ class CurrencyDisplay {
     var $negativePos	= '{sign}{num}{symb}';	// Currency symbol position with Negative values :
 
     private function __construct (){
-		dump($this, 'CurrencyDisplay constructor');
+
 	}
 
 	/**
@@ -90,7 +90,6 @@ class CurrencyDisplay {
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($currencyId,$style);
 			} else {
-//				$app =& JFactory::getApplication('administrator');
 				$uri =& JFactory::getURI();
 
 				if(empty($currencyId)){
@@ -106,7 +105,7 @@ class CurrencyDisplay {
 				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
-		dump(self::$_instance,'get currency id '.$currencyId);
+
 		return self::$_instance;
 	}
 

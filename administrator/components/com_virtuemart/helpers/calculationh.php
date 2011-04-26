@@ -719,9 +719,12 @@ class calculationHelper {
 		$this->_cartPrices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
 		$this->_cartData['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
 
-		$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
-		$this->_db->setQuery($q);
-		$taxrules = $this->_db->loadAssocList();
+		$taxrules = array();
+		if(!empty($shipping['shipping_rate_vat_id'])){
+			$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
+			$this->_db->setQuery($q);
+			$taxrules = $this->_db->loadAssocList();
+		}
 
 		if(count($taxrules)>0){
 			$this->_cartPrices['salesPriceShipping'] = self::roundDisplay(self::executeCalculation($taxrules, $this->_cartPrices['shippingValue']));

@@ -120,7 +120,7 @@ class VirtueMartViewProductdetails extends JView {
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
 		/* Set the titles */
-		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS',$product->product_name));
+		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE',$product->product_name));
 
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));

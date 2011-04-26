@@ -1500,6 +1500,7 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	* Get the Order By Select List
 	*
+	* notice by Max Milbers html tags should never be in a model. This function should be moved to a helper or simular,...
 	* @author Kohl Patrick
 	* @access public
 	* @param $fieds from config Back-end
