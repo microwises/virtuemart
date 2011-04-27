@@ -293,7 +293,7 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				$vendor_model = $this->getModel('vendor');
 
 				foreach ($productlist as $product_id => $product) {
-					dump($product->product_currency,'my produt');
+//					dump($product->product_currency,'my product');
 //					$product->mediaitems = $media->getProductDownloadables($product_id);
 //					$media->setProductId($product_id);
 //					$file_ids = explode(',',$product->file_ids);
