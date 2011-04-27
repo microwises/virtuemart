@@ -26,7 +26,7 @@ DROP TABLE
 `#__vm_product_category_xref`, 
 `#__vm_product_discount`, 
 `#__vm_product_download`, 
-`#__vm_product_files`, 
+`#__vm_media`, 
 `#__vm_product_mf_xref`, 
 `#__vm_product_price`, 
 `#__vm_product_product_type_xref`, 

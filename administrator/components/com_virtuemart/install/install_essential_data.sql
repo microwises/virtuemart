@@ -43,20 +43,20 @@ INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, 
 (null, 12842, 0, 'COM_VIRTUEMART_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, 1, '', '', ''),
 (null, 2, 0, 'COM_VIRTUEMART_PRODUCT_FILES_LIST_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'media', 'media'),
 (null, 2, 0, 'COM_VIRTUEMART_ATTRIBUTE_LIST_MNU', '', '', 'vmicon vmicon-16-content', 3, 1, '', 'attributes', 'attributes');
+
 --
 -- Dumping data for table `#__vm_module`
 --
 
-
 INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'product', 'Here you can administer your online catalog of products.  Categories , Products (view=product), Attributes  ,Product Types      Product Files (view=media), Inventory  , Calculation Rules ,Customer Reviews  ', 'storeadmin,admin', 1, '1', 1),
 (2, 'order', 'View Order and Update Order Status:    Orders , Coupons , Revenue Report ,Shopper , Shopper Groups ', 'admin,storeadmin', 1, '1', 2),
-(3, 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 1, '1', 3)
-(4, 'store', 'Store Configuration: Store Information, Payment Methods , Shipper, Shipping Rates \r\n', 'storeadmin,admin', 1, '1', 4),
+(3, 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 1, '1', 3),
+(4, 'store', 'Store Configuration: Store Information, Payment Methods , Shipper, Shipping Rates', 'storeadmin,admin', 1, '1', 4),
 (5, 'configuration', 'Configuration: shop configuration , currencies (view=currency), Credit Card List, Countries, userfields, order status  ', 'admin,storeadmin', 1, '1', 5),
 (6, 'msgs', 'This module is unprotected an used for displaying system messages to users.  We need to have an area that does not require authorization when things go wrong.', 'none', 0, '0', 99),
 (7, 'shop', 'This is the Washupito store module.  This is the demo store included with the VirtueMart distribution.', 'none', 1, '0', 99),
-(4, 'store', 'Store Configuration: Store Information, Payment Methods , Shipper, Shipping Rates \r\n', 'storeadmin,admin', 1, '1', 4),
+(8, 'store', 'Store Configuration: Store Information, Payment Methods , Shipper, Shipping Rates', 'storeadmin,admin', 1, '1', 4),
 (9, 'account', 'This module allows shoppers to update their account information and view previously placed orders.', 'shopper,storeadmin,admin,demo', 0, '0', 99),
 (10, 'checkout', '', 'none', 0, '0', 99),
 (77, 'tools', 'For the categories', 'admin,storeadmin', 0, '1', 8),
