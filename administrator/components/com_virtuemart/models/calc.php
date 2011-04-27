@@ -403,9 +403,13 @@ class VirtueMartModelCalc extends JModel
 		return self::getRule(array('TAX','TaxBill'));
 	}
 
+	function getDiscounts(){
+		return  self::getRule(array('DATax','DATaxBill','DBTax','DBTaxBill'));
+	}
+
 	function getDBDiscounts() {
 
-		return self::getRule(array('DBTax','DBTaxBill'));;
+		return self::getRule(array('DBTax','DBTaxBill'));
 	}
 
 	function getDADiscounts() {

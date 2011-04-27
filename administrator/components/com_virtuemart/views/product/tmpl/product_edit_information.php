@@ -152,6 +152,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+				</td>
+				<td width="79%">
+					<?php echo $this->lists['discounts']; echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->dbTaxRules;  ?>
+				</td>
+			</tr>
+
+<?php	/*		<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
@@ -165,7 +174,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%">
 					<?php echo $this->lists['dadiscounts']; echo $this->daTaxRules ?>
 				</td>
-			</tr>
+			</tr> */ ?>
 			<tr class="row0">
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">

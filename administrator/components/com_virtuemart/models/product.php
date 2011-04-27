@@ -240,6 +240,11 @@ class VirtueMartModelProduct extends JModel {
 //			}
 
 			/* Load the categories the product is in */
+//			$q = 'SELECT * FROM `#__vm_product_category_xref` WHERE `product_id` = "'.$product_id.'"';
+//			$this->_db->setQuery($q);
+//			$categories = $this->_db->loadAssocList();
+//			$product->categories = $this->_db->loadResultArray(0);
+
 			$product->categories = $this->getProductCategories($product_id);
 			$product->category_id = JRequest::getInt('category_id', 0);
 			if (empty($product->category_id) && isset($product->categories[0])) $product->category_id = $product->categories[0];
@@ -682,31 +687,11 @@ class VirtueMartModelProduct extends JModel {
      * Select the products to list on the product list page
      */
     public function getProductList() {
-//     	$this->_db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
 
-
-//     	/* Build the query */
-//     	$q = "SELECT `#__vm_product`.`product_id`,
-//     				`#__vm_product`.`product_parent_id`,
-//     				`#__vm_product`.`file_ids`,
-//     				`product_name`,
-//     				`vendor_name`,
-//     				`product_sku`,
-//     				`category_name`,
-//     				#__vm_category.`category_id`,
-//     				#__vm_category_xref.`category_parent_id`,
-//     				#__vm_product_category_xref.`product_list`,
-//     				`mf_name`,
-//     				#__vm_manufacturer.`manufacturer_id`,
-//     				#__vm_product.`published`,
-//     				`product_price`
-//     	$q = 'SELECT `product_id` '.$this->getProductListQuery().$this->getProductListFilter();
-
-		if (JRequest::getInt('category_id', 0) > 0) $cat_xref_table = ', `#__vm_product_category_xref` ';
+		$cat_xref_table = (JRequest::getInt('category_id', 0) > 0)? ', `#__vm_product_category_xref` ':'';
      	$q = 'SELECT `#__vm_product`.`product_id` FROM `#__vm_product`'.$cat_xref_table.' '.$this->getProductListFilter();
-
 
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	$productIdList = $this->_db->loadResultArray();
@@ -1078,11 +1063,15 @@ class VirtueMartModelProduct extends JModel {
 
 		$setPriceTable=FALSE;
 		foreach($product_price_table->getPublicProperties() as $property=>$ppvalue){
-			if(!empty($ppvalue)) $setPriceTable=TRUE;
-			break;
+			if(!empty($ppvalue)){
+				$setPriceTable=TRUE;
+				break;
+			}
 		}
 
+		dump($data,'use price table');
 		if($setPriceTable){
+			dump($product_price_table,'price table');
 			// Make sure the price record is valid
 			if (!$product_price_table->check()) {
 				$this->setError($product_price_table->getError());

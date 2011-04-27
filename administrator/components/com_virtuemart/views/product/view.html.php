@@ -96,8 +96,10 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
 				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
-				$lists['dbdiscounts'] = $this -> renderDiscountList($product->product_discount_id,1);
-				$lists['dadiscounts'] = $this -> renderDiscountList($product->product_discount_id,0);
+				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
+
+//				$lists['dbdiscounts'] = $this -> renderDiscountList($product->product_discount_id,1);
+//				$lists['dadiscounts'] = $this -> renderDiscountList($product->product_discount_id,0);
 
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
@@ -378,15 +380,16 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 	 *
 	 * @author Max Milbers
 	 */
-	function renderDiscountList($selected,$before){
+	function renderDiscountList($selected,$before=false){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
 
-		if($before){
-			$discounts = VirtueMartModelCalc::getDBDiscounts();
-		} else {
-			$discounts = VirtueMartModelCalc::getDADiscounts();
-		}
+		$discounts = VirtueMartModelCalc::getDiscounts();
+//		if($before){
+//			$discounts = VirtueMartModelCalc::getDBDiscounts();
+//		} else {
+//			$discounts = VirtueMartModelCalc::getDADiscounts();
+//		}
 
 		$discountrates = array();
 		$discountrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
