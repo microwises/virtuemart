@@ -29,7 +29,7 @@ class TableModule extends JTable
 	var $module_description  = '';	
 	
 	/** @var string Permissions of the module; separated by comma */
-  var $module_perms  = '';  
+        var $module_perms  = '';
   
 	/** @var int Flag if module is active */
 	var $published  = 0;				

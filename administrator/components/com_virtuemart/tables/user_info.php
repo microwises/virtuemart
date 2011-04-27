@@ -66,7 +66,10 @@ class TableUser_info extends JTable {
 //	var $bank_iban = '';
 //	var $bank_account_holder = '';
 //	var $bank_account_type = '';
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Userfield table
+* Usergroup table
 *
 * @package	VirtueMart
 * @subpackage Userfields
@@ -34,7 +34,10 @@ class TableUsergroups extends JTable {
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
 	var $group_level = 750;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 // 	var $published = 1;
 
 	function __construct(&$db)
@@ -55,7 +58,7 @@ class TableUsergroups extends JTable {
 		}
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_NAME_OF_PERMISSION_GROUP_CONTAINS_INVALID_CHARACTERS'));
+			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_NAME_INVALID_CHARACTERS'));
 			return false;
 		}
 

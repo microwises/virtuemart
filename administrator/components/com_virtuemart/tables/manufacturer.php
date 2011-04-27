@@ -44,7 +44,10 @@ class TableManufacturer extends JTable {
 	var $file_ids = '';
 	/** @var int Published or unpublished */
 	var $published = 1;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @param $db A database connector object

@@ -48,7 +48,10 @@ class TableCurrency extends JTable {
 	var $mdate         					;
 	var $published					= 0;
 	var $shared						= 1;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author RickG

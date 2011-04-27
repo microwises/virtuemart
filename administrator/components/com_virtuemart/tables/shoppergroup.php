@@ -36,7 +36,10 @@ class TableShopperGroup extends JTable
     /** @var int default group that new customers are associated with. There can only be one 
      * default group per vendor. */
 	var $default = 0;	
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author Markus �hler

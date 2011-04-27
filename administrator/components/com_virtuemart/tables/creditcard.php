@@ -38,7 +38,10 @@ class TableCreditcard extends JTable {
 	var $vendor_id		           = 0;
 	
 	var $published = 0;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author RickG

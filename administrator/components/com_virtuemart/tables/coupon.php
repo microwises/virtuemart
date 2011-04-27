@@ -44,7 +44,10 @@ class TableCoupon extends JTable {
 	var $coupon_expiry_date 	= '';
 	/** @var decimal Coupon valid value */
 	var $coupon_value_valid 	= 0;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object

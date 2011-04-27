@@ -109,7 +109,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		$cmd = JRequest::getCmd('task');
 
 		if ($id = $paymModel->store()) {
-			$msg = JText::_('COM_VIRTUEMART_PAYM_SAVED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_PAYMENT_SAVED_SUCCESS');
 		}
 		else {
 			$msg = JText::_($paymModel->getError());
@@ -149,10 +149,10 @@ class VirtuemartControllerPaymentmethod extends JController
 		$paymModel = $this->getModel('paymentmethod');
 
 		if (!$paymModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_('COM_VIRTUEMART_CALC_DELETED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_PAYMENT_DELETED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -168,10 +168,10 @@ class VirtuemartControllerPaymentmethod extends JController
 	{
 		$paymModel = $this->getModel('paymentmethod');
 		if (!$paymModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_PUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_PUBLISHED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_PAYMENT_PUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
@@ -187,10 +187,10 @@ class VirtuemartControllerPaymentmethod extends JController
 	{
 		$paymModel = $this->getModel('paymentmethod');
 		if (!$paymModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_UNPUBLISHED');
 		}
 		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');
+			$msg = JText::_('COM_VIRTUEMART_PAYMENT_UNPUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);

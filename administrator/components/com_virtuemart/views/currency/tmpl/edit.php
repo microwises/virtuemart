@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_numeric_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_numeric_code; ?>" />
+				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />
 			</td>
 		</tr>
                 <tr>
@@ -88,7 +88,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />
+				<input class="inputbox" type="text" name="currency_numeric_code" id="currency_numeric_code" size="3" value="<?php echo $this->currency->currency_numeric_code; ?>" />
 			</td>
 		</tr>
 <?php /*		<tr>

@@ -101,27 +101,27 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					echo " ".$p->parameter_unit;
 					if ($p->parameter_default) {
-						echo " (".jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT').": ";
+						echo " (".jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT').": ";
 						echo $p->parameter_default.")";
 					}
-					echo " [ ".jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE').": ";
+					echo " [ ".jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE').": ";
 					switch( $p->parameter_type ) {
-						case "I": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'); break;	// Integer
-						case "T": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'); break; 	// Text
-						case "S": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'); break; // Short Text
-						case "F": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'); break; 	// Float
-						case "C": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'); break; 	// Char
-						case "D": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME')." ";	// Date & Time
-						echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
-						echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
+						case "I": echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'); break;	// Integer
+						case "T": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'); break; 	// Text
+						case "S": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'); break; // Short Text
+						case "F": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'); break; 	// Float
+						case "C": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'); break; 	// Char
+						case "D": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME')." ";	// Date & Time
+						echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
+						echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
 						break;
-						case "A": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE')." ";		// Date
-						echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT');
+						case "A": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE')." ";		// Date
+						echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT');
 						break;
-						case "M": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME')." ";		// Time
-						echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
+						case "M": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME')." ";		// Time
+						echo jText::_('vVIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
 						break;
-						case "V": echo jText::_('VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'); break; 	// Multiple Value
+						case "V": echo jText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'); break; 	// Multiple Value
 					}
 					echo " ] ";
 				}

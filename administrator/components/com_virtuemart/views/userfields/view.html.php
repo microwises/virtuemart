@@ -124,12 +124,12 @@ class VirtuemartViewUserfields extends JView {
 			$this->assignRef('valueCount', --$i);
 
 			// Toggles
-			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'JYES', 'JNO');
-			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'JYES', 'JNO');
-			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'JYES', 'JNO');
-			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'JYES', 'JNO');
-			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'JYES', 'JNO');
-			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'JYES', 'JNO');
+			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
@@ -140,17 +140,17 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_required', 'publish','','VM_FIELDMANAGER_REQUIRE');
-			JToolBarHelper::custom('disable_required', 'unpublish','','VM_FIELDMANAGER_UNREQUIRE');
+			JToolBarHelper::custom('enable_required', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
+			JToolBarHelper::custom('disable_required', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_registration', 'publish','','VM_FIELDMANAGER_SHOW_REGISTRATION');
-			JToolBarHelper::custom('disable_registration', 'unpublish','','VM_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('enable_shipping', 'publish','','VM_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('disable_shipping', 'unpublish','','VM_FIELDMANAGER_HIDE_SHIPPING');
-			JToolBarHelper::custom('enable_account', 'publish','','VM_FIELDMANAGER_SHOW_ACCOUNT');
-			JToolBarHelper::custom('disable_account', 'unpublish','','VM_FIELDMANAGER_HIDE_ACCOUNT');
+			JToolBarHelper::custom('enable_registration', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
+			JToolBarHelper::custom('disable_registration', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
+			JToolBarHelper::custom('enable_shipping', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			JToolBarHelper::custom('disable_shipping', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			JToolBarHelper::custom('enable_account', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
+			JToolBarHelper::custom('disable_account', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 

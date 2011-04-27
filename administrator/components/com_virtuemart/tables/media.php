@@ -55,7 +55,10 @@ class TableMedia extends JTable {
 
 	var $shared = 0;
 	var $file_params	= '';
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object

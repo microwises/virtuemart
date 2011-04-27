@@ -58,7 +58,10 @@ class TableOrder_item extends JTable {
 	var $mdate = NULL;
 	/** @var text Product attribute */
 	var $product_attribute = NULL;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */

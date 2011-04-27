@@ -4,7 +4,7 @@
 * Attributes table
 *
 * @package	VirtueMart
-* @subpackage Country
+* @subpackage Attributes
 * @author RolandD
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -35,7 +35,10 @@ class TableAttributes extends JTable {
 	var $attribute_name = '';
 	/** @var int Listing order of attribute */
 	var $attribute_list = 0;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author RolandD
 	 * @param $db A database connector object

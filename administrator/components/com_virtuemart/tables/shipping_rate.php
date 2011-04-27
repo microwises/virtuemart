@@ -54,7 +54,10 @@ class TableShipping_Rate extends JTable {
 	var $shipping_rate_vat_id      	= '';
 		/** @var string Shipping Rate name*/
 	var $shipping_rate_list_order      	= '';
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object

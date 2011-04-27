@@ -61,7 +61,13 @@ class TableOrders extends JTable {
 	var $order_currency = NULL;
 	/** @var char Order status */
 	var $order_status = NULL;
-	/** @var int Creation date */
+        /** @var char User currency id */
+	var $user_currency_id = NULL;
+         /** @var char User currency rate */
+	var $user_currency_rate = NULL;
+        /** @var int Payment method ID */
+	var $ship_method_id = NULL;
+        /** @var int Creation date */
 	var $cdate = NULL;
 	/** @var int Last modified date */
 	var $mdate = NULL;
@@ -71,7 +77,10 @@ class TableOrders extends JTable {
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @param $db Class constructor; connect to the database

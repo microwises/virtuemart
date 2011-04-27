@@ -73,7 +73,10 @@ class TableCategory extends JTable {
 	var $metarobot	= '';
 	/** @var string Meta author */
 	var $metaauthor	= '';
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * Class contructor

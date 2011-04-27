@@ -72,6 +72,10 @@ class TableUserfields extends JTable {
 	var $vendor_id		= 0;
 	/** @var mediumtex Additional type-specific parameters */
 	var $params			= null;
+                /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */

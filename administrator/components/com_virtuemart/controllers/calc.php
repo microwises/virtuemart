@@ -198,7 +198,7 @@ class VirtuemartControllerCalc extends JController
 
 		$calcModel = $this->getModel('calc');
 		if (!$calcModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_UNPUBLISHED');
 		}
 		else{
 			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');

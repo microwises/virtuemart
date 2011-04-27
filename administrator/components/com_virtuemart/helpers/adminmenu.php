@@ -100,10 +100,10 @@ class AdminMenuHelper {
 				<?php
 				$modCount = 1;
 				foreach( $menuItems as $item ) {
-                                    if ($modCount > 1) {
+
                                     ?>
 			<h3 class="title-smenu" title="<?php echo JText::_($item['title']); ?> admin" id="menu-toggler-<?php echo $modCount?>" rel="<?php echo $modCount?>"><?php echo JText::_($item['title']) ?></h3>
-			<?php } ?>
+			 
                         <div class="section-smenu" id="menu-panel-<?php echo $modCount?>" id="<?php echo $modCount?>">
 			    <ul>
 					    <?php

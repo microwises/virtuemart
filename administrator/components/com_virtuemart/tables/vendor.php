@@ -66,8 +66,10 @@ class TableVendor extends JTable {
     var $vendor_address_format		= '';
     /** @var varchar Vendor date format */
     var $vendor_date_format			= '';
-
-    /**
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;    /**
      * @author RickG
      * @param $db A database connector object
      */

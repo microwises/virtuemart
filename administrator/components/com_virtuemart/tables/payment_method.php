@@ -65,7 +65,10 @@ class TablePayment_method extends JTable
 	var $published 		        = 0;	
    	/** @var string ordering */
 	var $ordering       	= '';
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object

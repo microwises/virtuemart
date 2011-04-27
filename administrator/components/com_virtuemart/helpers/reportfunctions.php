@@ -68,7 +68,7 @@ class ReportFunctions {
 	public function renderDateSelectList($presets, $from_period, $until_period){
 		// simpledate select
 		$select  = '';
-		$options = array(JHTML::_('select.option', '', '- '.JText::_('Select Period').' -', 'text', 'value'));
+		$options = array(JHTML::_('select.option', '', '- '.JText::_('COM_VIRTUEMART_SELECT_PERIOD').' -', 'text', 'value'));
 		foreach ($presets as $name => $value) {
 			$options[] = JHTML::_('select.option', $name, JText::_($value['name']), 'text', 'value');
 			if ($value['from'] == $from_period && $value['until'] == $until_period) {

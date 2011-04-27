@@ -44,13 +44,13 @@ class TableCalc extends JTable
 	var $calc_currency				= '';
 	var $ordering					= 0;
 	/** @var array affecting Categories of the rule */
-	var $calc_categories			= array();
+	//var $calc_categories			= array();
 	/** @var array affecting Shoppergroups of the rule */
-	var $calc_shopper_groups		= array();	
+	//var $calc_shopper_groups		= array();
 	/** @var array affecting Countries of the rule */
-	var $calc_countries				= array();	
+	//var $calc_countries				= array();
 	/** @var array affecting States of the rule */
-	var $calc_states				= array();	
+	//var $calc_states				= array();
 	/** @var string Visible for shoppers */
 	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
@@ -61,6 +61,10 @@ class TableCalc extends JTable
 	var $publish_down;
 	/** @var string modified date */
 	var $modified;
+        /** @var string   */
+	var $calc_qualify;
+         /** @var string   */
+	var $calc_affected;
 	/** @var string conditional amount to trigger the rule */
 	var $calc_amount_cond;	
 	/** @var string The dimension of the amount, maybe unnecessary*/
@@ -69,7 +73,10 @@ class TableCalc extends JTable
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
 	var $published 		        = 0;	
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author Max Milbers
