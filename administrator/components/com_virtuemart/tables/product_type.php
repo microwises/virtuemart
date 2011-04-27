@@ -40,7 +40,10 @@ class TableProduct_type extends JTable {
 	var $product_type_flypage = null;
 	/** @var int The order to list the product types in */
 	var $ordering = 0;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 	/**
 	* @param database A database connector object
 	 */

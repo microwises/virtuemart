@@ -55,7 +55,10 @@ class TableProduct_price extends JTable {
     var $price_quantity_start = null;
     /** @var int Price quantity end */
     var $price_quantity_end = null;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
     /**
      * @author RolandD
      * @param $db A database connector object

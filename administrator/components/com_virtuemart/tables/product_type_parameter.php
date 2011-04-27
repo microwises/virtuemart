@@ -48,7 +48,10 @@ class TableProduct_type_parameter extends JTable {
 	var $parameter_default = null;
 	/** @var string Unit for parameter */
 	var $parameter_unit = null;
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	* @param database A database connector object

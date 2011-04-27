@@ -104,8 +104,10 @@ class TableProduct extends JTable {
 	var $metaauthor	= null;
 	/** @var string Name of the details page to use for showing product details in the front end */
 	var $layout = null;
-
-
+        /** @var boolean */
+	var $checked_out	= 0;
+	/** @var time */
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author RolandD
