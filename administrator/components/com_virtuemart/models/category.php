@@ -357,37 +357,28 @@ class VirtueMartModelCategory extends JModel {
 
 
 	/**
-	 * Gets the total number of product for category
-	 *
-     * @author jseros
-	 * @return int Total number of products
-	 *
-	 */
-	public function countProducts( $categoryId = 0 ){
-		$categoryId = intval($categoryId);
+	* count the products in a category
+	*
+	* @author RolandD, Max Milbers
+	* @return array list of categories product is in
+	*/
+	public function countProducts($cat_id=0) {
 
-		//by jseros
-//		$query = 'SELECT COUNT(category_id) as total FROM #__vm_product_category_xref
-//				  WHERE category_id = '. $this->_db->Quote($categoryId);
-
+		if(!empty($this->_db))$this->_db = JFactory::getDBO();
 		$vendorId = 1;
-		//by RolandD
-		$query = 'SELECT count(#__vm_product.product_id) AS total
-			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
+		if ($cat_id > 0) {
+			$q = 'SELECT count(#__vm_product.product_id) AS total
+			FROM #__vm_product, #__vm_product_category_xref
 			WHERE #__vm_product.vendor_id = "'.$vendorId.'"
-			AND #__vm_product_category_xref.category_id = "'.$this->_db->Quote($categoryId).'"
-			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
+			AND #__vm_product_category_xref.category_id = '.$this->_db->Quote($cat_id).'
 			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
-			AND #__vm_product.published = "1" ';				//TODO I think this is legacy and need adjusted
-			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != '1') {
-				$q .= ' AND product_in_stock > 0 ';
-			}
+			AND #__vm_product.published = "1" ';
+			$this->_db->setQuery($q);
+			$count = $this->_db->loadResult();
+		}
 
-    	$this->_db->setQuery($query);
-    	$result = $this->_db->loadObject();
-
-        return $result->total;
-    }
+		return $count;
+	}
 
 	/**
 	 * NOT USED,

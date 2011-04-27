@@ -169,7 +169,6 @@ class VirtueMartModelProduct extends JModel {
 					}
 				}
 	    	}
-//			dump($child,'my $child with Parent level '.$i++);
 			$child->product_parent_id = $parentProduct->product_parent_id;
     	}
 		$child->published = $published;
@@ -335,7 +334,6 @@ class VirtueMartModelProduct extends JModel {
 				return $this->fillVoidProduct($product,$front);
 			}
 //		}
-//		dump( $product,'my getProduct');
 		return $product;
     }
 
@@ -705,20 +703,23 @@ class VirtueMartModelProduct extends JModel {
 //     				#__vm_product.`published`,
 //     				`product_price`
 //     	$q = 'SELECT `product_id` '.$this->getProductListQuery().$this->getProductListFilter();
-     	$q = 'SELECT `product_id` FROM #__vm_product '.$this->getProductListFilter();
+
+		if (JRequest::getInt('category_id', 0) > 0) $cat_xref_table = ', `#__vm_product_category_xref` ';
+     	$q = 'SELECT `#__vm_product`.`product_id` FROM `#__vm_product`'.$cat_xref_table.' '.$this->getProductListFilter();
+
 
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	$productIdList = $this->_db->loadResultArray();
-//		dump($this->_db,'product Id List');
-     	$products = array();
-     	foreach ($productIdList as $id){
-//     		dump($id, 'My id');
-     		$products[] = $this->getProduct($id,false,false,false);
-     	}
-//     	dump($products,'product Id List');
-     	return $products;
-//     	return $this->_db->loadObjectList('product_id');
+//     	$app = JFactory::getApplication();
+//     	$app -> enqueueMessage($this->_db->getQuery());
 
+     	$products = array();
+     	if(!empty($productIdList)){
+     		foreach ($productIdList as $id){
+     			$products[] = $this->getProduct($id,false,false,false);
+     		}
+     	}
+     	return $products;
     }
 
 	/**
@@ -775,7 +776,10 @@ class VirtueMartModelProduct extends JModel {
      	if (JRequest::getInt('product_parent_id', 0) > 0) $filters[] = '#__vm_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
      	else // $filters[] = '#__vm_product.`product_parent_id` = 0';
      	/* Category ID */
-     	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
+     	if (JRequest::getInt('category_id', 0) > 0){
+     		$filters[] = '`#__vm_product_category_xref`.`category_id` = '.JRequest::getInt('category_id');
+     		$filters[] = '`#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`';
+     	}
      	/* Product name */
      	if (JRequest::getVar('filter_product', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Product type ID */

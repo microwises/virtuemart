@@ -81,7 +81,6 @@ class VirtuemartViewUser extends JView {
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-//		dump($this->_userFieldsModel,'my userfield model');
 
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);

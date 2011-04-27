@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 $nrows = count( $this->categories );
 
@@ -29,7 +29,7 @@ if( $this->pagination->limit < $nrows ){
 	}
 }
 ?>
-      	
+
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
 		<table class="adminlist">
@@ -37,19 +37,19 @@ if( $this->pagination->limit < $nrows ){
 		<tr>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>		            
+			</th>
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
-			</th>			
+			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_FORM_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
-			</th>				
+			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_FORM_DESCRIPTION', 'c.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
-			</th>						
+			</th>
 			<th width="11%">
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCTS_LBL'); ?>
-			</th>	
+			</th>
 			<th width="5%">
 				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
@@ -68,23 +68,23 @@ if( $this->pagination->limit < $nrows ){
 		<?php
 		$k = 0;
 		$repeat = 0;
-		
+
 		for ($i = $this->pagination->limitstart; $i < $nrows; $i++) {
-			
+
 			if( !isset($this->rowList[$i])) $this->rowList[$i] = $i;
 			if( !isset($this->depthList[$i])) $this->depthList[$i] = 0;
-			
+
 			$row = $this->categories[$this->rowList[$i]];
-			
+
 			$checked = JHTML::_('grid.id', $i, $row->category_id);
 			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $row->category_id);
 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&category_id=' . $row->category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&category_id=' . $row->category_id);
-			
+
 			$categoryLevel = '';
 			$repeat = $this->depthList[$i] + 1;
-			
+
 			if($repeat > 1){
 				$categoryLevel = str_repeat(".&nbsp;&nbsp;&nbsp;", $repeat - 1);
 				$categoryLevel .= "<sup>|_</sup>&nbsp;";
@@ -93,19 +93,19 @@ if( $this->pagination->limit < $nrows ){
 			<tr class="<?php echo "row".$k;?>">
 				<td align="center">
 					<?php echo ($i+1);?>
-				</td>			            
+				</td>
 				<td><?php echo $checked;?></td>
 				<td align="left">
 					<span class="categoryLevel"><?php echo $categoryLevel;?></span>
 					<a href="<?php echo $editlink;?>"><?php echo $this->escape($row->category_name);?></a>
-				</td>					
+				</td>
 				<td align="left">
 					<?php echo $row->category_description; ?>
-				</td>				
+				</td>
 				<td>
-					<?php echo ShopFunctions::countProductsByCategory($row->category_id);?>
+					<?php echo  $this->model->countProducts($row->category_id);//ShopFunctions::countProductsByCategory($row->category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
-				</td>	
+				</td>
 				<td align="center">
 					<?php echo $published;?>
 				</td>
@@ -133,19 +133,19 @@ if( $this->pagination->limit < $nrows ){
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>		
-	</table>	
+		</tfoot>
+	</table>
 </div>
-	        
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="category" />
-	<input type="hidden" name="view" value="category" />	
+	<input type="hidden" name="view" value="category" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-            
-            
-<?php AdminMenuHelper::endAdminArea(); ?> 
+
+
+<?php AdminMenuHelper::endAdminArea(); ?>

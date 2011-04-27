@@ -317,8 +317,7 @@ foreach ($this->product->related as $rkey => $related) {
 					</h3>
 
 					<?php
-					dump($this,'jojo');
-					//echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
+						echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"'));
 					?>
 
 					<div class="product-price marginbottom12">

@@ -61,7 +61,7 @@ class CurrencyDisplay {
 	public function getCurrencyDisplay($vendorId=0, $currencyId=0, $style=0){
 
 		if(empty(self::$_instance) || $currencyId!=self::$_instance->id){
-			dump(self::$_instance,'getCurrencyDisplay start id '.$currencyId);
+
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
@@ -86,7 +86,7 @@ class CurrencyDisplay {
 			}
 
 			self::$_instance = new CurrencyDisplay();
-			dump(self::$_instance,'after new currencyDisplay id '.$currencyId);
+
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($currencyId,$style);
 			} else {
