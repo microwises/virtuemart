@@ -422,35 +422,42 @@ class shopFunctionsF {
 		shopFunctionsF::setTemplate($template);
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		$layout = VmConfig::get('vmlayout','default');
-
-		//Set specific category layout
-		if(!empty($catLayout) && empty($prodLayout)){
-			if(is_Int($catLayout)){
-				$db = JFactory::getDBO();
-				$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
-				$db->setQuery($q);
-				$temp = $db->loadResult();
-				if ($temp) $layout = $temp;
-			} else {
-				$layout = $catLayout;
+		if(JRequest::getVar('view')=='virtuemart'){
+			$layout = VmConfig::get('vmlayout','default');
+			$view->setLayout(strtolower($layout));
+		} else {
+			//Set specific category layout
+			if(!empty($catLayout) && empty($prodLayout)){
+				if(is_Int($catLayout)){
+					$db = JFactory::getDBO();
+					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$db->setQuery($q);
+					$temp = $db->loadResult();
+					if ($temp) $layout = $temp;
+				} else {
+					$layout = $catLayout;
+				}
 			}
+
+			//Set specific product layout
+			if(!empty($prodLayout)){
+				if(is_Int($prodLayout)){
+					$db = JFactory::getDBO();
+					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$db->setQuery($q);
+					$temp = $db->loadResult();
+					if ($temp) $layout = $temp;
+				} else {
+					$layout = $prodLayout;
+				}
+			}
+			if(!empty($layout)){
+				$view->setLayout(strtolower($layout));
+			}
+
 		}
 
-		//Set specific product layout
-		if(!empty($prodLayout)){
-			if(is_Int($prodLayout)){
-				$db = JFactory::getDBO();
-				$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
-				$db->setQuery($q);
-				$temp = $db->loadResult();
-				if ($temp) $layout = $temp;
-			} else {
-				$layout = $prodLayout;
-			}
-		}
 
-		$view->setLayout(strtolower($layout));
 
 	}
 

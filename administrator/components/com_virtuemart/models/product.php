@@ -1069,7 +1069,6 @@ class VirtueMartModelProduct extends JModel {
 			}
 		}
 
-		dump($data,'use price table');
 		if($setPriceTable){
 			dump($product_price_table,'price table');
 			// Make sure the price record is valid

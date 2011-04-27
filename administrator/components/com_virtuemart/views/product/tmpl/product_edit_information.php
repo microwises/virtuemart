@@ -159,7 +159,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 			</tr>
 
-<?php	/*		<tr class="row1">
+<?php	/*	The problem here is that we can only override one discount (there is only one field for it)
+			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
 				</td>

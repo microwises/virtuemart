@@ -21,7 +21,7 @@ class VmImage extends VmMediaHandler {
 
 		parent::addMediaActionByType();
 		if( function_exists('imagecreatefromjpeg')){
-			$this->addMediaAction('upload_create_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_CREATE_THUMBNAIL');
+//			$this->addMediaAction('upload_create_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_CREATE_THUMBNAIL');
 			$this->addMediaAction('create_thumb','COM_VIRTUEMART_FORM_MEDIA_CREATE_THUMBNAIL');
 		}
 	}

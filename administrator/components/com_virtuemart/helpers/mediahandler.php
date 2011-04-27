@@ -122,7 +122,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
-		
+
 
 		return $data;
 	}
@@ -405,19 +405,43 @@ class VmMediaHandler {
 	function processAction($data){
 //		dump($data,'my data in process Action');
 		if( $data['media_action'] == 'upload' ){
+			dump($this,'What do I have to overwrite?');
+			$this->file_id=0;
+			$this->file_url='';
+			$this->file_url_thumb='';
 			$file_name = $this->uploadFile($this->file_url_folder);
-			$this->file_url = $this->file_url_folder.$file_name;
+			$this->file_name = $file_name;
+			$this->file_url = $this->file_url_folder.$this->file_name;
 		}
-		else if( $data['media_action'] == 'upload_delete' ){
+		else if( $data['media_action'] == 'replace' ){
 			$oldFileUrl = $data['file_url'];
 			$file_name = $this->uploadFile($this->file_url_folder);
+			$this->file_name = $file_name;
+			$this->file_url = $this->file_url_folder.$this->file_name;
 			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
 				$this->deleteFile($oldFileUrl);
 			}
-			$this->file_url = $this->file_url_folder.$file_name;
-			$this->file_name = $file_name;
+		}
+		else if( $data['media_action'] == 'replace_thumb' ){
+			$oldFileUrl = $data['file_url_thumb'];
+			$file_name = $this->uploadFile($this->file_url_folder_thumb);
+			$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
+			if($this->file_url_thumb!=$oldFileUrl&& !empty($file_name)){
+				$this->deleteFile($oldFileUrl);
+			}
 
 		}
+
+//		else if( $data['media_action'] == 'upload_delete' ){
+//			$oldFileUrl = $data['file_url'];
+//			$file_name = $this->uploadFile($this->file_url_folder);
+//			if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
+//				$this->deleteFile($oldFileUrl);
+//			}
+//			$this->file_url = $this->file_url_folder.$file_name;
+//			$this->file_name = $file_name;
+//
+//		}
 //		else if( $data['media_action'] == 'upload_attach' ){
 //			$oldFileUrl = $data['file_url'];
 //			$file_name = $this->uploadFile($this->file_url_folder);
@@ -432,26 +456,27 @@ class VmMediaHandler {
 //		}
 		else if( $data['media_action'] == 'delete' ){
 			$this->deleteFile($this->file_url);
+
 			unset($data['file_id']);
 		}
-		else if( $data['media_action'] == 'upload_thumb' ){
-			$file_name = $this->uploadFile($this->file_url_folder_thumb);
-			$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
-		}
-		else if( $data['media_action'] == 'upload_delete_thumb' ){
-			$oldFileUrl = $data['file_url_thumb'];
-			$file_name = $this->uploadFile($this->file_url_folder_thumb);
-			if($this->file_url_thumb!=$oldFileUrl){
-				$this->deleteFile($oldFileUrl);
-			}
-			$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
-		}
-		else if( $data['media_action'] == 'delete_thumb' ){
-			$this->deleteFile($this->file_url_thumb);
-		}
-		else{
-
-		}
+//		else if( $data['media_action'] == 'upload_thumb' ){
+//			$file_name = $this->uploadFile($this->file_url_folder_thumb);
+//			$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
+//		}
+//		else if( $data['media_action'] == 'upload_delete_thumb' ){
+//			$oldFileUrl = $data['file_url_thumb'];
+//			$file_name = $this->uploadFile($this->file_url_folder_thumb);
+//			if($this->file_url_thumb!=$oldFileUrl){
+//				$this->deleteFile($oldFileUrl);
+//			}
+//			$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
+//		}
+//		else if( $data['media_action'] == 'delete_thumb' ){
+//			$this->deleteFile($this->file_url_thumb);
+//		}
+//		else{
+//
+//		}
 
 		if(empty($this->file_title) && !empty($file_name)) $this->file_title = $file_name;
 		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
@@ -506,20 +531,25 @@ class VmMediaHandler {
 
 		$this->addMediaAction(0,'COM_VIRTUEMART_NONE');
 
+		$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
 		if(empty($this->file_name)){
-			$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
-//			$this->addMediaAction('upload_attach','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_ATTACH');
+
 		} else {
-			$this->addMediaAction('upload_delete','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE');
-			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');
+//			$this->addMediaAction('upload_delete','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE');
+			$this->addMediaAction('replace','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE');
+//			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');
 		}
 
-		if(empty($this->file_url_thumb)){
-			$this->addMediaAction('upload_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_THUMB');
-		} else {
-			$this->addMediaAction('upload_delete_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
-			$this->addMediaAction('delete_thumb','COM_VIRTUEMART_FORM_MEDIA_DELETE_THUMB');
-		}
+		$this->addMediaAction('replace_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE_THUMB');
+
+//		$this->addMediaAction('replace_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
+
+//		if(empty($this->file_url_thumb)){
+//			$this->addMediaAction('upload_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_THUMB');
+//		} else {
+//			$this->addMediaAction('upload_delete_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
+//			$this->addMediaAction('delete_thumb','COM_VIRTUEMART_FORM_MEDIA_DELETE_THUMB');
+//		}
 
 	}
 

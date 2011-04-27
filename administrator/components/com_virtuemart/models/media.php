@@ -268,7 +268,7 @@ class VirtueMartModelMedia extends JModel {
 		$oldId = $data['file_id'];
 		$this -> setId($oldId);
 		$file_id = $this->store($type,$data);
-
+		dump($file_id,'my oldid = '.$oldId.'my new');
 		/* add the file_id & delete 0 and '' from $data */
 //		$data['file_ids'] = array_merge( (array)$data['file_id'],$data['file_ids']);
 		$data['file_ids'] = array_merge( (array)$file_id,$data['file_ids']);
@@ -330,7 +330,7 @@ class VirtueMartModelMedia extends JModel {
 		$table = $this->getTable('media');
 		if(empty($data))$data = JRequest::get('post');
 
-		
+
 		$modified = JFactory::getDate();
 		$data['mdate']=$modified->toMySQL();
 		if(empty($this->file_id)) $data['cdate'] = $modified->toMySQL();
@@ -349,7 +349,7 @@ class VirtueMartModelMedia extends JModel {
 			$data['published'] = $data['media_published'];
 		else
 			$data['published'] = 0;
-		
+
 
 		if(empty($data['file_url'])){
 //			$this->delete($data['file_id']);
