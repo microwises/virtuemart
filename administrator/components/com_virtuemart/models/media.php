@@ -189,7 +189,7 @@ class VirtueMartModelMedia extends JModel {
 	    	}
 
 	    	if ($onlyPublished) {
-				$whereItems[] = '`#__vm_media`.`media_published` = 1';
+				$whereItems[] = '`#__vm_media`.`published` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
 			$oderby = '`#__vm_media`.`mdate`';
@@ -330,6 +330,7 @@ class VirtueMartModelMedia extends JModel {
 		$table = $this->getTable('media');
 		if(empty($data))$data = JRequest::get('post');
 
+		
 		$modified = JFactory::getDate();
 		$data['mdate']=$modified->toMySQL();
 		if(empty($this->file_id)) $data['cdate'] = $modified->toMySQL();
@@ -343,6 +344,12 @@ class VirtueMartModelMedia extends JModel {
 		}
 
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
+		// workarround for media published and product published two fields in one form.
+		if ($data['media_published'])
+			$data['published'] = $data['media_published'];
+		else
+			$data['published'] = 0;
+		
 
 		if(empty($data['file_url'])){
 //			$this->delete($data['file_id']);

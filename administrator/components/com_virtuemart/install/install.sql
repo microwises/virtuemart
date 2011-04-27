@@ -659,7 +659,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_media` (
   `file_url_thumb` varchar(254) NOT NULL,
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL,
-  `media_published` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL,
   `file_is_product_image` tinyint(1) NOT NULL,
   `file_is_downloadable` tinyint(1) NOT NULL,
   `file_is_forSale` tinyint(1) NOT NULL,

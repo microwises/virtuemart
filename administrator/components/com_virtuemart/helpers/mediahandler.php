@@ -122,6 +122,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
+		
 
 		return $data;
 	}
@@ -626,7 +627,7 @@ class VmMediaHandler {
     function getImagesList() {
 
     	$vendorId=1;
-    	$q='SELECT * FROM `#__vm_media` WHERE `media_published`=1
+    	$q='SELECT * FROM `#__vm_media` WHERE `published`=1
     	AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
@@ -674,7 +675,7 @@ class VmMediaHandler {
 
 		$html .= ' <table class="adminform"> ';
 
-		if ($this->media_published) $checked =  "checked=\"checked\""; else $checked ='';
+		if ($this->published) $checked =  "checked=\"checked\""; else $checked ='';
 		$html .= '<tr>
 	<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
