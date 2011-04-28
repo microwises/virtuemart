@@ -134,6 +134,8 @@ class VirtuemartControllerProduct extends JController {
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 		/* Waitinglist functions */
 		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
+		/* custom functions */
+		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
 
 		/* Set the layout */
 		$view->setLayout('product_edit');
@@ -273,7 +275,11 @@ class VirtuemartControllerProduct extends JController {
 
 		/* Standard model */
 		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-
+		$type = JRequest::getVar('type', false);
+		if ($type = 'customfield') {
+			$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+			$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
+		}
 		/* Now display the view. */
 		$view->display(null);
 	}
@@ -343,5 +349,6 @@ class VirtuemartControllerProduct extends JController {
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&task=add&product_id='.$cids[0]);
 	}
+
 }
 // pure php no closing tag

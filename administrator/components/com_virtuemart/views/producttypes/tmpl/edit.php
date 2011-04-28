@@ -56,8 +56,7 @@ $document = JFactory::getDocument();
       </td>
 	</tr>
 	<tr>
-      <td colspan="2"><br /></td>
-	</tr>
+      <td colspan="2">
 <?php /*	<tr>
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('COM_VIRTUEMART_LEAVE_BLANK') ?>: </td>
       <td valign="top">
@@ -72,16 +71,28 @@ $document = JFactory::getDocument();
       <input type="text" class="inputbox" name="product_type_flypage" value="<?php echo $this->producttype->product_type_flypage; ?>" />
       </td>
 	</tr> */ ?>
-	<?php foreach ( $this->producttypeParameter as $parameter ){
+	<?php 
+	if ($this->producttypeParameter) {
+		/* Load some behaviour */
+		JHTML::_('behavior.tooltip');
+		jimport('joomla.html.pane');
+		$pane = JPane::getInstance();
+		echo $pane->startPane("parameter-pane");
+		foreach ( $this->producttypeParameter as $parameter ) {
+			echo $pane->startPanel($parameter->parameter_name,$parameter->parameter_name);
+				include ('edit_parameters.php');
+			echo $pane->endPanel();
+		}
+		echo $pane->endPane();
 	}
-	?>
+	?><br /></td>
+	</tr>
 </table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="producttypes" />
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="producttypes" />
-<input type="hidden" name="product_type_id" value="<?php echo $this->producttype->product_type_id; ?>" />
+<input type="hidden" name="cid[]" value="<?php echo $this->producttype->product_type_id; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

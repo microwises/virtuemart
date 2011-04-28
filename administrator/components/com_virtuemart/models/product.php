@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+ JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 /**
  * Model for VirtueMart Products
  *
@@ -317,6 +318,14 @@ class VirtueMartModelProduct extends JModel {
 				/* Load the custom variants */
 				$product->customvariants = $this->getCustomVariants($product->custom_attribute);
 
+				/* Load the custom product fields */
+				
+				//$product->customfields = $this->getproductCustoms($product_id);
+				/*if(!class_exists(' VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+				if(!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
+				
+				$product->field_types = VmCustomHandler::getField_types();*/
+				$product->customfields = self::getproductCustomsField($product_id);
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -337,6 +346,8 @@ class VirtueMartModelProduct extends JModel {
 				$product->votes = $this->getVotes($product_id);
 
 				}
+				else
+				$product->customfields = self::getproductCustomslist($product_id);
 			} else {
 				$product = new stdClass();
 				return $this->fillVoidProduct($product,$front);
@@ -358,20 +369,15 @@ class VirtueMartModelProduct extends JModel {
 	 	 $product->product_currency = null;
 	 	 $product->product_price_quantity_start = null;
 	 	 $product->product_price_quantity_end = null;
-
 	 	 $product->product_tax_id = null;
 	 	 $product->product_discount_id = null;
 	 	 if($front){
 	 	 	$product->link = '';
 	 	 	$product->categories = array();
 	 	 	$product->prices = array();
-
 	 	 	$product->variants = array();
-	 	 	$product->customvariants = array();
-
 	 	 	$product->category_id = 0;
 	 	 	$product->customvariants = array();
-
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
@@ -1174,6 +1180,14 @@ class VirtueMartModelProduct extends JModel {
 			$ProducttypesModel = new VirtueMartModelProducttypes();
 			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
 		}
+		/* Update product custom field
+		* 'product_type_tables' are all types tables in product edit view
+		*/
+		if (array_key_exists('field', $data)) {
+			dump ($data['field'] , 'customsaved' );
+			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveProductfield($data['field'],$product_data->product_id);
+		}
 
 
 		return $product_data->product_id;
@@ -1878,6 +1892,56 @@ class VirtueMartModelProduct extends JModel {
 		$this->_db->setQuery($q);
 		return ($this->_db->loadResult() > 0);
 	}
+  /**
+     * AUthor Kohl Patrick
+     * Load all custom fields for a Single product
+     * return custom fields value and definition
+     */
+     public function getproductCustomslist($product_id) {
+
+		 if ($this->hasproductCustoms($product_id )) {
+
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`
+			FROM `jos_vm_custom` AS C 
+			LEFT JOIN `jos_vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+			LEFT JOIN `jos_vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+			Where xref.`product_id` ='.$product_id;
+		$this->_db->setQuery($query);
+		$productCustoms = $this->_db->loadObjectList();
+		$row= 0 ;
+		foreach ($productCustoms as & $field ) {
+			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$row);
+			$row++ ;
+		}
+		return $productCustoms;
+		}
+		return ;
+     }
+  /**
+     * AUthor Kohl Patrick
+     * Load the t the custom fields for a product
+     * return Object product type , parameters & value
+     */
+     public function getproductCustoms() {
+		static $productcustomFields ;
+		if ($productcustomFields) return $productcustomFields;
+		$product_id = JRequest::getInt('product_id', false);
+		if (empty ($productcustomFields)) {
+			 if ($this->hasproductCustoms($product_id )) {
+				if(!class_exists(' VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+				$productcustomFields = VirtueMartModelCustom::getProductCustoms($product_id);
+			return $productcustomFields++ ;
+			}
+		} else return $productcustomFields;
+     }
+
+	/* look if whe have a product type */
+	private function hasproductCustoms($product_id) {
+		$this->_db = JFactory::getDBO();
+		$q = "SELECT COUNT(`product_id`) FROM `#__vm_custom_field_xref_product` WHERE `product_id` = ".$product_id;
+		$this->_db->setQuery($q);
+		return ($this->_db->loadResult() > 0);
+	}
 
 	// **************************************************
 	//Attributes
@@ -2136,6 +2200,130 @@ class VirtueMartModelProduct extends JModel {
 
 		$this->mediaModel->attachImages($products,'file_ids','product','image');
 
+	}
+/**
+ * Formating admin display by roles
+ * input Types for product only !
+ */
+
+	function inputType($value,$type,$is_list=0,$row){
+		if ($is_list>0) {
+			$options = array();
+			$values = explode(';',$value);
+			foreach ($values as $key => $val)
+				$options[] = array( 'value' => $val ,'text' =>$val);
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
+		} else {
+			switch ($type) {
+				/* string or integer */
+				case 'S':
+				case 'I':
+					return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" />';
+				break;
+				/* bool */
+				case 'B':
+					return JHTML::_( 'select.booleanlist', 'field['.$row.'][custom_value]' , 'class="inputbox"', $value);
+				break;
+				/* parent */
+				case 'P':
+					return $value.'<input type="hidden" value="'.$value .'" name="field['.$row.'][custom_value]" />' ;
+				break;
+				/* image */
+				case 'i':
+					$vendorId=1;
+					$q='SELECT `file_id` as value,`file_title` as text FROM `#__vm_media` WHERE `published`=1
+					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
+					$this->_db->setQuery($q);
+					$options = $this->_db->loadObjectList();
+					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$value);
+				break;
+				/* Child product */
+				case 'C':
+					$vendorId=1;
+					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
+					$q='SELECT `product_id` as value,concat(`product_sku`,":",`product_name`) as text FROM `#__vm_product` WHERE `published`=1
+					AND `product_parent_id`= "'.$product_id.'"';
+					$this->_db->setQuery($q);
+					if ($options = $this->_db->loadObjectList() ) return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$value);
+					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
+				break;
+			}
+
+		}
+	}
+     public function getproductCustomsField() {
+		$product_id = JRequest::getInt('product_id', false);
+
+		 if ($this->hasproductCustoms($product_id )) {
+
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`
+			FROM `jos_vm_custom` AS C 
+			LEFT JOIN `jos_vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+			LEFT JOIN `jos_vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+			Where xref.`product_id` ='.$product_id;
+		$this->_db->setQuery($query);
+		$productCustoms = $this->_db->loadObjectList();
+		$row= 0 ;
+		foreach ($productCustoms as & $field ) {
+			$field->display = self::displayType($field->custom_value,$field->field_type,$field->is_list,$row);
+			$row++ ;
+		}
+		return $productCustoms;
+		}
+		return ;
+     }
+/**
+  * Formating front display by roles
+  *  for product only !
+  */
+	function displayType($value,$type,$is_list=0,$row){
+		if ($is_list>0) {
+			$options = array();
+			$values = explode(';',$value);
+			foreach ($values as $key => $val)
+				$options[] = array( 'value' => $val ,'text' =>$val);
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
+		} else {
+			switch ($type) {
+				/* string or integer */
+				case 'S':
+				case 'I':
+					return $value;
+				break;
+				/* bool */
+				case 'B':
+					return JHTML::_( 'select.booleanlist', 'field['.$row.'][custom_value]' , 'class="inputbox"', $value);
+				break;
+				/* parent */
+				case 'P':
+					return '<b>'.$value.'<b/>' ;
+				break;
+				/* image */
+				case 'i':
+					$vendorId=1;
+					$q='SELECT * FROM `#__vm_media` WHERE `published`=1
+					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1") AND file_id='.(int)$value;
+					$this->_db->setQuery($q);
+					$image = $this->_db->loadObject();
+					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+					$this->file_id = (int)$value;
+					$imagehandler = VmMediaHandler::createMedia($image);
+					//$imagehandler->createMedia($image);
+					return $imagehandler->displayMediaThumb();
+				break;
+				/* Child product */
+				case 'C':
+					$vendorId=1;
+					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
+					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p WHERE `published`=1
+					AND `product_id`= "'.$value.'" LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id` ';
+					$this->_db->setQuery($q);
+					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result>product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
+					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
+				break;
+			}
+		}
 	}
 
 }

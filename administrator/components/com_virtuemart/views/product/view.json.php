@@ -31,21 +31,64 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
-
-		/* Get the task */
+		$product_model = $this->getModel('product');
 		
-
-		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
-		$query = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-			FROM #__vm_product";
-		if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
-		$db->setQuery($query);
-		$json = $db->loadObjectList();
-				
+		$type = JRequest::getVar('type', false);
+		$id = JRequest::getInt('id', false);
+		$row = JRequest::getInt('row', false);
+		$db = JFactory::getDBO();
+		/* Get the task */
+		if ($type=='relatedproducts') {
+			$query = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+				FROM #__vm_product";
+			if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
+				$db->setQuery($query);
+				$json['value'] = $db->loadObjectList();
+				$json['ok'] = 1 ;
+		} else if ($type=='custom') {
+			$query = "SELECT CONCAT(custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
+				FROM #__vm_custom";
+			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
+			$db->setQuery($query);
+			$json['value'] = $db->loadObjectList();
+			$json['ok'] = 1 ;
+		} else if ($type=='customfield') {
+			$this->loadHelper('customhandler');
+			$fieldTypes= VmCustomHandler::getField_types() ;
+
+			$query = "SELECT * FROM #__vm_custom
+			WHERE custom_id=".$id." or custom_parent_id=".$id;
+			$query .=" order by custom_parent_id asc";
+			$db->setQuery($query);
+			$rows = $db->loadObjectlist();
+			$html = array ();
+			foreach ($rows as $field) {
+			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,$row);
+			 $html[] = '<tr>
+				 <td>'.$field->custom_title.'</td>
+				 <td>'.$display.$field->custom_tip.'
+				 </td>
+				 <td>'.$fieldTypes[$field->field_type].'
+					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
+					<input type="hidden" value="'.$field->custom_id.'" name="field['.$row.'][custom_id]" />
+					<input type="checkbox" value="1" checked="checked" name="admin_only" />
+				 </td>
+				 <td></td>
+				</tr>';
+				$row++;
+			}
+			$json['value'] = $html;
+			$json['ok'] = 1 ;
+		} else $json['ok'] = 0 ;
+		if ( empty($json)) {
+			$json['value'] = null;
+			$json['ok'] = 1 ;
+		}
 		echo json_encode($json);
 
 
 	}
+
 }
 // pure php no closing tag

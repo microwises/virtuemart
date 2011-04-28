@@ -57,6 +57,9 @@ VmConfig::JvalideForm();
 	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_TYPES_TAB'), 'product_types' );
 		echo $this->loadTemplate('types');
 	echo $this->pane->endPanel();
+	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB'), 'product_custom' );
+		echo $this->loadTemplate('custom');
+	echo $this->pane->endPanel();
 	echo $this->pane->endPane();
 
 ?>

@@ -171,9 +171,24 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
+				
+				$this->loadHelper('customhandler'); 
+				$fieldTypes = VmCustomHandler::getField_types();
+				$this->assignRef('fieldTypes', $fieldTypes);
 				/* Load product types lists */
 				$productTypes = $this->get('productTypes');
 				$this->assignRef('productTypes', $productTypes);
+				dump ($product,'produit');
+				/* Load affected product  customs fields */
+				//$productCustoms = $this->get('productCustomsList');
+				//if (!$productCustoms) $productCustoms = array();
+				//$lists['product_customs'] = JHTML::_('select.genericlist', $productCustoms, 'productCustoms[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'productCustoms\')"', 'id', 'text', $productCustoms);
+
+				//$this->assignRef('product_customs', $productCustoms);
+				
+				/* Load product types lists */
+				$customsList = VmCustomHandler::getCustomsList();
+				$this->assignRef('customsList', JHTML::_('select.genericlist', $customsList,'customlist','size="5"'));
 
 
 				/* Set up labels */

@@ -123,9 +123,9 @@ AdminMenuHelper::startAdminArea();
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="producttypeparameters" />
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="producttypeparameters" />
 <input type="hidden" name="product_type_id" value="<?php echo $this->parameter->product_type_id; ?>" />
+<input type="hidden" name="cid[]" value="<?php echo $this->parameter->product_type_id; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

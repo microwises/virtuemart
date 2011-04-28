@@ -23,7 +23,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 // addon for joomla modal Box
 JHTML::_ ( 'behavior.modal' );
+JHTML::_('behavior.tooltip');
 
+dump($this->product);
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -261,6 +263,21 @@ if (empty ( $this->product )) {
 		<?php echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
+	<?php // Product custom_fields
+	if (!empty($this->product->customfields)) { ?>
+	<div class="product-fields">
+		<?php foreach ($this->product->customfields as $field)
+		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<span class="product-fields-title" ><b><?php echo $field->custom_title ?></b><span>
+			<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+			<span class="product-field-display"><?php echo $field->display ?><span>
+			<span class="product-field-desc"><?php echo $field->custom_field_desc ?><span>
+			</div>
+			<?php  //print_r( $field );
+		}
+		?>
+	</div>
+	<?php } // Product custom_fields END ?>
 
 	<?php // Product Packaging
 	$product_packaging = '';

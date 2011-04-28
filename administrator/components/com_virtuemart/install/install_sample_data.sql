@@ -64,6 +64,37 @@ INSERT IGNORE INTO `#__vm_category_media_xref` (`id`,`category_id`, `file_ids`) 
 (NULL, 5, 5);
 
 --
+-- Dumping data for table `#__vm_custom`
+--
+
+INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `published`) VALUES
+(1, 0, 0, 'Group of fields', 'Add fields to this parent and all are adde in one time', 'I''m a parent', 'Add many fields', 'P', 0, 0, 1),
+(2, 1, 0, 'I''m a string', 'Here you can add some text', 'Plz enter a text', 'Comment', 'S', 0, 0, 1),
+(3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 1),
+(4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choice', 'B', 0, 0, 1),
+(5, 0, 0, 'add child', 'Add a child to me', '', 'link to child', 'C', 0, 0, 1),
+(7, 0, 0, 'PHOTO', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 1);
+
+--
+-- Dumping data for table  `#__vm_custom_field`
+--
+
+INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `published`) VALUES
+(2, 7, '1', NULL, 0),
+(4, 2, 'Plz enter a text', NULL, 0),
+(5, 3, '100', NULL, 0),
+(6, 4, '0', NULL, 0);
+
+--
+-- Dumping data for table  `jos_vm_custom_field_xref_product`
+--
+
+INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, `ordering`, `published`) VALUES
+(2, 6, 0, 0),
+(4, 6, 0, 0),
+(5, 6, 0, 0),
+(6, 6, 0, 0);
+--
 -- Dumping data for table `#__vm_manufacturer`
 --
 

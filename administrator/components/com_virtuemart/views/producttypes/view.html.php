@@ -53,6 +53,7 @@ class VirtuemartViewProducttypes extends JView {
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_TYPE_FORM_LBL'), 'vm_product_types_48');
+				JToolBarHelper::custom( 'addParameter', 'new','new', 'new parameter',false,true );
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();
 				JToolBarHelper::save();

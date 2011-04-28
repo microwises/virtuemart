@@ -273,7 +273,57 @@ CREATE TABLE `#__vm_currency` (
   PRIMARY KEY (`currency_id`),
   KEY `idx_currency_code` (`currency_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
+-- --------------------------------------------------------
+--
+-- Table structure for table `jos_vm_custom`
+--
 
+CREATE TABLE IF NOT EXISTS `#__vm_custom` (
+  `custom_id` int(11) NOT NULL AUTO_INCREMENT,
+  `custom_parent_id` int(11) NOT NULL DEFAULT '0',
+  `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
+  `custom_title` char(255) NOT NULL COMMENT 'field title',
+  `custom_tip` char(255) NOT NULL COMMENT 'tip',
+  `custom_value` char(255) DEFAULT NULL COMMENT 'defaut value',
+  `custom_field_desc` char(255) DEFAULT NULL COMMENT 'description or unit',
+  `field_type` char(1) NOT NULL DEFAULT 'S' COMMENT 'S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden',
+  `is_list` tinyint(1) DEFAULT '0' COMMENT 'list of values',
+  `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`custom_id`),
+  KEY `idx_custom_parent_id` (`custom_parent_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure `#__vm_custom_field`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_custom_field` (
+  `custom_field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'field id',
+  `custom_id` int(11) NOT NULL COMMENT 'custom group id',
+  `custom_value` char(255) DEFAULT NULL COMMENT 'field value',
+  `custom_price` char(255) DEFAULT NULL COMMENT 'price',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`custom_field_id`),
+  KEY `idx_custom_id` (`custom_id`),
+  KEY `idx_custom_value` (`custom_value`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
+-- --------------------------------------------------------
+
+--
+-- Table structure `#__vm_custom_field_xref_product`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_custom_field_xref_product` (
+  `custom_field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'field ref to product',
+  `product_id` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`custom_field_id`),
+  KEY `idx_product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 --

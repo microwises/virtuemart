@@ -142,18 +142,66 @@ class VirtueMartModelProducttypes extends JModel {
 		return $product_type_data;
     }
 
-	/* load the Parameter for this product type */
+	/* load the Parameter for the slected product type */
 	public function getProducttypeParameter() {
 		$cids = JRequest::getVar('cid', false);
 		$q = 'SELECT * FROM `#__vm_product_type_parameter` WHERE `product_type_id`='.$cids[0];
 		$this->_db->setQuery($q);
-
-		return $this->_db->loadObjectList();
+		if ($parameters = $this->_db->loadObjectList()) {
+			foreach ($parameters as $parameter ) {
+				$this->renderParameterList($parameter) ;
+				$parameter->list_order = $this->renderParameterListOrder($cids[0] , $parameter->parameter_name, $parameter->ordering) ;
+			}
+			return $parameters ;
+		}
+		else return false;
 	}
-    /**
-    * Delete a product type
-    * @author RolandD
-    */
+
+	/* add list to parameter type */
+	public function renderParameterList ( &$parameter) {
+
+		$options = array();
+		$options[] = JHTML::_('select.option', 'I', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'));
+		$options[] = JHTML::_('select.option', 'T', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'));
+		$options[] = JHTML::_('select.option', 'S', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'));
+		$options[] = JHTML::_('select.option', 'F', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'));
+		$options[] = JHTML::_('select.option', 'C', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'));
+		$options[] = JHTML::_('select.option', 'D', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME'));
+		$options[] = JHTML::_('select.option', 'A', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE'));
+		$options[] = JHTML::_('select.option', 'M', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME'));
+		$options[] = JHTML::_('select.option', 'V', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'));
+		$options[] = JHTML::_('select.option', 'B', JText::_('COM_VIRTUEMART_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK'));
+
+		$parameter->lists = JHTML::_('select.genericlist', $options, 'parameter_type', 'class="inputbox"', 'value', 'text', $parameter->parameter_type);
+	}
+
+	    public function renderParameterListOrder($product_type_id=0, $parameter_name = '', $list_order=0) {
+
+    	$db = JFactory::getDBO();
+    	$options = array();
+		if (empty($parameter_name)) {
+			return JText::_('COM_VIRTUEMART_CMN_NEW_ITEM_LAST');
+		}
+		else {
+
+			$q = "SELECT ordering,parameter_label,parameter_name FROM #__vm_product_type_parameter " ;
+			if ($product_type_id) {
+				$q .= 'WHERE product_type_id='.$product_type_id;
+			}
+			$q .= " ORDER BY ordering ASC" ;
+			$db->setQuery($q) ;
+			$parameters = $db->loadObjectList();
+			foreach ($parameters as $key => $parameter) {
+				$options[] = JHTML::_('select.option', $parameter->ordering, $parameter->ordering.". ".$parameter->parameter_label.' ('.$parameter->parameter_name.')');
+			}
+			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
+		}
+    }
+		
+	/**
+	* Delete a product type
+	* @author RolandD
+	*/
     public function removeProductType() {
 
 		/* Get the product IDs to remove */
@@ -204,7 +252,7 @@ class VirtueMartModelProducttypes extends JModel {
 		/* Get the posted data */
 		$data = JRequest::get('post', 4);
 
-		/* Bind the rating details */
+		/* Bind the table */
 		$product_type_data->bind($data);
 
 		if ($cids[0] == 0) {
@@ -230,6 +278,7 @@ class VirtueMartModelProducttypes extends JModel {
 			$q .= ") TYPE=MyISAM;";
 			$this->_db->setQuery($q);
 			$this->_db->query();
+			return $product_type_data->product_type_id ;
 		}
 
 		/* Re-Order the Product Type table IF the ordering has been changed */
@@ -263,7 +312,7 @@ class VirtueMartModelProducttypes extends JModel {
 			}
 		} // END Re-Ordering
 
-		return true;
+		return $cids[0];
     }
 
     /**

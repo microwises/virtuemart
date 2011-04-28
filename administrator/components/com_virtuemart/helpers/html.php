@@ -221,4 +221,121 @@ class VmHTML{
 		
 		return $html;
 	}
+	/* simple row display */
+	function Row($label, $value ){
+			$html = '<tr>
+		<td class="labelcell">'.JText::_($label).'</td>
+		<td>'.$value.'</td><td>-</td>
+	</tr>';
+		return $html ;
+	}
+	/**
+	 * Creates rows with with a Radio Input List
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param string $arr
+	 * @param string $extra
+	 * @return string
+	 */
+	function radioRow($label, $radios, $name, $default,$key='value',$text='text') {
+			$html = '<tr>
+		<td class="labelcell">'.JText::_($label).'</td>
+		<td>'.$default.JHTML::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</td>
+		<td></td>
+		</tr>';
+		return $html ;
+	}
+	/**
+	 * Creating rows with boolean list
+	 *
+	 * @author Patrick Kohl
+	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 *
+	 */
+	public function booleanRow( $label , $name, $value){
+	$html = '<tr>
+	<td class="labelcell">
+		<label for="'.$name.'">'. JText::_($label) .'</label>
+	</td>
+	<td><fieldset class="radio">
+				'.JHTML::_( 'select.booleanlist',  $name , 'class="inputbox"', $value).'
+		</fieldset>
+	</td>
+	<td></td>
+</tr>';
+	return $html ;
+	}
+		/**
+	 * Creating rows with input fields
+	 *
+	 * @author Max Milbers
+	 * @author Patrick Kohl
+	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 */
+	public function inputRow($label, $name,$value,$readonly=''){
+		$html = '<tr>
+		<td class="labelcell">'.JText::_($label).'</td>
+		<td> <input type="text" '.$readonly.'class="inputbox" name="'.$name.'" size="70" value="'.$value.'" /></td>
+		<td></td>
+	</tr>';
+		return $html;
+	}
+	/**
+	 *
+	 * @author Patrick Kohl 
+	 * @param string $label textlabel
+	 * @param array $options( value & text)
+	 * @param string $name option name
+	 * @param string $defaut defaut value
+	 * @param string $key option value 
+	 * @param string $text option text
+	 * @param boolean $zero add  a '0' value in the option
+	 * return a select list 
+	 */	
+	public function selectRow($label , $options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+		
+		$html = '<tr>
+		<td class="labelcell">'.JText::_($label).'</td>
+		<td>'.self::select($options, $name, $default, $attrib, $key, $text, $zero).'</td>
+		<td></td>
+	</tr>';
+		
+		return $html ;
+	}
+	/**
+	 *
+	 * @author Patrick Kohl 
+	 * @param array $options( value & text)
+	 * @param string $name option name
+	 * @param string $defaut defaut value
+	 * @param string $key option value 
+	 * @param string $text option text
+	 * @param boolean $zero add  a '0' value in the option
+	 * return a select list 
+	 */
+	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+		if ($zero) {
+		$option  = array($key =>0, $text => "-select-");
+		$options = array_merge(array($option), $options);
+		}
+		echo $default;
+		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default);
+	}
+	/**
+	 * renders the hiddenfields added in the layout before (used to make the displaycustomHandle reusable)
+	 * @author Max Milbers
+	 */
+	public function inputHidden($values){
+		$html='';
+		foreach($values as $k=>$v){
+			$html .= '<input type="hidden" name="'.$k.'" value="'.$v.'" />';
+		}
+		return $html;
+	}
+
 }
