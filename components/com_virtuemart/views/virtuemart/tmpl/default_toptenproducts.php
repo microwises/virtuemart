@@ -57,29 +57,23 @@ foreach ( $this->toptenProducts as $topProduct ) {
 		// Show Products ?>
 		<div class="product floatleft<?php echo $TopTen_cellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
-				<div class="width30 floatleft center">
-					<?php // Product Image
-					if ($topProduct->images) {
-						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $topProduct->product_id . '&category_id=' . $topProduct->category_id ), $topProduct->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"' ) );
-					}
-					?>
-				</div>
 
-				<div class="width70 floatright">
 
 					<h3>
 					<?php // Product Name
 					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $topProduct->product_id . '&category_id=' . $topProduct->category_id ), $topProduct->product_name, array ('title' => $topProduct->product_name ) ); ?>
 					</h3>
 
-					<?php // Product Short Description
-					if (! empty ( $topProduct->product_s_desc )) { ?>
-					<p class="product_s_desc">
-					<?php echo shopFunctionsF::limitStringByWord($topProduct->product_s_desc, 40, '...') ?>
-					</p>
-					<?php } ?>
+					<div>
+					<?php // Product Image
+					if ($topProduct->images) {
+						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $topProduct->product_id . '&category_id=' . $topProduct->category_id ), $topProduct->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"' ) );
+					}
+					?>
+					</div>
+		
 
-					<div class="product-price marginbottom12">
+					<div class="product-price">
 					<?php
 					if (VmConfig::get ( 'show_prices' ) == '1') {
 					//				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
@@ -106,8 +100,6 @@ foreach ( $this->toptenProducts as $topProduct ) {
 					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $topProduct->product_id . '&category_id=' . $topProduct->category_id ), JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $topProduct->product_name, 'class' => 'product-details' ) );
 					?>
 					</div>
-				</div>
-			<div class="clear"></div>
 			</div>
 		</div>
 	<?php

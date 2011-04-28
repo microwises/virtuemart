@@ -673,11 +673,26 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 .featured-view {margin-bottom: 25px;}
 .featured-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
 .featured-view .row {}
-.featured-view .row .product {}
+.featured-view .row .product {text-align: center;}
 .featured-view .row .product .spacer {padding: 6px;}
 .featured-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
 .featured-view .row .product .spacer span {font-size: 11px;color: #666;}
-.featured-view .row .product .spacer img {max-width: 90%;height: auto;}
+.featured-view .row .product .spacer img {max-width: 100%;height: auto;width: auto;}
+.featured-view .row .product .spacer .product-price {margin: 10px 0px 10px 0px;}
+
+/*////////////////////////////////////
+////// Recently Products View ////////
+////////////////////////////////////*/
+
+.recently-view {margin-bottom: 25px;}
+.recently-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
+.recently-view .row {}
+.recently-view .row .product {text-align: center;}
+.recently-view .row .product .spacer {padding: 6px;}
+.recently-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
+.recently-view .row .product .spacer span {font-size: 11px;color: #666;}
+.recently-view .row .product .spacer img {max-width: 100%;height: auto;width: auto;}
+.recently-view .row .product .spacer .product-price {margin: 10px 0px 10px 0px;}
 
 /*////////////////////////////////////
 ////// Top Ten Products View /////////
@@ -686,11 +701,13 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 .topten-view {margin-bottom: 25px;}
 .topten-view h4 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 14px;}
 .topten-view .row {}
-.topten-view .row .product {}
+.topten-view .row .product {text-align: center;}
 .topten-view .row .product .spacer {padding: 6px;}
 .topten-view .row .product .spacer h3 {font-size: 14px;margin: 0px 0px 6px 0px;padding: 0px;}
 .topten-view .row .product .spacer span {font-size: 11px;color: #666;}
-.topten-view .row .product .spacer img {max-width: 90%;height: auto;}
+.topten-view .row .product .spacer img {max-width: 100%;height: auto;width: auto;}
+.topten-view .row .product .spacer .product-price {margin: 10px 0px 10px 0px;}
+
 
 /*////////////////////////////////////
 //////// Browsepage View /////////////

@@ -30,7 +30,7 @@ $Featuredcellwidth = ' width'.floor ( 100 / $featuredProducts_per_row );
 $verticalseparator = " vertical-separator";
 ?>
 
-<div class="featured-view">
+<div class="recently-view">
 
 	<h4><?php echo JText::_('COM_VIRTUEMART_RECENT_PRODUCTS') ?></h4>
 
@@ -57,29 +57,20 @@ foreach ( $this->recentProducts as $featProduct ) {
 		// Show Products ?>
 		<div class="product floatleft<?php echo $Featuredcellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
-				<div class="width30 floatleft center">
+					<h3>
+					<?php // Product Name
+					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), $featProduct->product_name, array ('title' => $featProduct->product_name ) ); ?>
+					</h3>
+					
+					<div>
 					<?php // Product Image
 					if ($featProduct->images) {
 						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), $featProduct->images[0]->displayMediaThumb('class="featuredProductImage" border="0"') );
 					}
 					?>
-				</div>
+					</div>
 
-				<div class="width70 floatright">
-
-					<h3>
-					<?php // Product Name
-					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), $featProduct->product_name, array ('title' => $featProduct->product_name ) ); ?>
-					</h3>
-
-					<?php // Product Short Description
-					if (! empty ( $featProduct->product_s_desc )) { ?>
-					<p class="product_s_desc">
-					<?php echo shopFunctionsF::limitStringByWord($featProduct->product_s_desc, 40, '...') ?>
-					</p>
-					<?php } ?>
-
-					<div class="product-price marginbottom12">
+					<div class="product-price">
 					<?php
 					if (VmConfig::get ( 'show_prices' ) == '1') {
 					//				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
@@ -106,8 +97,6 @@ foreach ( $this->recentProducts as $featProduct ) {
 					echo JHTML::link ( JRoute::_( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $featProduct->product_name, 'class' => 'product-details' ) );
 					?>
 					</div>
-				</div>
-			<div class="clear"></div>
 			</div>
 		</div>
 	<?php
