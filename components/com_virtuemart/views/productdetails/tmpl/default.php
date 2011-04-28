@@ -592,13 +592,13 @@ if (empty ( $this->product )) {
 						echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
 						echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 					}
+					?>
+					</div>
+					<?php 
 				}
 				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 
 	</div>
-<?php
-	}
-
-	?>
+<?php } ?>
 </div>
