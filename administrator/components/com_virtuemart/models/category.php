@@ -817,9 +817,12 @@ class VirtueMartModelCategory extends JModel {
 		$childs = $db->loadObjectList();
 
 		/* Get the products in the category */
-		foreach ($childs as $ckey => $child) {
-			$childs[$ckey]->number_of_products = $this->countProducts($child->category_child_id);
+		if(!empty($childs)){
+			foreach ($childs as $ckey => $child) {
+				$childs[$ckey]->number_of_products = $this->countProducts($child->category_child_id);
+			}
 		}
+
 
 		return $childs;
 	}

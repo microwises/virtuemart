@@ -169,16 +169,16 @@ class VirtueMartModelMedia extends JModel {
     	$product_id = JRequest::getVar('product_id',0);
 
     	if(!empty($product_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_product` ';
+    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_product_media_xref` ';
     		$whereItems[] = '`product_id` = "'.$product_id.'"';
-    		$oderby = '`mdate`';
+    		$oderby = '`#__vm_media`.`mdate`';
     	}
 
     	$cat_id = JRequest::getVar('category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_category` ';
+    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_category_media_xref` ';
     		$whereItems[] = '`category_id` = "'.$cat_id.'"';
-    		$oderby = '`mdate`';
+    		$oderby = '`#__vm_media`.`mdate`';
     	}
 
     	if(empty($query)){
@@ -208,7 +208,8 @@ class VirtueMartModelMedia extends JModel {
 			$query .= $where;
 		}
 
-		$query .= ' ORDER BY '.$oderby;
+		//Todo sorting for mdate does not work
+//		$query .= ' ORDER BY '.$oderby;
 
 		$app =& JFactory::getApplication();
 
@@ -314,9 +315,9 @@ class VirtueMartModelMedia extends JModel {
 		if(empty($data))$data = JRequest::get('post');
 
 
-		$modified = JFactory::getDate();
-		$data['mdate']=$modified->toMySQL();
-		if(empty($this->file_id)) $data['cdate'] = $modified->toMySQL();
+//		$modified = JFactory::getDate();
+//		$data['mdate']=$modified->toMySQL();
+//		if(empty($this->file_id)) $data['cdate'] = $modified->toMySQL();
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 

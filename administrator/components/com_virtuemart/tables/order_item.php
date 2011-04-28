@@ -68,5 +68,20 @@ class TableOrder_item extends JTable {
 	function __construct($db) {
 		parent::__construct('#__vm_order_item', 'order_item_id', $db);
 	}
+
+	/**
+	 * For setting the time
+	 *
+	 * @author Max Milbers
+	 */
+
+	function check(){
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+	}
 }
 // pure php no closing tag

@@ -51,6 +51,7 @@ echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEF'), 'sef_panel');
 echo $this->loadTemplate('sef');
 echo $pane->endPanel();
+
 echo $pane->endPane();
 ?>
 

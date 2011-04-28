@@ -31,7 +31,7 @@ class TableUser_info extends JTable {
 
 	/** @var int Primary key */
 	var $user_id = 0;
-	
+
 	/** @var int hidden userkey */
 	var $user_info_id = 0;
 
@@ -137,8 +137,8 @@ class TableUser_info extends JTable {
 			return false;
 		}
 		return true;
-	} 
-	
+	}
+
 	/**
 	* Stores/Updates a tax rate
 	*
@@ -159,11 +159,18 @@ class TableUser_info extends JTable {
 	/**
 	* Validates the user info record fields.
 	*
-	* @author RickG, RolandD
+	* @author RickG, RolandD, Max Milbers
 	* @return boolean True if the table buffer is contains valid data, false otherwise.
 	*/
-	public function check()
-	{
+	public function check(){
+
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+
 		if (!empty($this->user_info_id)) {
 			return true;
 		}
@@ -185,6 +192,8 @@ class TableUser_info extends JTable {
 			$this->cdate = time();
 			return false;
 		}
+
+
 	}
 
 	/**
@@ -195,7 +204,7 @@ class TableUser_info extends JTable {
 	 */
 	function delete($id)
 	{
-		// TODO If $id is not numeric, assume it's a user_info_id. Validate if this is safe enough 
+		// TODO If $id is not numeric, assume it's a user_info_id. Validate if this is safe enough
 		if (!is_numeric($id)) {
 			return (parent::delete($id));
 		}
@@ -207,7 +216,7 @@ class TableUser_info extends JTable {
 		}
 		return true;
 	}
-	
+
 }
 
 // No Closing tag

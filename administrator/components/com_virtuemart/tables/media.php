@@ -117,6 +117,12 @@ class TableMedia extends JTable {
 			$ok = false;
 		}
 
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
 
 		return $ok;
 	}

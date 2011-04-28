@@ -35,7 +35,7 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&controller=product'), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
 	<div style="float: right;">

@@ -66,11 +66,11 @@ class TableCurrency extends JTable {
 	/**
 	 * Validates the currency record fields.
 	 *
-	 * @author RickG
+	 * @author RickG, Max Milbers
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check()
-	{
+	function check() {
+
         if (!$this->currency_name) {
 			$this->setError(JText::_('COM_VIRTUEMART_CURRENCY_RECORDS_MUST_CONTAIN_CURRENCY_NAME'));
 			return false;
@@ -92,6 +92,13 @@ class TableCurrency extends JTable {
 				return false;
 			}
 		}
+
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
 
 		return true;
 	}

@@ -88,6 +88,27 @@ class TableCategory extends JTable {
 	}
 
 	/**
+	 *
+	 * @author Max Milbers
+	 */
+	public function check(){
+
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+
+     	if(empty($this->category_name)){
+            $this->setError('Cant save category without name');
+            return false;
+     	}
+
+     	return true;
+	}
+
+	/**
 	 * Overwrite method
 	 *
 	 * @author jseros

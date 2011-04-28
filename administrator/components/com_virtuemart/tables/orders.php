@@ -90,6 +90,18 @@ class TableOrders extends JTable {
 	}
 
 	/**
+	 * To set cdate and mdate
+	 * @author Max Milbers
+	 */
+	function check(){
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+	}
+	/**
 	 * Overloaded delete() to delete records from order_user_info and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)
 	 *

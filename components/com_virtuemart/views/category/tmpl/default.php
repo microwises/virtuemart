@@ -60,6 +60,7 @@ if ( VmConfig::get('showCategory',1) ) {
 		<div class="category-view">
 
 		<?php // Start the Output
+		if(!empty($this->category->children)){
 		foreach ( $this->category->children as $category ) {
 
 			// Show the horizontal seperator
@@ -109,7 +110,7 @@ if ( VmConfig::get('showCategory',1) ) {
 			$iCol ++;
 		}
 	}
-
+	}
 	// Do we need a final closing row tag?
 	if ($iCol != 1) { ?>
 		<div class="clear"></div>
@@ -145,7 +146,7 @@ $verticalseparator = " vertical-separator";
 <div class="browse-view">
 
 	<h1><?php echo $this->category->category_name; ?></h1>
-	
+
 	<div>
 		<div class="width70 floatleft">
 			<?php echo $this->orderByList; ?>
@@ -219,7 +220,7 @@ foreach ( $this->products as $product ) {
 						<?php } ?>
 
 					<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
-					<?php	
+					<?php
 					if ($this->show_prices == '1') {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 							echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
@@ -240,7 +241,7 @@ foreach ( $this->products as $product ) {
 						echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$product->prices);
 					} ?>
 					</div>
-					
+
 					<p>
 					<?php // Product Details Button
 					echo JHTML::link($product->link, JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name,'class' => 'product-details'));

@@ -354,7 +354,7 @@ class VirtueMartModelOrders extends JModel {
 
 				// Order updates can be ignored if we're updating only lines
 				$order->order_status = $new_status;
-				$order->mdate = $timestamp;
+//				$order->mdate = $timestamp;
 
 				/* When the order is set to "shipped", we can capture the payment */
 				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
@@ -525,8 +525,9 @@ class VirtueMartModelOrders extends JModel {
 			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
 		$_orderData->payment_method_id = $_cart->paym_id;
-		$_orderData->cdate = time();
-		$_orderData->mdate = time();
+		//Should be done in table
+//		$_orderData->cdate = time();
+//		$_orderData->mdate = time();
 		$_orderData->ship_method_id = $_cart->shipping_rate_id;
 
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);

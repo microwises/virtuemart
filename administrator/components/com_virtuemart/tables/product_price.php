@@ -79,8 +79,12 @@ class TableProduct_price extends JTable {
             return false;
         }
 
-       	if(empty($this->cdate)) $this->cdate = time();
-       	$this->mdate = time();
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
 
 //		if (!$this->product_price) {
 //			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));

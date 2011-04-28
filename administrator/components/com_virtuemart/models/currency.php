@@ -135,9 +135,6 @@ class VirtueMartModelCurrency extends JModel {
 
 	$data = JRequest::get( 'post' );
 
-	$modified = JFactory::getDate();
-	$data['mdate']=$modified->toMySQL();
-
 	// Store multiple selectlist entries as a | separated string
 	if (key_exists('currency_display_style', $data) && is_array($data['currency_display_style'])) {
 	    $data['display_style'] = implode('|', $data['currency_display_style']);

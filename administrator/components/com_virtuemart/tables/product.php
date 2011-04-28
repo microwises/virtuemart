@@ -126,10 +126,14 @@ class TableProduct extends JTable {
             $this->setError('Serious error cant save product without vendor id');
             return false;
         }
-		dump($this->mdate, 'mtime before');
-     	if(empty($this->cdate)) $this->cdate = time();
-     	$this->mdate = time();
-		dump($this->mdate, 'mtime after');
+
+       	$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+
         return true;
     }
 }
