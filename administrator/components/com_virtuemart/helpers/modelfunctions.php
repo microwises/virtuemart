@@ -66,7 +66,9 @@ class modelfunctions{
 			$q .= 'VALUES ("'.$id.'","'. $dataid . '")';
 			$db->setQuery($q);
 			$db->query();
+			dump($db->getQuery(),'storeArrayData');
 		}
+		dump($db,'storeArrayData');
 		return true;
 	}
 

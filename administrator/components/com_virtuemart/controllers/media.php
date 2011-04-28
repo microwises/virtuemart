@@ -91,13 +91,13 @@ class VirtuemartControllerMedia extends JController {
 		//Now we try to determine to which this media should be long to
 		$data = JRequest::get('post');
 		if(!empty($data['product_id'])){
-			$table = $fileModel->getTable('product');
+			$table = $fileModel->getTable('product_media_xref');
 			$type = 'product';
 		} else if (!empty($data['category_id'])){
-			$table = $fileModel->getTable('category');
+			$table = $fileModel->getTable('category_media_xref');
 			$type = 'category';
 		} else if (!empty($data['manufacturer_id'])){
-			$table = $fileModel->getTable('manufacturer');
+			$table = $fileModel->getTable('mf_media_xref');
 			$type = 'manufacturer';
 //		} else if ($data['vendor_id']){
 //			$table = $this->getTable('vendor');

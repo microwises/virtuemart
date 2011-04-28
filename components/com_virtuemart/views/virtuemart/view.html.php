@@ -59,10 +59,12 @@ class VirtueMartViewVirtueMart extends JView {
         if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
         /* Load the recent viewed products */
-        $recentProductIds = shopFunctionsF::getRecentProductIds();
-        $recentProducts = $productModel->getProducts($recentProductIds);
-        $productModel->addImagesToProducts($recentProducts);
-        $this->assignRef('recentProducts', $recentProducts);
+        if (VmConfig::get('show_recent', 1)) {
+        	$recentProductIds = shopFunctionsF::getRecentProductIds();
+			$recentProducts = $productModel->getProducts($recentProductIds);
+        	$productModel->addImagesToProducts($recentProducts);
+        	$this->assignRef('recentProducts', $recentProducts);
+        }
 
         if (VmConfig::get('showFeatured', 1)) {
 			$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);

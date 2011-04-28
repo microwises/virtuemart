@@ -67,11 +67,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0,0,null,"shopper")';
-// Outcommented to revert rev. 2916		$query = 'INSERT IGNORE INTO `#__vm_users` VALUES ("'. $user->id .'",0, '.VmConfig::get('default_vendor_id').',null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__vm_users` (`user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
+			dump($db,'why fail ?');
 	    }
 
 		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
@@ -196,7 +196,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	$currencyFields = array();
-	$currencyFields[0] = '47'; //EUR
+	$currencyFields[0] = '50'; //EUR
 	$currencyFields[1] = '144'; //USD
 
 	$fields = array();
@@ -223,8 +223,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
-	$fields['file_ids'] =  '1';
-	$fields['vendor_currency'] =  144;
+	$fields['file_ids'] =  1;
+	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
 	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";

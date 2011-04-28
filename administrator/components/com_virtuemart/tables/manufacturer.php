@@ -40,8 +40,7 @@ class TableManufacturer extends JTable {
 	var $mf_category_id  = 0;
     /** @var string manufacturer URL */
 	var $mf_url = '';
-    /** @var string manufacturer full image */
-	var $file_ids = '';
+
 	/** @var int Published or unpublished */
 	var $published = 1;
         /** @var boolean */

@@ -216,9 +216,12 @@ class VirtueMartModelProduct extends JModel {
    				}
    			}
 
-			if(!empty($product->file_ids)){
-				$product->file_ids = explode(',',$product->file_ids);
-			}
+   			$xrefTable = $this->getTable('product_media_xref');
+			$product->file_ids = $xrefTable->load((int)$this->_id);
+
+//			if(!empty($product->file_ids)){
+//				$product->file_ids = explode(',',$product->file_ids);
+//			}
 
 //   			if(!$front){
     			$ppTable = $this->getTable('product_price');
@@ -619,7 +622,7 @@ class VirtueMartModelProduct extends JModel {
 				$filter = 'AND `#__vm_product`.`product_special`="Y" ';
 				break;
 			case 'latest':
-				$filter = 'AND `#__vm_product`.`cdate` > '.(time()-(60*60*24*7)).' ';
+				$filter = 'AND `#__vm_product`.`mdate` > '.(time()-(60*60*24*7)).' ';
 				break;
 			case 'random':
 				$filter = '';
@@ -628,10 +631,13 @@ class VirtueMartModelProduct extends JModel {
 				$filter ='';
 		}
 
-	        $query  = 'SELECT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `#__vm_product`.`file_ids`, `product_in_stock`, `product_url` ';
-	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
-	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
-	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
+		$cat_xref_table = $categoryId? ', `#__vm_product_category_xref` ':'';
+		$query = 'SELECT `product_id` ';
+		$query .= 'FROM `#__vm_product`'.$cat_xref_table.' WHERE `product_id` > 0 ';
+//	        $query  = 'SELECT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `#__vm_product`.`file_ids`, `product_in_stock`, `product_url` ';
+//	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
+//	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
+//	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
 			if ($categoryId) {
 				$query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
 				$query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
@@ -650,18 +656,20 @@ class VirtueMartModelProduct extends JModel {
 			}
 
         $this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
+		$ids = $this->_db->loadResultArray();
 
+		$result=array();
 		/* Check if we have any products */
-		if($result) {
+		if($ids) {
 			if ($show_prices=VmConfig::get('show_prices',1) == '1'){
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 			}
 
 			/* Add some extra info */
-			foreach ($result as $featured) {
+			foreach ($ids as $id) {
 
+				$featured = $this->getProduct($id);
 				/* Product price */
 				$price = "";
 				if ($show_prices) {
@@ -676,9 +684,12 @@ class VirtueMartModelProduct extends JModel {
 
 				/* Attributes */
 				$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
+
+				$result[] = $featured;
 			}
 
 		}
+		dump($result, 'getGroupProducts back');
 
 		return $result;
     }
@@ -1051,7 +1062,8 @@ class VirtueMartModelProduct extends JModel {
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
-			$mediaModel->storeMedia($data,$product_data,'product');
+			$xrefTable = $this->getTable('product_media_xref');
+			$mediaModel->storeMedia($data,$xrefTable,'product');
 		}
 
 		$product_price_table = $this->getTable('product_price');

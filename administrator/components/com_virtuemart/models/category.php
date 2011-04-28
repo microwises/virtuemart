@@ -134,9 +134,8 @@ class VirtueMartModelCategory extends JModel {
    			$this->_data->load((int)$this->_id);
   		}
 
-  		if($this->_data->file_ids){
-  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
-		}
+		$xrefTable = $this->getTable('category_media_xref');
+		$this->_data->file_ids = $xrefTable->load((int)$this->_id);
 
   		if($childs){
   			$this->_data->haschildren = $this->hasChildren($this->_id);
@@ -192,15 +191,34 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
 
-		$query = 'SELECT `category_id`, `file_ids`, `category_child_id`, `category_name` ';
+//		$query = 'SELECT `#__vm_category`.`category_id`, `#__vm_category_media_xref`.`file_ids`, `#__vm_category_xref`.`category_child_id`, `category_name` ';
+//		$query .= 'FROM `#__vm_category`, `#__vm_category_xref`, `#__vm_category_media_xref` ';
+//		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
+//		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
+//		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_media_xref`.`category_id` ';
+//
+//		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
+//		$query .= 'AND `#__vm_category`.`published` = "1" ';
+//		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
+//
+//		$childList = $this->_getList( $query ); dump($this->_db,'my db getChildCategoryList');
+
+		$query = 'SELECT `#__vm_category`.`category_id`,`#__vm_category`.`category_name` ';
 		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
 		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
 		$query .= 'AND `#__vm_category`.`published` = "1" ';
 		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
+		$childList = $this->_getList( $query ); dump($this->_db,'my db getChildCategoryList');
+		dump($childList,'my getChildCategoryList');
 
-		$childList = $this->_getList( $query );
+		if(!empty($childList)){
+			foreach($childList as $child){
+				$xrefTable = $this->getTable('category_media_xref');
+				$child->file_ids = $xrefTable->load($child->category_id);
+			}
+		}
 		return $childList;
 	}
 
@@ -662,8 +680,9 @@ class VirtueMartModelCategory extends JModel {
 
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$xrefTable = $this->getTable('category_media_xref');
 		$mediaModel = new VirtueMartModelMedia();
-		$mediaModel->storeMedia($data,$table,'category');
+		$mediaModel->storeMedia($data,$xrefTable,'category');
 
 		return $id;
 	}

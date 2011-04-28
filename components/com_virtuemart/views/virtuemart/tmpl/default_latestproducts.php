@@ -34,14 +34,14 @@
 			}
 				if ($latestProduct->file_ids) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$latestProduct->product_id.'&category_id='.$latestProduct->category_id),
-						$featProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"'));
+						$latestProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"'));
 				?>
 				<br /><br/>
 				<?php } ?>
 				<?php echo shopFunctionsF::limitStringByWord($latestProduct->product_s_desc, 40, '...') ?>
 				<br />
 
-				<?php echo addToCart($latestProduct); ?>
+				<?php //echo addToCart($latestProduct); ?>
 		</div>
 		<?php
 		// Do we need to close the current row now?

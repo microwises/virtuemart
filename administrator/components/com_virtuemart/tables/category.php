@@ -37,8 +37,7 @@ class TableCategory extends JTable {
 	var $category_name		=  '';
 	/** @var string Category description */
 	var $category_description		= '';
-    /** @var string Category media */
-	var $file_ids		= null;
+
 	/** @var integer Category publish or not */
 	var $published			= 1;
 	/** @var date Category creation date */

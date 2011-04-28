@@ -127,7 +127,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `category_name` varchar(128) NOT NULL DEFAULT '',
   `category_description` text,
-  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL, 	 	 	
@@ -166,6 +165,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
   KEY `category_xref_category_parent_id` (`category_parent_id`),
   KEY `idx_category_xref_category_list` (`category_list`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
+
+--
+-- Table structure for table `#__vm_category_media_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_category_media_xref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  `file_ids` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -277,12 +287,22 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_desc` text,
   `mf_category_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
-  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=1 ;
+
+--
+-- Table structure for table `#__vm_manufacturer_media_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_media_xref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `manufacturer_id` int(11) NOT NULL DEFAULT '0',
+  `file_ids` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -568,7 +588,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   `product_sku` varchar(64) NOT NULL DEFAULT '',
   `product_s_desc` varchar(255) DEFAULT NULL,
   `product_desc` text,
-  `file_ids` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `product_weight` decimal(10,4) DEFAULT NULL,
   `product_weight_uom` varchar(32) DEFAULT 'pounds.',
@@ -677,6 +696,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`download_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
+
+--
+-- Table structure for table `#__vm_category_media_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_product_media_xref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `file_ids` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1099,8 +1129,6 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   `vendor_phone` varchar(32) DEFAULT NULL,
   `vendor_store_name` varchar(128) NOT NULL DEFAULT '',
   `vendor_store_desc` text,
---  `vendor_category_id` int(11) DEFAULT NULL,
-  `file_ids` varchar(255) DEFAULT NULL,
   `vendor_currency` varchar(16) DEFAULT NULL,
   `cdate` int(11) DEFAULT NULL,
   `mdate` int(11) DEFAULT NULL,
@@ -1119,6 +1147,19 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   KEY `idx_vendor_name` (`vendor_name`)
 --  KEY `idx_vendor_category_id` (`vendor_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store' AUTO_INCREMENT=1 ;
+
+
+--
+-- Table structure for table `#__vm_vendor_media_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_vendor_media_xref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vendor_id` int(11) NOT NULL DEFAULT '0',
+  `file_ids` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 

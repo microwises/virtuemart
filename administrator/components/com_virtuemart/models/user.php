@@ -528,7 +528,7 @@ class VirtueMartModelUser extends JModel {
 			modelfunctions::storeArrayData('#__vm_user_shopper_group_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 
 			if (!user_info::storeAddress($_data, 'user_info', $new)) {
-				$this->setError('Was not able to save the virtuemart user data');
+				$this->setError('Was not able to save the virtuemart user_info address data');
 				return false;
 			}
 
@@ -543,7 +543,7 @@ class VirtueMartModelUser extends JModel {
 				//$vendorModel->setId($_data['vendor_id']);
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
-					$this->setError($vendorModel->getError());
+					$this->setError($vendorModel->getError()); dump($vendorModel,'hm');
 					return false;
 				}else{
 					//Update xref Table

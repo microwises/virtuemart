@@ -38,10 +38,7 @@ class TableVendor extends JTable {
     var $vendor_store_name		= '';
     /** @var text Vendor store description */
     var $vendor_store_desc   		= '';
-    /** @var int Category Id */
-//    var $vendor_category_id   		= '';
-    /** @var varchar Vendor full image */
-    var $file_ids   		= '';
+
     /** @var varchar Currency */
     var $vendor_currency	  		= '';
     /** @var int Vendor created date */

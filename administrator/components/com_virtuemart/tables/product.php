@@ -40,8 +40,7 @@ class TableProduct extends JTable {
 	var $product_s_desc		= null;
     /** @var string File extension */
 	var $product_desc			= null;
-	/** @var string File URL */
-	var $file_ids				= null;
+
 	/** @var int File published or not */
 	var $published		= null;
 	/** @var int File is an image or other */
@@ -116,5 +115,22 @@ class TableProduct extends JTable {
 	function __construct($db) {
 		parent::__construct('#__vm_product', 'product_id', $db);
 	}
+
+    /**
+     * @author Max Milbers
+     * @param
+     */
+    function check() {
+
+        if (empty($this->vendor_id)) {
+            $this->setError('Serious error cant save product without vendor id');
+            return false;
+        }
+		dump($this->mdate, 'mtime before');
+     	if(empty($this->cdate)) $this->cdate = time();
+     	$this->mdate = time();
+		dump($this->mdate, 'mtime after');
+        return true;
+    }
 }
 // pure php no closing tag

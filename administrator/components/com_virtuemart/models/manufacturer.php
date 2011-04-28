@@ -86,9 +86,13 @@ class VirtueMartModelManufacturer extends JModel {
 
      	$this->_data = $this->getTable();
      	$this->_data->load(JRequest::getInt('manufacturer_id', 0));
-       	if($this->_data->file_ids){
-  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
-  		}
+
+     	$xrefTable = $this->getTable('mf_media_xref');
+		$this->_data->file_ids = $xrefTable->load((int)$this->_id);
+
+//       	if($this->_data->file_ids){
+//  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
+//  		}
      	return $this->_data;
      }
 
@@ -129,6 +133,7 @@ class VirtueMartModelManufacturer extends JModel {
 		// Process the images //		$fullImage = JRequest::getVar('file_id', null, 'files',array());
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
+		$xrefTable = $this->getTable('mf_media_xref');
 		$mediaModel->storeMedia($data,$table,'manufacturer');
 
 		return $table->manufacturer_id;

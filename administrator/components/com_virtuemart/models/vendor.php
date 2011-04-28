@@ -116,9 +116,13 @@ class VirtueMartModelVendor extends JModel {
 		    else{
 				$this->_data->vendor_accepted_currencies = array();
 		    }
-          	if($this->_data->file_ids){
-  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
-  			}
+
+		    $xrefTable = $this->getTable('vendor_media_xref');
+			$this->_data->file_ids = $xrefTable->load((int)$this->_id);
+
+//          	if($this->_data->file_ids){
+//  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
+//  			}
 //			if($withUserData){
 //			    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
 //			    $query .= "WHERE vendor_id = '". $this->_id ."'";
@@ -202,7 +206,7 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
-
+	dump($data,'data for store vendor');
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -227,32 +231,12 @@ class VirtueMartModelVendor extends JModel {
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 
 	/* Process the images */
-//	if(!empty($table->file_ids)){
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		$mediaModel = new VirtueMartModelMedia();
-		$mediaModel->storeMedia($data,$table,'vendor');
 
-//		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-//		$mediaModel = new VirtueMartModelMedia();
-//		$mediaModel -> setId( $data['file_id'] );
-//		$table->file_ids = false;
-//		$table->file_ids = $mediaModel->store('vendor');
-//		if(!$table->file_ids){
-//			$app =& JFactory::getApplication();
-//			if($errs = $mediaModel->getErrors()){
-//				foreach($errs as $err){
-//					$app->enqueueMessage($err);
-//				}
-//			}
-//		} else {
-//			// Save the category record to the database
-//			if (!$table->store()) {
-//				$this->setError($table->getError());
-//				return false;
-//			}
-//		}
-//	}
-
+	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+	$xrefTable = $this->getTable('vendor_media_xref');
+	$mediaModel = new VirtueMartModelMedia();
+	$mediaModel->storeMedia($data,$xrefTable,'vendor');
+	dump($this,'store vendor');
 	return $this->_id;
 
 	}

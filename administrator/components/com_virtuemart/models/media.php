@@ -256,6 +256,7 @@ class VirtueMartModelMedia extends JModel {
      * This function stores a media and updates then the refered table
      *
      * @author Max Milbers
+     * @author Patrick Kohl
      * @param unknown_type $data
      * @param unknown_type $table
      * @param unknown_type $type
@@ -268,55 +269,37 @@ class VirtueMartModelMedia extends JModel {
 		$oldId = $data['file_id'];
 		$this -> setId($oldId);
 		$file_id = $this->store($type,$data);
-		dump($file_id,'my oldid = '.$oldId.'my new');
+		$this -> setId($file_id);
 		/* add the file_id & delete 0 and '' from $data */
-//		$data['file_ids'] = array_merge( (array)$data['file_id'],$data['file_ids']);
-		$data['file_ids'] = array_merge( (array)$file_id,$data['file_ids']);
+
+		$file_ids = array_merge( (array)$file_id,$data['file_ids']);
 		$file_ids = array_diff($data['file_ids'],array('0',''));
-		//$product_data->file_ids = implode(',',$file_ids);
-//		if($data['file_id']!=$file_id){
-			/*$file_ids = $data['file_ids'];
-			if(is_array($file_ids)){
-				$key = array_search($data['file_id'],$file_ids);
-				if(!$key){
-					$file_ids[] = $file_id;
-				}else {
-					$file_ids[$key] = $file_id;
-				}
-			} else {
-				$data['file_ids'] = $file_id;
-			}
+		$file_ids = array_unique($file_ids);
+		$data['file_ids'] = array_reverse ($file_ids,true);
 
-			$data['file_id']=$file_id;
+//		$data['file_ids']= implode(',',$file_ids);
+//		$data['file_ids'] = array(1,2);
+		dump($data,'data to bind');
+		// Bind the form fields to the country table
+		if (!$table->bind($data)) {
+			$this->setError($table->getError());
+			return false;
+		}
+		dump($table,'table after bind');
+		// Make sure the category record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;
+		}
 
-			if(is_array($file_ids)){
-				$file_ids = array_unique($file_ids);
-				$data['file_ids'] = implode(',',$file_ids);
-			} else {
-				$data['file_ids'] = $file_ids;
-			}*/
-			$file_ids = array_unique($file_ids);
-			$data['file_ids']= implode(',',$file_ids);
+		// Save the category record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;
+		}
+		dump($table,'table after store');
+		return true;
 
-			// Bind the form fields to the country table
-			if (!$table->bind($data)) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Make sure the category record is valid
-			if (!$table->check()) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Save the category record to the database
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				return false;
-			}
-			return true;
-//		}
 	}
 
 	/**
