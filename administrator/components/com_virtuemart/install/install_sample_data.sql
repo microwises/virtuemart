@@ -127,7 +127,7 @@ INSERT INTO `#__vm_product` (`product_id`, `vendor_id`, `product_parent_id`, `pr
 (16, 1, 2, 'L03', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 962351180, 962351180, 'Plastic Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', '');
 
 
-INSERT IGNORE INTO `#__vm_category_media_xref` (`id`,`category_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__vm_product_media_xref` (`id`,`product_id`, `file_ids`) VALUES
 (NULL, 1, 13),
 (NULL, 2, 8),
 (NULL, 3, 5),
