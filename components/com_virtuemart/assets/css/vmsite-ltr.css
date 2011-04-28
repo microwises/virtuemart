@@ -590,8 +590,11 @@ span.title {font-weight: bold;display: block;border-bottom: solid #CAC9C9 1px;ma
 /* Add To Cart Bar */
 .productdetails-view .addtocart-bar {padding: 0px 0px 0px 38px;margin: 15px 0px 0px 0px;}
 
+/* Availability Image */
+.availability {text-align: center;margin: 15px 0px 0px 0px;}
+
 /* Ask A Question */
-.ask-a-question {margin: 15px 0px 0px 0px;}
+.ask-a-question {margin: 10px 0px 0px 0px;}
 
 /* Manufacturer */
 .manufacturer {margin: 10px 0px 0px 0px;}

@@ -217,7 +217,15 @@ if (empty ( $this->product )) {
 				<div class="clear"></div>
 				</div>
 			<?php }  // Add To Cart Button END ?>
-
+			
+				<?php // Availability Image
+				/* TO DO add width and height to the image */
+				if (!empty($this->product->product_availability)) { ?>
+				<div class="availability">
+					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+				</div>
+				<?php } ?>
+				
 				<?php // Ask a question about this product
 				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
