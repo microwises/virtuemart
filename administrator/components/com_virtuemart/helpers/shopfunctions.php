@@ -250,7 +250,7 @@ class ShopFunctions {
 
 		static $categoryTree = '';
 		if($level==0){
-			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</option>';
+			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
 		}
 		$vendor_id = 1;
 

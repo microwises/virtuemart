@@ -40,10 +40,10 @@ class VirtuemartViewCategory extends JView {
 		$this->loadHelper('image');
 
 		$model = $this->getModel();
-        $layoutName = JRequest::getVar('layout', 'default');
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $view = JRequest::getCmd('view');
+                $layoutName = JRequest::getVar('layout', 'default');
+                $mainframe = JFactory::getApplication();
+                $option = JRequest::getCmd('option');
+                $view = JRequest::getCmd('view');
 
 		if ($layoutName == 'edit') {
 
@@ -89,19 +89,21 @@ class VirtuemartViewCategory extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL'), 'vm_categories_48' );
-			JToolBarHelper::addNewX();
+                        JToolBarHelper::publishList();
+                        JToolBarHelper::unpublishList();
+                        JToolBarHelper::deleteList('', 'remove', 'Delete');			
 			JToolBarHelper::editListX();
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
+			JToolBarHelper::addNewX();
+			
 			/**
 			* Commented out for future use
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
 			*/
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			
 
 			$categories = $model->getCategoryTree(false);
-        	$categoriesSorted = $model->sortCategoryTree($categories);
+                        $categoriesSorted = $model->sortCategoryTree($categories);
 
 			$pagination = $model->getPagination();
 

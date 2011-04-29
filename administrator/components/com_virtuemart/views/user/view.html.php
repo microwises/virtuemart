@@ -268,14 +268,15 @@ class VirtuemartViewUser extends JView {
 					 $this->assignRef('pane', $pane);
 		} else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_LIST_LBL'), 'vm_user_48.png');
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
+			
+			
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('enable_vendor', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
 			JToolBarHelper::custom('disable_vendor', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
-
+                        JToolBarHelper::editListX();
+                        JToolBarHelper::addNewX();
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
 

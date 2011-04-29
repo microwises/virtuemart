@@ -62,10 +62,11 @@ class VirtuemartViewShopperGroup extends JView {
 
 		} else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_LBL'), 'vm_shop_users_48' );
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
+			
+			
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
-
+                        JToolBarHelper::editListX();
+                        JToolBarHelper::addNewX();
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 

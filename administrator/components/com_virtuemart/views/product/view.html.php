@@ -73,20 +73,20 @@ class VirtuemartViewProduct extends JView {
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->product_id);
 
-				$dbTax = 'Rules Effecting: <br />';
+				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['dBTax'] as $rule){
 
 					$dbTax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('dbTaxRules', $dbTax);
 
-				$tax = 'Tax Effecting: <br />';
+				$tax = JText::_('COM_VIRTUEMART_TAX_EFFECTING');
 				foreach($calculator->rules['tax'] as $rule){
 					$tax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('taxRules', $tax);
 
-				$daTax = 'Rules Effecting: <br />';
+				$daTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING');
 				foreach($calculator->rules['dATax'] as $rule){
 					$daTax .= $rule['calc_name']. '<br />';
 				}
@@ -128,7 +128,7 @@ class VirtuemartViewProduct extends JView {
 					$vendor = $vendor_model->getVendor();
 					$product->product_currency = $vendor->vendor_currency;
 				}
-$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+                                $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
 
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
@@ -353,7 +353,8 @@ $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), '
 				JToolBarHelper::publish();
 				JToolBarHelper::unpublish();
 				JToolBarHelper::deleteListX();
-				JToolBarHelper::addNew();
+                                JToolBarHelper::editListX();
+				JToolBarHelper::addNewX();
 
 				/* Assign the data */
 				$this->assignRef('productlist', $productlist);
