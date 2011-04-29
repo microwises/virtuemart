@@ -218,20 +218,11 @@ class VirtueMartModelManufacturerCategory extends JModel {
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
-	function publish($publishId = false)
-	{
+	function publish($publishId = false){
+
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','manufacturer_category',$publishId);
 
-//		$table = $this->getTable('manufacturer_category');
-//		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );
-//
-//        if (!$table->publish($categoryIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;
-//        }
-//
-//		return true;
 	}
 
 
@@ -259,13 +250,13 @@ class VirtueMartModelManufacturerCategory extends JModel {
 
 		return $this->_data;
 	}
+
 	/**
 	 * Build category filter
 	 *
 	 * @return object List of category to build filter select box
 	 */
-	function getCategoryFilter()
-	{
+	function getCategoryFilter(){
 		$db = JFactory::getDBO();
 		$query = 'SELECT mf_category_id as value, mf_category_name as text'
 				.' FROM #__vm_manufacturer_category';
@@ -278,8 +269,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 
 		return $categoryFilter;
 
-
-
 	}
 }
+
 // pure php no closing tag

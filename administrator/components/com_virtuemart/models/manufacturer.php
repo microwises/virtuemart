@@ -84,15 +84,13 @@ class VirtueMartModelManufacturer extends JModel {
      */
      public function getManufacturer() {
 
+     	$this->_id = JRequest::getInt('manufacturer_id', 0);
      	$this->_data = $this->getTable();
-     	$this->_data->load(JRequest::getInt('manufacturer_id', 0));
+     	$this->_data->load($this->_id);
 
      	$xrefTable = $this->getTable('mf_media_xref');
-		$this->_data->file_ids = $xrefTable->load((int)$this->_id);
+		$this->_data->file_ids = $xrefTable->load($this->_id);
 
-//       	if($this->_data->file_ids){
-//  			$this->_data->file_ids = explode(',',$this->_data->file_ids);
-//  		}
      	return $this->_data;
      }
 
