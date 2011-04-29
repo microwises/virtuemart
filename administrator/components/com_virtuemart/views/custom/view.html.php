@@ -52,8 +52,6 @@ class VirtuemartViewCustom extends JView {
 			$this->assignRef('field_types', $field_types );
 			$custom = $model->getCustom();
 			$this->assignRef('custom',	$custom);
-			
-
 
 			$isNew = ($custom->custom_id < 1);
 			if ($isNew) {

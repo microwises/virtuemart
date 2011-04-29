@@ -1465,17 +1465,19 @@ class VirtueMartModelProduct extends JModel {
 
 		/* Load the variants */
 		$product->variants = $this->getVariants($product);
-
+		
+		/* Load the Customs Field Cart Price */
+		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldCartPrice($product->product_id);
 		/* Loads the product price details */
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
 		$quantityArray = JRequest::getVar('quantity',1,'post');
-
+		
 		/* Calculate the modificator */
-		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);		/* Calculate the modificator */
+		$product_type_modificator = $calculator->calculatecustomsCart($product->product_id,$product->CustomsFieldCartPrice,$product_type_modificator);
 //		$product_type_modificator = $calculator->parseModifier($product->variants);
-
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
@@ -2308,12 +2310,45 @@ class VirtueMartModelProduct extends JModel {
 				$this->_db->setQuery($query);
 				$productCustoms = $this->_db->loadObjectList();
 				if ($group->field_type == 'V') 
-				$group->display = VmHTML::select($productCustoms,'field['.$row.'][custom_value]',$group->custom_value,'','value','text',false);
-				else { $group->display = self::displayType('',$group->field_type,0,0,$row) ; }
+				$group->display = VmHTML::select($productCustoms,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
+				else { $group->display = '<input type="hidden" value="'.$productCustoms[0]->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /> '.self::displayType('',$group->field_type,0,0,$row) ; }
 				//($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true)
 				$row++ ;
 			}
 				return $groups;
+
+		}
+		return ;
+     }
+     public function getproductCustomsFieldCartPrice($product_id) {
+
+		if ($this->hasproductCustoms($product_id )) {
+
+			// group by custom_id
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type` 
+				FROM `#__vm_custom` AS C 
+				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+				Where xref.`product_id` ='.$product_id;
+			$query .=' and is_cart_attribute = 1 group by custom_id' ;
+			
+			$this->_db->setQuery($query);
+			$groups = $this->_db->loadAssocList();
+			$row= 0 ;
+			// render select list
+			foreach ($groups as & $group) {
+				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
+					FROM `#__vm_custom` AS C 
+					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+					Where xref.`product_id` ='.$product_id;
+				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group['custom_id'] ;
+				$this->_db->setQuery($query);
+				$productCustomsCart = $this->_db->loadAssocList();
+				$group = array_merge($group, $productCustomsCart);
+				$row++ ;
+			}
+			return $groups;
 
 		}
 		return ;
@@ -2377,7 +2412,6 @@ class VirtueMartModelProduct extends JModel {
 					LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id` 
 					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
-					echo $q ;
 					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				break;

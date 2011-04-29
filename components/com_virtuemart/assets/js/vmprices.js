@@ -4,7 +4,7 @@
 		
 		this.each(function(){
 			var cart = $(this),
-			addtocart = cart.find('.addtocart'),
+			addtocart = cart.find('input.addtocart-button'),
 			plus   = cart.find('.quantity-plus'),
 			minus  = cart.find('.quantity-minus'),
 			select = cart.find('select'),

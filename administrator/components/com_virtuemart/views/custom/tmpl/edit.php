@@ -18,8 +18,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+VmConfig::JvalideForm();
 AdminMenuHelper::startAdminArea();
-echo'<form name="adminForm" id="adminForm" method="post">';
+echo'<form name="adminForm" id="adminform" method="post" action="">';
 echo '<fieldset class="adminform">';
 $this->custom->addHidden('view','custom');
 $this->custom->addHidden('task','');
@@ -32,3 +33,9 @@ dump ($this->custom,'custom');
 echo '</fieldset>';
 echo '</form>';
  AdminMenuHelper::endAdminArea(); ?>
+<script type="text/javascript">
+function submitbutton(pressbutton) {
+	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
+	else return false ;
+} 
+</script>

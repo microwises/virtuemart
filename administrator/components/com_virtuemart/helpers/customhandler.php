@@ -390,6 +390,7 @@ class VmCustomHandler {
 		// get custom parents
     	$q='SELECT custom_id as value ,custom_title as text FROM `#__vm_custom` where custom_parent_id=0';
 		if ($publishedOnly) $q=' WHERE `published`=1 ';
+		if ($ID = JRequest::getVar( 'custom_id',false)) $q .=' and `custom_id`!='.$ID;
 		//if (isset($this->custom_id)) $q.=' and custom_id !='.$this->custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
@@ -449,12 +450,12 @@ class VmCustomHandler {
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TITLE','custom_title',$this->custom_title);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$this->custom_field_desc);
 		// change input by type
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_DEFAULT','custom_value',$this->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
-		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_id,'');
+		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_FORM_FIELD_PUBLISHED','published',$this->published);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
@@ -463,7 +464,7 @@ class VmCustomHandler {
 		self::addCustomAttributesByType();
 		// only input when not set else display
 		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ; 
-		else $html .= VmHTML::radioRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type) ; 
+		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ; 
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
 //		$html .= '</form>';

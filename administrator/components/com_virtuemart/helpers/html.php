@@ -255,13 +255,13 @@ class VmHTML{
 	 * @param string $value
 	 *
 	 */
-	public function booleanRow( $label , $name, $value){
+	public function booleanRow( $label , $name, $value,$class='class="inputbox"'){
 	$html = '<tr>
 	<td class="labelcell">
 		<label for="'.$name.'">'. JText::_($label) .'</label>
 	</td>
 	<td><fieldset class="radio">
-				'.JHTML::_( 'select.booleanlist',  $name , 'class="inputbox"', $value).'
+				'.JHTML::_( 'select.booleanlist',  $name , $class , $value).'
 		</fieldset>
 	</td>
 	<td></td>
@@ -277,10 +277,10 @@ class VmHTML{
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function inputRow($label, $name,$value,$readonly=''){
+	public function inputRow($label, $name,$value,$class='class="inputbox"',$readonly='',$size='70'){
 		$html = '<tr>
 		<td class="labelcell">'.JText::_($label).'</td>
-		<td> <input type="text" '.$readonly.'class="inputbox" name="'.$name.'" size="70" value="'.$value.'" /></td>
+		<td> <input type="text" '.$readonly.' '.$class.' name="'.$name.'" size="'.$size.'" value="'.$value.'" /></td>
 		<td></td>
 	</tr>';
 		return $html;
@@ -320,7 +320,7 @@ class VmHTML{
 	 */
 	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
-		$option  = array($key =>0, $text => "-select-");
+		$option  = array($key =>null, $text => "-select-");
 		$options = array_merge(array($option), $options);
 		}
 		echo $default;
@@ -336,6 +336,30 @@ class VmHTML{
 			$html .= '<input type="hidden" name="'.$k.'" value="'.$v.'" />';
 		}
 		return $html;
+	}
+	/**
+	*@var $type type of regular Expression to validate
+	*@bool $required field is required
+	*@Int $min minimum of char
+	*@Int $max max of char
+	*@var $match original ID field to compare with this such as Email, passsword
+	*@ Return $html class for validate
+	**/
+	public function validate($type='',$required=true, $min=null,$max=null,$match=null) {
+
+		if ($required) $validTxt = 'required'; 
+		else $validTxt = 'optional';
+		if (isset($min)) $validTxt .= ',minSize['.$min.']';
+		if (isset($max)) $validTxt .= ',maxSize['.$max.']';
+		static $validateID=0 ;
+		$validateID++;
+		if ($type=='S' ) return 'id="validate'.$validateID.'" class="validate[required,minSize[2],maxSize[255]]"';
+		$validate = array ( 'I'=>'onlyNumberSp', 'F'=>'number','D'=>'dateTime','A'=>'date','M'=>'time','T'=>'Text','L'=>'link','U'=>'url','P'=>'phone');
+		if (isset ($validate[$type])) $validTxt .= ',custom['.$validate[$type].']';
+		$html ='';
+		$html .='id="validate'.$validateID.'" class="validate['.$validTxt.']"';
+
+		return $html ;
 	}
 
 }
