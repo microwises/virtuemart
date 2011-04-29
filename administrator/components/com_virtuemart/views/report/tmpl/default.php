@@ -46,7 +46,7 @@ if( $this->pagination->limit < $rows ){
                         <?php echo $this->lists['select_date']; ?>
                         <?php echo JHTML::_('calendar', $this->from_period, 'from_period', 'from-period', '%m-%d-%Y'); ?>
                         <?php echo JHTML::_('calendar', $this->until_period, 'until_period', 'until-period', '%m-%d-%Y'); ?>
-                        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?>
+                        <button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>
                 </tr>

@@ -101,7 +101,7 @@ INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, 
 --
 
 INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `published`) VALUES
-(1, 'Manufacturer', 'info@manufacturer.com', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
+(1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
 
 
 --

@@ -69,7 +69,7 @@ class VirtuemartViewReport extends JView {
 				// check period - set to defaults if no value is set or dates cannot be parsed
 				if ($from->_date === false || $until->_date === false) {
 					if ($from_period != '?' && $until_period != '?') {
-						JError::raiseNotice(500, JText::_('Please enter a valid date format (YYYY-MM-DD)'));
+						JError::raiseNotice(500, JText::_('COM_VIRTUEMART_ENTER_VALID_DATE'));
 					}
 					$from_period  = $date_presets['last30']['from'];
 					$until_period = $date_presets['last30']['until'];

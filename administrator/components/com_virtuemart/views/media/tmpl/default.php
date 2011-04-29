@@ -92,9 +92,9 @@ $pagination = $this->pagination;
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons
-					if(!empty($productfile->file_is_product_image)) echo 'File is product image';
-					if(!empty($productfile->file_is_downloadable)) echo 'File is downloadable';
-					if(!empty($productfile->file_is_forSale)) echo 'File is for Sale';
+					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_PRODUCT_IMAGE') ;
+					if(!empty($productfile->file_is_downloadable)) echo JText::_('COM_VIRTUEMART_DOWNLOADABLE') ;
+					if(!empty($productfile->file_is_forSale)) echo  JText::_('COM_VIRTUEMART_FOR_SALE');
 
 					?>
 				</td>

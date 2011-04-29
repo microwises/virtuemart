@@ -123,14 +123,14 @@ class CurrencyDisplay {
 
     	$this->id =	$currencyId;
 		if ($currencyStyle) {
-		    $array = explode("|", $currencyStyle);
+		    $array = explode("|", $currencyStyle);dump($array);
 //		    if(!empty($array[0])) $this->id = $array[0];
-		    if(!empty($array[1])) $this->symbol = $array[1];
-		    if(!empty($array[2])) $this->nbDecimal = $array[2];
-		    if(!empty($array[3])) $this->decimal = $array[3];
-		    if(!empty($array[4])) $this->thousands = $array[4];
-		    if(!empty($array[5])) $this->positivePos = $array[5];
-		    if(!empty($array[6])) $this->negativePos = $array[6];
+		    $this->symbol = $array[1];
+		    $this->nbDecimal = (int)$array[2];
+		    $this->decimal = $array[3]; 
+		    $this->thousands = $array[4];
+		    $this->positivePos = $array[5];
+		    $this->negativePos = $array[6];
 		}
     }
 

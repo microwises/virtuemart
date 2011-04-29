@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc` (
   `calc_amount_dimunit` text NOT NULL COMMENT 'The dimension, kg, m, €',
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Affects all vendors',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`calc_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
   `metakey` text NOT NULL,
   `metarobot` text NOT NULL,
   `metaauthor` text NOT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`category_id`),
   KEY `idx_category_vendor_id` (`vendor_id`),
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_media_xref` (
 CREATE TABLE IF NOT EXISTS `#__vm_config` (
   `config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `config` text,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`config_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_country` (
   `country_3_code` char(3) DEFAULT NULL,
   `country_2_code` char(2) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`country_id`),
   KEY `idx_country_name` (`country_name`)
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
   `coupon_start_date` datetime DEFAULT NULL,
   `coupon_expiry_date` datetime DEFAULT NULL,
   `coupon_value_valid` decimal(15,5) NOT NULL DEFAULT '0.00000',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`coupon_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
@@ -242,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
   `creditcard_name` varchar(70) NOT NULL DEFAULT '',
   `creditcard_code` varchar(30) NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`creditcard_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store credit card types' AUTO_INCREMENT=1 ;
@@ -268,7 +268,7 @@ CREATE TABLE `#__vm_currency` (
   `mdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'modified date',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `shared` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`currency_id`),
   KEY `idx_currency_code` (`currency_code`)
@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_category_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=1 ;
@@ -367,7 +367,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
   `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`mf_category_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
@@ -446,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
   `ship_method_id` varchar(255) DEFAULT NULL,
   `customer_note` text NOT NULL,
   `ip_address` varchar(15) NOT NULL DEFAULT '',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`order_id`),
   KEY `idx_orders_user_id` (`user_id`),
@@ -494,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
   `cdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation date',
   `mdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'modified date',
   `product_attribute` text,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`order_item_id`),
   KEY `idx_order_item_order_id` (`order_id`),
@@ -515,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
   `order_status_description` text NOT NULL,
   `ordering` int(11) DEFAULT NULL,
   `vendor_id` int(11) DEFAULT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`order_status_id`),
   KEY `idx_order_status_list_order` (`ordering`),
@@ -560,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
   `bank_iban` varchar(64) NOT NULL DEFAULT '',
   `bank_account_holder` varchar(48) NOT NULL DEFAULT '',
   `bank_account_type` enum('Checking','Business Checking','Savings') NOT NULL DEFAULT 'Checking',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`order_info_id`),
   KEY `idx_order_info_order_id` (`order_id`)
@@ -588,7 +588,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `paym_secret_key` blob NOT NULL,
   `paym_params` text NOT NULL,
   `shared` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'valide for all vendors?',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`paym_id`),
   KEY `idx_payment_method_vendor_id` (`paym_vendor_id`),
@@ -620,7 +620,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `paym_id` int(11) NOT NULL DEFAULT '0',
   `paym_shopper_group` int(11) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_paym_id` (`paym_id`,`paym_shopper_group`)
@@ -669,7 +669,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   `metarobot` text NOT NULL,
   `metaauthor` text NOT NULL,
   `layout` varchar(255) NOT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`product_id`),
   KEY `idx_product_vendor_id` (`vendor_id`),
@@ -690,7 +690,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
   `product_id` int(11) NOT NULL DEFAULT '0',
   `attribute_name` char(255) NOT NULL DEFAULT '',
   `attribute_value` char(255) NOT NULL DEFAULT '',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`attribute_id`),
   KEY `idx_product_attribute_product_id` (`product_id`),
@@ -744,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
   `download_max` int(11) NOT NULL DEFAULT '0',
   `download_id` varchar(32) NOT NULL DEFAULT '',
   `file_name` varchar(255) NOT NULL DEFAULT '',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`download_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
@@ -783,7 +783,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_media` (
   `file_is_forSale` tinyint(1) NOT NULL,
   `shared` tinyint(1) NOT NULL,
   `file_params` text,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`file_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
@@ -823,7 +823,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
   `shopper_group_id` int(11) DEFAULT NULL,
   `price_quantity_start` int(11) unsigned NOT NULL DEFAULT '0',
   `price_quantity_end` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`product_price_id`),
   KEY `idx_product_price_product_id` (`product_id`),
@@ -871,7 +871,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
   `review_ok` int(11) NOT NULL DEFAULT '0',
   `review_votes` int(11) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`review_id`),
   UNIQUE KEY `product_id` (`product_id`,`userid`)
@@ -891,7 +891,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
   `product_type_browsepage` varchar(255) DEFAULT NULL,
   `product_type_flypage` varchar(255) DEFAULT NULL,
   `ordering` int(11) DEFAULT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -913,7 +913,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type_parameter` (
   `parameter_multiselect` char(1) DEFAULT NULL,
   `parameter_default` varchar(255) DEFAULT NULL,
   `parameter_unit` varchar(32) DEFAULT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`product_type_id`,`parameter_name`),
   KEY `idx_product_type_parameter_product_type_id` (`product_type_id`),
@@ -932,7 +932,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
   `allvotes` int(11) NOT NULL DEFAULT '0',
   `rating` tinyint(1) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all votes for a product';
@@ -950,7 +950,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
   `shipping_carrier_list_order` int(11) NOT NULL DEFAULT '0',
   `shipping_carrier_vendor_id` int(11) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL default '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`shipping_carrier_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
@@ -975,7 +975,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
   `shipping_rate_currency_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_vat_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_list_order` int(11) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`shipping_rate_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Rates for each carrier' AUTO_INCREMENT=1 ;
@@ -992,7 +992,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
   `shopper_group_name` varchar(32) DEFAULT NULL,
   `shopper_group_desc` text,
   `default` tinyint(1) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`shopper_group_id`),
   KEY `idx_shopper_group_vendor_id` (`vendor_id`),
@@ -1014,7 +1014,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
   `state_3_code` char(3) DEFAULT NULL,
   `state_2_code` char(2) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`state_id`),
   UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
@@ -1034,7 +1034,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_users` (
 	`vendor_id` tinyint(1) NOT NULL DEFAULT '0',
 	`customer_number` varchar(32) DEFAULT NULL,
 	`perms` varchar(40) NOT NULL DEFAULT 'shopper',
-        `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+        `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
         `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the unique user data' AUTO_INCREMENT=1 ;
@@ -1061,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
   `group_name` varchar(128) DEFAULT NULL,
   `group_level` int(11) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
@@ -1106,7 +1106,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
   `sys` tinyint(4) NOT NULL DEFAULT '0',
   `vendor_id` int(11) DEFAULT NULL,
   `params` mediumtext,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`fieldid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the fields for the user information' AUTO_INCREMENT=1 ;
@@ -1124,7 +1124,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
   `fieldvalue` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL DEFAULT '0',
   `sys` tinyint(4) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`fieldvalueid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the different values for dropdown and radio lists' AUTO_INCREMENT=1 ;
@@ -1162,7 +1162,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
   `extra_field_5` char(1) DEFAULT NULL,
   `cdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation date',
   `mdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'modified date',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 --  `perms` varchar(40) NOT NULL DEFAULT 'shopper',
   PRIMARY KEY (`user_info_id`),
@@ -1193,7 +1193,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   `vendor_accepted_currencies` text NOT NULL,
   `vendor_address_format` text NOT NULL,
   `vendor_date_format` varchar(255) NOT NULL,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`vendor_id`),
   KEY `idx_vendor_name` (`vendor_name`)
@@ -1226,7 +1226,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_waiting_list` (
   `notify_email` varchar(150) NOT NULL DEFAULT '',
   `notified` enum('0','1') DEFAULT '0',
   `notify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`waiting_list_id`),
   KEY `product_id` (`product_id`),
@@ -1246,7 +1246,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_zone_shipping` (
   `zone_limit` decimal(10,2) DEFAULT NULL,
   `zone_description` text NOT NULL,
   `zone_tax_rate` int(11) NOT NULL DEFAULT '0',
-  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`zone_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module' AUTO_INCREMENT=1 ;

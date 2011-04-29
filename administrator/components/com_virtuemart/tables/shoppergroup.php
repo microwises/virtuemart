@@ -63,7 +63,7 @@ class TableShopperGroup extends JTable
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} else if (mb_strlen($this->shopper_group_name) > 32) {
-			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_NAMES_MUST_NOT_BE_LONGER_THAN_32_CHARACTERS'));
+			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_NAMES_LESS_THAN_32_CHARACTERS'));
       return false;
 		}
 
