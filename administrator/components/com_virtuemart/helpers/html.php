@@ -319,7 +319,7 @@ class VmHTML{
 	 * return a select list 
 	 */
 	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
-		if ($zero) {
+		if ($zero==true) {
 		$option  = array($key =>0, $text => "-select-");
 		$options = array_merge(array($option), $options);
 		}

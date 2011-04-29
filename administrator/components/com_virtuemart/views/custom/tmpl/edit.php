@@ -25,11 +25,9 @@ $this->custom->addHidden('view','custom');
 $this->custom->addHidden('task','');
 $this->custom->addHidden(JUtility::getToken(),1);
 if ($this->custom->custom_parent_id) $this->custom->addHidden('custom_parent_id',$this->custom->custom_parent_id);
-$field_types = $this->field_types;
-
 $attribute_id = JRequest::getVar('attribute_id', '');
 if(!empty($attribute_id)) $this->custom->addHidden('attribute_id',$attribute_id);
-echo $this->custom->displayCustomFields('',$field_types);
+echo $this->custom->displayCustomFields('',$this->field_types);
 dump ($this->custom,'custom');
 echo '</fieldset>';
 echo '</form>';

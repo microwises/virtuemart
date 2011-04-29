@@ -64,7 +64,7 @@ class VirtuemartViewProduct extends JView {
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,$row);
+			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row);
 			 $html[] = '<tr>
 				 <td>'.$field->custom_title.'</td>
 				 <td>'.$display.$field->custom_tip.'

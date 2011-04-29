@@ -198,6 +198,43 @@ class VirtuemartControllerCustom extends JController {
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
 	}
+	/**
+	 * Handle the publish task
+	 *
+	 * @author Max Milbers
+	 */
+	public function toggle_is_hidden() {
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$customModel = $this->getModel('custom');
+		if (!$customModel->toggle('is_hidden')) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_TOGGLED');
+		}
+		else{
+			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TOGGLED_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
+	}	/**
+	 * Handle the publish task
+	 *
+	 * @author Max Milbers
+	 */
+	public function toggle_admin_only() {
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$customModel = $this->getModel('custom');
+		if (!$customModel->toggle('admin_only')) {
+			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_PUBLISHED');
+		}
+		else{
+			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_PUBLISHED_SUCCESS');
+		}
+
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
+	}
 
 }
 // pure php no closing tag

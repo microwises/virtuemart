@@ -279,6 +279,7 @@ CREATE TABLE `#__vm_currency` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_custom` (
+ 
   `custom_id` int(11) NOT NULL AUTO_INCREMENT,
   `custom_parent_id` int(11) NOT NULL DEFAULT '0',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
@@ -289,6 +290,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_custom` (
   `field_type` char(1) NOT NULL DEFAULT 'S' COMMENT 'S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden',
   `is_list` tinyint(1) DEFAULT '0' COMMENT 'list of values',
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
+  `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',
   `published` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`custom_id`),
   KEY `idx_custom_parent_id` (`custom_parent_id`)

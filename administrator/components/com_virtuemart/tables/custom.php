@@ -55,6 +55,9 @@ class TableCustom extends JTable {
 	/** @var int(1)  1= hidden field info */
 	var $is_hidden		= 0;
 
+	/** @var int(1)  1= cart attributes and price added to cart */
+	var $is_cart_attribute		= 0;
+
 	/** @var int custom published or not */
 	var $published		= 0;
 

@@ -314,13 +314,6 @@ class VirtueMartModelCustom extends JModel {
 		}
 		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS')));
 
-		//TODO update table belonging, category, product, venodor
-		//delete custom from server
-		/* Redirect so the user cannot reload the delete action */
-//		$url = 'index.php?option=com_virtuemart&view=custom';
-//		$productid = JRequest::getInt('product_id', false);
-//		if ($productid) $url .= '&product_id='.$productid;
-//		$mainframe->redirect($url);
 	}
 
 	/**
@@ -335,23 +328,29 @@ class VirtueMartModelCustom extends JModel {
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::publish('cid','custom',$publishId);
 
+	}	/**
+	 * Publish/Unpublish all the ids selected
+     *
+     * @author Max Milbers
+     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @return boolean True is the delete was successful, false otherwise.
+     */
+	public function toggle($field)
+	{
+		dump(JRequest::get( 'post' ),'la poste');
+		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		return modelfunctions::toggle('custom',$field,'cid');
+
 	}
 
-	public function attachImages($objects,$nameId,$type,$mime=''){
-		if(!empty($objects)){
-			if(!is_array($objects)) $objects = array($objects);
-			foreach($objects as $object){
-				$object->images = $this->createCustomByIds($object->$nameId,$type,$mime);
-			}
-		}
-	}
+	// Save and delete from database
 	public function  saveProductfield($fields, $product_id) {
 
 		$newIds = array();
 
 		foreach ($fields as $field) {
-			$q = 'REPLACE INTO #__vm_custom_field ( custom_field_id ,custom_id , custom_value  )';
-			$q .= " VALUES( '".$field['custom_field_id']."', '".$field['custom_id']."', '". $field['custom_value'] ."') ";
+			$q = 'REPLACE INTO `#__vm_custom_field` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
+			$q .= " VALUES( '".$field['custom_field_id']."', '".$field['custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
 			$custom_field_id = mysql_insert_id();
@@ -361,9 +360,12 @@ class VirtueMartModelCustom extends JModel {
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
+		
+		// slect all custom_field_id from product
 		$q="select custom_field_id from `#__vm_custom_field_xref_product` where product_id=".$product_id ;
 		$this->_db->setQuery($q);
 		$Ids = $this->_db->loadResultArray();
+		// delete from database old unused product custom fields
 		$deleteIds = array_diff(  $Ids,$newIds);
 		$id = '('.implode (',',$deleteIds).')';
 				$this->_db->setQuery('DELETE from `#__vm_custom_field_xref_product` WHERE `custom_field_id` in  ' . $id);
@@ -376,10 +378,6 @@ class VirtueMartModelCustom extends JModel {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		dump($Ids ,'all IDS');
-		dump($newIds ,'IDS to preserve');
-		dump($deleteIds ,'IDS to delete');
-		
 	}
 
 }

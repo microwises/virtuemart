@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 				 <input type="hidden" value="'.$customRow->custom_field_id.'" name="field['.$i .'][custom_field_id]" />
 				 <input type="checkbox" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 				</td>
-				<td><div style="float:left;" class="remove vmicon-16-trash">_ </div></td>
+				<td><div style="float:left;" class="remove vmicon-16-trash">'.JText::_('DELETE').'</div></td>
 			 </tr>';
 
 			$i++;
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </fieldset>
 <div style="clear:both;"></div>
-<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash">_ </div>
+<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('DELETE'); ?></div>
 <div><?php echo $this->customsList; ?></div>
 <?php /*<div class="jsonSuggestResults" style="width: 322px;">
 	<input type="text" size="40" name="search" id="ProductCustomSearch" value="" />
@@ -101,19 +101,17 @@ jQuery('input#ProductCustomSearch').autocomplete('index.php?option=com_virtuemar
 jQuery('select#customlist').click(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
 	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&product_id=<?php echo $this->product->product_id; ?>',
-		function(data) {
-			var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
-			jQuery.each(data.value, function(index, value){
-				jQuery("table#customfields").append(value);
-//				jQuery("table#customfields td:last").append(trash);
-			});
-			jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
-	jQuery(this).parents('tr').remove();
-	//jQuery(this).remove();
-	
-
-});
+	function(data) {
+		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
+		jQuery.each(data.value, function(index, value){
+			jQuery("table#customfields").append(value);
+//			jQuery("table#customfields td:last").append(trash);
 		});
+		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
+			jQuery(this).parents('tr').remove();
+		});
+	});
+	nextCustom++;
 });
 
 function removeSelectedOptions(from) {

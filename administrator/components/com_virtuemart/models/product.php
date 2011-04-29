@@ -319,13 +319,10 @@ class VirtueMartModelProduct extends JModel {
 				$product->customvariants = $this->getCustomVariants($product->custom_attribute);
 
 				/* Load the custom product fields */
-				
-				//$product->customfields = $this->getproductCustoms($product_id);
-				/*if(!class_exists(' VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-				if(!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-				
-				$product->field_types = VmCustomHandler::getField_types();*/
-				$product->customfields = self::getproductCustomsField($product_id);
+				$product->customfields = self::getproductCustomsField();
+
+				/*  custom product fields for add to cart */
+				$product->customfieldsCart = self::getproductCustomsFieldCart();
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -1901,16 +1898,16 @@ class VirtueMartModelProduct extends JModel {
 
 		 if ($this->hasproductCustoms($product_id )) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`
-			FROM `jos_vm_custom` AS C 
-			LEFT JOIN `jos_vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-			LEFT JOIN `jos_vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
+			FROM `#__vm_custom` AS C 
+			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
 			Where xref.`product_id` ='.$product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
 		foreach ($productCustoms as & $field ) {
-			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$row);
+			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}
 		return $productCustoms;
@@ -2206,7 +2203,7 @@ class VirtueMartModelProduct extends JModel {
  * input Types for product only !
  */
 
-	function inputType($value,$type,$is_list=0,$row){
+	function inputType($value,$type,$is_list=0,$price,$row){
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
@@ -2215,6 +2212,14 @@ class VirtueMartModelProduct extends JModel {
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
 			switch ($type) {
+				/* variants*/
+				case 'V':
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').'<input type="text" value="'.$price.'" name="field['.$row.'][custom_price]" />';
+				break;
+				/*userfield variants*/
+				case 'U':
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" />';
+				break;
 				/* string or integer */
 				case 'S':
 				case 'I':
@@ -2251,24 +2256,65 @@ class VirtueMartModelProduct extends JModel {
 
 		}
 	}
-     public function getproductCustomsField() {
+     public function getproductCustomsField($cart = 0) {
 		$product_id = JRequest::getInt('product_id', false);
 
 		 if ($this->hasproductCustoms($product_id )) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`
-			FROM `jos_vm_custom` AS C 
-			LEFT JOIN `jos_vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-			LEFT JOIN `jos_vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
+			FROM `#__vm_custom` AS C 
+			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
 			Where xref.`product_id` ='.$product_id;
+		$query .=' and is_cart_attribute = 0 order by custom_id' ;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
 		foreach ($productCustoms as & $field ) {
-			$field->display = self::displayType($field->custom_value,$field->field_type,$field->is_list,$row);
+			$field->display = self::displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}
 		return $productCustoms;
+		}
+		return ;
+     }
+	 // temp function TODO better one 
+     public function getproductCustomsFieldCart() {
+		$product_id = JRequest::getInt('product_id', false);
+
+		if ($this->hasproductCustoms($product_id )) {
+
+			// group by custom_id
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type` 
+				FROM `#__vm_custom` AS C 
+				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+				Where xref.`product_id` ='.$product_id;
+			$query .=' and is_cart_attribute = 1 group by custom_id' ;
+			
+			$this->_db->setQuery($query);
+			$groups = $this->_db->loadObjectList();
+			
+			if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+			$row= 0 ;
+			// render select list
+			foreach ($groups as & $group) {
+				$query='SELECT  field.`custom_field_id` as value ,concat(field.`custom_value`," : ", field.`custom_price`) AS text 
+					FROM `#__vm_custom` AS C 
+					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
+					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+					Where xref.`product_id` ='.$product_id;
+				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group->custom_id ;
+				$this->_db->setQuery($query);
+				$productCustoms = $this->_db->loadObjectList();
+				if ($group->field_type == 'V') 
+				$group->display = VmHTML::select($productCustoms,'field['.$row.'][custom_value]',$group->custom_value,'','value','text',false);
+				else { $group->display = self::displayType('',$group->field_type,0,0,$row) ; }
+				//($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true)
+				$row++ ;
+			}
+				return $groups;
+
 		}
 		return ;
      }
@@ -2276,7 +2322,7 @@ class VirtueMartModelProduct extends JModel {
   * Formating front display by roles
   *  for product only !
   */
-	function displayType($value,$type,$is_list=0,$row){
+	function displayType($value,$type,$is_list=0,$price = 0,$row){
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
@@ -2285,6 +2331,16 @@ class VirtueMartModelProduct extends JModel {
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
 			switch ($type) {
+				/* variants*/
+				case 'V':
+				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
+				// else TODO FORMAT price by currency
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price.' ';
+				break;
+				/*userfield variants*/
+				case 'U':
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price.' ';
+				break;
 				/* string or integer */
 				case 'S':
 				case 'I':
@@ -2292,11 +2348,12 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* bool */
 				case 'B':
-					return JHTML::_( 'select.booleanlist', 'field['.$row.'][custom_value]' , 'class="inputbox"', $value);
+					if ($value == 0) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NO') ;
+					return JText::_('COM_VIRTUEMART_ADMIN_CFG_YES') ;
 				break;
 				/* parent */
 				case 'P':
-					return '<b>'.$value.'<b/>' ;
+					return '<b>'.$value.'<b/>';
 				break;
 				/* image */
 				case 'i':
@@ -2316,10 +2373,12 @@ class VirtueMartModelProduct extends JModel {
 				case 'C':
 					$vendorId=1;
 					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
-					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p WHERE `published`=1
-					AND `product_id`= "'.$value.'" LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id` ';
+					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p 
+					LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id` 
+					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
-					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result>product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
+					echo $q ;
+					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				break;
 			}

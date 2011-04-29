@@ -36,7 +36,7 @@ class VmCustomHandler {
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	}
-		/** @var _field_types autorized Types of data */
+	/** @return autorized Types of data **/
     function getField_types(){
 
 		return array( 'S' =>'COM_VIRTUEMART_CUSTOM_STRING',
@@ -46,7 +46,9 @@ class VmCustomHandler {
 			'D'=>'COM_VIRTUEMART_CUSTOM_DATE',
 			'T'=>'COM_VIRTUEMART_CUSTOM_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-			'i'=>'COM_VIRTUEMART_CUSTOM_IMAGE'
+			'i'=>'COM_VIRTUEMART_CUSTOM_IMAGE',
+			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
+			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
 			);
     }
 	/**
@@ -457,6 +459,7 @@ class VmCustomHandler {
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$this->is_cart_attribute);
 		self::addCustomAttributesByType();
 		// only input when not set else display
 		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ; 
