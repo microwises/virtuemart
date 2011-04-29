@@ -27,29 +27,6 @@ class ShopFunctions {
 	}
 
 
-//	Forget this function!
-//	Oscar sais: No, except if you document which alternative to use!! This function IS called!!!
-//Use shopfunctionsf, the helper in the frontend and there the method sendMail
-	/**
-	* Initialise the mailer object to start sending mails
-	* @author RolandD
-	* @deprecated
-	*/
-	public function loadMailer() {
-		$mainframe = JFactory::getApplication();
-		jimport('joomla.mail.helper');
-
-		/* Start the mailer object */
-		$mailer = JFactory::getMailer();
-		$mailer->isHTML(true);
-		/* This has to be replaced by the vendor data */
-		//$mailer->From = $mainframe->getCfg('mailfrom');
-		//$mailer->FromName = $mainframe->getCfg('sitename');
-		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-
-		return $mailer;
-	}
-
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *
@@ -282,31 +259,34 @@ class ShopFunctions {
 
 		$records = $categoryModel->getCategoryTree(true, true, $cid);
 		$selected="";
-		foreach ($records as $key => $category) {
+		if(!empty($records)){
+			foreach ($records as $key => $category) {
 
-			$childId = $category->category_child_id;
+				$childId = $category->category_child_id;
 
-			if ($childId != $cid) {
-				if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
+				if ($childId != $cid) {
+					if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
 
-				$disabled = '';
-				if( in_array( $childId, $disabledFields )) {
-					$disabled = 'disabled="disabled"';
+					$disabled = '';
+					if( in_array( $childId, $disabledFields )) {
+						$disabled = 'disabled="disabled"';
+					}
+
+					if( $disabled != '' && stristr($_SERVER['HTTP_USER_AGENT'], 'msie') ) {
+						//IE7 suffers from a bug, which makes disabled option fields selectable
+					}
+					else{
+						$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">'."\n";
+						$categoryTree .= str_repeat(' - ', ($level-1) );
+
+						$categoryTree .= $category->category_name .'</option>';
+					}
 				}
 
-				if( $disabled != '' && stristr($_SERVER['HTTP_USER_AGENT'], 'msie') ) {
-					//IE7 suffers from a bug, which makes disabled option fields selectable
-				}
-				else{
-					$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">'."\n";
-					$categoryTree .= str_repeat(' - ', ($level-1) );
-
-					$categoryTree .= $category->category_name .'</option>';
-				}
+				self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
 			}
-
-			self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
 		}
+
 
 		return $categoryTree;
 	}

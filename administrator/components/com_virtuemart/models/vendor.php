@@ -206,7 +206,7 @@ class VirtueMartModelVendor extends JModel {
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
-	dump($data,'data for store vendor');
+
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -236,7 +236,7 @@ class VirtueMartModelVendor extends JModel {
 	$xrefTable = $this->getTable('vendor_media_xref');
 	$mediaModel = new VirtueMartModelMedia();
 	$mediaModel->storeMedia($data,$xrefTable,'vendor');
-	dump($this,'store vendor');
+
 	return $this->_id;
 
 	}

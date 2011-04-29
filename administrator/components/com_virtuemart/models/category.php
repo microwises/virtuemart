@@ -191,18 +191,6 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
 
-//		$query = 'SELECT `#__vm_category`.`category_id`, `#__vm_category_media_xref`.`file_ids`, `#__vm_category_xref`.`category_child_id`, `category_name` ';
-//		$query .= 'FROM `#__vm_category`, `#__vm_category_xref`, `#__vm_category_media_xref` ';
-//		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
-//		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
-//		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_media_xref`.`category_id` ';
-//
-//		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
-//		$query .= 'AND `#__vm_category`.`published` = "1" ';
-//		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
-//
-//		$childList = $this->_getList( $query ); dump($this->_db,'my db getChildCategoryList');
-
 		$query = 'SELECT `#__vm_category`.`category_id`,`#__vm_category`.`category_name` ';
 		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
@@ -210,8 +198,7 @@ class VirtueMartModelCategory extends JModel {
 		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
 		$query .= 'AND `#__vm_category`.`published` = "1" ';
 		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
-		$childList = $this->_getList( $query ); dump($this->_db,'my db getChildCategoryList');
-		dump($childList,'my getChildCategoryList');
+		$childList = $this->_getList( $query );
 
 		if(!empty($childList)){
 			foreach($childList as $child){
@@ -662,7 +649,7 @@ class VirtueMartModelCategory extends JModel {
 					  )';
 		}
 		else{
-			$id = $data['category_id'];
+//			$id = $data['category_id'];
 
 			$query = 'UPDATE #__vm_category_xref
 					  SET category_parent_id = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
@@ -684,7 +671,7 @@ class VirtueMartModelCategory extends JModel {
 		$mediaModel = new VirtueMartModelMedia();
 		$mediaModel->storeMedia($data,$xrefTable,'category');
 
-		return $id;
+		return $data['category_id'];
 	}
 
 	/**

@@ -71,7 +71,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
-			dump($db,'why fail ?');
 	    }
 
 		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
@@ -196,8 +195,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	$currencyFields = array();
-	$currencyFields[0] = '47'; //EUR
-	$currencyFields[1] = '144'; //USD
+	$currencyFields[0] = 47; //EUR
+	$currencyFields[1] = 144; //USD
 
 	$fields = array();
 
@@ -215,7 +214,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['city'] =  'Canangra';
 	$fields['zip'] =  '055555';
 	$fields['state_id'] =  '72';
-	$fields['country_id'] =  '195'; // if euro, then country in europe
+	$fields['country_id'] =  '13';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['vendor_id'] = '1';
@@ -224,7 +223,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
 	$fields['file_ids'] =  1;
-	$fields['vendor_currency'] =  47; // euro
+	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
 	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";

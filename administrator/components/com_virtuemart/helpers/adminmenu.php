@@ -90,7 +90,7 @@ class AdminMenuHelper {
 		    <center>
 				<?php
 				//TODO The link should be done better
-				echo JHTML::_('link', 'http://virtuemart.net', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
+				echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
 				?>
 			<h2><?php echo JText::_('COM_VIRTUEMART_ADMIN')	?></h2>
 		    </center>
@@ -103,7 +103,7 @@ class AdminMenuHelper {
 
                                     ?>
 			<h3 class="title-smenu" title="<?php echo JText::_($item['title']); ?> admin" id="menu-toggler-<?php echo $modCount?>" rel="<?php echo $modCount?>"><?php echo JText::_($item['title']) ?></h3>
-			 
+
                         <div class="section-smenu" id="menu-panel-<?php echo $modCount?>" id="<?php echo $modCount?>">
 			    <ul>
 					    <?php

@@ -72,7 +72,6 @@ class TableCategory_media_xref extends JTable {
 		$this->_db->setQuery($q);
 
     	if ($result = $this->_db->loadResultArray() ) {
-    		dump($result);
 			return $result;
 		}
 		else
@@ -80,8 +79,7 @@ class TableCategory_media_xref extends JTable {
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-//		$this->file_ids = $this->_db->loadResultArray();
-//		return $this;
+
     }
 
     /**

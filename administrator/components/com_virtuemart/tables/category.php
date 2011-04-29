@@ -105,6 +105,19 @@ class TableCategory extends JTable {
             return false;
      	}
 
+		if (!empty($this->category_name) && ($this->category_id == 0)) {
+		    $db = JFactory::getDBO();
+
+			$q = 'SELECT count(*) FROM `#__vm_category` ';
+			$q .= 'WHERE `category_name`="' .  $this->category_name . '"';
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
+			if ($rowCount > 0) {
+				$this->setError(JText::_('COM_VIRTUEMART_CATEGORY_NAME_ALREADY_EXISTS'));
+				return false;
+			}
+		}
+
      	return true;
 	}
 

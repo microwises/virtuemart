@@ -543,7 +543,7 @@ class VirtueMartModelUser extends JModel {
 				//$vendorModel->setId($_data['vendor_id']);
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
-					$this->setError($vendorModel->getError()); dump($vendorModel,'hm');
+					$this->setError($vendorModel->getError());
 					return false;
 				}else{
 					//Update xref Table

@@ -38,10 +38,10 @@ $j15 = VmConfig::isJ15();
 			<th width="60">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_LIST_NAME'); ?>
 			</th>
-			<?php if($this->perms->check( 'admin' )){ ?>
+			<?php /* if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
-			</th><?php }?>
+			</th><?php } */ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_DESCR'); ?>
 			</th>
@@ -118,11 +118,11 @@ $j15 = VmConfig::isJ15();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php if($this->perms->check( 'admin' )){?>
+				<?php /* if($this->perms->check( 'admin' )){?>
 				<td align="left">
 					<?php echo $row->calc_vendor_id; ?>
 				</td>
-				<?php } ?>
+				<?php } */ ?>
 				<td>
 					<?php echo $row->calc_descr; ?>
 				</td>

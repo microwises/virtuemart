@@ -31,11 +31,11 @@ class TableCalc extends JTable
 	/** @var string VendorID of the rule creator */
 	var $calc_vendor_id				= 0;
 	/** @var string Calculation name */
-	var $calc_name           		= '';	
+	var $calc_name           		= '';
 	/** @var string Calculation description */
-	var $calc_descr           		= '';	
+	var $calc_descr           		= '';
 	/** @var string Calculation kind */
-	var $calc_kind           		= '';	
+	var $calc_kind           		= '';
    	/** @var string Calculation mathematical Operation */
 	var $calc_value_mathop       	= '';
 	/** @var string Calculation value of the mathop */
@@ -59,20 +59,22 @@ class TableCalc extends JTable
 	var $publish_up;
 	/** @var string end date */
 	var $publish_down;
+	/** @var string created date */
+	var $cdate;
 	/** @var string modified date */
-	var $modified;
+	var $mdate;
         /** @var string   */
 	var $calc_qualify;
          /** @var string   */
 	var $calc_affected;
 	/** @var string conditional amount to trigger the rule */
-	var $calc_amount_cond;	
+	var $calc_amount_cond;
 	/** @var string The dimension of the amount, maybe unnecessary*/
 	var $calc_amount_dimunit;
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $published 		        = 0;	
+	var $published 		        = 0;
         /** @var boolean */
 	var $checked_out	= 0;
 	/** @var time */
@@ -95,12 +97,12 @@ class TableCalc extends JTable
 	 * @author Max Milbers
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check() 
+	function check()
 	{
         if (!$this->calc_vendor_id) {
 			$this->calc_vendor_id = 1; //default to mainvendor
 		}
-		
+
         if (!$this->calc_name) {
 			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME'));
 			return false;
@@ -113,18 +115,24 @@ class TableCalc extends JTable
 
 		if (($this->calc_name) && ($this->calc_id == 0)) {
 		    $db = JFactory::getDBO();
-		    
+
 			$q = 'SELECT count(*) FROM `#__vm_calc` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
+            $db->setQuery($q);
+		    $rowCount = $db->loadResult();
 			if ($rowCount > 0) {
 				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}
-		
-		
+
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->cdate)){
+			$this->cdate = $today;
+		}
+     	$this->mdate = $today;
+
 		return true;
 	}
 

@@ -78,7 +78,6 @@ class TableProduct_media_xref extends JTable {
 		$this->_db->setQuery($q);
 
     	if ($result = $this->_db->loadResultArray() ) {
-    		dump($result);
 			return $result;
 		}
 		else

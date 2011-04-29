@@ -19,7 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//echo $this->image->displayImageFoldersWriteAble(VmConfig::get('media_product_path'));
 
 ?>
 <div class="col50">

@@ -271,22 +271,19 @@ class VirtueMartModelMedia extends JModel {
 		$this -> setId($oldId);
 		$file_id = $this->store($type,$data);
 		$this -> setId($file_id);
-		/* add the file_id & delete 0 and '' from $data */
 
+		/* add the file_id & delete 0 and '' from $data */
 		$file_ids = array_merge( (array)$file_id,$data['file_ids']);
 		$file_ids = array_diff($data['file_ids'],array('0',''));
 		$file_ids = array_unique($file_ids);
 		$data['file_ids'] = array_reverse ($file_ids,true);
 
-//		$data['file_ids']= implode(',',$file_ids);
-//		$data['file_ids'] = array(1,2);
-		dump($data,'data to bind');
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
 			return false;
 		}
-		dump($table,'table after bind');
+
 		// Make sure the category record is valid
 		if (!$table->check()) {
 			$this->setError($table->getError());
@@ -298,7 +295,7 @@ class VirtueMartModelMedia extends JModel {
 			$this->setError($table->getError());
 			return false;
 		}
-		dump($table,'table after store');
+
 		return true;
 
 	}

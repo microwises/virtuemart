@@ -6,7 +6,7 @@
  * @package	VirtueMart
  * @subpackage
  * @author Max Milbers, Eugen Stranz
- * @author RolandD, 
+ * @author RolandD,
  * @todo handle child products
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -52,10 +52,10 @@ if (empty ( $this->product )) {
 		<div class="clear"></div>
 		</div>
 	<?php } ?>
-	
+
 	<?php // product Title ?>
 	<h1><?php echo $this->product->product_name ?></h1>
-	
+
 	<?php // Product Edit Link
 	echo $this->edit_link ?>
 
@@ -69,7 +69,7 @@ if (empty ( $this->product )) {
 	<div class="clear"></div>
 	</div>
 	<?php } ?>
-			
+
 	<?php // Product Short Description
 	if (!empty($this->product->product_s_desc)) { ?>
 	<div class="product-short-description">
@@ -80,7 +80,7 @@ if (empty ( $this->product )) {
 
 	<div>
 		<div class="width50 floatleft">
-		
+
 		<?php // Product Main Image
 		if (!empty($this->product->images[0])) { ?>
 			<div class="main-image">
@@ -97,7 +97,7 @@ if (empty ( $this->product )) {
 			} ?>
 			</div>
 		<?php } ?>
-		
+
 		</div>
 
 		<div class="width50 floatright">
@@ -113,18 +113,18 @@ if (empty ( $this->product )) {
 				<?php // Product Price
 				if ($this->show_prices) { ?>
 				<div class="product-price" id="productPrice<?php echo $this->product->product_id ?>">
-				<?php 
+				<?php
 				if ($this->product->product_unit && VmConfig::get ( 'vm_price_show_packaging_pricelabel' )) {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
 				} else {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . ": </strong>";
 				}
-	
+
 				if ($this->showBasePrice) {
 					echo shopFunctionsF::createPriceDiv ( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $this->product->prices );
 					echo shopFunctionsF::createPriceDiv ( 'basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $this->product->prices );
 				}
-				
+
 				echo shopFunctionsF::createPriceDiv ( 'variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $this->product->prices );
 				echo shopFunctionsF::createPriceDiv ( 'basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $this->product->prices );
 				echo shopFunctionsF::createPriceDiv ( 'discountedPriceWithoutTax', 'COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE', $this->product->prices );
@@ -161,20 +161,20 @@ if (empty ( $this->product )) {
 					foreach ($this->product->variants as $variant_name => $variant) {
 						$variantExist=true;
 						$options = array();
-						
+
 						foreach ($variant as $name => $price) {
 							if (!empty($price)){
 								$name .= ' ('.$price.')';
 							}
 							$options[] = JHTML::_('select.option', $name, $name);
 						}
-						
+
 						if (!empty($options)) {
 							// genericlist have ID and whe want only class ( future use in jQuery, may be)
 							$html    = '<select name="'. $variant_name .'" class="variant">';
 							$html    .= JHTMLSelect::Options( $options, 'value', 'text', NULL, false );
 							$html    .= '</select>'; ?>
-							
+
 						<span class="variant-name"><?php echo $variant_name ?></span>
 						<span class="variant-dropdown"><?php echo $html ?></span>
 						<br class="clear" />
@@ -192,7 +192,7 @@ if (empty ( $this->product )) {
 					<?php } // Show the custom attributes END ?>
 
 						<div class="addtocart-bar">
-					
+
 							<?php // Display the quantity box ?>
 							<!-- <label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 							<span class="quantity-box">
@@ -216,10 +216,10 @@ if (empty ( $this->product )) {
 							<span class="addtocart-button">
 								<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 							</span>
-					
+
 						<div class="clear"></div>
 						</div>
-					
+
 						<?php // Display the add to cart button END ?>
 						<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
 						<input type="hidden" name="option" value="com_virtuemart" />
@@ -234,7 +234,7 @@ if (empty ( $this->product )) {
 				<div class="clear"></div>
 				</div>
 			<?php }  // Add To Cart Button END ?>
-			
+
 				<?php // Availability Image
 				/* TO DO add width and height to the image */
 				if (!empty($this->product->product_availability)) { ?>
@@ -242,7 +242,7 @@ if (empty ( $this->product )) {
 					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 				</div>
 				<?php } ?>
-				
+
 				<?php // Ask a question about this product
 				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
@@ -252,10 +252,10 @@ if (empty ( $this->product )) {
 				<?php // Manufacturer of the Product
 				if(VmConfig::get('show_manufacturer', 1) && !empty($this->product->manufacturer_id)) { ?>
 				<div class="manufacturer">
-				<?php 
+				<?php
 					$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
 					$text = $this->product->mf_name;
-				
+
 					/* Avoid JavaScript on PDF Output */
 					if (strtolower(JRequest::getVar('output')) == "pdf"){
 						echo JHTML::_('link', $link, $text);
@@ -320,7 +320,7 @@ if (empty ( $this->product )) {
 		// $target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
 		// $link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
 		// echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
-	// } 
+	// }
 	?>
 
 	<?php // Related Products
@@ -383,7 +383,7 @@ if (empty ( $this->product )) {
 			if ($iRelatedCol == $RelatedProducts_per_row) { ?>
 				<div class="clear"></div>
 				</div>
-			<?php 
+			<?php
 			$iRelatedCol = 1;
 			} else {
 				$iRelatedCol ++;
@@ -410,7 +410,7 @@ if (empty ( $this->product )) {
 			$verticalseparator = " vertical-separator"; ?>
 
 		<div class="category-view">
-	
+
 			<?php // Start the Output
 			foreach ( $this->category->children as $category ) {
 
@@ -485,7 +485,7 @@ if (empty ( $this->product )) {
 	*/
 	if ( VmConfig::get('allow_reviews') ) { ?>
 		<div class="customer-reviews">
-	
+
 		<?php
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
@@ -574,8 +574,8 @@ if (empty ( $this->product )) {
 						$document = &JFactory::getDocument();
 						$document->addScriptDeclaration($reviewJavascript);
 						?>
-					
-		
+
+
 
 						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
 						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
@@ -626,7 +626,7 @@ if (empty ( $this->product )) {
 					}
 					?>
 					</div>
-					<?php 
+					<?php
 				}
 				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>

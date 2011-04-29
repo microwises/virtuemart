@@ -235,9 +235,6 @@ class VirtueMartModelCalc extends JModel
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
 
-		$modified = JFactory::getDate();
-		$data['modified']=$modified->toMySQL();
-
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
