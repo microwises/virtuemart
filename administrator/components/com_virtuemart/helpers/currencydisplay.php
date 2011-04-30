@@ -123,11 +123,11 @@ class CurrencyDisplay {
 
     	$this->id =	$currencyId;
 		if ($currencyStyle) {
-		    $array = explode("|", $currencyStyle);dump($array);
+		    $array = explode("|", $currencyStyle);
 //		    if(!empty($array[0])) $this->id = $array[0];
 		    $this->symbol = $array[1];
 		    $this->nbDecimal = (int)$array[2];
-		    $this->decimal = $array[3]; 
+		    $this->decimal = $array[3];
 		    $this->thousands = $array[4];
 		    $this->positivePos = $array[5];
 		    $this->negativePos = $array[6];

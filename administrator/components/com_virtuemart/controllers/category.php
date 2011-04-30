@@ -55,6 +55,7 @@ class VirtuemartControllerCategory extends JController {
 		}
 	}
 
+
 	/**
 	 * Display any category view
 	 *

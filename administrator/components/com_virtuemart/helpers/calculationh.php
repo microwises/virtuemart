@@ -143,7 +143,7 @@ class calculationHelper {
 			//Todo check for ACL groups
 			return array();
 		}
-
+		dump($variant,'variant getProductPrices');
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
@@ -371,7 +371,7 @@ class calculationHelper {
 				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->product_id);
 				continue;
 			}
-
+			dump($product,'$product');
 			$variantmod = $this->parseModifier($product->variant);
 
 			$cartproductkey = $productId.$variantmod;
@@ -391,7 +391,7 @@ class calculationHelper {
 			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $product->prices['discountAmount']*$product->quantity;
 			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax']*$product->quantity;
 
-			$this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['priceWithoutTax'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $product->prices['discountAmount'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
@@ -453,7 +453,9 @@ class calculationHelper {
 
 		$this->calculatePaymentPrice($paymentId,$creditId,$this->_cartPrices['withTax']);
 
+//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		$this->_cartPrices['billSub']  = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
+//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
 		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['paymentDiscount'];
 		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax;
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
@@ -1067,28 +1069,30 @@ class calculationHelper {
 	function calculateModificators($product_id,$variants){
 
 
-		$modificatorSum=0.0;
-		$max=array();
-		foreach ($variants as $variant_name => $variant) {
-			$value = JRequest::getVar($variant_name,0);
-//			echo '<br />The Value is now  <pre>'.print_r($value).'</pre>';
-			if(strpos($value,'(')){
+//		$modificatorSum=0.0;
+//		$max=array();
+//		foreach ($variants as $variant_name => $variant) {
+//			$value = JRequest::getVar($variant_name,0);
+////			echo '<br />The Value is now  <pre>'.print_r($value).'</pre>';
+//			if(strpos($value,'(')){
+//
+//				$bundle=strrchr($value,'(') ;
+//				$modificator=substr($bundle,1,strlen($bundle)-2);
+//				if(strpos($bundle,'=')){
+//					$max[]=$modificator;
+//				}else{
+//					if(count($max)==0) $modificatorSum = $modificatorSum+$modificator;
+//				}
+//			}
+//		}
+//		if(count($max)==0){
+//			return $modificatorSum;
+//		} else {
+//			return max($max);
+//		}
+	}
 
-				$bundle=strrchr($value,'(') ;
-				$modificator=substr($bundle,1,strlen($bundle)-2);
-				if(strpos($bundle,'=')){
-					$max[]=$modificator;
-				}else{
-					if(count($max)==0) $modificatorSum = $modificatorSum+$modificator;
-				}
-			}
-		}
-		if(count($max)==0){
-			return $modificatorSum;
-		} else {
-			return max($max);
-		}
-	}	/**
+	/**
 	 * Calculate a pricemodification for a variant
 	 *
 	 * Variant values can be in the following format:
@@ -1105,7 +1109,7 @@ class calculationHelper {
 	 * @return array The adjusted price modificator
 	 */
 
-	function calculatecustomsCart($product_id,$customForCart,$product_type_modificator){
+	function calculateCustomsCart($product_id,$customForCart,$product_type_modificator){
 
 
 		$modificatorSum=0.0;
@@ -1113,9 +1117,9 @@ class calculationHelper {
 	foreach ($datas as $data) {
 		foreach ($data as $id) {
 			$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
-				FROM `#__vm_custom` AS C 
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+				FROM `#__vm_custom` AS C
+				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 				Where xref.`product_id` ='.$product_id;
 			$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$id ;
 			$this->_db->setQuery($query);
@@ -1123,9 +1127,9 @@ class calculationHelper {
 			// test operator
 			$op = substr($productCustomsPrice->custom_price,0,1);
 			$op2 = substr($productCustomsPrice->custom_price,-1);
-			
+
 			$price=floatval($productCustomsPrice->custom_price);
-			if ($op2 == '%') $price = $product_type_modificator*($price/100);
+			if ($op2 == '%') $price = $product_type_modificator*($price*0.01);
 			switch ($op) {
 				case '+':
 					$product_type_modificator+=$price;
@@ -1148,11 +1152,11 @@ class calculationHelper {
 		}
 
 	}
-	
+
 
 		$max=array('custom'=>'price');
 		/*foreach ($customForCart as $custom) {
-			
+
 		}*/
 		return $product_type_modificator;
 	}
@@ -1191,7 +1195,7 @@ class calculationHelper {
 				}
 			}
 		}
-		if(count($max)==0){
+		if(count($max)==0){ dump($modificatorSum,'parseModifier');
 			return $modificatorSum;
 		} else {
 			return max($max);

@@ -267,7 +267,7 @@ class VirtueMartModelProduct extends JModel {
 				$product->attributes = $this->getAttributes($product);
 
 				/* Load the variants */
-				$product->variants = $this->getVariants($product);
+//				$product->variants = $this->getVariants($product);
 
 				/* Load the price */
 				$prices = "";
@@ -279,7 +279,8 @@ class VirtueMartModelProduct extends JModel {
 					$calculator = calculationHelper::getInstance();
 
 					/* Calculate the modificator */
-					$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+//					$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+					//I need here the choosen ids of the customfields
 					$quantityArray = JRequest::getVar('quantity',1,'post');
 					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
 				}
@@ -316,13 +317,13 @@ class VirtueMartModelProduct extends JModel {
 				$product->hasproducttypes = $this->hasProductType($product_id);
 
 				/* Load the custom variants */
-				$product->customvariants = $this->getCustomVariants($product->custom_attribute);
+//				$product->customvariants = $this->getCustomVariants($product->custom_attribute);
 
 				/* Load the custom product fields */
-				$product->customfields = self::getproductCustomsField();
+				$product->customfields = self::getproductCustomsField($product);
 
 				/*  custom product fields for add to cart */
-				$product->customfieldsCart = self::getproductCustomsFieldCart();
+				$product->customfieldsCart = self::getproductCustomsFieldCart($product);
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -350,6 +351,7 @@ class VirtueMartModelProduct extends JModel {
 				return $this->fillVoidProduct($product,$front);
 			}
 //		}
+		$this->product = $product;
 		return $product;
     }
 
@@ -1464,8 +1466,8 @@ class VirtueMartModelProduct extends JModel {
 		$product->attributes = $this->getAttributes($product);
 
 		/* Load the variants */
-		$product->variants = $this->getVariants($product);
-		
+//		$product->variants = $this->getVariants($product);
+
 		/* Load the Customs Field Cart Price */
 		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldCartPrice($product->product_id);
 		/* Loads the product price details */
@@ -1473,10 +1475,10 @@ class VirtueMartModelProduct extends JModel {
 		$calculator = calculationHelper::getInstance();
 
 		$quantityArray = JRequest::getVar('quantity',1,'post');
-		
+
 		/* Calculate the modificator */
 		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);		/* Calculate the modificator */
-		$product_type_modificator = $calculator->calculatecustomsCart($product->product_id,$product->CustomsFieldCartPrice,$product_type_modificator);
+		$product_type_modificator = $calculator->calculateCustomsCart($product->product_id,$product->CustomsFieldCartPrice,$product_type_modificator);
 //		$product_type_modificator = $calculator->parseModifier($product->variants);
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
@@ -1901,9 +1903,9 @@ class VirtueMartModelProduct extends JModel {
 		 if ($this->hasproductCustoms($product_id )) {
 
 		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
-			FROM `#__vm_custom` AS C 
-			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+			FROM `#__vm_custom` AS C
+			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 			Where xref.`product_id` ='.$product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
@@ -1956,44 +1958,45 @@ class VirtueMartModelProduct extends JModel {
 	* @param string $extra_ids any extra id's to add to the attributes
 	* @return
 	*/
-	public function getVariants($product) {
+//	public function getVariants($product) {
+//
+//		$this->_db = &JFactory::getDBO();
+//		/* Get the variants */
+//		$variants_raw = explode(';', $product->attribute);
+//
+//		/* Get the variant details */
+//		foreach ($variants_raw as $vkey => $variant) {
+//			$variant_details = explode(',', $variant);
+//			$variant_name = '';
+//			foreach ($variant_details as $dkey => $value) {
+//				if ($dkey == 0) {
+//					$variant_name = $value;
+//					$variants[$value] = array();
+//				}
+//				else {
+//					/* Get the price */
+//					$matches = array();
+//					$pattern = '/\[.*?]/';
+//					/* Get all matches */
+//					preg_match_all($pattern, $value, $matches);
+//					if (sizeof($matches[0]) > 0) {
+//						$variant_type = str_ireplace($matches[0], '', $value);
+//						$find = array('[', ']');
+//						foreach ($matches[0] as $key => $match) {
+//							/* Remove all obsolete characters */
+//							$variant_price = str_replace($find, '', $match);
+//							$variants[$variant_name][$variant_type] = $variant_price;
+//						}
+//					}
+//					else {
+//						$variants[$variant_name][$value] = '';
+//					}
+//				}
+//			}
+//		}
+//		return $variants;
+//	}
 
-		$this->_db = &JFactory::getDBO();
-		/* Get the variants */
-		$variants_raw = explode(';', $product->attribute);
-
-		/* Get the variant details */
-		foreach ($variants_raw as $vkey => $variant) {
-			$variant_details = explode(',', $variant);
-			$variant_name = '';
-			foreach ($variant_details as $dkey => $value) {
-				if ($dkey == 0) {
-					$variant_name = $value;
-					$variants[$value] = array();
-				}
-				else {
-					/* Get the price */
-					$matches = array();
-					$pattern = '/\[.*?]/';
-					/* Get all matches */
-					preg_match_all($pattern, $value, $matches);
-					if (sizeof($matches[0]) > 0) {
-						$variant_type = str_ireplace($matches[0], '', $value);
-						$find = array('[', ']');
-						foreach ($matches[0] as $key => $match) {
-							/* Remove all obsolete characters */
-							$variant_price = str_replace($find, '', $match);
-							$variants[$variant_name][$variant_type] = $variant_price;
-						}
-					}
-					else {
-						$variants[$variant_name][$value] = '';
-					}
-				}
-			}
-		}
-		return $variants;
-	}
     /**
      * Load the attribute names for a product
      */
@@ -2258,60 +2261,69 @@ class VirtueMartModelProduct extends JModel {
 
 		}
 	}
-     public function getproductCustomsField($cart = 0) {
+     public function getproductCustomsField($product, $cart = 0) {
 		$product_id = JRequest::getInt('product_id', false);
 
 		 if ($this->hasproductCustoms($product_id )) {
 
 		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
-			FROM `#__vm_custom` AS C 
-			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+			FROM `#__vm_custom` AS C
+			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 			Where xref.`product_id` ='.$product_id;
 		$query .=' and is_cart_attribute = 0 order by custom_id' ;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
 		foreach ($productCustoms as & $field ) {
-			$field->display = self::displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+			$field->display = self::displayType($product,$field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}
 		return $productCustoms;
 		}
 		return ;
      }
-	 // temp function TODO better one 
-     public function getproductCustomsFieldCart() {
-		$product_id = JRequest::getInt('product_id', false);
+	 // temp function TODO better one
+     public function getproductCustomsFieldCart($product) {
+//		$product_id = JRequest::getInt('product_id', false);
 
-		if ($this->hasproductCustoms($product_id )) {
+		if ($this->hasproductCustoms($product->product_id )) {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type` 
-				FROM `#__vm_custom` AS C 
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
-				Where xref.`product_id` ='.$product_id;
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`
+				FROM `#__vm_custom` AS C
+				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+				Where xref.`product_id` ='.$product->product_id;
 			$query .=' and is_cart_attribute = 1 group by custom_id' ;
-			
+
 			$this->_db->setQuery($query);
 			$groups = $this->_db->loadObjectList();
-			
+
 			if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 			$row= 0 ;
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
 			// render select list
 			foreach ($groups as & $group) {
-				$query='SELECT  field.`custom_field_id` as value ,concat(field.`custom_value`," : ", field.`custom_price`) AS text 
-					FROM `#__vm_custom` AS C 
-					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
-					Where xref.`product_id` ='.$product_id;
+
+//				$query='SELECT  field.`custom_field_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
+				$query='SELECT  field.`custom_field_id` as value ,field.`custom_value`, field.`custom_price`
+					FROM `#__vm_custom` AS C
+					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+					Where xref.`product_id` ='.$product->product_id;
 				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group->custom_id ;
 				$this->_db->setQuery($query);
 				$productCustoms = $this->_db->loadObjectList();
-				if ($group->field_type == 'V') 
-				$group->display = VmHTML::select($productCustoms,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
-				else { $group->display = '<input type="hidden" value="'.$productCustoms[0]->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /> '.self::displayType('',$group->field_type,0,0,$row) ; }
+				if ($group->field_type == 'V'){
+					dump($productCustoms,'field_type == V');
+					$productCustoms[0]->text =$productCustoms[0]->custom_value .': '.$calculator->priceDisplay($productCustoms[0]->custom_price,$product->product_currency,true);
+					$group->display = VmHTML::select($productCustoms,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
+				} else {
+					dump($product,'field_type == other');
+					$group->display = '<input type="hidden" value="'.$productCustoms[0]->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /> '.self::displayType($product,'',$group->field_type,0,0,$row) ;
+				}
 				//($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true)
 				$row++ ;
 			}
@@ -2325,22 +2337,22 @@ class VirtueMartModelProduct extends JModel {
 		if ($this->hasproductCustoms($product_id )) {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type` 
-				FROM `#__vm_custom` AS C 
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`
+				FROM `#__vm_custom` AS C
+				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 				Where xref.`product_id` ='.$product_id;
 			$query .=' and is_cart_attribute = 1 group by custom_id' ;
-			
+
 			$this->_db->setQuery($query);
 			$groups = $this->_db->loadAssocList();
 			$row= 0 ;
 			// render select list
 			foreach ($groups as & $group) {
 				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
-					FROM `#__vm_custom` AS C 
-					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id` 
-					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id` 
+					FROM `#__vm_custom` AS C
+					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 					Where xref.`product_id` ='.$product_id;
 				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group['custom_id'] ;
 				$this->_db->setQuery($query);
@@ -2357,7 +2369,8 @@ class VirtueMartModelProduct extends JModel {
   * Formating front display by roles
   *  for product only !
   */
-	function displayType($value,$type,$is_list=0,$price = 0,$row){
+	function displayType($product,$value,$type,$is_list=0,$price = 0,$row){
+
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
@@ -2369,8 +2382,16 @@ class VirtueMartModelProduct extends JModel {
 				/* variants*/
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
-				// else TODO FORMAT price by currency
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price.' ';
+				/* Loads the product price details */
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+				$calculator = calculationHelper::getInstance();
+//				if(emtpy($this->product)){
+//					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
+//					$this->product = $this->getProduct($product_id);
+//
+//				}
+				 return 'we are heroes';
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$calculator->priceDisplay($price,$product->product_currency,true).' ';
 				break;
 				/*userfield variants*/
 				case 'U':
@@ -2408,8 +2429,8 @@ class VirtueMartModelProduct extends JModel {
 				case 'C':
 					$vendorId=1;
 					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
-					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p 
-					LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id` 
+					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p
+					LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id`
 					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
 					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );

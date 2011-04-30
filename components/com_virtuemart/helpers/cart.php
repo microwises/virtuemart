@@ -186,25 +186,25 @@ class VirtueMartCart  {
 //				echo '<pre>'.print_r($quantityPost).'</pre>';die;
 
 //				/* Check for variants being posted */
-				$variants = array();
-				foreach ($product->variants as $variant => $options) {
-					if (array_key_exists($product->product_id.$variant, $post)) {
-						$variants[$variant] = $post[$product->product_id.$variant];
-						$productKey .= $post[$product->product_id.$variant];
-					}
-				}
-				$productKey .= ':';
-				$product->variant =  $variants;
+//				$variants = array();
+//				foreach ($product->variants as $variant => $options) {
+//					if (array_key_exists($product->product_id.$variant, $post)) {
+//						$variants[$variant] = $post[$product->product_id.$variant];
+//						$productKey .= $post[$product->product_id.$variant];
+//					}
+//				}
+//				$productKey .= ':';
+//				$product->variant =  $variants;
 
 				/* Check for custom attributes */
-				$customvariants = array();
-				foreach ($product->customvariants as $cvariant) {
-					if (array_key_exists($product->product_id.$cvariant, $post)) {
-						$customvariants[$cvariant] = $post[$product->product_id.$cvariant];
-						$productKey .= ':'.$post[$product->product_id.$cvariant];
-					}
-				}
-				$product->customvariant =  $customvariants;
+//				$customvariants = array();
+//				foreach ($product->customvariants as $cvariant) {
+//					if (array_key_exists($product->product_id.$cvariant, $post)) {
+//						$customvariants[$cvariant] = $post[$product->product_id.$cvariant];
+//						$productKey .= ':'.$post[$product->product_id.$cvariant];
+//					}
+//				}
+//				$product->customvariant =  $customvariants;
 
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
