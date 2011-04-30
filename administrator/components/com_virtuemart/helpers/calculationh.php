@@ -365,13 +365,14 @@ class calculationHelper {
 		$this->_cartData['paymentName'] = '';
 		$cartpaymentTax = 0;
 
-		foreach ($cart->products as $product){
+		foreach ($cart->products as $name=>$product){
 			$productId = $product->product_id;
 			if (empty($product->quantity) || empty( $product->product_id )){
 				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->product_id);
 				continue;
 			}
-			dump($product,'$product');
+//			dump($product,'$product');
+			dump($product,'$product '.$name);
 			$variantmod = $this->parseModifier($product->variant);
 
 			$cartproductkey = $productId.$variantmod;

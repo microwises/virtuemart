@@ -174,6 +174,7 @@ class VirtueMartCart  {
 				$quantityPost = $post['quantity'][$p_key];
 				$category_idPost = $post['category_id'][$p_key];
 
+				dump($post,'post');
 				/** @todo Check for child items, variants and attributes */
 
 				/** @todo check for attributes adding to the cart */
@@ -181,8 +182,14 @@ class VirtueMartCart  {
 
 //				$product->quantity = $quantity;
 				$product->category_id = $category_idPost;
-				$productKey= $product->product_id.':';
+				$productKey= $product->product_id.'::';
 
+				$product->variants = $post['customPrice'];
+				foreach($product->variants as $variant){
+					foreach($variant as $variant => $selected){
+						$productKey .= $variant.':'.$selected.';';
+					}
+				}
 //				echo '<pre>'.print_r($quantityPost).'</pre>';die;
 
 //				/* Check for variants being posted */

@@ -279,7 +279,7 @@ class VirtueMartModelProduct extends JModel {
 					$calculator = calculationHelper::getInstance();
 
 					/* Calculate the modificator */
-//					$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
+					$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
 					//I need here the choosen ids of the customfields
 					$quantityArray = JRequest::getVar('quantity',1,'post');
 					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
@@ -1958,44 +1958,44 @@ class VirtueMartModelProduct extends JModel {
 	* @param string $extra_ids any extra id's to add to the attributes
 	* @return
 	*/
-//	public function getVariants($product) {
-//
-//		$this->_db = &JFactory::getDBO();
-//		/* Get the variants */
-//		$variants_raw = explode(';', $product->attribute);
-//
-//		/* Get the variant details */
-//		foreach ($variants_raw as $vkey => $variant) {
-//			$variant_details = explode(',', $variant);
-//			$variant_name = '';
-//			foreach ($variant_details as $dkey => $value) {
-//				if ($dkey == 0) {
-//					$variant_name = $value;
-//					$variants[$value] = array();
-//				}
-//				else {
-//					/* Get the price */
-//					$matches = array();
-//					$pattern = '/\[.*?]/';
-//					/* Get all matches */
-//					preg_match_all($pattern, $value, $matches);
-//					if (sizeof($matches[0]) > 0) {
-//						$variant_type = str_ireplace($matches[0], '', $value);
-//						$find = array('[', ']');
-//						foreach ($matches[0] as $key => $match) {
-//							/* Remove all obsolete characters */
-//							$variant_price = str_replace($find, '', $match);
-//							$variants[$variant_name][$variant_type] = $variant_price;
-//						}
-//					}
-//					else {
-//						$variants[$variant_name][$value] = '';
-//					}
-//				}
-//			}
-//		}
-//		return $variants;
-//	}
+	public function getVariants($product) {
+
+		$this->_db = &JFactory::getDBO();
+		/* Get the variants */
+		$variants_raw = explode(';', $product->attribute);
+
+		/* Get the variant details */
+		foreach ($variants_raw as $vkey => $variant) {
+			$variant_details = explode(',', $variant);
+			$variant_name = '';
+			foreach ($variant_details as $dkey => $value) {
+				if ($dkey == 0) {
+					$variant_name = $value;
+					$variants[$value] = array();
+				}
+				else {
+					/* Get the price */
+					$matches = array();
+					$pattern = '/\[.*?]/';
+					/* Get all matches */
+					preg_match_all($pattern, $value, $matches);
+					if (sizeof($matches[0]) > 0) {
+						$variant_type = str_ireplace($matches[0], '', $value);
+						$find = array('[', ']');
+						foreach ($matches[0] as $key => $match) {
+							/* Remove all obsolete characters */
+							$variant_price = str_replace($find, '', $match);
+							$variants[$variant_name][$variant_type] = $variant_price;
+						}
+					}
+					else {
+						$variants[$variant_name][$value] = '';
+					}
+				}
+			}
+		}
+		return $variants;
+	}
 
     /**
      * Load the attribute names for a product
