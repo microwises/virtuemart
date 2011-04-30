@@ -373,7 +373,8 @@ class calculationHelper {
 			}
 //			dump($product,'$product');
 			dump($product,'$product '.$name);
-			$variantmod = $this->parseModifier($product->variant);
+//			$variantmod = $this->parseModifier($product->variant);
+			$variantmod = $this->parseModifier($name);
 
 			$cartproductkey = $productId.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);
@@ -1093,6 +1094,14 @@ class calculationHelper {
 //		}
 	}
 
+	public function parseModifier($name){
+
+		$product_id = substr(0,strpos('::')-1;
+		dump($product_id,'$product_id');
+
+
+	}
+
 	/**
 	 * Calculate a pricemodification for a variant
 	 *
@@ -1179,7 +1188,7 @@ class calculationHelper {
 	 * @return array The adjusted price modificator
 	 */
 
-	public function parseModifier($variants){
+	public function parseModifierOld($variants){
 		if(empty( $variants) ) return 0.0;
 
 		$modificatorSum=0.0;
