@@ -51,17 +51,6 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
-		</span>
-	    </td>
-	    <td valign="top">
-		<?php echo VmHTML::checkbox('show_out_of_stock_products', $this->config->get('show_out_of_stock_products')); ?>
-	    </td>
-	</tr>
-
-	<tr>
-	    <td class="key">
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE') ?>
 		</span>
@@ -88,94 +77,14 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	</tr>
 	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
-		<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
+	<td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
 		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('content_plugins_enable', $this->config->get('content_plugins_enable')); ?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
-		<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE') ?></label>
-		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('coupons_enable', $this->config->get('coupons_enable')); ?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
-		<label for="coupons_default_expire"><?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE') ?></label>
-		</span>
-	    </td>
-		<td>
-			<select name="coupons_default_expire" class="inputbox">
-				<?php
-					// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
-					$_defaultExpTime = array(
-						 '1,D' => '1 '.JText::_('COM_VIRTUEMART_DAY')
-						,'1,W' => '1 '.JText::_('COM_VIRTUEMART_WEEK')
-						,'2,W' => '2 '.JText::_('COM_VIRTUEMART_WEEKS')
-						,'1,M' => '1 '.JText::_('COM_VIRTUEMART_MONTH')
-						,'3,M' => '3 '.JText::_('COM_VIRTUEMART_MONTHS')
-						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTHS')
-						,'1,Y' => '1 '.JText::_('COM_VIRTUEMART_YEAR')
-					);
-					foreach ($_defaultExpTime as $_v => $_t) {
-						echo '<option value="'.$_v.'"';
-						if ($this->config->get('coupons_default_expire') == $_v) {
-							echo ' selected="selected"';
-						}
-						echo ">$_t</option>\n";
-					}
-				?>
-			</select>
 		</td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-		<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
-		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('allow_reviews', $this->config->get('allow_reviews')); ?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
-		<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?></label>
-		</span>
-	    </td>
-	    <td>
-		<?php echo VmHTML::checkbox('reviews_autopublish', $this->config->get('reviews_autopublish')); ?>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
-		<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
-		</span>
-	    </td>
-	    <td>
-		<input type="text" size="6" id="reviews_minimum_comment_length" name="reviews_minimum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_minimum_comment_length'); ?>" />
-	    </td>
-	</tr>
-	<tr>
-	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
-		<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
-		</span>
-	    </td>
-	    <td>
-		<input type="text" size="6" id="reviews_maximum_comment_length" name="reviews_maximum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
-	    </td>
+		<td>
+		<input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
+	</td>
 	</tr>
     </table>
 </fieldset>

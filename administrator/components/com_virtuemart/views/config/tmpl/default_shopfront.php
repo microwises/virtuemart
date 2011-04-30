@@ -28,11 +28,10 @@ $orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('COM_VIRT
 $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRTUEMART_SALES'));*/
 ?>
 <br />
-<table>
-    <tr><td valign="top">
-
+<table width="100%">
+    <tr><td valign="top" width="50%">
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
@@ -73,122 +72,67 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			<td>
 			    <?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?>
-			    </span>
-			</td>
+		    </tr>   
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
+				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
+				</span>
+	    	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('content_plugins_enable', $this->config->get('content_plugins_enable')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
+				</span>
+	    	</td>
+	    	<td valign="top">
+				<?php echo VmHTML::checkbox('show_out_of_stock_products', $this->config->get('show_out_of_stock_products')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
+				<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE') ?></label>
+				</span>
+	   	 	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('coupons_enable', $this->config->get('coupons_enable')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
+				<label for="coupons_default_expire"><?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE') ?></label>
+				</span>
+	    	</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_featured', $this->config->get('show_featured')); ?>
+			<select name="coupons_default_expire" class="inputbox">
+				<?php
+					// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
+					$_defaultExpTime = array(
+						 '1,D' => '1 '.JText::_('COM_VIRTUEMART_DAY')
+						,'1,W' => '1 '.JText::_('COM_VIRTUEMART_WEEK')
+						,'2,W' => '2 '.JText::_('COM_VIRTUEMART_WEEKS')
+						,'1,M' => '1 '.JText::_('COM_VIRTUEMART_MONTH')
+						,'3,M' => '3 '.JText::_('COM_VIRTUEMART_MONTHS')
+						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTHS')
+						,'1,Y' => '1 '.JText::_('COM_VIRTUEMART_YEAR')
+					);
+					foreach ($_defaultExpTime as $_v => $_t) {
+						echo '<option value="'.$_v.'"';
+						if ($this->config->get('coupons_default_expire') == $_v) {
+							echo ' selected="selected"';
+						}
+						echo ">$_t</option>\n";
+					}
+				?>
+			</select>
 			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_recent', $this->config->get('show_recent')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_topTen', $this->config->get('show_topTen')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_latest', $this->config->get('show_latest')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
-			</td>
-		    </tr>
-
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
-			    </span>
-			</td>
-			<td>
-
-			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field'),'product_id'); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo $this->orderByFields->checkbox ; ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo $this->searchFields ; ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?>
-			    </span>
-			    </td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_products_in_category', $this->config->get('show_products_in_category')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', $this->config->get('no_image_set'));
-			    ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', $this->config->get('no_image_found'));
-			    ?>
-			</td>
-		    </tr>
+			</tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
@@ -201,11 +145,57 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 		    </tr>
 		</table>
 	    </fieldset>
+	    
+	    <fieldset class="adminform">
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
+		<table class="admintable">
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
+				</span>
+	    	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('allow_reviews', $this->config->get('allow_reviews')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
+				<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?></label>
+			</span>
+	    	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('reviews_autopublish', $this->config->get('reviews_autopublish')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
+				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
+				</span>
+	    	</td>
+	    	<td>
+				<input type="text" size="6" id="reviews_minimum_comment_length" name="reviews_minimum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_minimum_comment_length'); ?>" />
+	   	 	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
+				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
+				</span>
+	   	 	</td>
+	    	<td>
+			<input type="text" size="6" id="reviews_maximum_comment_length" name="reviews_maximum_comment_length" class="inputbox" value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
+	    	</td>
+			</tr>
+		</table>
+		</fieldset>
 
-	</td><td valign="top">
+	</td><td valign="top" width="50%">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
@@ -243,7 +233,18 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    ?>
 			</td>
 		    </tr>
-			<tr>
+			
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY') ?>
+			    </span>
+			</td>
+			<td>
+			   <?php echo VmHTML::checkbox('showCategory', $this->config->get('showCategory',1)); ?>
+			</td>
+		    </tr>
+		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT') ?>
@@ -253,6 +254,16 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <?php
 			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'text', 'text', $this->config->get('categorylayout'));
 			    ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="categories_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('categories_per_row') ?>" />
 			</td>
 		    </tr>
 		    <tr>
@@ -267,28 +278,6 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    ?>
 			</td>
 		    </tr>
-			<tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY') ?>
-			    </span>
-			</td>
-			<td>
-			   <?php echo VmHTML::checkbox('showCategory', $this->config->get('showCategory',1)); ?>
-			</td>
-		    </tr>
-
-		    <tr>
-			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
-			    </span>
-			</td>
-			<td>
-			    <input type="text" name="categories_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('categories_per_row') ?>" />
-			</td>
-		    </tr>
-		    <tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
@@ -299,7 +288,26 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
 			</td>
 		    </tr>
-
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_featured', $this->config->get('show_featured')); ?>
+			</td>
+		    </tr>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
@@ -310,7 +318,16 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <input type="text" name="featured_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('featured_products_per_row') ?>" />
 			</td>
 		    </tr>
-
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_topTen', $this->config->get('show_topTen')); ?>
+			</td>
+		    </tr>
 		     <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
@@ -321,8 +338,38 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <input type="text" name="topten_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('topten_products_per_row') ?>" />
 			</td>
 		    </tr>
-
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_recent', $this->config->get('show_recent')); ?>
+			</td>
+		    </tr>
+		   
 		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_latest', $this->config->get('show_latest')); ?>
+			</td>
+		    </tr>
+		</table>
+	    </fieldset>
+	</td></tr>
+</table>
+
+<table width="100%">
+    <tr><td valign="top">
+		<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
+		<table class="admintable">
+	    	<tr>
 				<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
@@ -405,18 +452,74 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			echo '<input type="hidden" name="img_height" value="'. $this->config->get('img_height',90) .'" /></td></tr>';
 		    }
 		    ?>
-			<tr>
+		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
-				</span>
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
+			    </span>
 			</td>
 			<td>
-			    <input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', $this->config->get('no_image_set'));
+			    ?>
 			</td>
 		    </tr>
-		</table>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', $this->config->get('no_image_found'));
+			    ?>
+			</td>
+		    </tr>
+	    
+	    </table>
 	    </fieldset>
+	</td></tr>
+</table>
 
+<table>
+    <tr><td valign="top">
+		<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_TITLE') ?></legend>
+		<table class="admintable">
+			<tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
+			    </span>
+			</td>
+			<td>
+
+			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field'),'product_id'); ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo $this->orderByFields->checkbox ; ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo $this->searchFields ; ?>
+			</td>
+		    </tr>
+		    <tr>
+		</table>
+		</fieldset>
 	</td></tr>
 </table>
