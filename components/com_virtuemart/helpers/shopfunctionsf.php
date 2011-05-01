@@ -286,9 +286,9 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param array $vars variables to assign to the view
 	 */
-	public function renderMail ($controllerName, $viewName, $recipient, $vars=array()) {
+	public function renderMail ($viewName, $recipient, $vars=array()) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-		$format = (VmConfig::get()) ? 'html' : 'raw';
+		$format = (VmConfig::get('html_email')) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
 		$controller->addPath(JPATH_VM_SITE);
