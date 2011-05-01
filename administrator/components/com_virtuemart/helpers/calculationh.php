@@ -379,7 +379,8 @@ class calculationHelper {
 //			dump($product,'$product');
 			dump($name,'$productname ');
 //			$variantmod = $this->parseModifier($product->variant);
-			$variantmod = $this->parseModifier($name);
+			$variantmods = $this->parseModifier($name);
+			$variantmod = $this->calculateModificators($product,$variantmods);
 
 			$cartproductkey = $name ; //$product->product_id.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
@@ -1098,21 +1099,27 @@ class calculationHelper {
 		return $modificatorSum;
 	}
 
-//	public function parseModifier($name){
-//
-//		$items = explode(';',$name);
-//		dump($items,'$items');
-//		$variants = array();
-//		foreach($items as $item){
-//			if(!empty($item)){
-//				$index = strpos($item,'::');
-//				$product_id = substr($item,0,$index);dump($product_id,'$product_id');
-//				$item = substr($item,$index+2);
-//
-//				$index2 = strpos($item,':');
-//				$variant = substr($item,0,$index2);dump($variant,'$variant');
-//				$selected = substr($item,$index2+1);dump($selected,'selected $variant');
-//
+	public function parseModifier($name){
+
+		$items = explode(';',$name);
+		dump($items,'$items');
+		$return = array();
+		$variants = array();
+		foreach($items as $item){
+			if(!empty($item)){
+				$index = strpos($item,'::');
+				$product_id = substr($item,0,$index);dump($product_id,'$product_id');
+				$item = substr($item,$index+2);
+
+				$index2 = strpos($item,':');
+				$variant = substr($item,0,$index2);dump($variant,'$variant');
+				$selected = substr($item,$index2+1);dump($selected,'selected $variant');
+				$variants[$variant] = $selected;
+			}
+		}
+		$return[] = $variants;
+		return $return;
+	}
 ////				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
 ////					FROM `#__vm_custom` AS C
 ////					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
