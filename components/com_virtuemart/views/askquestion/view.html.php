@@ -145,24 +145,8 @@ class VirtueMartViewAskquestion extends JView {
 
 	function renderMail() {
 		$this->setLayout('mail_html_question');
-		$vendorModel = $this->getModel('vendor');
-		$VendorEmail = $vendorModel->getVendorEmail($this->product->vendor_id);
-
-		$user = JFactory::getUser();
-		if (empty($user->id)) {
-			$fromMail = JRequest::getVar('email');
-			$fromName = JRequest::getVar('name','');
-		}
-		else {
-			$fromMail = $user->email;
-			$fromName = $user->name;
-	 	}
-
-	 	$subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
-
-	 	$msgtype = '';
-		$message = JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_MSG', $productDetails->product_name ,JRequest::getVar('comment'));
-
+	 	$this->subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$this->product->product_name;
+	 	parent::display();
 	}
 
 	private function showLastCategory($tpl) {

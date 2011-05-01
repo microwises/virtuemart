@@ -291,17 +291,20 @@ class shopFunctionsF {
 		$format = (VmConfig::get('html_email')) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
-		$controller->addPath(JPATH_VM_SITE);
-		$controller->addPath(JPATH_VM_ADMINISTRATOR);
+		$controller->addModelPath(JPATH_VM_SITE.DS.'models');
+		$controller->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 
 		$view = $controller->getView($viewName, $format);
-		$view->setModel($controller->getModel($viewName));
+		$model = $controller->getModel($viewName);
+		if ($model) {
+			$view->setModel($model);
+		}
 		$view->setModel($controller->getModel('user'));
 		$view->setModel($controller->getModel('vendor'));
 		$view->setModel($controller->getModel('userfields'));
 
 		foreach ($vars as $key => $val) {
-			$view->assignRef($key, $val);
+			$view->$key = $val;
 		}
 
 		self::sendMail($view, $recipient);
@@ -325,6 +328,7 @@ class shopFunctionsF {
 		$view->renderMail($vendor);
 		$body = ob_get_contents();
 		ob_end_clean();
+		dump($body, 'Mail Template');
 
 		$subject = (isset($view->subject)) ? $view->subject : JText::_('COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT');
 		$mailer = JFactory::getMailer();
@@ -337,7 +341,7 @@ class shopFunctionsF {
 			$mailer->addReplyTo($view->replyTo);
 		}
 
-		if (!isset($view->mediaToSend)) {
+		if (isset($view->mediaToSend)) {
 			foreach ((array)$view->mediaToSend as $media) {
 				//Todo test and such things.
 				$mailer->addAttachment($media);
