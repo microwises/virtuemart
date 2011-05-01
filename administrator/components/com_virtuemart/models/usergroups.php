@@ -141,7 +141,7 @@ class VirtueMartModelUsergroups extends JModel {
 		$table = $this->getTable('usergroups');
 
 		$data = JRequest::get( 'post' );
-		echo 'store that <pre>'.$data.'</pre>';
+
 		// Bind the form fields to the extensions table
 
 		if (!$table->bind($data)) {

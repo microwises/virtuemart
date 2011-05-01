@@ -129,7 +129,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	    $this->_id = 0;
 	    $this->_data = null;
 	}
-	
+
 	return $this->_data;
     }
 
@@ -147,7 +147,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	if($data['vendor_id']) {
 		$data['shipping_carrier_vendor_id'] = $data['vendor_id'];
 	}
-	
+
 	// Bind the form fields to the shipping carrier table
 	if (!$table->bind($data)) {
 	    $this->setError($table->getError());
@@ -224,7 +224,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 
     /**
      * Retireve a list of shipping carriers from the database.
-     * 
+     *
      * @author RickG
      * @return object List of shipping carrier objects
      */
@@ -234,15 +234,15 @@ class VirtueMartModelShippingCarrier extends JModel {
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
-    
-    
+
+
     /**
      * @deprecated Use the plugins instead
      * @author Max Milbers
      * @return a associative List
      */
 	public function getShippingCarrierRates($weight=0, $country=0, $zip=0) {
-		
+
 		$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
 		$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_list_order`';
 		$carrierList = $this->_getList($query);
@@ -255,32 +255,29 @@ class VirtueMartModelShippingCarrier extends JModel {
 			$query = 'SELECT * FROM `#__vm_shipping_rate` WHERE `shipping_rate_carrier_id`="'.$value->shipping_carrier_id.'" ';
 			if(!empty($weight)){
 				$query .= 'AND `shipping_rate_weight_start` <="'.$weight.'" AND `shipping_rate_weight_end` > "'.$weight.'"';
-			}		 	 	
+			}
 			if(!empty($zip)){
 				$query .= 'AND `shipping_rate_zip_start` <="'.$zip.'" AND `shipping_rate_zip_end` > "'.$zip.'"';
 			}
-			
+
 			//todo country and dimension
 //			if(!empty($country)){
 //				$countries = explode(';', $this->_data->shipping_rate_country);
 //				$query .= 'AND (`shipping_rate_country` ="'.$country.'" OR `shipping_rate_country` ="" )';
 //			}
-//			echo '<br />$query '.$query;
+
 			$db->setQuery($query);
 			if ($db->query()) {
 				echo '<br /><br />';
-//				echo 'WIE <pre>'. print_r($db->loadAssocList()) .'</pre>';
+
 				$list[$value->shipping_carrier_name]=$db->loadAssocList();
 				echo '<br />';
 //				return true;
 	    	}
 		}
-//		echo '<br />';echo '<br />';echo '<br />';
-//		echo '<pre>'. print_r($list) .'</pre>';
-//		
 		return $list;
     }
-    
+
 }
 
 //no closing tag

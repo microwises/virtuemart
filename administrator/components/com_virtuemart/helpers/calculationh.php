@@ -1081,10 +1081,11 @@ class calculationHelper {
 					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 					WHERE xref.`product_id` ='.$product->product_id;
-				$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected[0] ;
+				$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;
 				$this->_db->setQuery($query);
 				$productCustomsPrice = $this->_db->loadObject();
-
+				$app = JFactory::getApplication();
+//				echo('$productCustomsPrice'.print_r($variants,1).'  query: '.$this->_db->getQuery());
 				if(!empty($productCustomsPrice->custom_price)){
 					//We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;

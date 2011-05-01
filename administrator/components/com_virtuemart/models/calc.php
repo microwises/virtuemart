@@ -186,7 +186,6 @@ class VirtueMartModelCalc extends JModel
 
 		}
 
-//		echo (print_r($this->_data).'<br /><br />');
 		return $this->_data;
 	}
 

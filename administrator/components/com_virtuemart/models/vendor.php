@@ -248,17 +248,18 @@ class VirtueMartModelVendor extends JModel {
 	 * @param $_vendorId Vendor ID
 	 * @return string Currency code
 	 */
-	function getVendorCurrencyCode ($_vendorId)
+	function getVendorCurrency ($_vendorId)
 	{
-		$_db = JFactory::getDBO();
-		$_q = 'SELECT c.currency_code AS cc '
+		$db = JFactory::getDBO();
+
+		$q = 'SELECT *  '
 			. 'FROM `#__vm_currency` AS c'
 			. ',    `#__vm_vendor` AS v '
 			. 'WHERE v.vendor_id = '.$_vendorId . ' '
 			. 'AND   v.vendor_currency = c.currency_id';
-		$_db->setQuery($_q);
-		$_r = $_db->loadObject();
-		return $_r->cc;
+		$db->setQuery($q);
+		$r = $db->loadObject();
+		return $r;
 	}
 
 	/**

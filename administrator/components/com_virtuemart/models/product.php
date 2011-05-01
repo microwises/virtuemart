@@ -1415,10 +1415,6 @@ class VirtueMartModelProduct extends JModel {
 //		$product = $this->_db->loadObject();
 
 		$product = $this->getProduct($product_id);
-		/* Load the categories the product is in */
-		$product->categories = $this->getProductCategories();
-
-		if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
 
 		/* NEW Load the Customs Field Cart Price */
 		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldWithPrice($product);
@@ -1863,7 +1859,11 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* image */
 				case 'i':
-					$vendorId=1;
+					if (empty($product)){
+						$vendorId=1;
+					} else {
+						$vendorId = $product->vendor_id;
+					}
 					$q='SELECT `file_id` as value,`file_title` as text FROM `#__vm_media` WHERE `published`=1
 					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 					$this->_db->setQuery($q);
@@ -1872,8 +1872,11 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* Child product */
 				case 'C':
-					$vendorId=1;
-					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
+					if (empty($product)){
+						$product_id = JRequest::getInt('product_id', 0);
+					} else {
+						$product_id = $product->product_id;
+					}
 					$q='SELECT `product_id` as value,concat(`product_sku`,":",`product_name`) as text FROM `#__vm_product` WHERE `published`=1
 					AND `product_parent_id`= "'.$product_id.'"';
 					$this->_db->setQuery($q);
@@ -1907,7 +1910,6 @@ class VirtueMartModelProduct extends JModel {
      }
 	 // temp function TODO better one
      public function getproductCustomsFieldCart($product) {
-//		$product_id = JRequest::getInt('product_id', false);
 
 		if ($product->hasproductCustoms)  {
 
@@ -1926,6 +1928,9 @@ class VirtueMartModelProduct extends JModel {
 			$row= 0 ;
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
+
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
+//			$vendor_currency = VirtueMartModelVendor::getVendorCurrency($product->vendor_id)->currency_code;
 			// render select list
 			foreach ($groups as & $group) {
 
@@ -1939,7 +1944,7 @@ class VirtueMartModelProduct extends JModel {
 				$this->_db->setQuery($query);
 				$productCustoms = $this->_db->loadObjectList();
 				foreach ($productCustoms as $productCustom) {
-					$productCustom->custom_price = $calculator->priceDisplay($productCustom->custom_price,$product->product_currency,true);
+					$productCustom->custom_price = $calculator->priceDisplay($productCustom->custom_price,'',true);
 				}
 				if ($group->field_type == 'V'){
 					foreach ($productCustoms as $productCustom) {
@@ -2048,9 +2053,11 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* image */
 				case 'i':
+					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
+
 					$vendorId=1;
 					$q='SELECT * FROM `#__vm_media` WHERE `published`=1
-					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1") AND file_id='.(int)$value;
+					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND file_id='.(int)$value;
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
 					$image = $db->loadObject();
@@ -2064,8 +2071,6 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* Child product */
 				case 'C':
-					$vendorId=1;
-					if (empty($product_id)) $product_id = JRequest::getInt('product_id', 0);
 					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__vm_product` as p
 					LEFT JOIN `#__vm_product_category_xref` as x on x.`product_id` = p.`product_id`
 					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
