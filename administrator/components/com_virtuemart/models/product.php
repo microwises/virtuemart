@@ -276,6 +276,7 @@ class VirtueMartModelProduct extends JModel {
 					$product_type_modificator = 0; //$calculator->calculateModificators($product->product_id,$product->variants);
 					//$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
 					//I need here the choosen ids of the customfields
+				  // getProductcustomfieldsIds HAVE THE CUSTOM FIELDS ID
 					$product->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($product);
 					$quantityArray = JRequest::getVar('quantity',1,'post');
 					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product->ProductcustomfieldsIds,$quantityArray[0]);
@@ -313,7 +314,7 @@ class VirtueMartModelProduct extends JModel {
 				$product->hasproducttypes = $this->hasProductType($product_id);
 
 				/* Load the custom variants */
-//				$product->customvariants = $this->getCustomVariants($product->custom_attribute);
+//				$product->customvariants = $this->getCustomVariants($product->custom_attribute); OBSELETE
 				$product->hasproductCustoms = $this->hasproductCustoms($product_id);
 				/* Load the custom product fields */
 				$product->customfields = self::getproductCustomsField($product);
@@ -370,9 +371,9 @@ class VirtueMartModelProduct extends JModel {
 	 	 	$product->link = '';
 	 	 	$product->categories = array();
 	 	 	$product->prices = array();
-	 	 	$product->variants = array();
+	 	 	$product->variants = array();// I MEAN OBSELETE ?PK
 	 	 	$product->category_id = 0;
-	 	 	$product->customvariants = array();
+	 	 	$product->customvariants = array(); // OBSELETE ?PK TODO Add user comment in custom fields and methode for card
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
@@ -1169,12 +1170,14 @@ class VirtueMartModelProduct extends JModel {
 		}
 		/* Update product types
 		* 'product_type_tables' are all types tables in product edit view
-		*/
+		TODO CAN BE CUSTOM FIELDS
+
 		if (array_key_exists('product_type_tables', $data)) {
 			if(!class_exists('VirtueMartModelProducttypes')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'producttypes.php');
 			$ProducttypesModel = new VirtueMartModelProducttypes();
 			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
 		}
+		*/
 		/* Update product custom field
 		* 'product_type_tables' are all types tables in product edit view
 		*/
@@ -1472,7 +1475,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Load the variants */
 //		$product->variants = $this->getVariants($product);
 
-		/* Load the Customs Field Cart Price */
+		/* NEW Load the Customs Field Cart Price */
 		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldWithPrice($product);
 		/* Loads the product price details */
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -1482,7 +1485,7 @@ class VirtueMartModelProduct extends JModel {
 
 		/* Calculate the modificator */
 //		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);		/* Calculate the modificator */
-//		$product_type_modificator = $calculator->calculateCustomsCart($product->product_id,$product->CustomsFieldCartPrice);
+//		$product_type_modificator = $calculator->calculateCustomsCart($product->product_id,$product->CustomsFieldCartPrice); WHY NOT HERE ?
 		$selectedVariants = $calculator->parseModifier($product->variants);
 		$variantPriceModification = $calculator->calculateModificators($product,$selectedVariants);
 		$quantityArray = JRequest::getVar('quantity',1,'post');
@@ -1668,6 +1671,7 @@ class VirtueMartModelProduct extends JModel {
 	* @param string $custom_attr_list containing the custom variants
 	* @return array containing the custom variants
 	*/
+/* OBSELETE
 	private function getCustomVariants($custom_attr_list) {
 		$fields = array();
 		if ($custom_attr_list) {
@@ -1676,7 +1680,7 @@ class VirtueMartModelProduct extends JModel {
 		}
 		return $fields;
 	}
-
+*/
 	// **************************************************
 	//Stocks
 	//

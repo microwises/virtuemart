@@ -244,7 +244,7 @@ class calculationHelper {
 		$prices['costPrice']  = $costPrice;
 		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyTo($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
-
+/**TODO OBSELETE ? ****/
 		if(isset($variant)){
 			if (strpos($variant, '=') !== false) {
 	//		   $variant=substr($variant,1);
@@ -257,6 +257,7 @@ class calculationHelper {
 		if(empty($prices['basePrice'])){
 			return $this->fillVoidPrices($prices);
 		}
+/***********/
 		//For Profit, margin, and so on
 //		if(count($calcRules)!==0){
 //			$prices['profit'] =
@@ -374,6 +375,7 @@ class calculationHelper {
 //			dump($product,'$product');
 			dump($name,'$productname ');
 //			$variantmod = $this->parseModifier($product->variant);
+			// TODO  IS THIS OK  MAX?
 			$variantmod = $this->parseModifier($name);
 
 			$cartproductkey = $name ; //$product->product_id.$variantmod;
@@ -1067,7 +1069,7 @@ class calculationHelper {
 	 * @param array $variantnames the value of the variant
 	 * @return array The adjusted price modificator
 	 */
-
+/* OBSELETE VARIANT ??
 	function calculateModificators($product,$variants){
 
 		$modificatorSum=0.0;
@@ -1096,8 +1098,11 @@ class calculationHelper {
 //		} else {
 //			return max($max);
 //		}
-	}
-
+	}*/
+// IS YOUR TEST MAX ?
+		// DATAS ARE THE ARRAY OF custom_field_id 'pricable'
+		// $datas = JRequest::getVar('customPrice'); // YOU DONT HAVE THE ID HERE
+		// calculateCustomsCart GIVE ID AND PRICE AND VALUE (NEXT FUNCTION)
 	public function parseModifier($name){
 
 		$items = explode(';',$name);
@@ -1153,26 +1158,18 @@ class calculationHelper {
 
 
 	/**
-	 * Calculate a pricemodification for a variant
-	 *
-	 * Variant values can be in the following format:
-	 * Array ( [Size] => Array ( [XL] => +1 [M] => [S] => -2 ) [Power] => Array ( [strong] => [middle] => [poor] => =24 ) )
-	 *
-	 * In the post is the data for the chosen variant, when there is a hit, it gets calculated
-	 *
-	 * Returns all variant modifications summed up or the highest price set with '='
-	 *
-	 * @todo could be slimmed a bit down, using smaller array for variantnames, this could be done by using the parseModifiers method, needs to adjust the post
-	 * @author Max Milbers
+	 * Calculate a pricemodification for custom fields pricable
 	 * @param int $product_id the product ID the attribute price should be calculated for
 	 * @param array $variantnames the value of the variant
-	 * @return array The adjusted price modificator
+	 * @return The adjusted price modificator
 	 */
-
-	function calculateCustomsCart($product_id,$customForCart,$product_type_modificator){
+// FIND THE custom_field_id ADDED TO CART AND PRICE + VALUE FOR IT .
+// The last field $product_type_modificator (old variant)was delete here
+	function calculateCustomsCart($product_id,$customForCart){
 
 
 		$modificatorSum=0.0;
+		// DATAS ARE THE ARRAY OF custom_field_id 'pricable'
 		$datas = JRequest::getVar('customPrice');
 	foreach ($datas as $data) {
 		foreach ($data as $id) {
@@ -1183,31 +1180,31 @@ class calculationHelper {
 				Where xref.`product_id` ='.$product_id;
 			$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$id ;
 			$this->_db->setQuery($query);
-			$productCustomsPrice = $this->_db->loadObject();
+			$modificatorSum = $this->_db->loadObject();
 			// test operator
-			$op = substr($productCustomsPrice->custom_price,0,1);
-			$op2 = substr($productCustomsPrice->custom_price,-1);
+			$op = substr($modificatorSum->custom_price,0,1);
+			$op2 = substr($modificatorSum->custom_price,-1);
 
-			$price=floatval($productCustomsPrice->custom_price);
-			if ($op2 == '%') $price = $product_type_modificator*($price*0.01);
+			$price=floatval($modificatorSum->custom_price);
+			if ($op2 == '%') $price = $modificatorSum*($price*0.01);
 			switch ($op) {
 				case '+':
-					$product_type_modificator+=$price;
+					$modificatorSum+=$price;
 					break;
 				case '-':
-					$product_type_modificator-=$price;
+					$modificatorSum-=$price;
 					break;
 				case '*':
-					$product_type_modificator*=$price;
+					$modificatorSum*=$price;
 					break;
 				case '/':
-					$product_type_modificator/=$price;
+					$modificatorSum/=$price;
 					break;
 				case '%':
-					$product_type_modificator=$product_type_modificator+$product_type_modificator*($price/100);
+					$modificatorSum=$modificatorSum+$modificatorSum*($price/100);
 					break;
 				default :
-					$product_type_modificator+=$price;
+					$modificatorSum+=$price;
 			}
 		}
 
@@ -1218,7 +1215,8 @@ class calculationHelper {
 		/*foreach ($customForCart as $custom) {
 
 		}*/
-		return $product_type_modificator;
+		// $modificatorSum SHOULD RETURN THE MODIFICATION FOR BASE PRICE
+		return $modificatorSum;
 	}
 
 	/**
@@ -1237,7 +1235,7 @@ class calculationHelper {
 	 * @param array $variantnames the value of the variant
 	 * @return array The adjusted price modificator
 	 */
-
+/*  WAS OLD VARIANT MODIFICATOR
 	public function parseModifierOld($variants){
 		if(empty( $variants) ) return 0.0;
 
@@ -1260,7 +1258,7 @@ class calculationHelper {
 		} else {
 			return max($max);
 		}
-	}
+	}*/
 
 		/**
 	 * Load the currency object

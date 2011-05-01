@@ -183,7 +183,7 @@ class VirtueMartCart  {
 //				$product->quantity = $quantity;
 				$product->category_id = $category_idPost;
 				$productKey= $product->product_id.'::';
-
+// INDEX NOT FOUND IN JSON HERE
 				$product->variants = $post['customPrice'];
 				foreach($product->variants as $variant){
 					foreach($variant as $variant => $selected){
@@ -956,6 +956,7 @@ class VirtueMartCart  {
 	* @param array $d
 	* @return array $result
 	*/
+	/* TODO OBSELETE HAS TO BE REWRITEN
 	public function cartGetAttributes( &$d ) {
 		$db = JFactory::getDBO();
 
@@ -1061,6 +1062,6 @@ class VirtueMartCart  {
 		$result['custom_attribute_list'] = $custom_attribute_list ;
 
 		return $result ;
-	}
+	}*/
 
 }
