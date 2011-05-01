@@ -684,7 +684,7 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->vendor_id = $_prod->vendor_id;
 			$_orderItems->product_id = $_prod->product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;
-			$_orderItems->order_item_name = $_prod->product_name;
+			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_prod->prices['basePriceVariant'];
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
@@ -694,13 +694,14 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->mdate = time();
 			$_orderItems->product_attribute = '';
 
-			$_variants = array_merge($_prod->variant, $_prod->customvariants);
-			foreach ($_variants as $_a => $_v) {
-				$_orderItems->product_attribute .= (
-					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
-					. $_a . ': ' . $_v
-				);
-			}
+//			//TODO
+//			$_variants = array_merge($_prod->variant, $_prod->customvariants);
+//			foreach ($_variants as $_a => $_v) {
+//				$_orderItems->product_attribute .= (
+//					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
+//					. $_a . ': ' . $_v
+//				);
+//			}
 
 			if (!$_orderItems->store()){
 				// Stop on first failure, most likely the result of a bug anyway (so in the testphase)

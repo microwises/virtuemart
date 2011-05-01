@@ -72,7 +72,7 @@ class TableOrders extends JTable {
 	/** @var int Last modified date */
 	var $mdate = NULL;
 	/** @var int Shipping method ID */
-	var $ship_method_id = NULL;
+	var $payment_method_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;
 	/** @var string Users IP Address */

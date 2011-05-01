@@ -41,7 +41,7 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->cdate);?></td>
+				<td><?php echo $this->orderbt->cdate; ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
@@ -467,7 +467,7 @@ JPluginHelper::importPlugin('vmshipper');
 		}
 		?>
 		</td>
-		<td valign="top"><?php 
+		<td valign="top"><?php
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderPaymentBE',array(
 			 $this->orderID

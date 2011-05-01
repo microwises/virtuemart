@@ -278,9 +278,9 @@ class VirtueMartModelPaymentmethod extends JModel
 		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
 		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
 
-		$dbv = $table->getDBO();
-		if(empty($this->_id)) $this->_id = $dbv->insertid();
-		return $this->_id;
+//		$dbv = $table->getDBO();
+//		if(empty($this->_id)) $this->_id = $dbv->insertid();
+		return $table->paym_id;
 	}
 
 

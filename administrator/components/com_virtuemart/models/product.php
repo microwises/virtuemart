@@ -87,15 +87,6 @@ class VirtueMartModelProduct extends JModel {
 		return $this->_pagination;
 	}
 
-
-//	function getPagination() {
-//        if (empty($this->_pagination)) {
-//            jimport('joomla.html.pagination');
-//            $this->_pagination = new JPagination($this->getTotalProductsInCategory(), $this->getState('limitstart'), $this->getState('limit') );
-//        }
-//        return $this->_pagination;
-//	}
-
 	/**
 	 * Gets the total number of products
 	 */
@@ -111,16 +102,6 @@ class VirtueMartModelProduct extends JModel {
 
         return $this->_total;
     }
-
-//  function getTotalProductsInCategory()
-//  {
-//        // Load the content if it doesn't already exist
-//        if (empty($this->_total)) {
-//            if (empty($this->_query)) $this->_query = $this->_buildQuery();
-//            $this->_total = $this->_getListCount($this->_query);
-//        }
-//        return $this->_total;
-//  }
 
      /**
      * Get the simple product info
@@ -328,14 +309,11 @@ class VirtueMartModelProduct extends JModel {
 	 	 	$product->link = '';
 	 	 	$product->categories = array();
 	 	 	$product->prices = array();
-	 	 	$product->variants = array();// I MEAN OBSELETE ?PK
 	 	 	$product->category_id = 0;
-	 	 	$product->customvariants = array(); // OBSELETE ?PK TODO Add user comment in custom fields and methode for card
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
 	 	 	$product->box = '';
-
 	 	 }
 
 	 	 return $product;
@@ -1773,23 +1751,6 @@ class VirtueMartModelProduct extends JModel {
 	}
 
 
-    /**
-	 * Since a product dont need always an image, we can attach them to the product with this function
-	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $products
-	 */
-	public function addImagesToProducts($products=0){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($products,'file_ids','product','image');
-
-	}
-
 	// **************************************************
 	// Custom FIElDS
 	//
@@ -2006,7 +1967,7 @@ class VirtueMartModelProduct extends JModel {
 				/* Loads the product price details */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$calculator->priceDisplay($price,$product->product_currency,true).' ';
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$calculator->priceDisplay($price,$calculator->vendor_currency,true).' ';
 				break;
 				/*userfield variants*/
 				case 'U':
@@ -2030,7 +1991,6 @@ class VirtueMartModelProduct extends JModel {
 				case 'i':
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
-					$vendorId=1;
 					$q='SELECT * FROM `#__vm_media` WHERE `published`=1
 					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND file_id='.(int)$value;
 					$db =& JFactory::getDBO();
@@ -2057,5 +2017,21 @@ class VirtueMartModelProduct extends JModel {
 		}
 	}
 
+    /**
+	 * Since a product dont need always an image, we can attach them to the product with this function
+	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $products
+	 */
+	public function addImagesToProducts($products=0){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($products,'file_ids','product','image');
+
+	}
 }
 // No closing tag

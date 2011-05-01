@@ -86,7 +86,7 @@ class VmHTML{
 	 * will be the selected option in the dropdown.
 	 * @author gday
 	 * @author soeren
-	 * 
+	 *
 	 * @param string $name The name of the select element
 	 * @param string $value The pre-selected value
 	 * @param array $arr The array containting $key and $val
@@ -94,7 +94,7 @@ class VmHTML{
 	 * @param string $multiple use "multiple=\"multiple\" to have a multiple choice select list
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
-	 */	
+	 */
 	function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="") {
 
 		$html = '';
@@ -105,10 +105,10 @@ class VmHTML{
 	        	 $arr=array($arrIn);
 	        } else {
 	        	 $arr=$arrIn;
-	        }			
+	        }
 		}
 
-        
+
 		$html = '<select class="inputbox" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.'>';
 
 		while (list($key, $val) = each($arr)) {
@@ -134,14 +134,14 @@ class VmHTML{
 
 		return $html;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 */
     function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
 //    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
-        
+
         echo '<br />$tag_name '.$tag_name;
         echo '<br />$tag_attribs '.$tag_attribs;
         echo '<br />$key '.$key;
@@ -186,7 +186,7 @@ class VmHTML{
         $html .= "\n</select>\n";
         return $html;
 	}
-        
+
 	/**
 	 * Creates a Radio Input List
 	 *
@@ -218,7 +218,7 @@ class VmHTML{
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
 			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
 		}
-		
+
 		return $html;
 	}
 	/* simple row display */
@@ -287,36 +287,36 @@ class VmHTML{
 	}
 	/**
 	 *
-	 * @author Patrick Kohl 
+	 * @author Patrick Kohl
 	 * @param string $label textlabel
 	 * @param array $options( value & text)
 	 * @param string $name option name
 	 * @param string $defaut defaut value
-	 * @param string $key option value 
+	 * @param string $key option value
 	 * @param string $text option text
 	 * @param boolean $zero add  a '0' value in the option
-	 * return a select list 
-	 */	
+	 * return a select list
+	 */
 	public function selectRow($label , $options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
-		
+
 		$html = '<tr>
 		<td class="labelcell">'.JText::_($label).'</td>
 		<td>'.self::select($options, $name, $default, $attrib, $key, $text, $zero).'</td>
 		<td></td>
 	</tr>';
-		
+
 		return $html ;
 	}
 	/**
 	 *
-	 * @author Patrick Kohl 
+	 * @author Patrick Kohl
 	 * @param array $options( value & text)
 	 * @param string $name option name
 	 * @param string $defaut defaut value
-	 * @param string $key option value 
+	 * @param string $key option value
 	 * @param string $text option text
 	 * @param boolean $zero add  a '0' value in the option
-	 * return a select list 
+	 * return a select list
 	 */
 	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
@@ -336,9 +336,10 @@ class VmHTML{
 		}
 		return $html;
 	}
+
 	/**
-	 * @author Patrick Kohl 
-	*@var $type type of regular Expression to validate
+	* @author Patrick Kohl
+	* @var $type type of regular Expression to validate
 	* $type can be I integer, F Float, A date, M, time, T text, L link, U url, P phone
 	*@bool $required field is required
 	*@Int $min minimum of char
@@ -348,7 +349,7 @@ class VmHTML{
 	**/
 	public function validate($type='',$required=true, $min=null,$max=null,$match=null) {
 
-		if ($required) $validTxt = 'required'; 
+		if ($required) $validTxt = 'required';
 		else $validTxt = 'optional';
 		if (isset($min)) $validTxt .= ',minSize['.$min.']';
 		if (isset($max)) $validTxt .= ',maxSize['.$max.']';
