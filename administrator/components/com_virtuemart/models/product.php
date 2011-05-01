@@ -972,7 +972,7 @@ class VirtueMartModelProduct extends JModel {
 		if($product){
 			$data = (array)$product;
 		} else{
-			$data = JRequest::get('post', 4);
+			$data = JRequest::get('post', 4);	//TODO 4?
 		}
 
 		/* Setup some place holders */
@@ -1054,36 +1054,12 @@ class VirtueMartModelProduct extends JModel {
 			modelfunctions::storeArrayData('#__vm_product_mf_xref','product_id','manufacturer_id',$product_data->product_id,$data['manufacturer_id']);
 		}
 
-//		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
-//		$q .= $product_data->product_id.', ';
-//		$q .= JRequest::getInt('manufacturer_id').') ';
-//		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
-//		$this->_db->setQuery($q);
-//		$this->_db->query();
-
 		/* Update waiting list  */
 		if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
 			$waitinglist = new VirtueMartModelWaitingList();
 			$waitinglist->notifyList($data['product_id']);
 		}
 
-//		/* If is Item, update attributes */
-//		if ($product_data->product_parent_id > 0) {
-//			$q  = 'SELECT attribute_id FROM #__vm_product_attribute ';
-//			$q .= 'WHERE product_id='.$product_data->product_id;
-//			$this->_db->setQuery($q);
-//			$attributes = $this->_db->loadObjectList();
-//			foreach ($attributes as $id => $attribute) {
-//				$q  = 'UPDATE #__vm_product_attribute SET ';
-//				$q .= 'attribute_value='.$this->_db->Quote($data['attribute_'.$attribute->attribute_id]);
-//				$q .= ' WHERE attribute_id = '.$attribute->attribute_id;
-//				$this->_db->setQuery($q);
-//				$this->_db->query();
-//
-//			}
-//		/* If it is a Product, update Category */
-//		}
-//		else {
 		if(!empty($data['categories']) && count($data['categories'])>0){
 			/* Delete old category links */
 			$q  = "DELETE FROM `#__vm_product_category_xref` ";
@@ -1131,7 +1107,6 @@ class VirtueMartModelProduct extends JModel {
 		* 'product_type_tables' are all types tables in product edit view
 		*/
 		if (array_key_exists('field', $data)) {
-//			dump ($data['field'] , 'customsaved' );
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveProductfield($data['field'],$product_data->product_id);
 		}

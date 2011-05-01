@@ -50,56 +50,24 @@ defined('_JEXEC') or die('Restricted access');
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
+			$product_rows[$i]['customfieldsCart'] ='';
 //			/* Add the variants */
 			if (!is_int($priceKey)) {
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
-				
+
 				foreach ($variantmods as $variantmod) {
 						$row=0 ;
 						foreach($variantmod as $variant=>$selected){
-							dump($selected,$priceKey.' are vari ID : '.$variant);
-							dump($product->customfieldsCart[$row],' are vari ID : '.$row);
+//							dump($selected,$priceKey.' are vari ID : '.$variant);
+//							dump($product->customfieldsCart[$row],' are vari ID : '.$row);
+							$product_rows[$i]['customfieldsCart'] .= ' '.$product->customfieldsCart[$row]->custom_field_desc;
 							$row++;
 						}
 				}
 			}
-//			$variant = '';
-//			$variantmod = '0';
-//			if(!empty($product->variant)){
-//				$product_rows[$i]['product_variant'] = '';
-//
-//				foreach ($product->variant as $vname => $vvalue) {
-//					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
-//					$variant .=$vvalue;
-//				}
-//			} else {
-				$product_rows[$i]['product_variant']='';
-//			}
-//
-//
-//			/* Add the custom variants */
-//			$cvariant = '';
-//			if(!empty($product->customvariant)){
-//				$product_rows[$i]['product_customvariant'] = '';
-//
-//				foreach ($product->customvariant as $cname => $cvalue) {
-//					$product_rows[$i]['product_customvariant'] .= '<br />'.$cname.': '.$cvalue;
-//					$cvariant .= $cvalue;
-//				}
-//			} else {
-				$product_rows[$i]['product_customvariant']='';
-//			}
 
-			// Display attribute values if this an item
-			$product_rows[$i]['product_attributes'] = '';
-//			if ($product->product_parent_id > 0) {
-//				foreach ($product->attributes as $attribute) {
-//					$product_rows[$i]['product_attributes'] .= "<br />".$attribute->attribute_name."&nbsp;";
-//					$product_rows[$i]['product_attributes'] .= "(" . $attribute->attribute_value.")";
-//				}
-//			}
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			/** @todo WEIGHT CALCULATION */
@@ -153,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php foreach( $product_rows as $prow ) { ?>
 			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
-				<td align="left" ><?php echo $prow['product_name'].$prow['product_variant'].$prow['product_customvariant'].$prow['product_attributes']; ?></td>
+				<td align="left" ><?php echo $prow['product_name'].$prow['customfieldsCart']; ?></td>
 				<td align="left" ><?php echo $prow['product_sku'] ?></td>
 				<td align="center" ><?php echo $prow['prices'] ?></td>
 				<td align="right" ><?php echo $prow['update_form'] ?>

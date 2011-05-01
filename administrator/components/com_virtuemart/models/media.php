@@ -311,11 +311,6 @@ class VirtueMartModelMedia extends JModel {
 		$table = $this->getTable('media');
 		if(empty($data))$data = JRequest::get('post');
 
-
-//		$modified = JFactory::getDate();
-//		$data['mdate']=$modified->toMySQL();
-//		if(empty($this->file_id)) $data['cdate'] = $modified->toMySQL();
-
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		// Bind the form fields to the table

@@ -120,11 +120,9 @@ class VirtuemartControllerCustom extends JController {
 			}
 		}
 
-
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
-			
-			$redirection = 'index.php?option=com_virtuemart&view=custom&task=edit&custom_id='.JRequest::getInt('custom_id',$id);
+			$redirection = 'index.php?option=com_virtuemart&view=custom&task=edit&custom_id='.$id;
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=custom';
 		}

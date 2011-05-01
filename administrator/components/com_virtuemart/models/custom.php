@@ -126,8 +126,8 @@ class VirtueMartModelCustom extends JModel {
      */
     function getProductCustoms($product_id){
 
-		$query='SELECT * FROM `#__vm_custom_field` 
-		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__vm_custom_field`.`custom_field_id` 
+		$query='SELECT * FROM `#__vm_custom_field`
+		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__vm_custom_field`.`custom_field_id`
 		and product_id='.$product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
@@ -136,8 +136,8 @@ class VirtueMartModelCustom extends JModel {
   		return $this->_datas;
 
     }
-	
-	
+
+
 
     /**
 	 * Retireve a list of customs from the database. This is meant only for backend use
@@ -159,13 +159,13 @@ class VirtueMartModelCustom extends JModel {
 		$datas->field_types = VmCustomHandler::getField_types() ;
 		foreach ($datas->items as $key => & $data) {
   		if (!empty($data->custom_parent_id)) $data->custom_parent_title = VmCustomHandler::getCustomParentTitle($data->custom_parent_id);
-		else { 
+		else {
 			$data->custom_parent_title =  '-' ;
 		}
   		$data->field_type_display = $datas->field_types[$data->field_type ];
 		}
 		$datas->customsSelect=VmCustomHandler::displayCustomSelection();
-		
+
 		return $datas;
     }
 
@@ -192,25 +192,28 @@ class VirtueMartModelCustom extends JModel {
 		$data['custom_ids'] = array_merge( (array)$data['custom_id'],$data['custom_ids']);
 		$custom_ids = array_diff($data['custom_ids'],array('0',''));
 
-			// Bind the form fields to the table
-			if (!$table->bind($data)) {
-				$this->setError($table->getError());
-				return false;
-			}
+		// Bind the form fields to the table
+		if (!$table->bind($data)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
-			// Make sure the record is valid
-			if (!$table->check()) {
-				$this->setError($table->getError());
-				return false;
-			}
+		// Make sure the record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;
+		}
 
-			// Save the record to the database
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				return false;
-			}
-			return true;
-//		}
+		// Save the record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;
+		}
+		$dbv = $table->getDBO();
+		if(empty($this->_id)) $this->_id = $dbv->insertid();
+
+		return $this->_id;
+
 	}
 
 	/**
@@ -259,7 +262,7 @@ class VirtueMartModelCustom extends JModel {
 //		$deleted = 0;
 	 	$row = $this->getTable('custom');
 //	 	$cids = JRequest::getVar('cid');
-		
+
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
 				//$row->load($cid);
@@ -318,7 +321,7 @@ class VirtueMartModelCustom extends JModel {
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
-		
+
 		// slect all custom_field_id from product
 		$q="select custom_field_id from `#__vm_custom_field_xref_product` where product_id=".$product_id ;
 		$this->_db->setQuery($q);

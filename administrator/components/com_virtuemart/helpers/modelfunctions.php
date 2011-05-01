@@ -69,6 +69,13 @@ class modelfunctions{
 
 		}
 
+		//TODO enhance it maybe simular to this
+		//		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
+//		$q .= $product_data->product_id.', ';
+//		$q .= JRequest::getInt('manufacturer_id').') ';
+//		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
+//		$this->_db->setQuery($q);
+//		$this->_db->query();
 		return true;
 	}
 
@@ -137,7 +144,7 @@ class modelfunctions{
 	function publish($idName, $tablename, $publishId = false) {
 
 		$table = $this->getTable($tablename);
-		
+
 		$ids = JRequest::getVar( $idName, array(0), 'post', 'array' );
 		if (!$table->publish($ids, $publishId)) {
 			$this->setError($table->getError());
