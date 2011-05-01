@@ -50,42 +50,42 @@ defined('_JEXEC') or die('Restricted access');
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
-			/* Add the variants */
-			$variant = '';
-			$variantmod = '0';
-			if(!empty($product->variant)){
-				$product_rows[$i]['product_variant'] = '';
-
-				foreach ($product->variant as $vname => $vvalue) {
-					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
-					$variant .=$vvalue;
-				}
-			} else {
+//			/* Add the variants */
+//			$variant = '';
+//			$variantmod = '0';
+//			if(!empty($product->variant)){
+//				$product_rows[$i]['product_variant'] = '';
+//
+//				foreach ($product->variant as $vname => $vvalue) {
+//					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
+//					$variant .=$vvalue;
+//				}
+//			} else {
 				$product_rows[$i]['product_variant']='';
-			}
-
-
-			/* Add the custom variants */
-			$cvariant = '';
-			if(!empty($product->customvariant)){
-				$product_rows[$i]['product_customvariant'] = '';
-
-				foreach ($product->customvariant as $cname => $cvalue) {
-					$product_rows[$i]['product_customvariant'] .= '<br />'.$cname.': '.$cvalue;
-					$cvariant .= $cvalue;
-				}
-			} else {
+//			}
+//
+//
+//			/* Add the custom variants */
+//			$cvariant = '';
+//			if(!empty($product->customvariant)){
+//				$product_rows[$i]['product_customvariant'] = '';
+//
+//				foreach ($product->customvariant as $cname => $cvalue) {
+//					$product_rows[$i]['product_customvariant'] .= '<br />'.$cname.': '.$cvalue;
+//					$cvariant .= $cvalue;
+//				}
+//			} else {
 				$product_rows[$i]['product_customvariant']='';
-			}
+//			}
 
 			// Display attribute values if this an item
 			$product_rows[$i]['product_attributes'] = '';
-			if ($product->product_parent_id > 0) {
-				foreach ($product->attributes as $attribute) {
-					$product_rows[$i]['product_attributes'] .= "<br />".$attribute->attribute_name."&nbsp;";
-					$product_rows[$i]['product_attributes'] .= "(" . $attribute->attribute_value.")";
-				}
-			}
+//			if ($product->product_parent_id > 0) {
+//				foreach ($product->attributes as $attribute) {
+//					$product_rows[$i]['product_attributes'] .= "<br />".$attribute->attribute_name."&nbsp;";
+//					$product_rows[$i]['product_attributes'] .= "(" . $attribute->attribute_value.")";
+//				}
+//			}
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			/** @todo WEIGHT CALCULATION */
@@ -158,7 +158,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		  <tr class="sectiontableentry1">
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
-			<td align="right"><?php echo $this->prices['priceWithoutTax'] ?></td>
+			<td align="right"><?php echo $this->prices['basePrice'] ?></td>
 			<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
 			<td align="right"><?php echo $this->prices['discountAmount'] ?></td>
 			<td align="right"><?php echo $this->prices['salesPrice'] ?></td>

@@ -363,7 +363,7 @@ class calculationHelper {
 		$this->_cartPrices['salesPriceWithDiscount']= 0;
 		$this->_cartPrices['discountAmount']= 0;
 		$this->_cartPrices['priceWithoutTax']= 0;
-
+		$this->_cartPrices['subTotalProducts'] = 0;
 		$this->_cartData['duty'] = 1;
 
 		$this->_cartData['payment'] = 0; //could be automatically set to a default set in the globalconfig
@@ -384,7 +384,7 @@ class calculationHelper {
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
-			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $product->prices['basePrice']*$product->quantity;
+			$this->_cartPrices['basePrice'] +=  $product->prices['basePrice']*$product->quantity;
 //				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->product_id]['basePriceVariant']*$product->quantity;
 			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax']*$product->quantity;
 			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax']*$product->quantity;
@@ -399,7 +399,13 @@ class calculationHelper {
 			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $product->prices['discountAmount'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
 
+//			if(empty($this->_cartPrices['priceWithoutTax'])){ //before tax
+//				$this->_cartPrices['subTotalProducts'] += $product->prices['discountedPriceWithoutTax']*$product->quantity;
+//			} else {
+//				$this->_cartPrices['subTotalProducts'] += $product->prices['basePrice']*$product->quantity;
+//			}
 		}
+
 
 
 		if(empty($this->_shopperGroupId)){
