@@ -12,8 +12,6 @@
 INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
 (null, 1, 0, 'COM_VIRTUEMART_CATEGORY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 1, 1, '', 'category', ''),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'product', 'product'),
-(null, 1, 0, 'COM_VIRTUEMART_ATTRIBUTE_LIST_MNU', '', '', 'vmicon vmicon-16-content', 3, 1, '', 'attributes', 'attributes'),
-(null, 1, 0, 'COM_VIRTUEMART_PRODUCT_TYPE_LIST_MNU', '', '', 'vmicon vmicon-16-content', 4, 1, '', 'producttypes', ''),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_CUSTOM_LIST_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'custom', ''),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_FILES_LIST_MNU', '', '', 'vmicon vmicon-16-content', 6, 1, '', 'media', 'media'),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_INVENTORY_MNU', '', '', 'vmicon vmicon-16-install', 7, 1, '', 'inventory', 'inventory'),

@@ -160,7 +160,7 @@ class VirtueMartModelCustom extends JModel {
 		foreach ($datas->items as $key => & $data) {
   		if (!empty($data->custom_parent_id)) $data->custom_parent_title = VmCustomHandler::getCustomParentTitle($data->custom_parent_id);
 		else { 
-			$data->custom_parent_title =  JText::_('COM_VIRTUEMART_CUSTOM_NO_PARENT') ;
+			$data->custom_parent_title =  '-' ;
 		}
   		$data->field_type_display = $datas->field_types[$data->field_type ];
 		}

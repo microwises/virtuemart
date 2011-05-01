@@ -173,21 +173,6 @@ INSERT IGNORE INTO `#__vm_product_media_xref` (`id`,`product_id`, `file_ids`) VA
 (NULL, 10, 6);
 
 --
--- Dumping data for table `#__vm_product_attribute`
---
-
-INSERT IGNORE INTO `#__vm_product_attribute` (`attribute_id`, `product_id`, `attribute_name`, `attribute_value`) VALUES
-(1, 11, 'Color', 'Red'),
-(2, 12, 'Color', 'Green'),
-(3, 13, 'Color', 'Blue'),
-(4, 11, 'Size', 'Small'),
-(5, 12, 'Size', 'Medium'),
-(6, 13, 'Size', 'Large'),
-(7, 14, 'Material', 'Metal'),
-(8, 15, 'Material', 'Wood'),
-(9, 16, 'Material', 'Plastic');
-
---
 -- Dumping data for table `#__vm_product_attribute_sku`
 --
 
