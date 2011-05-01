@@ -193,7 +193,7 @@ class VirtueMartControllerProductdetails extends JController {
 		foreach ($prices as &$value  ){
 			$value = $calculator->priceDisplay($value);
 		}
-		die;
+//		die;
 		// Get the document object.
 		$document =& JFactory::getDocument();
 
@@ -201,9 +201,9 @@ class VirtueMartControllerProductdetails extends JController {
 		$document->setMimeEncoding( 'application/json' );
 
 
-//		echo json_encode ($prices);
-//		jexit();
-//		die;
+		echo json_encode ($prices);
+		jexit();
+		die;
 
 	}
 
