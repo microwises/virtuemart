@@ -174,13 +174,17 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function recalculate(){
 
+		$post = JRequest::get('request');
+
+//		echo '<pre>'.print_r($post,1).'</pre>';
 		$product_idArray = JRequest::getVar('product_id',0);
 		$product_id = $product_idArray[0];
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$product_model = $this->getModel('product');
 
-		$prices = $product_model->getPrice($product_id);
+		$customVariant = JRequest::getVar('customPrice',array());
+		$prices = $product_model->getPrice($product_id,$customVariant);
 
 		//Why we do not have to include the calculatorh.php here?
 		//Because it is already require in the model!
@@ -189,16 +193,17 @@ class VirtueMartControllerProductdetails extends JController {
 		foreach ($prices as &$value  ){
 			$value = $calculator->priceDisplay($value);
 		}
-
+		die;
 		// Get the document object.
 		$document =& JFactory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );
 
-		echo json_encode ($prices);
-		jexit();
-		die;
+
+//		echo json_encode ($prices);
+//		jexit();
+//		die;
 
 	}
 

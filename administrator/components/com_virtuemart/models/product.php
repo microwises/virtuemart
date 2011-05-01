@@ -273,13 +273,14 @@ class VirtueMartModelProduct extends JModel {
 					$calculator = calculationHelper::getInstance();
 
 					/* Calculate the modificator */
-					$product_type_modificator = 0; //$calculator->calculateModificators($product->product_id,$product->variants);
+//					$product_type_modificator = 0; //$calculator->calculateModificators($product->product_id,$product->variants);
 					//$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
 					//I need here the choosen ids of the customfields
 				  // getProductcustomfieldsIds HAVE THE CUSTOM FIELDS ID
 					$product->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($product);
 					$quantityArray = JRequest::getVar('quantity',1,'post');
-					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,$product->ProductcustomfieldsIds,$quantityArray[0]);
+//					$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
+					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,0,$quantityArray[0]);
 				}
 
 				$product->prices = $prices;
@@ -1447,23 +1448,25 @@ class VirtueMartModelProduct extends JModel {
 	/*
 	 * was productdetails
 	 */
-	public function getPrice($product_id=false){
+	public function getPrice($product_id=false,$customVariant=false){
 
 		$this->_db = JFactory::getDBO();
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 
-		$q = "SELECT `p`.*, `x`.`category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
-			FROM `#__vm_product` `p`
-			LEFT JOIN `#__vm_product_category_xref` x
-			ON `x`.`product_id` = `p`.`product_id`
-			LEFT JOIN `#__vm_product_mf_xref` `mx`
-			ON `mx`.`product_id` = `p`.`product_id`
-			LEFT JOIN `#__vm_manufacturer` `m`
-			ON `m`.`manufacturer_id` = `mx`.`manufacturer_id`
-			WHERE `p`.`product_id` = ".$product_id;
-		$this->_db->setQuery($q);
-		$product = $this->_db->loadObject();
+		//This is one of the dead sins of OOP and MUST NOT be done
+//		$q = "SELECT `p`.*, `x`.`category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
+//			FROM `#__vm_product` `p`
+//			LEFT JOIN `#__vm_product_category_xref` x
+//			ON `x`.`product_id` = `p`.`product_id`
+//			LEFT JOIN `#__vm_product_mf_xref` `mx`
+//			ON `mx`.`product_id` = `p`.`product_id`
+//			LEFT JOIN `#__vm_manufacturer` `m`
+//			ON `m`.`manufacturer_id` = `mx`.`manufacturer_id`
+//			WHERE `p`.`product_id` = ".$product_id;
+//		$this->_db->setQuery($q);
+//		$product = $this->_db->loadObject();
 
+		$product = $this->getProduct($product_id);
 		/* Load the categories the product is in */
 		$product->categories = $this->getProductCategories();
 
@@ -1486,11 +1489,12 @@ class VirtueMartModelProduct extends JModel {
 		/* Calculate the modificator */
 //		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);		/* Calculate the modificator */
 //		$product_type_modificator = $calculator->calculateCustomsCart($product->product_id,$product->CustomsFieldCartPrice); WHY NOT HERE ?
-		$selectedVariants = $calculator->parseModifier($product->variants);
-		$variantPriceModification = $calculator->calculateModificators($product,$selectedVariants);
+//		$selectedVariants = $calculator->parseModifier($customVariant);
+		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 //				$product->product_id.$variant_name
-		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$product_type_modificator,$quantityArray[0]);
+
+		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$variantPriceModification,$quantityArray[0]);
 
 		//Wrong place, this must not be done in a model, display is gui, therefore it must be done in the view!
 		// change display //
