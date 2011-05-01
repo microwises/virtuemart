@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 		$product_rows = array();
 
 		$i=0;
-		foreach ($this->cart->products as $k=>$product){
+		foreach ($this->cart->products as $priceKey=>$product){
 			// Added for the zone shipping module
 			//$vars["zone_qty"] += $product["quantity"];
 
@@ -94,8 +94,10 @@ defined('_JEXEC') or die('Restricted access');
 			//$weight_total += $weight_subtotal;
 
 			/* Product PRICE */
-			$priceKey = $product->product_id.$variantmod;
-
+//			$priceKey = $k ;//$product->product_id.$variantmod;
+//
+//			dump($variantmod,'$variantmod');
+//			dump($k,'key');
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
 			$product_rows[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
@@ -110,14 +112,14 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="text" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
-				<input type="hidden" name="cart_product_id" value="'.$k.'" />
+				<input type="hidden" name="cart_product_id" value="'.$priceKey.'" />
 				<input type="image" name="update" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/update_quantity_cart.png" alt="'. JText::_('COM_VIRTUEMART_UPDATE') .'" align="middle" />
 			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="delete" />
-				<input type="hidden" name="cart_product_id" value="'.$k.'" />
+				<input type="hidden" name="cart_product_id" value="'.$priceKey.'" />
 				<input type="image" name="delete" title="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/remove_from_cart.png" alt="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" align="middle" />
 			  </form>';
 			} else {

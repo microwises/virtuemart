@@ -372,19 +372,19 @@ class calculationHelper {
 				continue;
 			}
 //			dump($product,'$product');
-			dump($product,'$product '.$name);
+			dump($name,'$productname ');
 //			$variantmod = $this->parseModifier($product->variant);
 			$variantmod = $this->parseModifier($name);
 
-			$cartproductkey = $productId.$variantmod;
-			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);
-//			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($productId,0,$variantmod,$product->quantity,true,false);
-//			$product->prices = $pricesPerId[(int)$productId] = $this -> getProductPrices($product,0,$variantmod,$product->quantity,true,false);
+			$cartproductkey = $name ; //$product->product_id.$variantmod;
+			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
+//			$product->prices = $pricesPerId[(int)$product->product_id] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
+//			$product->prices = $pricesPerId[(int)$product->product_id] = $this -> getProductPrices($product,0,$variantmod,$product->quantity,true,false);
 //			$this->_cartPrices[$cartproductkey] = $pricesPerId[$cartproductkey];
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
 			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $product->prices['basePrice']*$product->quantity;
-//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$productId]['basePriceVariant']*$product->quantity;
+//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->product_id]['basePriceVariant']*$product->quantity;
 			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax']*$product->quantity;
 			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax']*$product->quantity;
 			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice']*$product->quantity;
@@ -1068,10 +1068,14 @@ class calculationHelper {
 	 * @return array The adjusted price modificator
 	 */
 
-	function calculateModificators($product_id,$variants){
+	function calculateModificators($product,$variants){
 
+		$modificatorSum=0.0;
 
-//		$modificatorSum=0.0;
+		foreach($variants as $variant){
+
+		}
+
 //		$max=array();
 //		foreach ($variants as $variant_name => $variant) {
 //			$value = JRequest::getVar($variant_name,0);
@@ -1096,11 +1100,57 @@ class calculationHelper {
 
 	public function parseModifier($name){
 
-		$product_id = substr(0,strpos('::')-1;
-		dump($product_id,'$product_id');
+		$items = explode(';',$name);
+		dump($items,'$items');
+		$variants = array();
+		foreach($items as $item){
+			if(!empty($item)){
+				$index = strpos($item,'::');
+				$product_id = substr($item,0,$index);dump($product_id,'$product_id');
+				$item = substr($item,$index+2);
 
+				$index2 = strpos($item,':');
+				$variant = substr($item,0,$index2);dump($variant,'$variant');
+				$selected = substr($item,$index2+1);dump($selected,'selected $variant');
+
+//				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
+//					FROM `#__vm_custom` AS C
+//					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+//					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+//					Where xref.`product_id` ='.$product_id;
+//				$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$variant ;
+//				$this->_db->setQuery($query);
+//				$productCustomsPrice = $this->_db->loadObject();
+//				// test operator
+//				$op = substr($productCustomsPrice->custom_price,0,1);
+//				$op2 = substr($productCustomsPrice->custom_price,-1);
+//
+//				$price=floatval($productCustomsPrice->custom_price);
+//				if ($op2 == '%') $price = $product_type_modificator*($price*0.01);
+//				switch ($op) {
+//					case '+':
+//						$product_type_modificator+=$price;
+//						break;
+//					case '-':
+//						$product_type_modificator-=$price;
+//						break;
+//					case '*':
+//						$product_type_modificator*=$price;
+//						break;
+//					case '/':
+//						$product_type_modificator/=$price;
+//						break;
+//					case '%':
+//						$product_type_modificator=$product_type_modificator+$product_type_modificator*($price/100);
+//						break;
+//					default :
+//						$product_type_modificator+=$price;
+//				}
+			}
+		}
 
 	}
+
 
 	/**
 	 * Calculate a pricemodification for a variant

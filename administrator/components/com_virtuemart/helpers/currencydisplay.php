@@ -181,11 +181,12 @@ class CurrencyDisplay {
 
     	$tmp1 = round((float) $number, $decimals);
 
-		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
-			$tmp1 = $tmp2;
-		}
-
-		return strtr($tmp1, array(' ' => $thousand_separator, '.' => $decimal_point));
+    	return number_format($number,$decimals,$decimal_point,$thousand_separator);
+//		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
+//			$tmp1 = $tmp2;
+//		}
+//
+//		return strtr($tmp1, array(' ' => $thousand_separator, '.' => $decimal_point));
     }
 
     /**

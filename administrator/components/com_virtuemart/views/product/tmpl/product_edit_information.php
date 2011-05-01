@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
-					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
+					<?php echo $this->product_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -124,7 +124,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
-					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
+					<?php echo $this->vendor_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -133,7 +133,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
-					<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
+					<?php echo $this->vendor_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>
 			</tr>
 		</table>

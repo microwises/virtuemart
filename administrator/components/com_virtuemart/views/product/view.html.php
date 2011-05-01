@@ -123,17 +123,24 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
+
+				$vendor_model->setId($product->vendor_id);
+				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
-					$vendor_model->setId($product->vendor_id);
-					$vendor = $vendor_model->getVendor();
 					$product->product_currency = $vendor->vendor_currency;
 				}
-                                $currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+				$currency = $currency_model->getCurrency($product->product_currency);
+				$this->assignRef('product_currency', $currency->currency_symbol);
 
+				$currency = $currency_model->getCurrency($vendor->vendor_currency);
+				$this->assignRef('vendor_currency', $currency->currency_symbol);
+
+//				$product_currency_symbol = $currency->currency_symbol;
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
-//				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $product->manufacturer_id );
+
 				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'manufacturer_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
 
 				/* Load the attribute names */
@@ -178,7 +185,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load product types lists */
 				$productTypes = $this->get('productTypes');
 				$this->assignRef('productTypes', $productTypes);
-				dump ($product,'produit');
+
 				/* Load affected product  customs fields */
 				//$productCustoms = $this->get('productCustomsList');
 				//if (!$productCustoms) $productCustoms = array();
