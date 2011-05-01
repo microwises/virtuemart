@@ -151,46 +151,11 @@ if (empty ( $this->product )) {
 
 			<span class="product-field-desc"><?php echo $field->custom_field_desc ?><span>
 			</div>
-			<?php  dump( $field ,'cart field');
+			<?php
 		}
 		?>
 	</div>
-	<?php } // Product custom_fields END ?>
-					<?php // Product Variants Drop Down Box 
-					/*
-					$variantExist=false;
-					foreach ($this->product->variants as $variant_name => $variant) {
-						$variantExist=true;
-						$options = array();
-
-						foreach ($variant as $name => $price) {
-							if (!empty($price)){
-								$name .= ' ('.$price.')';
-							}
-							$options[] = JHTML::_('select.option', $name, $name);
-						}
-
-						if (!empty($options)) {
-							// genericlist have ID and whe want only class ( future use in jQuery, may be)
-							$html    = '<select name="'. $variant_name .'" class="variant">';
-							$html    .= JHTMLSelect::Options( $options, 'value', 'text', NULL, false );
-							$html    .= '</select>'; ?>
-
-						<span class="variant-name"><?php echo $variant_name ?></span>
-						<span class="variant-dropdown"><?php echo $html ?></span>
-						<br class="clear" />
-					<?php }
-					}  */// Product Variants Drop Down Box END ?>
-
-					<?php // Show the custom attributes
-				/*	foreach($this->product->customvariants as $ckey => $customvariant) { ?>
-						<span class="custom-variant-name">
-							<label for="<?php echo $customvariant ?>_field"><?php echo $customvariant ?></label>:
-						</span> <span class="custom-variant-inputbox">
-							<input type="text" class="custom-attribute" id="<?php echo $customvariant ?>_field" name="<?php echo $this->product->product_id.$customvariant; ?>" />
-						</span>
-						<br class="clear" />
-					<?php } */ // Show the custom attributes END ?>
+	<?php } ?>
 
 						<div class="addtocart-bar">
 

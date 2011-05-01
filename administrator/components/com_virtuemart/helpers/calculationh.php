@@ -143,7 +143,7 @@ class calculationHelper {
 			//Todo check for ACL groups
 			return array();
 		}
-		dump($variant,'variant getProductPrices');
+
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
@@ -1097,18 +1097,18 @@ class calculationHelper {
 	public function parseModifier($name){
 
 		$items = explode(';',$name);
-		dump($items,'$items');
+
 		$return = array();
 		$variants = array();
 		foreach($items as $item){
 			if(!empty($item)){
 				$index = strpos($item,'::');
-				$product_id = substr($item,0,$index);dump($product_id,'$product_id');
+				$product_id = substr($item,0,$index);
 				$item = substr($item,$index+2);
 
 				$index2 = strpos($item,':');
-				$variant = substr($item,0,$index2);dump($variant,'$variant');
-				$selected = substr($item,$index2+1);dump($selected,'selected $variant');
+				$variant = substr($item,0,$index2);
+				$selected = substr($item,$index2+1);
 				$variants[$variant] = $selected;
 			}
 		}

@@ -154,8 +154,6 @@ class VirtueMartCart  {
 		$total_updated = 0;
 		$total_deleted = 0;
 		$product_ids = JRequest::getVar('product_id',array(),'default','array' ) ;
-//		$product_ids = $post['product_id'];
-//		$product_ids = JRequest::get('product_id');
 
 		if (empty($product_ids)) {
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS',false) );
@@ -174,13 +172,6 @@ class VirtueMartCart  {
 				$quantityPost = $post['quantity'][$p_key];
 				$category_idPost = $post['category_id'][$p_key];
 
-				dump($post,'post');
-				/** @todo Check for child items, variants and attributes */
-
-				/** @todo check for attributes adding to the cart */
-
-
-//				$product->quantity = $quantity;
 				$product->category_id = $category_idPost;
 				$productKey= $product->product_id;
 // INDEX NOT FOUND IN JSON HERE
@@ -194,28 +185,6 @@ class VirtueMartCart  {
 						}
 					}
 				}
-//				echo '<pre>'.print_r($quantityPost).'</pre>';die;
-
-//				/* Check for variants being posted */
-//				$variants = array();
-//				foreach ($product->variants as $variant => $options) {
-//					if (array_key_exists($product->product_id.$variant, $post)) {
-//						$variants[$variant] = $post[$product->product_id.$variant];
-//						$productKey .= $post[$product->product_id.$variant];
-//					}
-//				}
-//				$productKey .= ':';
-//				$product->variant =  $variants;
-
-				/* Check for custom attributes */
-//				$customvariants = array();
-//				foreach ($product->customvariants as $cvariant) {
-//					if (array_key_exists($product->product_id.$cvariant, $post)) {
-//						$customvariants[$cvariant] = $post[$product->product_id.$cvariant];
-//						$productKey .= ':'.$post[$product->product_id.$cvariant];
-//					}
-//				}
-//				$product->customvariant =  $customvariants;
 
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;

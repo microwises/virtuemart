@@ -1034,7 +1034,6 @@ class VirtueMartModelProduct extends JModel {
 		}
 
 		if($setPriceTable){
-			dump($product_price_table,'price table');
 			// Make sure the price record is valid
 			if (!$product_price_table->check()) {
 				$this->setError($product_price_table->getError());
@@ -1132,7 +1131,7 @@ class VirtueMartModelProduct extends JModel {
 		* 'product_type_tables' are all types tables in product edit view
 		*/
 		if (array_key_exists('field', $data)) {
-			dump ($data['field'] , 'customsaved' );
+//			dump ($data['field'] , 'customsaved' );
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveProductfield($data['field'],$product_data->product_id);
 		}
@@ -1943,13 +1942,11 @@ class VirtueMartModelProduct extends JModel {
 					$productCustom->custom_price = $calculator->priceDisplay($productCustom->custom_price,$product->product_currency,true);
 				}
 				if ($group->field_type == 'V'){
-					dump($productCustoms,'field_type == V');
 					foreach ($productCustoms as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
 					}
 					$group->display = VmHTML::select($productCustoms,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
 				} else {
-					dump($product,'field_type == other');
 					$group->display ='';
 					foreach ($productCustoms as $productCustom) {
 						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
@@ -2057,7 +2054,7 @@ class VirtueMartModelProduct extends JModel {
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
 					$image = $db->loadObject();
-					dump($value,'C. image'.$row);
+//					dump($value,'C. image'.$row);
 					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 					$this->file_id = (int)$value;
