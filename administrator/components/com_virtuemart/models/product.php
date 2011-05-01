@@ -273,13 +273,8 @@ class VirtueMartModelProduct extends JModel {
 					$calculator = calculationHelper::getInstance();
 
 					/* Calculate the modificator */
-//					$product_type_modificator = 0; //$calculator->calculateModificators($product->product_id,$product->variants);
-					//$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);
-					//I need here the choosen ids of the customfields
-				  // getProductcustomfieldsIds HAVE THE CUSTOM FIELDS ID
 					$product->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($product);
 					$quantityArray = JRequest::getVar('quantity',1,'post');
-//					$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
 					$prices = $calculator->getProductPrices((int)$product->product_id,$product->categories,0,$quantityArray[0]);
 				}
 
@@ -1472,12 +1467,6 @@ class VirtueMartModelProduct extends JModel {
 
 		if (empty($product->category) && isset($product->categories[0])) $product->category_id = $product->categories[0];
 
-		/* Load the attributes */
-//		$product->attributes = $this->getAttributes($product);
-
-		/* Load the variants */
-//		$product->variants = $this->getVariants($product);
-
 		/* NEW Load the Customs Field Cart Price */
 		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldWithPrice($product);
 		/* Loads the product price details */
@@ -1487,12 +1476,8 @@ class VirtueMartModelProduct extends JModel {
 		$quantityArray = JRequest::getVar('quantity',1,'post');
 
 		/* Calculate the modificator */
-//		$product_type_modificator = $calculator->calculateModificators($product->product_id,$product->variants);		/* Calculate the modificator */
-//		$product_type_modificator = $calculator->calculateCustomsCart($product->product_id,$product->CustomsFieldCartPrice); WHY NOT HERE ?
-//		$selectedVariants = $calculator->parseModifier($customVariant);
 		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
 		$quantityArray = JRequest::getVar('quantity',1,'post');
-//				$product->product_id.$variant_name
 
 		$prices = $calculator->getProductPrices($product->product_id,$product->categories,$variantPriceModification,$quantityArray[0]);
 

@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
 					$variant .=$vvalue;
 				}
-				$variantmod = $this->calculator->parseModifier($product->variant);
+
 			} else {
 				$product_rows[$i]['product_variant']='';
 			}

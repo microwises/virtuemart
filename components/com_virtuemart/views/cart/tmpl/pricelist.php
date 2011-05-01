@@ -60,7 +60,6 @@ defined('_JEXEC') or die('Restricted access');
 					$product_rows[$i]['product_variant'] .= '<br />'.$vname.': '.$vvalue;
 					$variant .=$vvalue;
 				}
-//				$variantmod = $this->calculator->parseModifier($product->variant);
 			} else {
 				$product_rows[$i]['product_variant']='';
 			}
@@ -94,10 +93,6 @@ defined('_JEXEC') or die('Restricted access');
 			//$weight_total += $weight_subtotal;
 
 			/* Product PRICE */
-//			$priceKey = $k ;//$product->product_id.$variantmod;
-//
-//			dump($variantmod,'$variantmod');
-//			dump($k,'key');
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 
 			$product_rows[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
