@@ -182,12 +182,16 @@ class VirtueMartCart  {
 
 //				$product->quantity = $quantity;
 				$product->category_id = $category_idPost;
-				$productKey= $product->product_id.'::';
+				$productKey= $product->product_id;
 // INDEX NOT FOUND IN JSON HERE
-				$product->variants = $post['customPrice'];
-				foreach($product->variants as $variant){
-					foreach($variant as $variant => $selected){
-						$productKey .= $variant.':'.$selected.';';
+// changed name field you know exactly was this is
+				if (isset($post['customPrice'])) {
+					$product->customPrices = $post['customPrice'];
+					$productKey.= '::';
+					foreach($product->customPrices as $customPrice){
+						foreach($customPrice as $customId => $custom_fieldId){
+							$productKey .= $customId.':'.$custom_fieldId.';';
+						}
 					}
 				}
 //				echo '<pre>'.print_r($quantityPost).'</pre>';die;
