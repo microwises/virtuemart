@@ -199,8 +199,8 @@ class VirtuemartControllerCustom extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
 	}
 	/**
-	 * Handle the publish task
-	 *
+	 * Toggle is_hidden fied
+	 *@Author Kohl patrick
 	 * @author Max Milbers
 	 */
 	public function toggle_is_hidden() {
@@ -216,9 +216,10 @@ class VirtuemartControllerCustom extends JController {
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
-	}	/**
-	 * Handle the publish task
-	 *
+	}
+	/**
+	 * Toggle admin_only
+	 *@Author Kohl patrick
 	 * @author Max Milbers
 	 */
 	public function toggle_admin_only() {

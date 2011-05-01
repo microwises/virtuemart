@@ -117,11 +117,11 @@ class VirtueMartModelCustom extends JModel {
 
   		return $custom;
 
-    }    /**
+    }
+    /**
      * Gets a single custom by custom_id
      * .
-     * @param string $type
-     * @param string $mime mime type of custom, use for exampel image
+     * @param int $product_id
      * @return customobject
      */
     function getProductCustoms($product_id){
@@ -140,36 +140,6 @@ class VirtueMartModelCustom extends JModel {
 	
 
     /**
-     * Kind of getCustoms, it creates a bunch of image objects by an array of custom_ids
-     *
-     * @author Max Milbers
-     * @param unknown_type $custom_ids
-     * @param unknown_type $type
-     * @param unknown_type $mime
-     */
-	function createCustomByIds($custom_ids,$role=''){
-
-    	$customs = array();
-    	if(!empty($custom_ids)){
-    		if(!is_array($custom_ids)) $custom_ids = explode(',',$custom_ids);
-
-    	    foreach($custom_ids as $custom_id){
-	    		$data = $this->getTable('Custom');
-	    		$id = is_object($custom_id)? $custom_id->custom_id:$custom_id;
-	   			$data->load($id);
-	  			$customs[] = $custom;
-    		}
-    	}
-
-    	if(empty($customs)){
-    		$data = $this->getTable('Custom');
-    		$customs[] = $this->createCustom($custom_ids,$role);
-    	}
-
-    	return $customs;
-	}
-
-    /**
 	 * Retireve a list of customs from the database. This is meant only for backend use
 	 *
 	 * @author Kohl Patrick
@@ -186,7 +156,6 @@ class VirtueMartModelCustom extends JModel {
 
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		VmCustomHandler::addCustomAttributesByType();
 		$datas->field_types = VmCustomHandler::getField_types() ;
 		foreach ($datas->items as $key => & $data) {
   		if (!empty($data->custom_parent_id)) $data->custom_parent_title = VmCustomHandler::getCustomParentTitle($data->custom_parent_id);
@@ -205,6 +174,7 @@ class VirtueMartModelCustom extends JModel {
      * This function stores a custom and updates then the refered table
      *
      * @author Max Milbers
+     * @author Patrick Kohl
      * @param unknown_type $data
      * @param unknown_type $table
      * @param unknown_type $type
@@ -244,10 +214,9 @@ class VirtueMartModelCustom extends JModel {
 	}
 
 	/**
-	 * Store an entry of a customItem, this means in end effect every custom custom in the shop
-	 * images, videos, pdf, zips, exe, ...
+	 * Store an entry of a customItem,
 	 *
-	 * @author Max Milbers
+	 * @author Kohl Patrick
 	 */
 	public function store($data=0) {
 
@@ -261,39 +230,27 @@ class VirtueMartModelCustom extends JModel {
 			$this->setError($table->getError());
 			return false;
 		}
-
-		$data = VmCustomHandler::prepareStoreCustom($table,$data); //this does not store the custom, it process the actions and prepares data
-/*
-		if(!empty($data['file_url'])){
-//			$this->delete($data['custom_id']);
-		} else { */
-			// Bind the form fields to the table again
-			if (!$table->bind($data)) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Make sure the record is valid
-			if (!$table->check()) {
-				if($table->getError()){
-					foreach($table->getErrors() as $error){
-						$this->setError($error);
-					}
+		// Make sure the record is valid
+		if (!$table->check()) {
+			if($table->getError()){
+				foreach($table->getErrors() as $error){
+					$this->setError($error);
 				}
-				return false;
 			}
-			// Save the record to the database
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				return false;
-			}
+			return false;
+		}
+		// Save the record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;
+		}
 		//}
 
 		return $table->custom_id;
 	}
 
 	/**
-	 * Delete an image file
+	 * Delete an custom field
 	 * @author unknow, maybe Roland Dalmulder
 	 * @author Max Milbers
 	 */
@@ -302,15 +259,16 @@ class VirtueMartModelCustom extends JModel {
 //		$deleted = 0;
 	 	$row = $this->getTable('custom');
 //	 	$cids = JRequest::getVar('cid');
+		
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
-				$row->load($cid);
-				if ($row->delete()) $deleted++;
+				//$row->load($cid);
+				if ($row->delete($cid)) $deleted++;
 			}
 		}
 		else {
-			$row->load($cids);
-			if ($row->delete()) $deleted++;
+			//$row->load($cids);
+			if ($row->delete($cid)) $deleted++;
 		}
 		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS')));
 
@@ -331,19 +289,19 @@ class VirtueMartModelCustom extends JModel {
 	}	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @author Max Milbers
+     * @author Kohl Patrick
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function toggle($field)
 	{
-		dump(JRequest::get( 'post' ),'la poste');
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::toggle('custom',$field,'cid');
-
 	}
 
-	// Save and delete from database
+	/* Save and delete from database
+	* all product custom_fields and xref
+	*/
 	public function  saveProductfield($fields, $product_id) {
 
 		$newIds = array();

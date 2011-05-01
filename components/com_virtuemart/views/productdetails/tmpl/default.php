@@ -156,7 +156,8 @@ if (empty ( $this->product )) {
 		?>
 	</div>
 	<?php } // Product custom_fields END ?>
-					<?php // Product Variants Drop Down Box
+					<?php // Product Variants Drop Down Box 
+					/*
 					$variantExist=false;
 					foreach ($this->product->variants as $variant_name => $variant) {
 						$variantExist=true;
@@ -179,7 +180,7 @@ if (empty ( $this->product )) {
 						<span class="variant-dropdown"><?php echo $html ?></span>
 						<br class="clear" />
 					<?php }
-					} // Product Variants Drop Down Box END ?>
+					}  */// Product Variants Drop Down Box END ?>
 
 					<?php // Show the custom attributes
 				/*	foreach($this->product->customvariants as $ckey => $customvariant) { ?>

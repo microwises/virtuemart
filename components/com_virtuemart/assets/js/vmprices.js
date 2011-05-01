@@ -8,6 +8,7 @@
 			plus   = cart.find('.quantity-plus'),
 			minus  = cart.find('.quantity-minus'),
 			select = cart.find('select'),
+			radio = cart.find('input:radio'),
 			product_id = cart.find('input[name="product_id[]"]').val(),
 			quantity = cart.find('.quantity-input');
 			//console.log(product_id);
@@ -30,6 +31,9 @@
 				}
 			});
 			select.change(function() {
+				setproducttype(cart,product_id);
+			});
+			radio.change(function() {
 				setproducttype(cart,product_id);
 			});
 		});

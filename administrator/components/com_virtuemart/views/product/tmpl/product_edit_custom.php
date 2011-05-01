@@ -22,12 +22,24 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <fieldset style="background-color:#F9F9F9;">
 		<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM');?></legend>
-<table id="customfields">
+<table id="customfields" class="adminlist">
+	<thead>
+	<tr class="row1">
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TITLE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_VALUE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TYPE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
+		<th><?php echo JText::_('DELETE'); ?></th>
+	</tr>
+	</thead>
+	<tbody>
 	<?php
 	$i=0;
 	if (isset($this->product->customfields)) {
 		
 		foreach ($this->product->customfields as $customRow) {
+		if ($customRow->is_cart_attribute) $cartIcone=  'icon-16-default.png';
+		else  $cartIcone= 'icon-16-default-off.png'; 
 		 echo '<tr>
 				
 				<td>'.$customRow->custom_title.'</td>
@@ -38,7 +50,10 @@ defined('_JEXEC') or die('Restricted access');
 				 <input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 				 <input type="hidden" value="'.$customRow->custom_id.'" name="field['.$i .'][custom_id]" />
 				 <input type="hidden" value="'.$customRow->custom_field_id.'" name="field['.$i .'][custom_field_id]" />
-				 <input type="checkbox" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+				 <input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+				</td>
+				<td>
+				 <img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" />
 				</td>
 				<td><div style="float:left;" class="remove vmicon-16-trash">'.JText::_('DELETE').'</div></td>
 			 </tr>';
@@ -52,11 +67,12 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>';
 	}
 	?>
+	</tbody>
 </table>
 </fieldset>
 <div style="clear:both;"></div>
 <div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('DELETE'); ?></div>
-<div><?php echo $this->customsList; ?></div>
+<div><?php echo JText::_('SELECT').' '.$this->customsList; ?></div>
 <?php /*<div class="jsonSuggestResults" style="width: 322px;">
 	<input type="text" size="40" name="search" id="ProductCustomSearch" value="" />
 </div> */ ?>

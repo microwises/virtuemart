@@ -74,7 +74,6 @@ class TableCustom extends JTable {
 	 *
 	 * @author  Patrick Kohl
 	 * @return boolean True .
-	  * No check at moment
 	 */
 	function check(){
 		if(empty($this->custom_title)) {
@@ -90,6 +89,21 @@ class TableCustom extends JTable {
 			return false ;
 		}
 		return true;
+	}
+	/*
+	* field from 3 table have to be checked at delete
+	* #__vm_custom_field,#__vm_custom,jos_vm_custom_field_xref_product
+	*/
+	function delete($id)
+	{
+		$this->_db->setQuery('DELETE X,F,C FROM `#__vm_custom` AS C 
+		LEFT JOIN `#__vm_custom_field` AS F ON F.`custom_id` = C.`custom_id`
+		LEFT JOIN  `#__vm_custom_field_xref_product` AS X ON  X.`custom_field_id` = F.`custom_field_id` 
+		WHERE C.`custom_id`=' . $id);
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
+			return false;
+		}
 	}
 
 }

@@ -21,11 +21,6 @@ class VmCustomHandler {
 	private function __construct($id=0){
 
 		$this->custom_id = $id;
-
-		$this->theme_url = VmConfig::get('vm_themeurl',0);
-		if(empty($this->theme_url)){
-			$this->theme_url = JURI::root().'components/com_virtuemart/';
-		}
 	}
 
 	public function getCustomParentTitle($custom_parent_id) {
@@ -86,244 +81,8 @@ class VmCustomHandler {
 	public function prepareStoreCustom($data,$table){
 
 		$custom = VmCustomHandler::createCustom($data);
-
-		/*$data = $custom->processAction($data);
-		$data = $custom->processAttributes($data);
-
-		$attribsImage = get_object_vars($custom);
-		foreach($attribsImage as $k=>$v){
-			$data[$k] = $v;
-		}*/
-
 		return $custom;//$data;
 	}
-    /**
-     * Sets the file information and paths/urls and so on.
-     *
-     * @author Max Milbers
-     * @param unknown_type $filename
-     * @param unknown_type $url
-     * @param unknown_type $path
-     */
-    function setCustomInfo($type=0){
-
-    	if(empty($this->file_url)){
-    		$this->file_url = $this->getCustomUrlByView($type);
-     		$this->file_url_folder = $this->file_url;
-    		$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
-    		$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
-    		$this->file_name = '';
-    		$this->file_extension = '';
-    	} else {
-	     	if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-
-	    	$lastIndexOfSlash= strrpos($this->file_url,'/');
-
-	    	$name = substr($this->file_url,$lastIndexOfSlash+1);
-
-	    	$this->file_name = JFile::stripExt($name);
-	    	$this->file_url_folder = substr($this->file_url,0,$lastIndexOfSlash+1);
-	    	$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
-	    	$this->file_extension = strtolower(JFile::getExt($name));
-
-			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
-
-    	}
-
-    	if($this->custom_boolean) $this->custom_attributes = 'custom_boolean';
-	    if($this->custom_string) $this->custom_attributes = 'custom_string';
-	    if($this->custom_boolean) $this->custom_attributes = 'custom_int';
-
-    	self::determineFoldersToTest();
-
-    }
-
-
-
-	/**
-	 * This function should return later also an icon, if there isnt any automatic thumbnail creation possible
-	 * like pdf, zip, ...
-	 *
-	 * @author Max Milbers
-	 * @param string $imageArgs
-	 * @param boolean $lightbox
-	 */
-	function getIcon($imageArgs,$lightbox){
-		//we can later add here icons for different types
-		$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-		$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
-		return self::displayIt($file_url, $file_alt, $imageArgs,$lightbox);
-	}
-
-	/**
-	 * This function is just for options how to display an image...
-	 * we may add here plugins for displaying images
-	 *
-	 * @author Max Milbers
-	 * @param string $file_url relative Url
-	 * @param string $file_alt custom description
-	 * @param string $imageArgs attributes for displaying the images
-	 * @param boolean $lightbox use lightbox
-	 */
-	function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'"){
-
-		if($lightbox){
-			$image = JHTML::image($file_url, $file_alt, $imageArgs);
-			if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
-			if ($this->file_url) $href = JURI::root() .$this->file_url ;
-			else $href = $image ;
-			$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
-			return $lightboxImage;
-		} else {
-			return JHTML::image($file_url, $file_alt, $imageArgs);
-		}
-	}
-
-
-	/**
-	 * Processes the choosed Action while storing the data, gets extend by the used child, use for the action clear commands.
-	 * Useable commands in all customs upload, upload_delete, delete, and all of them with _thumb on it also.
-	 *
-	 * @author Max Milbers
-	 * @param arraybyform $data
-	 */
-	function processAction($data){
-
-		if( $data['custom_action'] == 'upload' ){
-			$custom_name = self::uploadcustom($this->custom_url_folder);
-			$this->custom_url = $this->custom_url_folder.$custom_name;
-		}
-		else if( $data['custom_action'] == 'upload_delete' ){
-			$oldcustomUrl = $data['custom_url'];
-			$custom_name = self::uploadcustom($this->custom_url_folder);
-			if($this->custom_url!=$oldcustomUrl && !empty($this->custom_name)){
-				self::deletecustom($oldcustomUrl);
-			}
-			$this->custom_url = $this->custom_url_folder.$custom_name;
-			$this->custom_name = $custom_name;
-
-		}
-		else if( $data['custom_action'] == 'delete' ){
-			self::deletecustom($this->custom_url);
-			unset($data['custom_id']);
-		}
-		else if( $data['custom_action'] == 'upload_thumb' ){
-			$custom_name = self::uploadcustom($this->custom_url_folder_thumb);
-			$this->custom_url_thumb = $this->custom_url_folder_thumb.$custom_name;
-		}
-		else if( $data['custom_action'] == 'upload_delete_thumb' ){
-			$oldcustomUrl = $data['custom_url_thumb'];
-			$custom_name = self::uploadcustom($this->custom_url_folder_thumb);
-			if($this->custom_url_thumb!=$oldcustomUrl){
-				self::deletecustom($oldcustomUrl);
-			}
-			$this->custom_url_thumb = $this->custom_url_folder_thumb.$custom_name;
-		}
-		else if( $data['custom_action'] == 'delete_thumb' ){
-			self::deletecustom($this->custom_url_thumb);
-		}
-		else{
-
-		}
-
-		if(empty($this->custom_title) && !empty($custom_name)) $this->custom_title = $custom_name;
-		if(empty($this->custom_title) && !empty($custom_name)) $data['custom_title'] = $custom_name;
-
-		return $data;
-	}
-
-
-	/**
-	 * For processing the Attributes of the custom while the storing process
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $data
-	 */
-	function processAttributes($data){
-
-		if($data['custom_attributes'] == 'custom_is_product_image'){
-			$this->custom_is_product_image = 1;
-			$this->custom_is_downloadable = 0;
-			$this->custom_is_forSale = 0;
-		}
-		else if($data['custom_attributes'] == 'custom_is_downloadable'){
-			$this->custom_is_downloadable = 1;
-			$this->custom_is_forSale = 0;
-		}
-		else if($data['custom_attributes'] == 'custom_is_forSale'){
-			$this->custom_is_product_image = 0;
-			$this->custom_is_downloadable = 0;
-			$this->custom_is_forSale = 1;
-		}
-		return $data;
-	}
-
-	private $_actions = array();
-	/**
-	 * This method can be used to add extra actions to the custom
-	 *
-	 * @author Max Milbers
-	 * @param string $optionName this is the value in the form
-	 * @param string $langkey the langkey used
-	 */
-	function addCustomAction($optionName,$langkey){
-		$this->_actions[$optionName] = $langkey ;
-	}
-
-	/**
-	 * Adds the custom action which are needed in the form for all custom,
-	 * you can use this function in your child calling parent. Look in VmImage for an exampel
-	 * @author Max Milbers
-	 */
-	function addCustomActionByType(){
-
-		self::addCustomAction(0,'COM_VIRTUEMART_NONE');
-
-		if(empty($this->custom_url)){
-			self::addCustomAction('upload','COM_VIRTUEMART_FORM_CUSTOM_FIELD_UPLOAD');
-		} else {
-			self::addCustomAction('upload_delete','COM_VIRTUEMART_FORM_CUSTOM_FIELD_UPLOAD_DELETE');
-			self::addCustomAction('delete','COM_VIRTUEMART_FORM_CUSTOM_FIELD_DELETE');
-		}
-
-		if(empty($this->custom_url_thumb)){
-			self::addCustomAction('upload_thumb','COM_VIRTUEMART_FORM_CUSTOM_FIELD_UPLOAD_THUMB');
-		} else {
-			self::addCustomAction('upload_delete_thumb','COM_VIRTUEMART_FORM_CUSTOM_FIELD_UPLOAD_DELETE_THUMB');
-			self::addCustomAction('delete_thumb','COM_VIRTUEMART_FORM_CUSTOM_FIELD_DELETE_THUMB');
-		}
-
-	}
-
-
-	private $_attributes = array();
-
-
-	/**
-	 * This method can be used to add extra attributes to the custom
-	 *
-	 * @author Max Milbers
-	 * @param string $optionName this is the value in the form
-	 * @param string $langkey the langkey used
-	 */
-	public function addCustomAttributes($optionName,$langkey=''){
-		$this->_attributes[$optionName] = $langkey ;
-	}
-
-	/**
-	 * Adds the attributes which are needed in the form for all custom,
-	 * you can use this function in your child calling parent. Look in VmImage for an exampel
-	 * @author Max Milbers
-	 */
-	public function addCustomAttributesByType(){
-		self::addCustomAttributes('S','COM_VIRTUEMART_CUSTOM_STRING');
-		self::addCustomAttributes('I','COM_VIRTUEMART_CUSTOM_INT');
-		self::addCustomAttributes('P','COM_VIRTUEMART_CUSTOM_PARENT');
-		self::addCustomAttributes('B','COM_VIRTUEMART_CUSTOM_BOOL');
-		self::addCustomAttributes('D','COM_VIRTUEMART_CUSTOM_DATE');
-		self::addCustomAttributes('T','COM_VIRTUEMART_CUSTOM_TIME');
-	}
-
 
 	private $_hidden = array();
 
@@ -416,18 +175,6 @@ class VmCustomHandler {
 
 		return $result;
     }
-	public function booleanRow( $text , $value){
-	$html = '<tr>
-	<td class="labelcell">
-		<label for="'.$value.'">'. JText::_($text) .'</label>
-	</td>
-	<td><fieldset class="radio">
-				'.JHTML::_( 'select.booleanlist',  $value , 'class="inputbox"', $this->$value).'
-		</fieldset>
-	</td>
-</tr>';
-	return $html ;
-	}
 	/**
 	 * This displays a custom handler.
 	 *
@@ -461,7 +208,6 @@ class VmCustomHandler {
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$this->is_cart_attribute);
-		self::addCustomAttributesByType();
 		// only input when not set else display
 		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ; 
 		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ; 

@@ -35,6 +35,7 @@ echo '</form>';
  AdminMenuHelper::endAdminArea(); ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) {
+	if (pressbutton=='cancel') submitform(pressbutton);
 	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
 	else return false ;
 } 

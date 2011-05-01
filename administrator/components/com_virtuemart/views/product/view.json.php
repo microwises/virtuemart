@@ -64,7 +64,9 @@ class VirtuemartViewProduct extends JView {
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row);
+			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
+			 if ($field->is_cart_attribute) $cartIcone=  'icon-16-default.png';
+			 else  $cartIcone= 'icon-16-default-off.png'; 
 			 $html[] = '<tr>
 				 <td>'.$field->custom_title.'</td>
 				 <td>'.$display.$field->custom_tip.'
@@ -72,8 +74,9 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.$fieldTypes[$field->field_type].'
 					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$field->custom_id.'" name="field['.$row.'][custom_id]" />
-					<input type="checkbox" value="1" checked="checked" name="admin_only" />
+					<input type="hidden" value="1" checked="checked" name="admin_only" />
 				 </td>
+				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
 				 <td></td>
 				</tr>';
 				$row++;

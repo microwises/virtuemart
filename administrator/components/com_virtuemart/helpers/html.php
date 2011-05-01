@@ -232,10 +232,10 @@ class VmHTML{
 	/**
 	 * Creates rows with with a Radio Input List
 	 *
+	 * @param string $label
+	 * @param array $radios
 	 * @param string $name
-	 * @param string $value
-	 * @param string $arr
-	 * @param string $extra
+	 * @param string $default
 	 * @return string
 	 */
 	function radioRow($label, $radios, $name, $default,$key='value',$text='text') {
@@ -250,7 +250,7 @@ class VmHTML{
 	 * Creating rows with boolean list
 	 *
 	 * @author Patrick Kohl
-	 * @param string $text
+	 * @param string $label
 	 * @param string $name
 	 * @param string $value
 	 *
@@ -327,7 +327,7 @@ class VmHTML{
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default);
 	}
 	/**
-	 * renders the hiddenfields added in the layout before (used to make the displaycustomHandle reusable)
+	 * renders the hidden input
 	 * @author Max Milbers
 	 */
 	public function inputHidden($values){
@@ -338,12 +338,14 @@ class VmHTML{
 		return $html;
 	}
 	/**
+	 * @author Patrick Kohl 
 	*@var $type type of regular Expression to validate
+	* $type can be I integer, F Float, A date, M, time, T text, L link, U url, P phone
 	*@bool $required field is required
 	*@Int $min minimum of char
 	*@Int $max max of char
 	*@var $match original ID field to compare with this such as Email, passsword
-	*@ Return $html class for validate
+	*@ Return $html class for validate javascript
 	**/
 	public function validate($type='',$required=true, $min=null,$max=null,$match=null) {
 
