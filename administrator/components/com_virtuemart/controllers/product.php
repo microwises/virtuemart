@@ -299,56 +299,6 @@ class VirtuemartControllerProduct extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&product_id='.$cids[0]);
 	}
 
-	/**
-	* Add a product type to a product
-	* @author RolandD
-	*/
-	public function addProductType() {
-		/* Create the view object */
-		$view = $this->getView('product', 'html');
-
-		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-
-		/* Set the layout */
-		$view->setLayout('product_type_add');
-
-		/* Now display the view. */
-		$view->display();
-	}
-
-	/**
-	* Save a product with a product type relation
-	*
-	* @author RolandD
-	*/
-	public function saveProductType() {
-		$mainframe = Jfactory::getApplication();
-
-		$model = $this->getModel('product');
-		$msgtype = '';
-		if ($model->saveProductType()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LINK_SAVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_TYPE_LINK_NOT_SAVED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
-	}
-
-	/**
-	* Add a product attribute
-	* @author RolandD
-	*/
-	public function addAttribute() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Get the product ID */
-		$cids = array();
-		$cids = JRequest::getVar('cid');
-		if (!is_array($cids)) $cids = array($cids);
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&task=add&product_id='.$cids[0]);
-	}
 
 }
 // pure php no closing tag

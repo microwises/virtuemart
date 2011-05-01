@@ -382,9 +382,6 @@ class calculationHelper {
 
 			$cartproductkey = $name ; //$product->product_id.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
-//			$product->prices = $pricesPerId[(int)$product->product_id] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
-//			$product->prices = $pricesPerId[(int)$product->product_id] = $this -> getProductPrices($product,0,$variantmod,$product->quantity,true,false);
-//			$this->_cartPrices[$cartproductkey] = $pricesPerId[$cartproductkey];
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
 			$this->_cartPrices['basePrice'] = $this->_cartPrices['basePrice'] + $product->prices['basePrice']*$product->quantity;
@@ -1089,6 +1086,7 @@ class calculationHelper {
 				$productCustomsPrice = $this->_db->loadObject();
 
 				if(!empty($productCustomsPrice->custom_price)){
+					//We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 				}
 			}

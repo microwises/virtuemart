@@ -149,10 +149,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the attribute values */
 				$product->attribute_values = $this->get('ProductAttributeValues');
 
-				/* TODO Load the child products */
-//				if ($product->product_id > 0 && $product->product_parent_id == 0) {
-//					$product->child_products = $product_model->getChildAttributes($product->product_id);
-//				} else
+				/* TODO remove this */
 				$product->child_products = null;
 
 				if( empty( $product->product_available_date )) {
@@ -259,8 +256,8 @@ class VirtuemartViewProduct extends JView {
 				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
-				JToolBarHelper::apply('saveproducttype');
-				JToolBarHelper::save('saveproducttype');
+//				JToolBarHelper::apply('saveproducttype');
+//				JToolBarHelper::save('saveproducttype');
 				JToolBarHelper::cancel();
 				break;
 			default:
@@ -353,8 +350,8 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
-				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE'), true);
-				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_PRODUCT_TYPE'), true);
+//				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE'), true);
+//				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_PRODUCT_TYPE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				JToolBarHelper::divider();
 				JToolBarHelper::publish();

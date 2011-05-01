@@ -187,27 +187,7 @@ class VirtueMartModelProduct extends JModel {
 
 //		if(empty($this->_data)){
 			if (!empty($product_id)) {
-//			if($front){
-//				$q = 'SELECT p.*, mx.manufacturer_id, m.mf_name ';
-//			} else {
-//				$q = 'SELECT p.*, mx.manufacturer_id, pp.* ';
-//			}
-//			$q .= 'FROM #__vm_product AS p
-//					LEFT JOIN `#__vm_product_mf_xref` mx
-//					ON mx.`product_id` = `p`.`product_id` ';
-//			if($front){
-//				$q .= 'LEFT JOIN `#__vm_product_category_xref` x
-//				ON x.`product_id` = `p`.`product_id`
-//				LEFT JOIN `#__vm_manufacturer` `m`
-//				ON `m`.`manufacturer_id` = `mx`.`manufacturer_id` ';
-//			} else{
-//				$q .= 'LEFT JOIN #__vm_product_price AS pp
-//				ON p.product_id = pp.product_id ';
-//			}
-//			$q .= 'WHERE p.product_id = '.$product_id.' ';
-//
-//			$this->_db->setQuery($q);
-//			$product = $this->_db->loadObject();
+
 
    			$product = $this->getTable('product');
    			$product->load($product_id);
@@ -220,18 +200,15 @@ class VirtueMartModelProduct extends JModel {
    			$xrefTable = $this->getTable('product_media_xref');
 			$product->file_ids = $xrefTable->load((int)$this->_id);
 
-//			if(!empty($product->file_ids)){
-//				$product->file_ids = explode(',',$product->file_ids);
-//			}
 
-//   			if(!$front){
+//   		if(!$front){
     			$ppTable = $this->getTable('product_price');
     			$q = 'SELECT `product_price_id` FROM `#__vm_product_price` WHERE `product_id` = "'.$product_id.'" ';
 				$this->_db->setQuery($q);
     			$ppId = $this->_db->loadResult();
    				$ppTable->load($ppId);
 				$product = (object) array_merge((array) $ppTable, (array) $product);
-//   			}
+//   		}
 
    			$q = 'SELECT `manufacturer_id` FROM `#__vm_product_mf_xref` WHERE `product_id` = "'.$product_id.'" ';
    			$this->_db->setQuery($q);
@@ -256,12 +233,6 @@ class VirtueMartModelProduct extends JModel {
    			}
 
 			if($front){
-
-				/* Load the attributes */
-//				$product->attributes = $this->getAttributes($product);
-
-				/* Load the variants */
-//				$product->variants = $this->getVariants($product);
 
 				/* Load the price */
 				$prices = "";
@@ -306,11 +277,7 @@ class VirtueMartModelProduct extends JModel {
 				/* Check for child products */
 				$product->haschildren = $this->checkChildProducts($product_id);
 
-				/* Check for product types */
-				$product->hasproducttypes = $this->hasProductType($product_id);
-
 				/* Load the custom variants */
-//				$product->customvariants = $this->getCustomVariants($product->custom_attribute); OBSELETE
 				$product->hasproductCustoms = $this->hasproductCustoms($product_id);
 				/* Load the custom product fields */
 				$product->customfields = self::getproductCustomsField($product);
@@ -323,12 +290,6 @@ class VirtueMartModelProduct extends JModel {
 
 				/* Check the stock level */
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
-
-				/* Handle some child product data */
-//				if ($product->product_parent_id > 0) {
-//					/* Get the attributes */
-//					$product->attributes = $this->getAttributes($product);
-//				}
 
 				/* Get stock indicator */
 				$product->stock = $this->getStockIndicator($product);
@@ -680,14 +641,10 @@ class VirtueMartModelProduct extends JModel {
 				/* Child products */
 				$featured->haschildren = $this->checkChildProducts($featured->product_id);
 
-				/* Attributes */
-//				$featured->hasattributes = $this->checkAttributes($featured->product_id, true);
-
 				$result[] = $featured;
 			}
 
 		}
-		dump($result, 'getGroupProducts back');
 
 		return $result;
     }
@@ -1029,9 +986,6 @@ class VirtueMartModelProduct extends JModel {
 			$this->setError($product_data->getError());
 			return false;
 		}
-
-		/* Get the attribute */
-		$product_data->attribute = $this->formatAttributeX();
 
         /* Set the product packaging */
         $product_data->product_packaging = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
@@ -1652,24 +1606,7 @@ class VirtueMartModelProduct extends JModel {
 
 
 
-	/**
-	* Load the custom variants
-	*
-	* @author RolandD
-	* @access private
-	* @param string $custom_attr_list containing the custom variants
-	* @return array containing the custom variants
-	*/
-/* OBSELETE
-	private function getCustomVariants($custom_attr_list) {
-		$fields = array();
-		if ($custom_attr_list) {
-			if (substr($custom_attr_list, -1) == ';') $custom_attr_list = substr($custom_attr_list, 0, -1);
-			$fields = explode(";", $custom_attr_list);
-		}
-		return $fields;
-	}
-*/
+
 	// **************************************************
 	//Stocks
 	//
@@ -1813,84 +1750,7 @@ class VirtueMartModelProduct extends JModel {
 		}
 	}
 
-	/**
-    * Get a list of product types to assign the product to
-    * @author RolandD
-    */
-    public function getProductTypeList() {
-//    	$this->_db = JFactory::getDBO();
 
-    	$cids = JRequest::getVar('cid');
-
-    	$q  = "SELECT t.product_type_id AS value, product_type_name AS text
-    		FROM #__vm_product_type t
-			LEFT JOIN #__vm_product_product_type_xref x
-			ON x.product_type_id = t.product_type_id
-			WHERE (product_id != ".$cids[0]." OR product_id IS NULL)
-			ORDER BY `ordering` ASC";
-		$this->_db->setQuery($q);
-		return $this->_db->loadObjectList();
-    }
-
-    /**
-    * Add a product to a product type link
-    * @todo Add unique key to table vm_product_product_type_xref
-    */
-    public function saveProductType() {
-//    	$this->_db = JFactory::getDBO();
-
-    	$product_id = JRequest::getInt('product_id', false);
-    	$product_type_id = JRequest::getInt('product_type_id', false);
-
-    	if ($product_id && $product_type_id) {
-			/* Check if the product link already exist */
-			$q  = "SELECT COUNT(*) AS count FROM #__vm_product_product_type_xref ";
-			$q .= "WHERE product_id = ".$product_id." AND product_type_id = ".$product_type_id;
-			$this->_db->setQuery($q);
-
-			if ($this->_db->loadResult() == 0) {
-				$q  = "INSERT INTO #__vm_product_product_type_xref (product_id, product_type_id) ";
-				$q .= "VALUES (".$product_id.",".$product_type_id.")";
-				$this->_db->setQuery($q);
-				$this->_db->query();
-
-				$q  = "INSERT INTO #__vm_product_type_".$product_type_id." (product_id) ";
-				$q .= "VALUES (".$product_id.")";
-				$this->_db->setQuery($q);
-				$this->_db->query();
-
-				return true;
-			}
-			else return false;
-		}
-		else return false;
-    }
-
-
-  /**
-     * AUthor Kohl Patrick
-     * Load the types and parameter for a product
-     * return Object product type , parameters & value
-     */
-     public function getproductTypes() {
-		$product_id = JRequest::getInt('product_id', false);
-
-		 if ($this->hasProductType($product_id )) {
-
-			if(!class_exists('VirtueMartModelProducttypes')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'producttypes.php');
-			$ProducttypesModel = new VirtueMartModelProducttypes();
-		return $ProducttypesModel->getProductProducttypes($product_id);
-		}
-		return ;
-     }
-
-	/* look if whe have a product type */
-	private function hasProductType($product_id) {
-		$this->_db = JFactory::getDBO();
-		$q = "SELECT COUNT(`product_id`) AS types FROM `#__vm_product_product_type_xref` WHERE `product_id` = ".$product_id;
-		$this->_db->setQuery($q);
-		return ($this->_db->loadResult() > 0);
-	}
   /**
      * AUthor Kohl Patrick
      * Load all custom fields for a Single product
@@ -1942,210 +1802,6 @@ class VirtueMartModelProduct extends JModel {
 		return ($this->_db->loadResult() > 0);
 	}
 
-	// **************************************************
-	//Attributes
-	//
-	/**
-	* Load the variants for a product
-	*
-	* Variants can have several attributes an example:
-	* Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]
-	*
-	* @author RolandD, Max Milbers
-	* @param object $product the product to get attributes for
-	* @param string $extra_ids any extra id's to add to the attributes
-	* @return
-	*/
-
-//    /**
-//     * Load the attribute names for a product
-//     */
-//     public function getProductAttributeNames() {
-//     	 $product_id = JRequest::getInt('product_id', 0);
-//     	 $product_parent_id = JRequest::getInt('product_parent_id', 0);
-////		 $this->_db = JFactory::getDBO();
-//		 $q = "SELECT attribute_name
-//			FROM #__vm_product_attribute_sku
-//			WHERE product_id = ";
-//			if ($product_parent_id > 0) $q .= $product_parent_id;
-//			else $q .= $product_id;
-//		 $this->_db->setQuery($q);
-//		 return $this->_db->loadResultArray();
-//     }
-//
-//     /**
-//     * Load the attribute names for a product
-//     */
-//     public function getProductAttributeValues() {
-//     	 $product_id = JRequest::getInt('product_id', 0);
-//     	 /* Check if we are loading an existing product */
-//     	 if ($product_id > 0) {
-////     	 	 $this->_db = JFactory::getDBO();
-//			 $q = "SELECT attribute_id, attribute_name, attribute_value
-//				FROM #__vm_product_attribute
-//				WHERE product_id = ".$product_id;
-//			 $this->_db->setQuery($q);
-//			 return $this->_db->loadAssocList('attribute_name');
-//     	 }
-//     	 else return null;
-//     }
-
-	/**
-	* Load the child products for a given product
-	*/
-//	public function getChildAttributes($product_id) {
-////		$this->_db = JFactory::getDBO();
-//		$q = "SELECT p.product_id, product_name, product_sku, attribute_name, attribute_value
-//			FROM #__vm_product p
-//			LEFT JOIN #__vm_product_attribute
-//			ON p.product_id = #__vm_product_attribute.product_id
-//			WHERE p.product_parent_id = ".$product_id."
-//			ORDER BY p.product_sku";
-//		$this->_db->setQuery($q);
-//		$products = $this->_db->loadObjectList();
-//		$childproduct = array();
-//		foreach ($products as $key => $product) {
-//			foreach ($product as $name => $value) {
-//				if (!array_key_exists($product->product_sku, $childproduct)) {
-//					$childproduct[$product->product_sku] = new StdClass();
-//				}
-//				if ($name != 'attribute_name' && $name != 'attribute_value') {
-//					$childproduct[$product->product_sku]->$name = $value;
-//				}
-//				else {
-//					$attribute_name = $product->attribute_name;
-//					$childproduct[$product->product_sku]->$attribute_name = $product->attribute_value;
-//				}
-//			}
-//		}
-//		return $childproduct;
-//	}
-
-	/**
-	 * Function to create a DB object that holds all information
-	 * from the attribute tables about item $item_id AND/OR product $product_id
-	 *
-	 * @author RolandD
-	 * @access private
-	 * @param int $product The product object
-	 * @param string $attribute_name The name of the attribute to filter
-	 * @return array list of attribute objects
-	 */
-//	private function getAttributes($product, $attribute_name = '') {
-//		$this->_db = JFactory::getDBO();
-//		$attributes = array();
-//		if ($product->product_id && $product->product_parent_id) {
-//			$q  = "SELECT * FROM `#__vm_product_attribute`, `#__vm_product_attribute_sku` ";
-//			$q .= "WHERE `#__vm_product_attribute`.`product_id` = ".$product->product_id." ";
-//			$q .= "AND `#__vm_product_attribute_sku`.`product_id` = ".$product->product_parent_id." ";
-//			if ($attribute_name) {
-//				$q .= "AND `#__vm_product_attribute`.`attribute_name` = ".$this->_db->Quote($attribute_name)." ";
-//			}
-//			$q .= "AND `#__vm_product_attribute`.`attribute_name` = `#__vm_product_attribute_sku`.attribute_name ";
-//			$q .= "ORDER BY attribute_list, `#__vm_product_attribute`.`attribute_name`";
-//		}
-//		elseif ($product->product_id) {
-//			$q  = "SELECT * FROM `#__vm_product_attribute` ";
-//			$q .= "WHERE  `product_id` = ".$product->product_id." ";
-//			if ($attribute_name) {
-//				$q .= "AND `attribute_name` = ".$this->_db->Quote($attribute_name)." ";
-//			}
-//		}
-//		elseif ($product->product_parent_id) {
-//			$q  = "SELECT * FROM `#__vm_product_attribute_sku` ";
-//			$q .= "WHERE product_id = ".$product->product_parent_id." ";
-//			if ($attribute_name) {
-//				$q .= "AND `#__vm_product_attribute`.`attribute_name` = ".$this->_db->Quote($attribute_name)." ";
-//			}
-//			$q .= "ORDER BY attribute_list,`attribute_name`";
-//		}
-//
-//		$this->_db->setQuery($q);
-//		$attributes = $this->_db->loadObjectList();//dump($attributes,'$attributes');
-//		return $attributes;
-//	}
-
-    /**
-	 * Function to quickly check whether a product has attributes or not
-	 *
-	 * @author RolandD
-	 * @param int $pid The id of the product to check
-	 * @return boolean True when the product has attributes, false when not
-	 */
-//	function checkAttributes($pid, $checkSimpleAttributes=false ) {
-//		if (is_array($pid) || empty($pid)) return false;
-//
-//		$pid = intval($pid);
-////		$this->_db = JFactory::getDBO();
-//		$product_info = JRequest::getVar('product_info', false);
-//
-//		if (!$product_info || empty($product_info[$pid]["product_has_attributes"] )) {
-//			$this->_db->setQuery("SELECT `product_id` FROM `#__vm_product_attribute_sku` WHERE `product_id`=".$pid);
-//			$product_id = $this->_db->loadResult();
-//
-//			if ($product_id) $product_info[$pid]["product_has_attributes"] = true;
-//			else if($checkSimpleAttributes) {
-//				$this->_db->setQuery("SELECT `attribute`,`custom_attribute` FROM `#__vm_product` WHERE `product_id`=".$pid);
-//				$attributes = $this->_db->loadObject();
-//				if ($attributes->attribute || $attributes->custom_attribute) {
-//					$product_info[$pid]["product_has_attributes"] = true;
-//				}
-//				else {
-//					$product_info[$pid]["product_has_attributes"] = false;
-//				}
-//			}
-//			else $product_info[$pid]["product_has_attributes"] = false;
-//		}
-//		JRequest::setVar('product_info', $product_info);
-//		return $product_info[$pid]["product_has_attributes"];
-//	}
-
-//		/**
-//	* Format the attributes of a product to DB format
-//	*/
-//	public function formatAttributeX() {
-//		// request attribute pieces
-//		$attributeX = JRequest::getVar( 'attributeX', array( 0 ) ) ;
-//		$attribute_string = '' ;
-//
-//		// no pieces given? then return
-//		if( empty( $attributeX ) ) {
-//			return $attribute_string ;
-//		}
-//
-//		// put the pieces together again
-//		foreach( $attributeX as $attributes ) {
-//			$attribute_string .= ';' ;
-//			// continue only if the attribute has a name
-//			if( empty( $attributes['name'] ) ) {
-//				continue ;
-//			}
-//			$attribute_string .= trim( $attributes['name'] ) ;
-//			$n2 = count( $attributes['value'] ) ;
-//			for( $i2 = 0 ; $i2 < $n2 ; $i2 ++ ) {
-//				$value = $attributes['value'][$i2] ;
-//				$price = $attributes['price'][$i2] ;
-//
-//				if( ! empty( $value ) ) {
-//					$attribute_string .= ',' . trim( $value ) ;
-//
-//					if( ! empty( $price ) ) {
-//
-//						// add the price only if there is an operand
-//						if( strstr( $price, '+' ) or (strstr( $price, '-' )) or (strstr( $price, '=' )) ) {
-//							$attribute_string .= '[' . trim( $price ) . ']' ;
-//						}
-//					}
-//				}
-//			}
-//
-//		}
-//
-//		// cut off the first attribute separators on the beginning of the string
-//		// otherwise you would get an empty first attribute
-//		$attribute_string = substr( $attribute_string, 1 ) ;
-//		return trim( $attribute_string ) ;
-//	}
 
     /**
 	 * Since a product dont need always an image, we can attach them to the product with this function
@@ -2163,6 +1819,11 @@ class VirtueMartModelProduct extends JModel {
 		$this->mediaModel->attachImages($products,'file_ids','product','image');
 
 	}
+
+	// **************************************************
+	// Custom FIElDS
+	//
+
 /**
  * Formating admin display by roles
  * input Types for product only !
