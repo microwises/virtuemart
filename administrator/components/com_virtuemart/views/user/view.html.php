@@ -268,8 +268,8 @@ class VirtuemartViewUser extends JView {
 					 $this->assignRef('pane', $pane);
 		} else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_LIST_LBL'), 'vm_user_48.png');
-			
-			
+
+
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('enable_vendor', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
 			JToolBarHelper::custom('disable_vendor', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
@@ -295,6 +295,20 @@ class VirtuemartViewUser extends JView {
 		}
 
 		parent::display($tpl);
+	}
+
+	function renderMail ($doVendor=false) {
+		$tpl = ($doVendor) ? 'mail_html_regvendor' : 'mail_html_reguser';
+		$this->setLayout($tpl);
+
+		$vendorModel = $this->getModel('vendor');
+		$vendorId = 1;
+		$vendorModel->setId($vendorId);
+		$vendor = $vendorModel->getVendor();
+		$vendorModel->addImagesToVendor($vendor);
+
+		$this->assignRef('subject', ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT', $this->user->get('email')) : JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name));
+		parent::display();
 	}
 
 	/**

@@ -277,47 +277,66 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Prepares a view for rendering email, then renders and sends
+	 *
+	 * @param object $controller
+	 * @param string $viewName View which will render the email
+	 * @param string $recipient shopper@whatever.com
+	 * @param array $vars variables to assign to the view
+	 */
+	public function renderMail ($controllerName, $viewName, $recipient, $vars=array()) {
+		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
+		$format = (VmConfig::get()) ? 'html' : 'raw';
+
+		$controller = new VirtueMartControllerVirtuemart();
+		$controller->addPath(JPATH_VM_SITE);
+		$controller->addPath(JPATH_VM_ADMINISTRATOR);
+
+		$view = $controller->getView($viewName, $format);
+		$view->setModel($controller->getModel($viewName));
+		$view->setModel($controller->getModel('user'));
+		$view->setModel($controller->getModel('vendor'));
+		$view->setModel($controller->getModel('userfields'));
+
+		foreach ($vars as $key => $val) {
+			$view->assignRef($key, $val);
+		}
+
+		self::sendMail($view, $recipient);
+
+		if (isset($view->doVendor)) {
+			self::sendMail($view, $view->vendorEmail, true);
+		}
+	}
+	// VirtueMartViewUser: registerUser,
+
+	/**
 	 * With this function you can use a view to sent it by email.
 	 * Just use a task in a controller todo the rendering of the email.
 	 *
 	 * @param string $view for exampel user, cart
 	 * @param string $recipient shopper@whatever.com
-	 * @param string $subject You bought an article
-	 * @param int $vendor_id for exampel 1
-	 * @param boolean $mediaToSend Should there be attachments?
+	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
-	function renderAndSentVmMail($view,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
-
+	private function sendMail (&$view, $recipient, $vendor=false) {
 		ob_start();
-		$view->display();
+		$view->renderMail($vendor);
 		$body = ob_get_contents();
 		ob_end_clean();
 
-		self::sendVmMail($body,$recipient,$subject, $replyTo, $mediaToSend);
-
-	}
-
-	public function sendVmMail($body,$recipient,$subject='TODO set subject', $replyTo = array(), $mediaToSend = array()){
-
-		$mailer =& JFactory::getMailer();
-
-		$config =& JFactory::getConfig();
-		$mailer->setSender(array($config->getValue( 'config.mailfrom' ),$config->getValue( 'config.fromname' )));
-
-		if(!empty($replyTo)) $mailer->addReplyTo($replyTo);
-
+		$subject = (isset($view->subject)) ? $view->subject : JText::_('COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT');
+		$mailer = JFactory::getMailer();
 		$mailer->addRecipient($recipient);
-
 		$mailer->setSubject($subject);
-
 		$mailer->isHTML(VmConfig::get('html_email',true));
 		$mailer->setBody($body);
 
-		// Optional file attached  //this information must come from the cart
-		if(!empty($mediaToSend)){
-			//Test if array, if not make an array out of it
-			if(!is_array($mediaToSend)) $mediaToSend = array($mediaToSend);
-			foreach ($mediaToSend as $media){
+		if (isset($view->replyTo)) {
+			$mailer->addReplyTo($view->replyTo);
+		}
+
+		if (!isset($view->mediaToSend)) {
+			foreach ((array)$view->mediaToSend as $media) {
 				//Todo test and such things.
 				$mailer->addAttachment($media);
 			}
@@ -326,6 +345,40 @@ class shopFunctionsF {
 		return $mailer->Send();
 	}
 
+
+	/**
+	 * Sends the mail using joomla mailer
+	 * TODO people often send media with emails. Like pictures, serials,...
+	 *
+	 * @author Max Milbers
+	 * @param $body the html body to send, the content of the email
+	 * @param $recipient the recipients of the mail, can be array also
+	 * @param $mediaToSend an array for the paths which holds the files which should be sent to
+	 * @param $vendorId default is 1 (mainstore)
+	 * @deprecated
+	 */
+	public function sendVmMail ($body, $recipient, $subject='', $replyTo=array(), $mediaToSend=array()) {
+		$subject = (empty($subject)) ? JText::_('COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT') : $subject;
+		$mailer = JFactory::getMailer();
+		$mailer->addRecipient($recipient);
+		$mailer->setSubject($subject);
+		$mailer->isHTML(VmConfig::get('html_email',true));
+		$mailer->setBody($body);
+
+		if (!empty($replyTo)) {
+			$mailer->addReplyTo($replyTo);
+		}
+
+		// Optional file attached  //this information must come from the cart
+		if (!empty($mediaToSend)) {
+			foreach ((array)$mediaToSend as $media) {
+				//Todo test and such things.
+				$mailer->addAttachment($media);
+			}
+		}
+
+		return $mailer->Send();
+	}
 
 	/**
 	 * Sends the mail joomla conform

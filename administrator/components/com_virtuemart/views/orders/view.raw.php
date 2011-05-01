@@ -119,5 +119,16 @@ class VirtuemartViewOrders extends JView {
 		error_reporting(0);
 		parent::display($tpl);
 	}
+
+	function renderMail () {
+		$vendorModel = $this->getModel('vendor');
+		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);
+		$vendorModel->setId($vendor_id);
+		$vendor = $vendorModel->getVendor();
+		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
+
+		$this->subject = JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
+		parent::display();
+	}
 }
 

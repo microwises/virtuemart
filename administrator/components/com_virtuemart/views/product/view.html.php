@@ -373,6 +373,14 @@ class VirtuemartViewProduct extends JView {
 		parent::display($tpl);
 	}
 
+	function renderMail() {
+		$this->setLayout('mail_html_waitlist');
+		$this->subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $this->productName);
+		$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $this->productName, $this->url);
+
+		parent::display();
+	}
+
 	/**
 	 * Renders the list for the tax rules
 	 *

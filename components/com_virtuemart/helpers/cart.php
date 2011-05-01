@@ -785,63 +785,18 @@ class VirtueMartCart  {
 	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
 	 *
 	 * @author Max Milbers
+	 * @author Christopher Roussel
 	 *
 	 * @param int $_orderID
 	 *
 	 */
-	private function sentOrderConfirmedEmail($order){
+	private function sentOrderConfirmedEmail ($order) {
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
-//		if(VmConfig::get('html_email',true){
-		 	/* Create the view */
-			$controller = new VirtueMartControllerCart();
-			$view = $controller->getView('cart', 'html');
+		$vars = array('order' => $order);
+		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
-			$userModel = $controller->getModel( 'user' );
-			$view->setModel( $userModel );
-
-			$vendorModel = $controller->getModel( 'vendor' );
-			$vendorId = 1;
-			$vendorModel->setId($vendorId);
-			$vendor = $vendorModel->getVendor();
-			$vendorModel->addImagesToVendor($vendor);
-			$view->setModel( $vendorModel );
-
-			$userFieldsModel = $controller->getModel('userfields', 'VirtuemartModel');
-			$view->setModel( $userFieldsModel );
-
-			$view->setLayout('mailshopper');
-
-			$shopperName =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
-
-			$view->assignRef('shopperName', $shopperName);
-			$view->assignRef('order', $order);
-			$view->assignRef('vendor', $vendor);
-
-			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$vendor->vendor_store_name,
-																			$order['details']['BT']->order_total,
-																			$order['details']['BT']->order_number,
-																			$order['details']['BT']->order_pass
-																			);
-			$res = shopFunctionsF::renderAndSentVmMail(	$view,
-														$order['details']['BT']->email,
-														$subject,
-														array($vendorModel->getVendorEmail($vendorId),$vendor->vendor_store_name)
-														);
-
-			$view->setLayout('mailvendor');
-			$subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$shopperName,
-																			$order['details']['BT']->order_total,
-																			$order['details']['BT']->order_number);
-			$res = shopFunctionsF::renderAndSentVmMail(	$view,
-														$vendorModel->getVendorEmail($vendorId),
-														$subject,
-														array($order['details']['BT']->email,$shopperName)
-														);
-//		} else {
-//			//Todo version without html
-//		}
-
-		return $res;
+		return shopFunctionsF::renderMail('cart', $order['details']['BT']->email, $vars);
 	}
 
 

@@ -127,20 +127,6 @@ class VirtueMartViewCart extends JView {
 				$checkout_link_html = '';
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
-
-		} else if($layoutName=='mailshopper' || $layoutName=='mailvendor'){
-
-			$this->prepareCartData();
-
-			$this->prepareUserData();
-
-			$this->prepareAddressDataInCart();
-
-//			$this->prepareMailData();
-			//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
-//			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_TITLE'));
-//			$mainframe->setPageTitle(JText::_('COM_VIRTUEMART_CART_TITLE'));
-
 		}
 
 		$this->assignRef('lists', $this->lists);
@@ -148,6 +134,27 @@ class VirtueMartViewCart extends JView {
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		dump($this->_cart,'my cart');
 		parent::display($tpl);
+	}
+
+	public function renderMail ($doVendor=false) {
+		$tpl = ($doVendor) ? 'mail_html_vendor' : 'mail_html_shopper';
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+
+		$this->_cart = VirtueMartCart::getCart(false);
+		$this->assignRef('cart', $this->_cart);
+		$this->assignRef('lists', $this->lists);
+		$this->prepareCartData();
+		$this->prepareUserData();
+		$this->prepareAddressDataInCart();
+		$this->prepareMailData();
+
+		$this->subject = ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$this->shopperName, $this->order['details']['BT']->order_total, $this->order['details']['BT']->order_number) : JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $this->order['details']['BT']->order_total, $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
+
+		//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
+//		$pathway->addItem(JText::_('COM_VIRTUEMART_CART_TITLE'));
+//		$mainframe->setPageTitle(JText::_('COM_VIRTUEMART_CART_TITLE'));
+
+		parent::display();
 	}
 
 	private function prepareContinueLink(){

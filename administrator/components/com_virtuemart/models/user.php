@@ -576,80 +576,34 @@ class VirtueMartModelUser extends JModel {
 
 
 	 /**
-	  * This uses the shopfunctionsF::renderAndSentVmMail function, which uses a controller and task to render the content
+	  * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
 	  * and sents it then.
 	  *
-	  * deprecated: Sends a standard registration email.
+	  * @deprecated: Sends a standard registration email.
 	  *
 	  * @author Oscar van Eijk
 	  * @author Max Milbers
+	  * @author Christopher Roussel
 	  */
 	 function sendRegistrationEmail($user){
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$vars = array('user' => $user);
 
-	 	if(VmConfig::get('html_email',true)){
-		 	if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		// Send registration confirmation mail
+		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+		$vars['password'] = $password;
 
-		 	/* Create the view */
-			$controller = new VirtueMartControllerUser();
-			$view = $controller->getView('user', 'html');
+	 	// If user activation is turned on, we need to set the activation information
+	 	$usersConfig = JComponentHelper::getParams('com_users');
+		$useractivation = $usersConfig->get('useractivation');
+		if ($useractivation == '1') {
+			jimport('joomla.user.helper');
+			$activationLink = 'index.php?option=com_user&task=activate&activation='.$user->get('activation');
+			$vars['activationLink'] = $activationLink;
+		}
 
-			$view->setModel( $this );
-			$view->setModel( $controller->getModel( 'userfields' ) );
-
-			$vendorModel = $controller->getModel( 'vendor' );
-			$vendorId = 1;
-			$vendorModel->setId($vendorId);
-			$vendor = $vendorModel->getVendor();
-			$vendorModel->addImagesToVendor($vendor);
-			$view->setModel( $vendorModel );
-
-			// Send registration confirmation mail
-			$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
-			$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-			$view->assignRef('password',$password);
-
-		 	// If user activation is turned on, we need to set the activation information
-		 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
-			$useractivation = $usersConfig->get( 'useractivation' );
-			if ($useractivation == '1')
-			{
-				jimport('joomla.user.helper');
-				$activationLink = "index.php?option=com_user&task=activate&activation=".$user->get('activation');
-				$view->assignRef('activationLink',$activationLink);
-			}
-
-		 	$subject = JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name);
-			$view->setLayout('mailregisteruser');
-			$res = shopFunctionsF::renderAndSentVmMail(	$view,
-														$user->get('email'),
-														$subject,
-														array($vendorModel->getVendorEmail($vendorId), $vendor->vendor_store_name)
-														);
-
-			$subject = JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT',$user->get('email'));
-			$view->setLayout('mailregistervendor');
-			$res = shopFunctionsF::renderAndSentVmMail(	$view,
-														$vendorModel->getVendorEmail($vendorId),
-														$subject,
-														array($user->get('email'),$user->get('email'))
-														);
-	 	} else {
-
-	 		$mainframe = JFactory::getApplication() ;
-		 	$fromMail = $mainframe->getCfg('mailfrom');
-		 	$fromName = $mainframe->getCfg('fromname');
-		 	$fromSite = $mainframe->getCfg('sitename');
-
-		 	$subject = JText::_('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT');
-		 	$message =  JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE', $user->get('name')
-				, $fromSite
-				, JURI::root()
-				, $user->get('username')
-				, $user->password_clear
-				);
-			JUtility::sendMail( $fromMail, $fromName, $user->get('email'), $subject, $message );
-	 	}
-
+		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 	 }
 
 	 /**

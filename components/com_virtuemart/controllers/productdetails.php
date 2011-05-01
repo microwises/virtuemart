@@ -63,54 +63,32 @@ class VirtueMartControllerProductdetails extends JController {
 
 	/**
 	 * Send the ask question email.
-	 * Author Kohl Patrick
+	 * @author Kohl Patrick, Christopher Roussel
 	 */
-	public function mailAskquestion(){
-		/* Create the view */
-		$view = $this->getView('askquestion', 'html');
-		/* add vendor model*/
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+	public function mailAskquestion () {
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$mainframe = JFactory::getApplication();
+		$vars = array();
 
-		$productmodel = $this->getModel( 'product', 'VirtuemartModel' );
-		$productDetails = $productmodel->getProductDetails();
+		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
+		$productModel = $this->getModel('product');
+		$vars['product'] = $productModel->getProductDetails();
 
-		$vendormodel = $this->getModel( 'vendor', 'VirtuemartModel' );
-		$VendorEmail = $vendormodel->getVendorEmail($productDetails->vendor_id);
-		/* Add the default model */
-		$view->setModel($this->getModel('product','VirtuemartModel'), true);
-
-		/* Add the category model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
-
-
-		/* mail asked question
-		*  TODO use the templating Mail
-		* Author Kohl Patrick
-		*/
-		$mainframe = JFactory::getApplication() ;
-		$user =& JFactory::getUser();
-		if(empty($user->id)){
-                    $fromMail = JRequest::getVar('email');
-                    $fromName = JRequest::getVar('name','');
-
-		}else {
-                    $fromMail = $user->email;
-                    $fromName = $user->name;
-	 	}
-		$fromSite = $mainframe->getCfg('sitename');
-		$subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$productDetails->product_name .'('.$fromSite.')';
-//		$message = $productDetails->product_name."\n".$productDetails->product_s_desc."\n\n";
-//		$message .= JRequest::getVar('comment');
-		$msgtype = '';
-		$message = JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_MSG', $productDetails->product_name ,JRequest::getVar('comment'));
-		if (JUtility::sendMail( $fromMail, $fromName, $VendorEmail, $subject, $message, true ) == true ) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY') );
-		else {
-			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY') );
+		if (shopFunctionsF::renderMail('askquestion', $user->email, $vars)) {
+			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
 		}
+		else {
+			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
+		}
+		$mainframe->enqueueMessage(JText::_($string));
+
 		/* Display it all */
+		$view = $this->getView('askquestion', 'html');
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mailconfirmed');
 		$view->display();
 	}
+
 	/**
 	 *  Ask Question form
 	 *

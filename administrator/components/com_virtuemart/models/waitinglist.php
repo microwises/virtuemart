@@ -45,67 +45,41 @@ class VirtueMartModelWaitingList extends JModel {
 	/**
 	* Notify customers product is back in stock
 	* @author RolandD
+	* @author Christopher Rouseel
 	* @todo Add Itemid &Itemid='.$sess->getShopItemid()
 	* @todo Do something if the mail cannot be send
 	* @todo Update mail from
 	* @todo Get the from name/email from the vendor
 	*/
-	public function notifyList($product_id=false) {
-		if (!$product_id) return false;
-		else {
-			$mainframe = Jfactory::getApplication('site');
-			$db = JFactory::getDBO();
-
-			$q = "SELECT * FROM #__vm_waiting_list ";
-			$q .= "WHERE notified = '0' AND product_id = ".$product_id;
-			$db->setQuery($q);
-			$waiting_users = $db->loadObjectList();
-
-			/* Load the product details */
-			$q = "SELECT product_name FROM #__vm_product WHERE product_id = ".$product_id;
-			$db->setQuery($q);
-			$product_name = $db->loadResult();
-
-			/* Lets make the e-mail up from the info we have */
-			$notice_subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $product_name);
-
-			/* Now get the url information */
-			$url = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
-			$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $product_name, $url);
-
-			foreach ($waiting_users as $key => $waiting_user) {
-
-
-				if (!class_exists('shopFunctionsF')) require( JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php' );
-				$result = shopFunctionsF::sendVmMail($notice_body,
-													$waiting_user->notify_email,
-													$notice_subject,
-													array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename'))
-													);
-//				//TODO mail
-//				/* Get the mailer start */
-//				$mailer = shopFunctions::loadMailer();
-//				//by Max Milbers
-//				//$from_email = ps_vendor::get_vendor_fields(1,array("email"),"");
-//				$mailer->From = $mainframe->getCfg('mailfrom');
-//				$mailer->FromName = $mainframe->getCfg('sitename');
-//				$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
-//				$mailer->AddAddress($waiting_user->notify_email);
-//				$mailer->setBody($notice_body);
-//				$mailer->setSubject($notice_subject);
-
-				/* Send the mail */
-				if (!$result) {
-
-				}
-				else {
-					/* Clear the mail details */
-					$mailer->ClearAddresses();
-					$this->update($waiting_user->notify_email, $product_id);
-				}
-			}
-			return true;
+	public function notifyList ($product_id=false) {
+		if (!$product_id) {
+			return false;
 		}
+
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$vars = array();
+
+		$db = JFactory::getDBO();
+		$q = "SELECT * FROM #__vm_waiting_list ";
+		$q .= "WHERE notified = '0' AND product_id = ".$product_id;
+		$db->setQuery($q);
+		$waiting_users = $db->loadObjectList();
+
+		/* Load the product details */
+		$q = "SELECT product_name FROM #__vm_product WHERE product_id = ".$product_id;
+		$db->setQuery($q);
+		$vars['productName'] = $db->loadResult();
+
+		/* Now get the url information */
+		$vars['url'] = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
+
+		foreach ($waiting_users as $key => $waiting_user) {
+			$vars['user'] = $waiting_user;
+			if (shopFunctionsF::renderMail('waitinglist', $waiting_user->notify_email, $vars)) {
+				$this->update($waiting_user->notify_email, $product_id);
+			}
+		}
+		return true;
 	}
 
 	/**

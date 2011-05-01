@@ -211,5 +211,18 @@ class VirtuemartViewOrders extends JView {
 		parent::display($tpl);
 	}
 
+	function renderMail () {
+		$tpl = isset($this->layout) ? 'mail_html_' . $this->layout : 'mail_html_updorder';
+		$this->setLayout($tpl);
+		$vendorModel = $this->getModel('vendor');
+		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);
+		$vendorModel->setId($vendor_id);
+		$vendor = $vendorModel->getVendor();
+		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
+
+		$this->subject = ($switch) ? JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ') : JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
+		parent::display();
+	}
+
 }
 

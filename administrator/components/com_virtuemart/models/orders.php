@@ -795,12 +795,15 @@ class VirtueMartModelOrders extends JModel {
 	 * E-mails the Download-ID to the customer
 	 * or deletes the Download-ID from the product_downloads table
 	 *
+	 * @author ?, Christopher Roussel
 	 * @return boolean
 	 */
-	function mailDownloadId($order_id)
-	{
+	function mailDownloadId ($order_id) {
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$url = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
+		$vars = array('orderID' => $order_id);
+
+		$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT order_status FROM #__vm_orders WHERE order_id='.$order_id);
@@ -813,9 +816,6 @@ class VirtueMartModelOrders extends JModel {
 			$db->setQuery($q);
 			$downloads = $db->loadObjectList();
 			if ($downloads) {
-				$vendor_id = 1;
-				$dbv = ps_vendor::get_vendor_fields($vendor_id,array("email","vendor_name"),"");
-
 				$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email
 					FROM #__vm_user_info
 					LEFT JOIN #__users ju
@@ -825,38 +825,17 @@ class VirtueMartModelOrders extends JModel {
 					LIMIT 1";
 				$db->setQuery($q);
 				$user = $db->loadObject();
+				$vars['downloads'] = $downloads;
+				$vars['user'] = $user;
+				$vars['layout'] = 'download';
 
-				$message = JText::_('HI',false) .' '.$user->full_name.",\n\n";
-				$message .= JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_1',false).".\n";
-				$message .= JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_2',false)."\n\n";
-
-				foreach ($downloads as $key => $download) {
-					$message .= $download->file_name.": ".$download->download_id
-					. "\n".$url."&download_id=".$download->download_id."\n\n";
-				}
-
-				$message .= JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_3',false).VmConfig::get('download_max')."\n";
-				$expire = ((VmConfig::get('download_expire') / 60) / 60) / 24;
-				$message .= str_replace("{expire}", $expire, JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_4',false));
-				$message .= "\n\n____________________________________________________________\n";
-				$message .= JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_5',false)."\n";
-				$message .= $dbv->f("vendor_name") . " \n" .VmConfig::get('url')."\n\n".$dbv->f("email") . "\n";
-				$message .= "____________________________________________________________\n";
-				$message .= JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG_6',false) . $dbv->f("vendor_name");
-
-
-				$mail_Body = $message;
-				$mail_Subject = JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ',false);
-
-				$result = vmMail( $dbv->f("email"), $dbv->f("vendor_name"),
-				$db->f("email"), $mail_Subject, $mail_Body, '' );
-
-				if ($result) {
-					$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG',false). " ". $user->full_name. ' '.$user->email);
+				if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
+					$string = 'COM_VIRTUEMART_DOWNLOADS_SEND_MSG';
 				}
 				else {
-					$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_DOWNLOADS_ERR_SEND',false)." ". $user->full_name. ' '.$user->email, 'error');
+					$string = 'COM_VIRTUEMART_DOWNLOADS_ERR_SEND';
 				}
+				$mainframe->enqueueMessage(JText::_($string,false). " ". $user->full_name. ' '.$user->email);
 			}
 		}
 		else if ($order_status == VmConfig::get('disable_download_status')) {
@@ -871,26 +850,19 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Notifies the customer that the Order Status has been changed
 	 *
-	 * @author RolandD
+	 * @author RolandD, Christopher Roussel
 	 * @todo: Fix URL when we have front-end done
 	 */
 	function notifyCustomer($order, $_comments) {
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$vars = array('order' => $order, 'comments' => $_comments);
+		$vars['includeComments'] = JRequest::getVar('include_comment', array());
+
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&order_id=".$order->order_id.'&Itemid='.$sess->getShopItemid();
-		$url = 'url';
+		$vars['url'] = 'url';
 
-		/* Get the list of comments to include */
-		$include_comments = JRequest::getVar('include_comment', array());
-
-		/* Get vendor info */
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$vendor_id = VirtueMartModelVendor::getVendorId('order', $order->order_id);
-		$vendorModel = new VirtueMartModelVendor();
-		$vendorModel->setId($vendor_id);
-		$vendor = $vendorModel->getVendor();
-		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
-
+		$db = JFactory::getDBO();
 		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
 			FROM #__vm_order_user_info
 			LEFT JOIN #__vm_orders
@@ -902,59 +874,14 @@ class VirtueMartModelOrders extends JModel {
 		$db->setQuery($q);
 		$user = $db->loadObject();
 
-		/* MAIL BODY */
-		$message = JText::_('COM_VIRTUEMART_HI',false) .' '. $user->full_name. ",\n\n";
-		$message .= JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1',false)."\n\n";
-
-		/* Check if we need to include the comment in the mail */
-		if (array_key_exists($order->order_id, $include_comments) && !empty($_comments)) {
-			$message .= JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL',false).":\n";
-			$message .= $_comments;
-			$message .= "\n____________________________________________________________\n\n";
-		}
-
-		/* Add the new status */
-		$message .= JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2',false)."\n";
-		$message .= "____________________________________________________________\n\n";
-		$message .= $user->order_status_name;
-
-		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' ) {
-			$message .= "\n____________________________________________________________\n\n";
-			$message .= JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
-			$message .= $url;
-		}
-		$message .= "\n\n____________________________________________________________\n";
-		$message .= $vendor->vendor_name . " \n";
-		$message .= VmConfig::get('url')."\n";
-		$message .= $vendor->email;
-
-		if (!class_exists('shopFunctionsF')) require( JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php' );
-		$result = shopFunctionsF::sendVmMail($message,
-											$user->email,
-											str_replace( "{order_id}", $order->order_id, JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ')),
-											array($vendor->email, $vendor->vendor_name)
-											);
-
-//		$mailer = shopFunctions::loadMailer();
-//		$mailer->From = $vendor->email;
-//		$mailer->FromName = $vendor->vendor_name;
-//		$mailer->AddReplyTo(array($vendor->email, $vendor->vendor_name));
-//		$mailer->AddAddress($user->email);
-//		$mailer->setBody(nl2br(str_replace( "{order_id}", $order->order_id, $message)));
-//		$mailer->setSubject(str_replace( "{order_id}", $order->order_id, JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ')));
-//
-//		$result = $mailer->Send();
-
 		/* Send the email */
-		if ($result) {
-			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_MSG',false)." ".$user->full_name.", ".$user->email);
+		if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
+			$string = 'COM_VIRTUEMART_DOWNLOADS_SEND_MSG';
 		}
 		else {
-			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_DOWNLOADS_ERR_SEND',false).' '.$user->full_name. ', '.$user->email." (". $result->ErrorInfo.")" );
+			$string = 'COM_VIRTUEMART_DOWNLOADS_ERR_SEND';
 		}
-
-		/* Clear the mail details */
-		$mailer->ClearAddresses();
+		$mainframe->enqueueMessage( JText::_($string,false).' '.$user->full_name. ', '.$user->email);
 	}
 
 
