@@ -51,6 +51,20 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
 //			/* Add the variants */
+			if (!is_int($priceKey)) {
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+				$calculator = calculationHelper::getInstance();
+				$variantmods = $calculator->parseModifier($priceKey);
+				
+				foreach ($variantmods as $variantmod) {
+						$row=0 ;
+						foreach($variantmod as $variant=>$selected){
+							dump($selected,$priceKey.' are vari ID : '.$variant);
+							dump($product->customfieldsCart[$row],' are vari ID : '.$row);
+							$row++;
+						}
+				}
+			}
 //			$variant = '';
 //			$variantmod = '0';
 //			if(!empty($product->variant)){

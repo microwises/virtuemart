@@ -36,6 +36,7 @@ $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
 if (!$filter_category ) $category_id = null;
 $products = 		$productModel->getGroupProducts($Product_group, $vendorId, $category_id, $max_items);
+
 if(empty($products)) return false;
 $totalProd = 		count( $products);
 $productModel->addImagesToProducts($products);

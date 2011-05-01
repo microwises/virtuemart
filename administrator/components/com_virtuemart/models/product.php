@@ -280,10 +280,10 @@ class VirtueMartModelProduct extends JModel {
 				/* Load the custom variants */
 				$product->hasproductCustoms = $this->hasproductCustoms($product_id);
 				/* Load the custom product fields */
-				$product->customfields = self::getproductCustomsField($product);
+				$product->customfields = self::getProductCustomsField($product);
 
 				/*  custom product fields for add to cart */
-				$product->customfieldsCart = self::getproductCustomsFieldCart($product);
+				$product->customfieldsCart = self::getProductCustomsFieldCart($product);
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -1417,7 +1417,7 @@ class VirtueMartModelProduct extends JModel {
 		$product = $this->getProduct($product_id);
 
 		/* NEW Load the Customs Field Cart Price */
-		$product->CustomsFieldCartPrice = $this->getproductCustomsFieldWithPrice($product);
+		$product->CustomsFieldCartPrice = $this->getProductCustomsFieldWithPrice($product);
 		/* Loads the product price details */
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
@@ -1887,7 +1887,7 @@ class VirtueMartModelProduct extends JModel {
 
 		}
 	}
-     public function getproductCustomsField($product, $cart = 0) {
+     public function getProductCustomsField($product) {
 
 		if ($product->hasproductCustoms) {
 
@@ -1909,12 +1909,12 @@ class VirtueMartModelProduct extends JModel {
 		return ;
      }
 	 // temp function TODO better one
-     public function getproductCustomsFieldCart($product) {
+     public function getProductCustomsFieldCart($product) {
 
 		if ($product->hasproductCustoms)  {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`
 				FROM `#__vm_custom` AS C
 				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
@@ -1981,12 +1981,12 @@ class VirtueMartModelProduct extends JModel {
 	*Get fields with price
 	* from custom fields
 	**/
-     public function getproductCustomsFieldWithPrice($product) {
+     public function getProductCustomsFieldWithPrice($product) {
 
 		if ($this->hasproductCustoms($product->product_id )) {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`
 				FROM `#__vm_custom` AS C
 				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`

@@ -323,7 +323,6 @@ class VmHTML{
 		$option  = array($key =>null, $text => "-select-");
 		$options = array_merge(array($option), $options);
 		}
-		echo $default;
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default);
 	}
 	/**
