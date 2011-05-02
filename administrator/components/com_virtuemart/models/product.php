@@ -352,7 +352,7 @@ class VirtueMartModelProduct extends JModel {
 
 		$products=array();
 		foreach($productIds as $id){
-			if($product = $this->getProduct($id)){
+			if($product = $this->getProduct($id,$front, $withCalc, $onlyPublished)){
 				$products[] = $product;
 			}
 		}
@@ -1925,7 +1925,7 @@ class VirtueMartModelProduct extends JModel {
 		if ($this->hasproductCustoms($product->product_id )) {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden` 
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
 				FROM `#__vm_custom` AS C
 				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`

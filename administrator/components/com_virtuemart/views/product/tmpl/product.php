@@ -38,7 +38,7 @@ $category_id = JRequest::getInt('category_id', false);
 		<tr>
 			<td align="left" width="100%">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
-				<select class="inputbox" id="category_id" name="category_id" onchange="document.adminForm.submit(); return false;">					
+				<select class="inputbox" id="category_id" name="category_id" onchange="document.adminForm.submit(); return false;">
 					<?php echo $this->category_tree; ?>
 				</select>
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
@@ -121,7 +121,9 @@ $pagination = $this->pagination;
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Category name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&category_id='.$product->category_id.'&option='.$option), $product->category_name); ?></td>
+				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&category_id='.$product->category_id.'&option='.$option), $product->category_name);
+					echo $product->categoriesList;
+				?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if( $category_id ) { ?>
 					<td align="center" class="order">

@@ -107,7 +107,8 @@ class modelfunctions{
 				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
-				$list .= $tmp. ', ';
+				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&category_id='.$value), $tmp). ', ';
+//				$list .= $tmp. ', ';
 				$i++;
 				if($i==$quantity) break;
 			}

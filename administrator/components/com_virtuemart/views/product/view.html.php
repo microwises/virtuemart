@@ -236,7 +236,7 @@ class VirtuemartViewProduct extends JView {
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
 				else $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT').' :: '.$product->product_sku.' :: '.$product->product_name;
-                                 
+
 
 
 				JToolBarHelper::title($text, 'vm_product_48');
@@ -326,6 +326,11 @@ class VirtuemartViewProduct extends JView {
 					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->vendor_id,$vendor->vendor_currency);
 					$price = $calculator->convertCurrencyTo($product->product_currency,$product->product_price,true);
 					$product->product_price_display = $currencyDisplay->getFullValue($price);
+
+					/* Write the first 5 categories in the list */
+					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+					$product->categoriesList = modelfunctions::buildGuiList('category_id','#__vm_product_category_xref','product_id',$product->product_id,'category_name','#__vm_category','category_id');
+
 //					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
 

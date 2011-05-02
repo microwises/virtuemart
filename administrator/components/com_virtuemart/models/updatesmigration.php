@@ -204,7 +204,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
-	$fields['company'] =  "Washupito's the User";
+	$fields['company'] =  "Washupito's the virtual mart";
 	$fields['title'] =  'Sire';
 	$fields['last_name'] =  'upito';
 	$fields['first_name'] =  'Wash';
@@ -213,8 +213,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['address_1'] =  'vendorra road 8';
 	$fields['city'] =  'Canangra';
 	$fields['zip'] =  '055555';
-	$fields['state_id'] =  '72';
-	$fields['country_id'] =  '13';
+	$fields['state_id'] =  '361';
+	$fields['country_id'] =  '195';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['vendor_id'] = '1';

@@ -126,6 +126,11 @@ class VirtueMartModelShippingRate extends JModel {
 
    			// Convert ; separated string into array
    			$this->_data->shipping_rate_country = explode(';', $this->_data->shipping_rate_country);
+   			if(empty($this->_data->shipping_rate_currency_id)){
+   				$vendorId=1;
+   				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+   				$this->_data->shipping_rate_currency_id = VirtueMartModelVendor::getVendorCurrency($vendorId)->currency_id;
+   			}
   		}
 
   		if (!$this->_data) {
