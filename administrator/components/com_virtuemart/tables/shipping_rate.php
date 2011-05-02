@@ -76,7 +76,7 @@ class TableShipping_Rate extends JTable {
 	 */
 	function check()
 	{
-        if (!$this->shipping_rate_name) {
+        if (empty($this->shipping_rate_name)) {
 			$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_RATE_RECORDS_MUST_CONTAIN_RATE_NAME'));
 			return false;
 		}
@@ -92,6 +92,11 @@ class TableShipping_Rate extends JTable {
 				$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_RATE_NAME_ALREADY_EXISTS'));
 				return false;
 			}
+		}
+
+		if(empty($this->shipping_rate_carrier_id)){
+			$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_RATE_HAS_NO_SHIPPER_ID'));
+			return false;
 		}
 
 		return true;
