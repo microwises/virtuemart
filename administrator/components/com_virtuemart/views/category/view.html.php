@@ -54,9 +54,9 @@ class VirtuemartViewCategory extends JView {
         	$isNew = ($category->category_id < 1);
 
 			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL').': <small><small>[ New ]</small></small>', 'vm_categories_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_categories_48');
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL').': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_categories_48');
 
 				$relationInfo = $model->getRelationInfo( $category->category_id );
 				$this->assignRef('relationInfo', $relationInfo);

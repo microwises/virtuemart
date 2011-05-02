@@ -62,9 +62,9 @@ class VirtuemartViewState extends JView {
 		}
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_states_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_states_48');
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').': <small><small>[ Edit ]</small></small>', 'vm_states_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_states_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();

@@ -48,7 +48,7 @@ class VirtuemartViewOrderstatus extends JView {
 			$editor = JFactory::getEditor();
 
 			if ($orderStatus->order_status_id < 1) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
@@ -62,7 +62,7 @@ class VirtuemartViewOrderstatus extends JView {
 				$ordering = JHTML::_('list.specificordering',  $orderStatus, $orderStatus->order_status_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').': <small><small>[ Edit ]</small></small>', 'vm_orderstatus_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -76,7 +76,7 @@ class VirtuemartViewOrderstatus extends JView {
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_MNU'), 'vm_orderstatus_48' );
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_LBL'), 'vm_orderstatus_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();

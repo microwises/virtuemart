@@ -55,7 +55,7 @@ class VirtuemartViewCustom extends JView {
 
 			$isNew = ($custom->custom_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
@@ -65,7 +65,7 @@ class VirtuemartViewCustom extends JView {
 				}
 			}
 			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_LIST_EDIT').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_LIST_EDIT').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();

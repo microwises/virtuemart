@@ -234,8 +234,11 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('delete_message', $delete_message);
 
 				/* Toolbar */
-				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_ADD_PRODUCT');
-				else $text = JText::_('COM_VIRTUEMART_EDIT_PRODUCT').' :: '.$product->product_sku.' :: '.$product->product_name;
+				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
+				else $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT').' :: '.$product->product_sku.' :: '.$product->product_name;
+                                 
+
+
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::apply();

@@ -52,7 +52,7 @@ class VirtuemartViewUserfields extends JView {
 			$userField = $model->getUserfield();
 
 			if ($userField->fieldid < 1) { // Insert new userfield
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
@@ -66,7 +66,7 @@ class VirtuemartViewUserfields extends JView {
 				$ordering = JHTML::_('list.specificordering',  $userField, $userField->fieldid, $qry);
 				$this->assignRef('ordering', $ordering);
 
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').': <small><small>[ Edit ]</small></small>');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'));
 
 				$userFieldValues = $model->getUserfieldValues();
 				$lists['type'] = $this->_getTypes($userField->type)

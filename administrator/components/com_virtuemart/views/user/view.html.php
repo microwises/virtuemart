@@ -74,15 +74,15 @@ class VirtuemartViewUser extends JView {
 
 			if ($_new) { // Insert new user
 				if($task=='editshop'){
-					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STORE_FORM_LBL').': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USER_FORM_LBL').': <small><small>[ New ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
 				}
 			} else { // Update existing user
 				if($task=='editshop'){
-					JToolBarHelper::title( JText::_('COM_VIRTUEMART_STORE_FORM_LBL').': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title( JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
 				} else {
-					JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_FORM_LBL').': <small><small>[ Edit ]</small></small>', 'vm_user_48.png');
+					JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
 				}
 			}
 

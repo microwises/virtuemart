@@ -65,6 +65,7 @@ AdminMenuHelper::startAdminArea();
             	</div>
 		</td>
 	</tr>
+        <?php if (false) { ?>
 <!-- todo?? To be used with HTML editor (with some more restrictions)
 	<tr>
 		<td width="24%" align="left" valign="top">
@@ -77,6 +78,7 @@ AdminMenuHelper::startAdminArea();
 	</td>
 	</tr>
 -->
+  <?php } ?>
 	<tr>
 		<!-- Published status -->
 		<td>

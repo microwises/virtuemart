@@ -50,7 +50,7 @@ class VirtuemartViewUsergroups extends JView {
 			$usergroup = $model->getUsergroup();
 			$this->assignRef('usergroup',	$usergroup);
 
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_ADD').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
 			JToolBarHelper::save();

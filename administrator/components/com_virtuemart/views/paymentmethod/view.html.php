@@ -63,9 +63,9 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$isNew = ($paym->paym_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_LIST_ADD').': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_LIST_EDIT').': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
