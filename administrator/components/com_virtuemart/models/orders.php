@@ -220,6 +220,7 @@ class VirtueMartModelOrders extends JModel {
 	 * Store an attribute
 	 *
 	 * @author RolandD
+	 *TODO do it work for Customs fields options pricable
 	 */
 	public function saveAttribute()
 	{
@@ -263,6 +264,7 @@ class VirtueMartModelOrders extends JModel {
 	 * Remove an attribute
 	 * @author RolandD
 	 * @todo Add sanity checks
+	  TODO do it work for Customs fields options pricable
 	 */
 	public function removeAttribute()
 	{
@@ -664,7 +666,24 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$_orderItems = $this->getTable('order_item');
 //		$_lineCount = 0;
-		foreach ($_cart->products as $_prod) {
+		foreach ($_cart->products as $priceKey=>$_prod) {
+			if (!is_int($priceKey)) {
+				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+				$calculator = calculationHelper::getInstance();
+				$variantmods = $calculator->parseModifier($priceKey);
+				$row=0 ;
+
+				foreach ($variantmods as $variantmod) {
+						
+						foreach($variantmod as $variant=>$selected){
+							//dump($product->customfieldsCart[$row]->options[$selected];
+							$_prod->product_name .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
+								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+							
+						}
+						$row++;
+				}
+			}
 		// TODO: add fields for the following data:
 //    * [double] basePrice = 38.48
 //    * [double] basePriceVariant = 38.48
