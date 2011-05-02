@@ -142,6 +142,23 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('STaddress',$STaddress['fields']);
 	}
 
+	private function prepareVendor(){
+
+		$vendor = $this->getModel('vendor','VirtuemartModel');
+		$vendor->setId($this->_cart->vendorId);
+		$_vendor = $vendor->getVendor();
+		$vendor->addImagesToVendor($_vendor);
+		$this->assignRef('vendor',$_vendor);
+	}
+
+	private function prepareMailData(){
+
+		if(empty($this->vendor)) $this->prepareVendor();
+		//TODO add orders, for the orderId
+		//TODO add registering userdata
+		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
+	}
+
 }
 
 //no closing tag

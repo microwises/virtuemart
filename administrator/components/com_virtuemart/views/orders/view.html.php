@@ -13,7 +13,6 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
  */
 
 // Check to ensure this file is included in Joomla!
@@ -217,10 +216,10 @@ class VirtuemartViewOrders extends JView {
 		$vendorModel = $this->getModel('vendor');
 		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);
 		$vendorModel->setId($vendor_id);
-		$vendor = $vendorModel->getVendor();
-		$vendor->email = $vendorModel->getVendorEmail($vendor->vendor_id);
+		$this->vendor = $vendorModel->getVendor();
+		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->vendor_id);
 
-		$this->subject = ($switch) ? JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ') : JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
+		$this->subject = ($tpl = 'mail_html_download') ? JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ') : JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
 		parent::display();
 	}
 

@@ -893,6 +893,7 @@ class VirtueMartModelOrders extends JModel {
 			AND #__vm_orders.order_id = #__vm_order_user_info.order_id";
 		$db->setQuery($q);
 		$user = $db->loadObject();
+		$vars['user'] = $user;
 
 		/* Send the email */
 		if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
