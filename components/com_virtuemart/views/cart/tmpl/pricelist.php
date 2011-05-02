@@ -56,15 +56,17 @@ defined('_JEXEC') or die('Restricted access');
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
+				$row=0 ;
 
 				foreach ($variantmods as $variantmod) {
-						$row=0 ;
+						
 						foreach($variantmod as $variant=>$selected){
-//							dump($selected,$priceKey.' are vari ID : '.$variant);
-//							dump($product->customfieldsCart[$row],' are vari ID : '.$row);
-							$product_rows[$i]['customfieldsCart'] .= ' '.$product->customfieldsCart[$row]->custom_field_desc;
-							$row++;
+							//dump($product->customfieldsCart[$row]->options[$selected];
+							$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+								'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
+							
 						}
+						$row++;
 				}
 			}
 

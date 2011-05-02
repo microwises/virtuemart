@@ -74,7 +74,7 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.$fieldTypes[$field->field_type].'
 					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$field->custom_id.'" name="field['.$row.'][custom_id]" />
-					<input type="hidden" value="1" checked="checked" name="admin_only" />
+					<input type="hidden" value="'.$field->admin_only.'" checked="checked" name="admin_only" />
 				 </td>
 				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
 				 <td></td>

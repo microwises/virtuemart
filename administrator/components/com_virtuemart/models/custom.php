@@ -128,7 +128,7 @@ class VirtueMartModelCustom extends JModel {
 
 		$query='SELECT * FROM `#__vm_custom_field`
 		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__vm_custom_field`.`custom_field_id`
-		and product_id='.$product_id;
+		and `product_id`='.$product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
 		$this->_datas->customFields = self::getCustoms() ;
@@ -149,8 +149,8 @@ class VirtueMartModelCustom extends JModel {
 
 		$this->_db = JFactory::getDBO();
 		$query='SELECT * FROM `#__vm_custom` ';
-		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'WHERE custom_parent_id ='.$custom_parent_id;
-		if ($keyword = JRequest::getVar('keyword') ) $query .= 'WHERE custom_title LIKE "%'.$keyword.'%"';
+		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'WHERE `custom_parent_id` ='.$custom_parent_id;
+		if ($keyword = JRequest::getVar('keyword') ) $query .= 'WHERE `custom_title` LIKE "%'.$keyword.'%"';
 		$this->_db->setQuery($query);
 		$datas->items = $this->_db->loadObjectList();
 
@@ -316,14 +316,14 @@ class VirtueMartModelCustom extends JModel {
 			$this->_db->query();
 			$custom_field_id = mysql_insert_id();
 			$newIds[]=$custom_field_id;
-			$q = 'REPLACE INTO #__vm_custom_field_xref_product ( custom_field_id , product_id  )';
+			$q = 'REPLACE INTO `#__vm_custom_field_xref_product` ( `custom_field_id` , `product_id`  )';
 			$q .= " VALUES( '".$custom_field_id."', '". $product_id ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
 
 		// slect all custom_field_id from product
-		$q="select custom_field_id from `#__vm_custom_field_xref_product` where product_id=".$product_id ;
+		$q="select custom_field_id from `#__vm_custom_field_xref_product` where `product_id`=".$product_id ;
 		$this->_db->setQuery($q);
 		$Ids = $this->_db->loadResultArray();
 		// delete from database old unused product custom fields

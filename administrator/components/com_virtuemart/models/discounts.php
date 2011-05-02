@@ -92,7 +92,7 @@ class VirtueMartModelDiscounts extends JModel {
     * @author RolandD
     */
     private function getDiscountsListQuery() {
-    	return 'FROM #__vm_product_discount';
+    	return 'FROM `#__vm_product_discount`';
     }
 
     /**

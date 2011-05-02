@@ -1791,7 +1791,7 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* parent */
 				case 'P':
-					return $value.'<input type="hidden" value="'.$value .'" name="field['.$row.'][custom_value]" />' .$priceInput;
+					return $value.'<input type="hidden" value="'.$value.'" name="field['.$row.'][custom_value]" />'.$priceInput;
 				break;
 				/* image */
 				case 'i':
@@ -1850,7 +1850,7 @@ class VirtueMartModelProduct extends JModel {
 		if ($product->hasproductCustoms)  {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
 				FROM `#__vm_custom` AS C
 				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
@@ -1878,18 +1878,21 @@ class VirtueMartModelProduct extends JModel {
 					Where xref.`product_id` ='.$product->product_id;
 				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group->custom_id ;
 				$this->_db->setQuery($query);
-				$productCustoms = $this->_db->loadObjectList();
-				foreach ($productCustoms as $productCustom) {
+				$options = $this->_db->loadObjectList();
+				$group->options = array();
+				foreach ( $options as $option) $group->options[$option->value] = $option;
+
+				foreach ($group->options as $productCustom) {
 					$productCustom->custom_price = $calculator->priceDisplay($productCustom->custom_price,'',true);
 				}
 				if ($group->field_type == 'V'){
-					foreach ($productCustoms as $productCustom) {
+					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
 					}
-					$group->display = VmHTML::select($productCustoms,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
+					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
 				} else {
 					$group->display ='';
-					foreach ($productCustoms as $productCustom) {
+					foreach ($group->options as $productCustom) {
 						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
 					}
 				}
@@ -1922,7 +1925,7 @@ class VirtueMartModelProduct extends JModel {
 		if ($this->hasproductCustoms($product->product_id )) {
 
 			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`
+			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden` 
 				FROM `#__vm_custom` AS C
 				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`

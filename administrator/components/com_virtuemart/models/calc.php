@@ -120,22 +120,22 @@ class VirtueMartModelCalc extends JModel
    			$this->_id = 0;
   		}
 		/* Add the calculation rule categories */
-		$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `calc_category` FROM `#__vm_calc_category_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->calc_categories = $this->_db->loadResultArray();
 
 		/* Add the calculation rule shoppergroups */
-		$q = 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `calc_shopper_group` FROM `#__vm_calc_shoppergroup_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->calc_shopper_groups = $this->_db->loadResultArray();
 
 		/* Add the calculation rule countries */
-		$q = 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id` = "'.$this->_id.'"';
+		$q = 'SELECT `calc_country` FROM `#__vm_calc_country_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->calc_countries = $this->_db->loadResultArray();
 
 		/* Add the calculation rule states */
-		$q = 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`= "'.$this->_id.'"';
+		$q = 'SELECT `calc_state` FROM `#__vm_calc_state_xref` WHERE `calc_rule_id`= "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 		$this->_data->calc_states = $this->_db->loadResultArray();
 
@@ -302,8 +302,8 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT calc_shopper_published
-					  FROM #__vm_calc
+			$query = 'SELECT `calc_shopper_published`
+					  FROM `#__vm_calc`
 					  WHERE calc_id = '. $quotedId;
 
 			$this->_db->setQuery($query);
@@ -311,8 +311,8 @@ class VirtueMartModelCalc extends JModel
 
 			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
 
-			$query = 'UPDATE #__vm_calc
-					  SET calc_shopper_published = '.$publish.'
+			$query = 'UPDATE `#__vm_calc`
+					  SET `calc_shopper_published` = '.$publish.'
 					  WHERE calc_id = '.$quotedId;
 
 			$this->_db->setQuery($query);
@@ -341,18 +341,18 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT calc_vendor_published
-					  FROM #__vm_calc
-					  WHERE calc_id = '. $quotedId;
+			$query = 'SELECT `calc_vendor_published`
+					  FROM `#__vm_calc`
+					  WHERE `calc_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
 			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
 
-			$query = 'UPDATE #__vm_calc
-					  SET calc_vendor_published = '.$publish.'
-					  WHERE calc_id = '.$quotedId;
+			$query = 'UPDATE `#__vm_calc`
+					  SET `calc_vendor_published` = '.$publish.'
+					  WHERE `calc_id` = '.$quotedId;
 
 			$this->_db->setQuery($query);
 

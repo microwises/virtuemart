@@ -258,7 +258,7 @@ class VirtueMartModelManufacturerCategory extends JModel {
 	 */
 	function getCategoryFilter(){
 		$db = JFactory::getDBO();
-		$query = 'SELECT mf_category_id as value, mf_category_name as text'
+		$query = 'SELECT `mf_category_id` as `value`, `mf_category_name` as text'
 				.' FROM #__vm_manufacturer_category';
 		$db->setQuery($query);
 

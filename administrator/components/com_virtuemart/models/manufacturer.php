@@ -70,7 +70,7 @@ class VirtueMartModelManufacturer extends JModel {
     		$filter = '';
             if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__vm_manufacturer.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
 			$q = "SELECT COUNT(*)
-				FROM #__vm_manufacturer ".
+				FROM `#__vm_manufacturer` ".
 				$filter;
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
@@ -179,8 +179,8 @@ class VirtueMartModelManufacturer extends JModel {
 	 */
 	function getManufacturerDropDown() {
 		$db = JFactory::getDBO();
-		$query = "SELECT manufacturer_id AS value, mf_name AS text, '' AS disable
-				FROM #__vm_manufacturer";
+		$query = "SELECT `manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
+				FROM `#__vm_manufacturer`";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER') .' -' ));

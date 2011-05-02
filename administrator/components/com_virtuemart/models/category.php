@@ -226,35 +226,35 @@ class VirtueMartModelCategory extends JModel {
 		$vendorId = 1;
 		$categories = Array();
 
-		$query = "SELECT c.category_id, c.category_description, c.category_name, c.ordering, c.published, cx.category_child_id, cx.category_parent_id, cx.category_shared
-				  FROM #__vm_category c
-				  LEFT JOIN #__vm_category_xref cx
-				  ON c.category_id = cx.category_child_id
+		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
+				  FROM `#__vm_category` c
+				  LEFT JOIN `#__vm_category_xref` cx
+				  ON c.`category_id` = cx.`category_child_id`
 				  WHERE 1 ";
 
 		// Get only published categories
 		if( $onlyPublished ) {
-			$query .= "AND c.published = 1 ";
+			$query .= "AND c.`published` = 1 ";
 		}
 
 		if( !empty( $keyword ) ) {
-			$query .= "AND ( c.category_name LIKE '%".$keyword."%'
-					   OR c.category_description LIKE '%".$keyword."%') ";
+			$query .= "AND ( c.`category_name` LIKE '%".$keyword."%'
+					   OR c.`category_description` LIKE '%".$keyword."%') ";
 		}
 
 		if( $withParentId ){
-			$query .= " AND cx.category_parent_id = ". $this->_db->Quote($parentId);
+			$query .= " AND cx.`category_parent_id` = ". $this->_db->Quote($parentId);
 		}
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= " AND (c.vendor_id = ". $this->_db->Quote($vendorId) . " OR cx.category_shared = '1') ";
+			$query .= " AND (c.`vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
 		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
 		$filterOrderDir = JRequest::getCmd('filter_order_Dir', 'ASC');
 		// $filterOrder can still be empty at this point!
 		if( empty( $filterOrder )) {
-			$filterOrder = 'c.ordering';
+			$filterOrder = 'c.`ordering`';
 		}
 		if( empty( $filterOrderDir )) {
 			$filterOrderDir = 'ASC';
@@ -373,11 +373,11 @@ class VirtueMartModelCategory extends JModel {
 		$vendorId = 1;
 		if ($cat_id > 0) {
 			$q = 'SELECT count(#__vm_product.product_id) AS total
-			FROM #__vm_product, #__vm_product_category_xref
-			WHERE #__vm_product.vendor_id = "'.$vendorId.'"
-			AND #__vm_product_category_xref.category_id = '.$this->_db->Quote($cat_id).'
-			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
-			AND #__vm_product.published = "1" ';
+			FROM `#__vm_product`, `#__vm_product_category_xref`
+			WHERE `#__vm_product`.`vendor_id` = "'.$vendorId.'"
+			AND `#__vm_product_category_xref`.`category_id` = '.$this->_db->Quote($cat_id).'
+			AND `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
+			AND `#__vm_product`.`published` = "1" ';
 			$this->_db->setQuery($q);
 			$count = $this->_db->loadResult();
 		}
@@ -425,7 +425,7 @@ class VirtueMartModelCategory extends JModel {
 		$row = $this->getTable();
 		$row->load($id);
 
-		$query = 'SELECT category_parent_id FROM #__vm_category_xref WHERE category_child_id = '. $this->_db->Quote( $row->category_id );
+		$query = 'SELECT `category_parent_id` FROM `#__vm_category_xref` WHERE `category_child_id` = '. $this->_db->Quote( $row->category_id );
 		$this->_db->setQuery($query);
 		$parent = $this->_db->loadObject();
 
@@ -453,10 +453,10 @@ class VirtueMartModelCategory extends JModel {
 		$order		= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
 
-		$query = 'SELECT category_parent_id FROM #__vm_category
-				  LEFT JOIN #__vm_category_xref cx
-				  ON c.category_id = cx.category_child_id
-			      WHERE c.category_id = %s';
+		$query = 'SELECT `category_parent_id` FROM `#__vm_category`
+				  LEFT JOIN `#__vm_category_xref` cx
+				  ON c.`category_id` = cx.`category_child_id`
+			      WHERE c.`category_id` = %s';
 
 		// update ordering values
 		for( $i=0; $i < $total; $i++ ) {
@@ -514,18 +514,18 @@ class VirtueMartModelCategory extends JModel {
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT category_shared
-					  FROM #__vm_category_xref
-					  WHERE category_child_id = '. $quotedId;
+			$query = 'SELECT `category_shared`
+					  FROM `#__vm_category_xref`
+					  WHERE `category_child_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$categoryXref = $this->_db->loadObject();
 
 			$share = ($categoryXref->category_shared > 0) ? 0 : 1;
 
-			$query = 'UPDATE #__vm_category_xref
-					  SET category_shared = '.$share.'
-					  WHERE category_child_id = '.$quotedId;
+			$query = 'UPDATE `#__vm_category_xref`
+					  SET `category_shared` = '.$share.'
+					  WHERE `category_child_id` = '.$quotedId;
 
 			$this->_db->setQuery($query);
 
@@ -596,9 +596,9 @@ class VirtueMartModelCategory extends JModel {
     public function getRelationInfo( $category_id = 0 ){
     	$category_id = (int) $category_id;
 
-    	$query = 'SELECT category_parent_id, category_shared, category_list
-    			  FROM #__vm_category_xref
-    			  WHERE category_child_id = '. $this->_db->Quote($category_id);
+    	$query = 'SELECT `category_parent_id`, `category_shared`, `category_list`
+    			  FROM `#__vm_category_xref`
+    			  WHERE `category_child_id` = '. $this->_db->Quote($category_id);
     	$this->_db->setQuery($query);
 
     	return $this->_db->loadObject();
@@ -641,7 +641,7 @@ class VirtueMartModelCategory extends JModel {
 		//store category relation
 		if( !$data['category_id'] ){ //is new
 			$data['category_id'] = $this->_db->insertid();
-			$query = 'INSERT INTO #__vm_category_xref(category_parent_id, category_child_id, category_shared)
+			$query = 'INSERT INTO `#__vm_category_xref`(`category_parent_id`, `category_child_id`, `category_shared`)
 					  VALUES(
 					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
 					  	'. $this->_db->Quote( (int)$data['category_id'] ) .',
@@ -651,10 +651,10 @@ class VirtueMartModelCategory extends JModel {
 		else{
 //			$id = $data['category_id'];
 
-			$query = 'UPDATE #__vm_category_xref
-					  SET category_parent_id = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-					  category_shared = '. $this->_db->Quote( (int)$data['shared'] ) .'
-					  WHERE category_child_id = '. $this->_db->Quote( (int)$data['category_id'] );
+			$query = 'UPDATE `#__vm_category_xref`
+					  SET `category_parent_id` = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
+					  `category_shared` = '. $this->_db->Quote( (int)$data['shared'] ) .'
+					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$data['category_id'] );
 		}
 
 		$this->_db->setQuery($query);
@@ -692,7 +692,7 @@ class VirtueMartModelCategory extends JModel {
 				}
 
 				//deleting relations
-				$query = "DELETE FROM #__vm_product_category_xref WHERE category_child_id = ". $this->_db->Quote($cid);
+				$query = "DELETE FROM `#__vm_product_category_xref` WHERE `category_child_id` = ". $this->_db->Quote($cid);
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -700,7 +700,7 @@ class VirtueMartModelCategory extends JModel {
 		    	}
 
 		    	//updating parent relations
-				$query = "UPDATE #__vm_product_category_xref SET category_parent_id = 0 WHERE category_parent_id = ". $this->_db->Quote($cid);
+				$query = "UPDATE `#__vm_product_category_xref` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". $this->_db->Quote($cid);
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -726,7 +726,7 @@ class VirtueMartModelCategory extends JModel {
      */
     public function clearProducts($cid) {
 
-    	$query = "UPDATE #__vm_product_category_xref SET category_id = 0 WHERE category_id =" . $this->_db->Quote($cid);
+    	$query = "UPDATE `#__vm_product_category_xref` SET `category_id` = 0 WHERE `category_id` =" . $this->_db->Quote($cid);
 		$this->_db->setQuery($query);
 
 		if( !$this->_db->query() ){
@@ -771,9 +771,9 @@ class VirtueMartModelCategory extends JModel {
 	*/
 	public function hasChildren($category_id) {
 		$db = JFactory::getDBO();
-		$q = "SELECT category_child_id
-			FROM #__vm_category_xref
-			WHERE category_parent_id = ".$category_id;
+		$q = "SELECT `category_child_id`
+			FROM `#__vm_category_xref`
+			WHERE `category_parent_id` = ".$category_id;
 		$db->setQuery($q);
 		$db->query();
 		if ($db->getAffectedRows() > 0) return true;
@@ -792,13 +792,13 @@ class VirtueMartModelCategory extends JModel {
 		$db = JFactory::getDBO();
 		$childs = array();
 
-		$q = "SELECT category_id, file_ids, category_child_id, category_name
-			FROM #__vm_category, #__vm_category_xref
-			WHERE #__vm_category_xref.category_parent_id = ".$category_id."
-			AND #__vm_category.category_id=#__vm_category_xref.category_child_id
-			AND #__vm_category.vendor_id = 1
-			AND #__vm_category.published = 1
-			ORDER BY #__vm_category.ordering, #__vm_category.category_name ASC";
+		$q = "SELECT `category_id`, `file_ids`, `category_child_id`, `category_name`
+			FROM `#__vm_category`, `#__vm_category_xref`
+			WHERE `#__vm_category_xref`.`category_parent_id` = ".$category_id."
+			AND `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
+			AND `#__vm_category`.`vendor_id` = 1
+			AND `#__vm_category`.`published` = 1
+			ORDER BY `#__vm_category.ordering`, `#__vm_category`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
@@ -855,7 +855,7 @@ class VirtueMartModelCategory extends JModel {
 
 		$db = & JFactory::getDBO();
 		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-			FROM  #__vm_category_xref AS `xref`
+			FROM  `#__vm_category_xref` AS `xref`
 			WHERE `xref`.`category_child_id`= ".$category_id;
 		$db->setQuery($q);
 		if (!$ids = $db->loadObject()) {
@@ -879,9 +879,9 @@ class VirtueMartModelCategory extends JModel {
 		static $level = 0;
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
-		$q = 'SELECT category_child_id,category_name FROM #__vm_category_xref
-		LEFT JOIN #__vm_category on #__vm_category.category_id=#__vm_category_xref.category_child_id
-		WHERE category_parent_id='.$id;
+		$q = 'SELECT `category_child_id`,`category_name` FROM `#__vm_category_xref`
+		LEFT JOIN `#__vm_category` on `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
+		WHERE `category_parent_id`='.$id;
 		$db->setQuery($q);
 		$num ++;
 		// if it is a leaf (no data underneath it) then return
