@@ -144,7 +144,7 @@ class VirtueMartModelProduct extends JModel {
 	    	foreach($attribs as $k=>$v){
 				if(is_array($child->$k)){
 					if(!is_array($v)) $v =array($v);
-					$child->$k = array_merge($child->$k,$v);//dump($tmp,'$tmp array '.$k);dump($child->$k,'$tmp array '.$k.' and '.$v);
+					$child->$k = array_merge($child->$k,$v);
 				} else{
 					if(empty($child->$k)){
 						$child->$k = $v;
@@ -1999,7 +1999,7 @@ class VirtueMartModelProduct extends JModel {
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
 					$image = $db->loadObject();
-//					dump($value,'C. image'.$row);
+
 					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 					$this->file_id = (int)$value;

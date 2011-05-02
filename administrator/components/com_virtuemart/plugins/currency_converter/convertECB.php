@@ -146,9 +146,6 @@ class convertECB {
 		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
 
 		$val = $amountA * $valB / $valA;
-//		dump($valA,'$valA');
-//		dump($valB,'$valB');
-//		dump($amountA,'$amountA');
 		//todo
 		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
 

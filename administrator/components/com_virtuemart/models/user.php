@@ -76,13 +76,13 @@ class VirtueMartModelUser extends JModel {
 		//anonymous sets to 0 for a new entry
 		if(empty($user->id)){
 			$this->setId(0);
-			//			dump($this->_id,'Recogniced anonymous case');
+			//			echo($this->_id,'Recogniced anonymous case');
 		} else {
 			$idArray = JRequest::getVar('cid',  null, '', 'array');
 			//not anonymous, but no cid means already registered user edit own data
 			if(!isset($idArray[0])){
 				$this->setId((int)$user->id);
-				//				dump($user->id,'cid was null, therefore user->id is used');
+				//				echo($user->id,'cid was null, therefore user->id is used');
 			} else {
 				if($idArray[0] != $user->id){
 					if(Permissions::getInstance()->check("admin,storeadmin")) {

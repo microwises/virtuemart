@@ -29,7 +29,7 @@ if ($this->custom->custom_parent_id) $this->custom->addHidden('custom_parent_id'
 $attribute_id = JRequest::getVar('attribute_id', '');
 if(!empty($attribute_id)) $this->custom->addHidden('attribute_id',$attribute_id);
 echo $this->custom->displayCustomFields('',$this->field_types);
-//dump ($this->custom,'custom');
+
 echo '</fieldset>';
 echo '</form>';
  AdminMenuHelper::endAdminArea(); ?>
