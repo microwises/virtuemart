@@ -705,7 +705,7 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
-			$_orderItems->product_item_price = $_prod->prices['basePriceVariant'];
+			$_orderItems->product_item_price = $_prod->prices['basePrice'];
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 //			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
