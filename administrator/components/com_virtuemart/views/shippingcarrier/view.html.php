@@ -44,7 +44,7 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CARRIER_LIST_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_ups_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CARRIER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_ups_48');
 			} else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_ups_48');
 			}

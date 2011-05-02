@@ -45,7 +45,7 @@ class VirtuemartViewShippingRate extends JView {
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_RATE_LIST_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shipping_rates_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_RATE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shipping_rates_48');
 			} else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_shipping_rates_48');
 			}
