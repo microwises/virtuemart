@@ -79,10 +79,10 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Loads the pagination
 	 */
-    public function getPagination($front=false) {
+    public function getPagination() {
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal($front), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
@@ -90,11 +90,13 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal($front=false) {
+	private function getTotal() {
     	if (empty($this->_total)) {
 //    		$this->_db = JFactory::getDBO();
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			$showall = Permissions::getInstance()->check('storeadmin');
 			$where='';
-			if ($front) $where = ' WHERE  #__vm_product.`published`=1 ';
+			if (!$showall) $where = ' WHERE  #__vm_product.`published`=1 ';
 			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$where.$this->getProductListFilter();
 			$this->_db->setQuery($q);
 			$fields = $this->_db->loadObjectList('product_id');
