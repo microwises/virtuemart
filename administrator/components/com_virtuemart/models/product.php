@@ -53,7 +53,11 @@ class VirtueMartModelProduct extends JModel {
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+		if (JRequest::getVar('view') == 'category' ) {
+			$limitstart = JRequest::getVar('limitstart',0) ;
+		} else {
+			$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+		}
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
