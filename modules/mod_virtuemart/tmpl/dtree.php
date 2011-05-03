@@ -56,9 +56,6 @@ $db = JFactory::getDBO();
 
 	//$db->next_record();
 	$db->setQuery($query);
-	// how many menu items in this menu?
-	//$db->query();
-	//$row =  $db->getNumRows();
 	$categories = $db->loadObjectList();
 
 
@@ -70,24 +67,24 @@ $db = JFactory::getDBO();
 	
 	// start creating the content
 	// create left aligned table, load the CSS stylesheet and dTree code
-	$menu_htmlcode .= "<table border=\"0\" cellspacing=\"1\" cellpadding=\"0\" width=\"100%\"><tr><td align=\"left\">\n";
-	$menu_htmlcode .= "<link rel=\"stylesheet\" href=\"$js_src/dtree/dtree.css\" type=\"text/css\" />\n";
-	$menu_htmlcode .= "<script type=\"text/javascript\" src=\"$js_src/dtree/dtree.js\"></script>\n";
-	$menu_htmlcode .= "<script type=\"text/javascript\">\n";
+	$menu_htmlcode .= "<table border='0' cellspacing='1' cellpadding='0' width='100%'><tr><td align='left'>\n";
+	$menu_htmlcode .= "<link rel='stylesheet' href='{$js_src}/dtree/dtree.css' type='text/css' />\n";
+	$menu_htmlcode .= "<script type='text/javascript' src='{$js_src}/dtree/dtree.js'></script>\n";
+	$menu_htmlcode .= "<script type='text/javascript'>\n";
 	
 	// create the tree, using the unique name
 	// pass the live_site parameter on so dTree can find the icons
 	$menu_htmlcode .= "$tree = new dTree('$tree',\"$js_src\");\n";
 	
 	// pass on the dTree API parameters
-	$menu_htmlcode .= "$tree.config.useSelection=".$useSelection.";\n";
-	$menu_htmlcode .= "$tree.config.useLines=".$useLines.";\n";
-	$menu_htmlcode .= "$tree.config.useIcons=".$useIcons.";\n";
-	$menu_htmlcode .= "$tree.config.useCookies=".$useCookies.";\n";
-	$menu_htmlcode .= "$tree.config.useStatusText=".$useStatusText.";\n";
-	$menu_htmlcode .= "$tree.config.closeSameLevel=".$closeSameLevel.";\n";
+	$menu_htmlcode .= $tree.".config.useSelection=".$useSelection.";\n";
+	$menu_htmlcode .= $tree.".config.useLines=".$useLines.";\n";
+	$menu_htmlcode .= $tree.".config.useIcons=".$useIcons.";\n";
+	$menu_htmlcode .= $tree.".config.useCookies=".$useCookies.";\n";
+	$menu_htmlcode .= $tree.".config.useStatusText=".$useStatusText.";\n";
+	$menu_htmlcode .= $tree.".config.closeSameLevel=".$closeSameLevel.";\n";
 	
-	$basename = $_REQUEST['root_label'];
+	$basename = jRequest::getVar('root_label');
 	
 	// what is the ID of this node?
 	
@@ -111,14 +108,14 @@ $db = JFactory::getDBO();
 	$target = "";
 	
 	// create the first node, parent is always -1
-	$menu_htmlcode .= "$tree.add(\"$baseid\",\"-1\",\"$basename\",\"$baselink\",\"\",\"$target\");\n";
+	$menu_htmlcode .= $tree.".add('{$baseid}','-1','{$basename}','{$baselink}','','{$target}')\n";
 	// process each of the nodes
 	foreach ($categories as $cat ) {
 	
 		// get name and link (just to save space in the code later on)
-		$name = htmlentities( $cat->category_name, ENT_QUOTES,"UTF-8").'('. $ps_product_category->getProductCount( $cat->category_id).')';
+		$name = htmlentities( $cat->category_name, ENT_QUOTES,"UTF-8").'('. $ps_product_category->countProducts( $cat->category_id).')';
 		$url = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->category_id);
-		$menu_htmlcode .= "$tree.add(\"".$cat->category_id."\",\"".$cat->category_parent_id."\",\"$name\",\"$url\",\"\",\"$target\");\n";
+		$menu_htmlcode .= $tree.'.add("'.$cat->category_id.'","'.$cat->category_parent_id.'","'.$name.'","'.$url.'","","'.$target.'");'."\n";
 	  
 		// if this node is the selected node
 		if ($cat->category_id == $openid) { 
@@ -126,9 +123,9 @@ $db = JFactory::getDBO();
 		}  
 	}
 	
-	$menu_htmlcode .= "document.write($tree);\n";
-	$menu_htmlcode .= $openAll == "true" ? "$tree.openAll();\n" : "$tree.closeAll();\n";
-	$menu_htmlcode .= "$tree.openTo(\"$opento\",\"$opento_selected\");\n";
+	$menu_htmlcode .= "document.write({$tree});\n";
+	$menu_htmlcode .= $openAll == "true" ? $tree."openAll();\n" : $tree.".closeAll();\n";
+	$menu_htmlcode .= $tree.".openTo('{$opento}','{$opento_selected}');\n";
 	$menu_htmlcode .= "</script>\n";
 	$menu_htmlcode .= "<noscript>\n";
 	$menu_htmlcode .= $ps_product_category->get_category_tree( $category_id, $class_mainlevel );

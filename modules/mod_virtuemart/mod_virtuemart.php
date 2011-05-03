@@ -81,7 +81,7 @@ if ( $show_listall == 'yes' ) { ?>
       <td colspan="2"><br />
 	   
 
-          <a href="<?php JRoute::_('index.php?option=com_virtuemart&view=category&category_id=0'); ?>">
+          <a href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&category_id=0'); ?>">
           <?php echo  JText::_('COM_VIRTUEMART_LIST_ALL_PRODUCTS') ?>
           </a>
       </td>
@@ -97,23 +97,25 @@ if ( $show_productsearch == 'yes' ) { ?>
     <td colspan="2">
 	  <hr />
       <label for="shop_search_field"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SEARCH_LBL') ?></label>
-      <form action="<?php echo JRoute::_("index.php") ?>" method="get">
+      <form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&category_id='.$category_id ); ?> ?>" method="get">
         <input id="shop_search_field" title="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE') ?>" class="inputbox" type="text" size="12" name="keyword" />
-        <input class="button" type="submit" name="Search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE') ?>" />
-		<input type="hidden" name="Itemid" value="<?php echo intval(@$_REQUEST['Itemid']) ?>" />
+        <input class="button" type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE') ?>" />
+		<input type="hidden" name="search" value="true" />
+		<input type="hidden" name="limitstart" value="0" />
+		<input type="hidden" name="category" value="0" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="category" />
 	  </form>
         <br />
-        <a href="<?php echo JRoute::_("index.php?option=com_virtuemart&view=advenced.search") ?>">
+    <?php /*    <a href="<?php echo JRoute::_("index.php?option=com_virtuemart&view=advanced.search") ?>">
             <?php echo JText::_('COM_VIRTUEMART_ADVANCED_SEARCH') ?>
         </a><?php /** Changed Product Type - Begin */
-	if ( $show_product_parameter_search == 'yes' ) { ?>
+	/* TODO if ( $show_product_parameter_search == 'yes' ) { ?>
         <br />
         <a href="<?php echo JRoute::_("index.php?option=com_virtuemart&view=parameter_search") ?>" title="<?php echo JText::_('COM_VIRTUEMART_PARAMETER_SEARCH') ?>">
             <?php echo JText::_('COM_VIRTUEMART_PARAMETER_SEARCH') ?>
         </a>
-<?php } /** Changed Product Type - End */ ?>
+<?php }*/ /** Changed Product Type - End */ ?>
         <hr />
     </td>
   </tr>
@@ -313,55 +315,46 @@ $db->setQuery($q);
 $published = $db->loadResult();
 
 if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$published  ) {
-	$_SESSION['vmMiniCart'] = true;
 ?>
-    <tr>
-        <td colspan="2">
-        	<?php
-	        $class_att = 'class="'. $class_mainlevel .'"';
-	        echo '<a style ="float:right;" '.$class_att.' href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('COM_VIRTUEMART_CART_SHOW').'</a>';
-			?>
-		</td>
-    </tr>
     <tr>
         <td colspan="2" >
 			<div class="vmCartModule">
+			<?php
+			if ($show_product_list) {
+				?>
 				<div id="hiddencontainer" style=" display: none; ">
 					<div class="container">
+						<?php if ($show_price) { ?>
+						  <div class="prices" style="float: right;"></div>
+						<?php } ?>
 						<div class="product_row">
 							<span class="quantity"></span>&nbsp;x&nbsp;<span class="product_name"></span>
 						</div>
-						<?php if ($show_price) { ?>
-							<div class="prices"></div>
-						<?php } ?>
+
 						<div class="product_attributes"></div>
 					</div>
 				</div>
 
 			<div class="vm_cart_products">
 
-			<?php 
+			<?php
 			// ALL THE DISPLAY IS Done by Ajax in hiddencontainer
 			?>
 			</div>
-
-			<div class="total"></div>
+			<?php
+			}
+			?>
+			<div class="total" style="float: right;"></div>
 			<div class="total_products"><?php echo JText::_('VM_AJAX_CART_WAITING') ?></div>
 			<div class="show_cart"></div>
 			<noscript>
 			<?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
-			</noscript> 
+			</noscript>
 			</div>
         </td>
     </tr>
         <?php 
-} else {
-	$_SESSION['vmMiniCart'] = false;
-	 
-}?>
+} 
+?>
    
 </table>
-<?php
-// Just for SIMPLEBOARD compatibility !
-if (@$_REQUEST['option'] != "com_virtuemart") $db = array(); 
-?>

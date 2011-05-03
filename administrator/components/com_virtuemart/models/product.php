@@ -424,8 +424,8 @@ class VirtueMartModelProduct extends JModel {
 
 			if (empty($this->_query)) $this->_query = $this->_buildQuery();
 			$product_ids = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
-
 			/* Collect the product data */
+			$this->_total =$this->_db->setQuery('SELECT FOUND_ROWS();');
 
 			foreach ($product_ids as $product_id) {
 				$this->products[] = $this->getProduct($product_id->product_id);
@@ -510,7 +510,7 @@ class VirtueMartModelProduct extends JModel {
 				break;
 		}
 
-		$query = "SELECT `#__vm_product`.`product_id` FROM `#__vm_product` ";
+		$query = "SELECT SQL_CALC_FOUND_ROWS `#__vm_product`.`product_id` FROM `#__vm_product` ";
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__vm_product_category_xref` ON `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
 			 LEFT JOIN `#__vm_category` ON `#__vm_category`.`category_id` = `#__vm_product_category_xref`.`category_id`';

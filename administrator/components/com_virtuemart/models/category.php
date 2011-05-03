@@ -53,6 +53,7 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	private $_pagination;
 
+	private $_category_tree;
 
     /**
      * Constructor for the country model.
@@ -224,7 +225,6 @@ class VirtueMartModelCategory extends JModel {
 	public function getCategoryTree($onlyPublished = true, $withParentId = false, $parentId = 0, $keyword = "") {
 
 		$vendorId = 1;
-		$categories = Array();
 
 		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
 				  FROM `#__vm_category` c
@@ -265,9 +265,9 @@ class VirtueMartModelCategory extends JModel {
 		$this->_db->setQuery($query);
 
 		// Transfer the Result into a searchable Array
-		$categories = $this->_db->loadObjectList();
+		$this->_category_tree = $this->_db->loadObjectList();
 
-		return $categories;
+		return $this->_category_tree;
 
 	}
 
@@ -277,7 +277,7 @@ class VirtueMartModelCategory extends JModel {
 	 *
 	 * @author jseros
 	 *
-	 * @param array $categoryArr
+	 * @param array $this->_category_tree
 	 * @return associative array ordering categories
 	 */
 	public function sortCategoryTree($categoryArr){
@@ -380,7 +380,7 @@ class VirtueMartModelCategory extends JModel {
 			AND `#__vm_product`.`published` = "1" ';
 			$this->_db->setQuery($q);
 			$count = $this->_db->loadResult();
-		}
+		} else $count=0 ;
 
 		return $count;
 	}
@@ -911,6 +911,216 @@ class VirtueMartModelCategory extends JModel {
 	function GetTreeCat($id=0,$maxLevel = 1000) {
 		self::treeCat($id ,$maxLevel) ;
 		return $this->container ;
+	}
+
+	/* old fuction to do work virtuemart categorie tree */
+	function get_category_tree( $category_id=0,
+				$links_css_class="mainlevel",
+				$list_css_class="mm123",
+				$highlighted_style="font-style:italic;" ) {
+
+		self::getCategoryTreeArray(); // Set array of category objects
+		$result = self::sortCategoryTreeArray(); // Sort array of category objects
+		$row_list = $result['row_list'];
+		$depth_list = $result['depth_list'];
+		$category_tmp = $result['category_tmp'];
+		$nrows = sizeof($category_tmp);
+
+		// Copy the Array into an Array with auto_incrementing Indexes
+		$key = array_keys($this->_category_tree); // Array of category table primary keys
+		
+		$nrows = $size = sizeOf($key); // Category count
+
+		$html = "";
+
+		// Find out if we have subcategories to display
+		$allowed_subcategories = Array();
+		if( !empty( $this->_category_tree[$category_id]["category_parent_id"] ) ) {
+			// Find the Root Category of this category
+			$root = $this->_category_tree[$category_id];
+			$allowed_subcategories[] = $this->_category_tree[$category_id]["category_parent_id"];
+			// Loop through the Tree up to the root
+			while( !empty( $root["category_parent_id"] )) {
+				$allowed_subcategories[] = $this->_category_tree[$root["category_child_id"]]["category_child_id"];
+				$root = $this->_category_tree[$root["category_parent_id"]];
+			}
+		}
+		// Fix the empty Array Fields
+		if( $nrows < count( $row_list ) ) {
+			$nrows = count( $row_list );
+		}
+
+		// Now show the categories
+		for($n = 0 ; $n < $nrows ; $n++) {
+
+			if( !isset( $row_list[$n] ) || !isset( $category_tmp[$row_list[$n]]["category_child_id"] ) )
+			continue;
+			if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"] )
+			$style = $highlighted_style;
+			else
+			$style = "";
+
+			$allowed = false;
+			if( $depth_list[$n] > 0 ) {
+				// Subcategory!
+				if( isset( $root ) && in_array( $category_tmp[$row_list[$n]]["category_child_id"], $allowed_subcategories )
+				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $category_id
+				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $this->_category_tree[$category_id]["category_parent_id"]) {
+					$allowed = true;
+
+				}
+			}
+			else
+			$allowed = true;
+			$append = "";
+			if( $allowed ) {
+				if( $style == $highlighted_style ) {
+					$append = 'id="active_menu"';
+				}
+				if( $depth_list[$n] > 0 ) {
+					$css_class = "sublevel";
+				}
+				else {
+					$css_class = $links_css_class;
+				}
+				$catname =htmlentities($category_tmp[$row_list[$n]]["category_name"], ENT_NOQUOTES, 'UTF-8');
+
+				$html .= '
+          <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id='.$category_tmp[$row_list[$n]]["category_child_id"]) .'" '.$append.'>'
+				. str_repeat("&nbsp;&nbsp;&nbsp;",$depth_list[$n]) . $catname
+				. self::countProducts( $category_tmp[$row_list[$n]]["category_child_id"] )
+				.'</a>';
+			}
+		}
+
+		return $html;
+	}
+	/**
+	* This function is repsonsible for returning an array containing category information
+	* @param boolean Show only published products?
+	* @param string the keyword to filter categories
+	*/
+	function getCategoryTreeArray( $only_published=true, $keyword = "" ) {
+
+		$db = JFactory::getDBO();
+		if( empty( $this->_category_tree)) {
+
+			// Get only published categories
+			$query  = "SELECT `category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
+						FROM `#__vm_category`, `#__vm_category_xref` WHERE ";
+			if( $only_published ) {
+				$query .= "`#__vm_category`.`published`=1 AND ";
+			}
+			$query .= "`#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id` ";
+			if( !empty( $keyword )) {
+				$query .= "AND ( `category_name` LIKE '%$keyword%' ";
+				$query .= "OR `category_description` LIKE '%$keyword%' ";
+				$query .= ") ";
+			}
+			$query .= "ORDER BY `#__vm_category`.`ordering` ASC, `#__vm_category`.`category_name` ASC";
+
+			// initialise the query in the $database connector
+			$db->setQuery($query);
+
+			// Transfer the Result into a searchable Array
+			$dbCategories = $db->loadAssocList();
+
+		//if (!$ids = $db->loadObject()) 
+			foreach( $dbCategories as $Cat ) {
+				$this->_category_tree[$Cat['category_child_id']] = $Cat;
+			}
+		}
+	}
+		/**
+	 * Sorts an array with categories so the order of the categories is the same as in a tree, just as a flat list.
+	 * The Tree Depth is
+	 *
+	 * @param array $categoryArr
+	 */
+	function sortCategoryTreeArray() {
+		// Copy the Array into an Array with auto_incrementing Indexes
+		$key = array_keys($this->_category_tree); // Array of category table primary keys
+		
+		$nrows = $size = sizeOf($key); // Category count
+
+		/** FIRST STEP
+	    * Order the Category Array and build a Tree of it
+	    **/
+
+		$id_list = array();
+		$row_list = array();
+		$depth_list = array();
+
+		$children = array();
+		$parent_ids = array();
+		$parent_ids_hash = array();
+		
+		//Build an array of category references
+		$category_tmp = Array();
+		for ($i=0; $i<$size; $i++)
+		{
+			$category_tmp[$i] = $this->_category_tree[$key[$i]];
+			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
+			if($category_tmp[$i]["category_parent_id"] == 0)
+			{ 
+				array_push($id_list,$category_tmp[$i]["category_child_id"]);
+				array_push($row_list,$i);
+				array_push($depth_list,0);
+			}
+
+			$parent_id = $parent_ids[$i];
+			
+			if (isset($parent_ids_hash[$parent_id]))
+			{
+				$parent_ids_hash[$parent_id][$i] = $parent_id;
+				
+			}
+			else
+			{
+				$parent_ids_hash[$parent_id] = array($i => $parent_id);
+			}
+			
+		}
+		
+		$loop_count = 0;
+		$watch = array(); // Hash to store children
+		while(count($id_list) < $nrows) {
+			if( $loop_count > $nrows )
+			break;
+			$id_temp = array();
+			$row_temp = array();
+			$depth_temp = array();
+			for($i = 0 ; $i < count($id_list) ; $i++) {
+				$id = $id_list[$i];
+				$row = $row_list[$i];
+				$depth = $depth_list[$i];
+				array_push($id_temp,$id);
+				array_push($row_temp,$row);
+				array_push($depth_temp,$depth);
+
+				$children = @$parent_ids_hash[$id];
+				
+				if (!empty($children))
+				{
+					foreach($children as $key => $value) {
+						if( !isset($watch[$id][$category_tmp[$key]["category_child_id"]])) {
+							$watch[$id][$category_tmp[$key]["category_child_id"]] = 1;
+							array_push($id_temp,$category_tmp[$key]["category_child_id"]);
+							array_push($row_temp,$key);
+							array_push($depth_temp,$depth + 1);
+						}
+					}
+				}
+			}
+			$id_list = $id_temp;
+			$row_list = $row_temp;
+			$depth_list = $depth_temp;
+			$loop_count++;
+		}
+		return array('id_list' => $id_list,
+								'row_list' => $row_list,
+								'depth_list' => $depth_list,
+								'category_tmp' => $category_tmp);
 	}
 
 }
