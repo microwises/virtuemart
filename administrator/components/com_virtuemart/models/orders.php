@@ -674,12 +674,12 @@ class VirtueMartModelOrders extends JModel {
 				$row=0 ;
 
 				foreach ($variantmods as $variantmod) {
-						
+
 						foreach($variantmod as $variant=>$selected){
 							//dump($product->customfieldsCart[$row]->options[$selected];
 							$_prod->product_name .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
-							
+
 						}
 						$row++;
 				}
@@ -847,7 +847,7 @@ class VirtueMartModelOrders extends JModel {
 				$user = $db->loadObject();
 				$vars['downloads'] = $downloads;
 				$vars['user'] = $user;
-				$vars['layout'] = 'download';
+				$vars['layoutName'] = 'download';
 
 				if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
 					$string = 'COM_VIRTUEMART_DOWNLOADS_SEND_MSG';
@@ -892,6 +892,7 @@ class VirtueMartModelOrders extends JModel {
 			WHERE #__vm_orders.order_id = '".$order->order_id."'
 			AND #__vm_orders.order_id = #__vm_order_user_info.order_id";
 		$db->setQuery($q);
+		$db->query();
 		$user = $db->loadObject();
 		$vars['user'] = $user;
 

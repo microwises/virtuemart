@@ -328,7 +328,6 @@ class shopFunctionsF {
 		$view->renderMail($vendor);
 		$body = ob_get_contents();
 		ob_end_clean();
-		dump($body, 'Mail Template');
 
 		$subject = (isset($view->subject)) ? $view->subject : JText::_('COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT');
 		$mailer = JFactory::getMailer();
