@@ -142,7 +142,7 @@ class VirtueMartModelProduct extends JModel {
     	    $attribs = get_object_vars($parentProduct);
 
 	    	foreach($attribs as $k=>$v){
-				if(is_array($child->$k)){
+				if(!empty($child->$k) && is_array($child->$k)){
 					if(!is_array($v)) $v =array($v);
 					$child->$k = array_merge($child->$k,$v);
 				} else{
@@ -286,10 +286,19 @@ class VirtueMartModelProduct extends JModel {
 				return $this->fillVoidProduct($product,$front);
 			}
 //		}
+//		$product = $this->fillVoidProduct($product,$front);
 		$this->product = $product;
 		return $product;
     }
 
+    /**
+     * This fills the empty properties of a product
+     * todo add if(!empty statements
+     *
+     * @author Max Milbers
+     * @param unknown_type $product
+     * @param unknown_type $front
+     */
     private function fillVoidProduct($product,$front=true){
 
 		/* Load an empty product */

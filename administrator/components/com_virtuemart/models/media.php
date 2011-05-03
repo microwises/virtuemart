@@ -404,7 +404,9 @@ class VirtueMartModelMedia extends JModel {
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
 			foreach($objects as $object){
-				$object->images = $this->createMediaByIds($object->$nameId,$type,$mime);
+				if(empty($object->$nameId)) $file_ids = null; else $file_ids = $object->$nameId;
+				$object->images = $this->createMediaByIds($file_ids,$type,$mime);
+//				}
 			}
 		}
 	}
