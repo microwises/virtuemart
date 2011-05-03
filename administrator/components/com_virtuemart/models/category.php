@@ -792,17 +792,16 @@ class VirtueMartModelCategory extends JModel {
 		$db = JFactory::getDBO();
 		$childs = array();
 
-		$q = "SELECT `category_id`, `file_ids`, `category_child_id`, `category_name`
+		$q = "SELECT `category_id`, `category_child_id`, `category_name`
 			FROM `#__vm_category`, `#__vm_category_xref`
 			WHERE `#__vm_category_xref`.`category_parent_id` = ".$category_id."
 			AND `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
 			AND `#__vm_category`.`vendor_id` = 1
 			AND `#__vm_category`.`published` = 1
-			ORDER BY `#__vm_category.ordering`, `#__vm_category`.`category_name` ASC";
+			ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
-
 		/* Get the products in the category */
 		if(!empty($childs)){
 			foreach ($childs as $ckey => $child) {
