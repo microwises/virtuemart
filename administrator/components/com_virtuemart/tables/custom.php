@@ -44,8 +44,8 @@ class TableCustom extends JTable {
     /** @var string custom Meta or alt  */
 	var $custom_field_desc	= '';
 	/**
-	 *@var varchar(1)  
-	 * Type = S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden	  
+	 *@var varchar(1)
+	 * Type = S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden
 	 */
 	var $field_type= '';
 
@@ -61,7 +61,7 @@ class TableCustom extends JTable {
 	/** @var int custom published or not */
 	var $published		= 0;
 
-	
+
 	/**
 	 * @author  Patrick Kohl
 	 * @param $db A database connector object
@@ -76,6 +76,8 @@ class TableCustom extends JTable {
 	 * @return boolean True .
 	 */
 	function check(){
+
+		//TODO check for same title?
 		if(empty($this->custom_title)) {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_TITLE'));
 			return false ;
@@ -84,7 +86,7 @@ class TableCustom extends JTable {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_A_FIELD_TYPE'));
 			return false ;
 		}
-		if( $this->custom_id > 0  AND $this->custom_id==$this->custom_parent_id ) {
+		if( $this->custom_id > 0  && $this->custom_id==$this->custom_parent_id ) {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
 			return false ;
 		}
@@ -96,9 +98,9 @@ class TableCustom extends JTable {
 	*/
 	function delete($id)
 	{
-		$this->_db->setQuery('DELETE X,F,C FROM `#__vm_custom` AS C 
+		$this->_db->setQuery('DELETE X,F,C FROM `#__vm_custom` AS C
 		LEFT JOIN `#__vm_custom_field` AS F ON F.`custom_id` = C.`custom_id`
-		LEFT JOIN  `#__vm_custom_field_xref_product` AS X ON  X.`custom_field_id` = F.`custom_field_id` 
+		LEFT JOIN  `#__vm_custom_field_xref_product` AS X ON  X.`custom_field_id` = F.`custom_field_id`
 		WHERE C.`custom_id`=' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());

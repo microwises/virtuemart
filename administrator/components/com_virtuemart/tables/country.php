@@ -78,14 +78,14 @@ class TableCountry extends JTable {
 			return false;
 		}
 
-		if (($this->country_name) && ($this->country_id == 0)) {
+		if (($this->country_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_country` ';
+			$q = 'SELECT `country_id` FROM `#__vm_country` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
             $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
+		    $country_id = $db->loadResult();
+		    if (!empty($country_id) && $country_id!=$this->country_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS'));
 				return false;
 			}

@@ -105,14 +105,14 @@ class TableCategory extends JTable {
             return false;
      	}
 
-		if (!empty($this->category_name) && ($this->category_id == 0)) {
+		if (!empty($this->category_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_category` ';
-			$q .= 'WHERE `category_name`="' .  $this->category_name . '"';
+			$q = 'SELECT `category_id` FROM `#__vm_category` ';
+			$q .= 'WHERE `category_name`="' . $this->category_name . '"';
             $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
+		    $category_id = $db->loadResult();
+		    if (!empty($category_id) && $category_id!=$this->category_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_CATEGORY_NAME_ALREADY_EXISTS'));
 				return false;
 			}

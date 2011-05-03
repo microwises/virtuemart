@@ -87,10 +87,9 @@ class VirtuemartViewPaymentMethod extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
-
+			JToolBarHelper::editListX();
+			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 

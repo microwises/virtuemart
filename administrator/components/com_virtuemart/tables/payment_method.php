@@ -33,24 +33,24 @@ class TablePayment_method extends JTable
 	/** @var id for the used plugin */
 	var $paym_jplugin_id			= 0;
 	/** @var string Paymentmethod name */
-	var $paym_name           		= '';	
+	var $paym_name           		= '';
 	/** @var string Element of paymentmethod */
-	var $paym_element           	= '';	
+	var $paym_element           	= '';
 	///** @var string Shoppergroups allowed to use payment_method */
 	//var $paym_shoppergroup_id         = '';	  // paym_shopper_group?
 
 	/** @var string discount of the paymentmethod */
-	var $discount       		 	= '';	
+	var $discount       		 	= '';
 	/** @var string discount_is_percentage of the paymentmethod */
-	var $discount_is_percentage     = '';	
+	var $discount_is_percentage     = '';
 	/** @var string discount_max_amount, maximum amount of money to transfers,... todo ask for what we need that? */
 	var $discount_max_amount       	= '';
 	/** @var string discount_min_amount of the paymentmethod */
 	var $discount_min_amount		='';
-	 	
+
 //	/** @var string Type of the paymentmethod */
 //	var $paym_type       		 	= '';
-	
+
 
 	/** @var string parameter of the paymentmethod*/
 	var $paym_params				= 0;
@@ -62,7 +62,7 @@ class TablePayment_method extends JTable
 	/** @var for all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $published 		        = 0;	
+	var $published 		        = 0;
    	/** @var string ordering */
 	var $ordering       	= '';
         /** @var boolean */
@@ -86,7 +86,7 @@ class TablePayment_method extends JTable
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() {
-		
+
         if (!$this->paym_name) {
 			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_CONTAIN_NAME'));
 			return false;
@@ -96,25 +96,25 @@ class TablePayment_method extends JTable
 			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_HAVE_VENDOR'));
 			return false;
 		}
-		
-		if (($this->paym_name) && ($this->paym_id == 0)) {
+
+		if (($this->paym_name)) {
 		    $db =& JFactory::getDBO();
-		    
-			$q = 'SELECT count(*) FROM `#__vm_payment_method` ';
+
+			$q = 'SELECT paym_id FROM `#__vm_payment_method` ';
 			$q .= 'WHERE `paym_name`="' .  $this->paym_name . '"';
-            $db->setQuery($q);        
-		    $rowCount = $db->loadResult();		
-			if ($rowCount > 0) {
+            $db->setQuery($q);
+		    $paym_id = $db->loadResult();
+		    if(!empty($paym_id) && $paym_id!=$this->paym_id){
 				$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHOD_NAME_ALREADY_EXISTS'));
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
-	
+
+
+
 
 }
 // pure php no closing tag

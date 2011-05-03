@@ -113,14 +113,14 @@ class TableCalc extends JTable
 			return false;
 		}
 
-		if (($this->calc_name) && ($this->calc_id == 0)) {
+		if (($this->calc_name) ) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_calc` ';
+			$q = 'SELECT `calc_id` FROM `#__vm_calc` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
             $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
+		    $calc_id = $db->loadResult();
+			if (!empty($calc_id) && $calc_id!=$this->calc_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
 				return false;
 			}

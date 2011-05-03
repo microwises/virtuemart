@@ -307,6 +307,7 @@ class VirtueMartViewCart extends JView {
 		$payments = $paymentModel->getPayms(false,true);
 		if(empty($payments)){
 
+			$text ='';
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
 				$uri =& JFactory::getURI();

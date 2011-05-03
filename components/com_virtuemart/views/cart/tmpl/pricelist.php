@@ -59,12 +59,12 @@ defined('_JEXEC') or die('Restricted access');
 				$row=0 ;
 
 				foreach ($variantmods as $variantmod) {
-						
+
 						foreach($variantmod as $variant=>$selected){
 							//dump($product->customfieldsCart[$row]->options[$selected];
 							$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 								'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
-							
+
 						}
 						$row++;
 				}
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['subtotal_with_tax'] = $this->prices[$priceKey]['subtotal_with_tax'];
 
 			// UPDATE CART / DELETE FROM CART
-			if($this->layoutName=='default'){
+			if(!empty($this->layoutName) && $this->layoutName=='default'){
 			$product_rows[$i]['update_form'] = '<form action="index.php" method="post" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="text" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />

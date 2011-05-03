@@ -25,45 +25,44 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  */
 class Permissions extends JObject{
 
-	/** @var array Contains all the user groups */ 
-	var $_user_groups;	
-	
+	/** @var array Contains all the user groups */
+	var $_user_groups;
+
 	/** @var user_id for the permissions*/
 	var $_user_id;		//$auth['user_id']
 
 	var $_show_prices; //$auth['show_prices']
-	
+
 	var $_db;
 
 	var $_perms;
-	
+
 	var $_is_registered_customer;
-	
+
 	static $_instance;
-	
+
 	public function __construct() {
-		
+
 		$this->_db = JFactory::getDBO();
 		$this->getUserGroups();
 		$this->doAuthentication();
-		
+
 	}
-	
-	function getInstance(){ 
+
+	function getInstance(){
 		if(!is_object(self::$_instance)){
 			self::$_instance = new Permissions();
 		}else {
-			//is this necessary?
-//			self::$_instance->doAuthentication();
+
 		}
  		return self::$_instance;
     }
-      
+
 	public function getUserGroups() {
 		if (empty($this->_user_groups)) {
 			$this->_db = JFactory::getDBO();
-			$q = ('SELECT `group_id`,`group_name`,`group_level` 
-					FROM `#__vm_perm_groups` 
+			$q = ('SELECT `group_id`,`group_name`,`group_level`
+					FROM `#__vm_perm_groups`
 					ORDER BY `group_level` ');
 			$this->_db->setQuery($q);
 			$this->_user_groups = $this->_db->loadObjectList('group_name');
@@ -71,7 +70,7 @@ class Permissions extends JObject{
 //		echo 'Die Usergroups: <pre>'.print_r($this->_user_groups).'</pre>';
 		return $this->_user_groups;
 	}
-	
+
 	/**
 	* description: Validates if someone is registered customer.
 	*            by checking if one has a billing address
@@ -93,26 +92,26 @@ class Permissions extends JObject{
 		}
 
 		$this->_db = JFactory::getDBO();
-		/* If the registration type is neither "no registration" nor "optional registration", 
+		/* If the registration type is neither "no registration" nor "optional registration",
 			there *must* be a related Joomla! user, we can join */
-		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
+		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 			&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
-			$q  = "SELECT COUNT(user_id) AS num_rows 
-				FROM `#__vm_user_info`, `#__users` 
+			$q  = "SELECT COUNT(user_id) AS num_rows
+				FROM `#__vm_user_info`, `#__users`
 				WHERE `id`=`user_id`
 				AND #__vm_user_info.user_id='" . $user_id . "'
 				AND #__vm_user_info.address_type='BT'";
-		} 
+		}
 		else {
-			$q  = "SELECT COUNT(user_id) AS num_rows 
-				FROM `#__vm_user_info` 
-				WHERE #__vm_user_info.user_id='" . $user_id . "'  
+			$q  = "SELECT COUNT(user_id) AS num_rows
+				FROM `#__vm_user_info`
+				WHERE #__vm_user_info.user_id='" . $user_id . "'
 				AND #__vm_user_info.address_type='BT'";
 		}
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	* This function does the basic authentication
 	* for a user in the shop.
@@ -124,42 +123,42 @@ class Permissions extends JObject{
 		$this->_db = JFactory::getDBO();
 		$session = JFactory::getSession();
 		$vmUser = JFactory::getUser();
-		
+
 		// Check token
 //		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		
+
 		if (VmConfig::get('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */
-			$this->_show_prices  = $vmUser->authorize( 'virtuemart', 'prices' );	
+			$this->_show_prices  = $vmUser->authorize( 'virtuemart', 'prices' );
 		}
 		else {
 			$this->_show_prices = 1;
 		}
-		
+
 		/* Load the shoppr group values, commented because shoppergroups does not posses rights atm */
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
 //		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
-		
+
 		/* User has already logged in */
 		if (!empty($vmUser->id) || !empty( $this->_user_id)) {
 			if( $vmUser->id > 0 ) {
 				$this->_user_id   = $vmUser->id;
 //				$auth["username"] = $vmUser->username;
-			} 
-			else if(!empty($this->_user_id) 
-					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' 
-					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') 
+			}
+			else if(!empty($this->_user_id)
+					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
+					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION')
 			{
 				$this->_user_id = 0;
 //				$auth["username"] = "demo";
 			}
-			
+
 			if (self::isRegisteredCustomer($this->_user_id)) {
 				$q = 'SELECT `perms`
-					FROM #__vm_users 
+					FROM #__vm_users
 					WHERE user_id="'.$this->_user_id.'"';
-				$this->_db->setQuery($q); 
+				$this->_db->setQuery($q);
 				$this->_perms = $this->_db->loadResult();
 
 				/* We must prevent that Administrators or Managers are 'just' shoppers */
@@ -207,7 +206,7 @@ class Permissions extends JObject{
 	 */
 	public function check($perms) {
 		/* Set the authorization for use */
-		
+
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
 		if ($perms == "none") {
@@ -226,7 +225,7 @@ class Permissions extends JObject{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks if the user has higher permissions than $perm
 	 * does not work properly, do not use or correct it
@@ -238,14 +237,14 @@ class Permissions extends JObject{
 	function atLeastPerms( $perm ) {
 
 		if( $this->_perms && $this->_user_groups[$perm] >= $this->_user_groups[$this->_perms] ) {
-			return true;	
+			return true;
 		}
 		else {
 			return false;
 		}
-	
+
 	}
-	
+
 	/**
 	 * lists the permission levels in a select box
 	 * @author pablo
@@ -253,18 +252,18 @@ class Permissions extends JObject{
 	 * @param string $group_name The preselected key
 	 */
 	function list_perms( $name, $group_name, $size=1, $multi=false ) {
-		
+
 		$auth = $_SESSION['auth'];
 		if( $multi ) {
 			$multi = 'multiple="multiple"';
 		}
 
-		// Get users current permission value 
+		// Get users current permission value
 		$dvalue = $this->user_groups[$this->_perms];
-		
+
 		$perms = $this->getUserGroups();
 		arsort( $perms );
-		
+
 		if( $size==1 ) {
 			$values[0] = JText::_('COM_VIRTUEMART_SELECT');
 		}
@@ -274,18 +273,18 @@ class Permissions extends JObject{
 				$values[$key] = $key;
 			}
 		}
-		
+
 		if( $size > 1 ) {
 			$name .= '[]';
 			$values['none'] = JText::_('COM_VIRTUEMART_NO_RESTRICTION');
 		}
-		
+
 		echo VmHTML::selectList( $name, $group_name, $values, $size, $multi );
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	* Here we insert groups that are allowed to view prices
 	*
@@ -296,7 +295,7 @@ class Permissions extends JObject{
 
 		echo '<pre>'.print_r($child_groups,1).'</pre>';
 
-		
+
 		foreach( $child_groups as $child_group ) {
 			self::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
 		}
@@ -304,13 +303,13 @@ class Permissions extends JObject{
 		foreach( $admin_groups as $child_group ) {
 			self::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
 		}
-		
+
 	}
-	
+
 	/**
 	 * Function from an old Mambo phpgacl integration function
 	 * @deprecated (but necessary, sigh!)
-	 * @static 
+	 * @static
 	 * @param string $table
 	 * @param string $fields
 	 * @param string $groupby
@@ -325,9 +324,9 @@ class Permissions extends JObject{
 		$root->lft = 0;
 		$root->rgt = 0;
 		$fields = str_replace( 'group_id', 'id', $fields );
-		
+
 		if ($root_id) {
-		} 
+		}
 		else if ($root_name) {
 			$database->setQuery("SELECT `lft`, `rgt` FROM `".$table."` WHERE `name`='".$root_name."'" );
 			$root = $database->loadObject();
@@ -352,12 +351,12 @@ class Permissions extends JObject{
 
 		return $database->loadObjectList();
 	}
-	
+
 	/**
 	* This is a temporary function to allow 3PD's to add basic ACL checks for their
 	* modules and components.  NOTE: this information will be compiled in the db
 	* in future versions
-	 * @static 
+	 * @static
 	 * @param unknown_type $aco_section_value
 	 * @param unknown_type $aco_value
 	 * @param unknown_type $aro_section_value
@@ -370,10 +369,10 @@ class Permissions extends JObject{
 		$acl->acl[] = array( $aco_section_value, $aco_value, $aro_section_value, $aro_value, $axo_section_value, $axo_value );
 		$acl->acl_count = count( $acl->acl );
 	}
-	
+
 	/**
 	 * Returns a tree with the children of the root group id
-	 * @static 
+	 * @static
 	 * @param int $root_id
 	 * @param string $root_name
 	 * @param boolean $inclusive
@@ -428,14 +427,14 @@ class Permissions extends JObject{
 		ksort($list);
 		return $list;
 	}
-	
+
 	/**
-	* Check if the price should be shown including tax 
-	* 
+	* Check if the price should be shown including tax
+	*
 	* @author RolandD
 	* @todo Figure out where to get the setting from
 	* @access public
-	* @param 
+	* @param
 	* @return bool true if price with tax is shown otherwise false
 	*/
 	public function showPriceIncludingTax() {

@@ -72,11 +72,11 @@ class TableManufacturer extends JTable {
 		if (($this->mf_name) && ($this->manufacturer_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_manufacturer` ';
+			$q = 'SELECT `manufacturer_id` FROM `#__vm_manufacturer` ';
 			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
             $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
+		    $manufacturer_id = $db->loadResult();
+		    if (!empty($manufacturer_id) && $manufacturer_id!=$this->manufacturer_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
 				return false;
 			}

@@ -52,7 +52,7 @@ class VirtuemartViewShippingCarrier extends JView {
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
 			JToolBarHelper::cancel();
-			
+
 			$this->loadHelper('shopFunctions');
 			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
@@ -60,9 +60,10 @@ class VirtuemartViewShippingCarrier extends JView {
 			$this->assignRef('carrier',	$shippingCarrier);
 		} else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_LIST_LBL'), 'vm_ups_48' );
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
+			JToolBarHelper::editListX();
+			JToolBarHelper::deleteList('', 'remove', 'Delete');
+
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -139,10 +139,11 @@ class VirtueMartModelPaymentmethod extends JModel
 //   			$this->_data = null;
   		}
 
-  		if(empty($this->_data->paym_vendor_id)){
-  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-   			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-  		}
+  		//what a nonsense
+//  		if(empty($this->_data->paym_vendor_id)){
+//  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//   			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+//  		}
 
   		if(!empty($this->_id)){
 			/* Add the paymentmethod shoppergroups */
@@ -252,6 +253,11 @@ class VirtueMartModelPaymentmethod extends JModel
 			$data['params'] = $params->toString();
 		}
 		if($data['vendor_id']) $data['paym_vendor_id'] = $data['vendor_id'];
+
+	  	if(empty($data['paym_vendor_id'])){
+	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+	   		$data['paym_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
+	  	}
 
 		// Bind the form fields to the calculation table
 		if (!$table->bind($data)) {

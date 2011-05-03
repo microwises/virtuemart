@@ -74,9 +74,9 @@ class VirtuemartViewShippingRate extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_LIST_LBL'), 'vm_shipping_rates_48');
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
+			JToolBarHelper::editListX();
+			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
