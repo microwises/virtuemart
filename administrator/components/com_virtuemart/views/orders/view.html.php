@@ -211,7 +211,7 @@ class VirtuemartViewOrders extends JView {
 	}
 
 	function renderMail () {
-		$tpl = isset($this->layout) ? 'mail_html_' . $this->layout : 'mail_html_updorder';
+		$tpl = isset($this->layoutName) ? 'mail_html_' . $this->layoutName : 'mail_html_updorder';
 		$this->setLayout($tpl);
 		$vendorModel = $this->getModel('vendor');
 		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);

@@ -33,6 +33,7 @@ class VirtueMartViewAskquestion extends JView {
 
 	function renderMail() {
 		$this->setLayout('mail_raw_question');
+		$this->comment = JRequest::getString('comment');
 	 	$this->subject = JText::_('COM_VIRTUEMART_QUESTION_ABOUT').$this->product->product_name;
 	 	parent::display();
 	}

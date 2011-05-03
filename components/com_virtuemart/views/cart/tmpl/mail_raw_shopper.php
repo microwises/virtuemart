@@ -27,8 +27,6 @@
 *
 */
 
-//dump($this,'my mailshopper');
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -38,14 +36,15 @@ echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']->order_total,
 						$this->order['details']['BT']->order_number,
 						$this->order['details']['BT']->order_pass,
-						$this->order['details']['BT']->cdate);
+						$this->order['details']['BT']->cdate) . "\n" . "\n";
 
-echo '<img src="'.JURI::root().$this->vendor->images[0]->file_url.'" />';
-echo 'Link to view your order'; echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass);
+echo 'Link to view your order' .  JURI::root() . JRoute::_( 'index.php?option=com_virtuemart&controller=orders&task=details&order_number=' . $this->order['details']['BT']->order_number . '&order_pass=' . $this->order['details']['BT']->order_pass ) . "\n";
 if(!empty($this->order['details']['BT']->customer_note)){
-	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
+	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note);
 }
+echo "\n";
 
+//TODO make plain text
 //PriceList
 include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
 
@@ -58,5 +57,3 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
 //include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
 
 	//Footer for shopper
-?>
-

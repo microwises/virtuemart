@@ -52,10 +52,11 @@ class VirtueMartViewCart extends JView {
 
 		$this->subject = ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$this->shopperName, $this->order['details']['BT']->order_total, $this->order['details']['BT']->order_number) : JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $this->order['details']['BT']->order_total, $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
 
-		//If this is necessary must be tested, I dont know if it would change the look of the email, or has other advantages
-//		$pathway->addItem(JText::_('COM_VIRTUEMART_CART_TITLE'));
-//		$mainframe->setPageTitle(JText::_('COM_VIRTUEMART_CART_TITLE'));
-
+		$this->doVendor = true;
+		$vendorModel = $this->getModel('vendor');
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->layoutName = $tpl;
+		$this->setLayout($tpl);
 		parent::display();
 	}
 
