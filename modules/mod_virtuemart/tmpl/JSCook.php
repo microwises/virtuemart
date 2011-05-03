@@ -11,7 +11,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree
 **/
-global $mosConfig_live_site, $mainframe, $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style;
+//global $root_label, $jscookTree_style;
 
 if( !class_exists('vmCategoryTree')) {
 	class vmCategoryTree {
@@ -25,7 +25,7 @@ if( !class_exists('vmCategoryTree')) {
 			$q = "SELECT category_name, category_id, category_child_id "
 			. "FROM #__vm_category as a, #__vm_category_xref as b "
 			. "WHERE a.published='1' AND "
-			. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
+			. " b.category_parent_id='{$category_id}' AND a.category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
 			$db->setQuery($q);
 			
@@ -98,10 +98,6 @@ $treeid = JRequest::getInt('treeid', '');
 $tmplPath = JURI::root().'/modules/mod_virtuemart/tmpl/';
 
 
-
-
-if( $jscook_type == "tree" ) {
-
 	if($jscookTree_style == "ThemeXP") {
 		$jscook_tree = "ctThemeXP1";
 	}
@@ -161,15 +157,6 @@ if( $jscook_type == "tree" ) {
 	}
 	$document = JFactory::getDocument();
 	$document->addScriptDeclaration($JStheme);
-}
-else {
-	JHTML::script('JSCookMenu_mini.js', '/includes/js/', false);
-	JHTML::script('theme.js', '/includes/js/ThemeOffice/', false);
-	JHTML::stylesheet ( 'theme.css', '/includes/js/ThemeOffice/', false );
-
-	$vm_jscook = new vmCategoryMenu();
-}
-
 // create a unique tree identifier, in case multiple trees are used
 // (max one per module)
 $varname = "JSCook_".uniqid( $jscook_type."_" );
@@ -184,21 +171,16 @@ $vm_jscook->traverse_tree_down($menu_htmlcode);
 
 $menu_htmlcode .= "];
 ";
-if(  $jscook_type == "tree" ) {
-	$menu_htmlcode .= "var treeindex = ctDraw ('div_$varname', $varname, $jscook_tree, '$jscookTree_style', 0, 0);";
-}
-else
-$menu_htmlcode .= "cmDraw ('div_$varname', $varname, '$menu_orientation', cm$jscookMenu_style, '$jscookMenu_style');";
+$menu_htmlcode .= "var treeindex = ctDraw ('div_$varname', $varname, $jscook_tree, '$jscookTree_style', 0, 0);";
 
 $menu_htmlcode .="
 --></script>\n";
 
-if(  $jscook_type == "tree" ) {
-	if( $treeid ) {
-		$menu_htmlcode .= "<input type=\"hidden\" id=\"treeid\" name=\"treeid\" value=\"$treeid\" />\n";
-		$menu_htmlcode .= "<script language=\"JavaScript\" type=\"text/javascript\">ctExposeTreeIndex( treeindex, parseInt(ctGetObject('treeid').value));</script>\n";
-	}
+if( $treeid ) {
+	$menu_htmlcode .= "<input type=\"hidden\" id=\"treeid\" name=\"treeid\" value=\"$treeid\" />\n";
+	$menu_htmlcode .= "<script language=\"JavaScript\" type=\"text/javascript\">ctExposeTreeIndex( treeindex, parseInt(ctGetObject('treeid').value));</script>\n";
 }
+
 $menu_htmlcode .= "<noscript>";
 //$menu_htmlcode .= $ps_product_category->get_category_tree( $category_id, $class_mainlevel );
 $menu_htmlcode .= "\n</noscript>\n";

@@ -50,9 +50,7 @@ $show_product_parameter_search = $params->get( 'show_product_parameter_search', 
 $menutype = $params->get( 'menutype', "default" );
 $class_sfx = $params->get( 'class_sfx', '' );
 $pretext = $params->get( 'pretext', '' );
-$jscookMenu_style = $params->get( 'jscookMenu_style', 'ThemeOffice' );
 $jscookTree_style = $params->get( 'jscookTree_style', 'ThemeXP' );
-$jscook_type = $params->get( 'jscook_type', 'menu' );
 $menu_orientation = $params->get( 'menu_orientation', 'hbr' );
 $_REQUEST['root_label'] = $params->get( 'root_label', 'Shop' );
 

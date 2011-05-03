@@ -180,11 +180,11 @@
 			<option value="transmenu">TransMenu</option>
 			<option value="dtree">dTree</option>
 		</param>
-		<param name="jscook_type" type="list" default="menu"
-			label="JSCook Type"
+		<param name="jscookTree_style" type="list" default="ThemeXP"
+			label="JSCookTree Style"
 			description="The Style for Displaying the categories: Menu or Tree">
-			<option value="menu">Menu</option>
-			<option value="tree">Tree</option>
+			<option value="ThemeXP">XP Theme</option>
+			<option value="ThemeNavy">Navy Theme</option>
 		</param>
 		<param name="jscookMenu_style" type="text" default="ThemeOffice"
 			label="JSCookMenu Style"
