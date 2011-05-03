@@ -961,7 +961,7 @@ class VirtueMartModelCategory extends JModel {
 			$style = "";
 
 			$allowed = false;
-			if( $depth_list[$n] > 0 ) {
+			if( $depth_list[$n] > 0 and $category_id>0 ) {
 				// Subcategory!
 				if( isset( $root ) && in_array( $category_tmp[$row_list[$n]]["category_child_id"], $allowed_subcategories )
 				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $category_id
