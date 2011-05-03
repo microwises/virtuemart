@@ -52,7 +52,7 @@ class VirtueMartModelProduct extends JModel {
 
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
 
 		// In case limit has been changed, adjust limitstart accordingly
@@ -79,10 +79,10 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Loads the pagination
 	 */
-    public function getPagination() {
+    public function getPagination($front=false) {
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new JPagination( $this->getTotal($front), $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
@@ -90,11 +90,12 @@ class VirtueMartModelProduct extends JModel {
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal() {
+	private function getTotal($front=false) {
     	if (empty($this->_total)) {
 //    		$this->_db = JFactory::getDBO();
-
-			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$this->getProductListFilter();
+			$where='';
+			if ($front) $where = ' WHERE  #__vm_product.`published`=1 ';
+			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$where.$this->getProductListFilter();
 			$this->_db->setQuery($q);
 			$fields = $this->_db->loadObjectList('product_id');
 			$this->_total = count($fields);

@@ -126,7 +126,7 @@ class VirtuemartViewCategory extends JView {
 	    $total = $categoryModel->countProducts($categoryId);
 	    $this->assignRef('total', $total);
 
-	    $pagination = $productModel->getPagination($categoryId);
+	    $pagination = $productModel->getPagination(true);
 	    $this->assignRef('pagination', $pagination);
 	    $orderByList = $productModel->getOrderByList();
 	    $this->assignRef('orderByList', $orderByList);
