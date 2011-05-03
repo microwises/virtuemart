@@ -262,6 +262,9 @@ class calculationHelper {
 		if(empty($prices['basePrice'])){
 			return $this->fillVoidPrices($prices);
 		}
+		if(empty($prices['basePriceVariant'])){
+			$prices['basePriceVariant'] = $prices['basePrice'] ;
+		}
 		//For Profit, margin, and so on
 //		if(count($calcRules)!==0){
 //			$prices['profit'] =
@@ -1091,9 +1094,8 @@ class calculationHelper {
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
 					$app = JFactory::getApplication();
-					echo('$productCustomsPrice'.print_r($variants,1).'  query: '.$this->_db->getQuery());
 					if(!empty($productCustomsPrice->custom_price)){
-						//We should use here $this->interpreteMathOp
+						//TODO adding % and more We should use here $this->interpreteMathOp
 						$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 					}
 				}
