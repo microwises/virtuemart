@@ -27,7 +27,7 @@ $config->cssSite();
 
 /* Setting */
 $categoryModel = new VirtueMartModelCategory();
-$category_id = $params->get('Parent_Category_id', '0');
+$category_id = $params->get('Parent_Category_id', 0);
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
@@ -35,7 +35,6 @@ $active_category_id = JRequest::getInt('category_id', '0');
 $vendorId = '1';
 
 $categories = $categoryModel->getChildrenList($category_id) ;
-
 /*		$q = "SELECT category_id, category_name
 			FROM #__vm_category, #__vm_category_xref
 			WHERE #__vm_category_xref.category_parent_id = ".$category_id."

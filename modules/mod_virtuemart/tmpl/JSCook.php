@@ -11,7 +11,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * This file is included by the virtuemart module if the module parameter
 * MenuType is set to jscooktree
 **/
-//global $root_label, $jscookTree_style;
+
 
 if( !class_exists('vmCategoryTree')) {
 	class vmCategoryTree {

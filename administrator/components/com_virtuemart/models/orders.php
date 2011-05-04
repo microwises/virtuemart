@@ -658,6 +658,7 @@ class VirtueMartModelOrders extends JModel {
 	 * Create the ordered item records
 	 *
 	 * @author Oscar van Eijk
+	 * @author Kohl Patrick
 	 * @param integer $_id integer Order ID
 	 * @param object $_cart array The cart data
 	 * @return boolean True on success
@@ -676,7 +677,6 @@ class VirtueMartModelOrders extends JModel {
 				foreach ($variantmods as $variantmod) {
 
 						foreach($variantmod as $variant=>$selected){
-							//dump($product->customfieldsCart[$row]->options[$selected];
 							$_prod->product_name .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
 
