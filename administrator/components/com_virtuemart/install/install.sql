@@ -276,7 +276,7 @@ CREATE TABLE `#__vm_currency` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
 -- --------------------------------------------------------
 --
--- Table structure for table `jos_vm_custom`
+-- Table structure for table `#__vm_custom`
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_custom` (

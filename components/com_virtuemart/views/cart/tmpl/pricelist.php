@@ -164,7 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 		if (VmConfig::get('coupons_enable')) {
 		?>
 			<tr class="sectiontableentry2">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
 				<?php if (!empty($this->cartData['couponCode'])) { ?>
 					<td colspan="2" align="left"><?php
 						echo $this->cartData['couponCode'] . ' (' . $this->cartData['couponDescr'] . ')';
@@ -179,7 +179,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING')); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editshipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING')); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
@@ -189,7 +189,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if($this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT')); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT')); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>

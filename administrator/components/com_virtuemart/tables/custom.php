@@ -94,7 +94,7 @@ class TableCustom extends JTable {
 	}
 	/*
 	* field from 3 table have to be checked at delete
-	* #__vm_custom_field,#__vm_custom,jos_vm_custom_field_xref_product
+	* #__vm_custom_field,#__vm_custom,#__vm_custom_field_xref_product
 	*/
 	function delete($id)
 	{
