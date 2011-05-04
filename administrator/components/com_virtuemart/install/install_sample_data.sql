@@ -88,7 +88,7 @@ INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`
 (6, 4, '0', NULL, 0);
 
 --
--- Dumping data for table  `jos_vm_custom_field_xref_product`
+-- Dumping data for table  `#__vm_custom_field_xref_product`
 --
 
 INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, `ordering`, `published`) VALUES
