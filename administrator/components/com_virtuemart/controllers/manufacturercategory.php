@@ -86,7 +86,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategory',JText::_('COM_VIRTUEMART_CANCELLED'));
+		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturerCategory',JText::_('COM_VIRTUEMART_CANCELLED'));
 	}
 
 
@@ -105,8 +105,8 @@ class VirtuemartControllerManufacturerCategory extends JController {
 		}
 
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturercategory&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=manufacturercategory';
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturerCategory&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=manufacturerCategory';
 
 		$this->setRedirect($redirection, $msg);
 
@@ -127,7 +127,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
 	}
 
 
@@ -142,7 +142,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
 	}
 
 
@@ -157,7 +157,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
 	}
 }
 // pure php no closing tag

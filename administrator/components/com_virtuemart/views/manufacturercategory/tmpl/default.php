@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 			
 			$checked = JHTML::_('grid.id', $i, $row->mf_category_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturercategory&task=edit&cid[]=' . $row->mf_category_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturerCategory&task=edit&cid[]=' . $row->mf_category_id);
 			$manufacturersList = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&mf_category_id=' . $row->mf_category_id);
 
 			?>
