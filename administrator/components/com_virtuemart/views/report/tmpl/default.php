@@ -25,7 +25,7 @@ $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $order_id = JRequest::getInt('order_id', false);
-$format = '%m-%d-%Y';
+$format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
 
 if( $this->pagination->limit < $rows ){
@@ -37,15 +37,15 @@ if( $this->pagination->limit < $rows ){
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
-        <h2><?php echo JHTML::_('date', $this->from_period, $format) . ' - ' . JHTML::_('date', $this->until_period, $format); ?></h2>
+        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', JHTML::_('date', $this->from_period, $format) , JHTML::_('date', $this->until_period, $format)); ?></h2>
         <div id="filterbox" style="float: left">
             
             <table>
                 <tr>
                     <td align="left" width="100%">
-                        <?php echo $this->lists['select_date']; ?>
-                        <?php echo JHTML::_('calendar', $this->from_period, 'from_period', 'from-period', '%m-%d-%Y'); ?>
-                        <?php echo JHTML::_('calendar', $this->until_period, 'until_period', 'until-period', '%m-%d-%Y'); ?>
+                        <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date']; ?>
+                        <?php echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') . JHTML::_('calendar', $this->from_period, 'from_period', 'from-period', $format); ?>
+                        <?php echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . JHTML::_('calendar', $this->until_period, 'until_period', 'until-period', $format); ?>
                         <button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>
