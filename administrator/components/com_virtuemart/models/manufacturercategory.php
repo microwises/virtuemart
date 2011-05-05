@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.model');
  * @subpackage Manufacturer category
  * @author
  */
-class VirtueMartModelManufacturerCategory extends JModel {
+class VirtuemartModelManufacturerCategory extends JModel {
 
 	/** @var integer Primary key */
     var $_id;

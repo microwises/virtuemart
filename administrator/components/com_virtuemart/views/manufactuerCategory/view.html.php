@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: view.html.php 3135 2011-05-02 17:17:10Z alatak $
 */
 
 // Check to ensure this file is included in Joomla!
