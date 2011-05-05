@@ -105,15 +105,20 @@ class VirtuemartModelReport extends JModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects 
      */
-    function getRevenue($noLimit = false){
+    function getRevenue($start_date, $end_date, $noLimit = false){
     	$db = JFactory::getDBO();
     	
+		if(empty($start_date) || empty($end_date)){
+			$curDate = JFactory::getDate();
+			$start_date = $curDate;
+			$end_date = $curDate;
+		}
 		$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
 		$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "COUNT(order_id) as number_of_orders, ";
 		$query .= "SUM(order_subtotal) as revenue ";
 		$query .= "FROM `#__vm_orders` ";
-		//WHERE cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		$query .= "WHERE `cdate` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
 		$query .= "GROUP BY order_date ";
 		$query .= "ORDER BY date_num ASC ";
 		
