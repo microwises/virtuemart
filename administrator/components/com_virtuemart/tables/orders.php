@@ -108,6 +108,7 @@ class TableOrders extends JTable {
 	 * @var integer Order id
 	 * @return boolean True on success
 	 * @author Oscar van Eijk
+	 * @author Kohl Patrick
 	 */
 	function delete($id)
 	{
@@ -116,11 +117,17 @@ class TableOrders extends JTable {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		$this->_db->setQuery('DELETE from `#__vm_order_payment` WHERE `order_id` = ' . $id);
+		/*vm_order_payment NOT EXIST  have to find the table name*/
+		$this->_db->setQuery( 'SELECT `paym_element` FROM `#__vm_payment_method` , `#__vm_orders`
+			WHERE `#__vm_payment_method`.`paym_id` = `#__vm_orders`.`payment_method_id` AND `order_id` = ' . $id );
+		$paymentTable = '#__vm_order_payment_'. $this->_db->loadResult();
+		/*$paymentTable is the paiement used in order*/
+		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
+
 
 		$_q = 'INSERT INTO `#__vm_order_history` ('
 				.	' order_status_history_id'

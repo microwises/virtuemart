@@ -167,15 +167,15 @@ class VirtuemartControllerOrders extends JController {
 	*/
 	public function remove() {
 		$mainframe = Jfactory::getApplication();
-
+		$cids = JRequest::getVar('cid');
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
-
+		
 		$model = $this->getModel('orders');
 		$msgtype = '';
 		if ($model->removeOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_REMOVED_SUCCESSFULLY');
 		else {
-//			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_REMOVED_SUCCESSFULLY');
 			$model->getError();
 			$msgtype = 'error';
 		}

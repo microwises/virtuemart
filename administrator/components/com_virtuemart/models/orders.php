@@ -101,6 +101,24 @@ class VirtueMartModelOrders extends JModel {
 		return $oderId;
 
 	}
+	 /**
+	 * This function gets the secured order Number, to send with paiement
+	 */
+	public function getOrderNumber($_orderNr){
+
+		$orderNumber = JRequest::getVar('order_number',0);
+//		if(empty($orderNumber)) return 0;
+		$orderPass = JRequest::getVar('order_pass',0);
+//		if(empty($orderPass)) return 0;
+
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT `order_number` FROM `#__vm_orders` WHERE ="'.$order_id.'"  ';
+		$db->setQuery($q);
+		$OrderNumber = $db->loadResult();
+		return $OrderNumber;
+
+	}
 
 	/**
 	 * Load a single order
@@ -980,24 +998,16 @@ class VirtueMartModelOrders extends JModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True of remove was successful, false otherwise
 	 */
-	function removeOrder()
-	{
-		$orderIds = JRequest::getVar('cid',  0, '', 'array');
+	function removeOrder() {
+
+		$cids = JRequest::getVar('cid');
+			if (!is_array($cids)) $cids = array($cids);
+		//$orderIds = JRequest::getVar('cid',  0, '', 'array');
 		$table = $this->getTable('orders');
 
-		foreach($orderIds as $_id) {
-			$this->_db->setQuery('SELECT order_item_id '
-				. 'FROM #__vm_order_item '
-				. 'WHERE order_id='.$_id);
-			$order_items = $this->_db->loadObjectList();
+		foreach($cids as $_id) {
+			$this->removeOrderItems ($_id);
 
-			if ($order_items) {
-				foreach ($order_items as $key => $_item) {
-					if (!self::removeOrderLineItem($_item)) {
-						return (false);
-					}
-				}
-			}
 			if (!$table->delete($_id)) {
 				$this->setError($table->getError());
 				return false;
@@ -1005,7 +1015,20 @@ class VirtueMartModelOrders extends JModel {
 		}
 		return true;
 	}
-
+	/* 
+	*delete product from order item table
+	*@var $order_id Order to clear
+	*/
+	function removeOrderItems ($order_id){
+		$q ='DELETE from `#__vm_order_item` WHERE `order_id` = ' . $order_id;
+		 $this->_db->setQuery($q);
+		dump ($q ,' query');
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
+			return false;
+		}
+	return true;
+	}
 	/**
 	 * Remove an order line item.
 	 *
@@ -1014,6 +1037,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function removeOrderLineItem($orderLineId) {
+		
 		$table = $this->getTable('order_item');
 
 		if ($table->delete($orderLineId)) {

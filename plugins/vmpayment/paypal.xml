@@ -23,29 +23,38 @@
 		<filename plugin="paypal">paypal.php</filename>
 	</files>
 	<params>
-		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "P" description="VM_PAYMS_TYPE" />
-		<param type="text" name="PAYPAL_EMAIL" label="PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL"
-             default="username@email.com" description="PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN" />
-        <param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS" description="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="ordering" default="C"
-			/>
-        <param name="PAYMENT_PENDING_STATUS" label="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING" description="JM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="P"
-			/>
-        <param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED" description="PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" default="X"
-			/>
-		<param name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED" description="PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED_EXPLAIN">
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
-			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "PP" description="VM_PAYMS_TYPE" />
+		<param type="text" name="PAYPAL_EMAIL" label="PLG_VMPAYMENT_PAYPAL_EMAIL"
+             default="username@email.com" description="PLG_VMPAYMENT_PAYPAL_EMAIL_EXPLAIN" /><br/>
+			 
+		<param name="status_success" type="sql" default="C" label="PLG_VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="PLG_VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" 
+			query="SELECT order_status_code AS value, order_status_name AS status_success FROM #__vm_order_status" /><br/>
+			
+		<param name="status_pending" type="sql" default="P" label="PLG_VMPAYMENT_PAYPAL_STATUS_PENDING" description="PLG_VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" 
+			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__vm_order_status" /><br/>
+
+		<param name="status_pending" type="sql" default="X" label="PLG_VMPAYMENT_PAYPAL_STATUS_FAILED" description="PLG_VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" 
+			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__vm_order_status" />
+
+		<param name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="PLG_VMPAYMENT_PAYPAL_ONLYVERIFIED" description="PLG_VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
 		</param>
-		<param name="DEBUG" type="radio" default="0" label="PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE" description="PHPSHOP_ADMIN_CFG_ENABLE_AUTORIZENET_TESTMODE_EXPLAIN">
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
-			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+		<param name="DEBUG" type="radio" default="0" label="PLG_VMPAYMENT_PAYPAL_DEBUG" description="PLG_VMPAYMENT_PAYPAL_DEBUG_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
 		</param>
-		<param name="SANDBOX" type="radio" default="0" label="Use PayPal Sandbox?" description="The PayPal Sandbox allows to simulate transactions in a secure environment.">
-			<option value="0">PHPSHOP_ADMIN_CFG_NO</option>
-			<option value="1">PHPSHOP_ADMIN_CFG_YES</option>
+		<param name="SANDBOX" type="radio" default="1" label="PLG_VMPAYMENT_PAYPAL_SANDBOX" description="PLG_VMPAYMENT_PAYPAL_SANDBOX_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="SANDBOX" type="radio" default="1" label="PLG_VMPAYMENT_PAYPAL_SANDBOX" description="PLG_VMPAYMENT_PAYPAL_SANDBOX_DESC">
+			<option value="AUD">Australian Dollar </option>
+			<option value="CAD">Canadian Dollar </option>
+			<option value="EUR">Euro</option>
+			<option value="GBP">Pound sterling</option>
+			<option value="JPY">Yen japonais</option>
+			<option value="USD">US Dollar</option>
 		</param>
 	</params>
 </install>

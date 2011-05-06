@@ -61,6 +61,16 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	 *
 	 */
 	function display() {
+		$document = JFactory::getDocument();
+		$viewName = JRequest::getVar('view', '');
+		$viewType = $document->getType();
+		$view =& $this->getView($viewName, $viewType);
+
+		// Push a model into the view
+		$model =& $this->getModel( 'manufacturerCategory' );
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
 		parent::display();
 	}
 

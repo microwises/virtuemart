@@ -130,7 +130,7 @@ $option = JRequest::getWord('option');
     <!-- Hidden Fields -->
     <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-    <input type="hidden" name="task" value="orders" />
+    <input type="hidden" name="task" value="" />
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="orders" />
     <input type="hidden" name="boxchecked" value="0" />
