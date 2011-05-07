@@ -32,9 +32,14 @@ jimport( 'joomla.application.component.view' );
 class virtuemartViewrecommend extends JView {
 
 	function renderMail() {
+
+		/* set the mailer in subject */
+		$user = JFactory::getUser();
+		
 		$this->setLayout('mail_raw');
 		$this->comment = JRequest::getString('comment');
-	 	$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$this->user->name).$this->product->product_name;
+		
+	 	$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$user->name,$this->product->product_name);
 	 	parent::display();
 	}
 

@@ -307,10 +307,10 @@ class shopFunctionsF {
 			$view->$key = $val;
 		}
 
-		self::sendMail($view, $recipient);
+		return self::sendMail($view, $recipient);
 
 		if (isset($view->doVendor)) {
-			self::sendMail($view, $view->vendorEmail, true);
+			return self::sendMail($view, $view->vendorEmail, true);
 		}
 	}
 	// VirtueMartViewUser: registerUser,
