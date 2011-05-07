@@ -6,5 +6,5 @@ $prefix = $uri->toString(array('scheme', 'host', 'port'));
 $link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id );
 
 echo '<br /><b>'.JHTML::_('link',$prefix.$link, $this->product->product_name).'</b>';
-
-// TODO add a footer and SHOP HEADER ?
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'mail_html_footer.php');
+// TODO add SHOP HEADER ?
