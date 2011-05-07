@@ -161,14 +161,14 @@ class shopFunctionsF {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
-			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
+			//Todo this is old stuff and must be adjusted	
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {
 				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_EMAIL');
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_EMAIL'), 'screenX=100,screenY=200');
+			return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" href="'.$link.'">'.$text.'</a>';
 		}
 	}
 
