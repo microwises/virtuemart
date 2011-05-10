@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Manufacturer
  * @author
  */
-class VirtuemartControllerManufacturerCategory extends JController {
+class VirtuemartControllerManufacturercategory extends JController {
 
 	/**
 	 * Method to display the view
@@ -46,10 +46,10 @@ class VirtuemartControllerManufacturerCategory extends JController {
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('manufacturerCategory', $viewType);
+		$view =& $this->getView('manufacturercategory', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('manufacturerCategory');
+		$model =& $this->getModel('manufacturercategory');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -67,7 +67,7 @@ class VirtuemartControllerManufacturerCategory extends JController {
 		$view =& $this->getView($viewName, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel( 'manufacturerCategory' );
+		$model =& $this->getModel( 'manufacturercategory' );
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -81,8 +81,8 @@ class VirtuemartControllerManufacturerCategory extends JController {
 	 */
 	function edit()
 	{
-		JRequest::setVar('controller', 'manufacturerCategory');
-		JRequest::setVar('view', 'manufacturerCategory');
+		JRequest::setVar('controller', 'manufacturercategory');
+		JRequest::setVar('view', 'manufacturercategory');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 

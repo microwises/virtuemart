@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Manufacturer Categories
  * @author Patrick Kohl
  */
-class VirtuemartViewManufacturerCategory extends JView {
+class VirtuemartViewManufacturercategory extends JView {
 
 	function display($tpl = null) {
 

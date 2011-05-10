@@ -54,7 +54,7 @@ class VirtuemartControllerManufacturer extends JController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		$model1 = $this->getModel('manufacturerCategory');
+		$model1 = $this->getModel('manufacturercategory');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}
