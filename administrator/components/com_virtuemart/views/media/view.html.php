@@ -67,8 +67,8 @@ class VirtuemartViewMedia extends JView {
 			}
 
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
         }

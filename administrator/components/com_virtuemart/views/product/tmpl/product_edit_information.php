@@ -19,6 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
+<?php dump($this->product); ?>
 <table class="adminform">
 	<tr>
 		<td valign="top">
@@ -101,21 +102,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 		<table class="adminform">
+
 			<tr class="row0">
-				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CURRENCY') ?>:</div>
-				</td>
-				<td width="71%">
-					<?php echo $this->currencies; ?>
-				</td>
-			</tr>
-			<tr class="row1">
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>:</div>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
-					<?php echo $this->product_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
+                                        
+					<?php echo $this->product_currency; echo $this->currencies;  echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -133,7 +128,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
-					<?php echo $this->vendor_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
+					<?php echo $this->vendor_currency;   echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
 				</td>
 			</tr>
 		</table>
@@ -192,6 +187,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 		</table>
 		</fieldset>
+                <table class="adminform">
+                <tr class="row1">
+                            <td width="21%" >
+                                    <div style="text-align:right;font-weight:bold;">
+                                    <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?>:</div>
+                            </td>
+                            <td width="79%" >
+                                    <?php
+                                            $checked = '';
+                                            if (strtoupper($this->product->product_special) == "Y") $checked = 'checked="checked"' ?>
+                                            <input type="checkbox" name="product_special" value="Y" <?php echo $checked; ?> />
+                            </td>
+                    </tr>
+                </table>
 		<table class="adminform">
 			<tr>
 				<td width="29%" valign="top">
@@ -201,9 +210,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
 				</td>
 			</tr>
-			<tr class="row1">
-				<td colspan="2">&nbsp;</td>
-			</tr>
+			 
 		</table>
 	</td>
 	</tr>

@@ -132,9 +132,11 @@ class VirtuemartViewProduct extends JView {
 				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
 				$currency = $currency_model->getCurrency($product->product_currency);
 				$this->assignRef('product_currency', $currency->currency_symbol);
-
+dump($currency);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
+dump($currency);
+dump($vendor);
 
 //				$product_currency_symbol = $currency->currency_symbol;
 				/* Load the manufacturers */
@@ -240,9 +242,9 @@ class VirtuemartViewProduct extends JView {
 
 
 				JToolBarHelper::title($text, 'vm_product_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::apply();
+				JToolBarHelper::divider();				
 				JToolBarHelper::save();
+                                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				break;

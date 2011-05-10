@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_VALUE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TYPE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-		<th><?php echo JText::_('DELETE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -71,8 +71,8 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </fieldset>
 <div style="clear:both;"></div>
-<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('DELETE'); ?></div>
-<div><?php echo JText::_('SELECT').' '.$this->customsList; ?></div>
+<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
+<div><?php echo JText::_('COM_VIRTUEMART_SELECT').' '.$this->customsList; ?></div>
 <?php /*<div class="jsonSuggestResults" style="width: 322px;">
 	<input type="text" size="40" name="search" id="ProductCustomSearch" value="" />
 </div> */ ?>

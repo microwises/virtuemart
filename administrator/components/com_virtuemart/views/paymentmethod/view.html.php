@@ -68,8 +68,8 @@ class VirtuemartViewPaymentMethod extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->paym_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));

@@ -60,8 +60,8 @@ class VirtuemartViewManufacturer extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_manufacturer_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$model->addImagesToManufacturer($manufacturer);

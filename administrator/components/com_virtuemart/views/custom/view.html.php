@@ -55,17 +55,17 @@ class VirtuemartViewCustom extends JView {
 
 			$isNew = ($custom->custom_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
 				if(empty($userDetails->vendor_id)){
-					JError::raiseError(403,'Forbidden for non vendors');
+					JError::raiseError(403,JText::_('COM_VIRTUEMART_CUSTOM_FOR_VENDOR'));
 				}
 			}
 			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_LIST_EDIT').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();

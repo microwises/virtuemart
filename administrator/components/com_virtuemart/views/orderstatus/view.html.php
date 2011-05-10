@@ -51,6 +51,7 @@ class VirtuemartViewOrderstatus extends JView {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
+                                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -64,8 +65,10 @@ class VirtuemartViewOrderstatus extends JView {
 
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
+
+                                JToolBarHelper::save();
+                                JToolBarHelper::apply();
+				JToolBarHelper::cancel();
 			}
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');

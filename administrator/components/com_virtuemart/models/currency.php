@@ -225,5 +225,6 @@ class VirtueMartModelCurrency extends JModel {
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }
+
 }
 // pure php no closing tag

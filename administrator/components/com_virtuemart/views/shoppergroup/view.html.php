@@ -55,8 +55,8 @@ class VirtuemartViewShopperGroup extends JView {
 			$this->assignRef('vendorList',	$vendors);
 
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('shoppergroup',	$shoppergroup);
 

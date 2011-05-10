@@ -57,7 +57,7 @@ class VirtuemartViewModule extends JView {
 		  $this->assignRef('shoppergroup',	$module);
 		  //$this->assignRef('vendors',	$zoneModel->getShippingZoneSelectList());
 		}	else {
-			JToolBarHelper::title( JText::_( 'VM_MODULE_LIST_LBL ' ), 'vm_shop_users_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_MODULE_LIST_LBL' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

@@ -67,8 +67,8 @@ class VirtuemartViewState extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_states_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$this->assignRef('state', $state);

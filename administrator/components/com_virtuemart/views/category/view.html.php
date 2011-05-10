@@ -62,9 +62,9 @@ class VirtuemartViewCategory extends JView {
 				$this->assignRef('relationInfo', $relationInfo);
 			}
 
-			JToolBarHelper::divider();
-			JToolBarHelper::apply();
+			JToolBarHelper::divider();			
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$parent = $model->getParentCategory( $category->category_id );

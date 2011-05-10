@@ -73,8 +73,8 @@ class VirtuemartViewCoupon extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUPON_HEADER').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_coupon_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('coupon',	$coupon);
         }

@@ -52,8 +52,8 @@ class VirtuemartViewCountry extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 		    }
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 		    $this->assignRef('country',	$country);

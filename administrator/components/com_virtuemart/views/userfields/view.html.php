@@ -73,8 +73,8 @@ class VirtuemartViewUserfields extends JView {
 					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
