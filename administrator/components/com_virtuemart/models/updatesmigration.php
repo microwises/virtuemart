@@ -83,7 +83,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
 	    }
 
-	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
+	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `created_on`, `modified_on`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
@@ -433,6 +433,16 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$db = JFactory::getDBO();
 	$config = JFactory::getConfig();
 	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
+	if (!$tables = $db->loadResultArray()) {
+	    $this->setError = $db->getErrorMsg();
+	    return false;
+	}
+
+	foreach ($tables as $table) {
+	    $db->setQuery('DROP TABLE ' . $table);
+	    $db->query();
+	}
+	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."virtuemart_%'");
 	if (!$tables = $db->loadResultArray()) {
 	    $this->setError = $db->getErrorMsg();
 	    return false;

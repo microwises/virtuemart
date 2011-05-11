@@ -40,10 +40,10 @@ class TableOrder_status extends JTable {
 	var $ordering					= 0;
 	/** @var int Vendor ID if the status is vendor specific */
 	var $vendor_id					= null;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @param $db Class constructor; connect to the database

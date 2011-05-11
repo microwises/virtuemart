@@ -36,7 +36,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->cdate);?></td>
+				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->created_on);?></td>
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>

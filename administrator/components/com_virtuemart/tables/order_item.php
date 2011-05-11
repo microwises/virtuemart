@@ -53,15 +53,15 @@ class TableOrder_item extends JTable {
 	/** @var char Order status */
 	var $order_status = NULL;
 	/** @var int Creation date */
-	var $cdate = NULL;
+	var $created_on = NULL;
 	/** @var int Last modified date */
-	var $mdate = NULL;
+	var $modified_on = NULL;
 	/** @var text Product attribute */
 	var $product_attribute = NULL;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
@@ -78,10 +78,10 @@ class TableOrder_item extends JTable {
 	function check(){
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 	}
 }
 // pure php no closing tag

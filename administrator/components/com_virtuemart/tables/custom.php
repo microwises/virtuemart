@@ -59,7 +59,7 @@ class TableCustom extends JTable {
 	var $is_cart_attribute		= 0;
 
 	/** @var int custom published or not */
-	var $published		= 0;
+	var $enabled		= 0;
 
 
 	/**

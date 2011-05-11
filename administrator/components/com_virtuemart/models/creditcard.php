@@ -213,7 +213,7 @@ class VirtueMartModelCreditcard extends JModel {
 	function getCreditCards($published=1)
 	{
 		$query = 'SELECT * FROM `#__vm_creditcard` ';
-		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
+		if($published) $query .= 'WHERE `enabled`= "'.$published.'" ';
 		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;

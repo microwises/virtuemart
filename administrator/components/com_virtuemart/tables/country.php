@@ -39,11 +39,11 @@ class TableCountry extends JTable {
     /** @var char 2 character country code */
 	var $country_2_code         = '';
     /** @var int Published or unpublished */
-	var $published 		        = 1;
-    /** @var boolean */
-	var $checked_out	= 0;
+	var $enabled 		        = 1;
+           /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 
 

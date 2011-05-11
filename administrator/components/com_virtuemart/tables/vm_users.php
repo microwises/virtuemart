@@ -35,10 +35,10 @@ defined('_JEXEC') or die('Restricted access');
 	var $vendor_id 			= 0;
 	var $customer_number 	= 0;
 	var $perms				= 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @param $db Class constructor; connect to the database

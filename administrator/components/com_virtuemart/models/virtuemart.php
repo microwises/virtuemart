@@ -119,7 +119,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return ObjectList List of recent orders.
 	 */
 	function getRecentOrders($nbrOrders=5) {
-		$query = 'SELECT `order_id`, `order_total` FROM `#__vm_orders` ORDER BY `cdate` desc';
+		$query = 'SELECT `order_id`, `order_total` FROM `#__vm_orders` ORDER BY `created_on` desc';
         return $this->_getList($query, 0, $nbrOrders);
     }
 
@@ -138,7 +138,7 @@ class VirtueMartModelVirtueMart extends JModel {
 		$query .= 'WHERE `perms` <> "admin" ';
         $query .= 'AND `perms` <> "storeadmin" ';
         $query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
-        $query .= 'ORDER BY uo.`cdate` DESC';
+        $query .= 'ORDER BY uo.`created_on` DESC';
         return $this->_getList($query, 0, $nbrCusts);
     }
 }

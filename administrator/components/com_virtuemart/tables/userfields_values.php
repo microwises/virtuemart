@@ -40,10 +40,10 @@ class TableUserfields_values extends JTable {
 	var $ordering		= 0;
 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
 	var $sys			= 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+         /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */

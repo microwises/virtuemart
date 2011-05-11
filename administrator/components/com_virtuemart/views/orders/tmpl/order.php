@@ -41,7 +41,7 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo $this->orderbt->cdate; ?></td>
+				<td><?php echo $this->orderbt->created_on; ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>

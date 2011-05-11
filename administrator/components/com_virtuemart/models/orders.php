@@ -374,7 +374,7 @@ class VirtueMartModelOrders extends JModel {
 
 				// Order updates can be ignored if we're updating only lines
 				$order->order_status = $new_status;
-//				$order->mdate = $timestamp;
+//				$order->modified_on = $timestamp;
 
 				/* When the order is set to "shipped", we can capture the payment */
 				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
@@ -546,8 +546,8 @@ class VirtueMartModelOrders extends JModel {
 		}
 		$_orderData->payment_method_id = $_cart->paym_id;
 		//Should be done in table
-//		$_orderData->cdate = time();
-//		$_orderData->mdate = time();
+//		$_orderData->created_on = time();
+//		$_orderData->modified_on = time();
 		$_orderData->ship_method_id = $_cart->shipping_rate_id;
 
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
@@ -727,8 +727,8 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 //			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
-			$_orderItems->cdate = time();
-			$_orderItems->mdate = time();
+			$_orderItems->created_on = time();
+			$_orderItems->modified_on = time();
 			$_orderItems->product_attribute = '';
 
 //			//TODO
@@ -800,7 +800,7 @@ class VirtueMartModelOrders extends JModel {
 		$_table = $this->getTable('order_item');
 		$_table->load($_item);
 		$_table->order_status = $_status;
-		$_table->mdate = time();
+		$_table->modified_on = time();
 		$_table->store();
 	}
 
@@ -825,7 +825,7 @@ class VirtueMartModelOrders extends JModel {
 			}
 			$_table->product_attribute = join("<br>\n", $_attrib);
 		}
-		$_table->mdate = time();
+		$_table->modified_on = time();
 		$_table->store();
 	}
 
@@ -940,7 +940,7 @@ class VirtueMartModelOrders extends JModel {
 		}
 		else {
 			$table->reset();
-			$table->cdate = JFactory::getDate()->toMySql();
+			$table->created_on = JFactory::getDate()->toMySql();
 			$table->order_id = $orderId;
 			return $table;
 		}
@@ -958,7 +958,7 @@ class VirtueMartModelOrders extends JModel {
 
 		$data = JRequest::get('post');
 		$curDate = JFactory::getDate();
-		$data['mdate'] = $curDate->toMySql();
+		$data['modified_on'] = $curDate->toMySql();
 
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');

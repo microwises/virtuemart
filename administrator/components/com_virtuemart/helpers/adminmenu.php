@@ -167,8 +167,8 @@ class AdminMenuHelper {
 	$db		= JFactory::getDBO();
 	$menuArr = array();
 
-	$filter[] = "jmmod.published='1'";
-	$filter[] = "item.published='1'";
+	$filter[] = "jmmod.enabled='1'";
+	$filter[] = "item.enabled='1'";
 	$filter[] = "jmmod.is_admin='1'";
 	if( !empty($moduleId)) {
 	    $filter[] = 'vmmod.module_id='.(int)$moduleId;

@@ -51,7 +51,7 @@ if( $this->pagination->limit < $nrows ){
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCTS_LBL'); ?>
 			</th>
 			<th width="5%">
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_LIST_PUBLISH', 'c.enabled', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<!-- Commented out for future use
 			<th width="5%">

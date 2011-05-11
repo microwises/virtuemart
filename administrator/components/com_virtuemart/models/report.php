@@ -113,12 +113,12 @@ class VirtuemartModelReport extends JModel {
 			$start_date = $curDate;
 			$end_date = $curDate;
 		}
-		$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "COUNT(order_id) as number_of_orders, ";
 		$query .= "SUM(order_subtotal) as revenue ";
 		$query .= "FROM `#__vm_orders` ";
-		$query .= "WHERE `cdate` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
+		$query .= "WHERE `created_on` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
 		$query .= "GROUP BY order_date ";
 		$query .= "ORDER BY date_num ASC ";
 		
@@ -149,11 +149,11 @@ class VirtuemartModelReport extends JModel {
     function getItemsSold($noLimit = false){
     	$db = JFactory::getDBO();
     	
-		$query = "SELECT FROM_UNIXTIME(`cdate`, '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME(`cdate`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "SUM(product_quantity) as items_sold ";
 		$query .= "FROM `#__vm_order_item` ";
-		//WHERE cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		//WHERE created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
 		$query .= "GROUP BY order_date ";
 		$query .= "ORDER BY date_num ASC ";
 		
@@ -185,11 +185,11 @@ class VirtuemartModelReport extends JModel {
     	$db = JFactory::getDBO();
     	
 		$query = "SELECT `product_name`, `product_sku`, ";
-		$query .= "FROM_UNIXTIME('i.cdate', '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME('o.cdate',GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query .= "FROM_UNIXTIME('i.created_on', '%M, %Y') as order_date, ";
+		$query .= "FROM_UNIXTIME('o.created_on',GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "SUM(product_quantity) as items_sold ";
   		$query .= "FROM #__vm_order_item i, #__vm_orders o, #__vm_product p ";
-		//WHERE #__vm_order_item.cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		//WHERE #__vm_order_item.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
 		//$query .= "AND o.order_id=i.order_id ";
 		$query .= "WHERE o.order_id=i.order_id ";
   		$query .= "AND i.product_id=p.product_id ";

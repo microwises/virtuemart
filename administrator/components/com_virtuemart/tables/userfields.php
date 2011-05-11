@@ -55,7 +55,7 @@ class TableUserfields extends JTable {
 	/** @var int */
 	var $default		= 0;
 	/** @var boolean True if publised*/
-	var $published		= 1;
+	var $enabled		= 1;
 	/** @var boolean True to display in registration form*/
 	var $registration	= 0;
 	/** @var boolean True to display in shipping form*/
@@ -72,10 +72,10 @@ class TableUserfields extends JTable {
 	var $vendor_id		= 0;
 	/** @var mediumtex Additional type-specific parameters */
 	var $params			= null;
-                /** @var boolean */
-	var $checked_out	= 0;
+              /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */

@@ -91,7 +91,7 @@ class VirtueMartModelRatings extends JModel {
      			user_rating,
      			time,
      			#__vm_product_reviews.userid,
-			#__vm_product_reviews.published
+			#__vm_product_reviews.enabled
      			".$this->getRatingsListQuery().$this->getRatingsFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList();
@@ -182,7 +182,7 @@ class VirtueMartModelRatings extends JModel {
 
 	if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 	$q = "UPDATE #__vm_product_reviews
-		SET published = ".$db->Quote($state)."
+		SET enabled = ".$db->Quote($state)."
 		WHERE review_id IN (".$cids.")";
 	$db->setQuery($q);
 	if ($db->query()) return true;
@@ -242,8 +242,8 @@ class VirtueMartModelRatings extends JModel {
 		
 
 		/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
-		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
-		else $data['published'] = 0;
+		if (VmConfig::get('reviews_autopublish',0)) $data['enabled'] = 1;
+		else $data['enabled'] = 0;
 
     	// Bind the form fields to the table
 		if (!$ratings_data->bind($data)) {

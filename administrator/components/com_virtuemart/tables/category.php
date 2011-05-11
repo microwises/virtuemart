@@ -39,11 +39,11 @@ class TableCategory extends JTable {
 	var $category_description		= '';
 
 	/** @var integer Category publish or not */
-	var $published			= 1;
+	var $enabled			= 1;
 	/** @var date Category creation date */
-	var $cdate				= null;
+	var $created_on				= null;
 	/** @var date Category last modification date */
-	var $mdate	= null;
+	var $modified_on	= null;
 
 	/** @var string Category browse page layout */
 	var $category_template = null;
@@ -72,11 +72,10 @@ class TableCategory extends JTable {
 	var $metarobot	= '';
 	/** @var string Meta author */
 	var $metaauthor	= '';
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
-
+	var $locked_by	= 0;
 	/**
 	 * Class contructor
 	 *
@@ -95,10 +94,10 @@ class TableCategory extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
      	if(empty($this->category_name)){
             $this->setError('Cant save category without name');

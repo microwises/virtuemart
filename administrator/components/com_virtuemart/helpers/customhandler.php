@@ -148,7 +148,7 @@ class VmCustomHandler {
     	$vendorId=1;
 		// get custom parents
     	$q='SELECT custom_id as value ,custom_title as text FROM `#__vm_custom` where custom_parent_id=0';
-		if ($publishedOnly) $q=' WHERE `published`=1 ';
+		if ($publishedOnly) $q=' WHERE `enabled`=1 ';
 		if ($ID = JRequest::getVar( 'custom_id',false)) $q .=' and `custom_id`!='.$ID;
 		//if (isset($this->custom_id)) $q.=' and custom_id !='.$this->custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
@@ -203,7 +203,7 @@ class VmCustomHandler {
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_DEFAULT','custom_value',$this->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
 		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_FORM_FIELD_PUBLISHED','published',$this->published);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_FORM_FIELD_PUBLISHED','enabled',$this->enabled);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);

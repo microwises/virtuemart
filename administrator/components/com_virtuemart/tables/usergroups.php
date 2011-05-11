@@ -34,11 +34,11 @@ class TableUsergroups extends JTable {
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
 	var $group_level = 750;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
-// 	var $published = 1;
+	var $locked_by	= 0;
+// 	var $enabled = 1;
 
 	function __construct(&$db)
 	{

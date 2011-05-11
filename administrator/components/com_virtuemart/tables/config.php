@@ -33,10 +33,10 @@ class TableConfig extends JTable {
 	var $config_id			= 0;
 	/** @var config */
 	var $config       		= 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object

@@ -230,7 +230,7 @@ class VirtueMartModelManufacturer extends JModel {
 			$where[] .= 'LOWER( `#__vm_manufacturer`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		}
 		if ($onlyPublished) {
-			$where[] .= '`#__vm_manufacturer`.`published` = 1';
+			$where[] .= '`#__vm_manufacturer`.`enabled` = 1';
 		}
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');

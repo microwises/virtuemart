@@ -45,11 +45,11 @@ class TableRatings extends JTable {
 	/** @var int No idea what this is for */
 	var $review_votes      		= null;
 	/** @var int State of the review */
-	var $published         		= 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+	var $enabled         		= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	* @author RolandD

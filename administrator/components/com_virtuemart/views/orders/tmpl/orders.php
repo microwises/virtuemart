@@ -86,9 +86,9 @@ $option = JRequest::getWord('option');
 			?>
 		<td><?php echo $details_link; ?></td>
 		<!-- Order date -->
-		<td><?php echo $order->cdate //date('d-M-y H:i', $order->cdate); ?></td>
+		<td><?php echo $order->created_on //date('d-M-y H:i', $order->created_on); ?></td>
 		<!-- Last modified -->
-		<td><?php echo $order->mdate //date('d-M-y H:i', $order->mdate); ?></td>
+		<td><?php echo $order->modified_on //date('d-M-y H:i', $order->modified_on); ?></td>
 		<!-- Status -->
 		<td>
 			    <?php

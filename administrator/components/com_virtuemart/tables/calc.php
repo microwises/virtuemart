@@ -52,17 +52,17 @@ class TableCalc extends JTable
 	/** @var array affecting States of the rule */
 	//var $calc_states				= array();
 	/** @var string Visible for shoppers */
-	var $calc_shopper_published		= 0;
+	var $calc_shopper_enabled		= 0;
 	/** @var string Visible for Vendors */
-	var $calc_vendor_published		= 0;
+	var $calc_vendor_enabled		= 0;
 	/** @var string start date */
 	var $publish_up;
 	/** @var string end date */
 	var $publish_down;
 	/** @var string created date */
-	var $cdate;
+	var $created_on;
 	/** @var string modified date */
-	var $mdate;
+	var $modified_on;
         /** @var string   */
 	var $calc_qualify;
          /** @var string   */
@@ -74,11 +74,11 @@ class TableCalc extends JTable
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $published 		        = 0;
+	var $enabled 		        = 0;
         /** @var boolean */
-	var $checked_out	= 0;
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @author Max Milbers
@@ -131,7 +131,7 @@ class TableCalc extends JTable
 		if(empty($this->cdate)){
 			$this->cdate = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		return true;
 	}

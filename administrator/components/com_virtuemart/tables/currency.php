@@ -44,14 +44,14 @@ class TableCurrency extends JTable {
 	var $exchange_rate         		= '';
 	/** @var char display style */
 	var $display_style         		= '';
-	var $cdate         					;
-	var $mdate         					;
-	var $published					= 0;
+	var $created_on         					;
+	var $modified_on         					;
+	var $enabled					= 0;
 	var $shared						= 1;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @author RickG
@@ -95,10 +95,10 @@ class TableCurrency extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		return true;
 	}

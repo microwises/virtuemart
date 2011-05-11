@@ -46,7 +46,7 @@ class TableMedia extends JTable {
 	var $file_url_thumb			= '';
 
 	/** @var int File published or not */
-	var $published			= 0;
+	var $enabled			= 0;
 	/** @var int File is an image or other */
 	var $file_is_downloadable	= 0;
 	var $file_is_forSale		= 0;
@@ -55,10 +55,10 @@ class TableMedia extends JTable {
 
 	var $shared = 0;
 	var $file_params	= '';
-        /** @var boolean */
-	var $checked_out	= 0;
+                /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
@@ -119,10 +119,10 @@ class TableMedia extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		return $ok;
 	}

@@ -45,7 +45,7 @@ $mainframe = JFactory::getApplication();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>
+				<?php echo JHTML::_('select.booleanlist', 'enabled', $this->category->enabled, $this->category->enabled);?>
 				</fieldset>
 			</td>
 		</tr>

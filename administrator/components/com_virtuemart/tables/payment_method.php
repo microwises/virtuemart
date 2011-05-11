@@ -62,7 +62,7 @@ class TablePayment_method extends JTable
 	/** @var for all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $published 		        = 0;
+	var $enabled 		        = 0;
    	/** @var string ordering */
 	var $ordering       	= '';
         /** @var boolean */

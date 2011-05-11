@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <table class="adminform">
     <tr class="row0">
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>?:</td>
-      <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->paym->published); ?></fieldset></td>
+      <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'enabled', 'class="inputbox"', $this->paym->enabled); ?></fieldset></td>
     </tr>
     <tr class="row1">
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_NAME') ?>:</td>

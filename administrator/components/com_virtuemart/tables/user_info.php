@@ -57,8 +57,8 @@ class TableUser_info extends JTable {
 	var $extra_field_3 = '';
 	var $extra_field_4 = '';
 	var $extra_field_5 = '';
-	var $cdate = '';
-	var $mdate = '';
+	var $created_on = '';
+	var $modified_on = '';
 //	var $perms = '';
 //	var $bank_account_nr = '';
 //	var $bank_name = '';
@@ -66,10 +66,10 @@ class TableUser_info extends JTable {
 //	var $bank_iban = '';
 //	var $bank_account_holder = '';
 //	var $bank_account_type = '';
-        /** @var boolean */
-	var $checked_out	= 0;
+              /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -166,10 +166,10 @@ class TableUser_info extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		if (!empty($this->user_info_id)) {
 			return true;
@@ -189,7 +189,7 @@ class TableUser_info extends JTable {
 			return true;
 		} else {
 			$this->user_info_id = md5(uniqid($this->user_id));
-			$this->cdate = time();
+			$this->created_on = time();
 			return false;
 		}
 

@@ -86,7 +86,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		}
 		else {
 			$table = '#__extensions';
-			$enable = 'enabled';
+			$enable = 'published';
 			$ext_id = 'extension_id';
 		}
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipper" AND `'.$enable.'`="1" ';

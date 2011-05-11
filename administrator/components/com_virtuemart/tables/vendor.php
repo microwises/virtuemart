@@ -42,9 +42,9 @@ class TableVendor extends JTable {
     /** @var varchar Currency */
     var $vendor_currency	  		= '';
     /** @var int Vendor created date */
-    var $cdate	 	 				= '';
+    var $created_on	 	 				= '';
     /** @var int Vendor modified date */
-    var $mdate				  		= '';
+    var $modified_on				  		= '';
     /** @var varchar Path to vendor images */
     var $vendor_image_path   		= '';
     /** @var text Vendor terms of service */
@@ -63,10 +63,10 @@ class TableVendor extends JTable {
     var $vendor_address_format		= '';
     /** @var varchar Vendor date format */
     var $vendor_date_format			= '';
-        /** @var boolean */
-	var $checked_out	= 0;
+              /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;    /**
+	var $locked_by	= 0; /**
      * @author RickG
      * @param $db A database connector object
      */
@@ -97,10 +97,10 @@ class TableVendor extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		return true;
     }

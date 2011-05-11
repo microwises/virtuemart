@@ -221,7 +221,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__vm_currency`.`currency_name`';
+	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `#__vm_currency`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

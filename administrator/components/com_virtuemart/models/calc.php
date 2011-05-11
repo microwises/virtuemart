@@ -164,7 +164,7 @@ class VirtueMartModelCalc extends JModel
 
 		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
+			$query .= 'WHERE `#__virtuemart_calcs`.`enabled` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_calcs`.`calc_name`';
 		if ($noLimit) {
@@ -204,7 +204,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'published' ){
+	public function published( $row, $i, $variable = 'enabled' ){
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
@@ -354,17 +354,17 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_shopper_published`
+			$query = 'SELECT `calc_shopper_enabled`
 					  FROM `#__virtuemart_calcs`
 					  WHERE calc_id = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
+			$publish = ($calc->calc_shopper_enabled > 0) ? 0 : 1;
 
 			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_shopper_published` = '.$publish.'
+					  SET `calc_shopper_enabled` = '.$publish.'
 					  WHERE calc_id = '.$quotedId;
 
 			$this->_db->setQuery($query);
@@ -393,17 +393,17 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_vendor_published`
+			$query = 'SELECT `calc_vendor_enabled`
 					  FROM `#__virtuemart_calcs`
 					  WHERE `calc_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
+			$publish = ($calc->calc_vendor_enabled > 0) ? 0 : 1;
 
 			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_vendor_published` = '.$publish.'
+					  SET `calc_vendor_enabled` = '.$publish.'
 					  WHERE `calc_id` = '.$quotedId;
 
 			$this->_db->setQuery($query);

@@ -42,7 +42,7 @@ class TableProduct extends JTable {
 	var $product_desc			= null;
 
 	/** @var int File published or not */
-	var $published		= null;
+	var $enabled		= null;
 	/** @var int File is an image or other */
 	var $product_weight			= null;
 	/** @var int File image height */
@@ -72,9 +72,9 @@ class TableProduct extends JTable {
 	/** @var int File thumbnail image width */
 	var $ship_code_id	= null;
 	/** @var int File thumbnail image width */
-	var $cdate	= null;
+	var $created_on	= null;
 	/** @var int File thumbnail image width */
-	var $mdate	= null;
+	var $modified_on	= null;
 	/** @var string Name of the product */
 	var $product_name	= null;
 	/** @var int File thumbnail image width */
@@ -103,10 +103,10 @@ class TableProduct extends JTable {
 	var $metaauthor	= null;
 	/** @var string Name of the details page to use for showing product details in the front end */
 	var $layout = null;
-        /** @var boolean */
-	var $checked_out	= 0;
+            /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @author RolandD
@@ -129,10 +129,10 @@ class TableProduct extends JTable {
 
        	$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
         return true;
     }

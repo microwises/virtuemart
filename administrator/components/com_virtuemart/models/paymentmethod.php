@@ -189,7 +189,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	public function getPayms($onlyPublished=false, $noLimit=false){
 		$query = 'SELECT * FROM `#__vm_payment_method` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__vm_payment_method`.`published` = 1';
+			$query .= 'WHERE `#__vm_payment_method`.`enabled` = 1';
 		}
 		$query .= ' ORDER BY `#__vm_payment_method`.`paym_name`';
 		if ($noLimit) {
@@ -225,9 +225,9 @@ class VirtueMartModelPaymentmethod extends JModel
 //				$this->_db->setQuery($q);
 //				$paym_jplugin_id = $this->_db->loadResult();
 //
-//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
+//				$q = 'SELECT `enabled` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
 //				$this->_db->setQuery($q);
-//				$data->published = $this->_db->loadResult();
+//				$data->enabled = $this->_db->loadResult();
 			}
 
 		}
@@ -307,7 +307,7 @@ class VirtueMartModelPaymentmethod extends JModel
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'published' )
+	public function published( $row, $i, $variable = 'enabled' )
 	{
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
@@ -388,7 +388,7 @@ class VirtueMartModelPaymentmethod extends JModel
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
+			$publish = ($calc->calc_shopper_enabled > 0) ? 0 : 1;
 
 			$query = 'UPDATE #__vm_payment_method
 					  SET discount_is_percentage = '.$publish.'

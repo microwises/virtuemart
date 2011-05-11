@@ -68,19 +68,19 @@ class TableOrders extends JTable {
         /** @var int Payment method ID */
 	var $ship_method_id = NULL;
         /** @var int Creation date */
-	var $cdate = NULL;
+	var $created_on = NULL;
 	/** @var int Last modified date */
-	var $mdate = NULL;
+	var $modified_on = NULL;
 	/** @var int Shipping method ID */
 	var $payment_method_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @param $db Class constructor; connect to the database
@@ -90,16 +90,16 @@ class TableOrders extends JTable {
 	}
 
 	/**
-	 * To set cdate and mdate
+	 * To set created_on and modified_on
 	 * @author Max Milbers
 	 */
 	function check(){
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 	}
 	/**
 	 * Overloaded delete() to delete records from order_user_info and order payment as well,

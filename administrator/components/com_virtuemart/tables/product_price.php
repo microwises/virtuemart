@@ -46,19 +46,19 @@ class TableProduct_price extends JTable {
 
     var $product_price_edate = null;
     /** @var string Creation date */
-    var $cdate = null;
+    var $created_on = null;
     /** @var string Modified date */
-    var $mdate = null;
+    var $modified_on = null;
     /** @var int Shopper group ID */
     var $shopper_group_id = null;
     /** @var int Price quantity start */
     var $price_quantity_start = null;
     /** @var int Price quantity end */
     var $price_quantity_end = null;
-        /** @var boolean */
-	var $checked_out	= 0;
+           /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
     /**
      * @author RolandD
      * @param $db A database connector object
@@ -81,10 +81,10 @@ class TableProduct_price extends JTable {
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 //		if (!$this->product_price) {
 //			$this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_PRICE'));
