@@ -2,7 +2,7 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * Best selling Products module for VirtueMart
-* @version $Id: mod_virtuemart_topten.php 1160 2008-01-14 20:35:19Z soeren_nb $
+* @version $Id: mod_virtuemart_category.php 1160 2008-01-14 20:35:19Z soeren_nb $
 * @package VirtueMart
 * @subpackage modules
 *
