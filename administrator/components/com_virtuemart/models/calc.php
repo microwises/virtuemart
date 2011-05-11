@@ -189,7 +189,7 @@ class VirtueMartModelCalc extends JModel
 			/* Write the first 5 states in the list */
 			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
 
-			$query = 'SELECT `currency_name` FROM `#__vm_currency` WHERE `currency_id` = "'.$data->calc_currency.'" ';
+			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `currency_id` = "'.$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
 			$data->currencyName = $this->_db->loadResult();
 

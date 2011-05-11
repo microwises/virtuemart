@@ -92,7 +92,7 @@ class VirtueMartModelCustom extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-		    $query = 'SELECT `custom_id` FROM `#__vm_custom`';
+		    $query = 'SELECT `custom_id` FROM `#__virtuemart_customs`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -126,8 +126,8 @@ class VirtueMartModelCustom extends JModel {
      */
     function getProductCustoms($product_id){
 
-		$query='SELECT * FROM `#__vm_custom_field`
-		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__vm_custom_field`.`custom_field_id`
+		$query='SELECT * FROM `#__virtuemart_custom_fields`
+		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__virtuemart_custom_fields`.`custom_field_id`
 		and `product_id`='.$product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
@@ -148,7 +148,7 @@ class VirtueMartModelCustom extends JModel {
     function getCustoms(){
 
 		$this->_db = JFactory::getDBO();
-		$query='SELECT * FROM `#__vm_custom` ';
+		$query='SELECT * FROM `#__virtuemart_customs` ';
 		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'WHERE `custom_parent_id` ='.$custom_parent_id;
 		if ($keyword = JRequest::getVar('keyword') ) $query .= 'WHERE `custom_title` LIKE "%'.$keyword.'%"';
 		$this->_db->setQuery($query);
@@ -310,7 +310,7 @@ class VirtueMartModelCustom extends JModel {
 		$newIds = array();
 
 		foreach ($fields as $field) {
-			$q = 'REPLACE INTO `#__vm_custom_field` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
+			$q = 'REPLACE INTO `#__virtuemart_custom_fields` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
 			$q .= " VALUES( '".$field['custom_field_id']."', '".$field['custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
@@ -334,7 +334,7 @@ class VirtueMartModelCustom extends JModel {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		$this->_db->setQuery('DELETE from `#__vm_custom_field` WHERE `custom_field_id` in  ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_custom_fields` WHERE `custom_field_id` in  ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

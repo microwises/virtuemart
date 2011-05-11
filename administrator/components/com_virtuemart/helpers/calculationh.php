@@ -719,7 +719,7 @@ class calculationHelper {
 //	function calculateCouponPrices($code=array()){
 //		if (empty($code)) return;
 //		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
-//		$q= 'SELECT * FROM #__vm_coupons WHERE ' .
+//		$q= 'SELECT * FROM #__virtuemart_coupons WHERE ' .
 //			$couponCodesQuery .
 //			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
 //			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
@@ -947,7 +947,7 @@ class calculationHelper {
 		if(empty($exchangeRate)){
 //			if(is_Int($currency)){
 				$q = 'SELECT `exchange_rate`
-				FROM `#__vm_currency` WHERE `currency_id` ="'.$currency.'" ';
+				FROM `#__virtuemart_currencies` WHERE `currency_id` ="'.$currency.'" ';
 				$this->_db->setQuery($q);
 				if(	$exch = $this->_db->loadResult()){
 					$exchangeRate = $this->_db->loadResult();
@@ -985,7 +985,7 @@ class calculationHelper {
 
 		if(is_numeric($curr)){
 			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code` FROM `#__vm_currency` WHERE `currency_id`="'.$curr.'"';
+			$q = 'SELECT `currency_code` FROM `#__virtuemart_currencies` WHERE `currency_id`="'.$curr.'"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
@@ -1098,8 +1098,8 @@ class calculationHelper {
 			foreach($variants as $variant=>$selected){
 				if (!empty($selected)) {
 					$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
-						FROM `#__vm_custom` AS C
-						LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+						FROM `#__virtuemart_customs` AS C
+						LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 						LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 						WHERE xref.`product_id` ='.$product->product_id;
 					$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;

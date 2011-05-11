@@ -100,7 +100,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `currency_id` FROM `#__vm_currency`';
+	    $query = 'SELECT `currency_id` FROM `#__virtuemart_currencies`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -206,8 +206,8 @@ class VirtueMartModelCurrency extends JModel {
     if( !Permissions::getInstance()->check('admin') ){
     	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
     }
-	$query = 'SELECT * FROM `#__vm_currency` '.$where;
-	$query .= 'ORDER BY `#__vm_currency`.`currency_name`';
+	$query = 'SELECT * FROM `#__virtuemart_currencies` '.$where;
+	$query .= 'ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
@@ -221,7 +221,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `#__vm_currency`.`currency_name`';
+	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

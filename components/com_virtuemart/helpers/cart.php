@@ -786,7 +786,7 @@ class VirtueMartCart  {
         // We store the items in a new SESSION var
 		if ($user->id > 0 && empty($cart)) {
 			$q = 'SELECT `cart_content`
-				FROM `#__vm_cart`
+				FROM `#__virtuemart_carts`
 				WHERE `user_id` = '.$user->id;
 			$db->setQuery($q);
 			$savedcart = $db->loadObject();
@@ -869,7 +869,7 @@ class VirtueMartCart  {
 		$cart = $this->getCart();
 		if ($user->id > 0) {
 			$cart_contents = serialize($cart);
-			$q = "INSERT INTO `#__vm_cart` (`user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
+			$q = "INSERT INTO `#__virtuemart_carts` (`user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
 				ON DUPLICATE KEY UPDATE `cart_content` = ".$db->Quote($cart_contents);
 			$db->setQuery($q);
 			$db->query();

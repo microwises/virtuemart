@@ -1221,9 +1221,9 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->setQuery($q); $this->_db->query();
 
 			/* delete Product custom fields and Xref */
-			$q = "DELETE `#__vm_custom_field_xref_product`,`#__vm_custom_field`
-				FROM  `#__vm_custom_field_xref_product`,`#__vm_custom_field`
-				WHERE `#__vm_custom_field_xref_product`.`custom_field_id` = `#__vm_custom_field`.`custom_field_id`
+			$q = "DELETE `#__vm_custom_field_xref_product`,`#__virtuemart_custom_fields`
+				FROM  `#__vm_custom_field_xref_product`,`#__virtuemart_custom_fields`
+				WHERE `#__vm_custom_field_xref_product`.`custom_field_id` = `#__virtuemart_custom_fields`.`custom_field_id`
 				AND `#__vm_custom_field_xref_product`.`product_id` =".$product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
@@ -1725,8 +1725,8 @@ class VirtueMartModelProduct extends JModel {
 		 if ($this->hasproductCustoms($product_id )) {
 
 		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`enabled` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
-			FROM `#__vm_custom` AS C
-			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+			FROM `#__virtuemart_customs` AS C
+			LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 			Where xref.`product_id` ='.$product_id;
 		$this->_db->setQuery($query);
@@ -1844,8 +1844,8 @@ class VirtueMartModelProduct extends JModel {
 		if ($product->hasproductCustoms) {
 
 		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`enabled` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
-			FROM `#__vm_custom` AS C
-			LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+			FROM `#__virtuemart_customs` AS C
+			LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 			Where xref.`product_id` ='.$product->product_id;
 		$query .=' and is_cart_attribute = 0 order by custom_id' ;
@@ -1867,8 +1867,8 @@ class VirtueMartModelProduct extends JModel {
 
 			// group by custom_id
 			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
-				FROM `#__vm_custom` AS C
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+				FROM `#__virtuemart_customs` AS C
+				LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 				Where xref.`product_id` ='.$product->product_id;
 			$query .=' and is_cart_attribute = 1 group by custom_id' ;
@@ -1888,8 +1888,8 @@ class VirtueMartModelProduct extends JModel {
 
 //				$query='SELECT  field.`custom_field_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
 				$query='SELECT  field.`custom_field_id` as value ,field.`custom_value`, field.`custom_price`
-					FROM `#__vm_custom` AS C
-					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+					FROM `#__virtuemart_customs` AS C
+					LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 					Where xref.`product_id` ='.$product->product_id;
 				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group->custom_id ;
@@ -1923,8 +1923,8 @@ class VirtueMartModelProduct extends JModel {
 	* GIve Product custom_field_id pricable
 	**/
 	public function getProductcustomfieldsIds($product) {
-			$query='SELECT field.`custom_field_id` FROM `#__vm_custom` AS C
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+			$query='SELECT field.`custom_field_id` FROM `#__virtuemart_customs` AS C
+				LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 				Where is_cart_attribute = 1 and xref.`product_id` ='.$product->product_id;
 		$this->_db->setQuery($query);
@@ -1942,8 +1942,8 @@ class VirtueMartModelProduct extends JModel {
 
 			// group by custom_id
 			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
-				FROM `#__vm_custom` AS C
-				LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+				FROM `#__virtuemart_customs` AS C
+				LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 				LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 				Where xref.`product_id` ='.$product->product_id;
 			$query .=' and is_cart_attribute = 1 group by custom_id' ;
@@ -1954,7 +1954,7 @@ class VirtueMartModelProduct extends JModel {
 			foreach ($groups as & $group) {
 				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
 					FROM `#__vm_custom` AS C
-					LEFT JOIN `#__vm_custom_field` AS field ON C.`custom_id` = field.`custom_id`
+					LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
 					LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 					Where xref.`product_id` ='.$product->product_id;
 				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group['custom_id'] ;

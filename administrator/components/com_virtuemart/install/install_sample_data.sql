@@ -64,10 +64,10 @@ INSERT IGNORE INTO `#__vm_category_media_xref` (`id`,`category_id`, `file_ids`) 
 (NULL, 5, 5);
 
 --
--- Dumping data for table `#__vm_custom`
+-- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `enabled`) VALUES
+INSERT INTO `#__virtuemart_customs` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `enabled`) VALUES
 (1, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1),
 (2, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1),
 (3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
@@ -78,10 +78,10 @@ INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `cust
 (10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1);
 
 --
--- Dumping data for table  `#__vm_custom_field`
+-- Dumping data for table  `#__virtuemart_custom_fields`
 --
 
-INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `enabled`) VALUES
+INSERT INTO `#__virtuemart_custom_fields` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `enabled`) VALUES
 (2, 7, '1', NULL, 0),
 (4, 2, 'Plz enter a text', NULL, 0),
 (5, 3, '100', NULL, 0),

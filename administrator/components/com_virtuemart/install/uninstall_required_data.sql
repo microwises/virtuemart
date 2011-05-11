@@ -2,8 +2,8 @@
 
 DELETE FROM `#__vm_perm_groups`;
 DELETE FROM `#__virtuemart_countries`;
-DELETE FROM `#__vm_creditcard`;
-DELETE FROM `#__vm_currency`;
+DELETE FROM `#__virtuemart_creditcards`;
+DELETE FROM `#__virtuemart_currencies`;
 DELETE FROM `#__vm_payment_method`;
 DELETE FROM `#__vm_shipping_carrier`;
 DELETE FROM `#__vm_shipping_rate`;

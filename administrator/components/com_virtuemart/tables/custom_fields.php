@@ -42,13 +42,13 @@ class TableCustom_fields extends JTable {
 	/** @var int custom published or not */
 	var $enabled		= 0;
 
-	
+
 	/**
 	 * @author  Patrick Kohl
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__vm_custom_field', 'custom_id', $db);
+		parent::__construct('#__virtuemart_custom_fields', 'custom_id', $db);
 	}
 
 	/**

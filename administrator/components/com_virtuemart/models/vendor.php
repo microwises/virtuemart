@@ -253,7 +253,7 @@ class VirtueMartModelVendor extends JModel {
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT *  '
-			. 'FROM `#__vm_currency` AS c'
+			. 'FROM `#__virtuemart_currencies` AS c'
 			. ',    `#__vm_vendor` AS v '
 			. 'WHERE v.vendor_id = '.$_vendorId . ' '
 			. 'AND   v.vendor_currency = c.currency_id';

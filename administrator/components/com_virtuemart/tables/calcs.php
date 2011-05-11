@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: calc.php 3151 2011-05-03 16:28:43Z Milbo $
 */
 defined('_JEXEC') or die();
 
@@ -52,17 +52,17 @@ class TableCalc extends JTable
 	/** @var array affecting States of the rule */
 	//var $calc_states				= array();
 	/** @var string Visible for shoppers */
-	var $calc_shopper_enabled		= 0;
+	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
-	var $calc_vendor_enabled		= 0;
+	var $calc_vendor_published		= 0;
 	/** @var string start date */
 	var $publish_up;
 	/** @var string end date */
 	var $publish_down;
 	/** @var string created date */
-	var $created_on;
+	var $cdate;
 	/** @var string modified date */
-	var $modified_on;
+	var $mdate;
         /** @var string   */
 	var $calc_qualify;
          /** @var string   */
@@ -74,20 +74,18 @@ class TableCalc extends JTable
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $enabled 		        = 0;
+	var $published 		        = 0;
         /** @var boolean */
-	var $locked_on	= 0;
+	var $checked_out	= 0;
 	/** @var time */
-	var $locked_by	= 0;
+	var $checked_out_time	= 0;
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
-	function __construct(&$db)
-	{
-		parent::__construct('#__vm_calc', 'calc_id', $db);
-//		echo 'TableCalc <br />';
+	function __construct(&$db){
+		parent::__construct('#__virtuemart_calcs', 'calc_id', $db);
 	}
 
 
@@ -116,7 +114,7 @@ class TableCalc extends JTable
 		if (($this->calc_name) ) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `calc_id` FROM `#__vm_calc` ';
+			$q = 'SELECT `calc_id` FROM `#__virtuemart_calcs` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
             $db->setQuery($q);
 		    $calc_id = $db->loadResult();
@@ -131,7 +129,7 @@ class TableCalc extends JTable
 		if(empty($this->cdate)){
 			$this->cdate = $today;
 		}
-     	$this->modified_on = $today;
+     	$this->mdate = $today;
 
 		return true;
 	}

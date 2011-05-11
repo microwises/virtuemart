@@ -263,10 +263,10 @@ INSERT INTO `#__virtuemart_countries` (`country_id`, `zone_id`, `country_name`, 
 
 
 --
--- Dumping data for table `#__vm_creditcard`
+-- Dumping data for table `#__virtuemart_creditcards`
 --
 
-INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`enabled`) VALUES
+INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`enabled`) VALUES
 (1, 1, 'Visa', 'VISA',1),
 (2, 1, 'MasterCard', 'MC',1),
 (3, 1, 'American Express', 'amex',1),
@@ -276,10 +276,10 @@ INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`,
 (7, 1, 'Australian Bankcard', 'australian_bc',1);
 
 --
--- Dumping data for table `#__vm_currency`
+-- Dumping data for table `#__virtuemart_currencies`
 --
 
-INSERT INTO `#__vm_currency` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `enabled`, `shared`, `locked_on` ) VALUES
+INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `enabled`, `shared`, `locked_on` ) VALUES
 (2, 1, 'United Arab Emirates dirham', '', 'AED', 784, 'د.إ', 0, '1|د.إ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0 ),
 (4, 1, 'Albanian lek', '', 'ALL', 8, 'Lek', 0, '1|Lek|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),
 (5, 1, 'Netherlands Antillean gulden', '', 'ANG', 532, 'ƒ', 0, '1|ƒ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),

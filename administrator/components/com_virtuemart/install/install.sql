@@ -109,10 +109,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_state_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_cart`
+-- Table structure for table `#__virtuemart_carts`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_cart` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
   `user_id` int(11) NOT NULL,
   `cart_content` text NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -218,10 +218,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_coupons`
+-- Table structure for table `#__virtuemart_coupons`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `coupon_id` int(16) NOT NULL AUTO_INCREMENT,
   `coupon_code` varchar(32) NOT NULL DEFAULT '',
   `percent_or_total` enum('percent','total') NOT NULL DEFAULT 'percent',
@@ -238,10 +238,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_creditcard`
+-- Table structure for table `#__virtuemart_creditcards`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
   `creditcard_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `creditcard_name` varchar(70) NOT NULL DEFAULT '',
@@ -255,11 +255,11 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_currency`
+-- Table structure for table `#__virtuemart_currencies`
 -- 
 
 
-CREATE TABLE `#__vm_currency` (
+CREATE TABLE `#__virtuemart_currencies` (
   `currency_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '1',
   `currency_name` varchar(64) DEFAULT NULL,
@@ -282,10 +282,10 @@ CREATE TABLE `#__vm_currency` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
 -- --------------------------------------------------------
 --
--- Table structure for table `#__vm_custom`
+-- Table structure for table `#__virtuemart_customs`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_custom` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
  
   `custom_id` int(11) NOT NULL AUTO_INCREMENT,
   `custom_parent_id` int(11) NOT NULL DEFAULT '0',
@@ -306,10 +306,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_custom` (
 -- --------------------------------------------------------
 
 --
--- Table structure `#__vm_custom_field`
+-- Table structure `#__virtuemart_custom_fields`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_custom_field` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_custom_fields` (
   `custom_field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'field id',
   `custom_id` int(11) NOT NULL COMMENT 'custom group id',
   `custom_value` char(255) DEFAULT NULL COMMENT 'field value',

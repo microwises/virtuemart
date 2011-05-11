@@ -35,7 +35,7 @@ abstract class CouponHelper
 			. ', `coupon_start_date` '
 			. ', IF( NOW() > `coupon_expiry_date`, 1, 0 ) AS ended '
 			. ', `coupon_value_valid` '
-			. 'FROM `#__vm_coupons` '
+			. 'FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_code . '"';
 		$_db->setQuery($_q);
 		$_couponData = $_db->loadObject();
@@ -67,7 +67,7 @@ abstract class CouponHelper
 		$_q = 'SELECT `percent_or_total` '
 			. ', `coupon_type` '
 			. ', `coupon_value` '
-			. 'FROM `#__vm_coupons` '
+			. 'FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_code . '"';
 		$_db->setQuery($_q);
 		return $_db->loadObject();
@@ -89,7 +89,7 @@ abstract class CouponHelper
 			}
 		}
 		$_db = JFactory::getDBO();
-		$_q = 'DELETE FROM `#__vm_coupons` '
+		$_q = 'DELETE FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_code . '"';
 		$_db->setQuery($_q);
 		return ($_db->query() !== false);

@@ -59,7 +59,7 @@ class TableCurrency extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_currency', 'currency_id', $db);
+		parent::__construct('#__virtuemart_currencies', 'currency_id', $db);
 	}
 
 
@@ -83,7 +83,7 @@ class TableCurrency extends JTable {
 		if (($this->currency_name) && ($this->currency_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_currency` ';
+			$q = 'SELECT count(*) FROM `#__virtuemart_currencies` ';
 			$q .= 'WHERE `currency_name`="' .  $this->currency_name . '"';
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();

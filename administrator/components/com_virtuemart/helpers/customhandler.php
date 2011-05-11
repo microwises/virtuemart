@@ -25,7 +25,7 @@ class VmCustomHandler {
 
 	public function getCustomParentTitle($custom_parent_id) {
 
-    	$q='SELECT custom_title FROM `#__vm_custom` WHERE custom_id ='.$custom_parent_id;
+    	$q='SELECT custom_title FROM `#__virtuemart_customs` WHERE custom_id ='.$custom_parent_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$this->_db->setQuery($q);
@@ -147,7 +147,7 @@ class VmCustomHandler {
 
     	$vendorId=1;
 		// get custom parents
-    	$q='SELECT custom_id as value ,custom_title as text FROM `#__vm_custom` where custom_parent_id=0';
+    	$q='SELECT custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0';
 		if ($publishedOnly) $q=' WHERE `enabled`=1 ';
 		if ($ID = JRequest::getVar( 'custom_id',false)) $q .=' and `custom_id`!='.$ID;
 		//if (isset($this->custom_id)) $q.=' and custom_id !='.$this->custom_id;

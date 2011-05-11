@@ -41,9 +41,9 @@ $db->setQuery($q);
 $currency_codes    = $db->loadResult();
 
 /* table vm_currency */
-//$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency_codes.') and published =1 ORDER BY `currency_name`';
+//$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__virtuemart_currencies` WHERE `currency_id` IN ('.$currency_codes.') and published =1 ORDER BY `currency_name`';
 $q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as currency_txt
-FROM `#__vm_currency` WHERE `currency_id` IN ('.$currency_codes.') and (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `currency_name`';
+FROM `#__virtuemart_currencies` WHERE `currency_id` IN ('.$currency_codes.') and (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */

@@ -54,7 +54,7 @@ class TableCoupon extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_coupons', 'coupon_id', $db);
+		parent::__construct('#__virtuemart_coupons', 'coupon_id', $db);
 	}
 
 

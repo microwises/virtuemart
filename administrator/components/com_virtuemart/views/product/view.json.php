@@ -48,7 +48,7 @@ class VirtuemartViewProduct extends JView {
 				$json['ok'] = 1 ;
 		} else if ($type=='custom') {
 			$query = "SELECT CONCAT(custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
-				FROM #__vm_custom";
+				FROM #__virtuemart_customs";
 			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
 			$db->setQuery($query);
 			$json['value'] = $db->loadObjectList();
@@ -57,7 +57,7 @@ class VirtuemartViewProduct extends JView {
 			$this->loadHelper('customhandler');
 			$fieldTypes= VmCustomHandler::getField_types() ;
 
-			$query = "SELECT * FROM #__vm_custom
+			$query = "SELECT * FROM #__virtuemart_customs
 			WHERE custom_id=".$id." or custom_parent_id=".$id;
 			$query .=" order by custom_parent_id asc";
 			$db->setQuery($query);

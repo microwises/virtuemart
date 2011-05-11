@@ -36,7 +36,7 @@ class TableCreditcard extends JTable {
 	var $creditcard_code           = '';
 	/** @var char Credit card code */
 	var $vendor_id		           = 0;
-	
+
 	var $enabled = 0;
                /** @var boolean */
 	var $locked_on	= 0;
@@ -49,7 +49,7 @@ class TableCreditcard extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_creditcard', 'creditcard_id', $db);
+		parent::__construct('#__virtuemart_creditcards', 'creditcard_id', $db);
 	}
 
 
@@ -73,7 +73,7 @@ class TableCreditcard extends JTable {
 		if (($this->creditcard_name) && ($this->creditcard_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_creditcard` ';
+			$q = 'SELECT count(*) FROM `#__virtuemart_creditcards` ';
 			$q .= 'WHERE `creditcard_name`="' .  $this->creditcard_name . '"';
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();

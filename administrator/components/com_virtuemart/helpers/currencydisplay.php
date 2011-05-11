@@ -65,7 +65,7 @@ class CurrencyDisplay {
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
-					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
 					$style = $db->loadResult();
 				}
@@ -79,7 +79,7 @@ class CurrencyDisplay {
 						$currencyId = $db->loadResult();
 					}
 
-					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
 					$style = $db->loadResult();
 				}

@@ -6,7 +6,7 @@ DELETE FROM `#__vm_calc_country_xref`;
 DELETE FROM `#__vm_calc_state_xref`;
 DELETE FROM `#__virtuemart_categories`;
 DELETE FROM `#__vm_category_xref`;
-DELETE FROM `#__vm_coupons`;
+DELETE FROM `#__virtuemart_coupons`;
 DELETE FROM `#__vm_manufacturer`;
 DELETE FROM `#__vm_manufacturer_category`;
 DELETE FROM `#__vm_orders`;

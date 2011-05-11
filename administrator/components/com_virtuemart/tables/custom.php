@@ -67,7 +67,7 @@ class TableCustom extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__vm_custom', 'custom_id', $db);
+		parent::__construct('#__virtuemart_customs', 'custom_id', $db);
 	}
 
 	/**
@@ -94,12 +94,12 @@ class TableCustom extends JTable {
 	}
 	/*
 	* field from 3 table have to be checked at delete
-	* #__vm_custom_field,#__vm_custom,#__vm_custom_field_xref_product
+	* #__vm_custom_field,#__virtuemart_customs,#__vm_custom_field_xref_product
 	*/
 	function delete($id)
 	{
-		$this->_db->setQuery('DELETE X,F,C FROM `#__vm_custom` AS C
-		LEFT JOIN `#__vm_custom_field` AS F ON F.`custom_id` = C.`custom_id`
+		$this->_db->setQuery('DELETE X,F,C FROM `#__virtuemart_customs` AS C
+		LEFT JOIN `#__virtuemart_custom_fields` AS F ON F.`custom_id` = C.`custom_id`
 		LEFT JOIN  `#__vm_custom_field_xref_product` AS X ON  X.`custom_field_id` = F.`custom_field_id`
 		WHERE C.`custom_id`=' . $id);
 		if ($this->_db->query() === false) {
