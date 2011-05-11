@@ -84,7 +84,7 @@ class TableCategory extends JTable {
 	 * @param $db A database connector object
 	 */
 	public function __construct($db) {
-		parent::__construct('#__vm_category', 'category_id', $db);
+		parent::__construct('#__virtuemart_categories', 'category_id', $db);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class TableCategory extends JTable {
 		if (!empty($this->category_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `category_id` FROM `#__vm_category` ';
+			$q = 'SELECT `category_id` FROM `#__virtuemart_categories` ';
 			$q .= 'WHERE `category_name`="' . $this->category_name . '"';
             $db->setQuery($q);
 		    $category_id = $db->loadResult();

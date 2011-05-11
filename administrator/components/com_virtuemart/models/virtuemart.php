@@ -40,13 +40,13 @@ class VirtueMartModelVirtueMart extends JModel {
 		$db = JFactory::getDBO();
 
 		$query = "SELECT category_id, category_child_id, category_name ";
-		$query .= "FROM #__vm_category, #__vm_category_xref ";
+		$query .= "FROM #__virtuemart_categories, #__vm_category_xref ";
 		$query .= "WHERE #__vm_category_xref.category_parent_id = '$category_id' ";
-		$query .= "AND #__vm_category.category_id = #__vm_category_xref.category_child_id ";
-		//$query .= "AND #__vm_category.vendor_id = '$hVendor_id' ";
-		$query .= "AND #__vm_category.vendor_id = '1' ";
-		$query .= "AND #__vm_category.published = '1' ";
-		$query .= "ORDER BY #__vm_category.list_order, #__vm_category.category_name ASC";
+		$query .= "AND #__virtuemart_categories.category_id = #__vm_category_xref.category_child_id ";
+		//$query .= "AND #__virtuemart_categories.vendor_id = '$hVendor_id' ";
+		$query .= "AND #__virtuemart_categories.vendor_id = '1' ";
+		$query .= "AND #__virtuemart_categories.published = '1' ";
+		$query .= "ORDER BY #__virtuemart_categories.list_order, #__virtuemart_categories.category_name ASC";
 
 		$childList = $this->_getList( $query );
 		return $childList;

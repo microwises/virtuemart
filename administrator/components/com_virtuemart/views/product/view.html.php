@@ -327,7 +327,7 @@ class VirtuemartViewProduct extends JView {
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-					$product->categoriesList = modelfunctions::buildGuiList('category_id','#__vm_product_category_xref','product_id',$product->product_id,'category_name','#__vm_category','category_id');
+					$product->categoriesList = modelfunctions::buildGuiList('category_id','#__vm_product_category_xref','product_id',$product->product_id,'category_name','#__virtuemart_categories','category_id');
 
 //					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}

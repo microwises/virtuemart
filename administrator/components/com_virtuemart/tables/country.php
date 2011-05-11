@@ -53,7 +53,7 @@ class TableCountry extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_country', 'country_id', $db);
+		parent::__construct('#__virtuemart_countries', 'country_id', $db);
 	}
 
 
@@ -81,7 +81,7 @@ class TableCountry extends JTable {
 		if (($this->country_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `country_id` FROM `#__vm_country` ';
+			$q = 'SELECT `country_id` FROM `#__virtuemart_countries` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
             $db->setQuery($q);
 		    $country_id = $db->loadResult();

@@ -1,7 +1,7 @@
 -- Remove all required data
 
 DELETE FROM `#__vm_perm_groups`;
-DELETE FROM `#__vm_country`;
+DELETE FROM `#__virtuemart_countries`;
 DELETE FROM `#__vm_creditcard`;
 DELETE FROM `#__vm_currency`;
 DELETE FROM `#__vm_payment_method`;

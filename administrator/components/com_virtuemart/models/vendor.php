@@ -446,7 +446,7 @@ class VirtueMartModelVendor extends JModel {
 				ON u.user_id = x.user_id
 				LEFT JOIN #__users j
 				ON j.id = u.user_id
-				LEFT JOIN #__vm_country c ON c.country_id = u.country_id
+				LEFT JOIN #__virtuemart_countries c ON c.country_id = u.country_id
 				LEFT JOIN #__vm_state s ON s.state_id = u.state_id
 				WHERE v.vendor_id = ".$vendor_id."
 				AND address_type = 'BT'";
@@ -577,7 +577,7 @@ class VirtueMartModelVendor extends JModel {
 //		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
 //		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
 //		if($countrytable) {
-//			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id)
+//			$q .= 'LEFT JOIN #__virtuemart_countries c ON (u.country=c.country_id)
 //				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
 //		}
 //		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';

@@ -322,7 +322,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_country` WHERE country_id = ' . $_id;
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_countries` WHERE country_id = ' . $_id;
 		$_db->setQuery($_q);
 		$_r = $_db->loadResult();
 		return $_r;
@@ -343,7 +343,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = "SELECT `country_id` FROM `#__vm_country` WHERE `country_name` = '$_name'";
+		$_q = "SELECT `country_id` FROM `#__virtuemart_countries` WHERE `country_name` = '$_name'";
 		$_db->setQuery($_q);
 		$_r = $_db->loadResult();
 		return $_r;

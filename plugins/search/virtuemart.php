@@ -123,7 +123,7 @@ class plgSearchVirtueMart extends JPlugin {
 			FROM_UNIXTIME( a.cdate, '%Y-%m-%d %H:%i:%s' ) AS created, '2' AS browsernav
 			FROM #__vm_product AS a
 			LEFT JOIN #__vm_product_category_xref AS xref ON xref.product_id = a.product_id
-			LEFT JOIN #__vm_category AS b ON b.category_id = xref.category_id"
+			LEFT JOIN #__virtuemart_categories AS b ON b.category_id = xref.category_id"
 		. ' WHERE '. $where
 		. ' ORDER BY '. $order
 		;

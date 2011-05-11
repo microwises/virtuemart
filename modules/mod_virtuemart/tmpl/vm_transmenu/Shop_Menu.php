@@ -32,9 +32,9 @@ class Shop_Menu{
 		$query  = "SELECT category_id as id, category_parent_id as parent, category_name as name, '' as type,
 							CONCAT('index.php?option=com_virtuemart&view=category&category_id=', category_id ) AS link,
 							'-1' as browserNav, ordering as list_order
-								FROM #__vm_category, #__vm_category_xref 
-								WHERE #__vm_category.published='1' 
-									AND #__vm_category.category_id=#__vm_category_xref.category_child_id 
+								FROM #__virtuemart_categories, #__vm_category_xref 
+								WHERE #__virtuemart_categories.published='1' 
+									AND #__virtuemart_categories.category_id=#__vm_category_xref.category_child_id 
 								ORDER BY name ASC";
 		
 		$db->setQuery( $query );

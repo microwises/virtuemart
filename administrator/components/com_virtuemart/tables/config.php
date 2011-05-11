@@ -43,7 +43,7 @@ class TableConfig extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_config', 'config_id', $db);
+		parent::__construct('#__virtuemart_configs', 'config_id', $db);
 	}
 
 

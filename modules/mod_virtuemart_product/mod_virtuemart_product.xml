@@ -66,7 +66,7 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__vm_category" 
+		<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__virtuemart_categories" 
 			key_field="category_id" value_field="category_name" label="CATEGORY" description="CATEGORY_DESC" />
 	</params>
 	<params group="advanced">

@@ -178,13 +178,13 @@ class VirtueMartModelCalc extends JModel
 		foreach ($this->_data as $data){
 
 			/* Write the first 5 categories in the list */
-			$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__vm_category','category_id');
+			$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__virtuemart_categories','category_id');
 
 			/* Write the first 5 shoppergroups in the list */
 			$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__vm_calc_shoppergroup_xref','calc_rule_id',$data->calc_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
 
 			/* Write the first 5 countries in the list */
-			$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__vm_country','country_id');
+			$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__virtuemart_countries','country_id');
 
 			/* Write the first 5 states in the list */
 			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');

@@ -455,7 +455,7 @@ class shopFunctionsF {
 		if(!empty($catTpl) && empty($prodTpl)){
 			if(is_Int($catTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `category_template` FROM `#__vm_category` WHERE `category_id` = "'.$catTpl.'" ';
+				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if ($temp) $template = $temp;
@@ -488,7 +488,7 @@ class shopFunctionsF {
 			if(!empty($catLayout) && empty($prodLayout)){
 				if(is_Int($catLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;
@@ -501,7 +501,7 @@ class shopFunctionsF {
 			if(!empty($prodLayout)){
 				if(is_Int($prodLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;

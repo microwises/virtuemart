@@ -386,7 +386,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 
 		if ($_section == '[CONFIG]') {
-			$_qry = "INSERT INTO `#__vm_config` (`config_id`, `config`) VALUES (null, '$_value')";
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`config_id`, `config`) VALUES (null, '$_value')";
 		}
 		// Other sections can be implemented here
 

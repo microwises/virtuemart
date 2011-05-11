@@ -517,7 +517,7 @@ class VirtueMartModelProduct extends JModel {
 		$query = "SELECT `#__vm_product`.`product_id` FROM `#__vm_product` ";
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__vm_product_category_xref` ON `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
-			 LEFT JOIN `#__vm_category` ON `#__vm_category`.`category_id` = `#__vm_product_category_xref`.`category_id`';
+			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`category_id` = `#__vm_product_category_xref`.`category_id`';
 		}
 		if ($joinMf == true) {
 			$query .= ' LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product`.`product_id` = `#__vm_product_mf_xref`.`product_id`
@@ -588,12 +588,12 @@ class VirtueMartModelProduct extends JModel {
 		$query = 'SELECT `product_id` ';
 		$query .= 'FROM `#__vm_product`'.$cat_xref_table.' WHERE `product_id` > 0 ';
 //	        $query  = 'SELECT `product_sku`,`#__vm_product`.`product_id`, `#__vm_product_category_xref`.`category_id`,`product_name`, `product_s_desc`, `#__vm_product`.`file_ids`, `product_in_stock`, `product_url` ';
-//	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
+//	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__virtuemart_categories` WHERE ';
 //	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
 //	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
 			if ($categoryId) {
-				$query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
-				$query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
+				$query .= 'AND `#__virtuemart_categories`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
+				$query .= 'AND `#__virtuemart_categories`.`category_id`=' . $categoryId . ' ';
 			}
 	        $query .= 'AND `#__vm_product`.`published`="1" ';
 	        $query .= $filter;
@@ -696,10 +696,10 @@ class VirtueMartModelProduct extends JModel {
 			ON #__vm_product.product_id = #__vm_product_attribute.product_id
 			LEFT OUTER JOIN #__vm_product_category_xref
 			ON #__vm_product.product_id = #__vm_product_category_xref.product_id
-			LEFT OUTER JOIN #__vm_category
-			ON #__vm_product_category_xref.category_id = #__vm_category.category_id
+			LEFT OUTER JOIN #__virtuemart_categories
+			ON #__vm_product_category_xref.category_id = #__virtuemart_categories.category_id
 			LEFT OUTER JOIN #__vm_category_xref
-			ON #__vm_category.category_id = #__vm_category_xref.category_child_id
+			ON #__virtuemart_categories.category_id = #__vm_category_xref.category_child_id
 			LEFT OUTER JOIN #__vm_vendor
 			ON #__vm_product.vendor_id = #__vm_vendor.vendor_id';
     }
@@ -1307,7 +1307,7 @@ class VirtueMartModelProduct extends JModel {
 //				$prod_id = $recentproducts[$i]['product_id'];
 //				$category_id = $recentproducts[$i]['category_id'];
 //				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
-//				$q .= "FROM #__vm_product as p,#__vm_category as c,#__vm_product_category_xref as cx ";
+//				$q .= "FROM #__vm_product as p,#__virtuemart_categories as c,#__vm_product_category_xref as cx ";
 //				$q .= "WHERE p.product_id = '".$prod_id."' ";
 //				$q .= "AND c.category_id = '".$category_id."' ";
 //				$q .= "AND p.product_id = cx.product_id ";

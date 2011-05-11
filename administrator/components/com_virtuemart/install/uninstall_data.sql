@@ -4,7 +4,7 @@ DELETE FROM `#__virtuemart_calcs`;
 DELETE FROM `#__vm_calc_shoppergroup_xref`;
 DELETE FROM `#__vm_calc_country_xref`;
 DELETE FROM `#__vm_calc_state_xref`;
-DELETE FROM `#__vm_category`;
+DELETE FROM `#__virtuemart_categories`;
 DELETE FROM `#__vm_category_xref`;
 DELETE FROM `#__vm_coupons`;
 DELETE FROM `#__vm_manufacturer`;

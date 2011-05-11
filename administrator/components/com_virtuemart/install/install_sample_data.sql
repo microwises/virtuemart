@@ -30,10 +30,10 @@ INSERT IGNORE INTO `#__vm_calc_shoppergroup_xref` (`id`, `calc_rule_id`, `calc_s
 
 
 --
--- Dumping data for table `#__vm_category`
+-- Dumping data for table `#__virtuemart_categories`
 --
 
-INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `enabled`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
+INSERT INTO `#__virtuemart_categories` (`category_id`, `vendor_id`, `category_name`, `category_description`, `enabled`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
 (1, 1, 'Hand Tools', 'Hand Tools', 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', '', '', ''),
 (2, 1, 'Power Tools', 'Power Tools', 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
 (3, 1, 'Garden Tools', 'Garden Tools', 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),

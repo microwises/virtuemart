@@ -258,7 +258,7 @@ class VirtueMartModelState extends JModel {
 		//Test if id is published
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT * FROM `#__vm_country` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
+		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){
 			//Test if country has states

@@ -26,7 +26,7 @@
 	function determineAlreadyInstalledVersion(){
 		$this -> oldVersion = "fresh";
 		$db = JFactory::getDBO();
-		$db->setQuery( 'SELECT * FROM #__vm_country WHERE `country_id`="1" ');
+		$db->setQuery( 'SELECT * FROM #__virtuemart_countries WHERE `country_id`="1" ');
 		if($db->query() == true ) {
 			$country1 = $db->loadResult();
 			if(isset($country1)){

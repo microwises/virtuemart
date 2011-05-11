@@ -101,7 +101,7 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function _getTotal(){
     	if (empty($this->_total)) {
-			$query = 'SELECT `category_id` FROM `#__vm_category`';
+			$query = 'SELECT `category_id` FROM `#__virtuemart_categories`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -192,13 +192,13 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function getChildCategoryList($vendorId, $category_id) {
 
-		$query = 'SELECT `#__vm_category`.`category_id`,`#__vm_category`.`category_name` ';
-		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
+		$query = 'SELECT `#__virtuemart_categories`.`category_id`,`#__virtuemart_categories`.`category_name` ';
+		$query .= 'FROM `#__virtuemart_categories`, `#__vm_category_xref` ';
 		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
-		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
-		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__vm_category`.`published` = "1" ';
-		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
+		$query .= 'AND `#__virtuemart_categories`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
+		$query .= 'AND `#__virtuemart_categories`.`vendor_id` = ' . $vendorId . ' ';
+		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
+		$query .= 'ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
 		$childList = $this->_getList( $query );
 
 		if(!empty($childList)){
@@ -227,7 +227,7 @@ class VirtueMartModelCategory extends JModel {
 		$vendorId = 1;
 
 		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
-				  FROM `#__vm_category` c
+				  FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__vm_category_xref` cx
 				  ON c.`category_id` = cx.`category_child_id`
 				  WHERE 1 ";
@@ -397,10 +397,10 @@ class VirtueMartModelCategory extends JModel {
 //	public function getProductCount($category_id) {
 //		$db = JFactory::getDBO();
 //		$q = "SELECT count(#__vm_product.product_id) AS num_rows
-//			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
+//			FROM #__vm_product, #__vm_product_category_xref, #__virtuemart_categories
 //			WHERE #__vm_product.vendor_id = 1
 //			AND #__vm_product_category_xref.category_id = ".$category_id."
-//			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
+//			AND #__virtuemart_categories.category_id = #__vm_product_category_xref.category_id
 //			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
 //			AND #__vm_product.published = 1";
 //			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
@@ -453,7 +453,7 @@ class VirtueMartModelCategory extends JModel {
 		$order		= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
 
-		$query = 'SELECT `category_parent_id` FROM `#__vm_category`
+		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories`
 				  LEFT JOIN `#__vm_category_xref` cx
 				  ON c.`category_id` = cx.`category_child_id`
 			      WHERE c.`category_id` = %s';
@@ -793,12 +793,12 @@ class VirtueMartModelCategory extends JModel {
 		$childs = array();
 
 		$q = "SELECT `category_id`, `category_child_id`, `category_name`
-			FROM `#__vm_category`, `#__vm_category_xref`
+			FROM `#__virtuemart_categories`, `#__vm_category_xref`
 			WHERE `#__vm_category_xref`.`category_parent_id` = ".$category_id."
-			AND `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
-			AND `#__vm_category`.`vendor_id` = 1
-			AND `#__vm_category`.`published` = 1
-			ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC";
+			AND `#__virtuemart_categories`.`category_id`=`#__vm_category_xref`.`category_child_id`
+			AND `#__virtuemart_categories`.`vendor_id` = 1
+			AND `#__virtuemart_categories`.`published` = 1
+			ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
@@ -836,7 +836,7 @@ class VirtueMartModelCategory extends JModel {
 		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
 			$q = "SELECT `category_name`,`category_id`
-				FROM  `#__vm_category`
+				FROM  `#__virtuemart_categories`
 				WHERE  `category_id`=".$id;
 
 			$db->setQuery($q);
@@ -879,7 +879,7 @@ class VirtueMartModelCategory extends JModel {
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
 		$q = 'SELECT `category_child_id`,`category_name` FROM `#__vm_category_xref`
-		LEFT JOIN `#__vm_category` on `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
+		LEFT JOIN `#__virtuemart_categories` on `#__virtuemart_categories`.`category_id`=`#__vm_category_xref`.`category_child_id`
 		WHERE `category_parent_id`='.$id;
 		$db->setQuery($q);
 		$num ++;
@@ -1006,17 +1006,17 @@ class VirtueMartModelCategory extends JModel {
 
 			// Get only published categories
 			$query  = "SELECT `category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
-						FROM `#__vm_category`, `#__vm_category_xref` WHERE ";
+						FROM `#__virtuemart_categories`, `#__vm_category_xref` WHERE ";
 			if( $only_published ) {
-				$query .= "`#__vm_category`.`published`=1 AND ";
+				$query .= "`#__virtuemart_categories`.`published`=1 AND ";
 			}
-			$query .= "`#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id` ";
+			$query .= "`#__virtuemart_categories`.`category_id`=`#__vm_category_xref`.`category_child_id` ";
 			if( !empty( $keyword )) {
 				$query .= "AND ( `category_name` LIKE '%$keyword%' ";
 				$query .= "OR `category_description` LIKE '%$keyword%' ";
 				$query .= ") ";
 			}
-			$query .= "ORDER BY `#__vm_category`.`ordering` ASC, `#__vm_category`.`category_name` ASC";
+			$query .= "ORDER BY `#__virtuemart_categories`.`ordering` ASC, `#__virtuemart_categories`.`category_name` ASC";
 
 			// initialise the query in the $database connector
 			$db->setQuery($query);

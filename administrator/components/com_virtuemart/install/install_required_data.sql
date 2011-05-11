@@ -12,10 +12,10 @@ INSERT INTO `#__vm_perm_groups` (`group_id`, `group_name`, `group_level`) VALUES
 (4, 'demo', 750);
 
 --
--- Dumping data for table `#__vm_country`
+-- Dumping data for table `#__virtuemart_countries`
 --
 
-INSERT INTO `#__vm_country` (`country_id`, `zone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
+INSERT INTO `#__virtuemart_countries` (`country_id`, `zone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
 (1, 1, 'Afghanistan', 'AFG', 'AF'),
 (2, 1, 'Albania', 'ALB', 'AL'),
 (3, 1, 'Algeria', 'DZA', 'DZ'),

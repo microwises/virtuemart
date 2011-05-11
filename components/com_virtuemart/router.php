@@ -433,7 +433,7 @@ class vmrouterHelper {
 
 		foreach ($parents_id as $id ) {
 			$q = "SELECT `category_name` as name
-					FROM  `#__vm_category`
+					FROM  `#__virtuemart_categories`
 					WHERE  `category_id`=".$id;
 
 			$db->setQuery($q);
@@ -490,7 +490,7 @@ class vmrouterHelper {
 			$name = str_replace('-', '%', $name);
 			$name = str_replace(':', '%', $name);
 			$q = "SELECT distinct `c`.`category_id`
-				FROM  `#__vm_category` AS `c` , `#__vm_category_xref` as `xref`";
+				FROM  `#__virtuemart_categories` AS `c` , `#__vm_category_xref` as `xref`";
 			$q .=" WHERE `c`.`category_name` LIKE '".$name."' ";
 			$q .=" AND `xref`.`category_child_id`=`c`.`category_id`";
 			$q .=" AND `xref`.`category_parent_id` in (".$category_ids.") ";

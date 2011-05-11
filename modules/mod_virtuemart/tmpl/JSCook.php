@@ -23,7 +23,7 @@ if( !class_exists('vmCategoryTree')) {
 			$db = JFactory::getDBO();
 			$level++;
 			$q = "SELECT category_name, category_id, category_child_id "
-			. "FROM #__vm_category as a, #__vm_category_xref as b "
+			. "FROM #__virtuemart_categories as a, #__vm_category_xref as b "
 			. "WHERE a.published='1' AND "
 			. " b.category_parent_id='{$category_id}' AND a.category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
@@ -63,7 +63,7 @@ if( !class_exists('vmCategoryMenu')) {
 			$level++;
 			$db = JFactory::getDBO();
 			$q = "SELECT category_name, category_id, category_child_id "
-			. "FROM #__vm_category as a, #__vm_category_xref as b "
+			. "FROM #__virtuemart_categories as a, #__vm_category_xref as b "
 			. "WHERE a.published='1' AND "
 			. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";

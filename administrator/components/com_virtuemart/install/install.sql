@@ -122,10 +122,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_category`
+-- Table structure for table `#__virtuemart_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_category` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `category_name` varchar(128) NOT NULL DEFAULT '',
@@ -185,10 +185,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_media_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_config`
+-- Table structure for table `#__virtuemart_configs`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_config` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
   `config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `config` text,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -199,10 +199,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_config` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_country`
+-- Table structure for table `#__virtuemart_countries`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_country` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   `country_id` int(11) NOT NULL AUTO_INCREMENT,
   `zone_id` int(11) NOT NULL DEFAULT '1',
   `country_name` varchar(64) DEFAULT NULL,
