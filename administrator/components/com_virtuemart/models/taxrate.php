@@ -122,7 +122,7 @@
 //		$db = JFactory::getDBO();
 //
 ////  		if (empty($this->_data)) {
-////  			$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_id`="'.(int)$this->_id.'" AND WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+////  			$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE `calc_id`="'.(int)$this->_id.'" AND WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
 ////  			$db->setQuery($q);
 ////			$this->_data = $db->loadResultArray();
 //  			
@@ -147,9 +147,9 @@
 //		
 //		if (empty($this->_data)) {
 //			$q = 'SELECT * ';
-////			$q .= 'CONCAT("(", `#__vm_calc`.`calc_id`, ") ", FORMAT(`#__vm_calc`.`calc_value`*100, 2)) AS select_list_name ';
-//			$q .= 'FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" AND `calc_value_mathop`="+%" OR `calc_value_mathop`="-%" ';
-////  			$q = 'SELECT * FROM `#__vm_calc` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+////			$q .= 'CONCAT("(", `#__virtuemart_calcs`.`calc_id`, ") ", FORMAT(`#__virtuemart_calcs`.`calc_value`*100, 2)) AS select_list_name ';
+//			$q .= 'FROM `#__virtuemart_calcs` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" AND `calc_value_mathop`="+%" OR `calc_value_mathop`="-%" ';
+////  			$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
 //  			$db->setQuery($q);
 //			$this->_data = $db->loadObjectList();
 //  		}

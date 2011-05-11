@@ -27,12 +27,8 @@ defined('_JEXEC') or die();
  */
 class TableMf_media_xref extends JTable {
 
-	/** @var int Primary key */
-	var $id					= 0;
-	/** @var int category_id  */
-	var $manufacturer_id		= 0;
-	/** @var int file_id name */
-	var $file_ids           = array();
+	var $_pkey 		= 'manufacturer_id';
+	var $_skey 		= 'file_ids';
 
 
 	/**
@@ -40,63 +36,7 @@ class TableMf_media_xref extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__vm_category_media_xref', 'id', $db);
+		parent::__construct('#__vm_manufacturer_media_xref', 'id', $db);
 	}
 
-    /**
-     * @author Max Milbers
-     * @param
-     */
-    function check() {
-
-        if (empty($this->manufacturer_id)) {
-            $this->setError('Serious error cant save manufacturer media xref without manufacturer id');
-            return false;
-        }
-
-		if (empty($this->file_ids)) {
-            $this->setError('Serious error cant save manufacturer media xref without media id');
-            return false;
-        }
-//     	if(empty($this->cdate)) $this->cdate = time();
-//     	$this->mdate = time();
-
-        return true;
-    }
-
-    /**
-     * Records in this table are arrays. Therefore we need to overload the load() function.
-     *
-	 * @author Max Milbers
-     * @param int $id
-     */
-    function load($id=0){
-    	if(empty($this->_db)) $this->_db = JFactory::getDBO();
-		if(empty($this->id)) $this->id = $id;
-		$q = 'SELECT `file_ids` FROM `'.$this->_tbl.'` WHERE `manufacturer_id` = "'.$this->id.'"';
-		$this->_db->setQuery($q);
-
-    	if ($result = $this->_db->loadResultArray() ) {
-			return $result;
-		}
-		else
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
-    }
-
-    /**
-     * Records in this table do not need to exist, so we might need to create a record even
-     * if the primary key is set. Therefore we need to overload the store() function.
-     *
-     * @author Max Milbers
-     * @see libraries/joomla/database/JTable#store($updateNulls)
-     */
-    public function store() {
-
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::storeArrayData($this->_tbl,'manufacturer_id','file_ids', $this->manufacturer_id,$this->file_ids);
-
-    }
 }

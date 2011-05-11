@@ -586,7 +586,7 @@ class calculationHelper {
 		$shopperGroup = '';
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
-		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
 		' AND `published`="1" ' .
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
@@ -657,7 +657,7 @@ class calculationHelper {
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
-		$q= 'SELECT * FROM #__vm_calc WHERE ' .
+		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
 			' AND `published`="1" ' .
 			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
@@ -765,7 +765,7 @@ class calculationHelper {
 
 		$taxrules = array();
 		if(!empty($shipping['shipping_rate_vat_id'])){
-			$q= 'SELECT * FROM #__vm_calc WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
+			$q= 'SELECT * FROM #__virtuemart_calcs WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
 			$this->_db->setQuery($q);
 			$taxrules = $this->_db->loadAssocList();
 		}

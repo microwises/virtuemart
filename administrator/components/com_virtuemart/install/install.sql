@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_calc`
+-- Table structure for table `#__virtuemart_calcs`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_calc` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_id` int(11) NOT NULL AUTO_INCREMENT,
   `calc_vendor_id` int(4) NOT NULL COMMENT 'Belongs to vendor',
   `calc_name` text NOT NULL COMMENT 'Name of the rule',

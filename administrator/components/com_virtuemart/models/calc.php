@@ -95,7 +95,7 @@ class VirtueMartModelCalc extends JModel
 	 */
 	public function _getTotal() {
     	if (empty($this->_total)) {
-			$query = 'SELECT `calc_id` FROM `#__vm_calc`';
+			$query = 'SELECT `calc_id` FROM `#__virtuemart_calcs`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -162,11 +162,11 @@ class VirtueMartModelCalc extends JModel
 	public function getCalcs($onlyPublished=false, $noLimit=false){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		$query = 'SELECT * FROM `#__vm_calc` ';
+		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__vm_calc`.`published` = 1';
+			$query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__vm_calc`.`calc_name`';
+		$query .= ' ORDER BY `#__virtuemart_calcs`.`calc_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
@@ -228,7 +228,7 @@ class VirtueMartModelCalc extends JModel
 	 */
     public function store() {
 
-		$table = $this->getTable('calc');
+		$table = $this->getTable('calcs');
 		$data = JRequest::get('post');
 
 		// Convert selected dates to MySQL format for storing.
@@ -355,7 +355,7 @@ class VirtueMartModelCalc extends JModel
 
 			$quotedId = $this->_db->Quote($id);
 			$query = 'SELECT `calc_shopper_published`
-					  FROM `#__vm_calc`
+					  FROM `#__virtuemart_calcs`
 					  WHERE calc_id = '. $quotedId;
 
 			$this->_db->setQuery($query);
@@ -363,7 +363,7 @@ class VirtueMartModelCalc extends JModel
 
 			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
 
-			$query = 'UPDATE `#__vm_calc`
+			$query = 'UPDATE `#__virtuemart_calcs`
 					  SET `calc_shopper_published` = '.$publish.'
 					  WHERE calc_id = '.$quotedId;
 
@@ -394,7 +394,7 @@ class VirtueMartModelCalc extends JModel
 
 			$quotedId = $this->_db->Quote($id);
 			$query = 'SELECT `calc_vendor_published`
-					  FROM `#__vm_calc`
+					  FROM `#__virtuemart_calcs`
 					  WHERE `calc_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
@@ -402,7 +402,7 @@ class VirtueMartModelCalc extends JModel
 
 			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
 
-			$query = 'UPDATE `#__vm_calc`
+			$query = 'UPDATE `#__virtuemart_calcs`
 					  SET `calc_vendor_published` = '.$publish.'
 					  WHERE `calc_id` = '.$quotedId;
 
@@ -428,7 +428,7 @@ class VirtueMartModelCalc extends JModel
 		$now			=& JFactory::getDate()->toMySQL();
 
 
-		$q = 'SELECT * FROM `#__vm_calc` WHERE ';
+		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){
 			$q .= '`calc_kind`="'.$field.'" OR ';
 		}

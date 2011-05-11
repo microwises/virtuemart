@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+
 /**
  * Calculator table class
  * The class is is used to manage the media in the shop.
@@ -25,15 +27,10 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableCategory_media_xref extends JTable {
+class TableCategory_media_xref extends VmXrefTable {
 
-	/** @var int Primary key */
-	var $id					= 0;
-	/** @var int category_id  */
-	var $category_id		= 0;
-	/** @var int file_id name */
-	var $file_ids           = array();
-
+	var $_pkey 		= 'category_id';
+	var $_skey 		= 'file_ids';
 
 	/**
 	 * @author Max Milbers
@@ -43,56 +40,4 @@ class TableCategory_media_xref extends JTable {
 		parent::__construct('#__vm_category_media_xref', 'id', $db);
 	}
 
-    /**
-     * @author Max Milbers
-     * @param
-     */
-    function check() {
-
-        if (empty($this->category_id)) {
-            $this->setError('Serious error cant save category media xref without category id');
-            return false;
-        }
-
-		if (empty($this->file_ids)) {
-            $this->setError('Serious error cant save category media xref without media id');
-            return false;
-        }
-//     	if(empty($this->cdate)) $this->cdate = time();
-//     	$this->mdate = time();
-
-        return true;
-    }
-
-    function load($id=0){
-
-    	if(empty($this->_db)) $this->_db = JFactory::getDBO();
-		if(empty($this->id)) $this->id = $id;
-		$q = 'SELECT `file_ids` FROM `'.$this->_tbl.'` WHERE `category_id` = "'.$this->id.'"';
-		$this->_db->setQuery($q);
-
-    	if ($result = $this->_db->loadResultArray() ) {
-			return $result;
-		}
-		else
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
-
-    }
-
-    /**
-     * Records in this table do not need to exist, so we might need to create a record even
-     * if the primary key is set. Therefore we need to overload the store() function.
-     *
-     * @author Max Milbers
-     * @see libraries/joomla/database/JTable#store($updateNulls)
-     */
-    public function store() {
-
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::storeArrayData($this->_tbl,'category_id','file_ids', $this->category_id,$this->file_ids);
-
-    }
 }

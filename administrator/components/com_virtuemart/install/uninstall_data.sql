@@ -1,6 +1,6 @@
 -- Remove all virtuemart data
 
-DELETE FROM `#__vm_calc`;
+DELETE FROM `#__virtuemart_calcs`;
 DELETE FROM `#__vm_calc_shoppergroup_xref`;
 DELETE FROM `#__vm_calc_country_xref`;
 DELETE FROM `#__vm_calc_state_xref`;
