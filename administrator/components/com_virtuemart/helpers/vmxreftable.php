@@ -87,14 +87,15 @@ class VmXrefTable extends JTable {
      * @author Max Milbers
      * @param
      */
-    function check() {
+    function check($obligatory=false) {
 
         if (empty($this->_pvalue)) {
             $this->setError('Serious error cant save '.$this->_tbl.' without '.$this->_pkey);
             return false;
         }
 
-		if (empty($this->_svalue)) {
+
+		if (empty($this->_svalue) && $obligatory) {
             $this->setError('Serious error cant save '.$this->_tbl.' without '.$this->_skey);
             return false;
         }
@@ -139,7 +140,15 @@ class VmXrefTable extends JTable {
 
     }
 
-    public function bindChecknStore($model, $data) {
+    /**
+     * As shortcat
+     *
+     * @author Max Milbers
+     * @param unknown_type $model
+     * @param unknown_type $data
+     * @param unknown_type $obligatory
+     */
+    public function bindChecknStore($model, $data, $obligatory=false) {
 
     	if (!$this->bind($data)) {
 			$model->setError($this->getError());
@@ -147,7 +156,7 @@ class VmXrefTable extends JTable {
 		}
 
 		// Make sure the calculation record is valid
-		if (!$this->check()) {
+		if (!$this->check($obligatory)) {
 			$model->setError($this->getError());
 			return false;
 		}
