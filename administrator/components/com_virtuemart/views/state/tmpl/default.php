@@ -25,6 +25,7 @@ AdminMenuHelper::startAdminArea();
 
 <form action="index.php" method="post" name="adminForm">
     <div id="editcell">
+    <div><?php echo JHTML::_('link','index.php?option=com_virtuemart&controller=country&country_id='.$this->country_id,JText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
 	<table class="adminlist">
 	    <thead>
 		<tr>

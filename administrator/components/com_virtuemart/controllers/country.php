@@ -40,9 +40,20 @@ class VirtuemartControllerCountry extends JController {
 	function __construct() {
 		parent::__construct();
 
+		JRequest::setVar('view', 'country');
+
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );
+
+	}
+
+	/**
+	 * Display the country view
+	 *
+	 * @author Max Milbers
+	 */
+	function display() {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -57,14 +68,6 @@ class VirtuemartControllerCountry extends JController {
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}
-	}
-
-	/**
-	 * Display the country view
-	 *
-	 * @author RickG
-	 */
-	function display() {
 		parent::display();
 	}
 
@@ -77,7 +80,6 @@ class VirtuemartControllerCountry extends JController {
 	function edit()
 	{
 		JRequest::setVar('controller', 'country');
-		JRequest::setVar('view', 'country');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 

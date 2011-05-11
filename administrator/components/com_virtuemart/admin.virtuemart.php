@@ -33,6 +33,7 @@ $controller = new $_class();
 
 // Perform the Request task
 $controller->execute(JRequest::getVar('task', $_controller));
+
 $controller->redirect();
 
 // pure php no closing tag

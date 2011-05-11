@@ -60,6 +60,11 @@ class VirtuemartViewState extends JView {
 			JError::raiseWarning(412,'Country id is 0');
 			return false;
 		}
+
+		$country = $this->getModel('country');
+		$country->setId($countryId);
+		$this->assignRef('country_name', $country->getCountry()->country_name);
+
 		if ($layoutName == 'edit') {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_states_48');

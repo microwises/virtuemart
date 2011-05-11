@@ -1015,14 +1015,14 @@ class VirtueMartModelOrders extends JModel {
 		}
 		return true;
 	}
-	/* 
+	/*
 	*delete product from order item table
 	*@var $order_id Order to clear
 	*/
 	function removeOrderItems ($order_id){
 		$q ='DELETE from `#__vm_order_item` WHERE `order_id` = ' . $order_id;
 		 $this->_db->setQuery($q);
-		dump ($q ,' query');
+
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
@@ -1037,7 +1037,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function removeOrderLineItem($orderLineId) {
-		
+
 		$table = $this->getTable('order_item');
 
 		if ($table->delete($orderLineId)) {

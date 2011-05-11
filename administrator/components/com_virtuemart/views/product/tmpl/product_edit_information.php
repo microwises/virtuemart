@@ -19,7 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
-<?php dump($this->product); ?>
+<?php // dump($this->product); ?>-->
 <table class="adminform">
 	<tr>
 		<td valign="top">
@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
-                                        
+
 					<?php echo $this->product_currency; echo $this->currencies;  echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
 				</td>
 			</tr>
@@ -210,7 +210,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
 				</td>
 			</tr>
-			 
+
 		</table>
 	</td>
 	</tr>
