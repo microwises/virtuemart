@@ -146,13 +146,14 @@ class vmParameters extends JParameter{
 	 *
 	 * @access	protected
 	 * @param	string The raw parms text
-	 * @param	string Path to the xml setup file
+	 * @param	string paym_element payment element name
 	 * @since	1.5
 	 */
-	function __construct($data, $path = '', $type='component')
+	function __construct($data, $paym_element = '', $type='component')
 	{
-		parent::__construct($data,$path);
-
+                JPlugin::loadLanguage('plg_vmpayment_'.$paym_element );
+                $path=JPATH_PLUGINS.DS.'vmpayment'.DS.basename($paym_element).'.xml';
+		parent::__construct($data,$path);               
 		$this->_type = $type;
 		$this->_raw = $data;
 
@@ -188,7 +189,7 @@ class vmParameters extends JParameter{
 				$result = $this->renderParam( $param, $name );
 				$html[] = '<tr>';
 
-				$html[] = '<td width="40%" class="labelcell"><span class="editlinktip">' . $result[0] . '</span></td>';
+				$html[] = '<td width="40%" class="labelcell"><span class="editlinktip">' .Jtext::_( $result[0])  . '</span></td>';
 				$html[] = '<td>' . $result[1] . $result[2].'</td>';
 
 				$html[] = '</tr>';
@@ -226,7 +227,7 @@ class vmParameters extends JParameter{
 		if( $param->attributes( 'description') ) {
 			$description = JText::_($param->attributes( 'description'));
 		} else {
-			$description = 'No description found';
+			$description = JText::_('COM_VIRTUEMART_NO_DESCRIPTION_FOUND');
 		}
 
 		$result[0] = $label ? $label : $name;
@@ -235,7 +236,7 @@ class vmParameters extends JParameter{
 			$result[0] = '&nbsp;';
 		} else {
 //			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
-			$result[0] = $description;
+			//$result[0] = $description;
 		}
 
 		if (in_array( '_form_' . $type, $this->_methods )) {
