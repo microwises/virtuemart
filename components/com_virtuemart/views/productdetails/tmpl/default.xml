@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Standard Virtuemart Productdetails Layout">
-		<message>
-			To set the product
-		</message>
+	<layout title="COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU">
+            <message><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]></message>
 	</layout>
 	<state>
-		<name>Standard Virtuemart Productdetails Layout</name>
-		<description>To set the product view</description>
+		<name>COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU</name>
+		<description><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]></description>
 		<url>
-			<param name="product_id" type="sql" query="SELECT product_id, product_name FROM #__vm_product" key_field="product_id" value_field="product_name" label="Product" description="Choose a product ..." />
+			<param name="product_id" type="sql" query="SELECT product_id, product_name FROM #__vm_product" key_field="product_id" value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
 		</url>
 	</state>
 </metadata>

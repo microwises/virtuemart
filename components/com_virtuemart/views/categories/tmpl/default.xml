@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="Standard Virtuemart Categories Layout">
-		<message>
-			To set the parent category
-		</message>
+	<layout title="COM_VIRTUEMART_CATEGORIES_LAYOUT_MENU">
+            <message><![CDATA[COM_VIRTUEMART_CATEGORIES_LAYOUT_DESC]]></message>
 	</layout>
 	<state>
-		<name>Standard Virtuemart Categories Layout</name>
-		<description>To set the parent category view</description>
-		<url>
-			<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__vm_category" key_field="category_id" value_field="category_name" label="Category" description="Choose a category..." />
-		</url>
+		<name>COM_VIRTUEMART_CATEGORIES_LAYOUT_MENU</name>
+		<description><![CDATA[COM_VIRTUEMART_CATEGORIES_LAYOUT_DESC]]></description>		 
 	</state>
 </metadata>
