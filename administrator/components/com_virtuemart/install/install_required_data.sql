@@ -266,7 +266,7 @@ INSERT INTO `#__vm_country` (`country_id`, `zone_id`, `country_name`, `country_3
 -- Dumping data for table `#__vm_creditcard`
 --
 
-INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
+INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`enabled`) VALUES
 (1, 1, 'Visa', 'VISA',1),
 (2, 1, 'MasterCard', 'MC',1),
 (3, 1, 'American Express', 'amex',1),
@@ -279,7 +279,7 @@ INSERT INTO `#__vm_creditcard` (`creditcard_id`, `vendor_id`, `creditcard_name`,
 -- Dumping data for table `#__vm_currency`
 --
 
-INSERT INTO `#__vm_currency` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `cdate`, `mdate`, `published`, `shared`, `checked_out`, `checked_out_time`) VALUES
+INSERT INTO `#__vm_currency` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `enabled`, `shared`, `checked_out`, `checked_out_time`) VALUES
 (2, 1, 'United Arab Emirates dirham', '', 'AED', 784, 'د.إ', 0, '1|د.إ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0, '0000-00-00 00:00:00'),
 (4, 1, 'Albanian lek', '', 'ALL', 8, 'Lek', 0, '1|Lek|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0, '0000-00-00 00:00:00'),
 (5, 1, 'Netherlands Antillean gulden', '', 'ANG', 532, 'ƒ', 0, '1|ƒ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0, '0000-00-00 00:00:00'),
@@ -460,7 +460,7 @@ INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_gro
 --
 
 
-INSERT INTO `#__vm_state` (`state_id`, `country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
+INSERT INTO `#__vm_state` (`state_id`, `country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `enabled`) VALUES
 (1, 223, 0, 'Alabama', 'ALA', 'AL', 1),
 (2, 223, 0, 'Alaska', 'ALK', 'AK', 1),
 (3, 223, 0, 'Arizona', 'ARZ', 'AZ', 1),

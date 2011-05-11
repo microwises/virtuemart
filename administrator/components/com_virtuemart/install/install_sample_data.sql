@@ -6,7 +6,7 @@
 --  Dumping data for `#__vm_calc`
 --
 
-INSERT IGNORE INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `cdate`, `mdate`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
+INSERT IGNORE INTO `#__vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `created_on`, `modified_on`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
 (1, 1, 'Tax 9.25%', 'A simple tax for all products regardless the category', 'Tax', '+%', 9.25, '47', 0, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0),
 (2, 1, 'Discount for all Hand Tools', 'Discount for all Hand Tools 2 euro', 'DBTax', '-', 2, '47', 1, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0),
 (3, 1, 'Duty for Powertools', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', 20, '47', 0, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0);
@@ -33,7 +33,7 @@ INSERT IGNORE INTO `#__vm_calc_shoppergroup_xref` (`id`, `calc_rule_id`, `calc_s
 -- Dumping data for table `#__vm_category`
 --
 
-INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `published`, `cdate`, `mdate`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
+INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `enabled`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
 (1, 1, 'Hand Tools', 'Hand Tools', 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', '', '', ''),
 (2, 1, 'Power Tools', 'Power Tools', 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
 (3, 1, 'Garden Tools', 'Garden Tools', 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),
@@ -67,7 +67,7 @@ INSERT IGNORE INTO `#__vm_category_media_xref` (`id`,`category_id`, `file_ids`) 
 -- Dumping data for table `#__vm_custom`
 --
 
-INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
+INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `enabled`) VALUES
 (1, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1),
 (2, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1),
 (3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
@@ -81,7 +81,7 @@ INSERT INTO `#__vm_custom` (`custom_id`, `custom_parent_id`, `admin_only`, `cust
 -- Dumping data for table  `#__vm_custom_field`
 --
 
-INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `published`) VALUES
+INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `enabled`) VALUES
 (2, 7, '1', NULL, 0),
 (4, 2, 'Plz enter a text', NULL, 0),
 (5, 3, '100', NULL, 0),
@@ -91,7 +91,7 @@ INSERT INTO `#__vm_custom_field` (`custom_field_id`, `custom_id`, `custom_value`
 -- Dumping data for table  `#__vm_custom_field_xref_product`
 --
 
-INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, `ordering`, `published`) VALUES
+INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, `ordering`, `enabled`) VALUES
 (2, 6, 0, 0),
 (4, 6, 0, 0),
 (5, 6, 0, 0),
@@ -100,7 +100,7 @@ INSERT INTO `#__vm_custom_field_xref_product` (`custom_field_id`, `product_id`, 
 -- Dumping data for table `#__vm_manufacturer`
 --
 
-INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `published`) VALUES
+INSERT INTO `#__vm_manufacturer` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `enabled`) VALUES
 (1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
 
 
@@ -122,7 +122,7 @@ INSERT IGNORE INTO `#__vm_manufacturer_media_xref` (`id`,`manufacturer_id`, `fil
 -- Dumping data for table `#__vm_media`
 --
 
-INSERT INTO `#__vm_media` (`file_id`, `vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_url`, `file_url_thumb`, `cdate`, `mdate`, `published`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `shared`, `file_params`) VALUES
+INSERT INTO `#__vm_media` (`file_id`, `vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_url`, `file_url_thumb`, `created_on`, `modified_on`, `enabled`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `shared`, `file_params`) VALUES
 (1, 1, 'black shovel', '', '', 'image/jpeg', 'images/stories/virtuemart/category/fc2f001413876a374484df36ed9cf775.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (2, 1, 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', '', 'image/jpeg', 'images/stories/virtuemart/category/fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (3, 1, 'green shovel', '', '', 'image/jpeg', 'images/stories/virtuemart/category/756ff6d140e11079caf56955060f1162.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
@@ -141,7 +141,7 @@ INSERT INTO `#__vm_media` (`file_id`, `vendor_id`, `file_title`, `file_descripti
 -- Dumping data for table `#__vm_product`
 --
 
-INSERT INTO `#__vm_product` (`product_id`, `vendor_id`, `product_parent_id`, `product_sku`, `product_s_desc`, `product_desc`, `published`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `cdate`, `mdate`, `product_name`, `product_sales`, `attribute`, `custom_attribute`, `product_unit`, `product_packaging`, `product_order_levels`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`) VALUES
+INSERT INTO `#__vm_product` (`product_id`, `vendor_id`, `product_parent_id`, `product_sku`, `product_s_desc`, `product_desc`, `enabled`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `created_on`, `modified_on`, `product_name`, `product_sales`, `attribute`, `custom_attribute`, `product_unit`, `product_packaging`, `product_order_levels`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`) VALUES
 (1, 1, 0, 'G01', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 10, 5, 1072911600, '48h.gif', 'Y', NULL, NULL, NULL, 'Hand Shovel', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
 (2, 1, 0, 'G02', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 76, 5, 1072911600, '3-5d.gif', 'N', NULL, NULL, NULL, 'Ladder', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
 (3, 1, 0, 'G03', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '7d.gif', 'N', NULL, NULL, NULL, 'Shovel', 0, 'Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]', '', '', 0, NULL, NULL, '', '', '', '', ''),
@@ -224,7 +224,7 @@ INSERT IGNORE INTO `#__vm_product_mf_xref` (`product_id`, `manufacturer_id`) VAL
 -- Dumping data for table `#__vm_product_price`
 --
 
-INSERT INTO `#__vm_product_price` (`product_price_id`, `product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `cdate`, `mdate`, `shopper_group_id`, `price_quantity_start`, `price_quantity_end`) VALUES
+INSERT INTO `#__vm_product_price` (`product_price_id`, `product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `shopper_group_id`, `price_quantity_start`, `price_quantity_end`) VALUES
 (1, 5, '24.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (2, 1, '4.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (3, 2, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
