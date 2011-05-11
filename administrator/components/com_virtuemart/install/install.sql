@@ -191,8 +191,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_media_xref` (
 CREATE TABLE IF NOT EXISTS `#__vm_config` (
   `config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `config` text,
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`config_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;
 
@@ -908,8 +908,8 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
   `product_type_browsepage` varchar(255) DEFAULT NULL,
   `product_type_flypage` varchar(255) DEFAULT NULL,
   `ordering` int(11) DEFAULT NULL,
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+ `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
