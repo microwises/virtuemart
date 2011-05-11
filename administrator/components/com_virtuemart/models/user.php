@@ -441,9 +441,9 @@ class VirtueMartModelUser extends JModel {
 			$this->setId($newId);
 
 			//I would like to do this function in the FE user/controller like the other emails, with layout
-			if ($new) {
-				$this->sendRegistrationEmail($user);
-			}
+//			if ($new) {
+//				$this->sendRegistrationEmail($user);
+//			}
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){

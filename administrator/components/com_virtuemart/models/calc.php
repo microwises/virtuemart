@@ -119,25 +119,34 @@ class VirtueMartModelCalc extends JModel
    			$this->_data = new stdClass();
    			$this->_id = 0;
   		}
-		/* Add the calculation rule categories */
-		$q = 'SELECT `calc_category` FROM `#__vm_calc_category_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->calc_categories = $this->_db->loadResultArray();
 
-		/* Add the calculation rule shoppergroups */
-		$q = 'SELECT `calc_shopper_group` FROM `#__vm_calc_shoppergroup_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->calc_shopper_groups = $this->_db->loadResultArray();
+		$xrefTable = $this->getTable('calc_category_xref');
+		if (!$this->_data->calc_categories = $xrefTable->load($this->_id)) {
+			$this->setError($xrefTable->getError());
+		}
 
-		/* Add the calculation rule countries */
-		$q = 'SELECT `calc_country` FROM `#__vm_calc_country_xref` WHERE `calc_rule_id` = "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->calc_countries = $this->_db->loadResultArray();
+		$xrefTable = $this->getTable('calc_shoppergroup_xref');
+		if (!$this->_data->calc_shopper_groups = $xrefTable->load($this->_id)) {
+			$this->setError($xrefTable->getError());
+		}
 
-		/* Add the calculation rule states */
-		$q = 'SELECT `calc_state` FROM `#__vm_calc_state_xref` WHERE `calc_rule_id`= "'.$this->_id.'"';
-		$this->_db->setQuery($q);
-		$this->_data->calc_states = $this->_db->loadResultArray();
+		$xrefTable = $this->getTable('calc_country_xref');
+		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
+			dump($xrefTable,'calc_countries');
+			$this->setError($xrefTable->getError());
+		}
+
+		$xrefTable = $this->getTable('calc_state_xref');
+		if (!$this->_data->calc_states = $xrefTable->load($this->_id)) {
+			$this->setError($xrefTable->getError());
+		}
+
+		if($errs = $this->getErrors()){
+			$app = JFactory::getApplication();
+			foreach($errs as $err){
+				$app->enqueueMessage($err);
+			}
+		}
 
   		return $this->_data;
 	}
@@ -253,10 +262,53 @@ class VirtueMartModelCalc extends JModel
 		}
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category', $table->calc_id,$data["calc_categories"]);
-		modelfunctions::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group', $table->calc_id,$data["shopper_group_id"]);
-		modelfunctions::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country', $table->calc_id,$data["country_id"]);
-		modelfunctions::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state', $table->calc_id,$data["state_id"]);
+
+    	$xrefTable = $this->getTable('calc_category_xref');
+    	if (!$xrefTable->bindChecknStore($this,$data)) {
+			$this->setError($xrefTable->getError());
+		}
+
+		$xrefTable = $this->getTable('calc_shoppergroup_xref');
+    	if (!$xrefTable->bindChecknStore($this,$data)) {
+			$this->setError($xrefTable->getError());
+		}
+
+		$xrefTable = $this->getTable('calc_country_xref');
+    	if (!$xrefTable->bindChecknStore($this,$data)) {
+			$this->setError($xrefTable->getError());
+		}
+
+		$xrefTable = $this->getTable('calc_state_xref');
+    	if (!$xrefTable->bindChecknStore($this,$data)) {
+			$this->setError($xrefTable->getError());
+		}
+
+//		modelfunctions::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category', $table->calc_id,$data["calc_categories"]);
+////		modelfunctions::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group', $table->calc_id,$data["shopper_group_id"]);
+//		modelfunctions::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country', $table->calc_id,$data["country_id"]);
+//		modelfunctions::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state', $table->calc_id,$data["state_id"]);
+
+    	$errMsg = $this->_db->getErrorMsg();
+		$errs = $this->_db->getErrors();
+
+		if(!empty($errMsg)){
+
+			$errNum = $this->_db->getErrorNum();
+			$this->setError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$query);
+		}
+
+		if(!empty($errs)){
+			foreach($errs as $err){
+				if(!empty($err)) $this->setError($err);
+			}
+		}
+
+		if($errs = $this->getErrors()){
+			$app = JFactory::getApplication();
+			foreach($errs as $err){
+				$app->enqueueMessage($err);
+			}
+		}
 
 		return $table->calc_id;
 	}

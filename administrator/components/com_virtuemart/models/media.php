@@ -296,7 +296,7 @@ class VirtueMartModelMedia extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->id;
 
 	}
 

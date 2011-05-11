@@ -7,7 +7,15 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2010 Soeren Eberhardt-Biermann, Max Milbers 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ *
+ * http://virtuemart.net
  */
 
 // Check to ensure this file is included in Joomla!
@@ -62,7 +70,7 @@ class calculationHelper {
 
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
-		$this -> _debug           = false;
+		$this -> _debug           = true;
 	}
 
 	public function getInstance(){
@@ -597,17 +605,20 @@ class calculationHelper {
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach($rules as $rule){
 
-			$q= 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
 			$this->_db->setQuery($q);
-			$cats = $this->_db->loadResultArray();
+			$cats = $this->_db->loadResultArray();dump($q,'$q');
 
-			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
 			$hitsCategory = true;
+			dump($this->_cats,'$this->_cats');
+			dump($cats,'$cats');
 			if(isset($this->_cats)){
 				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
+				dump($hitsCategory,'$hitsCategory');
 			}
 			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){
@@ -618,6 +629,7 @@ class calculationHelper {
 			if(!empty($this->_amount)){
 				//Test
 			}
+			dump($hitsShopper,'$hitsShopper');
 //if ($this -> _debug	) echo '<br/ >foreach '.$rule["calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if( $hitsCategory && $hitsShopper ){
 				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["calc_id"];
