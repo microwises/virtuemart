@@ -228,7 +228,7 @@ class VirtueMartModelUser extends JModel {
 		function getContactDetails()
 		{
 			if ($this->_id) {
-				$this->_db->setQuery('SELECT * FROM #__contact_details WHERE virtuemart_user_id = ' . $this->_id);
+				$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
 				$_contacts = $this->_db->loadObjectList();
 				if (count($_contacts) > 0) {
 					return $_contacts[0];
