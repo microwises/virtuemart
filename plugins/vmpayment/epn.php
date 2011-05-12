@@ -50,7 +50,7 @@ class plgPaymentEpn extends vmPaymentPlugin {
         //$database = new ps_DB();
 		$database = JFactory::getDBO();
 		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
-//		$hVendor_id = $_SESSION['ps_vendor_id'];
+//		$hVendor_id = $_SESSION['ps_virtuemart_vendor_id'];
 		$hVendor_id = 1;  
 		$auth = $_SESSION['auth'];
         $ps_checkout = new ps_checkout;
@@ -302,7 +302,7 @@ Discover Test Account       5424000000000015
         $db = JFactory::getDBO();
         $q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
         $q .= "order_number='".$d['order_number']."' ";
-        $q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+        $q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
         $db->query( $q );
         if( !$db->next_record() ) {
             $vmLogger->err("Error: Order not found.");
@@ -314,7 +314,7 @@ Discover Test Account       5424000000000015
         //$dbaccount = new ps_DB;
         $dbaccount = JFactory::getDBO();
         $q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."') 
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
         $dbaccount->query($q);
         $dbaccount->next_record();
         
@@ -497,7 +497,7 @@ Discover Test Account       5424000000000015
            $q = "UPDATE #__{vm}_order_payment SET ";
            $q .="order_payment_log='".$d["order_payment_log"]."',";
            $q .="order_payment_trans_id='".$d["order_payment_trans_id"]."' ";
-           $q .="WHERE order_id='".$db->f("order_id")."' ";
+           $q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
            $db->query( $q );
            
            return True;

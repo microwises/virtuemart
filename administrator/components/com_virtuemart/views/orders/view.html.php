@@ -54,11 +54,11 @@ class VirtuemartViewOrders extends JView {
 
 			/* Get the data */
 			$order = $this->get('Order');
-			$_orderID = $order['details']['BT']->order_id;
+			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-			$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->vendor_id);
+			$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->virtuemart_vendor_id);
 			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
@@ -91,7 +91,7 @@ class VirtuemartViewOrders extends JView {
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->order_item_id] = JHTML::_('select.genericlist', $_orderStats, 'order_status_'.$_item->order_item_id, '', 'value', 'text', $_item->order_status, 'order_item_status');
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $_orderStats, 'order_status_'.$_item->virtuemart_order_item_id, '', 'value', 'text', $_item->order_status, 'order_item_status');
 				if (!empty($_item->product_attribute)) {
 					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -101,20 +101,20 @@ class VirtuemartViewOrders extends JView {
 					foreach ($_prodAttribs as $_pAttr) {
 						$_list = explode(',', $_pAttr);
 						$_name = array_shift($_list);
-						$_productAttributes[$_item->order_item_id][$_name] = array();
+						$_productAttributes[$_item->virtuemart_order_item_id][$_name] = array();
 						foreach ($_list as $_opt) {
 							$_optObj = new stdClass();
 							$_optObj->option = $_opt;
-							$_productAttributes[$_item->order_item_id][$_name][] = $_optObj;
+							$_productAttributes[$_item->virtuemart_order_item_id][$_name][] = $_optObj;
 						}
 					}
 					foreach ($_attribs as $_attrib) {
 						$_attr = preg_split('/:\s*/', $_attrib);
-						$_itemAttributesUpdateFields[$_item->order_item_id][] = array(
+						$_itemAttributesUpdateFields[$_item->virtuemart_order_item_id][] = array(
 							 'lbl' => $_attr[0]
 							,'fld' => JHTML::_('select.genericlist'
-									, $_productAttributes[$_item->order_item_id][$_attr[0]]
-									, 'product_attribute_'.$_item->order_item_id.'['.$_attr[0].']'
+									, $_productAttributes[$_item->virtuemart_order_item_id][$_attr[0]]
+									, 'product_attribute_'.$_item->virtuemart_order_item_id.'['.$_attr[0].']'
 									, null
 									, 'option'
 									, 'option'
@@ -156,8 +156,8 @@ class VirtuemartViewOrders extends JView {
 			$model = $this->getModel();
 			$orderId = JRequest::getVar('orderId', '');
 			$orderLineItem = JRequest::getVar('orderLineId', '');
-			$this->assignRef('order_id', $orderId);
-			$this->assignRef('order_item_id', $orderLineItem);
+			$this->assignRef('virtuemart_order_id', $orderId);
+			$this->assignRef('virtuemart_order_item_id', $orderLineItem);
 
 			$orderItem = $model->getOrderLineDetails($orderId, $orderLineItem);
 			$this->assignRef('orderitem', $orderItem);
@@ -174,13 +174,13 @@ class VirtuemartViewOrders extends JView {
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
-			foreach ($orderslist as $order_id => $order) {
+			foreach ($orderslist as $virtuemart_order_id => $order) {
 
 				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				if (!array_key_exists('v'.$order->vendor_id, $_currencies)) {
-					$_currencies['v'.$order->vendor_id] = CurrencyDisplay::getCurrencyDisplay($order->vendor_id);
+				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
+					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getCurrencyDisplay($order->virtuemart_vendor_id);
 				}
-				$order->order_total = $_currencies['v'.$order->vendor_id]->getFullValue($order->order_total);
+				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->getFullValue($order->order_total);
 			}
 
 			/* Get the pagination */
@@ -214,12 +214,12 @@ class VirtuemartViewOrders extends JView {
 		$tpl = isset($this->layoutName) ? 'mail_html_' . $this->layoutName : 'mail_html_updorder';
 		$this->setLayout($tpl);
 		$vendorModel = $this->getModel('vendor');
-		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);
-		$vendorModel->setId($vendor_id);
+		$virtuemart_vendor_id = $vendorModel ->getVendorId('order', $this->order->virtuemart_order_id);
+		$vendorModel->setId($virtuemart_vendor_id);
 		$this->vendor = $vendorModel->getVendor();
-		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 
-		$this->subject = ($tpl = 'mail_html_download') ? JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ') : JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
+		$this->subject = ($tpl = 'mail_html_download') ? JText::_('COM_VIRTUEMART_DOWNLOADS_SEND_SUBJ') : JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->virtuemart_order_id);
 		parent::display();
 	}
 

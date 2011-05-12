@@ -29,13 +29,13 @@ defined('_JEXEC') or die('Restricted access');
 class TableOrder_item extends JTable {
 
 	/** @var int Primary key */
-	var $order_item_id = 0;
+	var $virtuemart_order_item_id = 0;
 	/** @var int User ID */
-	var $order_id = NULL;
+	var $virtuemart_order_id = NULL;
 	/** @var int User info ID */
 	var $virtuemart_userinfo_id = NULL;
 	/** @var int Vendor ID */
-	var $vendor_id = NULL;
+	var $virtuemart_vendor_id = NULL;
 	/** @var int Product ID */
 	var $virtuemart_product_id = NULL;
 	/** @var string Order item SKU */
@@ -66,7 +66,7 @@ class TableOrder_item extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__virtuemart_order_items', 'order_item_id', $db);
+		parent::__construct('#__virtuemart_order_items', 'virtuemart_order_item_id', $db);
 	}
 
 	/**

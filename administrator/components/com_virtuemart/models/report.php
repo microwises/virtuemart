@@ -92,7 +92,7 @@ class VirtuemartModelReport extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-	    	$query = 'SELECT `order_id` FROM `#__virtuemart_orders`';
+	    	$query = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders`';
 	    	$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -115,7 +115,7 @@ class VirtuemartModelReport extends JModel {
 		}
 		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
 		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
-		$query .= "COUNT(order_id) as number_of_orders, ";
+		$query .= "COUNT(virtuemart_order_id) as number_of_orders, ";
 		$query .= "SUM(order_subtotal) as revenue ";
 		$query .= "FROM `#__virtuemart_orders` ";
 		$query .= "WHERE `created_on` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
@@ -190,8 +190,8 @@ class VirtuemartModelReport extends JModel {
 		$query .= "SUM(product_quantity) as items_sold ";
   		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
 		//WHERE #__virtuemart_order_items.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
-		//$query .= "AND o.order_id=i.order_id ";
-		$query .= "WHERE o.order_id=i.order_id ";
+		//$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";
+		$query .= "WHERE o.virtuemart_order_id=i.virtuemart_order_id ";
   		$query .= "AND i.virtuemart_product_id=p.virtuemart_product_id ";
   		$query .= "GROUP BY product_sku, product_name, order_date ";
   		$query .= "ORDER BY date_num, product_name ASC";

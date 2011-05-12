@@ -41,7 +41,7 @@ class VirtuemartViewShippingRate extends JView {
         $shippingRate = $model->getShippingRate();
 
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($shippingRate->virtuemart_shipping_rate_id < 1);
+        $isNew = ($shippingRate->virtuemart_shippingrate_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

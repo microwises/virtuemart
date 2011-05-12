@@ -60,7 +60,7 @@ class VirtuemartViewCustom extends JView {
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
-				if(empty($userDetails->vendor_id)){
+				if(empty($userDetails->virtuemart_vendor_id)){
 					JError::raiseError(403,JText::_('COM_VIRTUEMART_CUSTOM_FOR_VENDOR'));
 				}
 			}

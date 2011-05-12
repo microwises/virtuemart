@@ -82,7 +82,7 @@ class VirtuemartViewUserfields extends JView {
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'vendor_id', '', 'vendor_id', 'vendor_name', $userField->vendor_id);
+			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = $this->getModel('shoppergroup');

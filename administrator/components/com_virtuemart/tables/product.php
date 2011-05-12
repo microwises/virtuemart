@@ -31,7 +31,7 @@ class TableProduct extends JTable {
 	/** @var int Primary key */
 	var $virtuemart_product_id				= null;
 	/** @var integer Product id */
-	var $vendor_id		= null;
+	var $virtuemart_vendor_id		= null;
 	/** @var string File name */
 	var $product_parent_id		= null;
 	/** @var string File title */
@@ -122,7 +122,7 @@ class TableProduct extends JTable {
      */
     function check() {
 
-        if (empty($this->vendor_id)) {
+        if (empty($this->virtuemart_vendor_id)) {
             $this->setError('Serious error cant save product without vendor id');
             return false;
         }

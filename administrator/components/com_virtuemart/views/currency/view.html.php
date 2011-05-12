@@ -66,14 +66,14 @@ class VirtuemartViewCurrency extends JView {
 			$usermodel = $this->getModel('user', 'VirtuemartModel');
 			$usermodel->setCurrent();
 			$userDetails = $usermodel->getUser();
-			if(empty($userDetails->vendor_id)){
+			if(empty($userDetails->virtuemart_vendor_id)){
 				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
 			}
-			if(empty($currency->vendor_id))$currency->vendor_id = $userDetails->vendor_id;
-//			$this->assignRef('vendor_id', $vendorCurrency);
+			if(empty($currency->virtuemart_vendor_id))$currency->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
+//			$this->assignRef('virtuemart_vendor_id', $vendorCurrency);
 
 			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->vendor_id,$currency->currency_id,'');
+			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->virtuemart_vendor_id,$currency->currency_id,'');
 			$this->assignRef('currencyDisplay',$cd);
 
        }

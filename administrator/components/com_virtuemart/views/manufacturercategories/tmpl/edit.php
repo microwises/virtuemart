@@ -36,7 +36,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_category_name" id="mf_category_name" size="50" value="<?php echo $this->manufacturercategories->mf_category_name; ?>" />
+				<input class="inputbox" type="text" name="mf_category_name" id="mf_category_name" size="50" value="<?php echo $this->manufacturerCategory->mf_category_name; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<textarea rows="20" cols="50" name="mf_category_desc" id="mf_category_desc"><?php echo $this->manufacturercategories->mf_category_desc; ?></textarea>
+				<textarea rows="20" cols="50" name="mf_category_desc" id="mf_category_desc"><?php echo $this->manufacturerCategory->mf_category_desc; ?></textarea>
 
 
 			</td>
@@ -60,7 +60,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturercategories->published); ?>
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturerCategory->published); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="mf_category_id" value="<?php echo $this->manufacturercategories->mf_category_id; ?>" />
+	<input type="hidden" name="mf_category_id" value="<?php echo $this->manufacturerCategory->mf_category_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="manufacturercategories" />

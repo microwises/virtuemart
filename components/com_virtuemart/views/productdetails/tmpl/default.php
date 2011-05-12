@@ -105,7 +105,7 @@ if (empty ( $this->product )) {
 			<div class="spacer-buy-area">
 
 				<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
-				/* $link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&vendor_id='.$this->product->vendor_id);
+				/* $link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&virtuemart_vendor_id='.$this->product->virtuemart_vendor_id);
 				$text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
 				echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 				*/ ?>
@@ -582,7 +582,7 @@ if (empty ( $this->product )) {
 							<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 							<input type="hidden" name="option" value="com_virtuemart" />
 							<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-							<input type="hidden" name="review_id" value="0" />
+							<input type="hidden" name="virtuemart_product_review_id" value="0" />
 							<input type="hidden" name="task" value="review" />
 						</form>
 						<?php

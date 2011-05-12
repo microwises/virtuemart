@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
-			 $this->orderdetails['details']['BT']->order_id
+			 $this->orderdetails['details']['BT']->virtuemart_order_id
 		));
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {

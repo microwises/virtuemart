@@ -119,12 +119,12 @@ class VirtuemartViewProduct extends JView {
 				$vendor_model = $this->getModel('vendor');
 
 				$vendors = $vendor_model->getVendors();
-				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
+				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
 
-				$vendor_model->setId($product->vendor_id);
+				$vendor_model->setId($product->virtuemart_vendor_id);
 				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
@@ -318,10 +318,10 @@ class VirtuemartViewProduct extends JView {
 					$product->mediaitems = count($product->file_ids);
 					$product->reviews = $productreviews->countReviewsForProduct($virtuemart_product_id);
 
-					$vendor_model->setId($product->vendor_id);
+					$vendor_model->setId($product->virtuemart_vendor_id);
 					$vendor = $vendor_model->getVendor();
 					$calculator->setVendorCurrency($vendor->vendor_currency);
-					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->vendor_id,$vendor->vendor_currency);
+					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->virtuemart_vendor_id,$vendor->vendor_currency);
 					$price = $calculator->convertCurrencyTo($product->product_currency,$product->product_price,true);
 					$product->product_price_display = $currencyDisplay->getFullValue($price);
 

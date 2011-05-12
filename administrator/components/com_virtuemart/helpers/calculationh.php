@@ -172,7 +172,7 @@ class calculationHelper {
 					return false;
 				}
 			}
-			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="'.$productId.'" ');
+			$this->_db->setQuery( 'SELECT `virtuemart_vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="'.$productId.'" ');
 			$single = $this->_db->loadResult();
 			$this->productVendorId = $single;
 			if(empty($this->productVendorId)){
@@ -196,7 +196,7 @@ class calculationHelper {
 //			$this->product_override_price = $productId->product_override_price;
 //			$this->override = $productId->override;
 //
-//			$this->productVendorId = $productId->vendor_id;
+//			$this->productVendorId = $productId->virtuemart_vendor_id;
 //			if(empty($this->productVendorId)){
 //				$this->productVendorId=1;
 //			}
@@ -204,7 +204,7 @@ class calculationHelper {
 //
 //		}
 
-		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `vendor_id`="'.$this->productVendorId.'" ');
+		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
 
@@ -212,14 +212,14 @@ class calculationHelper {
 			$user = JFactory::getUser();
 			if(!empty($user->id)){
 				$this->_db->setQuery( 'SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups as `usgr`
- JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
+ JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`virtuemart_vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it
 			}
 			if(empty($this->_shopperGroupId)){
 				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');
+				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'"');
 //				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups
-//				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
+//				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId = $this->_db->loadResult();
 			}
 		}
@@ -359,7 +359,7 @@ class calculationHelper {
 	public function getCheckoutPrices($cart){
 
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
-//		echo '<br />virtuemart_shipping_rate_id '.$cart->virtuemart_shipping_rate_id.'<br />';
+//		echo '<br />virtuemart_shippingrate_id '.$cart->virtuemart_shippingrate_id.'<br />';
 		$pricesPerId = array();
 		$this->_cartPrices = array();
 		$this->_cartData = array();
@@ -444,7 +444,7 @@ class calculationHelper {
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 
-		$shippingRateId = empty($cart->virtuemart_shipping_rate_id) ? 0 : $cart->virtuemart_shipping_rate_id;
+		$shippingRateId = empty($cart->virtuemart_shippingrate_id) ? 0 : $cart->virtuemart_shippingrate_id;
 
 		$this->calculateShipmentPrice($shippingRateId);
 
@@ -580,7 +580,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
+		//virtuemart_calc_id 	virtuemart_virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
@@ -589,7 +589,7 @@ class calculationHelper {
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
 		' AND `published`="1" ' .
-		' AND (`virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+		' AND (`virtuemart_virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 		if(!empty($this->_amount)){
@@ -660,7 +660,7 @@ class calculationHelper {
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
 			' AND `published`="1" ' .
-			' AND (`virtuemart_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
+			' AND (`virtuemart_virtuemart_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 //			$shoppergrps .  $countries . $states ;
@@ -754,7 +754,7 @@ class calculationHelper {
 		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
 
 		// Outcommented (Oscar); use th model instead
-//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `virtuemart_shipping_rate_id` = "'.$ship_id.'" ';
+//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `virtuemart_shippingrate_id` = "'.$ship_id.'" ';
 //		$this->_db->setQuery($q);
 //		$shipping = $this->_db->loadAssoc();
 

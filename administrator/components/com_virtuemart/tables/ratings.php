@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableRatings extends JTable {
 
 	/** @var int Primary key */
-	var $review_id				= 0;
+	var $virtuemart_product_review_id				= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id           	= null;
 	/** @var string The user comment */
@@ -56,7 +56,7 @@ class TableRatings extends JTable {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_reviews', 'review_id', $db);
+		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
 	}
 }
 // pure php no closing tag

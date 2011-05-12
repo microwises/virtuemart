@@ -45,15 +45,15 @@ $option = JRequest::getWord('option');
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_CDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_STATUS', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NOTIFY', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_TOTAL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_CDATE', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_STATUS', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NOTIFY', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_TOTAL', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	    </tr>
 	</thead>
 	<tbody>
@@ -63,16 +63,16 @@ $option = JRequest::getWord('option');
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->orderslist as $key => $order) {
-		    $checked = JHTML::_('grid.id', $i , $order->order_id);
+		    $checked = JHTML::_('grid.id', $i , $order->virtuemart_order_id);
 		    ?>
 		    <tr class="<?php echo "row$k"; ?>">
 		    <!-- Checkbox -->
 		    <td><?php echo $checked; ?></td>
 		    <!-- Order id -->
 			<?php
-			$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
+			$link = 'index.php?option='.$option.'&view=orders&task=edit&virtuemart_order_id='.$order->virtuemart_order_id;
 			?>
-		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->order_id)); ?></td>
+		<td><?php echo JHTML::_('link', JRoute::_($link), $order->virtuemart_order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->virtuemart_order_id)); ?></td>
 		<!-- Name -->
 		<td><?php echo $order->order_name; ?></td>
 		<!-- Payment method -->
@@ -80,7 +80,7 @@ $option = JRequest::getWord('option');
 		<!-- Print view -->
 			<?php
 			/* Print view URL */
-			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&order_id=".$order->order_id;
+			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&virtuemart_order_id=".$order->virtuemart_order_id;
 			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
 			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 			?>
@@ -92,21 +92,21 @@ $option = JRequest::getWord('option');
 		<!-- Status -->
 		<td>
 			    <?php
-			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
-			    echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
+			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
+			    echo '<input type="hidden" name="current_order_status['.$order->virtuemart_order_id.']" value="'.$order->order_status.'" />';
 			    echo '<br />';
-			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->order_id.']'));
-			    echo '<textarea class="element-hidden vm-absolute vm-showable" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
+			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->virtuemart_order_id.']'));
+			    echo '<textarea class="element-hidden vm-absolute vm-showable" id="order_comment_'.$order->virtuemart_order_id.'" name="order_comment['.$order->virtuemart_order_id.']" value="" cols="40" rows="10"/></textarea>';
 			    ?>
 		</td>
 		<!-- Update -->
 		<td>
 			    <?php
-			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY');
+			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->virtuemart_order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY');
 			    echo '<br />';
-			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT');
+			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->virtuemart_order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT');
 			    echo '<br />';
-			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->order_id.']"  checked="checked" />'.JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS');
+			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->virtuemart_order_id.']"  checked="checked" />'.JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS');
 			    ?>
 		</td>
 		<!-- Total -->

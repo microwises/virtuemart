@@ -69,7 +69,7 @@ class TableUserfields extends JTable {
 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
 	var $sys			= 0;
 	/** @var int The Vendor ID, if vendor specific*/
-	var $vendor_id		= 0;
+	var $virtuemart_vendor_id		= 0;
 	/** @var mediumtex Additional type-specific parameters */
 	var $params			= null;
               /** @var boolean */

@@ -410,7 +410,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_address_type->readonly = 0;
 			$_address_type->calculated = 0;
 			$_address_type->sys = 0;
-			$_address_type->vendor_id = 1;
+			$_address_type->virtuemart_vendor_id = 1;
 			$_address_type->params = '';
 			$_fields[] = $_address_type;
 		}
@@ -437,7 +437,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_user_is_vendor->readonly = 0;
 			$_user_is_vendor->calculated = 0;
 			$_user_is_vendor->sys = 0;
-			$_user_is_vendor->vendor_id = 1;
+			$_user_is_vendor->virtuemart_vendor_id = 1;
 			$_user_is_vendor->params = '';
 			$_fields[] = $_user_is_vendor;
 		}

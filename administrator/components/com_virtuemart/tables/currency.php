@@ -31,7 +31,7 @@ class TableCurrency extends JTable {
 	/** @var int Primary key */
 	var $currency_id				= 0;
 	/** @var int vendor id */
-	var $vendor_id					= 1;
+	var $virtuemart_vendor_id					= 1;
 	/** @var string Currency name*/
 	var $currency_name           	= '';
 	/** @var char Currency code */

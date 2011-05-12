@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableOrder_status extends JTable {
 
 	/** @var int Primary key */
-	var $order_status_id			= 0;
+	var $virtuemart_orderstate_id			= 0;
 	/** @var char Order status Code */
 	var $order_status_code			= '';
 	/** @var string Order status name*/
@@ -39,7 +39,7 @@ class TableOrder_status extends JTable {
 	/** @var int Order in which the order status is listed */
 	var $ordering					= 0;
 	/** @var int Vendor ID if the status is vendor specific */
-	var $vendor_id					= null;
+	var $virtuemart_vendor_id					= null;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -50,7 +50,7 @@ class TableOrder_status extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_orderstates', 'order_status_id', $db);
+		parent::__construct('#__virtuemart_orderstates', 'virtuemart_orderstate_id', $db);
 	}
 
 	/**
@@ -70,14 +70,14 @@ class TableOrder_status extends JTable {
 		}
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT count(*),order_status_id FROM `#__virtuemart_orderstates` ';
+		$q = 'SELECT count(*),virtuemart_orderstate_id FROM `#__virtuemart_orderstates` ';
 		$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
 		$db->setQuery($q); 
 
 		$row = $db->loadRow();
 		if(is_array($row)){
 			if($row[0]>0){
-				if($row[1] != $this->order_status_id){
+				if($row[1] != $this->virtuemart_orderstate_id){
 					$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_EXISTS'));
 					return false;
 				}

@@ -109,7 +109,7 @@ class VirtuemartViewUser extends JView {
 
 			// Shopper info
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -224,7 +224,7 @@ class VirtuemartViewUser extends JView {
 					 }
 
 					 $vendorModel = $this->getModel('vendor');
-					 $vendorModel->setId($userDetails->vendor_id);
+					 $vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 					if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 						if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');

@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableVendor extends JTable {
 
     /** @var int Primary key */
-    var $vendor_id			= 0;
+    var $virtuemart_vendor_id			= 0;
     /** @var varchar Vendor name*/
     var $vendor_name  	         	= '';
     /** @var varchar Vendor phone number */
@@ -71,7 +71,7 @@ class TableVendor extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-		parent::__construct('#__virtuemart_vendors', 'vendor_id', $db);
+		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
     }
 
 
@@ -82,7 +82,7 @@ class TableVendor extends JTable {
      * @return boolean True if the table buffer is contains valid data, false otherwise.
      */
     function check() {
-		if (($this->vendor_name) && ($this->vendor_id == 0)) {
+		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
 		    $db = JFactory::getDBO();
 
 		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
@@ -115,9 +115,9 @@ class TableVendor extends JTable {
 	 */
 	public function store()
 	{
-		$_qry = 'SELECT vendor_id '
+		$_qry = 'SELECT virtuemart_vendor_id '
 				. 'FROM #__virtuemart_vendors '
-				. 'WHERE vendor_id = ' . $this->vendor_id
+				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
 		;
 		$this->_db->setQuery($_qry);
 		$_count = $this->_db->loadResultArray();

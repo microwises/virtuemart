@@ -68,7 +68,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	 */
 	 public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
 	 	if(!$jpluginId) return 0;
-	 	$q = 'SELECT `paym_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `vendor_id` = "'.$vendorId.'" ';
+	 	$q = 'SELECT `paym_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	 }
@@ -140,9 +140,9 @@ class VirtueMartModelPaymentmethod extends JModel
   		}
 
   		//what a nonsense
-//  		if(empty($this->_data->paym_vendor_id)){
+//  		if(empty($this->_data->paym_virtuemart_vendor_id)){
 //  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-//   			$this->_data->paym_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+//   			$this->_data->paym_virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 //  		}
 
   		if(!empty($this->_id)){
@@ -252,11 +252,11 @@ class VirtueMartModelPaymentmethod extends JModel
 			$params->bind($data['params']);
 			$data['params'] = $params->toString();
 		}
-		if($data['vendor_id']) $data['paym_vendor_id'] = $data['vendor_id'];
+		if($data['virtuemart_vendor_id']) $data['paym_virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 
-	  	if(empty($data['paym_vendor_id'])){
+	  	if(empty($data['paym_virtuemart_vendor_id'])){
 	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-	   		$data['paym_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
+	   		$data['paym_virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
 		// missing string FIX, Bad way ?
 		if (VmConfig::isJ15()) {

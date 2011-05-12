@@ -166,7 +166,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function getUser(){
 
-		//This can cause trouble, when you save a new vendor in the form with apply. The new vendor_id is not set then
+		//This can cause trouble, when you save a new vendor in the form with apply. The new virtuemart_vendor_id is not set then
 		//		if (empty($this->_data)) {
 
 			$this->_data = new stdClass();
@@ -207,7 +207,7 @@ class VirtueMartModelUser extends JModel {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 				$vendorModel = new VirtueMartModelVendor();
 
-				$vendorModel->setId($this->_data->vendor_id);
+				$vendorModel->setId($this->_data->virtuemart_vendor_id);
 				$this->_data->vendor = $vendorModel->getVendor();
 			}
 			//		}
@@ -481,7 +481,7 @@ class VirtueMartModelUser extends JModel {
 		 * that gets fired by the onAfterStoreUser. I'll built that (OvE)
 		 *
 		 * Notice:
-		 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the order_id
+		 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the virtuemart_order_id
 		 * with the email. The order is saved with all information in an extra table, so there is
 		 * no need for a silent registration. We may think about if we actually need/want the feature silent registration
 		 * The information of anonymous is stored in the order table and has nothing todo with the usermodel!
@@ -498,7 +498,7 @@ class VirtueMartModelUser extends JModel {
 
 			//update user table
 			$usertable = $this->getTable('vm_users');
-			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			if (!$usertable->bind($vmusersData)) {
 				$this->setError($usertable->getError());
 				return false;
@@ -517,7 +517,7 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			if(empty($_data['virtuemart_shoppergroup_id'])){
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 				$this->_db->setQuery($q);
 				$_data['virtuemart_shoppergroup_id']=$this->_db->loadResult();
 			}
@@ -534,24 +534,24 @@ class VirtueMartModelUser extends JModel {
 
 			if($_data['user_is_vendor']){
 
-				//	$_data['vendor_id'] = $_data['my_vendor_id'];
+				//	$_data['virtuemart_vendor_id'] = $_data['my_virtuemart_vendor_id'];
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
 
-				//TODO Attention this is set now to vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
-				//So we disable the possibility to store vendors not with vendor_id = 1
-				//$vendorModel->setId($_data['vendor_id']);
+				//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
+				//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
+				//$vendorModel->setId($_data['virtuemart_vendor_id']);
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
 					return false;
 				}else{
 					//Update xref Table
-					$vendor_id = $vendorModel->getId();
+					$virtuemart_vendor_id = $vendorModel->getId();
 
 					//update user table
 					//					$usertable = $this->getTable('vm_users');
-					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 					if (!$usertable->bind($vmusersData)) {
 						$this->setError($table->getError());
 						return false;

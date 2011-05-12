@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableShipping_Rate extends JTable {
 
 	/** @var int Primary key */
-	var $virtuemart_shipping_rate_id			= 0;
+	var $virtuemart_shippingrate_id			= 0;
 	/** @var string Shipping Rate name*/
 	var $shipping_rate_name      	= '';
 	/** @var string Shipping Rate name*/
@@ -64,7 +64,7 @@ class TableShipping_Rate extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_shippingrates', 'virtuemart_shipping_rate_id', $db);
+		parent::__construct('#__virtuemart_shippingrates', 'virtuemart_shippingrate_id', $db);
 	}
 
 
@@ -81,7 +81,7 @@ class TableShipping_Rate extends JTable {
 			return false;
 		}
 
-		if (($this->shipping_rate_name) && ($this->virtuemart_shipping_rate_id == 0)) {
+		if (($this->shipping_rate_name) && ($this->virtuemart_shippingrate_id == 0)) {
 		    $db =& JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__virtuemart_shippingrates` ';

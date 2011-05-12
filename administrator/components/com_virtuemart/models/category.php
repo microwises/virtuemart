@@ -196,7 +196,7 @@ class VirtueMartModelCategory extends JModel {
 		$query .= 'FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` ';
 		$query .= 'WHERE `#__virtuemart_category_categories`.`category_parent_id` = ' . $virtuemart_category_id . ' ';
 		$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
-		$query .= 'AND `#__virtuemart_categories`.`vendor_id` = ' . $vendorId . ' ';
+		$query .= 'AND `#__virtuemart_categories`.`virtuemart_vendor_id` = ' . $vendorId . ' ';
 		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
 		$query .= 'ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
 		$childList = $this->_getList( $query );
@@ -247,7 +247,7 @@ class VirtueMartModelCategory extends JModel {
 		}
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= " AND (c.`vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
+			$query .= " AND (c.`virtuemart_vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
 		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
@@ -374,7 +374,7 @@ class VirtueMartModelCategory extends JModel {
 		if ($cat_id > 0) {
 			$q = 'SELECT count(#__virtuemart_products.virtuemart_product_id) AS total
 			FROM `#__virtuemart_products`, `#__virtuemart_product_categories`
-			WHERE `#__virtuemart_products`.`vendor_id` = "'.$vendorId.'"
+			WHERE `#__virtuemart_products`.`virtuemart_vendor_id` = "'.$vendorId.'"
 			AND `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$this->_db->Quote($cat_id).'
 			AND `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			AND `#__virtuemart_products`.`published` = "1" ';
@@ -398,7 +398,7 @@ class VirtueMartModelCategory extends JModel {
 //		$db = JFactory::getDBO();
 //		$q = "SELECT count(#__virtuemart_products.virtuemart_product_id) AS num_rows
 //			FROM #__virtuemart_products, #__virtuemart_product_categories, #__virtuemart_categories
-//			WHERE #__virtuemart_products.vendor_id = 1
+//			WHERE #__virtuemart_products.virtuemart_vendor_id = 1
 //			AND #__virtuemart_product_categories.virtuemart_category_id = ".$virtuemart_category_id."
 //			AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_product_categories.virtuemart_category_id
 //			AND #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_categories.virtuemart_product_id
@@ -618,7 +618,7 @@ class VirtueMartModelCategory extends JModel {
 		$data = JRequest::get('post');
 
 		/* Vendor */
-		$data['vendor_id'] = 1;
+		$data['virtuemart_vendor_id'] = 1;
 
 		// Bind the form fields to the category table
 		if (!$table->bind($data)) {
@@ -796,7 +796,7 @@ class VirtueMartModelCategory extends JModel {
 			FROM `#__virtuemart_categories`, `#__virtuemart_category_categories`
 			WHERE `#__virtuemart_category_categories`.`category_parent_id` = ".$virtuemart_category_id."
 			AND `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
-			AND `#__virtuemart_categories`.`vendor_id` = 1
+			AND `#__virtuemart_categories`.`virtuemart_vendor_id` = 1
 			AND `#__virtuemart_categories`.`published` = 1
 			ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;

@@ -57,10 +57,10 @@ class VirtuemartViewMedia extends JView {
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
-				if(empty($userDetails->vendor_id)){
+				if(empty($userDetails->virtuemart_vendor_id)){
 					JError::raiseError(403,'Forbidden for non vendors');
 				}
-				if(empty($media->vendor_id))$media->vendor_id = $userDetails->vendor_id;
+				if(empty($media->virtuemart_vendor_id))$media->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 			else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');

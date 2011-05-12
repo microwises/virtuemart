@@ -29,11 +29,11 @@ defined('_JEXEC') or die('Restricted access');
 class TableOrders extends JTable {
 
 	/** @var int Primary key */
-	var $order_id = 0;
+	var $virtuemart_order_id = 0;
 	/** @var int User ID */
 	var $virtuemart_user_id = 0;
 	/** @var int Vendor ID */
-	var $vendor_id = 0;
+	var $virtuemart_vendor_id = 0;
 	/** @var int Order number */
 	var $order_number = NULL;
 	var $order_pass = NULL;
@@ -86,7 +86,7 @@ class TableOrders extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__virtuemart_orders', 'order_id', $db);
+		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);
 	}
 
 	/**
@@ -112,26 +112,26 @@ class TableOrders extends JTable {
 	 */
 	function delete($id)
 	{
-		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `order_id` = ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
 		/*vm_order_payment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `paym_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
-			WHERE `#__virtuemart_paymentmethods`.`paym_id` = `#__virtuemart_orders`.`payment_method_id` AND `order_id` = ' . $id );
+			WHERE `#__virtuemart_paymentmethods`.`paym_id` = `#__virtuemart_orders`.`payment_method_id` AND `virtuemart_order_id` = ' . $id );
 		$paymentTable = '#__vm_order_payment_'. $this->_db->loadResult();
 		/*$paymentTable is the paiement used in order*/
-		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `order_id` = ' . $id);
+		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
 
 
-		$_q = 'INSERT INTO `#__virtuemart_order_history` ('
-				.	' order_status_history_id'
-				.	',order_id'
+		$_q = 'INSERT INTO `#__virtuemart_order_histories` ('
+				.	' virtuemart_order_history_id'
+				.	',virtuemart_order_id'
 				.	',order_status_code'
 				.	',date_added'
 				.	',customer_notified'

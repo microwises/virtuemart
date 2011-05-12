@@ -51,11 +51,11 @@ class VirtuemartViewOrders extends JView {
 
 		/* Get the data */
 		$order = $this->get('Order');
-		$_orderID = $order['details']['BT']->order_id;
+		$_orderID = $order['details']['BT']->virtuemart_order_id;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-		$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->vendor_id);
+		$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->virtuemart_vendor_id);
 		$this->assignRef('currency', $currency);
 
 		$_userFields = $userFieldsModel->getUserFields(
@@ -95,11 +95,11 @@ class VirtuemartViewOrders extends JView {
 				foreach ($_prodAttribs as $_pAttr) {
 					$_list = explode(',', $_pAttr);
 					$_name = array_shift($_list);
-					$_productAttributes[$_item->order_item_id][$_name] = array();
+					$_productAttributes[$_item->virtuemart_order_item_id][$_name] = array();
 					foreach ($_list as $_opt) {
 						$_optObj = new stdClass();
 						$_optObj->option = $_opt;
-						$_productAttributes[$_item->order_item_id][$_name][] = $_optObj;
+						$_productAttributes[$_item->virtuemart_order_item_id][$_name][] = $_optObj;
 					}
 				}
 			}
@@ -124,12 +124,12 @@ class VirtuemartViewOrders extends JView {
 		$tpl = isset($this->layoutName) ? 'mail_raw_' . $this->layoutName : 'mail_raw_updorder';
 		$this->setLayout($tpl);
 		$vendorModel = $this->getModel('vendor');
-		$vendor_id = $vendorModel ->getVendorId('order', $this->order->order_id);
-		$vendorModel->setId($vendor_id);
+		$virtuemart_vendor_id = $vendorModel ->getVendorId('order', $this->order->virtuemart_order_id);
+		$vendorModel->setId($virtuemart_vendor_id);
 		$this->vendor = $vendorModel->getVendor();
-		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 
-		$this->subject = JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->order_id);
+		$this->subject = JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->order->virtuemart_order_id);
 		parent::display();
 	}
 }

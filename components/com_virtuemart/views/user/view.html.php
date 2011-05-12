@@ -130,7 +130,7 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='mailregisteruser'){
 			$vendorModel = $this->getModel('vendor');
-//			$vendorModel->setId($this->_userDetails->vendor_id);
+//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
 		}
@@ -368,7 +368,7 @@ class VirtuemartViewUser extends JView {
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		if(Permissions::getInstance()->check('admin,storeadmin')){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['virtuemart_shoppergroup_id']);
-			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
+			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
 
 		} else {
 			$this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
@@ -377,16 +377,16 @@ class VirtuemartViewUser extends JView {
 			}
 			$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
 
-			if(!empty($this->_userDetails->vendor_id)){
-				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
+			if(!empty($this->_userDetails->virtuemart_vendor_id)){
+				$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
 			}
 
 			if(empty($this->_lists['vendors'])){
 // Outcommented to revert rev. 2916
-//				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
-//					.(empty($this->_userDetails->vendor_id)
-//						?VmConfig::get('default_vendor_id')
-//						: $this->_userDetails->vendor_id
+//				$_setVendor = '<input type="hidden" name="virtuemart_vendor_id" id="virtuemart_vendor_id" value = "'
+//					.(empty($this->_userDetails->virtuemart_vendor_id)
+//						?VmConfig::get('default_virtuemart_vendor_id')
+//						: $this->_userDetails->virtuemart_vendor_id
 //					 ).'"/>';
 				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
@@ -469,7 +469,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 			$vendorModel = $this->getModel('vendor');
-			$vendorModel->setId($this->_userDetails->vendor_id);
+			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$vendorModel->addImagesToVendor($vendor);
 			$this->assignRef('vendor', $vendor);

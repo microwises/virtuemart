@@ -80,7 +80,7 @@ class VirtuemartViewPaymentMethod extends JView {
 
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups));
 
-			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($paym->paym_virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {

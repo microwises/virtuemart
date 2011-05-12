@@ -30,7 +30,7 @@ class TableMedia extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_media_id				= 0;
-	var $vendor_id				= 0;
+	var $virtuemart_vendor_id				= 0;
 
 	/** @var string File title */
 	var $file_title				= '';
@@ -76,8 +76,8 @@ class TableMedia extends JTable {
 
 		$ok = true;
 		$notice = true;
-	    if (!$this->vendor_id) {
-			$this->vendor_id = 1; //default to mainvendor
+	    if (!$this->virtuemart_vendor_id) {
+			$this->virtuemart_vendor_id = 1; //default to mainvendor
 		}
 		if(empty($this->file_title)) $this->file_title = $this->file_name ;
 

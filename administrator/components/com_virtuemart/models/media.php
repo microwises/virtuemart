@@ -185,7 +185,7 @@ class VirtueMartModelMedia extends JModel {
     		$query='SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` ';
     	    if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	    	if(!Permissions::getInstance()->check('admin') ){
-				$whereItems[] = '(`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 	    	}
 
 	    	if ($onlyPublished) {

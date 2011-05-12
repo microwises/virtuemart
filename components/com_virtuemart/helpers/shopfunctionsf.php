@@ -396,7 +396,7 @@ class shopFunctionsF {
 	 * @param $vendorId default is 1 (mainstore)
 	 * @deprecated
 	 */
-	function sendVmMailold($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
+	function sendVmMailold($body,$recipient,$subject='TODO set subject', $virtuemart_vendor_id=1, $mediaToSend = false ){
 
 		$mailer =& JFactory::getMailer();
 
@@ -426,7 +426,7 @@ class shopFunctionsF {
 
 		// Optionally add embedded image  //TODO Test it
 		$vendor = $this->getModel('vendor','VirtuemartModel');
-		$vendor->setId($vendor_id);
+		$vendor->setId($virtuemart_vendor_id);
 		$_store = $vendor->getVendor();
 
 		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->file_ids, 'base64', 'image/jpeg' );

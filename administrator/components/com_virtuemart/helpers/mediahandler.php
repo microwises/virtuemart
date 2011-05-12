@@ -621,7 +621,7 @@ class VmMediaHandler {
 
     	$vendorId=1;
     	$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-    	AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
+    	AND (`virtuemart_vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$this->_db->setQuery($q);

@@ -40,7 +40,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="vendor_id">
+				<label for="virtuemart_vendor_id">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>

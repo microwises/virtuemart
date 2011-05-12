@@ -73,9 +73,9 @@ class VirtueMartModelOrders extends JModel {
 		if (empty($this->_total)) {
 			$db = JFactory::getDBO();
 
-			$q = "SELECT o.`order_id` ".$this->getOrdersListQuery().$this->getOrdersListFilter();
+			$q = "SELECT o.`virtuemart_order_id` ".$this->getOrdersListQuery().$this->getOrdersListFilter();
 			$db->setQuery($q);
-			$fields = $db->loadObjectList('order_id');
+			$fields = $db->loadObjectList('virtuemart_order_id');
 			$this->_total = count($fields);
 		}
 
@@ -95,7 +95,7 @@ class VirtueMartModelOrders extends JModel {
 
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
 		$db->setQuery($q);
 		$oderId = $db->loadResult();
 		return $oderId;
@@ -113,7 +113,7 @@ class VirtueMartModelOrders extends JModel {
 
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE ="'.$order_id.'"  ';
+		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE ="'.$virtuemart_order_id.'"  ';
 		$db->setQuery($q);
 		$OrderNumber = $db->loadResult();
 		return $OrderNumber;
@@ -123,11 +123,11 @@ class VirtueMartModelOrders extends JModel {
 	/**
 	 * Load a single order
 	 */
-	public function getOrder($order_id='')
+	public function getOrder($virtuemart_order_id='')
 	{
 		$db = JFactory::getDBO();
 		$order = array();
-		if(empty($order_id))$order_id = JRequest::getInt('order_id');
+		if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 
 		/* Get the order details */
 		$q = "SELECT o.*, u.*,
@@ -137,28 +137,28 @@ class VirtueMartModelOrders extends JModel {
 			LEFT JOIN #__virtuemart_orderstates s
 			ON s.order_status_code = o.order_status
 			LEFT JOIN #__virtuemart_order_userinfos u
-			ON u.order_id = o.order_id
-			WHERE o.order_id=".$order_id;
+			ON u.virtuemart_order_id = o.virtuemart_order_id
+			WHERE o.virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
 
 		/* Get the order history */
 		$q = "SELECT *
-			FROM #__virtuemart_order_history
-			WHERE order_id=".$order_id."
-			ORDER BY order_status_history_id ASC";
+			FROM #__virtuemart_order_histories
+			WHERE virtuemart_order_id=".$virtuemart_order_id."
+			ORDER BY virtuemart_order_history_id ASC";
 		$db->setQuery($q);
 		$order['history'] = $db->loadObjectList();
 
 		/* Get the order items */
-		$q = "SELECT order_item_id, product_quantity, order_item_name,
+		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				order_item_sku, i.virtuemart_product_id, product_item_price,
 				product_final_price, product_attribute, order_status,
 				intnotes
 			FROM #__virtuemart_order_items i
 			LEFT JOIN #__virtuemart_products p
 			ON p.virtuemart_product_id = i.virtuemart_product_id
-			WHERE order_id=".$order_id;
+			WHERE virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 
@@ -191,7 +191,7 @@ class VirtueMartModelOrders extends JModel {
 		} else {
 			$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 		}
-		return $db->loadObjectList('order_id');
+		return $db->loadObjectList('virtuemart_order_id');
 	}
 
 	/**
@@ -202,7 +202,7 @@ class VirtueMartModelOrders extends JModel {
 	{
 		return 'FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_order_userinfos u
-			ON u.order_id = o.order_id
+			ON u.virtuemart_order_id = o.virtuemart_order_id
 			LEFT JOIN #__virtuemart_paymentmethods m
 			ON o.payment_method_id = m.paym_id';
 	}
@@ -215,8 +215,8 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$db = JFactory::getDBO();
 		/* Check some filters */
-		$filter_order = JRequest::getCmd('filter_order', 'order_id');
-		if ($filter_order == '') $filter_order = 'order_id';
+		$filter_order = JRequest::getCmd('filter_order', 'virtuemart_order_id');
+		if ($filter_order == '') $filter_order = 'virtuemart_order_id';
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 
@@ -224,10 +224,10 @@ class VirtueMartModelOrders extends JModel {
 		// page here, so this dirty hack makes sure we don't get errors here.
 		// Consider it a Joomla bug... but we have to deal with it....
 		if ($filter_order == 'id') {
-			$filter_order = 'order_id';
+			$filter_order = 'virtuemart_order_id';
 		}
 		/* Attributes name */
-		if (JRequest::getVar('filter_orders', false)) $filters[] = '#__virtuemart_orders.`order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
+		if (JRequest::getVar('filter_orders', false)) $filters[] = '#__virtuemart_orders.`virtuemart_order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
 
 		if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
 		else $filter = ' ORDER BY '.$filter_order." ".$filter_order_Dir;
@@ -359,17 +359,17 @@ class VirtueMartModelOrders extends JModel {
 		if ($update) {
 			$updated = 0;
 			$error = 0;
-			foreach ($update as $order_id => $new_status) {
+			foreach ($update as $virtuemart_order_id => $new_status) {
 				$timestamp = time();
 				/* Get customer notification */
-				$customer_notified = (@$notify[$order_id] == 1) ? 1 : 0;
+				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
 
 				/* Get the comments */
-				$comment = (array_key_exists($order_id, $comments)) ? $comments[$order_id] : '';
+				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
 
 				/* Update the order */
 				$order = $this->getTable();
-				$order->load($order_id);
+				$order->load($virtuemart_order_id);
 				$order_status_code = $order->order_status;
 
 				// Order updates can be ignored if we're updating only lines
@@ -381,7 +381,7 @@ class VirtueMartModelOrders extends JModel {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher =& JDispatcher::getInstance();
 					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
-									 $order_id
+									 $virtuemart_order_id
 								)
 						);
 					foreach ($_returnValues as $_returnValue) {
@@ -402,7 +402,7 @@ class VirtueMartModelOrders extends JModel {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher =& JDispatcher::getInstance();
 					$_dispatcher->trigger('plgVmOnCancelPayment',array(
-									 $order_id
+									 $virtuemart_order_id
 									,$order_status_code
 									,$new_status
 							)
@@ -411,7 +411,7 @@ class VirtueMartModelOrders extends JModel {
 
 				if ($order->store()) {
 					/* Update the order history */
-					$this->_updateOrderHist($order_id, $new_status, $customer_notified, $comment);
+					$this->_updateOrderHist($virtuemart_order_id, $new_status, $customer_notified, $comment);
 
 					/* Update stock level */
 					if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
@@ -422,7 +422,7 @@ class VirtueMartModelOrders extends JModel {
 						$_q = 'SELECT virtuemart_product_id '
 							.', product_quantity '
 							.'FROM `#__virtuemart_order_items` '
-							."WHERE `order_id` = $order_id";
+							."WHERE `virtuemart_order_id` = $virtuemart_order_id";
 						$db->setQuery($_q);
 						if ($_products = $db->loadObjectList()) {
 							foreach ($_products as $_key => $_product) {
@@ -436,24 +436,24 @@ class VirtueMartModelOrders extends JModel {
 					}
 
 					/* Update order item status */
-					if (@$update_lines[$order_id]) {
-						$q = "SELECT order_item_id
+					if (@$update_lines[$virtuemart_order_id]) {
+						$q = "SELECT virtuemart_order_item_id
 							FROM #__virtuemart_order_items
-							WHERE order_id=".$order_id;
+							WHERE virtuemart_order_id=".$virtuemart_order_id;
 						$db->setQuery($q);
 						$order_items = $db->loadObjectList();
 						if ($order_items) {
 							foreach ($order_items as $key => $order_item) {
-								$this->updateSingleItemStatus($order_item->order_item_id, $new_status);
+								$this->updateSingleItemStatus($order_item->virtuemart_order_item_id, $new_status);
 							}
 						}
 					}
 
 					/* Send a download ID */
-					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($order_id);
+					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 					/* Check if the customer needs to be informed */
-					if (@$notify[$order_id]) $this->notifyCustomer($order, $comments);
+					if (@$notify[$virtuemart_order_id]) $this->notifyCustomer($order, $comments);
 					$updated++;
 				} else {
 					$error++;
@@ -518,9 +518,9 @@ class VirtueMartModelOrders extends JModel {
 //		$_prices['salesPricePayment']	Total
 
 		$_orderData =  $this->getTable('orders');
-		$_orderData->order_id = null;
+		$_orderData->virtuemart_order_id = null;
 		$_orderData->virtuemart_user_id = $_usr->get('id');
-		$_orderData->vendor_id = $_cart->vendorId;
+		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
 		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'),8);
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
@@ -548,7 +548,7 @@ class VirtueMartModelOrders extends JModel {
 		//Should be done in table
 //		$_orderData->created_on = time();
 //		$_orderData->modified_on = time();
-		$_orderData->ship_method_id = $_cart->virtuemart_shipping_rate_id;
+		$_orderData->ship_method_id = $_cart->virtuemart_shippingrate_id;
 
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
@@ -600,7 +600,7 @@ class VirtueMartModelOrders extends JModel {
 				$_userInfoData->$_name = $_cart->BT[$_name];
 			}
 		}
-		$_userInfoData->order_id = $_id;
+		$_userInfoData->virtuemart_order_id = $_id;
 		$_userInfoData->virtuemart_user_id = $_usr->get('id');
 		if (!$_userInfoData->store()){
 			$this->setError($_userInfoData->getError());
@@ -626,7 +626,7 @@ class VirtueMartModelOrders extends JModel {
 					$_userInfoData->$_name = $_cart->ST[$_name];
 				}
 			}
-			$_userInfoData->order_id = $_id;
+			$_userInfoData->virtuemart_order_id = $_id;
 			$_userInfoData->virtuemart_user_id = $_usr->get('id');
 			$_userInfoData->address_type = 'ST';
 			if (!$_userInfoData->store()){
@@ -715,10 +715,10 @@ class VirtueMartModelOrders extends JModel {
 //    * [double] discountAmount = 2.19
 //    * [double] priceWithoutTax = 36.48
 //    * [double] variantModification = 0
-			$_orderItems->order_item_id = null;
-			$_orderItems->order_id = $_id;
+			$_orderItems->virtuemart_order_item_id = null;
+			$_orderItems->virtuemart_order_id = $_id;
 			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
-			$_orderItems->vendor_id = $_prod->vendor_id;
+			$_orderItems->virtuemart_vendor_id = $_prod->virtuemart_vendor_id;
 			$_orderItems->virtuemart_product_id = $_prod->virtuemart_product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
@@ -761,7 +761,7 @@ class VirtueMartModelOrders extends JModel {
 	private function _updateOrderHist($_id, $_status = 'P', $_notified = 1, $_comment = '')
 	{
 		$_orderHist = $this->getTable('order_history');
-		$_orderHist->order_id = $_id;
+		$_orderHist->virtuemart_order_id = $_id;
 		$_orderHist->order_status_code = $_status;
 		$_orderHist->date_added = date('Y-m-d G:i:s', time());
 		$_orderHist->customer_notified = $_notified;
@@ -811,7 +811,7 @@ class VirtueMartModelOrders extends JModel {
 	public function updateSingleItem()
 	{
 		$_table = $this->getTable('order_item');
-		$_item = JRequest::getVar('order_item_id', '');
+		$_item = JRequest::getVar('virtuemart_order_item_id', '');
 		$_table->load($_item);
 		$_table->order_status = JRequest::getVar('order_status_'.$_item, '');
 		$_table->product_quantity = JRequest::getVar('product_quantity_'.$_item, '');
@@ -836,21 +836,21 @@ class VirtueMartModelOrders extends JModel {
 	 * @author ?, Christopher Roussel
 	 * @return boolean
 	 */
-	function mailDownloadId ($order_id) {
+	function mailDownloadId ($virtuemart_order_id) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$vars = array('orderID' => $order_id);
+		$vars = array('orderID' => $virtuemart_order_id);
 
 		$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT order_status FROM #__virtuemart_orders WHERE order_id='.$order_id);
+		$db->setQuery('SELECT order_status FROM #__virtuemart_orders WHERE virtuemart_order_id='.$virtuemart_order_id);
 		$order_status = $db->loadResult();
 
 		if ($order_status == VmConfig::get('enable_download_status')) {
-			$q = "SELECT order_id,virtuemart_user_id,download_id,file_name
+			$q = "SELECT virtuemart_order_id,virtuemart_user_id,download_id,file_name
 				FROM #__virtuemart_product_downloads
-				WHERE order_id = '".$order_id."'";
+				WHERE virtuemart_order_id = '".$virtuemart_order_id."'";
 			$db->setQuery($q);
 			$downloads = $db->loadObjectList();
 			if ($downloads) {
@@ -877,7 +877,7 @@ class VirtueMartModelOrders extends JModel {
 			}
 		}
 		else if ($order_status == VmConfig::get('disable_download_status')) {
-			$q = "DELETE FROM #__virtuemart_product_downloads WHERE order_id=".$order_id;
+			$q = "DELETE FROM #__virtuemart_product_downloads WHERE virtuemart_order_id=".$virtuemart_order_id;
 			$db->setQuery($q);
 			$db->query();
 		}
@@ -897,7 +897,7 @@ class VirtueMartModelOrders extends JModel {
 		$vars = array('order' => $order, 'comments' => $_comments);
 		$vars['includeComments'] = JRequest::getVar('include_comment', array());
 
-		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&order_id=".$order->order_id.'&Itemid='.$sess->getShopItemid();
+		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';
 
 		$db = JFactory::getDBO();
@@ -907,8 +907,8 @@ class VirtueMartModelOrders extends JModel {
 			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id
 			LEFT JOIN #__virtuemart_orderstates
 			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
-			WHERE #__virtuemart_orders.order_id = '".$order->order_id."'
-			AND #__virtuemart_orders.order_id = #__virtuemart_order_userinfos.order_id";
+			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order->virtuemart_order_id."'
+			AND #__virtuemart_orders.virtuemart_order_id = #__virtuemart_order_userinfos.virtuemart_order_id";
 		$db->setQuery($q);
 		$db->query();
 		$user = $db->loadObject();
@@ -941,7 +941,7 @@ class VirtueMartModelOrders extends JModel {
 		else {
 			$table->reset();
 			$table->created_on = JFactory::getDate()->toMySql();
-			$table->order_id = $orderId;
+			$table->virtuemart_order_id = $orderId;
 			return $table;
 		}
 	}
@@ -1017,10 +1017,10 @@ class VirtueMartModelOrders extends JModel {
 	}
 	/*
 	*delete product from order item table
-	*@var $order_id Order to clear
+	*@var $virtuemart_order_id Order to clear
 	*/
-	function removeOrderItems ($order_id){
-		$q ='DELETE from `#__virtuemart_order_items` WHERE `order_id` = ' . $order_id;
+	function removeOrderItems ($virtuemart_order_id){
+		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		 $this->_db->setQuery($q);
 
 		if ($this->_db->query() === false) {

@@ -58,7 +58,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 					,'auto_inc' => true
 					,'null' => false
 			)
-			,'order_id' => array (
+			,'virtuemart_order_id' => array (
 					 'type' => 'int'
 					,'length' => 11
 					,'null' => false
@@ -70,7 +70,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		);
 		$_schemeIdx = array(
 			 'idx_order_payment' => array(
-					 'columns' => array ('order_id')
+					 'columns' => array ('virtuemart_order_id')
 					,'primary' => false
 					,'unique' => false
 					,'type' => null
@@ -128,7 +128,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		$database = JFactory::getDBO();
 
-		$_vendorID = 1 ; //$_orderData->vendor_id; TODO
+		$_vendorID = 1 ; //$_orderData->virtuemart_vendor_id; TODO
 		$_vendorCurrency = VirtueMartModelVendor::getVendorCurrency($_vendorID);
 
 		// Option to send email to merchant from gateway
@@ -152,7 +152,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			'receiver_email' => $this->params->get('PAYPAL_EMAIL') , 
 			'item_name' => JText::_( 'VM_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr , 
 			'order_number' => VirtueMartModelOrders::getOrderNumber($_orderNr),
-			"order_id" => $_orderNr,
+			"virtuemart_order_id" => $_orderNr,
 			"invoice" => $_orderNr , 
 			"amount" => $_priceData['billTotal'] , 
 			"shipping" => $_priceData['order_shipping'], 
@@ -168,8 +168,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			"country" => ShopFunctions::getCountryByID($_usrST['virtuemart_country_id'],'country_3_code') , 
 			"email" => $_usrBT[ 'email' ] , 
 			"night_phone_b" => $_usrBT[ 'phone_1' ] ,
-			"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_id=' . $_orderNr ), // TO VERIFY
-			"notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
+			"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY
+			"notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
 			"cancel_return" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart') , // TO VERIFY
 			"undefined_quantity" => "0" , 
 
@@ -186,7 +186,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		}
 
 		// Prepare data that should be stored in the database
-		$_dbValues['order_id'] = $_orderNr;
+		$_dbValues['virtuemart_order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		// TODO wait for PAYPAL return ???
 //		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
@@ -239,7 +239,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
+	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
 		
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
@@ -247,7 +247,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		}
 		$_db = JFactory::getDBO();
 		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
-			. 'WHERE `order_id` = ' . $_order_id;
+			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {
 			JError::raiseWarning(500, $_db->getErrorMsg());

@@ -29,7 +29,7 @@ class TablePayment_method extends JTable
 	/** @var int Primary key */
 	var $paym_id					= 0;
 	/** @var string VendorID of the payment_method creator */
-	var $paym_vendor_id				= 0;
+	var $paym_virtuemart_vendor_id				= 0;
 	/** @var id for the used plugin */
 	var $paym_jplugin_id			= 0;
 	/** @var string Paymentmethod name */
@@ -92,7 +92,7 @@ class TablePayment_method extends JTable
 			return false;
 		}
 
-        if (!$this->paym_vendor_id) {
+        if (!$this->paym_virtuemart_vendor_id) {
 			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_HAVE_VENDOR'));
 			return false;
 		}

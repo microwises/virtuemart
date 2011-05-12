@@ -106,7 +106,7 @@ class VirtueMartModelWaitingList extends JModel {
 //		global $vmLogger;
 //		$db = new ps_DB;
 //
-//		$q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
+//		$q = "SELECT virtuemart_waitinguser_id from #__{vm}_waiting_list WHERE ";
 //		$q .= "notify_email='" . $d["notify_email"] . "' AND ";
 //		$q .= "virtuemart_product_id='" . $d["virtuemart_product_id"] . "' AND notified='0'";
 //		$db->query($q);

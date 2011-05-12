@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 	/** @var int Vendor ID */
 	var $virtuemart_user_id			= 0;
 	var $user_is_vendor 	= 0;
-	var $vendor_id 			= 0;
+	var $virtuemart_vendor_id 			= 0;
 	var $customer_number 	= 0;
 	var $perms				= 0;
                /** @var boolean */

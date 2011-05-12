@@ -32,7 +32,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
-				<td><?php printf("%08d", $this->orderbt->order_id);?></td>
+				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>

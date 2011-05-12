@@ -67,7 +67,7 @@ AdminMenuHelper::startAdminArea();
 			      <a href="<?php echo $editlink; ?>"><?php echo $row->shopper_group_name; ?></a>
 			    </td>
 			    <td align="left">
-            <?php echo $row->vendor_id; ?>
+            <?php echo $row->virtuemart_vendor_id; ?>
           </td>
 			    <td align="left">
 				    <?php echo $row->shopper_group_desc; ?>

@@ -96,7 +96,7 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="ratings" />
-<input type="hidden" name="review_id" value="<?php echo $this->rating->review_id; ?>" />
+<input type="hidden" name="virtuemart_product_review_id" value="<?php echo $this->rating->virtuemart_product_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
 <input type="hidden" name="userid" value="<?php echo $this->rating->userid; ?>" />
 <input type="hidden" name="time" value="<?php echo $this->rating->time; ?>" />

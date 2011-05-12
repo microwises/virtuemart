@@ -260,7 +260,7 @@ class VirtueMartModelProduct extends JModel {
 
 				/* Load the vendor details */
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->vendor_id);
+				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 				/* Check for child products */
 				$product->haschildren = $this->checkChildProducts($virtuemart_product_id);
@@ -701,7 +701,7 @@ class VirtueMartModelProduct extends JModel {
 			LEFT OUTER JOIN #__virtuemart_category_categories
 			ON #__virtuemart_categories.virtuemart_category_id = #__virtuemart_category_categories.category_child_id
 			LEFT OUTER JOIN #__virtuemart_vendors
-			ON #__virtuemart_products.vendor_id = #__virtuemart_vendors.vendor_id';
+			ON #__virtuemart_products.virtuemart_vendor_id = #__virtuemart_vendors.virtuemart_vendor_id';
     }
 
     /**
@@ -1117,7 +1117,7 @@ class VirtueMartModelProduct extends JModel {
 	public function createChild($id){
 		// created_on , modified_on
 		$vendorId = 1 ;
-		$q = 'INSERT INTO `#__virtuemart_products` ( `vendor_id`, `product_parent_id` ) VALUES ( '.$vendorId.', '.$id.' )';
+		$q = 'INSERT INTO `#__virtuemart_products` ( `virtuemart_vendor_id`, `product_parent_id` ) VALUES ( '.$vendorId.', '.$id.' )';
 		$this->_db->setQuery($q);
 		$this->_db->query();
 		return $this->_db->insertid();
@@ -1810,10 +1810,10 @@ class VirtueMartModelProduct extends JModel {
 					if (empty($product)){
 						$vendorId=1;
 					} else {
-						$vendorId = $product->vendor_id;
+						$vendorId = $product->virtuemart_vendor_id;
 					}
 					$q='SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
-					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
+					AND (`virtuemart_vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 					$this->_db->setQuery($q);
 					$options = $this->_db->loadObjectList();
 					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$value).$priceInput;
@@ -1878,7 +1878,7 @@ class VirtueMartModelProduct extends JModel {
 			$calculator = calculationHelper::getInstance();
 
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
-//			$vendor_currency = VirtueMartModelVendor::getVendorCurrency($product->vendor_id)->currency_code;
+//			$vendor_currency = VirtueMartModelVendor::getVendorCurrency($product->virtuemart_vendor_id)->currency_code;
 			// render select list
 			foreach ($groups as & $group) {
 
@@ -2007,7 +2007,7 @@ class VirtueMartModelProduct extends JModel {
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
 					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
+					AND (`virtuemart_vendor_id`= "'.$product->virtuemart_vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
 					$image = $db->loadObject();

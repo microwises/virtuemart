@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 class TableOrder_history extends JTable {
 
 	/** @var int Primary key */
-	var $order_status_history_id = 0;
+	var $virtuemart_order_history_id = 0;
 	/** @var int Order ID */
-	var $order_id = 0;
+	var $virtuemart_order_id = 0;
 	/** @var char Order status code */
 	var $order_status_code = 0;
 	/** @var datetime Date added */
@@ -45,7 +45,7 @@ class TableOrder_history extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__virtuemart_order_history', 'order_status_history_id', $db);
+		parent::__construct('#__virtuemart_order_histories', 'virtuemart_order_history_id', $db);
 	}
 }
 // pure php no closing tag

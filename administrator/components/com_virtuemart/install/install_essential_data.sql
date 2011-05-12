@@ -64,7 +64,7 @@ INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_descrip
 -- Dumping data for table `#__virtuemart_orderstates`
 --
 
-INSERT INTO `#__virtuemart_orderstates` (`order_status_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `vendor_id`) VALUES
+INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `virtuemart_vendor_id`) VALUES
 (null, 'P', 'Pending', '', 1, 1),
 (null, 'C', 'Confirmed', '', 2, 1),
 (null, 'X', 'Cancelled', '', 3, 1),
@@ -76,7 +76,7 @@ INSERT INTO `#__virtuemart_orderstates` (`order_status_id`, `order_status_code`,
 -- Dumping data for table `#__virtuemart_userfields`
 --
 
-INSERT INTO `#__virtuemart_userfields` (`virtuemart_userfield_id`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `vendor_id`, `params`) VALUES
+INSERT INTO `#__virtuemart_userfields` (`virtuemart_userfield_id`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`) VALUES
 (null, 'email', 'COM_VIRTUEMART_REGISTER_EMAIL', '', 'emailaddress', 100, 30, 1, 2, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'title', 'COM_VIRTUEMART_SHOPPER_FORM_TITLE', '', 'select', 0, 0, 0, 8, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'password', 'COM_VIRTUEMART_SHOPPER_FORM_PASSWORD_1', '', 'password', 25, 30, 1, 4, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),

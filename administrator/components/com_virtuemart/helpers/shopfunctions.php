@@ -69,23 +69,23 @@ class ShopFunctions {
 			if(empty($vendorId)){
 				$vendorId = 1;
 				//Dont delete this message, we need it later for multivendor
-				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
+				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
 			}
-			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `vendor_id` = "'.$vendorId.'" ';
+			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
-//			$html .='<input type="hidden" value="'.$vendorId.'" name="vendor_id">';
+//			$html .='<input type="hidden" value="'.$vendorId.'" name="virtuemart_vendor_id">';
 			return $html;
 		} else {
 
-			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
+			$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
 			$db->setQuery($q);
 			$vendors = $db->loadAssocList();
 
 			$attrs = '';
 			$name = 'vendor_name';
-			$idA = $id = 'vendor_id';
+			$idA = $id = 'virtuemart_vendor_id';
 
 			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift($vendors, $emptyOption);
@@ -252,7 +252,7 @@ class ShopFunctions {
 		if($level==0){
 			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
 		}
-		$vendor_id = 1;
+		$virtuemart_vendor_id = 1;
 
 		$categoryModel = self::getModel('category');
 		$level++;
@@ -380,8 +380,8 @@ class ShopFunctions {
 			. ', s.shipping_rate_name AS name '
 			. 'FROM `#__virtuemart_shippingrates` AS s '
 			. ', `#__virtuemart_shippingcarriers` AS c '
-			. 'WHERE s.virtuemart_shipping_rate_id = ' . $_id . ' '
-			. 'AND s.shipping_rate_carrier_id = c.virtuemart_shipping_carrier_id '
+			. 'WHERE s.virtuemart_shippingrate_id = ' . $_id . ' '
+			. 'AND s.shipping_rate_carrier_id = c.virtuemart_shippingcarrier_id '
 		;
 		$_db->setQuery($_q);
 		return $_db->loadObject();

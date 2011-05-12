@@ -51,7 +51,7 @@ class VirtuemartViewShopperGroup extends JView {
 			}
 
 			$this->loadHelper('shopfunctions');
-			$vendors = ShopFunctions::renderVendorList($shoppergroup->vendor_id);
+			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 
 			JToolBarHelper::divider();

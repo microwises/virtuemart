@@ -229,7 +229,7 @@ class VirtuemartControllerOrders extends JController {
 		$model = $this->getModel('orders');
 		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
 		
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.$data['order_id']);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
 	}
 
 
@@ -271,11 +271,11 @@ class VirtuemartControllerOrders extends JController {
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('cid',  0, '', 'array');
 		$_status = JRequest::getVar('order_status', '');
-		$_orderID = JRequest::getVar('order_id', '');
+		$_orderID = JRequest::getVar('virtuemart_order_id', '');
 		foreach ($_items as $_item) {
 			$model->updateSingleItemStatus($_item, $_status[$_orderID]);
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.$_orderID);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
 	/**
@@ -286,14 +286,14 @@ class VirtuemartControllerOrders extends JController {
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$model->updateSingleItem();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&order_id='.JRequest::getVar('order_id', ''));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getVar('virtuemart_order_id', ''));
 	}
 
 	/**
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
-	    $orderId = JRequest::getVar('order_id', '');  
+	    $orderId = JRequest::getVar('virtuemart_order_id', '');  
 	    $model = $this->getModel('orders');
 	    $msg = '';
 
@@ -301,7 +301,7 @@ class VirtuemartControllerOrders extends JController {
 		$msg = $model->getError();
 	    }
 
-	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $orderId;
+	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 	    $this->setRedirect($editLink, $msg);
 	}
 
@@ -319,7 +319,7 @@ class VirtuemartControllerOrders extends JController {
 			$msg = $model->getError();
 	    }
 
-	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&order_id=' . $orderId;
+	    $editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 	    $this->setRedirect($editLink, $msg);
 	}
 }

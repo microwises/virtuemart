@@ -60,7 +60,7 @@ class VirtuemartViewCategory extends JView {
 
 	    $category = $categoryModel->getCategory($categoryId);
 		$search = JRequest::getVar('search') ;
-		if(empty($category->vendor_id) && $search == null ) {
+		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 
 	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
 	    	$mainframe -> redirect( 'index.php');

@@ -21,7 +21,7 @@ class ShopperGroup {
 	 * @return array
 	 */
   	function getShoppergroupById($id, $default_group = false) {
-    	$vendor_id = 1;
+    	$virtuemart_vendor_id = 1;
     	$db = JFactory::getDBO();
     	
     	$q =  'SELECT `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`, `#__virtuemart_shoppergroups`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__virtuemart_shoppergroups`';
@@ -32,7 +32,7 @@ class ShopperGroup {
       		$q .= '`#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`=`#__virtuemart_user_shoppergroups`.`virtuemart_shoppergroup_id`';
     	} 
     	else {
-    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`vendor_id`="'.$vendor_id.'" AND `default`="1"';
+    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.$virtuemart_vendor_id.'" AND `default`="1"';
     	}
     	$db->setQuery($q);
     	return $db->loadAssoc();

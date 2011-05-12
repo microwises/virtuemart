@@ -58,7 +58,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 					,'auto_inc' => true
 					,'null' => false
 			)
-			,'order_id' => array (
+			,'virtuemart_order_id' => array (
 					 'type' => 'int'
 					,'length' => 11
 					,'null' => false
@@ -70,7 +70,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		);
 		$_schemeIdx = array(
 			 'idx_order_payment' => array(
-					 'columns' => array ('order_id')
+					 'columns' => array ('virtuemart_order_id')
 					,'primary' => false
 					,'unique' => false
 					,'type' => null
@@ -96,7 +96,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$this->_paym_id = $_orderData->paym_id;
-		$_dbValues['order_id'] = $_orderNr;
+		$_dbValues['virtuemart_order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_paym_id;
 		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
@@ -106,7 +106,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
+	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
 		
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
@@ -114,7 +114,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		}
 		$_db = JFactory::getDBO();
 		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
-			. 'WHERE `order_id` = ' . $_order_id;
+			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {
 			JError::raiseWarning(500, $_db->getErrorMsg());

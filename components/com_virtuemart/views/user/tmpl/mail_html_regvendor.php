@@ -35,4 +35,4 @@ Entered adress <?php echo $li ?>
 }
 echo $li;
 echo JURI::root().'index.php?option=com_virtuemart&controller=user&virtuemart_user_id='.$this->_models['user']->_id.' '.$li;
-echo JURI::root().'index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id.' '.$li;
+echo JURI::root().'index.php?option=com_virtuemart&controller=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id.' '.$li;

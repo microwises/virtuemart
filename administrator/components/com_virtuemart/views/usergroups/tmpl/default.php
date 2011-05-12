@@ -38,7 +38,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 AdminMenuHelper::startAdminArea(); 
-//if($vendor_id==1 || $perm->check( 'admin' )){
+//if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
       	

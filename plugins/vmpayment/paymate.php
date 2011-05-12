@@ -49,7 +49,7 @@ class plgPaymentPaymate extends vmPaymentPlugin {
 	        var url = 'https://www.paymate.com.au/PayMate/ExpressPayment?mid=<?php echo $this->params->get('PAYMATE_USERNAME').
 	          "&amt=".$db->f("order_total").
 	        "&currency=".$_SESSION['vendor_currency'].
-	          "&ref=".$db->f("order_id").
+	          "&ref=".$db->f("virtuemart_order_id").
 	   "&pmt_sender_email=".$user->email.
 	    "&pmt_contact_firstname=".$user->first_name.
 	          "&pmt_contact_surname=".$user->last_name.

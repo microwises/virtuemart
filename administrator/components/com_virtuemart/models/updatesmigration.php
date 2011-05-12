@@ -67,13 +67,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`virtuemart_user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_users FAILED' );
 	    }
 
-		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
+		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 		$this->_db->setQuery($q);
 		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
 
@@ -124,7 +124,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$db = JFactory::getDBO();
 
-		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `vendor_id`= "1" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `virtuemart_vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
 
@@ -133,7 +133,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$oldUserId = $db->loadResult();
 
 		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__virtuemart_users` (`virtuemart_user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+		    $db->setQuery('INSERT `#__virtuemart_users` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
 				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for virtuemart_user_id '.$userId);
 		    }
@@ -143,10 +143,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 		else {
 		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
@@ -217,7 +217,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['virtuemart_country_id'] =  '195';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
-	$fields['vendor_id'] = '1';
+	$fields['virtuemart_vendor_id'] = '1';
 	$fields['vendor_name'] =  'Washupito';
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
@@ -432,6 +432,24 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function removeAllVMTables() {
 	$db = JFactory::getDBO();
 	$config = JFactory::getConfig();
+
+    $prefix = $config->getValue('config.dbprefix').'vm_%';
+	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
+	if (!$tables = $db->loadResultArray()) {
+	    $this->setError = $db->getErrorMsg();
+	    return false;
+	}
+
+	foreach ($tables as $table) {
+
+	    $db->setQuery('DROP TABLE ' . $table);
+	    if($db->query()){
+	    	$droppedTables[] = substr($table,strlen($prefix)-1);
+	    } else {
+	    	$errorTables[] = $table;
+	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+	    }
+	}
 
 	$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');

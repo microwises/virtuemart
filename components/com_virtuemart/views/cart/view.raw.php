@@ -54,7 +54,7 @@ class VirtueMartViewCart extends JView {
 
 		$this->doVendor = true;
 		$vendorModel = $this->getModel('vendor');
-		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();

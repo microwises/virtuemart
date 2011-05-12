@@ -82,7 +82,7 @@ class VirtueMartModelRatings extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT 	`review_id`,
+     	$q = "SELECT 	`virtuemart_product_review_id`,
      			#__virtuemart_products.`virtuemart_product_id`,
      			#__virtuemart_products.`product_parent_id`,
      			`product_name`,
@@ -135,11 +135,11 @@ class VirtueMartModelRatings extends JModel {
     * @author RolandD
     */
     public function getRating() {
-		/* Get the review IDs to retrieve (input variable may be cid, cid[] or review_id */
+		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_product_review_id */
 		$cids = array();
 		$cids = JRequest::getVar('cid', false);
 		if (empty($cids)) {
-			$cids= JRequest::getVar('review_id',false);
+			$cids= JRequest::getVar('virtuemart_product_review_id',false);
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
@@ -183,7 +183,7 @@ class VirtueMartModelRatings extends JModel {
 	if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
 	$q = "UPDATE #__virtuemart_product_reviews
 		SET published = ".$db->Quote($state)."
-		WHERE review_id IN (".$cids.")";
+		WHERE virtuemart_product_review_id IN (".$cids.")";
 	$db->setQuery($q);
 	if ($db->query()) return true;
 	else return false;
@@ -234,7 +234,7 @@ class VirtueMartModelRatings extends JModel {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		if ($data['user_rating'] < 0 ) $data['user_rating'] = 0 ;
 		if ($data['user_rating'] > $maxrating ) $data['user_rating'] = $maxrating ;
-		if ( !$data['review_id'] )  $data['userid'] = $user->id;
+		if ( !$data['virtuemart_product_review_id'] )  $data['userid'] = $user->id;
 		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
 		//set to defaut value not used (prevent hack)
 		$data['review_ok'] = 0 ; 

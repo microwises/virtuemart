@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'virtuemart_shipping_carrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'virtuemart_shippingcarrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
 			</td>
 		</tr>					
 		<tr>
@@ -161,7 +161,7 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="virtuemart_shipping_rate_id" value="<?php echo $this->rate->virtuemart_shipping_rate_id; ?>" />
+	<input type="hidden" name="virtuemart_shippingrate_id" value="<?php echo $this->rate->virtuemart_shippingrate_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shippingrate" />

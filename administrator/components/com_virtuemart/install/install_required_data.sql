@@ -266,7 +266,7 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_zone
 -- Dumping data for table `#__virtuemart_creditcards`
 --
 
-INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
+INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `virtuemart_vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
 (1, 1, 'Visa', 'VISA',1),
 (2, 1, 'MasterCard', 'MC',1),
 (3, 1, 'American Express', 'amex',1),
@@ -279,7 +279,7 @@ INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditca
 -- Dumping data for table `#__virtuemart_currencies`
 --
 
-INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `published`, `shared`, `locked_on` ) VALUES
+INSERT INTO `#__virtuemart_currencies` (`currency_id`, `virtuemart_vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `published`, `shared`, `locked_on` ) VALUES
 (2, 1, 'United Arab Emirates dirham', '', 'AED', 784, 'د.إ', 0, '1|د.إ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0 ),
 (4, 1, 'Albanian lek', '', 'ALL', 8, 'Lek', 0, '1|Lek|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),
 (5, 1, 'Netherlands Antillean gulden', '', 'ANG', 532, 'ƒ', 0, '1|ƒ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),
@@ -452,7 +452,7 @@ INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_na
 -- Dumping data for table `#__virtuemart_shoppergroups`
 --
 
-INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
+INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
 (NULL, 1, '-default-', 'This is the default shopper group.', 1);
 
 --

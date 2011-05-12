@@ -145,7 +145,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	    $query = 'SELECT * FROM '
 	      . $db->nameQuote('#__virtuemart_shoppergroups')
 	      . 'ORDER BY '
-	      . $db->nameQuote('vendor_id')
+	      . $db->nameQuote('virtuemart_vendor_id')
 	      . ','
 	      . $db->nameQuote('shopper_group_name')
 		;

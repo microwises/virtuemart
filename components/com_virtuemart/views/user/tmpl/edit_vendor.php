@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
 			</td>
 			<td>
-				<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->vendor_id; ?>" />
+				<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />
 				<input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->currency->getSymbol(); ?>" />
 			</td>
 		</tr>
@@ -172,4 +172,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </fieldset>
 
 <input type="hidden" name="user_is_vendor" value="1" />
-<input type="hidden" name="vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />
+<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />

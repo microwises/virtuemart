@@ -247,7 +247,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="calc" />
-	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
+	<input type="hidden" name="virtuemart_virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
 
 </form>
 

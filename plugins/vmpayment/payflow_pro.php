@@ -53,7 +53,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency,$vmLogger;
 		//$database = new ps_DB;
 		$database = JFactory::getDBO();
-		$hVendor_id = $_SESSION["ps_vendor_id"];
+		$hVendor_id = $_SESSION["ps_virtuemart_vendor_id"];
 		$auth = $_SESSION['auth'];
 		$ps_checkout = new ps_checkout;
 
@@ -239,7 +239,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
 		$q .= "order_number='".$d['order_number']."' ";
-		$q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+		$q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
 		$db->query( $q );
 		if( !$db->next_record() ) {
 			//$vmLogger->err("Error: Order not found.");
@@ -253,7 +253,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		// $dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
 		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
 
@@ -377,7 +377,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
-				$q .="WHERE order_id='".$db->f("order_id")."' ";
+				$q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
@@ -428,7 +428,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
 		$q .= "order_number='".$d['order_number']."' ";
-		$q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+		$q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
 		$db->query( $q );
 		if( !$db->next_record() ) {
 			//$vmLogger->err("Error: Order not found.");
@@ -442,7 +442,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		//$dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
 		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
 
@@ -566,7 +566,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
-				$q .="WHERE order_id='".$db->f("order_id")."' ";
+				$q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;

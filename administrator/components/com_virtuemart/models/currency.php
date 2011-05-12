@@ -204,7 +204,7 @@ class VirtueMartModelCurrency extends JModel {
     $where = '';
     if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
     if( !Permissions::getInstance()->check('admin') ){
-    	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+    	$where = 'WHERE (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
     }
 	$query = 'SELECT * FROM `#__virtuemart_currencies` '.$where;
 	$query .= 'ORDER BY `#__virtuemart_currencies`.`currency_name`';
@@ -221,7 +221,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
+	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

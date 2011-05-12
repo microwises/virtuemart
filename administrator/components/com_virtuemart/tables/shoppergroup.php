@@ -25,7 +25,7 @@ class TableShopperGroup extends JTable
 	var $virtuemart_shoppergroup_id	 = 0;
 	
 	/** @var int Vendor id */
-	var $vendor_id = 0;
+	var $virtuemart_vendor_id = 0;
 	
 	/** @var string Shopper group name; no more than 32 characters */
 	var $shopper_group_name  = '';	
@@ -77,8 +77,8 @@ class TableShopperGroup extends JTable
 			  . ' = '
 			  . $db->Quote($this->shopper_group_name)
 			  . ' AND '
-			  . $db->nameQuote('vendor_id')
-			  . ' = ' . $this->vendor_id;
+			  . $db->nameQuote('virtuemart_vendor_id')
+			  . ' = ' . $this->virtuemart_vendor_id;
       
 			$db->setQuery($query);        
 		  $rowCount = $db->loadResult();	

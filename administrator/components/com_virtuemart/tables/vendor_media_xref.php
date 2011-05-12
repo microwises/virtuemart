@@ -27,7 +27,7 @@ defined('_JEXEC') or die();
  */
 class TableVendor_media_xref extends JTable {
 
-	var $_pkey 		= 'vendor_id';
+	var $_pkey 		= 'virtuemart_vendor_id';
 	var $_skey 		= 'file_ids';
 
 

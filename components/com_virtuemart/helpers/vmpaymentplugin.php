@@ -58,7 +58,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * 				,'auto_inc' => true
 	 * 				,'null' => false
 	 * 		)
-	 * 		,'order_id' => array (
+	 * 		,'virtuemart_order_id' => array (
 	 * 				 'type' => 'int'
 	 * 				,'length' => 11
 	 * 				,'null' => false
@@ -70,7 +70,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * 	);
 	 * 	$_schemeIdx = array(
 	 * 		 'idx_order_payment' => array(
-	 * 				 'columns' => array ('order_id')
+	 * 				 'columns' => array ('virtuemart_order_id')
 	 * 				,'primary' => false
 	 * 				,'unique' => false
 	 * 				,'type' => null
@@ -116,7 +116,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
 
-		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
+		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_virtuemart_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 
@@ -210,13 +210,13 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * It displays the the payment method-specific data.
 	 * All plugins *must* reimplement this method.
 	 *
-	 * @param integer $_order_id The order ID
+	 * @param integer $_virtuemart_order_id The order ID
 	 * @param integer $_paymethod_id Payment method used for this order
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id);
+	abstract function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id);
 
 	/**
 	 * This event is fired each time the status of an order is changed to Cancelled.
@@ -274,7 +274,7 @@ abstract class vmPaymentPlugin extends JPlugin
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `payment_method_id` '
 			. 'FROM #__virtuemart_orders '
-			. "WHERE order_id = $_id";
+			. "WHERE virtuemart_order_id = $_id";
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
 			return -1;

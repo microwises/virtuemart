@@ -31,7 +31,7 @@ class TableReport extends JTable {
 	 * @param $db Database connector object 
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_orders', 'order_id', $db);
+		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);
 	}
 }
 // pure php no closing tag

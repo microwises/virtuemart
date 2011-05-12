@@ -14,7 +14,7 @@ DROP TABLE
 `#__virtuemart_adminmenuentries`,
 `#__virtuemart_modules`,
 `#__virtuemart_orders`,
-`#__virtuemart_order_history`,
+`#__virtuemart_order_histories`,
 `#__virtuemart_order_items`,
 `#__virtuemart_orderstates`,
 `#__virtuemart_order_userinfos`,
@@ -42,4 +42,4 @@ DROP TABLE
 `#__virtuemart_user_shoppergroups`,
 `#__virtuemart_vendors`,
 `#__virtuemart_waitingusers`,
-`#__virtuemart_shippingzones`;
+`#__virtuemart_worldzones`;

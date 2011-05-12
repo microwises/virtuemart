@@ -32,7 +32,7 @@ class TableCategory extends JTable {
 	/** @var int Primary key */
 	var $virtuemart_category_id	= null;
 	/** @var integer Product id */
-	var $vendor_id		= 0;
+	var $virtuemart_vendor_id		= 0;
 	/** @var string Category name */
 	var $category_name		=  '';
 	/** @var string Category description */

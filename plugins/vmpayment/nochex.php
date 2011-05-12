@@ -47,9 +47,9 @@ class plgPaymentNochex extends vmPaymentPlugin {
         <form action="https://www.nochex.com/nochex.dll/checkout" method=post target="_blank"> 
                    <input type="hidden" name="email" value="<?php echo $this->params->get('NOCHEX_EMAIL') ?>" />
                    <input type="hidden" name="amount" value="<?php printf("%.2f", $db->f("order_total"))?>" />
-               <input type="hidden" name="ordernumber" value="<?php $db->p("order_id") ?>" />
+               <input type="hidden" name="ordernumber" value="<?php $db->p("virtuemart_order_id") ?>" />
                     <input type="hidden" name="logo" value="<?php echo $vendor_image_url ?>" />
-               <input type="hidden" name="returnurl" value="<?php echo SECUREURL ."index.php?option=com_virtuemart&amp;page=checkout.result&amp;order_id=".$db->f("order_id") ?>" />
+               <input type="hidden" name="returnurl" value="<?php echo SECUREURL ."index.php?option=com_virtuemart&amp;page=checkout.result&amp;virtuemart_order_id=".$db->f("virtuemart_order_id") ?>" />
              <input type="image" name="submit" src="http://www.nochex.com/web/images/paymeanimated.gif" /> 
               </form>
               <?php

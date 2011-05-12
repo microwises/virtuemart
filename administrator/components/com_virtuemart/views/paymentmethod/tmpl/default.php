@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 AdminMenuHelper::startAdminArea(); 
-//if($vendor_id==1 || $perm->check( 'admin' )){
+//if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
       	
@@ -93,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>				
 				<td align="left">
-					<?php echo JText::_($row->paym_vendor_id); ?>
+					<?php echo JText::_($row->paym_virtuemart_vendor_id); ?>
 				</td>
 				<?php } ?>
 				<td>

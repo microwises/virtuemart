@@ -94,7 +94,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	function _getTotal()
 	{
 		if (empty($this->_total)) {
-			$query = 'SELECT `order_status_id` FROM `#__virtuemart_orderstates`';
+			$query = 'SELECT `virtuemart_orderstate_id` FROM `#__virtuemart_orderstates`';
 			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -131,11 +131,11 @@ class VirtueMartModelOrderstatus extends JModel {
 		$table =& $this->getTable('order_status');
 
 		$data = JRequest::get('post');
-		$isNew = ($data['order_status_id'] < 1) ? true : false;
+		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
 		} else {
-			$table->load($data['order_status_id']);
+			$table->load($data['virtuemart_orderstate_id']);
 
 			if ($table->ordering == $data['ordering']) {
 				$reorderRequired = false;

@@ -52,7 +52,7 @@ class plgPaymentEcheck extends vmPaymentPlugin {
 		$databse = JFactory::getDBO();
 		
 		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
-		//		$hVendor_id = $_SESSION['ps_vendor_id'];
+		//		$hVendor_id = $_SESSION['ps_virtuemart_vendor_id'];
 		$hVendor_id = 1 ;
 		$auth = $_SESSION['auth'] ;
 		$ps_checkout = new ps_checkout( ) ;

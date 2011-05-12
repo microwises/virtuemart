@@ -40,4 +40,4 @@ Your entered adress <?php echo $li ?>
 echo $li;
 echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=user').$li;
 //Multi-X
-//echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=vendor&vendor_id='.$this->vendor->vendor_id).$li;
+//echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id).$li;

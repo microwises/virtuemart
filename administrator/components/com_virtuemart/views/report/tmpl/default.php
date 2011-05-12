@@ -24,7 +24,7 @@ $now = getdate();
 $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
-$order_id = JRequest::getInt('order_id', false);
+$virtuemart_order_id = JRequest::getInt('virtuemart_order_id', false);
 $format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
 
@@ -66,7 +66,7 @@ if( $this->pagination->limit < $rows ){
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_DATE','order_date',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','order_total_items',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
