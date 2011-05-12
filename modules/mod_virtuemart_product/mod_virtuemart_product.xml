@@ -12,7 +12,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>MOD_VIRTUEMART_PRODUCT_DESC</description>
+	<description>Shows featured/Latest/Topten/Random products from VirtueMart at your choice.</description>
 	<files>
 		<filename module="mod_virtuemart_product">mod_virtuemart_product.php</filename>
         <filename>index.html</filename>
@@ -22,52 +22,52 @@
 	</files>
 	<params>
 		<param name="product_group" type="list" default="featured"
-			label="DISPLAY"
-			description="DISPLAY_DESC">
-			<option value="featured">FEATURED_PRODUCTS</option>
-			<option value="latest">LATEST_PRODUCTS</option>
-			<option value="random">RANDOM_PRODUCTS</option>
-			<option value="topten">BEST_SALES</option>
+			label="Display"
+			description="Here you can decide, What you want to see in the module">
+			<option value="featured">Featured Products</option>
+			<option value="latest">Latest Products</option>
+			<option value="random">Random Products</option>
+			<option value="topten">Best Sales</option>
 		</param>
 		<param name="max_items" type="text" default="2"
-			label="MAX_ITEMS"
-			description="MAX_ITEMS_DESC" />
+			label="Number of displayed products"
+			description="This defines the number of products which will be displayed in the module." />
 		<param name="products_per_row" type="text" default=""
-			label="PRODUCTS_PER_ROW"
-			description="PRODUCTS_PER_ROW_DESC" />
+			label="Products per row"
+			description="The Number of columns per row for the product snapshots." />
 		<param name="display_style" type="list" default="list"
-			label="DISPLAY_STYLE"
-			description="DISPLAY_STYLE_DESC">
+			label="Display Style"
+			description="Here you can decide wether the products are shown ">
 			<option value="list">List based ul-li</option>
 			<option value="div">Div based</option>
 		</param>
 		<param name="show_price" type="list" default="1"
-			label="SHOW_PRICE"
-			description="SHOW_PRICE">
+			label="Show Product Price?"
+			description="Defines wether the product price is displayed or not.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="show_addtocart" type="list" default="1"
-			label="SHOW_ADDTOCART"
-			description="SHOW_ADDTOCART_DESC">
+			label="Show Add-To-Cart Link?"
+			description="Not implemented YET - Defines wether the Add-To-Cart Link is displayed or not.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="headerText" type="text" default=""
-			label="HEADER_TEXT"
-			description="HEADER_TEXT_DESC" />
+			label="Header Text"
+			description="Add a Text before list of featured products." />
 		<param name="footerText" type="text" default=""
-			label="FOOTER_TEXT"
-			description="FOOTER_TEXT_DESC" />
+			label="Footer Text"
+			description="Add a Text after list of featured products." />
 		<param name="filter_category" type="list" default="0"
-			label="FILTER_CATEGORY"
-			description="FILTER_CATEGORY_DESC">
+			label="Use category filter"
+			description="Do you wan't the product from only this category?">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__virtuemart_categories" 
-			key_field="category_id" value_field="category_name" label="CATEGORY" description="CATEGORY_DESC" />
+			key_field="category_id" value_field="category_name" label="Category" description="Choose a category..." />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0"

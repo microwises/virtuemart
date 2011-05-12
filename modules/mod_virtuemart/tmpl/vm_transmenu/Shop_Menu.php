@@ -33,7 +33,7 @@ class Shop_Menu{
 							CONCAT('index.php?option=com_virtuemart&view=category&category_id=', category_id ) AS link,
 							'-1' as browserNav, ordering as list_order
 								FROM #__virtuemart_categories, #__virtuemart_category_categories 
-								WHERE #__virtuemart_categories.published='1' 
+								WHERE #__virtuemart_categories.enabled='1' 
 									AND #__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id 
 								ORDER BY name ASC";
 		

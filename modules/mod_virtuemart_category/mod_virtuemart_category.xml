@@ -22,7 +22,7 @@
 		<param name="layout" type="radio" default="default" label="vCHILD_CAT_MENU_TYPE" description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC">
 			<option value="current">MOD_VIRTUEMART_CATEGORY_CURRENT</option>
 			<option value="default">MOD_VIRTUEMART_CATEGORY_ACCORDEON</option>
-			<option value="all">AMOD_VIRTUEMART_CATEGORY_LL_CHILD</option>
+			<option value="all">MOD_VIRTUEMART_CATEGORY_ALL_CHILD</option>
 		</param>		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

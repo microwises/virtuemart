@@ -49,7 +49,7 @@ $db = JFactory::getDBO();
 	
 	// select menu items from database
 	$query  = "SELECT category_id,category_parent_id,category_name FROM #__virtuemart_categories, #__virtuemart_category_categories ";
-	$query .= "WHERE #__virtuemart_categories.published='1' AND ";
+	$query .= "WHERE #__virtuemart_categories.enabled='1' AND ";
 	$query .= "#__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id ";
 	$query .= "ORDER BY category_parent_id, ordering, category_name ASC";
 

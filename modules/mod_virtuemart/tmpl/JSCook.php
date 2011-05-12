@@ -24,7 +24,7 @@ if( !class_exists('vmCategoryTree')) {
 			$level++;
 			$q = "SELECT category_name, category_id, category_child_id "
 			. "FROM #__virtuemart_categories as a, #__virtuemart_category_categories as b "
-			. "WHERE a.published='1' AND "
+			. "WHERE a.enabled='1' AND "
 			. " b.category_parent_id='{$category_id}' AND a.category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
 			$db->setQuery($q);
@@ -64,7 +64,7 @@ if( !class_exists('vmCategoryMenu')) {
 			$db = JFactory::getDBO();
 			$q = "SELECT category_name, category_id, category_child_id "
 			. "FROM #__virtuemart_categories as a, #__virtuemart_category_categories as b "
-			. "WHERE a.published='1' AND "
+			. "WHERE a.enabled='1' AND "
 			. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
 			$db->setQuery($q);

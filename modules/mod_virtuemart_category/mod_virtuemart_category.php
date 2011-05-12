@@ -40,7 +40,7 @@ $categories = $categoryModel->getChildrenList($category_id) ;
 			WHERE #__virtuemart_category_categories.category_parent_id = ".$category_id."
 			AND #__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id
 			AND #__virtuemart_categories.vendor_id = 1
-			AND #__virtuemart_categories.published = 1
+			AND #__virtuemart_categories.enabled = 1
 			ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";
 $db->setQuery($q);
 $categories = $db->loadObjectList();*/
