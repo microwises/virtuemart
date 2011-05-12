@@ -71,7 +71,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product->product_id);
+				$product->prices = $calculator -> getProductPrices($product->virtuemart_product_id);
 
 				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['dBTax'] as $rule){
@@ -164,12 +164,12 @@ class VirtuemartViewProduct extends JView {
 				}
 
 				/* Get the related products */
-				$related_products = $product_model->getRelatedProducts($product->product_id);
+				$related_products = $product_model->getRelatedProducts($product->virtuemart_product_id);
 				if (!$related_products) $related_products = array();
 				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
 
 				/* Load waiting list */
-				if ($product->product_id) {
+				if ($product->virtuemart_product_id) {
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
@@ -295,8 +295,8 @@ class VirtuemartViewProduct extends JView {
 
 				/* Check for child products if it is a parent item */
 				if (JRequest::getInt('product_parent_id', 0) == 0) {
-					foreach ($productlist as $product_id => $product) {
-						$product->haschildren = $model->checkChildProducts($product_id);
+					foreach ($productlist as $virtuemart_product_id => $product) {
+						$product->haschildren = $model->checkChildProducts($virtuemart_product_id);
 					}
 				}
 
@@ -314,9 +314,9 @@ class VirtuemartViewProduct extends JView {
 				$calculator = calculationHelper::getInstance();
 				$vendor_model = $this->getModel('vendor');
 
-				foreach ($productlist as $product_id => $product) {
+				foreach ($productlist as $virtuemart_product_id => $product) {
 					$product->mediaitems = count($product->file_ids);
-					$product->reviews = $productreviews->countReviewsForProduct($product_id);
+					$product->reviews = $productreviews->countReviewsForProduct($virtuemart_product_id);
 
 					$vendor_model->setId($product->vendor_id);
 					$vendor = $vendor_model->getVendor();
@@ -327,7 +327,7 @@ class VirtuemartViewProduct extends JView {
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','product_id',$product->product_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
+					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
 
 //					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}

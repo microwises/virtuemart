@@ -31,7 +31,7 @@ class TableRatings extends JTable {
 	/** @var int Primary key */
 	var $review_id				= 0;
 	/** @var int Product ID */
-	var $product_id           	= null;
+	var $virtuemart_product_id           	= null;
 	/** @var string The user comment */
 	var $comment         		= null;
 	/** @var int The ID of the user who made comment */

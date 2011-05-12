@@ -32,7 +32,7 @@ class TableProduct_price extends JTable {
     /** @var int Primary key */
     var $product_price_id = 0;
     /** @var int Product id */
-    var $product_id = 0;
+    var $virtuemart_product_id = 0;
     /** @var string Product price */
     var $product_price = null;
     var $override = 0;
@@ -65,7 +65,7 @@ class TableProduct_price extends JTable {
      */
     function __construct(&$db) {
         parent::__construct('#__virtuemart_product_prices', 'product_price_id', $db);
-//        parent::__construct('#__virtuemart_product_prices', 'product_id', $db);
+//        parent::__construct('#__virtuemart_product_prices', 'virtuemart_product_id', $db);
     }
 
     /**
@@ -74,7 +74,7 @@ class TableProduct_price extends JTable {
      */
     function check() {
 
-        if (!$this->product_id) {
+        if (!$this->virtuemart_product_id) {
             $this->setError(JText::_('COM_VIRTUEMART_IMPOSSIBLE_TO_SAVE_PRODUCT_PRICES_WITHOUT_PRODUCT_ID'));
             return false;
         }
@@ -107,12 +107,12 @@ class TableProduct_price extends JTable {
      * @see libraries/joomla/database/JTable#store($updateNulls)
      */
     public function store() {
-//        $_qry = 'SELECT product_id '
+//        $_qry = 'SELECT virtuemart_product_id '
 //                . 'FROM #__virtuemart_product_prices '
 //                . 'WHERE product_price_id = ' . $this->product_price_id
         $_qry = 'SELECT product_price_id '
                 . 'FROM #__virtuemart_product_prices '
-                . 'WHERE product_id = ' . $this->product_id;
+                . 'WHERE virtuemart_product_id = ' . $this->virtuemart_product_id;
         $this->_db->setQuery($_qry);
         $id = $this->_db->loadResult();
 

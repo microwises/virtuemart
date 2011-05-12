@@ -37,7 +37,7 @@ class TableOrder_item extends JTable {
 	/** @var int Vendor ID */
 	var $vendor_id = NULL;
 	/** @var int Product ID */
-	var $product_id = NULL;
+	var $virtuemart_product_id = NULL;
 	/** @var string Order item SKU */
 	var $order_item_sku = NULL;
 	/** @var string Order item name */

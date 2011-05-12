@@ -155,7 +155,7 @@ class calculationHelper {
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
-			$this->_db->setQuery( 'SELECT * FROM #__virtuemart_product_prices  WHERE `product_id`="'.$productId.'" ');
+			$this->_db->setQuery( 'SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc();
 			if($row){
 				if(!empty($row['product_price'])){
@@ -172,7 +172,7 @@ class calculationHelper {
 					return false;
 				}
 			}
-			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__virtuemart_products  WHERE `product_id`="'.$productId.'" ');
+			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="'.$productId.'" ');
 			$single = $this->_db->loadResult();
 			$this->productVendorId = $single;
 			if(empty($this->productVendorId)){
@@ -180,7 +180,7 @@ class calculationHelper {
 			}
 
 			if(empty($catIds)){
-				$this->_db->setQuery( 'SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `product_id`="'.$productId.'" ');
+				$this->_db->setQuery( 'SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="'.$productId.'" ');
 				$this->_cats=$this->_db->loadResultArray();
 			}else{
 				$this->_cats=$catIds;
@@ -382,21 +382,21 @@ class calculationHelper {
 		$cartpaymentTax = 0;
 
 		foreach ($cart->products as $name=>$product){
-			$productId = $product->product_id;
-			if (empty($product->quantity) || empty( $product->product_id )){
-				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->product_id);
+			$productId = $product->virtuemart_product_id;
+			if (empty($product->quantity) || empty( $product->virtuemart_product_id )){
+				JError::raiseWarning(710,'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id '.$product->virtuemart_product_id);
 				continue;
 			}
 
 			$variantmods = $this->parseModifier($name);
 			$variantmod = $this->calculateModificators($product,$variantmods);
 
-			$cartproductkey = $name ; //$product->product_id.$variantmod;
-			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->product_id,0,$variantmod,$product->quantity,true,false);
+			$cartproductkey = $name ; //$product->virtuemart_product_id.$variantmod;
+			$product->prices = $pricesPerId[$cartproductkey] = $this -> getProductPrices($product->virtuemart_product_id,0,$variantmod,$product->quantity,true,false);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
 			$this->_cartPrices['basePrice'] +=  $product->prices['basePrice']*$product->quantity;
-//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->product_id]['basePriceVariant']*$product->quantity;
+//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
 			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax']*$product->quantity;
 			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax']*$product->quantity;
 			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice']*$product->quantity;
@@ -1085,7 +1085,7 @@ class calculationHelper {
 	 *
 	 * @todo could be slimmed a bit down, using smaller array for variantnames, this could be done by using the parseModifiers method, needs to adjust the post
 	 * @author Max Milbers
-	 * @param int $product_id the product ID the attribute price should be calculated for
+	 * @param int $virtuemart_product_id the product ID the attribute price should be calculated for
 	 * @param array $variantnames the value of the variant
 	 * @return array The adjusted price modificator
 	 */
@@ -1101,7 +1101,7 @@ class calculationHelper {
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
 						LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
-						WHERE xref.`product_id` ='.$product->product_id;
+						WHERE xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
 					$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
@@ -1125,7 +1125,7 @@ class calculationHelper {
 		foreach($items as $item){
 			if(!empty($item)){
 				$index = strpos($item,'::');
-				$product_id = substr($item,0,$index);
+				$virtuemart_product_id = substr($item,0,$index);
 				$item = substr($item,$index+2);
 
 				$index2 = strpos($item,':');

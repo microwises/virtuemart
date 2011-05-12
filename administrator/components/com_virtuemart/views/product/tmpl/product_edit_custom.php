@@ -116,7 +116,7 @@ jQuery('input#ProductCustomSearch').autocomplete('index.php?option=com_virtuemar
 	});
 jQuery('select#customlist').click(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
-	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&product_id=<?php echo $this->product->product_id; ?>',
+	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
 	function(data) {
 		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 		jQuery.each(data.value, function(index, value){

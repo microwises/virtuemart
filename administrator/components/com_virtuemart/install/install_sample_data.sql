@@ -91,7 +91,7 @@ INSERT INTO `#__virtuemart_customfields` (`custom_field_id`, `custom_id`, `custo
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
-INSERT INTO `#__virtuemart_product_customfields` (`id`, `product_id`, `custom_field_id`, `ordering`, `published`) VALUES
+INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `custom_field_id`, `ordering`, `published`) VALUES
 (NULL, 6, 2, 0, 0),
 (NULL, 6, 4, 0, 0),
 (NULL, 6, 5, 0, 0),
@@ -141,7 +141,7 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `vendor_id`, `file_ti
 -- Dumping data for table `#__virtuemart_products`
 --
 
-INSERT INTO `#__virtuemart_products` (`product_id`, `vendor_id`, `product_parent_id`, `product_sku`, `product_s_desc`, `product_desc`, `published`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `created_on`, `modified_on`, `product_name`, `product_sales`, `attribute`, `custom_attribute`, `product_unit`, `product_packaging`, `product_order_levels`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`) VALUES
+INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `vendor_id`, `product_parent_id`, `product_sku`, `product_s_desc`, `product_desc`, `published`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `created_on`, `modified_on`, `product_name`, `product_sales`, `attribute`, `custom_attribute`, `product_unit`, `product_packaging`, `product_order_levels`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`) VALUES
 (1, 1, 0, 'G01', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 10, 5, 1072911600, '48h.gif', 'Y', NULL, NULL, NULL, 'Hand Shovel', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
 (2, 1, 0, 'G02', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 76, 5, 1072911600, '3-5d.gif', 'N', NULL, NULL, NULL, 'Ladder', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
 (3, 1, 0, 'G03', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '7d.gif', 'N', NULL, NULL, NULL, 'Shovel', 0, 'Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]', '', '', 0, NULL, NULL, '', '', '', '', ''),
@@ -160,7 +160,7 @@ INSERT INTO `#__virtuemart_products` (`product_id`, `vendor_id`, `product_parent
 (16, 1, 2, 'L03', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Plastic Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', '');
 
 
-INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`product_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `file_ids`) VALUES
 (NULL, 1, 13),
 (NULL, 2, 8),
 (NULL, 3, 5),
@@ -177,7 +177,7 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`product_id`, `file_ids`
 -- Dumping data for table `#__virtuemart_product_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `product_id`, `product_list`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `virtuemart_product_id`, `product_list`) VALUES
 (1, 1, NULL),
 (3, 2, NULL),
 (3, 3, NULL),
@@ -194,7 +194,7 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`,
 -- Dumping data for table `#__virtuemart_product_manufacturers`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`product_id`, `manufacturer_id`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `manufacturer_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
@@ -216,7 +216,7 @@ INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`product_id`, `manufac
 -- Dumping data for table `#__virtuemart_product_prices`
 --
 
-INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `shopper_group_id`, `price_quantity_start`, `price_quantity_end`) VALUES
+INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `shopper_group_id`, `price_quantity_start`, `price_quantity_end`) VALUES
 (1, 5, '24.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (2, 1, '4.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (3, 2, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),

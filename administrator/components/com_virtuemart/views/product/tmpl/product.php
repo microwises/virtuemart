@@ -93,7 +93,7 @@ $pagination = $this->pagination;
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($productlist as $key => $product) {
-			$checked = JHTML::_('grid.id', $i , $product->product_id);
+			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id);
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -101,19 +101,19 @@ $pagination = $this->pagination;
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
 				<?php
-				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
+				$link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
 				$child_link = '';
 				if ($product->product_parent_id == 0 && $product->haschildren) {
-					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
 				}
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link; ?></td>
 				<!-- Vendor name -->
-				<td><?php echo $product->product_id; // echo $product->vendor_name; ?></td>
+				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
 				<!-- Media -->
 				<?php
 					/* Create URL */
-					$link = JRoute::_('index.php?view=media&product_id='.$product->product_id.'&option='.$option);
+					$link = JRoute::_('index.php?view=media&virtuemart_product_id='.$product->virtuemart_product_id.'&option='.$option);
 				?>
 				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('COM_VIRTUEMART_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
 				<!-- Product SKU -->
@@ -136,7 +136,7 @@ $pagination = $this->pagination;
 				<!-- Manufacturer name -->
 				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
-				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&product_id='.$product->product_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>

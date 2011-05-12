@@ -70,8 +70,8 @@ class modelfunctions{
 		}
 
 		//TODO enhance it maybe simular to this
-//		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (product_id, manufacturer_id) VALUES (';
-//		$q .= $product_data->product_id.', ';
+//		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (virtuemart_product_id, manufacturer_id) VALUES (';
+//		$q .= $product_data->virtuemart_product_id.', ';
 //		$q .= JRequest::getInt('manufacturer_id').') ';
 //		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
 //		$this->_db->setQuery($q);

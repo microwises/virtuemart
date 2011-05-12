@@ -166,11 +166,11 @@ class VirtueMartModelMedia extends JModel {
     	$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
     	$query = '';
     	$whereItems = array();
-    	$product_id = JRequest::getVar('product_id',0);
+    	$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',0);
 
-    	if(!empty($product_id)){
+    	if(!empty($virtuemart_product_id)){
     		$query = 'SELECT `file_ids` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
-    		$whereItems[] = '`product_id` = "'.$product_id.'"';
+    		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
@@ -381,8 +381,8 @@ class VirtueMartModelMedia extends JModel {
 		//delete media from server
 		/* Redirect so the user cannot reload the delete action */
 //		$url = 'index.php?option=com_virtuemart&view=media';
-//		$productid = JRequest::getInt('product_id', false);
-//		if ($productid) $url .= '&product_id='.$productid;
+//		$productid = JRequest::getInt('virtuemart_product_id', false);
+//		if ($productid) $url .= '&virtuemart_product_id='.$productid;
 //		$mainframe->redirect($url);
 	}
 

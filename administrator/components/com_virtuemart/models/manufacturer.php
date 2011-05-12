@@ -169,7 +169,7 @@ class VirtueMartModelManufacturer extends JModel {
      	$q = "SELECT
 			";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_id');
+     	return $db->loadObjectList('virtuemart_product_id');
     }
 
     /**
@@ -199,7 +199,7 @@ class VirtueMartModelManufacturer extends JModel {
 			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
 			$q = "UPDATE #__virtuemart_manufacturers
 				SET product_publish = ".$db->Quote($state)."
-				WHERE product_id IN (".$cids.")";
+				WHERE virtuemart_product_id IN (".$cids.")";
 			$db->setQuery($q);
 			if ($db->query()) return true;
 			else return false;

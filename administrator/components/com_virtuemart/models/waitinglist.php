@@ -37,7 +37,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$db = JFactory::getDBO();
 		$q = 'SELECT name, username, virtuemart_user_id, notify_email, notified, notify_date FROM `#__virtuemart_waitingusers`
 				LEFT JOIN `#__users` ON `virtuemart_user_id` = `id`
-				WHERE `product_id`=' . JRequest::getInt('product_id');
+				WHERE `virtuemart_product_id`=' . JRequest::getInt('virtuemart_product_id');
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
@@ -51,8 +51,8 @@ class VirtueMartModelWaitingList extends JModel {
 	* @todo Update mail from
 	* @todo Get the from name/email from the vendor
 	*/
-	public function notifyList ($product_id=false) {
-		if (!$product_id) {
+	public function notifyList ($virtuemart_product_id=false) {
+		if (!$virtuemart_product_id) {
 			return false;
 		}
 
@@ -61,22 +61,22 @@ class VirtueMartModelWaitingList extends JModel {
 
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__virtuemart_waitingusers ";
-		$q .= "WHERE notified = '0' AND product_id = ".$product_id;
+		$q .= "WHERE notified = '0' AND virtuemart_product_id = ".$virtuemart_product_id;
 		$db->setQuery($q);
 		$waiting_users = $db->loadObjectList();
 
 		/* Load the product details */
-		$q = "SELECT product_name FROM #__virtuemart_products WHERE product_id = ".$product_id;
+		$q = "SELECT product_name FROM #__virtuemart_products WHERE virtuemart_product_id = ".$virtuemart_product_id;
 		$db->setQuery($q);
 		$vars['productName'] = $db->loadResult();
 
 		/* Now get the url information */
-		$vars['url'] = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&product_id='.$product_id.'&option=com_virtuemart');
+		$vars['url'] = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&virtuemart_product_id='.$virtuemart_product_id.'&option=com_virtuemart');
 
 		foreach ($waiting_users as $key => $waiting_user) {
 			$vars['user'] = $waiting_user;
 			if (shopFunctionsF::renderMail('waitinglist', $waiting_user->notify_email, $vars)) {
-				$this->update($waiting_user->notify_email, $product_id);
+				$this->update($waiting_user->notify_email, $virtuemart_product_id);
 			}
 		}
 		return true;
@@ -86,12 +86,12 @@ class VirtueMartModelWaitingList extends JModel {
 	* Updates the waitinglist
 	* @author RolandD
 	*/
-//	public function update($shopper_email,$product_id) {
+//	public function update($shopper_email,$virtuemart_product_id) {
 //		$db = JFactory::getDBO();
 //
 //		$q = "UPDATE #__virtuemart_waitingusers SET notified='1' WHERE ";
 //		$q .= "notify_email = ".$db->Quote($shopper_email)." AND ";
-//		$q .= "product_id = ".$product_id;
+//		$q .= "virtuemart_product_id = ".$virtuemart_product_id;
 //		$db->setQuery($q);
 //		if ($db->query()) return true;
 //		else return false;
@@ -108,7 +108,7 @@ class VirtueMartModelWaitingList extends JModel {
 //
 //		$q = "SELECT waiting_list_id from #__{vm}_waiting_list WHERE ";
 //		$q .= "notify_email='" . $d["notify_email"] . "' AND ";
-//		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
+//		$q .= "virtuemart_product_id='" . $d["virtuemart_product_id"] . "' AND notified='0'";
 //		$db->query($q);
 //		if ($db->next_record()) {
 //			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_ALREADY') );
@@ -122,7 +122,7 @@ class VirtueMartModelWaitingList extends JModel {
 //			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_EMAIL_NOTVALID') );
 //			return False;
 //		}
-//		if (!$d["product_id"]) {
+//		if (!$d["virtuemart_product_id"]) {
 //			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_PRODUCT') );
 //			return False;
 //		}
@@ -140,7 +140,7 @@ class VirtueMartModelWaitingList extends JModel {
 //			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_ERR_EMAIL_ENTER') );
 //			return False;
 //		}
-//		if (!$d["product_id"]) {
+//		if (!$d["virtuemart_product_id"]) {
 //			$vmLogger->err( JText::_('COM_VIRTUEMART_WAITING_LIST_DELETE_ERR_PRODUCT') );
 //			return False;
 //		}
@@ -151,7 +151,7 @@ class VirtueMartModelWaitingList extends JModel {
 	* Creates a new waiting list entry
 	*
 	* @author mwattier
-	* @param $product_id
+	* @param $virtuemart_product_id
 	* @return
 	*/
 
@@ -162,9 +162,9 @@ class VirtueMartModelWaitingList extends JModel {
 //		if (!$this->validate_add($d)) {
 //			return False;
 //		}
-//		$q = "INSERT INTO #__{vm}_waiting_list (product_id, virtuemart_user_id, notify_email)";
+//		$q = "INSERT INTO #__{vm}_waiting_list (virtuemart_product_id, virtuemart_user_id, notify_email)";
 //		$q .= " VALUES ('";
-//		$q .= $d["product_id"] . "','";
+//		$q .= $d["virtuemart_product_id"] . "','";
 //		$q .= $auth['virtuemart_user_id'] . "','";
 //		$q .= $d["notify_email"] . "')";
 //		$db->query($q);
@@ -177,7 +177,7 @@ class VirtueMartModelWaitingList extends JModel {
 	* Should delete a category and add categories under it.
 	*
 	* @author pablo
-	* @param $product_id
+	* @param $virtuemart_product_id
 	* @return
 	*/
 
@@ -188,7 +188,7 @@ class VirtueMartModelWaitingList extends JModel {
 //			return False;
 //		}
 //		$q = "DELETE from #__{vm}_waiting_list where notify_email='" . $d["notify_email"] . "'";
-//		$q .= " AND product_id='" .$d["product_id"] ."'";
+//		$q .= " AND virtuemart_product_id='" .$d["virtuemart_product_id"] ."'";
 //		$db->query($q);
 //		$db->next_record();
 //		return True;
@@ -199,16 +199,16 @@ class VirtueMartModelWaitingList extends JModel {
 	* Will notify all people who have not been notified
 	*
 	* @author
-	* @param string $product_id the ID of the product
+	* @param string $virtuemart_product_id the ID of the product
 	* @return true
 	*/
 
-//	function notify_list($product_id) {
+//	function notify_list($virtuemart_product_id) {
 //		global $sess,  $mosConfig_fromname;
 //
 //		$option = JRequest::getVar(  'option' );
 //
-//		if (!$product_id) {
+//		if (!$virtuemart_product_id) {
 //			return False;
 //		}
 //
@@ -217,7 +217,7 @@ class VirtueMartModelWaitingList extends JModel {
 //
 //		$db = new ps_DB;
 //		$q = "SELECT * FROM #__{vm}_waiting_list WHERE ";
-//		$q .= "notified='0' AND product_id='$product_id'";
+//		$q .= "notified='0' AND virtuemart_product_id='$virtuemart_product_id'";
 //		$db->query($q);
 //
 //		require_once( CLASSPATH. 'ps_product.php');
@@ -225,20 +225,20 @@ class VirtueMartModelWaitingList extends JModel {
 //
 //		while ($db->next_record()) {
 //			// get the product name for the e-mail
-//			$product_name = $ps_product->get_field($product_id, "product_name");
+//			$product_name = $ps_product->get_field($virtuemart_product_id, "product_name");
 //
 //			// lets make the e-mail up from the info we have
 //			$notice_subject = sprintf(JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT'), $product_name);
 //
 //			// now get the url information
-//			$url = URL . "index.php?page=shop.product_details&flypage=shop.flypage&product_id=$product_id&option=$option&Itemid=".$sess->getShopItemid();
+//			$url = URL . "index.php?page=shop.product_details&flypage=shop.flypage&virtuemart_product_id=$virtuemart_product_id&option=$option&Itemid=".$sess->getShopItemid();
 //			$notice_body = sprintf(JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT'), $product_name, $url);
 //
 //			// send the e-mail
 //			$shopper_email = $db->f("notify_email");
 //			vmMail($from_email, $mosConfig_fromname, $shopper_email, $notice_subject, $notice_body, "");
 //
-//			$this->update( $shopper_email, $product_id);
+//			$this->update( $shopper_email, $virtuemart_product_id);
 //
 //		}
 //		return True;

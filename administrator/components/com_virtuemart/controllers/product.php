@@ -175,7 +175,7 @@ class VirtuemartControllerProduct extends JController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		if ($product_id = $model->saveProduct()){
+		if ($virtuemart_product_id = $model->saveProduct()){
 			 $msg = JText::_('COM_VIRTUEMART_PRODUCT_SAVED_SUCCESSFULLY');
 		}
 		else {
@@ -185,7 +185,7 @@ class VirtuemartControllerProduct extends JController {
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product_id.'&product_parent_id='.JRequest::getInt('product_parent_id');
+			$redirection = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$virtuemart_product_id.'&product_parent_id='.JRequest::getInt('product_parent_id');
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=product';
 		}
@@ -210,7 +210,7 @@ class VirtuemartControllerProduct extends JController {
 		$cids = JRequest::getVar('cid');
 		if ($id=$model->createChild($cids[0])){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
-			$redirect = 'index.php?option=com_virtuemart&controller=product&task=edit&product_parent_id='.$cids[0].'&product_id='.$id;
+			$redirect = 'index.php?option=com_virtuemart&controller=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
 		} else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
 			$msgtype = 'error';
@@ -296,7 +296,7 @@ class VirtuemartControllerProduct extends JController {
 		$cids = JRequest::getVar('cid');
 		if (!is_array($cids)) $cids = array($cids);
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&product_id='.$cids[0]);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}
 
 

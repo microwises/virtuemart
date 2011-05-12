@@ -192,7 +192,7 @@ class VirtuemartModelReport extends JModel {
 		//WHERE #__virtuemart_order_items.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
 		//$query .= "AND o.order_id=i.order_id ";
 		$query .= "WHERE o.order_id=i.order_id ";
-  		$query .= "AND i.product_id=p.product_id ";
+  		$query .= "AND i.virtuemart_product_id=p.virtuemart_product_id ";
   		$query .= "GROUP BY product_sku, product_name, order_date ";
   		$query .= "ORDER BY date_num, product_name ASC";
 		

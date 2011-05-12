@@ -26,8 +26,8 @@ $this->media->addHidden('task','');
 $this->media->addHidden(JUtility::getToken(),1);
 
 
-$product_id = JRequest::getVar('product_id', '');
-if(!empty($product_id)) $this->media->addHidden('product_id',$product_id);
+$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', '');
+if(!empty($virtuemart_product_id)) $this->media->addHidden('virtuemart_product_id',$virtuemart_product_id);
 
 $virtuemart_category_id = JRequest::getVar('virtuemart_category_id', '');
 if(!empty($virtuemart_category_id)) $this->media->addHidden('virtuemart_category_id',$virtuemart_category_id);

@@ -840,7 +840,7 @@ class ShopFunctions {
 			//We have a child list so get the current quantity;
 			$quantity = 0 ;
 			foreach ($cart->products as $productCart){
-				if ($productCart["product_id"] == $product->product_id) {
+				if ($productCart["virtuemart_product_id"] == $product->virtuemart_product_id) {
 					$quantity = $productCart["quantity"];
 				}
 			}
@@ -850,8 +850,8 @@ class ShopFunctions {
 		}
 
 		// Detremine which style to use
-		if ($use_parent == 'Y' && $product->parent_product_id !=0) $id = $product->parent_product_id;
-		else $id = $product->product_id ;
+		if ($use_parent == 'Y' && $product->parent_virtuemart_product_id !=0) $id = $product->parent_virtuemart_product_id;
+		else $id = $product->virtuemart_product_id ;
 
 		//Get style to use
 		extract($product->quantity_options);

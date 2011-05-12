@@ -71,7 +71,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of active products in the database
 	 */
 	function getTotalActiveProducts() {
-		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE `published`="1"';
+		$query = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`="1"';
         return $this->_getListCount($query);
     }
 
@@ -82,7 +82,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of inactive products in the database
 	 */
 	function getTotalInActiveProducts() {
-		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE  `published`="0"';
+		$query = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE  `published`="0"';
         return $this->_getListCount($query);
     }
 
@@ -93,7 +93,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of featured products in the database
 	 */
 	function getTotalFeaturedProducts() {
-		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE `product_special`="Y"';
+		$query = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `product_special`="Y"';
         return $this->_getListCount($query);
     }
 

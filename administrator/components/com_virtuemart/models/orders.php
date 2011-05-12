@@ -152,12 +152,12 @@ class VirtueMartModelOrders extends JModel {
 
 		/* Get the order items */
 		$q = "SELECT order_item_id, product_quantity, order_item_name,
-				order_item_sku, i.product_id, product_item_price,
+				order_item_sku, i.virtuemart_product_id, product_item_price,
 				product_final_price, product_attribute, order_status,
 				intnotes
 			FROM #__virtuemart_order_items i
 			LEFT JOIN #__virtuemart_products p
-			ON p.product_id = i.product_id
+			ON p.virtuemart_product_id = i.virtuemart_product_id
 			WHERE order_id=".$order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
@@ -419,7 +419,7 @@ class VirtueMartModelOrders extends JModel {
 					if ($_updateStock != 0) {
 						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 						$_productModel = new VirtueMartModelProduct();
-						$_q = 'SELECT product_id '
+						$_q = 'SELECT virtuemart_product_id '
 							.', product_quantity '
 							.'FROM `#__virtuemart_order_items` '
 							."WHERE `order_id` = $order_id";
@@ -427,9 +427,9 @@ class VirtueMartModelOrders extends JModel {
 						if ($_products = $db->loadObjectList()) {
 							foreach ($_products as $_key => $_product) {
 								if ($_updateStock > 0) { // Increase
-									$_productModel->increaseStockAfterCancel ($_product->product_id, $_product->product_quantity);
+									$_productModel->increaseStockAfterCancel ($_product->virtuemart_product_id, $_product->product_quantity);
 								} else { // Decrease
-									$_productModel->decreaseStockAfterSales ($_product->product_id, $_product->product_quantity);
+									$_productModel->decreaseStockAfterSales ($_product->virtuemart_product_id, $_product->product_quantity);
 								}
 							}
 						}
@@ -663,7 +663,7 @@ class VirtueMartModelOrders extends JModel {
 					if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 					$_productModel = new VirtueMartModelProduct();
 					foreach ($_cart->products as $_prod) {
-						$_productModel->decreaseStockAfterSales ($_prod->product_id, $_prod->quantity);
+						$_productModel->decreaseStockAfterSales ($_prod->virtuemart_product_id, $_prod->quantity);
 					}
 				}
 				break; // This was the active plugin, so there's nothing left to do here.
@@ -719,7 +719,7 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->order_id = $_id;
 			$_orderItems->user_info_id = 'TODO'; //$_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 			$_orderItems->vendor_id = $_prod->vendor_id;
-			$_orderItems->product_id = $_prod->product_id;
+			$_orderItems->virtuemart_product_id = $_prod->virtuemart_product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
@@ -1056,7 +1056,7 @@ class VirtueMartModelOrders extends JModel {
 	public function getProductListJson() {
 		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
-		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+		$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 			FROM #__virtuemart_products";
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
 		$db->setQuery($q);

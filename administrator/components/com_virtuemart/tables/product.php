@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableProduct extends JTable {
 
 	/** @var int Primary key */
-	var $product_id				= null;
+	var $virtuemart_product_id				= null;
 	/** @var integer Product id */
 	var $vendor_id		= null;
 	/** @var string File name */
@@ -113,7 +113,7 @@ class TableProduct extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct($db) {
-		parent::__construct('#__virtuemart_products', 'product_id', $db);
+		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
 	}
 
     /**

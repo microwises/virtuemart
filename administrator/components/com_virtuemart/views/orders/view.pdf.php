@@ -91,7 +91,7 @@ class VirtuemartViewOrders extends JView {
 			if (!empty($_item->product_attribute)) {
 				$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
-				$product = $productModel->getProduct($_item->product_id);
+				$product = $productModel->getProduct($_item->virtuemart_product_id);
 				$_productAttributes = array();
 				$_prodAttribs = explode(';', $product->attribute);
 				foreach ($_prodAttribs as $_pAttr) {

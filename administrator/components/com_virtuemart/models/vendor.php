@@ -370,7 +370,7 @@ class VirtueMartModelVendor extends JModel {
 				}
 				break;
 			case 'product':
-				$q = 'SELECT vendor_id FROM #__virtuemart_products WHERE product_id='.$value;
+				$q = 'SELECT vendor_id FROM #__virtuemart_products WHERE virtuemart_product_id='.$value;
 				break;
 		}
 		$db->setQuery($q);

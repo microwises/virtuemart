@@ -83,7 +83,7 @@ class VirtueMartModelRatings extends JModel {
 
      	/* Build the query */
      	$q = "SELECT 	`review_id`,
-     			#__virtuemart_products.`product_id`,
+     			#__virtuemart_products.`virtuemart_product_id`,
      			#__virtuemart_products.`product_parent_id`,
      			`product_name`,
      			`username`,
@@ -104,7 +104,7 @@ class VirtueMartModelRatings extends JModel {
     private function getRatingsListQuery() {
     	return 'FROM #__virtuemart_product_reviews
 			LEFT JOIN #__virtuemart_products
-			ON #__virtuemart_product_reviews.product_id = #__virtuemart_products.product_id
+			ON #__virtuemart_product_reviews.virtuemart_product_id = #__virtuemart_products.virtuemart_product_id
 			LEFT JOIN #__users
 			ON #__virtuemart_product_reviews.userid = #__users.id';
     }
@@ -152,7 +152,7 @@ class VirtueMartModelRatings extends JModel {
 		/* Add some variables for a new rating */
 		if (JRequest::getVar('task') == 'add') {
 			/* Product ID */
-			$ratings_data->product_id = JRequest::getInt('product_id');
+			$ratings_data->virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
 
 			/* User ID */
 			$user = JFactory::getUser();
@@ -161,7 +161,7 @@ class VirtueMartModelRatings extends JModel {
 
 		/* Get the product name */
 		$db = JFactory::getDBO();
-		$q = "SELECT product_name FROM #__virtuemart_products WHERE product_id = ".$ratings_data->product_id;
+		$q = "SELECT product_name FROM #__virtuemart_products WHERE virtuemart_product_id = ".$ratings_data->virtuemart_product_id;
 		$db->setQuery($q);
 		$ratings_data->product_name = $db->loadResult();
 
@@ -277,7 +277,7 @@ class VirtueMartModelRatings extends JModel {
 		$db = JFactory::getDBO();
 		$q = "SELECT COUNT(*) AS total
 			FROM #__virtuemart_product_reviews
-			WHERE product_id=".$pid;
+			WHERE virtuemart_product_id=".$pid;
 		$db->setQuery($q);
 		$reviews = $db->loadResult();
 		return $reviews;

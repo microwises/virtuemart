@@ -121,14 +121,14 @@ class VirtueMartModelCustom extends JModel {
     /**
      * Gets a single custom by custom_id
      * .
-     * @param int $product_id
+     * @param int $virtuemart_product_id
      * @return customobject
      */
-    function getProductCustoms($product_id){
+    function getProductCustoms($virtuemart_product_id){
 
 		$query='SELECT * FROM `#__virtuemart_customfields`
 		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
-		and `product_id`='.$product_id;
+		and `virtuemart_product_id`='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
 		$this->_datas->customFields = self::getCustoms() ;
@@ -305,7 +305,7 @@ class VirtueMartModelCustom extends JModel {
 	/* Save and delete from database
 	* all product custom_fields and xref
 	*/
-	public function  saveProductfield($fields, $product_id) {
+	public function  saveProductfield($fields, $virtuemart_product_id) {
 
 		$newIds = array();
 
@@ -316,14 +316,14 @@ class VirtueMartModelCustom extends JModel {
 			$this->_db->query();
 			$custom_field_id = mysql_insert_id();
 			$newIds[]=$custom_field_id;
-			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `custom_field_id` , `product_id`  )';
-			$q .= " VALUES( '".$custom_field_id."', '". $product_id ."') ";
+			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `custom_field_id` , `virtuemart_product_id`  )';
+			$q .= " VALUES( '".$custom_field_id."', '". $virtuemart_product_id ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
 
 		// slect all custom_field_id from product
-		$q="select custom_field_id from `#__virtuemart_product_customfields` where `product_id`=".$product_id ;
+		$q="select custom_field_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
 		$this->_db->setQuery($q);
 		$Ids = $this->_db->loadResultArray();
 		// delete from database old unused product custom fields

@@ -60,7 +60,7 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->inventorylist as $key => $product) {
-			$checked = JHTML::_('grid.id', $i , $product->product_id);
+			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id);
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
 				<?php
-				$link = 'index.php?option=com_virtuemart&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
+				$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
 				<!-- Product SKU -->

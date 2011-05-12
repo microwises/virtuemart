@@ -82,13 +82,13 @@ class VirtueMartModelProductspecial extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT #__virtuemart_products.`product_id`,
+     	$q = "SELECT #__virtuemart_products.`virtuemart_product_id`,
      				#__virtuemart_products.`product_parent_id`,`product_name`,`product_sku`, `product_special`,";
 //     				IF(`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,  //Todo solve this
      				$q .="`published`,`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_id');
+     	return $db->loadObjectList('virtuemart_product_id');
     }
 
     /**
@@ -98,7 +98,7 @@ class VirtueMartModelProductspecial extends JModel {
     private function getInventoryListQuery() {
     	return 'FROM #__virtuemart_products
 			LEFT JOIN #__virtuemart_product_prices
-			ON #__virtuemart_products.product_id = #__virtuemart_product_prices.product_id
+			ON #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_prices.virtuemart_product_id
 			LEFT JOIN #__virtuemart_shoppergroups
 			ON #__virtuemart_product_prices.shopper_group_id = #__virtuemart_shoppergroups.shopper_group_id';
     }

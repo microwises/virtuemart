@@ -17,7 +17,7 @@
 */
 
 /**
- * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
+ * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&virtuemart_product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
 AdminMenuHelper::startAdminArea();
 
@@ -35,7 +35,7 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+	if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
 	<div style="float: left;">
@@ -117,8 +117,8 @@ $pagination = $this->pagination;
 	</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
-<?php if (JRequest::getInt('product_id', false)) { ?>
-	<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
+<?php if (JRequest::getInt('virtuemart_product_id', false)) { ?>
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id'); ?>" />
 <?php } ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="custom" />

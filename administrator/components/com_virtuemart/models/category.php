@@ -372,11 +372,11 @@ class VirtueMartModelCategory extends JModel {
 		if(!empty($this->_db))$this->_db = JFactory::getDBO();
 		$vendorId = 1;
 		if ($cat_id > 0) {
-			$q = 'SELECT count(#__virtuemart_products.product_id) AS total
+			$q = 'SELECT count(#__virtuemart_products.virtuemart_product_id) AS total
 			FROM `#__virtuemart_products`, `#__virtuemart_product_categories`
 			WHERE `#__virtuemart_products`.`vendor_id` = "'.$vendorId.'"
 			AND `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$this->_db->Quote($cat_id).'
-			AND `#__virtuemart_products`.`product_id` = `#__virtuemart_product_categories`.`product_id`
+			AND `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			AND `#__virtuemart_products`.`published` = "1" ';
 			$this->_db->setQuery($q);
 			$count = $this->_db->loadResult();
@@ -396,12 +396,12 @@ class VirtueMartModelCategory extends JModel {
 	 */
 //	public function getProductCount($virtuemart_category_id) {
 //		$db = JFactory::getDBO();
-//		$q = "SELECT count(#__virtuemart_products.product_id) AS num_rows
+//		$q = "SELECT count(#__virtuemart_products.virtuemart_product_id) AS num_rows
 //			FROM #__virtuemart_products, #__virtuemart_product_categories, #__virtuemart_categories
 //			WHERE #__virtuemart_products.vendor_id = 1
 //			AND #__virtuemart_product_categories.virtuemart_category_id = ".$virtuemart_category_id."
 //			AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_product_categories.virtuemart_category_id
-//			AND #__virtuemart_products.product_id = #__virtuemart_product_categories.product_id
+//			AND #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_categories.virtuemart_product_id
 //			AND #__virtuemart_products.published = 1";
 //			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
 //				$q .= " AND product_in_stock > 0 ";

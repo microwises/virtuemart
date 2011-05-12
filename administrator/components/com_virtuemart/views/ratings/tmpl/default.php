@@ -70,7 +70,7 @@ $option = JRequest::getWord('option');
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
-				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$review->product_id.'&product_parent_id='.$review->product_parent_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id.'&product_parent_id='.$review->product_parent_id; ?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit&review_id='.$review->review_id; ?>
