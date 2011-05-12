@@ -105,7 +105,7 @@ AdminMenuHelper::startAdminArea();
 
 	<input type="hidden" name="option" value="com_virtuemart" />
 
-	<input type="hidden" name="group_id" value="<?php echo $this->usergroup->group_id; ?>" />
+	<input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->usergroup->virtuemart_shoppergroup_id; ?>" />
 
 	<input type="hidden" name="task" value="" />
 

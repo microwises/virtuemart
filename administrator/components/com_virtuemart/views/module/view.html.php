@@ -40,7 +40,7 @@ class VirtuemartViewModule extends JView {
 
 		$module = $model->getModule();
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($module->shopper_group_id < 1);
+		$isNew = ($module->virtuemart_shoppergroup_id < 1);
 
 		if ($layoutName == 'edit') {
 		  if ($isNew) {

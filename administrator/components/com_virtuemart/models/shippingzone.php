@@ -57,12 +57,12 @@ class VirtueMartModelShippingZone extends JModel {
     {
         parent::__construct();
 
-        $cid = JRequest::getVar('zone_id', false, 'DEFAULT', 'array');
+        $cid = JRequest::getVar('virtuemart_zone_id', false, 'DEFAULT', 'array');
         if ($cid) {
             $id = $cid[0];
         }
         else {
-            $id = JRequest::getInt('zone_id', 1);
+            $id = JRequest::getInt('virtuemart_zone_id', 1);
         }
 
         $this->setId($id);
@@ -93,7 +93,7 @@ class VirtueMartModelShippingZone extends JModel {
 		if (empty($this->_data)) {
 			$query = 'SELECT * ';
 			$query .= 'FROM `#__virtuemart_shippingzones` ';
-			$query .= 'WHERE `zone_id` = ' . (int)$this->_id;
+			$query .= 'WHERE `virtuemart_zone_id` = ' . (int)$this->_id;
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
 		}
@@ -117,7 +117,7 @@ class VirtueMartModelShippingZone extends JModel {
     {
     	$db =& JFactory::getDBO();
 
-    	$query = 'SELECT `zone_id`, `zone_name` ';
+    	$query = 'SELECT `virtuemart_zone_id`, `zone_name` ';
 		$query .= 'FROM `#__virtuemart_shippingzones`';
 		$db->setQuery($query);
 

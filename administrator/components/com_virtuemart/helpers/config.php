@@ -43,7 +43,7 @@ class VmConfig
 	 */
 	private function loadConfig() {
 		$db = JFactory::getDBO();
-		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `config_id` = '1'";
+		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = '1'";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 

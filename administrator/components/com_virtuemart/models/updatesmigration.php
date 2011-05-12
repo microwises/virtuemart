@@ -73,17 +73,17 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_users FAILED' );
 	    }
 
-		$q = 'SELECT `shopper_group_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
+		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
 		$this->_db->setQuery($q);
-		$default_shopper_group_id=$this->_db->loadResult();
+		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
 	    }
 
-	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`user_info_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
+	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
@@ -178,7 +178,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 //				WHERE address_type='BT' ");
 //	$db->query();
 //
-//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
+//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
 //	$db->query();
     }
 
@@ -200,7 +200,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	$fields = array();
 
-//	$fields['user_info_id'] = $db->loadResult();
+//	$fields['virtuemart_userinfo_id'] = $db->loadResult();
 	$fields['virtuemart_user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
@@ -386,7 +386,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 
 		if ($_section == '[CONFIG]') {
-			$_qry = "INSERT INTO `#__virtuemart_configs` (`config_id`, `config`) VALUES (null, '$_value')";
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (null, '$_value')";
 		}
 		// Other sections can be implemented here
 

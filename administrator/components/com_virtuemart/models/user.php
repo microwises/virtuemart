@@ -176,19 +176,19 @@ class VirtueMartModelUser extends JModel {
 			$this->_data = $this->getTable('vm_users');
 			$this->_data->load((int)$this->_id);
 
-			/* Add the shopper_group_ids */
-			$q = 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
+			/* Add the virtuemart_shoppergroup_ids */
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 
-			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
+			$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
 
 			$this->_data->userInfo = array ();
 
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
-				$_ui_id = $_ui[$i]->user_info_id;
+				$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 				/*
 				 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
@@ -402,7 +402,7 @@ class VirtueMartModelUser extends JModel {
 				$user->set('usertype', $newUsertype);
 
 				if ( VmConfig::isJ15()){
-					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
 				}
 
 				$date =& JFactory::getDate();
@@ -516,16 +516,16 @@ class VirtueMartModelUser extends JModel {
 				return false;
 			}
 
-			if(empty($_data['shopper_group_id'])){
-				$q = 'SELECT `shopper_group_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
+			if(empty($_data['virtuemart_shoppergroup_id'])){
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
 				$this->_db->setQuery($q);
-				$_data['shopper_group_id']=$this->_db->loadResult();
+				$_data['virtuemart_shoppergroup_id']=$this->_db->loadResult();
 			}
 
 			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
+			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
+			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'user_info', $new)) {
 				$this->setError('Was not able to save the virtuemart user_info address data');
@@ -684,10 +684,10 @@ class VirtueMartModelUser extends JModel {
 	  * Retrieve a single address for a user
 	  *
 	  *  @param $_uid int User ID
-	  *  @param $_user_info_id string Optional User Info ID
+	  *  @param $_virtuemart_userinfo_id string Optional User Info ID
 	  *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo). Empty string to ignore
 	  */
-	 function getUserAddress($_uid = 0, $_user_info_id = -1, $_type = 'ST')
+	 function getUserAddress($_uid = 0, $_virtuemart_userinfo_id = -1, $_type = 'ST')
 	 {
 	 	$_q = 'SELECT * '
 			. ' FROM #__virtuemart_userinfos '
@@ -695,8 +695,8 @@ class VirtueMartModelUser extends JModel {
 			if ($_type !== '') {
 				$_q .= " AND address_type='$_type'";
 			}
-			if ($_user_info_id !== -1) {
-				$_q .= " AND user_info_id='$_user_info_id'";
+			if ($_virtuemart_userinfo_id !== -1) {
+				$_q .= " AND virtuemart_userinfo_id='$_virtuemart_userinfo_id'";
 			}
 			return ($this->_getList($_q));
 	 }
@@ -783,7 +783,7 @@ class VirtueMartModelUser extends JModel {
 			. 'FROM #__users AS ju '
 			. 'LEFT JOIN #__virtuemart_users AS vmu ON ju.id = vmu.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
-			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
+			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
 

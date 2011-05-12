@@ -33,7 +33,7 @@ class TableState extends JTable {
 	/** @var integer Country id */
 	var $virtuemart_country_id           	= 0;
 	/** @var integer Zone id */
-	var $zone_id           	= 0;
+	var $virtuemart_zone_id           	= 0;
 	/** @var string State name */
 	var $state_name           	= '';
 	/** @var char 3 character state code */

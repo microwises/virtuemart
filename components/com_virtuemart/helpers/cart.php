@@ -43,7 +43,7 @@ class VirtueMartCart  {
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
-	var $shipping_rate_id = 0;
+	var $virtuemart_shipping_rate_id = 0;
 	var $shipper_id = 0;
 	var $paym_id = 0;
 	var $BT = 0;
@@ -469,8 +469,8 @@ class VirtueMartCart  {
 		return '';
 	}
 
-	public function setShippingRate($shipping_rate_id){
-		$this->shipping_rate_id=$shipping_rate_id;
+	public function setShippingRate($virtuemart_shipping_rate_id){
+		$this->virtuemart_shipping_rate_id=$virtuemart_shipping_rate_id;
 		$this->setCartIntoSession();
 	}
 
@@ -585,14 +585,14 @@ class VirtueMartCart  {
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
-		$this->shipping_rate_id = -1;
+		$this->virtuemart_shipping_rate_id = -1;
 		foreach ($_retValues as $_retVal) {
 			if ($_retVal !== null) {
-				$this->shipping_rate_id = $_retVal;
+				$this->virtuemart_shipping_rate_id = $_retVal;
 				break; // When we've got a value, it's always a valid one, so we're done now
 			}
 		}
-		if ($this->shipping_rate_id < 0) {
+		if ($this->virtuemart_shipping_rate_id < 0) {
 			$this->shipper_id = 0;
 			$this->setCartIntoSession();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);

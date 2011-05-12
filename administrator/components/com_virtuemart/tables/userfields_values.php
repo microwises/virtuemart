@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 class TableUserfields_values extends JTable {
 
 	/** @var int Primary key */
-	var $fieldvalueid	= 0;
+	var $virtuemart_userfield_value_id	= 0;
 	/** @var int Reference to the userfield */
-	var $fieldid		= 0;
+	var $virtuemart_userfield_id		= 0;
 	/** @var string Label of the value */
 	var $fieldtitle		= null;
 	/** @var string Selectable value */
@@ -49,7 +49,7 @@ class TableUserfields_values extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_userfields_values', 'fieldvalueid', $db);
+		parent::__construct('#__virtuemart_userfield_values', 'virtuemart_userfield_value_id', $db);
 	}
 
 	/**
@@ -66,15 +66,15 @@ class TableUserfields_values extends JTable {
 		}
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT `fieldvalueid` FROM `#__virtuemart_userfields_values` '
+		$q = 'SELECT `virtuemart_userfield_value_id` FROM `#__virtuemart_userfield_values` '
 			. 'WHERE `fieldtitle`="' . $this->fieldtitle . '" '
-			. 'AND   `fieldid`=' . $this->fieldid;
+			. 'AND   `virtuemart_userfield_id`=' . $this->virtuemart_userfield_id;
 		$db->setQuery($q);
 		$_id = $db->loadResult();
 		if ($_id === null) {
-			$this->fieldvalueid = null;
+			$this->virtuemart_userfield_value_id = null;
 		} else {
-			$this->fieldvalueid = $_id;
+			$this->virtuemart_userfield_value_id = $_id;
 		}
 		return true;
 	}
@@ -84,10 +84,10 @@ class TableUserfields_values extends JTable {
 	 * @var Field id
 	 * @return boolean True on success
 	 */
-	function delete($fieldid)
+	function delete($virtuemart_userfield_id)
 	{
 		$db =& JFactory::getDBO();
-		$db->setQuery('DELETE from `#__virtuemart_userfields_values` WHERE `fieldid` = ' . $fieldid);
+		$db->setQuery('DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $virtuemart_userfield_id);
 		if ($db->query() === false) {
 			$this->setError($db->getError());
 			return false;

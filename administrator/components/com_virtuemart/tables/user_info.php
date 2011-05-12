@@ -33,7 +33,7 @@ class TableUser_info extends JTable {
 	var $virtuemart_user_id = 0;
 
 	/** @var int hidden userkey */
-	var $user_info_id = 0;
+	var $virtuemart_userinfo_id = 0;
 
 //	var $user_is_vendor = 0;
 	var $address_type = '';
@@ -77,7 +77,7 @@ class TableUser_info extends JTable {
 	function __construct($db) {
 		/* Make sure the custom fields are added */
 		self::addUserFields();
-		parent::__construct('#__virtuemart_userinfos', 'user_info_id', $db);
+		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
 	}
 
 	/**
@@ -171,12 +171,12 @@ class TableUser_info extends JTable {
 		}
      	$this->modified_on = $today;
 
-		if (!empty($this->user_info_id)) {
+		if (!empty($this->virtuemart_userinfo_id)) {
 			return true;
 		}
 
 		/* Check if a record exists */
-		$q = "SELECT user_info_id
+		$q = "SELECT virtuemart_userinfo_id
 			FROM #__virtuemart_userinfos
 			WHERE virtuemart_user_id = ".$this->virtuemart_user_id."
 			AND address_type = ".$this->_db->Quote($this->address_type)."
@@ -185,10 +185,10 @@ class TableUser_info extends JTable {
 		$total = $this->_db->loadResultArray();
 
 		if (count($total) > 0) {
-			$this->user_info_id = $total[0];
+			$this->virtuemart_userinfo_id = $total[0];
 			return true;
 		} else {
-			$this->user_info_id = md5(uniqid($this->virtuemart_user_id));
+			$this->virtuemart_userinfo_id = md5(uniqid($this->virtuemart_user_id));
 			$this->created_on = time();
 			return false;
 		}
@@ -197,14 +197,14 @@ class TableUser_info extends JTable {
 	}
 
 	/**
-	 * Overloaded delete() to delete a list of user_info_id's based on the user id
+	 * Overloaded delete() to delete a list of virtuemart_userinfo_id's based on the user id
 	 * @var mixed id
 	 * @return boolean True on success
 	 * @author Oscar van Eijk
 	 */
 	function delete($id)
 	{
-		// TODO If $id is not numeric, assume it's a user_info_id. Validate if this is safe enough
+		// TODO If $id is not numeric, assume it's a virtuemart_userinfo_id. Validate if this is safe enough
 		if (!is_numeric($id)) {
 			return (parent::delete($id));
 		}

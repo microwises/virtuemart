@@ -50,7 +50,7 @@ class TableProduct_price extends JTable {
     /** @var string Modified date */
     var $modified_on = null;
     /** @var int Shopper group ID */
-    var $shopper_group_id = null;
+    var $virtuemart_shoppergroup_id = null;
     /** @var int Price quantity start */
     var $price_quantity_start = null;
     /** @var int Price quantity end */

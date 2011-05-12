@@ -22,7 +22,7 @@ defined('_JEXEC') or die();
 class TableShopperGroup extends JTable
 {
 	/** @var int primary key */
-	var $shopper_group_id	 = 0;
+	var $virtuemart_shoppergroup_id	 = 0;
 	
 	/** @var int Vendor id */
 	var $vendor_id = 0;
@@ -47,7 +47,7 @@ class TableShopperGroup extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_shoppergroups', 'shopper_group_id', $db);
+		parent::__construct('#__virtuemart_shoppergroups', 'virtuemart_shoppergroup_id', $db);
 	}
 
 
@@ -67,7 +67,7 @@ class TableShopperGroup extends JTable
       return false;
 		}
 
-		if (($this->country_name) && ($this->shopper_group_id == 0)) {
+		if (($this->country_name) && ($this->virtuemart_shoppergroup_id == 0)) {
 		  
 			$db =& JFactory::getDBO();  
 			$query = 'SELECT count(*) FROM '

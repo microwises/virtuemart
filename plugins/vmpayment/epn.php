@@ -68,12 +68,12 @@ class plgPaymentEpn extends vmPaymentPlugin {
         $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
-        $user_info_id = $dbbt->f("user_info_id");
-        if( $user_info_id != $d["ship_to_info_id"]) {
+        $virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+        if( $virtuemart_userinfo_id != $d["ship_to_info_id"]) {
             // Get user billing information
             //$dbst =& new ps_DB;
             $dbst =& JFactory::getDBO();
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -324,12 +324,12 @@ Discover Test Account       5424000000000015
         $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$db->f("user_id")."'";
         $dbbt->query($qt);
         $dbbt->next_record();
-        $user_info_id = $dbbt->f("user_info_id");
-        if( $user_info_id != $db->f("user_info_id")) {
+        $virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+        if( $virtuemart_userinfo_id != $db->f("virtuemart_userinfo_id")) {
             // Get user billing information
             //$dbst =& new ps_DB;
             $dbst =& JFactory::getDBO();
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$db->f("user_info_id")."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }

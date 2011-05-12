@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableUsergroups extends JTable {
 
 	/** @var Primary Key*/
-	var $group_id = 0;
+	var virtuemart_permgroup_id = 0;
 	/** @var Authentification Groupname*/
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
@@ -42,7 +42,7 @@ class TableUsergroups extends JTable {
 
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_permgroups', 'group_id', $db);
+		parent::__construct('#__virtuemart_permgroups', 'virtuemart_permgroup_id', $db);
 	}
 
 	/**

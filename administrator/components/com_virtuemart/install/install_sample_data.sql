@@ -216,7 +216,7 @@ INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id
 -- Dumping data for table `#__virtuemart_product_prices`
 --
 
-INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `shopper_group_id`, `price_quantity_start`, `price_quantity_end`) VALUES
+INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `virtuemart_shoppergroup_id`, `price_quantity_start`, `price_quantity_end`) VALUES
 (1, 5, '24.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (2, 1, '4.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (3, 2, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
@@ -238,7 +238,7 @@ INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `virtuemart_prod
 -- Dumping data for table `#__virtuemart_shoppergroups`
 --
 
-INSERT IGNORE INTO `#__virtuemart_shoppergroups` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
+INSERT IGNORE INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
 (NULL, 1, 'Gold Level', 'Gold Level Shoppers.', 0),
 (NULL, 1, 'Wholesale', 'Shoppers that can buy at wholesale.', 0);
 
@@ -246,7 +246,7 @@ INSERT IGNORE INTO `#__virtuemart_shoppergroups` (`shopper_group_id`, `vendor_id
 -- Dumping data for table `#__virtuemart_shippingzones`
 --
 
-INSERT INTO `#__virtuemart_shippingzones` (`zone_id`, `zone_name`, `zone_cost`, `zone_limit`, `zone_description`, `zone_tax_rate`) VALUES
+INSERT INTO `#__virtuemart_shippingzones` (`virtuemart_zone_id`, `zone_name`, `zone_cost`, `zone_limit`, `zone_description`, `zone_tax_rate`) VALUES
 (1, 'Default', '6.00', '35.00', 'This is the default Shipping Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', 2),
 (2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', 2),
 (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),

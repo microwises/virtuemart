@@ -181,7 +181,7 @@ class VirtueMartModelCalc extends JModel
 			$data->calcCategoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
 
 			/* Write the first 5 shoppergroups in the list */
-			$data->calcShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','shopper_group_id');
+			$data->calcShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id');
 
 			/* Write the first 5 countries in the list */
 			$data->calcCountriesList = modelfunctions::buildGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id');
@@ -284,7 +284,7 @@ class VirtueMartModelCalc extends JModel
 		}
 
 //		modelfunctions::storeArrayData('#__virtuemart_calc_categories','virtuemart_calc_id','virtuemart_category_id', $table->virtuemart_calc_id,$data["calc_categories"]);
-////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','virtuemart_calc_id','virtuemart_shoppergroup_id', $table->virtuemart_calc_id,$data["shopper_group_id"]);
+////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','virtuemart_calc_id','virtuemart_shoppergroup_id', $table->virtuemart_calc_id,$data["virtuemart_shoppergroup_id"]);
 //		modelfunctions::storeArrayData('#__virtuemart_calc_countries','virtuemart_calc_id','virtuemart_country_id', $table->virtuemart_calc_id,$data["virtuemart_country_id"]);
 //		modelfunctions::storeArrayData('#__virtuemart_state_ids','virtuemart_calc_id','virtuemart_state_id', $table->virtuemart_calc_id,$data["virtuemart_state_id"]);
 

@@ -728,7 +728,7 @@ class VirtueMartModelProduct extends JModel {
      	/* Product name */
      	if (JRequest::getVar('filter_product', false)) $filters[] = '#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Product type ID */
-     	//if (JRequest::getInt('product_type_id', false)) $filters[] = '#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
+     	//if (JRequest::getInt('virtuemart_producttype_id', false)) $filters[] = '#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Time filter */
      	if (JRequest::getVar('search_type', '') != '') {
      		$search_order = JRequest::getVar('search_order') == 'bf' ? '<' : '>';
@@ -1204,12 +1204,12 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->setQuery($q); $this->_db->query();
 
 			/* find and delete Product Types */
-			$q = "SELECT product_type_id FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q = "SELECT virtuemart_producttype_id FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			/* TODO the product is not deleted from this tables !!*/
-			$product_type_ids = $this->_db->loadResultArray();
-			foreach ($product_type_ids as $product_type_id)
-			$q  = "DELETE FROM #__virtuemart_producttypes_".$product_type_id." WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$virtuemart_producttype_ids = $this->_db->loadResultArray();
+			foreach ($virtuemart_producttype_ids as $virtuemart_producttype_id)
+			$q  = "DELETE FROM #__virtuemart_producttypes_".$virtuemart_producttype_id." WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
 			/* Delete Product Types xref */

@@ -57,7 +57,7 @@ class ShopFunctions {
 	*
 	* @author Max Milbers, RolandD
 	* @access public
-	* @param int $shopper_group_id the shopper group to pre-select
+	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
@@ -104,7 +104,7 @@ class ShopFunctions {
 	*
 	* @author Max Milbers, RolandD
 	* @access public
-	* @param int $shopper_group_id the shopper group to pre-select
+	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
@@ -113,7 +113,7 @@ class ShopFunctions {
 		$shoppergrps = $shopperModel->getShopperGroups(false,true);
 		$attrs = '';
 		$name = 'shopper_group_name';
-		$idA = $id = 'shopper_group_id';
+		$idA = $id = 'virtuemart_shoppergroup_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
@@ -380,8 +380,8 @@ class ShopFunctions {
 			. ', s.shipping_rate_name AS name '
 			. 'FROM `#__virtuemart_shippingrates` AS s '
 			. ', `#__virtuemart_shippingcarriers` AS c '
-			. 'WHERE s.shipping_rate_id = ' . $_id . ' '
-			. 'AND s.shipping_rate_carrier_id = c.shipping_carrier_id '
+			. 'WHERE s.virtuemart_shipping_rate_id = ' . $_id . ' '
+			. 'AND s.shipping_rate_carrier_id = c.virtuemart_shipping_carrier_id '
 		;
 		$_db->setQuery($_q);
 		return $_db->loadObject();

@@ -523,10 +523,10 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
 		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'),8);
-		//Note as long we do not have an extra table only storing addresses, the user_info_id is not needed.
-		//The user_info_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
+		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
+		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
-//		$_orderData->user_info_id = 'TODO'; // $_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+//		$_orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 		$_orderData->order_total = $_prices['billTotal'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
@@ -548,7 +548,7 @@ class VirtueMartModelOrders extends JModel {
 		//Should be done in table
 //		$_orderData->created_on = time();
 //		$_orderData->modified_on = time();
-		$_orderData->ship_method_id = $_cart->shipping_rate_id;
+		$_orderData->ship_method_id = $_cart->virtuemart_shipping_rate_id;
 
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
@@ -717,7 +717,7 @@ class VirtueMartModelOrders extends JModel {
 //    * [double] variantModification = 0
 			$_orderItems->order_item_id = null;
 			$_orderItems->order_id = $_id;
-			$_orderItems->user_info_id = 'TODO'; //$_cart['BT']['user_info_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 			$_orderItems->vendor_id = $_prod->vendor_id;
 			$_orderItems->virtuemart_product_id = $_prod->virtuemart_product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;

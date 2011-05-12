@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableConfig extends JTable {
 
 	/** @var int Primary key */
-	var $config_id			= 0;
+	var $virtuemart_config_id			= 0;
 	/** @var config */
 	var $config       		= 0;
                /** @var boolean */
@@ -43,7 +43,7 @@ class TableConfig extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_configs', 'config_id', $db);
+		parent::__construct('#__virtuemart_configs', 'virtuemart_config_id', $db);
 	}
 
 

@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableUserfields extends JTable {
 
 	/** @var var Primary Key*/
-	var $fieldid		= 0;
+	var $virtuemart_userfield_id		= 0;
 	/** @var string Internal fielname*/
 	var $name			= null;
 	/** @var string Visible title*/
@@ -82,7 +82,7 @@ class TableUserfields extends JTable {
 	function __construct(&$db)
 	{
 		self::loadFields($db);
-		parent::__construct('#__virtuemart_userfields', 'fieldid', $db);
+		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
 	}
 
 	/**
@@ -126,7 +126,7 @@ class TableUserfields extends JTable {
 			$this->setError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
-		if ($this->fieldid == 0) {
+		if ($this->virtuemart_userfield_id == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
 					. 'FROM `#__virtuemart_userfields`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
@@ -170,7 +170,7 @@ class TableUserfields extends JTable {
 				$_fieldType = 'TINYINT';
 				break;
 			case 'euvatid':
-				$this->params = 'shopper_group_id='.$_data['shopper_group_id']."\n";
+				$this->params = 'virtuemart_shoppergroup_id='.$_data['virtuemart_shoppergroup_id']."\n";
 				$_fieldType = 'VARCHAR(255)';
 				break;
 			case 'age_verification':
@@ -189,7 +189,7 @@ class TableUserfields extends JTable {
 	 */
 	function store()
 	{
-		$isNew = ($this->fieldid == 0);
+		$isNew = ($this->virtuemart_userfield_id == 0);
 		if (!parent::store()) { // Write data to the DB
 			$this->setError($this->getError());
 			return false;

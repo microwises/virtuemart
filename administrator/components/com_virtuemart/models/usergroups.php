@@ -89,7 +89,7 @@ class VirtueMartModelUsergroups extends JModel {
     function _getTotal() {
 
 		if (empty($this->_total)) {
-		    $query = 'SELECT `group_id` FROM `#__virtuemart_permgroups`';
+		    $query = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -119,11 +119,11 @@ class VirtueMartModelUsergroups extends JModel {
     function getUsergroups($onlyPublished=false, $noLimit=false) {
 
 		$db = JFactory::getDBO();
-		$query = 'SELECT * FROM `#__virtuemart_permgroups` ';
+		$query = 'SELECT * FROM `#__virtuemart_shoppergroups` ';
 //		if ($onlyPublished) {
-//			$query .= 'WHERE `#__virtuemart_permgroups`.`published` = 1';
+//			$query .= 'WHERE `#__virtuemart_shoppergroups`.`published` = 1';
 //		}
-		$query .= ' ORDER BY `#__virtuemart_permgroups`.`group_name`';
+		$query .= ' ORDER BY `#__virtuemart_shoppergroups`.`group_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
@@ -169,7 +169,7 @@ class VirtueMartModelUsergroups extends JModel {
     function delete() {
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::delete('group_id','usergroups');
+		return modelfunctions::delete('virtuemart_shoppergroup_id','usergroups');
 
     }
 
@@ -177,7 +177,7 @@ class VirtueMartModelUsergroups extends JModel {
 	function publish($publishId = false) {
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('group_id','usergroups',$publishId);
+		return modelfunctions::publish('virtuemart_shoppergroup_id','usergroups',$publishId);
 
     }
 

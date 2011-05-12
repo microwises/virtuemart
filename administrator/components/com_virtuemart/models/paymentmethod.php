@@ -215,7 +215,7 @@ class VirtueMartModelPaymentmethod extends JModel
 				$data->paym_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__virtuemart_paymentmethod_shoppergroups','paym_id',$data->paym_id,'shopper_group_name','#__virtuemart_shoppergroups','shopper_group_id');
+				$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__virtuemart_paymentmethod_shoppergroups','paym_id',$data->paym_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id');
 
 				/* Write the first 5 accepted creditcards in the list */
 				$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__virtuemart_paymentmethod_creditcards','paym_id',$data->paym_id,'creditcard_name','#__virtuemart_creditcards','creditcard_id');
@@ -292,7 +292,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		}
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_shoppergroups','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
+		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_shoppergroups','paym_id','paym_shopper_group',$data['paym_id'],$data['virtuemart_shoppergroup_id']);
 		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_creditcards','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
 
 //		$dbv = $table->getDBO();

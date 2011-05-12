@@ -211,14 +211,14 @@ class calculationHelper {
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(!empty($user->id)){
-				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__virtuemart_user_shoppergroups as `usgr`
- JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
+				$this->_db->setQuery( 'SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups as `usgr`
+ JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it
 			}
 			if(empty($this->_shopperGroupId)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_shoppergroups
+				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
 				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');
-//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups
+//				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups
 //				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId = $this->_db->loadResult();
 			}
@@ -359,7 +359,7 @@ class calculationHelper {
 	public function getCheckoutPrices($cart){
 
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
-//		echo '<br />shipping_rate_id '.$cart->shipping_rate_id.'<br />';
+//		echo '<br />virtuemart_shipping_rate_id '.$cart->virtuemart_shipping_rate_id.'<br />';
 		$pricesPerId = array();
 		$this->_cartPrices = array();
 		$this->_cartData = array();
@@ -422,7 +422,7 @@ class calculationHelper {
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups  WHERE `virtuemart_user_id`="'.$user->id.'" ');
+				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups  WHERE `virtuemart_user_id`="'.$user->id.'" ');
 				$this->_shopperGroupId=$this->_db->loadResultArray();
 			}
 		}
@@ -444,7 +444,7 @@ class calculationHelper {
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 
-		$shippingRateId = empty($cart->shipping_rate_id) ? 0 : $cart->shipping_rate_id;
+		$shippingRateId = empty($cart->virtuemart_shipping_rate_id) ? 0 : $cart->virtuemart_shipping_rate_id;
 
 		$this->calculateShipmentPrice($shippingRateId);
 
@@ -754,7 +754,7 @@ class calculationHelper {
 		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
 
 		// Outcommented (Oscar); use th model instead
-//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
+//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `virtuemart_shipping_rate_id` = "'.$ship_id.'" ';
 //		$this->_db->setQuery($q);
 //		$shipping = $this->_db->loadAssoc();
 

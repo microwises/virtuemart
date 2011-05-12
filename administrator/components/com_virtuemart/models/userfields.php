@@ -78,7 +78,7 @@ class VirtueMartModelUserfields extends JModel {
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (
 			 'age_verification' => 'minimum_age'
-			,'euvatid'          => 'shopper_group_id'
+			,'euvatid'          => 'virtuemart_shoppergroup_id'
 			,'webaddress'       => 'webaddresstype'
 		);
 	}
@@ -188,7 +188,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$this->_data = $this->getTable('userfields_values');
 		if ($this->_id > 0) {
-			$query = 'SELECT * FROM `#__virtuemart_userfields_values` WHERE `fieldid` = ' . $this->_id
+			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $this->_id
 				. ' ORDER BY `ordering`';
 			$_userFieldValues = $this->_getList($query);
 			return $_userFieldValues;
@@ -210,12 +210,12 @@ class VirtueMartModelUserfields extends JModel {
 
 		$data = JRequest::get('post');
 
-		$isNew = ($data['fieldid'] < 1) ? true : false;
+		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
 			$_action = 'ADD';
 		} else {
-			$field->load($data['fieldid']);
+			$field->load($data['virtuemart_userfield_id']);
 			$_action = 'CHANGE';
 
 			if ($field->ordering == $data['ordering']) {
@@ -232,7 +232,7 @@ class VirtueMartModelUserfields extends JModel {
 		}
 
 		// Store the fieldvalues, if any, in a correct array
-		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['fieldid']);
+		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id']);
 
 		if (!$field->bind($data)) { // Bind data
 			$this->setError($field->getError());
@@ -286,7 +286,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * Bind and write all value records
 	 *
 	 * @param array $_values
-	 * @param mixed $_id If a new record is being inserted, it contains the fieldid, otherwise the value true
+	 * @param mixed $_id If a new record is being inserted, it contains the virtuemart_userfield_id, otherwise the value true
 	 * @return boolean
 	 */
 	private function storeFieldValues($_values, $_id)
@@ -298,7 +298,7 @@ class VirtueMartModelUserfields extends JModel {
 
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
-				$_values[$i]['fieldid'] = $_id;
+				$_values[$i]['virtuemart_userfield_id'] = $_id;
 			}
 
 			if (!$fieldvalue->bind($_values[$i])) { // Bind data
@@ -390,7 +390,7 @@ class VirtueMartModelUserfields extends JModel {
 		// We need some extra fields that are not in the userfields table. They will be hidden on the details form
 		if (!in_array('address_type', $_skip)) {
 			$_address_type = new stdClass();
-			$_address_type->fieldid = 0;
+			$_address_type->virtuemart_userfield_id = 0;
 			$_address_type->name = 'address_type';
 			$_address_type->title = '';
 			$_address_type->description = '' ;
@@ -417,7 +417,7 @@ class VirtueMartModelUserfields extends JModel {
 
 		if (!in_array('user_is_vendor', $_skip)) {
 			$_user_is_vendor = new stdClass();
-			$_user_is_vendor->fieldid = 0;
+			$_user_is_vendor->virtuemart_userfield_id = 0;
 			$_user_is_vendor->name = 'user_is_vendor';
 			$_user_is_vendor->title = '';
 			$_user_is_vendor->description = '' ;
@@ -712,8 +712,8 @@ class VirtueMartModelUserfields extends JModel {
 						case 'multiselect':
 						case 'radio':
 							$_qry = 'SELECT fieldtitle, fieldvalue '
-								. 'FROM #__virtuemart_userfields_values '
-								. 'WHERE fieldid = ' . $_fld->fieldid . ' '
+								. 'FROM #__virtuemart_userfield_values '
+								. 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id . ' '
 								. 'ORDER BY ordering ';
 							$_values = $this->_getList($_qry);
 							// We need an extra lok here, especially for the Bank info; the values
@@ -776,10 +776,10 @@ class VirtueMartModelUserfields extends JModel {
 	 *
 	 * @param array $titles List of titles from the formdata
 	 * @param array $values List of values from the formdata
-	 * @param int $fieldid ID of the userfield to relate
+	 * @param int $virtuemart_userfield_id ID of the userfield to relate
 	 * @return array Data to bind to the userfield_values table
 	 */
-	private function postData2FieldValues($titles, $values, $fieldid)
+	private function postData2FieldValues($titles, $values, $virtuemart_userfield_id)
 	{
 		$_values = array();
 		if (is_array($titles) && is_array($values)) {
@@ -788,7 +788,7 @@ class VirtueMartModelUserfields extends JModel {
 					continue; // Ignore empty fields
 				}
 				$_values[] = array(
-					 'fieldid'    => $fieldid
+					 'virtuemart_userfield_id'    => $virtuemart_userfield_id
 					,'fieldtitle' => $titles[$i]
 					,'fieldvalue' => $values[$i]
 					,'ordering'   => $i
@@ -807,7 +807,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$_sql = 'SELECT name '
 				. 'FROM `#__virtuemart_userfields`'
-				. "WHERE fieldid = $_id";
+				. "WHERE virtuemart_userfield_id = $_id";
 
 		$_v = $this->_getList($_sql);
 		return ($_v[0]->name);
@@ -974,7 +974,7 @@ class VirtueMartModelUserfields extends JModel {
 
 			$query = 'UPDATE `#__virtuemart_userfields`'
 				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE fieldid IN ( '.$ids.' )'
+				. ' WHERE virtuemart_userfield_id IN ( '.$ids.' )'
 			;
 			$this->_db->setQuery( $query );
 			if (!$this->_db->query()) {

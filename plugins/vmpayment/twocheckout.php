@@ -47,15 +47,15 @@ class plgPaymentTwoCheckout extends vmPaymentPlugin {
 	 */
 	function showPaymentForm( &$db, $user, $dbbt ) {
 	
-    	$q  = "SELECT * FROM #__users WHERE user_info_id='".$db->f("user_info_id")."'"; 
+    	$q  = "SELECT * FROM #__users WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."'"; 
     	//$dbbt = new ps_DB;
     	$dbbt = JFactory::getDBO();
     	$dbbt->setQuery($q);
   		$dbbt->query();
        	$dbbt->next_record(); 
         // Get ship_to information
-    	if( $db->f("user_info_id") != $dbbt->f("user_info_id")) {
-       		$q2  = "SELECT * FROM #__virtuemart_userinfos WHERE user_info_id='".$db->f("user_info_id")."'"; 
+    	if( $db->f("virtuemart_userinfo_id") != $dbbt->f("virtuemart_userinfo_id")) {
+       		$q2  = "SELECT * FROM #__virtuemart_userinfos WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."'"; 
     		//$dbst = new ps_DB;
     		$q2 = JFactory::getDBO();
     		$dbst->setQuery($q2);

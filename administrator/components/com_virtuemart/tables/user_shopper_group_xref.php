@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 	/** @var int Vendor ID */
 	var $virtuemart_user_id			= 0;
 	/** @var int shoppergroup ID */
-	var $shopper_group_id	= 0;
+	var $virtuemart_shoppergroup_id	= 0;
 
 
 	/**

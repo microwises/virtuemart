@@ -100,7 +100,7 @@ class VirtueMartModelShopperGroup extends JModel {
 
 	    if (empty($this->_total)) {
 	    	$db = JFactory::getDBO();
-	      $query = 'SELECT ' . $db->nameQuote('shopper_group_id')
+	      $query = 'SELECT ' . $db->nameQuote('virtuemart_shoppergroup_id')
 	        . ' FROM ' . $db->nameQuote('#__virtuemart_shoppergroups');
 	      $this->_total = $this->_getListCount($query);
 	    }
@@ -188,7 +188,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	      return false;
 	    }
 
-	    return $table->shopper_group_id;
+	    return $table->virtuemart_shoppergroup_id;
     }
 
 

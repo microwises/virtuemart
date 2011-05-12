@@ -124,7 +124,7 @@ class VirtuemartViewUser extends JView {
 					.'&view=user'
 					.'&task=edit'
 					.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
-					.'&shipto='.$_addressList[$_i]->user_info_id
+					.'&shipto='.$_addressList[$_i]->virtuemart_userinfo_id
 					. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
 				}
@@ -147,7 +147,7 @@ class VirtuemartViewUser extends JView {
 					 	$_userDetailsList = current($userDetails->userInfo);
 					 	for ($_i = 0; $_i < $_addressCount; $_i++) {
 					 		if ($_userDetailsList->address_type == 'BT') {
-					 			$_userInfoID = $_userDetailsList->user_info_id;
+					 			$_userInfoID = $_userDetailsList->virtuemart_userinfo_id;
 					 			reset($userDetails->userInfo);
 					 			break;
 					 		}
@@ -181,7 +181,7 @@ class VirtuemartViewUser extends JView {
 					 	$_shipto = 0;
 					 	$_paneOffset = array();
 					 } else {
-					 	// Contains 0 for new, otherwise a user_info_id
+					 	// Contains 0 for new, otherwise a virtuemart_userinfo_id
 					 	$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
 					 	$_paneOffset = array('startOffset' => 2);
 					 	$_shiptoFields = $userFieldsModel->getUserFields(
@@ -197,7 +197,7 @@ class VirtuemartViewUser extends JView {
 
 					 		// @todo oscar, I just added that, but maybe it breaks the logic, please take a look on it
 					 		if(!empty($_userDetailsList)){
-						 		if ($_userDetailsList->user_info_id == $_shipto_id) {
+						 		if ($_userDetailsList->virtuemart_userinfo_id == $_shipto_id) {
 						 			reset($userDetails->userInfo);
 						 			break;
 						 		}

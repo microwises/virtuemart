@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableShipping_Carrier extends JTable {
 
 	/** @var int Primary key */
-	var $shipping_carrier_id			= 0;
+	var $virtuemart_shipping_carrier_id			= 0;
 	/** @var string Shipping Carrier name*/
 	var $shipping_carrier_name			= '';
 	/** @var int Shipping List order */
@@ -49,7 +49,7 @@ class TableShipping_Carrier extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-	parent::__construct('#__virtuemart_shippingcarriers', 'shipping_carrier_id', $db);
+	parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shipping_carrier_id', $db);
     }
 
 
@@ -65,7 +65,7 @@ class TableShipping_Carrier extends JTable {
 	    return false;
 	}
 
-	if (($this->shipping_carrier_name) && ($this->shipping_carrier_id == 0)) {
+	if (($this->shipping_carrier_name) && ($this->virtuemart_shipping_carrier_id == 0)) {
 	    $db =& JFactory::getDBO();
 
 	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';

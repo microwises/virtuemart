@@ -5,4 +5,4 @@ DELETE FROM `#__virtuemart_adminmenuentries`;
 DELETE FROM `#__virtuemart_modules`;
 DELETE FROM `#__virtuemart_orderstates`;
 DELETE FROM `#__virtuemart_userfields`;
-DELETE FROM `#__virtuemart_userfields_values`;
+DELETE FROM `#__virtuemart_userfield_values`;

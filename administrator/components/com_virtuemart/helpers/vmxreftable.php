@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
 class VmXrefTable extends JTable {
 
 	/** @var int Primary key */
-//	var $au_idkey	= 'shoppergroup_id';
+//	var $au_idkey	= 'virtuemart_shoppergroup_id';
 	var $_id		= 0;
 
 	var $_pkey 		= '';

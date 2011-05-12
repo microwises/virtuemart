@@ -38,7 +38,7 @@ class TableOrders extends JTable {
 	var $order_number = NULL;
 	var $order_pass = NULL;
 	/** @var int User info ID */
-	var $user_info_id = NULL;
+	var $virtuemart_userinfo_id = NULL;
 	/** @var decimal Order total */
 	var $order_total = 0.00000;
 	/** @var decimal Order subtotal */

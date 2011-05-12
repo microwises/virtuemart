@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'zone_id', '', 'zone_id', 'zone_name', $this->state->zone_id); ?>
+				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'virtuemart_zone_id', '', 'virtuemart_zone_id', 'zone_name', $this->state->virtuemart_zone_id); ?>
 			</td>
 		</tr>
 		<tr>
@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php /* echo JHTML::_('Select.radiolist', $this->shippingZones, 'zone_id', '', 'zone_id', 'zone_name', $this->country->zone_id);*/ ?>
+				<?php /* echo JHTML::_('Select.radiolist', $this->shippingZones, 'virtuemart_zone_id', '', 'virtuemart_zone_id', 'zone_name', $this->country->virtuemart_zone_id);*/ ?>
 				<input class="inputbox" type="text" name="state_2_code" id="state_2_code" size="10" value="<?php echo $this->state->state_2_code; ?>" />
 			</td>
 		</tr>

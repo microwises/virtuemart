@@ -246,7 +246,7 @@ class VirtuemartViewProduct extends JView {
 				break;
 			case 'addproducttype':
 				/* Get the product types that can be chosen */
-				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'product_type_id');
+				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
 				$this->assignRef('producttypes', $producttypes);
 
 				/* Get the product */

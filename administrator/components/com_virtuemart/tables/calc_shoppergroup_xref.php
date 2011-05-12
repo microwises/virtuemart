@@ -34,7 +34,7 @@ class Tablecalc_shoppergroup_xref extends VmXrefTable {
 	var $pkeyForm	= 'virtuemart_calc_id';
 
 	var $_skey 		= 'virtuemart_shoppergroup_id';
-	var $skeyForm	= 'shopper_group_id';
+	var $skeyForm	= 'virtuemart_shoppergroup_id';
 
 
 	/**

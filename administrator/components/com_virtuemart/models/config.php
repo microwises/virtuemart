@@ -249,7 +249,7 @@ class VirtueMartModelConfig extends JModel {
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `config_id` = 1";
+		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = 1";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 		if ($config) {
@@ -275,7 +275,7 @@ class VirtueMartModelConfig extends JModel {
 	    $curConfigParams->bind($data);
 
 	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE config_id ="1"' ;
+	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 		$this->setError($table->getError());

@@ -50,8 +50,8 @@ AdminMenuHelper::startAdminArea();
 	    for ($i = 0, $n = count( $this->shoppergroups ); $i < $n; $i++) {
 		    $row = $this->shoppergroups[$i];
 
-		    $checked = JHTML::_('grid.id', $i, $row->shopper_group_id);
-		    $editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shoppergroup&task=edit&cid[]=' . $row->shopper_group_id); ?>
+		    $checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
+		    $editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shoppergroup&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id); ?>
 	      
 	      <tr class="<?php echo "row$k"; ?>">
 			    <td width="10">

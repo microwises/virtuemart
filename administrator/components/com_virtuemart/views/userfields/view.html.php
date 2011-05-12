@@ -51,7 +51,7 @@ class VirtuemartViewUserfields extends JView {
 
 			$userField = $model->getUserfield();
 
-			if ($userField->fieldid < 1) { // Insert new userfield
+			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -63,7 +63,7 @@ class VirtuemartViewUserfields extends JView {
 				$qry = 'SELECT ordering AS value, name AS text'
 					. ' FROM #__virtuemart_userfields'
 					. ' ORDER BY ordering';
-				$ordering = JHTML::_('list.specificordering',  $userField, $userField->fieldid, $qry);
+				$ordering = JHTML::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'));
@@ -87,7 +87,7 @@ class VirtuemartViewUserfields extends JView {
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = $this->getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
-			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'shopper_group_id', '', 'shopper_group_id', 'shopper_group_name', $model->_params->get('shopper_group_id'));
+			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $model->_params->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();

@@ -140,6 +140,6 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why? ?>" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userInfoID; ?>" />
 <?php  echo JHTML::_( 'form.token' ); ?>
 </form>

@@ -40,7 +40,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		$shippingCarrier = $model->getShippingCarrier();
 
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($shippingCarrier->shipping_carrier_id < 1);
+		$isNew = ($shippingCarrier->virtuemart_shipping_carrier_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

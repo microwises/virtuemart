@@ -100,7 +100,7 @@ class VirtueMartModelProductspecial extends JModel {
 			LEFT JOIN #__virtuemart_product_prices
 			ON #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_prices.virtuemart_product_id
 			LEFT JOIN #__virtuemart_shoppergroups
-			ON #__virtuemart_product_prices.shopper_group_id = #__virtuemart_shoppergroups.shopper_group_id';
+			ON #__virtuemart_product_prices.virtuemart_shoppergroup_id = #__virtuemart_shoppergroups.virtuemart_shoppergroup_id';
     }
 
     /**

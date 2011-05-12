@@ -37,7 +37,7 @@ class TablePayment_method extends JTable
 	/** @var string Element of paymentmethod */
 	var $paym_element           	= '';
 	///** @var string Shoppergroups allowed to use payment_method */
-	//var $paym_shoppergroup_id         = '';	  // paym_shopper_group?
+	//var $paym_shoppervirtuemart_shoppergroup_id         = '';	  // paym_shopper_group?
 
 	/** @var string discount of the paymentmethod */
 	var $discount       		 	= '';
