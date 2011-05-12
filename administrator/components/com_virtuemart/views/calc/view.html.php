@@ -82,7 +82,7 @@ class VirtuemartViewCalc extends JView {
 				if(empty($userDetails->virtuemart_vendor_id)){
 					JError::raiseError(403,'Forbidden for non vendors');
 				}
-				if(empty($calc->virtuemart_virtuemart_vendor_id))$calc->virtuemart_virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
+				if(empty($calc->virtuemart_vendor_id))$calc->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 			else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
@@ -125,7 +125,7 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('statesList', $statesList);			
 
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
-			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_virtuemart_vendor_id,True);
+			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,True);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {

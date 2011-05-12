@@ -10,7 +10,7 @@
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `virtuemart_calc_id` SERIAL,
-  `virtuemart_virtuemart_vendor_id` int(11) NOT NULL COMMENT 'Belongs to vendor',
+  `virtuemart_vendor_id` int(11) NOT NULL COMMENT 'Belongs to vendor',
   `calc_name` text NOT NULL COMMENT 'Name of the rule',
   `calc_descr` text NOT NULL COMMENT 'Description',
   `calc_kind` text NOT NULL COMMENT 'Discount/Tax/Margin/Commission',
@@ -317,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `custom_field_id` int(11) NOT NULL COMMENT 'field ref to product',
   `ordering` int(11) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`custom_field_id`),
+  PRIMARY KEY (`id`),
   KEY `idx_product_id` (`virtuemart_product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
 

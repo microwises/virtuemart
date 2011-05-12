@@ -29,7 +29,7 @@ class TableCalc extends JTable
 	/** @var int Primary key */
 	var $virtuemart_calc_id					= 0;
 	/** @var string VendorID of the rule creator */
-	var $virtuemart_virtuemart_vendor_id				= 0;
+	var $virtuemart_vendor_id				= 0;
 	/** @var string Calculation name */
 	var $calc_name           		= '';
 	/** @var string Calculation description */
@@ -97,8 +97,8 @@ class TableCalc extends JTable
 	 */
 	function check()
 	{
-        if (!$this->virtuemart_virtuemart_vendor_id) {
-			$this->virtuemart_virtuemart_vendor_id = 1; //default to mainvendor
+        if (!$this->virtuemart_vendor_id) {
+			$this->virtuemart_vendor_id = 1; //default to mainvendor
 		}
 
         if (!$this->calc_name) {

@@ -120,7 +120,7 @@ $j15 = VmConfig::isJ15();
 				</td>
 				<?php /* if($this->perms->check( 'admin' )){?>
 				<td align="left">
-					<?php echo $row->virtuemart_virtuemart_vendor_id; ?>
+					<?php echo $row->virtuemart_vendor_id; ?>
 				</td>
 				<?php } */ ?>
 				<td>

@@ -580,7 +580,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-		//virtuemart_calc_id 	virtuemart_virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
+		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
@@ -589,7 +589,7 @@ class calculationHelper {
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
 		' AND `published`="1" ' .
-		' AND (`virtuemart_virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+		' AND (`virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 		if(!empty($this->_amount)){
@@ -660,7 +660,7 @@ class calculationHelper {
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
 			' AND `published`="1" ' .
-			' AND (`virtuemart_virtuemart_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
+			' AND (`virtuemart_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 //			$shoppergrps .  $countries . $states ;

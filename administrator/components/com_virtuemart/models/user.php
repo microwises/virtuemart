@@ -252,8 +252,8 @@ class VirtueMartModelUser extends JModel {
 				return array_flip($gids);
 			}
 
-			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
-			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
+			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');dump($_usr,'$_usr');
+			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO'); dump($_grp,'$_grp');
 			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
 
 			$_currentUser =& JFactory::getUser();
@@ -402,7 +402,8 @@ class VirtueMartModelUser extends JModel {
 				$user->set('usertype', $newUsertype);
 
 				if ( VmConfig::isJ15()){
-					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
+					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+//					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
 				}
 
 				$date =& JFactory::getDate();
