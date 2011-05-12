@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('debug_ip_enabled', $this->config->get('debug_ip_enabled')); ?>
+		<?php echo VmHTML::checkbox('debug_ip_published', $this->config->get('debug_ip_published')); ?>
 	    </td>
 	</tr>
 	<tr>

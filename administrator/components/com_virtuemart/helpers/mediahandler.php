@@ -285,7 +285,7 @@ class VmMediaHandler {
 
 			//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			$query = 'UPDATE `#__vm_media` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__vm_media`.`file_id` = "'.$this->file_id.'" ';
+			$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__virtuemart_medias`.`file_id` = "'.$this->file_id.'" ';
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
@@ -620,7 +620,7 @@ class VmMediaHandler {
     function getImagesList() {
 
     	$vendorId=1;
-    	$q='SELECT * FROM `#__vm_media` WHERE `enabled`=1
+    	$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
     	AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
@@ -668,7 +668,7 @@ class VmMediaHandler {
 
 		$html .= ' <table class="adminform"> ';
 
-		if ($this->enabled) $checked =  "checked=\"checked\""; else $checked ='';
+		if ($this->published) $checked =  "checked=\"checked\""; else $checked ='';
 		$html .= '<tr>
 	<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>

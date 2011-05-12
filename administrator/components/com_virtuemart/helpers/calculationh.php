@@ -147,7 +147,7 @@ class calculationHelper {
 		if(!VmConfig::get('show_prices',0)){
 			return array();
 		}
-		if(VmConfig::get('price_access_level_enabled',0)){
+		if(VmConfig::get('price_access_level_published',0)){
 			//Todo check for ACL groups
 			return array();
 		}
@@ -155,7 +155,7 @@ class calculationHelper {
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
-			$this->_db->setQuery( 'SELECT * FROM #__vm_product_price  WHERE `product_id`="'.$productId.'" ');
+			$this->_db->setQuery( 'SELECT * FROM #__virtuemart_product_prices  WHERE `product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc();
 			if($row){
 				if(!empty($row['product_price'])){
@@ -172,7 +172,7 @@ class calculationHelper {
 					return false;
 				}
 			}
-			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__vm_product  WHERE `product_id`="'.$productId.'" ');
+			$this->_db->setQuery( 'SELECT `vendor_id` FROM #__virtuemart_products  WHERE `product_id`="'.$productId.'" ');
 			$single = $this->_db->loadResult();
 			$this->productVendorId = $single;
 			if(empty($this->productVendorId)){
@@ -180,7 +180,7 @@ class calculationHelper {
 			}
 
 			if(empty($catIds)){
-				$this->_db->setQuery( 'SELECT `category_id` FROM #__vm_product_category_xref  WHERE `product_id`="'.$productId.'" ');
+				$this->_db->setQuery( 'SELECT `category_id` FROM #__virtuemart_product_categories  WHERE `product_id`="'.$productId.'" ');
 				$this->_cats=$this->_db->loadResultArray();
 			}else{
 				$this->_cats=$catIds;
@@ -204,21 +204,21 @@ class calculationHelper {
 //
 //		}
 
-		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__vm_vendor  WHERE `vendor_id`="'.$this->productVendorId.'" ');
+		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `vendor_id`="'.$this->productVendorId.'" ');
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
 
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(!empty($user->id)){
-				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__vm_user_shopper_group_xref as `usgr`
- JOIN `#__vm_shopper_group` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
+				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__virtuemart_user_shoppergroups as `usgr`
+ JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it
 			}
 			if(empty($this->_shopperGroupId)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_shopper_group
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_shoppergroups
 				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'"');
-//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref
+//				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups
 //				WHERE `default`="1" AND `vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId = $this->_db->loadResult();
 			}
@@ -422,7 +422,7 @@ class calculationHelper {
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref  WHERE `user_id`="'.$user->id.'" ');
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups  WHERE `user_id`="'.$user->id.'" ');
 				$this->_shopperGroupId=$this->_db->loadResultArray();
 			}
 		}
@@ -588,7 +588,7 @@ class calculationHelper {
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
-		' AND `enabled`="1" ' .
+		' AND `published`="1" ' .
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
@@ -605,11 +605,11 @@ class calculationHelper {
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach($rules as $rule){
 
-			$q = 'SELECT `calc_category` FROM #__vm_calc_category_xref WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
+			$q = 'SELECT `calc_category` FROM #__virtuemart_calc_categories WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
 			$this->_db->setQuery($q);
 			$cats = $this->_db->loadResultArray();dump($q,'$q');
 
-			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
+			$q= 'SELECT `calc_shopper_group` FROM #__virtuemart_calc_shoppergroups WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
@@ -659,7 +659,7 @@ class calculationHelper {
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
-			' AND `enabled`="1" ' .
+			' AND `published`="1" ' .
 			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
@@ -669,15 +669,15 @@ class calculationHelper {
 		$testedRules= array();
 		foreach($rules as $rule){
 
-			$q= 'SELECT `calc_country` FROM #__vm_calc_country_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `calc_country` FROM #__virtuemart_calc_countries WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$countries = $this->_db->loadResultArray();
 
-			$q= 'SELECT `calc_state` FROM #__vm_calc_state_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `calc_state` FROM #__virtuemart_calc_states WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$states = $this->_db->loadResultArray();
 
-			$q= 'SELECT `calc_shopper_group` FROM #__vm_calc_shoppergroup_xref WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `calc_shopper_group` FROM #__virtuemart_calc_shoppergroups WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
@@ -754,7 +754,7 @@ class calculationHelper {
 		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
 
 		// Outcommented (Oscar); use th model instead
-//		$q= 'SELECT * FROM `#__vm_shipping_rate` AS `r`, `#__vm_shipping_carrier` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
+//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `shipping_rate_id` = "'.$ship_id.'" ';
 //		$this->_db->setQuery($q);
 //		$shipping = $this->_db->loadAssoc();
 
@@ -1099,7 +1099,7 @@ class calculationHelper {
 				if (!empty($selected)) {
 					$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
 						FROM `#__virtuemart_customs` AS C
-						LEFT JOIN `#__virtuemart_custom_fields` AS field ON C.`custom_id` = field.`custom_id`
+						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
 						LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 						WHERE xref.`product_id` ='.$product->product_id;
 					$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;

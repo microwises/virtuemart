@@ -40,7 +40,7 @@ class TableCustom_fields extends JTable {
 	var $custom_price	= '';
 
 	/** @var int custom published or not */
-	var $enabled		= 0;
+	var $published		= 0;
 
 
 	/**
@@ -48,7 +48,7 @@ class TableCustom_fields extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_custom_fields', 'custom_id', $db);
+		parent::__construct('#__virtuemart_customfields', 'custom_id', $db);
 	}
 
 	/**

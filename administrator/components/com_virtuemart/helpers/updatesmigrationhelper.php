@@ -31,12 +31,12 @@
 			$country1 = $db->loadResult();
 			if(isset($country1)){
 				$this -> oldVersion = "1.0";
-				$db->setQuery( 'SELECT * FROM #__vm_users WHERE `user_id`="'.$this -> storeOwnerId.'" ');
+				$db->setQuery( 'SELECT * FROM #__virtuemart_users WHERE `user_id`="'.$this -> storeOwnerId.'" ');
 				if($db->query() == true ) {
 					$authUser = $db->loadResult();
 					if(isset($authUser)){
 						$this -> oldVersion = "1.1";
-						$db->setQuery( 'SELECT * FROM #__vm_menu_admin WHERE `id`= "10" ');
+						$db->setQuery( 'SELECT * FROM #__virtuemart_adminmenuentries WHERE `id`= "10" ');
 						if($db->query() == true ) {
 							$menuAdmin = $db->loadResult();
 							if(isset($menuAdmin)){

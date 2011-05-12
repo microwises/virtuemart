@@ -41,7 +41,7 @@ class TableState extends JTable {
     /** @var char 2 character state code */
 	var $state_2_code         	= '';
 	/** @var int Published or unpublished */
-	var $enabled         		= 1;
+	var $published         		= 1;
 
 
 	/**
@@ -50,7 +50,7 @@ class TableState extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_state', 'state_id', $db);
+		parent::__construct('#__virtuemart_states', 'state_id', $db);
 	}
 
 
@@ -78,7 +78,7 @@ class TableState extends JTable {
 		if (($this->state_name) && ($this->state_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_state` ';
+			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';
 			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();

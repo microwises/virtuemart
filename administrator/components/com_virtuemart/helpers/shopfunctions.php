@@ -71,7 +71,7 @@ class ShopFunctions {
 				//Dont delete this message, we need it later for multivendor
 				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
 			}
-			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
+			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
@@ -79,7 +79,7 @@ class ShopFunctions {
 			return $html;
 		} else {
 
-			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
+			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
 			$db->setQuery($q);
 			$vendors = $db->loadAssocList();
 
@@ -366,7 +366,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_state` WHERE state_id = ' . $_id;
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_states` WHERE state_id = ' . $_id;
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
 		return $_r->fld;
@@ -378,8 +378,8 @@ class ShopFunctions {
 
 		$_q = 'SELECT c.shipping_carrier_name AS carrier '
 			. ', s.shipping_rate_name AS name '
-			. 'FROM `#__vm_shipping_rate` AS s '
-			. ', `#__vm_shipping_carrier` AS c '
+			. 'FROM `#__virtuemart_shippingrates` AS s '
+			. ', `#__virtuemart_shippingcarriers` AS c '
 			. 'WHERE s.shipping_rate_id = ' . $_id . ' '
 			. 'AND s.shipping_rate_carrier_id = c.shipping_carrier_id '
 		;
@@ -468,7 +468,7 @@ class ShopFunctions {
 	{
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT order_status_name FROM `#__vm_order_status`'
+		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates`'
 			. " WHERE order_status_code = '$_code' ";
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();

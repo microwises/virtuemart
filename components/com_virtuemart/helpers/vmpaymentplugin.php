@@ -116,7 +116,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
 
-		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
+		$q = 'SELECT `paym_id`,`paym_name` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 
@@ -273,7 +273,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `payment_method_id` '
-			. 'FROM #__vm_orders '
+			. 'FROM #__virtuemart_orders '
 			. "WHERE order_id = $_id";
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
@@ -293,7 +293,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
-			. 'FROM #__vm_payment_method '
+			. 'FROM #__virtuemart_paymentmethods '
 			. "WHERE paym_id='" . $this->_paym_id . "'";
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
@@ -313,14 +313,14 @@ abstract class vmPaymentPlugin extends JPlugin
 
         if (version_compare(JVERSION, '1.6.0') < '') {
             $_q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__vm_payment_method AS vm '
+                    . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__plugins AS j '
                     . "WHERE vm.paym_id='$_pid' "
                     . 'AND   vm.paym_jplugin_id = j.id '
                     . "AND   j.element = '$_pelement'";
         } else {
             $_q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__vm_payment_method AS vm '
+                    . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__extensions AS j '
                     . "WHERE vm.paym_id='$_pid' "
                     . 'AND   vm.paym_jplugin_id = j.extension_id '
@@ -345,7 +345,7 @@ abstract class vmPaymentPlugin extends JPlugin
 
 
                 $_q = 'SELECT `paym_name` '
-                        . 'FROM #__vm_payment_method '
+                        . 'FROM #__virtuemart_paymentmethods '
                         . "WHERE paym_id='$_pid' ";
 
 

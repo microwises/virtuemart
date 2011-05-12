@@ -188,7 +188,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$this->_data = $this->getTable('userfields_values');
 		if ($this->_id > 0) {
-			$query = 'SELECT * FROM `#__vm_userfield_values` WHERE `fieldid` = ' . $this->_id
+			$query = 'SELECT * FROM `#__virtuemart_userfields_values` WHERE `fieldid` = ' . $this->_id
 				. ' ORDER BY `ordering`';
 			$_userFieldValues = $this->_getList($query);
 			return $_userFieldValues;
@@ -338,7 +338,7 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
-		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
+		$_q = 'SELECT * FROM `#__virtuemart_userfields` WHERE 1 = 1 ';
 
 		if( $_sec != 'bank' && $_sec != '') {
 			$_q .= 'AND `'.$_sec.'`=1 ';
@@ -351,12 +351,12 @@ class VirtueMartModelUserfields extends JModel {
 			unset ($_skip[$_skipBank]);
 		}
 
-		if(array_key_exists('enabled',$_switches)){
-			if ($_switches['enabled'] !== false ) {
-				$_q .= 'AND enabled = 1 ';
+		if(array_key_exists('published',$_switches)){
+			if ($_switches['published'] !== false ) {
+				$_q .= 'AND published = 1 ';
 			}
 		} else {
-			$_q .= 'AND enabled = 1 ';
+			$_q .= 'AND published = 1 ';
 		}
 		if(array_key_exists('required',$_switches)){
 			if ($_switches['required'] === true ) {
@@ -403,7 +403,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_address_type->rows = 0;
 			$_address_type->value = '';
 			$_address_type->default = 'BT';
-			$_address_type->enabled = 1;
+			$_address_type->published = 1;
 			$_address_type->registration = 1;
 			$_address_type->shipping = 0;
 			$_address_type->account = 1;
@@ -430,7 +430,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_user_is_vendor->rows = 0;
 			$_user_is_vendor->value = 0;
 			$_user_is_vendor->default = 0;
-			$_user_is_vendor->enabled = 1;
+			$_user_is_vendor->published = 1;
 			$_user_is_vendor->registration = 1;
 			$_user_is_vendor->shipping = 0;
 			$_user_is_vendor->account = 1;
@@ -712,7 +712,7 @@ class VirtueMartModelUserfields extends JModel {
 						case 'multiselect':
 						case 'radio':
 							$_qry = 'SELECT fieldtitle, fieldvalue '
-								. 'FROM #__vm_userfield_values '
+								. 'FROM #__virtuemart_userfields_values '
 								. 'WHERE fieldid = ' . $_fld->fieldid . ' '
 								. 'ORDER BY ordering ';
 							$_values = $this->_getList($_qry);
@@ -806,7 +806,7 @@ class VirtueMartModelUserfields extends JModel {
 	function getNameByID($_id)
 	{
 		$_sql = 'SELECT name '
-				. 'FROM `#__vm_userfield`'
+				. 'FROM `#__virtuemart_userfields`'
 				. "WHERE fieldid = $_id";
 
 		$_v = $this->_getList($_sql);
@@ -905,7 +905,7 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function _getListQuery ()
 	{
-		$query = 'SELECT * FROM `#__vm_userfield` ';
+		$query = 'SELECT * FROM `#__virtuemart_userfields` ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
 		return ($query);
@@ -972,7 +972,7 @@ class VirtueMartModelUserfields extends JModel {
 			JArrayHelper::toInteger($id);
 			$ids = implode( ',', $id );
 
-			$query = 'UPDATE `#__vm_userfield`'
+			$query = 'UPDATE `#__virtuemart_userfields`'
 				. ' SET `' . $field . '` = '.(int) $value
 				. ' WHERE fieldid IN ( '.$ids.' )'
 			;

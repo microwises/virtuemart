@@ -39,7 +39,7 @@ class TableCategory extends JTable {
 	var $category_description		= '';
 
 	/** @var integer Category publish or not */
-	var $enabled			= 1;
+	var $published			= 1;
 	/** @var date Category creation date */
 	var $created_on				= null;
 	/** @var date Category last modification date */
@@ -139,7 +139,7 @@ class TableCategory extends JTable {
 		$k = $this->_tbl_key;
 
 		$sql = "SELECT ".$this->_tbl_key.", ordering FROM ".$this->_tbl." c
-				LEFT JOIN #__vm_category_xref cx
+				LEFT JOIN #__virtuemart_category_categories cx
 				ON c.category_id = cx.category_child_id";
 
 		$condition = 'cx.category_parent_id = '. $this->_db->Quote($parent_id);
@@ -234,7 +234,7 @@ class TableCategory extends JTable {
 
 		$query = 'SELECT c.'.$this->_tbl_key.', c.ordering'
 		. ' FROM '. $this->_tbl . ' c'
-		. ' LEFT JOIN #__vm_category_xref cx'
+		. ' LEFT JOIN #__virtuemart_category_categories cx'
 		. ' ON c.category_id = cx.category_child_id'
 		. ' WHERE c.ordering >= 0' . ( $where ? ' AND '. $where : '' )
 		. ' AND cx.category_parent_id = '. $parent_id

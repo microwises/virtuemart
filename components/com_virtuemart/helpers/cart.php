@@ -340,7 +340,7 @@ class VirtueMartCart  {
 	public function getCategoryId() {
 		$db = JFactory::getDBO();
 		$product_id = JRequest::getInt('product_id');
-		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$q = 'SELECT `category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}	/**
@@ -353,7 +353,7 @@ class VirtueMartCart  {
 	*/
 	public function getCardCategoryId($product_id) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$q = 'SELECT `category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -802,7 +802,7 @@ class VirtueMartCart  {
 				if (!empty($products_in_cart)) {
 					$remove_products = array();
 					$q = 'SELECT `product_id`
-						FROM #__vm_product
+						FROM #__virtuemart_products
 						WHERE `product_id` IN ('.implode(',', $products_in_cart ).')
 						AND published = 0';
 					$db->setQuery($q);

@@ -41,7 +41,7 @@ class Tablecalc_category_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__vm_calc_category_xref', 'id', $db);
+		parent::__construct('#__virtuemart_calc_categories', 'id', $db);
 	}
 
 

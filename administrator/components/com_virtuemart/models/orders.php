@@ -95,7 +95,7 @@ class VirtueMartModelOrders extends JModel {
 
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_id` FROM `#__vm_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
+		$q = 'SELECT `order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
 		$db->setQuery($q);
 		$oderId = $db->loadResult();
 		return $oderId;
@@ -113,7 +113,7 @@ class VirtueMartModelOrders extends JModel {
 
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_number` FROM `#__vm_orders` WHERE ="'.$order_id.'"  ';
+		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE ="'.$order_id.'"  ';
 		$db->setQuery($q);
 		$OrderNumber = $db->loadResult();
 		return $OrderNumber;
@@ -133,10 +133,10 @@ class VirtueMartModelOrders extends JModel {
 		$q = "SELECT o.*, u.*,
 				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
-			FROM #__vm_orders o
-			LEFT JOIN #__vm_order_status s
+			FROM #__virtuemart_orders o
+			LEFT JOIN #__virtuemart_orderstates s
 			ON s.order_status_code = o.order_status
-			LEFT JOIN #__vm_order_user_info u
+			LEFT JOIN #__virtuemart_order_userinfos u
 			ON u.order_id = o.order_id
 			WHERE o.order_id=".$order_id;
 		$db->setQuery($q);
@@ -144,7 +144,7 @@ class VirtueMartModelOrders extends JModel {
 
 		/* Get the order history */
 		$q = "SELECT *
-			FROM #__vm_order_history
+			FROM #__virtuemart_order_history
 			WHERE order_id=".$order_id."
 			ORDER BY order_status_history_id ASC";
 		$db->setQuery($q);
@@ -155,8 +155,8 @@ class VirtueMartModelOrders extends JModel {
 				order_item_sku, i.product_id, product_item_price,
 				product_final_price, product_attribute, order_status,
 				intnotes
-			FROM #__vm_order_item i
-			LEFT JOIN #__vm_product p
+			FROM #__virtuemart_order_items i
+			LEFT JOIN #__virtuemart_products p
 			ON p.product_id = i.product_id
 			WHERE order_id=".$order_id;
 		$db->setQuery($q);
@@ -200,10 +200,10 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	private function getOrdersListQuery()
 	{
-		return 'FROM #__vm_orders o
-			LEFT JOIN #__vm_order_user_info u
+		return 'FROM #__virtuemart_orders o
+			LEFT JOIN #__virtuemart_order_userinfos u
 			ON u.order_id = o.order_id
-			LEFT JOIN #__vm_payment_method m
+			LEFT JOIN #__virtuemart_paymentmethods m
 			ON o.payment_method_id = m.paym_id';
 	}
 
@@ -227,7 +227,7 @@ class VirtueMartModelOrders extends JModel {
 			$filter_order = 'order_id';
 		}
 		/* Attributes name */
-		if (JRequest::getVar('filter_orders', false)) $filters[] = '#__vm_orders.`order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
+		if (JRequest::getVar('filter_orders', false)) $filters[] = '#__virtuemart_orders.`order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
 
 		if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
 		else $filter = ' ORDER BY '.$filter_order." ".$filter_order_Dir;
@@ -249,28 +249,28 @@ class VirtueMartModelOrders extends JModel {
 		/* Update the list order */
 		$new_list = JRequest::getInt('listorder', 0);
 		$db = JFactory::getDBO();
-		if ($new_list == 0) {
-			$q = "SELECT IF(MAX(attribute_list) IS NULL, 1, MAX(attribute_list)+1) AS newlist
-				FROM #__vm_product_attribute_sku";
-			$db->setQuery($q);
-			$new_list = $db->loadResult();
-		} else {
-			if ($new_list > $row->attribute_list) {
-				/* First the lists below the new list order */
-				$q = "UPDATE #__vm_product_attribute_sku SET attribute_list = attribute_list-1
-					 WHERE attribute_list <= ".$new_list;
-				$db->setQuery($q);
-				$db->query();
-			} elseif ($new_list < $row->attribute_list) {
-				/* Second the lists above the new list order */
-				$q = "UPDATE #__vm_product_attribute_sku SET attribute_list = attribute_list+1
-					 WHERE attribute_list >= ".$new_list;
-				$db->setQuery($q);
-				$db->query();
-			}
-		}
+//		if ($new_list == 0) {
+//			$q = "SELECT IF(MAX(attribute_list) IS NULL, 1, MAX(attribute_list)+1) AS newlist
+//				FROM #__virtuemart_products_attribute_sku";
+//			$db->setQuery($q);
+//			$new_list = $db->loadResult();
+//		} else {
+//			if ($new_list > $row->attribute_list) {
+//				/* First the lists below the new list order */
+//				$q = "UPDATE #__virtuemart_products_attribute_sku SET attribute_list = attribute_list-1
+//					 WHERE attribute_list <= ".$new_list;
+//				$db->setQuery($q);
+//				$db->query();
+//			} elseif ($new_list < $row->attribute_list) {
+//				/* Second the lists above the new list order */
+//				$q = "UPDATE #__virtuemart_products_attribute_sku SET attribute_list = attribute_list+1
+//					 WHERE attribute_list >= ".$new_list;
+//				$db->setQuery($q);
+//				$db->query();
+//			}
+//		}
 		$row->bind(JRequest::get('post'));
-		$row->attribute_list = $new_list;
+//		$row->attribute_list = $new_list;
 		if ($row->store()) {
 			return true;
 		} else {
@@ -309,7 +309,7 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$db = JFactory::getDBO();
 		$q = "SELECT order_status_code AS value, order_status_name AS text
-			FROM #__vm_order_status
+			FROM #__virtuemart_orderstates
 			ORDER BY ordering";
 		$db->setQuery($q);
 		return $db->loadObjectList();
@@ -421,7 +421,7 @@ class VirtueMartModelOrders extends JModel {
 						$_productModel = new VirtueMartModelProduct();
 						$_q = 'SELECT product_id '
 							.', product_quantity '
-							.'FROM `#__vm_order_item` '
+							.'FROM `#__virtuemart_order_items` '
 							."WHERE `order_id` = $order_id";
 						$db->setQuery($_q);
 						if ($_products = $db->loadObjectList()) {
@@ -438,7 +438,7 @@ class VirtueMartModelOrders extends JModel {
 					/* Update order item status */
 					if (@$update_lines[$order_id]) {
 						$q = "SELECT order_item_id
-							FROM #__vm_order_item
+							FROM #__virtuemart_order_items
 							WHERE order_id=".$order_id;
 						$db->setQuery($q);
 						$order_items = $db->loadObjectList();
@@ -844,18 +844,18 @@ class VirtueMartModelOrders extends JModel {
 		$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT order_status FROM #__vm_orders WHERE order_id='.$order_id);
+		$db->setQuery('SELECT order_status FROM #__virtuemart_orders WHERE order_id='.$order_id);
 		$order_status = $db->loadResult();
 
 		if ($order_status == VmConfig::get('enable_download_status')) {
 			$q = "SELECT order_id,user_id,download_id,file_name
-				FROM #__vm_product_download
+				FROM #__virtuemart_product_downloads
 				WHERE order_id = '".$order_id."'";
 			$db->setQuery($q);
 			$downloads = $db->loadObjectList();
 			if ($downloads) {
 				$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email
-					FROM #__vm_user_info
+					FROM #__virtuemart_userinfos
 					LEFT JOIN #__users ju
 					ON (ju.id = u.user_id)
 					WHERE user_id = '".$downloads[0]->userid."'
@@ -877,7 +877,7 @@ class VirtueMartModelOrders extends JModel {
 			}
 		}
 		else if ($order_status == VmConfig::get('disable_download_status')) {
-			$q = "DELETE FROM #__vm_product_download WHERE order_id=".$order_id;
+			$q = "DELETE FROM #__virtuemart_product_downloads WHERE order_id=".$order_id;
 			$db->setQuery($q);
 			$db->query();
 		}
@@ -902,13 +902,13 @@ class VirtueMartModelOrders extends JModel {
 
 		$db = JFactory::getDBO();
 		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
-			FROM #__vm_order_user_info
-			LEFT JOIN #__vm_orders
-			ON #__vm_orders.user_id = #__vm_order_user_info.user_id
-			LEFT JOIN #__vm_order_status
-			ON #__vm_order_status.order_status_code = #__vm_orders.order_status
-			WHERE #__vm_orders.order_id = '".$order->order_id."'
-			AND #__vm_orders.order_id = #__vm_order_user_info.order_id";
+			FROM #__virtuemart_order_userinfos
+			LEFT JOIN #__virtuemart_orders
+			ON #__virtuemart_orders.user_id = #__virtuemart_order_userinfos.user_id
+			LEFT JOIN #__virtuemart_orderstates
+			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
+			WHERE #__virtuemart_orders.order_id = '".$order->order_id."'
+			AND #__virtuemart_orders.order_id = #__virtuemart_order_userinfos.order_id";
 		$db->setQuery($q);
 		$db->query();
 		$user = $db->loadObject();
@@ -1020,7 +1020,7 @@ class VirtueMartModelOrders extends JModel {
 	*@var $order_id Order to clear
 	*/
 	function removeOrderItems ($order_id){
-		$q ='DELETE from `#__vm_order_item` WHERE `order_id` = ' . $order_id;
+		$q ='DELETE from `#__virtuemart_order_items` WHERE `order_id` = ' . $order_id;
 		 $this->_db->setQuery($q);
 
 		if ($this->_db->query() === false) {
@@ -1057,7 +1057,7 @@ class VirtueMartModelOrders extends JModel {
 		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
 		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-			FROM #__vm_product";
+			FROM #__virtuemart_products";
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
 		$db->setQuery($q);
 		return $db->loadObjectList();

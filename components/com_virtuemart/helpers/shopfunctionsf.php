@@ -468,7 +468,7 @@ class shopFunctionsF {
 		if(!empty($prodTpl)){
 			if(is_Int($prodTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `product_template` FROM `#__vm_product` WHERE `product_id` = "'.$prodTpl.'" ';
+				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `product_id` = "'.$prodTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if($temp) $template = $temp;

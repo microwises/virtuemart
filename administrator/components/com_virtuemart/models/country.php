@@ -220,7 +220,7 @@ class VirtueMartModelCountry extends JModel {
     function getCountries($onlyPublished=true, $noLimit=false) {
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		if ($onlyPublished) {
-		    $query .= 'WHERE `#__virtuemart_countries`.`enabled` = 1';
+		    $query .= 'WHERE `#__virtuemart_countries`.`published` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_countries`.`country_name`';
 		if ($noLimit) {

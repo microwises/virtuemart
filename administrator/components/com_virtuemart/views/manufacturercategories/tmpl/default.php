@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 			
 			$checked = JHTML::_('grid.id', $i, $row->mf_category_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturerCategory&task=edit&cid[]=' . $row->mf_category_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturercategories&task=edit&cid[]=' . $row->mf_category_id);
 			$manufacturersList = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&mf_category_id=' . $row->mf_category_id);
 
 			?>
@@ -90,8 +90,8 @@ AdminMenuHelper::startAdminArea();
 </div>
 	        
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="manufacturerCategory" />
-	<input type="hidden" name="view" value="manufacturerCategory" />	
+	<input type="hidden" name="controller" value="manufacturercategories" />
+	<input type="hidden" name="view" value="manufacturercategories" />	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>

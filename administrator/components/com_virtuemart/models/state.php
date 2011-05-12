@@ -107,7 +107,7 @@ class VirtueMartModelState extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `state_id` FROM `#__vm_state`';
+			$query = 'SELECT `state_id` FROM `#__virtuemart_states`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -156,7 +156,7 @@ class VirtueMartModelState extends JModel {
 		}
 
 		$query = 'SELECT *';
-		$query .= ' FROM `#__vm_state`';
+		$query .= ' FROM `#__virtuemart_states`';
 		$query .= ' WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
 		$db->setQuery($query);
 
@@ -241,8 +241,8 @@ class VirtueMartModelState extends JModel {
 	 */
 	public function getStates($countryId)
 	{
-		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
-		$query .= 'ORDER BY `#__vm_state`.`state_name`';
+		$query = 'SELECT * FROM `#__virtuemart_states`  WHERE `country_id`= "'.$countryId.'" ';
+		$query .= 'ORDER BY `#__virtuemart_states`.`state_name`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
@@ -258,15 +258,15 @@ class VirtueMartModelState extends JModel {
 		//Test if id is published
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `country_id`= "'.$countryId.'" AND `enabled`="1"';
+		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){
 			//Test if country has states
-			$q = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
+			$q = 'SELECT * FROM `#__virtuemart_states`  WHERE `country_id`= "'.$countryId.'" ';
 			$db->setQuery($q);
 			if($db->loadResult()){
 				//Test if state_id fits to country_id
-				$q = 'SELECT * FROM `#__vm_state` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `enabled`="1"';
+				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `published`="1"';
 				$db->setQuery($q);
 				if($db->loadResult()){
 					return 0;

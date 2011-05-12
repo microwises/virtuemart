@@ -46,7 +46,7 @@ class TableMedia extends JTable {
 	var $file_url_thumb			= '';
 
 	/** @var int File published or not */
-	var $enabled			= 0;
+	var $published			= 0;
 	/** @var int File is an image or other */
 	var $file_is_downloadable	= 0;
 	var $file_is_forSale		= 0;
@@ -64,7 +64,7 @@ class TableMedia extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__vm_media', 'file_id', $db);
+		parent::__construct('#__virtuemart_medias', 'file_id', $db);
 	}
 
 	/**

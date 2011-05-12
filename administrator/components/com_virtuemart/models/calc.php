@@ -164,7 +164,7 @@ class VirtueMartModelCalc extends JModel
 
 		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_calcs`.`enabled` = 1';
+			$query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_calcs`.`calc_name`';
 		if ($noLimit) {
@@ -178,16 +178,16 @@ class VirtueMartModelCalc extends JModel
 		foreach ($this->_data as $data){
 
 			/* Write the first 5 categories in the list */
-			$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__vm_calc_category_xref','calc_rule_id',$data->calc_id,'category_name','#__virtuemart_categories','category_id');
+			$data->calcCategoriesList = modelfunctions::buildGuiList('calc_category','#__virtuemart_calc_categories','calc_rule_id',$data->calc_id,'category_name','#__virtuemart_categories','category_id');
 
 			/* Write the first 5 shoppergroups in the list */
-			$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__vm_calc_shoppergroup_xref','calc_rule_id',$data->calc_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+			$data->calcShoppersList = modelfunctions::buildGuiList('calc_shopper_group','#__virtuemart_calc_shoppergroups','calc_rule_id',$data->calc_id,'shopper_group_name','#__virtuemart_shoppergroups','shopper_group_id');
 
 			/* Write the first 5 countries in the list */
-			$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__vm_calc_country_xref','calc_rule_id',$data->calc_id,'country_name','#__virtuemart_countries','country_id');
+			$data->calcCountriesList = modelfunctions::buildGuiList('calc_country','#__virtuemart_calc_countries','calc_rule_id',$data->calc_id,'country_name','#__virtuemart_countries','country_id');
 
 			/* Write the first 5 states in the list */
-			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__vm_calc_state_xref','calc_rule_id',$data->calc_id,'state_name','#__vm_state','state_id');
+			$data->calcStatesList = modelfunctions::buildGuiList('calc_state','#__virtuemart_calc_states','calc_rule_id',$data->calc_id,'state_name','#__virtuemart_states','state_id');
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `currency_id` = "'.$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
@@ -204,7 +204,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'enabled' ){
+	public function published( $row, $i, $variable = 'published' ){
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
@@ -283,10 +283,10 @@ class VirtueMartModelCalc extends JModel
 			$this->setError($xrefTable->getError());
 		}
 
-//		modelfunctions::storeArrayData('#__vm_calc_category_xref','calc_rule_id','calc_category', $table->calc_id,$data["calc_categories"]);
-////		modelfunctions::storeArrayData('#__vm_calc_shoppergroup_xref','calc_rule_id','calc_shopper_group', $table->calc_id,$data["shopper_group_id"]);
-//		modelfunctions::storeArrayData('#__vm_calc_country_xref','calc_rule_id','calc_country', $table->calc_id,$data["country_id"]);
-//		modelfunctions::storeArrayData('#__vm_calc_state_xref','calc_rule_id','calc_state', $table->calc_id,$data["state_id"]);
+//		modelfunctions::storeArrayData('#__virtuemart_calc_categories','calc_rule_id','calc_category', $table->calc_id,$data["calc_categories"]);
+////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','calc_rule_id','calc_shopper_group', $table->calc_id,$data["shopper_group_id"]);
+//		modelfunctions::storeArrayData('#__virtuemart_calc_countries','calc_rule_id','calc_country', $table->calc_id,$data["country_id"]);
+//		modelfunctions::storeArrayData('#__virtuemart_calc_states','calc_rule_id','calc_state', $table->calc_id,$data["state_id"]);
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();
@@ -354,17 +354,17 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_shopper_enabled`
+			$query = 'SELECT `calc_shopper_published`
 					  FROM `#__virtuemart_calcs`
 					  WHERE calc_id = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_shopper_enabled > 0) ? 0 : 1;
+			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
 
 			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_shopper_enabled` = '.$publish.'
+					  SET `calc_shopper_published` = '.$publish.'
 					  WHERE calc_id = '.$quotedId;
 
 			$this->_db->setQuery($query);
@@ -393,17 +393,17 @@ class VirtueMartModelCalc extends JModel
 		foreach ($categories as $id){
 
 			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_vendor_enabled`
+			$query = 'SELECT `calc_vendor_published`
 					  FROM `#__virtuemart_calcs`
 					  WHERE `calc_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_vendor_enabled > 0) ? 0 : 1;
+			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
 
 			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_vendor_enabled` = '.$publish.'
+					  SET `calc_vendor_published` = '.$publish.'
 					  WHERE `calc_id` = '.$quotedId;
 
 			$this->_db->setQuery($query);

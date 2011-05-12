@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.model');
  * @subpackage Manufacturer category
  * @author
  */
-class VirtuemartModelManufacturercategory extends JModel {
+class VirtuemartModelManufacturercategories extends JModel {
 
 	/** @var integer Primary key */
     var $_id;
@@ -100,7 +100,7 @@ class VirtuemartModelManufacturercategory extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `mf_category_id` FROM `#__vm_manufacturer_category`';
+			$query = 'SELECT `mf_category_id` FROM `#__virtuemart_manufacturer_categories`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -197,7 +197,7 @@ class VirtuemartModelManufacturercategory extends JModel {
 		if ($categoryId) {
 			$db = JFactory::getDBO();
 
-			$query = 'DELETE FROM `#__vm_manufacturer_category`  WHERE `mf_category_id`= "'.$categoryId.'"';
+			$query = 'DELETE FROM `#__virtuemart_manufacturer_categories`  WHERE `mf_category_id`= "'.$categoryId.'"';
 			$db->setQuery($query);
 			if ($db->query()) {
 				return true;
@@ -235,11 +235,11 @@ class VirtuemartModelManufacturercategory extends JModel {
 	 */
 	function getManufacturerCategories($onlyPublished=false, $noLimit=false)
 	{
-		$query = 'SELECT * FROM `#__vm_manufacturer_category` ';
+		$query = 'SELECT * FROM `#__virtuemart_manufacturer_categories` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__vm_manufacturer_category`.`published` = 1';
+			$query .= 'WHERE `#__virtuemart_manufacturer_categories`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__vm_manufacturer_category`.`mf_category_name`';
+		$query .= ' ORDER BY `#__virtuemart_manufacturer_categories`.`mf_category_name`';
 
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
@@ -259,7 +259,7 @@ class VirtuemartModelManufacturercategory extends JModel {
 	function getCategoryFilter(){
 		$db = JFactory::getDBO();
 		$query = 'SELECT `mf_category_id` as `value`, `mf_category_name` as text'
-				.' FROM #__vm_manufacturer_category';
+				.' FROM #__virtuemart_manufacturer_categories';
 		$db->setQuery($query);
 
 		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );

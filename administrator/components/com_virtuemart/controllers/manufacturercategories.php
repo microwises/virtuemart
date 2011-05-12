@@ -29,7 +29,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Manufacturer
  * @author
  */
-class VirtuemartControllerManufacturercategory extends JController {
+class VirtuemartControllermanufacturercategories extends JController {
 
 	/**
 	 * Method to display the view
@@ -46,10 +46,10 @@ class VirtuemartControllerManufacturercategory extends JController {
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('manufacturercategory', $viewType);
+		$view =& $this->getView('manufacturercategories', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('manufacturercategory');
+		$model =& $this->getModel('manufacturercategories');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -67,7 +67,7 @@ class VirtuemartControllerManufacturercategory extends JController {
 		$view =& $this->getView($viewName, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel( 'manufacturercategory' );
+		$model =& $this->getModel( 'manufacturercategories' );
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -81,8 +81,8 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function edit()
 	{
-		JRequest::setVar('controller', 'manufacturercategory');
-		JRequest::setVar('view', 'manufacturercategory');
+		JRequest::setVar('controller', 'manufacturercategories');
+		JRequest::setVar('view', 'manufacturercategories');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 
@@ -96,7 +96,7 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function cancel()
 	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturerCategory',JText::_('COM_VIRTUEMART_CANCELLED'));
+		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategories',JText::_('COM_VIRTUEMART_CANCELLED'));
 	}
 
 
@@ -106,7 +106,7 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function save()
 	{
-		$model =& $this->getModel('manufacturerCategory');
+		$model =& $this->getModel('manufacturercategories');
 
 		if ($id = $model->store()) {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_SAVED');
@@ -115,8 +115,8 @@ class VirtuemartControllerManufacturercategory extends JController {
 		}
 
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturerCategory&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=manufacturerCategory';
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturercategories&task=edit&cid[]='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=manufacturercategories';
 
 		$this->setRedirect($redirection, $msg);
 
@@ -129,7 +129,7 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function remove()
 	{
-		$model = $this->getModel('manufacturerCategory');
+		$model = $this->getModel('manufacturercategories');
 		if (!$model->delete()) {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DELETE_WARNING');
 		}
@@ -137,7 +137,7 @@ class VirtuemartControllerManufacturercategory extends JController {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
 	}
 
 
@@ -147,12 +147,12 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function publish()
 	{
-		$model = $this->getModel('manufacturerCategory');
+		$model = $this->getModel('manufacturercategories');
 		if (!$model->publish(true)) {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
 	}
 
 
@@ -162,12 +162,12 @@ class VirtuemartControllerManufacturercategory extends JController {
 	 */
 	function unpublish()
 	{
-		$model = $this->getModel('manufacturerCategory');
+		$model = $this->getModel('manufacturercategories');
 		if (!$model->publish(false)) {
 			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturerCategory', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
 	}
 }
 // pure php no closing tag

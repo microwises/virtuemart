@@ -121,8 +121,8 @@ class plgSearchVirtueMart extends JPlugin {
 		$text	= $db->Quote( '%'.$db->getEscaped( $text, true ).'%', false );
 		$query	= "SELECT DISTINCT CONCAT( a.product_name,' (',a.product_sku,')' ) AS title, a.product_id AS slug, b.category_id AS catslug,CONCAT_WS( ' | ', a.product_s_desc, a.product_desc )  AS text, b.category_name as section,
 			FROM_UNIXTIME( a.cdate, '%Y-%m-%d %H:%i:%s' ) AS created, '2' AS browsernav
-			FROM #__vm_product AS a
-			LEFT JOIN #__vm_product_category_xref AS xref ON xref.product_id = a.product_id
+			FROM #__virtuemart_products AS a
+			LEFT JOIN #__virtuemart_product_categories AS xref ON xref.product_id = a.product_id
 			LEFT JOIN #__virtuemart_categories AS b ON b.category_id = xref.category_id"
 		. ' WHERE '. $where
 		. ' ORDER BY '. $order

@@ -27,7 +27,7 @@ class TableOrder_user_info extends JTable {
 	function __construct(&$_db)
 	{
 		self::loadFields($_db);
-		parent::__construct('#__vm_order_user_info', 'order_info_id', $_db);
+		parent::__construct('#__virtuemart_order_userinfos', 'order_info_id', $_db);
 	}
 
 	/**
@@ -36,7 +36,7 @@ class TableOrder_user_info extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__vm_order_user_info`";
+		$_q = "SHOW COLUMNS FROM `#__virtuemart_order_userinfos`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
@@ -57,7 +57,7 @@ class TableOrder_user_info extends JTable {
 	 */
 	function _modifyColumn ($_act, $_col, $_type = '')
 	{
-		$_sql = "ALTER TABLE `#__vm_order_user_info` ";
+		$_sql = "ALTER TABLE `#__virtuemart_order_userinfos` ";
 
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		switch ($_check_act) {

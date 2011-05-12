@@ -45,7 +45,7 @@ class TableOrder_history extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__vm_order_history', 'order_status_history_id', $db);
+		parent::__construct('#__virtuemart_order_history', 'order_status_history_id', $db);
 	}
 }
 // pure php no closing tag

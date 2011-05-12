@@ -55,7 +55,7 @@ class plgPaymentTwoCheckout extends vmPaymentPlugin {
        	$dbbt->next_record(); 
         // Get ship_to information
     	if( $db->f("user_info_id") != $dbbt->f("user_info_id")) {
-       		$q2  = "SELECT * FROM #__vm_user_info WHERE user_info_id='".$db->f("user_info_id")."'"; 
+       		$q2  = "SELECT * FROM #__virtuemart_userinfos WHERE user_info_id='".$db->f("user_info_id")."'"; 
     		//$dbst = new ps_DB;
     		$q2 = JFactory::getDBO();
     		$dbst->setQuery($q2);

@@ -113,7 +113,7 @@ abstract class vmShipperPlugin extends JPlugin
                 if(version_compare(JVERSION,'1.6.0') < ''){
                         $_q = 'SELECT v.`shipping_carrier_id`   AS id '
 			. ',      v.`shipping_carrier_name` AS name '
-			. 'FROM   #__vm_shipping_carrier v '
+			. 'FROM   #__virtuemart_shippingcarriers v '
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
@@ -123,7 +123,7 @@ abstract class vmShipperPlugin extends JPlugin
 		} else {
 			$_q = 'SELECT v.`shipping_carrier_id`   AS id '
 			. ',      v.`shipping_carrier_name` AS name '
-			. 'FROM   #__vm_shipping_carrier AS v '
+			. 'FROM   #__virtuemart_shippingcarriers AS v '
 			. ',      #__extensions    AS      j '
 			. 'WHERE j.`folder` = "vmshipper" '
                         . 'AND j.`element` = "'.$this->_selement.'" '
@@ -163,7 +163,7 @@ abstract class vmShipperPlugin extends JPlugin
 
                 if(version_compare(JVERSION,'1.6.0') < ''){
                        $_q = 'SELECT 1 '
-			. 'FROM   #__vm_shipping_carrier v '
+			. 'FROM   #__virtuemart_shippingcarriers v '
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
@@ -172,7 +172,7 @@ abstract class vmShipperPlugin extends JPlugin
 		 ;
 		} else {
                       $_q = 'SELECT 1 '
-			. 'FROM   #__vm_shipping_carrier AS v '
+			. 'FROM   #__virtuemart_shippingcarriers AS v '
 		        . ',      #__extensions   AS     j '
                         . 'WHERE j.`folder` = "vmshipper" '
 			. 'AND j.`element` = "'.$this->_selement.'" '
@@ -421,8 +421,8 @@ abstract class vmShipperPlugin extends JPlugin
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT r.`shipping_rate_name` AS rate '
 			. ',      c.`shipping_carrier_name` AS carrier '
-			. 'FROM #__vm_shipping_rate r '
-			. ',    #__vm_shipping_carrier c '
+			. 'FROM #__virtuemart_shippingrates r '
+			. ',    #__virtuemart_shippingcarriers c '
 			. 'WHERE r.`shipping_rate_id` = ' . $this->getShippingRateIDForOrder($_orderId) . ' '
 			. 'AND   r.`shipping_rate_carrier_id` = c.`shipping_carrier_id` '
 		;
@@ -460,7 +460,7 @@ abstract class vmShipperPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `ship_method_id` '
-			. 'FROM #__vm_orders '
+			. 'FROM #__virtuemart_orders '
 			. "WHERE order_id = $_id";
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
@@ -531,8 +531,8 @@ abstract class vmShipperPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT s.`shipping_rate_carrier_id` AS shipper_id '
-			. 'FROM #__vm_orders        AS o '
-			. ',    #__vm_shipping_rate AS s '
+			. 'FROM #__virtuemart_orders        AS o '
+			. ',    #__virtuemart_shippingrates AS s '
 			. "WHERE o.`order_id` = $_id "
 			. 'AND   o.`ship_method_id` = s.`shipping_rate_id`';
 		$_db->setQuery($_q);
@@ -560,7 +560,7 @@ abstract class vmShipperPlugin extends JPlugin
 
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_rate_id` '
-			. 'FROM #__vm_shipping_rate '
+			. 'FROM #__virtuemart_shippingrates '
 			. 'WHERE `shipping_rate_carrier_id` = "'.$_shipperId.'" ' ;
 			//TODO This does not work properly, ... (by Max)
 			if(!empty($_orderWeight)){
@@ -595,14 +595,14 @@ abstract class vmShipperPlugin extends JPlugin
 
 		  if(version_compare(JVERSION,'1.6.0') < ''){
                      $_q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__vm_shipping_carrier AS vm '
+			. 'FROM #__virtuemart_shippingcarriers AS vm '
 			. ',    #__plugins AS j '
 			. "WHERE vm.shipping_carrier_id = '$_sid' "
 			. 'AND   vm.shipping_carrier_jplugin_id = j.id '
 			. "AND   j.element = '$_selement'";
 		} else {
                     $_q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__vm_shipping_carrier AS vm '
+			. 'FROM #__virtuemart_shippingcarriers AS vm '
 			. ',      #__extensions    AS      j '
 			. 'WHERE j.`folder` = "vmshipper" '
                         . "AND vm.shipping_carrier_id = '$_sid' "
@@ -630,7 +630,7 @@ abstract class vmShipperPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `shipping_carrier_name` '
-			. 'FROM #__vm_shipping_carrier '
+			. 'FROM #__virtuemart_shippingcarriers '
 			. "WHERE shipping_carrier_id ='$_pid' ";
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check

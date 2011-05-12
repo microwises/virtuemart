@@ -36,9 +36,9 @@ $vendorId = '1';
 
 $categories = $categoryModel->getChildrenList($category_id) ;
 /*		$q = "SELECT category_id, category_name
-			FROM #__virtuemart_categories, #__vm_category_xref
-			WHERE #__vm_category_xref.category_parent_id = ".$category_id."
-			AND #__virtuemart_categories.category_id=#__vm_category_xref.category_child_id
+			FROM #__virtuemart_categories, #__virtuemart_category_categories
+			WHERE #__virtuemart_category_categories.category_parent_id = ".$category_id."
+			AND #__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id
 			AND #__virtuemart_categories.vendor_id = 1
 			AND #__virtuemart_categories.published = 1
 			ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";

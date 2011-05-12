@@ -50,7 +50,7 @@ class TableOrder_status extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_order_status', 'order_status_id', $db);
+		parent::__construct('#__virtuemart_orderstates', 'order_status_id', $db);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class TableOrder_status extends JTable {
 		}
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT count(*),order_status_id FROM `#__vm_order_status` ';
+		$q = 'SELECT count(*),order_status_id FROM `#__virtuemart_orderstates` ';
 		$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
 		$db->setQuery($q); 
 

@@ -68,9 +68,9 @@ class VirtueMartModelManufacturer extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__vm_manufacturer.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
+            if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__virtuemart_manufacturers.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
 			$q = "SELECT COUNT(*)
-				FROM `#__vm_manufacturer` ".
+				FROM `#__virtuemart_manufacturers` ".
 				$filter;
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
@@ -180,7 +180,7 @@ class VirtueMartModelManufacturer extends JModel {
 	function getManufacturerDropDown() {
 		$db = JFactory::getDBO();
 		$query = "SELECT `manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
-				FROM `#__vm_manufacturer`";
+				FROM `#__virtuemart_manufacturers`";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER') .' -' ));
@@ -197,7 +197,7 @@ class VirtueMartModelManufacturer extends JModel {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
 			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
-			$q = "UPDATE #__vm_manufacturer
+			$q = "UPDATE #__virtuemart_manufacturers
 				SET product_publish = ".$db->Quote($state)."
 				WHERE product_id IN (".$cids.")";
 			$db->setQuery($q);
@@ -224,21 +224,21 @@ class VirtueMartModelManufacturer extends JModel {
 
 		$where = array();
 		if ($mf_category_id > 0) {
-			$where[] .= '`#__vm_manufacturer`.`mf_category_id` = '. $mf_category_id;
+			$where[] .= '`#__virtuemart_manufacturers`.`mf_category_id` = '. $mf_category_id;
 		}
 		if ( $search ) {
-			$where[] .= 'LOWER( `#__vm_manufacturer`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		}
 		if ($onlyPublished) {
-			$where[] .= '`#__vm_manufacturer`.`enabled` = 1';
+			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
 		}
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
 
-		$query = 'SELECT * FROM `#__vm_manufacturer` '
+		$query = 'SELECT * FROM `#__virtuemart_manufacturers` '
 				. $where;
 
-		$query .= ' ORDER BY `#__vm_manufacturer`.`mf_name`';
+		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}

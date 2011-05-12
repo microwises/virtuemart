@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('feed_enabled', $this->config->get('feed_enabled')); ?>
+		<?php echo VmHTML::checkbox('feed_published', $this->config->get('feed_published')); ?>
 	    </td>
 	</tr>
 	<tr>

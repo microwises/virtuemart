@@ -86,7 +86,7 @@ class TableOrders extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__vm_orders', 'order_id', $db);
+		parent::__construct('#__virtuemart_orders', 'order_id', $db);
 	}
 
 	/**
@@ -112,14 +112,14 @@ class TableOrders extends JTable {
 	 */
 	function delete($id)
 	{
-		$this->_db->setQuery('DELETE from `#__vm_order_user_info` WHERE `order_id` = ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
 		/*vm_order_payment NOT EXIST  have to find the table name*/
-		$this->_db->setQuery( 'SELECT `paym_element` FROM `#__vm_payment_method` , `#__vm_orders`
-			WHERE `#__vm_payment_method`.`paym_id` = `#__vm_orders`.`payment_method_id` AND `order_id` = ' . $id );
+		$this->_db->setQuery( 'SELECT `paym_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
+			WHERE `#__virtuemart_paymentmethods`.`paym_id` = `#__virtuemart_orders`.`payment_method_id` AND `order_id` = ' . $id );
 		$paymentTable = '#__vm_order_payment_'. $this->_db->loadResult();
 		/*$paymentTable is the paiement used in order*/
 		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `order_id` = ' . $id);
@@ -129,7 +129,7 @@ class TableOrders extends JTable {
 		}
 
 
-		$_q = 'INSERT INTO `#__vm_order_history` ('
+		$_q = 'INSERT INTO `#__virtuemart_order_history` ('
 				.	' order_status_history_id'
 				.	',order_id'
 				.	',order_status_code'

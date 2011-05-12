@@ -92,7 +92,7 @@ class VirtuemartModelReport extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-	    	$query = 'SELECT `order_id` FROM `#__vm_orders`';
+	    	$query = 'SELECT `order_id` FROM `#__virtuemart_orders`';
 	    	$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -117,7 +117,7 @@ class VirtuemartModelReport extends JModel {
 		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "COUNT(order_id) as number_of_orders, ";
 		$query .= "SUM(order_subtotal) as revenue ";
-		$query .= "FROM `#__vm_orders` ";
+		$query .= "FROM `#__virtuemart_orders` ";
 		$query .= "WHERE `created_on` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
 		$query .= "GROUP BY order_date ";
 		$query .= "ORDER BY date_num ASC ";
@@ -152,7 +152,7 @@ class VirtuemartModelReport extends JModel {
 		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
 		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "SUM(product_quantity) as items_sold ";
-		$query .= "FROM `#__vm_order_item` ";
+		$query .= "FROM `#__virtuemart_order_items` ";
 		//WHERE created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
 		$query .= "GROUP BY order_date ";
 		$query .= "ORDER BY date_num ASC ";
@@ -188,8 +188,8 @@ class VirtuemartModelReport extends JModel {
 		$query .= "FROM_UNIXTIME('i.created_on', '%M, %Y') as order_date, ";
 		$query .= "FROM_UNIXTIME('o.created_on',GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
 		$query .= "SUM(product_quantity) as items_sold ";
-  		$query .= "FROM #__vm_order_item i, #__vm_orders o, #__vm_product p ";
-		//WHERE #__vm_order_item.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+  		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
+		//WHERE #__virtuemart_order_items.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
 		//$query .= "AND o.order_id=i.order_id ";
 		$query .= "WHERE o.order_id=i.order_id ";
   		$query .= "AND i.product_id=p.product_id ";

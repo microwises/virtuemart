@@ -47,7 +47,7 @@ class TableShopperGroup extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_shopper_group', 'shopper_group_id', $db);
+		parent::__construct('#__virtuemart_shoppergroups', 'shopper_group_id', $db);
 	}
 
 
@@ -71,7 +71,7 @@ class TableShopperGroup extends JTable
 		  
 			$db =& JFactory::getDBO();  
 			$query = 'SELECT count(*) FROM '
-			  . $db->nameQuote('#__vm_shopper_group')
+			  . $db->nameQuote('#__virtuemart_shoppergroups')
 			  . ' WHERE '
 			  . $db->nameQuote('shopper_group_name')
 			  . ' = '

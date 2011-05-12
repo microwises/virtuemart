@@ -47,7 +47,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'enabled', 'class="inputbox"', $this->currency->enabled); ?>
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->currency->published); ?>
 				</fieldset>
 			</td>
 		</tr>

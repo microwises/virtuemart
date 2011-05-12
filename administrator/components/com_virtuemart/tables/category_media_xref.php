@@ -37,7 +37,7 @@ class TableCategory_media_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__vm_category_media_xref', 'id', $db);
+		parent::__construct('#__virtuemart_category_medias', 'id', $db);
 	}
 
 }

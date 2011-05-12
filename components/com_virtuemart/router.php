@@ -467,7 +467,7 @@ class vmrouterHelper {
 
 		$db			= & JFactory::getDBO();
 		$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-				FROM  #__vm_category_xref AS `xref`
+				FROM  #__virtuemart_category_categories AS `xref`
 				WHERE `xref`.`category_child_id`= ".$category_id;
 		$db->setQuery($q);
 		$ids = $db->loadObject();
@@ -490,7 +490,7 @@ class vmrouterHelper {
 			$name = str_replace('-', '%', $name);
 			$name = str_replace(':', '%', $name);
 			$q = "SELECT distinct `c`.`category_id`
-				FROM  `#__virtuemart_categories` AS `c` , `#__vm_category_xref` as `xref`";
+				FROM  `#__virtuemart_categories` AS `c` , `#__virtuemart_category_categories` as `xref`";
 			$q .=" WHERE `c`.`category_name` LIKE '".$name."' ";
 			$q .=" AND `xref`.`category_child_id`=`c`.`category_id`";
 			$q .=" AND `xref`.`category_parent_id` in (".$category_ids.") ";
@@ -507,7 +507,7 @@ class vmrouterHelper {
 	public function getProductName($id){
 
 		$db			= & JFactory::getDBO();
-		$query = 'SELECT `product_name` FROM `#__vm_product`  ' .
+		$query = 'SELECT `product_name` FROM `#__virtuemart_products`  ' .
 		' WHERE `product_id` = ' . (int) $id;
 
 		$db->setQuery($query);
@@ -544,8 +544,8 @@ class vmrouterHelper {
 		$productName = str_replace('-', '%', $productName);
 		$productName = str_replace(':', '%', $productName);
 		$q = "SELECT `p`.`product_id`
-			FROM `#__vm_product` AS `p`
-			LEFT JOIN `#__vm_product_category_xref` AS `xref` ON `p`.`product_id` = `xref`.`product_id`
+			FROM `#__virtuemart_products` AS `p`
+			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`product_id` = `xref`.`product_id`
 			WHERE `p`.`product_name` LIKE '".$productName."'
 			AND `xref`.`category_id` in (".$product['category_id'].") ";
 		$db->setQuery($q);
@@ -556,7 +556,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($manufacturer_id ){
 	$db = JFactory::getDBO();
-	$query = 'SELECT `mf_name` FROM `#__vm_manufacturer` WHERE manufacturer_id='.$manufacturer_id;
+	$query = 'SELECT `mf_name` FROM `#__virtuemart_manufacturers` WHERE manufacturer_id='.$manufacturer_id;
 	$db->setQuery($query);
 	$lang =& JFactory::getLanguage();
 	$mfName = $lang->transliterate($db->loadResult());

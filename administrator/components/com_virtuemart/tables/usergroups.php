@@ -38,11 +38,11 @@ class TableUsergroups extends JTable {
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;
-// 	var $enabled = 1;
+// 	var $published = 1;
 
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_perm_groups', 'group_id', $db);
+		parent::__construct('#__virtuemart_permgroups', 'group_id', $db);
 	}
 
 	/**

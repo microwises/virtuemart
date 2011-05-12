@@ -2,10 +2,10 @@
 -- This will insert all sample data into the VirtueMart tables
 
 --
--- Dumping data for table `#__vm_perm_groups`
+-- Dumping data for table `#__virtuemart_permgroups`
 --
 
-INSERT INTO `#__vm_perm_groups` (`group_id`, `group_name`, `group_level`) VALUES
+INSERT INTO `#__virtuemart_permgroups` (`group_id`, `group_name`, `group_level`) VALUES
 (1, 'admin', 0),
 (2, 'storeadmin', 250),
 (3, 'shopper', 500),
@@ -266,7 +266,7 @@ INSERT INTO `#__virtuemart_countries` (`country_id`, `zone_id`, `country_name`, 
 -- Dumping data for table `#__virtuemart_creditcards`
 --
 
-INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`enabled`) VALUES
+INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
 (1, 1, 'Visa', 'VISA',1),
 (2, 1, 'MasterCard', 'MC',1),
 (3, 1, 'American Express', 'amex',1),
@@ -279,7 +279,7 @@ INSERT INTO `#__virtuemart_creditcards` (`creditcard_id`, `vendor_id`, `creditca
 -- Dumping data for table `#__virtuemart_currencies`
 --
 
-INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `enabled`, `shared`, `locked_on` ) VALUES
+INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_name`, `currency_code_2`, `currency_code`, `currency_numeric_code`, `currency_symbol`, `exchange_rate`, `display_style`, `created_on`, `modified_on`, `published`, `shared`, `locked_on` ) VALUES
 (2, 1, 'United Arab Emirates dirham', '', 'AED', 784, 'د.إ', 0, '1|د.إ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0 ),
 (4, 1, 'Albanian lek', '', 'ALL', 8, 'Lek', 0, '1|Lek|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),
 (5, 1, 'Netherlands Antillean gulden', '', 'ANG', 532, 'ƒ', 0, '1|ƒ|2|,| |{number} {symbol}|{sign}{number} {symbol}', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 0),
@@ -449,18 +449,18 @@ INSERT INTO `#__virtuemart_currencies` (`currency_id`, `vendor_id`, `currency_na
 
 
 --
--- Dumping data for table `#__vm_shopper_group`
+-- Dumping data for table `#__virtuemart_shoppergroups`
 --
 
-INSERT INTO `#__vm_shopper_group` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
+INSERT INTO `#__virtuemart_shoppergroups` (`shopper_group_id`, `vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
 (NULL, 1, '-default-', 'This is the default shopper group.', 1);
 
 --
--- Dumping data for table `#__vm_state`
+-- Dumping data for table `#__virtuemart_states`
 --
 
 
-INSERT INTO `#__vm_state` (`state_id`, `country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `enabled`) VALUES
+INSERT INTO `#__virtuemart_states` (`state_id`, `country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
 (1, 223, 0, 'Alabama', 'ALA', 'AL', 1),
 (2, 223, 0, 'Alaska', 'ALK', 'AK', 1),
 (3, 223, 0, 'Arizona', 'ARZ', 'AZ', 1),

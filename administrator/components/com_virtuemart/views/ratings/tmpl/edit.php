@@ -85,7 +85,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		</td>
 		<td>
-			<?php echo JHTML::_('select.booleanlist', 'enabled', '', $this->rating->enabled); ?>
+			<?php echo JHTML::_('select.booleanlist', 'published', '', $this->rating->published); ?>
 		</td>
 	</tr>
 </table>

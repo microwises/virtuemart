@@ -3,19 +3,6 @@
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `#__vm_auth_group`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
-  `group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_name` varchar(128) DEFAULT NULL,
-  `group_level` int(11) DEFAULT NULL,
-  PRIMARY KEY (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `#__virtuemart_calcs`
@@ -31,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_value` float NOT NULL DEFAULT '0' COMMENT 'The Amount',
   `calc_currency` char(3) NOT NULL DEFAULT '0' COMMENT 'Currency of the Rule',
   `ordering` tinyint(2) NOT NULL,
-  `calc_shopper_enabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Shoppers',
-  `calc_vendor_enabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Vendors',
+  `calc_shopper_published` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Shoppers',
+  `calc_vendor_published` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Vendors',
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Enddate if nothing is set = permanent',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -43,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_affected` int(11) NOT NULL DEFAULT '0' COMMENT 'affected productId''s',
   `calc_amount_cond` float NOT NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text NOT NULL COMMENT 'The dimension, kg, m, €',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Affects all vendors',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
@@ -53,10 +40,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_calc_category_xref`
+-- Table structure for table `#__virtuemart_calc_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_category` int(11) NOT NULL DEFAULT '0',
@@ -67,10 +54,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_category_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_calc_shoppergroup_xref`
+-- Table structure for table `#__virtuemart_calc_shoppergroups`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_calc_shoppergroup_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_shoppergroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_shopper_group` int(11) NOT NULL DEFAULT '0',
@@ -81,10 +68,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_shoppergroup_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_calc_country_xref`
+-- Table structure for table `#__virtuemart_calc_countries`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_calc_country_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_country` int(11) NOT NULL DEFAULT '0',
@@ -95,10 +82,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_calc_country_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_calc_state_xref`
+-- Table structure for table `#__virtuemart_calc_states`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_calc_state_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `calc_rule_id` int(11) NOT NULL DEFAULT '0',
   `calc_state` int(11) NOT NULL DEFAULT '0',
@@ -130,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `category_name` varchar(128) NOT NULL DEFAULT '',
   `category_description` text,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -158,10 +145,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_category_xref`
+-- Table structure for table `#__virtuemart_category_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
   `category_parent_id` int(11) NOT NULL DEFAULT '0',
   `category_child_id` int(11) NOT NULL DEFAULT '0',
   `category_list` int(11) DEFAULT NULL,
@@ -172,10 +159,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
 
 --
--- Table structure for table `#__vm_category_media_xref`
+-- Table structure for table `#__virtuemart_category_medias`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_category_media_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
@@ -208,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   `country_name` varchar(64) DEFAULT NULL,
   `country_3_code` char(3) DEFAULT NULL,
   `country_2_code` char(2) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`country_id`),
@@ -246,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `creditcard_name` varchar(70) NOT NULL DEFAULT '',
   `creditcard_code` varchar(30) NOT NULL DEFAULT '',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`creditcard_id`)
@@ -273,7 +260,7 @@ CREATE TABLE `#__virtuemart_currencies` (
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `shared` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
@@ -298,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `is_list` tinyint(1) DEFAULT '0' COMMENT 'list of values',
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
   `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`custom_id`),
   KEY `idx_custom_parent_id` (`custom_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
@@ -306,15 +293,15 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
 -- --------------------------------------------------------
 
 --
--- Table structure `#__virtuemart_custom_fields`
+-- Table structure `#__virtuemart_customfields`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_custom_fields` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
   `custom_field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'field id',
   `custom_id` int(11) NOT NULL COMMENT 'custom group id',
   `custom_value` char(255) DEFAULT NULL COMMENT 'field value',
   `custom_price` char(255) DEFAULT NULL COMMENT 'price',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`custom_field_id`),
   KEY `idx_custom_id` (`custom_id`),
   KEY `idx_custom_value` (`custom_value`)
@@ -329,34 +316,34 @@ CREATE TABLE IF NOT EXISTS `#__vm_custom_field_xref_product` (
   `custom_field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'field ref to product',
   `product_id` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`custom_field_id`),
   KEY `idx_product_id` (`product_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__vm_manufacturer`
+-- Table structure for table `#__virtuemart_manufacturers`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_name` varchar(64) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
   `mf_category_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=1 ;
 
 --
--- Table structure for table `#__vm_manufacturer_media_xref`
+-- Table structure for table `#__virtuemart_manufacturer_medias`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_media_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_medias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `manufacturer_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
@@ -366,14 +353,14 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_media_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_manufacturer_category`
+-- Table structure for table `#__virtuemart_manufacturer_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_categories` (
   `mf_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`mf_category_id`),
@@ -383,10 +370,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_menu_admin`
+-- Table structure for table `#__virtuemart_adminmenuentries`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `module_id` int(10) unsigned NOT NULL COMMENT 'The ID of the VM Module, this Item is assigned to',
   `parent_id` int(11) unsigned NOT NULL,
@@ -395,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
   `depends` text NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
   `icon_class` varchar(255) NOT NULL,
   `ordering` tinyint(4) NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `tooltip` text NOT NULL,
   `view` varchar(255) DEFAULT NULL,
   `task` varchar(255) DEFAULT NULL,
@@ -405,15 +392,15 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_module`
+-- Table structure for table `#__virtuemart_modules`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_module` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_modules` (
   `module_id` int(11) NOT NULL AUTO_INCREMENT,
   `module_name` varchar(255) DEFAULT NULL,
   `module_description` text,
   `module_perms` varchar(255) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `is_admin` enum('0','1') NOT NULL,
   `list_order` int(11) DEFAULT NULL,
   PRIMARY KEY (`module_id`),
@@ -424,10 +411,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_module` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_orders`
+-- Table structure for table `#__virtuemart_orders`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_orders` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0',
   `vendor_id` int(11) NOT NULL DEFAULT '0',
@@ -468,10 +455,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_history`
+-- Table structure for table `#__virtuemart_order_history`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_history` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_history` (
   `order_status_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL DEFAULT '0',
   `order_status_code` char(1) NOT NULL DEFAULT '0',
@@ -484,10 +471,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_history` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_item`
+-- Table structure for table `#__virtuemart_order_items`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `order_item_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
   `user_info_id` varchar(32) DEFAULT NULL,
@@ -516,10 +503,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_status`
+-- Table structure for table `#__virtuemart_orderstates`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `order_status_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_status_code` char(1) NOT NULL DEFAULT '',
   `order_status_name` varchar(64) DEFAULT NULL,
@@ -536,10 +523,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_user_info`
+-- Table structure for table `#__virtuemart_order_userinfos`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
   `order_info_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -580,10 +567,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_payment_method`
+-- Table structure for table `#__virtuemart_paymentmethods`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   `paym_id` int(11) NOT NULL AUTO_INCREMENT,
   `paym_vendor_id` int(11) NOT NULL DEFAULT '1',
   `paym_jplugin_id` int(11) NOT NULL,
@@ -594,7 +581,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `ordering` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `paym_extra_info` text NOT NULL,
   `paym_secret_key` blob NOT NULL,
   `paym_params` text NOT NULL,
@@ -610,10 +597,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_payment_method_acceptedcreditcards_xref`
+-- Table structure for table `#__virtuemart_paymentmethod_creditcards`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_payment_method_acceptedcreditcards_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_creditcards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `paym_id` int(11) NOT NULL DEFAULT '0',
   `paym_accepted_credit_card` int(11) NOT NULL DEFAULT '0',
@@ -624,10 +611,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method_acceptedcreditcards_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_payment_method_shoppergroup_xref`
+-- Table structure for table `#__virtuemart_paymentmethod_shoppergroups`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `paym_id` int(11) NOT NULL DEFAULT '0',
   `paym_shopper_group` int(11) NOT NULL DEFAULT '0',
@@ -641,17 +628,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method_shoppergroup_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product`
+-- Table structure for table `#__virtuemart_products`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `product_parent_id` int(11) NOT NULL DEFAULT '0',
   `product_sku` varchar(64) NOT NULL DEFAULT '',
   `product_s_desc` varchar(255) DEFAULT NULL,
   `product_desc` text,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `product_weight` decimal(10,4) DEFAULT NULL,
   `product_weight_uom` varchar(32) DEFAULT 'pounds.',
   `product_length` decimal(10,4) DEFAULT NULL,
@@ -692,48 +679,14 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
   KEY `idx_product_name` (`product_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All products are stored here.' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `#__vm_product_attribute`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
-  `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `attribute_name` char(255) NOT NULL DEFAULT '',
-  `attribute_value` char(255) NOT NULL DEFAULT '',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`attribute_id`),
-  KEY `idx_product_attribute_product_id` (`product_id`),
-  KEY `idx_product_attribute_name` (`attribute_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores attributes + their specific values for Child Products' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_attribute_sku`
+-- Table structure for table `#__virtuemart_product_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_attribute_sku` (
-  `attribute_sku_id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `attribute_name` char(255) NOT NULL DEFAULT '',
-  `attribute_list` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`attribute_sku_id`),
-  KEY `idx_product_attribute_sku_product_id` (`product_id`),
-  KEY `idx_product_attribute_sku_attribute_name` (`attribute_name`),
-  KEY `idx_product_attribute_list` (`attribute_list`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Attributes for a Parent Product used by its Child Products' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__vm_product_category_xref`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
   `category_id` int(11) NOT NULL DEFAULT '0',
   `product_id` int(11) NOT NULL DEFAULT '0',
   `product_list` int(11) DEFAULT NULL,
@@ -746,10 +699,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
 
 
 --
--- Table structure for table `#__vm_product_download`
+-- Table structure for table `#__virtuemart_product_downloads`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_downloads` (
   `product_id` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
   `order_id` int(11) NOT NULL DEFAULT '0',
@@ -763,10 +716,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
 
 --
--- Table structure for table `#__vm_category_media_xref`
+-- Table structure for table `#__virtuemart_product_medias`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_media_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
@@ -776,10 +729,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_media_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_media` (was  `#__vm_product_files`)
+-- Table structure for table `#__virtuemart_medias` (was  `#__virtuemart_product_files`)
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_media` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_id` int(19) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL,
   `file_title` varchar(126) NOT NULL DEFAULT '',
@@ -792,7 +745,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_media` (
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `file_is_product_image` tinyint(1) NOT NULL,
   `file_is_downloadable` tinyint(1) NOT NULL,
   `file_is_forSale` tinyint(1) NOT NULL,
@@ -806,10 +759,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_media` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_mf_xref`
+-- Table structure for table `#__virtuemart_product_manufacturers`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_mf_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
   `product_id` int(11) DEFAULT NULL,
   `manufacturer_id` int(11) DEFAULT NULL,
   KEY `idx_product_mf_xref_product_id` (`product_id`),
@@ -819,10 +772,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_mf_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_price`
+-- Table structure for table `#__virtuemart_product_prices`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `product_price_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL DEFAULT '0',
   `product_price` decimal(15,5) DEFAULT NULL,
@@ -850,10 +803,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_product_type_xref`
+-- Table structure for table `#__virtuemart_product_producttypes`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_product_type_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_producttypes` (
   `product_id` int(11) NOT NULL DEFAULT '0',
   `product_type_id` int(11) NOT NULL DEFAULT '0',
   KEY `idx_product_product_type_xref_product_id` (`product_id`),
@@ -863,10 +816,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_product_type_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_relations`
+-- Table structure for table `#__virtuemart_product_relations`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_relations` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_relations` (
   `product_id` int(11) NOT NULL DEFAULT '0',
   `related_products` text,
   PRIMARY KEY (`product_id`)
@@ -875,10 +828,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_relations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_reviews`
+-- Table structure for table `#__virtuemart_product_reviews`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
@@ -887,7 +840,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
   `user_rating` tinyint(1) NOT NULL DEFAULT '0',
   `review_ok` int(11) NOT NULL DEFAULT '0',
   `review_votes` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`review_id`),
@@ -897,18 +850,34 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_type`
+-- Table structure for table `#__virtuemart_product_reviews`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
+  `product_id` int(255) NOT NULL DEFAULT '0',
+  `votes` text NOT NULL,
+  `allvotes` int(11) NOT NULL DEFAULT '0',
+  `rating` tinyint(1) NOT NULL DEFAULT '0',
+  `lastip` varchar(50) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`product_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all votes for a product';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_producttypes`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_producttypes` (
   `product_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_type_name` varchar(255) NOT NULL DEFAULT '',
   `product_type_description` text,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `product_type_browsepage` varchar(255) DEFAULT NULL,
-  `product_type_flypage` varchar(255) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `product_type_layout` varchar(255) DEFAULT NULL,
   `ordering` int(11) DEFAULT NULL,
- `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -916,10 +885,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_type_parameter`
+-- Table structure for table `#__virtuemart_producttype_customfields`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_type_parameter` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_producttype_customfields` (
   `product_type_id` int(11) NOT NULL DEFAULT '0',
   `parameter_name` varchar(255) NOT NULL DEFAULT '',
   `parameter_label` varchar(255) NOT NULL DEFAULT '',
@@ -937,36 +906,20 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type_parameter` (
   KEY `idx_product_type_parameter_parameter_order` (`ordering`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Parameters which are part of a product type';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `#__vm_product_votes`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
-  `product_id` int(255) NOT NULL DEFAULT '0',
-  `votes` text NOT NULL,
-  `allvotes` int(11) NOT NULL DEFAULT '0',
-  `rating` tinyint(1) NOT NULL DEFAULT '0',
-  `lastip` varchar(50) NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all votes for a product';
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shipping_carrier`
+-- Table structure for table `#__virtuemart_shippingcarriers`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `shipping_carrier_id` int(11) NOT NULL AUTO_INCREMENT,
   `shipping_carrier_jplugin_id` int(11) NOT NULL,
   `shipping_carrier_name` char(80) NOT NULL DEFAULT '',
   `shipping_carrier_list_order` int(11) NOT NULL DEFAULT '0',
   `shipping_carrier_vendor_id` int(11) NOT NULL DEFAULT '1',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`shipping_carrier_id`)
@@ -975,10 +928,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shipping_rate`
+-- Table structure for table `#__virtuemart_shippingrates`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
   `shipping_rate_id` int(11) NOT NULL AUTO_INCREMENT,
   `shipping_rate_name` varchar(255) NOT NULL DEFAULT '',
   `shipping_rate_carrier_id` int(11) NOT NULL DEFAULT '0',
@@ -1000,10 +953,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shopper_group`
+-- Table structure for table `#__virtuemart_shoppergroups`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `shopper_group_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) DEFAULT NULL,
   `shopper_group_name` varchar(32) DEFAULT NULL,
@@ -1020,17 +973,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
 
 
 --
--- Table structure for table `#__vm_state`
+-- Table structure for table `#__virtuemart_states`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_state` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL DEFAULT '1',
   `zone_id` int(4) NOT NULL,
   `state_name` varchar(64) DEFAULT NULL,
   `state_3_code` char(3) DEFAULT NULL,
   `state_2_code` char(2) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`state_id`),
@@ -1042,10 +995,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_users`
+-- Table structure for table `#__virtuemart_users`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_users` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_users` (
 	`user_id` int(11) NOT NULL AUTO_INCREMENT,
 	`user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
 	`vendor_id` tinyint(1) NOT NULL DEFAULT '0',
@@ -1059,10 +1012,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_user_shoppergroup_xref`
+-- Table structure for table `#__virtuemart_user_shoppergroups`
 -- 
 
-CREATE TABLE IF NOT EXISTS `#__vm_user_shopper_group_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_user_shoppergroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0',
   `shopper_group_id` int(11) NOT NULL DEFAULT '0',
@@ -1073,34 +1026,23 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_shopper_group_xref` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `#__vm_perm_groups` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(128) DEFAULT NULL,
   `group_level` int(11) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
 
---
--- Table structure for table `#__vm_user_perm_group_xref`
---
 
--- CREATE TABLE IF NOT EXISTS `#__vm_user_perm_group_xref` (
---  `id` int(11) NOT NULL AUTO_INCREMENT,
---  `user_id` int(11) NOT NULL DEFAULT '0',
---  `group_id` int(11) DEFAULT NULL,
---  PRIMARY KEY (`id`), 
---  UNIQUE KEY `i_user_id` (`user_id`,`group_id`)
--- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps the user to user=permission groups';
-
-
+-- --------------------------------------------------------
 --
--- Table structure for table `#__vm_userfield`
+-- Table structure for table `#__virtuemart_userfields`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `fieldid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL,
@@ -1114,7 +1056,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
   `rows` int(11) DEFAULT NULL,
   `value` varchar(50) DEFAULT NULL,
   `default` int(11) DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
   `registration` tinyint(1) NOT NULL DEFAULT '0',
   `shipping` tinyint(1) NOT NULL DEFAULT '0',
   `account` tinyint(1) NOT NULL DEFAULT '1',
@@ -1131,10 +1073,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_userfield_values`
+-- Table structure for table `#__virtuemart_userfields_values`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields_values` (
   `fieldvalueid` int(11) NOT NULL AUTO_INCREMENT,
   `fieldid` int(11) NOT NULL DEFAULT '0',
   `fieldtitle` varchar(255) NOT NULL DEFAULT '',
@@ -1149,10 +1091,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_user_info`
+-- Table structure for table `#__virtuemart_userinfos`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
   `user_info_id` varchar(32) NOT NULL DEFAULT '',
   `user_id` int(11) NOT NULL DEFAULT '0',
 --  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
@@ -1191,10 +1133,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_vendor`
+-- Table structure for table `#__virtuemart_vendors`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_name` varchar(64) DEFAULT NULL,
   `vendor_phone` varchar(32) DEFAULT NULL,
@@ -1223,10 +1165,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
 
 
 --
--- Table structure for table `#__vm_vendor_media_xref`
+-- Table structure for table `#__virtuemart_vendor_medias`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_vendor_media_xref` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vendor_medias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
@@ -1257,10 +1199,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_waiting_list` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_zone_shipping`
+-- Table structure for table `#__virtuemart_shippingzones`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_zone_shipping` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingzones` (
   `zone_id` int(11) NOT NULL AUTO_INCREMENT,
   `zone_name` varchar(255) DEFAULT NULL,
   `zone_cost` decimal(10,2) DEFAULT NULL,

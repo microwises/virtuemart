@@ -55,7 +55,7 @@ class TableUserfields extends JTable {
 	/** @var int */
 	var $default		= 0;
 	/** @var boolean True if publised*/
-	var $enabled		= 1;
+	var $published		= 1;
 	/** @var boolean True to display in registration form*/
 	var $registration	= 0;
 	/** @var boolean True to display in shipping form*/
@@ -82,7 +82,7 @@ class TableUserfields extends JTable {
 	function __construct(&$db)
 	{
 		self::loadFields($db);
-		parent::__construct('#__vm_userfield', 'fieldid', $db);
+		parent::__construct('#__virtuemart_userfields', 'fieldid', $db);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class TableUserfields extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__vm_userfield`";
+		$_q = "SHOW COLUMNS FROM `#__virtuemart_userfields`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
@@ -128,7 +128,7 @@ class TableUserfields extends JTable {
 		}
 		if ($this->fieldid == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
-					. 'FROM `#__vm_userfield`'
+					. 'FROM `#__virtuemart_userfields`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
 
 			$this->_db->setQuery($_sql);

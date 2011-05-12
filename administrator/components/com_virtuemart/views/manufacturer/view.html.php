@@ -41,7 +41,7 @@ class VirtuemartViewManufacturer extends JView {
 		global $option;
 		// get necessary models
 		$model = $this->getModel();
-		$categoryModel = $this->getModel('manufacturerCategory');
+		$categoryModel = $this->getModel('manufacturercategories');
 
         $mf_category_id	= $mainframe->getUserStateFromRequest( $option.'mf_category_id', 'mf_category_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );

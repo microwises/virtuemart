@@ -66,7 +66,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$waiting_users = $db->loadObjectList();
 
 		/* Load the product details */
-		$q = "SELECT product_name FROM #__vm_product WHERE product_id = ".$product_id;
+		$q = "SELECT product_name FROM #__virtuemart_products WHERE product_id = ".$product_id;
 		$db->setQuery($q);
 		$vars['productName'] = $db->loadResult();
 

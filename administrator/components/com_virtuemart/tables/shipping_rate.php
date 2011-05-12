@@ -64,7 +64,7 @@ class TableShipping_Rate extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_shipping_rate', 'shipping_rate_id', $db);
+		parent::__construct('#__virtuemart_shippingrates', 'shipping_rate_id', $db);
 	}
 
 
@@ -84,7 +84,7 @@ class TableShipping_Rate extends JTable {
 		if (($this->shipping_rate_name) && ($this->shipping_rate_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM `#__vm_shipping_rate` ';
+			$q = 'SELECT count(*) FROM `#__virtuemart_shippingrates` ';
 			$q .= 'WHERE `shipping_rate_name`="' .  $this->shipping_rate_name . '"';
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();

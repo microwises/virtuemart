@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 			/** 
 			 * @todo Add to database layout published column
 			 */
-			$row->enabled = 1;
+			$row->published = 1;
 			$checked = JHTML::_('grid.id', $i, $row->shipping_carrier_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=edit&cid[]=' . $row->shipping_carrier_id);
 			?>

@@ -90,7 +90,7 @@ class VirtueMartModelMedia extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-		    $query = 'SELECT `file_id` FROM `#__vm_media`';
+		    $query = 'SELECT `file_id` FROM `#__virtuemart_medias`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -169,30 +169,30 @@ class VirtueMartModelMedia extends JModel {
     	$product_id = JRequest::getVar('product_id',0);
 
     	if(!empty($product_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_product_media_xref` ';
+    		$query = 'SELECT `file_ids` as file_id FROM `#__virtuemart_product_medias` ';
     		$whereItems[] = '`product_id` = "'.$product_id.'"';
-    		$oderby = '`#__vm_media`.`modified_on`';
+    		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
     	$cat_id = JRequest::getVar('category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_category_media_xref` ';
+    		$query = 'SELECT `file_ids` as file_id FROM `#__virtuemart_category_medias` ';
     		$whereItems[] = '`category_id` = "'.$cat_id.'"';
-    		$oderby = '`#__vm_media`.`modified_on`';
+    		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
     	if(empty($query)){
-    		$query='SELECT `file_id` FROM `#__vm_media` ';
+    		$query='SELECT `file_id` FROM `#__virtuemart_medias` ';
     	    if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	    	if(!Permissions::getInstance()->check('admin') ){
 				$whereItems[] = '(`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 	    	}
 
 	    	if ($onlyPublished) {
-				$whereItems[] = '`#__vm_media`.`enabled` = 1';
+				$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
-			$oderby = '`#__vm_media`.`modified_on`';
+			$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
 
@@ -322,9 +322,9 @@ class VirtueMartModelMedia extends JModel {
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 		// workarround for media published and product published two fields in one form.
 		if ($data['media_published'])
-			$data['enabled'] = $data['media_published'];
+			$data['published'] = $data['media_published'];
 		else
-			$data['enabled'] = 0;
+			$data['published'] = 0;
 
 
 		if(empty($data['file_url'])){

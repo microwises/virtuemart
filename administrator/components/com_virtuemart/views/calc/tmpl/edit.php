@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'enabled', 'class="inputbox"', $this->calc->enabled); ?>
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->calc->published); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -157,7 +157,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'calc_shopper_enabled', 'class="inputbox"', $this->calc->calc_shopper_enabled); ?>
+				<?php echo JHTML::_('select.booleanlist',  'calc_shopper_published', 'class="inputbox"', $this->calc->calc_shopper_published); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -169,7 +169,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_enabled', 'class="inputbox"', $this->calc->calc_vendor_enabled); ?>
+				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_published', 'class="inputbox"', $this->calc->calc_vendor_published); ?>
 				</fieldset>
 			</td>
 		</tr>

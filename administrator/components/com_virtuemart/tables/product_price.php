@@ -64,8 +64,8 @@ class TableProduct_price extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-        parent::__construct('#__vm_product_price', 'product_price_id', $db);
-//        parent::__construct('#__vm_product_price', 'product_id', $db);
+        parent::__construct('#__virtuemart_product_prices', 'product_price_id', $db);
+//        parent::__construct('#__virtuemart_product_prices', 'product_id', $db);
     }
 
     /**
@@ -108,10 +108,10 @@ class TableProduct_price extends JTable {
      */
     public function store() {
 //        $_qry = 'SELECT product_id '
-//                . 'FROM #__vm_product_price '
+//                . 'FROM #__virtuemart_product_prices '
 //                . 'WHERE product_price_id = ' . $this->product_price_id
         $_qry = 'SELECT product_price_id '
-                . 'FROM #__vm_product_price '
+                . 'FROM #__virtuemart_product_prices '
                 . 'WHERE product_id = ' . $this->product_id;
         $this->_db->setQuery($_qry);
         $id = $this->_db->loadResult();

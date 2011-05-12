@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('price_access_level_enabled', $this->config->get('price_access_level_enabled')); ?>
+			    <?php echo VmHTML::checkbox('price_access_level_published', $this->config->get('price_access_level_published')); ?>
 			    <?php echo JText::_('COM_VIRTUEMART_CFG_ENABLE_FEATURE'); ?>
 			    <br />
 			    <?php

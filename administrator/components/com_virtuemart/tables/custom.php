@@ -59,7 +59,7 @@ class TableCustom extends JTable {
 	var $is_cart_attribute		= 0;
 
 	/** @var int custom published or not */
-	var $enabled		= 0;
+	var $published		= 0;
 
 
 	/**
@@ -99,7 +99,7 @@ class TableCustom extends JTable {
 	function delete($id)
 	{
 		$this->_db->setQuery('DELETE X,F,C FROM `#__virtuemart_customs` AS C
-		LEFT JOIN `#__virtuemart_custom_fields` AS F ON F.`custom_id` = C.`custom_id`
+		LEFT JOIN `#__virtuemart_customfields` AS F ON F.`custom_id` = C.`custom_id`
 		LEFT JOIN  `#__vm_custom_field_xref_product` AS X ON  X.`custom_field_id` = F.`custom_field_id`
 		WHERE C.`custom_id`=' . $id);
 		if ($this->_db->query() === false) {

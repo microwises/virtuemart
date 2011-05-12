@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_user_shopper_group_xref', 'user_id', $db);
+		parent::__construct('#__virtuemart_user_shoppergroups', 'user_id', $db);
 	}
  
  	/**
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 	public function store()
 	{
 		$_qry = 'SELECT user_id '
-				. 'FROM #__vm_user_shopper_group_xref '
+				. 'FROM #__virtuemart_user_shoppergroups '
 				. 'WHERE user_id = ' . $this->user_id
 		;
 		$this->_db->setQuery($_qry);

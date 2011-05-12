@@ -45,7 +45,7 @@ class TableRatings extends JTable {
 	/** @var int No idea what this is for */
 	var $review_votes      		= null;
 	/** @var int State of the review */
-	var $enabled         		= 0;
+	var $published         		= 0;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -56,7 +56,7 @@ class TableRatings extends JTable {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__vm_product_reviews', 'review_id', $db);
+		parent::__construct('#__virtuemart_product_reviews', 'review_id', $db);
 	}
 }
 // pure php no closing tag

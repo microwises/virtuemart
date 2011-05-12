@@ -273,7 +273,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo $this->lists['enabled']; ?>
+				<?php echo $this->lists['published']; ?>
 				</fieldset>
 			</td>
 		</tr>

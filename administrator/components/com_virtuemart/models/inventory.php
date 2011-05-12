@@ -82,13 +82,13 @@ class VirtueMartModelInventory extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT `#__vm_product`.`product_id`,
-     				`#__vm_product`.`product_parent_id`,
+     	$q = "SELECT `#__virtuemart_products`.`product_id`,
+     				`#__virtuemart_products`.`product_parent_id`,
      				`product_name`,
      				`product_sku`,
      				`product_in_stock`,
      				`product_weight`,
-     				`enabled`,
+     				`published`,
      				`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
@@ -100,11 +100,11 @@ class VirtueMartModelInventory extends JModel {
     * @author RolandD
     */
     private function getInventoryListQuery() {
-    	return 'FROM `#__vm_product`
-			LEFT JOIN `#__vm_product_price`
-			ON `#__vm_product`.`product_id` = `#__vm_product_price`.`product_id`
-			LEFT JOIN `#__vm_shopper_group`
-			ON `#__vm_product_price`.`shopper_group_id` = `#__vm_shopper_group`.`shopper_group_id`';
+    	return 'FROM `#__virtuemart_products`
+			LEFT JOIN `#__virtuemart_product_prices`
+			ON `#__virtuemart_products`.`product_id` = `#__virtuemart_product_prices`.`product_id`
+			LEFT JOIN `#__virtuemart_shoppergroups`
+			ON `#__virtuemart_product_prices`.`shopper_group_id` = `#__virtuemart_shoppergroups`.`shopper_group_id`';
     }
 
     /**
@@ -120,10 +120,10 @@ class VirtueMartModelInventory extends JModel {
 
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__vm_product`.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_inventory').'%');
-     	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '`#__vm_product`.`product_in_stock` > 0';
+     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_inventory').'%');
+     	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
      	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '`#__virtuemart_categories`.`category_id` = '.JRequest::getInt('category_id');
-     	$filters[] = '(`#__vm_shopper_group`.`default` = 1 OR `#__vm_shopper_group`.`default` is NULL)';
+     	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
      	return ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
     }

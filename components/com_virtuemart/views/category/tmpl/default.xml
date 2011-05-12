@@ -7,7 +7,7 @@
 		<name>COM_VIRTUEMART_CATEGORY_LAYOUT_MENU</name>
 		<description><![CDATA[COM_VIRTUEMART_CATEGORY_LAYOUT_DESC]]></description>
                 <url>
-			<param name="category_id" type="sql" query="SELECT `a`.`category_id`, concat_ws('/',`b`.`category_name`,`a`.`category_name`) as name FROM `#__virtuemart_categories` as `a` left join `#__vm_category_xref` as `x` on `x`.`category_child_id`=`a`.`category_id` left join `#__virtuemart_categories` as `b` on `x`.`category_parent_id`=`b`.`category_id` order by concat_ws('/',`b`.`category_name`,`a`.`category_name`)" key_field="category_id" value_field="name" label="COM_VIRTUEMART_CATEGORY" description="COM_VIRTUEMART_CHOOSE_CATEGORY" />
+			<param name="category_id" type="sql" query="SELECT `a`.`category_id`, concat_ws('/',`b`.`category_name`,`a`.`category_name`) as name FROM `#__virtuemart_categories` as `a` left join `#__virtuemart_category_categories` as `x` on `x`.`category_child_id`=`a`.`category_id` left join `#__virtuemart_categories` as `b` on `x`.`category_parent_id`=`b`.`category_id` order by concat_ws('/',`b`.`category_name`,`a`.`category_name`)" key_field="category_id" value_field="name" label="COM_VIRTUEMART_CATEGORY" description="COM_VIRTUEMART_CHOOSE_CATEGORY" />
 		</url>
 	</state>
 </metadata>

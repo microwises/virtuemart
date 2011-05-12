@@ -68,7 +68,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	 */
 	 public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
 	 	if(!$jpluginId) return 0;
-	 	$q = 'SELECT `paym_id` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `vendor_id` = "'.$vendorId.'" ';
+	 	$q = 'SELECT `paym_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `vendor_id` = "'.$vendorId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	 }
@@ -111,7 +111,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	public function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `paym_id` FROM `#__vm_payment_method`';
+			$query = 'SELECT `paym_id` FROM `#__virtuemart_paymentmethods`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -147,12 +147,12 @@ class VirtueMartModelPaymentmethod extends JModel
 
   		if(!empty($this->_id)){
 			/* Add the paymentmethod shoppergroups */
-			$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$this->_id.'"';
+			$q = 'SELECT `paym_shopper_group` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `paym_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->paym_shopper_groups = $this->_db->loadResultArray();
 
 			/* Add the accepted credit cards */
-			$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$this->_id.'"';
+			$q = 'SELECT `paym_accepted_credit_card` FROM #__virtuemart_paymentmethod_creditcards WHERE `paym_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->paym_creditcards = $this->_db->loadResultArray();
 
@@ -187,11 +187,11 @@ class VirtueMartModelPaymentmethod extends JModel
 	 * @return object List of calculation rule objects
 	 */
 	public function getPayms($onlyPublished=false, $noLimit=false){
-		$query = 'SELECT * FROM `#__vm_payment_method` ';
+		$query = 'SELECT * FROM `#__virtuemart_paymentmethods` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__vm_payment_method`.`enabled` = 1';
+			$query .= 'WHERE `#__virtuemart_paymentmethods`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__vm_payment_method`.`paym_name`';
+		$query .= ' ORDER BY `#__virtuemart_paymentmethods`.`paym_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		} else {
@@ -205,29 +205,29 @@ class VirtueMartModelPaymentmethod extends JModel
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 			foreach ($this->_data as $data){
 				/* Add the paymentmethod shoppergroups */
-				$q = 'SELECT `paym_shopper_group` FROM #__vm_payment_method_shoppergroup_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+				$q = 'SELECT `paym_shopper_group` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `paym_id` = "'.$data->paym_id.'"';
 				$this->_db->setQuery($q);
 				$data->paym_shopper_groups = $this->_db->loadResultArray();
 
 				/* Add the accepted credit cards */
-				$q = 'SELECT `paym_accepted_credit_card` FROM #__vm_payment_method_acceptedcreditcards_xref WHERE `paym_id` = "'.$data->paym_id.'"';
+				$q = 'SELECT `paym_accepted_credit_card` FROM #__virtuemart_paymentmethod_creditcards WHERE `paym_id` = "'.$data->paym_id.'"';
 				$this->_db->setQuery($q);
 				$data->paym_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__vm_payment_method_shoppergroup_xref','paym_id',$data->paym_id,'shopper_group_name','#__vm_shopper_group','shopper_group_id');
+				$data->paymShoppersList = modelfunctions::buildGuiList('paym_shopper_group','#__virtuemart_paymentmethod_shoppergroups','paym_id',$data->paym_id,'shopper_group_name','#__virtuemart_shoppergroups','shopper_group_id');
 
 				/* Write the first 5 accepted creditcards in the list */
-				$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__vm_payment_method_acceptedcreditcards_xref','paym_id',$data->paym_id,'creditcard_name','#__virtuemart_creditcards','creditcard_id');
+				$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__virtuemart_paymentmethod_creditcards','paym_id',$data->paym_id,'creditcard_name','#__virtuemart_creditcards','creditcard_id');
 
 				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
 //				$this->_db->setQuery($q);
 //				$paym_jplugin_id = $this->_db->loadResult();
 //
-//				$q = 'SELECT `enabled` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
+//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
 //				$this->_db->setQuery($q);
-//				$data->enabled = $this->_db->loadResult();
+//				$data->published = $this->_db->loadResult();
 			}
 
 		}
@@ -292,8 +292,8 @@ class VirtueMartModelPaymentmethod extends JModel
 		}
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__vm_payment_method_shoppergroup_xref','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
-		modelfunctions::storeArrayData('#__vm_payment_method_acceptedcreditcards_xref','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
+		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_shoppergroups','paym_id','paym_shopper_group',$data['paym_id'],$data['shopper_group_id']);
+		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_creditcards','paym_id','paym_accepted_credit_card',$data['paym_id'],$data['creditcard_id']);
 
 //		$dbv = $table->getDBO();
 //		if(empty($this->_id)) $this->_id = $dbv->insertid();
@@ -307,7 +307,7 @@ class VirtueMartModelPaymentmethod extends JModel
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'enabled' )
+	public function published( $row, $i, $variable = 'published' )
 	{
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
@@ -382,15 +382,15 @@ class VirtueMartModelPaymentmethod extends JModel
 
 //			$quotedId = $this->_db->Quote($id);
 			$query = 'SELECT discount_is_percentage
-					  FROM #__vm_payment_method
+					  FROM #__virtuemart_paymentmethods
 					  WHERE paym_id = '. $quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
 
-			$publish = ($calc->calc_shopper_enabled > 0) ? 0 : 1;
+			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
 
-			$query = 'UPDATE #__vm_payment_method
+			$query = 'UPDATE #__virtuemart_paymentmethods
 					  SET discount_is_percentage = '.$publish.'
 					  WHERE paym_id = '.$quotedId;
 
@@ -478,7 +478,7 @@ class VirtueMartModelPaymentmethod extends JModel
 		$data = array(0);
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 
-		$query = 'SELECT `paym_accepted_credit_card` FROM `#__vm_payment_method_acceptedcreditcards_xref` ';
+		$query = 'SELECT `paym_accepted_credit_card` FROM `#__virtuemart_paymentmethod_creditcards` ';
 		$query .= 'WHERE `paym_id` = "'.$this->_id.'"';
 
 		$this->_db->setQuery($query);
@@ -498,7 +498,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	 */
 	function hasCreditCard($paym_id)
 	{
-		$query = 'SELECT COUNT(*) AS c FROM `#__vm_payment_method_acceptedcreditcards_xref` WHERE `paym_id`="'.$paym_id.'"';
+		$query = 'SELECT COUNT(*) AS c FROM `#__virtuemart_paymentmethod_creditcards` WHERE `paym_id`="'.$paym_id.'"';
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 		$this->_db->setQuery($query);
 		$_r = $this->_db->loadAssoc();

@@ -74,7 +74,7 @@ class CurrencyDisplay {
 						$vendorId = 1;		//Map to mainvendor
 					}
 					if(empty($currencyId)){
-						$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+						$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `vendor_id`="'.$vendorId.'"';
 						$db->setQuery($q);
 						$currencyId = $db->loadResult();
 					}

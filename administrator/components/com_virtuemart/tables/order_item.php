@@ -66,7 +66,7 @@ class TableOrder_item extends JTable {
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
-		parent::__construct('#__vm_order_item', 'order_item_id', $db);
+		parent::__construct('#__virtuemart_order_items', 'order_item_id', $db);
 	}
 
 	/**

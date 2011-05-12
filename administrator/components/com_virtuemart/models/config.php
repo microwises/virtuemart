@@ -145,8 +145,8 @@ class VirtueMartModelConfig extends JModel {
     function getOrderStatusList() {
 	$db = JFactory::getDBO();
 
-	$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__vm_order_status` ';
-	$query .= ' ORDER BY `#__vm_order_status`.`order_status_name`';
+	$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__virtuemart_orderstates` ';
+	$query .= ' ORDER BY `#__virtuemart_orderstates`.`order_status_name`';
 	$db->setQuery($query);
 
 	return $db->loadObjectList();
@@ -162,7 +162,7 @@ class VirtueMartModelConfig extends JModel {
     function getModuleList() {
 	$db = JFactory::getDBO();
 
-	$query = 'SELECT `module_id`, `module_name` FROM `#__vm_module` ';
+	$query = 'SELECT `module_id`, `module_name` FROM `#__virtuemart_modules` ';
 	$query .= 'ORDER BY `module_id`';
 	$db->setQuery($query);
 

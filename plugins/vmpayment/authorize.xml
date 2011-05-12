@@ -52,9 +52,9 @@
 		</param>
 		<param name="@spacer" type="spacer" />
 		<param name="PAYMENT_VERIFIED_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" />
+			type="table_data_list" table="#__virtuemart_orderstates" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" />
 		<param name="PAYMENT_INVALID_STATUS" label="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL" description="PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN"
-			type="table_data_list" table="#__vm_order_status" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" />
+			type="table_data_list" table="#__virtuemart_orderstates" valuefield="order_status_code" textfield="order_status_name" orderfield="list_order" />
 		<param name="AN_LOGIN" type="text" label="PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME" default="username" description="PHPSHOP_ADMIN_CFG_AUTORIZENET_USERNAME_EXPLAIN" />
 		<param name="transaction_key" type="secret_key" label="PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY" description="PHPSHOP_ADMIN_CFG_AUTORIZENET_KEY_EXPLAIN" />
 	</params>

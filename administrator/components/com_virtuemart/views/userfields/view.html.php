@@ -61,7 +61,7 @@ class VirtuemartViewUserfields extends JView {
 			} else { // Update existing userfield
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, name AS text'
-					. ' FROM #__vm_userfield'
+					. ' FROM #__virtuemart_userfields'
 					. ' ORDER BY ordering';
 				$ordering = JHTML::_('list.specificordering',  $userField, $userField->fieldid, $qry);
 				$this->assignRef('ordering', $ordering);

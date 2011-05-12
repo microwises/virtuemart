@@ -64,11 +64,11 @@ class VirtuemartViewCalc extends JView {
 				
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
-				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "'.$vendorId.'"';
+				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `vendor_id` = "'.$vendorId.'"';
 				$db->setQuery($q);
 				$currency= $db->loadResult();
 				if(empty($currency)){
-					$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "1" ';
+					$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `vendor_id` = "1" ';
 					$db->setQuery($q);
 					$currency= $db->loadResult();
 					$calc->calc_currency = $currency;

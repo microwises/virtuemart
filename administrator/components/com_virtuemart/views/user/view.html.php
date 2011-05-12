@@ -320,7 +320,7 @@ class VirtuemartViewUser extends JView {
 	{
 
 		$img 	= $field ? $imgY : $imgX;
-		if ($toggle == 'enabled') { // Stay compatible with grid.published
+		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
 			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');

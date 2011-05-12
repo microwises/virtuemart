@@ -164,8 +164,8 @@ class VirtueMartModelVendor extends JModel {
 	*/
 	public function getVendors() {
 
-		$query = 'SELECT * FROM `#__vm_vendor` ';
-		$query .= 'ORDER BY `#__vm_vendor`.`vendor_id`';
+		$query = 'SELECT * FROM `#__virtuemart_vendors` ';
+		$query .= 'ORDER BY `#__virtuemart_vendors`.`vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
@@ -182,7 +182,7 @@ class VirtueMartModelVendor extends JModel {
 		$db = JFactory::getDBO();
 		if (empty($vendorId)) return;
 		else {
-			$query = 'SELECT `user_id` FROM `#__vm_users` WHERE `vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
+			$query = 'SELECT `user_id` FROM `#__virtuemart_users` WHERE `vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);
@@ -254,7 +254,7 @@ class VirtueMartModelVendor extends JModel {
 
 		$q = 'SELECT *  '
 			. 'FROM `#__virtuemart_currencies` AS c'
-			. ',    `#__vm_vendor` AS v '
+			. ',    `#__virtuemart_vendors` AS v '
 			. 'WHERE v.vendor_id = '.$_vendorId . ' '
 			. 'AND   v.vendor_currency = c.currency_id';
 		$db->setQuery($q);
@@ -277,7 +277,7 @@ class VirtueMartModelVendor extends JModel {
 
 	function getUserIdByOrderId( &$order_id){
 		if(empty ($order_id))return;
-		$q  = "SELECT `user_id` FROM `#__vm_orders` WHERE `order_id`='$order_id'";
+		$q  = "SELECT `user_id` FROM `#__virtuemart_orders` WHERE `order_id`='$order_id'";
 //		$db->query( $q );
 		$this->_db->setQuery($q);
 
@@ -355,22 +355,22 @@ class VirtueMartModelVendor extends JModel {
 		$db = JFactory::getDBO();
 		switch ($type) {
 			case 'order':
-				$q = 'SELECT vendor_id FROM #__vm_order_item WHERE order_id='.$value;
+				$q = 'SELECT vendor_id FROM #__virtuemart_order_items WHERE order_id='.$value;
 				break;
 			case 'user':
 				if ($ownerOnly) {
 					$q = 'SELECT `vendor_id`
-						FROM `#__vm_users` `au`
-						LEFT JOIN `#__vm_user_info` `u`
+						FROM `#__virtuemart_users` `au`
+						LEFT JOIN `#__virtuemart_userinfos` `u`
 						ON (au.user_id = u.user_id)
 						WHERE `u`.`user_id`=' .$value;
 				}
 				else {
-					$q  = 'SELECT `vendor_id` FROM `#__vm_users` WHERE `user_id`= "' .$value.'" ';
+					$q  = 'SELECT `vendor_id` FROM `#__virtuemart_users` WHERE `user_id`= "' .$value.'" ';
 				}
 				break;
 			case 'product':
-				$q = 'SELECT vendor_id FROM #__vm_product WHERE product_id='.$value;
+				$q = 'SELECT vendor_id FROM #__virtuemart_products WHERE product_id='.$value;
 				break;
 		}
 		$db->setQuery($q);
@@ -394,7 +394,7 @@ class VirtueMartModelVendor extends JModel {
 	 * @author Max Milbers
 	 */
 	public function getVendorName($vendor_id=1){
-		$query = 'SELECT `vendor_store_name` FROM `#__vm_vendor` WHERE `vendor_id` = "'.$vendor_id.'" ';
+		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors` WHERE `vendor_id` = "'.$vendor_id.'" ';
 		$this->_db->setQuery($query);
 		if($this->_db->query()) return $this->_db->loadResult(); else return '';
 	}
@@ -439,15 +439,15 @@ class VirtueMartModelVendor extends JModel {
 			$q = "SELECT vendor_store_name AS storename, address_1, address_2, email, fax,
 				s.state_2_code AS state, s.state_name AS statename, city, zip,
 				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
-				FROM #__vm_vendor v
-				LEFT JOIN #__vm_user_shopper_group_xref x
+				FROM #__virtuemart_vendors v
+				LEFT JOIN #__virtuemart_user_shoppergroups x
 				ON x.vendor_id = v.vendor_id
-				LEFT JOIN #__vm_user_info u
+				LEFT JOIN #__virtuemart_userinfos u
 				ON u.user_id = x.user_id
 				LEFT JOIN #__users j
 				ON j.id = u.user_id
 				LEFT JOIN #__virtuemart_countries c ON c.country_id = u.country_id
-				LEFT JOIN #__vm_state s ON s.state_id = u.state_id
+				LEFT JOIN #__virtuemart_states s ON s.state_id = u.state_id
 				WHERE v.vendor_id = ".$vendor_id."
 				AND address_type = 'BT'";
 			$this->_db->setQuery($q);
@@ -574,11 +574,11 @@ class VirtueMartModelVendor extends JModel {
 //				}
 //			}
 //
-//		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
+//		$q = 'SELECT '.$fieldstring.' FROM (#__virtuemart_vendors v, #__virtuemart_userinfos u) ';
 //		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
 //		if($countrytable) {
 //			$q .= 'LEFT JOIN #__virtuemart_countries c ON (u.country=c.country_id)
-//				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
+//				LEFT JOIN #__virtuemart_states s ON (s.country_id=c.country_id) ';
 //		}
 //		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
 //

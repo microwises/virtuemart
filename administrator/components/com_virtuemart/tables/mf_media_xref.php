@@ -36,7 +36,7 @@ class TableMf_media_xref extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__vm_manufacturer_media_xref', 'id', $db);
+		parent::__construct('#__virtuemart_manufacturer_medias', 'id', $db);
 	}
 
 }

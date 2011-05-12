@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_users', 'user_id', $db);
+		parent::__construct('#__virtuemart_users', 'user_id', $db);
 	}
  
  	/**
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 	public function store()
 	{
 		$_qry = 'SELECT user_id '
-				. 'FROM #__vm_users '
+				. 'FROM #__virtuemart_users '
 				. 'WHERE user_id = ' . $this->user_id
 		;
 		$this->_db->setQuery($_qry);

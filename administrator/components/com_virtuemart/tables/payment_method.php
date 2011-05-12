@@ -62,7 +62,7 @@ class TablePayment_method extends JTable
 	/** @var for all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int Published or unpublished */
-	var $enabled 		        = 0;
+	var $published 		        = 0;
    	/** @var string ordering */
 	var $ordering       	= '';
         /** @var boolean */
@@ -75,7 +75,7 @@ class TablePayment_method extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_payment_method', 'paym_id', $db);
+		parent::__construct('#__virtuemart_paymentmethods', 'paym_id', $db);
 	}
 
 
@@ -100,7 +100,7 @@ class TablePayment_method extends JTable
 		if (($this->paym_name)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT paym_id FROM `#__vm_payment_method` ';
+			$q = 'SELECT paym_id FROM `#__virtuemart_paymentmethods` ';
 			$q .= 'WHERE `paym_name`="' .  $this->paym_name . '"';
             $db->setQuery($q);
 		    $paym_id = $db->loadResult();

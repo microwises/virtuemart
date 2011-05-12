@@ -7,7 +7,7 @@
 		<name>COM_VIRTUEMART_MANUFACTURER_LAYOUT_MENU</name>
 		<description><![CDATA[COM_VIRTUEMART_MANUFACTURER_LAYOUT_DESC]]></description>
                 <url>
-			<param name="manufacturer_id" type="sql" query="SELECT manufacturer_id, mf_name  FROM #__vm_manufacturer" key_field="manufacturer_id" value_field="mf_name" label="Manufacturer" description="Choose a Manufacturer..." />
+			<param name="manufacturer_id" type="sql" query="SELECT manufacturer_id, mf_name  FROM #__virtuemart_manufacturers" key_field="manufacturer_id" value_field="mf_name" label="Manufacturer" description="Choose a Manufacturer..." />
 		</url>
 	</state>
 </metadata>

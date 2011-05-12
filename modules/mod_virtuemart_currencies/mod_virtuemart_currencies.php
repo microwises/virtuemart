@@ -36,7 +36,7 @@ $text_before = $params->get( 'text_before', '');
 
 /* table vm_vendor */
 $db = JFactory::getDBO();
-$q  = 'SELECT `vendor_accepted_currencies` FROM `#__vm_vendor` WHERE `vendor_id`='.$vendorId;
+$q  = 'SELECT `vendor_accepted_currencies` FROM `#__virtuemart_vendors` WHERE `vendor_id`='.$vendorId;
 $db->setQuery($q);
 $currency_codes    = $db->loadResult();
 

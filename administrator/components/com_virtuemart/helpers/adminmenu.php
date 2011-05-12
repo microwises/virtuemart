@@ -167,16 +167,16 @@ class AdminMenuHelper {
 	$db		= JFactory::getDBO();
 	$menuArr = array();
 
-	$filter[] = "jmmod.enabled='1'";
-	$filter[] = "item.enabled='1'";
+	$filter[] = "jmmod.published='1'";
+	$filter[] = "item.published='1'";
 	$filter[] = "jmmod.is_admin='1'";
 	if( !empty($moduleId)) {
 	    $filter[] = 'vmmod.module_id='.(int)$moduleId;
 	}
 
 	$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
-	$query .= 'FROM `#__vm_module` jmmod ';
-	$query .= 'LEFT JOIN `#__vm_menu_admin` item ON `jmmod`.`module_id`=`item`.`module_id` ';
+	$query .= 'FROM `#__virtuemart_modules` jmmod ';
+	$query .= 'LEFT JOIN `#__virtuemart_adminmenuentries` item ON `jmmod`.`module_id`=`item`.`module_id` ';
 	$query .= 'WHERE  ' . implode(' AND ', $filter ) . ' ';
 	$query .= 'ORDER BY `jmmod`.`list_order`, `item`.`ordering`';
 	$db->setQuery($query);

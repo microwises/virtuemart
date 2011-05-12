@@ -42,7 +42,7 @@ class Tablecalc_shoppergroup_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__vm_calc_shoppergroup_xref', 'id', $db);
+		parent::__construct('#__virtuemart_calc_shoppergroups', 'id', $db);
 	}
 
 

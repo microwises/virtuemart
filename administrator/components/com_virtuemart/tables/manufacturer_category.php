@@ -35,7 +35,7 @@ class TableManufacturer_Category extends JTable {
 	/** @var string manufacturer category description */
 	var $mf_category_desc = '';
 	/** @var int Published or unpublished */
-	var $enabled = 1;
+	var $published = 1;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -46,7 +46,7 @@ class TableManufacturer_Category extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_manufacturer_category', 'mf_category_id', $db);
+		parent::__construct('#__virtuemart_manufacturer_categories', 'mf_category_id', $db);
 	}
 
 
@@ -65,7 +65,7 @@ class TableManufacturer_Category extends JTable {
 		if (($this->mf_category_name) && ($this->mf_category_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT count(*) FROM #__vm_manufacturer_category ';
+			$q = 'SELECT count(*) FROM #__virtuemart_manufacturer_categories ';
 			$q .= 'WHERE mf_category_name="' .  $this->mf_category_name . '"';
             $db->setQuery($q);
 		    $rowCount = $db->loadResult();
@@ -88,7 +88,7 @@ class TableManufacturer_Category extends JTable {
 			$db = JFactory::getDBO();
 
 			$q = 'SELECT count(*)'
-				.' FROM #__vm_manufacturer'
+				.' FROM #__virtuemart_manufacturers'
 				.' WHERE mf_category_id = '.$categoryId;
 			$db->setQuery($q);
 			$mCount = $db->loadResult();

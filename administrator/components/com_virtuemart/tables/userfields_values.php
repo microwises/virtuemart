@@ -49,7 +49,7 @@ class TableUserfields_values extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_userfield_values', 'fieldvalueid', $db);
+		parent::__construct('#__virtuemart_userfields_values', 'fieldvalueid', $db);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class TableUserfields_values extends JTable {
 		}
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT `fieldvalueid` FROM `#__vm_userfield_values` '
+		$q = 'SELECT `fieldvalueid` FROM `#__virtuemart_userfields_values` '
 			. 'WHERE `fieldtitle`="' . $this->fieldtitle . '" '
 			. 'AND   `fieldid`=' . $this->fieldid;
 		$db->setQuery($q);
@@ -87,7 +87,7 @@ class TableUserfields_values extends JTable {
 	function delete($fieldid)
 	{
 		$db =& JFactory::getDBO();
-		$db->setQuery('DELETE from `#__vm_userfield_values` WHERE `fieldid` = ' . $fieldid);
+		$db->setQuery('DELETE from `#__virtuemart_userfields_values` WHERE `fieldid` = ' . $fieldid);
 		if ($db->query() === false) {
 			$this->setError($db->getError());
 			return false;

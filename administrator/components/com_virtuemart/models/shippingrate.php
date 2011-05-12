@@ -104,7 +104,7 @@ class VirtueMartModelShippingRate extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `shipping_rate_id` FROM `#__vm_shipping_rate`';
+			$query = 'SELECT `shipping_rate_id` FROM `#__virtuemart_shippingrates`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -152,8 +152,8 @@ class VirtueMartModelShippingRate extends JModel {
 	public function getShippingRatePrices ($_id, $_checkFree = false)
 	{
 		$_q = 'SELECT * '
-			. 'FROM  `#__vm_shipping_rate` AS r '
-			. ',     `#__vm_shipping_carrier` AS c '
+			. 'FROM  `#__virtuemart_shippingrates` AS r '
+			. ',     `#__virtuemart_shippingcarriers` AS c '
 			. 'WHERE `shipping_rate_id` = ' . $_id . ' '
 			. 'AND   r.shipping_rate_carrier_id = c.shipping_carrier_id '
 		;
@@ -276,8 +276,8 @@ class VirtueMartModelShippingRate extends JModel {
 	 */
 	function getShippingRates()
 	{
-		$query = 'SELECT sr.*, sc.shipping_carrier_name FROM `#__vm_shipping_rate` AS sr ';
-		$query .= 'JOIN `#__vm_shipping_carrier` AS sc ON `sc`.`shipping_carrier_id` = `sr`.`shipping_rate_carrier_id`';
+		$query = 'SELECT sr.*, sc.shipping_carrier_name FROM `#__virtuemart_shippingrates` AS sr ';
+		$query .= 'JOIN `#__virtuemart_shippingcarriers` AS sc ON `sc`.`shipping_carrier_id` = `sr`.`shipping_rate_carrier_id`';
 		$query .= 'ORDER BY `sr`.`shipping_rate_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;

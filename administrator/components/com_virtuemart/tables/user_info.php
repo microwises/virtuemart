@@ -77,7 +77,7 @@ class TableUser_info extends JTable {
 	function __construct($db) {
 		/* Make sure the custom fields are added */
 		self::addUserFields();
-		parent::__construct('#__vm_user_info', 'user_info_id', $db);
+		parent::__construct('#__virtuemart_userinfos', 'user_info_id', $db);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class TableUser_info extends JTable {
 		$db = JFactory::getDBO();
 		/* Collect the table names for the product types */
 		$customfields = array();
-		$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__vm_user_info');
+		$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__virtuemart_userinfos');
 		$db->setQuery($q);
 		$fields = $db->loadObjectList();
 		if (count($fields) > 0) {
@@ -111,7 +111,7 @@ class TableUser_info extends JTable {
 	 */
 	function _modifyColumn ($_act, $_col, $_type = '')
 	{
-		$_sql = "ALTER TABLE `#__vm_user_info` ";
+		$_sql = "ALTER TABLE `#__virtuemart_userinfos` ";
 
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		switch ($_check_act) {
@@ -177,7 +177,7 @@ class TableUser_info extends JTable {
 
 		/* Check if a record exists */
 		$q = "SELECT user_info_id
-			FROM #__vm_user_info
+			FROM #__virtuemart_userinfos
 			WHERE user_id = ".$this->user_id."
 			AND address_type = ".$this->_db->Quote($this->address_type)."
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
@@ -209,7 +209,7 @@ class TableUser_info extends JTable {
 			return (parent::delete($id));
 		}
 		// Implicit else
-		$this->_db->setQuery('DELETE from `#__vm_user_info` WHERE `user_id` = ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_userinfos` WHERE `user_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

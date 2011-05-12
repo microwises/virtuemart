@@ -71,7 +71,7 @@ class TableVendor extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-		parent::__construct('#__vm_vendor', 'vendor_id', $db);
+		parent::__construct('#__virtuemart_vendors', 'vendor_id', $db);
     }
 
 
@@ -85,7 +85,7 @@ class TableVendor extends JTable {
 		if (($this->vendor_name) && ($this->vendor_id == 0)) {
 		    $db = JFactory::getDBO();
 
-		    $q = 'SELECT count(*) FROM `#__vm_vendor` ';
+		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
 		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
 		    $db->setQuery($q);
 		    $rowCount = $db->loadResult();
@@ -116,7 +116,7 @@ class TableVendor extends JTable {
 	public function store()
 	{
 		$_qry = 'SELECT vendor_id '
-				. 'FROM #__vm_vendor '
+				. 'FROM #__virtuemart_vendors '
 				. 'WHERE vendor_id = ' . $this->vendor_id
 		;
 		$this->_db->setQuery($_qry);

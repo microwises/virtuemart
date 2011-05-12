@@ -39,7 +39,7 @@ class TableShipping_Carrier extends JTable {
 	/** @var int Vendor ID */
 	var $shipping_carrier_vendor_id		= 0;
 	/** @var int Published boolean */
-	var $enabled						= 1;
+	var $published						= 1;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -49,7 +49,7 @@ class TableShipping_Carrier extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-	parent::__construct('#__vm_shipping_carrier', 'shipping_carrier_id', $db);
+	parent::__construct('#__virtuemart_shippingcarriers', 'shipping_carrier_id', $db);
     }
 
 
@@ -68,7 +68,7 @@ class TableShipping_Carrier extends JTable {
 	if (($this->shipping_carrier_name) && ($this->shipping_carrier_id == 0)) {
 	    $db =& JFactory::getDBO();
 
-	    $q = 'SELECT count(*) FROM `#__vm_shipping_carrier` ';
+	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';
 	    $q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';
 	    $db->setQuery($q);
 	    $rowCount = $db->loadResult();

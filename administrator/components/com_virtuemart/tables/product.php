@@ -42,7 +42,7 @@ class TableProduct extends JTable {
 	var $product_desc			= null;
 
 	/** @var int File published or not */
-	var $enabled		= null;
+	var $published		= null;
 	/** @var int File is an image or other */
 	var $product_weight			= null;
 	/** @var int File image height */
@@ -113,7 +113,7 @@ class TableProduct extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct($db) {
-		parent::__construct('#__vm_product', 'product_id', $db);
+		parent::__construct('#__virtuemart_products', 'product_id', $db);
 	}
 
     /**

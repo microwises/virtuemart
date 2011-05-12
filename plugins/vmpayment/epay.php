@@ -151,7 +151,7 @@ function printCard(cardId) {
 		//$db = & new ps_DB( ) ;
 		$db = JFactory::getDBO();
 		$currency_code = "208" ;
-		$q = "SELECT order_currency FROM #__vm_orders where order_id = " . $order_id ;
+		$q = "SELECT order_currency FROM #__virtuemart_orders where order_id = " . $order_id ;
 		$db->query( $q ) ;
 		if( $db->next_record() ) {
 			$currency_code = plgPaymentEpay::get_iso_code( $db->f( "order_currency" ) ) ;

@@ -62,7 +62,7 @@ class Permissions extends JObject{
 		if (empty($this->_user_groups)) {
 			$this->_db = JFactory::getDBO();
 			$q = ('SELECT `group_id`,`group_name`,`group_level`
-					FROM `#__vm_perm_groups`
+					FROM `#__virtuemart_permgroups`
 					ORDER BY `group_level` ');
 			$this->_db->setQuery($q);
 			$this->_user_groups = $this->_db->loadObjectList('group_name');
@@ -97,16 +97,16 @@ class Permissions extends JObject{
 		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 			&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
 			$q  = "SELECT COUNT(user_id) AS num_rows
-				FROM `#__vm_user_info`, `#__users`
+				FROM `#__virtuemart_userinfos`, `#__users`
 				WHERE `id`=`user_id`
-				AND #__vm_user_info.user_id='" . $user_id . "'
-				AND #__vm_user_info.address_type='BT'";
+				AND #__virtuemart_userinfos.user_id='" . $user_id . "'
+				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		else {
 			$q  = "SELECT COUNT(user_id) AS num_rows
-				FROM `#__vm_user_info`
-				WHERE #__vm_user_info.user_id='" . $user_id . "'
-				AND #__vm_user_info.address_type='BT'";
+				FROM `#__virtuemart_userinfos`
+				WHERE #__virtuemart_userinfos.user_id='" . $user_id . "'
+				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
@@ -156,7 +156,7 @@ class Permissions extends JObject{
 
 			if (self::isRegisteredCustomer($this->_user_id)) {
 				$q = 'SELECT `perms`
-					FROM #__vm_users
+					FROM #__virtuemart_users
 					WHERE user_id="'.$this->_user_id.'"';
 				$this->_db->setQuery($q);
 				$this->_perms = $this->_db->loadResult();

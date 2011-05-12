@@ -126,8 +126,8 @@ class VirtueMartModelCustom extends JModel {
      */
     function getProductCustoms($product_id){
 
-		$query='SELECT * FROM `#__virtuemart_custom_fields`
-		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__virtuemart_custom_fields`.`custom_field_id`
+		$query='SELECT * FROM `#__virtuemart_customfields`
+		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
 		and `product_id`='.$product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
@@ -310,7 +310,7 @@ class VirtueMartModelCustom extends JModel {
 		$newIds = array();
 
 		foreach ($fields as $field) {
-			$q = 'REPLACE INTO `#__virtuemart_custom_fields` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
+			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
 			$q .= " VALUES( '".$field['custom_field_id']."', '".$field['custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
@@ -334,7 +334,7 @@ class VirtueMartModelCustom extends JModel {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		$this->_db->setQuery('DELETE from `#__virtuemart_custom_fields` WHERE `custom_field_id` in  ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `custom_field_id` in  ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

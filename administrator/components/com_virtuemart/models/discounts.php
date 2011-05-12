@@ -92,7 +92,7 @@ class VirtueMartModelDiscounts extends JModel {
     * @author RolandD
     */
     private function getDiscountsListQuery() {
-    	return 'FROM `#__vm_product_discount`';
+    	return 'FROM `#__virtuemart_products_discount`';
     }
 
     /**
@@ -108,7 +108,7 @@ class VirtueMartModelDiscounts extends JModel {
 
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_discounts', false)) $filters[] = '#__vm_product_discount.`amount` LIKE '.$db->Quote('%'.JRequest::getVar('filter_discounts').'%');
+     	if (JRequest::getVar('filter_discounts', false)) $filters[] = '#__virtuemart_products_discount.`amount` LIKE '.$db->Quote('%'.JRequest::getVar('filter_discounts').'%');
 
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
      	else $filter = '';

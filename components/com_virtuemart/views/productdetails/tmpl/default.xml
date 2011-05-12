@@ -7,7 +7,7 @@
 		<name>COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU</name>
 		<description><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]></description>
 		<url>
-			<param name="product_id" type="sql" query="SELECT product_id, product_name FROM #__vm_product" key_field="product_id" value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
+			<param name="product_id" type="sql" query="SELECT product_id, product_name FROM #__virtuemart_products" key_field="product_id" value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
 		</url>
 	</state>
 </metadata>

@@ -42,7 +42,7 @@ class TableManufacturer extends JTable {
 	var $mf_url = '';
 
 	/** @var int Published or unpublished */
-	var $enabled = 1;
+	var $published = 1;
               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -53,7 +53,7 @@ class TableManufacturer extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_manufacturer', 'manufacturer_id', $db);
+		parent::__construct('#__virtuemart_manufacturers', 'manufacturer_id', $db);
 	}
 
 
@@ -72,7 +72,7 @@ class TableManufacturer extends JTable {
 		if (($this->mf_name) && ($this->manufacturer_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT `manufacturer_id` FROM `#__vm_manufacturer` ';
+			$q = 'SELECT `manufacturer_id` FROM `#__virtuemart_manufacturers` ';
 			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
             $db->setQuery($q);
 		    $manufacturer_id = $db->loadResult();

@@ -28,13 +28,13 @@
              default="username@email.com" description="PLG_VMPAYMENT_PAYPAL_EMAIL_EXPLAIN" /><br/>
 			 
 		<param name="status_success" type="sql" default="C" label="PLG_VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="PLG_VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" 
-			query="SELECT order_status_code AS value, order_status_name AS status_success FROM #__vm_order_status" /><br/>
+			query="SELECT order_status_code AS value, order_status_name AS status_success FROM #__virtuemart_orderstates" /><br/>
 			
 		<param name="status_pending" type="sql" default="P" label="PLG_VMPAYMENT_PAYPAL_STATUS_PENDING" description="PLG_VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" 
-			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__vm_order_status" /><br/>
+			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__virtuemart_orderstates" /><br/>
 
 		<param name="status_pending" type="sql" default="X" label="PLG_VMPAYMENT_PAYPAL_STATUS_FAILED" description="PLG_VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" 
-			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__vm_order_status" />
+			query="SELECT order_status_code AS value, order_status_name AS status_pending FROM #__virtuemart_orderstates" />
 
 		<param name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="PLG_VMPAYMENT_PAYPAL_ONLYVERIFIED" description="PLG_VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
 			<option value="0">NO</option>

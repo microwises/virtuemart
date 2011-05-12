@@ -67,27 +67,27 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__vm_users` (`user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_users FAILED' );
 	    }
 
-		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
+		$q = 'SELECT `shopper_group_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `vendor_id`="1" ';
 		$this->_db->setQuery($q);
 		$default_shopper_group_id=$this->_db->loadResult();
 
-		$query = 'INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
 	    }
 
-	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `created_on`, `modified_on`) ";
+	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`user_info_id`, `user_id`, `address_type`, `created_on`, `modified_on`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
 	    }
 	}
 	$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
@@ -124,16 +124,16 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$db = JFactory::getDBO();
 
-		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
 
-		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
 
 		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+		    $db->setQuery('INSERT `#__virtuemart_users` (`user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
 				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
 		    }
@@ -143,10 +143,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 		else {
 		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
@@ -174,7 +174,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 //					    WHEN 'demo' THEN 3
 //					    ELSE 2
 //					END
-//				FROM #__vm_user_info
+//				FROM #__virtuemart_userinfos
 //				WHERE address_type='BT' ");
 //	$db->query();
 //

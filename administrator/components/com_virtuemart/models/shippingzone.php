@@ -92,7 +92,7 @@ class VirtueMartModelShippingZone extends JModel {
 
 		if (empty($this->_data)) {
 			$query = 'SELECT * ';
-			$query .= 'FROM `#__vm_zone_shipping` ';
+			$query .= 'FROM `#__virtuemart_shippingzones` ';
 			$query .= 'WHERE `zone_id` = ' . (int)$this->_id;
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
@@ -118,7 +118,7 @@ class VirtueMartModelShippingZone extends JModel {
     	$db =& JFactory::getDBO();
 
     	$query = 'SELECT `zone_id`, `zone_name` ';
-		$query .= 'FROM `#__vm_zone_shipping`';
+		$query .= 'FROM `#__virtuemart_shippingzones`';
 		$db->setQuery($query);
 
 		return $db->loadObjectList();

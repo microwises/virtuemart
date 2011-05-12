@@ -94,7 +94,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	function _getTotal()
 	{
 		if (empty($this->_total)) {
-			$query = 'SELECT `order_status_id` FROM `#__vm_order_status`';
+			$query = 'SELECT `order_status_id` FROM `#__virtuemart_orderstates`';
 			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -197,7 +197,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function getOrderStatusList()
 	{
-		$query = 'SELECT * FROM `#__vm_order_status` ';
+		$query = 'SELECT * FROM `#__virtuemart_orderstates` ';
 		$query .= $this->_getOrdering();
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
