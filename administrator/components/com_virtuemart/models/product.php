@@ -178,7 +178,7 @@ class VirtueMartModelProduct extends JModel {
 
 
    			$product = $this->getTable('product');
-   			$product->load($virtuemart_product_id);
+   			$product->load($virtuemart_product_id);dump($product,'product');
    			if($onlyPublished){
    				if(empty($product->published)){
    					return $this->fillVoidProduct($product,$front);
@@ -198,7 +198,7 @@ class VirtueMartModelProduct extends JModel {
 				$product = (object) array_merge((array) $ppTable, (array) $product);
 //   		}
 
-   			$q = 'SELECT `manufacturer_id` FROM `#__virtuemart_product_manufacturers` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
+   			$q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_product_manufacturers` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
    			$this->_db->setQuery($q);
    			$mf_id = $this->_db->loadResult();
 
@@ -313,7 +313,7 @@ class VirtueMartModelProduct extends JModel {
 	 	 $product->load();
 
 	 	 /* Add optional fields */
-	 	 $product->manufacturer_id = null;
+	 	 $product->virtuemart_manufacturer_id = null;
 	 	 $product->product_price_id = null;
 	 	 $product->product_price = null;
 	 	 $product->product_currency = null;
@@ -478,10 +478,10 @@ class VirtueMartModelProduct extends JModel {
 			$filter_order = VmConfig::get('browse_orderby_field');
 		}
 
-		$manufacturer_id = JRequest::getInt('manufacturer_id', false );
-		if ($manufacturer_id) {
+		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
+		if ($virtuemart_manufacturer_id) {
 			$joinMf = true ;
-			$where[] = ' `#__virtuemart_product_manufacturers`.`manufacturer_id` = '.$manufacturer_id;
+			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
 		}
 
 		/* search Order fields set */
@@ -521,7 +521,7 @@ class VirtueMartModelProduct extends JModel {
 		}
 		if ($joinMf == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_manufacturers` ON `#__virtuemart_manufacturers`.`manufacturer_id` = `#__virtuemart_product_manufacturers`.`manufacturer_id` ';
+			 LEFT JOIN `#__virtuemart_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 		if ($joinPrice == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_prices` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id` ';
@@ -691,7 +691,7 @@ class VirtueMartModelProduct extends JModel {
 			LEFT OUTER JOIN #__virtuemart_product_manufacturers
 			ON #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_manufacturers.virtuemart_product_id
 			LEFT OUTER JOIN #__virtuemart_manufacturers
-			ON #__virtuemart_product_manufacturers.manufacturer_id = #__virtuemart_manufacturers.manufacturer_id ' .
+			ON #__virtuemart_product_manufacturers.virtuemart_manufacturer_id = #__virtuemart_manufacturers.virtuemart_manufacturer_id ' .
 			//LEFT OUTER JOIN #__virtuemart_products_attribute
 			// ON #__virtuemart_products.virtuemart_product_id = #__virtuemart_products_attribute.virtuemart_product_id
 			'LEFT OUTER JOIN #__virtuemart_product_categories
@@ -1043,9 +1043,9 @@ class VirtueMartModelProduct extends JModel {
 
 
 		/* Update manufacturer link */
-		if(!empty($data['manufacturer_id'])){
+		if(!empty($data['virtuemart_manufacturer_id'])){
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_product_manufacturers','virtuemart_product_id','manufacturer_id',$product_data->virtuemart_product_id,$data['manufacturer_id']);
+			modelfunctions::storeArrayData('#__virtuemart_product_manufacturers','virtuemart_product_id','virtuemart_manufacturer_id',$product_data->virtuemart_product_id,$data['virtuemart_manufacturer_id']);
 		}
 
 		/* Update waiting list  */
@@ -1367,14 +1367,14 @@ class VirtueMartModelProduct extends JModel {
 		if (!$virtuemart_product_id) $virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
 
 		//This is one of the dead sins of OOP and MUST NOT be done
-//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
+//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`product_list`, `m`.`virtuemart_manufacturer_id`, `m`.`mf_name`
 //			FROM `#__virtuemart_products` `p`
 //			LEFT JOIN `#__virtuemart_product_categories` x
 //			ON `x`.`virtuemart_product_id` = `p`.`virtuemart_product_id`
 //			LEFT JOIN `#__virtuemart_product_manufacturers` `mx`
 //			ON `mx`.`virtuemart_product_id` = `p`.`virtuemart_product_id`
 //			LEFT JOIN `#__virtuemart_manufacturers` `m`
-//			ON `m`.`manufacturer_id` = `mx`.`manufacturer_id`
+//			ON `m`.`virtuemart_manufacturer_id` = `mx`.`virtuemart_manufacturer_id`
 //			WHERE `p`.`virtuemart_product_id` = ".$virtuemart_product_id;
 //		$this->_db->setQuery($q);
 //		$product = $this->_db->loadObject();
@@ -1473,11 +1473,11 @@ class VirtueMartModelProduct extends JModel {
 
 	/* manufacturer link list*/
 	$manufacturerTxt ='';
-	$manufacturer_id = JRequest::getVar('manufacturer_id',0);
-	if ($manufacturer_id != '' ) $manufacturerTxt ='&manufacturer_id='.$manufacturer_id;
+	$virtuemart_manufacturer_id = JRequest::getVar('virtuemart_manufacturer_id',0);
+	if ($virtuemart_manufacturer_id != '' ) $manufacturerTxt ='&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
 	if ($mf_virtuemart_product_ids) {
-		$query = 'SELECT DISTINCT `#__virtuemart_manufacturers`.`mf_name`,`#__virtuemart_manufacturers`.`manufacturer_id` FROM `#__virtuemart_manufacturers`';
-		$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_manufacturers`.`manufacturer_id` = `#__virtuemart_product_manufacturers`.`manufacturer_id` ';
+		$query = 'SELECT DISTINCT `#__virtuemart_manufacturers`.`mf_name`,`#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers`';
+		$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		$query .= ' WHERE `#__virtuemart_product_manufacturers`.`virtuemart_product_id` in ('.implode (',', $mf_virtuemart_product_ids ).') ';
 		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
 		$db->setQuery($query);
@@ -1486,16 +1486,16 @@ class VirtueMartModelProduct extends JModel {
 		$manufacturerLink='';
 		if (count($manufacturers)>0) {
 			$manufacturerLink ='<div class="orderlist">';
-			if ($manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
+			if ($virtuemart_manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
 			if (count($manufacturers)>1) {
 				foreach ($manufacturers as $mf) {
-					$link = JRoute::_('index.php?option=com_virtuemart&view=category&manufacturer_id='.$mf->manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
-					if ($mf->manufacturer_id != $manufacturer_id) {
+					$link = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id='.$mf->virtuemart_manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
+					if ($mf->virtuemart_manufacturer_id != $virtuemart_manufacturer_id) {
 						$manufacturerLink .='<div><a title="'.$mf->mf_name.'" href="'.$link.'">'.$mf->mf_name.'</a></div>';
 					}
 					else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
 				}
-			} elseif ($manufacturer_id > 0) $currentManufacturerLink =JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
+			} elseif ($virtuemart_manufacturer_id > 0) $currentManufacturerLink =JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'<div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
 			else $currentManufacturerLink ='<div >'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div> '.$manufacturers[0]->mf_name.'</div>';
 			$manufacturerLink .='</div>';
 		}

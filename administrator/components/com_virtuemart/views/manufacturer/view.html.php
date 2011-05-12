@@ -52,7 +52,7 @@ class VirtuemartViewManufacturer extends JView {
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();
-       		$isNew = ($manufacturer->manufacturer_id < 1);
+       		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_manufacturer_48');

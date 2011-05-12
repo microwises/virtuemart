@@ -68,7 +68,7 @@ class VirtueMartModelManufacturer extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('manufacturer_id', 0) > 0) $filter .= ' WHERE #__virtuemart_manufacturers.`manufacturer_id` = '.JRequest::getInt('manufacturer_id');
+            if (JRequest::getInt('virtuemart_manufacturer_id', 0) > 0) $filter .= ' WHERE #__virtuemart_manufacturers.`virtuemart_manufacturer_id` = '.JRequest::getInt('virtuemart_manufacturer_id');
 			$q = "SELECT COUNT(*)
 				FROM `#__virtuemart_manufacturers` ".
 				$filter;
@@ -84,7 +84,7 @@ class VirtueMartModelManufacturer extends JModel {
      */
      public function getManufacturer() {
 
-     	$this->_id = JRequest::getInt('manufacturer_id', 0);
+     	$this->_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
      	$this->_data = $this->getTable();
      	$this->_data->load($this->_id);
 
@@ -134,7 +134,7 @@ class VirtueMartModelManufacturer extends JModel {
 		$xrefTable = $this->getTable('mf_media_xref');
 		$mediaModel->storeMedia($data,$table,'manufacturer');
 
-		return $table->manufacturer_id;
+		return $table->virtuemart_manufacturer_id;
 	}
 
 
@@ -179,7 +179,7 @@ class VirtueMartModelManufacturer extends JModel {
 	 */
 	function getManufacturerDropDown() {
 		$db = JFactory::getDBO();
-		$query = "SELECT `manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
+		$query = "SELECT `virtuemart_manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
 				FROM `#__virtuemart_manufacturers`";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();

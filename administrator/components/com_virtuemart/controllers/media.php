@@ -96,7 +96,7 @@ class VirtuemartControllerMedia extends JController {
 		} else if (!empty($data['virtuemart_category_id'])){
 			$table = $fileModel->getTable('category_media_xref');
 			$type = 'category';
-		} else if (!empty($data['manufacturer_id'])){
+		} else if (!empty($data['virtuemart_manufacturer_id'])){
 			$table = $fileModel->getTable('mf_media_xref');
 			$type = 'manufacturer';
 //		} else if ($data['virtuemart_vendor_id']){

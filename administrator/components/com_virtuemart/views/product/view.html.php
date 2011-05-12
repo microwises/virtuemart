@@ -137,15 +137,15 @@ class VirtuemartViewProduct extends JView {
 //				$product_currency_symbol = $currency->currency_symbol;
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
-				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
+				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
-				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'manufacturer_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
+				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 
-				/* Load the attribute names */
-				$product->attribute_names = $this->get('ProductAttributeNames');
-
-				/* Load the attribute values */
-				$product->attribute_values = $this->get('ProductAttributeValues');
+//				/* Load the attribute names */
+//				$product->attribute_names = $this->get('ProductAttributeNames');
+//
+//				/* Load the attribute values */
+//				$product->attribute_values = $this->get('ProductAttributeValues');
 
 				/* TODO remove this */
 				$product->child_products = null;
@@ -216,7 +216,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
-				$this->assignRef('product', $product);
+				$this->assignRef('product', $product);dump($product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
 				$this->assignRef('min_order', $min_order);

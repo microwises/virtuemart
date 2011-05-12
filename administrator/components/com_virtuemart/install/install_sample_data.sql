@@ -100,7 +100,7 @@ INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`,
 -- Dumping data for table `#__virtuemart_manufacturers`
 --
 
-INSERT INTO `#__virtuemart_manufacturers` (`manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `published`) VALUES
+INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `published`) VALUES
 (1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
 
 
@@ -115,7 +115,7 @@ INSERT INTO `#__virtuemart_manufacturer_categories` (`mf_category_id`, `mf_categ
 -- Dumping data for table `#__virtuemart_manufacturer_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`manufacturer_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `file_ids`) VALUES
 (NULL, 1, 1);
 
 --
@@ -194,7 +194,7 @@ INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`,
 -- Dumping data for table `#__virtuemart_product_manufacturers`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `manufacturer_id`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id`, `virtuemart_manufacturer_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),

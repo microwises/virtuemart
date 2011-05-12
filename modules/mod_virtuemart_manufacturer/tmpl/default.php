@@ -10,7 +10,7 @@ $col= 1 ;
 if ($display_style =="div") { ?>
 	<div class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
 	<?php foreach ($manufacturers as $manufacturer) {
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
+		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 		
 		?>
 		<div style="float:left;">
@@ -44,7 +44,7 @@ if ($display_style =="div") { ?>
 <ul class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php
 foreach ($manufacturers as $manufacturer) { 
-	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&manufacturer_id=' . $manufacturer->manufacturer_id);
+	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 	?>
 	<li><a href="<?php echo $link; ?>">
 		<?php

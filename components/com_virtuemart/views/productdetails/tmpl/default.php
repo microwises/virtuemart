@@ -193,7 +193,7 @@ if (empty ( $this->product )) {
 						<noscript><input type="hidden" name="task" value="add" /></noscript>
 						<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
 						<?php /** @todo Handle the manufacturer view */ ?>
-						<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
+						<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->product->virtuemart_manufacturer_id ?>" />
 						<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
 					</form>
 
@@ -216,10 +216,10 @@ if (empty ( $this->product )) {
 				</div>
 
 				<?php // Manufacturer of the Product
-				if(VmConfig::get('show_manufacturer', 1) && !empty($this->product->manufacturer_id)) { ?>
+				if(VmConfig::get('show_manufacturer', 1) && !empty($this->product->virtuemart_manufacturer_id)) { ?>
 				<div class="manufacturer">
 				<?php
-					$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&manufacturer_id='.$this->product->manufacturer_id.'&tmpl=component');
+					$link = JRoute::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id.'&tmpl=component');
 					$text = $this->product->mf_name;
 
 					/* Avoid JavaScript on PDF Output */

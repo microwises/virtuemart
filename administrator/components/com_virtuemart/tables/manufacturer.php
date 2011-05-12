@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableManufacturer extends JTable {
 
 	/** @var int Primary key */
-	var $manufacturer_id = 0;
+	var $virtuemart_manufacturer_id = 0;
 	/** @var string manufacturer name */
 	var $mf_name = '';
 	/** @var string manufacturer email */
@@ -53,7 +53,7 @@ class TableManufacturer extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_manufacturers', 'manufacturer_id', $db);
+		parent::__construct('#__virtuemart_manufacturers', 'virtuemart_manufacturer_id', $db);
 	}
 
 
@@ -69,14 +69,14 @@ class TableManufacturer extends JTable {
 			return false;
 		}
 
-		if (($this->mf_name) && ($this->manufacturer_id == 0)) {
+		if (($this->mf_name) && ($this->virtuemart_manufacturer_id == 0)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT `manufacturer_id` FROM `#__virtuemart_manufacturers` ';
+			$q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers` ';
 			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
             $db->setQuery($q);
-		    $manufacturer_id = $db->loadResult();
-		    if (!empty($manufacturer_id) && $manufacturer_id!=$this->manufacturer_id) {
+		    $virtuemart_manufacturer_id = $db->loadResult();
+		    if (!empty($virtuemart_manufacturer_id) && $virtuemart_manufacturer_id!=$this->virtuemart_manufacturer_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
 				return false;
 			}

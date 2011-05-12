@@ -327,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
-  `manufacturer_id` SERIAL,
+  `virtuemart_manufacturer_id` SERIAL,
   `mf_name` varchar(64) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
@@ -336,8 +336,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`manufacturer_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`virtuemart_manufacturer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who deliver products' AUTO_INCREMENT=1 ;
 
 --
 -- Table structure for table `#__virtuemart_manufacturer_medias`
@@ -345,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_medias` (
   `id` SERIAL,
-  `manufacturer_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_manufacturer_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -764,9 +764,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
   `virtuemart_product_id` int(11) DEFAULT NULL,
-  `manufacturer_id` int(11) DEFAULT NULL,
+  `virtuemart_manufacturer_id` int(11) DEFAULT NULL,
   KEY `idx_product_mf_xref_product_id` (`virtuemart_product_id`),
-  KEY `idx_product_mf_xref_manufacturer_id` (`manufacturer_id`)
+  KEY `idx_product_mf_xref_virtuemart_manufacturer_id` (`virtuemart_manufacturer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a product to a manufacturer';
 
 -- --------------------------------------------------------

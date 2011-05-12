@@ -47,7 +47,7 @@ class VirtueMartControllerManufacturer extends JController
 		
 		/* Set the layout */
 		$view->setLayout(JRequest::getVar('layout','default'));
-		if (JRequest::getInt('manufacturer_id')) {
+		if (JRequest::getInt('virtuemart_manufacturer_id')) {
 			/* link in product details to display a specific manufacturer */
 			$view->setLayout('details');
 		} else {

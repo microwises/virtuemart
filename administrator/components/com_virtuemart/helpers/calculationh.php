@@ -607,18 +607,18 @@ class calculationHelper {
 
 			$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
 			$this->_db->setQuery($q);
-			$cats = $this->_db->loadResultArray();dump($q,'$q');
+			$cats = $this->_db->loadResultArray();
 
 			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
 			$hitsCategory = true;
-			dump($this->_cats,'$this->_cats');
-			dump($cats,'$cats');
+//			dump($this->_cats,'$this->_cats');
+//			dump($cats,'$cats');
 			if(isset($this->_cats)){
 				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
-				dump($hitsCategory,'$hitsCategory');
+//				dump($hitsCategory,'$hitsCategory');
 			}
 			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){

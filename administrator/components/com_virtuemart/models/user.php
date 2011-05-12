@@ -251,9 +251,9 @@ class VirtueMartModelUser extends JModel {
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);
 			}
-
-			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');dump($_usr,'$_usr');
-			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO'); dump($_grp,'$_grp');
+			dump($this->_data->JUser,'hmm');
+			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
+			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
 			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
 
 			$_currentUser =& JFactory::getUser();
