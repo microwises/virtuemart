@@ -81,12 +81,12 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		if (VmConfig::isJ15()) {
 			$table = '#__plugins';
-			$enable = 'published';
+			$enable = 'enabled';
 			$ext_id = 'id';
 		}
 		else {
 			$table = '#__extensions';
-			$enable = 'published';
+			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipper" AND `'.$enable.'`="1" ';

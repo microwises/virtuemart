@@ -45,7 +45,7 @@ class VirtueMartModelVirtueMart extends JModel {
 		$query .= "AND #__virtuemart_categories.category_id = #__virtuemart_category_categories.category_child_id ";
 		//$query .= "AND #__virtuemart_categories.vendor_id = '$hVendor_id' ";
 		$query .= "AND #__virtuemart_categories.vendor_id = '1' ";
-		$query .= "AND #__virtuemart_categories.published = '1' ";
+		$query .= "AND #__virtuemart_categories.enabled = '1' ";
 		$query .= "ORDER BY #__virtuemart_categories.list_order, #__virtuemart_categories.category_name ASC";
 
 		$childList = $this->_getList( $query );
@@ -71,7 +71,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of active products in the database
 	 */
 	function getTotalActiveProducts() {
-		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE `published`="1"';
+		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE `enabled`="1"';
         return $this->_getListCount($query);
     }
 
@@ -82,7 +82,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of inactive products in the database
 	 */
 	function getTotalInActiveProducts() {
-		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE  `published`="0"';
+		$query = 'SELECT `product_id` FROM `#__virtuemart_products` WHERE  `enabled`="0"';
         return $this->_getListCount($query);
     }
 

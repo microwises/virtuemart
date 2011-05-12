@@ -325,7 +325,7 @@ class VirtueMartModelUserfields extends JModel {
 	 *
 	 * @param string $section The section the fields belong to (e.g. 'registration' or 'account')
 	 * @param array $_switches Array to toggle these options:
-	 *                         * published    Published fields only (default: true)
+	 *                         * enabled    enabled fields only (default: true)
 	 *                         * required     Required fields only (default: false)
 	 *                         * delimiters   Exclude delimiters (default: false)
 	 *                         * captcha      Exclude Captcha type (default: false)
@@ -351,12 +351,12 @@ class VirtueMartModelUserfields extends JModel {
 			unset ($_skip[$_skipBank]);
 		}
 
-		if(array_key_exists('published',$_switches)){
-			if ($_switches['published'] !== false ) {
-				$_q .= 'AND published = 1 ';
+		if(array_key_exists('enabled',$_switches)){
+			if ($_switches['enabled'] !== false ) {
+				$_q .= 'AND enabled = 1 ';
 			}
 		} else {
-			$_q .= 'AND published = 1 ';
+			$_q .= 'AND enabled = 1 ';
 		}
 		if(array_key_exists('required',$_switches)){
 			if ($_switches['required'] === true ) {
@@ -403,7 +403,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_address_type->rows = 0;
 			$_address_type->value = '';
 			$_address_type->default = 'BT';
-			$_address_type->published = 1;
+			$_address_type->enabled = 1;
 			$_address_type->registration = 1;
 			$_address_type->shipping = 0;
 			$_address_type->account = 1;
@@ -430,7 +430,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_user_is_vendor->rows = 0;
 			$_user_is_vendor->value = 0;
 			$_user_is_vendor->default = 0;
-			$_user_is_vendor->published = 1;
+			$_user_is_vendor->enabled = 1;
 			$_user_is_vendor->registration = 1;
 			$_user_is_vendor->shipping = 0;
 			$_user_is_vendor->account = 1;

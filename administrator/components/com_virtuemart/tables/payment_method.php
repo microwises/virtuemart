@@ -61,14 +61,14 @@ class TablePayment_method extends JTable
 	var $paym_secret_key			= '';
 	/** @var for all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
-    /** @var int Published or unpublished */
-	var $published 		        = 0;
+    /** @var int enabled or unpublished */
+	var $enabled 		        = 0;
    	/** @var string ordering */
 	var $ordering       	= '';
-        /** @var boolean */
-	var $checked_out	= 0;
+             /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object

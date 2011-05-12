@@ -45,8 +45,8 @@ class VirtuemartViewState extends JView {
 
         $layoutName = JRequest::getVar('layout', 'default');
 
-		$published = JRequest::getBool('published', false);
-		$this->assignRef('published',	$published);
+		$enabled = JRequest::getBool('enabled', false);
+		$this->assignRef('enabled',	$enabled);
 
 
 		$countryId = JRequest::getInt('country_id', 0);

@@ -181,7 +181,7 @@ class VirtuemartControllerUserfields extends JController {
 	 */
 	function unpublish()
 	{
-		self::toggle('published', 0);
+		self::toggle('enabled', 0);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class VirtuemartControllerUserfields extends JController {
 	 */
 	function publish()
 	{
-		self::toggle('published', 1);
+		self::toggle('enabled', 1);
 	}
 
 	/**

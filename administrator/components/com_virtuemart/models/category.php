@@ -197,7 +197,7 @@ class VirtueMartModelCategory extends JModel {
 		$query .= 'WHERE `#__virtuemart_category_categories`.`category_parent_id` = ' . $category_id . ' ';
 		$query .= 'AND `#__virtuemart_categories`.`category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
 		$query .= 'AND `#__virtuemart_categories`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
+		$query .= 'AND `#__virtuemart_categories`.`enabled` = "1" ';
 		$query .= 'ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
 		$childList = $this->_getList( $query );
 
@@ -216,7 +216,7 @@ class VirtueMartModelCategory extends JModel {
 	*
 	* @author
 	*
-	* @param boolean $onlyPublished Show only published categories?
+	* @param boolean $onlyPublished Show only enabled categories?
 	* @param boolean $withParentId Keep in mind $parentId param?
 	* @param integer $parentId Show only its childs
 	* @param string $keyword the keyword to filter categories
@@ -226,15 +226,15 @@ class VirtueMartModelCategory extends JModel {
 
 		$vendorId = 1;
 
-		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
+		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`enabled`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
 				  FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__virtuemart_category_categories` cx
 				  ON c.`category_id` = cx.`category_child_id`
 				  WHERE 1 ";
 
-		// Get only published categories
+		// Get only enabled categories
 		if( $onlyPublished ) {
-			$query .= "AND c.`published` = 1 ";
+			$query .= "AND c.`enabled` = 1 ";
 		}
 
 		if( !empty( $keyword ) ) {
@@ -377,7 +377,7 @@ class VirtueMartModelCategory extends JModel {
 			WHERE `#__virtuemart_products`.`vendor_id` = "'.$vendorId.'"
 			AND `#__virtuemart_product_categories`.`category_id` = '.$this->_db->Quote($cat_id).'
 			AND `#__virtuemart_products`.`product_id` = `#__virtuemart_product_categories`.`product_id`
-			AND `#__virtuemart_products`.`published` = "1" ';
+			AND `#__virtuemart_products`.`enabled` = "1" ';
 			$this->_db->setQuery($q);
 			$count = $this->_db->loadResult();
 		} else $count=0 ;
@@ -402,7 +402,7 @@ class VirtueMartModelCategory extends JModel {
 //			AND #__virtuemart_product_categories.category_id = ".$category_id."
 //			AND #__virtuemart_categories.category_id = #__virtuemart_product_categories.category_id
 //			AND #__virtuemart_products.product_id = #__virtuemart_product_categories.product_id
-//			AND #__virtuemart_products.published = 1";
+//			AND #__virtuemart_products.enabled = 1";
 //			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
 //				$q .= " AND product_in_stock > 0 ";
 //			}
@@ -489,7 +489,7 @@ class VirtueMartModelCategory extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author RickG, jseros, Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the publishing was successful, false otherwise.
      */
 	public function publish($publishId = false){
@@ -797,7 +797,7 @@ class VirtueMartModelCategory extends JModel {
 			WHERE `#__virtuemart_category_categories`.`category_parent_id` = ".$category_id."
 			AND `#__virtuemart_categories`.`category_id`=`#__virtuemart_category_categories`.`category_child_id`
 			AND `#__virtuemart_categories`.`vendor_id` = 1
-			AND `#__virtuemart_categories`.`published` = 1
+			AND `#__virtuemart_categories`.`enabled` = 1
 			ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
@@ -996,7 +996,7 @@ class VirtueMartModelCategory extends JModel {
 	}
 	/**
 	* This function is repsonsible for returning an array containing category information
-	* @param boolean Show only published products?
+	* @param boolean Show only enabled products?
 	* @param string the keyword to filter categories
 	*/
 	function getCategoryTreeArray( $only_published=true, $keyword = "" ) {
@@ -1004,11 +1004,11 @@ class VirtueMartModelCategory extends JModel {
 		$db = JFactory::getDBO();
 		if( empty( $this->_category_tree)) {
 
-			// Get only published categories
-			$query  = "SELECT `category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
+			// Get only enabled categories
+			$query  = "SELECT `category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `enabled` as category_publish
 						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` WHERE ";
 			if( $only_published ) {
-				$query .= "`#__virtuemart_categories`.`published`=1 AND ";
+				$query .= "`#__virtuemart_categories`.`enabled`=1 AND ";
 			}
 			$query .= "`#__virtuemart_categories`.`category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
 			if( !empty( $keyword )) {

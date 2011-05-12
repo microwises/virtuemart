@@ -156,7 +156,7 @@ class VirtueMartModelMedia extends JModel {
 	 * Retireve a list of files from the database. This is meant only for backend use
 	 *
      * @author Max Milbers
-     * @param string $onlyPuiblished True to only retreive the published files, false otherwise
+     * @param string $onlyPuiblished True to only retreive the enabled files, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of media objects
 	 */
@@ -189,7 +189,7 @@ class VirtueMartModelMedia extends JModel {
 	    	}
 
 	    	if ($onlyPublished) {
-				$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
+				$whereItems[] = '`#__virtuemart_medias`.`enabled` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
 			$oderby = '`#__virtuemart_medias`.`modified_on`';
@@ -320,11 +320,11 @@ class VirtueMartModelMedia extends JModel {
 		}
 
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
-		// workarround for media published and product published two fields in one form.
+		// workarround for media enabled and product enabled two fields in one form.
 		if ($data['media_published'])
-			$data['published'] = $data['media_published'];
+			$data['enabled'] = $data['media_published'];
 		else
-			$data['published'] = 0;
+			$data['enabled'] = 0;
 
 
 		if(empty($data['file_url'])){
@@ -390,7 +390,7 @@ class VirtueMartModelMedia extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)

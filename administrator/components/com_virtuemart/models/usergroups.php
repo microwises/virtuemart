@@ -121,7 +121,7 @@ class VirtueMartModelUsergroups extends JModel {
 		$db = JFactory::getDBO();
 		$query = 'SELECT * FROM `#__virtuemart_permgroups` ';
 //		if ($onlyPublished) {
-//			$query .= 'WHERE `#__virtuemart_permgroups`.`published` = 1';
+//			$query .= 'WHERE `#__virtuemart_permgroups`.`enabled` = 1';
 //		}
 		$query .= ' ORDER BY `#__virtuemart_permgroups`.`group_name`';
 		if ($noLimit) {

@@ -155,7 +155,7 @@ class VirtueMartModelCalc extends JModel
 	 * Retireve a list of calculation rules from the database.
 	 *
      * @author Max Milbers
-     * @param string $onlyPuiblished True to only retreive the published Calculation rules, false otherwise
+     * @param string $onlyPuiblished True to only retreive the enabled Calculation rules, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
@@ -164,7 +164,7 @@ class VirtueMartModelCalc extends JModel
 
 		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
+			$query .= 'WHERE `#__virtuemart_calcs`.`enabled` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_calcs`.`calc_name`';
 		if ($noLimit) {
@@ -204,7 +204,7 @@ class VirtueMartModelCalc extends JModel
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'published' ){
+	public function enabled( $row, $i, $variable = 'enabled' ){
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
 		$img 	= $row->$variable ? $imgY : $imgX;
@@ -331,7 +331,7 @@ class VirtueMartModelCalc extends JModel
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)

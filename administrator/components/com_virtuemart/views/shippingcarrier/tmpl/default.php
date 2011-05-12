@@ -44,9 +44,9 @@ AdminMenuHelper::startAdminArea();
 		for ($i=0, $n=count( $this->shippingCarriers ); $i < $n; $i++) {
 			$row =& $this->shippingCarriers[$i];
 			/** 
-			 * @todo Add to database layout published column
+			 * @todo Add to database layout enabled column
 			 */
-			$row->published = 1;
+			$row->enabled = 1;
 			$checked = JHTML::_('grid.id', $i, $row->shipping_carrier_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=edit&cid[]=' . $row->shipping_carrier_id);
 			?>

@@ -267,13 +267,13 @@ AdminMenuHelper::startAdminArea();
 
 		<tr>
 			<td width="110" class="key">
-				<label for="published">
+				<label for="enabled">
 					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>:
 				</label>
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo $this->lists['published']; ?>
+				<?php echo $this->lists['enabled']; ?>
 				</fieldset>
 			</td>
 		</tr>

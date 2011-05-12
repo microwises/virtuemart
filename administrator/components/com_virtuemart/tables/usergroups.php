@@ -38,7 +38,7 @@ class TableUsergroups extends JTable {
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;
-// 	var $published = 1;
+// 	var $enabled = 1;
 
 	function __construct(&$db)
 	{

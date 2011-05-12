@@ -194,7 +194,7 @@ class VirtueMartModelCreditcard extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)
@@ -210,10 +210,10 @@ class VirtueMartModelCreditcard extends JModel {
      * @author RickG, Max Milbers
 	 * @return object List of credit card objects
 	 */
-	function getCreditCards($published=1)
+	function getCreditCards($enabled=1)
 	{
 		$query = 'SELECT * FROM `#__virtuemart_creditcards` ';
-		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
+		if($enabled) $query .= 'WHERE `enabled`= "'.$enabled.'" ';
 		$query .= 'ORDER BY `#__virtuemart_creditcards`.`creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;

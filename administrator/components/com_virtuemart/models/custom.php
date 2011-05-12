@@ -281,7 +281,7 @@ class VirtueMartModelCustom extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)
@@ -293,7 +293,7 @@ class VirtueMartModelCustom extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Kohl Patrick
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function toggle($field)

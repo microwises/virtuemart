@@ -100,7 +100,7 @@ class VirtueMartModelProduct extends JModel {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$showall = Permissions::getInstance()->check('storeadmin');
 			$where='';
-			if (!$showall) $where = ' WHERE  #__virtuemart_products.`published`=1 ';
+			if (!$showall) $where = ' WHERE  #__virtuemart_products.`enabled`=1 ';
 			$q = "SELECT #__virtuemart_products.`product_id` ".$this->getProductListQuery().$where.$this->getProductListFilter();
 			$this->_db->setQuery($q);
 			$fields = $this->_db->loadObjectList('product_id');
@@ -140,7 +140,7 @@ class VirtueMartModelProduct extends JModel {
     	//store the original parent id
 		$pId = $child->product_id;
     	$ppId = $child->product_parent_id;
-		$published = $child->published;
+		$enabled = $child->enabled;
 
 		$i = 0;
 		//Check for all attributes to inherited by parent products
@@ -160,7 +160,7 @@ class VirtueMartModelProduct extends JModel {
 	    	}
 			$child->product_parent_id = $parentProduct->product_parent_id;
     	}
-		$child->published = $published;
+		$child->enabled = $enabled;
 		$child->product_id = $pId;
 		$child->product_parent_id = $ppId;
 
@@ -180,7 +180,7 @@ class VirtueMartModelProduct extends JModel {
    			$product = $this->getTable('product');
    			$product->load($product_id);
    			if($onlyPublished){
-   				if(empty($product->published)){
+   				if(empty($product->enabled)){
    					return $this->fillVoidProduct($product,$front);
    				}
    			}
@@ -388,7 +388,7 @@ class VirtueMartModelProduct extends JModel {
 		$q = "SELECT `p`.`product_id`, `product_sku`, `product_name`, related_products
 			FROM `#__virtuemart_products` p, `#__virtuemart_product_relations` `r`
 			WHERE `r`.`product_id` = ".$product_id."
-			AND `p`.published = 1
+			AND `p`.enabled = 1
 			AND FIND_IN_SET(`p`.`product_id`, REPLACE(`r`.`related_products`, '|', ',' )) LIMIT 0, 4";
 		$this->_db->setQuery($q);
 		$related_products = $this->_db->loadObjectList();
@@ -453,7 +453,7 @@ class VirtueMartModelProduct extends JModel {
 		$joinCategory = false ;
 		$joinMf = false ;
 		$joinPrice = false ;
-		$where[] = " `#__virtuemart_products`.`published`='1' ";
+		$where[] = " `#__virtuemart_products`.`enabled`='1' ";
 
 		/* search fields filters set */
 		if ( $search == 'true') {
@@ -595,7 +595,7 @@ class VirtueMartModelProduct extends JModel {
 				$query .= 'AND `#__virtuemart_categories`.`category_id`=`#__virtuemart_product_categories`.`category_id` ';
 				$query .= 'AND `#__virtuemart_categories`.`category_id`=' . $categoryId . ' ';
 			}
-	        $query .= 'AND `#__virtuemart_products`.`published`="1" ';
+	        $query .= 'AND `#__virtuemart_products`.`enabled`="1" ';
 	        $query .= $filter;
 	        if (VmConfig::get('check_stock') && VmConfig::get('show_out_of_stock_products') != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
@@ -769,7 +769,7 @@ class VirtueMartModelProduct extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the publishing was successful, false otherwise.
      */
 	public function publish($publishId = false){
@@ -1308,8 +1308,8 @@ class VirtueMartModelProduct extends JModel {
 //				$q .= "AND c.category_id = '".$category_id."' ";
 //				$q .= "AND p.product_id = cx.product_id ";
 //				$q .= "AND c.category_id=cx.category_id ";
-//				$q .= "AND p.published='1' ";
-//				$q .= "AND c.published='1' ";
+//				$q .= "AND p.enabled='1' ";
+//				$q .= "AND c.enabled='1' ";
 //				$q .= "LIMIT 0,1";
 //				$this->_db->setQuery($q);
 //				$product = $this->_db->loadObject();
@@ -1424,7 +1424,7 @@ class VirtueMartModelProduct extends JModel {
 			LEFT JOIN `#__users` `u`
 			ON `u`.`id` = `r`.`userid`
 			WHERE `product_id` = "'.$product_id.'"
-			AND published = "1"
+			AND enabled = "1"
 			ORDER BY `time` DESC ';
 		if (!$showall) $q .= ' LIMIT 0, 5';
 		$this->_db->setQuery($q);
@@ -1720,7 +1720,7 @@ class VirtueMartModelProduct extends JModel {
 
 		 if ($this->hasproductCustoms($product_id )) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`enabled` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
 			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
@@ -1812,7 +1812,7 @@ class VirtueMartModelProduct extends JModel {
 					} else {
 						$vendorId = $product->vendor_id;
 					}
-					$q='SELECT `file_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
+					$q='SELECT `file_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `enabled`=1
 					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 					$this->_db->setQuery($q);
 					$options = $this->_db->loadObjectList();
@@ -1825,7 +1825,7 @@ class VirtueMartModelProduct extends JModel {
 					} else {
 						$product_id = $product->product_id;
 					}
-					$q='SELECT `product_id` as value,concat(`product_sku`,":",`product_name`) as text FROM `#__virtuemart_products` WHERE `published`=1
+					$q='SELECT `product_id` as value,concat(`product_sku`,":",`product_name`) as text FROM `#__virtuemart_products` WHERE `enabled`=1
 					AND `product_parent_id`= "'.$product_id.'"';
 					$this->_db->setQuery($q);
 					if ($options = $this->_db->loadObjectList() ) return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$value);
@@ -1839,7 +1839,7 @@ class VirtueMartModelProduct extends JModel {
 
 		if ($product->hasproductCustoms) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
+		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`enabled` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
 			LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
@@ -2006,7 +2006,7 @@ class VirtueMartModelProduct extends JModel {
 				case 'i':
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
-					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
+					$q='SELECT * FROM `#__virtuemart_medias` WHERE `enabled`=1
 					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND file_id='.(int)$value;
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
@@ -2023,7 +2023,7 @@ class VirtueMartModelProduct extends JModel {
 				case 'C':
 					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__virtuemart_products` as p
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`product_id` = p.`product_id`
-					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
+					WHERE `enabled`=1 AND p.`product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
 					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');

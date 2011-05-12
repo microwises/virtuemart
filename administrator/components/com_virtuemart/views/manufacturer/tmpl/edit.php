@@ -69,7 +69,7 @@ $editor = JFactory::getEditor();
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturer->published); ?>
+				<?php echo JHTML::_('select.booleanlist',  'enabled', 'class="inputbox"', $this->manufacturer->enabled); ?>
 				</fieldset>
 			</td>
 		</tr>

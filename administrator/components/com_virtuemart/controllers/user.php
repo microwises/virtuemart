@@ -176,7 +176,7 @@ class VirtuemartControllerUser extends JController {
 	function disable_vendor()
 	{
 		//TODO is only for single store, take a look on that for multivendor
-		// Why was this ?? Re-published again (Oscar)
+		// Why was this ?? Re-enabled again (Oscar)
 //		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
 		self::toggle('user_is_vendor', 0);
 	}
@@ -187,7 +187,7 @@ class VirtuemartControllerUser extends JController {
 	function enable_vendor()
 	{
 		//TODO is only for single store, take a look on that for multivendor
-		// Why was this ?? Re-published again (Oscar)
+		// Why was this ?? Re-enabled again (Oscar)
 //		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
 		self::toggle('user_is_vendor', 1);
 	}

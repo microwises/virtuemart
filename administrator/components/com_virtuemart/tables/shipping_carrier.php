@@ -38,8 +38,8 @@ class TableShipping_Carrier extends JTable {
 	var $shipping_carrier_jplugin_id	= 0;
 	/** @var int Vendor ID */
 	var $shipping_carrier_vendor_id		= 0;
-	/** @var int Published boolean */
-	var $published						= 1;
+	/** @var int enabled boolean */
+	var $enabled						= 1;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

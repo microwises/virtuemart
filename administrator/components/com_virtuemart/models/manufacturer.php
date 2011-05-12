@@ -189,7 +189,7 @@ class VirtueMartModelManufacturer extends JModel {
 
     /**
     * Set the publish/unpublish state
-    * @return bool true if manufacturers are published or false if manufacturers are not published
+    * @return bool true if manufacturers are enabled or false if manufacturers are not enabled
     */
     public function getPublish() {
      	$cid = JRequest::getVar('cid', false);
@@ -230,7 +230,7 @@ class VirtueMartModelManufacturer extends JModel {
 			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		}
 		if ($onlyPublished) {
-			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
+			$where[] .= '`#__virtuemart_manufacturers`.`enabled` = 1';
 		}
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');

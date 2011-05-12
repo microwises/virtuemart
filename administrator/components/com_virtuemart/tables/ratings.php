@@ -45,7 +45,7 @@ class TableRatings extends JTable {
 	/** @var int No idea what this is for */
 	var $review_votes      		= null;
 	/** @var int State of the review */
-	var $published         		= 0;
+	var $enabled         		= 0;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

@@ -60,9 +60,9 @@ class TableCalc extends JTable
 	/** @var string end date */
 	var $publish_down;
 	/** @var string created date */
-	var $cdate;
+	var $created_on				= null;
 	/** @var string modified date */
-	var $mdate;
+	var $modified_on	= null;
         /** @var string   */
 	var $calc_qualify;
          /** @var string   */
@@ -73,12 +73,12 @@ class TableCalc extends JTable
 	var $calc_amount_dimunit;
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
-    /** @var int Published or unpublished */
-	var $published 		        = 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+    /** @var int enabled or unpublished */
+	var $enabled 		        = 0;
+             /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	 * @author Max Milbers
@@ -126,10 +126,10 @@ class TableCalc extends JTable
 
 		$date = JFactory::getDate();
 		$today = $date->toMySQL();
-		if(empty($this->cdate)){
-			$this->cdate = $today;
+		if(empty($this->created_on)){
+			$this->created_on = $today;
 		}
-     	$this->mdate = $today;
+     	$this->modified_on = $today;
 
 		return true;
 	}

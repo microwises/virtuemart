@@ -46,7 +46,7 @@ class TableCurrency extends JTable {
 	var $display_style         		= '';
 	var $created_on         					;
 	var $modified_on         					;
-	var $published					= 0;
+	var $enabled					= 0;
 	var $shared						= 1;
                /** @var boolean */
 	var $locked_on	= 0;

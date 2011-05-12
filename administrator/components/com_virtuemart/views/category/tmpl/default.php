@@ -51,7 +51,7 @@ if( $this->pagination->limit < $nrows ){
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCTS_LBL'); ?>
 			</th>
 			<th width="5%">
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_LIST_PUBLISH', 'c.enabled', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<!-- Commented out for future use
 			<th width="5%">
@@ -77,7 +77,7 @@ if( $this->pagination->limit < $nrows ){
 			$row = $this->categories[$this->rowList[$i]];
 
 			$checked = JHTML::_('grid.id', $i, $row->category_id);
-			$published = JHTML::_('grid.published', $row, $i);
+			$enabled = JHTML::_('grid.enabled', $row, $i);
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $row->category_id);
 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&category_id=' . $row->category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&category_id=' . $row->category_id);
@@ -107,7 +107,7 @@ if( $this->pagination->limit < $nrows ){
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center">
-					<?php echo $published;?>
+					<?php echo $enabled;?>
 				</td>
 				<!-- Commented out for future use
 				<td align="center">

@@ -182,7 +182,7 @@ class VirtueMartModelCurrency extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)
@@ -195,7 +195,7 @@ class VirtueMartModelCurrency extends JModel {
 
     /**
      * Retireve a list of currencies from the database.
-     * This function is used in the backend for the currency listing, therefore no asking if published or not
+     * This function is used in the backend for the currency listing, therefore no asking if enabled or not
      * @author RickG, Max Milbers
      * @return object List of currency objects
      */
@@ -215,13 +215,13 @@ class VirtueMartModelCurrency extends JModel {
     /**
      * Retireve a list of currencies from the database.
      *
-     * This is written to get a list for selecting currencies. Therefore it asks for published
+     * This is written to get a list for selecting currencies. Therefore it asks for enabled
      * @author RolandD, Max Milbers
      * @return object List of currency objects
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
+	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

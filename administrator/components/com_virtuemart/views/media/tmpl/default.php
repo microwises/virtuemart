@@ -73,8 +73,8 @@ $pagination = $this->pagination;
 		foreach ($productfileslist as $key => $productfile) {
 
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
-			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
-			else $published = '';
+			if (!is_null($productfile->file_id)) $enabled = JHTML::_('grid.enabled', $productfile, $i );
+			else $enabled = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
@@ -109,8 +109,8 @@ $pagination = $this->pagination;
 				<td><?php echo $productfile->file_name; ?></td>
 				<!-- File extension -->
 				<td><?php echo $productfile->file_extension; ?></td>
-				<!-- Published -->
-				<td><?php echo $published; ?></td>
+				<!-- enabled -->
+				<td><?php echo $enabled; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

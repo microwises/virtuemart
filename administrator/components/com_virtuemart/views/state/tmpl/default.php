@@ -56,7 +56,7 @@ AdminMenuHelper::startAdminArea();
 		$row =& $this->states[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->state_id);
-		$published = JHTML::_('grid.published', $row, $i);
+		$enabled = JHTML::_('grid.enabled', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=state&task=edit&state_id=' . $row->state_id);
 
 		?>
@@ -77,7 +77,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo $row->state_3_code; ?>
 		</td>
 		<td>
-			<?php echo $published; ?>
+			<?php echo $enabled; ?>
 		</td>
 	    </tr>
 		<?php

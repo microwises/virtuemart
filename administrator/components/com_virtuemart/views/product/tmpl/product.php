@@ -83,7 +83,7 @@ $pagination = $this->pagination;
 		<?php } ?>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS'); ?></th>
-		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_PUBLISH', 'enabled', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -94,7 +94,7 @@ $pagination = $this->pagination;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($productlist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->product_id);
-			$published = JHTML::_('grid.published', $product, $i );
+			$enabled = JHTML::_('grid.enabled', $product, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
@@ -138,8 +138,8 @@ $pagination = $this->pagination;
 				<!-- Reviews -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&product_id='.$product->product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
-				<!-- Published -->
-				<td><?php echo $published; ?></td>
+				<!-- enabled -->
+				<td><?php echo $enabled; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;
