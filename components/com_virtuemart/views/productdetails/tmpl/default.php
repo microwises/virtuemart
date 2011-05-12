@@ -41,11 +41,11 @@ if (empty ( $this->product )) {
 		<div class="product-neighbours">
 		<?php
 		if (! empty ( $this->product->neighbours ['previous'] )) {
-			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['previous'] ['product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
+			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
 			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'] ['product_name'], array ('class' => 'previous-page' ) );
 		}
 		if (! empty ( $this->product->neighbours ['next'] )) {
-			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['next'] ['product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
+			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
 			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next-page' ) );
 		}
 		?>
@@ -62,10 +62,10 @@ if (empty ( $this->product )) {
 	<?php // PDF - Print - Email Icon
 	if (VmConfig::get('pdf_button_enable', 1) == '1' || VmConfig::get('show_emailfriend', 1) == '1' || VmConfig::get('show_printicon', 1) == '1') { ?>
 	<div class="icons">
-		<?php $link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id;
+		<?php $link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		echo shopFunctionsF::PdfIcon($link.'&output=pdf' );
 		echo shopFunctionsF::PrintIcon($link.'&print=1');
-		echo shopFunctionsF::EmailIcon($this->product->product_id); ?>
+		echo shopFunctionsF::EmailIcon($this->product->virtuemart_product_id); ?>
 	<div class="clear"></div>
 	</div>
 	<?php } ?>
@@ -112,7 +112,7 @@ if (empty ( $this->product )) {
 
 				<?php // Product Price
 				if ($this->show_prices) { ?>
-				<div class="product-price" id="productPrice<?php echo $this->product->product_id ?>">
+				<div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 				<?php
 				if ($this->product->product_unit && VmConfig::get ( 'vm_price_show_packaging_pricelabel' )) {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
@@ -139,7 +139,7 @@ if (empty ( $this->product )) {
 				<?php // Add To Cart Button
 				if (!VmConfig::get('use_as_catalog',0)) { ?>
 				<div class="addtocart-area">
-					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->product_id ?>">
+					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
 	<?php // Product custom_fields
 	if (!empty($this->product->customfieldsCart)) {  ?>
 	<div class="product-fields">
@@ -160,7 +160,7 @@ if (empty ( $this->product )) {
 						<div class="addtocart-bar">
 
 							<?php // Display the quantity box ?>
-							<!-- <label for="quantity<?php echo $this->product->product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
+							<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 							<span class="quantity-box">
 								<input type="text" class="quantity-input" name="quantity[]" value="1" />
 							</span>
@@ -191,7 +191,7 @@ if (empty ( $this->product )) {
 						<input type="hidden" name="option" value="com_virtuemart" />
 						<input type="hidden" name="view" value="cart" />
 						<noscript><input type="hidden" name="task" value="add" /></noscript>
-						<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
+						<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
 						<?php /** @todo Handle the manufacturer view */ ?>
 						<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
 						<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
@@ -210,7 +210,7 @@ if (empty ( $this->product )) {
 				<?php } ?>
 
 				<?php // Ask a question about this product
-				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
+				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
 					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				</div>
@@ -284,7 +284,7 @@ if (empty ( $this->product )) {
 
 		/* Show pdf in a new Window, other file types will be offered as download */
 		// $target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-		// $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&product_id='.$this->product->product_id);
+		// $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&virtuemart_product_id='.$this->product->virtuemart_product_id);
 		// echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	// }
 	?>
@@ -546,7 +546,7 @@ if (empty ( $this->product )) {
 
 						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
 						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
-						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
+						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
 							<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 								<tr>
 								<?php
@@ -579,7 +579,7 @@ if (empty ( $this->product )) {
 							<div align="right"><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT')  ?>
 								<input type="text" value="0" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
 							</div>
-							<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
+							<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 							<input type="hidden" name="option" value="com_virtuemart" />
 							<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
 							<input type="hidden" name="review_id" value="0" />

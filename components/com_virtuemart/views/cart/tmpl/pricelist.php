@@ -43,9 +43,9 @@ defined('_JEXEC') or die('Restricted access');
 
 			if ($i % 2) $product_rows[$i]['row_color'] = "sectiontableentry2";
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
-			$product->virtuemart_category_id = $this->cart->getCardCategoryId($product->product_id);
+			$product->virtuemart_category_id = $this->cart->getCardCategoryId($product->virtuemart_product_id);
 			/* Create product URL */
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			/** @todo WEIGHT CALCULATION */
-			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
+			//$weight_subtotal = vmShippingMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
 			/* Product PRICE */
@@ -91,14 +91,14 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="text" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" class="inputbox" size="3" maxlength="4" name="quantity" value="'.$product->quantity.'" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
-				<input type="hidden" name="cart_product_id" value="'.$priceKey.'" />
+				<input type="hidden" name="cart_virtuemart_product_id" value="'.$priceKey.'" />
 				<input type="image" name="update" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/update_quantity_cart.png" alt="'. JText::_('COM_VIRTUEMART_UPDATE') .'" align="middle" />
 			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="delete" />
-				<input type="hidden" name="cart_product_id" value="'.$priceKey.'" />
+				<input type="hidden" name="cart_virtuemart_product_id" value="'.$priceKey.'" />
 				<input type="image" name="delete" title="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/remove_from_cart.png" alt="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" align="middle" />
 			  </form>';
 			} else {

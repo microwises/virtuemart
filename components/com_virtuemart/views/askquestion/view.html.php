@@ -64,19 +64,19 @@ class VirtueMartViewAskquestion extends JView {
 //		$product = $this->get('product');
 		$product_model = $this->getModel('product');
 
-		$product_idArray = JRequest::getVar('product_id');
-		if(is_array($product_idArray)){
-			$product_id=$product_idArray[0];
+		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id');
+		if(is_array($virtuemart_product_idArray)){
+			$virtuemart_product_id=$virtuemart_product_idArray[0];
 		} else {
-			$product_id=$product_idArray;
+			$virtuemart_product_id=$virtuemart_product_idArray;
 		}
 
-		if(empty($product_id)){
+		if(empty($virtuemart_product_id)){
 			self::showLastCategory($tpl);
 			return;
 		}
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$product = $product_model->getProduct($product_id);
+		$product = $product_model->getProduct($virtuemart_product_id);
 		/* Set Canonic link */
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
@@ -111,7 +111,7 @@ class VirtueMartViewAskquestion extends JView {
 		}
 
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&product_id='.$product->product_id));
+		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$product->virtuemart_product_id));
 
 		// for askquestion
 		$pathway->addItem( JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));

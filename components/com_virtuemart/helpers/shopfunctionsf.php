@@ -156,13 +156,13 @@ class shopFunctionsF {
 	 * @param string $link
 	 * @param boolean $use_icon
 	 */
-	function EmailIcon( $product_id, $use_icon=true ) {
-		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
+	function EmailIcon( $virtuemart_product_id, $use_icon=true ) {
+		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $virtuemart_product_id > 0  ) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted	
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {
@@ -468,7 +468,7 @@ class shopFunctionsF {
 		if(!empty($prodTpl)){
 			if(is_Int($prodTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `product_id` = "'.$prodTpl.'" ';
+				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.$prodTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if($temp) $template = $temp;

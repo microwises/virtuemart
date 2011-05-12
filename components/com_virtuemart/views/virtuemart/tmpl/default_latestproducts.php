@@ -10,7 +10,7 @@
 		?>
 		<div style="float:left;width:<?php echo $TopTen_cellwidth ?>%;text-align:top;padding:0px;" >
 			<?php
-			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$latestProduct->product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id), $latestProduct->product_name);
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$latestProduct->virtuemart_product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id), $latestProduct->product_name);
 			?>
 				<h4><?php echo $latestProduct->product_name; ?></h4>
 				<?php 			if (VmConfig::get('show_prices') == '1') {
@@ -33,7 +33,7 @@
 					echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$latestProduct->prices);
 			}
 				if ($latestProduct->file_ids) {
-					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$latestProduct->product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id),
+					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$latestProduct->virtuemart_product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id),
 						$latestProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"'));
 				?>
 				<br /><br/>

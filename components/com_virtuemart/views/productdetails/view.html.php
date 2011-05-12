@@ -69,16 +69,16 @@ class VirtueMartViewProductdetails extends JView {
 //		$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 		$product_model = $this->getModel('product');
 
-		$product_idArray = JRequest::getVar('product_id');
-		if(is_array($product_idArray)){
-			$product_id=$product_idArray[0];
+		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id');
+		if(is_array($virtuemart_product_idArray)){
+			$virtuemart_product_id=$virtuemart_product_idArray[0];
 		} else {
-			$product_id=$product_idArray;
+			$virtuemart_product_id=$virtuemart_product_idArray;
 		}
 
-		$product = $product_model->getProduct($product_id);
+		$product = $product_model->getProduct($virtuemart_product_id);
 
-		if(empty($product->product_id)){
+		if(empty($product->virtuemart_product_id)){
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
@@ -130,7 +130,7 @@ class VirtueMartViewProductdetails extends JView {
 		if (VmConfig::get('allow_reviews', 1) == '1') {
 			$model = $this->getModel();
 			/* Show all reviews available */
-			$product_reviews = $model->getProductReviews($product->product_id);
+			$product_reviews = $model->getProductReviews($product->virtuemart_product_id);
 			$this->assignRef('product_reviews', $product_reviews);
 		}
 
@@ -138,7 +138,7 @@ class VirtueMartViewProductdetails extends JView {
 		/** @todo build edit page */
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
-			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
+			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&virtuemart_product_id='.$product->virtuemart_product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
 		}
 		else {
@@ -183,7 +183,7 @@ class VirtueMartViewProductdetails extends JView {
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
-		shopFunctionsF::addProductToRecent($product_id);
+		shopFunctionsF::addProductToRecent($virtuemart_product_id);
 		//TODO add params, add event
 //		$params = new JParameter();
 //		/*

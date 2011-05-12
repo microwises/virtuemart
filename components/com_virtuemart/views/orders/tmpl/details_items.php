@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 <?php
 	foreach($this->orderdetails['items'] as $_item) {
-		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id=' . $_item->product_id);
+		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $_item->virtuemart_product_id);
 ?>
 		<tr valign="top">
 			<td align="left" >

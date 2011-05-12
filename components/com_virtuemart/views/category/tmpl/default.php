@@ -219,7 +219,7 @@ foreach ( $this->products as $product ) {
 						</p>
 						<?php } ?>
 
-					<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
+					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 					<?php
 					if ($this->show_prices == '1') {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
