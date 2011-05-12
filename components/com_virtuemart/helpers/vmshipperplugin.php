@@ -168,7 +168,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
 			. 'AND   v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
-			. 'AND   v.`published` = 1 '
+			. 'AND   v.`enabled` = 1 '
 		 ;
 		} else {
                       $_q = 'SELECT 1 '
@@ -178,7 +178,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'AND j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
 			. 'AND   v.`shipping_carrier_vendor_id` = "'.$_vendorId.'" '
-			. 'AND   v.`published` = 1 '
+			. 'AND   v.`enabled` = 1 '
 		 ;
 
 		}

@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
 	<tr>
 		<td align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
-		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->cdate); ?></td>
+		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->created_on); ?></td>
 	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('COM_VIRTUEMART_LAST_UPDATED') ?></td>
-		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->mdate); ?></td>
+		<td align="left"><?php echo JHTML::_('date', $this->orderdetails['details']['BT']->modified_on); ?></td>
 	</tr>
 	<tr>
 		<td align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>

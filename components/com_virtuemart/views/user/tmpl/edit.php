@@ -75,7 +75,7 @@ function myValidator(f, t)
 
 /*
  * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one
- * So maybe we should place here a method (joomla plugin hook) which loads all published plugins, which already used by the user and display
+ * So maybe we should place here a method (joomla plugin hook) which loads all enabled plugins, which already used by the user and display
  * them.
  */
 //	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );

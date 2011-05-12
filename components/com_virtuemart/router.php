@@ -605,8 +605,8 @@ class vmrouterHelper {
 			$this->lang['product_availability']   = $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABILITY');
 			$this->lang['product_special'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_SPECIAL');
 			$this->lang['ship_code_id'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_SHIP_CODE_ID');
-			$this->lang['cdate'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_CDATE');
-			$this->lang['mdate'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_MDATE');
+			$this->lang['created_on'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_CDATE');
+			$this->lang['modified_on'] 			= $lang->_('COM_VIRTUEMART_SEF_BY_MDATE');
 			$this->lang['product_name'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_NAME');
 			$this->lang['product_sales'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_SALES');
 			$this->lang['product_unit'] 	= $lang->_('COM_VIRTUEMART_SEF_BY_PRODUCT_UNIT');
@@ -654,8 +654,8 @@ class vmrouterHelper {
 			$this->lang['product_availability'] = 'product_availability';
 			$this->lang['product_special'] = 'product_special';
 			$this->lang['ship_code_id'] = 'ship_code_id';
-			$this->lang['cdate'] = 'cdate';
-			$this->lang['mdate'] = 'mdate';
+			$this->lang['created_on'] = 'created_on';
+			$this->lang['modified_on'] = 'modified_on';
 			$this->lang['product_name'] = 'product_name';
 			$this->lang['product_sales'] = 'product_sales';
 			$this->lang['product_unit'] = 'product_unit';

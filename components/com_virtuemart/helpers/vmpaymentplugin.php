@@ -116,7 +116,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
 
-		$q = 'SELECT `paym_id`,`paym_name` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
+		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `enabled`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 
@@ -128,7 +128,7 @@ abstract class vmPaymentPlugin extends JPlugin
 			return true;
 		} else{
 //			$mainframe = &JFactory::getApplication();
-//			$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
+//			$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and enabled payment plugin by vendor','error' );
 			return false;
 		}
 
