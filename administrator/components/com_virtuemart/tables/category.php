@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCategory extends JTable {
 
 	/** @var int Primary key */
-	var $category_id	= null;
+	var $virtuemart_category_id	= null;
 	/** @var integer Product id */
 	var $vendor_id		= 0;
 	/** @var string Category name */
@@ -83,7 +83,7 @@ class TableCategory extends JTable {
 	 * @param $db A database connector object
 	 */
 	public function __construct($db) {
-		parent::__construct('#__virtuemart_categories', 'category_id', $db);
+		parent::__construct('#__virtuemart_categories', 'virtuemart_category_id', $db);
 	}
 
 	/**
@@ -107,11 +107,11 @@ class TableCategory extends JTable {
 		if (!empty($this->category_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `category_id` FROM `#__virtuemart_categories` ';
+			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_categories` ';
 			$q .= 'WHERE `category_name`="' . $this->category_name . '"';
             $db->setQuery($q);
-		    $category_id = $db->loadResult();
-		    if (!empty($category_id) && $category_id!=$this->category_id) {
+		    $virtuemart_category_id = $db->loadResult();
+		    if (!empty($virtuemart_category_id) && $virtuemart_category_id!=$this->virtuemart_category_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_CATEGORY_NAME_ALREADY_EXISTS'));
 				return false;
 			}
@@ -140,7 +140,7 @@ class TableCategory extends JTable {
 
 		$sql = "SELECT ".$this->_tbl_key.", ordering FROM ".$this->_tbl." c
 				LEFT JOIN #__virtuemart_category_categories cx
-				ON c.category_id = cx.category_child_id";
+				ON c.virtuemart_category_id = cx.category_child_id";
 
 		$condition = 'cx.category_parent_id = '. $this->_db->Quote($parent_id);
 		$where = ($where ? ' AND '.$condition : $condition);
@@ -235,7 +235,7 @@ class TableCategory extends JTable {
 		$query = 'SELECT c.'.$this->_tbl_key.', c.ordering'
 		. ' FROM '. $this->_tbl . ' c'
 		. ' LEFT JOIN #__virtuemart_category_categories cx'
-		. ' ON c.category_id = cx.category_child_id'
+		. ' ON c.virtuemart_category_id = cx.category_child_id'
 		. ' WHERE c.ordering >= 0' . ( $where ? ' AND '. $where : '' )
 		. ' AND cx.category_parent_id = '. $parent_id
 		. ' ORDER BY c.ordering'.$order2;

@@ -314,7 +314,7 @@ class VirtuemartControllerPaymentmethod extends JController
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		//capturing calc_id
+		//capturing virtuemart_calc_id
 		$id = 0;
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);

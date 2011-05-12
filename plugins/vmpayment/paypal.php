@@ -165,7 +165,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			"zip" => $_usrBT[ 'zip' ] , 
 			"city" => $_usrBT[ 'city' ] , 
 			"state" => $_usrBT[ 'state' ] , 
-			"country" => ShopFunctions::getCountryByID($_usrST['country_id'],'country_3_code') , 
+			"country" => ShopFunctions::getCountryByID($_usrST['virtuemart_country_id'],'country_3_code') , 
 			"email" => $_usrBT[ 'email' ] , 
 			"night_phone_b" => $_usrBT[ 'phone_1' ] ,
 			"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_id=' . $_orderNr ), // TO VERIFY

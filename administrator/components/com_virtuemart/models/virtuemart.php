@@ -32,17 +32,17 @@ class VirtueMartModelVirtueMart extends JModel {
     /**
 	 * creates a bulleted of the childen of this category if they exist
 	 * @author pablo
-	 * @param int $category_id
+	 * @param int $virtuemart_category_id
 	 * @return string The HTML code
 	 */
 	function GetVendorDetails($vendor_id)
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT category_id, category_child_id, category_name ";
+		$query = "SELECT virtuemart_category_id, category_child_id, category_name ";
 		$query .= "FROM #__virtuemart_categories, #__virtuemart_category_categories ";
-		$query .= "WHERE #__virtuemart_category_categories.category_parent_id = '$category_id' ";
-		$query .= "AND #__virtuemart_categories.category_id = #__virtuemart_category_categories.category_child_id ";
+		$query .= "WHERE #__virtuemart_category_categories.category_parent_id = '$virtuemart_category_id' ";
+		$query .= "AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_category_categories.category_child_id ";
 		//$query .= "AND #__virtuemart_categories.vendor_id = '$hVendor_id' ";
 		$query .= "AND #__virtuemart_categories.vendor_id = '1' ";
 		$query .= "AND #__virtuemart_categories.published = '1' ";

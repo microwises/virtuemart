@@ -162,7 +162,7 @@ class shopFunctionsF {
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted	
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component');
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {
@@ -455,7 +455,7 @@ class shopFunctionsF {
 		if(!empty($catTpl) && empty($prodTpl)){
 			if(is_Int($catTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catTpl.'" ';
+				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if ($temp) $template = $temp;
@@ -488,7 +488,7 @@ class shopFunctionsF {
 			if(!empty($catLayout) && empty($prodLayout)){
 				if(is_Int($catLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;
@@ -501,7 +501,7 @@ class shopFunctionsF {
 			if(!empty($prodLayout)){
 				if(is_Int($prodLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;

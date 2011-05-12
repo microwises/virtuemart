@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* calc_category_xref table ( to map calc rules to shoppergroups)
+* virtuemart_category_id_xref table ( to map calc rules to shoppergroups)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -28,12 +28,12 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
 
-class Tablecalc_category_xref extends VmXrefTable {
+class Tablevirtuemart_category_id_xref extends VmXrefTable {
 
-	var $_pkey 		= 'calc_rule_id';
-	var $pkeyForm	= 'calc_id';
+	var $_pkey 		= 'virtuemart_calc_id';
+	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'calc_category';
+	var $_skey 		= 'virtuemart_category_id';
 	var $skeyForm	= 'calc_categories';
 
 	/**

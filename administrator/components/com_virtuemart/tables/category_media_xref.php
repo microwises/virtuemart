@@ -29,7 +29,7 @@ if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  */
 class TableCategory_media_xref extends VmXrefTable {
 
-	var $_pkey 		= 'category_id';
+	var $_pkey 		= 'virtuemart_category_id';
 	var $_skey 		= 'file_ids';
 
 	/**

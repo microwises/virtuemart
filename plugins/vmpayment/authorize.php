@@ -356,9 +356,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_company' => substr($_usrBT['company'], 0, 50),
 			'x_address' => substr($_usrBT['address_1'], 0, 60),
 			'x_city' => substr($_usrBT['city'], 0, 40),
-			'x_state' => substr(ShopFunctions::getStateByID($_usrBT['state_id']), 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrBT['virtuemart_state_id']), 0, 40),
 			'x_zip' => substr($_usrBT['zip'], 0, 20),
-			'x_country' => substr(ShopFunctions::getCountryByID($_usrBT['country_id']), 0, 60),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrBT['virtuemart_country_id']), 0, 60),
 			'x_phone' => substr($_usrBT['phone_1'], 0, 25),
 			'x_fax' => substr($_usrBT['fax'], 0, 25),
 
@@ -368,9 +368,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_company' => substr($_usrST['company'], 0, 50),
 			'x_address' => substr($_usrST['address_1'], 0, 60),
 			'x_city' => substr($_usrST['city'], 0, 40),
-			'x_state' => substr(ShopFunctions::getStateByID($_usrST['state_id']), 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrST['virtuemart_state_id']), 0, 40),
 			'x_zip' => substr($_usrST['zip'], 0, 20),
-			'x_country' => substr(ShopFunctions::getCountryByID($_usrST['country_id']), 0, 60),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrST['virtuemart_country_id']), 0, 60),
 
 			// Additional Customer Data
 			'x_cust_id' => $_usr->get('id'),

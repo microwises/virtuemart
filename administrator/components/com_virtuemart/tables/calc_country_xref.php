@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* calc_category_xref table ( to map calc rules to shoppergroups)
+* virtuemart_category_id_xref table ( to map calc rules to shoppergroups)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -28,13 +28,13 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
 
-class Tablecalc_country_xref extends VmXrefTable {
+class Tablevirtuemart_country_id_xref extends VmXrefTable {
 
-	var $_pkey 		= 'calc_rule_id';
-	var $pkeyForm	= 'calc_id';
+	var $_pkey 		= 'virtuemart_calc_id';
+	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'calc_country';
-	var $skeyForm	= 'country_id';
+	var $_skey 		= 'virtuemart_country_id';
+	var $skeyForm	= 'virtuemart_country_id';
 
 	/**
 	 * @author Max Milbers

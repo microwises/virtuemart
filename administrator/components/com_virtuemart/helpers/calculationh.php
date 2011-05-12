@@ -70,7 +70,7 @@ class calculationHelper {
 
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
-		$this -> _debug           = true;
+		$this -> _debug           = false;
 	}
 
 	public function getInstance(){
@@ -180,7 +180,7 @@ class calculationHelper {
 			}
 
 			if(empty($catIds)){
-				$this->_db->setQuery( 'SELECT `category_id` FROM #__virtuemart_product_categories  WHERE `product_id`="'.$productId.'" ');
+				$this->_db->setQuery( 'SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `product_id`="'.$productId.'" ');
 				$this->_cats=$this->_db->loadResultArray();
 			}else{
 				$this->_cats=$catIds;
@@ -428,16 +428,16 @@ class calculationHelper {
 		}
 
 		//todo fill with data
-		if(!empty($cart->ST['country_id'])){
-			$this ->_deliveryCountry = $cart->ST['country_id'];
-		}else if(!empty($cart->BT['country_id'])){
-			$this ->_deliveryCountry = $cart->BT['country_id'];
+		if(!empty($cart->ST['virtuemart_country_id'])){
+			$this ->_deliveryCountry = $cart->ST['virtuemart_country_id'];
+		}else if(!empty($cart->BT['virtuemart_country_id'])){
+			$this ->_deliveryCountry = $cart->BT['virtuemart_country_id'];
 		}
 
-		if(!empty($cart->ST['state_id'])){
-			$this ->_deliveryState = $cart->ST['state_id'];
-		}else if(!empty($cart->BT['state_id'])){
-			$this ->_deliveryState = $cart->BT['state_id'];
+		if(!empty($cart->ST['virtuemart_state_id'])){
+			$this ->_deliveryState = $cart->ST['virtuemart_state_id'];
+		}else if(!empty($cart->BT['virtuemart_state_id'])){
+			$this ->_deliveryState = $cart->BT['virtuemart_state_id'];
 		}
 
 
@@ -543,11 +543,11 @@ class calculationHelper {
 					$cIn=$price;
 				}
 				$cOut = $this -> interpreteMathOp($rule['calc_value_mathop'],$rule['calc_value'],$cIn,$rule['calc_currency']);
-				$this->_cartPrices[$rule['calc_id'].'Diff'] = $this->roundDisplay($this->roundDisplay($cOut) - $cIn);
+				$this->_cartPrices[$rule['virtuemart_calc_id'].'Diff'] = $this->roundDisplay($this->roundDisplay($cOut) - $cIn);
 
 				//okey, this is a bit flawless logic, but should work
 				if($relateToBaseAmount){
-					$finalprice = $finalprice + $this->_cartPrices[$rule['calc_id'].'Diff'];
+					$finalprice = $finalprice + $this->_cartPrices[$rule['virtuemart_calc_id'].'Diff'];
 				} else {
 					$price = $cOut;
 				}
@@ -580,7 +580,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-		//calc_id 	calc_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
+		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
@@ -589,7 +589,7 @@ class calculationHelper {
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
 		' AND `published`="1" ' .
-		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+		' AND (`virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 		if(!empty($this->_amount)){
@@ -605,11 +605,11 @@ class calculationHelper {
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach($rules as $rule){
 
-			$q = 'SELECT `calc_category` FROM #__virtuemart_calc_categories WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
+			$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
 			$this->_db->setQuery($q);
 			$cats = $this->_db->loadResultArray();dump($q,'$q');
 
-			$q= 'SELECT `calc_shopper_group` FROM #__virtuemart_calc_shoppergroups WHERE `calc_rule_id`="'.$rule['calc_id'].'"';
+			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
@@ -629,10 +629,10 @@ class calculationHelper {
 			if(!empty($this->_amount)){
 				//Test
 			}
-			dump($hitsShopper,'$hitsShopper');
-//if ($this -> _debug	) echo '<br/ >foreach '.$rule["calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
+//			dump($hitsShopper,'$hitsShopper');
+//if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if( $hitsCategory && $hitsShopper ){
-				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["calc_id"];
+				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["virtuemart_calc_id"];
 				$testedRules[]=$rule;
 			}
 		}
@@ -652,15 +652,15 @@ class calculationHelper {
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
 
 //		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
-//		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'calc_country',true);
-//		$states = $this -> writeRulePartEffectingQuery($this->_states,'calc_state',true);
+//		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'virtuemart_country_id',true);
+//		$states = $this -> writeRulePartEffectingQuery($this->_states,'virtuemart_state_id',true);
 
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
 			' AND `published`="1" ' .
-			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
+			' AND (`virtuemart_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 //			$shoppergrps .  $countries . $states ;
@@ -669,15 +669,15 @@ class calculationHelper {
 		$testedRules= array();
 		foreach($rules as $rule){
 
-			$q= 'SELECT `calc_country` FROM #__virtuemart_calc_countries WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$countries = $this->_db->loadResultArray();
 
-			$q= 'SELECT `calc_state` FROM #__virtuemart_calc_states WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `virtuemart_state_id` FROM #__virtuemart_state_ids WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$states = $this->_db->loadResultArray();
 
-			$q= 'SELECT `calc_shopper_group` FROM #__virtuemart_calc_shoppergroups WHERE `calc_rule_id`="'.$rule["calc_id"].'"';
+			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
 
@@ -695,7 +695,7 @@ class calculationHelper {
 //			}
 
 			if($hitsCountry && $hitsStates && $hitsShopper ){
-				if ($this -> _debug	) echo '<br/ >Add Checkout rule '.$rule["calc_id"].'<br/ >';
+				if ($this -> _debug	) echo '<br/ >Add Checkout rule '.$rule["virtuemart_calc_id"].'<br/ >';
 				$testedRules[]=$rule;
 			}
 		}
@@ -765,7 +765,7 @@ class calculationHelper {
 
 		$taxrules = array();
 		if(!empty($shipping['shipping_rate_vat_id'])){
-			$q= 'SELECT * FROM #__virtuemart_calcs WHERE `calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
+			$q= 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
 			$this->_db->setQuery($q);
 			$taxrules = $this->_db->loadAssocList();
 		}

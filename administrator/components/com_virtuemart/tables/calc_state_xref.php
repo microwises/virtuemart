@@ -28,13 +28,13 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
 
-class Tablecalc_state_xref extends VmXrefTable {
+class Tablevirtuemart_state_id_xref extends VmXrefTable {
 
-	var $_pkey 		= 'calc_rule_id';
-	var $pkeyForm	= 'calc_id';
+	var $_pkey 		= 'virtuemart_calc_id';
+	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'calc_state';
-	var $skeyForm	= 'state_id';
+	var $_skey 		= 'virtuemart_state_id';
+	var $skeyForm	= 'virtuemart_state_id';
 
 
 	/**
@@ -42,7 +42,7 @@ class Tablecalc_state_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_states', 'id', $db);
+		parent::__construct('#__virtuemart_state_ids', 'id', $db);
 	}
 
 

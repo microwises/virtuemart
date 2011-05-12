@@ -27,9 +27,9 @@ defined('_JEXEC') or die();
 class TableCalc extends JTable
 {
 	/** @var int Primary key */
-	var $calc_id					= 0;
+	var $virtuemart_calc_id					= 0;
 	/** @var string VendorID of the rule creator */
-	var $calc_vendor_id				= 0;
+	var $virtuemart_vendor_id				= 0;
 	/** @var string Calculation name */
 	var $calc_name           		= '';
 	/** @var string Calculation description */
@@ -46,11 +46,11 @@ class TableCalc extends JTable
 	/** @var array affecting Categories of the rule */
 	//var $calc_categories			= array();
 	/** @var array affecting Shoppergroups of the rule */
-	//var $calc_shopper_groups		= array();
+	//var $virtuemart_shoppergroup_ids		= array();
 	/** @var array affecting Countries of the rule */
 	//var $calc_countries				= array();
 	/** @var array affecting States of the rule */
-	//var $calc_states				= array();
+	//var $virtuemart_state_ids				= array();
 	/** @var string Visible for shoppers */
 	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
@@ -85,7 +85,7 @@ class TableCalc extends JTable
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calcs', 'calc_id', $db);
+		parent::__construct('#__virtuemart_calcs', 'virtuemart_calc_id', $db);
 	}
 
 
@@ -97,8 +97,8 @@ class TableCalc extends JTable
 	 */
 	function check()
 	{
-        if (!$this->calc_vendor_id) {
-			$this->calc_vendor_id = 1; //default to mainvendor
+        if (!$this->virtuemart_vendor_id) {
+			$this->virtuemart_vendor_id = 1; //default to mainvendor
 		}
 
         if (!$this->calc_name) {
@@ -114,11 +114,11 @@ class TableCalc extends JTable
 		if (($this->calc_name) ) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `calc_id` FROM `#__virtuemart_calcs` ';
+			$q = 'SELECT `virtuemart_calc_id` FROM `#__virtuemart_calcs` ';
 			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
             $db->setQuery($q);
-		    $calc_id = $db->loadResult();
-			if (!empty($calc_id) && $calc_id!=$this->calc_id) {
+		    $virtuemart_calc_id = $db->loadResult();
+			if (!empty($virtuemart_calc_id) && $virtuemart_calc_id!=$this->virtuemart_calc_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
 				return false;
 			}

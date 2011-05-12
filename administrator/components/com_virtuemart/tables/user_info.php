@@ -49,8 +49,8 @@ class TableUser_info extends JTable {
 	var $address_1 = '';
 	var $address_2 = '';
 	var $city = '';
-	var $state_id = '';
-	var $country_id = '';
+	var $virtuemart_state_id = '';
+	var $virtuemart_country_id = '';
 	var $zip = '';
 	var $extra_field_1 = '';
 	var $extra_field_2 = '';

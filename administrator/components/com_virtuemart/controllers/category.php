@@ -232,7 +232,7 @@ class VirtuemartControllerCategory extends JController {
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		//capturing category_id
+		//capturing virtuemart_category_id
 		$id = 0;
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
@@ -267,7 +267,7 @@ class VirtuemartControllerCategory extends JController {
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		//capturing category_id
+		//capturing virtuemart_category_id
 		$id = 0;
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);

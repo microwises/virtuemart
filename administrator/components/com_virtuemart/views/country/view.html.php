@@ -43,7 +43,7 @@ class VirtuemartViewCountry extends JView {
 
 		if ($layoutName == 'edit') {
 			$country = $model->getCountry();
-			$isNew = ($country->country_id < 1);
+			$isNew = ($country->virtuemart_country_id < 1);
 		    if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_COUNTRY_LIST_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 

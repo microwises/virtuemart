@@ -242,7 +242,7 @@ class VirtuemartViewUser extends JView {
 					 	$this->assignRef('currencies', $_currencies);
 
 					 	//can someone explain me what that should do?
-					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
+					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_virtuemart_category_id', '', 'vendor_virtuemart_category_id', 'vendor_category_name', $userDetails->vendor->vendor_virtuemart_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);
 
 					 	//				//Different currency styles for different vendors are nonsense imho

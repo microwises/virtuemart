@@ -114,7 +114,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_CATEGORY'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_virtuemart_category_id'); ?>:
 				</label>
 			</td>
 			<td>
@@ -126,7 +126,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_SHOPPER_GROUPS'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_virtuemart_shoppergroup_idS'); ?>:
 				</label>
 			</td>
 			<td>
@@ -240,14 +240,14 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<?php foreach($this->calc->calc_states as $state){
-		echo '<input type="hidden" name="prs_state_id[]" value="'.$state.'" />' ;
+	<?php foreach($this->calc->virtuemart_state_ids as $state){
+		echo '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
 	} ?>
-	<input type="hidden" name="calc_id" value="<?php echo $this->calc->calc_id; ?>" />
+	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="calc" />
-	<input type="hidden" name="calc_vendor_id" value="<?php echo $this->vendorId; ?>" />
+	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
 
 </form>
 

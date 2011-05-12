@@ -170,9 +170,9 @@ class VirtueMartCart  {
 			/* Check if we have a product */
 			if ($product) {
 				$quantityPost = $post['quantity'][$p_key];
-				$category_idPost = $post['category_id'][$p_key];
+				$virtuemart_category_idPost = $post['virtuemart_category_id'][$p_key];
 
-				$product->category_id = $category_idPost;
+				$product->virtuemart_category_id = $virtuemart_category_idPost;
 				$productKey= $product->product_id;
 // INDEX NOT FOUND IN JSON HERE
 // changed name field you know exactly was this is
@@ -340,7 +340,7 @@ class VirtueMartCart  {
 	public function getCategoryId() {
 		$db = JFactory::getDBO();
 		$product_id = JRequest::getInt('product_id');
-		$q = 'SELECT `category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}	/**
@@ -353,7 +353,7 @@ class VirtueMartCart  {
 	*/
 	public function getCardCategoryId($product_id) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -686,14 +686,14 @@ class VirtueMartCart  {
 			if ($_obj !== null && is_array($this->{$type})) {
 				$this->{$type}[$field->name] = $_obj->{$field->name};
 			}
-			if(empty($this->{$type}[$field->name]) && $field->name!='state_id'){
+			if(empty($this->{$type}[$field->name]) && $field->name!='virtuemart_state_id'){
 				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$this->{$type}[$field->name].' but '.$this->BT['first_name'];
 			} else {
-				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
-				if($field->name=='state_id'){
+				//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
+				if($field->name=='virtuemart_state_id'){
 
 					if(!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'state.php');
-					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
+					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['virtuemart_country_id'],$this->{$type}['virtuemart_state_id'])){
 						$redirectMsg = $msg;
 					}
 				}

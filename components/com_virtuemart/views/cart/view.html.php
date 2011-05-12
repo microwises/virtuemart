@@ -160,10 +160,10 @@ class VirtueMartViewCart extends JView {
 
 	private function prepareContinueLink(){
 		// Get a continue link */
-		$category_id = shopFunctionsF::getLastVisitedCategoryId();
+		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 		$categoryLink='';
-		if($category_id){
-			$categoryLink='&category_id='.$category_id;
+		if($virtuemart_category_id){
+			$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 

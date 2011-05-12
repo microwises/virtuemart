@@ -45,7 +45,7 @@ class VirtuemartViewCategories extends JView {
 		$this->loadHelper('image');
 
 		$categoryModel = $this->getModel('category');
-	    $categoryId = JRequest::getInt('category_id', 0);
+	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
 	    $vendorId = 1; //Todo change that for multivendor
 
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff

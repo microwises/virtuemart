@@ -30,10 +30,10 @@ if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
 
 class Tablecalc_shoppergroup_xref extends VmXrefTable {
 
-	var $_pkey 		= 'calc_rule_id';
-	var $pkeyForm	= 'calc_id';
+	var $_pkey 		= 'virtuemart_calc_id';
+	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'calc_shopper_group';
+	var $_skey 		= 'virtuemart_shoppergroup_id';
 	var $skeyForm	= 'shopper_group_id';
 
 

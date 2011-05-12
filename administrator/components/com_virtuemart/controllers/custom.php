@@ -93,7 +93,7 @@ class VirtuemartControllerCustom extends JController {
 		if(!empty($data['product_id'])){
 			$table = $fileModel->getTable('product');
 			$type = 'product';
-		} else if (!empty($data['category_id'])){
+		} else if (!empty($data['virtuemart_category_id'])){
 			$table = $fileModel->getTable('category');
 			$type = 'category';
 		} else if (!empty($data['manufacturer_id'])){

@@ -43,9 +43,9 @@ defined('_JEXEC') or die('Restricted access');
 
 			if ($i % 2) $product_rows[$i]['row_color'] = "sectiontableentry2";
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
-			$product->category_id = $this->cart->getCardCategoryId($product->product_id);
+			$product->virtuemart_category_id = $this->cart->getCardCategoryId($product->product_id);
 			/* Create product URL */
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
@@ -154,8 +154,8 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
 				<td align="right"> </td>
-				<td align="right"><?php echo -$this->prices[$rule['calc_id'].'Diff'];  ?> </td>
-				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo -$this->prices[$rule['virtuemart_calc_id'].'Diff'];  ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php
 			if($i) $i=1; else $i=0;
@@ -203,9 +203,9 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
-				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff']; ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff']; ?> </td>
 				<td align="right"><?php    ?> </td>
-				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php
 			if($i) $i=1; else $i=0;
@@ -216,8 +216,8 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
 				<td align="right"><?php  ?> </td>
-				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
-				<td align="right"><?php echo $this->prices[$rule['calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php
 			if($i) $i=1; else $i=0;

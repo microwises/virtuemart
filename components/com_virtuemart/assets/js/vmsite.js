@@ -24,7 +24,7 @@ var VM = (function($){
 				
 			//Regular Expr to parse parent list
 			dependentExpr: /dependent\[(.*)\]/i,
-			countryStateURL: 'index.php?option=com_virtuemart&view=state&format=json&country_id='
+			countryStateURL: 'index.php?option=com_virtuemart&view=state&format=json&virtuemart_country_id='
 		};
 		
 		return {
@@ -143,7 +143,7 @@ var VM = (function($){
 				
 					if( VM.inArray( countries, statesCombo.$countries[i]) === undefined ){
 						for( var state in statesCache[ statesCombo.$countries[i] ] ){
-							statesC.find('[value='+ statesCache[ statesCombo.$countries[i] ][state].state_id  +']').remove();
+							statesC.find('[value='+ statesCache[ statesCombo.$countries[i] ][state].virtuemart_state_id  +']').remove();
 						}
 					}
 				}
@@ -151,7 +151,7 @@ var VM = (function($){
 				
 				var selectedChar = 'selected="selected"';
 
-				var statesColl = document.getElementsByName('prs_state_id[]');
+				var statesColl = document.getElementsByName('prs_virtuemart_state_id[]');
 				var states = [];
 				for(var i = 0, n = statesColl.length; i < n; i++){
 					if(statesColl[i].value!='' && statesColl[i].value!=0){
@@ -168,14 +168,14 @@ var VM = (function($){
 						statesGroup = statesCache[ countries[i] ];
 						
 						for(var j in statesGroup){
-							if(statesGroup[j].state_id){
+							if(statesGroup[j].virtuemart_state_id){
 								
 								var selected ='';
-								if(VM.inArray(states,statesGroup[j].state_id)  !== undefined){
+								if(VM.inArray(states,statesGroup[j].virtuemart_state_id)  !== undefined){
 									selected = selectedChar;
 								}
 								
-								states2add += '<option value="'+ statesGroup[j].state_id +'" '+selected+'>'+ statesGroup[j].state_name +'</option>';
+								states2add += '<option value="'+ statesGroup[j].virtuemart_state_id +'" '+selected+'>'+ statesGroup[j].state_name +'</option>';
 							}
 						}
 					}
@@ -201,7 +201,7 @@ var VM = (function($){
 						countriesSend = [],
 						cStack = [];
 						if(!countries){	
-							countries = jQuery('#country_id').val() || [];
+							countries = jQuery('#virtuemart_country_id').val() || [];
 						}
 						countries = countries.push ? countries : [countries];
 					

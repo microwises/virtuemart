@@ -213,8 +213,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['address_1'] =  'vendorra road 8';
 	$fields['city'] =  'Canangra';
 	$fields['zip'] =  '055555';
-	$fields['state_id'] =  '361';
-	$fields['country_id'] =  '195';
+	$fields['virtuemart_state_id'] =  '361';
+	$fields['virtuemart_country_id'] =  '195';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
 	$fields['vendor_id'] = '1';
@@ -273,7 +273,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     function restoreSystemCompletly() {
 
-		$this -> removeAllVMTables();
+		$this->removeAllVMTables();
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
 		$this->execSQLFile($filename);
@@ -432,25 +432,33 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function removeAllVMTables() {
 	$db = JFactory::getDBO();
 	$config = JFactory::getConfig();
-	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
+
+	$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
+	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 	if (!$tables = $db->loadResultArray()) {
 	    $this->setError = $db->getErrorMsg();
 	    return false;
 	}
 
 	foreach ($tables as $table) {
+
 	    $db->setQuery('DROP TABLE ' . $table);
-	    $db->query();
-	}
-	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."virtuemart_%'");
-	if (!$tables = $db->loadResultArray()) {
-	    $this->setError = $db->getErrorMsg();
-	    return false;
+	    if($db->query()){
+	    	$droppedTables[] = substr($table,strlen($prefix)-1);
+	    } else {
+	    	$errorTables[] = $table;
+	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+	    }
 	}
 
-	foreach ($tables as $table) {
-	    $db->setQuery('DROP TABLE ' . $table);
-	    $db->query();
+	$app = JFactory::getApplication();
+	if(!empty($droppedTables)){
+		$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
+	}
+
+    if(!empty($errorTables)){
+		$app->enqueueMessage('Error dropping virtuemart table ' . implode($errorTables,', '));
+		return false;
 	}
 
 	return true;

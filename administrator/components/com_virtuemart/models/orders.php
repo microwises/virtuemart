@@ -590,12 +590,12 @@ class VirtueMartModelOrders extends JModel {
 		);
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			if ($_name == 'country_id') {
-				$_userInfoData->country = $_cart->BT['country_id'];
-//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['country_id']);
-			} elseif ($_name == 'state_id') {
-				$_userInfoData->state = $_cart->BT['state_id'];
-//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['state_id']);
+			if ($_name == 'virtuemart_country_id') {
+				$_userInfoData->country = $_cart->BT['virtuemart_country_id'];
+//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
+			} elseif ($_name == 'virtuemart_state_id') {
+				$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
+//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
 			} else {
 				$_userInfoData->$_name = $_cart->BT[$_name];
 			}
@@ -616,12 +616,12 @@ class VirtueMartModelOrders extends JModel {
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
-				if ($_name == 'country_id') {
-					$_userInfoData->country = $_cart->ST['country_id'];
-//					$_userInfoData->country = shopFunctions::getCountryByID($_cart->ST['country_id']);
-				} elseif ($_name == 'state_id') {
-					$_userInfoData->state = $_cart->ST['state_id'];
-//					$_userInfoData->state = shopFunctions::getStateByID($_cart->ST['state_id']);
+				if ($_name == 'virtuemart_country_id') {
+					$_userInfoData->country = $_cart->ST['virtuemart_country_id'];
+//					$_userInfoData->country = shopFunctions::getCountryByID($_cart->ST['virtuemart_country_id']);
+				} elseif ($_name == 'virtuemart_state_id') {
+					$_userInfoData->state = $_cart->ST['virtuemart_state_id'];
+//					$_userInfoData->state = shopFunctions::getStateByID($_cart->ST['virtuemart_state_id']);
 				} else {
 					$_userInfoData->$_name = $_cart->ST[$_name];
 				}

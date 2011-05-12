@@ -80,10 +80,10 @@ class VirtueMartViewProductdetails extends JView {
 
 		if(empty($product->product_id)){
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink));
 
@@ -96,21 +96,21 @@ class VirtueMartViewProductdetails extends JView {
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
-		$category_id = JRequest::getInt('category_id');
-		if ($category_id == 0 && !empty($product)) {
-			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0];
+		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
+		if ($virtuemart_category_id == 0 && !empty($product)) {
+			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
 		}
 
-		shopFunctionsF::setLastVisitedCategoryId($category_id);
+		shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 		if($category_model){
-			$category = $category_model->getCategory($category_id);
+			$category = $category_model->getCategory($virtuemart_category_id);
 			$category_model->addImagesToCategories($category);
 			$this->assignRef('category', $category);
 
 			if ($category->parents) {
 				foreach ($category->parents as $c){
-					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
 			if($category->children)	$category_model->addImagesToCategories($category->children);
@@ -211,10 +211,10 @@ class VirtueMartViewProductdetails extends JView {
 	}
 
 	private function showLastCategory($tpl) {
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 

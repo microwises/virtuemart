@@ -292,11 +292,11 @@ class VirtueMartModelVendor extends JModel {
 	}
 
 	/**
-	 * 		state_id 	country_id 	state_name 	state_3_code 	state_2_code
+	 * 		virtuemart_state_id 	virtuemart_country_id 	state_name 	state_3_code 	state_2_code
 	 		1 			223 		Alabama 	ALA 			AL
 
 
-	 		country_id 	zone_id 	country_name 	country_3_code 	country_2_code
+	 		virtuemart_country_id 	zone_id 	country_name 	country_3_code 	country_2_code
 			1 			1 			Afghanistan 	AFG 			AF
 	 */
 
@@ -446,8 +446,8 @@ class VirtueMartModelVendor extends JModel {
 				ON u.user_id = x.user_id
 				LEFT JOIN #__users j
 				ON j.id = u.user_id
-				LEFT JOIN #__virtuemart_countries c ON c.country_id = u.country_id
-				LEFT JOIN #__virtuemart_states s ON s.state_id = u.state_id
+				LEFT JOIN #__virtuemart_countries c ON c.virtuemart_country_id = u.virtuemart_country_id
+				LEFT JOIN #__virtuemart_states s ON s.virtuemart_state_id = u.virtuemart_state_id
 				WHERE v.vendor_id = ".$vendor_id."
 				AND address_type = 'BT'";
 			$this->_db->setQuery($q);
@@ -577,8 +577,8 @@ class VirtueMartModelVendor extends JModel {
 //		$q = 'SELECT '.$fieldstring.' FROM (#__virtuemart_vendors v, #__virtuemart_userinfos u) ';
 //		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
 //		if($countrytable) {
-//			$q .= 'LEFT JOIN #__virtuemart_countries c ON (u.country=c.country_id)
-//				LEFT JOIN #__virtuemart_states s ON (s.country_id=c.country_id) ';
+//			$q .= 'LEFT JOIN #__virtuemart_countries c ON (u.country=c.virtuemart_country_id)
+//				LEFT JOIN #__virtuemart_states s ON (s.virtuemart_country_id=c.virtuemart_country_id) ';
 //		}
 //		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
 //

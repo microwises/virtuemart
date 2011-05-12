@@ -209,8 +209,8 @@ class VirtueMartModelProduct extends JModel {
 
 			/* Load the categories the product is in */
 			$product->categories = $this->getProductCategories($product_id);
-			$product->category_id = JRequest::getInt('category_id', 0);
-			if (empty($product->category_id) && isset($product->categories[0])) $product->category_id = $product->categories[0];
+			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
+			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
    			if(!$front && !empty($product->categories[0])){
 				$catTable = $this->getTable('category');
@@ -240,7 +240,7 @@ class VirtueMartModelProduct extends JModel {
 				$product->prices = $prices;
 
 				/* Add the product link  */
-				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id.'&category_id='.$product->category_id);
+				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 				/* Load the neighbours */
 				$product->neighbours = $this->getNeighborProducts($product);
@@ -325,7 +325,7 @@ class VirtueMartModelProduct extends JModel {
 	 	 	$product->link = '';
 	 	 	$product->categories = array();
 	 	 	$product->prices = array();
-	 	 	$product->category_id = 0;
+	 	 	$product->virtuemart_category_id = 0;
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
@@ -347,7 +347,7 @@ class VirtueMartModelProduct extends JModel {
 
 		$categories = array();
 		if ($product_id > 0) {
-			$q = 'SELECT `category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = "'.$product_id.'"';
+			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `product_id` = "'.$product_id.'"';
 			$this->_db->setQuery($q);
 			$categories = $this->_db->loadResultArray();
 		}
@@ -402,9 +402,9 @@ class VirtueMartModelProduct extends JModel {
 				foreach ($related_products as $rkey => $related) {
 					$related_products[$rkey]->price = $calculator->getProductPrices($related->product_id);
 					$cats = $this->getProductCategories($related->product_id);
-					if(!empty($cats))$related->category_id = $cats[0]; //else $related->category_id = 0;
+					if(!empty($cats))$related->virtuemart_category_id = $cats[0]; //else $related->virtuemart_category_id = 0;
 					/* Add the product link  */
-					$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$related->product_id.'&category_id='.$related->category_id);
+					$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$related->product_id.'&virtuemart_category_id='.$related->virtuemart_category_id);
 				}
 			}
 
@@ -419,7 +419,7 @@ class VirtueMartModelProduct extends JModel {
 	*
 	* @author RolandD
 	* @access public
-	* @param int $category_id the category ID where to get the products for
+	* @param int $virtuemart_category_id the category ID where to get the products for
 	* @return array containing product objects
 	*/
 	public function getProductsInCategory() {
@@ -443,7 +443,7 @@ class VirtueMartModelProduct extends JModel {
 		//$mainframe = Jfactory::getApplication();
 		//$option = JRequest::getWord('option');
 		//$mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' ) );
-		$category_id = JRequest::getInt('category_id', 0 );
+		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
 
 		$filter_order  = JRequest::getVar('orderby', VmConfig::get('browse_orderby_field','product_id'));
 
@@ -467,9 +467,9 @@ class VirtueMartModelProduct extends JModel {
 			}
 			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 		}
-		if ($category_id>0){
+		if ($virtuemart_category_id>0){
 			$joinCategory = true ;
-			$where[] = ' `#__virtuemart_product_categories`.`category_id` = '.$category_id;
+			$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$virtuemart_category_id;
 		}
 		/* sanitize $filter_order and dir */
 		$browse_orderby_fields = VmConfig::get('browse_orderby_fields') ;
@@ -517,7 +517,7 @@ class VirtueMartModelProduct extends JModel {
 		$query = "SELECT `#__virtuemart_products`.`product_id` FROM `#__virtuemart_products` ";
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_categories` ON `#__virtuemart_products`.`product_id` = `#__virtuemart_product_categories`.`product_id`
-			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`category_id` = `#__virtuemart_product_categories`.`category_id`';
+			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
 		}
 		if ($joinMf == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_products`.`product_id` = `#__virtuemart_product_manufacturers`.`product_id`
@@ -546,7 +546,7 @@ class VirtueMartModelProduct extends JModel {
 			FROM `#__virtuemart_product_categories` x
 			LEFT JOIN `#__virtuemart_products` `p`
 			ON `p`.`product_id` = `x`.`product_id`
-			WHERE `category_id` = ".$product->category_id."
+			WHERE `virtuemart_category_id` = ".$product->virtuemart_category_id."
 			ORDER BY `product_list`, `x`.`product_id`";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('product_id');
@@ -587,13 +587,13 @@ class VirtueMartModelProduct extends JModel {
 		$cat_xref_table = $categoryId? ', `#__virtuemart_product_categories` ':'';
 		$query = 'SELECT `product_id` ';
 		$query .= 'FROM `#__virtuemart_products`'.$cat_xref_table.' WHERE `product_id` > 0 ';
-//	        $query  = 'SELECT `product_sku`,`#__virtuemart_products`.`product_id`, `#__virtuemart_product_categories`.`category_id`,`product_name`, `product_s_desc`, `#__virtuemart_products`.`file_ids`, `product_in_stock`, `product_url` ';
+//	        $query  = 'SELECT `product_sku`,`#__virtuemart_products`.`product_id`, `#__virtuemart_product_categories`.`virtuemart_category_id`,`product_name`, `product_s_desc`, `#__virtuemart_products`.`file_ids`, `product_in_stock`, `product_url` ';
 //	        $query .= 'FROM `#__virtuemart_products`, `#__virtuemart_product_categories`, `#__virtuemart_categories` WHERE ';
 //	        $query .= '(`#__virtuemart_products`.`product_parent_id`="" OR `#__virtuemart_products`.`product_parent_id`="0") ';
 //	        $query .= 'AND `#__virtuemart_products`.`product_id`=`#__virtuemart_product_categories`.`product_id` ';
 			if ($categoryId) {
-				$query .= 'AND `#__virtuemart_categories`.`category_id`=`#__virtuemart_product_categories`.`category_id` ';
-				$query .= 'AND `#__virtuemart_categories`.`category_id`=' . $categoryId . ' ';
+				$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_product_categories`.`virtuemart_category_id` ';
+				$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id`=' . $categoryId . ' ';
 			}
 	        $query .= 'AND `#__virtuemart_products`.`published`="1" ';
 	        $query .= $filter;
@@ -650,7 +650,7 @@ class VirtueMartModelProduct extends JModel {
      	/* Pagination */
      	$this->getPagination();
 
-		$cat_xref_table = (JRequest::getInt('category_id', 0) > 0)? ', `#__virtuemart_product_categories` ':'';
+		$cat_xref_table = (JRequest::getInt('virtuemart_category_id', 0) > 0)? ', `#__virtuemart_product_categories` ':'';
      	$q = 'SELECT `#__virtuemart_products`.`product_id` FROM `#__virtuemart_products`'.$cat_xref_table.' '.$this->getProductListFilter();
 
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
@@ -697,9 +697,9 @@ class VirtueMartModelProduct extends JModel {
 			LEFT OUTER JOIN #__virtuemart_product_categories
 			ON #__virtuemart_products.product_id = #__virtuemart_product_categories.product_id
 			LEFT OUTER JOIN #__virtuemart_categories
-			ON #__virtuemart_product_categories.category_id = #__virtuemart_categories.category_id
+			ON #__virtuemart_product_categories.virtuemart_category_id = #__virtuemart_categories.virtuemart_category_id
 			LEFT OUTER JOIN #__virtuemart_category_categories
-			ON #__virtuemart_categories.category_id = #__virtuemart_category_categories.category_child_id
+			ON #__virtuemart_categories.virtuemart_category_id = #__virtuemart_category_categories.category_child_id
 			LEFT OUTER JOIN #__virtuemart_vendors
 			ON #__virtuemart_products.vendor_id = #__virtuemart_vendors.vendor_id';
     }
@@ -721,8 +721,8 @@ class VirtueMartModelProduct extends JModel {
      	if (JRequest::getInt('product_parent_id', 0) > 0) $filters[] = '#__virtuemart_products.`product_parent_id` = '.JRequest::getInt('product_parent_id');
      	else // $filters[] = '#__virtuemart_products.`product_parent_id` = 0';
      	/* Category ID */
-     	if (JRequest::getInt('category_id', 0) > 0){
-     		$filters[] = '`#__virtuemart_product_categories`.`category_id` = '.JRequest::getInt('category_id');
+     	if (JRequest::getInt('virtuemart_category_id', 0) > 0){
+     		$filters[] = '`#__virtuemart_product_categories`.`virtuemart_category_id` = '.JRequest::getInt('virtuemart_category_id');
      		$filters[] = '`#__virtuemart_products`.`product_id` = `#__virtuemart_product_categories`.`product_id`';
      	}
      	/* Product name */
@@ -797,7 +797,7 @@ class VirtueMartModelProduct extends JModel {
 //    	$this->_db = JFactory::getDBO();
     	$mainframe = Jfactory::getApplication('site');
     	$order = JRequest::getVar('order');
-    	$category_id = JRequest::getInt('category_id');
+    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 
     	/* Check if all the entries are numbers */
 		foreach( $order as $list_id ) {
@@ -810,14 +810,14 @@ class VirtueMartModelProduct extends JModel {
 		/* Get the list of product IDs */
 		$q = "SELECT product_id
 			FROM #__virtuemart_product_categories
-			WHERE category_id = ".$category_id;
+			WHERE virtuemart_category_id = ".$virtuemart_category_id;
 		$this->_db->setQuery($q);
 		$product_ids = $this->_db->loadResultArray();
 
 		foreach( $order as $key => $list_id ) {
 			$q = "UPDATE #__virtuemart_product_categories ";
 			$q .= "SET product_list = ".$list_id;
-			$q .= " WHERE category_id ='".$category_id."' ";
+			$q .= " WHERE virtuemart_category_id ='".$virtuemart_category_id."' ";
 			$q .= " AND product_id ='".$product_ids[$key]."' ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
@@ -832,11 +832,11 @@ class VirtueMartModelProduct extends JModel {
 //    	$this->_db = JFactory::getDBO();
     	$cids = JRequest::getVar('cid');
     	$cid = (int)$cids[0];
-    	$category_id = JRequest::getInt('category_id');
+    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 
     	$q = "SELECT product_id, product_list
     		FROM #__virtuemart_product_categories
-    		WHERE category_id = ".$category_id."
+    		WHERE virtuemart_category_id = ".$virtuemart_category_id."
     		ORDER BY product_list";
     	$this->_db->setQuery($q);
     	$products = $this->_db->loadAssocList('product_id');
@@ -859,7 +859,7 @@ class VirtueMartModelProduct extends JModel {
     	/* Update the current product */
 		$q = "UPDATE #__virtuemart_product_categories
 			SET product_list = ".$products[$prev_id]['product_list']."
-			WHERE category_id = ".$category_id."
+			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND product_id = ".$products[$cid]['product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
@@ -871,7 +871,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Update the previous product */
 		$q = "UPDATE #__virtuemart_product_categories
 			SET product_list = ".$products[$cid]['product_list']."
-			WHERE category_id = ".$category_id."
+			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND product_id = ".$products[$prev_id]['product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
@@ -885,11 +885,11 @@ class VirtueMartModelProduct extends JModel {
 //    	$this->_db = JFactory::getDBO();
     	$cids = JRequest::getVar('cid');
     	$cid = (int)$cids[0];
-    	$category_id = JRequest::getInt('category_id');
+    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 
     	$q = "SELECT product_id, product_list
     		FROM #__virtuemart_product_categories
-    		WHERE category_id = ".$category_id."
+    		WHERE virtuemart_category_id = ".$virtuemart_category_id."
     		ORDER BY product_list";
     	$this->_db->setQuery($q);
     	$products = $this->_db->loadAssocList('product_id');
@@ -912,7 +912,7 @@ class VirtueMartModelProduct extends JModel {
     	/* Update the current product */
 		$q = "UPDATE #__virtuemart_product_categories
 			SET product_list = ".$products[$next_id]['product_list']."
-			WHERE category_id = ".$category_id."
+			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND product_id = ".$products[$cid]['product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
@@ -924,7 +924,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Update the next product */
 		$q = "UPDATE #__virtuemart_product_categories
 			SET product_list = ".$products[$cid]['product_list']."
-			WHERE category_id = ".$category_id."
+			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND product_id = ".$products[$next_id]['product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
@@ -1062,13 +1062,13 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->Query();
 
 			/* Store the new categories */
-			foreach( $data["categories"] as $category_id ) {
-				$this->_db->setQuery('SELECT IF(ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `category_id`='.$category_id );
+			foreach( $data["categories"] as $virtuemart_category_id ) {
+				$this->_db->setQuery('SELECT IF(ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
 				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__virtuemart_product_categories ";
-				$q .= "(category_id,product_id,product_list) ";
-				$q .= "VALUES ('".$category_id."','". $product_data->product_id . "', ".$list_order. ")";
+				$q .= "(virtuemart_category_id,product_id,product_list) ";
+				$q .= "VALUES ('".$virtuemart_category_id."','". $product_data->product_id . "', ".$list_order. ")";
 				$this->_db->setQuery($q);
 				$this->_db->query();
 			}
@@ -1240,7 +1240,7 @@ class VirtueMartModelProduct extends JModel {
 //    * Add a product to the recent products list
 //    * @author RolandD
 //    */
-//    public function addRecentProduct($product_id, $category_id, $maxviewed) {
+//    public function addRecentProduct($product_id, $virtuemart_category_id, $maxviewed) {
 //    	$session = JFactory::getSession();
 //		$recentproducts = $session->get("recentproducts", null);
 //		if (empty($recentproducts)) $recentproducts['idx'] = 0;
@@ -1260,7 +1260,7 @@ class VirtueMartModelProduct extends JModel {
 //    	}
 //    	// add product to recently viewed
 //    	$recentproducts[$recentproducts['idx']]['product_id'] = $product_id;
-//    	$recentproducts[$recentproducts['idx']]['category_id'] = $category_id;
+//    	$recentproducts[$recentproducts['idx']]['virtuemart_category_id'] = $virtuemart_category_id;
 //    	$recentproducts['idx']++;
 //    	//Check to see if we have reached are limit and remove first item
 //    	if($recentproducts['idx'] > $maxviewed+1) {
@@ -1301,13 +1301,13 @@ class VirtueMartModelProduct extends JModel {
 //			// If we have not reached max products add the next product
 //			if ($k < $maxitems) {
 //				$prod_id = $recentproducts[$i]['product_id'];
-//				$category_id = $recentproducts[$i]['category_id'];
+//				$virtuemart_category_id = $recentproducts[$i]['virtuemart_category_id'];
 //				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
 //				$q .= "FROM #__virtuemart_products as p,#__virtuemart_categories as c,#__virtuemart_product_categories as cx ";
 //				$q .= "WHERE p.product_id = '".$prod_id."' ";
-//				$q .= "AND c.category_id = '".$category_id."' ";
+//				$q .= "AND c.virtuemart_category_id = '".$virtuemart_category_id."' ";
 //				$q .= "AND p.product_id = cx.product_id ";
-//				$q .= "AND c.category_id=cx.category_id ";
+//				$q .= "AND c.virtuemart_category_id=cx.virtuemart_category_id ";
 //				$q .= "AND p.published='1' ";
 //				$q .= "AND c.published='1' ";
 //				$q .= "LIMIT 0,1";
@@ -1319,8 +1319,8 @@ class VirtueMartModelProduct extends JModel {
 //					$flypage = $product->category_flypage;
 //					if (empty($flypage)) $flypage = VmConfig::get('flypage');
 //
-//					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&category_id='.$category_id.'&flypage='.$flypage);
-//					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id);
+//					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&product_id='.$prod_id.'&virtuemart_category_id='.$virtuemart_category_id.'&flypage='.$flypage);
+//					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id);
 //					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
 //					$recent[$k]['category_name'] = $product->category_name;
 ////					$recent[$k]['file_ids'] = $product->file_ids;
@@ -1367,7 +1367,7 @@ class VirtueMartModelProduct extends JModel {
 		if (!$product_id) $product_id = JRequest::getInt('product_id', 0);
 
 		//This is one of the dead sins of OOP and MUST NOT be done
-//		$q = "SELECT `p`.*, `x`.`category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
+//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`product_list`, `m`.`manufacturer_id`, `m`.`mf_name`
 //			FROM `#__virtuemart_products` `p`
 //			LEFT JOIN `#__virtuemart_product_categories` x
 //			ON `x`.`product_id` = `p`.`product_id`
@@ -1457,8 +1457,8 @@ class VirtueMartModelProduct extends JModel {
 	$orderbyCfg 	= VmConfig::get('browse_orderby_field');
 	if ($orderby != '' && $orderby != $orderbyCfg ) $orderbyTxt = '&orderby='.$orderby;
 
-	$category_id = JRequest::getInt('category_id', 0 );
-	$fieldLink = '&category_id='.$category_id;
+	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
+	$fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
 	$search = JRequest::getVar('search', '' );
 	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getVar('keyword', '' );
 
@@ -2021,11 +2021,11 @@ class VirtueMartModelProduct extends JModel {
 				break;
 				/* Child product */
 				case 'C':
-					$q='SELECT p.`product_id` , p.`product_name`, x.`category_id` FROM `#__virtuemart_products` as p
+					$q='SELECT p.`product_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`product_id` = p.`product_id`
 					WHERE `published`=1 AND p.`product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
-					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&category_id=' . $result->category_id ), $result->product_name, array ('title' => $result->product_name ) );
+					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $result->product_id . '&virtuemart_category_id=' . $result->virtuemart_category_id ), $result->product_name, array ('title' => $result->product_name ) );
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				break;
 			}

@@ -590,10 +590,10 @@ class VirtueMartModelUserfields extends JModel {
 						$_return['fields'][$_fld->name]['value'], '', $_prefix);
 					break;
 
-				case 'country_id':
+				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
-						// The table data can contain the country_id or the country name
+						// The table data can contain the virtuemart_country_id or the country name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
 					}
@@ -601,13 +601,13 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 
-				case 'state_id':
+				case 'virtuemart_state_id':
 					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderStateList(
 						  $_return['fields'][$_fld->name]['value']
-						// FIXME The value of country_id here is actually a name, so we must translate it
-						, ShopFunctions::getCountryIDByName($_return['fields']['country_id']['value'])
-						, $_prefix.'country_id', false, $_prefix);
-					// The table data can contain the state_id or the state name
+						// FIXME The value of virtuemart_country_id here is actually a name, so we must translate it
+						, ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value'])
+						, $_prefix.'virtuemart_country_id', false, $_prefix);
+					// The table data can contain the virtuemart_state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
 					}

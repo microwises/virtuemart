@@ -99,7 +99,7 @@ class VirtuemartControllerState extends JController {
 	function cancel()
 	{
 		$data = JRequest::get( 'post' );
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"]);
+		$this->setRedirect('index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"]);
 	}
 
 
@@ -120,8 +120,8 @@ class VirtuemartControllerState extends JController {
 		}
 
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=state&task=edit&state_id='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=state&country_id='.$data['country_id'];
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data['virtuemart_country_id'];
 
 		$this->setRedirect($redirection, $msg);
 
@@ -144,7 +144,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_STATES_DELETED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 
@@ -161,7 +161,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 
@@ -178,7 +178,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 

@@ -97,21 +97,21 @@ class virtuemartViewrecommend extends JView {
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
-		$category_id = JRequest::getInt('category_id');
-		if ($category_id == 0 && !empty($product)) {
-			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0];
+		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
+		if ($virtuemart_category_id == 0 && !empty($product)) {
+			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
 		}
 
-		shopFunctionsF::setLastVisitedCategoryId($category_id);
+		shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 		if($category_model){
-			$category = $category_model->getCategory($category_id);
+			$category = $category_model->getCategory($virtuemart_category_id);
 			$this->assignRef('category', $category);
-			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category_id));
+			$pathway->addItem($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id));
 		}
 
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&category_id='.$category_id.'&product_id='.$product->product_id));
+		$pathway->addItem($product->product_name,JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&product_id='.$product->product_id));
 
 		// for askquestion
 		$pathway->addItem( JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
@@ -151,10 +151,10 @@ class virtuemartViewrecommend extends JView {
 	}
 
 	private function showLastCategory($tpl) {
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 

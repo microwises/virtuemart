@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 class TableState extends JTable {
 
 	/** @var int Primary key */
-	var $state_id				= 0;
+	var $virtuemart_state_id				= 0;
 	/** @var integer Country id */
-	var $country_id           	= 0;
+	var $virtuemart_country_id           	= 0;
 	/** @var integer Zone id */
 	var $zone_id           	= 0;
 	/** @var string State name */
@@ -50,7 +50,7 @@ class TableState extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_states', 'state_id', $db);
+		parent::__construct('#__virtuemart_states', 'virtuemart_state_id', $db);
 	}
 
 
@@ -75,7 +75,7 @@ class TableState extends JTable {
 			return false;
 		}
 
-		if (($this->state_name) && ($this->state_id == 0)) {
+		if (($this->state_name) && ($this->virtuemart_state_id == 0)) {
 		    $db =& JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';

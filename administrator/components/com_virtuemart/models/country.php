@@ -100,7 +100,7 @@ class VirtueMartModelCountry extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `country_id` FROM `#__virtuemart_countries`';
+	    $query = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -191,7 +191,7 @@ class VirtueMartModelCountry extends JModel {
 	    return false;
 	}
 
-	return $table->country_id;
+	return $table->virtuemart_country_id;
     }
 
     /**

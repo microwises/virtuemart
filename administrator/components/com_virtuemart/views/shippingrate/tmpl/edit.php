@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country)
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'virtuemart_country_id', 'country_name', $this->rate->shipping_rate_country)
 					. '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
 			</td>
 		</tr>		
@@ -152,7 +152,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<?php echo $this->taxRates;
-				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
+				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'virtuemart_calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
 				?>
 			</td>
 		</tr>

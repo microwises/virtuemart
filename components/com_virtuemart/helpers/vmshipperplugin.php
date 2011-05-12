@@ -572,7 +572,7 @@ abstract class vmShipperPlugin extends JPlugin
 				$_q .= 'OR  (`shipping_rate_zip_start` <= "'.$_address['zip'].'" AND `shipping_rate_zip_end` = "" ) ';
 			}
 			$_q .= 'AND (`shipping_rate_country` = \'\' ';
-			$_q .= 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['country_id'].'[[:>:]]\' ) ';
+			$_q .= 'OR `shipping_rate_country` REGEXP \'[[:<:]]'.$_address['virtuemart_country_id'].'[[:>:]]\' ) ';
 			$_q .= 'ORDER BY (`shipping_rate_value` + `shipping_rate_package_fee`) ';
 			$_q .= 'LIMIT 1';
 		$_db->setQuery($_q);

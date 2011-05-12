@@ -286,7 +286,7 @@ class VirtuemartViewProduct extends JView {
 				$productlist = $this->get('ProductList');
 
 				/* Get the category tree */
-				$categoryId = JRequest::getInt('category_id');
+				$categoryId = JRequest::getInt('virtuemart_category_id');
 //				if(!empty($categoryId)){
 					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 					$this->assignRef('category_tree', $category_tree);
@@ -327,7 +327,7 @@ class VirtuemartViewProduct extends JView {
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-					$product->categoriesList = modelfunctions::buildGuiList('category_id','#__virtuemart_product_categories','product_id',$product->product_id,'category_name','#__virtuemart_categories','category_id');
+					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','product_id',$product->product_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
 
 //					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
@@ -399,7 +399,7 @@ class VirtuemartViewProduct extends JView {
 		$taxrates = array();
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
 		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
+			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, 'product_tax_id');
 		}
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
 		return $listHTML;
@@ -425,7 +425,7 @@ class VirtuemartViewProduct extends JView {
 		$discountrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
 //		$discountrates[] = JHTML::_('select.option', 'override', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
 		foreach($discounts as $discount){
-			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
+			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
 		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;

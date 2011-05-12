@@ -174,10 +174,10 @@ class VirtueMartModelMedia extends JModel {
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
-    	$cat_id = JRequest::getVar('category_id',0);
+    	$cat_id = JRequest::getVar('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
     		$query = 'SELECT `file_ids` as file_id FROM `#__virtuemart_category_medias` ';
-    		$whereItems[] = '`category_id` = "'.$cat_id.'"';
+    		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 

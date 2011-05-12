@@ -1,7 +1,7 @@
 
 
-ALTER TABLE `jos_vm_user_info` CHANGE `state_id` `state_id` INT( 5 ) NOT NULL ;
-ALTER TABLE `jos_vm_user_info` CHANGE `country_id` `country_id` INT( 5 ) NOT NULL;
+ALTER TABLE `jos_vm_user_info` CHANGE `virtuemart_state_id` `virtuemart_state_id` INT( 5 ) NOT NULL ;
+ALTER TABLE `jos_vm_user_info` CHANGE `virtuemart_country_id` `virtuemart_country_id` INT( 5 ) NOT NULL;
 
 
 ALTER TABLE `jos_vm_product_media_xref` ADD UNIQUE KEY `i_product_id` (`product_id`,`file_ids`);

@@ -122,7 +122,7 @@ class VirtueMartModelInventory extends JModel {
      	$filters = array();
      	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_inventory').'%');
      	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
-     	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '`#__virtuemart_categories`.`category_id` = '.JRequest::getInt('category_id');
+     	if (JRequest::getInt('virtuemart_category_id', 0) > 0) $filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.JRequest::getInt('virtuemart_category_id');
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
      	return ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;

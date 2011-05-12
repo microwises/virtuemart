@@ -15,7 +15,7 @@ INSERT INTO `#__virtuemart_permgroups` (`group_id`, `group_name`, `group_level`)
 -- Dumping data for table `#__virtuemart_countries`
 --
 
-INSERT INTO `#__virtuemart_countries` (`country_id`, `zone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
+INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `zone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
 (1, 1, 'Afghanistan', 'AFG', 'AF'),
 (2, 1, 'Albania', 'ALB', 'AL'),
 (3, 1, 'Algeria', 'DZA', 'DZ'),
@@ -460,7 +460,7 @@ INSERT INTO `#__virtuemart_shoppergroups` (`shopper_group_id`, `vendor_id`, `sho
 --
 
 
-INSERT INTO `#__virtuemart_states` (`state_id`, `country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
+INSERT INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_country_id`, `zone_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
 (1, 223, 0, 'Alabama', 'ALA', 'AL', 1),
 (2, 223, 0, 'Alaska', 'ALK', 'AK', 1),
 (3, 223, 0, 'Arizona', 'ARZ', 'AZ', 1),

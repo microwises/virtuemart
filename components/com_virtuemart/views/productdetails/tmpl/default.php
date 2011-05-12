@@ -41,11 +41,11 @@ if (empty ( $this->product )) {
 		<div class="product-neighbours">
 		<?php
 		if (! empty ( $this->product->neighbours ['previous'] )) {
-			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['previous'] ['product_id'] . '&category_id=' . $this->product->category_id );
+			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['previous'] ['product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
 			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'] ['product_name'], array ('class' => 'previous-page' ) );
 		}
 		if (! empty ( $this->product->neighbours ['next'] )) {
-			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['next'] ['product_id'] . '&category_id=' . $this->product->category_id );
+			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $this->product->neighbours ['next'] ['product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
 			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next-page' ) );
 		}
 		?>
@@ -194,7 +194,7 @@ if (empty ( $this->product )) {
 						<input type="hidden" name="product_id[]" value="<?php echo $this->product->product_id ?>" />
 						<?php /** @todo Handle the manufacturer view */ ?>
 						<input type="hidden" name="manufacturer_id" value="<?php echo $this->product->manufacturer_id ?>" />
-						<input type="hidden" name="category_id[]" value="<?php echo $this->product->category_id ?>" />
+						<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
 					</form>
 
 				<div class="clear"></div>
@@ -210,7 +210,7 @@ if (empty ( $this->product )) {
 				<?php } ?>
 
 				<?php // Ask a question about this product
-				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id.'&tmpl=component'); ?>
+				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
 					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				</div>
@@ -399,7 +399,7 @@ if (empty ( $this->product )) {
 			}
 
 			// Category Link
-			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
+			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id );
 
 				// Show Category ?>
 				<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
@@ -546,7 +546,7 @@ if (empty ( $this->product )) {
 
 						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
 						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
-						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&category_id='.$this->product->category_id) ; ?>" name="reviewForm" id="reviewform">
+						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$this->product->product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
 							<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 								<tr>
 								<?php
@@ -581,7 +581,7 @@ if (empty ( $this->product )) {
 							</div>
 							<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
 							<input type="hidden" name="option" value="com_virtuemart" />
-							<input type="hidden" name="category_id" value="<?php echo JRequest::getInt('category_id'); ?>" />
+							<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
 							<input type="hidden" name="review_id" value="0" />
 							<input type="hidden" name="task" value="review" />
 						</form>

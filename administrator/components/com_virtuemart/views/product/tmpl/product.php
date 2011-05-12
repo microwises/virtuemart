@@ -29,7 +29,7 @@ $now = getdate();
 $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
-$category_id = JRequest::getInt('category_id', false);
+$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -38,7 +38,7 @@ $category_id = JRequest::getInt('category_id', false);
 		<tr>
 			<td align="left" width="100%">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
-				<select class="inputbox" id="category_id" name="category_id" onchange="document.adminForm.submit(); return false;">
+				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="document.adminForm.submit(); return false;">
 					<?php echo $this->category_tree; ?>
 				</select>
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
@@ -75,7 +75,7 @@ $pagination = $this->pagination;
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
-		if( $category_id ) { ?>
+		if( $virtuemart_category_id ) { ?>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
 				<?php echo JHTML::_('grid.order', $productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
@@ -121,11 +121,11 @@ $pagination = $this->pagination;
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Category name -->
-				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&category_id='.$product->category_id.'&option='.$option), $product->category_name);
+				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option='.$option), $product->category_name);
 					echo $product->categoriesList;
 				?></td>
 				<!-- Reorder only when category ID is present -->
-				<?php if( $category_id ) { ?>
+				<?php if( $virtuemart_category_id ) { ?>
 					<td align="center" class="order">
 						<span><?php echo $pagination->orderUpIcon( $i, $i > 0);?></span>
 						<span><?php echo $pagination->orderDownIcon( $i, $pagination->total, $i-1 <= count($productlist));?></span>

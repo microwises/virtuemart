@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCountry extends JTable {
 
 	/** @var int Primary key */
-	var $country_id				= 0;
+	var $virtuemart_country_id				= 0;
 	/** @var integer Zone id */
 	var $zone_id           		= 0;
 	/** @var string Country name */
@@ -53,7 +53,7 @@ class TableCountry extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_countries', 'country_id', $db);
+		parent::__construct('#__virtuemart_countries', 'virtuemart_country_id', $db);
 	}
 
 
@@ -81,11 +81,11 @@ class TableCountry extends JTable {
 		if (($this->country_name)) {
 		    $db = JFactory::getDBO();
 
-			$q = 'SELECT `country_id` FROM `#__virtuemart_countries` ';
+			$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
             $db->setQuery($q);
-		    $country_id = $db->loadResult();
-		    if (!empty($country_id) && $country_id!=$this->country_id) {
+		    $virtuemart_country_id = $db->loadResult();
+		    if (!empty($virtuemart_country_id) && $virtuemart_country_id!=$this->virtuemart_country_id) {
 				$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS'));
 				return false;
 			}

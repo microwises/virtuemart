@@ -6,7 +6,7 @@
 --  Dumping data for `#__virtuemart_calcs`
 --
 
-INSERT IGNORE INTO `#__virtuemart_calcs` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `created_on`, `modified_on`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
+INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `virtuemart_vendor_id`, `calc_name`, `calc_descr`, `calc_kind`, `calc_value_mathop`, `calc_value`, `calc_currency`, `ordering`, `calc_shopper_published`, `calc_vendor_published`, `publish_up`, `publish_down`, `created_on`, `modified_on`, `calc_qualify`, `calc_affected`, `calc_amount_cond`, `calc_amount_dimunit`, `published`, `shared`) VALUES
 (1, 1, 'Tax 9.25%', 'A simple tax for all products regardless the category', 'Tax', '+%', 9.25, '47', 0, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0),
 (2, 1, 'Discount for all Hand Tools', 'Discount for all Hand Tools 2 euro', 'DBTax', '-', 2, '47', 1, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0),
 (3, 1, 'Duty for Powertools', 'Ah tax that only effects a certain category, Power Tools, and Shoppergroup', 'Tax', '+%', 20, '47', 0, 1, 1, '2010-02-21 00:00:00', NULL, NULL, NULL, 0, 0, 0, '', 1, 0);
@@ -16,7 +16,7 @@ INSERT IGNORE INTO `#__virtuemart_calcs` (`calc_id`, `calc_vendor_id`, `calc_nam
 -- Dumping data for table `#__virtuemart_calc_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_calc_categories` (`id`, `calc_rule_id`, `calc_category`) VALUES
+INSERT IGNORE INTO `#__virtuemart_calc_categories` (`id`, `virtuemart_calc_id`, `virtuemart_category_id`) VALUES
 (2, 3, 1),
 (5, 4, 2);
 
@@ -25,7 +25,7 @@ INSERT IGNORE INTO `#__virtuemart_calc_categories` (`id`, `calc_rule_id`, `calc_
 -- Dumping data for table `#__virtuemart_calc_shoppergroups`
 --
 
-INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `calc_rule_id`, `calc_shopper_group`) VALUES
+INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `virtuemart_calc_id`, `virtuemart_shoppergroup_id`) VALUES
 (11, 0, 5);
 
 
@@ -33,7 +33,7 @@ INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `calc_rule_id`, `ca
 -- Dumping data for table `#__virtuemart_categories`
 --
 
-INSERT INTO `#__virtuemart_categories` (`category_id`, `vendor_id`, `category_name`, `category_description`, `published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
+INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `vendor_id`, `category_name`, `category_description`, `published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
 (1, 1, 'Hand Tools', 'Hand Tools', 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', '', '', ''),
 (2, 1, 'Power Tools', 'Power Tools', 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
 (3, 1, 'Garden Tools', 'Garden Tools', 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),
@@ -56,7 +56,7 @@ INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `c
 -- Dumping data for table `#__virtuemart_category_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`category_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `file_ids`) VALUES
 (NULL, 1, 1),
 (NULL, 2, 2),
 (NULL, 3, 3),
@@ -177,7 +177,7 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`product_id`, `file_ids`
 -- Dumping data for table `#__virtuemart_product_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_categories` (`category_id`, `product_id`, `product_list`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `product_id`, `product_list`) VALUES
 (1, 1, NULL),
 (3, 2, NULL),
 (3, 3, NULL),

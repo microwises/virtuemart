@@ -103,7 +103,7 @@ class VirtuemartViewShippingRate extends JView {
 		$taxrates = array();
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'shipping_rate_vat_id' );
 		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'shipping_rate_vat_id');
+			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, 'shipping_rate_vat_id');
 		}
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'shipping_rate_vat_id', 'multiple', 'shipping_rate_vat_id', 'text', $selected );
 		return $listHTML;

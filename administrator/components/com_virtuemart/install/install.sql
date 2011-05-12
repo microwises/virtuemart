@@ -9,8 +9,8 @@
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
-  `calc_id` SERIAL,
-  `calc_vendor_id` int(11) NOT NULL COMMENT 'Belongs to vendor',
+  `virtuemart_calc_id` SERIAL,
+  `virtuemart_vendor_id` int(11) NOT NULL COMMENT 'Belongs to vendor',
   `calc_name` text NOT NULL COMMENT 'Name of the rule',
   `calc_descr` text NOT NULL COMMENT 'Description',
   `calc_kind` text NOT NULL COMMENT 'Discount/Tax/Margin/Commission',
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Affects all vendors',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`calc_id`)
+  PRIMARY KEY (`virtuemart_calc_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -45,10 +45,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
   `id` SERIAL,
-  `calc_rule_id` int(11) NOT NULL DEFAULT '0',
-  `calc_category` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_calc_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_calc_rule_id` (`calc_rule_id`,`calc_category`)
+  UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_shoppergroups` (
   `id` SERIAL,
-  `calc_rule_id` int(11) NOT NULL DEFAULT '0',
-  `calc_shopper_group` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_calc_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_calc_rule_id` (`calc_rule_id`,`calc_shopper_group`)
+  UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_shoppergroup_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -73,24 +73,24 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_shoppergroups` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_countries` (
   `id` SERIAL,
-  `calc_rule_id` int(11) NOT NULL DEFAULT '0',
-  `calc_country` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_calc_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_country_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_calc_rule_id` (`calc_rule_id`,`calc_country`)
+  UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_country_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_calc_states`
+-- Table structure for table `#__virtuemart_state_ids`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_state_ids` (
   `id` SERIAL,
-  `calc_rule_id` int(11) NOT NULL DEFAULT '0',
-  `calc_state` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_calc_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_state_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_calc_rule_id` (`calc_rule_id`,`calc_state`)
+  UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_state_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_carts` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
-  `category_id` SERIAL,
+  `virtuemart_category_id` SERIAL,
   `vendor_id` int(11) NOT NULL DEFAULT '0',
   `category_name` varchar(128) NOT NULL DEFAULT '',
   `category_description` text,
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `metaauthor` text NOT NULL,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`category_id`),
+  PRIMARY KEY (`virtuemart_category_id`),
   KEY `idx_category_vendor_id` (`vendor_id`),
   KEY `idx_category_name` (`category_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Product Categories are stored here' AUTO_INCREMENT=1 ;
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
   `id` SERIAL,
-  `category_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
-  `country_id` SERIAL,
+  `virtuemart_country_id` SERIAL,
   `zone_id` int(11) NOT NULL DEFAULT '1',
   `country_name` varchar(64) DEFAULT NULL,
   `country_3_code` char(3) DEFAULT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`country_id`),
+  PRIMARY KEY (`virtuemart_country_id`),
   KEY `idx_country_name` (`country_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Country records' AUTO_INCREMENT=1 ;
 
@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
 -- 
 
 
-CREATE TABLE `#__virtuemart_currencies` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `currency_id` SERIAL,
   `vendor_id` int(11) NOT NULL DEFAULT '1',
   `currency_name` varchar(64) DEFAULT NULL,
@@ -688,10 +688,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
-  `category_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
   `product_id` int(11) NOT NULL DEFAULT '0',
   `product_list` int(11) DEFAULT NULL,
-  KEY `idx_product_category_xref_category_id` (`category_id`),
+  KEY `idx_product_category_xref_virtuemart_category_id` (`virtuemart_category_id`),
   KEY `idx_product_category_xref_product_id` (`product_id`),
   KEY `idx_product_category_xref_product_list` (`product_list`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps Products to Categories';
@@ -978,8 +978,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
-  `state_id` SERIAL,
-  `country_id` int(11) NOT NULL DEFAULT '1',
+  `virtuemart_state_id` SERIAL,
+  `virtuemart_country_id` int(11) NOT NULL DEFAULT '1',
   `zone_id` int(4) NOT NULL,
   `state_name` varchar(64) DEFAULT NULL,
   `state_3_code` char(3) DEFAULT NULL,
@@ -987,10 +987,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`state_id`),
-  UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
-  UNIQUE KEY `state_2_code` (`country_id`,`state_2_code`),
-  KEY `idx_country_id` (`country_id`)
+  PRIMARY KEY (`virtuemart_state_id`),
+  UNIQUE KEY `state_3_code` (`virtuemart_country_id`,`state_3_code`),
+  UNIQUE KEY `state_2_code` (`virtuemart_country_id`,`state_2_code`),
+  KEY `idx_virtuemart_country_id` (`virtuemart_country_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1112,8 +1112,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
   `address_1` varchar(64) NOT NULL DEFAULT '',
   `address_2` varchar(64) DEFAULT NULL,
   `city` varchar(32) NOT NULL DEFAULT '',
-  `state_id` int(5) NOT NULL DEFAULT '0',
-  `country_id` int(5) NOT NULL DEFAULT '0',
+  `virtuemart_state_id` int(5) NOT NULL DEFAULT '0',
+  `virtuemart_country_id` int(5) NOT NULL DEFAULT '0',
   `zip` varchar(32) NOT NULL DEFAULT '',
   `extra_field_1` varchar(255) DEFAULT NULL,
   `extra_field_2` varchar(255) DEFAULT NULL,

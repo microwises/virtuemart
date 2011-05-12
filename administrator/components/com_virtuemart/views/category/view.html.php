@@ -51,14 +51,14 @@ class VirtuemartViewCategory extends JView {
 
 	       	$model->addImagesToCategories($category);
 
-        	$isNew = ($category->category_id < 1);
+        	$isNew = ($category->virtuemart_category_id < 1);
 
 			if ( $isNew ) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_categories_48');
 			} else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_categories_48');
 
-				$relationInfo = $model->getRelationInfo( $category->category_id );
+				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
 
@@ -67,7 +67,7 @@ class VirtuemartViewCategory extends JView {
                         JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
-			$parent = $model->getParentCategory( $category->category_id );
+			$parent = $model->getParentCategory( $category->virtuemart_category_id );
 			$this->assignRef('parent', $parent);
 
 			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -82,7 +82,7 @@ class VirtuemartViewCategory extends JView {
 			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 			$this->assignRef('productLayouts', $productLayouts);
 
-			$categorylist = ShopFunctions::categoryListTree(array($parent->category_id));
+			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id));
 
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);

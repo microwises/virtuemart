@@ -39,7 +39,7 @@ class VirtuemartViewState extends JView {
 		$model = $this->getModel();
 		$zoneModel = $this->getModel('ShippingZone');
 
-		$stateId = JRequest::getInt('state_id', null);
+		$stateId = JRequest::getInt('virtuemart_state_id', null);
 		$model->setId($stateId);
 		$state =& $model->getSingleState();
 
@@ -49,9 +49,9 @@ class VirtuemartViewState extends JView {
 		$this->assignRef('published',	$published);
 
 
-		$countryId = JRequest::getInt('country_id', 0);
-		if(empty($countryId)) $countryId = $state->country_id;
-		$this->assignRef('country_id',	$countryId);
+		$countryId = JRequest::getInt('virtuemart_country_id', 0);
+		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
+		$this->assignRef('virtuemart_country_id',	$countryId);
 
 
         $isNew = (count($state) < 1);
