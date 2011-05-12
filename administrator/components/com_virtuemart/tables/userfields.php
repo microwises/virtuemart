@@ -55,7 +55,7 @@ class TableUserfields extends JTable {
 	/** @var int */
 	var $default		= 0;
 	/** @var boolean True if publised*/
-	var $enabled		= 1;
+	var $published		= 1;
 	/** @var boolean True to display in registration form*/
 	var $registration	= 0;
 	/** @var boolean True to display in shipping form*/

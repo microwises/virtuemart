@@ -794,7 +794,7 @@ class VirtueMartCart  {
 				// Fill the cart from the contents of the field cart_content, which holds a serialized array
 				$contents = unserialize($savedcart->cart_content);
 
-				// Now check if all products are still enabled and existant
+				// Now check if all products are still published and existant
 				$products_in_cart = array();
 				for ($i=0; $i < $contents["idx"]; $i++) {
 					$products_in_cart[$contents[$i]['product_id']] = intval($contents[$i]['product_id']);
@@ -804,7 +804,7 @@ class VirtueMartCart  {
 					$q = 'SELECT `product_id`
 						FROM #__virtuemart_products
 						WHERE `product_id` IN ('.implode(',', $products_in_cart ).')
-						AND enabled = 0';
+						AND published = 0';
 					$db->setQuery($q);
 					$remove_products = $db->loadResultArray();
 				}

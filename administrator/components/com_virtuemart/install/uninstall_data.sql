@@ -39,5 +39,5 @@ DELETE FROM `#__virtuemart_order_history`;
 DELETE FROM `#__virtuemart_order_items`;
 DELETE FROM `#__virtuemart_order_items`;
 DELETE FROM `#__virtuemart_order_userinfos`;
-DELETE FROM `#__vm_waiting_list`;
+DELETE FROM `#__virtuemart_waitingusers`;
 DELETE FROM `#__virtuemart_shippingzones`;

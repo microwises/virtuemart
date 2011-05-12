@@ -40,8 +40,8 @@ class TableState extends JTable {
 	var $state_3_code         	= '';
     /** @var char 2 character state code */
 	var $state_2_code         	= '';
-	/** @var int enabled or unpublished */
-	var $enabled         		= 1;
+	/** @var int published or unpublished */
+	var $published         		= 1;
 
 
 	/**

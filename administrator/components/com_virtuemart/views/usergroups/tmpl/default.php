@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 			
 			$row = $this->usergroups[$i];
 			$checked = JHTML::_('grid.id', $i, $row->group_id);
-//			$enabled = JHTML::_('grid.enabled', $row, $i);
+//			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=usergroups&task=edit&cid[]=' . $row->group_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">

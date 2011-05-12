@@ -35,7 +35,7 @@ class VirtueMartModelWaitingList extends JModel {
 	*/
 	public function getWaitingusers() {
 		$db = JFactory::getDBO();
-		$q = 'SELECT name, username, user_id, notify_email, notified, notify_date FROM `#__vm_waiting_list`
+		$q = 'SELECT name, username, user_id, notify_email, notified, notify_date FROM `#__virtuemart_waitingusers`
 				LEFT JOIN `#__users` ON `user_id` = `id`
 				WHERE `product_id`=' . JRequest::getInt('product_id');
 		$db->setQuery($q);
@@ -60,7 +60,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$vars = array();
 
 		$db = JFactory::getDBO();
-		$q = "SELECT * FROM #__vm_waiting_list ";
+		$q = "SELECT * FROM #__virtuemart_waitingusers ";
 		$q .= "WHERE notified = '0' AND product_id = ".$product_id;
 		$db->setQuery($q);
 		$waiting_users = $db->loadObjectList();
@@ -89,7 +89,7 @@ class VirtueMartModelWaitingList extends JModel {
 //	public function update($shopper_email,$product_id) {
 //		$db = JFactory::getDBO();
 //
-//		$q = "UPDATE #__vm_waiting_list SET notified='1' WHERE ";
+//		$q = "UPDATE #__virtuemart_waitingusers SET notified='1' WHERE ";
 //		$q .= "notify_email = ".$db->Quote($shopper_email)." AND ";
 //		$q .= "product_id = ".$product_id;
 //		$db->setQuery($q);

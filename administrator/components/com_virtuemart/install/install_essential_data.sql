@@ -9,7 +9,7 @@
 --
 -- Dumping data for table `#__virtuemart_adminmenuentries`
 --
-INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `enabled`, `tooltip`, `view`, `task`) VALUES
+INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
 (null, 1, 0, 'COM_VIRTUEMART_CATEGORY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 1, 1, '', 'category', ''),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'product', 'product'),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_CUSTOM_LIST_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'custom', ''),
@@ -46,7 +46,7 @@ INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `n
 -- Dumping data for table `#__virtuemart_modules`
 --
 
-INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_description`, `module_perms`, `enabled`, `is_admin`, `list_order`) VALUES
+INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'product', 'Here you can administer your online catalog of products.  Categories , Products (view=product), Attributes  ,Product Types      Product Files (view=media), Inventory  , Calculation Rules ,Customer Reviews  ', 'storeadmin,admin', 1, '1', 1),
 (2, 'order', 'View Order and Update Order Status:    Orders , Coupons , Revenue Report ,Shopper , Shopper Groups ', 'admin,storeadmin', 1, '1', 2),
 (3, 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 1, '1', 3),
@@ -76,7 +76,7 @@ INSERT INTO `#__virtuemart_orderstates` (`order_status_id`, `order_status_code`,
 -- Dumping data for table `#__virtuemart_userfields`
 --
 
-INSERT INTO `#__virtuemart_userfields` (`fieldid`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `enabled`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `vendor_id`, `params`) VALUES
+INSERT INTO `#__virtuemart_userfields` (`fieldid`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `vendor_id`, `params`) VALUES
 (null, 'email', 'COM_VIRTUEMART_REGISTER_EMAIL', '', 'emailaddress', 100, 30, 1, 2, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'title', 'COM_VIRTUEMART_SHOPPER_FORM_TITLE', '', 'select', 0, 0, 0, 8, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'password', 'COM_VIRTUEMART_SHOPPER_FORM_PASSWORD_1', '', 'password', 25, 30, 1, 4, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),

@@ -56,9 +56,9 @@ AdminMenuHelper::startAdminArea();
 		for ($i=0, $n=count( $this->shippingRates ); $i < $n; $i++) {
 			$row =& $this->shippingRates[$i];
 			/**
-			 * @todo Add to database layout enabled column
+			 * @todo Add to database layout published column
 			 */
-			$row->enabled = 1;
+			$row->published = 1;
 			$checked = JHTML::_('grid.id', $i, $row->shipping_rate_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingrate&task=edit&cid[]=' . $row->shipping_rate_id);
 			?>

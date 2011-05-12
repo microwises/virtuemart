@@ -54,7 +54,7 @@ AdminMenuHelper::startAdminArea();
 		$row = $this->countries[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->country_id);
-		$enabled = JHTML::_('grid.enabled', $row, $i);
+		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->country_id);
 		$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&country_id=' . $row->country_id);
 		?>
@@ -76,7 +76,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo $row->country_3_code ; ?>
 		</td>
 		<td align="center">
-			<?php echo $enabled; ?>
+			<?php echo $published; ?>
 		</td>
 	    </tr>
 		<?php

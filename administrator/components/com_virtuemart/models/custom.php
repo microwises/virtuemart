@@ -127,7 +127,7 @@ class VirtueMartModelCustom extends JModel {
     function getProductCustoms($product_id){
 
 		$query='SELECT * FROM `#__virtuemart_customfields`
-		left join `#__vm_custom_field_xref_product` on  `#__vm_custom_field_xref_product`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
+		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
 		and `product_id`='.$product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
@@ -281,7 +281,7 @@ class VirtueMartModelCustom extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be enabled, false otherwise.
+     * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)
@@ -293,7 +293,7 @@ class VirtueMartModelCustom extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Kohl Patrick
-     * @param boolean $publishId True is the ids should be enabled, false otherwise.
+     * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function toggle($field)
@@ -316,20 +316,20 @@ class VirtueMartModelCustom extends JModel {
 			$this->_db->query();
 			$custom_field_id = mysql_insert_id();
 			$newIds[]=$custom_field_id;
-			$q = 'REPLACE INTO `#__vm_custom_field_xref_product` ( `custom_field_id` , `product_id`  )';
+			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `custom_field_id` , `product_id`  )';
 			$q .= " VALUES( '".$custom_field_id."', '". $product_id ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
 
 		// slect all custom_field_id from product
-		$q="select custom_field_id from `#__vm_custom_field_xref_product` where `product_id`=".$product_id ;
+		$q="select custom_field_id from `#__virtuemart_product_customfields` where `product_id`=".$product_id ;
 		$this->_db->setQuery($q);
 		$Ids = $this->_db->loadResultArray();
 		// delete from database old unused product custom fields
 		$deleteIds = array_diff(  $Ids,$newIds);
 		$id = '('.implode (',',$deleteIds).')';
-				$this->_db->setQuery('DELETE from `#__vm_custom_field_xref_product` WHERE `custom_field_id` in  ' . $id);
+				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `custom_field_id` in  ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

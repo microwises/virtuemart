@@ -223,7 +223,7 @@ class VirtueMartModelState extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be enabled, false otherwise.
+     * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	function publish($publishId = false)
@@ -248,17 +248,17 @@ class VirtueMartModelState extends JModel {
 	}
 
 	/**
-	 * Tests if a state and country fits together and if they are enabled
+	 * Tests if a state and country fits together and if they are published
 	 *
 	 * @author Max Milbers
 	 * @return String Attention, this function gives a 0=false back in case of success
 	 */
 	public function testStateCountry($countryId,$stateId)
 	{
-		//Test if id is enabled
+		//Test if id is published
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `country_id`= "'.$countryId.'" AND `enabled`="1"';
+		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){
 			//Test if country has states
@@ -266,7 +266,7 @@ class VirtueMartModelState extends JModel {
 			$db->setQuery($q);
 			if($db->loadResult()){
 				//Test if state_id fits to country_id
-				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `enabled`="1"';
+				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `published`="1"';
 				$db->setQuery($q);
 				if($db->loadResult()){
 					return 0;

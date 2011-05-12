@@ -46,5 +46,5 @@ DROP TABLE
 `#__virtuemart_userinfos`, 
 `#__virtuemart_user_shoppergroups`, 
 `#__virtuemart_vendors`, 
-`#__vm_waiting_list`, 
+`#__virtuemart_waitingusers`, 
 `#__virtuemart_shippingzones`;

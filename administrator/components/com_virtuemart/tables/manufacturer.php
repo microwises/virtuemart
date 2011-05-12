@@ -41,8 +41,8 @@ class TableManufacturer extends JTable {
     /** @var string manufacturer URL */
 	var $mf_url = '';
 
-	/** @var int enabled or unpublished */
-	var $enabled = 1;
+	/** @var int published or unpublished */
+	var $published = 1;
               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

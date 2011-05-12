@@ -39,13 +39,13 @@ $mainframe = JFactory::getApplication();
 	<table class="adminform">
 		<tr>
 			<td class="key" style="width: 150px;">
-				<label for="enabled">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
 				</label>
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist', 'enabled', $this->category->enabled, $this->category->enabled);?>
+				<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>
 				</fieldset>
 			</td>
 		</tr>

@@ -189,7 +189,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	public function getPayms($onlyPublished=false, $noLimit=false){
 		$query = 'SELECT * FROM `#__virtuemart_paymentmethods` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_paymentmethods`.`enabled` = 1';
+			$query .= 'WHERE `#__virtuemart_paymentmethods`.`published` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_paymentmethods`.`paym_name`';
 		if ($noLimit) {
@@ -220,14 +220,14 @@ class VirtueMartModelPaymentmethod extends JModel
 				/* Write the first 5 accepted creditcards in the list */
 				$data->paymCreditCardList = modelfunctions::buildGuiList('paym_accepted_credit_card','#__virtuemart_paymentmethod_creditcards','paym_id',$data->paym_id,'creditcard_name','#__virtuemart_creditcards','creditcard_id');
 
-				/* Add enabled from table plugins obsolete */
+				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
 //				$this->_db->setQuery($q);
 //				$paym_jplugin_id = $this->_db->loadResult();
 //
-//				$q = 'SELECT `enabled` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
+//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
 //				$this->_db->setQuery($q);
-//				$data->enabled = $this->_db->loadResult();
+//				$data->published = $this->_db->loadResult();
 			}
 
 		}
@@ -307,7 +307,7 @@ class VirtueMartModelPaymentmethod extends JModel
      * @author Max Milbers
      *
      */
-	public function enabled( $row, $i, $variable = 'enabled' )
+	public function published( $row, $i, $variable = 'published' )
 	{
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
@@ -357,7 +357,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	 * This function does change the table plugin and NOT the table paymentmethod!
      *
      * @author Max Milbers
-     * @param boolean $publish True is the ids should be enabled, false otherwise.
+     * @param boolean $publish True is the ids should be published, false otherwise.
      * @param the ids to alter
      * @return boolean True is the delete was successful, false otherwise.
      */

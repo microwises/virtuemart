@@ -69,7 +69,7 @@ AdminMenuHelper::startAdminArea();
 		$row = $this->manufacturers[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->manufacturer_id);
-		$enabled = JHTML::_('grid.enabled', $row, $i);
+		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&manufacturer_id=' . $row->manufacturer_id);
 
 		?>
@@ -91,7 +91,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo $row->mf_url; ?>
 		</td>
 		<td align="center">
-			<?php echo $enabled; ?>
+			<?php echo $published; ?>
 		</td>
 	    </tr>
 		<?php

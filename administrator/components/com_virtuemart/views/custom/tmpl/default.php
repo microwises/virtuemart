@@ -75,8 +75,8 @@ $pagination = $this->pagination;
 		foreach ($customs as $key => $custom) {
 
 			$checked = JHTML::_('grid.id', $i , $custom->custom_id);
-			if (!is_null($custom->custom_id)) $enabled = JHTML::_('grid.enabled', $custom, $i );
-			else $enabled = '';
+			if (!is_null($custom->custom_id)) $published = JHTML::_('grid.published', $custom, $i );
+			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
@@ -98,7 +98,7 @@ $pagination = $this->pagination;
 					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->admin_only  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
 				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle_is_hidden')" title="<?php echo ($custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->is_hidden  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
-				<td><?php echo $enabled; ?></td>
+				<td><?php echo $published; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

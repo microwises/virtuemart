@@ -105,8 +105,8 @@ $j15 = VmConfig::isJ15();
 				JHTML::_('grid.id', $i, $row->fieldid);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->fieldid);
 			$required = $this->toggle($row->required, $i, 'required', $coreField);
-//			$enabled = JHTML::_('grid.enabled', $row, $i);
-			$enabled = $this->toggle($row->enabled, $i, 'enabled', $coreField);
+//			$published = JHTML::_('grid.published', $row, $i);
+			$published = $this->toggle($row->published, $i, 'published', $coreField);
 			$registration = $this->toggle($row->registration, $i, 'registration', $coreField);
 			$shipping = $this->toggle($row->shipping, $i, 'shipping', $coreField);
 			$account = $this->toggle($row->account, $i, 'account', $coreField);
@@ -133,7 +133,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo $required; ?>
 				</td>
 				<td align="center">
-					<?php echo $enabled; ?>
+					<?php echo $published; ?>
 				</td>
 				<td align="center">
 					<?php echo $registration; ?>

@@ -125,7 +125,7 @@ class VirtuemartViewUserfields extends JView {
 
 			// Toggles
 			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['enabled']    = JHTML::_('select.booleanlist', 'enabled',    $notoggle, $userField->enabled,    'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
@@ -183,13 +183,13 @@ class VirtuemartViewUserfields extends JView {
 	{
 
 		$img 	= $field ? $imgY : $imgX;
-		if ($toggle == 'enabled') { // Stay compatible with grid.enabled
+		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
 			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_published') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 

@@ -32,7 +32,7 @@ class TableModule extends JTable
         var $module_perms  = '';
   
 	/** @var int Flag if module is active */
-	var $enabled  = 0;
+	var $published  = 0;
 	
     /** @var int Site module or Admin module */
 	var $is_admin  = 0;

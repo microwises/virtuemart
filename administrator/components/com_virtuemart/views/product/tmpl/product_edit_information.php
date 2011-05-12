@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</td>
 					<td width="79%">
 						<fieldset class="radio">
-						<?php echo JHTMLSelect::booleanlist('enabled', null, $this->product->enabled); ?>
+						<?php echo JHTMLSelect::booleanlist('published', null, $this->product->published); ?>
 						</fieldset>
 					</td>
 				</tr>

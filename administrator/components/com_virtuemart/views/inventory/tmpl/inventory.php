@@ -50,7 +50,7 @@ AdminMenuHelper::startAdminArea();
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_INVENTORY_STOCK', 'product_in_stock', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_INVENTORY_PRICE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_INVENTORY_WEIGHT', 'product_weight', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'enabled', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -61,7 +61,7 @@ AdminMenuHelper::startAdminArea();
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->inventorylist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->product_id);
-			$enabled = JHTML::_('grid.enabled', $product, $i );
+			$published = JHTML::_('grid.published', $product, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
@@ -79,8 +79,8 @@ AdminMenuHelper::startAdminArea();
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Product weight -->
 				<td><?php echo $product->product_weight; ?></td>
-				<!-- enabled -->
-				<td><?php echo $enabled; ?></td>
+				<!-- published -->
+				<td><?php echo $published; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

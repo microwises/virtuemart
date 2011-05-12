@@ -45,8 +45,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ENABLED_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_ENABLED') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_published_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DEBUG_IP_published') ?>
 		</span>
 	    </td>
 	    <td>
@@ -207,8 +207,8 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
         <tr>
             <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_ENABLED') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_published_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_published') ?>
 		</span>
             </td>
             <td>

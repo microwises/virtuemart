@@ -215,7 +215,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @param boolean $publishId True is the ids should be enabled, false otherwise.
+     * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	function publish($publishId = false){
@@ -229,7 +229,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	/**
 	 * Retireve a list of countries from the database.
 	 *
-     * @param string $onlyPuiblished True to only retreive the enabled categories, false otherwise
+     * @param string $onlyPuiblished True to only retreive the published categories, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of manufacturer categories objects
 	 */
@@ -237,7 +237,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	{
 		$query = 'SELECT * FROM `#__virtuemart_manufacturer_categories` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_manufacturer_categories`.`enabled` = 1';
+			$query .= 'WHERE `#__virtuemart_manufacturer_categories`.`published` = 1';
 		}
 		$query .= ' ORDER BY `#__virtuemart_manufacturer_categories`.`mf_category_name`';
 

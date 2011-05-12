@@ -53,7 +53,7 @@ $option = JRequest::getWord('option');
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS_LIST'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'user_rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'enabled', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -64,7 +64,7 @@ $option = JRequest::getWord('option');
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->ratingslist as $key => $review) {
 			$checked = JHTML::_('grid.id', $i , $review->review_id);
-			$enabled = JHTML::_('grid.enabled', $review, $i );
+			$published = JHTML::_('grid.published', $review, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
@@ -82,8 +82,8 @@ $option = JRequest::getWord('option');
 				<td>
 				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$review->user_rating.'.gif',$review->user_rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->user_rating . '/' . $this->max_rating))); ?>
 				</td>
-				<!-- enabled -->
-				<td><?php echo $enabled; ?></td>
+				<!-- published -->
+				<td><?php echo $published; ?></td>
 			</tr>
 		<?php 
 			$k = 1 - $k;

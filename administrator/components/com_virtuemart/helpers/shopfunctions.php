@@ -392,7 +392,7 @@ class ShopFunctions {
 	 *
      * @author jseros
      *
-	 * @param boolean $onlyPublished Show only enabled categories?
+	 * @param boolean $onlyPublished Show only published categories?
 	 * @param boolean $withParentId Keep in mind $parentId param?
 	 * @param integer $parentId Show only its childs
 	 * @param string $attribs HTML attributes for the list

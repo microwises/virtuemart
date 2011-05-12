@@ -73,8 +73,8 @@ class TableCalc extends JTable
 	var $calc_amount_dimunit;
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
-    /** @var int enabled or unpublished */
-	var $enabled 		        = 0;
+    /** @var int published or unpublished */
+	var $published 		        = 0;
              /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

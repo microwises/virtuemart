@@ -580,7 +580,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint){
 
-		//calc_id 	calc_vendor_id	calc_shopper_published	calc_vendor_published	enabled 	shared calc_amount_cond
+		//calc_id 	calc_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
@@ -588,7 +588,7 @@ class calculationHelper {
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 		'`calc_kind`="'.$entrypoint.'" ' .
-		' AND `enabled`="1" ' .
+		' AND `published`="1" ' .
 		' AND (`calc_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
 		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
@@ -659,7 +659,7 @@ class calculationHelper {
 		//shared rules counting for every vendor seems to be not necessary
 		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
 			'`calc_kind`="'.$entrypoint.'" ' .
-			' AND `enabled`="1" ' .
+			' AND `published`="1" ' .
 			' AND (`calc_vendor_id`="'.$cartVendorId.'" OR `shared`="1" )'.
 			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
 			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
@@ -1100,7 +1100,7 @@ class calculationHelper {
 					$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-						LEFT JOIN `#__vm_custom_field_xref_product` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+						LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
 						WHERE xref.`product_id` ='.$product->product_id;
 					$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;
 					$this->_db->setQuery($query);

@@ -47,7 +47,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 
-				<?php echo JHTML::_('select.booleanlist',  'enabled', 'class="inputbox"', $this->state->enabled); ?>
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->state->published); ?>
 
 			</td>
 		</tr>

@@ -39,7 +39,7 @@ class TableCategory extends JTable {
 	var $category_description		= '';
 
 	/** @var integer Category publish or not */
-	var $enabled			= 1;
+	var $published			= 1;
 	/** @var date Category creation date */
 	var $created_on				= null;
 	/** @var date Category last modification date */

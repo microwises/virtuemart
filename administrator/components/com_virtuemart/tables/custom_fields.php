@@ -39,8 +39,8 @@ class TableCustom_fields extends JTable {
     /** @var string price  */
 	var $custom_price	= '';
 
-	/** @var int custom enabled or not */
-	var $enabled		= 0;
+	/** @var int custom published or not */
+	var $published		= 0;
 
 
 	/**

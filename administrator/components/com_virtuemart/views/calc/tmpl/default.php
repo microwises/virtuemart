@@ -105,7 +105,7 @@ $j15 = VmConfig::isJ15();
 
 			$row = $this->calcs[$i];
 			$checked = JHTML::_('grid.id', $i, $row->calc_id);
-			$enabled = JHTML::_('grid.enabled', $row, $i);
+			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=calc&task=edit&cid[]=' . $row->calc_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
@@ -189,7 +189,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo JText::_($row->calcStatesList); ?>
 				</td>
 				<td align="center">
-					<?php echo $enabled; ?>
+					<?php echo $published; ?>
 				</td>
 				<?php /*
 				<td align="center">

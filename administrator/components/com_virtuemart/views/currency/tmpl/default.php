@@ -69,7 +69,7 @@ AdminMenuHelper::startAdminArea();
 		$row =& $this->currencies[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->currency_id);
-		$enabled = JHTML::_('grid.enabled', $row, $i);
+		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=edit&cid[]=' . $row->currency_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
@@ -114,7 +114,7 @@ AdminMenuHelper::startAdminArea();
 			echo $endDate
 		</td> */ ?>
 		<td align="center">
-			<?php echo $enabled; ?>
+			<?php echo $published; ?>
 		</td>
 		<?php /*
 		<td align="center">

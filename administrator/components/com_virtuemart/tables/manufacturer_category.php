@@ -34,8 +34,8 @@ class TableManufacturer_Category extends JTable {
 	var $mf_category_name = '';
 	/** @var string manufacturer category description */
 	var $mf_category_desc = '';
-	/** @var int enabled or unpublished */
-	var $enabled = 1;
+	/** @var int published or unpublished */
+	var $published = 1;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

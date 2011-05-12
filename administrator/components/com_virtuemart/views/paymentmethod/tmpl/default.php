@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 			
 			$row = $this->payms[$i];
 			$checked = JHTML::_('grid.id', $i, $row->paym_id);
-			$enabled = JHTML::_('grid.enabled', $row, $i);
+			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paymentmethod&task=edit&cid[]=' . $row->paym_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
@@ -136,7 +136,7 @@ AdminMenuHelper::startAdminArea();
 					echo $tmp_cell; ?>
 				</td> */ ?>
 				<td align="center">
-					<?php echo $enabled; ?>
+					<?php echo $published; ?>
 				</td>
 				<td align="center">
 					<?php echo $row->shared; ?>
