@@ -60,7 +60,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of customers in the database
 	 */
 	function getTotalCustomers() {
-		$query = 'SELECT `user_id`  FROM `#__virtuemart_userinfos` WHERE `address_type` = "BT"';
+		$query = 'SELECT `virtuemart_user_id`  FROM `#__virtuemart_userinfos` WHERE `address_type` = "BT"';
         return $this->_getListCount($query);
     }
 
@@ -131,10 +131,10 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return ObjectList List of recent orders.
 	 */
 	function getRecentCustomers($nbrCusts=5) {
-		$query = 'SELECT `id` as `user_id`, `first_name`, `last_name`, `order_id` FROM `#__users` as `u` ';
-		$query .= 'JOIN `#__virtuemart_users` as uv ON u.id = uv.user_id ';
-		$query .= 'JOIN `#__virtuemart_userinfos` as ui ON u.id = ui.user_id ';
-		$query .= 'JOIN `#__virtuemart_orders` as uo ON u.id = uo.user_id ';
+		$query = 'SELECT `id` as `virtuemart_user_id`, `first_name`, `last_name`, `order_id` FROM `#__users` as `u` ';
+		$query .= 'JOIN `#__virtuemart_users` as uv ON u.id = uv.virtuemart_user_id ';
+		$query .= 'JOIN `#__virtuemart_userinfos` as ui ON u.id = ui.virtuemart_user_id ';
+		$query .= 'JOIN `#__virtuemart_orders` as uo ON u.id = uo.virtuemart_user_id ';
 		$query .= 'WHERE `perms` <> "admin" ';
         $query .= 'AND `perms` <> "storeadmin" ';
         $query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';

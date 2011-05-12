@@ -28,7 +28,7 @@ class ShopperGroup {
     		
     	if (!empty($id) && !$default_group) {
       		$q .= ', `#__virtuemart_user_shoppergroups`';
-      		$q .= ' WHERE `#__virtuemart_user_shoppergroups`.`user_id`="'.$id.'" AND ';
+      		$q .= ' WHERE `#__virtuemart_user_shoppergroups`.`virtuemart_user_id`="'.$id.'" AND ';
       		$q .= '`#__virtuemart_shoppergroups`.`shopper_group_id`=`#__virtuemart_user_shoppergroups`.`shopper_group_id`';
     	} 
     	else {

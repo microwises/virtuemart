@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
  class TableVm_users extends JTable {
 
 	/** @var int Vendor ID */
-	var $user_id			= 0;
+	var $virtuemart_user_id			= 0;
 	var $user_is_vendor 	= 0;
 	var $vendor_id 			= 0;
 	var $customer_number 	= 0;
@@ -45,15 +45,15 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_users', 'user_id', $db);
+		parent::__construct('#__virtuemart_users', 'virtuemart_user_id', $db);
 	}
  
  	/**
- 	 * Every entry must contain a user_id
+ 	 * Every entry must contain a virtuemart_user_id
  	 * @author Max Milbers
  	 */
  	public function check(){
-		if (!$this->user_id) {
+		if (!$this->virtuemart_user_id) {
 			$this->setError(JText::_('COM_VIRTUEMART_USERS_MUST_HAVE_USER_ID'));
 			return false;
 		}
@@ -68,9 +68,9 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	public function store()
 	{
-		$_qry = 'SELECT user_id '
+		$_qry = 'SELECT virtuemart_user_id '
 				. 'FROM #__virtuemart_users '
-				. 'WHERE user_id = ' . $this->user_id
+				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
 		;
 		$this->_db->setQuery($_qry);
 		$_count = $this->_db->loadResultArray();

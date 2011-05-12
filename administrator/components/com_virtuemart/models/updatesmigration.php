@@ -67,7 +67,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`virtuemart_user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_users FAILED' );
@@ -83,7 +83,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
 	    }
 
-	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`user_info_id`, `user_id`, `address_type`, `created_on`, `modified_on`) ";
+	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`user_info_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
@@ -100,9 +100,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function determineStoreOwner() {
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
-		if (isset($user_id) && $user_id > 0) {
-		    $user = JFactory::getUser($user_id);
+		$virtuemart_user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
+		if (isset($virtuemart_user_id) && $virtuemart_user_id > 0) {
+		    $user = JFactory::getUser($virtuemart_user_id);
 		}
 		else {
 		    $user = JFactory::getUser();
@@ -128,14 +128,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->query();
 		$oldVendorId = $db->loadResult();
 
-		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `user_id`= "' . $userId . '" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `virtuemart_user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
 
 		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__virtuemart_users` (`user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+		    $db->setQuery('INSERT `#__virtuemart_users` (`virtuemart_user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
-				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
+				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for virtuemart_user_id '.$userId);
 		    }
 		    else {
 		    	return $userId;
@@ -143,14 +143,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 		else {
 		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
-				JError::raiseWarning(1, 'UPDATE __vm_users failed for user_id '.$userId);
+				JError::raiseWarning(1, 'UPDATE __vm_users failed for virtuemart_user_id '.$userId);
 		    } else {
 		    	return $userId;
 		    }
@@ -166,7 +166,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	# insert the user <=> group relationship
 //	$db = JFactory::getDBO();
 //	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
-//				SELECT user_id,
+//				SELECT virtuemart_user_id,
 //					CASE `perms`
 //					    WHEN 'admin' THEN 0
 //					    WHEN 'storeadmin' THEN 1
@@ -178,7 +178,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 //				WHERE address_type='BT' ");
 //	$db->query();
 //
-//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
+//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
 //	$db->query();
     }
 
@@ -201,7 +201,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields = array();
 
 //	$fields['user_info_id'] = $db->loadResult();
-	$fields['user_id'] =  $userId;
+	$fields['virtuemart_user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
 	$fields['company'] =  "Washupito's the virtual mart";

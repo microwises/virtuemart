@@ -31,7 +31,7 @@ class TableOrders extends JTable {
 	/** @var int Primary key */
 	var $order_id = 0;
 	/** @var int User ID */
-	var $user_id = 0;
+	var $virtuemart_user_id = 0;
 	/** @var int Vendor ID */
 	var $vendor_id = 0;
 	/** @var int Order number */

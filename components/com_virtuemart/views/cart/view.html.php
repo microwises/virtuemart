@@ -239,7 +239,7 @@ class VirtueMartViewCart extends JView {
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
-//		$this->assignRef('user_id', $this->lists['current_id']);
+//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
 			$this->_user = $this->getModel('user');
 			$this->_user->setCurrent();

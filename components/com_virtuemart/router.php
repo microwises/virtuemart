@@ -131,7 +131,7 @@ function virtuemartBuildRoute(&$query) {
 			}
 		break;
 		case 'user';
-			if ( isset($helper->menu->user_id) ) $query['Itemid'] = $helper->menu->user_id;
+			if ( isset($helper->menu->virtuemart_user_id) ) $query['Itemid'] = $helper->menu->virtuemart_user_id;
 			else $segments[] = $lang['user'] ;
 			if (isset($query['task'])) {
 				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartBT'] ;
@@ -689,7 +689,7 @@ class vmrouterHelper {
 			} elseif ( $item->query['view']=='manufacturer' ) {
 				$this->menu->manufacturer_id = $item->id ;
 			} elseif ( $item->query['view']=='user' ) {
-				$this->menu->user_id = $item->id ;
+				$this->menu->virtuemart_user_id = $item->id ;
 			} elseif ( $item->query['view']=='cart' ) {
 				$this->menu->cart_id = $item->id ;
 			}

@@ -17,7 +17,7 @@
 */
 
 /**
- * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_virtuemart&no_menu=1
+ * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
 AdminMenuHelper::startAdminArea();
 
@@ -72,13 +72,13 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($productfileslist as $key => $productfile) {
 
-			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
-			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
+			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id);
+			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
-				<td><?php echo $checked; echo $productfile->file_id; ?></td>
+				<td><?php echo $checked; echo $productfile->virtuemart_media_id; ?></td>
 				<!-- Product name -->
 				<?php
 				$link = "index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
@@ -86,7 +86,7 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', JRoute::_($link), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
 				<?php
-				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&file_id=".$productfile->file_id."&option=".$option;
+				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&virtuemart_media_id=".$productfile->virtuemart_media_id."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->

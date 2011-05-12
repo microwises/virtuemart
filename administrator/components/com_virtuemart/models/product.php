@@ -1812,7 +1812,7 @@ class VirtueMartModelProduct extends JModel {
 					} else {
 						$vendorId = $product->vendor_id;
 					}
-					$q='SELECT `file_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
+					$q='SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
 					$this->_db->setQuery($q);
 					$options = $this->_db->loadObjectList();
@@ -2007,14 +2007,14 @@ class VirtueMartModelProduct extends JModel {
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
 					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND file_id='.(int)$value;
+					AND (`vendor_id`= "'.$product->vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
 					$db =& JFactory::getDBO();
 					$db->setQuery($q);
 					$image = $db->loadObject();
 
 					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-					$this->file_id = (int)$value;
+					$this->virtuemart_media_id = (int)$value;
 					$imagehandler = VmMediaHandler::createMedia($image);
 					//$imagehandler->createMedia($image);
 					return $imagehandler->displayMediaThumb();

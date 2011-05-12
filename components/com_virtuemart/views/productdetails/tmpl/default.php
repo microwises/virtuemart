@@ -284,7 +284,7 @@ if (empty ( $this->product )) {
 
 		/* Show pdf in a new Window, other file types will be offered as download */
 		// $target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-		// $link = JRoute::_('index.php?view=productdetails&task=getfile&file_id='.$file->file_id.'&product_id='.$this->product->product_id);
+		// $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&product_id='.$this->product->product_id);
 		// echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	// }
 	?>

@@ -77,7 +77,7 @@ class VirtuemartViewUser extends JView {
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 
 		//the uid is the id of the user, we wanna edit.
-		//This is nonsene, because the user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
+		//This is nonsene, because the virtuemart_user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
@@ -299,7 +299,7 @@ class VirtuemartViewUser extends JView {
 //				.'&layout=edit'
 				.'&task=editAddressSt'
 				.'&addrtype=ST'
-				.'&cid[]='.$_addressList[$_i]->user_id
+				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
 				.'&user_info_id='.$_addressList[$_i]->user_info_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 

@@ -90,7 +90,7 @@ class VirtueMartModelVendor extends JModel {
 			$vendorId = self::getVendorId('user', $userId, $ownerOnly);
 			return $vendorId;
 		}else{
-			JError::raiseNotice(1,'$user_id empty, no user logged in');
+			JError::raiseNotice(1,'$virtuemart_user_id empty, no user logged in');
 			return 0;
 		}
 
@@ -124,13 +124,13 @@ class VirtueMartModelVendor extends JModel {
 //  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
 //  			}
 //			if($withUserData){
-//			    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
+//			    $query = "SELECT virtuemart_user_id FROM #__vm_auth_user_vendor ";
 //			    $query .= "WHERE vendor_id = '". $this->_id ."'";
 //			    $this->_db->setQuery($query);
 //			    $userVendor = $this->_db->loadObject();
 //
 //			    // Get user_info table data
-//			    $this->_data->userId = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
+//			    $this->_data->userId = (isset($userVendor->virtuemart_user_id) ? $userVendor->virtuemart_user_id : 0);
 //
 //				$userInfoTable = $this->getTable('user_info');
 //	    		$userInfoTable->load((int)$this->_id);
@@ -175,14 +175,14 @@ class VirtueMartModelVendor extends JModel {
 	 *
 	 * @author Max Milbers
 	 * @param int $vendor_id
-	 * @return int $user_id
+	 * @return int $virtuemart_user_id
 	 */
 	function getUserIdByVendorId($vendorId=0) {
 		//this function is used static, needs its own db
 		$db = JFactory::getDBO();
 		if (empty($vendorId)) return;
 		else {
-			$query = 'SELECT `user_id` FROM `#__virtuemart_users` WHERE `vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
+			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_users` WHERE `vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);
@@ -277,16 +277,16 @@ class VirtueMartModelVendor extends JModel {
 
 	function getUserIdByOrderId( &$order_id){
 		if(empty ($order_id))return;
-		$q  = "SELECT `user_id` FROM `#__virtuemart_orders` WHERE `order_id`='$order_id'";
+		$q  = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `order_id`='$order_id'";
 //		$db->query( $q );
 		$this->_db->setQuery($q);
 
 //		if($db->next_record()){
 		if($this->_db->query()){
-//			$user_id = $db->f('user_id');
+//			$virtuemart_user_id = $db->f('virtuemart_user_id');
 			return $this->_db->loadResult();
 		}else{
-			JError::raiseNotice(1,'Error in DB $order_id '.$order_id.' dont have a user_id');
+			JError::raiseNotice(1,'Error in DB $order_id '.$order_id.' dont have a virtuemart_user_id');
 			return 0;
 		}
 	}
@@ -362,11 +362,11 @@ class VirtueMartModelVendor extends JModel {
 					$q = 'SELECT `vendor_id`
 						FROM `#__virtuemart_users` `au`
 						LEFT JOIN `#__virtuemart_userinfos` `u`
-						ON (au.user_id = u.user_id)
-						WHERE `u`.`user_id`=' .$value;
+						ON (au.virtuemart_user_id = u.virtuemart_user_id)
+						WHERE `u`.`virtuemart_user_id`=' .$value;
 				}
 				else {
-					$q  = 'SELECT `vendor_id` FROM `#__virtuemart_users` WHERE `user_id`= "' .$value.'" ';
+					$q  = 'SELECT `vendor_id` FROM `#__virtuemart_users` WHERE `virtuemart_user_id`= "' .$value.'" ';
 				}
 				break;
 			case 'product':
@@ -407,9 +407,9 @@ class VirtueMartModelVendor extends JModel {
 	 */
 
  	public function getVendorEmail($vendor_id){
- 		$user_id = self::getUserIdByVendorId($vendor_id);
- 		if(!empty($user_id)){
-  			$query = 'SELECT `email` FROM `#__users` WHERE `id` = "'.$user_id.'" ';
+ 		$virtuemart_user_id = self::getUserIdByVendorId($vendor_id);
+ 		if(!empty($virtuemart_user_id)){
+  			$query = 'SELECT `email` FROM `#__users` WHERE `id` = "'.$virtuemart_user_id.'" ';
 			$this->_db->setQuery($query);
 			if($this->_db->query()) return $this->_db->loadResult(); else return '';
  		}
@@ -443,9 +443,9 @@ class VirtueMartModelVendor extends JModel {
 				LEFT JOIN #__virtuemart_user_shoppergroups x
 				ON x.vendor_id = v.vendor_id
 				LEFT JOIN #__virtuemart_userinfos u
-				ON u.user_id = x.user_id
+				ON u.virtuemart_user_id = x.virtuemart_user_id
 				LEFT JOIN #__users j
-				ON j.id = u.user_id
+				ON j.id = u.virtuemart_user_id
 				LEFT JOIN #__virtuemart_countries c ON c.virtuemart_country_id = u.virtuemart_country_id
 				LEFT JOIN #__virtuemart_states s ON s.virtuemart_state_id = u.virtuemart_state_id
 				WHERE v.vendor_id = ".$vendor_id."
@@ -512,13 +512,13 @@ class VirtueMartModelVendor extends JModel {
 //		//used static
 //		$db = JFactory::getDBO();
 //		$usertable= false;
-//		$user_id = self::getUserIdByVendorId($vendor_id);
-//		if (empty($user_id)) {
-//				//JError::raiseNotice(1, 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
+//		$virtuemart_user_id = self::getUserIdByVendorId($vendor_id);
+//		if (empty($virtuemart_user_id)) {
+//				//JError::raiseNotice(1, 'Failure in Database no virtuemart_user_id for vendor_id '.$vendor_id.' found' );
 //				return;
 //		}
 //		else{
-//			// JError::raiseNotice(1, 'get_vendor_details user_id for vendor_id found' );
+//			// JError::raiseNotice(1, 'get_vendor_details virtuemart_user_id for vendor_id found' );
 //		}
 //		if (empty($fields)) {
 //			$fieldstring = '*';
@@ -575,12 +575,12 @@ class VirtueMartModelVendor extends JModel {
 //			}
 //
 //		$q = 'SELECT '.$fieldstring.' FROM (#__virtuemart_vendors v, #__virtuemart_userinfos u) ';
-//		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
+//		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.virtuemart_user_id) ';
 //		if($countrytable) {
 //			$q .= 'LEFT JOIN #__virtuemart_countries c ON (u.country=c.virtuemart_country_id)
 //				LEFT JOIN #__virtuemart_states s ON (s.virtuemart_country_id=c.virtuemart_country_id) ';
 //		}
-//		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
+//		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.virtuemart_user_id = '.(int)$virtuemart_user_id.' ';
 //
 //		if (!empty($orderby)) $q .= 'ORDER BY '.$orderby.' ';
 //
@@ -588,7 +588,7 @@ class VirtueMartModelVendor extends JModel {
 //		$vendor_fields = $db->loadObject();
 //		if (!$vendor_fields) {
 //			print '<h1>Invalid query in get_vendor_fields <br />Query: '.$q.'<br />';
-//			print 'vendor_id: '.$vendor_id.' and user_id: '.$user_id.' <br />' ;
+//			print 'vendor_id: '.$vendor_id.' and virtuemart_user_id: '.$virtuemart_user_id.' <br />' ;
 //			print '$orderby: '.$orderby.' and $usertable: '.$usertable.'</h1>' ;
 //			return ;
 //		}

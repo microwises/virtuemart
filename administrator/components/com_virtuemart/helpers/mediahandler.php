@@ -19,7 +19,7 @@ class VmMediaHandler {
 
 	private function __construct($id=0){
 
-		$this->file_id = $id;
+		$this->virtuemart_media_id = $id;
 
 		$this->theme_url = VmConfig::get('vm_themeurl',0);
 		if(empty($this->theme_url)){
@@ -285,7 +285,7 @@ class VmMediaHandler {
 
 			//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__virtuemart_medias`.`file_id` = "'.$this->file_id.'" ';
+			$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.$this->virtuemart_media_id.'" ';
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
@@ -406,7 +406,7 @@ class VmMediaHandler {
 
 		if( $data['media_action'] == 'upload' ){
 
-			$this->file_id=0;
+			$this->virtuemart_media_id=0;
 			$this->file_url='';
 			$this->file_url_thumb='';
 			$file_name = $this->uploadFile($this->file_url_folder);
@@ -434,7 +434,7 @@ class VmMediaHandler {
 		else if( $data['media_action'] == 'delete' ){
 			//TODO this is complex, we must assure that the media entry gets also deleted.
 			//$this->deleteFile($this->file_url);
-			unset($data['file_id']);
+			unset($data['virtuemart_media_id']);
 
 		}
 //		else{
@@ -562,7 +562,7 @@ class VmMediaHandler {
 	 */
 	private function addHiddenByType(){
 
-		$this->addHidden('file_id',$this->file_id);
+		$this->addHidden('virtuemart_media_id',$this->virtuemart_media_id);
 		$this->addHidden('option','com_virtuemart');
 
 	}
@@ -594,14 +594,14 @@ class VmMediaHandler {
 		$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div><br/ > ';
 		VmConfig::JimageSelectlist();
 
-		$options[] = JHTML::_('select.option', '0' , '--Attach Existing image--', 'file_id' );
+		$options[] = JHTML::_('select.option', '0' , '--Attach Existing image--', 'virtuemart_media_id' );
 		foreach($result as $file){
-			$options[] = JHTML::_('select.option', $file->file_id, $file->file_title, 'file_id' );
+			$options[] = JHTML::_('select.option', $file->virtuemart_media_id, $file->file_title, 'virtuemart_media_id' );
 		}
 		if(empty($fileIds)) return  JText::_('COM_VIRTUEMART_NO_MEDIA_FILES').'<br />'.$html;
 		$text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		foreach($fileIds as $k=>$id){
-			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'file_ids[]',null,'file_id','text',$id).'<br />';
+			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'file_ids[]',null,'virtuemart_media_id','text',$id).'<br />';
 			if(empty($k)) $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE';
 
 		}
@@ -654,7 +654,7 @@ class VmMediaHandler {
 	 */
 	public function displayFileHandler($imageArgs=''){
 
-		$identify = ''; // ':'.$this->file_id;
+		$identify = ''; // ':'.$this->virtuemart_media_id;
 
 		$this->addHiddenByType();
 

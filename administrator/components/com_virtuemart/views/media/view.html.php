@@ -50,7 +50,7 @@ class VirtuemartViewMedia extends JView {
 			$media = $model->getFile();
 			$this->assignRef('media',	$media);
 
-			$isNew = ($media->file_id < 1);
+			$isNew = ($media->virtuemart_media_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MEDIA_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 

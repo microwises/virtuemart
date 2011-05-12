@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableMedia extends JTable {
 
 	/** @var int Primary key */
-	var $file_id				= 0;
+	var $virtuemart_media_id				= 0;
 	var $vendor_id				= 0;
 
 	/** @var string File title */
@@ -64,7 +64,7 @@ class TableMedia extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_medias', 'file_id', $db);
+		parent::__construct('#__virtuemart_medias', 'virtuemart_media_id', $db);
 	}
 
 	/**

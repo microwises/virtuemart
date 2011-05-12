@@ -28,8 +28,8 @@ class Permissions extends JObject{
 	/** @var array Contains all the user groups */
 	var $_user_groups;
 
-	/** @var user_id for the permissions*/
-	var $_user_id;		//$auth['user_id']
+	/** @var virtuemart_user_id for the permissions*/
+	var $_virtuemart_user_id;		//$auth['virtuemart_user_id']
 
 	var $_show_prices; //$auth['show_prices']
 
@@ -74,21 +74,21 @@ class Permissions extends JObject{
 	/**
 	* description: Validates if someone is registered customer.
 	*            by checking if one has a billing address
-	* parameters: user_id
+	* parameters: virtuemart_user_id
 	* returns: true if the user has a BT address
 	*          false if the user has none
 	*
 	* Check if a user is registered in the shop (=customer)
 	*
-	* @param int $user_id the user ID to check. If no user ID is given the currently logged in user will be used.
+	* @param int $virtuemart_user_id the user ID to check. If no user ID is given the currently logged in user will be used.
 	* @return boolean
 	*/
-	public function isRegisteredCustomer($user_id=0) {
-		if ($user_id == 0) {
+	public function isRegisteredCustomer($virtuemart_user_id=0) {
+		if ($virtuemart_user_id == 0) {
 			/* Lets see if we can get the current signed in user */
 			$user = JFactory::getUser();
 			if ($user->id == 0) return false;
-			else $user_id = $user->id;
+			else $virtuemart_user_id = $user->id;
 		}
 
 		$this->_db = JFactory::getDBO();
@@ -96,16 +96,16 @@ class Permissions extends JObject{
 			there *must* be a related Joomla! user, we can join */
 		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 			&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
-			$q  = "SELECT COUNT(user_id) AS num_rows
+			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
 				FROM `#__virtuemart_userinfos`, `#__users`
-				WHERE `id`=`user_id`
-				AND #__virtuemart_userinfos.user_id='" . $user_id . "'
+				WHERE `id`=`virtuemart_user_id`
+				AND #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
 				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		else {
-			$q  = "SELECT COUNT(user_id) AS num_rows
+			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
 				FROM `#__virtuemart_userinfos`
-				WHERE #__virtuemart_userinfos.user_id='" . $user_id . "'
+				WHERE #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
 				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		$this->_db->setQuery($q);
@@ -141,23 +141,23 @@ class Permissions extends JObject{
 //		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
 
 		/* User has already logged in */
-		if (!empty($vmUser->id) || !empty( $this->_user_id)) {
+		if (!empty($vmUser->id) || !empty( $this->_virtuemart_user_id)) {
 			if( $vmUser->id > 0 ) {
-				$this->_user_id   = $vmUser->id;
+				$this->_virtuemart_user_id   = $vmUser->id;
 //				$auth["username"] = $vmUser->username;
 			}
-			else if(!empty($this->_user_id)
+			else if(!empty($this->_virtuemart_user_id)
 					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION')
 			{
-				$this->_user_id = 0;
+				$this->_virtuemart_user_id = 0;
 //				$auth["username"] = "demo";
 			}
 
-			if (self::isRegisteredCustomer($this->_user_id)) {
+			if (self::isRegisteredCustomer($this->_virtuemart_user_id)) {
 				$q = 'SELECT `perms`
 					FROM #__virtuemart_users
-					WHERE user_id="'.$this->_user_id.'"';
+					WHERE virtuemart_user_id="'.$this->_virtuemart_user_id.'"';
 				$this->_db->setQuery($q);
 				$this->_perms = $this->_db->loadResult();
 
@@ -181,8 +181,8 @@ class Permissions extends JObject{
 				$this->_is_registered_customer = false;
 			}
 		} // user is not logged in
-		elseif (empty($this->_user_id)) {
-			$this->_user_id = 0;
+		elseif (empty($this->_virtuemart_user_id)) {
+			$this->_virtuemart_user_id = 0;
 //			$auth["username"] = "demo";
 			$this->_perms  = "";
 //			$auth["first_name"] = "guest";

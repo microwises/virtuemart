@@ -123,7 +123,7 @@ class VirtuemartControllerMedia extends JController {
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=media&task=edit&file_id='.$id;
+			$redirection = 'index.php?option=com_virtuemart&view=media&task=edit&virtuemart_media_id='.$id;
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=media';
 		}

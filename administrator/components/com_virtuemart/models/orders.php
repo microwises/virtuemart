@@ -182,7 +182,7 @@ class VirtueMartModelOrders extends JModel {
 			.$this->getOrdersListQuery();
 		$_filter = array();
 		if ($_uid > 0) {
-			$_filter[] = ('u.user_id = ' . $_uid);
+			$_filter[] = ('u.virtuemart_user_id = ' . $_uid);
 		}
 		$q .= $this->getOrdersListFilter($_filter)."
 	";
@@ -519,7 +519,7 @@ class VirtueMartModelOrders extends JModel {
 
 		$_orderData =  $this->getTable('orders');
 		$_orderData->order_id = null;
-		$_orderData->user_id = $_usr->get('id');
+		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
 		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'),8);
@@ -601,7 +601,7 @@ class VirtueMartModelOrders extends JModel {
 			}
 		}
 		$_userInfoData->order_id = $_id;
-		$_userInfoData->user_id = $_usr->get('id');
+		$_userInfoData->virtuemart_user_id = $_usr->get('id');
 		if (!$_userInfoData->store()){
 			$this->setError($_userInfoData->getError());
 			return false;
@@ -627,7 +627,7 @@ class VirtueMartModelOrders extends JModel {
 				}
 			}
 			$_userInfoData->order_id = $_id;
-			$_userInfoData->user_id = $_usr->get('id');
+			$_userInfoData->virtuemart_user_id = $_usr->get('id');
 			$_userInfoData->address_type = 'ST';
 			if (!$_userInfoData->store()){
 				$this->setError($_userInfoData->getError());
@@ -848,7 +848,7 @@ class VirtueMartModelOrders extends JModel {
 		$order_status = $db->loadResult();
 
 		if ($order_status == VmConfig::get('enable_download_status')) {
-			$q = "SELECT order_id,user_id,download_id,file_name
+			$q = "SELECT order_id,virtuemart_user_id,download_id,file_name
 				FROM #__virtuemart_product_downloads
 				WHERE order_id = '".$order_id."'";
 			$db->setQuery($q);
@@ -857,8 +857,8 @@ class VirtueMartModelOrders extends JModel {
 				$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email
 					FROM #__virtuemart_userinfos
 					LEFT JOIN #__users ju
-					ON (ju.id = u.user_id)
-					WHERE user_id = '".$downloads[0]->userid."'
+					ON (ju.id = u.virtuemart_user_id)
+					WHERE virtuemart_user_id = '".$downloads[0]->userid."'
 					AND address_type='BT'
 					LIMIT 1";
 				$db->setQuery($q);
@@ -904,7 +904,7 @@ class VirtueMartModelOrders extends JModel {
 		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
 			FROM #__virtuemart_order_userinfos
 			LEFT JOIN #__virtuemart_orders
-			ON #__virtuemart_orders.user_id = #__virtuemart_order_userinfos.user_id
+			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id
 			LEFT JOIN #__virtuemart_orderstates
 			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
 			WHERE #__virtuemart_orders.order_id = '".$order->order_id."'

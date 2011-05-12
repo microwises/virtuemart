@@ -206,7 +206,7 @@ class VmConfig
 				jQuery('.selectimage select').change(function() {
 					var data = jQuery(this).val();
 					//alert('Handler for .change() called.'+data);
-					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&file_id='+data ,
+					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
 					function(datas, textStatus) { 
 						if (datas.msg =='OK') {
 							jQuery('#vm_display_image').attr('src', datas.file_url);

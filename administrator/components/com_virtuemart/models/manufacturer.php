@@ -128,7 +128,7 @@ class VirtueMartModelManufacturer extends JModel {
 			return false;
 		}
 
-		// Process the images //		$fullImage = JRequest::getVar('file_id', null, 'files',array());
+		// Process the images //		$fullImage = JRequest::getVar('virtuemart_media_id', null, 'files',array());
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
 		$xrefTable = $this->getTable('mf_media_xref');

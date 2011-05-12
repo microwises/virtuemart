@@ -123,7 +123,7 @@ class VirtuemartViewUser extends JView {
 					.'?option=com_virtuemart'
 					.'&view=user'
 					.'&task=edit'
-					.'&cid[]='.$_addressList[$_i]->user_id
+					.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
 					.'&shipto='.$_addressList[$_i]->user_info_id
 					. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 

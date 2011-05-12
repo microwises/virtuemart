@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		} else {
 			$waiting_notified = '';
 		}
-		if ($wait->user_id==0) {
+		if ($wait->virtuemart_user_id==0) {
 			$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td><td>'.$waiting_notified.'</td></tr>';
 		} 
 		else {

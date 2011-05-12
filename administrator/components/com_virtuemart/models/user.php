@@ -177,13 +177,13 @@ class VirtueMartModelUser extends JModel {
 			$this->_data->load((int)$this->_id);
 
 			/* Add the shopper_group_ids */
-			$q = 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups WHERE `user_id` = "'.$this->_id.'"';
+			$q = 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 
-			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__virtuemart_userinfos` WHERE `user_id` = "' . $this->_id.'"');
+			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
 
 			$this->_data->userInfo = array ();
 
@@ -228,7 +228,7 @@ class VirtueMartModelUser extends JModel {
 		function getContactDetails()
 		{
 			if ($this->_id) {
-				$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
+				$this->_db->setQuery('SELECT * FROM #__contact_details WHERE virtuemart_user_id = ' . $this->_id);
 				$_contacts = $this->_db->loadObjectList();
 				if (count($_contacts) > 0) {
 					return $_contacts[0];
@@ -437,7 +437,7 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			$newId = $user->get('id');
-			$data['user_id'] = $newId;		//We need this in that case, because data is bound to table later
+			$data['virtuemart_user_id'] = $newId;		//We need this in that case, because data is bound to table later
 			$this->setId($newId);
 
 			//I would like to do this function in the FE user/controller like the other emails, with layout
@@ -498,7 +498,7 @@ class VirtueMartModelUser extends JModel {
 
 			//update user table
 			$usertable = $this->getTable('vm_users');
-			$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			if (!$usertable->bind($vmusersData)) {
 				$this->setError($usertable->getError());
 				return false;
@@ -523,9 +523,9 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
+			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
+			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
 
 			if (!user_info::storeAddress($_data, 'user_info', $new)) {
 				$this->setError('Was not able to save the virtuemart user_info address data');
@@ -551,7 +551,7 @@ class VirtueMartModelUser extends JModel {
 
 					//update user table
 					//					$usertable = $this->getTable('vm_users');
-					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 					if (!$usertable->bind($vmusersData)) {
 						$this->setError($table->getError());
 						return false;
@@ -675,7 +675,7 @@ class VirtueMartModelUser extends JModel {
 	 {
 	 	$_q = 'SELECT * '
 			. ' FROM #__virtuemart_userinfos '
-			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
+			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
 			. " AND address_type='$_type'";
 			return ($this->_getList($_q));
 	 }
@@ -691,7 +691,7 @@ class VirtueMartModelUser extends JModel {
 	 {
 	 	$_q = 'SELECT * '
 			. ' FROM #__virtuemart_userinfos '
-			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
+			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
 			if ($_type !== '') {
 				$_q .= " AND address_type='$_type'";
 			}
@@ -710,7 +710,7 @@ class VirtueMartModelUser extends JModel {
 	 function getCustomerNumberById($_id = 0)
 	 {
 	 	$_q = "SELECT `customer_number` FROM `#__virtuemart_users` "
-			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
+			."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
 			$_r = $this->_getList($_q);
 			if(!empty($_r[0])){
 				return $_r[0]->customer_number;
@@ -781,8 +781,8 @@ class VirtueMartModelUser extends JModel {
 			. ', ju.usertype AS usertype'
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
-			. 'LEFT JOIN #__virtuemart_users AS vmu ON ju.id = vmu.user_id '
-			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.user_id '
+			. 'LEFT JOIN #__virtuemart_users AS vmu ON ju.id = vmu.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
@@ -807,8 +807,8 @@ class VirtueMartModelUser extends JModel {
 			. 'FROM `#__users` j '
 			. 'WHERE j.id IN (' . join(',', $_ids) . ') '
 			. 'AND NOT EXISTS ('
-			. 'SELECT user_id FROM `#__virtuemart_userinfos` v '
-			. 'WHERE v.user_id = j.id'
+			. 'SELECT virtuemart_user_id FROM `#__virtuemart_userinfos` v '
+			. 'WHERE v.virtuemart_user_id = j.id'
 			. ')'
 			);
 			$_missingUsers = array();
@@ -840,7 +840,7 @@ class VirtueMartModelUser extends JModel {
 
 	 		$query = 'UPDATE `#__virtuemart_users`'
 				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE user_id IN ( '.$ids.' )'
+				. ' WHERE virtuemart_user_id IN ( '.$ids.' )'
 				;
 				$this->_db->setQuery( $query );
 				if (!$this->_db->query()) {

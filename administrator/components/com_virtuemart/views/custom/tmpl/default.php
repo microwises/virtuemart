@@ -17,7 +17,7 @@
 */
 
 /**
- * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_virtuemart&no_menu=1
+ * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
 AdminMenuHelper::startAdminArea();
 

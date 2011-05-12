@@ -212,7 +212,7 @@ class calculationHelper {
 			$user = JFactory::getUser();
 			if(!empty($user->id)){
 				$this->_db->setQuery( 'SELECT `usgr`.`shopper_group_id` FROM #__virtuemart_user_shoppergroups as `usgr`
- JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
+ JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`shopper_group_id`=`sg`.`shopper_group_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`vendor_id`="'.$this->productVendorId.'" ');
 				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it
 			}
 			if(empty($this->_shopperGroupId)){
@@ -422,7 +422,7 @@ class calculationHelper {
 		if(empty($this->_shopperGroupId)){
 			$user = JFactory::getUser();
 			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups  WHERE `user_id`="'.$user->id.'" ');
+				$this->_db->setQuery( 'SELECT `shopper_group_id` FROM #__virtuemart_user_shoppergroups  WHERE `virtuemart_user_id`="'.$user->id.'" ');
 				$this->_shopperGroupId=$this->_db->loadResultArray();
 			}
 		}

@@ -30,7 +30,7 @@ class TableUser_info extends JTable {
 
 
 	/** @var int Primary key */
-	var $user_id = 0;
+	var $virtuemart_user_id = 0;
 
 	/** @var int hidden userkey */
 	var $user_info_id = 0;
@@ -178,7 +178,7 @@ class TableUser_info extends JTable {
 		/* Check if a record exists */
 		$q = "SELECT user_info_id
 			FROM #__virtuemart_userinfos
-			WHERE user_id = ".$this->user_id."
+			WHERE virtuemart_user_id = ".$this->virtuemart_user_id."
 			AND address_type = ".$this->_db->Quote($this->address_type)."
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
@@ -188,7 +188,7 @@ class TableUser_info extends JTable {
 			$this->user_info_id = $total[0];
 			return true;
 		} else {
-			$this->user_info_id = md5(uniqid($this->user_id));
+			$this->user_info_id = md5(uniqid($this->virtuemart_user_id));
 			$this->created_on = time();
 			return false;
 		}
@@ -209,7 +209,7 @@ class TableUser_info extends JTable {
 			return (parent::delete($id));
 		}
 		// Implicit else
-		$this->_db->setQuery('DELETE from `#__virtuemart_userinfos` WHERE `user_id` = ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

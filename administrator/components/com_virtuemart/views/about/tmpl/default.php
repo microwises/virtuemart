@@ -130,7 +130,7 @@ AdminMenuHelper::endAdminArea();
 //		<?php
 //		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
 //			$row = $this->recentCustomers[$i];
-//			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&user_id='.$row->user_id);
+//			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&virtuemart_user_id='.$row->virtuemart_user_id);
 //			?>
 //			<tr>
 //		  		<td colspan="2">

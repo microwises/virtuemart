@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 //	/** @var int User ID */
 //	var $id			= 0;
 	/** @var int Vendor ID */
-	var $user_id			= 0;
+	var $virtuemart_user_id			= 0;
 	/** @var int shoppergroup ID */
 	var $shopper_group_id	= 0;
 
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_user_shoppergroups', 'user_id', $db);
+		parent::__construct('#__virtuemart_user_shoppergroups', 'virtuemart_user_id', $db);
 	}
  
  	/**
@@ -54,9 +54,9 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	public function store()
 	{
-		$_qry = 'SELECT user_id '
+		$_qry = 'SELECT virtuemart_user_id '
 				. 'FROM #__virtuemart_user_shoppergroups '
-				. 'WHERE user_id = ' . $this->user_id
+				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
 		;
 		$this->_db->setQuery($_qry);
 		$_count = $this->_db->loadResultArray();

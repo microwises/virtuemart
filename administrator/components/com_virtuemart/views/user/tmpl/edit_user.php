@@ -242,7 +242,7 @@ function gotocontact(id) {
 	<?php endif; ?>
 </fieldset>
 
-<input type="hidden" name="user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
+<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
 <input type="hidden" name="cid[]" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
 <input type="hidden" name="contact_id" value="" />
 
