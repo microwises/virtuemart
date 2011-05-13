@@ -204,7 +204,7 @@ class VirtueMartModelOrders extends JModel {
 			LEFT JOIN #__virtuemart_order_userinfos u
 			ON u.virtuemart_order_id = o.virtuemart_order_id
 			LEFT JOIN #__virtuemart_paymentmethods m
-			ON o.payment_method_id = m.paym_id';
+			ON o.payment_method_id = m.virtuemart_paymentmethod_id';
 	}
 
 	/**
@@ -540,11 +540,11 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->order_discount = $_prices['discountAmount'];
 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
 		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
-		if (isset($_cart->currency_id)) {
-			$_orderData->user_currency_id = $_cart->currency_id;
+		if (isset($_cart->virtuemart_currency_id)) {
+			$_orderData->user_virtuemart_currency_id = $_cart->virtuemart_currency_id;
 			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
-		$_orderData->payment_method_id = $_cart->paym_id;
+		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
 		//Should be done in table
 //		$_orderData->created_on = time();
 //		$_orderData->modified_on = time();
@@ -606,10 +606,10 @@ class VirtueMartModelOrders extends JModel {
 			$this->setError($_userInfoData->getError());
 			return false;
 		}
-		$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
+		$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 
 		if ($_cart->ST) {
-			$_userInfoData->order_info_id = null; // Reset key to make sure it doesn't get overwritten by ST
+			$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 				, array('delimiters'=>true, 'captcha'=>true)
 				, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')

@@ -39,7 +39,7 @@ class ShopFunctions {
 
 		$attrs = '';
 		$name = 'creditcard_name';
-		$idA = $id = 'creditcard_id';
+		$idA = $id = 'virtuemart_creditcard_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($creditcards, $emptyOption);

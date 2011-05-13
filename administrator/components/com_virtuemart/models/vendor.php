@@ -256,7 +256,7 @@ class VirtueMartModelVendor extends JModel {
 			. 'FROM `#__virtuemart_currencies` AS c'
 			. ',    `#__virtuemart_vendors` AS v '
 			. 'WHERE v.virtuemart_vendor_id = '.$_vendorId . ' '
-			. 'AND   v.vendor_currency = c.currency_id';
+			. 'AND   v.vendor_currency = c.virtuemart_currency_id';
 		$db->setQuery($q);
 		$r = $db->loadObject();
 		return $r;

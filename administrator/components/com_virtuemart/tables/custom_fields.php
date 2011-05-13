@@ -29,10 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 class TableCustom_fields extends JTable {
 
 	/** @var int Primary key */
-	var $custom_field_id		= 0;
+	var $virtuemart_customfield_id		= 0;
 
 	/** @var int group key */
-	var $custom_id		= 0;
+	var $virtuemart_custom_id		= 0;
 
     /** @var string custom value */
 	var $custom_value	= '';
@@ -48,7 +48,7 @@ class TableCustom_fields extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_customfields', 'custom_id', $db);
+		parent::__construct('#__virtuemart_customfields', 'virtuemart_custom_id', $db);
 	}
 
 	/**

@@ -219,12 +219,12 @@ class VirtueMartModelManufacturer extends JModel {
 		$option	= 'com_virtuemart';
 
 
-		$mf_category_id	= $mainframe->getUserStateFromRequest( $option.'mf_category_id', 'mf_category_id', 0, 'int' );
+		$virtuemart_manufacturer_category_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturer_category_id', 'virtuemart_manufacturer_category_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
 		$where = array();
-		if ($mf_category_id > 0) {
-			$where[] .= '`#__virtuemart_manufacturers`.`mf_category_id` = '. $mf_category_id;
+		if ($virtuemart_manufacturer_category_id > 0) {
+			$where[] .= '`#__virtuemart_manufacturers`.`virtuemart_manufacturer_category_id` = '. $virtuemart_manufacturer_category_id;
 		}
 		if ( $search ) {
 			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );

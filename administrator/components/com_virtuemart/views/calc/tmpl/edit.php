@@ -107,7 +107,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'currency_id', 'currency_name', $this->calc->calc_currency); ?>
+			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'virtuemart_currency_id', 'currency_name', $this->calc->calc_currency); ?>
 
 			</td>
 		</tr>

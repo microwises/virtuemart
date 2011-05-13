@@ -302,7 +302,7 @@ class VirtueMartViewCart extends JView {
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = $this->getModel('paymentmethod');
 
-		$selectedPaym = empty($this->_cart->paym_id) ? 0 : $this->_cart->paym_id;
+		$selectedPaym = empty($this->_cart->virtuemart_paymentmethod_id) ? 0 : $this->_cart->virtuemart_paymentmethod_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
 		$payments = $paymentModel->getPayms(false,true);

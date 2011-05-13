@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCurrency extends JTable {
 
 	/** @var int Primary key */
-	var $currency_id				= 0;
+	var $virtuemart_currency_id				= 0;
 	/** @var int vendor id */
 	var $virtuemart_vendor_id					= 1;
 	/** @var string Currency name*/
@@ -59,7 +59,7 @@ class TableCurrency extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_currencies', 'currency_id', $db);
+		parent::__construct('#__virtuemart_currencies', 'virtuemart_currency_id', $db);
 	}
 
 
@@ -80,7 +80,7 @@ class TableCurrency extends JTable {
 			return false;
 		}
 
-		if (($this->currency_name) && ($this->currency_id == 0)) {
+		if (($this->currency_name) && ($this->virtuemart_currency_id == 0)) {
 		    $db =& JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__virtuemart_currencies` ';

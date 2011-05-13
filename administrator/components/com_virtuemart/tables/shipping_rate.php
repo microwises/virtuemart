@@ -49,7 +49,7 @@ class TableShipping_Rate extends JTable {
 		/** @var string Shipping Rate name*/
 	var $shipping_rate_package_fee      	= '';
 		/** @var string Shipping Rate name*/
-	var $shipping_rate_currency_id      	= '';
+	var $shipping_rate_virtuemart_currency_id      	= '';
 		/** @var string Shipping Rate name*/
 	var $shipping_rate_vat_id      	= '';
 		/** @var string Shipping Rate name*/

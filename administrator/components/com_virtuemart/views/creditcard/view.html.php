@@ -41,7 +41,7 @@ class VirtuemartViewCreditcard extends JView {
         $creditcard =& $model->getCreditCard();
 
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($creditcard->creditcard_id < 1);
+        $isNew = ($creditcard->virtuemart_creditcard_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

@@ -47,7 +47,7 @@ class VirtuemartViewProduct extends JView {
 				$json['value'] = $db->loadObjectList();
 				$json['ok'] = 1 ;
 		} else if ($type=='custom') {
-			$query = "SELECT CONCAT(custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
+			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";
 			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
 			$db->setQuery($query);
@@ -58,7 +58,7 @@ class VirtuemartViewProduct extends JView {
 			$fieldTypes= VmCustomHandler::getField_types() ;
 
 			$query = "SELECT * FROM #__virtuemart_customs
-			WHERE custom_id=".$id." or custom_parent_id=".$id;
+			WHERE virtuemart_custom_id=".$id." or custom_parent_id=".$id;
 			$query .=" order by custom_parent_id asc";
 			$db->setQuery($query);
 			$rows = $db->loadObjectlist();
@@ -73,7 +73,7 @@ class VirtuemartViewProduct extends JView {
 				 </td>
 				 <td>'.$fieldTypes[$field->field_type].'
 					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$field->custom_id.'" name="field['.$row.'][custom_id]" />
+					<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 					<input type="hidden" value="'.$field->admin_only.'" checked="checked" name="admin_only" />
 				 </td>
 				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>

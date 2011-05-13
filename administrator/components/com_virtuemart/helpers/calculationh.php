@@ -99,7 +99,7 @@ class calculationHelper {
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
 
 		if(empty($currencyId)){
-			$currencyId = $this->_app->getUserStateFromRequest( 'currency_id', 'currency_id',$this->vendorCurrency );
+			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->vendorCurrency );
 			if(empty($currencyId)){
 				$currencyId = $this->vendorCurrency;
 			}
@@ -468,8 +468,8 @@ class calculationHelper {
 		$discountAfterTax = $this->roundDisplay($this -> executeCalculation($dATaxRules, $toDisc));
 		$this->_cartPrices['withTax']=$this->_cartPrices['discountAfterTax']=!empty($discountAfterTax) ?$discountAfterTax:$toDisc;
 
-		$paymentId = empty($cart->paym_id) ? 0 : $cart->paym_id;
-		$creditId = empty($cart->creditcard_id) ? 0 : $cart->creditcard_id;
+		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
+		$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
 		$this->calculatePaymentPrice($paymentId,$creditId,$this->_cartPrices['withTax']);
 
@@ -673,7 +673,7 @@ class calculationHelper {
 			$this->_db->setQuery($q);
 			$countries = $this->_db->loadResultArray();
 
-			$q= 'SELECT `virtuemart_state_id` FROM #__virtuemart_state_ids WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
+			$q= 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$states = $this->_db->loadResultArray();
 
@@ -791,7 +791,7 @@ class calculationHelper {
 	 * @param	$value	$cartVendorId
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
-	function calculatePaymentPrice($paym_id=0,$cc_id=0,$value=0.0,$cartVendorId=1){
+	function calculatePaymentPrice($virtuemart_paymentmethod_id=0,$cc_id=0,$value=0.0,$cartVendorId=1){
 //		if (empty($code)) return 0.0;
 
 //		$code=4;
@@ -800,7 +800,7 @@ class calculationHelper {
 		if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
 		$model = new VirtueMartModelPaymentmethod();
-		$model->setId($paym_id);
+		$model->setId($virtuemart_paymentmethod_id);
 		$paym = $model->getPaym();
 
 		$this->_cartData['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('COM_VIRTUEMART_CART_NO_PAYM_SELECTED');
@@ -947,7 +947,7 @@ class calculationHelper {
 		if(empty($exchangeRate)){
 //			if(is_Int($currency)){
 				$q = 'SELECT `exchange_rate`
-				FROM `#__virtuemart_currencies` WHERE `currency_id` ="'.$currency.'" ';
+				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.$currency.'" ';
 				$this->_db->setQuery($q);
 				if(	$exch = $this->_db->loadResult()){
 					$exchangeRate = $this->_db->loadResult();
@@ -975,7 +975,7 @@ class calculationHelper {
 
 
 	/**
-	 * Changes the currency_id into the right currency_code
+	 * Changes the virtuemart_currency_id into the right currency_code
 	 * For exampel 47 => EUR
 	 *
 	 * @author Max Milbers
@@ -985,7 +985,7 @@ class calculationHelper {
 
 		if(is_numeric($curr)){
 			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code` FROM `#__virtuemart_currencies` WHERE `currency_id`="'.$curr.'"';
+			$q = 'SELECT `currency_code` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$curr.'"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
@@ -1097,12 +1097,12 @@ class calculationHelper {
 		foreach($dummy as $variants){
 			foreach($variants as $variant=>$selected){
 				if (!empty($selected)) {
-					$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
+					$query='SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
 						FROM `#__virtuemart_customs` AS C
-						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-						LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+						LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 						WHERE xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-					$query .=' and is_cart_attribute = 1 and field.`custom_field_id`='.$selected ;
+					$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`='.$selected ;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
 					$app = JFactory::getApplication();

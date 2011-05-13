@@ -21,13 +21,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 /***********
  * TODO When this module is converted to 1.5, the following fields must be set
  * in the cart:
- * 	currency_id: ID of the user selected currenct
+ * 	virtuemart_currency_id: ID of the user selected currenct
  * 	currency_rate: Actual rate compared to the shop currency
  * 	
  * Prices in the orders are saved in the shop currency; these fields are required
  * to show the prices to the user in a later stadium.
   */
-$currency_id = $mainframe->getUserStateFromRequest( "currency_id", 'currency_id',JRequest::getInt('currency_id', 1) );
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 1) );
 
 $vendorId = JRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
@@ -40,9 +40,9 @@ $currencies     = $db->loadObject();
 $currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
 
 /* table vm_currency */
-//$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__virtuemart_currencies` WHERE `currency_id` IN ('.$currency_codes.') and enabled =1 ORDER BY `currency_name`';
-$q = 'SELECT `currency_id`,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as currency_txt
-FROM `#__virtuemart_currencies` WHERE `currency_id` IN ('.$currency_codes.') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `currency_name`';
+//$q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_codes.') and enabled =1 ORDER BY `currency_name`';
+$q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as currency_txt
+FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_codes.') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */

@@ -30,11 +30,11 @@ AdminMenuHelper::startAdminArea();
 		<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FILTER'); ?>:
 		<input type="text" name="search" id="search" value="<?php echo $this->list['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_GO_BTN'); ?></button>
-		<button onclick="document.getElementById('search').value='';document.getElementById('mf_category_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
+		<button onclick="document.getElementById('search').value='';document.getElementById('virtuemart_manufacturer_category_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
 	    </td>
 	    <td nowrap="nowrap">
 		<?php
-		echo $this->list['mf_category_id'];
+		echo $this->list['virtuemart_manufacturer_category_id'];
 		?>
 	    </td>
 	</tr>

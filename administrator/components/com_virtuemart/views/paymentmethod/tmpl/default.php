@@ -77,13 +77,13 @@ AdminMenuHelper::startAdminArea();
 		for ($i=0, $n=count( $this->payms ); $i < $n; $i++) {
 			
 			$row = $this->payms[$i];
-			$checked = JHTML::_('grid.id', $i, $row->paym_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paymentmethod&task=edit&cid[]=' . $row->paym_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
-					<?php echo $row->paym_id; ?>
+					<?php echo $row->virtuemart_paymentmethod_id; ?>
 				</td>			            
 				<td width="10">
 					<?php echo $checked; ?>
@@ -93,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>				
 				<td align="left">
-					<?php echo JText::_($row->paym_virtuemart_vendor_id); ?>
+					<?php echo JText::_($row->virtuemart_vendor_id); ?>
 				</td>
 				<?php } ?>
 				<td>

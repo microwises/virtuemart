@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_CURRENCY'); ?>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
 			</td>
 		</tr>
 		<tr>

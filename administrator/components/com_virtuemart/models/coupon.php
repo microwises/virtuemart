@@ -104,7 +104,7 @@ class VirtueMartModelCoupon extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `coupon_id` FROM `#__virtuemart_coupons`';
+			$query = 'SELECT `virtuemart_coupon_id` FROM `#__virtuemart_coupons`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -170,7 +170,7 @@ class VirtueMartModelCoupon extends JModel {
 			return false;
 		}
 
-		return $table->coupon_id;
+		return $table->virtuemart_coupon_id;
 	}
 
 
@@ -205,7 +205,7 @@ class VirtueMartModelCoupon extends JModel {
 	function getCoupons()
 	{
 		$query = 'SELECT * FROM `#__virtuemart_coupons` ';
-		$query .= 'ORDER BY `#__virtuemart_coupons`.`coupon_id`';
+		$query .= 'ORDER BY `#__virtuemart_coupons`.`virtuemart_coupon_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

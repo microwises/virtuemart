@@ -74,13 +74,13 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($customs as $key => $custom) {
 
-			$checked = JHTML::_('grid.id', $i , $custom->custom_id);
-			if (!is_null($custom->custom_id)) $published = JHTML::_('grid.published', $custom, $i );
+			$checked = JHTML::_('grid.id', $i , $custom->virtuemart_custom_id);
+			if (!is_null($custom->virtuemart_custom_id)) $published = JHTML::_('grid.published', $custom, $i );
 			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
-				<td><?php echo $checked; echo $custom->custom_id; ?></td>
+				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
 				<?php 
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
@@ -88,7 +88,7 @@ $pagination = $this->pagination;
 				
 				<!-- Product name -->
 				<?php 
-				$link = "index.php?view=custom&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&custom_id=".$custom->custom_id."&option=".$option;
+				$link = "index.php?view=custom&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&virtuemart_custom_id=".$custom->virtuemart_custom_id."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
 				<td><?php echo $custom->custom_field_desc; ?></td>

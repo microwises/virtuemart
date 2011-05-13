@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCustom extends JTable {
 
 	/** @var int Primary key */
-	var $custom_id		= 0;
+	var $virtuemart_custom_id		= 0;
 	/** @var int parent */
 	var $custom_parent_id		= 0;
 	/** @var int(1)  1= only back-end display*/
@@ -67,7 +67,7 @@ class TableCustom extends JTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_customs', 'custom_id', $db);
+		parent::__construct('#__virtuemart_customs', 'virtuemart_custom_id', $db);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class TableCustom extends JTable {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_A_FIELD_TYPE'));
 			return false ;
 		}
-		if( $this->custom_id > 0  && $this->custom_id==$this->custom_parent_id ) {
+		if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
 			return false ;
 		}
@@ -99,9 +99,9 @@ class TableCustom extends JTable {
 	function delete($id)
 	{
 		$this->_db->setQuery('DELETE X,F,C FROM `#__virtuemart_customs` AS C
-		LEFT JOIN `#__virtuemart_customfields` AS F ON F.`custom_id` = C.`custom_id`
-		LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`custom_field_id` = F.`custom_field_id`
-		WHERE C.`custom_id`=' . $id);
+		LEFT JOIN `#__virtuemart_customfields` AS F ON F.`virtuemart_custom_id` = C.`virtuemart_custom_id`
+		LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_customfield_id` = F.`virtuemart_customfield_id`
+		WHERE C.`virtuemart_custom_id`=' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

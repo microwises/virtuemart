@@ -48,7 +48,7 @@ $editor = JFactory::getEditor();
 			</td>
 			<td>
 				<?php
-				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'mf_category_id', '', 'mf_category_id', 'mf_category_name', $this->manufacturer->mf_category_id); ?>
+				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'virtuemart_manufacturer_category_id', '', 'virtuemart_manufacturer_category_id', 'mf_category_name', $this->manufacturer->virtuemart_manufacturer_category_id); ?>
 			</td>
 		</tr>
 		<tr>

@@ -3,7 +3,7 @@
 DELETE FROM `#__virtuemart_calcs`;
 DELETE FROM `#__virtuemart_calc_shoppergroups`;
 DELETE FROM `#__virtuemart_calc_countries`;
-DELETE FROM `#__virtuemart_state_ids`;
+DELETE FROM `#__virtuemart_calc_states`;
 DELETE FROM `#__virtuemart_categories`;
 DELETE FROM `#__virtuemart_category_categories`;
 DELETE FROM `#__virtuemart_coupons`;

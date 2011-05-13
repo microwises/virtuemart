@@ -136,12 +136,12 @@ AdminMenuHelper::startAdminArea();
 		</tr>	
 		<tr>
 			<td width="110" class="key">
-				<label for="shipping_rate_currency_id">
+				<label for="shipping_rate_virtuemart_currency_id">
 					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_CURRENCY'); ?>:
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_currency_id', '', 'currency_id', 'currency_name', $this->rate->shipping_rate_currency_id); ?>							
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_virtuemart_currency_id', '', 'virtuemart_currency_id', 'currency_name', $this->rate->shipping_rate_virtuemart_currency_id); ?>							
 			</td>
 		</tr>					
 		<tr>

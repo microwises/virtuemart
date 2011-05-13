@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableManufacturer_Category extends JTable {
 
 	/** @var int Primary key */
-	var $mf_category_id = 0;
+	var $virtuemart_manufacturer_category_id = 0;
 	/** @var string manufacturer category name */
 	var $mf_category_name = '';
 	/** @var string manufacturer category description */
@@ -46,7 +46,7 @@ class TableManufacturer_Category extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_manufacturer_categories', 'mf_category_id', $db);
+		parent::__construct('#__virtuemart_manufacturer_categories', 'virtuemart_manufacturer_category_id', $db);
 	}
 
 
@@ -62,7 +62,7 @@ class TableManufacturer_Category extends JTable {
 			return false;
 		}
 
-		if (($this->mf_category_name) && ($this->mf_category_id == 0)) {
+		if (($this->mf_category_name) && ($this->virtuemart_manufacturer_category_id == 0)) {
 		    $db =& JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM #__virtuemart_manufacturer_categories ';
@@ -89,7 +89,7 @@ class TableManufacturer_Category extends JTable {
 
 			$q = 'SELECT count(*)'
 				.' FROM #__virtuemart_manufacturers'
-				.' WHERE mf_category_id = '.$categoryId;
+				.' WHERE virtuemart_manufacturer_category_id = '.$categoryId;
 			$db->setQuery($q);
 			$mCount = $db->loadResult();
 

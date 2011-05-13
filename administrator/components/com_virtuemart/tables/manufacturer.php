@@ -37,7 +37,7 @@ class TableManufacturer extends JTable {
 	/** @var string manufacturer description */
 	var $mf_desc = '';
     /** @var int Manufacturer category id */
-	var $mf_category_id  = 0;
+	var $virtuemart_manufacturer_category_id  = 0;
     /** @var string manufacturer URL */
 	var $mf_url = '';
 

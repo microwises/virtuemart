@@ -53,7 +53,7 @@ class VirtuemartViewCustom extends JView {
 			$custom = $model->getCustom();
 			$this->assignRef('custom',	$custom);
 
-			$isNew = ($custom->custom_id < 1);
+			$isNew = ($custom->virtuemart_custom_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 

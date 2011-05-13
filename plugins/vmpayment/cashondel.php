@@ -92,12 +92,12 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
-		$this->_paym_id = $_orderData->paym_id;
+		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
-		$_dbValues['payment_method_id'] = $this->_paym_id;
+		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}

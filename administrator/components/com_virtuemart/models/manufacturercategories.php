@@ -100,7 +100,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `mf_category_id` FROM `#__virtuemart_manufacturer_categories`';
+			$query = 'SELECT `virtuemart_manufacturer_category_id` FROM `#__virtuemart_manufacturer_categories`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -158,7 +158,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 			return false;
 		}
 
-		return $table->mf_category_id;
+		return $table->virtuemart_manufacturer_category_id;
 	}
 
 
@@ -197,7 +197,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 		if ($categoryId) {
 			$db = JFactory::getDBO();
 
-			$query = 'DELETE FROM `#__virtuemart_manufacturer_categories`  WHERE `mf_category_id`= "'.$categoryId.'"';
+			$query = 'DELETE FROM `#__virtuemart_manufacturer_categories`  WHERE `virtuemart_manufacturer_category_id`= "'.$categoryId.'"';
 			$db->setQuery($query);
 			if ($db->query()) {
 				return true;
@@ -258,7 +258,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	 */
 	function getCategoryFilter(){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `mf_category_id` as `value`, `mf_category_name` as text'
+		$query = 'SELECT `virtuemart_manufacturer_category_id` as `value`, `mf_category_name` as text'
 				.' FROM #__virtuemart_manufacturer_categories';
 		$db->setQuery($query);
 

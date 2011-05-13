@@ -41,7 +41,7 @@ class VirtuemartViewCoupon extends JView {
         $coupon = $model->getCoupon();
 
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($coupon->coupon_id < 1);
+        $isNew = ($coupon->virtuemart_coupon_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

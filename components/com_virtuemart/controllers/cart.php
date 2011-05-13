@@ -303,8 +303,8 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$paym_id= JRequest::getVar('paym_id', '0');
-			$cart->setPaymentMethod( $paym_id );
+			$virtuemart_paymentmethod_id= JRequest::getVar('virtuemart_paymentmethod_id', '0');
+			$cart->setPaymentMethod( $virtuemart_paymentmethod_id );
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();

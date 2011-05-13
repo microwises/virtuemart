@@ -61,7 +61,7 @@ class VirtuemartViewPaymentMethod extends JView {
 			$paym = $model->getPaym();
 			$this->assignRef('paym',	$paym);
 
-			$isNew = ($paym->paym_id < 1);
+			$isNew = ($paym->virtuemart_paymentmethod_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 			} else {
@@ -78,9 +78,9 @@ class VirtuemartViewPaymentMethod extends JView {
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->paym_creditcards,true));
 
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups));
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
 
-			$vendorList= ShopFunctions::renderVendorList($paym->paym_virtuemart_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {

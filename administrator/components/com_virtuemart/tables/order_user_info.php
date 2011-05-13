@@ -27,7 +27,7 @@ class TableOrder_user_info extends JTable {
 	function __construct(&$_db)
 	{
 		self::loadFields($_db);
-		parent::__construct('#__virtuemart_order_userinfos', 'order_info_id', $_db);
+		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
 	}
 
 	/**

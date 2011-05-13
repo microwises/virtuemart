@@ -100,7 +100,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `currency_id` FROM `#__virtuemart_currencies`';
+	    $query = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -162,7 +162,7 @@ class VirtueMartModelCurrency extends JModel {
 	    return false;
 	}
 
-	return $table->currency_id;
+	return $table->virtuemart_currency_id;
     }
 
 	/**

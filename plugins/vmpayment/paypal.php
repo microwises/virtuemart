@@ -91,14 +91,14 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			return;
 		}
 
-		if ($checkedPaymId==$this->paymentMethod->paym_id) {
+		if ($checkedPaymId==$this->paymentMethod->virtuemart_paymentmethod_id) {
 			$checked = '"checked"';
 		} else {
 			$checked = '';
 		}
 
 		$html  = '<fieldset>Hi i\'m PAYPAL SELECT TEST';
-		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 		$html .= '</fieldset> ';
 
 		return $html;
@@ -111,7 +111,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$_returnValue = 'P'; // TODO Read the status from the parameters
@@ -187,7 +187,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		// Prepare data that should be stored in the database
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
-		$_dbValues['payment_method_id'] = $this->_paym_id;
+		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		// TODO wait for PAYPAL return ???
 //		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
 		// Send to PAYPAL TODO Sandbox choice ???

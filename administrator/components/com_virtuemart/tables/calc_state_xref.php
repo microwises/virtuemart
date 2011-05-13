@@ -42,7 +42,7 @@ class Tablevirtuemart_state_id_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_state_ids', 'id', $db);
+		parent::__construct('#__virtuemart_calc_states', 'id', $db);
 	}
 
 

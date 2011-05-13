@@ -27,9 +27,9 @@ defined('_JEXEC') or die();
 class TablePayment_method extends JTable
 {
 	/** @var int Primary key */
-	var $paym_id					= 0;
+	var $virtuemart_paymentmethod_id					= 0;
 	/** @var string VendorID of the payment_method creator */
-	var $paym_virtuemart_vendor_id				= 0;
+	var $virtuemart_vendor_id				= 0;
 	/** @var id for the used plugin */
 	var $paym_jplugin_id			= 0;
 	/** @var string Paymentmethod name */
@@ -37,7 +37,7 @@ class TablePayment_method extends JTable
 	/** @var string Element of paymentmethod */
 	var $paym_element           	= '';
 	///** @var string Shoppergroups allowed to use payment_method */
-	//var $paym_shoppervirtuemart_shoppergroup_id         = '';	  // paym_shopper_group?
+	//var $paym_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
 
 	/** @var string discount of the paymentmethod */
 	var $discount       		 	= '';
@@ -75,7 +75,7 @@ class TablePayment_method extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_paymentmethods', 'paym_id', $db);
+		parent::__construct('#__virtuemart_paymentmethods', 'virtuemart_paymentmethod_id', $db);
 	}
 
 
@@ -92,7 +92,7 @@ class TablePayment_method extends JTable
 			return false;
 		}
 
-        if (!$this->paym_virtuemart_vendor_id) {
+        if (!$this->virtuemart_vendor_id) {
 			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_HAVE_VENDOR'));
 			return false;
 		}
@@ -100,11 +100,11 @@ class TablePayment_method extends JTable
 		if (($this->paym_name)) {
 		    $db =& JFactory::getDBO();
 
-			$q = 'SELECT paym_id FROM `#__virtuemart_paymentmethods` ';
+			$q = 'SELECT virtuemart_paymentmethod_id FROM `#__virtuemart_paymentmethods` ';
 			$q .= 'WHERE `paym_name`="' .  $this->paym_name . '"';
             $db->setQuery($q);
-		    $paym_id = $db->loadResult();
-		    if(!empty($paym_id) && $paym_id!=$this->paym_id){
+		    $virtuemart_paymentmethod_id = $db->loadResult();
+		    if(!empty($virtuemart_paymentmethod_id) && $virtuemart_paymentmethod_id!=$this->virtuemart_paymentmethod_id){
 				$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHOD_NAME_ALREADY_EXISTS'));
 				return false;
 			}

@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableProduct_price extends JTable {
 
     /** @var int Primary key */
-    var $product_price_id = 0;
+    var $virtuemart_product_price_id = 0;
     /** @var int Product id */
     var $virtuemart_product_id = 0;
     /** @var string Product price */
@@ -64,7 +64,7 @@ class TableProduct_price extends JTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-        parent::__construct('#__virtuemart_product_prices', 'product_price_id', $db);
+        parent::__construct('#__virtuemart_product_prices', 'virtuemart_product_price_id', $db);
 //        parent::__construct('#__virtuemart_product_prices', 'virtuemart_product_id', $db);
     }
 
@@ -109,8 +109,8 @@ class TableProduct_price extends JTable {
     public function store() {
 //        $_qry = 'SELECT virtuemart_product_id '
 //                . 'FROM #__virtuemart_product_prices '
-//                . 'WHERE product_price_id = ' . $this->product_price_id
-        $_qry = 'SELECT product_price_id '
+//                . 'WHERE virtuemart_product_price_id = ' . $this->virtuemart_product_price_id
+        $_qry = 'SELECT virtuemart_product_price_id '
                 . 'FROM #__virtuemart_product_prices '
                 . 'WHERE virtuemart_product_id = ' . $this->virtuemart_product_id;
         $this->_db->setQuery($_qry);
@@ -118,7 +118,7 @@ class TableProduct_price extends JTable {
 
 
         if ( $id > 0) {
-        	$this->product_price_id = $id;
+        	$this->virtuemart_product_price_id = $id;
             $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
         } else {
             $returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);

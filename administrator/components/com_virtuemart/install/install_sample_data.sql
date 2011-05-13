@@ -67,7 +67,7 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 -- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `#__virtuemart_customs` (`custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
+INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
 (1, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1),
 (2, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1),
 (3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
@@ -81,7 +81,7 @@ INSERT INTO `#__virtuemart_customs` (`custom_id`, `custom_parent_id`, `admin_onl
 -- Dumping data for table  `#__virtuemart_customfields`
 --
 
-INSERT INTO `#__virtuemart_customfields` (`custom_field_id`, `custom_id`, `custom_value`, `custom_price`, `published`) VALUES
+INSERT INTO `#__virtuemart_customfields` (`virtuemart_customfield_id`, `virtuemart_custom_id`, `custom_value`, `custom_price`, `published`) VALUES
 (2, 7, '1', NULL, 0),
 (4, 2, 'Plz enter a text', NULL, 0),
 (5, 3, '100', NULL, 0),
@@ -91,7 +91,7 @@ INSERT INTO `#__virtuemart_customfields` (`custom_field_id`, `custom_id`, `custo
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
-INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `custom_field_id`, `ordering`, `published`) VALUES
+INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `virtuemart_customfield_id`, `ordering`, `published`) VALUES
 (NULL, 6, 2, 0, 0),
 (NULL, 6, 4, 0, 0),
 (NULL, 6, 5, 0, 0),
@@ -100,7 +100,7 @@ INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`,
 -- Dumping data for table `#__virtuemart_manufacturers`
 --
 
-INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_category_id`, `mf_url`, `published`) VALUES
+INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `virtuemart_manufacturer_category_id`, `mf_url`, `published`) VALUES
 (1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
 
 
@@ -108,7 +108,7 @@ INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_nam
 -- Dumping data for table `#__virtuemart_manufacturer_categories`
 --
 
-INSERT INTO `#__virtuemart_manufacturer_categories` (`mf_category_id`, `mf_category_name`, `mf_category_desc`) VALUES
+INSERT INTO `#__virtuemart_manufacturer_categories` (`virtuemart_manufacturer_category_id`, `mf_category_name`, `mf_category_desc`) VALUES
 (1, '-default-', 'This is the default manufacturer category');
 
 --
@@ -216,7 +216,7 @@ INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id
 -- Dumping data for table `#__virtuemart_product_prices`
 --
 
-INSERT INTO `#__virtuemart_product_prices` (`product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `virtuemart_shoppergroup_id`, `price_quantity_start`, `price_quantity_end`) VALUES
+INSERT INTO `#__virtuemart_product_prices` (`virtuemart_product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `created_on`, `modified_on`, `virtuemart_shoppergroup_id`, `price_quantity_start`, `price_quantity_end`) VALUES
 (1, 5, '24.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (2, 1, '4.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),
 (3, 2, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, NULL, 5, 0, 0),

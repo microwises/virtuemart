@@ -104,7 +104,7 @@ class VirtueMartModelCreditcard extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `creditcard_id` FROM `#__virtuemart_creditcards`';
+			$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_creditcards`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -165,7 +165,7 @@ class VirtueMartModelCreditcard extends JModel {
 			return false;
 		}
 
-		return $table->creditcard_id;
+		return $table->virtuemart_creditcard_id;
 	}
 
 
@@ -214,7 +214,7 @@ class VirtueMartModelCreditcard extends JModel {
 	{
 		$query = 'SELECT * FROM `#__virtuemart_creditcards` ';
 		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
-		$query .= 'ORDER BY `#__virtuemart_creditcards`.`creditcard_id`';
+		$query .= 'ORDER BY `#__virtuemart_creditcards`.`virtuemart_creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

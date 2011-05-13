@@ -48,8 +48,8 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td>'.$this->fieldTypes[$customRow->field_type].'
 				 <input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-				 <input type="hidden" value="'.$customRow->custom_id.'" name="field['.$i .'][custom_id]" />
-				 <input type="hidden" value="'.$customRow->custom_field_id.'" name="field['.$i .'][custom_field_id]" />
+				 <input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+				 <input type="hidden" value="'.$customRow->virtuemart_customfield_id.'" name="field['.$i .'][virtuemart_customfield_id]" />
 				 <input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 				</td>
 				<td>

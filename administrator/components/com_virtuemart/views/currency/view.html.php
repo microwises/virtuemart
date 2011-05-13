@@ -51,7 +51,7 @@ class VirtuemartViewCurrency extends JView {
 
 			$currency = $model->getCurrency(true);
 			$this->assignRef('currency',	$currency);
-			$isNew = ($currency->currency_id < 1);
+			$isNew = ($currency->virtuemart_currency_id < 1);
 
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CURRENCY_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_currency_48');
@@ -73,7 +73,7 @@ class VirtuemartViewCurrency extends JView {
 //			$this->assignRef('virtuemart_vendor_id', $vendorCurrency);
 
 			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->virtuemart_vendor_id,$currency->currency_id,'');
+			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->virtuemart_vendor_id,$currency->virtuemart_currency_id,'');
 			$this->assignRef('currencyDisplay',$cd);
 
        }

@@ -187,9 +187,9 @@ class VirtueMartModelCalc extends JModel
 			$data->calcCountriesList = modelfunctions::buildGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id');
 
 			/* Write the first 5 states in the list */
-			$data->calcStatesList = modelfunctions::buildGuiList('virtuemart_state_id','#__virtuemart_state_ids','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id');
+			$data->calcStatesList = modelfunctions::buildGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id');
 
-			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `currency_id` = "'.$data->calc_currency.'" ';
+			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
 			$data->currencyName = $this->_db->loadResult();
 
@@ -286,7 +286,7 @@ class VirtueMartModelCalc extends JModel
 //		modelfunctions::storeArrayData('#__virtuemart_calc_categories','virtuemart_calc_id','virtuemart_category_id', $table->virtuemart_calc_id,$data["calc_categories"]);
 ////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','virtuemart_calc_id','virtuemart_shoppergroup_id', $table->virtuemart_calc_id,$data["virtuemart_shoppergroup_id"]);
 //		modelfunctions::storeArrayData('#__virtuemart_calc_countries','virtuemart_calc_id','virtuemart_country_id', $table->virtuemart_calc_id,$data["virtuemart_country_id"]);
-//		modelfunctions::storeArrayData('#__virtuemart_state_ids','virtuemart_calc_id','virtuemart_state_id', $table->virtuemart_calc_id,$data["virtuemart_state_id"]);
+//		modelfunctions::storeArrayData('#__virtuemart_calc_states','virtuemart_calc_id','virtuemart_state_id', $table->virtuemart_calc_id,$data["virtuemart_state_id"]);
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();

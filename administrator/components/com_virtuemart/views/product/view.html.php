@@ -129,7 +129,7 @@ class VirtuemartViewProduct extends JView {
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
 				}
-				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
 				$currency = $currency_model->getCurrency($product->product_currency);
 				$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);

@@ -130,10 +130,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	function plgVmOnSelectPayment($cart,$checkedPaymId=0){
 		if(!$this -> setVmParams($cart->vendorId)) return ;
 
-		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
+		if($checkedPaymId==$this->paymentMethod->virtuemart_paymentmethod_id) $checked = '"checked"'; else $checked = '';
 
 		$html = '<fieldset>';
-		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 
 
 		if($this->paymentMethod->paym_creditcards){
@@ -197,8 +197,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	function plgVmOnCheckoutCheckPaymentData($cart){
 		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
-			if(empty($cart->creditcard_id) ||
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->virtuemart_paymentmethod_id)){
+			if(empty($cart->virtuemart_creditcard_id) ||
 				empty($cart->cc_name) ||
 				empty($cart->cc_number) ||
 				empty($cart->cc_code) ||
@@ -220,18 +220,18 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	{
 		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->virtuemart_paymentmethod_id)){
 			require_once(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
-			$cart->creditcard_id= JRequest::getVar('creditcard', '0');
+			$cart->virtuemart_creditcard_id= JRequest::getVar('creditcard', '0');
 			$cart->cc_name= JRequest::getVar('cart_cc_name', '');
 			$cart->cc_number= JRequest::getVar('cart_cc_number', '');
 			$cart->cc_code= JRequest::getVar('cart_cc_code', '');
 			$cart->cc_expire_month= JRequest::getVar('cart_cc_expire_month', '');
 			$cart->cc_expire_year= JRequest::getVar('cart_cc_expire_year', '');
 
-			if(!empty($cart->creditcard_id)){
+			if(!empty($cart->virtuemart_creditcard_id)){
 				$cardModel = new VirtueMartModelCreditcard();
-				$cc_ = $cardModel->getCreditCard($cart->creditcard_id);
+				$cc_ = $cardModel->getCreditCard($cart->virtuemart_creditcard_id);
 				$cc_type = $cc_->creditcard_code;
 				if ($this->params->get('CHECK_CARD_CODE')) {
 					if (!$cardModel->validate_creditcard_data($cc_type,$cart->cc_number)) {
@@ -305,10 +305,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
-		$this->_paym_id = $_orderData->paym_id;
+		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;
 		$_transKey = $this->get_passkey();
 		if( $_transKey === false ) return false;
 
@@ -413,7 +413,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		// Prepare data that should be stored in the database
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
-		$_dbValues['payment_method_id'] = $this->_paym_id;
+		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		if (VmConfig::get('store_creditcard_data')) {
 			$_dbValues['order_payment_number'] = $_orderData->cc_number;
 			$_dbValues['order_payment_code'] = $_orderData->cc_code;

@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCreditcard extends JTable {
 
 	/** @var int Primary key */
-	var $creditcard_id				= 0;
+	var $virtuemart_creditcard_id				= 0;
 	/** @var string credit card name */
 	var $creditcard_name           = '';
 	/** @var char Credit card code */
@@ -49,7 +49,7 @@ class TableCreditcard extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_creditcards', 'creditcard_id', $db);
+		parent::__construct('#__virtuemart_creditcards', 'virtuemart_creditcard_id', $db);
 	}
 
 
@@ -70,7 +70,7 @@ class TableCreditcard extends JTable {
 			return false;
 		}
 
-		if (($this->creditcard_name) && ($this->creditcard_id == 0)) {
+		if (($this->creditcard_name) && ($this->virtuemart_creditcard_id == 0)) {
 		    $db =& JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__virtuemart_creditcards` ';

@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.model');
 class VirtueMartModelCustom extends JModel {
 
 	/** @var integer Primary key */
-    private $custom_id = 0;
+    private $virtuemart_custom_id = 0;
 
    /** @var integer Total number of files in the database */
     var $_total;
@@ -46,10 +46,10 @@ class VirtueMartModelCustom extends JModel {
 	function __construct(){
 		parent::__construct();
 
-//		$this->custom_id = $id;
+//		$this->virtuemart_custom_id = $id;
 
 		/* Get the custom ID */
-		$this->setId(JRequest::getInt('custom_id', null));
+		$this->setId(JRequest::getInt('virtuemart_custom_id', null));
 
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
@@ -67,7 +67,7 @@ class VirtueMartModelCustom extends JModel {
 	 * @param int $id
 	 */
     function setId($id) {
-		$this->custom_id = $id;
+		$this->virtuemart_custom_id = $id;
 		$this->_data = null;
     }
 
@@ -92,14 +92,14 @@ class VirtueMartModelCustom extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-		    $query = 'SELECT `custom_id` FROM `#__virtuemart_customs`';
+		    $query = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
     }
 
     /**
-     * Gets a single custom by custom_id
+     * Gets a single custom by virtuemart_custom_id
      * .
      * @param string $type
      * @param string $mime mime type of custom, use for exampel image
@@ -110,7 +110,7 @@ class VirtueMartModelCustom extends JModel {
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$data = $this->getTable('Custom');
-   		$data->load($this->custom_id);
+   		$data->load($this->virtuemart_custom_id);
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 
   		$custom = VmCustomHandler::createCustom($data);
@@ -119,7 +119,7 @@ class VirtueMartModelCustom extends JModel {
 
     }
     /**
-     * Gets a single custom by custom_id
+     * Gets a single custom by virtuemart_custom_id
      * .
      * @param int $virtuemart_product_id
      * @return customobject
@@ -127,7 +127,7 @@ class VirtueMartModelCustom extends JModel {
     function getProductCustoms($virtuemart_product_id){
 
 		$query='SELECT * FROM `#__virtuemart_customfields`
-		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
+		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
 		and `virtuemart_product_id`='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$this->_datas->productCustoms = $this->_db->loadObjectList();
@@ -184,13 +184,13 @@ class VirtueMartModelCustom extends JModel {
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save custom' );
 
-		$oldId = $data['custom_id'];
+		$oldId = $data['virtuemart_custom_id'];
 		$this -> setId($oldId);
-		$custom_id = $this->store($type,$data);
+		$virtuemart_custom_id = $this->store($type,$data);
 
-		/* add the custom_id & delete 0 and '' from $data */
-		$data['custom_ids'] = array_merge( (array)$data['custom_id'],$data['custom_ids']);
-		$custom_ids = array_diff($data['custom_ids'],array('0',''));
+		/* add the virtuemart_custom_id & delete 0 and '' from $data */
+		$data['virtuemart_custom_ids'] = array_merge( (array)$data['virtuemart_custom_id'],$data['virtuemart_custom_ids']);
+		$virtuemart_custom_ids = array_diff($data['virtuemart_custom_ids'],array('0',''));
 
 		// Bind the form fields to the table
 		if (!$table->bind($data)) {
@@ -249,7 +249,7 @@ class VirtueMartModelCustom extends JModel {
 		}
 		//}
 
-		return $table->custom_id;
+		return $table->virtuemart_custom_id;
 	}
 
 	/**
@@ -310,31 +310,31 @@ class VirtueMartModelCustom extends JModel {
 		$newIds = array();
 
 		foreach ($fields as $field) {
-			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `custom_field_id` ,`custom_id` , `custom_value`, `custom_price`  )';
-			$q .= " VALUES( '".$field['custom_field_id']."', '".$field['custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
+			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
+			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
-			$custom_field_id = mysql_insert_id();
-			$newIds[]=$custom_field_id;
-			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `custom_field_id` , `virtuemart_product_id`  )';
-			$q .= " VALUES( '".$custom_field_id."', '". $virtuemart_product_id ."') ";
+			$virtuemart_customfield_id = mysql_insert_id();
+			$newIds[]=$virtuemart_customfield_id;
+			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
+			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
 
-		// slect all custom_field_id from product
-		$q="select custom_field_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
+		// slect all virtuemart_customfield_id from product
+		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
 		$this->_db->setQuery($q);
 		$Ids = $this->_db->loadResultArray();
 		// delete from database old unused product custom fields
 		$deleteIds = array_diff(  $Ids,$newIds);
 		$id = '('.implode (',',$deleteIds).')';
-				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `custom_field_id` in  ' . $id);
+				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `custom_field_id` in  ' . $id);
+		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;

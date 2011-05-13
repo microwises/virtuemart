@@ -191,7 +191,7 @@ class VirtueMartModelProduct extends JModel {
 
 //   		if(!$front){
     			$ppTable = $this->getTable('product_price');
-    			$q = 'SELECT `product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
+    			$q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
 				$this->_db->setQuery($q);
     			$ppId = $this->_db->loadResult();
    				$ppTable->load($ppId);
@@ -314,7 +314,7 @@ class VirtueMartModelProduct extends JModel {
 
 	 	 /* Add optional fields */
 	 	 $product->virtuemart_manufacturer_id = null;
-	 	 $product->product_price_id = null;
+	 	 $product->virtuemart_product_price_id = null;
 	 	 $product->product_price = null;
 	 	 $product->product_currency = null;
 	 	 $product->product_price_quantity_start = null;
@@ -1219,7 +1219,7 @@ class VirtueMartModelProduct extends JModel {
 			/* delete Product custom fields and Xref */
 			$q = "DELETE `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
 				FROM  `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
-				WHERE `#__virtuemart_product_customfields`.`custom_field_id` = `#__virtuemart_customfields`.`custom_field_id`
+				WHERE `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
 				AND `#__virtuemart_product_customfields`.`virtuemart_product_id` =".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
@@ -1720,10 +1720,10 @@ class VirtueMartModelProduct extends JModel {
 
 		 if ($this->hasproductCustoms($virtuemart_product_id )) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`,field.`custom_price`
+		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
-			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 			Where xref.`virtuemart_product_id` ='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
@@ -1839,12 +1839,12 @@ class VirtueMartModelProduct extends JModel {
 
 		if ($product->hasproductCustoms) {
 
-		$query='SELECT C.`custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`custom_field_id` , field.`custom_value`, field.`custom_price`
+		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
-			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 			Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-		$query .=' and is_cart_attribute = 0 order by custom_id' ;
+		$query .=' and is_cart_attribute = 0 order by virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
@@ -1861,13 +1861,13 @@ class VirtueMartModelProduct extends JModel {
 
 		if ($product->hasproductCustoms)  {
 
-			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
+			// group by virtuemart_custom_id
+			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
 				FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 				Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-			$query .=' and is_cart_attribute = 1 group by custom_id' ;
+			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
 
 			$this->_db->setQuery($query);
 			$groups = $this->_db->loadObjectList();
@@ -1882,13 +1882,13 @@ class VirtueMartModelProduct extends JModel {
 			// render select list
 			foreach ($groups as & $group) {
 
-//				$query='SELECT  field.`custom_field_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
-				$query='SELECT  field.`custom_field_id` as value ,field.`custom_value`, field.`custom_price`
+//				$query='SELECT  field.`virtuemart_customfield_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
+				$query='SELECT  field.`virtuemart_customfield_id` as value ,field.`custom_value`, field.`custom_price`
 					FROM `#__virtuemart_customs` AS C
-					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 					Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group->custom_id ;
+				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.$group->virtuemart_custom_id ;
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList();
 				$group->options = array();
@@ -1901,11 +1901,11 @@ class VirtueMartModelProduct extends JModel {
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
 					}
-					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->custom_id.']',$group->custom_value,'','value','text',false);
+					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->custom_value,'','value','text',false);
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
-						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
 					}
 				}
 				$row++ ;
@@ -1916,12 +1916,12 @@ class VirtueMartModelProduct extends JModel {
 		return ;
      }
 	/*
-	* GIve Product custom_field_id pricable
+	* GIve Product virtuemart_customfield_id pricable
 	**/
 	public function getProductcustomfieldsIds($product) {
-			$query='SELECT field.`custom_field_id` FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+			$query='SELECT field.`virtuemart_customfield_id` FROM `#__virtuemart_customs` AS C
+				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 				Where is_cart_attribute = 1 and xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
 		$this->_db->setQuery($query);
 		return ($this->_db->loadResult() > 0);
@@ -1936,24 +1936,24 @@ class VirtueMartModelProduct extends JModel {
 
 		if ($this->hasproductCustoms($product->virtuemart_product_id )) {
 
-			// group by custom_id
-			$query='SELECT C.`custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`custom_field_id`,`is_hidden`
+			// group by virtuemart_custom_id
+			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
 				FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 				Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-			$query .=' and is_cart_attribute = 1 group by custom_id' ;
+			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
 			$this->_db->setQuery($query);
 			$groups = $this->_db->loadAssocList();
 
-			//product custom_field  with price grouped by custom_id
+			//product custom_field  with price grouped by virtuemart_custom_id
 			foreach ($groups as & $group) {
-				$query='SELECT  field.`custom_field_id` ,field.`custom_value`,field.`custom_price`
+				$query='SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
 					FROM `#__vm_custom` AS C
-					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`custom_id` = field.`custom_id`
-					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`custom_field_id` = field.`custom_field_id`
+					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 					Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
-				$query .=' and is_cart_attribute = 1 and C.`custom_id`='.$group['custom_id'] ;
+				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.$group['virtuemart_custom_id'] ;
 				$this->_db->setQuery($query);
 				$productCustomsCart = $this->_db->loadAssocList();
 				$group = array_merge($group, $productCustomsCart);

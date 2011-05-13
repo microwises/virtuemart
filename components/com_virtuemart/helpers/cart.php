@@ -45,7 +45,7 @@ class VirtueMartCart  {
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shippingrate_id = 0;
 	var $shipper_id = 0;
-	var $paym_id = 0;
+	var $virtuemart_paymentmethod_id = 0;
 	var $BT = 0;
 	var $ST = 0;
 	var $tosAccepted = false;
@@ -503,8 +503,8 @@ class VirtueMartCart  {
 		}
 	}
 
-	public function setPaymentMethod($paym_id){
-		$this->paym_id=$paym_id;
+	public function setPaymentMethod($virtuemart_paymentmethod_id){
+		$this->virtuemart_paymentmethod_id=$virtuemart_paymentmethod_id;
 		$this->setCartIntoSession();
 	}
 
@@ -599,7 +599,7 @@ class VirtueMartCart  {
 		}
 
 		//Test Payment and show payment plugin
-		if(empty($this->paym_id)){
+		if(empty($this->virtuemart_paymentmethod_id)){
 
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
 		} else {

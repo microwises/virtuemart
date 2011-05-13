@@ -43,7 +43,7 @@ class VirtuemartViewManufacturercategories extends JView {
 
         $manufacturerCategory = $model->getManufacturerCategory();
 
-        $isNew = ($manufacturerCategory->mf_category_id < 1);
+        $isNew = ($manufacturerCategory->virtuemart_manufacturer_category_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {

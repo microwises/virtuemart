@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableCoupon extends JTable {
 
 	/** @var int Primary key */
-	var $coupon_id			 	= 0;
+	var $virtuemart_coupon_id			 	= 0;
 	/** @var varchar Coupon name */
 	var $coupon_code         	= '';
 	/** @var string Coupon percentage or total */
@@ -54,7 +54,7 @@ class TableCoupon extends JTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_coupons', 'coupon_id', $db);
+		parent::__construct('#__virtuemart_coupons', 'virtuemart_coupon_id', $db);
 	}
 
 
