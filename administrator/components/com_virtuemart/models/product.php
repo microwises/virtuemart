@@ -64,7 +64,7 @@ class VirtueMartModelProduct extends JModel {
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'media.php');
+//		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'medias.php');
 	}
 
 	 /**
@@ -178,19 +178,19 @@ class VirtueMartModelProduct extends JModel {
 
 
    			$product = $this->getTable('products');
-   			$product->load($virtuemart_product_id);dump($product,'product');
+   			$product->load($virtuemart_product_id);
    			if($onlyPublished){
    				if(empty($product->published)){
    					return $this->fillVoidProduct($product,$front);
    				}
    			}
 
-   			$xrefTable = $this->getTable('product_media_xref');
+   			$xrefTable = $this->getTable('product_medias');
 			$product->file_ids = $xrefTable->load((int)$this->_id);
 
 
 //   		if(!$front){
-    			$ppTable = $this->getTable('product_price');
+    			$ppTable = $this->getTable('product_prices');
     			$q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" ';
 				$this->_db->setQuery($q);
     			$ppId = $this->_db->loadResult();
@@ -202,7 +202,7 @@ class VirtueMartModelProduct extends JModel {
    			$this->_db->setQuery($q);
    			$mf_id = $this->_db->loadResult();
 
-   			$mfTable = $this->getTable('manufacturer');
+   			$mfTable = $this->getTable('manufacturers');
    			$mfTable->load((int)$mf_id);
    			$product = (object) array_merge((array) $mfTable, (array) $product);
 
@@ -309,7 +309,7 @@ class VirtueMartModelProduct extends JModel {
     private function fillVoidProduct($product,$front=true){
 
 		/* Load an empty product */
-	 	 $product = $this->getTable();
+	 	 $product = $this->getTable('products');
 	 	 $product->load();
 
 	 	 /* Add optional fields */
@@ -775,7 +775,7 @@ class VirtueMartModelProduct extends JModel {
 	public function publish($publishId = false){
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','product',$publishId);
+		return modelfunctions::publish('cid','products',$publishId);
 
 	}
 
@@ -1008,11 +1008,11 @@ class VirtueMartModelProduct extends JModel {
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
-			$xrefTable = $this->getTable('product_media_xref');
+			$xrefTable = $this->getTable('product_medias');
 			$mediaModel->storeMedia($data,$xrefTable,'product');
 		}
 
-		$product_price_table = $this->getTable('product_price');
+		$product_price_table = $this->getTable('product_prices');
 
 		if (!$product_price_table->bind($data)) {
 			$this->setError($product_price_table->getError());

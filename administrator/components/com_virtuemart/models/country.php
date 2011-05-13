@@ -204,7 +204,7 @@ class VirtueMartModelCountry extends JModel {
     function publish($publishId = false) {
 
     	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','country',$publishId);
+		return modelfunctions::publish('cid','countries',$publishId);
 
     }
 

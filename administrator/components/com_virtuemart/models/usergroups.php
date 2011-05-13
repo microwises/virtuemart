@@ -102,7 +102,7 @@ class VirtueMartModelUsergroups extends JModel {
 		$db = JFactory::getDBO();
 
 		if (empty($this->_data)) {
-		    $this->_data = $this->getTable();
+		    $this->_data = $this->getTable('usergroups');
 		    $this->_data->load((int)$this->_id);
 		}
 

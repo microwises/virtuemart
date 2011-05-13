@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author RolandD
  * @author Max Milbers
  */
-class TableProduct_price extends JTable {
+class TableProduct_prices extends JTable {
 
     /** @var int Primary key */
     var $virtuemart_product_price_id = 0;
@@ -45,7 +45,7 @@ class TableProduct_price extends JTable {
     var $product_price_vdate = null;
 
     var $product_price_edate = null;
-  
+
     /** @var int Shopper group ID */
     var $virtuemart_shoppergroup_id = null;
     /** @var int Price quantity start */

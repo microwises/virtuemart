@@ -205,7 +205,7 @@ class VirtueMartModelUserfields extends JModel {
 	function store()
 	{
 		$field      =& $this->getTable('userfields');
-		$userinfo   =& $this->getTable('userinfo');
+		$userinfo   =& $this->getTable('userinfos');
 		$orderinfo  =& $this->getTable('order_userinfo');
 
 		$data = JRequest::get('post');
@@ -823,7 +823,7 @@ class VirtueMartModelUserfields extends JModel {
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
 		$field      =& $this->getTable('userfields');
 		$value      =& $this->getTable('userfields_values');
-		$userinfo   =& $this->getTable('userinfo');
+		$userinfo   =& $this->getTable('userinfos');
 		$orderinfo  =& $this->getTable('order_userinfo');
 
 		foreach($fieldIds as $fieldId) {

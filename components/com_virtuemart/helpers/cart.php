@@ -203,8 +203,6 @@ class VirtueMartCart  {
 					}
 				}
 
-
-
 			}
 			else {
 				$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND',false) );

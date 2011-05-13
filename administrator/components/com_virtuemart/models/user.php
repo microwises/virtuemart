@@ -156,7 +156,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _loadUserInfo($_ui_id)
 	{
-		$_data = $this->getTable('userinfo');
+		$_data = $this->getTable('userinfos');
 		$_data->load($_ui_id);
 		return $_data;
 	}
@@ -173,7 +173,7 @@ class VirtueMartModelUser extends JModel {
 
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-			$this->_data = $this->getTable('vm_users');
+			$this->_data = $this->getTable('vmusers');
 			$this->_data->load((int)$this->_id);
 
 			/* Add the virtuemart_shoppergroup_ids */
@@ -498,7 +498,7 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			//update user table
-			$usertable = $this->getTable('vm_users');
+			$usertable = $this->getTable('vmusers');
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			if (!$usertable->bind($vmusersData)) {
 				$this->setError($usertable->getError());
@@ -528,7 +528,7 @@ class VirtueMartModelUser extends JModel {
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
-			if (!user_info::storeAddress($_data, 'userinfo', $new)) {
+			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
 				$this->setError('Was not able to save the virtuemart userinfo address data');
 				return false;
 			}
@@ -551,7 +551,7 @@ class VirtueMartModelUser extends JModel {
 					$virtuemart_vendor_id = $vendorModel->getId();
 
 					//update user table
-					//					$usertable = $this->getTable('vm_users');
+					//					$usertable = $this->getTable('vmusers');
 					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 					if (!$usertable->bind($vmusersData)) {
 						$this->setError($table->getError());
@@ -615,9 +615,9 @@ class VirtueMartModelUser extends JModel {
 	 function delete()
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
-	 	$userInfo =& $this->getTable('userinfo');
+	 	$userInfo =& $this->getTable('userinfos');
 	 	$vm_shoppergroup_xref =& $this->getTable('user_shopper_group_xref');
-                $vm_users =& $this->getTable('vm_users');
+                $vmusers =& $this->getTable('vmusers');
 	 	$_status = true;
 	 	foreach($userIds as $userId) {
 	 		if ($this->getSuperAdminCount() <= 1) {
@@ -639,8 +639,8 @@ class VirtueMartModelUser extends JModel {
 	 			$_status = false;
 	 			continue;
 	 		}
-                        if (!$vm_users->delete($userId)) {
-	 			$this->setError($vm_users->getError()); // Signal but continue
+                        if (!$vmusers->delete($userId)) {
+	 			$this->setError($vmusers->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
 	 		}
@@ -710,7 +710,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function getCustomerNumberById($_id = 0)
 	 {
-	 	$_q = "SELECT `customer_number` FROM `#__virtuemart_users` "
+	 	$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
 			."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
 			$_r = $this->_getList($_q);
 			if(!empty($_r[0])){
@@ -773,7 +773,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function _getListQuery (){
 
-	 	// Used tables #__virtuemart_users, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_user_shoppergroups, #__virtuemart_vendors
+	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_user_shoppergroups, #__virtuemart_vendors
 	 	$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -782,7 +782,7 @@ class VirtueMartModelUser extends JModel {
 			. ', ju.usertype AS usertype'
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
-			. 'LEFT JOIN #__virtuemart_users AS vmu ON ju.id = vmu.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
@@ -839,7 +839,7 @@ class VirtueMartModelUser extends JModel {
 	 		JArrayHelper::toInteger($id);
 	 		$ids = implode( ',', $id );
 
-	 		$query = 'UPDATE `#__virtuemart_users`'
+	 		$query = 'UPDATE `#__virtuemart_vmusers`'
 				. ' SET `' . $field . '` = '.(int) $value
 				. ' WHERE virtuemart_user_id IN ( '.$ids.' )'
 				;

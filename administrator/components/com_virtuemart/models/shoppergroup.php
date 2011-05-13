@@ -118,7 +118,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	    $db = JFactory::getDBO();
 
 	    if (empty($_data)) {
-	      $this->_data = $this->getTable();
+	      $this->_data = $this->getTable('shoppergroups');
 	      $this->_data->load((int) $this->_id);
 	    }
 

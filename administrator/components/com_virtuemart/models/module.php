@@ -119,7 +119,7 @@
 //	    $db = JFactory::getDBO();
 //
 //	    if (empty($_data)) {
-//	      $this->_data = $this->getTable();
+//	      $this->_data = $this->getTable('modules');
 //	      $this->_data->load((int) $this->_id);
 //	    }
 //

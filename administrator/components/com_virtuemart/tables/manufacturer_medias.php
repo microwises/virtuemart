@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* virtuemart_category_id_xref table ( to map calc rules to shoppergroups)
+* mf_media_xref table ( for manufacturers)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -19,30 +19,24 @@
 defined('_JEXEC') or die();
 
 /**
- *
- * The class is an xref table
+ * Calculator table class
+ * The class is is used to manage the media in the shop.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
+class TableManufacturer_medias extends JTable {
 
-if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+	var $_pkey 		= 'virtuemart_manufacturer_id';
+	var $_skey 		= 'file_ids';
 
-class Tablevirtuemart_country_id_xref extends VmXrefTable {
-
-	var $_pkey 		= 'virtuemart_calc_id';
-	var $pkeyForm	= 'virtuemart_calc_id';
-
-	var $_skey 		= 'virtuemart_country_id';
-	var $skeyForm	= 'virtuemart_country_id';
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_countries', 'id', $db);
+		parent::__construct('#__virtuemart_manufacturer_medias', 'id', $db);
 	}
-
 
 }

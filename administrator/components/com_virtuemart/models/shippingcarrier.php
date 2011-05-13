@@ -120,7 +120,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable('shipping_carrier');
+	    $this->_data = $this->getTable('shippingcarriers');
 	    $this->_data->load((int)$this->_id);
 	}
 
@@ -141,7 +141,7 @@ class VirtueMartModelShippingCarrier extends JModel {
      * @return Mixed False if the save was unsuccessful, the shipping carrier ID otherwise.
      */
     function store() {
-	$table = $this->getTable('shipping_carrier');
+	$table = $this->getTable('shippingcarriers');
 
 	$data = JRequest::get( 'post' );
 	if($data['virtuemart_vendor_id']) {
@@ -178,7 +178,7 @@ class VirtueMartModelShippingCarrier extends JModel {
      */
     function delete() {
 	$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-	$table =& $this->getTable('shipping_carrier');
+	$table =& $this->getTable('shippingcarriers');
 
 	foreach($shippingCarrierIds as $shippingCarrierId) {
 	    if ($this->deleteShippingCarrierRates($shippingCarrierId)) {

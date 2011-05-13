@@ -37,7 +37,7 @@ class VirtuemartViewCountry extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel();
-		$zoneModel = $this->getModel('ShippingZone');
+		$zoneModel = $this->getModel('Worldzones');
 
 		$layoutName = JRequest::getVar('layout', 'default');
 

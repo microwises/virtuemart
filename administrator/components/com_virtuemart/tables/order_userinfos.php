@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class TableOrder_userinfo extends JTable {
+class TableOrder_userinfos extends JTable {
 
 	/**
 	 * Constructor
@@ -82,6 +82,6 @@ class TableOrder_userinfo extends JTable {
 			return false;
 		}
 		return true;
-	} 
+	}
 }
 // No closing tag

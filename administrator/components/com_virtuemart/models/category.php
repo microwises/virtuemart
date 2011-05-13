@@ -135,7 +135,7 @@ class VirtueMartModelCategory extends JModel {
    			$this->_data->load((int)$this->_id);
   		}
 
-		$xrefTable = $this->getTable('category_media_xref');
+		$xrefTable = $this->getTable('category_medias');
 		$this->_data->file_ids = $xrefTable->load((int)$this->_id);
 
   		if($childs){
@@ -203,7 +203,7 @@ class VirtueMartModelCategory extends JModel {
 
 		if(!empty($childList)){
 			foreach($childList as $child){
-				$xrefTable = $this->getTable('category_media_xref');
+				$xrefTable = $this->getTable('category_medias');
 				$child->file_ids = $xrefTable->load($child->virtuemart_category_id);
 			}
 		}
@@ -495,7 +495,7 @@ class VirtueMartModelCategory extends JModel {
 	public function publish($publishId = false){
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','category',$publishId);
+		return modelfunctions::publish('cid','categories',$publishId);
 
 	}
 
@@ -667,7 +667,7 @@ class VirtueMartModelCategory extends JModel {
 
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		$xrefTable = $this->getTable('category_media_xref');
+		$xrefTable = $this->getTable('category_medias');
 		$mediaModel = new VirtueMartModelMedia();
 		$mediaModel->storeMedia($data,$xrefTable,'category');
 

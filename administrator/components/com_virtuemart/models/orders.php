@@ -243,7 +243,7 @@ class VirtueMartModelOrders extends JModel {
 	public function saveAttribute()
 	{
 		/* Load an attribute */
-		$row = $this->getTable();
+		$row = $this->getTable('orders');
 		$row->load(JRequest::getInt('attribute_sku_id'));
 
 		/* Update the list order */
@@ -368,7 +368,7 @@ class VirtueMartModelOrders extends JModel {
 				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
 
 				/* Update the order */
-				$order = $this->getTable();
+				$order = $this->getTable('orders');
 				$order->load($virtuemart_order_id);
 				$order_status_code = $order->order_status;
 

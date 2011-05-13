@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TablePayment_method extends JTable
+class TablePaymentmethods extends JTable
 {
 	/** @var int Primary key */
 	var $virtuemart_paymentmethod_id					= 0;
@@ -55,8 +55,8 @@ class TablePayment_method extends JTable
 /** @var blob secret key of the paymentmethod */
 	var $paym_secret_key			= '';
 	/** @var string parameter of the paymentmethod*/
-	var $paym_params				= 0;		
-	
+	var $paym_params				= 0;
+
 	/** @var string ordering */
 	var $ordering       	= '';
         /** @var for all Vendors? */
@@ -64,7 +64,7 @@ class TablePayment_method extends JTable
         ////this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */
 	var $published 		        = 0;
-   	
+
        /** @var date Category creation date */
         var $created_on = null;
           /** @var int User id */

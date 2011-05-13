@@ -85,7 +85,7 @@ class VirtueMartModelManufacturer extends JModel {
      public function getManufacturer() {
 
      	$this->_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
-     	$this->_data = $this->getTable();
+     	$this->_data = $this->getTable('manufacturers');
      	$this->_data->load($this->_id);
 
      	$xrefTable = $this->getTable('mf_media_xref');
@@ -104,7 +104,7 @@ class VirtueMartModelManufacturer extends JModel {
 	public function store() {
 
 		/* Setup some place holders */
-		$table = $this->getTable();
+		$table = $this->getTable('manufacturers');
 
 		/* Load the data */
 		$data = JRequest::get('post', 4);
@@ -145,7 +145,7 @@ class VirtueMartModelManufacturer extends JModel {
      */
 	public function delete() {
 		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('manufacturer');
+    	$table = $this->getTable('manufacturers');
 
     	foreach($manufacturerIds as $manufacturerId) {
        		if (!$table->delete($manufacturerId)) {
@@ -219,12 +219,12 @@ class VirtueMartModelManufacturer extends JModel {
 		$option	= 'com_virtuemart';
 
 
-		$virtuemart_manufacturer_category_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturer_category_id', 'virtuemart_manufacturer_category_id', 0, 'int' );
+		$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
 		$where = array();
-		if ($virtuemart_manufacturer_category_id > 0) {
-			$where[] .= '`#__virtuemart_manufacturers`.`virtuemart_manufacturer_category_id` = '. $virtuemart_manufacturer_category_id;
+		if ($virtuemart_manufacturercategories_id > 0) {
+			$where[] .= '`#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 		if ( $search ) {
 			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );

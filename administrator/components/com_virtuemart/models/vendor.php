@@ -106,7 +106,7 @@ class VirtueMartModelVendor extends JModel {
 
         if (!$this->_data) {
 
-	    	$this->_data = $this->getTable('vendor');
+	    	$this->_data = $this->getTable('vendors');
    			$this->_data->load((int)$this->_id);
 
 		    // Convert ; separated string into array
@@ -117,7 +117,7 @@ class VirtueMartModelVendor extends JModel {
 				$this->_data->vendor_accepted_currencies = array();
 		    }
 
-		    $xrefTable = $this->getTable('vendor_media_xref');
+		    $xrefTable = $this->getTable('vendor_medias');
 			$this->_data->file_ids = $xrefTable->load((int)$this->_id);
 
 //          	if($this->_data->file_ids){
@@ -132,7 +132,7 @@ class VirtueMartModelVendor extends JModel {
 //			    // Get user_info table data
 //			    $this->_data->userId = (isset($userVendor->virtuemart_user_id) ? $userVendor->virtuemart_user_id : 0);
 //
-//				$userInfoTable = $this->getTable('userinfo');
+//				$userInfoTable = $this->getTable('userinfos');
 //	    		$userInfoTable->load((int)$this->_id);
 //	    		$this->_data->userInfo = $userInfoTable;
 //
@@ -182,7 +182,7 @@ class VirtueMartModelVendor extends JModel {
 		$db = JFactory::getDBO();
 		if (empty($vendorId)) return;
 		else {
-			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_users` WHERE `virtuemart_vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
+			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);
@@ -192,7 +192,7 @@ class VirtueMartModelVendor extends JModel {
 
 	/**
 	 * Bind the post data to the vendor table and save it
-     * This function DOES NOT safe information which is in the vm_users or vm_user_info table
+     * This function DOES NOT safe information which is in the vmusers or vm_user_info table
      * It only stores the stuff into the vendor table
      * @author RickG
      * @author Max Milbers
@@ -200,7 +200,7 @@ class VirtueMartModelVendor extends JModel {
 	 */
     function store($data){
 
-	$table = $this->getTable('vendor');
+	$table = $this->getTable('vendors');
 
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
@@ -233,7 +233,7 @@ class VirtueMartModelVendor extends JModel {
 	/* Process the images */
 
 	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-	$xrefTable = $this->getTable('vendor_media_xref');
+	$xrefTable = $this->getTable('vendor_medias');
 	$mediaModel = new VirtueMartModelMedia();
 	$mediaModel->storeMedia($data,$xrefTable,'vendor');
 
@@ -360,13 +360,13 @@ class VirtueMartModelVendor extends JModel {
 			case 'user':
 				if ($ownerOnly) {
 					$q = 'SELECT `virtuemart_vendor_id`
-						FROM `#__virtuemart_users` `au`
+						FROM `#__virtuemart_vmusers` `au`
 						LEFT JOIN `#__virtuemart_userinfos` `u`
 						ON (au.virtuemart_user_id = u.virtuemart_user_id)
 						WHERE `u`.`virtuemart_user_id`=' .$value;
 				}
 				else {
-					$q  = 'SELECT `virtuemart_vendor_id` FROM `#__virtuemart_users` WHERE `virtuemart_user_id`= "' .$value.'" ';
+					$q  = 'SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' .$value.'" ';
 				}
 				break;
 			case 'product':

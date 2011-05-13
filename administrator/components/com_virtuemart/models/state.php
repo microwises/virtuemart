@@ -124,7 +124,7 @@ class VirtueMartModelState extends JModel {
 	function getSingleState(){
 
 		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('states');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -172,7 +172,7 @@ class VirtueMartModelState extends JModel {
 	 */
     function store()
 	{
-		$table =& $this->getTable('state');
+		$table =& $this->getTable('states');
 
 		$data = JRequest::get( 'post' );
 		// Bind the form fields to the state table
@@ -207,7 +207,7 @@ class VirtueMartModelState extends JModel {
 	function delete()
 	{
 		$stateIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('state');
+    	$table =& $this->getTable('states');
 
     	foreach($stateIds as $stateId) {
         	if (!$table->delete($stateId)) {
@@ -229,7 +229,7 @@ class VirtueMartModelState extends JModel {
 	function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','state',$publishId);
+		return modelfunctions::publish('cid','states',$publishId);
 	}
 
 

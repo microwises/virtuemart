@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* product_media_xref table ( for media)
+* category_medias table for media
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+
 /**
  * Calculator table class
  * The class is is used to manage the media in the shop.
@@ -25,18 +27,17 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableProduct_media_xref extends JTable {
+class TableCategory_medias extends VmXrefTable {
 
-	var $_pkey 		= 'virtuemart_product_id';
+	var $_pkey 		= 'virtuemart_category_id';
 	var $_skey 		= 'file_ids';
-
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_product_medias', 'id', $db);
+		parent::__construct('#__virtuemart_category_medias', 'id', $db);
 	}
 
 }

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* mf_media_xref table ( for manufacturers)
+* vendor_media_xref table ( for media)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -19,24 +19,23 @@
 defined('_JEXEC') or die();
 
 /**
- * Calculator table class
+ * Vendor media table class
  * The class is is used to manage the media in the shop.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableMf_media_xref extends JTable {
+class TableVendor_medias extends JTable {
 
-	var $_pkey 		= 'virtuemart_manufacturer_id';
+	var $_pkey 		= 'virtuemart_vendor_id';
 	var $_skey 		= 'file_ids';
-
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_manufacturer_medias', 'id', $db);
+		parent::__construct('#__virtuemart_vendor_medias', 'id', $db);
 	}
 
 }

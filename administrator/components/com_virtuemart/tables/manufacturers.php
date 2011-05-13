@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author
  */
-class TableManufacturer extends JTable {
+class TableManufacturers extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_manufacturer_id = 0;
@@ -37,7 +37,7 @@ class TableManufacturer extends JTable {
 	/** @var string manufacturer description */
 	var $mf_desc = '';
     /** @var int Manufacturer category id */
-	var $virtuemart_manufacturer_category_id  = 0;
+	var $virtuemart_manufacturercategories_id  = 0;
     /** @var string manufacturer URL */
 	var $mf_url = '';
 

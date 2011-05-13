@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author 	RickG, RolandD
  */
-class TableUserinfo extends JTable {
+class TableUserinfos extends JTable {
 
 
 	/** @var int Primary key */

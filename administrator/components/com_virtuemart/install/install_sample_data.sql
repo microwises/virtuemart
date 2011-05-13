@@ -100,15 +100,15 @@ INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`,
 -- Dumping data for table `#__virtuemart_manufacturers`
 --
 
-INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `virtuemart_manufacturer_category_id`, `mf_url`, `published`) VALUES
+INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `virtuemart_manufacturercategories_id`, `mf_url`, `published`) VALUES
 (1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 1, 'http://www.example.org', 1);
 
 
 --
--- Dumping data for table `#__virtuemart_manufacturer_categories`
+-- Dumping data for table `#__virtuemart_manufacturercategories`
 --
 
-INSERT INTO `#__virtuemart_manufacturer_categories` (`virtuemart_manufacturer_category_id`, `mf_category_name`, `mf_category_desc`) VALUES
+INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`) VALUES
 (1, '-default-', 'This is the default manufacturer category');
 
 --

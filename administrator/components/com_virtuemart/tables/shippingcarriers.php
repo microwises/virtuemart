@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: shippingcarriesr.php -1   $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RickG
  */
-class TableShipping_Carrier extends JTable {
+class TableShippingcarriers extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shippingcarrier_id			= 0;

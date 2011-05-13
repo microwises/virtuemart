@@ -109,7 +109,7 @@ class VirtueMartModelCustom extends JModel {
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-   		$data = $this->getTable('Custom');
+   		$data = $this->getTable('customs');
    		$data->load($this->virtuemart_custom_id);
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 
@@ -223,7 +223,7 @@ class VirtueMartModelCustom extends JModel {
 	 */
 	public function store($data=0) {
 
-		$table = $this->getTable('custom');
+		$table = $this->getTable('customs');
 		if(empty($data))$data = JRequest::get('post');
 
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
@@ -260,7 +260,7 @@ class VirtueMartModelCustom extends JModel {
 	public function delete($cids) {
 		$mainframe = Jfactory::getApplication('site');
 //		$deleted = 0;
-	 	$row = $this->getTable('custom');
+	 	$row = $this->getTable('customs');
 //	 	$cids = JRequest::getVar('cid');
 
 	 	if (is_array($cids)) {
@@ -287,7 +287,7 @@ class VirtueMartModelCustom extends JModel {
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','custom',$publishId);
+		return modelfunctions::publish('cid','customs',$publishId);
 
 	}	/**
 	 * Publish/Unpublish all the ids selected

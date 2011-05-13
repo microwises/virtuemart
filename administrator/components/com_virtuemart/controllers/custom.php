@@ -97,10 +97,10 @@ class VirtuemartControllerCustom extends JController {
 			$table = $fileModel->getTable('categories');
 			$type = 'category';
 		} else if (!empty($data['virtuemart_manufacturer_id'])){
-			$table = $fileModel->getTable('manufacturer');
+			$table = $fileModel->getTable('manufacturers');
 			$type = 'manufacturer';
 //		} else if ($data['virtuemart_vendor_id']){
-//			$table = $this->getTable('vendor');
+//			$table = $this->getTable('vendors');
 //			$type = 'vendor';
 		} else {
 

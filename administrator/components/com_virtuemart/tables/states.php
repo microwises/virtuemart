@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG
  */
-class TableState extends JTable {
+class TableStates extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_state_id				= 0;

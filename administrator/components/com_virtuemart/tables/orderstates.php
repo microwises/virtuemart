@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author Oscar van Eijk
  */
-class TableOrder_status extends JTable {
+class TableOrderstates extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_orderstate_id			= 0;
@@ -83,7 +83,7 @@ class TableOrder_status extends JTable {
 		$db =& JFactory::getDBO();
 		$q = 'SELECT count(*),virtuemart_orderstate_id FROM `#__virtuemart_orderstates` ';
 		$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
-		$db->setQuery($q); 
+		$db->setQuery($q);
 
 		$row = $db->loadRow();
 		if(is_array($row)){
@@ -92,7 +92,7 @@ class TableOrder_status extends JTable {
 					$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_EXISTS'));
 					return false;
 				}
-			}					
+			}
 		}
 
 		return true;

@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RolandD
  */
-class TableOrder_item extends JTable {
+class TableOrder_items extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_order_item_id = 0;

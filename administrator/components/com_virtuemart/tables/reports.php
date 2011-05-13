@@ -3,7 +3,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
 *
-* @version 
+* @version
 * @package VirtueMart
 * @subpackage Report
 * @copyright Copyright (C) VirtueMart Team - All rights reserved.
@@ -19,16 +19,16 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
  * Report table class
- * 
+ *
  * @package	VirtueMart
  * @subpackage Report
- * @author Wicksj 
+ * @author Wicksj
  */
-class TableReport extends JTable {
-			
+class TableReports extends JTable {
+
 	/**
 	 * Constructor for report table class
-	 * @param $db Database connector object 
+	 * @param $db Database connector object
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);

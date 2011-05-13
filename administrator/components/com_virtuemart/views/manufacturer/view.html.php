@@ -43,7 +43,7 @@ class VirtuemartViewManufacturer extends JView {
 		$model = $this->getModel();
 		$categoryModel = $this->getModel('manufacturercategories');
 
-        $virtuemart_manufacturer_category_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturer_category_id', 'virtuemart_manufacturer_category_id', 0, 'int' );
+        $virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
 
@@ -91,7 +91,7 @@ class VirtuemartViewManufacturer extends JView {
 			$this->assignRef('manufacturers',	$manufacturers);
 			$categoryFilter = $categoryModel->getCategoryFilter();
 
-			$list['virtuemart_manufacturer_category_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturer_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturer_category_id );
+			$list['virtuemart_manufacturercategories_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );
 			$list['search'] = $search;
 
 			$this->assignRef('list', $list);

@@ -129,7 +129,7 @@ class VirtueMartModelPaymentmethod extends JModel
 //		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('payment_method');
+   			$this->_data = $this->getTable('paymentmethods');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -243,7 +243,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	 */
     public function store()
 	{
-		$table = $this->getTable('payment_method');
+		$table = $this->getTable('paymentmethods');
 
 		$data = JRequest::get('post');
 
@@ -333,7 +333,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	public function delete()
 	{
 		$calcIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('payment_method');
+    	$table = $this->getTable('paymentmethods');
 
     	foreach($calcIds as $calcId) {
 
@@ -364,7 +364,7 @@ class VirtueMartModelPaymentmethod extends JModel
 	public function publish($publish=false) {
 
     	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','payment_method',$publish);
+		return modelfunctions::publish('cid','paymentmethods',$publish);
 
 	}
 

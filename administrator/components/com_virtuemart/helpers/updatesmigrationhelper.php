@@ -31,7 +31,7 @@
 			$country1 = $db->loadResult();
 			if(isset($country1)){
 				$this -> oldVersion = "1.0";
-				$db->setQuery( 'SELECT * FROM #__virtuemart_users WHERE `virtuemart_user_id`="'.$this -> storeOwnerId.'" ');
+				$db->setQuery( 'SELECT * FROM #__virtuemart_vmusers WHERE `virtuemart_user_id`="'.$this -> storeOwnerId.'" ');
 				if($db->query() == true ) {
 					$authUser = $db->loadResult();
 					if(isset($authUser)){

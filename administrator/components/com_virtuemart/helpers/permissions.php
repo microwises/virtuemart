@@ -156,7 +156,7 @@ class Permissions extends JObject{
 
 			if (self::isRegisteredCustomer($this->_virtuemart_user_id)) {
 				$q = 'SELECT `perms`
-					FROM #__virtuemart_users
+					FROM #__virtuemart_vmusers
 					WHERE virtuemart_user_id="'.$this->_virtuemart_user_id.'"';
 				$this->_db->setQuery($q);
 				$this->_perms = $this->_db->loadResult();

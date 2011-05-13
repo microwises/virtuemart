@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* virtuemart_category_id_xref table ( to map calc rules to shoppergroups)
+* virtuemart_calc_countries table ( to map calc rules to shoppergroups)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -28,20 +28,20 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
 
-class Tablevirtuemart_category_id_xref extends VmXrefTable {
+class TableCalc_countries extends VmXrefTable {
 
 	var $_pkey 		= 'virtuemart_calc_id';
 	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'virtuemart_category_id';
-	var $skeyForm	= 'calc_categories';
+	var $_skey 		= 'virtuemart_country_id';
+	var $skeyForm	= 'virtuemart_country_id';
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_categories', 'id', $db);
+		parent::__construct('#__virtuemart_calc_countries', 'id', $db);
 	}
 
 

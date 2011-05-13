@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author Oscar van Eijk
  */
-class TableUserfields_values extends JTable {
+class TableUserfield_values extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_userfield_value_id	= 0;
@@ -78,7 +78,7 @@ class TableUserfields_values extends JTable {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Reimplement delete() to get a list if value IDs based on the field id
 	 * @var Field id

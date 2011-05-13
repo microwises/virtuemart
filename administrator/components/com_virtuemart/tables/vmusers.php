@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* user_shoppergroup__xref table
+* Users table
 *
 * @package	VirtueMart
 * @subpackage User
@@ -26,36 +26,50 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author Max Milbers
  */
- 
- class TableUser_shopper_group_xref extends JTable {
 
-//	/** @var int User ID */
-//	var $id			= 0;
+ class TableVmusers extends JTable {
+
 	/** @var int Vendor ID */
 	var $virtuemart_user_id			= 0;
-	/** @var int shoppergroup ID */
-	var $virtuemart_shoppergroup_id	= 0;
-
+	var $user_is_vendor 	= 0;
+	var $virtuemart_vendor_id 			= 0;
+	var $customer_number 	= 0;
+	var $perms				= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
+	/** @var time */
+	var $locked_by	= 0;
 
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_user_shoppergroups', 'virtuemart_user_id', $db);
+		parent::__construct('#__virtuemart_vmusers', 'virtuemart_user_id', $db);
 	}
- 
+
+ 	/**
+ 	 * Every entry must contain a virtuemart_user_id
+ 	 * @author Max Milbers
+ 	 */
+ 	public function check(){
+		if (!$this->virtuemart_user_id) {
+			$this->setError(JText::_('COM_VIRTUEMART_USERS_MUST_HAVE_USER_ID'));
+			return false;
+		}
+		return true;
+ 	}
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even
 	 * if the primary key is set. Therefore we need to overload the store() function.
-	 * 
+	 *
 	 * @author Oscar van Eijk
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
 	public function store()
 	{
 		$_qry = 'SELECT virtuemart_user_id '
-				. 'FROM #__virtuemart_user_shoppergroups '
+				. 'FROM #__virtuemart_vmusers '
 				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
 		;
 		$this->_db->setQuery($_qry);
@@ -73,5 +87,5 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		else return true;
 	}
-	
+
  }

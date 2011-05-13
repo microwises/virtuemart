@@ -120,23 +120,23 @@ class VirtueMartModelCalc extends JModel
    			$this->_id = 0;
   		}
 
-		$xrefTable = $this->getTable('virtuemart_category_id_xref');
+		$xrefTable = $this->getTable('calc_categories');
 		if (!$this->_data->calc_categories = $xrefTable->load($this->_id)) {
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('calc_shoppergroup_xref');
+		$xrefTable = $this->getTable('calc_shoppergroups');
 		if (!$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id)) {
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('virtuemart_country_id_xref');
+		$xrefTable = $this->getTable('calc_countries');
 		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
 			dump($xrefTable,'calc_countries');
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('virtuemart_state_id_xref');
+		$xrefTable = $this->getTable('calc_states');
 		if (!$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id)) {
 			$this->setError($xrefTable->getError());
 		}
@@ -263,22 +263,22 @@ class VirtueMartModelCalc extends JModel
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 
-    	$xrefTable = $this->getTable('virtuemart_category_id_xref');
+    	$xrefTable = $this->getTable('calc_categories');
     	if (!$xrefTable->bindChecknStore($this,$data)) {
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('calc_shoppergroup_xref');
+		$xrefTable = $this->getTable('calc_shoppergroups');
     	if (!$xrefTable->bindChecknStore($this,$data)) {
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('virtuemart_country_id_xref');
+		$xrefTable = $this->getTable('calc_countries');
     	if (!$xrefTable->bindChecknStore($this,$data)) {
 			$this->setError($xrefTable->getError());
 		}
 
-		$xrefTable = $this->getTable('virtuemart_state_id_xref');
+		$xrefTable = $this->getTable('calc_states');
     	if (!$xrefTable->bindChecknStore($this,$data)) {
 			$this->setError($xrefTable->getError());
 		}
@@ -337,7 +337,7 @@ class VirtueMartModelCalc extends JModel
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','calc',$publishId);
+		return modelfunctions::publish('cid','calcs',$publishId);
 
 	}
 

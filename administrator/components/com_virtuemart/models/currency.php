@@ -131,7 +131,7 @@ class VirtueMartModelCurrency extends JModel {
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
-	$table =& $this->getTable('currency');
+	$table =& $this->getTable('currencies');
 
 	$data = JRequest::get( 'post' );
 
@@ -188,7 +188,7 @@ class VirtueMartModelCurrency extends JModel {
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','currency',$publishId);
+		return modelfunctions::publish('cid','currencies',$publishId);
 
 	}
 

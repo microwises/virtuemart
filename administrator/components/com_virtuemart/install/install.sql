@@ -369,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `mf_name` varchar(64) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
-  `virtuemart_manufacturer_category_id` int(11) DEFAULT NULL,
+  `virtuemart_manufacturercategories_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -395,11 +395,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_medias` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_manufacturer_categories`
+-- Table structure for table `#__virtuemart_manufacturercategories`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_categories` (
-  `virtuemart_manufacturer_category_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
+  `virtuemart_manufacturercategories_id` SERIAL,
   `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -409,7 +409,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_categories` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_manufacturer_category_id`),
+  PRIMARY KEY (`virtuemart_manufacturercategories_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=1 ;
 
@@ -1102,10 +1102,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_users`
+-- Table structure for table `#__virtuemart_vmusers`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_users` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `virtuemart_user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
   `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
@@ -1252,7 +1252,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_userinfo_id`),
-  KEY `idx_user_info_virtuemart_user_id` (`virtuemart_user_id`)
+  KEY `idx_userinfo_virtuemart_user_id` (`virtuemart_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Customer Information, BT = BillTo and ST = ShipTo';
 
 -- --------------------------------------------------------

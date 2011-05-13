@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* calc_shoppergroup_xref table ( to map calc rules to shoppergroups)
+* calc_shoppergroups table ( to map calc rules to shoppergroups)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -28,13 +28,13 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
 
-class Tablevirtuemart_state_id_xref extends VmXrefTable {
+class TableCalc_shoppergroups extends VmXrefTable {
 
 	var $_pkey 		= 'virtuemart_calc_id';
 	var $pkeyForm	= 'virtuemart_calc_id';
 
-	var $_skey 		= 'virtuemart_state_id';
-	var $skeyForm	= 'virtuemart_state_id';
+	var $_skey 		= 'virtuemart_shoppergroup_id';
+	var $skeyForm	= 'virtuemart_shoppergroup_id';
 
 
 	/**
@@ -42,7 +42,7 @@ class Tablevirtuemart_state_id_xref extends VmXrefTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_states', 'id', $db);
+		parent::__construct('#__virtuemart_calc_shoppergroups', 'id', $db);
 	}
 
 

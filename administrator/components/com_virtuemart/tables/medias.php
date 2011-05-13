@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableMedia extends JTable {
+class TableMedias extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_media_id				= 0;

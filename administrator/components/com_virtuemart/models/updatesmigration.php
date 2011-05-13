@@ -67,10 +67,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_users` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_users FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
 	    }
 
 		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
@@ -124,18 +124,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$db = JFactory::getDBO();
 
-		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `virtuemart_vendor_id`= "1" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
 
-		$db->setQuery('SELECT * FROM  `#__virtuemart_users` WHERE `virtuemart_user_id`= "' . $userId . '" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
 
 		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__virtuemart_users` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+		    $db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
-				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for virtuemart_user_id '.$userId);
+				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
 		    }
 		    else {
 		    	return $userId;
@@ -143,14 +143,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 		else {
 		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_vendor_id` = "1" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__virtuemart_users` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
-				JError::raiseWarning(1, 'UPDATE __vm_users failed for virtuemart_user_id '.$userId);
+				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 		    } else {
 		    	return $userId;
 		    }
@@ -187,7 +187,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * Installs sample data to the current database.
      *
      * @author Max Milbers, RickG
-     * @params $userId User Id to add the user_info and vendor sample data to
+     * @params $userId User Id to add the userinfo and vendor sample data to
      */
     function installSampleData($userId = null) {
 	if ($userId == null) {
@@ -458,6 +458,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    return false;
 	}
 
+	$app = JFactory::getApplication();
 	foreach ($tables as $table) {
 
 	    $db->setQuery('DROP TABLE ' . $table);
@@ -469,7 +470,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    }
 	}
 
-	$app = JFactory::getApplication();
+
 	if(!empty($droppedTables)){
 		$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
 	}

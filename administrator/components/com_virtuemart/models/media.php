@@ -107,7 +107,7 @@ class VirtueMartModelMedia extends JModel {
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-   		$data = $this->getTable('Media');
+   		$data = $this->getTable('medias');
    		$data->load($this->virtuemart_media_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
@@ -135,7 +135,7 @@ class VirtueMartModelMedia extends JModel {
     		if(!is_array($file_ids)) $file_ids = explode(',',$file_ids);
 
     	    foreach($file_ids as $virtuemart_media_id){
-	    		$data = $this->getTable('Media');
+	    		$data = $this->getTable('medias');
 	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
 	   			$data->load($id);
 	   			$media = VmMediaHandler::createMedia($data,$type,$mime);
@@ -145,7 +145,7 @@ class VirtueMartModelMedia extends JModel {
     	}
 
     	if(empty($medias)){
-    		$data = $this->getTable('Media');
+    		$data = $this->getTable('medias');
     		$medias[] = VmMediaHandler::createMedia($data,$type,$mime);
     	}
 
@@ -308,7 +308,7 @@ class VirtueMartModelMedia extends JModel {
 	 */
 	public function store($type,$data=0) {
 
-		$table = $this->getTable('media');
+		$table = $this->getTable('medias');
 		if(empty($data))$data = JRequest::get('post');
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
@@ -363,7 +363,7 @@ class VirtueMartModelMedia extends JModel {
 	public function delete($cids) {
 		$mainframe = Jfactory::getApplication('site');
 //		$deleted = 0;
-	 	$row = $this->getTable('media');
+	 	$row = $this->getTable('medias');
 //	 	$cids = JRequest::getVar('cid');
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
@@ -396,7 +396,7 @@ class VirtueMartModelMedia extends JModel {
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','media',$publishId);
+		return modelfunctions::publish('cid','medias',$publishId);
 
 	}
 

@@ -132,7 +132,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 */
 	function getRecentCustomers($nbrCusts=5) {
 		$query = 'SELECT `id` as `virtuemart_user_id`, `first_name`, `last_name`, `virtuemart_order_id` FROM `#__users` as `u` ';
-		$query .= 'JOIN `#__virtuemart_users` as uv ON u.id = uv.virtuemart_user_id ';
+		$query .= 'JOIN `#__virtuemart_vmusers` as uv ON u.id = uv.virtuemart_user_id ';
 		$query .= 'JOIN `#__virtuemart_userinfos` as ui ON u.id = ui.virtuemart_user_id ';
 		$query .= 'JOIN `#__virtuemart_orders` as uo ON u.id = uo.virtuemart_user_id ';
 		$query .= 'WHERE `perms` <> "admin" ';

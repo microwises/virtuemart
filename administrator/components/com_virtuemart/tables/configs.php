@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage Config
  * @author RickG
  */
-class TableConfig extends JTable {
+class TableConfigs extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_config_id			= 0;

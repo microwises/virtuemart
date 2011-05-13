@@ -121,7 +121,7 @@ class VirtueMartModelShippingRate extends JModel {
 		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('shipping_rate');
+   			$this->_data = $this->getTable('shippingrates');
    			$this->_data->load((int)$this->_id);
 
    			// Convert ; separated string into array
@@ -215,7 +215,7 @@ class VirtueMartModelShippingRate extends JModel {
 	 */
     function store()
 	{
-		$table = $this->getTable('shipping_rate');
+		$table = $this->getTable('shippingrates');
 
 		$data = JRequest::get( 'post' );
 
@@ -255,7 +255,7 @@ class VirtueMartModelShippingRate extends JModel {
 	function delete()
 	{
 		$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('shipping_rate');
+    	$table =& $this->getTable('shippingrates');
 
     	foreach($shippingCarrierIds as $shippingCarrierId) {
     		if (!$table->delete($shippingCarrierId)) {
