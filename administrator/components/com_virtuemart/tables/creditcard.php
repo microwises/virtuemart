@@ -36,8 +36,15 @@ class TableCreditcard extends JTable {
 	var $creditcard_code           = '';
 	/** @var char Credit card code */
 	var $virtuemart_vendor_id		           = 0;
+  /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
 
-	var $published = 0;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

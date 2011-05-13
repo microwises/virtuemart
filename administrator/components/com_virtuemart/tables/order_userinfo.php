@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class TableOrder_user_info extends JTable {
+class TableOrder_userinfo extends JTable {
 
 	/**
 	 * Constructor

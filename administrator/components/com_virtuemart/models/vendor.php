@@ -132,7 +132,7 @@ class VirtueMartModelVendor extends JModel {
 //			    // Get user_info table data
 //			    $this->_data->userId = (isset($userVendor->virtuemart_user_id) ? $userVendor->virtuemart_user_id : 0);
 //
-//				$userInfoTable = $this->getTable('user_info');
+//				$userInfoTable = $this->getTable('userinfo');
 //	    		$userInfoTable->load((int)$this->_id);
 //	    		$this->_data->userInfo = $userInfoTable;
 //

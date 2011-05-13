@@ -45,17 +45,22 @@ class TableProduct_price extends JTable {
     var $product_price_vdate = null;
 
     var $product_price_edate = null;
-    /** @var string Creation date */
-    var $created_on = null;
-    /** @var string Modified date */
-    var $modified_on = null;
+  
     /** @var int Shopper group ID */
     var $virtuemart_shoppergroup_id = null;
     /** @var int Price quantity start */
     var $price_quantity_start = null;
     /** @var int Price quantity end */
     var $price_quantity_end = null;
-           /** @var boolean */
+ /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;

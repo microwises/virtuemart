@@ -29,18 +29,19 @@ defined('_JEXEC') or die('Restricted access');
 class TableProduct extends JTable {
 
 	/** @var int Primary key */
-	var $virtuemart_product_id				= null;
+	var $virtuemart_product_id	 = null;
 	/** @var integer Product id */
-	var $virtuemart_vendor_id		= null;
+	var $virtuemart_vendor_id = null;
 	/** @var string File name */
 	var $product_parent_id		= null;
 	/** @var string File title */
-	var $product_sku				= null;
+	var $product_sku= null;
+        /** @var string Name of the product */
+	var $product_name	= null;
     /** @var string File description */
 	var $product_s_desc		= null;
     /** @var string File extension */
 	var $product_desc			= null;
-
 	/** @var int File published or not */
 	var $published		= null;
 	/** @var int File is an image or other */
@@ -71,12 +72,7 @@ class TableProduct extends JTable {
 //	var $product_discount_id	= null;
 	/** @var int File thumbnail image width */
 	var $ship_code_id	= null;
-	/** @var int File thumbnail image width */
-	var $created_on	= null;
-	/** @var int File thumbnail image width */
-	var $modified_on	= null;
-	/** @var string Name of the product */
-	var $product_name	= null;
+		
 	/** @var int File thumbnail image width */
 	var $product_sales	= null;
 	/** @var int File thumbnail image width */
@@ -103,10 +99,21 @@ class TableProduct extends JTable {
 	var $metaauthor	= null;
 	/** @var string Name of the details page to use for showing product details in the front end */
 	var $layout = null;
-            /** @var boolean */
+       /** @var int published or unpublished */
+	var $published 		        = 1;
+         /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;
+
 
 	/**
 	 * @author RolandD

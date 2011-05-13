@@ -40,7 +40,16 @@ class TableCountry extends JTable {
 	var $country_2_code         = '';
     /** @var int published or unpublished */
 	var $published 		        = 1;
-           /** @var boolean */
+         /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+
+               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;

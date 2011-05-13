@@ -156,7 +156,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _loadUserInfo($_ui_id)
 	{
-		$_data = $this->getTable('user_info');
+		$_data = $this->getTable('userinfo');
 		$_data->load($_ui_id);
 		return $_data;
 	}
@@ -528,8 +528,8 @@ class VirtueMartModelUser extends JModel {
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
-			if (!user_info::storeAddress($_data, 'user_info', $new)) {
-				$this->setError('Was not able to save the virtuemart user_info address data');
+			if (!user_info::storeAddress($_data, 'userinfo', $new)) {
+				$this->setError('Was not able to save the virtuemart userinfo address data');
 				return false;
 			}
 
@@ -615,7 +615,7 @@ class VirtueMartModelUser extends JModel {
 	 function delete()
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
-	 	$userInfo =& $this->getTable('user_info');
+	 	$userInfo =& $this->getTable('userinfo');
 	 	$vm_shoppergroup_xref =& $this->getTable('user_shopper_group_xref');
                 $vm_users =& $this->getTable('vm_users');
 	 	$_status = true;

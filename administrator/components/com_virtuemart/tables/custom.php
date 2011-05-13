@@ -60,7 +60,19 @@ class TableCustom extends JTable {
 
 	/** @var int custom published or not */
 	var $published		= 0;
+/** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
 
+               /** @var boolean */
+	var $locked_on	= 0;
+	/** @var time */
+	var $locked_by	= 0;
 
 	/**
 	 * @author  Patrick Kohl

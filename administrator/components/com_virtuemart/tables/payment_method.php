@@ -50,22 +50,30 @@ class TablePayment_method extends JTable
 
 //	/** @var string Type of the paymentmethod */
 //	var $paym_type       		 	= '';
-
-
-	/** @var string parameter of the paymentmethod*/
-	var $paym_params				= 0;
-
-	/** @var string extra information to hold with the paymentmethod */
+/** @var string extra information to hold with the paymentmethod */
 	var $paym_extra_info			= '';
-	/** @var blob secret key of the paymentmethod */
+/** @var blob secret key of the paymentmethod */
 	var $paym_secret_key			= '';
-	/** @var for all Vendors? */
-	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
+	/** @var string parameter of the paymentmethod*/
+	var $paym_params				= 0;		
+	
+	/** @var string ordering */
+	var $ordering       	= '';
+        /** @var for all Vendors? */
+        var $shared				= 0;
+        ////this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */
 	var $published 		        = 0;
-   	/** @var string ordering */
-	var $ordering       	= '';
-             /** @var boolean */
+   	
+       /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;

@@ -42,7 +42,7 @@ class TableCalc extends JTable
 	var $calc_value       		 	= '';
 	/** @var string Currency used in the calculation */
 	var $calc_currency				= '';
-	var $ordering					= 0;
+					 
 	/** @var array affecting Categories of the rule */
 	//var $calc_categories			= array();
 	/** @var array affecting Shoppergroups of the rule */
@@ -59,11 +59,7 @@ class TableCalc extends JTable
 	var $publish_up;
 	/** @var string end date */
 	var $publish_down;
-	/** @var string created date */
-	var $created_on				= null;
-	/** @var string modified date */
-	var $modified_on	= null;
-        /** @var string   */
+	
 	var $calc_qualify;
          /** @var string   */
 	var $calc_affected;
@@ -74,7 +70,12 @@ class TableCalc extends JTable
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */
-	var $published 		        = 0;
+	var $ordering	=0;
+        var $published 		        = 0;
+        var $created_on = null;
+        var $created_by = 0;
+        var $modified_on = null;
+        var $modified_by = 0;
              /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

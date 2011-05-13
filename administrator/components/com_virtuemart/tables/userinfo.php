@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author 	RickG, RolandD
  */
-class TableUser_info extends JTable {
+class TableUserinfo extends JTable {
 
 
 	/** @var int Primary key */
@@ -59,14 +59,16 @@ class TableUser_info extends JTable {
 	var $extra_field_5 = '';
 	var $created_on = '';
 	var $modified_on = '';
-//	var $perms = '';
-//	var $bank_account_nr = '';
-//	var $bank_name = '';
-//	var $bank_sort_code = '';
-//	var $bank_iban = '';
-//	var $bank_account_holder = '';
-//	var $bank_account_type = '';
-              /** @var boolean */
+ 
+           /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
 	var $locked_by	= 0;

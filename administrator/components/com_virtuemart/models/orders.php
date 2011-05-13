@@ -578,7 +578,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
-		$_userInfoData =  $this->getTable('order_user_info');
+		$_userInfoData =  $this->getTable('order_userinfo');
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 
 		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');

@@ -66,17 +66,21 @@ class TableOrders extends JTable {
          /** @var char User currency rate */
 	var $user_currency_rate = NULL;
         /** @var int Payment method ID */
-	var $ship_method_id = NULL;
-        /** @var int Creation date */
-	var $created_on = NULL;
-	/** @var int Last modified date */
-	var $modified_on = NULL;
-	/** @var int Shipping method ID */
-	var $payment_method_id = NULL;
+        var $payment_method_id = NULL;
+        /** @var int Shipping method ID */
+	var $ship_method_id = NULL;      
 	/** @var text Customer note */
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
+        /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */
@@ -102,7 +106,7 @@ class TableOrders extends JTable {
      	$this->modified_on = $today;
 	}
 	/**
-	 * Overloaded delete() to delete records from order_user_info and order payment as well,
+	 * Overloaded delete() to delete records from order_userinfo and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)
 	 *
 	 * @var integer Order id

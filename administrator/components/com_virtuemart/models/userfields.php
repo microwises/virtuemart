@@ -205,8 +205,8 @@ class VirtueMartModelUserfields extends JModel {
 	function store()
 	{
 		$field      =& $this->getTable('userfields');
-		$userinfo   =& $this->getTable('user_info');
-		$orderinfo  =& $this->getTable('order_user_info');
+		$userinfo   =& $this->getTable('userinfo');
+		$orderinfo  =& $this->getTable('order_userinfo');
 
 		$data = JRequest::get('post');
 
@@ -253,7 +253,7 @@ class VirtueMartModelUserfields extends JModel {
 			return false;
 		}
 
-		// Alter the order_user_info table
+		// Alter the order_userinfo table
 		if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
 			$this->setError($orderinfo->getError());
 			return false;
@@ -823,8 +823,8 @@ class VirtueMartModelUserfields extends JModel {
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
 		$field      =& $this->getTable('userfields');
 		$value      =& $this->getTable('userfields_values');
-		$userinfo   =& $this->getTable('user_info');
-		$orderinfo  =& $this->getTable('order_user_info');
+		$userinfo   =& $this->getTable('userinfo');
+		$orderinfo  =& $this->getTable('order_userinfo');
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
@@ -835,7 +835,7 @@ class VirtueMartModelUserfields extends JModel {
 				return false;
 			}
 
-			// Alter the order_user_info table
+			// Alter the order_userinfo table
 			if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
 				$this->setError($orderinfo->getError());
 				return false;

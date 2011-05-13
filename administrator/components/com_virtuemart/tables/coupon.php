@@ -44,6 +44,15 @@ class TableCoupon extends JTable {
 	var $coupon_expiry_date 	= '';
 	/** @var decimal Coupon valid value */
 	var $coupon_value_valid 	= 0;
+         /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
+
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

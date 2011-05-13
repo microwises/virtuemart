@@ -30,6 +30,9 @@ class TableOrder_status extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_orderstate_id			= 0;
+        	/** @var int Vendor ID if the status is vendor specific */
+        var $virtuemart_vendor_id					= null;
+               /** @var boolean */
 	/** @var char Order status Code */
 	var $order_status_code			= '';
 	/** @var string Order status name*/
@@ -38,8 +41,16 @@ class TableOrder_status extends JTable {
 	var $order_status_description	= null;
 	/** @var int Order in which the order status is listed */
 	var $ordering					= 0;
-	/** @var int Vendor ID if the status is vendor specific */
-	var $virtuemart_vendor_id					= null;
+	 /** @var int published or unpublished */
+	var $published = 1;
+	 /** @var date Category creation date */
+        var $created_on = null;
+          /** @var int User id */
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+          /** @var int User id */
+        var $modified_by = 0;
                /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

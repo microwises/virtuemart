@@ -38,13 +38,6 @@ class TableCategory extends JTable {
 	/** @var string Category description */
 	var $category_description		= '';
 
-	/** @var integer Category publish or not */
-	var $published			= 1;
-	/** @var date Category creation date */
-	var $created_on				= null;
-	/** @var date Category last modification date */
-	var $modified_on	= null;
-
 	/** @var string Category browse page layout */
 	var $category_template = null;
 	/** @var string Category browse page layout */
@@ -72,8 +65,16 @@ class TableCategory extends JTable {
 	var $metarobot	= '';
 	/** @var string Meta author */
 	var $metaauthor	= '';
+        /** @var integer Category publish or not */
+	var $published			= 1;
+        /** @var date Category creation date */
+        var $created_on = null;
+        var $created_by = 0;
+        /** @var date Category last modification date */
+        var $modified_on = null;
+        var $modified_by = 0;
                /** @var boolean */
-	var $locked_on	= 0;
+	var $locked_on	= null;
 	/** @var time */
 	var $locked_by	= 0;
 	/**
