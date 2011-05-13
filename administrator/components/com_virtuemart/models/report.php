@@ -49,11 +49,15 @@ class VirtuemartModelReport extends JModel {
 		$mainframe = JFactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'limitstart', 'limitstart', 0, 'int');
-		
+		$start_date = $mainframe->getUserStateFromRequest(JRequest::getVar('from_period').JRequest::getVar('view').'from_period','from_period');
+		$end_date = $mainframe->getUserStateFromRequest(JRequest::getVar('until_period').JRequest::getVar('view').'until_period','until_period');
+				
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-		
+		$this->setState('start_date',$start_date);
+		$this->setState('end_date',$end_date);		
 	}
+	
 	/**
 	 * 
 	 */
@@ -91,8 +95,20 @@ class VirtuemartModelReport extends JModel {
      * @return int Total of report items in the database
      */
     function _getTotal() {
+		
 		if (empty($this->_total)) {
+			if(empty($this->start_date) || empty($this->end_date)){
+				$curDate = JFactory::getDate();
+				$startDate = $curDate->toFormat('%Y-%m-%d');
+				$endDate = $curDate->toFormat('%Y-%m-%d');
+			}
+			else{
+				$startDate = $this->start_date;
+				$endDate = $this->end_date;
+			}
+			
 	    	$query = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders`';
+			$query .= "WHERE `created_on` BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' "; 			
 	    	$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -108,19 +124,23 @@ class VirtuemartModelReport extends JModel {
     function getRevenue($start_date, $end_date, $noLimit = false){
     	$db = JFactory::getDBO();
     	
-		if(empty($start_date) || empty($end_date)){
+		if(empty($this->start_date) || empty($this->end_date)){
 			$curDate = JFactory::getDate();
-			$start_date = $curDate;
-			$end_date = $curDate;
+			$startDate = $curDate->toFormat('%Y-%m-%d');
+			$endDate = $curDate->toFormat('%Y-%m-%d');
 		}
-		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		else{
+			$startDate = $this->start_date;
+			$endDate = $this->end_date;
+		}
+
+		$query = "SELECT `created_on` as order_date, ";
 		$query .= "COUNT(virtuemart_order_id) as number_of_orders, ";
 		$query .= "SUM(order_subtotal) as revenue ";
 		$query .= "FROM `#__virtuemart_orders` ";
-		$query .= "WHERE `created_on` BETWEEN UNIX_TIMESTAMP('" . $start_date->toMySQL() . "') AND UNIX_TIMESTAMP('" . $end_date->toMySQL() . "') "; 
+		$query .= "WHERE `created_on` BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' "; 
 		$query .= "GROUP BY order_date ";
-		$query .= "ORDER BY date_num ASC ";
+		$query .= "ORDER BY order_date ASC ";
 		
 		if($noLimit){
 			$this->_data = $this->_getList($query);
@@ -148,14 +168,23 @@ class VirtuemartModelReport extends JModel {
      */
     function getItemsSold($noLimit = false){
     	$db = JFactory::getDBO();
+
+		if(empty($this->start_date) || empty($this->end_date)){
+			$curDate = JFactory::getDate();
+			$startDate = $curDate->toFormat('%Y-%m-%d');
+			$endDate = $curDate->toFormat('%Y-%m-%d');
+		}
+		else{
+			$startDate = $this->start_date;
+			$endDate = $this->end_date;
+		}
     	
-		$query = "SELECT FROM_UNIXTIME(`created_on`, '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME(`created_on`,GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query = "SELECT `created_on` as order_date, ";
 		$query .= "SUM(product_quantity) as items_sold ";
 		$query .= "FROM `#__virtuemart_order_items` ";
-		//WHERE created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
+		$query .= "WHERE `created_on` BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' "; 
 		$query .= "GROUP BY order_date ";
-		$query .= "ORDER BY date_num ASC ";
+		$query .= "ORDER BY order_date ASC ";
 		
 		if($noLimit){
 			$this->_data = $this->_getList($query);
@@ -183,18 +212,26 @@ class VirtuemartModelReport extends JModel {
      */
     function getProductList($noLimit = false){
     	$db = JFactory::getDBO();
+
+		if(empty($this->start_date) || empty($this->end_date)){
+			$curDate = JFactory::getDate();
+			$startDate = $curDate->toFormat('%Y-%m-%d');
+			$endDate = $curDate->toFormat('%Y-%m-%d');
+		}
+		else{
+			$startDate = $this->start_date;
+			$endDate = $this->end_date;
+		}
     	
 		$query = "SELECT `product_name`, `product_sku`, ";
-		$query .= "FROM_UNIXTIME('i.created_on', '%M, %Y') as order_date, ";
-		$query .= "FROM_UNIXTIME('o.created_on',GET_FORMAT(DATE,'INTERNAL')) as date_num, ";
+		$query .= "i.created_on as order_date, ";
 		$query .= "SUM(product_quantity) as items_sold ";
   		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
-		//WHERE #__virtuemart_order_items.created_on BETWEEN '" . $start_date . "' AND '" . $end_date . "' 
-		//$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";
-		$query .= "WHERE o.virtuemart_order_id=i.virtuemart_order_id ";
+		$query .= "WHERE i.created_on BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' "; 
+		$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";
   		$query .= "AND i.virtuemart_product_id=p.virtuemart_product_id ";
   		$query .= "GROUP BY product_sku, product_name, order_date ";
-  		$query .= "ORDER BY date_num, product_name ASC";
+  		$query .= "ORDER BY order_date, product_name ASC";
 		
 		if($noLimit){
 			$this->_data = $this->_getList($query);
