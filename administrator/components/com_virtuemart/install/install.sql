@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_affected` int(11) NOT NULL DEFAULT '0' COMMENT 'affected productId''s',
   `calc_amount_cond` float NOT NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text NOT NULL COMMENT 'The dimension, kg, m, €',
-  `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Affects all vendors',
-   `ordering` tinyint(2) NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -121,7 +121,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `category_layout` varchar(255) DEFAULT NULL,
   `category_product_layout` varchar(255) DEFAULT NULL,
   `products_per_row` tinyint(2) NOT NULL DEFAULT '1',
-  `ordering` int(11) DEFAULT '0',
   `limit_list_start` int(11) DEFAULT NULL,
   `limit_list_step` int(11) DEFAULT NULL,
   `limit_list_max` int(11) DEFAULT NULL,
@@ -130,6 +129,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `metakey` text NOT NULL,
   `metarobot` text NOT NULL,
   `metaauthor` text NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -245,6 +246,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
   `creditcard_name` varchar(70) NOT NULL DEFAULT '',
   `creditcard_code` varchar(30) NOT NULL DEFAULT '',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -272,6 +275,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `currency_symbol` char(4) DEFAULT NULL,
   `exchange_rate` float DEFAULT NULL,
   `display_style` varchar(128) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -343,7 +347,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL,
   `virtuemart_customfield_id` int(11) NOT NULL COMMENT 'field ref to product',
-  `ordering` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -423,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
   `link` text NOT NULL,
   `depends` text NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
   `icon_class` varchar(255) NOT NULL,
-  `ordering` tinyint(4) NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `tooltip` text NOT NULL,
   `view` varchar(255) DEFAULT NULL,
@@ -561,7 +565,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `order_status_code` char(1) NOT NULL DEFAULT '',
   `order_status_name` varchar(64) DEFAULT NULL,
   `order_status_description` text NOT NULL,
-  `ordering` int(11) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -817,8 +821,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   PRIMARY KEY (`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_manufacturers`
 --
@@ -830,8 +834,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
   KEY `idx_product_mf_xref_virtuemart_manufacturer_id` (`virtuemart_manufacturer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a product to a manufacturer';
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_prices`
 --
@@ -839,6 +843,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `virtuemart_product_price_id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` int(11) DEFAULT NULL,
   `product_price` decimal(15,5) DEFAULT NULL,
   `override` tinyint(1) NOT NULL DEFAULT '0',
   `product_override_price` decimal(15,5) NOT NULL,
@@ -847,15 +852,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `product_currency` char(16) DEFAULT NULL,
   `product_price_vdate` int(11) DEFAULT NULL,
   `product_price_edate` int(11) DEFAULT NULL,
-  `virtuemart_shoppergroup_id` int(11) DEFAULT NULL,
   `price_quantity_start` int(11) unsigned NOT NULL DEFAULT '0',
   `price_quantity_end` int(11) unsigned NOT NULL DEFAULT '0',
- `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_price_id`),
   KEY `idx_product_price_product_id` (`virtuemart_product_id`),
   KEY `idx_product_price_virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`)
@@ -901,7 +899,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `user_rating` tinyint(1) NOT NULL DEFAULT '0',
   `review_ok` int(11) NOT NULL DEFAULT '0',
   `review_votes` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_review_id`),
@@ -911,15 +914,21 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_votes`
---
+-- Table structure for table `#__virtuemart_product_votes`
+-- used?
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_votes` (
+  `virtuemart_product_vote_id` SERIAL,
   `virtuemart_product_id` int(255) NOT NULL DEFAULT '0',
   `votes` text NOT NULL,
   `allvotes` int(11) NOT NULL DEFAULT '0',
   `rating` tinyint(1) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_id`)
@@ -933,11 +942,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_producttypes` (
   `virtuemart_producttype_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `product_type_name` varchar(255) NOT NULL DEFAULT '',
   `product_type_description` text,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `product_type_layout` varchar(255) DEFAULT NULL,
-  `ordering` int(11) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_producttype_id`)
@@ -954,12 +969,16 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_producttype_customfields` (
   `parameter_name` varchar(255) NOT NULL DEFAULT '',
   `parameter_label` varchar(255) NOT NULL DEFAULT '',
   `parameter_description` text,
-  `ordering` int(11) NOT NULL DEFAULT '0',
   `parameter_type` char(1) NOT NULL DEFAULT 'T',
   `parameter_values` varchar(255) DEFAULT NULL,
   `parameter_multiselect` char(1) DEFAULT NULL,
   `parameter_default` varchar(255) DEFAULT NULL,
   `parameter_unit` varchar(32) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_producttype_id`,`parameter_name`),
@@ -976,11 +995,18 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_producttype_customfields` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `virtuemart_shippingcarrier_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipping_carrier_jplugin_id` int(11) NOT NULL,
   `shipping_carrier_name` char(80) NOT NULL DEFAULT '',
   `shipping_carrier_list_order` int(11) NOT NULL DEFAULT '0',
   `shipping_carrier_virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_shippingcarrier_id`)
@@ -994,6 +1020,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
   `virtuemart_shippingrate_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipping_rate_name` varchar(255) NOT NULL DEFAULT '',
   `shipping_rate_carrier_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_country` text NOT NULL,
@@ -1006,6 +1033,13 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
   `shipping_rate_virtuemart_currency_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_vat_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_list_order` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_shippingrate_id`)
@@ -1023,9 +1057,15 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `shopper_group_name` varchar(32) DEFAULT NULL,
   `shopper_group_desc` text,
   `default` tinyint(1) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_shoppergroup_id`),
+  `locked_by` int(11) NOT NULL DEFAULT 0,  PRIMARY KEY (`virtuemart_shoppergroup_id`),
   KEY `idx_shopper_group_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_shopper_group_name` (`shopper_group_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shopper Groups that users can be assigned to' AUTO_INCREMENT=1 ;
@@ -1039,12 +1079,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   `virtuemart_state_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `virtuemart_country_id` int(11) NOT NULL DEFAULT '1',
-  `virtuemart_worldzone_id` int(4) NOT NULL,
+  `virtuemart_worldzone_id` int(11) NOT NULL,
   `state_name` varchar(64) DEFAULT NULL,
   `state_3_code` char(3) DEFAULT NULL,
   `state_2_code` char(2) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_state_id`),
@@ -1060,15 +1107,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_users` (
-	`virtuemart_user_id` SERIAL,
-	`user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
-	`virtuemart_vendor_id` tinyint(1) NOT NULL DEFAULT '0',
-	`customer_number` varchar(32) DEFAULT NULL,
-	`perms` varchar(40) NOT NULL DEFAULT 'shopper',
-    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-    `locked_by` int(11) NOT NULL DEFAULT 0,
-	PRIMARY KEY (`virtuemart_user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the unique user data' AUTO_INCREMENT=1 ;
+  `virtuemart_user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
+  `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
+  `user_is_vendor` tinyint(1) NOT NULL DEFAULT '0',
+  `customer_number` varchar(32) DEFAULT NULL,
+  `perms` varchar(40) NOT NULL DEFAULT 'shopper',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the unique user data' ;
 
 -- --------------------------------------------------------
 
@@ -1089,9 +1140,16 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_user_shoppergroups` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
   `virtuemart_permgroup_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `group_name` varchar(128) DEFAULT NULL,
   `group_level` int(11) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_permgroup_id`)
@@ -1105,6 +1163,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `virtuemart_userfield_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `name` varchar(50) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL,
   `description` mediumtext NOT NULL,
@@ -1112,20 +1171,24 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `maxlength` int(11) DEFAULT NULL,
   `size` int(11) DEFAULT NULL,
   `required` tinyint(4) DEFAULT '0',
-  `ordering` int(11) DEFAULT NULL,
   `cols` int(11) DEFAULT NULL,
   `rows` int(11) DEFAULT NULL,
   `value` varchar(50) DEFAULT NULL,
   `default` int(11) DEFAULT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
   `registration` tinyint(1) NOT NULL DEFAULT '0',
   `shipping` tinyint(1) NOT NULL DEFAULT '0',
   `account` tinyint(1) NOT NULL DEFAULT '1',
   `readonly` tinyint(1) NOT NULL DEFAULT '0',
   `calculated` tinyint(1) NOT NULL DEFAULT '0',
   `sys` tinyint(4) NOT NULL DEFAULT '0',
-  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `params` mediumtext,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_userfield_id`)
@@ -1142,8 +1205,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfield_values` (
   `virtuemart_userfield_id` int(11) NOT NULL DEFAULT '0',
   `fieldtitle` varchar(255) NOT NULL DEFAULT '',
   `fieldvalue` varchar(255) NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
   `sys` tinyint(4) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_userfield_value_id`)
@@ -1202,10 +1269,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_store_name` varchar(128) NOT NULL DEFAULT '',
   `vendor_store_desc` text,
   `vendor_currency` varchar(16) DEFAULT NULL,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
   `vendor_image_path` varchar(255) DEFAULT NULL,
   `vendor_terms_of_service` text NOT NULL,
   `vendor_url` varchar(255) NOT NULL DEFAULT '',
@@ -1215,6 +1278,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_accepted_currencies` text NOT NULL,
   `vendor_address_format` text NOT NULL,
   `vendor_date_format` varchar(255) NOT NULL,
+  `config` text NOT NULL DEFAULT '',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_vendor_id`),
@@ -1248,6 +1316,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_waitingusers` (
   `notify_email` varchar(150) NOT NULL DEFAULT '',
   `notified` enum('0','1') DEFAULT '0',
   `notify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_waitinguser_id`),
@@ -1263,11 +1336,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_waitingusers` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_worldzones` (
   `virtuemart_worldzone_id` SERIAL,
+  `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `zone_name` varchar(255) DEFAULT NULL,
   `zone_cost` decimal(10,2) DEFAULT NULL,
   `zone_limit` decimal(10,2) DEFAULT NULL,
   `zone_description` text NOT NULL,
   `zone_tax_rate` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_worldzone_id`)

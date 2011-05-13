@@ -437,7 +437,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 	if (!$tables = $db->loadResultArray()) {
 	    $this->setError = $db->getErrorMsg();
-	    return false;
+//	    return false;
 	}
 
 	foreach ($tables as $table) {
