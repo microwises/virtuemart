@@ -111,7 +111,7 @@ class VirtueMartModelCalc extends JModel
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('calcs');
    			$this->_data->load((int)$this->_id);
   		}
 

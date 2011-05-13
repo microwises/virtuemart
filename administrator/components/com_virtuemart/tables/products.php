@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RolandD
  */
-class TableProduct extends JTable {
+class TableProducts extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_product_id	 = null;

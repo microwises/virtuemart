@@ -678,8 +678,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
   `id` SERIAL,
   `virtuemart_paymentmethod_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`,`virtuemart_shoppergroup_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for paymentmethods to shoppergroup' AUTO_INCREMENT=1 ;
@@ -788,7 +786,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   `id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `file_ids` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`file_ids`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -828,10 +827,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_manufacturers` (
+  `id` SERIAL,
   `virtuemart_product_id` int(11) DEFAULT NULL,
   `virtuemart_manufacturer_id` int(11) DEFAULT NULL,
-  KEY `idx_product_mf_xref_product_id` (`virtuemart_product_id`),
-  KEY `idx_product_mf_xref_virtuemart_manufacturer_id` (`virtuemart_manufacturer_id`)
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_manufacturer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps a product to a manufacturer';
 
 

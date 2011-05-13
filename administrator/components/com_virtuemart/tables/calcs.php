@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableCalc extends JTable
+class TableCalcs extends JTable
 {
 	/** @var int Primary key */
 	var $virtuemart_calc_id					= 0;
@@ -42,7 +42,7 @@ class TableCalc extends JTable
 	var $calc_value       		 	= '';
 	/** @var string Currency used in the calculation */
 	var $calc_currency				= '';
-					 
+
 	/** @var array affecting Categories of the rule */
 	//var $calc_categories			= array();
 	/** @var array affecting Shoppergroups of the rule */
@@ -59,7 +59,7 @@ class TableCalc extends JTable
 	var $publish_up;
 	/** @var string end date */
 	var $publish_down;
-	
+
 	var $calc_qualify;
          /** @var string   */
 	var $calc_affected;

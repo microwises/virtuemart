@@ -177,7 +177,7 @@ class VirtueMartModelProduct extends JModel {
 			if (!empty($virtuemart_product_id)) {
 
 
-   			$product = $this->getTable('product');
+   			$product = $this->getTable('products');
    			$product->load($virtuemart_product_id);dump($product,'product');
    			if($onlyPublished){
    				if(empty($product->published)){
@@ -970,7 +970,7 @@ class VirtueMartModelProduct extends JModel {
 		}
 
 		/* Setup some place holders */
-		$product_data = $this->getTable('product');
+		$product_data = $this->getTable('products');
 
 		/* Load the old product details first */
 		$product_data->load($data['virtuemart_product_id']);
@@ -1156,7 +1156,7 @@ class VirtueMartModelProduct extends JModel {
 		/* Start removing */
 		foreach ($cids as $key => $virtuemart_product_id) {
 			/* First copy the product in the product table */
-			$product_data = $this->getTable('product');
+			$product_data = $this->getTable('products');
 
 			/* Load the product details */
 			$product_data->load($virtuemart_product_id);
