@@ -50,10 +50,14 @@ class VirtuemartViewReport extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
 
+		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.calendar');
+
 		$model = $this->getModel();
 
 		switch($curTask){
 			default:{
+				
 				$pagination = $model->getPagination();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
