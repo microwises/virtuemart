@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
-	<name>VirtueMart Products Show</name>
+	<name>MOD_VIRTUEMART_PRODUCT</name>
 	<creationDate>February 2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>cyber__fr|at|hotmail.com</authorEmail>
@@ -12,7 +12,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>Shows featured/Latest/Topten/Random products from VirtueMart at your choice.</description>
+	<description>MOD_VIRTUEMART_PRODUCT_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_product">mod_virtuemart_product.php</filename>
         <filename>index.html</filename>
@@ -24,49 +24,49 @@
 		<param name="product_group" type="list" default="featured"
 			label="Display"
 			description="Here you can decide, What you want to see in the module">
-			<option value="featured">Featured Products</option>
-			<option value="latest">Latest Products</option>
-			<option value="random">Random Products</option>
-			<option value="topten">Best Sales</option>
+			<option value="featured">MOD_VIRTUEMART_PRODUCT_FEATURED_PRODUCTS</option>
+			<option value="latest">MOD_VIRTUEMART_PRODUCT_LATEST_PRODUCTS</option>
+			<option value="random">MOD_VIRTUEMART_PRODUCT_RANDOM_PRODUCTS</option>
+			<option value="topten">MOD_VIRTUEMART_PRODUCT_BEST_SALES</option>
 		</param>
 		<param name="max_items" type="text" default="2"
 			label="Number of displayed products"
 			description="This defines the number of products which will be displayed in the module." />
 		<param name="products_per_row" type="text" default=""
-			label="Products per row"
-			description="The Number of columns per row for the product snapshots." />
+			label="MOD_VIRTUEMART_PRODUCT_PRODUCTS_PER_ROW"
+			description="MOD_VIRTUEMART_PRODUCT_PRODUCTS_PER_ROW_DESC" />
 		<param name="display_style" type="list" default="list"
-			label="Display Style"
-			description="Here you can decide wether the products are shown ">
-			<option value="list">List based ul-li</option>
-			<option value="div">Div based</option>
+			label="MOD_VIRTUEMART_PRODUCT_DISPLAY_STYLE"
+			description="MOD_VIRTUEMART_PRODUCT_DISPLAY_STYLE_DESC">
+			<option value="list">MOD_VIRTUEMART_PRODUCT_DISPLAY_UL</option>
+			<option value="div">MOD_VIRTUEMART_PRODUCT_DISPLAY_DIV</option>
 		</param>
 		<param name="show_price" type="list" default="1"
-			label="Show Product Price?"
-			description="Defines wether the product price is displayed or not.">
+			label="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE"
+			description="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE_DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="show_addtocart" type="list" default="1"
-			label="Show Add-To-Cart Link?"
-			description="Not implemented YET - Defines wether the Add-To-Cart Link is displayed or not.">
+			label="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART"
+			description="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART_DES">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="headerText" type="text" default=""
-			label="Header Text"
-			description="Add a Text before list of featured products." />
+			label="MOD_VIRTUEMART_PRODUCT_HEADER_TEXT"
+			description="MOD_VIRTUEMART_PRODUCT_HEADER_TEXT_DESC" />
 		<param name="footerText" type="text" default=""
-			label="Footer Text"
-			description="Add a Text after list of featured products." />
+			label="MOD_VIRTUEMART_PRODUCT_FOOTER_TEXT"
+			description="MOD_VIRTUEMART_PRODUCT_FOOTER_TEXT_DESC" />
 		<param name="filter_category" type="list" default="0"
-			label="Use category filter"
-			description="Do you wan't the product from only this category?">
+			label="MOD_VIRTUEMART_PRODUCT_FILTER_CATEGORY"
+			description="MOD_VIRTUEMART_PRODUCT_FILTER_CATEGORY_DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="category_id" type="sql" query="SELECT category_id, category_name FROM #__virtuemart_categories" 
+		<param name="category_id" type="sql" query="SELECT virtuemart_category_id, category_name FROM #__virtuemart_categories"
 			key_field="category_id" value_field="category_name" label="Category" description="Choose a category..." />
 	</params>
 	<params group="advanced">
