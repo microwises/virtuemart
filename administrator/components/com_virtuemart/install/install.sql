@@ -478,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_discount` decimal(12,2) NOT NULL DEFAULT '0.00',
   `order_currency` varchar(16) DEFAULT NULL,
   `order_status` char(1) DEFAULT NULL,
-  `user_virtuemart_currency_id` INT(11) DEFAULT NULL,
+  `user_currency_id` INT(11) DEFAULT NULL,
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.0',
   `payment_method_id` INT(11) NOT NULL,
   `ship_method_id` varchar(255) DEFAULT NULL,

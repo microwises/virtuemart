@@ -213,7 +213,7 @@ class VirtueMartModelProduct extends JModel {
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
    			if(!$front && !empty($product->categories[0])){
-				$catTable = $this->getTable('category');
+				$catTable = $this->getTable('categories');
    				$catTable->load($product->categories[0]);
 				$product->category_name = $catTable->category_name;
    			} else {

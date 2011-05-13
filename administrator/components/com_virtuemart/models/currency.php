@@ -115,7 +115,7 @@ class VirtueMartModelCurrency extends JModel {
     function getCurrency() {
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable();
+	    $this->_data = $this->getTable('currencies');
 		$this->_data->load((int)$this->_id);
 	}
 

@@ -62,7 +62,7 @@ class TableOrders extends JTable {
 	/** @var char Order status */
 	var $order_status = NULL;
         /** @var char User currency id */
-	var $user_virtuemart_currency_id = NULL;
+	var $user_currency_id = NULL;
          /** @var char User currency rate */
 	var $user_currency_rate = NULL;
         /** @var int Payment method ID */

@@ -116,7 +116,7 @@ class VirtueMartModelCountry extends JModel {
 	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable();
+	    $this->_data = $this->getTable('countries');
 	    $this->_data->load((int)$this->_id);
 
 	}

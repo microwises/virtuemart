@@ -121,7 +121,7 @@ class VirtueMartModelCoupon extends JModel {
 		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('coupons');
    			$this->_data->load((int)$this->_id);
   		}
 

@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage Category
  * @author jseros
  */
-class TableCategory extends JTable {
+class TableCategories extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_category_id	= null;
@@ -73,7 +73,8 @@ class TableCategory extends JTable {
         /** @var date Category last modification date */
         var $modified_on = null;
         var $modified_by = 0;
-               /** @var boolean */
+
+   	/** @var boolean */
 	var $locked_on	= null;
 	/** @var time */
 	var $locked_by	= 0;

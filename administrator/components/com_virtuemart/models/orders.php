@@ -541,7 +541,7 @@ class VirtueMartModelOrders extends JModel {
 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
 		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
 		if (isset($_cart->virtuemart_currency_id)) {
-			$_orderData->user_virtuemart_currency_id = $_cart->virtuemart_currency_id;
+			$_orderData->user_currency_id = $_cart->virtuemart_currency_id;
 			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;

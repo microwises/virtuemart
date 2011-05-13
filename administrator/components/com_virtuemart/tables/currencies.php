@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG, Max Milbers
  */
-class TableCurrency extends JTable {
+class TableCurrencies extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_currency_id				= 0;

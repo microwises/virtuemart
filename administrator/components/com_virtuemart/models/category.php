@@ -131,7 +131,7 @@ class VirtueMartModelCategory extends JModel {
 		if(!empty($virtuemart_category_id)) $this->setId((int)$virtuemart_category_id);
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('categories');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -165,7 +165,7 @@ class VirtueMartModelCategory extends JModel {
 //	*/
 //	public function getCategory($virtuemart_category_id=0) {
 //		$db = JFactory::getDBO();
-//		$row =& $this->getTable('category');
+//		$row =& $this->getTable('categories');
 //		$row->load($virtuemart_category_id);
 //		if (VmConfig::get('showCategory',1)) {
 //		/* Check for children */
@@ -422,7 +422,7 @@ class VirtueMartModelCategory extends JModel {
 	public function orderCategory($id, $movement){
 		//retrieving the category table object
 		//and loading data
-		$row = $this->getTable();
+		$row = $this->getTable('categories');
 		$row->load($id);
 
 		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. $this->_db->Quote( $row->virtuemart_category_id );
@@ -448,7 +448,7 @@ class VirtueMartModelCategory extends JModel {
 	public function setOrder($cats){
 		$total		= count( $cats );
 		$groupings	= array();
-		$row = $this->gettable();
+		$row = $this->getTable('categories');
 
 		$order		= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
@@ -552,7 +552,7 @@ class VirtueMartModelCategory extends JModel {
 		$data = $this->getRelationInfo( $categoryId );
 		$parentId = isset($data->category_parent_id) ? $data->category_parent_id : 0;
 
-     	$parent = $this->getTable();
+     	$parent = $this->getTable('categories');
   		$parent->load((int) $parentId);
 
   		return $parent;
@@ -614,7 +614,7 @@ class VirtueMartModelCategory extends JModel {
     public function store() {
 		jimport('joomla.filesystem.file');
 
-		$table = $this->getTable();
+		$table = $this->getTable('categories');
 		$data = JRequest::get('post');
 
 		/* Vendor */
@@ -682,7 +682,7 @@ class VirtueMartModelCategory extends JModel {
      * @return boolean if the item delete was successful
      */
     public function delete($cids) {
-		$table = $this->getTable();
+		$table = $this->getTable('categories');
 
 		foreach($cids as $cid) {
 		    if( $this->clearProducts($cid) ) {
@@ -927,7 +927,7 @@ class VirtueMartModelCategory extends JModel {
 
 		// Copy the Array into an Array with auto_incrementing Indexes
 		$key = array_keys($this->_category_tree); // Array of category table primary keys
-		
+
 		$nrows = $size = sizeOf($key); // Category count
 
 		$html = "";
@@ -1024,7 +1024,7 @@ class VirtueMartModelCategory extends JModel {
 			// Transfer the Result into a searchable Array
 			$dbCategories = $db->loadAssocList();
 
-		//if (!$ids = $db->loadObject()) 
+		//if (!$ids = $db->loadObject())
 			foreach( $dbCategories as $Cat ) {
 				$this->_category_tree[$Cat['category_child_id']] = $Cat;
 			}
@@ -1039,7 +1039,7 @@ class VirtueMartModelCategory extends JModel {
 	function sortCategoryTreeArray() {
 		// Copy the Array into an Array with auto_incrementing Indexes
 		$key = array_keys($this->_category_tree); // Array of category table primary keys
-		
+
 		$nrows = $size = sizeOf($key); // Category count
 
 		/** FIRST STEP
@@ -1053,34 +1053,34 @@ class VirtueMartModelCategory extends JModel {
 		$children = array();
 		$parent_ids = array();
 		$parent_ids_hash = array();
-		
+
 		//Build an array of category references
 		$category_tmp = Array();
 		for ($i=0; $i<$size; $i++)
 		{
 			$category_tmp[$i] = $this->_category_tree[$key[$i]];
-			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
+			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];
 			if($category_tmp[$i]["category_parent_id"] == 0)
-			{ 
+			{
 				array_push($id_list,$category_tmp[$i]["category_child_id"]);
 				array_push($row_list,$i);
 				array_push($depth_list,0);
 			}
 
 			$parent_id = $parent_ids[$i];
-			
+
 			if (isset($parent_ids_hash[$parent_id]))
 			{
 				$parent_ids_hash[$parent_id][$i] = $parent_id;
-				
+
 			}
 			else
 			{
 				$parent_ids_hash[$parent_id] = array($i => $parent_id);
 			}
-			
+
 		}
-		
+
 		$loop_count = 0;
 		$watch = array(); // Hash to store children
 		while(count($id_list) < $nrows) {
@@ -1098,7 +1098,7 @@ class VirtueMartModelCategory extends JModel {
 				array_push($depth_temp,$depth);
 
 				$children = @$parent_ids_hash[$id];
-				
+
 				if (!empty($children))
 				{
 					foreach($children as $key => $value) {

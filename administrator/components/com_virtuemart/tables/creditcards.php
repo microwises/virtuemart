@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG
  */
-class TableCreditcard extends JTable {
+class TableCreditcards extends JTable {
 
 	/** @var int Primary key */
 	var $virtuemart_creditcard_id				= 0;
