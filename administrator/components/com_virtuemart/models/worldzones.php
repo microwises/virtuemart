@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.model');
  * @subpackage Shipping
  * @author RickG
  */
-class VirtueMartModelShippingZone extends JModel {
+class VirtueMartModelWorldzones extends JModel {
 
    /**
     * Shipping Zone Id
@@ -113,7 +113,7 @@ class VirtueMartModelShippingZone extends JModel {
      *
      * @author RickG
      */
-    function getShippingZoneSelectList()
+    function getWorldZonesSelectList()
     {
     	$db =& JFactory::getDBO();
 

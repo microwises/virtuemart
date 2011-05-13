@@ -57,7 +57,7 @@ class VirtuemartViewCountry extends JView {
 			JToolBarHelper::cancel();
 
 		    $this->assignRef('country',	$country);
-		    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
+		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
 		}
 		else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_LBL'), 'vm_countries_48' );

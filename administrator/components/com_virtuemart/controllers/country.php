@@ -64,7 +64,7 @@ class VirtuemartControllerCountry extends JController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		$model1 = $this->getModel('ShippingZone');
+		$model1 = $this->getModel('WorldZones');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}

@@ -78,7 +78,7 @@ class VirtuemartViewState extends JView {
 
 			$this->assignRef('state', $state);
 
-			$this->assignRef('shippingZones', $zoneModel->getShippingZoneSelectList());
+			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_LBL'), 'vm_states_48' );

@@ -52,11 +52,11 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_SHIPPING_ZONE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_WORLDZONE'); ?>:
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>		
 		<tr>

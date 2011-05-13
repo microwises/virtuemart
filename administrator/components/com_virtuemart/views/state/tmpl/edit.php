@@ -54,11 +54,11 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 		<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_SHIPPING_ZONE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_WORLDZONE'); ?>:
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
+				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>
 		<tr>
@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php /* echo JHTML::_('Select.radiolist', $this->shippingZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id);*/ ?>
+				<?php /* echo JHTML::_('Select.radiolist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id);*/ ?>
 				<input class="inputbox" type="text" name="state_2_code" id="state_2_code" size="10" value="<?php echo $this->state->state_2_code; ?>" />
 			</td>
 		</tr>
