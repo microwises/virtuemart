@@ -57,9 +57,6 @@ class TableUserinfo extends JTable {
 	var $extra_field_3 = '';
 	var $extra_field_4 = '';
 	var $extra_field_5 = '';
-	var $created_on = '';
-	var $modified_on = '';
- 
            /** @var date Category creation date */
         var $created_on = null;
           /** @var int User id */
