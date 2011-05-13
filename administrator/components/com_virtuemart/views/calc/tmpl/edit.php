@@ -114,7 +114,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_virtuemart_category_id'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_ID'); ?>:
 				</label>
 			</td>
 			<td>
@@ -126,7 +126,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_virtuemart_shoppergroup_idS'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>:
 				</label>
 			</td>
 			<td>

@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->state_name; ?></a>
 		</td>
 		<td align="left">
-			<?php echo $row->virtuemart_zone_id; ?>
+			<?php echo $row->virtuemart_worldzone_id; ?>
 		</td>
 		<td>
 			<?php echo $row->state_2_code; ?>

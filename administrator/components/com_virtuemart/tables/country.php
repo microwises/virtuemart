@@ -31,7 +31,7 @@ class TableCountry extends JTable {
 	/** @var int Primary key */
 	var $virtuemart_country_id				= 0;
 	/** @var integer Zone id */
-	var $virtuemart_zone_id           		= 0;
+	var $virtuemart_worldzone_id           		= 0;
 	/** @var string Country name */
 	var $country_name           = '';
 	/** @var char 3 character country code */

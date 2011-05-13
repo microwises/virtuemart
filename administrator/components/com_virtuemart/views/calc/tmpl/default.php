@@ -61,10 +61,10 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_CURRENCY'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_virtuemart_category_id'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_ID'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_virtuemart_shoppergroup_idS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
 			</th>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?>
@@ -88,7 +88,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_COUNTRIES'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_virtuemart_state_idS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?>
 			</th>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>

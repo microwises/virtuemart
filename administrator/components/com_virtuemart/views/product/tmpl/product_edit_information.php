@@ -19,7 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
-<?php // dump($this->product); ?>-->
+<?php // dump($this->product); ?> 
 <table class="adminform">
 	<tr>
 		<td valign="top">

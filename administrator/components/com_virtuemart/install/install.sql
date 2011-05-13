@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_value_mathop` text NOT NULL COMMENT 'the mathematical operation like (+,-,+%,-%)',
   `calc_value` float NOT NULL DEFAULT '0' COMMENT 'The Amount',
   `calc_currency` char(3) NOT NULL DEFAULT '0' COMMENT 'Currency of the Rule',
-  `ordering` tinyint(2) NOT NULL,
   `calc_shopper_published` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Shoppers',
   `calc_vendor_published` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Vendors',
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
@@ -27,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_amount_cond` float NOT NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text NOT NULL COMMENT 'The dimension, kg, m, €',
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Affects all vendors',
+   `ordering` tinyint(2) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   `virtuemart_country_id` SERIAL,
-  `virtuemart_zone_id` int(11) NOT NULL DEFAULT '1',
+  `virtuemart_worldzone_id` int(11) NOT NULL DEFAULT '1',
   `country_name` varchar(64) DEFAULT NULL,
   `country_3_code` char(3) DEFAULT NULL,
   `country_2_code` char(2) DEFAULT NULL,
@@ -688,6 +688,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
   `product_parent_id` int(11) NOT NULL DEFAULT '0',
   `product_sku` varchar(64) NOT NULL DEFAULT '',
+  `product_name` varchar(64) DEFAULT NULL,
   `product_s_desc` varchar(255) DEFAULT NULL,
   `product_desc` text,
   `product_weight` decimal(10,4) DEFAULT NULL,
@@ -703,7 +704,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_availability` varchar(56) NOT NULL DEFAULT '',
   `product_special` char(1) DEFAULT NULL,
   `ship_code_id` int(11) DEFAULT NULL,
-  `product_name` varchar(64) DEFAULT NULL,
   `product_sales` int(11) NOT NULL DEFAULT '0',
   `attribute` text,
   `custom_attribute` text NOT NULL,
@@ -739,8 +739,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
-  `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
   `product_list` int(11) DEFAULT NULL,
   KEY `idx_product_category_xref_virtuemart_category_id` (`virtuemart_category_id`),
   KEY `idx_product_category_xref_product_id` (`virtuemart_product_id`),
@@ -843,13 +843,13 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `product_currency` char(16) DEFAULT NULL,
   `product_price_vdate` int(11) DEFAULT NULL,
   `product_price_edate` int(11) DEFAULT NULL,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
   `virtuemart_shoppergroup_id` int(11) DEFAULT NULL,
   `price_quantity_start` int(11) unsigned NOT NULL DEFAULT '0',
   `price_quantity_end` int(11) unsigned NOT NULL DEFAULT '0',
+ `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_price_id`),
@@ -1036,7 +1036,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   `virtuemart_state_id` SERIAL,
   `virtuemart_country_id` int(11) NOT NULL DEFAULT '1',
-  `virtuemart_zone_id` int(4) NOT NULL,
+  `virtuemart_worldzone_id` int(4) NOT NULL,
   `state_name` varchar(64) DEFAULT NULL,
   `state_3_code` char(3) DEFAULT NULL,
   `state_2_code` char(2) DEFAULT NULL,
@@ -1258,7 +1258,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_waitingusers` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_worldzones` (
-  `virtuemart_zone_id` SERIAL,
+  `virtuemart_worldzone_id` SERIAL,
   `zone_name` varchar(255) DEFAULT NULL,
   `zone_cost` decimal(10,2) DEFAULT NULL,
   `zone_limit` decimal(10,2) DEFAULT NULL,
@@ -1266,6 +1266,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_worldzones` (
   `zone_tax_rate` int(11) NOT NULL DEFAULT '0',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_zone_id`)
+  PRIMARY KEY (`virtuemart_worldzone_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module' AUTO_INCREMENT=1 ;
 

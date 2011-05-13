@@ -56,7 +56,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'virtuemart_zone_id', '', 'virtuemart_zone_id', 'zone_name', $this->country->virtuemart_zone_id); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->shippingZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>			
 			</td>
 		</tr>		
 		<tr>

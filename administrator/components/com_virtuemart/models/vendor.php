@@ -296,7 +296,7 @@ class VirtueMartModelVendor extends JModel {
 	 		1 			223 		Alabama 	ALA 			AL
 
 
-	 		virtuemart_country_id 	virtuemart_zone_id 	country_name 	country_3_code 	country_2_code
+	 		virtuemart_country_id 	virtuemart_worldzone_id 	country_name 	country_3_code 	country_2_code
 			1 			1 			Afghanistan 	AFG 			AF
 	 */
 
