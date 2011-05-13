@@ -30,7 +30,7 @@ class ReportFunctions {
 		// set date presets
 		$curDate   = JFactory::getDate();
 		$curDate   = $curDate->toUnix();
-		$curDate   = mktime(0, 0, 0, date('n', $curDate), date('j', $curDate), date('Y', $curDate));
+		$curDate   = mktime(0, 0, 0, date('m', $curDate), date('d', $curDate), date('Y', $curDate));
 		$monday = (date('w', $curDate) == 1) ? $curDate : strtotime('last Monday', $curDate);
 		$date_presets['last90'] = array(
 			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_LAST90'),
