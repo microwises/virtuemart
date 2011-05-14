@@ -98,7 +98,7 @@ o_tree_$varname.select($Treeid);
 
 // Add a linked list in case JavaScript is disabled
 $menu_htmlcode .= "<noscript>\n";
-$menu_htmlcode .= $ps_product_category->get_category_tree( $category_id, $class_mainlevel );
+$menu_htmlcode .= $ps_product_category->get_category_tree( $virtuemart_category_id, $class_mainlevel );
 $menu_htmlcode .= "\n</noscript>\n";
 $menu_htmlcode .= "</div>";
 
@@ -108,17 +108,16 @@ class vmTigraTreeMenu {
     /***************************************************
     * function traverse_tree_down
     */
-	function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
+	function traverse_tree_down(&$mymenu_content, $virtuemart_category_id='0', $level='0') {
 		static $ibg = 0;
 		$db = JFactory::getDBO();
 		$level++;
-		$q = "SELECT category_name as cname, category_id as cid, category_child_id as ccid "
+		$q = "SELECT category_name as cname, virtuemart_category_id as cid, category_child_id as ccid "
 		. "FROM #__virtuemart_categories as a, #__virtuemart_category_categories as b "
-		 . "WHERE a.enabled='1' AND "
-		 . " b.category_parent_id='{$category_id}' AND a.category_id=b.category_child_id "
+		 . "WHERE a.published='1' AND "
+		 . " b.category_parent_id='{$virtuemart_category_id}' AND a.virtuemart_category_id=b.category_child_id "
 		 . "ORDER BY category_parent_id, ordering, category_name ASC";
 		$db->setQuery($q);
-		
 		$categories = $db->loadObjectList();
 		
 		if( $categories ) {
@@ -134,7 +133,7 @@ class vmTigraTreeMenu {
 					$mymenu_content.= ",";
 				}
 				$mymenu_content.= "['".htmlspecialchars($category->cname,ENT_QUOTES);
-				$mymenu_content.= "','href=\"".JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->cid.'&Treeid='.$Treeid.$itemid)."\"'\n ";
+				$mymenu_content.= "','href=\"".JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->cid.'&Treeid='.$Treeid.$itemid)."\"'\n ";
 				
 				/* recurse through the subcategories */
 				$this->traverse_tree_down($mymenu_content, $category->ccid, $level);

@@ -9,6 +9,6 @@
 
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 
-echo $ps_product_category->get_category_tree( $category_id, $class_mainlevel );
+echo $ps_product_category->get_category_tree( $virtuemart_category_id, $class_mainlevel );
 
 ?>
