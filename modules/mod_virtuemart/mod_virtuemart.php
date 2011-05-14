@@ -196,10 +196,10 @@ if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$enabl
 			}
 			?>
 			<div class="total" style="float: right;"></div>
-			<div class="total_products"><?php echo JText::_('MOD_VIRTEMART_AJAX_CART_WAITING') ?></div>
+			<div class="total_products"><?php echo JText::_('MOD_VIRTUEMART_AJAX_CART_WAITING') ?></div>
 			<div class="show_cart"></div>
 			<noscript>
-			<?php echo JText::_('MOD_VIRTEMART_AJAX_CART_PLZ_JAVASCRIPT') ?>
+			<?php echo JText::_('MOD_VIRTUEMART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 			</noscript>
 			</div>
         </td>

@@ -68,7 +68,7 @@ if ($show_product_list) {
 <div class="total_products"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"></div>
 <div class="show_cart"></div>
 <noscript>
-<?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
+<?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 </noscript>
 </div>
 
