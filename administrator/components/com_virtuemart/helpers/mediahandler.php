@@ -167,6 +167,26 @@ class VmMediaHandler {
 
     }
 
+    public function getUrl(){
+    	return $this->file_url_folder.$this->file_name.$this->file_extension;
+    }
+
+    public function getThumbUrl(){
+    	return $this->file_url_folder_thumb.$this->file_name.$this->file_extension;
+    }
+
+    public function getFullPath(){
+
+    	$rel_path = str_replace('/',DS,$this->file_url_folder);
+    	return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+    }
+
+    public function getThumbPath(){
+
+    	$rel_path = str_replace('/',DS,$this->file_url_folder);
+    	return JPATH_ROOT.DS.$rel_path.$this->file_name_thumb.'.'.$this->file_extension;
+    }
+
     /**
      * Tests if a function is an image by mime or extension
      *
@@ -434,7 +454,7 @@ class VmMediaHandler {
 		else if( $data['media_action'] == 'delete' ){
 			//TODO this is complex, we must assure that the media entry gets also deleted.
 			//$this->deleteFile($this->file_url);
-			unset($data['virtuemart_media_id']);
+			unset($data['active_media_id']);
 
 		}
 //		else{
@@ -442,7 +462,7 @@ class VmMediaHandler {
 //		}
 
 		if(empty($this->file_title) && !empty($file_name)) $this->file_title = $file_name;
-		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
+//		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
 
 		return $data;
 	}

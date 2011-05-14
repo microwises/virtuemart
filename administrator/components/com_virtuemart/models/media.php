@@ -267,31 +267,20 @@ class VirtueMartModelMedia extends JModel {
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		$oldId = $data['active_media_id'];
-		$this -> setId($oldId);
+//		$oldId = $data['active_media_id'];
+//		$this -> setId($oldId);
 		$virtuemart_media_id = $this->store($type,$data);
 		$this -> setId($virtuemart_media_id);
 
 		/* add the virtuemart_media_id & delete 0 and '' from $data */
-		$virtuemart_media_id = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
-		$virtuemart_media_id = array_diff($data['virtuemart_media_id'],array('0',''));
-		$virtuemart_media_id = array_unique($virtuemart_media_id);
-		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
+		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
+		$virtuemart_media_ids = array_diff($data['virtuemart_media_id'],array('0',''));
+		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+
+//		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
 
 		// Bind the form fields to the country table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the category record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the category record to the database
-		if (!$table->store()) {
+		if (!$table->bindChecknStore($this,$data)) {
 			$this->setError($table->getError());
 			return false;
 		}

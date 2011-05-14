@@ -1128,10 +1128,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_user_shoppergroups`
+-- Table structure for table `#__virtuemart_vmuser_shoppergroups`
 -- 
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_user_shoppergroups` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vmuser_shoppergroups` (
   `id` SERIAL,
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',

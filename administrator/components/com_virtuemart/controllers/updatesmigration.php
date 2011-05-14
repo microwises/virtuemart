@@ -124,13 +124,19 @@ class VirtuemartControllerUpdatesMigration extends JController {
      * @author RickG
      */
     function restoreSystemDefaults() {
-	$model = $this->getModel('updatesMigration');
-	$model->restoreSystemDefaults();
 
-	$msg = JText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
-	$msg .= ' User id of the main vendor is '.$model->setStoreOwner();
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
-    }
+    	if(VmConfig::get('dangeroustools',false)){
+ 			$model = $this->getModel('updatesMigration');
+			$model->restoreSystemDefaults();
+
+			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
+			$msg .= ' User id of the main vendor is '.$model->setStoreOwner();
+    	} else {
+    		$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+    	}
+    	$this->setDangerousToolsOff();
+    	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+   }
 
 
     /**
@@ -139,36 +145,51 @@ class VirtuemartControllerUpdatesMigration extends JController {
      * @author RickG
      */
     function deleteVmTables() {
-	$model = $this->getModel('updatesMigration');
-	if (!$model->removeAllVMTables()) {
-	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
-	}
-	else {
-	    $this->setRedirect('index.php?option=com_installer');
-	}
+
+    	$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMTABES_DELETED');
+    	if(VmConfig::get('dangeroustools',false)){
+    		$model = $this->getModel('updatesMigration');
+			if (!$model->removeAllVMTables()) {
+			    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+			}
+    	} else {
+			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+		}
+
+
+    	$this->setRedirect('index.php?option=com_installer',$msg);
     }
 
 
     function deleteVmData() {
-	$model = $this->getModel('updatesMigration');
-	if (!$model->removeAllVMData()) {
-	    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
-	}
-	else {
-	    $this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
-	}
+    	if(VmConfig::get('dangeroustools',false)){
+			$model = $this->getModel('updatesMigration');
+
+			if (!$model->removeAllVMData()) {
+			    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
+			}
+			else {
+			    $this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
+			}
+    	}
     }
 
 
     function deleteAll() {
-	$this -> installer -> populateVmDatabase("delete_essential.sql");
-	$this -> installer -> populateVmDatabase("delete_data.sql");
+    	if(VmConfig::get('dangeroustools',false)){
+ 			$this -> installer -> populateVmDatabase("delete_essential.sql");
+			$this -> installer -> populateVmDatabase("delete_data.sql");
+    	}
+
 //	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
     }
 
 
     function deleteRestorable() {
+    	if(VmConfig::get('dangeroustools',false)){
+
+    	}
 	$this -> installer -> populateVmDatabase("delete_restoreable.sql");
 //	$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
 	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration');
@@ -176,19 +197,34 @@ class VirtuemartControllerUpdatesMigration extends JController {
 
 	function refreshCompleteInstall(){
 
-		$model = $this->getModel('updatesMigration');
+		if(VmConfig::get('dangeroustools',false)){
 
-		$model -> restoreSystemCompletly();
+			$model = $this->getModel('updatesMigration');
 
-		$model->integrateJoomlaUsers();
-		$id = $model->determineStoreOwner();
-		$sid = $model->setStoreOwner($id);
-//		$model->setUserToPermissionGroup($id);
-		$model->installSampleData($id);
-		$msg = $model->getErrors();
-		if(empty($msg)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
+			$model -> restoreSystemCompletly();
+
+			$model->integrateJoomlaUsers();
+			$id = $model->determineStoreOwner();
+			$sid = $model->setStoreOwner($id);
+	//		$model->setUserToPermissionGroup($id);
+			$model->installSampleData($id);
+			$msg = $model->getErrors();
+			if(empty($msg)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
+
+		} else {
+
+			$msg
+		}
+
 
 		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
 	}
 
+	function setDangerousToolsOff(){
+
+		$model = $this->getModel('updatesMigration');
+
+		$model->setDangerousToolsOff();
+
+	}
 }

@@ -35,6 +35,7 @@ class VmXrefTable extends JTable {
 	var $skeyForm	= '';
 	var $_svalue 	= array();
 
+	var $ordering = 0;
     /**
      * Records in this table are arrays. Therefore we need to overload the load() function.
      *
@@ -112,6 +113,7 @@ class VmXrefTable extends JTable {
      */
     public function store() {
 
+
 		$db = JFactory::getDBO();
 
 		$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
@@ -122,8 +124,8 @@ class VmXrefTable extends JTable {
 		/* Store the new categories */
 		foreach( $this->_svalue as $dataid ) {
 			$q  = 'INSERT INTO `'.$this->_tbl.'` ';
-			$q .= '('.$this->_pkey.','.$this->_skey.') ';
-			$q .= 'VALUES ("'.$this->_pvalue.'","'. $dataid . '")';
+			$q .= '('.$this->_pkey.','.$this->_skey.', ordering ) ';
+			$q .= 'VALUES ("'.$this->_pvalue.'","'. $dataid . '", "'.$this->ordering++.'")';
 			$db->setQuery($q);
 			$db->query();
 

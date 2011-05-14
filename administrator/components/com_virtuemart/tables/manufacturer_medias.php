@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+
 /**
  * Calculator table class
  * The class is is used to manage the media in the shop.

@@ -19,6 +19,8 @@
 // Check to ensure this custom is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Custom table class
  * The class manage table to store custom user fields .

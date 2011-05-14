@@ -42,6 +42,7 @@ class TableCalc_countries extends VmXrefTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_countries', 'id', $db);
+
 	}
 
 

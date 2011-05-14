@@ -39,7 +39,7 @@ DROP TABLE
 `#__virtuemart_userfield_values`,
 `#__virtuemart_vmusers`,
 `#__virtuemart_userinfos`,
-`#__virtuemart_user_shoppergroups`,
+`#__virtuemart_vmuser_shoppergroups`,
 `#__virtuemart_vendors`,
 `#__virtuemart_waitingusers`,
 `#__virtuemart_worldzones`;

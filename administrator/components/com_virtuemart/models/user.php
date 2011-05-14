@@ -177,7 +177,7 @@ class VirtueMartModelUser extends JModel {
 			$this->_data->load((int)$this->_id);
 
 			/* Add the virtuemart_shoppergroup_ids */
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 
@@ -526,7 +526,7 @@ class VirtueMartModelUser extends JModel {
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
+			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
 				$this->setError('Was not able to save the virtuemart userinfo address data');
@@ -773,7 +773,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function _getListQuery (){
 
-	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_user_shoppergroups, #__virtuemart_vendors
+	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_vmuser_shoppergroups, #__virtuemart_vendors
 	 	$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -783,7 +783,7 @@ class VirtueMartModelUser extends JModel {
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
 			. 'LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id '
-			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();

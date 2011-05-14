@@ -92,39 +92,6 @@ class TableCategories extends VmTable {
 		$this->setLoggable();
 	}
 
-//	/**
-//	 *
-//	 * @author Max Milbers
-//	 */
-//	public function check(){
-//
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//
-//     	if(empty($this->category_name)){
-//            $this->setError('Cant save category without name');
-//            return false;
-//     	}
-//
-//		if (!empty($this->category_name)) {
-//		    $db = JFactory::getDBO();
-//
-//			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_categories` ';
-//			$q .= 'WHERE `category_name`="' . $this->category_name . '"';
-//            $db->setQuery($q);
-//		    $virtuemart_category_id = $db->loadResult();
-//		    if (!empty($virtuemart_category_id) && $virtuemart_category_id!=$this->virtuemart_category_id) {
-//				$this->setError(JText::_('COM_VIRTUEMART_CATEGORY_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//     	return true;
-//	}
 
 	/**
 	 * Overwrite method

@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Vendor table class
  * The class is is used to manage the vendors in the shop.
@@ -61,7 +63,7 @@ class TableVendors extends VmTable {
     /** @var varchar Vendor date format */
     var $vendor_date_format			= '';
 
-     * @author RickG
+    /* @author RickG, Max Milbers
      * @param $db A database connector object
      */
     function __construct(&$db) {

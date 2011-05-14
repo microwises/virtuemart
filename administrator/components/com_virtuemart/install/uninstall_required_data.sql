@@ -8,5 +8,5 @@ DELETE FROM `#__virtuemart_paymentmethods`;
 DELETE FROM `#__virtuemart_shippingcarriers`;
 DELETE FROM `#__virtuemart_shippingrates`;
 DELETE FROM `#__virtuemart_shoppergroups`;
-DELETE FROM `#__virtuemart_user_shoppergroups`;
+DELETE FROM `#__virtuemart_vmuser_shoppergroups`;
 DELETE FROM `#__virtuemart_states`;

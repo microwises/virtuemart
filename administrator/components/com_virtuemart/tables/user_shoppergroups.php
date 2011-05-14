@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_user_shoppergroups', 'virtuemart_user_id', $db);
+		parent::__construct('#__virtuemart_vmuser_shoppergroups', 'virtuemart_user_id', $db);
 	}
 
  	/**
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 	public function store()
 	{
 		$_qry = 'SELECT virtuemart_user_id '
-				. 'FROM #__virtuemart_user_shoppergroups '
+				. 'FROM #__virtuemart_vmuser_shoppergroups '
 				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
 		;
 		$this->_db->setQuery($_qry);

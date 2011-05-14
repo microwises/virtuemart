@@ -86,6 +86,15 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
 	</td>
 	</tr>
+	<td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOOLS_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
+		</span>
+		</td>
+		<td>
+		<input type="text" name="dangeroustools" class="inputbox" value="<?php echo $this->config->get('dangeroustools') ?>" />
+	</td>
+	</tr>
     </table>
 </fieldset>
 <?php /*

@@ -77,10 +77,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$this->_db->setQuery($q);
 		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_vmuser_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmuser_shoppergroups FAILED' );
 	    }
 
 	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";

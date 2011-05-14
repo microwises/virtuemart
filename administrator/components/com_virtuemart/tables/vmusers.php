@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * user_shoppergroup_xref table class
  * The class is used to link users to shoppergroups.
@@ -27,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Max Milbers
  */
 
- class TableVmusers extends JTable {
+ class TableVmusers extends VmTable {
 
 	/** @var int Vendor ID */
 	var $virtuemart_user_id			= 0;
@@ -35,10 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	var $virtuemart_vendor_id 			= 0;
 	var $customer_number 	= 0;
 	var $perms				= 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 
 	/**
 	 * @param $db Class constructor; connect to the database
@@ -46,6 +45,11 @@ defined('_JEXEC') or die('Restricted access');
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_vmusers', 'virtuemart_user_id', $db);
+
+//		$this->setUniqueName('customer_number','COM_VIRTUEMART_USER_NO_CUSTOMER_ID');
+
+		$this->setLoggable();
+
 	}
 
  	/**
@@ -57,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 			$this->setError(JText::_('COM_VIRTUEMART_USERS_MUST_HAVE_USER_ID'));
 			return false;
 		}
-		return true;
+		return parent::check();
  	}
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even
