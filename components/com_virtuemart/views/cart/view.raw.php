@@ -186,9 +186,9 @@ class VirtueMartViewCart extends JView {
 		foreach ($this->_cart->products as $priceKey=>$product){
 
 			//$vars["zone_qty"] += $product["quantity"];
-			$product->category_id = $this->_cart->getCardCategoryId($product->product_id);
+			$product->virtuemart_category_id = $this->_cart->getCardCategoryId($product->virtuemart_product_id);
 			//Create product URL
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 			// @todo Add variants
 			$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
@@ -213,7 +213,7 @@ class VirtueMartViewCart extends JView {
 			$this->data->products[$i]['product_sku'] = $product->product_sku;
 
 			//** @todo WEIGHT CALCULATION
-			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
+			//$weight_subtotal = vmShippingMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
 			
