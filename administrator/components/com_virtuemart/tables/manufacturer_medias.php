@@ -25,10 +25,10 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableManufacturer_medias extends JTable {
+class TableManufacturer_medias extends VmXrefTable {
 
 	var $_pkey 		= 'virtuemart_manufacturer_id';
-	var $_skey 		= 'file_ids';
+	var $_skey 		= 'virtuemart_media_id';
 
 
 	/**
@@ -37,6 +37,7 @@ class TableManufacturer_medias extends JTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_manufacturer_medias', 'id', $db);
+
 	}
 
 }

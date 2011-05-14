@@ -24,9 +24,9 @@ defined('_JEXEC') or die('Restricted access');
  * The class is is used to manage the user_info table.
  *
  * @package	VirtueMart
- * @author 	RickG, RolandD
+ * @author 	RickG, RolandD, Max Milbers
  */
-class TableUserinfos extends JTable {
+class TableUserinfos extends VmTable {
 
 
 	/** @var int Primary key */
@@ -77,6 +77,12 @@ class TableUserinfos extends JTable {
 		/* Make sure the custom fields are added */
 		self::addUserFields();
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
+
+		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+		$this->setPrimaryKeys('virtuemart_userinfo_id','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+
+		$this->setLoggable();
 	}
 
 	/**
@@ -163,15 +169,15 @@ class TableUserinfos extends JTable {
 	*/
 	public function check(){
 
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
 
 		if (!empty($this->virtuemart_userinfo_id)) {
-			return true;
+			return parent::check();
 		}
 
 		/* Check if a record exists */
@@ -185,10 +191,10 @@ class TableUserinfos extends JTable {
 
 		if (count($total) > 0) {
 			$this->virtuemart_userinfo_id = $total[0];
-			return true;
+			return parent::check();
 		} else {
 			$this->virtuemart_userinfo_id = md5(uniqid($this->virtuemart_user_id));
-			$this->created_on = time();
+//			$this->created_on = time();
 			return false;
 		}
 

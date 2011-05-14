@@ -429,7 +429,7 @@ class shopFunctionsF {
 		$vendor->setId($virtuemart_vendor_id);
 		$_store = $vendor->getVendor();
 
-		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->file_ids, 'base64', 'image/jpeg' );
+		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->virtuemart_media_id, 'base64', 'image/jpeg' );
 
 		return $mailer->Send();
 

@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RickG
  */
-class TableShippingrates extends JTable {
+class TableShippingrates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shippingrate_id			= 0;

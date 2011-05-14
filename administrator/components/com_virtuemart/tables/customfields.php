@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Patrick Kohl
  * @package		VirtueMart
  */
-class TableCustomfields extends JTable {
+class TableCustomfields extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_customfield_id		= 0;
@@ -41,38 +41,23 @@ class TableCustomfields extends JTable {
 
 	/** @var int custom published or not */
 	var $published		= 0;
-/** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
 
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
 
 	/**
-	 * @author  Patrick Kohl
+	 * @author  Patrick Kohl, Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customfields', 'virtuemart_custom_id', $db);
+
+		$this->setPrimaryKeys('virtuemart_custom_id','COM_VIRTUEMART_CUSTOMFIELDS_NO_CUSTOM_ID');
+//		$this->setPrimaryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
+
+		$this->setLoggable();
+
+
 	}
 
-	/**
-	 *
-	 * @author  Patrick Kohl
-	 * @return boolean True .
-	  * No check at moment
-	 */
-	function check(){
-
-		return true;
-	}
 
 }
 // pure php no closing tag

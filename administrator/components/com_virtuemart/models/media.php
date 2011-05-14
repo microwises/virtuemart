@@ -119,22 +119,22 @@ class VirtueMartModelMedia extends JModel {
     }
 
     /**
-     * Kind of getFiles, it creates a bunch of image objects by an array of file_ids
+     * Kind of getFiles, it creates a bunch of image objects by an array of virtuemart_media_id
      *
      * @author Max Milbers
-     * @param unknown_type $file_ids
+     * @param unknown_type $virtuemart_media_id
      * @param unknown_type $type
      * @param unknown_type $mime
      */
-	function createMediaByIds($file_ids,$type='',$mime=''){
+	function createMediaByIds($virtuemart_media_id,$type='',$mime=''){
 
     	if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
     	$medias = array();
-    	if(!empty($file_ids)){
-    		if(!is_array($file_ids)) $file_ids = explode(',',$file_ids);
+    	if(!empty($virtuemart_media_id)){
+    		if(!is_array($virtuemart_media_id)) $virtuemart_media_id = explode(',',$virtuemart_media_id);
 
-    	    foreach($file_ids as $virtuemart_media_id){
+    	    foreach($virtuemart_media_id as $virtuemart_media_id){
 	    		$data = $this->getTable('medias');
 	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
 	   			$data->load($id);
@@ -169,14 +169,14 @@ class VirtueMartModelMedia extends JModel {
     	$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',0);
 
     	if(!empty($virtuemart_product_id)){
-    		$query = 'SELECT `file_ids` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
+    		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
     		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
     	$cat_id = JRequest::getVar('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `file_ids` as virtuemart_media_id FROM `#__virtuemart_category_medias` ';
+    		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` ';
     		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
@@ -267,16 +267,16 @@ class VirtueMartModelMedia extends JModel {
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		$oldId = $data['virtuemart_media_id'];
+		$oldId = $data['active_media_id'];
 		$this -> setId($oldId);
 		$virtuemart_media_id = $this->store($type,$data);
 		$this -> setId($virtuemart_media_id);
 
 		/* add the virtuemart_media_id & delete 0 and '' from $data */
-		$file_ids = array_merge( (array)$virtuemart_media_id,$data['file_ids']);
-		$file_ids = array_diff($data['file_ids'],array('0',''));
-		$file_ids = array_unique($file_ids);
-		$data['file_ids'] = array_reverse ($file_ids,true);
+		$virtuemart_media_id = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
+		$virtuemart_media_id = array_diff($data['virtuemart_media_id'],array('0',''));
+		$virtuemart_media_id = array_unique($virtuemart_media_id);
+		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
 
 		// Bind the form fields to the country table
 		if (!$table->bind($data)) {
@@ -404,8 +404,8 @@ class VirtueMartModelMedia extends JModel {
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
 			foreach($objects as $object){
-				if(empty($object->$nameId)) $file_ids = null; else $file_ids = $object->$nameId;
-				$object->images = $this->createMediaByIds($file_ids,$type,$mime);
+				if(empty($object->$nameId)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->$nameId;
+				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
 //				}
 			}
 		}

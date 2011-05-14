@@ -24,9 +24,9 @@ defined('_JEXEC') or die('Restricted access');
  * The class is used to manage the manufacturer table in the shop.
  *
  * @package		VirtueMart
- * @author
+ * @author Max Milbers
  */
-class TableManufacturers extends JTable {
+class TableManufacturers extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_manufacturer_id = 0;
@@ -43,54 +43,49 @@ class TableManufacturers extends JTable {
 
 	/** @var int published or unpublished */
 	var $published = 1;
-       /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_manufacturers', 'virtuemart_manufacturer_id', $db);
+
+		$this->setUniqueName('mf_name','COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS');
+
+		$this->setLoggable();
+
 	}
 
 
-	/**
-	 * Validates the manufacturer record before saving to db.
-	 *
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check()
-	{
-        if (!$this->mf_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_RECORDS_MUST_CONTAIN_NAME'));
-			return false;
-		}
-
-		if (($this->mf_name) && ($this->virtuemart_manufacturer_id == 0)) {
-		    $db =& JFactory::getDBO();
-
-			$q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers` ';
-			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
-            $db->setQuery($q);
-		    $virtuemart_manufacturer_id = $db->loadResult();
-		    if (!empty($virtuemart_manufacturer_id) && $virtuemart_manufacturer_id!=$this->virtuemart_manufacturer_id) {
-				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-		return true;
-	}
+//	/**
+//	 * Validates the manufacturer record before saving to db.
+//	 *
+//	 * @return boolean True if the table buffer is contains valid data, false otherwise.
+//	 */
+//	function check()
+//	{
+//        if (!$this->mf_name) {
+//			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_RECORDS_MUST_CONTAIN_NAME'));
+//			return false;
+//		}
+//
+//		if (($this->mf_name) && ($this->virtuemart_manufacturer_id == 0)) {
+//		    $db =& JFactory::getDBO();
+//
+//			$q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers` ';
+//			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
+//            $db->setQuery($q);
+//		    $virtuemart_manufacturer_id = $db->loadResult();
+//		    if (!empty($virtuemart_manufacturer_id) && $virtuemart_manufacturer_id!=$this->virtuemart_manufacturer_id) {
+//				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
+//				return false;
+//			}
+//		}
+//
+//		return true;
+//	}
 
 }
 // pure php no closing tag

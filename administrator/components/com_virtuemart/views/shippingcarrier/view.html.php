@@ -54,7 +54,7 @@ class VirtuemartViewShippingCarrier extends JView {
 			JToolBarHelper::cancel();
 
 			$this->loadHelper('shopFunctions');
-			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_virtuemart_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);

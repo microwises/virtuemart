@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package		VirtueMart
  * @author RickG
+ * @author Max Milbers
  */
-class TableVendors extends JTable {
+class TableVendors extends VmTable {
 
     /** @var int Primary key */
     var $virtuemart_vendor_id			= 0;
@@ -41,10 +42,6 @@ class TableVendors extends JTable {
 
     /** @var varchar Currency */
     var $vendor_currency	  		= '';
-    /** @var int Vendor created date */
-    var $created_on	 	 				= '';
-    /** @var int Vendor modified date */
-    var $modified_on				  		= '';
     /** @var varchar Path to vendor images */
     var $vendor_image_path   		= '';
     /** @var text Vendor terms of service */
@@ -63,15 +60,18 @@ class TableVendors extends JTable {
     var $vendor_address_format		= '';
     /** @var varchar Vendor date format */
     var $vendor_date_format			= '';
-              /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0; /**
+
      * @author RickG
      * @param $db A database connector object
      */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
+
+		$this->setUniqueName('vendor_name','COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS');
+//		$this->setPrimaryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+
+		$this->setLoggable();
     }
 
 
@@ -81,29 +81,29 @@ class TableVendors extends JTable {
      * @author RickG
      * @return boolean True if the table buffer is contains valid data, false otherwise.
      */
-    function check() {
-		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
-		    $db = JFactory::getDBO();
-
-		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
-		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
-		    $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-		    if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS'));
-				return false;
-		    }
-		}
-
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-
-		return true;
-    }
+//    function check() {
+//		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
+//		    $db = JFactory::getDBO();
+//
+//		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
+//		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
+//		    $db->setQuery($q);
+//		    $rowCount = $db->loadResult();
+//		    if ($rowCount > 0) {
+//				$this->setError(JText::_('COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS'));
+//				return false;
+//		    }
+//		}
+//
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+//
+//		return true;
+//    }
 
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even

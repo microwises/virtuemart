@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @author Oscar van Eijk
+ * @author Max Milbers
  */
-class TableUsergroups extends JTable {
+class TableUsergroups extends VmTable {
 
 	/** @var Primary Key*/
 	var $virtuemart_permgroup_id = 0;
@@ -34,15 +35,16 @@ class TableUsergroups extends JTable {
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
 	var $group_level = 750;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
-// 	var $published = 1;
+
+	var $published = 0;
 
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_permgroups', 'virtuemart_permgroup_id', $db);
+
+		$this->setUniqueName('group_name','COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME');
+
+		$this->setLoggable();
 	}
 
 	/**
@@ -50,21 +52,21 @@ class TableUsergroups extends JTable {
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check($nrOfValues)
-	{
-		if (!$this->group_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME'));
-			return false;
-		}
+	function check($nrOfValues){
 
-		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
+//		if (!$this->group_name) {
+//			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME'));
+//			return false;
+//		}
+
+		if (preg_match('/[^a-z0-9\._\-]/i', $this->$group_name) > 0) {
 			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_NAME_INVALID_CHARACTERS'));
 			return false;
 		}
 
-		return true;
+		return parent::check();
 
-        }
+	}
 
 }
 

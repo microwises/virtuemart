@@ -145,7 +145,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 
 	$data = JRequest::get( 'post' );
 	if($data['virtuemart_vendor_id']) {
-		$data['shipping_carrier_virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
+		$data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 	}
 
 	// Bind the form fields to the shipping carrier table

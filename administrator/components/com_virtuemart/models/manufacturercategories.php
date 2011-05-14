@@ -116,7 +116,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('manufacturer_category');
+   			$this->_data = $this->getTable('manufacturercategories');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -136,7 +136,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	 */
     function store()
 	{
-		$table = $this->getTable('manufacturer_category');
+		$table = $this->getTable('manufacturercategories');
 
 		$data = JRequest::get('post');
 
@@ -170,7 +170,7 @@ class VirtuemartModelManufacturercategories extends JModel {
 	function delete()
 	{
 		$categoryIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('manufacturer_category');
+    	$table = $this->getTable('manufacturercategories');
 
     	foreach($categoryIds as $categoryId) {
        		if($table->checkManufacturer($categoryId)) {

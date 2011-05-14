@@ -25,17 +25,18 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package		VirtueMart
  * @author RolandD
+ * @author Max Milbers
  */
-class TableRatings extends JTable {
+class TableRatings extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_product_review_id				= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id           	= null;
+	/** @var int The ID of the user who made comment */
+	var $virtuemart_user_id         		= null;
 	/** @var string The user comment */
 	var $comment         		= null;
-	/** @var int The ID of the user who made comment */
-	var $userid         		= null;
 	/** @var date Timestamp of when the comment was made */
 	var $time         			= null;
 	/** @var int The number of stars awared */
@@ -46,10 +47,7 @@ class TableRatings extends JTable {
 	var $review_votes      		= null;
 	/** @var int State of the review */
 	var $published         		= 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 
 	/**
 	* @author RolandD
@@ -57,6 +55,13 @@ class TableRatings extends JTable {
 	*/
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
+
+//		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+//		$this->setPrimaryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+
+		$this->setLoggable();
+
 	}
 }
 // pure php no closing tag

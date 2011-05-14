@@ -315,7 +315,7 @@ class VirtuemartViewProduct extends JView {
 				$vendor_model = $this->getModel('vendor');
 
 				foreach ($productlist as $virtuemart_product_id => $product) {
-					$product->mediaitems = count($product->file_ids);
+					$product->mediaitems = count($product->virtuemart_media_id);
 					$product->reviews = $productreviews->countReviewsForProduct($virtuemart_product_id);
 
 					$vendor_model->setId($product->virtuemart_vendor_id);

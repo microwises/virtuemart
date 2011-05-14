@@ -89,7 +89,7 @@ class VirtueMartModelManufacturer extends JModel {
      	$this->_data->load($this->_id);
 
      	$xrefTable = $this->getTable('mf_media_xref');
-		$this->_data->file_ids = $xrefTable->load($this->_id);
+		$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
      	return $this->_data;
      }
@@ -254,12 +254,12 @@ class VirtueMartModelManufacturer extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($manus,'file_ids','vendor','image');
+		$this->mediaModel->attachImages($manus,'virtuemart_media_id','vendor','image');
 
 //		if(!empty($manus)){
 //			if(!is_array($cats)) $cats = array($cats);
 //			foreach($cats as $cat){
-//				$this->mediaModel -> setId($manus->file_ids );
+//				$this->mediaModel -> setId($manus->virtuemart_media_id );
 //				$manus->images = $this->mediaModel->getFile('vendor','image');
 //			}
 //		}

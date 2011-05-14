@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @author RolandD
+ * @author Max Milbers
  */
-class TableProducts extends JTable {
+class TableProducts extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_product_id	 = null;
@@ -99,18 +100,7 @@ class TableProducts extends JTable {
 	var $layout = null;
        /** @var int published or unpublished */
 	var $published 		        = 1;
-         /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 
 
 	/**
@@ -119,27 +109,34 @@ class TableProducts extends JTable {
 	 */
 	function __construct($db) {
 		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
+
+//		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+//		$this->setPrimaryKeys('product_name','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+
+		$this->setLoggable();
+
 	}
 
-    /**
-     * @author Max Milbers
-     * @param
-     */
-    function check() {
-
-        if (empty($this->virtuemart_vendor_id)) {
-            $this->setError('Serious error cant save product without vendor id');
-            return false;
-        }
-
-       	$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-
-        return true;
-    }
+//    /**
+//     * @author Max Milbers
+//     * @param
+//     */
+//    function check() {
+//
+//        if (empty($this->virtuemart_vendor_id)) {
+//            $this->setError('Serious error cant save product without vendor id');
+//            return false;
+//        }
+//
+//       	$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+//
+//        return true;
+//    }
 }
 // pure php no closing tag

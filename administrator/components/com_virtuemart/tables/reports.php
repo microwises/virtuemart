@@ -24,7 +24,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @subpackage Report
  * @author Wicksj
  */
-class TableReports extends JTable {
+class TableReports extends VmTable {
 
 	/**
 	 * Constructor for report table class

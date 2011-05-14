@@ -186,7 +186,7 @@ class VirtueMartModelProduct extends JModel {
    			}
 
    			$xrefTable = $this->getTable('product_medias');
-			$product->file_ids = $xrefTable->load((int)$this->_id);
+			$product->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
 
 //   		if(!$front){
@@ -587,7 +587,7 @@ class VirtueMartModelProduct extends JModel {
 		$cat_xref_table = $categoryId? ', `#__virtuemart_product_categories` ':'';
 		$query = 'SELECT `virtuemart_product_id` ';
 		$query .= 'FROM `#__virtuemart_products`'.$cat_xref_table.' WHERE `virtuemart_product_id` > 0 ';
-//	        $query  = 'SELECT `product_sku`,`#__virtuemart_products`.`virtuemart_product_id`, `#__virtuemart_product_categories`.`virtuemart_category_id`,`product_name`, `product_s_desc`, `#__virtuemart_products`.`file_ids`, `product_in_stock`, `product_url` ';
+//	        $query  = 'SELECT `product_sku`,`#__virtuemart_products`.`virtuemart_product_id`, `#__virtuemart_product_categories`.`virtuemart_category_id`,`product_name`, `product_s_desc`, `#__virtuemart_products`.`virtuemart_media_id`, `product_in_stock`, `product_url` ';
 //	        $query .= 'FROM `#__virtuemart_products`, `#__virtuemart_product_categories`, `#__virtuemart_categories` WHERE ';
 //	        $query .= '(`#__virtuemart_products`.`product_parent_id`="" OR `#__virtuemart_products`.`product_parent_id`="0") ';
 //	        $query .= 'AND `#__virtuemart_products`.`virtuemart_product_id`=`#__virtuemart_product_categories`.`virtuemart_product_id` ';
@@ -1004,7 +1004,7 @@ class VirtueMartModelProduct extends JModel {
 			$this->_id = $product_data->virtuemart_product_id = $data['virtuemart_product_id'] = $dbv->insertid();
 		}
 
-		if(!empty($data['file_ids'])){
+		if(!empty($data['virtuemart_media_id'])){
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
@@ -1195,7 +1195,7 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db->query();
 
 			/* Delete product reviews */
-			$q = "DELETE FROM #__virtuemart_product_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q = "DELETE FROM #__virtuemart_product_votes WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
@@ -1323,7 +1323,7 @@ class VirtueMartModelProduct extends JModel {
 //					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id);
 //					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
 //					$recent[$k]['category_name'] = $product->category_name;
-////					$recent[$k]['file_ids'] = $product->file_ids;
+////					$recent[$k]['virtuemart_media_id'] = $product->virtuemart_media_id;
 //				}
 //				$k++;
 //			}
@@ -1556,7 +1556,7 @@ class VirtueMartModelProduct extends JModel {
 			$this->_db = JFactory::getDBO();
 
 			$q = "SELECT `votes`, `allvotes`, `rating`
-				FROM `#__virtuemart_product_reviews`
+				FROM `#__virtuemart_product_votes`
 				WHERE `virtuemart_product_id` = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadObject();
@@ -2045,7 +2045,7 @@ class VirtueMartModelProduct extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($products,'file_ids','product','image');
+		$this->mediaModel->attachImages($products,'virtuemart_media_id','product','image');
 
 	}
 }

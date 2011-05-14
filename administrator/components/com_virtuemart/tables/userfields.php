@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author Oscar van Eijk
  */
-class TableUserfields extends JTable {
+class TableUserfields extends VmTable {
 
 	/** @var var Primary Key*/
 	var $virtuemart_userfield_id		= 0;
@@ -72,10 +72,10 @@ class TableUserfields extends JTable {
 	var $virtuemart_vendor_id		= 0;
 	/** @var mediumtex Additional type-specific parameters */
 	var $params			= null;
-              /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+//              /** @var boolean */
+//	var $locked_on	= 0;
+//	/** @var time */
+//	var $locked_by	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
@@ -83,6 +83,11 @@ class TableUserfields extends JTable {
 	{
 		self::loadFields($db);
 		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
+
+		$this->setUniqueName('name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+		$this->setPrimaryKeys('title','COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE');
+
+		$this->setLoggable();
 	}
 
 	/**
@@ -109,14 +114,14 @@ class TableUserfields extends JTable {
 	 */
 	function check($nrOfValues)
 	{
-		if (!$this->name) {
-			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
-			return false;
-		}
-		if (!$this->title) {
-			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
-			return false;
-		}
+//		if (!$this->name) {
+//			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
+//			return false;
+//		}
+//		if (!$this->title) {
+//			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
+//			return false;
+//		}
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
 			$this->setError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
@@ -139,7 +144,7 @@ class TableUserfields extends JTable {
 				return false;
 			}
 		}
-		return true;
+		return parent::check();
 	}
 
 	/**

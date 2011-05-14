@@ -117,8 +117,8 @@ abstract class vmShipperPlugin extends JPlugin
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
-			. 'AND  (v.`shipping_carrier_virtuemart_vendor_id` = "'.$_vendorId.'" '
-			. ' OR   v.`shipping_carrier_virtuemart_vendor_id` = "0") '
+			. 'AND  (v.`virtuemart_vendor_id` = "'.$_vendorId.'" '
+			. ' OR   v.`virtuemart_vendor_id` = "0") '
 		;
 		} else {
 			$_q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
@@ -128,8 +128,8 @@ abstract class vmShipperPlugin extends JPlugin
 			. 'WHERE j.`folder` = "vmshipper" '
                         . 'AND j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
-			. 'AND  (v.`shipping_carrier_virtuemart_vendor_id` = "'.$_vendorId.'" '
-			. ' OR   v.`shipping_carrier_virtuemart_vendor_id` = "0") '
+			. 'AND  (v.`virtuemart_vendor_id` = "'.$_vendorId.'" '
+			. ' OR   v.`virtuemart_vendor_id` = "0") '
 		;
 		}
 
@@ -167,7 +167,7 @@ abstract class vmShipperPlugin extends JPlugin
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
-			. 'AND   v.`shipping_carrier_virtuemart_vendor_id` = "'.$_vendorId.'" '
+			. 'AND   v.`virtuemart_vendor_id` = "'.$_vendorId.'" '
 			. 'AND   v.`published` = 1 '
 		 ;
 		} else {
@@ -177,7 +177,7 @@ abstract class vmShipperPlugin extends JPlugin
                         . 'WHERE j.`folder` = "vmshipper" '
 			. 'AND j.`element` = "'.$this->_selement.'" '
 			. 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
-			. 'AND   v.`shipping_carrier_virtuemart_vendor_id` = "'.$_vendorId.'" '
+			. 'AND   v.`virtuemart_vendor_id` = "'.$_vendorId.'" '
 			. 'AND   v.`published` = 1 '
 		 ;
 

@@ -56,7 +56,7 @@ INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `c
 -- Dumping data for table `#__virtuemart_category_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 1),
 (NULL, 2, 2),
 (NULL, 3, 3),
@@ -115,7 +115,7 @@ INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercate
 -- Dumping data for table `#__virtuemart_manufacturer_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 1);
 
 --
@@ -160,7 +160,7 @@ INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendo
 (16, 1, 2, 'L03', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Plastic Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', '');
 
 
-INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 13),
 (NULL, 2, 8),
 (NULL, 3, 5),

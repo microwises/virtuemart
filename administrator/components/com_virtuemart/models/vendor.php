@@ -118,10 +118,10 @@ class VirtueMartModelVendor extends JModel {
 		    }
 
 		    $xrefTable = $this->getTable('vendor_medias');
-			$this->_data->file_ids = $xrefTable->load((int)$this->_id);
+			$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
-//          	if($this->_data->file_ids){
-//  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
+//          	if($this->_data->virtuemart_media_id){
+//  				$this->_data->virtuemart_media_id = explode(',',$this->_data->virtuemart_media_id);
 //  			}
 //			if($withUserData){
 //			    $query = "SELECT virtuemart_user_id FROM #__vm_auth_user_vendor ";
@@ -485,7 +485,7 @@ class VirtueMartModelVendor extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($vendor,'file_ids','vendor','image');
+		$this->mediaModel->attachImages($vendor,'virtuemart_media_id','vendor','image');
 
 	}
 

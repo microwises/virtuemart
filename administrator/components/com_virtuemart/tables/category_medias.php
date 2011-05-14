@@ -30,7 +30,7 @@ if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
 class TableCategory_medias extends VmXrefTable {
 
 	var $_pkey 		= 'virtuemart_category_id';
-	var $_skey 		= 'file_ids';
+	var $_skey 		= 'virtuemart_media_id';
 
 	/**
 	 * @author Max Milbers

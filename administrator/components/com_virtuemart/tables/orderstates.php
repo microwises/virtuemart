@@ -25,8 +25,9 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @author Oscar van Eijk
+ * @author Max Milbers
  */
-class TableOrderstates extends JTable {
+class TableOrderstates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_orderstate_id			= 0;
