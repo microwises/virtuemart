@@ -164,7 +164,7 @@ class VirtueMartControllerCart extends JController {
 	public function viewJS(){
 
 		/* Create the view */
-		$view = $this->getView('cart', 'json');
+		$view = $this->getView('cart', 'raw');
 		/* Add the default model */
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
