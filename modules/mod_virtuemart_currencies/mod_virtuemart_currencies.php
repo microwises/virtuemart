@@ -37,12 +37,13 @@ $db = JFactory::getDBO();
 $q  = 'SELECT `vendor_accepted_currencies` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`='.$vendorId;
 $db->setQuery($q);
 $currencies     = $db->loadObject();
-$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
+//$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
+$currency_ids = $currencies->vendor_accepted_currencies;
 
 /* table vm_currency */
 //$q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`exchange_rate`,`currency_symbol`) as currency_txt FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_codes.') and enabled =1 ORDER BY `currency_name`';
 $q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as currency_txt
-FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_codes.') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND enabled = "1" ORDER BY `currency_name`';
+FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_ids.') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */
