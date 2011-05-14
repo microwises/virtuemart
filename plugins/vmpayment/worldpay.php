@@ -47,7 +47,7 @@ class plgPaymentWorldpay extends vmPaymentPlugin {
 		<form action="https://select.worldpay.com/wcc/purchase" method="post">
 	        <input type=hidden name="testMode" value="100"> 
 	       	<input type="hidden" name="instId" value="<?php echo $this->params->get('WORLDPAY_INST_ID') ?>" />
-	        <input type="hidden" name="cartId" value="<?php echo $db->f("order_id") ?>" />
+	        <input type="hidden" name="cartId" value="<?php echo $db->f("virtuemart_order_id") ?>" />
 	        <input type="hidden" name="amount" value="<?php echo $db->f("order_total") ?>" />
 	      	<input type="hidden" name="currency" value="<?php echo $_SESSION['vendor_currency'] ?>" />
 	        <input type="hidden" name="desc" value="Products" />

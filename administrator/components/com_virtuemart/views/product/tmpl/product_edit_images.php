@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="selectimage">
 	<?php
 //	foreach($this->product->images as $image){
-		if(empty($this->product->images[0]->file_id)) $this->product->images[0]->addHidden('file_is_product_image','1');
+		if(empty($this->product->images[0]->virtuemart_media_id)) $this->product->images[0]->addHidden('file_is_product_image','1');
 		if ($this->product->file_ids) echo $this->product->images[0]->displayFilesHandler($this->product->file_ids);
 		else echo $this->product->images[0]->displayFilesHandler();
 

@@ -29,20 +29,20 @@ defined('_JEXEC') or die('Restricted access');
 class TableUsergroups extends JTable {
 
 	/** @var Primary Key*/
-	var $group_id = 0;
+	var $virtuemart_permgroup_id = 0;
 	/** @var Authentification Groupname*/
 	var $group_name='';
 	/** @var Authentification level standard is set to demo*/
 	var $group_level = 750;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 // 	var $published = 1;
 
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_perm_groups', 'group_id', $db);
+		parent::__construct('#__virtuemart_permgroups', 'virtuemart_permgroup_id', $db);
 	}
 
 	/**
@@ -63,8 +63,8 @@ class TableUsergroups extends JTable {
 		}
 
 		return true;
-	}
 
+        }
 
 }
 

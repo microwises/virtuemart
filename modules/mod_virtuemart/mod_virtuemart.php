@@ -80,7 +80,7 @@ if ( $show_listall == 'yes' ) { ?>
 	   
 
           <a href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&category_id=0'); ?>">
-          <?php echo  JText::_('COM_VIRTUEMART_LIST_ALL_PRODUCTS') ?>
+          <?php echo  JText::_('MOD_VIRTUEMART_LIST_ALL_PRODUCTS') ?>
           </a>
       </td>
     </tr>
@@ -94,10 +94,10 @@ if ( $show_productsearch == 'yes' ) { ?>
   <tr> 
     <td colspan="2">
 	  <hr />
-      <label for="shop_search_field"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SEARCH_LBL') ?></label>
+      <label for="shop_search_field"><?php echo JText::_('MOD_VIRTUEMART_PRODUCT_SEARCH_LBL') ?></label>
       <form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&category_id='.$category_id ); ?> ?>" method="get">
-        <input id="shop_search_field" title="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE') ?>" class="inputbox" type="text" size="12" name="keyword" />
-        <input class="button" type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE') ?>" />
+        <input id="shop_search_field" title="<?php echo JText::_('MOD_VIRTUEMART_SEARCH_TITLE') ?>" class="inputbox" type="text" size="12" name="keyword" />
+        <input class="button" type="submit" value="<?php echo JText::_('MOD_VIRTUEMART_SEARCH_TITLE') ?>" />
 		<input type="hidden" name="search" value="true" />
 		<input type="hidden" name="limitstart" value="0" />
 		<input type="hidden" name="category" value="0" />
@@ -216,14 +216,14 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2" align="left" valign="top" style="margin: 0px; padding: 0px;">
 			<form action="<?php echo $action ?>" method="post" name="login" id="login">
-			<label for="username_field"><?php echo JText::_('COM_VIRTUEMART_USERNAME') ?></label><br/>
+			<label for="username_field"><?php echo JText::_('MOD_VIRTUEMART_USERNAME') ?></label><br/>
 			<input class="inputbox" type="text" id="username_field" size="12" name="username" />
 		  <br/>
-			<label for="password_field"><?php echo JText::_('COM_VIRTUEMART_PASSWORD') ?></label><br/>
+			<label for="password_field"><?php echo JText::_('MOD_VIRTUEMART_PASSWORD') ?></label><br/>
 			<input type="password" class="inputbox" id="password_field" size="12" name="passwd" />
 			<?php if( @VM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
 			<br />
-			<label for="remember_login"><?php echo JText::_('COM_VIRTUEMART_REMEMBER_ME') ?></label>
+			<label for="remember_login"><?php echo JText::_('MOD_VIRTUEMART_REMEMBER_ME') ?></label>
 			<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 			<?php else : ?>
 			<br />
@@ -232,7 +232,7 @@ if ( $show_login_form == "yes" ) {
 			<input type="hidden" value="login" name="op2" />
 			<input type="hidden" value="<?php echo $return ?>" name="return" />
 		  	<br/>
-			<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_BUTTON_LOGIN') ?>" class="button" name="Login" />
+			<input type="submit" value="<?php echo JText::_('MOD_VIRTUEMART_BUTTON_LOGIN') ?>" class="button" name="Login" />
 			<?php
 			if( vmIsJoomla(1.5) ) {
 				$validate = JUtility::getToken();
@@ -251,23 +251,23 @@ if ( $show_login_form == "yes" ) {
 		<tr>
 		  <td colspan="2">
 			<a href="<?php echo $reset ?>">
-			<?php echo JText::_('COM_VIRTUEMART_LOST_PASSWORD'); ?>
+			<?php echo JText::_('MOD_VIRTUEMART_LOST_PASSWORD'); ?>
 			</a>
 		  </td>
 		</tr>
 		<?php if( $remind_url ) : ?>
 		<tr>
 		  <td colspan="2">
-			<a href="<?php echo $remind_url ?>"><?php echo JText::_('COM_VIRTUEMART_FORGOT_YOUR_USERNAME') ?></a>
+			<a href="<?php echo $remind_url ?>"><?php echo JText::_('MOD_VIRTUEMART_FORGOT_YOUR_USERNAME') ?></a>
 		  </td>
 		</tr>
 		<?php endif; ?>
 		<?php if( $mosConfig_allowUserRegistration == '1' ) : ?>
 			<tr>
 			  <td colspan="2">
-				<?php echo JText::_('COM_VIRTUEMART_NO_ACCOUNT'); ?>
+				<?php echo JText::_('MOD_VIRTUEMART_NO_ACCOUNT'); ?>
 				<a href="<?php $sess->purl( SECUREURL.'index.php?option=com_virtuemart&amp;page=shop.registration' ); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_CREATE_ACCOUNT'); ?>
+				<?php echo JText::_('MOD_VIRTUEMART_CREATE_ACCOUNT'); ?>
 				</a>
 			  </td>
 			</tr>
@@ -287,7 +287,7 @@ if ( $show_login_form == "yes" ) {
 	  <tr> 
 	    <td colspan="2">
 	        <a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=$page&func=userLogout");?>">
-	        <?php echo JText::_('COM_VIRTUEMART_BUTTON_LOGOUT') ?>
+	        <?php echo JText::_('MOD_VIRTUEMART_BUTTON_LOGOUT') ?>
 	        </a>
 	    </td>
 	  </tr>
@@ -307,12 +307,12 @@ if ($config->get('enable_downloads') == '1') { ?>
 }
 
 // Show a link to the cart and show the mini cart
-// Check to see if minicart module is published, if it is prevent the minicart displaying in the VM module
-$q="SELECT published FROM #__modules WHERE module='mod_virtuemart_cart'";
+// Check to see if minicart module is enabled, if it is prevent the minicart displaying in the VM module
+$q="SELECT enabled FROM #__modules WHERE module='mod_virtuemart_cart'";
 $db->setQuery($q);
-$published = $db->loadResult();
+$enabled = $db->loadResult();
 
-if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$published  ) {
+if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$enabled  ) {
 ?>
     <tr>
         <td colspan="2" >
@@ -343,10 +343,10 @@ if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$publi
 			}
 			?>
 			<div class="total" style="float: right;"></div>
-			<div class="total_products"><?php echo JText::_('VM_AJAX_CART_WAITING') ?></div>
+			<div class="total_products"><?php echo JText::_('MOD_VIRTEMART_AJAX_CART_WAITING') ?></div>
 			<div class="show_cart"></div>
 			<noscript>
-			<?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>
+			<?php echo JText::_('MOD_VIRTEMART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 			</noscript>
 			</div>
         </td>

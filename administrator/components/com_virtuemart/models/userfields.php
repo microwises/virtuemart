@@ -78,7 +78,7 @@ class VirtueMartModelUserfields extends JModel {
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (
 			 'age_verification' => 'minimum_age'
-			,'euvatid'          => 'shopper_group_id'
+			,'euvatid'          => 'virtuemart_shoppergroup_id'
 			,'webaddress'       => 'webaddresstype'
 		);
 	}
@@ -188,7 +188,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$this->_data = $this->getTable('userfields_values');
 		if ($this->_id > 0) {
-			$query = 'SELECT * FROM `#__vm_userfield_values` WHERE `fieldid` = ' . $this->_id
+			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $this->_id
 				. ' ORDER BY `ordering`';
 			$_userFieldValues = $this->_getList($query);
 			return $_userFieldValues;
@@ -205,17 +205,17 @@ class VirtueMartModelUserfields extends JModel {
 	function store()
 	{
 		$field      =& $this->getTable('userfields');
-		$userinfo   =& $this->getTable('user_info');
-		$orderinfo  =& $this->getTable('order_user_info');
+		$userinfo   =& $this->getTable('userinfos');
+		$orderinfo  =& $this->getTable('order_userinfo');
 
 		$data = JRequest::get('post');
 
-		$isNew = ($data['fieldid'] < 1) ? true : false;
+		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
 			$_action = 'ADD';
 		} else {
-			$field->load($data['fieldid']);
+			$field->load($data['virtuemart_userfield_id']);
 			$_action = 'CHANGE';
 
 			if ($field->ordering == $data['ordering']) {
@@ -232,7 +232,7 @@ class VirtueMartModelUserfields extends JModel {
 		}
 
 		// Store the fieldvalues, if any, in a correct array
-		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['fieldid']);
+		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id']);
 
 		if (!$field->bind($data)) { // Bind data
 			$this->setError($field->getError());
@@ -253,7 +253,7 @@ class VirtueMartModelUserfields extends JModel {
 			return false;
 		}
 
-		// Alter the order_user_info table
+		// Alter the order_userinfo table
 		if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
 			$this->setError($orderinfo->getError());
 			return false;
@@ -286,7 +286,7 @@ class VirtueMartModelUserfields extends JModel {
 	 * Bind and write all value records
 	 *
 	 * @param array $_values
-	 * @param mixed $_id If a new record is being inserted, it contains the fieldid, otherwise the value true
+	 * @param mixed $_id If a new record is being inserted, it contains the virtuemart_userfield_id, otherwise the value true
 	 * @return boolean
 	 */
 	private function storeFieldValues($_values, $_id)
@@ -298,7 +298,7 @@ class VirtueMartModelUserfields extends JModel {
 
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
-				$_values[$i]['fieldid'] = $_id;
+				$_values[$i]['virtuemart_userfield_id'] = $_id;
 			}
 
 			if (!$fieldvalue->bind($_values[$i])) { // Bind data
@@ -325,7 +325,7 @@ class VirtueMartModelUserfields extends JModel {
 	 *
 	 * @param string $section The section the fields belong to (e.g. 'registration' or 'account')
 	 * @param array $_switches Array to toggle these options:
-	 *                         * published    Published fields only (default: true)
+	 *                         * published    published fields only (default: true)
 	 *                         * required     Required fields only (default: false)
 	 *                         * delimiters   Exclude delimiters (default: false)
 	 *                         * captcha      Exclude Captcha type (default: false)
@@ -338,7 +338,7 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
 	{
-		$_q = 'SELECT * FROM `#__vm_userfield` WHERE 1 = 1 ';
+		$_q = 'SELECT * FROM `#__virtuemart_userfields` WHERE 1 = 1 ';
 
 		if( $_sec != 'bank' && $_sec != '') {
 			$_q .= 'AND `'.$_sec.'`=1 ';
@@ -390,7 +390,7 @@ class VirtueMartModelUserfields extends JModel {
 		// We need some extra fields that are not in the userfields table. They will be hidden on the details form
 		if (!in_array('address_type', $_skip)) {
 			$_address_type = new stdClass();
-			$_address_type->fieldid = 0;
+			$_address_type->virtuemart_userfield_id = 0;
 			$_address_type->name = 'address_type';
 			$_address_type->title = '';
 			$_address_type->description = '' ;
@@ -410,14 +410,14 @@ class VirtueMartModelUserfields extends JModel {
 			$_address_type->readonly = 0;
 			$_address_type->calculated = 0;
 			$_address_type->sys = 0;
-			$_address_type->vendor_id = 1;
+			$_address_type->virtuemart_vendor_id = 1;
 			$_address_type->params = '';
 			$_fields[] = $_address_type;
 		}
 
 		if (!in_array('user_is_vendor', $_skip)) {
 			$_user_is_vendor = new stdClass();
-			$_user_is_vendor->fieldid = 0;
+			$_user_is_vendor->virtuemart_userfield_id = 0;
 			$_user_is_vendor->name = 'user_is_vendor';
 			$_user_is_vendor->title = '';
 			$_user_is_vendor->description = '' ;
@@ -437,7 +437,7 @@ class VirtueMartModelUserfields extends JModel {
 			$_user_is_vendor->readonly = 0;
 			$_user_is_vendor->calculated = 0;
 			$_user_is_vendor->sys = 0;
-			$_user_is_vendor->vendor_id = 1;
+			$_user_is_vendor->virtuemart_vendor_id = 1;
 			$_user_is_vendor->params = '';
 			$_fields[] = $_user_is_vendor;
 		}
@@ -590,10 +590,10 @@ class VirtueMartModelUserfields extends JModel {
 						$_return['fields'][$_fld->name]['value'], '', $_prefix);
 					break;
 
-				case 'country_id':
+				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
-						// The table data can contain the country_id or the country name
+						// The table data can contain the virtuemart_country_id or the country name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
 					}
@@ -601,13 +601,13 @@ class VirtueMartModelUserfields extends JModel {
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 
-				case 'state_id':
+				case 'virtuemart_state_id':
 					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderStateList(
 						  $_return['fields'][$_fld->name]['value']
-						// FIXME The value of country_id here is actually a name, so we must translate it
-						, ShopFunctions::getCountryIDByName($_return['fields']['country_id']['value'])
-						, $_prefix.'country_id', false, $_prefix);
-					// The table data can contain the state_id or the state name
+						// FIXME The value of virtuemart_country_id here is actually a name, so we must translate it
+						, ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value'])
+						, $_prefix.'virtuemart_country_id', false, $_prefix);
+					// The table data can contain the virtuemart_state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
 					}
@@ -712,8 +712,8 @@ class VirtueMartModelUserfields extends JModel {
 						case 'multiselect':
 						case 'radio':
 							$_qry = 'SELECT fieldtitle, fieldvalue '
-								. 'FROM #__vm_userfield_values '
-								. 'WHERE fieldid = ' . $_fld->fieldid . ' '
+								. 'FROM #__virtuemart_userfield_values '
+								. 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id . ' '
 								. 'ORDER BY ordering ';
 							$_values = $this->_getList($_qry);
 							// We need an extra lok here, especially for the Bank info; the values
@@ -776,10 +776,10 @@ class VirtueMartModelUserfields extends JModel {
 	 *
 	 * @param array $titles List of titles from the formdata
 	 * @param array $values List of values from the formdata
-	 * @param int $fieldid ID of the userfield to relate
+	 * @param int $virtuemart_userfield_id ID of the userfield to relate
 	 * @return array Data to bind to the userfield_values table
 	 */
-	private function postData2FieldValues($titles, $values, $fieldid)
+	private function postData2FieldValues($titles, $values, $virtuemart_userfield_id)
 	{
 		$_values = array();
 		if (is_array($titles) && is_array($values)) {
@@ -788,7 +788,7 @@ class VirtueMartModelUserfields extends JModel {
 					continue; // Ignore empty fields
 				}
 				$_values[] = array(
-					 'fieldid'    => $fieldid
+					 'virtuemart_userfield_id'    => $virtuemart_userfield_id
 					,'fieldtitle' => $titles[$i]
 					,'fieldvalue' => $values[$i]
 					,'ordering'   => $i
@@ -806,8 +806,8 @@ class VirtueMartModelUserfields extends JModel {
 	function getNameByID($_id)
 	{
 		$_sql = 'SELECT name '
-				. 'FROM `#__vm_userfield`'
-				. "WHERE fieldid = $_id";
+				. 'FROM `#__virtuemart_userfields`'
+				. "WHERE virtuemart_userfield_id = $_id";
 
 		$_v = $this->_getList($_sql);
 		return ($_v[0]->name);
@@ -823,8 +823,8 @@ class VirtueMartModelUserfields extends JModel {
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
 		$field      =& $this->getTable('userfields');
 		$value      =& $this->getTable('userfields_values');
-		$userinfo   =& $this->getTable('user_info');
-		$orderinfo  =& $this->getTable('order_user_info');
+		$userinfo   =& $this->getTable('userinfos');
+		$orderinfo  =& $this->getTable('order_userinfo');
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
@@ -835,7 +835,7 @@ class VirtueMartModelUserfields extends JModel {
 				return false;
 			}
 
-			// Alter the order_user_info table
+			// Alter the order_userinfo table
 			if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
 				$this->setError($orderinfo->getError());
 				return false;
@@ -905,7 +905,7 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function _getListQuery ()
 	{
-		$query = 'SELECT * FROM `#__vm_userfield` ';
+		$query = 'SELECT * FROM `#__virtuemart_userfields` ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
 		return ($query);
@@ -972,9 +972,9 @@ class VirtueMartModelUserfields extends JModel {
 			JArrayHelper::toInteger($id);
 			$ids = implode( ',', $id );
 
-			$query = 'UPDATE `#__vm_userfield`'
+			$query = 'UPDATE `#__virtuemart_userfields`'
 				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE fieldid IN ( '.$ids.' )'
+				. ' WHERE virtuemart_userfield_id IN ( '.$ids.' )'
 			;
 			$this->_db->setQuery( $query );
 			if (!$this->_db->query()) {

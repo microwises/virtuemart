@@ -24,6 +24,11 @@ if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtu
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
+	} else {
+
+		$app = JFactory::getApplication();
+		$app->enqueueMessage('Fatal Error: Couldnt find file '.$_controller);
+		$app->redirect('index.php?option=com_virtuemart');
 	}
 }
 
@@ -33,6 +38,7 @@ $controller = new $_class();
 
 // Perform the Request task
 $controller->execute(JRequest::getVar('task', $_controller));
+
 $controller->redirect();
 
 // pure php no closing tag

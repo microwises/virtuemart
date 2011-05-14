@@ -29,9 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 class TableRatings extends JTable {
 
 	/** @var int Primary key */
-	var $review_id				= 0;
+	var $virtuemart_product_review_id				= 0;
 	/** @var int Product ID */
-	var $product_id           	= null;
+	var $virtuemart_product_id           	= null;
 	/** @var string The user comment */
 	var $comment         		= null;
 	/** @var int The ID of the user who made comment */
@@ -46,17 +46,17 @@ class TableRatings extends JTable {
 	var $review_votes      		= null;
 	/** @var int State of the review */
 	var $published         		= 0;
-        /** @var boolean */
-	var $checked_out	= 0;
+               /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 
 	/**
 	* @author RolandD
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__vm_product_reviews', 'review_id', $db);
+		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
 	}
 }
 // pure php no closing tag

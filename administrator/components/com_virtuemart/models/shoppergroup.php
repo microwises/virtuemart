@@ -100,8 +100,8 @@ class VirtueMartModelShopperGroup extends JModel {
 
 	    if (empty($this->_total)) {
 	    	$db = JFactory::getDBO();
-	      $query = 'SELECT ' . $db->nameQuote('shopper_group_id')
-	        . ' FROM ' . $db->nameQuote('#__vm_shopper_group');
+	      $query = 'SELECT ' . $db->nameQuote('virtuemart_shoppergroup_id')
+	        . ' FROM ' . $db->nameQuote('#__virtuemart_shoppergroups');
 	      $this->_total = $this->_getListCount($query);
 	    }
 
@@ -118,7 +118,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	    $db = JFactory::getDBO();
 
 	    if (empty($_data)) {
-	      $this->_data = $this->getTable();
+	      $this->_data = $this->getTable('shoppergroups');
 	      $this->_data->load((int) $this->_id);
 	    }
 
@@ -143,9 +143,9 @@ class VirtueMartModelShopperGroup extends JModel {
     	$db = JFactory::getDBO();
 
 	    $query = 'SELECT * FROM '
-	      . $db->nameQuote('#__vm_shopper_group')
+	      . $db->nameQuote('#__virtuemart_shoppergroups')
 	      . 'ORDER BY '
-	      . $db->nameQuote('vendor_id')
+	      . $db->nameQuote('virtuemart_vendor_id')
 	      . ','
 	      . $db->nameQuote('shopper_group_name')
 		;
@@ -188,7 +188,7 @@ class VirtueMartModelShopperGroup extends JModel {
 	      return false;
 	    }
 
-	    return $table->shopper_group_id;
+	    return $table->virtuemart_shoppergroup_id;
     }
 
 

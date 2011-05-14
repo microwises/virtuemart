@@ -12,7 +12,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>Shows manufacturers from VirtueMart.</description>
+	<description>MOD_VIRTUEMART_MANUFACTURER_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_manufacturer">mod_virtuemart_manufacturer.php</filename>
         <filename>index.html</filename>
@@ -22,21 +22,21 @@
 	</files>
 	<params>
 		<param name="show" type="list" default="all"
-			label="Show"
-			description="Here you can decide, What you want to see in the module">
-			<option value="all">image &amp; name</option>
-			<option value="image">thumb image</option>
-			<option value="text">manufacturers name</option>
+			label="MOD_VIRTUEMART_MANUFACTURER_SHOW"
+			description="MOD_VIRTUEMART_MANUFACTURER_SHOW_DESC">
+			<option value="all">MOD_VIRTUEMART_MANUFACTURER_IMAGE_NAME</option>
+			<option value="image">MOD_VIRTUEMART_MANUFACTURER_THUMB_IMAGE</option>
+			<option value="text">MOD_VIRTUEMART_MANUFACTURER_NAME</option>
 		</param>
 		<param name="display_style" type="list" default="list"
-			label="Display Style"
-			description="Here you can decide wether the manufacturers are shown ">
-			<option value="list">List based ul-li</option>
-			<option value="div">Div based</option>
+			label="MOD_VIRTUEMART_MANUFACTURER_DISPLAY_STYLE"
+			description="MOD_VIRTUEMART_MANUFACTURER_DISPLAY_STYLE_DESC">
+			<option value="list">MOD_VIRTUEMART_MANUFACTURER_LIST</option>
+			<option value="div">MOD_VIRTUEMART_MANUFACTURER_DIV</option>
 		</param>
 				<param name="manufacturers_per_row" type="text" default=""
-			label="manufacturers per row"
-			description="The Number of columns per row for the manufacturers snapshots." />
+			label="MOD_VIRTUEMART_MANUFACTURER_ROW"
+			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC " />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="headerText" type="text" default=""
 			label="Header Text"

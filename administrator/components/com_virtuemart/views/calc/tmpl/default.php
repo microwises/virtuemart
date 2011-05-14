@@ -61,10 +61,10 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_CURRENCY'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_CATEGORY'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_ID'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_SHOPPER_GROUPS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
 			</th>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?>
@@ -88,7 +88,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_COUNTRIES'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_STATES'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?>
 			</th>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
@@ -104,13 +104,13 @@ $j15 = VmConfig::isJ15();
 		for ($i=0, $n=count( $this->calcs ); $i < $n; $i++) {
 
 			$row = $this->calcs[$i];
-			$checked = JHTML::_('grid.id', $i, $row->calc_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_calc_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=calc&task=edit&cid[]=' . $row->calc_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=calc&task=edit&cid[]=' . $row->virtuemart_calc_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
-					<?php echo $row->calc_id; ?>
+					<?php echo $row->virtuemart_calc_id; ?>
 				</td>
 				<td width="10">
 					<?php echo $checked; ?>
@@ -120,7 +120,7 @@ $j15 = VmConfig::isJ15();
 				</td>
 				<?php /* if($this->perms->check( 'admin' )){?>
 				<td align="left">
-					<?php echo $row->calc_vendor_id; ?>
+					<?php echo $row->virtuemart_vendor_id; ?>
 				</td>
 				<?php } */ ?>
 				<td>

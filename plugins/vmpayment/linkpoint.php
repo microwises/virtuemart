@@ -85,7 +85,7 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
         global $vendor_mail, $vendor_currency, $database;
 
 		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
-//		$hVendor_id = $_SESSION['ps_vendor_id'];
+//		$hVendor_id = $_SESSION['ps_virtuemart_vendor_id'];
 		$hVendor_id = 1;         $auth = $_SESSION['auth'];
         
         $ps_checkout = new ps_checkout;
@@ -99,11 +99,11 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
         $qt = "SELECT * FROM `#__{vm}_user_info` WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
-        $user_info_id = $dbbt->f("user_info_id");
-        if( $user_info_id != $d["ship_to_info_id"]) {
+        $virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+        if( $virtuemart_userinfo_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst = & JFactory::getDBO();
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -145,7 +145,7 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
         $myorder["cvmvalue"]      = $_SESSION['ccdata']['credit_card_code'];
         $myorder["chargetotal"]   = $order_total;
 
-//Atlanticom Mod: Let's anticipate the next order_id (an auto increment field) that will be used for this
+//Atlanticom Mod: Let's anticipate the next virtuemart_order_id (an auto increment field) that will be used for this
 //payment if it is successful, and what the heck... let's append the word WEB to it.
 
         // Get last attempt
@@ -163,22 +163,22 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
         }
 
         $dbord = JFactory::getDBO();
-        $qord = "SELECT MAX(order_id)+1 As expected_order_id FROM #__{vm}_orders";
+        $qord = "SELECT MAX(virtuemart_order_id)+1 As expected_virtuemart_order_id FROM #__{vm}_orders";
         $dbord->query($qord);
         $dbord->next_record();
-        $expected_order_id = $dbord->f("expected_order_id");
+        $expected_virtuemart_order_id = $dbord->f("expected_virtuemart_order_id");
         //has this order # already been attempted and failed?
-        if($LP_LastAttemptParts[1] == $expected_order_id){
+        if($LP_LastAttemptParts[1] == $expected_virtuemart_order_id){
           //we need to increment the attempt.
-          $this_order_id = "WEB-" . $expected_order_id . "-" . $LP_next_suffix;
+          $this_virtuemart_order_id = "WEB-" . $expected_virtuemart_order_id . "-" . $LP_next_suffix;
         } else {
           //it's a new order number
-           $this_order_id = "WEB-" . $expected_order_id;       
+           $this_virtuemart_order_id = "WEB-" . $expected_virtuemart_order_id;       
         }
-        $myorder["oid"] = $this_order_id;
+        $myorder["oid"] = $this_virtuemart_order_id;
 
         //save this attempt to the database
-        $q = "UPDATE #__{vm}_linkpoint SET LastAttempt = '" . $this_order_id . "' WHERE Id=1";
+        $q = "UPDATE #__{vm}_linkpoint SET LastAttempt = '" . $this_virtuemart_order_id . "' WHERE Id=1";
         $dbLP->query($q);
 
 //old code

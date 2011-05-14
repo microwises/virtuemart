@@ -81,7 +81,7 @@ if ( VmConfig::get('showCategory',1) ) {
 			}
 
 			// Category Link
-			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id=' . $category->category_id );
+			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id );
 
 				// Show Category ?>
 				<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
@@ -219,7 +219,7 @@ foreach ( $this->products as $product ) {
 						</p>
 						<?php } ?>
 
-					<div class="product-price marginbottom12" id="productPrice<?php echo $product->product_id ?>">
+					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 					<?php
 					if ($this->show_prices == '1') {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {

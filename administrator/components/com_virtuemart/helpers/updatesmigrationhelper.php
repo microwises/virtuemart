@@ -26,17 +26,17 @@
 	function determineAlreadyInstalledVersion(){
 		$this -> oldVersion = "fresh";
 		$db = JFactory::getDBO();
-		$db->setQuery( 'SELECT * FROM #__vm_country WHERE `country_id`="1" ');
+		$db->setQuery( 'SELECT * FROM #__virtuemart_countries WHERE `virtuemart_country_id`="1" ');
 		if($db->query() == true ) {
 			$country1 = $db->loadResult();
 			if(isset($country1)){
 				$this -> oldVersion = "1.0";
-				$db->setQuery( 'SELECT * FROM #__vm_users WHERE `user_id`="'.$this -> storeOwnerId.'" ');
+				$db->setQuery( 'SELECT * FROM #__virtuemart_vmusers WHERE `virtuemart_user_id`="'.$this -> storeOwnerId.'" ');
 				if($db->query() == true ) {
 					$authUser = $db->loadResult();
 					if(isset($authUser)){
 						$this -> oldVersion = "1.1";
-						$db->setQuery( 'SELECT * FROM #__vm_menu_admin WHERE `id`= "10" ');
+						$db->setQuery( 'SELECT * FROM #__virtuemart_adminmenuentries WHERE `id`= "10" ');
 						if($db->query() == true ) {
 							$menuAdmin = $db->loadResult();
 							if(isset($menuAdmin)){

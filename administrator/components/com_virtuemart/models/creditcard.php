@@ -104,7 +104,7 @@ class VirtueMartModelCreditcard extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `creditcard_id` FROM `#__vm_creditcard`';
+			$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_creditcards`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -122,7 +122,7 @@ class VirtueMartModelCreditcard extends JModel {
 		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('creditcards');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -144,7 +144,7 @@ class VirtueMartModelCreditcard extends JModel {
 	 */
     function store()
 	{
-		$table =& $this->getTable('creditcard');
+		$table =& $this->getTable('creditcards');
 
 		$data = JRequest::get( 'post' );
 		// Bind the form fields to the credit card table
@@ -165,7 +165,7 @@ class VirtueMartModelCreditcard extends JModel {
 			return false;
 		}
 
-		return $table->creditcard_id;
+		return $table->virtuemart_creditcard_id;
 	}
 
 
@@ -178,7 +178,7 @@ class VirtueMartModelCreditcard extends JModel {
 	function delete()
 	{
 		$creditcardIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('creditcard');
+    	$table =& $this->getTable('creditcards');
 
     	foreach($creditcardIds as $creditcardId) {
         	if (!$table->delete($creditcardId)) {
@@ -200,7 +200,7 @@ class VirtueMartModelCreditcard extends JModel {
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','creditcard',$publishId);
+		return modelfunctions::publish('cid','creditcards',$publishId);
 
 	}
 
@@ -212,9 +212,9 @@ class VirtueMartModelCreditcard extends JModel {
 	 */
 	function getCreditCards($published=1)
 	{
-		$query = 'SELECT * FROM `#__vm_creditcard` ';
+		$query = 'SELECT * FROM `#__virtuemart_creditcards` ';
 		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
-		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
+		$query .= 'ORDER BY `#__virtuemart_creditcards`.`virtuemart_creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

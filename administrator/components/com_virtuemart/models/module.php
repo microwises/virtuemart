@@ -101,7 +101,7 @@
 //	    if (empty($this->_total)) {
 //	    	$db = JFactory::getDBO();
 //	      $query = 'SELECT ' . $db->nameQuote('module_id')
-//	        . ' FROM ' . $db->nameQuote('#__vm_module');
+//	        . ' FROM ' . $db->nameQuote('#__virtuemart_modules');
 //	      $this->_total = $this->_getListCount($query);
 //	    }
 //
@@ -119,7 +119,7 @@
 //	    $db = JFactory::getDBO();
 //
 //	    if (empty($_data)) {
-//	      $this->_data = $this->getTable();
+//	      $this->_data = $this->getTable('modules');
 //	      $this->_data->load((int) $this->_id);
 //	    }
 //
@@ -197,7 +197,7 @@
 //    function getModules($noLimit = false) {
 //    	$db = JFactory::getDBO();
 //	    $query = 'SELECT * FROM '
-//	      . $db->nameQuote('#__vm_module')
+//	      . $db->nameQuote('#__virtuemart_modules')
 //	      . 'ORDER BY '
 //	      . $db->nameQuote('module_id');
 //

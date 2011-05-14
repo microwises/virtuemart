@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VM_ACCOUNTMAINT_MENU">
-		<message><![CDATA[VM_ACCOUNTMAINT_DESC]]></message>
+	<layout title="COM_VIRTUEMART_ACCOUNTMAINT_MENU">
+            <message><![CDATA[COM_VIRTUEMART_ACCOUNTMAINT_MENU_DESC]]></message>
 	</layout>
+	<state>
+		<name>COM_VIRTUEMART_ACCOUNTMAINT_MENU</name>
+		<description><![CDATA[COM_VIRTUEMART_ACCOUNTMAINT_MENU_DESC]]></description>
+	</state>
 </metadata>

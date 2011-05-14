@@ -57,7 +57,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="50" value="<?php echo $this->creditcard->vendor_id; ?>" />
+				<input class="inputbox" type="text" name="virtuemart_vendor_id" id="virtuemart_vendor_id" size="50" value="<?php echo $this->creditcard->virtuemart_vendor_id; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,7 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="creditcard_id" value="<?php echo $this->creditcard->creditcard_id; ?>" />
+	<input type="hidden" name="virtuemart_creditcard_id" value="<?php echo $this->creditcard->virtuemart_creditcard_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="creditcard" />

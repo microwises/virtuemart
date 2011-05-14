@@ -27,11 +27,11 @@ defined('_JEXEC') or die('Restricted access');
 	    <td class="key">
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">
 		<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'), JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
-		<label for="conf_VM_FEED_ENABLED"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE') ?></label>
+		<label for="conf_VM_FEED_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE') ?></label>
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('feed_enabled', $this->config->get('feed_enabled')); ?>
+		<?php echo VmHTML::checkbox('feed_published', $this->config->get('feed_published')); ?>
 	    </td>
 	</tr>
 	<tr>

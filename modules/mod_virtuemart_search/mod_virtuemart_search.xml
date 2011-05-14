@@ -20,24 +20,24 @@
         <filename>tmpl/index.html</filename>
 	</files>
 	<params>
-		<param name="width" type="text" default="20" label="BOX_WIDTH" description="BOX_WIDTH_DESC" />
-		<param name="text" type="text" default="" label="TEXT" description="TEXT_DESC" />
+		<param name="width" type="text" default="20" label="MOD_VIRTUEMART_SEARCH_BOX_WIDTH" description="MOD_VIRTUEMART_SEARCH_BOX_WIDTH_DESC" />
+		<param name="text" type="text" default="" label="MOD_VIRTUEMART_SEARCH_TEXT" description="MOD_VIRTUEMART_SEARCH_TEXT_DESC" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="button" type="radio" default="" label="SEARCH_BUTTON" description="SEARCH_BUTTON_DESC">
+		<param name="button" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON" description="MOD_VIRTUEMART_SEARCH_BUTTON_DESC">
 			<option value="">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="button_pos" type="list" default="right" label="SEARCH_BUTTON_POS" description="SEARCH_BUTTON_POS_DESC">
+		<param name="button_pos" type="list" default="right" label="MOD_VIRTUEMART_SEARCH_BUTTON_POS" description="MOD_VIRTUEMART_SEARCH_BUTTON_POS_DESC">
 			<option value="right">Right</option>
 			<option value="left">Left</option>
 			<option value="top">Top</option>
 			<option value="bottom">Bottom</option>
 		</param>
-		<param name="imagebutton" type="radio" default="" label="SEARCH_BUTTON_AS_IMG" description="SEARCH_BUTTON_AS_IMG_DESC">
+		<param name="imagebutton" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG" description="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG_DESC">
 			<option value="">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="button_text" type="text" default="" label="SEARCH_BUTTON_TXT" description="SEARCH_BUTTON_TXT_DESC" />
+		<param name="button_text" type="text" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON_TXT" description="MOD_VIRTUEMART_SEARCH_BUTTON_TXT_DESC" />
 	</params>
 	<params group="advanced">
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />

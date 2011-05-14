@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'shipping_carrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'virtuemart_shippingcarrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
 			</td>
 		</tr>					
 		<tr>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_id', 'country_name', $this->rate->shipping_rate_country)
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'virtuemart_country_id', 'country_name', $this->rate->shipping_rate_country)
 					. '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
 			</td>
 		</tr>		
@@ -136,12 +136,12 @@ AdminMenuHelper::startAdminArea();
 		</tr>	
 		<tr>
 			<td width="110" class="key">
-				<label for="shipping_rate_currency_id">
+				<label for="shipping_rate_virtuemart_currency_id">
 					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_CURRENCY'); ?>:
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_currency_id', '', 'currency_id', 'currency_name', $this->rate->shipping_rate_currency_id); ?>							
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_virtuemart_currency_id', '', 'virtuemart_currency_id', 'currency_name', $this->rate->shipping_rate_virtuemart_currency_id); ?>							
 			</td>
 		</tr>					
 		<tr>
@@ -152,7 +152,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<?php echo $this->taxRates;
-				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
+				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'virtuemart_calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
 				?>
 			</td>
 		</tr>
@@ -161,7 +161,7 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="shipping_rate_id" value="<?php echo $this->rate->shipping_rate_id; ?>" />
+	<input type="hidden" name="virtuemart_shippingrate_id" value="<?php echo $this->rate->virtuemart_shippingrate_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shippingrate" />

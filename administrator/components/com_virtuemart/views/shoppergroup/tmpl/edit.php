@@ -40,7 +40,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="vendor_id">
+				<label for="virtuemart_vendor_id">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>
@@ -76,7 +76,7 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="shopper_group_id" value="<?php echo $this->shoppergroup->shopper_group_id; ?>" />
+	<input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->shoppergroup->virtuemart_shoppergroup_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shoppergroup" />

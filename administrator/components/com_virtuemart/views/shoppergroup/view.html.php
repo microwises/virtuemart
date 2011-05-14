@@ -43,7 +43,7 @@ class VirtuemartViewShopperGroup extends JView {
 
 		if ($layoutName == 'edit') {
 			$shoppergroup = $model->getShopperGroup();
-			$isNew = ($shoppergroup->shopper_group_id < 1);
+			$isNew = ($shoppergroup->virtuemart_shoppergroup_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shop_users_48');
 			} else {
@@ -51,12 +51,12 @@ class VirtuemartViewShopperGroup extends JView {
 			}
 
 			$this->loadHelper('shopfunctions');
-			$vendors = ShopFunctions::renderVendorList($shoppergroup->vendor_id);
+			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('shoppergroup',	$shoppergroup);
 

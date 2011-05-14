@@ -96,7 +96,7 @@ AdminMenuHelper::startAdminArea();
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
-									<label for="shopper_group_id">
+									<label for="virtuemart_shoppergroup_id">
 										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER'); ?>:
 									</label>
 								</td>
@@ -291,7 +291,7 @@ AdminMenuHelper::startAdminArea();
 
 		<tr>
 			<td width="110" class="key">
-				<label for="vendor_id">
+				<label for="virtuemart_vendor_id">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
 				</label>
 			</td>
@@ -304,7 +304,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="fieldid" value="<?php echo $this->userField->fieldid; ?>" />
+<input type="hidden" name="virtuemart_userfield_id" value="<?php echo $this->userField->virtuemart_userfield_id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="valueCount" value="<?php echo $this->valueCount; ?>" />
@@ -431,7 +431,7 @@ function prep4SQL(o){
 		o.value='vm_' + o.value.replace(/[^a-zA-Z]+/g,'');
 	}
 }
-<?php if($this->userField->fieldid > 0) : ?>
+<?php if($this->userField->virtuemart_userfield_id > 0) : ?>
 document.adminForm.name.readOnly = true;
 <?php endif; ?>
 var divValues = new Fx.Slide('divValues' , {duration: <?php echo $duration;?> });

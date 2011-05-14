@@ -47,17 +47,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<?php
 		$k = 0;
 		foreach ($this->orderlist as $row) {
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=details&order_id=' . $row->order_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $row->virtuemart_order_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->order_id; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->virtuemart_order_id; ?></a>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->cdate); ?>
+					<?php echo JHTML::_('date', $row->created_on); ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->mdate); ?>
+					<?php echo JHTML::_('date', $row->modified_on); ?>
 				</td>
 				<td align="left">
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>

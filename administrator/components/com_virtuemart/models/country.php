@@ -100,7 +100,7 @@ class VirtueMartModelCountry extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `country_id` FROM `#__vm_country`';
+	    $query = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -116,7 +116,7 @@ class VirtueMartModelCountry extends JModel {
 	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable();
+	    $this->_data = $this->getTable('countries');
 	    $this->_data->load((int)$this->_id);
 
 	}
@@ -154,7 +154,7 @@ class VirtueMartModelCountry extends JModel {
 	}
 
 	$query = 'SELECT *';
-	$query .= ' FROM `#__vm_country`';
+	$query .= ' FROM `#__virtuemart_countries`';
 	$query .= ' WHERE `' . $countryCodeFieldname . '` = ' . (int)$code;
 	$db->setQuery($query);
 
@@ -191,7 +191,7 @@ class VirtueMartModelCountry extends JModel {
 	    return false;
 	}
 
-	return $table->country_id;
+	return $table->virtuemart_country_id;
     }
 
     /**
@@ -204,7 +204,7 @@ class VirtueMartModelCountry extends JModel {
     function publish($publishId = false) {
 
     	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','country',$publishId);
+		return modelfunctions::publish('cid','countries',$publishId);
 
     }
 
@@ -218,11 +218,11 @@ class VirtueMartModelCountry extends JModel {
      * @return object List of country objects
      */
     function getCountries($onlyPublished=true, $noLimit=false) {
-		$query = 'SELECT * FROM `#__vm_country` ';
+		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		if ($onlyPublished) {
-		    $query .= 'WHERE `#__vm_country`.`published` = 1';
+		    $query .= 'WHERE `#__virtuemart_countries`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__vm_country`.`country_name`';
+		$query .= ' ORDER BY `#__virtuemart_countries`.`country_name`';
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);
 		}

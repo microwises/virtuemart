@@ -90,17 +90,17 @@ class VirtuemartControllerCustom extends JController {
 
 		//Now we try to determine to which this custom should be long to
 		$data = JRequest::get('post');
-		if(!empty($data['product_id'])){
-			$table = $fileModel->getTable('product');
+		if(!empty($data['virtuemart_product_id'])){
+			$table = $fileModel->getTable('products');
 			$type = 'product';
-		} else if (!empty($data['category_id'])){
-			$table = $fileModel->getTable('category');
+		} else if (!empty($data['virtuemart_category_id'])){
+			$table = $fileModel->getTable('categories');
 			$type = 'category';
-		} else if (!empty($data['manufacturer_id'])){
-			$table = $fileModel->getTable('manufacturer');
+		} else if (!empty($data['virtuemart_manufacturer_id'])){
+			$table = $fileModel->getTable('manufacturers');
 			$type = 'manufacturer';
-//		} else if ($data['vendor_id']){
-//			$table = $this->getTable('vendor');
+//		} else if ($data['virtuemart_vendor_id']){
+//			$table = $this->getTable('vendors');
 //			$type = 'vendor';
 		} else {
 
@@ -122,7 +122,7 @@ class VirtuemartControllerCustom extends JController {
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=custom&task=edit&custom_id='.$id;
+			$redirection = 'index.php?option=com_virtuemart&view=custom&task=edit&virtuemart_custom_id='.$id;
 		} else {
 			$redirection = 'index.php?option=com_virtuemart&view=custom';
 		}

@@ -126,7 +126,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
 		</td>
 		<td>
-			<input type="hidden" name="currency_display_style[0]" value="<?php echo $this->currency->vendor_id; ?>" />
+			<input type="hidden" name="currency_display_style[0]" value="<?php echo $this->currency->virtuemart_vendor_id; ?>" />
 			<input class="inputbox" type="text" name="currency_display_style[1]" id="currency_symbol" size="20" value="<?php echo $this->currencyDisplay->getSymbol(); ?>" />
 		</td>
 	</tr>
@@ -175,9 +175,9 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 
 </div>
-	<input type="hidden" name="vendor_id" value="<?php echo $this->currency->vendor_id; ?>" />
+	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->currency->virtuemart_vendor_id; ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="currency_id" value="<?php echo $this->currency->currency_id; ?>" />
+	<input type="hidden" name="virtuemart_currency_id" value="<?php echo $this->currency->virtuemart_currency_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="currency" />

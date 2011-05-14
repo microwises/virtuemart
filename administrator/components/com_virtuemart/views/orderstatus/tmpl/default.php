@@ -64,9 +64,9 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row =& $this->orderStatusList[$i];
-			$checked = JHTML::_('grid.id', $i, $row->order_status_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=edit&cid[]=' . $row->order_status_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=remove&cid[]=' . $row->order_status_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
+			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
@@ -75,7 +75,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $checked; ?>
 				</td>
 				<td width="10">
-					<?php echo $row->order_status_id; ?>
+					<?php echo $row->virtuemart_orderstate_id; ?>
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->order_status_name); ?></a>

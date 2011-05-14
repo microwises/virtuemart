@@ -104,7 +104,7 @@ class VirtueMartModelShippingRate extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `shipping_rate_id` FROM `#__vm_shipping_rate`';
+			$query = 'SELECT `virtuemart_shippingrate_id` FROM `#__virtuemart_shippingrates`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -121,15 +121,15 @@ class VirtueMartModelShippingRate extends JModel {
 		$db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('shipping_rate');
+   			$this->_data = $this->getTable('shippingrates');
    			$this->_data->load((int)$this->_id);
 
    			// Convert ; separated string into array
    			$this->_data->shipping_rate_country = explode(';', $this->_data->shipping_rate_country);
-   			if(empty($this->_data->shipping_rate_currency_id)){
+   			if(empty($this->_data->shipping_rate_virtuemart_currency_id)){
    				$vendorId=1;
    				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-   				$this->_data->shipping_rate_currency_id = VirtueMartModelVendor::getVendorCurrency($vendorId)->currency_id;
+   				$this->_data->shipping_rate_virtuemart_currency_id = VirtueMartModelVendor::getVendorCurrency($vendorId)->virtuemart_currency_id;
    			}
   		}
 
@@ -152,10 +152,10 @@ class VirtueMartModelShippingRate extends JModel {
 	public function getShippingRatePrices ($_id, $_checkFree = false)
 	{
 		$_q = 'SELECT * '
-			. 'FROM  `#__vm_shipping_rate` AS r '
-			. ',     `#__vm_shipping_carrier` AS c '
-			. 'WHERE `shipping_rate_id` = ' . $_id . ' '
-			. 'AND   r.shipping_rate_carrier_id = c.shipping_carrier_id '
+			. 'FROM  `#__virtuemart_shippingrates` AS r '
+			. ',     `#__virtuemart_shippingcarriers` AS c '
+			. 'WHERE `virtuemart_shippingrate_id` = ' . $_id . ' '
+			. 'AND   r.shipping_rate_carrier_id = c.virtuemart_shippingcarrier_id '
 		;
 		$this->_db->setQuery($_q);
 		$_rates = $this->_db->loadAssoc();
@@ -215,7 +215,7 @@ class VirtueMartModelShippingRate extends JModel {
 	 */
     function store()
 	{
-		$table = $this->getTable('shipping_rate');
+		$table = $this->getTable('shippingrates');
 
 		$data = JRequest::get( 'post' );
 
@@ -242,7 +242,7 @@ class VirtueMartModelShippingRate extends JModel {
 			return false;
 		}
 
-		return $table->shipping_rate_id;
+		return $table->virtuemart_shippingrate_id;
 	}
 
 
@@ -255,7 +255,7 @@ class VirtueMartModelShippingRate extends JModel {
 	function delete()
 	{
 		$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('shipping_rate');
+    	$table =& $this->getTable('shippingrates');
 
     	foreach($shippingCarrierIds as $shippingCarrierId) {
     		if (!$table->delete($shippingCarrierId)) {
@@ -276,9 +276,9 @@ class VirtueMartModelShippingRate extends JModel {
 	 */
 	function getShippingRates()
 	{
-		$query = 'SELECT sr.*, sc.shipping_carrier_name FROM `#__vm_shipping_rate` AS sr ';
-		$query .= 'JOIN `#__vm_shipping_carrier` AS sc ON `sc`.`shipping_carrier_id` = `sr`.`shipping_rate_carrier_id`';
-		$query .= 'ORDER BY `sr`.`shipping_rate_id`';
+		$query = 'SELECT sr.*, sc.shipping_carrier_name FROM `#__virtuemart_shippingrates` AS sr ';
+		$query .= 'JOIN `#__virtuemart_shippingcarriers` AS sc ON `sc`.`virtuemart_shippingcarrier_id` = `sr`.`shipping_rate_carrier_id`';
+		$query .= 'ORDER BY `sr`.`virtuemart_shippingrate_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

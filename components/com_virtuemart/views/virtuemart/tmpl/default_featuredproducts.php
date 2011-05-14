@@ -60,13 +60,13 @@ foreach ( $this->featuredProducts as $featProduct ) {
 
 					<h3>
 					<?php // Product Name
-					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), $featProduct->product_name, array ('title' => $featProduct->product_name ) ); ?>
+					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $featProduct->virtuemart_product_id . '&virtuemart_category_id=' . $featProduct->virtuemart_category_id ), $featProduct->product_name, array ('title' => $featProduct->product_name ) ); ?>
 					</h3>
 					
 					<div>
 					<?php // Product Image
 					if ($featProduct->images) {
-						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), $featProduct->images[0]->displayMediaThumb('class="featuredProductImage" border="0"') );
+						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $featProduct->virtuemart_product_id . '&virtuemart_category_id=' . $featProduct->virtuemart_category_id ), $featProduct->images[0]->displayMediaThumb('class="featuredProductImage" border="0"') );
 					}
 					?>
 					</div>
@@ -95,7 +95,7 @@ foreach ( $this->featuredProducts as $featProduct ) {
 
 					<div>
 					<?php // Product Details Button
-					echo JHTML::link ( JRoute::_( 'index.php?option=com_virtuemart&view=productdetails&product_id=' . $featProduct->product_id . '&category_id=' . $featProduct->category_id ), JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $featProduct->product_name, 'class' => 'product-details' ) );
+					echo JHTML::link ( JRoute::_( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $featProduct->virtuemart_product_id . '&virtuemart_category_id=' . $featProduct->virtuemart_category_id ), JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $featProduct->product_name, 'class' => 'product-details' ) );
 					?>
 					</div>
 

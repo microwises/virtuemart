@@ -30,34 +30,34 @@ class ReportFunctions {
 		// set date presets
 		$curDate   = JFactory::getDate();
 		$curDate   = $curDate->toUnix();
-		$curDate   = mktime(0, 0, 0, date('n', $curDate), date('j', $curDate), date('Y', $curDate));
+		$curDate   = mktime(0, 0, 0, date('m', $curDate), date('d', $curDate), date('Y', $curDate));
 		$monday = (date('w', $curDate) == 1) ? $curDate : strtotime('last Monday', $curDate);
 		$date_presets['last90'] = array(
-			'name'  => 'Last 90 days',
-			'from'  => date('Y-m-d', strtotime('-2 months 29 days', $curDate)),
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_LAST90'),
+			'from'  => date('Y-m-d', strtotime('-89 day', $curDate)),
 			'until' => date('Y-m-d', $curDate));
 		$date_presets['last60'] = array(
-			'name'  => 'Last 60 days',
-			'from'  => date('Y-m-d', strtotime('-1 month 29 days', $curDate)),
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_LAST60'),
+			'from'  => date('Y-m-d', strtotime('-59 day', $curDate)),
 			'until' => date('Y-m-d', $curDate));
 		$date_presets['last30'] = array(
-			'name'  => 'Last 30 days',
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_LAST30'),
 			'from'  => date('Y-m-d', strtotime('-29 day', $curDate)),
 			'until' => date('Y-m-d', $curDate));
 		$date_presets['today'] = array(
-			'name'  => 'Today',
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_TODAY'),
 			'from'  => date('Y-m-d', $curDate),
 			'until' => date('Y-m-d', $curDate));
-		$date_presets['week'] = array(
-			'name'  => 'This Week',
+		$date_presets['this-week'] = array(
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_THIS_WEEK'),
 			'from'  => date('Y-m-d', $monday),
 			'until' => date('Y-m-d', strtotime('+6 day', $monday)));
-		$date_presets['month'] = array(
-			'name'  => 'This Month',
+		$date_presets['this-month'] = array(
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_THIS_MONTH'),
 			'from'  => date('Y-m-d', mktime(0, 0, 0, date('n', $curDate), 1, date('Y', $curDate))),
 			'until' => date('Y-m-d', mktime(0, 0, 0, date('n', $curDate)+1, 0, date('Y', $curDate))));
-		$date_presets['year'] = array(
-			'name'  => 'This Year',
+		$date_presets['this-year'] = array(
+			'name'  => JText::_('COM_VIRTUEMART_REPORT_PERIOD_THIS_YEAR'),
 			'from'  => date('Y-m-d', mktime(0, 0, 0, 1, 1, date('Y', $curDate))),
 			'until' => date('Y-m-d', mktime(0, 0, 0, 12, 31, date('Y', $curDate))));
 
@@ -68,7 +68,7 @@ class ReportFunctions {
 	public function renderDateSelectList($presets, $from_period, $until_period){
 		// simpledate select
 		$select  = '';
-		$options = array(JHTML::_('select.option', '', '- '.JText::_('COM_VIRTUEMART_SELECT_PERIOD').' -', 'text', 'value'));
+		$options = array(JHTML::_('select.option', '', '- '.JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD').' -', 'text', 'value'));
 		foreach ($presets as $name => $value) {
 			$options[] = JHTML::_('select.option', $name, JText::_($value['name']), 'text', 'value');
 			if ($value['from'] == $from_period && $value['until'] == $until_period) {

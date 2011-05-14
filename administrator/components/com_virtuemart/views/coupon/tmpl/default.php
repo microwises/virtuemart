@@ -53,8 +53,8 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count($this->coupons); $i < $n; $i++) {
 		$row = $this->coupons[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->coupon_id);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=coupon&task=edit&cid[]=' . $row->coupon_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_coupon_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=coupon&task=edit&cid[]=' . $row->virtuemart_coupon_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">

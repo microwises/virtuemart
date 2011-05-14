@@ -47,30 +47,33 @@ class VirtuemartViewOrderstatus extends JView {
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
-			if ($orderStatus->order_status_id < 1) {
+			if ($orderStatus->virtuemart_orderstate_id < 1) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
+                                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 			} else {
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, order_status_name AS text'
-					. ' FROM #__vm_order_status'
+					. ' FROM #__virtuemart_orderstates'
 					. ' ORDER BY ordering';
-				$ordering = JHTML::_('list.specificordering',  $orderStatus, $orderStatus->order_status_id, $qry);
+				$ordering = JHTML::_('list.specificordering',  $orderStatus, $orderStatus->virtuemart_orderstate_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
+
+                                JToolBarHelper::save();
+                                JToolBarHelper::apply();
+				JToolBarHelper::cancel();
 			}
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'vendor_id', '', 'vendor_id', 'vendor_name', $orderStatus->vendor_id);
+			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('orderStatus', $orderStatus);

@@ -10,7 +10,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @subpackage classes
  *
  * @author Max Milbers
- * @copyright Copyright (C) 2011 Virtuemart - All rights reserved.
+ * @copyright Copyright (C) 2004-2008 Soeren Eberhardt-Biermann - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -18,7 +18,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * other free or open source software licenses.
  * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://virtuemart.net
  */
 
 class CurrencyDisplay {
@@ -65,7 +65,7 @@ class CurrencyDisplay {
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
-					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
 					$style = $db->loadResult();
 				}
@@ -74,12 +74,12 @@ class CurrencyDisplay {
 						$vendorId = 1;		//Map to mainvendor
 					}
 					if(empty($currencyId)){
-						$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id`="'.$vendorId.'"';
+						$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'"';
 						$db->setQuery($q);
 						$currencyId = $db->loadResult();
 					}
 
-					$q = 'SELECT `display_style` FROM `#__vm_currency` WHERE `currency_id`="'.$currencyId.'"';
+					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
 					$style = $db->loadResult();
 				}

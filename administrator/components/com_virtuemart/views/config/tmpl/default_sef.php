@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">		 
 		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE_TIP'); ?>">
-		<label for="conf_VM_SEO_ENABLED"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE') ?></label>
+		<label for="conf_VM_SEO_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_DISABLE') ?></label>
 		</span>
 	    </td>
 	    <td>

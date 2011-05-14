@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 class TableUserfields extends JTable {
 
 	/** @var var Primary Key*/
-	var $fieldid		= 0;
+	var $virtuemart_userfield_id		= 0;
 	/** @var string Internal fielname*/
 	var $name			= null;
 	/** @var string Visible title*/
@@ -69,20 +69,20 @@ class TableUserfields extends JTable {
 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
 	var $sys			= 0;
 	/** @var int The Vendor ID, if vendor specific*/
-	var $vendor_id		= 0;
+	var $virtuemart_vendor_id		= 0;
 	/** @var mediumtex Additional type-specific parameters */
 	var $params			= null;
-                /** @var boolean */
-	var $checked_out	= 0;
+              /** @var boolean */
+	var $locked_on	= 0;
 	/** @var time */
-	var $checked_out_time	= 0;
+	var $locked_by	= 0;
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct(&$db)
 	{
 		self::loadFields($db);
-		parent::__construct('#__vm_userfield', 'fieldid', $db);
+		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class TableUserfields extends JTable {
 	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__vm_userfield`";
+		$_q = "SHOW COLUMNS FROM `#__virtuemart_userfields`";
 		$_db->setQuery($_q);
 		$_fields = $_db->loadObjectList();
 		if (count($_fields) > 0) {
@@ -126,9 +126,9 @@ class TableUserfields extends JTable {
 			$this->setError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
-		if ($this->fieldid == 0) {
+		if ($this->virtuemart_userfield_id == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
-					. 'FROM `#__vm_userfield`'
+					. 'FROM `#__virtuemart_userfields`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
 
 			$this->_db->setQuery($_sql);
@@ -170,7 +170,7 @@ class TableUserfields extends JTable {
 				$_fieldType = 'TINYINT';
 				break;
 			case 'euvatid':
-				$this->params = 'shopper_group_id='.$_data['shopper_group_id']."\n";
+				$this->params = 'virtuemart_shoppergroup_id='.$_data['virtuemart_shoppergroup_id']."\n";
 				$_fieldType = 'VARCHAR(255)';
 				break;
 			case 'age_verification':
@@ -189,7 +189,7 @@ class TableUserfields extends JTable {
 	 */
 	function store()
 	{
-		$isNew = ($this->fieldid == 0);
+		$isNew = ($this->virtuemart_userfield_id == 0);
 		if (!parent::store()) { // Write data to the DB
 			$this->setError($this->getError());
 			return false;

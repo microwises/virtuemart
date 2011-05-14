@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_VALUE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TYPE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-		<th><?php echo JText::_('DELETE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -48,8 +48,8 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td>'.$this->fieldTypes[$customRow->field_type].'
 				 <input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-				 <input type="hidden" value="'.$customRow->custom_id.'" name="field['.$i .'][custom_id]" />
-				 <input type="hidden" value="'.$customRow->custom_field_id.'" name="field['.$i .'][custom_field_id]" />
+				 <input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+				 <input type="hidden" value="'.$customRow->virtuemart_customfield_id.'" name="field['.$i .'][virtuemart_customfield_id]" />
 				 <input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 				</td>
 				<td>
@@ -71,8 +71,8 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </fieldset>
 <div style="clear:both;"></div>
-<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('DELETE'); ?></div>
-<div><?php echo JText::_('SELECT').' '.$this->customsList; ?></div>
+<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
+<div><?php echo JText::_('COM_VIRTUEMART_SELECT').' '.$this->customsList; ?></div>
 <?php /*<div class="jsonSuggestResults" style="width: 322px;">
 	<input type="text" size="40" name="search" id="ProductCustomSearch" value="" />
 </div> */ ?>
@@ -116,7 +116,7 @@ jQuery('input#ProductCustomSearch').autocomplete('index.php?option=com_virtuemar
 	});
 jQuery('select#customlist').click(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
-	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&product_id=<?php echo $this->product->product_id; ?>',
+	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
 	function(data) {
 		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 		jQuery.each(data.value, function(index, value){

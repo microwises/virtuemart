@@ -40,31 +40,38 @@ class VirtuemartControllerState extends JController {
 	function __construct() {
 		parent::__construct();
 
+		JRequest::setVar('view', 'state');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
 
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view =& $this->getView('state', $viewType);
-
-		// Push a model into the view
-		$model =& $this->getModel('state');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-		$model1 =& $this->getModel('ShippingZone');
-		if (!JError::isError($model1)) {
-			$view->setModel($model1, false);
-		}
 	}
 
 	/**
 	 * Display the state view
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */
 	function display() {
+
+		$document = JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view = $this->getView('state', $viewType);
+
+		// Push a model into the view
+		$model = $this->getModel('state');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+		$model1 = $this->getModel('Worldzones');
+		if (!JError::isError($model1)) {
+			$view->setModel($model1, false);
+		}
+
+		$model = $this->getModel('country');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
 		parent::display();
 	}
 
@@ -76,11 +83,11 @@ class VirtuemartControllerState extends JController {
 	 */
 	function edit(){
 		JRequest::setVar('controller', 'state');
-		JRequest::setVar('view', 'state');
+
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 
-		parent::display();
+		self::display();
 	}
 
 
@@ -92,7 +99,7 @@ class VirtuemartControllerState extends JController {
 	function cancel()
 	{
 		$data = JRequest::get( 'post' );
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"]);
+		$this->setRedirect('index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"]);
 	}
 
 
@@ -113,8 +120,8 @@ class VirtuemartControllerState extends JController {
 		}
 
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=state&task=edit&state_id='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=state&country_id='.$data['country_id'];
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id='.$id;
+		else $redirection = 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data['virtuemart_country_id'];
 
 		$this->setRedirect($redirection, $msg);
 
@@ -137,7 +144,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_STATES_DELETED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 
@@ -154,7 +161,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 
@@ -171,7 +178,7 @@ class VirtuemartControllerState extends JController {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
 	}
 
 

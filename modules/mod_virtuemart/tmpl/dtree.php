@@ -48,9 +48,9 @@ $db = JFactory::getDBO();
 	$category_id = JRequest::getInt('category_id', '');
 	
 	// select menu items from database
-	$query  = "SELECT category_id,category_parent_id,category_name FROM #__vm_category, #__vm_category_xref ";
-	$query .= "WHERE #__vm_category.published='1' AND ";
-	$query .= "#__vm_category.category_id=#__vm_category_xref.category_child_id ";
+	$query  = "SELECT category_id,category_parent_id,category_name FROM #__virtuemart_categories, #__virtuemart_category_categories ";
+	$query .= "WHERE #__virtuemart_categories.enabled='1' AND ";
+	$query .= "#__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id ";
 	$query .= "ORDER BY category_parent_id, ordering, category_name ASC";
 
 

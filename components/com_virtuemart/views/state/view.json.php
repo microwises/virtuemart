@@ -36,7 +36,7 @@ jimport( 'joomla.application.component.view');
 //		$states = array();
 //
 //		//retrieving countries id
-//		$countries = JRequest::getString('country_id');
+//		$countries = JRequest::getString('virtuemart_country_id');
 //		$countries = explode(',', $countries);
 //
 //		foreach($countries as $country){

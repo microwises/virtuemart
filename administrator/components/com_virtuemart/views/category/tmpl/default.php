@@ -76,11 +76,11 @@ if( $this->pagination->limit < $nrows ){
 
 			$row = $this->categories[$this->rowList[$i]];
 
-			$checked = JHTML::_('grid.id', $i, $row->category_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_category_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $row->category_id);
-			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&category_id=' . $row->category_id);
-			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&category_id=' . $row->category_id);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $row->virtuemart_category_id);
+			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $row->virtuemart_category_id);
+			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $row->virtuemart_category_id);
 
 			$categoryLevel = '';
 			$repeat = $this->depthList[$i] + 1;
@@ -103,7 +103,7 @@ if( $this->pagination->limit < $nrows ){
 					<?php echo $row->category_description; ?>
 				</td>
 				<td>
-					<?php echo  $this->model->countProducts($row->category_id);//ShopFunctions::countProductsByCategory($row->category_id);?>
+					<?php echo  $this->model->countProducts($row->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center">

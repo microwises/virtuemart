@@ -175,8 +175,8 @@ class AdminMenuHelper {
 	}
 
 	$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
-	$query .= 'FROM `#__vm_module` jmmod ';
-	$query .= 'LEFT JOIN `#__vm_menu_admin` item ON `jmmod`.`module_id`=`item`.`module_id` ';
+	$query .= 'FROM `#__virtuemart_modules` jmmod ';
+	$query .= 'LEFT JOIN `#__virtuemart_adminmenuentries` item ON `jmmod`.`module_id`=`item`.`module_id` ';
 	$query .= 'WHERE  ' . implode(' AND ', $filter ) . ' ';
 	$query .= 'ORDER BY `jmmod`.`list_order`, `item`.`ordering`';
 	$db->setQuery($query);

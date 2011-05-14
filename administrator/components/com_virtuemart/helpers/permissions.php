@@ -28,8 +28,8 @@ class Permissions extends JObject{
 	/** @var array Contains all the user groups */
 	var $_user_groups;
 
-	/** @var user_id for the permissions*/
-	var $_user_id;		//$auth['user_id']
+	/** @var virtuemart_user_id for the permissions*/
+	var $_virtuemart_user_id;		//$auth['virtuemart_user_id']
 
 	var $_show_prices; //$auth['show_prices']
 
@@ -61,8 +61,8 @@ class Permissions extends JObject{
 	public function getUserGroups() {
 		if (empty($this->_user_groups)) {
 			$this->_db = JFactory::getDBO();
-			$q = ('SELECT `group_id`,`group_name`,`group_level`
-					FROM `#__vm_perm_groups`
+			$q = ('SELECT `virtuemart_permgroup_id`,`group_name`,`group_level`
+					FROM `#__virtuemart_permgroups`
 					ORDER BY `group_level` ');
 			$this->_db->setQuery($q);
 			$this->_user_groups = $this->_db->loadObjectList('group_name');
@@ -74,21 +74,21 @@ class Permissions extends JObject{
 	/**
 	* description: Validates if someone is registered customer.
 	*            by checking if one has a billing address
-	* parameters: user_id
+	* parameters: virtuemart_user_id
 	* returns: true if the user has a BT address
 	*          false if the user has none
 	*
 	* Check if a user is registered in the shop (=customer)
 	*
-	* @param int $user_id the user ID to check. If no user ID is given the currently logged in user will be used.
+	* @param int $virtuemart_user_id the user ID to check. If no user ID is given the currently logged in user will be used.
 	* @return boolean
 	*/
-	public function isRegisteredCustomer($user_id=0) {
-		if ($user_id == 0) {
+	public function isRegisteredCustomer($virtuemart_user_id=0) {
+		if ($virtuemart_user_id == 0) {
 			/* Lets see if we can get the current signed in user */
 			$user = JFactory::getUser();
 			if ($user->id == 0) return false;
-			else $user_id = $user->id;
+			else $virtuemart_user_id = $user->id;
 		}
 
 		$this->_db = JFactory::getDBO();
@@ -96,17 +96,17 @@ class Permissions extends JObject{
 			there *must* be a related Joomla! user, we can join */
 		if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 			&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION') {
-			$q  = "SELECT COUNT(user_id) AS num_rows
-				FROM `#__vm_user_info`, `#__users`
-				WHERE `id`=`user_id`
-				AND #__vm_user_info.user_id='" . $user_id . "'
-				AND #__vm_user_info.address_type='BT'";
+			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
+				FROM `#__virtuemart_userinfos`, `#__users`
+				WHERE `id`=`virtuemart_user_id`
+				AND #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
+				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		else {
-			$q  = "SELECT COUNT(user_id) AS num_rows
-				FROM `#__vm_user_info`
-				WHERE #__vm_user_info.user_id='" . $user_id . "'
-				AND #__vm_user_info.address_type='BT'";
+			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
+				FROM `#__virtuemart_userinfos`
+				WHERE #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
+				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
@@ -141,23 +141,23 @@ class Permissions extends JObject{
 //		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
 
 		/* User has already logged in */
-		if (!empty($vmUser->id) || !empty( $this->_user_id)) {
+		if (!empty($vmUser->id) || !empty( $this->_virtuemart_user_id)) {
 			if( $vmUser->id > 0 ) {
-				$this->_user_id   = $vmUser->id;
+				$this->_virtuemart_user_id   = $vmUser->id;
 //				$auth["username"] = $vmUser->username;
 			}
-			else if(!empty($this->_user_id)
+			else if(!empty($this->_virtuemart_user_id)
 					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
 					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION')
 			{
-				$this->_user_id = 0;
+				$this->_virtuemart_user_id = 0;
 //				$auth["username"] = "demo";
 			}
 
-			if (self::isRegisteredCustomer($this->_user_id)) {
+			if (self::isRegisteredCustomer($this->_virtuemart_user_id)) {
 				$q = 'SELECT `perms`
-					FROM #__vm_users
-					WHERE user_id="'.$this->_user_id.'"';
+					FROM #__virtuemart_vmusers
+					WHERE virtuemart_user_id="'.$this->_virtuemart_user_id.'"';
 				$this->_db->setQuery($q);
 				$this->_perms = $this->_db->loadResult();
 
@@ -181,16 +181,10 @@ class Permissions extends JObject{
 				$this->_is_registered_customer = false;
 			}
 		} // user is not logged in
-		elseif (empty($this->_user_id)) {
-			$this->_user_id = 0;
+		elseif (empty($this->_virtuemart_user_id)) {
+			$this->_virtuemart_user_id = 0;
 //			$auth["username"] = "demo";
 			$this->_perms  = "";
-//			$auth["first_name"] = "guest";
-//			$auth["last_name"] = "";
-//			$auth["shopper_group_id"] = $shopper_group["shopper_group_id"];
-//			$auth["shopper_group_discount"] = $shopper_group["shopper_group_discount"];
-//			$auth["show_price_including_tax"] = $shopper_group["show_price_including_tax"];
-//			$auth["default_shopper_group"] = 1;
 			$this->_is_registered_customer = false;
 		}
 
@@ -291,7 +285,7 @@ class Permissions extends JObject{
 	*/
 	function prepareACL() {
 		// The basic ACL integration in Mambo/Joomla is not awesome
-		$child_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, VmConfig::get('vm_price_access_level'));
+		$child_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.virtuemart_shoppergroup_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, VmConfig::get('vm_price_access_level'));
 
 		echo '<pre>'.print_r($child_groups,1).'</pre>';
 
@@ -299,7 +293,7 @@ class Permissions extends JObject{
 		foreach( $child_groups as $child_group ) {
 			self::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
 		}
-		$admin_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, 'Public Backend' );
+		$admin_groups = self::getChildGroups( '#__core_acl_aro_groups', 'g1.virtuemart_shoppergroup_id, g1.name, COUNT(g2.name) AS level', 'g1.name', null, 'Public Backend' );
 		foreach( $admin_groups as $child_group ) {
 			self::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
 		}
@@ -323,7 +317,7 @@ class Permissions extends JObject{
 		$root = new stdClass();
 		$root->lft = 0;
 		$root->rgt = 0;
-		$fields = str_replace( 'group_id', 'id', $fields );
+		$fields = str_replace( 'virtuemart_shoppergroup_id', 'id', $fields );
 
 		if ($root_id) {
 		}
@@ -382,7 +376,7 @@ class Permissions extends JObject{
 		global $database, $_VERSION;
 
 		$tree = ps_perm::getChildGroups( '#__core_acl_aro_groups',
-			'g1.group_id, g1.name, COUNT(g2.name) AS level',
+			'g1.virtuemart_shoppergroup_id, g1.name, COUNT(g2.name) AS level',
 			'g1.name',
 			$root_id, $root_name, $inclusive );
 
@@ -416,9 +410,9 @@ class Permissions extends JObject{
 			}
 
 			if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
-				$tree[$i]->group_id = $tree[$i]->id;
+				$tree[$i]->virtuemart_shoppergroup_id = $tree[$i]->id;
 			}
-			$list[$tree[$i]->group_id] = $shim.$twist.$tree[$i]->name;
+			$list[$tree[$i]->virtuemart_shoppergroup_id] = $shim.$twist.$tree[$i]->name;
 			if ($tree[$i]->level < @$tree[$i-1]->level) {
 				$indents[$tree[$i]->level+1] = '.&nbsp;';
 			}

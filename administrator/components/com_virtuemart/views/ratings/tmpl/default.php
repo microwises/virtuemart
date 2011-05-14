@@ -63,17 +63,17 @@ $option = JRequest::getWord('option');
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->ratingslist as $key => $review) {
-			$checked = JHTML::_('grid.id', $i , $review->review_id);
+			$checked = JHTML::_('grid.id', $i , $review->virtuemart_product_review_id);
 			$published = JHTML::_('grid.published', $review, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
-				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$review->product_id.'&product_parent_id='.$review->product_parent_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id.'&product_parent_id='.$review->product_parent_id; ?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Username + time -->
-				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit&review_id='.$review->review_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit&virtuemart_product_review_id='.$review->virtuemart_product_review_id; ?>
 				<td><?php echo JHTML::_('link', $link, $review->username,array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<td><?php echo JHTML::_('link', $link, $review->reviewDate, array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Comment -->
@@ -82,7 +82,7 @@ $option = JRequest::getWord('option');
 				<td>
 				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$review->user_rating.'.gif',$review->user_rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->user_rating . '/' . $this->max_rating))); ?>
 				</td>
-				<!-- Published -->
+				<!-- published -->
 				<td><?php echo $published; ?></td>
 			</tr>
 		<?php 

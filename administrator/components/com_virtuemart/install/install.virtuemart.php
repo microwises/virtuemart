@@ -25,7 +25,7 @@ function com_install(){
 	$db = JFactory::getDBO();
 	$model = new VirtueMartModelUpdatesMigration();
 
-	$query = "SELECT count(id) AS idCount FROM `#__vm_menu_admin`";
+	$query = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
 	$db->setQuery($query);
 	$result = $db->loadObject();
 	if ($result->idCount > 0) {

@@ -47,9 +47,9 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count( $this->creditcards ); $i < $n; $i++) {
 		$row =& $this->creditcards[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->creditcard_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_creditcard_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=creditcard&task=edit&cid[]=' . $row->creditcard_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=creditcard&task=edit&cid[]=' . $row->virtuemart_creditcard_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">

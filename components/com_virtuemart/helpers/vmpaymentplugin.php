@@ -25,7 +25,7 @@ jimport('joomla.plugin.plugin');
 
 abstract class vmPaymentPlugin extends JPlugin
 {
-	private $_paym_id = 0;
+	private $_virtuemart_paymentmethod_id = 0;
 	private $_paym_name = '';
 
 	/** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
@@ -58,7 +58,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * 				,'auto_inc' => true
 	 * 				,'null' => false
 	 * 		)
-	 * 		,'order_id' => array (
+	 * 		,'virtuemart_order_id' => array (
 	 * 				 'type' => 'int'
 	 * 				,'length' => 11
 	 * 				,'null' => false
@@ -70,7 +70,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * 	);
 	 * 	$_schemeIdx = array(
 	 * 		 'idx_order_payment' => array(
-	 * 				 'columns' => array ('order_id')
+	 * 				 'columns' => array ('virtuemart_order_id')
 	 * 				,'primary' => false
 	 * 				,'unique' => false
 	 * 				,'type' => null
@@ -116,14 +116,14 @@ abstract class vmPaymentPlugin extends JPlugin
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
 
-		$q = 'SELECT `paym_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `paym_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
+		$q = 'SELECT `virtuemart_paymentmethod_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 
 		if(!empty($result)){
 			if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 			$this->paymentModel = new VirtueMartModelPaymentmethod();
-			$this->paymentModel->setId($result['paym_id']);
+			$this->paymentModel->setId($result['virtuemart_paymentmethod_id']);
 			$this->paymentMethod = $this->paymentModel->getPaym();
 			return true;
 		} else{
@@ -137,7 +137,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	/**
 	 * This event is fired during the checkout process. It allows the shopper to select
 	 * one of the available payment methods.
-	 * It should display a radio button (name: paym_id) to select the payment method. Other
+	 * It should display a radio button (name: virtuemart_paymentmethod_id) to select the payment method. Other
 	 * information (like credit card info) might be selected as well.
 	 *
 	 * @param object $cart The cart object
@@ -152,14 +152,14 @@ abstract class vmPaymentPlugin extends JPlugin
 			return;
 		}
 
-		if ($checkedPaymId==$this->paymentMethod->paym_id) {
+		if ($checkedPaymId==$this->paymentMethod->virtuemart_paymentmethod_id) {
 			$checked = '"checked"';
 		} else {
 			$checked = '';
 		}
 
 		$html  = '<fieldset>';
-		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 		$html .= '</fieldset> ';
 
 		return $html;
@@ -210,13 +210,13 @@ abstract class vmPaymentPlugin extends JPlugin
 	 * It displays the the payment method-specific data.
 	 * All plugins *must* reimplement this method.
 	 *
-	 * @param integer $_order_id The order ID
+	 * @param integer $_virtuemart_order_id The order ID
 	 * @param integer $_paymethod_id Payment method used for this order
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Max Milbers
 	 * @author Oscar van Eijk
 	 */
-	abstract function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id);
+	abstract function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id);
 
 	/**
 	 * This event is fired each time the status of an order is changed to Cancelled.
@@ -273,8 +273,8 @@ abstract class vmPaymentPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT `payment_method_id` '
-			. 'FROM #__vm_orders '
-			. "WHERE order_id = $_id";
+			. 'FROM #__virtuemart_orders '
+			. "WHERE virtuemart_order_id = $_id";
 		$_db->setQuery($_q);
 		if (!($_r = $_db->loadAssoc())) {
 			return -1;
@@ -293,8 +293,8 @@ abstract class vmPaymentPlugin extends JPlugin
 	{
 		$_db = &JFactory::getDBO();
 		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
-			. 'FROM #__vm_payment_method '
-			. "WHERE paym_id='" . $this->_paym_id . "'";
+			. 'FROM #__virtuemart_paymentmethods '
+			. "WHERE virtuemart_paymentmethod_id='" . $this->_virtuemart_paymentmethod_id . "'";
 		$_db->setQuery($_q);
 		$_r = $_db->loadAssoc(); // TODO Error check
 		return $_r['passkey'];
@@ -313,16 +313,16 @@ abstract class vmPaymentPlugin extends JPlugin
 
         if (version_compare(JVERSION, '1.6.0') < '') {
             $_q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__vm_payment_method AS vm '
+                    . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__plugins AS j '
-                    . "WHERE vm.paym_id='$_pid' "
+                    . "WHERE vm.virtuemart_paymentmethod_id='$_pid' "
                     . 'AND   vm.paym_jplugin_id = j.id '
                     . "AND   j.element = '$_pelement'";
         } else {
             $_q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__vm_payment_method AS vm '
+                    . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__extensions AS j '
-                    . "WHERE vm.paym_id='$_pid' "
+                    . "WHERE vm.virtuemart_paymentmethod_id='$_pid' "
                     . 'AND   vm.paym_jplugin_id = j.extension_id '
                     . "AND   j.element = '$_pelement'";
         }
@@ -345,8 +345,8 @@ abstract class vmPaymentPlugin extends JPlugin
 
 
                 $_q = 'SELECT `paym_name` '
-                        . 'FROM #__vm_payment_method '
-                        . "WHERE paym_id='$_pid' ";
+                        . 'FROM #__virtuemart_paymentmethods '
+                        . "WHERE virtuemart_paymentmethod_id='$_pid' ";
 
 
 

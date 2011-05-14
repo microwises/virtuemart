@@ -58,17 +58,17 @@ class VirtuemartViewCalc extends JView {
 			$calc = $model->getCalc();
 			$this->assignRef('calc',	$calc);
 			
-			$isNew = ($calc->calc_id < 1);
+			$isNew = ($calc->virtuemart_calc_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_NEW'), 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 				
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
-				$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "'.$vendorId.'"';
+				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.$vendorId.'"';
 				$db->setQuery($q);
 				$currency= $db->loadResult();
 				if(empty($currency)){
-					$q = 'SELECT `vendor_currency` FROM `#__vm_vendor` WHERE `vendor_id` = "1" ';
+					$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "1" ';
 					$db->setQuery($q);
 					$currency= $db->loadResult();
 					$calc->calc_currency = $currency;
@@ -79,18 +79,18 @@ class VirtuemartViewCalc extends JView {
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
-				if(empty($userDetails->vendor_id)){
+				if(empty($userDetails->virtuemart_vendor_id)){
 					JError::raiseError(403,'Forbidden for non vendors');
 				}
-				if(empty($calc->calc_vendor_id))$calc->calc_vendor_id = $userDetails->vendor_id;
+				if(empty($calc->virtuemart_vendor_id))$calc->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_EDIT'), 'vm_countries_48');
+				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 				
 			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
@@ -115,17 +115,17 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('currencies', $_currencies);
 			
 			/* Get the shoppergroup tree */
-			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->calc_shopper_groups,True);
+			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->virtuemart_shoppergroup_ids,True);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
 
 			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
 			
-			$statesList = ShopFunctions::renderStateList($calc->calc_states, $calc->calc_countries, 'country_id',True);
+			$statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids, $calc->calc_countries, 'virtuemart_country_id',True);
 			$this->assignRef('statesList', $statesList);			
 
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
-			$vendorList= ShopFunctions::renderVendorList($calc->calc_vendor_id,True);
+			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,True);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {

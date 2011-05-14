@@ -54,7 +54,7 @@ class VirtuemartControllerManufacturer extends JController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		$model1 = $this->getModel('manufacturerCategory');
+		$model1 = $this->getModel('manufacturercategories');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}
@@ -113,7 +113,7 @@ class VirtuemartControllerManufacturer extends JController {
 		}
 
 		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturer&task=edit&manufacturer_id='.$id;
+		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id='.$id;
 		else $redirection = 'index.php?option=com_virtuemart&view=manufacturer';
 
 		$this->setRedirect($redirection, $msg);

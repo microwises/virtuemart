@@ -77,7 +77,7 @@ class VirtuemartViewUser extends JView {
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 
 		//the uid is the id of the user, we wanna edit.
-		//This is nonsene, because the user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
+		//This is nonsene, because the virtuemart_user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
 //		$this->_uid = JRequest::getVar('cid', $this->_cuid);
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
@@ -130,7 +130,7 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='mailregisteruser'){
 			$vendorModel = $this->getModel('vendor');
-//			$vendorModel->setId($this->_userDetails->vendor_id);
+//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
 		}
@@ -184,11 +184,11 @@ class VirtuemartViewUser extends JView {
 		//Here we set the data to fill the fields
 		if($type=='BT'){
 			self::getUserData($type);
-			$user_info_id = JRequest::getVar('user_info_id', 0);
+			$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id', 0);
 			$userAddressData = $this->_userDetailsList;
 		} else {
 			$preFix='shipto_';
-			$userInfoID = JRequest::getVar('user_info_id', 0);
+			$userInfoID = JRequest::getVar('virtuemart_userinfo_id', 0);
 			if(!empty($userInfoID)) {
 				$userAddressData = $this->_userDetails->userInfo[$userInfoID];
 			} else {
@@ -237,7 +237,7 @@ class VirtuemartViewUser extends JView {
 			$userDetailsList = current($this->_userDetails->userInfo);
 			for ($_i = 0; $_i < $addressCount; $_i++) {
 				if ($userDetailsList->address_type == $type) {
-					$userInfoID = $userDetailsList->user_info_id;
+					$userInfoID = $userDetailsList->virtuemart_userinfo_id;
 					reset($this->_userDetails->userInfo);
 					break;
 				}
@@ -299,8 +299,8 @@ class VirtuemartViewUser extends JView {
 //				.'&layout=edit'
 				.'&task=editAddressSt'
 				.'&addrtype=ST'
-				.'&cid[]='.$_addressList[$_i]->user_id
-				.'&user_info_id='.$_addressList[$_i]->user_info_id
+				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
+				.'&virtuemart_userinfo_id='.$_addressList[$_i]->virtuemart_userinfo_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
 			}
@@ -314,7 +314,7 @@ class VirtuemartViewUser extends JView {
 	function lshipto(){
 
 		// The ShipTo address if selected
-		$_shipto_id = JRequest::getVar('user_info_id', 0);
+		$_shipto_id = JRequest::getVar('virtuemart_userinfo_id', 0);
 //		$_shipto_id = JRequest::getVar('shipto', -1);
 
 		$_shiptoFields = $this->_userFieldsModel->getUserFields(
@@ -325,7 +325,7 @@ class VirtuemartViewUser extends JView {
 		$_userDetailsList = null;
 
 		if(!empty($_shipto_id)){
-			// Contains 0 for new, otherwise a user_info_id
+			// Contains 0 for new, otherwise a virtuemart_userinfo_id
 			$_shipto = $this->_model->getUserAddress($this->_model->_id, $_shipto_id, 'ST');
 			$this->_openTab = 3;
 
@@ -335,7 +335,7 @@ class VirtuemartViewUser extends JView {
 				// Find the correct record
 				$_userDetailsList = current($this->_userDetails->userInfo);
 				for ($_i = 0; $_i < count($this->_userDetails->userInfo); $_i++) {
-					if ($_userDetailsList->user_info_id == $_shipto_id) {
+					if ($_userDetailsList->virtuemart_userinfo_id == $_shipto_id) {
 						reset($this->_userDetails->userInfo);
 						break;
 					}
@@ -367,26 +367,26 @@ class VirtuemartViewUser extends JView {
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		if(Permissions::getInstance()->check('admin,storeadmin')){
-			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['shopper_group_id']);
-			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->vendor_id);
+			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['virtuemart_shoppergroup_id']);
+			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
 
 		} else {
 			$this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
 			if(empty($this->_lists['shoppergroups'])){
 				$this->_lists['shoppergroups']='unregistered';
 			}
-			$this->_lists['shoppergroups'] .= '<input type="hidden" name="shopper_group_id" value = "' . $_shoppergroup['shopper_group_id'] . '" />';
+			$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
 
-			if(!empty($this->_userDetails->vendor_id)){
-				$this->_lists['vendors'] = $this->_userDetails->vendor_id;
+			if(!empty($this->_userDetails->virtuemart_vendor_id)){
+				$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
 			}
 
 			if(empty($this->_lists['vendors'])){
 // Outcommented to revert rev. 2916
-//				$_setVendor = '<input type="hidden" name="vendor_id" id="vendor_id" value = "'
-//					.(empty($this->_userDetails->vendor_id)
-//						?VmConfig::get('default_vendor_id')
-//						: $this->_userDetails->vendor_id
+//				$_setVendor = '<input type="hidden" name="virtuemart_vendor_id" id="virtuemart_vendor_id" value = "'
+//					.(empty($this->_userDetails->virtuemart_vendor_id)
+//						?VmConfig::get('default_virtuemart_vendor_id')
+//						: $this->_userDetails->virtuemart_vendor_id
 //					 ).'"/>';
 				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
@@ -469,7 +469,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 			$vendorModel = $this->getModel('vendor');
-			$vendorModel->setId($this->_userDetails->vendor_id);
+			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$vendorModel->addImagesToVendor($vendor);
 			$this->assignRef('vendor', $vendor);
@@ -504,7 +504,7 @@ class VirtuemartViewUser extends JView {
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_published') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 

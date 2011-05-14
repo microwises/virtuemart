@@ -45,11 +45,11 @@ VmConfig::JvalideForm();
 	echo $this->pane->endPanel();
 	if (isset($this->waitinglist) && count($this->waitinglist) > 0) {
 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB'), 'product_waitinglist' );
-			echo $this->loadTemplate('waitinglist');
+		echo $this->loadTemplate('waitinglist');
 		echo $this->pane->endPanel();
 	}
-	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_META_INFORMATION'), 'product_metadata' );
-		echo $this->loadTemplate('metadata');
+	//echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_META_INFORMATION'), 'product_metadata' );
+		//echo $this->loadTemplate('metadata');
 	echo $this->pane->endPanel();
 	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB'), 'product_custom' );
 		echo $this->loadTemplate('custom');
@@ -63,7 +63,7 @@ VmConfig::JvalideForm();
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="product" />
 <input type="hidden" name="controller" value="product" />
-<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
+<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>

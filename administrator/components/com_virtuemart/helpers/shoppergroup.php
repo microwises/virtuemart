@@ -21,18 +21,18 @@ class ShopperGroup {
 	 * @return array
 	 */
   	function getShoppergroupById($id, $default_group = false) {
-    	$vendor_id = 1;
+    	$virtuemart_vendor_id = 1;
     	$db = JFactory::getDBO();
     	
-    	$q =  'SELECT `#__vm_shopper_group`.`shopper_group_id`, `#__vm_shopper_group`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__vm_shopper_group`';
+    	$q =  'SELECT `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`, `#__virtuemart_shoppergroups`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__virtuemart_shoppergroups`';
     		
     	if (!empty($id) && !$default_group) {
-      		$q .= ', `#__vm_user_shopper_group_xref`';
-      		$q .= ' WHERE `#__vm_user_shopper_group_xref`.`user_id`="'.$id.'" AND ';
-      		$q .= '`#__vm_shopper_group`.`shopper_group_id`=`#__vm_user_shopper_group_xref`.`shopper_group_id`';
+      		$q .= ', `#__virtuemart_user_shoppergroups`';
+      		$q .= ' WHERE `#__virtuemart_user_shoppergroups`.`virtuemart_user_id`="'.$id.'" AND ';
+      		$q .= '`#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`=`#__virtuemart_user_shoppergroups`.`virtuemart_shoppergroup_id`';
     	} 
     	else {
-    		$q .= ' WHERE `#__vm_shopper_group`.`vendor_id`="'.$vendor_id.'" AND `default`="1"';
+    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.$virtuemart_vendor_id.'" AND `default`="1"';
     	}
     	$db->setQuery($q);
     	return $db->loadAssoc();

@@ -152,7 +152,7 @@ class VirtueMartViewCart extends JView {
 
 		$this->doVendor = true;
 		$vendorModel = $this->getModel('vendor');
-		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();
@@ -160,10 +160,10 @@ class VirtueMartViewCart extends JView {
 
 	private function prepareContinueLink(){
 		// Get a continue link */
-		$category_id = shopFunctionsF::getLastVisitedCategoryId();
+		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 		$categoryLink='';
-		if($category_id){
-			$categoryLink='&category_id='.$category_id;
+		if($virtuemart_category_id){
+			$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
@@ -209,28 +209,28 @@ class VirtueMartViewCart extends JView {
 									.'&view=user'
 									.'&task=editaddresscart'
 									.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-									.'&user_info_id='.(empty($addressList[$_i]->user_info_id)? 0 : $addressList[$_i]->user_info_id)
+									.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
 									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 //			$_selectedST = JRequest::getVar('shipto');
 			$_selectedAddress = (
 				empty($this->_cart->selected_shipto)
-					? $addressList[0]->user_info_id // Defaults to 1st BillTo
+					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
 					: $this->_cart->selected_shipto
 				);
 //			$_selectedAddress = (
 //				empty($this->_cart->address_shipto_id)
-//					? $addressList[0]->user_info_id // Defaults to 1st BillTo
+//					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
 //					: $this->_cart->address_shipto_id
 //				);
 
-			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'user_info_id', 'address_type_name', $_selectedAddress);
+			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
 		} else {
 			$_selectedAddress = 0;
 			$this->lists['shipTo'] = '';
 		}
 
-		$this->lists['billTo'] = empty($addressList[0]->user_info_id)? 0 : $addressList[0]->user_info_id;
+		$this->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
 
 	}
 
@@ -239,7 +239,7 @@ class VirtueMartViewCart extends JView {
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
-//		$this->assignRef('user_id', $this->lists['current_id']);
+//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
 			$this->_user = $this->getModel('user');
 			$this->_user->setCurrent();
@@ -302,7 +302,7 @@ class VirtueMartViewCart extends JView {
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = $this->getModel('paymentmethod');
 
-		$selectedPaym = empty($this->_cart->paym_id) ? 0 : $this->_cart->paym_id;
+		$selectedPaym = empty($this->_cart->virtuemart_paymentmethod_id) ? 0 : $this->_cart->virtuemart_paymentmethod_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
 		$payments = $paymentModel->getPayms(false,true);

@@ -43,7 +43,7 @@ class VmConfig
 	 */
 	private function loadConfig() {
 		$db = JFactory::getDBO();
-		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = '1'";
+		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = '1'";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 
@@ -206,7 +206,7 @@ class VmConfig
 				jQuery('.selectimage select').change(function() {
 					var data = jQuery(this).val();
 					//alert('Handler for .change() called.'+data);
-					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&file_id='+data ,
+					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
 					function(datas, textStatus) { 
 						if (datas.msg =='OK') {
 							jQuery('#vm_display_image').attr('src', datas.file_url);

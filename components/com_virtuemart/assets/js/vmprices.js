@@ -9,9 +9,9 @@
 			minus  = cart.find('.quantity-minus'),
 			select = cart.find('select'),
 			radio = cart.find('input:radio'),
-			product_id = cart.find('input[name="product_id[]"]').val(),
+			virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 			quantity = cart.find('.quantity-input');
-			//console.log(product_id);
+			//console.log(virtuemart_product_id);
 			
 			addtocart.bind('click',function(e) { 
 				e.preventDefault();
@@ -31,10 +31,10 @@
 				}
 			});
 			select.change(function() {
-				setproducttype(cart,product_id);
+				setproducttype(cart,virtuemart_product_id);
 			});
 			radio.change(function() {
-				setproducttype(cart,product_id);
+				setproducttype(cart,virtuemart_product_id);
 			});
 		});
 

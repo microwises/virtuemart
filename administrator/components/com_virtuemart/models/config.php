@@ -145,8 +145,8 @@ class VirtueMartModelConfig extends JModel {
     function getOrderStatusList() {
 	$db = JFactory::getDBO();
 
-	$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__vm_order_status` ';
-	$query .= ' ORDER BY `#__vm_order_status`.`order_status_name`';
+	$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__virtuemart_orderstates` ';
+	$query .= ' ORDER BY `#__virtuemart_orderstates`.`order_status_name`';
 	$db->setQuery($query);
 
 	return $db->loadObjectList();
@@ -162,7 +162,7 @@ class VirtueMartModelConfig extends JModel {
     function getModuleList() {
 	$db = JFactory::getDBO();
 
-	$query = 'SELECT `module_id`, `module_name` FROM `#__vm_module` ';
+	$query = 'SELECT `module_id`, `module_name` FROM `#__virtuemart_modules` ';
 	$query .= 'ORDER BY `module_id`';
 	$db->setQuery($query);
 
@@ -199,7 +199,7 @@ class VirtueMartModelConfig extends JModel {
 	$orderByFields = new stdClass();
 	$orderByFields->checkbox ='';
 
-	$orderByFieldsArray = array('product_id', 'product_sku','product_price','category_name','category_description','mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'cdate', 'mdate', 'product_name', 'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
+	$orderByFieldsArray = array('virtuemart_product_id', 'product_sku','product_price','category_name','category_description','mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on', 'product_name', 'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 	foreach ($orderByFieldsArray as $field ) {
 		if (in_array($field, $orderByChecked) ) {
 			$checked = 'checked="checked"';
@@ -224,7 +224,7 @@ class VirtueMartModelConfig extends JModel {
 	if (empty ($searchChecked)) $searchChecked = array('product_sku','category_name','category_description','mf_name','product_name', 'product_s_desc');
 	else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
 	$searchFields = '';
-	$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'cdate', 'mdate',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
+	$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 	foreach ($searchFieldsArray as $field ) {
 		if (in_array($field, $searchChecked) ) {
 			$checked = 'checked="checked"';
@@ -249,7 +249,7 @@ class VirtueMartModelConfig extends JModel {
 	{
 		$db = JFactory::getDBO();
 
-		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
+		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = 1";
 		$db->setQuery($query);
 		$config = $db->loadResult();
 		if ($config) {
@@ -275,7 +275,7 @@ class VirtueMartModelConfig extends JModel {
 	    $curConfigParams->bind($data);
 
 	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__vm_config` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE config_id ="1"' ;
+	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 		$this->setError($table->getError());

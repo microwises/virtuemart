@@ -47,7 +47,7 @@ class plgPaymentMontrada extends vmPaymentPlugin {
         global $vendor_mail, $vendor_currency, $vmLogger;
         
 		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
-//		$hVendor_id = $_SESSION['ps_vendor_id'];
+//		$hVendor_id = $_SESSION['ps_virtuemart_vendor_id'];
 		$hVendor_id = 1;         $auth = $_SESSION['auth'];
         $ps_checkout = new ps_checkout;
         
@@ -57,11 +57,11 @@ class plgPaymentMontrada extends vmPaymentPlugin {
         $qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."' AND address_type='BT'";
         $dbbt->query($qt);
         $dbbt->next_record();
-        $user_info_id = $dbbt->f("user_info_id");
-        if( $user_info_id != $d["ship_to_info_id"]) {
+        $virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+        if( $virtuemart_userinfo_id != $d["ship_to_info_id"]) {
             // Get user billing information
             $dbst = & JFactory::getDBO();
-            $qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+            $qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
             $dbst->query($qt);
             $dbst->next_record();
         }
@@ -200,7 +200,7 @@ class plgPaymentMontrada extends vmPaymentPlugin {
            return True;
            
            $db = JFactory::getDBO();
-           $q = "UPDATE #__{vm}_order_payment SET order_payment_code='',order_payment_number='',order_payment_expire='' WHERE order_id=$order_number";
+           $q = "UPDATE #__{vm}_order_payment SET order_payment_code='',order_payment_number='',order_payment_expire='' WHERE virtuemart_order_id=$order_number";
            $db->query($q);
            $db->next_record();
         } 

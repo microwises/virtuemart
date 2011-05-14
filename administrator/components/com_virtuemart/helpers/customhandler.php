@@ -20,12 +20,12 @@ class VmCustomHandler {
 
 	private function __construct($id=0){
 
-		$this->custom_id = $id;
+		$this->virtuemart_custom_id = $id;
 	}
 
 	public function getCustomParentTitle($custom_parent_id) {
 
-    	$q='SELECT custom_title FROM `#__vm_custom` WHERE custom_id ='.$custom_parent_id;
+    	$q='SELECT custom_title FROM `#__virtuemart_customs` WHERE virtuemart_custom_id ='.$custom_parent_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$this->_db->setQuery($q);
@@ -103,7 +103,7 @@ class VmCustomHandler {
 	 */
 	private function addHiddenByType(){
 
-		self::addHidden('custom_id',$this->custom_id);
+		self::addHidden('virtuemart_custom_id',$this->virtuemart_custom_id);
 		self::addHidden('option','com_virtuemart');
 
 	}
@@ -130,7 +130,7 @@ class VmCustomHandler {
 	public function displayCustomSelection(){
 		
 		$customslist = self::getCustomsList();
-		if (isset($this->custom_id)) $value = $this->custom_id ;
+		if (isset($this->virtuemart_custom_id)) $value = $this->virtuemart_custom_id ;
 		else $value = JRequest::getVar( 'custom_parent_id',0);
 		return  VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$customslist, 'custom_parent_id', $value);
 	}
@@ -147,10 +147,10 @@ class VmCustomHandler {
 
     	$vendorId=1;
 		// get custom parents
-    	$q='SELECT custom_id as value ,custom_title as text FROM `#__vm_custom` where custom_parent_id=0';
+    	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0';
 		if ($publishedOnly) $q=' WHERE `published`=1 ';
-		if ($ID = JRequest::getVar( 'custom_id',false)) $q .=' and `custom_id`!='.$ID;
-		//if (isset($this->custom_id)) $q.=' and custom_id !='.$this->custom_id;
+		if ($ID = JRequest::getVar( 'virtuemart_custom_id',false)) $q .=' and `virtuemart_custom_id`!='.$ID;
+		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$this->_db->setQuery($q);
@@ -182,7 +182,7 @@ class VmCustomHandler {
 	 */
 	public function displayCustomFields($imageArgs='',$field_types){
 
-		$identify = ''; // ':'.$this->custom_id;
+		$identify = ''; // ':'.$this->virtuemart_custom_id;
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		if ($this->field_type) self::addHidden('field_type',$this->field_type);
 		self::addHiddenByType();

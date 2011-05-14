@@ -40,8 +40,8 @@ class VirtuemartViewReport extends JView {
 		$curTask = JRequest::getVar('task');
 		$layoutName = JRequest::getVar('layout','default');
 
-		$from_period  = JRequest::getVar('from_period', '?');
-		$until_period = JRequest::getVar('until_period', '?');
+		$from_period  = JRequest::getVar('from_period', '');
+		$until_period = JRequest::getVar('until_period', '');
 
 		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT_MOD'), 'vm_report_48');
 
@@ -50,43 +50,39 @@ class VirtuemartViewReport extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
 
+		JHTML::_('behavior.tooltip');
+		JHTML::_('behavior.calendar');
+
 		$model = $this->getModel();
 
 		switch($curTask){
 			default:{
+				
 				$pagination = $model->getPagination();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				$date_presets = ReportFunctions::getDatePresets();
 				$lists['select_date'] = ReportFunctions::renderDateSelectList($date_presets, $from_period, $until_period);
-				// set period
-				$tzoffset     = $config->getValue('config.offset');
-				$from         = JFactory::getDate($from_period, $tzoffset);
-				$until        = JFactory::getDate($until_period, $tzoffset);
 				
-		
+				// set period
+				$tzoffset     = $config->getValue('config.offset');		
 				// check period - set to defaults if no value is set or dates cannot be parsed
-				if ($from->_date === false || $until->_date === false) {
-					if ($from_period != '?' && $until_period != '?') {
-						JError::raiseNotice(500, JText::_('COM_VIRTUEMART_ENTER_VALID_DATE'));
-					}
-					$from_period  = $date_presets['last30']['from'];
-					$until_period = $date_presets['last30']['until'];
-					$from         = JFactory::getDate($from_period, $tzoffset);
-					$until        = JFactory::getDate($until_period, $tzoffset);
+				if (empty($from_period) && empty($until_period)) {
+					$from_period  = $date_presets['today']['from'];
+					$until_period = $date_presets['today']['until'];
+					$from         =& JFactory::getDate($from_period, $tzoffset);
+					$until        =& JFactory::getDate($until_period, $tzoffset);
 				} else {
-					if ($from->toUnix() > $until->toUnix()){
-						list($from_period, $until_period) = array($until_period, $from_period);
-						list($from, $until) = array($until, $from);
-					}
+					$from         =& JFactory::getDate($from_period, $tzoffset);
+					$until        =& JFactory::getDate($until_period, $tzoffset);
 				}		
 
 				$this->assignRef('pagination', $pagination);
 
 				$myCurrencyDisplay = CurrencyDisplay::getCurrencyDisplay();
 
-				$revenueBasic = $model->getRevenue();
+				$revenueBasic = $model->getRevenue($from, $until);
 				if(is_array($revenueBasic)){
 					foreach($revenueBasic as $i => $j){
 						$j->revenue = $myCurrencyDisplay->getValue($j->revenue);

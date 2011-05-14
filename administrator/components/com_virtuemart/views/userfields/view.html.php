@@ -51,7 +51,7 @@ class VirtuemartViewUserfields extends JView {
 
 			$userField = $model->getUserfield();
 
-			if ($userField->fieldid < 1) { // Insert new userfield
+			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -61,9 +61,9 @@ class VirtuemartViewUserfields extends JView {
 			} else { // Update existing userfield
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, name AS text'
-					. ' FROM #__vm_userfield'
+					. ' FROM #__virtuemart_userfields'
 					. ' ORDER BY ordering';
-				$ordering = JHTML::_('list.specificordering',  $userField, $userField->fieldid, $qry);
+				$ordering = JHTML::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'));
@@ -73,8 +73,8 @@ class VirtuemartViewUserfields extends JView {
 					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
@@ -82,12 +82,12 @@ class VirtuemartViewUserfields extends JView {
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'vendor_id', '', 'vendor_id', 'vendor_name', $userField->vendor_id);
+			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = $this->getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
-			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'shopper_group_id', '', 'shopper_group_id', 'shopper_group_name', $model->_params->get('shopper_group_id'));
+			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $model->_params->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();
@@ -189,7 +189,7 @@ class VirtuemartViewUserfields extends JView {
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_published') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 

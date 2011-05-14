@@ -70,10 +70,10 @@ class modelfunctions{
 		}
 
 		//TODO enhance it maybe simular to this
-//		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
-//		$q .= $product_data->product_id.', ';
-//		$q .= JRequest::getInt('manufacturer_id').') ';
-//		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
+//		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (virtuemart_product_id, virtuemart_manufacturer_id) VALUES (';
+//		$q .= $product_data->virtuemart_product_id.', ';
+//		$q .= JRequest::getInt('virtuemart_manufacturer_id').') ';
+//		$q .= 'ON DUPLICATE KEY UPDATE virtuemart_manufacturer_id = '.JRequest::getInt('virtuemart_manufacturer_id');
 //		$this->_db->setQuery($q);
 //		$this->_db->query();
 		return true;
@@ -107,7 +107,7 @@ class modelfunctions{
 				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
-				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&category_id='.$value), $tmp). ', ';
+				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id='.$value), $tmp). ', ';
 //				$list .= $tmp. ', ';
 				$i++;
 				if($i==$quantity) break;

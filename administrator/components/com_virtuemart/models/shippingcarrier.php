@@ -36,7 +36,7 @@ class VirtueMartModelShippingCarrier extends JModel {
     /** @var integer Joomla plugin ID */
     var $jplugin_id;
     /** @var integer Vendor ID */
-    var $vendor_id;
+    var $virtuemart_vendor_id;
     /** @var objectlist shipping carrier data */
     var $_data;
     /** @var integer Total number of shipping carriers in the database */
@@ -104,7 +104,7 @@ class VirtueMartModelShippingCarrier extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `shipping_carrier_id` FROM `#__vm_shipping_carrier`';
+	    $query = 'SELECT `virtuemart_shippingcarrier_id` FROM `#__virtuemart_shippingcarriers`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -120,7 +120,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable('shipping_carrier');
+	    $this->_data = $this->getTable('shippingcarriers');
 	    $this->_data->load((int)$this->_id);
 	}
 
@@ -141,11 +141,11 @@ class VirtueMartModelShippingCarrier extends JModel {
      * @return Mixed False if the save was unsuccessful, the shipping carrier ID otherwise.
      */
     function store() {
-	$table = $this->getTable('shipping_carrier');
+	$table = $this->getTable('shippingcarriers');
 
 	$data = JRequest::get( 'post' );
-	if($data['vendor_id']) {
-		$data['shipping_carrier_vendor_id'] = $data['vendor_id'];
+	if($data['virtuemart_vendor_id']) {
+		$data['shipping_carrier_virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 	}
 
 	// Bind the form fields to the shipping carrier table
@@ -166,7 +166,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	    return false;
 	}
 
-	return $table->shipping_carrier_id;
+	return $table->virtuemart_shippingcarrier_id;
     }
 
 
@@ -178,7 +178,7 @@ class VirtueMartModelShippingCarrier extends JModel {
      */
     function delete() {
 	$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-	$table =& $this->getTable('shipping_carrier');
+	$table =& $this->getTable('shippingcarriers');
 
 	foreach($shippingCarrierIds as $shippingCarrierId) {
 	    if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
@@ -207,7 +207,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 	if ($carrierId) {
 	    $db =& JFactory::getDBO();
 
-	    $query = 'DELETE FROM `#__vm_shipping_rate`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
+	    $query = 'DELETE FROM `#__virtuemart_shippingrates`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
 	    $db->setQuery($query);
 	    if ($db->query()) {
 		return true;
@@ -229,8 +229,8 @@ class VirtueMartModelShippingCarrier extends JModel {
      * @return object List of shipping carrier objects
      */
     public function getShippingCarriers() {
-	$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
-	$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_id`';
+	$query = 'SELECT * FROM `#__virtuemart_shippingcarriers` ';
+	$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`virtuemart_shippingcarrier_id`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
@@ -243,8 +243,8 @@ class VirtueMartModelShippingCarrier extends JModel {
      */
 	public function getShippingCarrierRates($weight=0, $country=0, $zip=0) {
 
-		$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
-		$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_list_order`';
+		$query = 'SELECT * FROM `#__virtuemart_shippingcarriers` ';
+		$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`shipping_carrier_list_order`';
 		$carrierList = $this->_getList($query);
 
 		$db =& JFactory::getDBO();
@@ -252,7 +252,7 @@ class VirtueMartModelShippingCarrier extends JModel {
 		$i=(int)0;
 
 		foreach ($carrierList as $key=>$value) {
-			$query = 'SELECT * FROM `#__vm_shipping_rate` WHERE `shipping_rate_carrier_id`="'.$value->shipping_carrier_id.'" ';
+			$query = 'SELECT * FROM `#__virtuemart_shippingrates` WHERE `shipping_rate_carrier_id`="'.$value->virtuemart_shippingcarrier_id.'" ';
 			if(!empty($weight)){
 				$query .= 'AND `shipping_rate_weight_start` <="'.$weight.'" AND `shipping_rate_weight_end` > "'.$weight.'"';
 			}

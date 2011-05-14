@@ -82,13 +82,13 @@ class VirtueMartModelProductspecial extends JModel {
      	$this->getPagination();
 
      	/* Build the query */
-     	$q = "SELECT #__vm_product.`product_id`,
-     				#__vm_product.`product_parent_id`,`product_name`,`product_sku`, `product_special`,";
+     	$q = "SELECT #__virtuemart_products.`virtuemart_product_id`,
+     				#__virtuemart_products.`product_parent_id`,`product_name`,`product_sku`, `product_special`,";
 //     				IF(`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,  //Todo solve this
      				$q .="`published`,`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_id');
+     	return $db->loadObjectList('virtuemart_product_id');
     }
 
     /**
@@ -96,11 +96,11 @@ class VirtueMartModelProductspecial extends JModel {
     * @author RolandD
     */
     private function getInventoryListQuery() {
-    	return 'FROM #__vm_product
-			LEFT JOIN #__vm_product_price
-			ON #__vm_product.product_id = #__vm_product_price.product_id
-			LEFT JOIN #__vm_shopper_group
-			ON #__vm_product_price.shopper_group_id = #__vm_shopper_group.shopper_group_id';
+    	return 'FROM #__virtuemart_products
+			LEFT JOIN #__virtuemart_product_prices
+			ON #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_prices.virtuemart_product_id
+			LEFT JOIN #__virtuemart_shoppergroups
+			ON #__virtuemart_product_prices.virtuemart_shoppergroup_id = #__virtuemart_shoppergroups.virtuemart_shoppergroup_id';
     }
 
     /**
@@ -116,17 +116,17 @@ class VirtueMartModelProductspecial extends JModel {
 
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_productspecial', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_productspecial').'%');
+     	if (JRequest::getVar('filter_productspecial', false)) $filters[] = '#__virtuemart_products.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_productspecial').'%');
      	if (JRequest::getVar('search_type', '') != '') {
      		switch (JRequest::getVar('search_type')) {
 				case 'featured_and_discounted':
-					$filters[] = "#__vm_product_price.`product_discount_id` > 0 AND #__vm_product.`product_special` = 'Y'";
+					$filters[] = "#__virtuemart_product_prices.`product_discount_id` > 0 AND #__virtuemart_products.`product_special` = 'Y'";
 					break;
 				case 'featured':
-					$filters[] = "#__vm_product.`product_special` = 'Y'";
+					$filters[] = "#__virtuemart_products.`product_special` = 'Y'";
 					break;
 				case 'discounted':
-					$filters[] = '#__vm_product_price.`product_discount_id` > 0';
+					$filters[] = '#__virtuemart_product_prices.`product_discount_id` > 0';
 					break;
      		}
      	}

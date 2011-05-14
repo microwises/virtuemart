@@ -53,7 +53,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		global $vendor_mail, $vendor_currency,$vmLogger;
 		//$database = new ps_DB;
 		$database = JFactory::getDBO();
-		$hVendor_id = $_SESSION["ps_vendor_id"];
+		$hVendor_id = $_SESSION["ps_virtuemart_vendor_id"];
 		$auth = $_SESSION['auth'];
 		$ps_checkout = new ps_checkout;
 
@@ -76,12 +76,12 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 
 		$dbbt->query($qt);
 		$dbbt->next_record();
-		$user_info_id = $dbbt->f("user_info_id");
-		if( $user_info_id != $d["ship_to_info_id"]) {
+		$virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+		if( $virtuemart_userinfo_id != $d["ship_to_info_id"]) {
 			// Get user billing information
 			// $dbst =& new ps_DB;
 			$dbst =& JFactory::getDBO();
-			$qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
+			$qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$d["ship_to_info_id"]."' AND address_type='ST'";
 			$dbst->query($qt);
 			$dbst->next_record();
 		}
@@ -239,7 +239,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
 		$q .= "order_number='".$d['order_number']."' ";
-		$q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+		$q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
 		$db->query( $q );
 		if( !$db->next_record() ) {
 			//$vmLogger->err("Error: Order not found.");
@@ -253,7 +253,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		// $dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
 		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
 
@@ -263,12 +263,12 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$db->f("user_id")."'";
 		$dbbt->query($qt);
 		$dbbt->next_record();
-		$user_info_id = $dbbt->f("user_info_id");
-		if( $user_info_id != $db->f("user_info_id")) {
+		$virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+		if( $virtuemart_userinfo_id != $db->f("virtuemart_userinfo_id")) {
 			// Get user's alternative shipping information
 			//$dbst =& new ps_DB;
 			$dbst =& JFactory::getDBO();
-			$qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$db->f("user_info_id")."' AND address_type='ST'";
+			$qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."' AND address_type='ST'";
 			$dbst->query($qt);
 			$dbst->next_record();
 		}
@@ -377,7 +377,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
-				$q .="WHERE order_id='".$db->f("order_id")."' ";
+				$q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
@@ -428,7 +428,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
 		$q .= "order_number='".$d['order_number']."' ";
-		$q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+		$q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
 		$db->query( $q );
 		if( !$db->next_record() ) {
 			//$vmLogger->err("Error: Order not found.");
@@ -442,7 +442,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		//$dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
 		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
 
@@ -452,12 +452,12 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		$qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$db->f("user_id")."'";
 		$dbbt->query($qt);
 		$dbbt->next_record();
-		$user_info_id = $dbbt->f("user_info_id");
-		if( $user_info_id != $db->f("user_info_id")) {
+		$virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+		if( $virtuemart_userinfo_id != $db->f("virtuemart_userinfo_id")) {
 			// Get user's alternative shipping information
 			//$dbst =& new ps_DB;
 			$dbst =& JFactory::getDBO();
-			$qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$db->f("user_info_id")."' AND address_type='ST'";
+			$qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."' AND address_type='ST'";
 			$dbst->query($qt);
 			$dbst->next_record();
 		}
@@ -566,7 +566,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 				$q = "UPDATE #__{vm}_order_payment SET ";
 				$q .="order_payment_log='".$d["order_payment_log"]."',";
 				$q .="order_payment_trans_id='".$TRANSACTION_ID."' ";
-				$q .="WHERE order_id='".$db->f("order_id")."' ";
+				$q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
 				$db->query( $q );
 				$vmLogger->debug( $d['order_payment_log']);
 				break;

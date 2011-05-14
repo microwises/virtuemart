@@ -109,11 +109,11 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 		<?php 
 		for ($i=0, $n=count($this->recentOrders); $i < $n; $i++) {
 			$row = $this->recentOrders[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_print&order_id='.$row->order_id);
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_print&virtuemart_order_id='.$row->virtuemart_order_id);
 			?> 
 		  	<tr>
 				<td width="50%">
-					<a href="<?php echo $link; ?>"><?php echo $row->order_id; ?></a>
+					<a href="<?php echo $link; ?>"><?php echo $row->virtuemart_order_id; ?></a>
 			  	</td>
 				<td width="50%">
 					(<?php echo 'Here was some strange total and vendor currency' ?>)
@@ -127,12 +127,12 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 		<?php 
 		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
 			$row = $this->recentCustomers[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&user_id='.$row->user_id);
+			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&virtuemart_user_id='.$row->virtuemart_user_id);
 			?>
 			<tr>
 		  		<td colspan="2">
 		  			<a href="<?php echo $link; ?>">
-		  				<?php echo '(' . $row->order_id . ') ' . $row->first_name . ' ' . $row->last_name; ?>
+		  				<?php echo '(' . $row->virtuemart_order_id . ') ' . $row->first_name . ' ' . $row->last_name; ?>
 		  			</a>
 		  		</td>
 			</tr>

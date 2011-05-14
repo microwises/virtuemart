@@ -32,7 +32,8 @@ class VirtueMartControllerProductdetails extends JController {
 
 	public function __construct() {
 		parent::__construct();
-		$this->registerTask( 'askquestion','askquestion' );
+		$this->registerTask( 'recommend','MailForm' );
+		$this->registerTask( 'askquestion','MailForm' );
 	}
 
 	public function productdetails() {
@@ -86,7 +87,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 	$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
 	 	$vendorModel = $this->getModel('vendor');
-		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->vendor_id);
+		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
 
 		if (shopFunctionsF::renderMail('askquestion', $VendorEmail, $vars)) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
@@ -102,14 +103,58 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->setLayout('mailconfirmed');
 		$view->display();
 	}
+	
+	/**
+	 * Send the Recommend to a friend email.
+	 * @author Kohl Patrick, 
+	 */
+	public function mailRecommend () {
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$mainframe = JFactory::getApplication();
+		$vars = array();
 
+		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
+		$productModel = $this->getModel('product');
+		$vars['product'] = $productModel->getProductDetails();
+		$user = JFactory::getUser();
+			$fromMail = $user->email;
+			$fromName = $user->name;
+		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
+
+		$TOMail = JRequest::getVar('email');
+
+		if (shopFunctionsF::renderMail('recommend', $TOMail, $vars)) {
+			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
+		}
+		else {
+			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
+		}
+		$mainframe->enqueueMessage(JText::_($string));
+
+		/* Display it all */
+		$view = $this->getView('recommend', 'html');
+		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+		$view->setLayout('mailconfirmed');
+		$view->display();
+	}
+	
 	/**
 	 *  Ask Question form
-	 *
+	 * Recommend form for Mail
 	 */
-	public function askquestion(){
+	public function MailForm(){
+		
 		/* Create the view */
-		$view = $this->getView('askquestion', 'html');
+		if (JRequest::getCmd('task') == 'recommend' ) {
+			$user = JFactory::getUser();
+			if (empty($user->id)) {
+				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id') ),JText::_('YOU MUST LOGIN FIRST'));
+				return ; 
+			}
+			$view = $this->getView('recommend', 'html');
+		} else {
+			$view = $this->getView('askquestion', 'html');
+		}
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 
@@ -169,14 +214,14 @@ class VirtueMartControllerProductdetails extends JController {
 		$post = JRequest::get('request');
 
 //		echo '<pre>'.print_r($post,1).'</pre>';
-		$product_idArray = JRequest::getVar('product_id',0);
-		$product_id = $product_idArray[0];
+		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id',0);
+		$virtuemart_product_id = $virtuemart_product_idArray[0];
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$product_model = $this->getModel('product');
 
 		$customVariant = JRequest::getVar('customPrice',array());
-		$prices = $product_model->getPrice($product_id,$customVariant);
+		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant);
 
 		//Why we do not have to include the calculatorh.php here?
 		//Because it is already require in the model!

@@ -43,9 +43,9 @@ class VirtueMartCart  {
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
-	var $shipping_rate_id = 0;
+	var $virtuemart_shippingrate_id = 0;
 	var $shipper_id = 0;
-	var $paym_id = 0;
+	var $virtuemart_paymentmethod_id = 0;
 	var $BT = 0;
 	var $ST = 0;
 	var $tosAccepted = false;
@@ -153,9 +153,9 @@ class VirtueMartCart  {
 		$total_quantity = 0;
 		$total_updated = 0;
 		$total_deleted = 0;
-		$product_ids = JRequest::getVar('product_id',array(),'default','array' ) ;
+		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id',array(),'default','array' ) ;
 
-		if (empty($product_ids)) {
+		if (empty($virtuemart_product_ids)) {
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS',false) );
 			return false;
 		}
@@ -163,17 +163,17 @@ class VirtueMartCart  {
 		if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 		//Iterate through the prod_id's and perform an add to cart for each one
-		foreach ($product_ids as $p_key => $product_id) {
+		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
-			$product = $this->getProduct($product_id);
+			$product = $this->getProduct($virtuemart_product_id);
 
 			/* Check if we have a product */
 			if ($product) {
 				$quantityPost = $post['quantity'][$p_key];
-				$category_idPost = $post['category_id'][$p_key];
+				$virtuemart_category_idPost = $post['virtuemart_category_id'][$p_key];
 
-				$product->category_id = $category_idPost;
-				$productKey= $product->product_id;
+				$product->virtuemart_category_id = $virtuemart_category_idPost;
+				$productKey= $product->virtuemart_product_id;
 // INDEX NOT FOUND IN JSON HERE
 // changed name field you know exactly was this is
 				if (isset($post['customPrice'])) {
@@ -203,8 +203,6 @@ class VirtueMartCart  {
 					}
 				}
 
-
-
 			}
 			else {
 				$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND',false) );
@@ -225,7 +223,7 @@ class VirtueMartCart  {
 	*/
 	public function removeProductCart($prod_id=0) {
 		/* Check for cart IDs */
-		if (empty($prod_id)) $prod_id = JRequest::getVar('cart_product_id');
+		if (empty($prod_id)) $prod_id = JRequest::getVar('cart_virtuemart_product_id');
 //		$prod_id = JRequest::get();
 
 //		/* Check if the product ID is ok */
@@ -242,7 +240,7 @@ class VirtueMartCart  {
 //
 //		/* Remove the product */
 //		foreach ($cart_ids as $cart_id) {
-//			'P'.$product->product_id.$product->variants.$product->customvariants
+//			'P'.$product->virtuemart_product_id.$product->variants.$product->customvariants
 			unset($this->products[$prod_id]);
 //		}
 
@@ -258,21 +256,21 @@ class VirtueMartCart  {
 	* @param array $cart_id the cart IDs to remove from the cart
 	* @access public
 	*/
-	public function updateProductCart($cart_product_id=0) {
+	public function updateProductCart($cart_virtuemart_product_id=0) {
 
-		if (empty($cart_product_id)) $cart_product_id = JRequest::getVar('cart_product_id');
+		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = JRequest::getVar('cart_virtuemart_product_id');
 		if (empty($quantity)) $quantity = JRequest::getInt('quantity');
 
-//		foreach($cart_product_ids as $cart_product_id){
-			if (array_key_exists($cart_product_id, $this->products)) {
+//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
+			if (array_key_exists($cart_virtuemart_product_id, $this->products)) {
 				if(!empty($quantity)){
-					if($this->checkForQuantities($this->products[$cart_product_id],$quantity)){
-						$this->products[$cart_product_id]->quantity = $quantity;
+					if($this->checkForQuantities($this->products[$cart_virtuemart_product_id],$quantity)){
+						$this->products[$cart_virtuemart_product_id]->quantity = $quantity;
 						$updated = true;
 					}
 				} else {
 					//Todo when quantity is 0,  the product should be removed, maybe necessary to gather in array and execute delete func
-					unset($this->products[$cart_product_id]);
+					unset($this->products[$cart_virtuemart_product_id]);
 					$updated = true;
 				}
 
@@ -304,13 +302,13 @@ class VirtueMartCart  {
 	*
 	* @author Max Milbers
 	* @todo Find out if the include path belongs here? For now it works.
-	* @param int $product_id The product ID to get the object for
+	* @param int $virtuemart_product_id The product ID to get the object for
 	* @return object The product details object
 	*/
-	private function getProduct($product_id) {
+	private function getProduct($virtuemart_product_id) {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$model = JModel::getInstance('Product', 'VirtueMartModel');
-		return $model->getProduct($product_id, true, false);
+		return $model->getProduct($virtuemart_product_id, true, false);
 	}
 
 //	/**
@@ -325,7 +323,7 @@ class VirtueMartCart  {
 //		$products = array();
 ////		for ($i = 0; $cart['idx'] > $i; $i++) {
 //		foreach($this->products as $product)
-//			$products[] = $this->getProduct($product->product_id);
+//			$products[] = $this->getProduct($product->virtuemart_product_id);
 //		}
 //		return $products;
 //	}
@@ -339,8 +337,8 @@ class VirtueMartCart  {
 	*/
 	public function getCategoryId() {
 		$db = JFactory::getDBO();
-		$product_id = JRequest::getInt('product_id');
-		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = '.intval($virtuemart_product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}	/**
@@ -351,9 +349,9 @@ class VirtueMartCart  {
 	* @access public
 	* @return mixed if found the category ID else null
 	*/
-	public function getCardCategoryId($product_id) {
+	public function getCardCategoryId($virtuemart_product_id) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `category_id` FROM `#__vm_product_category_xref` WHERE `product_id` = '.intval($product_id).' LIMIT 1';
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = '.intval($virtuemart_product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -409,10 +407,10 @@ class VirtueMartCart  {
 		if (VmConfig::get('check_stock', false)) {
 			if ($quantity > $product->product_in_stock) {
 				/* Create an array for out of stock items and continue to next item */
-				$request_stock[$ci]['product_id'] = $product->product_id;
+				$request_stock[$ci]['virtuemart_product_id'] = $product->virtuemart_product_id;
 				$request_stock[$ci]['quantity'] = $quantity;
 				$ci++;
-//				$this->_error[] = 'Quantity reached stock limit '.$product->product_id;
+//				$this->_error[] = 'Quantity reached stock limit '.$product->virtuemart_product_id;
 				continue;
 			}
 		}
@@ -469,8 +467,8 @@ class VirtueMartCart  {
 		return '';
 	}
 
-	public function setShippingRate($shipping_rate_id){
-		$this->shipping_rate_id=$shipping_rate_id;
+	public function setShippingRate($virtuemart_shippingrate_id){
+		$this->virtuemart_shippingrate_id=$virtuemart_shippingrate_id;
 		$this->setCartIntoSession();
 	}
 
@@ -503,8 +501,8 @@ class VirtueMartCart  {
 		}
 	}
 
-	public function setPaymentMethod($paym_id){
-		$this->paym_id=$paym_id;
+	public function setPaymentMethod($virtuemart_paymentmethod_id){
+		$this->virtuemart_paymentmethod_id=$virtuemart_paymentmethod_id;
 		$this->setCartIntoSession();
 	}
 
@@ -585,21 +583,21 @@ class VirtueMartCart  {
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_retValues = $_dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
-		$this->shipping_rate_id = -1;
+		$this->virtuemart_shippingrate_id = -1;
 		foreach ($_retValues as $_retVal) {
 			if ($_retVal !== null) {
-				$this->shipping_rate_id = $_retVal;
+				$this->virtuemart_shippingrate_id = $_retVal;
 				break; // When we've got a value, it's always a valid one, so we're done now
 			}
 		}
-		if ($this->shipping_rate_id < 0) {
+		if ($this->virtuemart_shippingrate_id < 0) {
 			$this->shipper_id = 0;
 			$this->setCartIntoSession();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);
 		}
 
 		//Test Payment and show payment plugin
-		if(empty($this->paym_id)){
+		if(empty($this->virtuemart_paymentmethod_id)){
 
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
 		} else {
@@ -686,14 +684,14 @@ class VirtueMartCart  {
 			if ($_obj !== null && is_array($this->{$type})) {
 				$this->{$type}[$field->name] = $_obj->{$field->name};
 			}
-			if(empty($this->{$type}[$field->name]) && $field->name!='state_id'){
+			if(empty($this->{$type}[$field->name]) && $field->name!='virtuemart_state_id'){
 				$redirectMsg = 'Enter for "'.$type.'" "'.$field->name.'" title: '.JText::_($field->title).' and value: '.$this->{$type}[$field->name].' but '.$this->BT['first_name'];
 			} else {
-				//This is a special test for the state_id. There is the speciality that the state_id could be 0 but is valid.
-				if($field->name=='state_id'){
+				//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
+				if($field->name=='virtuemart_state_id'){
 
 					if(!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'state.php');
-					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['country_id'],$this->{$type}['state_id'])){
+					if(!$msg=VirtueMartModelState::testStateCountry($this->{$type}['virtuemart_country_id'],$this->{$type}['virtuemart_state_id'])){
 						$redirectMsg = $msg;
 					}
 				}
@@ -725,7 +723,7 @@ class VirtueMartCart  {
 				JError::raiseWarning(500, $order->getError());
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
 			}
-			$this->order_id= $_orderID;
+			$this->virtuemart_order_id= $_orderID;
 			$this->sentOrderConfirmedEmail($order->getOrder($_orderID));
 
 			//We delete the old stuff
@@ -786,8 +784,8 @@ class VirtueMartCart  {
         // We store the items in a new SESSION var
 		if ($user->id > 0 && empty($cart)) {
 			$q = 'SELECT `cart_content`
-				FROM `#__vm_cart`
-				WHERE `user_id` = '.$user->id;
+				FROM `#__virtuemart_carts`
+				WHERE `virtuemart_user_id` = '.$user->id;
 			$db->setQuery($q);
 			$savedcart = $db->loadObject();
 			if ($savedcart) {
@@ -797,13 +795,13 @@ class VirtueMartCart  {
 				// Now check if all products are still published and existant
 				$products_in_cart = array();
 				for ($i=0; $i < $contents["idx"]; $i++) {
-					$products_in_cart[$contents[$i]['product_id']] = intval($contents[$i]['product_id']);
+					$products_in_cart[$contents[$i]['virtuemart_product_id']] = intval($contents[$i]['virtuemart_product_id']);
 				}
 				if (!empty($products_in_cart)) {
 					$remove_products = array();
-					$q = 'SELECT `product_id`
-						FROM #__vm_product
-						WHERE `product_id` IN ('.implode(',', $products_in_cart ).')
+					$q = 'SELECT `virtuemart_product_id`
+						FROM #__virtuemart_products
+						WHERE `virtuemart_product_id` IN ('.implode(',', $products_in_cart ).')
 						AND published = 0';
 					$db->setQuery($q);
 					$remove_products = $db->loadResultArray();
@@ -811,7 +809,7 @@ class VirtueMartCart  {
 
 				if (!empty($remove_products)) {
 					for ($i=0; $i < $contents["idx"]; $i++) {
-						if (in_array(intval($contents[$i]['product_id']), $remove_products)) self::removeProductCart(array($i));
+						if (in_array(intval($contents[$i]['virtuemart_product_id']), $remove_products)) self::removeProductCart(array($i));
 					}
 				}
 			}
@@ -869,7 +867,7 @@ class VirtueMartCart  {
 		$cart = $this->getCart();
 		if ($user->id > 0) {
 			$cart_contents = serialize($cart);
-			$q = "INSERT INTO `#__vm_cart` (`user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
+			$q = "INSERT INTO `#__virtuemart_carts` (`virtuemart_user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
 				ON DUPLICATE KEY UPDATE `cart_content` = ".$db->Quote($cart_contents);
 			$db->setQuery($q);
 			$db->query();
@@ -892,19 +890,19 @@ class VirtueMartCart  {
 		//get listing of titles for attributes (Sean Tobin)
 		$attributes = array( ) ;
 		if( ! isset( $d["prod_id"] ) ) {
-			$d["prod_id"] = $d["product_id"] ;
+			$d["prod_id"] = $d["virtuemart_product_id"] ;
 		}
-		$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='" . (int)$d["prod_id"] . "'" ;
+		$q = "SELECT virtuemart_product_id, attribute, custom_attribute FROM #__{vm}_product WHERE virtuemart_product_id='" . (int)$d["prod_id"] . "'" ;
 		$db->query( $q ) ;
 
 		$db->next_record() ;
 
 		if( ! $db->f( "attribute" ) && ! $db->f( "custom_attribute" ) ) {
-			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='" . (int)$d["prod_id"] . "'" ;
+			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE virtuemart_product_id='" . (int)$d["prod_id"] . "'" ;
 
 			$db->query( $q ) ;
 			$db->next_record() ;
-			$q = "SELECT product_id, attribute, custom_attribute FROM #__{vm}_product WHERE product_id='" . $db->f( "product_parent_id" ) . "'" ;
+			$q = "SELECT virtuemart_product_id, attribute, custom_attribute FROM #__{vm}_product WHERE virtuemart_product_id='" . $db->f( "product_parent_id" ) . "'" ;
 			$db->query( $q ) ;
 			$db->next_record() ;
 		}

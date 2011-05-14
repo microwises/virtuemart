@@ -55,12 +55,12 @@ class VirtuemartViewCategory extends JView {
 
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
-	    $categoryId = JRequest::getInt('category_id', 0);
+	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
 	    $vendorId = 1;
 
 	    $category = $categoryModel->getCategory($categoryId);
 		$search = JRequest::getVar('search') ;
-		if(empty($category->vendor_id) && $search == null ) {
+		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 
 	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
 	    	$mainframe -> redirect( 'index.php');
@@ -69,7 +69,7 @@ class VirtuemartViewCategory extends JView {
 	    /* Add the category name to the pathway */
 		if ($category->parents) {
 			foreach ($category->parents as $c){
-				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 			}
 		}
 		if($category->children)	$categoryModel->addImagesToCategories($category->children);
@@ -87,7 +87,7 @@ class VirtuemartViewCategory extends JView {
 
 		echo "\n<ul id='nav'>\n\t<li class='B1'>";
 			foreach ($categoryTree as $cat) {
-				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->id);
+				$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$cat->id);
 				?><a href="<?php echo $caturl ?>" title="<?php echo $cat->name ?>"><?php echo $cat->name ?></a><?php
 				if ($total) {
 				if ($cat->level > $catLevel) {
@@ -107,7 +107,7 @@ class VirtuemartViewCategory extends JView {
 	    $this->assignRef('category', $category);
 
 		/* Set Canonic link */
-		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$categoryId) , 'canonical', 'rel', '' );
+		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
 
 	    /* Set the titles */
 		$document->setTitle($category->category_name);

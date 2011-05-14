@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="adminform">
 		<tr>
 			<td class="key">
-				<label for="vendor_id">
+				<label for="virtuemart_vendor_id">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:
 				</label>
 			</td>
@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="key">
-				<label for="shopper_group_id">
+				<label for="virtuemart_shoppergroup_id">
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?>:
 				</label>
 			</td>
@@ -169,6 +169,6 @@ defined('_JEXEC') or die('Restricted access');
 	echo $_hiddenFields;
 ?>
 </fieldset>
-<input type="hidden" name="user_info_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userInfoID; ?>" />
 <input type="hidden" name="address_type" value="BT" />
 

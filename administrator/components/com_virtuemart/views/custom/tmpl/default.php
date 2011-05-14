@@ -17,7 +17,7 @@
 */
 
 /**
- * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_virtuemart&no_menu=1
+ * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&virtuemart_product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
 AdminMenuHelper::startAdminArea();
 
@@ -35,7 +35,7 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+	if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
 	<div style="float: left;">
@@ -74,13 +74,13 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($customs as $key => $custom) {
 
-			$checked = JHTML::_('grid.id', $i , $custom->custom_id);
-			if (!is_null($custom->custom_id)) $published = JHTML::_('grid.published', $custom, $i );
+			$checked = JHTML::_('grid.id', $i , $custom->virtuemart_custom_id);
+			if (!is_null($custom->virtuemart_custom_id)) $published = JHTML::_('grid.published', $custom, $i );
 			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
-				<td><?php echo $checked; echo $custom->custom_id; ?></td>
+				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
 				<?php 
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
@@ -88,7 +88,7 @@ $pagination = $this->pagination;
 				
 				<!-- Product name -->
 				<?php 
-				$link = "index.php?view=custom&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&custom_id=".$custom->custom_id."&option=".$option;
+				$link = "index.php?view=custom&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&virtuemart_custom_id=".$custom->virtuemart_custom_id."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
 				<td><?php echo $custom->custom_field_desc; ?></td>
@@ -117,8 +117,8 @@ $pagination = $this->pagination;
 	</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
-<?php if (JRequest::getInt('product_id', false)) { ?>
-	<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
+<?php if (JRequest::getInt('virtuemart_product_id', false)) { ?>
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id'); ?>" />
 <?php } ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="custom" />

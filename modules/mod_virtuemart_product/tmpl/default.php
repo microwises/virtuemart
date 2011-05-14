@@ -13,10 +13,10 @@ if ($display_style =="div") { ?>
 <div style="float:left;">
 	<?php
 	if ($product->product_thumb_image) {
-		echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id),VmImage::getImageByProduct($product)->displayImage('class="featuredProductImage" border="0"',$product->product_name));
+		echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&category_id='.$product->category_id),VmImage::getImageByProduct($product)->displayImage('class="featuredProductImage" border="0"',$product->product_name));
 	}
 	?>
-		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id), $product->product_name, array('title' => $product->product_name)); ?>
+		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&category_id='.$product->category_id), $product->product_name, array('title' => $product->product_name)); ?>
 	<?php if ($show_price) { echo shopFunctionsF::createPriceDiv('salesPrice','',$product->prices); 
 		echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
 	}
@@ -41,11 +41,11 @@ endforeach; ?>
 <?php foreach ($products as $product) : ?>
 <li>
 	<?php
-	if ($product->images) {
-		echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id),$product->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"' ));
+	if ($product->product_thumb_image) {
+		echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&category_id='.$product->category_id),VmImage::getImageByProduct($product)->displayImage('class="featuredProductImage" border="0"',$product->product_name));
 	}
 	?>
-		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id), $product->product_name, array('title' => $product->product_name)); ?>
+		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&category_id='.$product->category_id), $product->product_name, array('title' => $product->product_name)); ?>
 	<?php if ($show_price) { echo shopFunctionsF::createPriceDiv('salesPrice','',$product->prices); 
 		echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
 	}

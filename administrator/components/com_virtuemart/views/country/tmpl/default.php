@@ -53,10 +53,10 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count( $this->countries ); $i < $n; $i++) {
 		$row = $this->countries[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->country_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_country_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->country_id);
-		$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&country_id=' . $row->country_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->virtuemart_country_id);
+		$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -67,7 +67,7 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $statelink; ?>">&nbsp;[States]</a>
 		</td>
 		<td align="left">
-			<?php echo $row->zone_id; ?>
+			<?php echo $row->virtuemart_worldzone_id; ?>
 		</td>
 		<td>
 			<?php echo $row->country_2_code; ?>

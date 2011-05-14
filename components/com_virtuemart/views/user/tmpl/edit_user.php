@@ -166,5 +166,5 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 </fieldset>
 
-<input type="hidden" name="my_user_id" value="<?php echo $this->lists['current_id']; ?>" />
-<input type="hidden" name="user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />
+<input type="hidden" name="my_virtuemart_user_id" value="<?php echo $this->lists['current_id']; ?>" />
+<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />

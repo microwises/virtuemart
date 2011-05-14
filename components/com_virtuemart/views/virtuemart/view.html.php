@@ -38,6 +38,7 @@ class VirtueMartViewVirtueMart extends JView {
 	    * $vendor = $vendorModel->getVendor();
 	    * $this->assignRef('vendor',	$vendor);
 	    */
+		if(!VmConfig::get('shop_is_offline',0)){
 	    $vendorId = JRequest::getInt('vendorid', 1);
 
 	    $vendorModel = $this->getModel('vendor');
@@ -46,7 +47,7 @@ class VirtueMartViewVirtueMart extends JView {
 	    $vendor = $vendorModel->getVendor();
 	    $this->assignRef('vendor',$vendor);
 
-		if(!VmConfig::get('shop_is_offline',0)){
+
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
 

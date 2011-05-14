@@ -53,11 +53,11 @@ class VirtuemartViewOrders extends JView {
 
 		/* Get the data */
 		$order = $this->get('Order');
-		$_orderID = $order['details']['BT']->order_id;
+		$_orderID = $order['details']['BT']->virtuemart_order_id;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-		$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->vendor_id);
+		$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->virtuemart_vendor_id);
 		$this->assignRef('currency', $currency);
 
 		$_userFields = $userFieldsModel->getUserFields(
@@ -91,17 +91,17 @@ class VirtuemartViewOrders extends JView {
 			if (!empty($_item->product_attribute)) {
 				$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
-				$product = $productModel->getProduct($_item->product_id);
+				$product = $productModel->getProduct($_item->virtuemart_product_id);
 				$_productAttributes = array();
 				$_prodAttribs = explode(';', $product->attribute);
 				foreach ($_prodAttribs as $_pAttr) {
 					$_list = explode(',', $_pAttr);
 					$_name = array_shift($_list);
-					$_productAttributes[$_item->order_item_id][$_name] = array();
+					$_productAttributes[$_item->virtuemart_order_item_id][$_name] = array();
 					foreach ($_list as $_opt) {
 						$_optObj = new stdClass();
 						$_optObj->option = $_opt;
-						$_productAttributes[$_item->order_item_id][$_name][] = $_optObj;
+						$_productAttributes[$_item->virtuemart_order_item_id][$_name][] = $_optObj;
 					}
 				}
 			}

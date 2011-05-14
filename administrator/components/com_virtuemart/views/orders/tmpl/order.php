@@ -37,11 +37,11 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
-				<td><?php printf("%08d", $this->orderbt->order_id);?></td>
+				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo $this->orderbt->cdate; ?></td>
+				<td><?php echo $this->orderbt->created_on; ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
@@ -192,18 +192,18 @@ JPluginHelper::importPlugin('vmshipper');
 			</thead>
 		<?php foreach ($this->order['items'] as $item) { ?>
 			<!-- Display the order item -->
-			<tr valign="top" id="showItem_<?php echo $item->order_item_id; ?>">
+			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>">
 				<td>
-					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId='.$item->order_item_id.'&task=removeOrderItem'); ?>
+					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<span onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');">
 						<?php
 							echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-bug.png', "Remove", NULL, "Remove");
 						?>
 					</span>
-					<a href="javascript:enableItemEdit(<?php echo $item->order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
+					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
 				</td>
 				<td>
-					<input type="checkbox" name="cid[]" value="<?php echo $item->order_item_id; ?>" />
+					<input type="checkbox" name="cid[]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
 				<td>
 					<?php echo $item->product_quantity; ?>
@@ -222,7 +222,7 @@ JPluginHelper::importPlugin('vmshipper');
 						$_dispatcher =& JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(
 							 $this->orderID
-							,$item->order_item_id
+							,$item->virtuemart_order_item_id
 						));
 						$_plg = '';
 						foreach ($_returnValues as $_returnValue) {
@@ -258,9 +258,9 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 
 			<!-- Same order item, but now in an editable format -->
-			<tr valign="top" style="display: none; width: 100%" id="editItem_<?php echo $item->order_item_id; ?>">
+			<tr valign="top" style="display: none; width: 100%" id="editItem_<?php echo $item->virtuemart_order_item_id; ?>">
 				<td>
-					<a href="#" onClick="javascript:resetForm(<?php echo $item->order_item_id; ?>);"><?php
+					<a href="#" onClick="javascript:resetForm(<?php echo $item->virtuemart_order_item_id; ?>);"><?php
 						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'));
 					?></a>
 					<a href="#" onClick="javascript:submitForm('updateOrderItem');">
@@ -269,17 +269,17 @@ JPluginHelper::importPlugin('vmshipper');
 					?></a>
 				</td>
 				<td>
-					<input type="checkbox" name="cid[]" value="<?php echo $item->order_item_id; ?>" />
+					<input type="checkbox" name="cid[]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
 				<td>
-					<input type="text" size="3" name="product_quantity_<?php echo $item->order_item_id; ?>" value="<?php echo $item->product_quantity; ?>"/>
+					<input type="text" size="3" name="product_quantity_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_quantity; ?>"/>
 				</td>
 				<td>
 					<?php
 						echo $item->order_item_name;
 						if (!empty($item->product_attribute)) {
 							echo '<table border="0" celspacing="0" celpadding="0">';
-							foreach ($this->itemattributesupdatefields[$item->order_item_id] as $_attrib) {
+							foreach ($this->itemattributesupdatefields[$item->virtuemart_order_item_id] as $_attrib) {
 								echo '<tr>'
 									. '<td>'.$_attrib['lbl'].'</td>'
 									. '<td>'.$_attrib['fld'].'</td>'
@@ -289,7 +289,7 @@ JPluginHelper::importPlugin('vmshipper');
 						}
 						$_returnValues = $_dispatcher->trigger('plgVmOnEditOrderLineShipperBE',array(
 							 $this->orderID
-							,$item->order_item_id
+							,$item->virtuemart_order_item_id
 						));
 						$_plg = '';
 						foreach ($_returnValues as $_returnValue) {
@@ -311,13 +311,13 @@ JPluginHelper::importPlugin('vmshipper');
 					<?php echo $item->order_item_sku; ?>
 				</td>
 				<td align="center">
-					<?php echo $this->itemstatusupdatefields[$item->order_item_id]; ?>
+					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
 				</td>
 				<td>
-					<input type="text" size="8" name="product_item_price_<?php echo $item->order_item_id; ?>" value="<?php echo $item->product_item_price; ?>"/>
+					<input type="text" size="8" name="product_item_price_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td>
-					<input type="text" size="8" name="product_final_price_<?php echo $item->order_item_id; ?>" value="<?php echo $item->product_final_price; ?>"/>
+					<input type="text" size="8" name="product_final_price_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
 					<?php echo $this->currency->getFullValue($item->product_quantity * $item->product_final_price); ?>
@@ -351,13 +351,13 @@ JPluginHelper::importPlugin('vmshipper');
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="orders" />
-		<input type="hidden" name="order_id" value="<?php echo $this->orderID; ?>" />
-		<input type="hidden" name="order_item_id" value="0" />
+		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
+		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 		</form> <!-- Update linestatus form -->
 		<table class="adminlist">
 			<tr>
-				<td align="left" colspan="6"><?php $editLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->order_id.'&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
+				<td align="left" colspan="6"><?php $editLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
 				<!-- <a href="<?php echo $editLineLink; ?>" class="modal"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "New Item"); ?>
 				New Item </a>--></td>
 				<td align="right">
@@ -457,7 +457,7 @@ JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher =& JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
 			 $this->orderID
-			,$this->orderbt->vendor_id
+			,$this->orderbt->virtuemart_vendor_id
 			,$this->shippingInfo
 		));
 		foreach ($_returnValues as $_returnValue) {
@@ -522,7 +522,7 @@ function resetForm(id) {
 		document.getElementById('editItem_'+id).style['display'] = 'none';
 		checkCkeckBoxes(id, false);
 		editingItem = 0;
-		document.orderItemForm.order_item_id.value = 0;
+		document.orderItemForm.virtuemart_order_item_id.value = 0;
 	}
 }
 
@@ -535,7 +535,7 @@ function enableItemEdit(id) {
 	document.getElementById('editItem_'+id).style['display'] = '';
 	checkCkeckBoxes(id, true);
 	editingItem = id;
-	document.orderItemForm.order_item_id.value = id;
+	document.orderItemForm.virtuemart_order_item_id.value = id;
 }
 
 function checkCkeckBoxes(id, chk) {

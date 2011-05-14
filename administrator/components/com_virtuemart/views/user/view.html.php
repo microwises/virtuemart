@@ -109,7 +109,7 @@ class VirtuemartViewUser extends JView {
 
 			// Shopper info
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->vendor_id);
+			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
@@ -123,8 +123,8 @@ class VirtuemartViewUser extends JView {
 					.'?option=com_virtuemart'
 					.'&view=user'
 					.'&task=edit'
-					.'&cid[]='.$_addressList[$_i]->user_id
-					.'&shipto='.$_addressList[$_i]->user_info_id
+					.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
+					.'&shipto='.$_addressList[$_i]->virtuemart_userinfo_id
 					. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
 				}
@@ -147,7 +147,7 @@ class VirtuemartViewUser extends JView {
 					 	$_userDetailsList = current($userDetails->userInfo);
 					 	for ($_i = 0; $_i < $_addressCount; $_i++) {
 					 		if ($_userDetailsList->address_type == 'BT') {
-					 			$_userInfoID = $_userDetailsList->user_info_id;
+					 			$_userInfoID = $_userDetailsList->virtuemart_userinfo_id;
 					 			reset($userDetails->userInfo);
 					 			break;
 					 		}
@@ -181,7 +181,7 @@ class VirtuemartViewUser extends JView {
 					 	$_shipto = 0;
 					 	$_paneOffset = array();
 					 } else {
-					 	// Contains 0 for new, otherwise a user_info_id
+					 	// Contains 0 for new, otherwise a virtuemart_userinfo_id
 					 	$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
 					 	$_paneOffset = array('startOffset' => 2);
 					 	$_shiptoFields = $userFieldsModel->getUserFields(
@@ -197,7 +197,7 @@ class VirtuemartViewUser extends JView {
 
 					 		// @todo oscar, I just added that, but maybe it breaks the logic, please take a look on it
 					 		if(!empty($_userDetailsList)){
-						 		if ($_userDetailsList->user_info_id == $_shipto_id) {
+						 		if ($_userDetailsList->virtuemart_userinfo_id == $_shipto_id) {
 						 			reset($userDetails->userInfo);
 						 			break;
 						 		}
@@ -224,7 +224,7 @@ class VirtuemartViewUser extends JView {
 					 }
 
 					 $vendorModel = $this->getModel('vendor');
-					 $vendorModel->setId($userDetails->vendor_id);
+					 $vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 					if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 						if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -242,7 +242,7 @@ class VirtuemartViewUser extends JView {
 					 	$this->assignRef('currencies', $_currencies);
 
 					 	//can someone explain me what that should do?
-					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_category_id', '', 'vendor_category_id', 'vendor_category_name', $userDetails->vendor->vendor_category_id);
+					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_virtuemart_category_id', '', 'vendor_virtuemart_category_id', 'vendor_category_name', $userDetails->vendor->vendor_virtuemart_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);
 
 					 	//				//Different currency styles for different vendors are nonsense imho
@@ -326,7 +326,7 @@ class VirtuemartViewUser extends JView {
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 

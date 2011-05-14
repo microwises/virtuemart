@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_CURRENCY'); ?>:
 							</td>
 							<td>
-								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
+								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
 							</td>
 						</tr>
 						<tr>
@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_ACCEPTED_CURRENCIES'); ?>:
 							</td>
 							<td>
-								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 							</td>
 						</tr>
 					</table>
@@ -135,4 +135,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 </div>
 <input type="hidden" name="user_is_vendor" value="1" />
-<input type="hidden" name="vendor_id" value="<?php echo $this->vendor->vendor_id; ?>" />
+<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />

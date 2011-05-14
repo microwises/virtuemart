@@ -51,7 +51,7 @@ class plgVmShipperStandard extends vmShipperPlugin
 					,'auto_inc' => true
 					,'null' => false
 			)
-			,'order_id' => array (
+			,'virtuemart_order_id' => array (
 					 'type' => 'int'
 					,'length' => 11
 					,'null' => false
@@ -63,7 +63,7 @@ class plgVmShipperStandard extends vmShipperPlugin
 		);
 		$_schemeIdx = array(
 			 'idx_order_payment' => array(
-					 'columns' => array ('order_id')
+					 'columns' => array ('virtuemart_order_id')
 					,'primary' => false
 					,'unique' => false
 					,'type' => null

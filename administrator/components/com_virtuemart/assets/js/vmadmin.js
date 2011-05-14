@@ -185,7 +185,7 @@
 
 	VMConfig.set({
 		//URL to country/state AJAX Request
-		countryStateURL: 'index.php?option=com_virtuemart&view=state&task=getList&format=json&country_id=',
+		countryStateURL: 'index.php?option=com_virtuemart&view=state&task=getList&format=json&virtuemart_country_id=',
 				
 		//string-int Speed to Menu slide effect
 		menuAdminSpeed: 'medium',

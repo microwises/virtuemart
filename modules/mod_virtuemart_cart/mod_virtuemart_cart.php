@@ -65,7 +65,7 @@ if ($show_product_list) {
 }
 ?>
 <div class="total" style="float: right;"></div>
-<div class="total_products"><?php echo JText::_('VM_AJAX_CART_WAITING') ?></div>
+<div class="total_products"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"></div>
 <div class="show_cart"></div>
 <noscript>
 <?php echo JText::_('VM_AJAX_CART_PLZ_JAVASCRIPT') ?>

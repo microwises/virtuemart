@@ -61,15 +61,15 @@ class VirtuemartViewPaymentMethod extends JView {
 			$paym = $model->getPaym();
 			$this->assignRef('paym',	$paym);
 
-			$isNew = ($paym->paym_id < 1);
+			$isNew = ($paym->virtuemart_paymentmethod_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 			} else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->paym_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
@@ -78,9 +78,9 @@ class VirtuemartViewPaymentMethod extends JView {
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->paym_creditcards,true));
 
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->paym_shopper_groups));
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
 
-			$vendorList= ShopFunctions::renderVendorList($paym->paym_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
@@ -155,7 +155,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		} else {
 			$table = '#__extensions';
 			$ext_id = 'extension_id';
-			$enable = 'enabled';
+			$enable = 'published';
 		}
 
 		$db = JFactory::getDBO();

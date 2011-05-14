@@ -93,6 +93,6 @@ if(count($this->shipToFields['fields']==0)){
 	}
 	echo $_hiddenFields;
 ?>
-<input type="hidden" name="shipto_user_info_id" value="<?php echo $this->shipToID; ?>" />
+<input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo $this->shipToID; ?>" />
 
 </fieldset>

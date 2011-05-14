@@ -70,8 +70,8 @@ function printCard(cardId) {
 <form action="https://ssl.ditonlinebetalingssystem.dk/popup/default.asp" method="post" name="ePay" target="ePay_window" id="ePay">
 	<input type="hidden" name="merchantnumber" value="<?php echo $this->params->get('EPAY_MERCHANTNUMBER') ?>" />
 	<input type="hidden" name="amount" value="<?php echo round( $db->f( "order_total" ) * 100, 2 ) ?>" /> 
-	<input 	type="hidden" name="currency" value="<?php echo $this->calculateePayCurrency( $db->f('order_id') ) ?>" /> 
-	<input type="hidden" name="orderid" value="<?php echo $order_id ?>" />
+	<input 	type="hidden" name="currency" value="<?php echo $this->calculateePayCurrency( $db->f('virtuemart_order_id') ) ?>" /> 
+	<input type="hidden" name="orderid" value="<?php echo $virtuemart_order_id ?>" />
 	<input type="hidden" name="ordretext" value="" />
 <?php
 		if( $this->params->get('EPAY_CALLBACK') == "1" ) {
@@ -110,7 +110,7 @@ function printCard(cardId) {
 	type="hidden" name="MD5Key"
 	value="<?php
 		if( $this->params->get('EPAY_MD5_TYPE') == 2 )
-			echo md5( $this->calculateePayCurrency( $order_id ) . round( $db->f( "order_total" ) * 100, 2 ) . $order_id . $this->params->get('EPAY_MD5_KEY') ) ?>">
+			echo md5( $this->calculateePayCurrency( $virtuemart_order_id ) . round( $db->f( "order_total" ) * 100, 2 ) . $virtuemart_order_id . $this->params->get('EPAY_MD5_KEY') ) ?>">
 <?php
 		$cardtypes = explode(',', $this->params->get('EPAY_CARDTYPES'));
 		foreach( $cardtypes as $cardnum ) {
@@ -147,11 +147,11 @@ function printCard(cardId) {
 &nbsp;&nbsp;&nbsp;
 <?php
 	}
-	function calculateePayCurrency( $order_id ) {
+	function calculateePayCurrency( $virtuemart_order_id ) {
 		//$db = & new ps_DB( ) ;
 		$db = JFactory::getDBO();
 		$currency_code = "208" ;
-		$q = "SELECT order_currency FROM #__vm_orders where order_id = " . $order_id ;
+		$q = "SELECT order_currency FROM #__virtuemart_orders where virtuemart_order_id = " . $virtuemart_order_id ;
 		$db->query( $q ) ;
 		if( $db->next_record() ) {
 			$currency_code = plgPaymentEpay::get_iso_code( $db->f( "order_currency" ) ) ;

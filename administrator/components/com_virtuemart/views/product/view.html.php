@@ -71,7 +71,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product->product_id);
+				$product->prices = $calculator -> getProductPrices($product->virtuemart_product_id);
 
 				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['dBTax'] as $rule){
@@ -119,35 +119,33 @@ class VirtuemartViewProduct extends JView {
 				$vendor_model = $this->getModel('vendor');
 
 				$vendors = $vendor_model->getVendors();
-				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
+				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
 
-				$vendor_model->setId($product->vendor_id);
+				$vendor_model->setId($product->virtuemart_vendor_id);
 				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
 				}
-				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
 				$currency = $currency_model->getCurrency($product->product_currency);
 				$this->assignRef('product_currency', $currency->currency_symbol);
-
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
-
 //				$product_currency_symbol = $currency->currency_symbol;
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
-				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
+				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
-				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'manufacturer_id', 'class="inputbox"', 'value', 'text', $product->manufacturer_id );
+				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 
-				/* Load the attribute names */
-				$product->attribute_names = $this->get('ProductAttributeNames');
-
-				/* Load the attribute values */
-				$product->attribute_values = $this->get('ProductAttributeValues');
+//				/* Load the attribute names */
+//				$product->attribute_names = $this->get('ProductAttributeNames');
+//
+//				/* Load the attribute values */
+//				$product->attribute_values = $this->get('ProductAttributeValues');
 
 				/* TODO remove this */
 				$product->child_products = null;
@@ -166,12 +164,12 @@ class VirtuemartViewProduct extends JView {
 				}
 
 				/* Get the related products */
-				$related_products = $product_model->getRelatedProducts($product->product_id);
+				$related_products = $product_model->getRelatedProducts($product->virtuemart_product_id);
 				if (!$related_products) $related_products = array();
 				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
 
 				/* Load waiting list */
-				if ($product->product_id) {
+				if ($product->virtuemart_product_id) {
 					$waitinglist = $this->get('waitingusers', 'waitinglist');
 					$this->assignRef('waitinglist', $waitinglist);
 				}
@@ -218,7 +216,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
-				$this->assignRef('product', $product);
+				$this->assignRef('product', $product);dump($product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
 				$this->assignRef('min_order', $min_order);
@@ -241,14 +239,14 @@ class VirtuemartViewProduct extends JView {
 
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
-				JToolBarHelper::apply();
 				JToolBarHelper::save();
+                                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				break;
 			case 'addproducttype':
 				/* Get the product types that can be chosen */
-				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'product_type_id');
+				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
 				$this->assignRef('producttypes', $producttypes);
 
 				/* Get the product */
@@ -288,7 +286,7 @@ class VirtuemartViewProduct extends JView {
 				$productlist = $this->get('ProductList');
 
 				/* Get the category tree */
-				$categoryId = JRequest::getInt('category_id');
+				$categoryId = JRequest::getInt('virtuemart_category_id');
 //				if(!empty($categoryId)){
 					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 					$this->assignRef('category_tree', $category_tree);
@@ -297,8 +295,8 @@ class VirtuemartViewProduct extends JView {
 
 				/* Check for child products if it is a parent item */
 				if (JRequest::getInt('product_parent_id', 0) == 0) {
-					foreach ($productlist as $product_id => $product) {
-						$product->haschildren = $model->checkChildProducts($product_id);
+					foreach ($productlist as $virtuemart_product_id => $product) {
+						$product->haschildren = $model->checkChildProducts($virtuemart_product_id);
 					}
 				}
 
@@ -316,20 +314,20 @@ class VirtuemartViewProduct extends JView {
 				$calculator = calculationHelper::getInstance();
 				$vendor_model = $this->getModel('vendor');
 
-				foreach ($productlist as $product_id => $product) {
+				foreach ($productlist as $virtuemart_product_id => $product) {
 					$product->mediaitems = count($product->file_ids);
-					$product->reviews = $productreviews->countReviewsForProduct($product_id);
+					$product->reviews = $productreviews->countReviewsForProduct($virtuemart_product_id);
 
-					$vendor_model->setId($product->vendor_id);
+					$vendor_model->setId($product->virtuemart_vendor_id);
 					$vendor = $vendor_model->getVendor();
 					$calculator->setVendorCurrency($vendor->vendor_currency);
-					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->vendor_id,$vendor->vendor_currency);
+					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->virtuemart_vendor_id,$vendor->vendor_currency);
 					$price = $calculator->convertCurrencyTo($product->product_currency,$product->product_price,true);
 					$product->product_price_display = $currencyDisplay->getFullValue($price);
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-					$product->categoriesList = modelfunctions::buildGuiList('category_id','#__vm_product_category_xref','product_id',$product->product_id,'category_name','#__vm_category','category_id');
+					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
 
 //					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
@@ -401,7 +399,7 @@ class VirtuemartViewProduct extends JView {
 		$taxrates = array();
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
 		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->calc_id, $tax->calc_name, 'product_tax_id');
+			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, 'product_tax_id');
 		}
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
 		return $listHTML;
@@ -427,7 +425,7 @@ class VirtuemartViewProduct extends JView {
 		$discountrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
 //		$discountrates[] = JHTML::_('select.option', 'override', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
 		foreach($discounts as $discount){
-			$discountrates[] = JHTML::_('select.option', $discount->calc_id, $discount->calc_name, 'product_discount_id');
+			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
 		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;

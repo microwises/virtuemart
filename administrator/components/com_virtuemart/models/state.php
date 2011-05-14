@@ -107,7 +107,7 @@ class VirtueMartModelState extends JModel {
 	function _getTotal()
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `state_id` FROM `#__vm_state`';
+			$query = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -124,7 +124,7 @@ class VirtueMartModelState extends JModel {
 	function getSingleState(){
 
 		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('states');
    			$this->_data->load((int)$this->_id);
   		}
 
@@ -156,7 +156,7 @@ class VirtueMartModelState extends JModel {
 		}
 
 		$query = 'SELECT *';
-		$query .= ' FROM `#__vm_state`';
+		$query .= ' FROM `#__virtuemart_states`';
 		$query .= ' WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
 		$db->setQuery($query);
 
@@ -172,7 +172,7 @@ class VirtueMartModelState extends JModel {
 	 */
     function store()
 	{
-		$table =& $this->getTable('state');
+		$table =& $this->getTable('states');
 
 		$data = JRequest::get( 'post' );
 		// Bind the form fields to the state table
@@ -193,7 +193,7 @@ class VirtueMartModelState extends JModel {
 			return false;
 		}
 
-		return $table->state_id;
+		return $table->virtuemart_state_id;
 	}
 
 
@@ -207,7 +207,7 @@ class VirtueMartModelState extends JModel {
 	function delete()
 	{
 		$stateIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('state');
+    	$table =& $this->getTable('states');
 
     	foreach($stateIds as $stateId) {
         	if (!$table->delete($stateId)) {
@@ -229,7 +229,7 @@ class VirtueMartModelState extends JModel {
 	function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','state',$publishId);
+		return modelfunctions::publish('cid','states',$publishId);
 	}
 
 
@@ -241,8 +241,8 @@ class VirtueMartModelState extends JModel {
 	 */
 	public function getStates($countryId)
 	{
-		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
-		$query .= 'ORDER BY `#__vm_state`.`state_name`';
+		$query = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
+		$query .= 'ORDER BY `#__virtuemart_states`.`state_name`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
@@ -258,27 +258,27 @@ class VirtueMartModelState extends JModel {
 		//Test if id is published
 
 		$db =& JFactory::getDBO();
-		$q = 'SELECT * FROM `#__vm_country` WHERE `country_id`= "'.$countryId.'" AND `published`="1"';
+		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){
 			//Test if country has states
-			$q = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
+			$q = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
 			$db->setQuery($q);
 			if($db->loadResult()){
-				//Test if state_id fits to country_id
-				$q = 'SELECT * FROM `#__vm_state` WHERE `country_id`= "'.$countryId.'" AND `state_id`="'.$stateId.'" and `published`="1"';
+				//Test if virtuemart_state_id fits to virtuemart_country_id
+				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `virtuemart_state_id`="'.$stateId.'" and `published`="1"';
 				$db->setQuery($q);
 				if($db->loadResult()){
 					return 0;
 				} else {
-					return 'state_id';
+					return 'virtuemart_state_id';
 				}
 			} else {
 				return 0;
 			}
 
 		} else {
-			return 'country_id';
+			return 'virtuemart_country_id';
 		}
 	}
 

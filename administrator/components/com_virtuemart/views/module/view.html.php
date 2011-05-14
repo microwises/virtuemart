@@ -40,7 +40,7 @@ class VirtuemartViewModule extends JView {
 
 		$module = $model->getModule();
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($module->shopper_group_id < 1);
+		$isNew = ($module->virtuemart_shoppergroup_id < 1);
 
 		if ($layoutName == 'edit') {
 		  if ($isNew) {
@@ -55,9 +55,9 @@ class VirtuemartViewModule extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 		  }
 		  $this->assignRef('shoppergroup',	$module);
-		  //$this->assignRef('vendors',	$zoneModel->getShippingZoneSelectList());
+		  //$this->assignRef('vendors',	$zoneModel->getWorldZonesSelectList());
 		}	else {
-			JToolBarHelper::title( JText::_( 'VM_MODULE_LIST_LBL ' ), 'vm_shop_users_48' );
+			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_MODULE_LIST_LBL' ), 'vm_shop_users_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

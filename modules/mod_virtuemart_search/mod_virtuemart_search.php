@@ -20,13 +20,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 $button			 = $params->get('button', '');
 $imagebutton	 = $params->get('imagebutton', '');
 $button_pos		 = $params->get('button_pos', 'left');
-$button_text	 = $params->get('button_text', JText::_('GO'));
+$button_text	 = $params->get('button_text', JText::_('Search'));
 $width			 = intval($params->get('width', 20));
 $maxlength		 = $width > 20 ? $width : 20;
-$text			 = $params->get('text', JText::_('SEARCH'));
+$text			 = $params->get('text', JText::_('search...'));
 $set_Itemid		 = intval($params->get('set_itemid', 0));
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');
-//$category_id 	 = JRequest::getInt('category_id', 0); todo ?
-$category_id = 0;
+$category_id 	 = JRequest::getInt('category_id', 0);
 require(JModuleHelper::getLayoutPath('mod_virtuemart_search'));
 ?>

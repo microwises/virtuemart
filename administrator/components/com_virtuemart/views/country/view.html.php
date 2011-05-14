@@ -37,13 +37,13 @@ class VirtuemartViewCountry extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel();
-		$zoneModel = $this->getModel('ShippingZone');
+		$zoneModel = $this->getModel('Worldzones');
 
 		$layoutName = JRequest::getVar('layout', 'default');
 
 		if ($layoutName == 'edit') {
 			$country = $model->getCountry();
-			$isNew = ($country->country_id < 1);
+			$isNew = ($country->virtuemart_country_id < 1);
 		    if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_COUNTRY_LIST_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 
@@ -52,12 +52,12 @@ class VirtuemartViewCountry extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 		    }
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 		    $this->assignRef('country',	$country);
-		    $this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
+		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
 		}
 		else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_LBL'), 'vm_countries_48' );

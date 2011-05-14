@@ -69,21 +69,21 @@ class VirtueMartViewProductdetails extends JView {
 //		$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 		$product_model = $this->getModel('product');
 
-		$product_idArray = JRequest::getVar('product_id');
-		if(is_array($product_idArray)){
-			$product_id=$product_idArray[0];
+		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id');
+		if(is_array($virtuemart_product_idArray)){
+			$virtuemart_product_id=$virtuemart_product_idArray[0];
 		} else {
-			$product_id=$product_idArray;
+			$virtuemart_product_id=$virtuemart_product_idArray;
 		}
 
-		$product = $product_model->getProduct($product_id);
+		$product = $product_model->getProduct($virtuemart_product_id);
 
-		if(empty($product->product_id)){
+		if(empty($product->virtuemart_product_id)){
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink));
 
@@ -96,21 +96,21 @@ class VirtueMartViewProductdetails extends JView {
 		/* Load the category */
 		$category_model = $this->getModel('category');
 		/* Get the category ID */
-		$category_id = JRequest::getInt('category_id');
-		if ($category_id == 0 && !empty($product)) {
-			if (array_key_exists('0', $product->categories)) $category_id = $product->categories[0];
+		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
+		if ($virtuemart_category_id == 0 && !empty($product)) {
+			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
 		}
 
-		shopFunctionsF::setLastVisitedCategoryId($category_id);
+		shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 		if($category_model){
-			$category = $category_model->getCategory($category_id);
+			$category = $category_model->getCategory($virtuemart_category_id);
 			$category_model->addImagesToCategories($category);
 			$this->assignRef('category', $category);
 
 			if ($category->parents) {
 				foreach ($category->parents as $c){
-					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$c->category_id));
+					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
 			if($category->children)	$category_model->addImagesToCategories($category->children);
@@ -130,7 +130,7 @@ class VirtueMartViewProductdetails extends JView {
 		if (VmConfig::get('allow_reviews', 1) == '1') {
 			$model = $this->getModel();
 			/* Show all reviews available */
-			$product_reviews = $model->getProductReviews($product->product_id);
+			$product_reviews = $model->getProductReviews($product->virtuemart_product_id);
 			$this->assignRef('product_reviews', $product_reviews);
 		}
 
@@ -138,7 +138,7 @@ class VirtueMartViewProductdetails extends JView {
 		/** @todo build edit page */
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
-			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&product_id='.$product->product_id);
+			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&virtuemart_product_id='.$product->virtuemart_product_id);
 			$edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
 		}
 		else {
@@ -183,7 +183,7 @@ class VirtueMartViewProductdetails extends JView {
 	    }
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
-		shopFunctionsF::addProductToRecent($product_id);
+		shopFunctionsF::addProductToRecent($virtuemart_product_id);
 		//TODO add params, add event
 //		$params = new JParameter();
 //		/*
@@ -211,10 +211,10 @@ class VirtueMartViewProductdetails extends JView {
 	}
 
 	private function showLastCategory($tpl) {
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 

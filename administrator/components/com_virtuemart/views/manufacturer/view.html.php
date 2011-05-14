@@ -41,9 +41,9 @@ class VirtuemartViewManufacturer extends JView {
 		global $option;
 		// get necessary models
 		$model = $this->getModel();
-		$categoryModel = $this->getModel('manufacturerCategory');
+		$categoryModel = $this->getModel('manufacturercategories');
 
-        $mf_category_id	= $mainframe->getUserStateFromRequest( $option.'mf_category_id', 'mf_category_id', 0, 'int' );
+        $virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
 
@@ -52,7 +52,7 @@ class VirtuemartViewManufacturer extends JView {
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();
-       		$isNew = ($manufacturer->manufacturer_id < 1);
+       		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_manufacturer_48');
@@ -60,8 +60,8 @@ class VirtuemartViewManufacturer extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_manufacturer_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$model->addImagesToManufacturer($manufacturer);
@@ -91,7 +91,7 @@ class VirtuemartViewManufacturer extends JView {
 			$this->assignRef('manufacturers',	$manufacturers);
 			$categoryFilter = $categoryModel->getCategoryFilter();
 
-			$list['mf_category_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'mf_category_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $mf_category_id );
+			$list['virtuemart_manufacturercategories_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );
 			$list['search'] = $search;
 
 			$this->assignRef('list', $list);

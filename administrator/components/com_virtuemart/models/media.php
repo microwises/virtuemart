@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.model');
 class VirtueMartModelMedia extends JModel {
 
 	/** @var integer Primary key */
-    private $file_id = 0;
+    private $virtuemart_media_id = 0;
 
    /** @var integer Total number of files in the database */
     var $_total;
@@ -44,10 +44,10 @@ class VirtueMartModelMedia extends JModel {
 	function __construct(){
 		parent::__construct();
 
-//		$this->file_id = $id;
+//		$this->virtuemart_media_id = $id;
 
 		/* Get the file ID */
-		$this->setId(JRequest::getInt('file_id', null));
+		$this->setId(JRequest::getInt('virtuemart_media_id', null));
 
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
@@ -65,7 +65,7 @@ class VirtueMartModelMedia extends JModel {
 	 * @param int $id
 	 */
     function setId($id) {
-		$this->file_id = $id;
+		$this->virtuemart_media_id = $id;
 		$this->_data = null;
     }
 
@@ -90,14 +90,14 @@ class VirtueMartModelMedia extends JModel {
      */
     function _getTotal() {
 		if (empty($this->_total)) {
-		    $query = 'SELECT `file_id` FROM `#__vm_media`';
+		    $query = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`';
 		    $this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
     }
 
     /**
-     * Gets a single media by file_id
+     * Gets a single media by virtuemart_media_id
      * .
      * @param string $type
      * @param string $mime mime type of file, use for exampel image
@@ -107,8 +107,8 @@ class VirtueMartModelMedia extends JModel {
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-   		$data = $this->getTable('Media');
-   		$data->load($this->file_id);
+   		$data = $this->getTable('medias');
+   		$data->load($this->virtuemart_media_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
@@ -134,18 +134,18 @@ class VirtueMartModelMedia extends JModel {
     	if(!empty($file_ids)){
     		if(!is_array($file_ids)) $file_ids = explode(',',$file_ids);
 
-    	    foreach($file_ids as $file_id){
-	    		$data = $this->getTable('Media');
-	    		$id = is_object($file_id)? $file_id->file_id:$file_id;
+    	    foreach($file_ids as $virtuemart_media_id){
+	    		$data = $this->getTable('medias');
+	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
 	   			$data->load($id);
 	   			$media = VmMediaHandler::createMedia($data,$type,$mime);
-	   			if(is_object($file_id) && !empty($file_id->product_name)) $media->product_name = $file_id->product_name;
+	   			if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 	  			$medias[] = $media;
     		}
     	}
 
     	if(empty($medias)){
-    		$data = $this->getTable('Media');
+    		$data = $this->getTable('medias');
     		$medias[] = VmMediaHandler::createMedia($data,$type,$mime);
     	}
 
@@ -166,33 +166,33 @@ class VirtueMartModelMedia extends JModel {
     	$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
     	$query = '';
     	$whereItems = array();
-    	$product_id = JRequest::getVar('product_id',0);
+    	$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',0);
 
-    	if(!empty($product_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_product_media_xref` ';
-    		$whereItems[] = '`product_id` = "'.$product_id.'"';
-    		$oderby = '`#__vm_media`.`mdate`';
+    	if(!empty($virtuemart_product_id)){
+    		$query = 'SELECT `file_ids` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
+    		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
+    		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
-    	$cat_id = JRequest::getVar('category_id',0);
+    	$cat_id = JRequest::getVar('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `file_ids` as file_id FROM `#__vm_category_media_xref` ';
-    		$whereItems[] = '`category_id` = "'.$cat_id.'"';
-    		$oderby = '`#__vm_media`.`mdate`';
+    		$query = 'SELECT `file_ids` as virtuemart_media_id FROM `#__virtuemart_category_medias` ';
+    		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
+    		$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
     	if(empty($query)){
-    		$query='SELECT `file_id` FROM `#__vm_media` ';
+    		$query='SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` ';
     	    if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	    	if(!Permissions::getInstance()->check('admin') ){
-				$whereItems[] = '(`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
 	    	}
 
 	    	if ($onlyPublished) {
-				$whereItems[] = '`#__vm_media`.`published` = 1';
+				$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
-			$oderby = '`#__vm_media`.`mdate`';
+			$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 
 
@@ -208,7 +208,7 @@ class VirtueMartModelMedia extends JModel {
 			$query .= $where;
 		}
 
-		//Todo sorting for mdate does not work
+		//Todo sorting for modified_on does not work
 //		$query .= ' ORDER BY '.$oderby;
 
 		$app =& JFactory::getApplication();
@@ -267,13 +267,13 @@ class VirtueMartModelMedia extends JModel {
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		$oldId = $data['file_id'];
+		$oldId = $data['virtuemart_media_id'];
 		$this -> setId($oldId);
-		$file_id = $this->store($type,$data);
-		$this -> setId($file_id);
+		$virtuemart_media_id = $this->store($type,$data);
+		$this -> setId($virtuemart_media_id);
 
-		/* add the file_id & delete 0 and '' from $data */
-		$file_ids = array_merge( (array)$file_id,$data['file_ids']);
+		/* add the virtuemart_media_id & delete 0 and '' from $data */
+		$file_ids = array_merge( (array)$virtuemart_media_id,$data['file_ids']);
 		$file_ids = array_diff($data['file_ids'],array('0',''));
 		$file_ids = array_unique($file_ids);
 		$data['file_ids'] = array_reverse ($file_ids,true);
@@ -296,7 +296,7 @@ class VirtueMartModelMedia extends JModel {
 			return false;
 		}
 
-		return true;
+		return $table->id;
 
 	}
 
@@ -308,7 +308,7 @@ class VirtueMartModelMedia extends JModel {
 	 */
 	public function store($type,$data=0) {
 
-		$table = $this->getTable('media');
+		$table = $this->getTable('medias');
 		if(empty($data))$data = JRequest::get('post');
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
@@ -328,7 +328,7 @@ class VirtueMartModelMedia extends JModel {
 
 
 		if(empty($data['file_url'])){
-//			$this->delete($data['file_id']);
+//			$this->delete($data['virtuemart_media_id']);
 		} else {
 			// Bind the form fields to the table again
 			if (!$table->bind($data)) {
@@ -352,7 +352,7 @@ class VirtueMartModelMedia extends JModel {
 			}
 		}
 
-		return $table->file_id;
+		return $table->virtuemart_media_id;
 	}
 
 	/**
@@ -363,7 +363,7 @@ class VirtueMartModelMedia extends JModel {
 	public function delete($cids) {
 		$mainframe = Jfactory::getApplication('site');
 //		$deleted = 0;
-	 	$row = $this->getTable('media');
+	 	$row = $this->getTable('medias');
 //	 	$cids = JRequest::getVar('cid');
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
@@ -381,8 +381,8 @@ class VirtueMartModelMedia extends JModel {
 		//delete media from server
 		/* Redirect so the user cannot reload the delete action */
 //		$url = 'index.php?option=com_virtuemart&view=media';
-//		$productid = JRequest::getInt('product_id', false);
-//		if ($productid) $url .= '&product_id='.$productid;
+//		$productid = JRequest::getInt('virtuemart_product_id', false);
+//		if ($productid) $url .= '&virtuemart_product_id='.$productid;
 //		$mainframe->redirect($url);
 	}
 
@@ -396,7 +396,7 @@ class VirtueMartModelMedia extends JModel {
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','media',$publishId);
+		return modelfunctions::publish('cid','medias',$publishId);
 
 	}
 

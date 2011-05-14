@@ -131,10 +131,10 @@ class VirtueMartControllerCart extends JController {
 		$cart = VirtueMartCart::getCart();
 		if($cart){
 			// Get a continue link */
-			$category_id = shopFunctionsF::getLastVisitedCategoryId();
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($category_id){
-				$categoryLink='&category_id='.$category_id;
+			if($virtuemart_category_id){
+				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
 			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
@@ -303,8 +303,8 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$paym_id= JRequest::getVar('paym_id', '0');
-			$cart->setPaymentMethod( $paym_id );
+			$virtuemart_paymentmethod_id= JRequest::getVar('virtuemart_paymentmethod_id', '0');
+			$cart->setPaymentMethod( $virtuemart_paymentmethod_id );
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$_dispatcher = JDispatcher::getInstance();

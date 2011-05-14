@@ -39,7 +39,7 @@ class ShopFunctions {
 
 		$attrs = '';
 		$name = 'creditcard_name';
-		$idA = $id = 'creditcard_id';
+		$idA = $id = 'virtuemart_creditcard_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($creditcards, $emptyOption);
@@ -57,7 +57,7 @@ class ShopFunctions {
 	*
 	* @author Max Milbers, RolandD
 	* @access public
-	* @param int $shopper_group_id the shopper group to pre-select
+	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
@@ -69,23 +69,23 @@ class ShopFunctions {
 			if(empty($vendorId)){
 				$vendorId = 1;
 				//Dont delete this message, we need it later for multivendor
-				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the vendor_id to the logged Vendor');
+				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
 			}
-			$q = 'SELECT `vendor_name` FROM #__vm_vendor WHERE `vendor_id` = "'.$vendorId.'" ';
+			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "'.$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
-//			$html .='<input type="hidden" value="'.$vendorId.'" name="vendor_id">';
+//			$html .='<input type="hidden" value="'.$vendorId.'" name="virtuemart_vendor_id">';
 			return $html;
 		} else {
 
-			$q = 'SELECT `vendor_id`,`vendor_name` FROM #__vm_vendor';
+			$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
 			$db->setQuery($q);
 			$vendors = $db->loadAssocList();
 
 			$attrs = '';
 			$name = 'vendor_name';
-			$idA = $id = 'vendor_id';
+			$idA = $id = 'virtuemart_vendor_id';
 
 			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift($vendors, $emptyOption);
@@ -104,7 +104,7 @@ class ShopFunctions {
 	*
 	* @author Max Milbers, RolandD
 	* @access public
-	* @param int $shopper_group_id the shopper group to pre-select
+	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	* @param bool $multiple if the select list should allow multiple selections
 	* @return string HTML select option list
 	*/
@@ -113,7 +113,7 @@ class ShopFunctions {
 		$shoppergrps = $shopperModel->getShopperGroups(false,true);
 		$attrs = '';
 		$name = 'shopper_group_name';
-		$idA = $id = 'shopper_group_id';
+		$idA = $id = 'virtuemart_shoppergroup_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($shoppergrps, $emptyOption);
@@ -142,8 +142,8 @@ class ShopFunctions {
 		$countries = $countryModel->getCountries(true, true);
 		$attrs = array();
 		$name = 'country_name';
-		$id = 'country_id';
-		$idA = $_prefix . 'country_id';
+		$id = 'virtuemart_country_id';
+		$idA = $_prefix . 'virtuemart_country_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($countries, $emptyOption);
@@ -180,7 +180,7 @@ class ShopFunctions {
 		$states = $stateModel->getStates($countryId);
 		$attrs = array();
 		$name = 'state_name';
-		$idA = $id = $_prefix.'state_id';
+		$idA = $id = $_prefix.'virtuemart_state_id';
 
 		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 		array_unshift($states, $emptyOption);
@@ -252,7 +252,7 @@ class ShopFunctions {
 		if($level==0){
 			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
 		}
-		$vendor_id = 1;
+		$virtuemart_vendor_id = 1;
 
 		$categoryModel = self::getModel('category');
 		$level++;
@@ -322,7 +322,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_country` WHERE country_id = ' . $_id;
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . $_id;
 		$_db->setQuery($_q);
 		$_r = $_db->loadResult();
 		return $_r;
@@ -343,7 +343,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = "SELECT `country_id` FROM `#__vm_country` WHERE `country_name` = '$_name'";
+		$_q = "SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `country_name` = '$_name'";
 		$_db->setQuery($_q);
 		$_r = $_db->loadResult();
 		return $_r;
@@ -366,7 +366,7 @@ class ShopFunctions {
 		}
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__vm_state` WHERE state_id = ' . $_id;
+		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = ' . $_id;
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
 		return $_r->fld;
@@ -378,10 +378,10 @@ class ShopFunctions {
 
 		$_q = 'SELECT c.shipping_carrier_name AS carrier '
 			. ', s.shipping_rate_name AS name '
-			. 'FROM `#__vm_shipping_rate` AS s '
-			. ', `#__vm_shipping_carrier` AS c '
-			. 'WHERE s.shipping_rate_id = ' . $_id . ' '
-			. 'AND s.shipping_rate_carrier_id = c.shipping_carrier_id '
+			. 'FROM `#__virtuemart_shippingrates` AS s '
+			. ', `#__virtuemart_shippingcarriers` AS c '
+			. 'WHERE s.virtuemart_shippingrate_id = ' . $_id . ' '
+			. 'AND s.shipping_rate_carrier_id = c.virtuemart_shippingcarrier_id '
 		;
 		$_db->setQuery($_q);
 		return $_db->loadObject();
@@ -468,7 +468,7 @@ class ShopFunctions {
 	{
 		$_db = JFactory::getDBO();
 
-		$_q = 'SELECT order_status_name FROM `#__vm_order_status`'
+		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates`'
 			. " WHERE order_status_code = '$_code' ";
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
@@ -840,7 +840,7 @@ class ShopFunctions {
 			//We have a child list so get the current quantity;
 			$quantity = 0 ;
 			foreach ($cart->products as $productCart){
-				if ($productCart["product_id"] == $product->product_id) {
+				if ($productCart["virtuemart_product_id"] == $product->virtuemart_product_id) {
 					$quantity = $productCart["quantity"];
 				}
 			}
@@ -850,8 +850,8 @@ class ShopFunctions {
 		}
 
 		// Detremine which style to use
-		if ($use_parent == 'Y' && $product->parent_product_id !=0) $id = $product->parent_product_id;
-		else $id = $product->product_id ;
+		if ($use_parent == 'Y' && $product->parent_virtuemart_product_id !=0) $id = $product->parent_virtuemart_product_id;
+		else $id = $product->virtuemart_product_id ;
 
 		//Get style to use
 		extract($product->quantity_options);

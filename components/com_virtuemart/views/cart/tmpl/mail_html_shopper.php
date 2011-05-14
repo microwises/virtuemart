@@ -11,7 +11,7 @@
 *
 * $this->order['details'] contains the raw address data (use the formatted ones, like BTaddress). Interesting informatin here is,
 * order_number ($this->order['details']['BT']->order_number), order_pass, coupon_code, order_status, order_status_name,
-* user_currency_rate, cdate, customer_note, ip_address
+* user_currency_rate, created_on, customer_note, ip_address
 *
 * @package	VirtueMart
 * @subpackage Cart
@@ -38,7 +38,7 @@ echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']->order_total,
 						$this->order['details']['BT']->order_number,
 						$this->order['details']['BT']->order_pass,
-						$this->order['details']['BT']->cdate);
+						$this->order['details']['BT']->created_on);
 
 echo '<img src="'.JURI::root().$this->vendor->images[0]->file_url.'" />';
 echo 'Link to view your order'; echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass);

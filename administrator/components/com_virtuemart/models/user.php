@@ -156,7 +156,7 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function _loadUserInfo($_ui_id)
 	{
-		$_data = $this->getTable('user_info');
+		$_data = $this->getTable('userinfos');
 		$_data->load($_ui_id);
 		return $_data;
 	}
@@ -166,29 +166,29 @@ class VirtueMartModelUser extends JModel {
 	 */
 	function getUser(){
 
-		//This can cause trouble, when you save a new vendor in the form with apply. The new vendor_id is not set then
+		//This can cause trouble, when you save a new vendor in the form with apply. The new virtuemart_vendor_id is not set then
 		//		if (empty($this->_data)) {
 
 			$this->_data = new stdClass();
 
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-			$this->_data = $this->getTable('vm_users');
+			$this->_data = $this->getTable('vmusers');
 			$this->_data->load((int)$this->_id);
 
-			/* Add the shopper_group_ids */
-			$q = 'SELECT `shopper_group_id` FROM #__vm_user_shopper_group_xref WHERE `user_id` = "'.$this->_id.'"';
+			/* Add the virtuemart_shoppergroup_ids */
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->shopper_groups = $this->_db->loadResultArray();
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 
-			$_ui = $this->_getList('SELECT `user_info_id` FROM `#__vm_user_info` WHERE `user_id` = "' . $this->_id.'"');
+			$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
 
 			$this->_data->userInfo = array ();
 
 			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
-				$_ui_id = $_ui[$i]->user_info_id;
+				$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
 				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
 				/*
 				 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
@@ -207,7 +207,7 @@ class VirtueMartModelUser extends JModel {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 				$vendorModel = new VirtueMartModelVendor();
 
-				$vendorModel->setId($this->_data->vendor_id);
+				$vendorModel->setId($this->_data->virtuemart_vendor_id);
 				$this->_data->vendor = $vendorModel->getVendor();
 			}
 			//		}
@@ -251,7 +251,7 @@ class VirtueMartModelUser extends JModel {
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);
 			}
-
+			dump($this->_data->JUser,'hmm');
 			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
 			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
 			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
@@ -403,6 +403,7 @@ class VirtueMartModelUser extends JModel {
 
 				if ( VmConfig::isJ15()){
 					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+//					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
 				}
 
 				$date =& JFactory::getDate();
@@ -437,13 +438,13 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			$newId = $user->get('id');
-			$data['user_id'] = $newId;		//We need this in that case, because data is bound to table later
+			$data['virtuemart_user_id'] = $newId;		//We need this in that case, because data is bound to table later
 			$this->setId($newId);
 
 			//I would like to do this function in the FE user/controller like the other emails, with layout
-			if ($new) {
-				$this->sendRegistrationEmail($user);
-			}
+//			if ($new) {
+//				$this->sendRegistrationEmail($user);
+//			}
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
@@ -481,7 +482,7 @@ class VirtueMartModelUser extends JModel {
 		 * that gets fired by the onAfterStoreUser. I'll built that (OvE)
 		 *
 		 * Notice:
-		 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the order_id
+		 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the virtuemart_order_id
 		 * with the email. The order is saved with all information in an extra table, so there is
 		 * no need for a silent registration. We may think about if we actually need/want the feature silent registration
 		 * The information of anonymous is stored in the order table and has nothing todo with the usermodel!
@@ -497,8 +498,8 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			//update user table
-			$usertable = $this->getTable('vm_users');
-			$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'vendor_id'=>$_data['vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+			$usertable = $this->getTable('vmusers');
+			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			if (!$usertable->bind($vmusersData)) {
 				$this->setError($usertable->getError());
 				return false;
@@ -516,42 +517,42 @@ class VirtueMartModelUser extends JModel {
 				return false;
 			}
 
-			if(empty($_data['shopper_group_id'])){
-				$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
+			if(empty($_data['virtuemart_shoppergroup_id'])){
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 				$this->_db->setQuery($q);
-				$_data['shopper_group_id']=$this->_db->loadResult();
+				$_data['virtuemart_shoppergroup_id']=$this->_db->loadResult();
 			}
 
 			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('user_id'=>$this->_id,'shopper_group_id'=>$_data['shopper_group_id']);
+			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
 			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__vm_user_shopper_group_xref','user_id','shopper_group_id',$this->_id,$_data['shopper_group_id']);
+			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
-			if (!user_info::storeAddress($_data, 'user_info', $new)) {
-				$this->setError('Was not able to save the virtuemart user_info address data');
+			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
+				$this->setError('Was not able to save the virtuemart userinfo address data');
 				return false;
 			}
 
 			if($_data['user_is_vendor']){
 
-				//	$_data['vendor_id'] = $_data['my_vendor_id'];
+				//	$_data['virtuemart_vendor_id'] = $_data['my_virtuemart_vendor_id'];
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendorModel = new VirtueMartModelVendor();
 
-				//TODO Attention this is set now to vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
-				//So we disable the possibility to store vendors not with vendor_id = 1
-				//$vendorModel->setId($_data['vendor_id']);
+				//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
+				//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
+				//$vendorModel->setId($_data['virtuemart_vendor_id']);
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
 					return false;
 				}else{
 					//Update xref Table
-					$vendor_id = $vendorModel->getId();
+					$virtuemart_vendor_id = $vendorModel->getId();
 
 					//update user table
-					//					$usertable = $this->getTable('vm_users');
-					$vmusersData = array('user_id'=>$_data['user_id'],'user_is_vendor'=>1,'vendor_id'=>$vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+					//					$usertable = $this->getTable('vmusers');
+					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 					if (!$usertable->bind($vmusersData)) {
 						$this->setError($table->getError());
 						return false;
@@ -614,9 +615,9 @@ class VirtueMartModelUser extends JModel {
 	 function delete()
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
-	 	$userInfo =& $this->getTable('user_info');
+	 	$userInfo =& $this->getTable('userinfos');
 	 	$vm_shoppergroup_xref =& $this->getTable('user_shopper_group_xref');
-                $vm_users =& $this->getTable('vm_users');
+                $vmusers =& $this->getTable('vmusers');
 	 	$_status = true;
 	 	foreach($userIds as $userId) {
 	 		if ($this->getSuperAdminCount() <= 1) {
@@ -638,8 +639,8 @@ class VirtueMartModelUser extends JModel {
 	 			$_status = false;
 	 			continue;
 	 		}
-                        if (!$vm_users->delete($userId)) {
-	 			$this->setError($vm_users->getError()); // Signal but continue
+                        if (!$vmusers->delete($userId)) {
+	 			$this->setError($vmusers->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
 	 		}
@@ -674,8 +675,8 @@ class VirtueMartModelUser extends JModel {
 	 function getUserAddressList($_uid = 0, $_type = 'ST')
 	 {
 	 	$_q = 'SELECT * '
-			. ' FROM #__vm_user_info '
-			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
+			. ' FROM #__virtuemart_userinfos '
+			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
 			. " AND address_type='$_type'";
 			return ($this->_getList($_q));
 	 }
@@ -684,19 +685,19 @@ class VirtueMartModelUser extends JModel {
 	  * Retrieve a single address for a user
 	  *
 	  *  @param $_uid int User ID
-	  *  @param $_user_info_id string Optional User Info ID
+	  *  @param $_virtuemart_userinfo_id string Optional User Info ID
 	  *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo). Empty string to ignore
 	  */
-	 function getUserAddress($_uid = 0, $_user_info_id = -1, $_type = 'ST')
+	 function getUserAddress($_uid = 0, $_virtuemart_userinfo_id = -1, $_type = 'ST')
 	 {
 	 	$_q = 'SELECT * '
-			. ' FROM #__vm_user_info '
-			. " WHERE user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
+			. ' FROM #__virtuemart_userinfos '
+			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
 			if ($_type !== '') {
 				$_q .= " AND address_type='$_type'";
 			}
-			if ($_user_info_id !== -1) {
-				$_q .= " AND user_info_id='$_user_info_id'";
+			if ($_virtuemart_userinfo_id !== -1) {
+				$_q .= " AND virtuemart_userinfo_id='$_virtuemart_userinfo_id'";
 			}
 			return ($this->_getList($_q));
 	 }
@@ -709,8 +710,8 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function getCustomerNumberById($_id = 0)
 	 {
-	 	$_q = "SELECT `customer_number` FROM `#__vm_users` "
-			."WHERE `user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
+	 	$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
+			."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
 			$_r = $this->_getList($_q);
 			if(!empty($_r[0])){
 				return $_r[0]->customer_number;
@@ -772,7 +773,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function _getListQuery (){
 
-	 	// Used tables #__vm_users, #__vm_user_info, #__vm_user_perm_groups, #__vm_user_shopper_group_xref, #__vm_vendor
+	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_user_shoppergroups, #__virtuemart_vendors
 	 	$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -781,9 +782,9 @@ class VirtueMartModelUser extends JModel {
 			. ', ju.usertype AS usertype'
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
-			. 'LEFT JOIN #__vm_users AS vmu ON ju.id = vmu.user_id '
-			. 'LEFT JOIN #__vm_user_shopper_group_xref AS vx ON ju.id = vx.user_id '
-			. 'LEFT JOIN #__vm_shopper_group AS sg ON vx.shopper_group_id = sg.shopper_group_id ';
+			. 'LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
 
@@ -791,7 +792,7 @@ class VirtueMartModelUser extends JModel {
 	 }
 
 	 /**
-	  * Take a list of userIds and check if they all have a record in #__vm_user_info
+	  * Take a list of userIds and check if they all have a record in #__virtuemart_userinfos
 	  *
 	  * @author Oscar van Eijk
 	  * @param $_ids Array with userIds to check (uId, uId, ...)
@@ -807,8 +808,8 @@ class VirtueMartModelUser extends JModel {
 			. 'FROM `#__users` j '
 			. 'WHERE j.id IN (' . join(',', $_ids) . ') '
 			. 'AND NOT EXISTS ('
-			. 'SELECT user_id FROM `#__vm_user_info` v '
-			. 'WHERE v.user_id = j.id'
+			. 'SELECT virtuemart_user_id FROM `#__virtuemart_userinfos` v '
+			. 'WHERE v.virtuemart_user_id = j.id'
 			. ')'
 			);
 			$_missingUsers = array();
@@ -838,9 +839,9 @@ class VirtueMartModelUser extends JModel {
 	 		JArrayHelper::toInteger($id);
 	 		$ids = implode( ',', $id );
 
-	 		$query = 'UPDATE `#__vm_users`'
+	 		$query = 'UPDATE `#__virtuemart_vmusers`'
 				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE user_id IN ( '.$ids.' )'
+				. ' WHERE virtuemart_user_id IN ( '.$ids.' )'
 				;
 				$this->_db->setQuery( $query );
 				if (!$this->_db->query()) {

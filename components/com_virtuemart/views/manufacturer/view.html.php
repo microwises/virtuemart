@@ -41,11 +41,11 @@ class VirtuemartViewManufacturer extends JView {
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 		$this->loadHelper('image');
 
-		$manufacturer_id = JRequest::getInt('manufacturer_id', 0);
+		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
 		$mf_categorie_id = JRequest::getInt('mf_categorie_id', 0);
 		// get necessary models
 		$model = & $this->getModel('manufacturer');
-		if ($manufacturer_id ) {
+		if ($virtuemart_manufacturer_id ) {
 			$manufacturer = $model->getManufacturer();
 			$model->addImagesToManufacturer($manufacturer);
 

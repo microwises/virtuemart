@@ -99,7 +99,7 @@ $mainframe = JFactory::getApplication();
 											</label>
 										</td>
 										<td>
-											<?php echo ShopFunctions::getEnumeratedCategories(true, true, $this->parent->category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering); ?>
+											<?php echo ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering); ?>
 										</td>
 									</tr>
 									<tr>
@@ -272,7 +272,7 @@ $mainframe = JFactory::getApplication();
 	echo $pane->endPane();
 ?>
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="category_id" value="<?php echo $this->category->category_id; ?>" />
+	<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->category->virtuemart_category_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="category" />

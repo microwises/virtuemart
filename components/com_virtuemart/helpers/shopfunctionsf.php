@@ -156,19 +156,19 @@ class shopFunctionsF {
 	 * @param string $link
 	 * @param boolean $use_icon
 	 */
-	function EmailIcon( $product_id, $use_icon=true ) {
-		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product_id > 0  ) {
+	function EmailIcon( $virtuemart_product_id, $use_icon=true ) {
+		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $virtuemart_product_id > 0  ) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
-			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1&amp;tmpl=component');
+			//Todo this is old stuff and must be adjusted	
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {
 				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_EMAIL');
 			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_EMAIL'), 'screenX=100,screenY=200');
+			return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" href="'.$link.'">'.$text.'</a>';
 		}
 	}
 
@@ -307,10 +307,10 @@ class shopFunctionsF {
 			$view->$key = $val;
 		}
 
-		self::sendMail($view, $recipient);
+		return self::sendMail($view, $recipient);
 
 		if (isset($view->doVendor)) {
-			self::sendMail($view, $view->vendorEmail, true);
+			return self::sendMail($view, $view->vendorEmail, true);
 		}
 	}
 	// VirtueMartViewUser: registerUser,
@@ -396,7 +396,7 @@ class shopFunctionsF {
 	 * @param $vendorId default is 1 (mainstore)
 	 * @deprecated
 	 */
-	function sendVmMailold($body,$recipient,$subject='TODO set subject', $vendor_id=1, $mediaToSend = false ){
+	function sendVmMailold($body,$recipient,$subject='TODO set subject', $virtuemart_vendor_id=1, $mediaToSend = false ){
 
 		$mailer =& JFactory::getMailer();
 
@@ -426,7 +426,7 @@ class shopFunctionsF {
 
 		// Optionally add embedded image  //TODO Test it
 		$vendor = $this->getModel('vendor','VirtuemartModel');
-		$vendor->setId($vendor_id);
+		$vendor->setId($virtuemart_vendor_id);
 		$_store = $vendor->getVendor();
 
 		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->file_ids, 'base64', 'image/jpeg' );
@@ -455,7 +455,7 @@ class shopFunctionsF {
 		if(!empty($catTpl) && empty($prodTpl)){
 			if(is_Int($catTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `category_template` FROM `#__vm_category` WHERE `category_id` = "'.$catTpl.'" ';
+				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if ($temp) $template = $temp;
@@ -468,7 +468,7 @@ class shopFunctionsF {
 		if(!empty($prodTpl)){
 			if(is_Int($prodTpl)){
 				$db = JFactory::getDBO();
-				$q = 'SELECT `product_template` FROM `#__vm_product` WHERE `product_id` = "'.$prodTpl.'" ';
+				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.$prodTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if($temp) $template = $temp;
@@ -488,7 +488,7 @@ class shopFunctionsF {
 			if(!empty($catLayout) && empty($prodLayout)){
 				if(is_Int($catLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;
@@ -501,7 +501,7 @@ class shopFunctionsF {
 			if(!empty($prodLayout)){
 				if(is_Int($prodLayout)){
 					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__vm_category` WHERE `category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;

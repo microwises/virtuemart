@@ -40,7 +40,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		$shippingCarrier = $model->getShippingCarrier();
 
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($shippingCarrier->shipping_carrier_id < 1);
+		$isNew = ($shippingCarrier->virtuemart_shippingcarrier_id < 1);
 
 		if ($layoutName == 'edit') {
 			if ($isNew) {
@@ -54,7 +54,7 @@ class VirtuemartViewShippingCarrier extends JView {
 			JToolBarHelper::cancel();
 
 			$this->loadHelper('shopFunctions');
-			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
@@ -86,7 +86,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		}
 		else {
 			$table = '#__extensions';
-			$enable = 'enabled';
+			$enable = 'published';
 			$ext_id = 'extension_id';
 		}
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipper" AND `'.$enable.'`="1" ';

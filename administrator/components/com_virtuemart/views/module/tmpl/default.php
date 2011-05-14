@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage ShopperGroup
-* @author Markus Öhler
+* @author Markus ï¿½hler
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -56,8 +56,8 @@ AdminMenuHelper::startAdminArea();
 	    for ($i = 0, $n = count( $this->shoppergroups ); $i < $n; $i++) {
 		    $row = $this->shoppergroups[$i];
 
-		    $checked = JHTML::_('grid.id', $i, $row->shopper_group_id);
-		    $editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shoppergroup&task=edit&cid[]=' . $row->shopper_group_id); ?>
+		    $checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
+		    $editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shoppergroup&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id); ?>
 	      
 	      <tr class="<?php echo "row$k"; ?>">
 			    <td width="10">
@@ -67,7 +67,7 @@ AdminMenuHelper::startAdminArea();
 			      <a href="<?php echo $editlink; ?>"><?php echo $row->shopper_group_name; ?></a>
 			    </td>
 			    <td align="left">
-            <?php echo $row->vendor_id; ?>
+            <?php echo $row->virtuemart_vendor_id; ?>
           </td>
 			    <td align="left">
 				    <?php echo $row->shopper_group_desc; ?>

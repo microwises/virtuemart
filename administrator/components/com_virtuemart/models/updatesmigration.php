@@ -67,27 +67,27 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__vm_users` (`user_id`,`user_is_vendor`,`vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 		$db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_users FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
 	    }
 
-		$q = 'SELECT `shopper_group_id` FROM `#__vm_shopper_group` WHERE `default`="1" AND `vendor_id`="1" ';
+		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 		$this->_db->setQuery($q);
-		$default_shopper_group_id=$this->_db->loadResult();
+		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
 
-		$query = 'INSERT IGNORE INTO `#__vm_user_shopper_group_xref` VALUES (null,"' . $user->id . '", "'.$default_shopper_group_id.'")';
+		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_shopper_group_xref FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
 	    }
 
-	    $query = "INSERT IGNORE INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
+	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
 	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
+			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
 	    }
 	}
 	$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
@@ -100,9 +100,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function determineStoreOwner() {
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
-		if (isset($user_id) && $user_id > 0) {
-		    $user = JFactory::getUser($user_id);
+		$virtuemart_user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
+		if (isset($virtuemart_user_id) && $virtuemart_user_id > 0) {
+		    $user = JFactory::getUser($virtuemart_user_id);
 		}
 		else {
 		    $user = JFactory::getUser();
@@ -124,18 +124,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$db = JFactory::getDBO();
 
-		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `vendor_id`= "1" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
 
-		$db->setQuery('SELECT * FROM  `#__vm_users` WHERE `user_id`= "' . $userId . '" ');
+		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
 
 		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__vm_users` (`user_id`, `user_is_vendor`, `vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+		    $db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
 		    if ($db->query() == false) {
-				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vm_users for user_id '.$userId);
+				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
 		    }
 		    else {
 		    	return $userId;
@@ -143,14 +143,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 		else {
 		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `vendor_id` = "1" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_vendor_id` = "1" ');
 		    }
 		    else {
-				$db->setQuery( 'UPDATE `#__vm_users` SET `vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
-				JError::raiseWarning(1, 'UPDATE __vm_users failed for user_id '.$userId);
+				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 		    } else {
 		    	return $userId;
 		    }
@@ -166,7 +166,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	# insert the user <=> group relationship
 //	$db = JFactory::getDBO();
 //	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
-//				SELECT user_id,
+//				SELECT virtuemart_user_id,
 //					CASE `perms`
 //					    WHEN 'admin' THEN 0
 //					    WHEN 'storeadmin' THEN 1
@@ -174,11 +174,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 //					    WHEN 'demo' THEN 3
 //					    ELSE 2
 //					END
-//				FROM #__vm_user_info
+//				FROM #__virtuemart_userinfos
 //				WHERE address_type='BT' ");
 //	$db->query();
 //
-//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
+//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
 //	$db->query();
     }
 
@@ -187,7 +187,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * Installs sample data to the current database.
      *
      * @author Max Milbers, RickG
-     * @params $userId User Id to add the user_info and vendor sample data to
+     * @params $userId User Id to add the userinfo and vendor sample data to
      */
     function installSampleData($userId = null) {
 	if ($userId == null) {
@@ -200,8 +200,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	$fields = array();
 
-//	$fields['user_info_id'] = $db->loadResult();
-	$fields['user_id'] =  $userId;
+//	$fields['virtuemart_userinfo_id'] = $db->loadResult();
+	$fields['virtuemart_user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
 	$fields['company'] =  "Washupito's the virtual mart";
@@ -213,11 +213,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['address_1'] =  'vendorra road 8';
 	$fields['city'] =  'Canangra';
 	$fields['zip'] =  '055555';
-	$fields['state_id'] =  '361';
-	$fields['country_id'] =  '195';
+	$fields['virtuemart_state_id'] =  '361';
+	$fields['virtuemart_country_id'] =  '195';
 	//Dont change this, atm everything is mapped to mainvendor with id=1
 	$fields['user_is_vendor'] =  '1';
-	$fields['vendor_id'] = '1';
+	$fields['virtuemart_vendor_id'] = '1';
 	$fields['vendor_name'] =  'Washupito';
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
@@ -273,7 +273,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     function restoreSystemCompletly() {
 
-		$this -> removeAllVMTables();
+		$this->removeAllVMTables();
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
 		$this->execSQLFile($filename);
@@ -386,7 +386,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		}
 
 		if ($_section == '[CONFIG]') {
-			$_qry = "INSERT INTO `#__vm_config` (`config_id`, `config`) VALUES (null, '$_value')";
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (null, '$_value')";
 		}
 		// Other sections can be implemented here
 
@@ -432,15 +432,52 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function removeAllVMTables() {
 	$db = JFactory::getDBO();
 	$config = JFactory::getConfig();
-	$db->setQuery("SHOW TABLES LIKE '".$config->getValue('config.dbprefix')."vm_%'");
+
+    $prefix = $config->getValue('config.dbprefix').'vm_%';
+	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
+	if (!$tables = $db->loadResultArray()) {
+	    $this->setError = $db->getErrorMsg();
+//	    return false;
+	}
+
+	foreach ($tables as $table) {
+
+	    $db->setQuery('DROP TABLE ' . $table);
+	    if($db->query()){
+	    	$droppedTables[] = substr($table,strlen($prefix)-1);
+	    } else {
+	    	$errorTables[] = $table;
+	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+	    }
+	}
+
+	$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
+	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 	if (!$tables = $db->loadResultArray()) {
 	    $this->setError = $db->getErrorMsg();
 	    return false;
 	}
 
+	$app = JFactory::getApplication();
 	foreach ($tables as $table) {
+
 	    $db->setQuery('DROP TABLE ' . $table);
-	    $db->query();
+	    if($db->query()){
+	    	$droppedTables[] = substr($table,strlen($prefix)-1);
+	    } else {
+	    	$errorTables[] = $table;
+	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+	    }
+	}
+
+
+	if(!empty($droppedTables)){
+		$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
+	}
+
+    if(!empty($errorTables)){
+		$app->enqueueMessage('Error dropping virtuemart table ' . implode($errorTables,', '));
+		return false;
 	}
 
 	return true;

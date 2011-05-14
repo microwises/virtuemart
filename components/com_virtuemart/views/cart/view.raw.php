@@ -54,7 +54,7 @@ class VirtueMartViewCart extends JView {
 
 		$this->doVendor = true;
 		$vendorModel = $this->getModel('vendor');
-		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->vendor_id);
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();
@@ -65,7 +65,7 @@ class VirtueMartViewCart extends JView {
 		//For User address
 		$_currentUser =& JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
-//		$this->assignRef('user_id', $this->lists['current_id']);
+//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
 			$this->_user = $this->getModel('user');
 			$this->_user->setCurrent();

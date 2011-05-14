@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
-	<name>VirtueMart Shopping Cart</name>
+	<name>MOD_VIRTUEMART_CART</name>
 	<creationDate>February 2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>
@@ -12,7 +12,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>Shows a shopping cart for your customers.</description>
+	<description>MOD_VIRTUEMART_CART_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>
 	</files>
@@ -21,14 +21,14 @@
 			label="Module Class Suffix"
 			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 		<param name="show_price" type="list" default="1"
-			label="Show Product Price?"
-			description="Defines wether the product price is displayed or not.">
+			label="MOD_VIRTUEMART_CART_SHOW_PRICE"
+			description="MOD_VIRTUEMART_CART_SHOW_PRICE_DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param><br/>
 		<param name="show_product_list" type="list" default="1"
-			label="Show Product list in cart?"
-			description="Defines wether the product list in cart  is displayed or not.">
+			label="MOD_VIRTUEMART_CART_SHOW_LIST"
+			description="MOD_VIRTUEMART_CART_SHOW_LIST_DESCDefines wether the product list in cart  is displayed or not.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>

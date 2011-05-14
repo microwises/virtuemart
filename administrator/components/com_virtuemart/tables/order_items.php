@@ -1,0 +1,87 @@
+<?php
+/**
+*
+* Order item table
+*
+* @package	VirtueMart
+* @subpackage Orders
+* @author RolandD
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id$
+*/
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Order item table class
+ * The class is is used to manage the order items in the shop.
+ *
+ * @package	VirtueMart
+ * @author RolandD
+ */
+class TableOrder_items extends JTable {
+
+	/** @var int Primary key */
+	var $virtuemart_order_item_id = 0;
+	/** @var int User ID */
+	var $virtuemart_order_id = NULL;
+	/** @var int User info ID */
+	var $virtuemart_userinfo_id = NULL;
+	/** @var int Vendor ID */
+	var $virtuemart_vendor_id = NULL;
+	/** @var int Product ID */
+	var $virtuemart_product_id = NULL;
+	/** @var string Order item SKU */
+	var $order_item_sku = NULL;
+	/** @var string Order item name */
+	var $order_item_name = NULL;
+	/** @var int Product Quantity */
+	var $product_quantity = NULL;
+	/** @var decimal Product item price */
+	var $product_item_price = 0.00000;
+	/** @var decimal Product final price */
+	var $product_final_price = 0.00000;
+	/** @var string Order item currency */
+	var $order_item_currency = NULL;
+	/** @var char Order status */
+	var $order_status = NULL;
+	/** @var int Creation date */
+	var $created_on = NULL;
+	/** @var int Last modified date */
+	var $modified_on = NULL;
+	/** @var text Product attribute */
+	var $product_attribute = NULL;
+               /** @var boolean */
+	var $locked_on	= 0;
+	/** @var time */
+	var $locked_by	= 0;
+	/**
+	 * @param $db Class constructor; connect to the database
+	 */
+	function __construct($db) {
+		parent::__construct('#__virtuemart_order_items', 'virtuemart_order_item_id', $db);
+	}
+
+	/**
+	 * For setting the time
+	 *
+	 * @author Max Milbers
+	 */
+
+	function check(){
+		$date = JFactory::getDate();
+		$today = $date->toMySQL();
+		if(empty($this->created_on)){
+			$this->created_on = $today;
+		}
+     	$this->modified_on = $today;
+	}
+}
+// pure php no closing tag

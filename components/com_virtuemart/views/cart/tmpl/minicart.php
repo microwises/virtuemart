@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 			else $product_rows[$i]['row_color'] = "sectiontableentry1";
 
 			//Create product URL
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&product_id='.$product->product_id.'&category_id='.$product->category_id);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 			// @todo Add variants
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
@@ -91,11 +91,11 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			//** @todo WEIGHT CALCULATION
-			//$weight_subtotal = vmShippingMethod::get_weight($product["product_id"]) * $product->quantity'];
+			//$weight_subtotal = vmShippingMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
 			// Product PRICE
-			$priceKey = $product->product_id.$variantmod;
+			$priceKey = $product->virtuemart_product_id.$variantmod;
 
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
 

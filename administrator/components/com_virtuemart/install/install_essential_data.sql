@@ -7,9 +7,9 @@
 --
 
 --
--- Dumping data for table `#__vm_menu_admin`
+-- Dumping data for table `#__virtuemart_adminmenuentries`
 --
-INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
+INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `name`, `link`, `depends`, `icon_class`, `ordering`, `published`, `tooltip`, `view`, `task`) VALUES
 (null, 1, 0, 'COM_VIRTUEMART_CATEGORY_LIST_MNU', '', '', 'vmicon vmicon-16-content', 1, 1, '', 'category', ''),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'product', 'product'),
 (null, 1, 0, 'COM_VIRTUEMART_PRODUCT_CUSTOM_LIST_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'custom', ''),
@@ -24,7 +24,7 @@ INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, 
 (null, 2, 0, 'COM_VIRTUEMART_SHOPPERS_MNU', '', '', 'vmicon vmicon-16-user', 4, 1, '', 'user', ''),
 (null, 2, 0, 'COM_VIRTUEMART_SHOPPER_GROUP_LIST_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'shoppergroup', ''),
 (null, 3, 0, 'COM_VIRTUEMART_MANUFACTURER_LIST_MNU', '', '', 'vmicon vmicon-16-content', 1, 1, '', 'manufacturer', ''),
-(null, 3, 0, 'COM_VIRTUEMART_MANUFACTURER_CAT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'manufacturercategory', ''),
+(null, 3, 0, 'COM_VIRTUEMART_MANUFACTURER_CAT_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'manufacturercategories', ''),
 (null, 4, 0, 'COM_VIRTUEMART_STORE_FORM_MNU', '', '', 'vmicon vmicon-16-config', 1, 1, '', 'user', 'editshop'),
 (null, 4, 0, 'COM_VIRTUEMART_PAYMENT_METHOD_LIST_MNU', '', '', 'vmicon vmicon-16-content', 2, 1, '', 'paymentmethod', ''),
 (null, 4, 0, 'COM_VIRTUEMART_CARRIER_LIST_MNU', '', '', 'vmicon vmicon-16-content', 3, 1, '', 'shippingcarrier', ''),
@@ -43,10 +43,10 @@ INSERT INTO `#__vm_menu_admin` (`id`, `module_id`, `parent_id`, `name`, `link`, 
 (null, 77, 0, 'COM_VIRTUEMART_USERGROUP_LBL', '', '', 'vmicon vmicon-16-user', 2, 1, '', 'usergroups', '');
 
 --
--- Dumping data for table `#__vm_module`
+-- Dumping data for table `#__virtuemart_modules`
 --
 
-INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
+INSERT INTO `#__virtuemart_modules` (`module_id`, `module_name`, `module_description`, `module_perms`, `published`, `is_admin`, `list_order`) VALUES
 (1, 'product', 'Here you can administer your online catalog of products.  Categories , Products (view=product), Attributes  ,Product Types      Product Files (view=media), Inventory  , Calculation Rules ,Customer Reviews  ', 'storeadmin,admin', 1, '1', 1),
 (2, 'order', 'View Order and Update Order Status:    Orders , Coupons , Revenue Report ,Shopper , Shopper Groups ', 'admin,storeadmin', 1, '1', 2),
 (3, 'manufacturer', 'Manage the manufacturers of products in your store.', 'storeadmin,admin', 1, '1', 3),
@@ -61,10 +61,10 @@ INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `m
 (13, 'zone', 'This is the zone-shipping module. Here you can manage your shipping costs according to Zones.', 'admin,storeadmin', 0, '1', 11);
 
 --
--- Dumping data for table `#__vm_order_status`
+-- Dumping data for table `#__virtuemart_orderstates`
 --
 
-INSERT INTO `#__vm_order_status` (`order_status_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `vendor_id`) VALUES
+INSERT INTO `#__virtuemart_orderstates` (`virtuemart_orderstate_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `virtuemart_vendor_id`) VALUES
 (null, 'P', 'Pending', '', 1, 1),
 (null, 'C', 'Confirmed', '', 2, 1),
 (null, 'X', 'Cancelled', '', 3, 1),
@@ -73,10 +73,10 @@ INSERT INTO `#__vm_order_status` (`order_status_id`, `order_status_code`, `order
 
 
 --
--- Dumping data for table `#__vm_userfield`
+-- Dumping data for table `#__virtuemart_userfields`
 --
 
-INSERT INTO `#__vm_userfield` (`fieldid`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `vendor_id`, `params`) VALUES
+INSERT INTO `#__virtuemart_userfields` (`virtuemart_userfield_id`, `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipping`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`) VALUES
 (null, 'email', 'COM_VIRTUEMART_REGISTER_EMAIL', '', 'emailaddress', 100, 30, 1, 2, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'title', 'COM_VIRTUEMART_SHOPPER_FORM_TITLE', '', 'select', 0, 0, 0, 8, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
 (null, 'password', 'COM_VIRTUEMART_SHOPPER_FORM_PASSWORD_1', '', 'password', 25, 30, 1, 4, NULL, NULL, NULL, NULL, 1, 1, 0, 1, 0, 0, 1, 1, NULL),
@@ -92,8 +92,8 @@ INSERT INTO `#__vm_userfield` (`fieldid`, `name`, `title`, `description`, `type`
 (null, 'address_2', 'COM_VIRTUEMART_SHOPPER_FORM_ADDRESS_2', '', 'text', 64, 30, 0, 13, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
 (null, 'city', 'COM_VIRTUEMART_SHOPPER_FORM_CITY', '', 'text', 32, 30, 1, 14, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
 (null, 'zip', 'COM_VIRTUEMART_SHOPPER_FORM_ZIP', '', 'text', 32, 30, 1, 15, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
-(null, 'country_id', 'COM_VIRTUEMART_SHOPPER_FORM_COUNTRY', '', 'select', 0, 0, 1, 16, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
-(null, 'state_id', 'COM_VIRTUEMART_SHOPPER_FORM_STATE', '', 'select', 0, 0, 1, 17, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
+(null, 'virtuemart_country_id', 'COM_VIRTUEMART_SHOPPER_FORM_COUNTRY', '', 'select', 0, 0, 1, 16, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
+(null, 'virtuemart_state_id', 'COM_VIRTUEMART_SHOPPER_FORM_STATE', '', 'select', 0, 0, 1, 17, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
 (null, 'phone_1', 'COM_VIRTUEMART_SHOPPER_FORM_PHONE', '', 'text', 32, 30, 1, 18, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
 (null, 'phone_2', 'COM_VIRTUEMART_SHOPPER_FORM_PHONE2', '', 'text', 32, 30, 0, 19, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),
 (null, 'fax', 'COM_VIRTUEMART_SHOPPER_FORM_FAX', '', 'text', 32, 30, 0, 20, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 0, 0, 1, 1, NULL),

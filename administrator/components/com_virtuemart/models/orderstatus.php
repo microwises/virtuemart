@@ -94,7 +94,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	function _getTotal()
 	{
 		if (empty($this->_total)) {
-			$query = 'SELECT `order_status_id` FROM `#__vm_order_status`';
+			$query = 'SELECT `virtuemart_orderstate_id` FROM `#__virtuemart_orderstates`';
 			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -108,7 +108,7 @@ class VirtueMartModelOrderstatus extends JModel {
 		$db = JFactory::getDBO();
 
 		if (empty($this->_data)) {
-			$this->_data = $this->getTable('order_status');
+			$this->_data = $this->getTable('orderstates');
 			$this->_data->load((int)$this->_id);
 		}
 
@@ -128,14 +128,14 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function store()
 	{
-		$table =& $this->getTable('order_status');
+		$table =& $this->getTable('orderstates');
 
 		$data = JRequest::get('post');
-		$isNew = ($data['order_status_id'] < 1) ? true : false;
+		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
 		} else {
-			$table->load($data['order_status_id']);
+			$table->load($data['virtuemart_orderstate_id']);
 
 			if ($table->ordering == $data['ordering']) {
 				$reorderRequired = false;
@@ -179,7 +179,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	function delete()
 	{
 		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
-		$table =& $this->getTable('order_status');
+		$table =& $this->getTable('orderstates');
 
 		foreach($orderStatIds as $orderStatId) {
 			if (!$table->delete($orderStatId)) {
@@ -197,7 +197,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function getOrderStatusList()
 	{
-		$query = 'SELECT * FROM `#__vm_order_status` ';
+		$query = 'SELECT * FROM `#__virtuemart_orderstates` ';
 		$query .= $this->_getOrdering();
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
@@ -212,7 +212,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	{
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
-		
+
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'ordering', 'cmd' );
 
@@ -226,7 +226,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function move($direction)
 	{
-		$table =& $this->getTable('order_status');
+		$table =& $this->getTable('orderstates');
 		if (!$table->load($this->_id)) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -242,7 +242,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	/**
 	 * Check if stock should be updated when an order status changes/
 	 * TODO This must be implemented in an orderstatus flow in a future release
-	 * 
+	 *
 	 * @author Oscar van Eijk, null if the order is new (default)
 	 * @param char $_newStat New order status
 	 * @param char $_oldStat Old order status, null if the order is new (default)
@@ -266,7 +266,7 @@ class VirtueMartModelOrderstatus extends JModel {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Reorder the Order statusus
 	 *
@@ -274,7 +274,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function saveorder($cid = array(), $order)
 	{
-		$table =& $this->getTable('order_status');
+		$table =& $this->getTable('orderstates');
 
 		// update ordering values
 		for( $i=0; $i < count($cid); $i++ )

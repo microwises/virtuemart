@@ -46,8 +46,8 @@ class VirtuemartViewOrders extends JView {
 				$orderDetails = $orderModel->getOrder();
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
-					if(!empty($orderDetails['details']['BT']->user_id)){
-						if ($orderDetails['details']['BT']->user_id != $cuid) {
+					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
 							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 							return;
 						}

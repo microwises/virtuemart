@@ -30,11 +30,11 @@ AdminMenuHelper::startAdminArea();
 		<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FILTER'); ?>:
 		<input type="text" name="search" id="search" value="<?php echo $this->list['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_GO_BTN'); ?></button>
-		<button onclick="document.getElementById('search').value='';document.getElementById('mf_category_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
+		<button onclick="document.getElementById('search').value='';document.getElementById('virtuemart_manufacturercategories_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
 	    </td>
 	    <td nowrap="nowrap">
 		<?php
-		echo $this->list['mf_category_id'];
+		echo $this->list['virtuemart_manufacturercategories_id'];
 		?>
 	    </td>
 	</tr>
@@ -68,9 +68,9 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count( $this->manufacturers ); $i < $n; $i++) {
 		$row = $this->manufacturers[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->manufacturer_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_manufacturer_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&manufacturer_id=' . $row->manufacturer_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id=' . $row->virtuemart_manufacturer_id);
 
 		?>
 	    <tr class="<?php echo "row$k"; ?>">

@@ -37,11 +37,11 @@ class VirtuemartViewState extends JView {
 		$this->loadHelper('adminMenu');
 
 		$model = $this->getModel();
-		$zoneModel = $this->getModel('ShippingZone');
+		$zoneModel = $this->getModel('Worldzones');
 
-		$stateId = JRequest::getInt('state_id', null);
+		$stateId = JRequest::getInt('virtuemart_state_id', null);
 		$model->setId($stateId);
-		$state =& $model->getSingleState();
+		$state = $model->getSingleState();
 
         $layoutName = JRequest::getVar('layout', 'default');
 
@@ -49,10 +49,9 @@ class VirtuemartViewState extends JView {
 		$this->assignRef('published',	$published);
 
 
-		$countryId = JRequest::getInt('country_id', 0);
-		if(empty($countryId)) $countryId = $state->country_id;
-		$this->assignRef('country_id',	$countryId);
-
+		$countryId = JRequest::getInt('virtuemart_country_id', 0);
+		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
+		$this->assignRef('virtuemart_country_id',	$countryId);
 
         $isNew = (count($state) < 1);
 
@@ -60,6 +59,11 @@ class VirtuemartViewState extends JView {
 			JError::raiseWarning(412,'Country id is 0');
 			return false;
 		}
+
+		$country = $this->getModel('country');
+		$country->setId($countryId);
+		$this->assignRef('country_name', $country->getCountry()->country_name);
+
 		if ($layoutName == 'edit') {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_states_48');
@@ -67,13 +71,13 @@ class VirtuemartViewState extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_states_48');
 			}
 			JToolBarHelper::divider();
-			JToolBarHelper::apply();
 			JToolBarHelper::save();
+                        JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$this->assignRef('state', $state);
 
-			$this->assignRef('shippingZones', $zoneModel->getShippingZoneSelectList());
+			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_LBL'), 'vm_states_48' );

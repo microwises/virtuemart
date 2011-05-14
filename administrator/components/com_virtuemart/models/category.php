@@ -101,7 +101,7 @@ class VirtueMartModelCategory extends JModel {
 	 */
 	public function _getTotal(){
     	if (empty($this->_total)) {
-			$query = 'SELECT `category_id` FROM `#__vm_category`';
+			$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_categories`';
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -126,16 +126,16 @@ class VirtueMartModelCategory extends JModel {
      *
      * @author RickG, jseros, RolandD, Max Milbers
      */
-	public function getCategory($category_id=0,$childs=TRUE){
+	public function getCategory($virtuemart_category_id=0,$childs=TRUE){
 
-		if(!empty($category_id)) $this->setId((int)$category_id);
+		if(!empty($virtuemart_category_id)) $this->setId((int)$virtuemart_category_id);
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
+   			$this->_data = $this->getTable('categories');
    			$this->_data->load((int)$this->_id);
   		}
 
-		$xrefTable = $this->getTable('category_media_xref');
+		$xrefTable = $this->getTable('category_medias');
 		$this->_data->file_ids = $xrefTable->load((int)$this->_id);
 
   		if($childs){
@@ -163,23 +163,23 @@ class VirtueMartModelCategory extends JModel {
 //	* @author RolandD
 //	* @return object containing the category
 //	*/
-//	public function getCategory($category_id=0) {
+//	public function getCategory($virtuemart_category_id=0) {
 //		$db = JFactory::getDBO();
-//		$row =& $this->getTable('category');
-//		$row->load($category_id);
+//		$row =& $this->getTable('categories');
+//		$row->load($virtuemart_category_id);
 //		if (VmConfig::get('showCategory',1)) {
 //		/* Check for children */
-//		$row->haschildren = $this->hasChildren($category_id);
+//		$row->haschildren = $this->hasChildren($virtuemart_category_id);
 //
 //		/* Get children if they exist */
-//		if ($row->haschildren) $row->children = $this->getChildrenList($category_id);
+//		if ($row->haschildren) $row->children = $this->getChildrenList($virtuemart_category_id);
 //		else $row->children = null;
 //
 //		/* Get the product count */
-//		$row->productcount = $this->getProductCount($category_id);
+//		$row->productcount = $this->getProductCount($virtuemart_category_id);
 //		}
 //		/* Get parent for breatcrumb */
-//		$row->parents = $this->getparentsList($category_id);
+//		$row->parents = $this->getparentsList($virtuemart_category_id);
 //
 //		return $row;
 //	}
@@ -187,24 +187,24 @@ class VirtueMartModelCategory extends JModel {
     /**
 	 * Get the list of child categories for a given category
 	 *
-	 * @param int $category_id Category id to check for child categories
+	 * @param int $virtuemart_category_id Category id to check for child categories
 	 * @return object List of objects containing the child categories
 	 */
-	public function getChildCategoryList($vendorId, $category_id) {
+	public function getChildCategoryList($vendorId, $virtuemart_category_id) {
 
-		$query = 'SELECT `#__vm_category`.`category_id`,`#__vm_category`.`category_name` ';
-		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
-		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
-		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
-		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__vm_category`.`published` = "1" ';
-		$query .= 'ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC';
+		$query = 'SELECT `#__virtuemart_categories`.`virtuemart_category_id`,`#__virtuemart_categories`.`category_name` ';
+		$query .= 'FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` ';
+		$query .= 'WHERE `#__virtuemart_category_categories`.`category_parent_id` = ' . $virtuemart_category_id . ' ';
+		$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
+		$query .= 'AND `#__virtuemart_categories`.`virtuemart_vendor_id` = ' . $vendorId . ' ';
+		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
+		$query .= 'ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
 		$childList = $this->_getList( $query );
 
 		if(!empty($childList)){
 			foreach($childList as $child){
-				$xrefTable = $this->getTable('category_media_xref');
-				$child->file_ids = $xrefTable->load($child->category_id);
+				$xrefTable = $this->getTable('category_medias');
+				$child->file_ids = $xrefTable->load($child->virtuemart_category_id);
 			}
 		}
 		return $childList;
@@ -226,10 +226,10 @@ class VirtueMartModelCategory extends JModel {
 
 		$vendorId = 1;
 
-		$query = "SELECT c.`category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
-				  FROM `#__vm_category` c
-				  LEFT JOIN `#__vm_category_xref` cx
-				  ON c.`category_id` = cx.`category_child_id`
+		$query = "SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
+				  FROM `#__virtuemart_categories` c
+				  LEFT JOIN `#__virtuemart_category_categories` cx
+				  ON c.`virtuemart_category_id` = cx.`category_child_id`
 				  WHERE 1 ";
 
 		// Get only published categories
@@ -247,7 +247,7 @@ class VirtueMartModelCategory extends JModel {
 		}
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= " AND (c.`vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
+			$query .= " AND (c.`virtuemart_vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
 		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
@@ -372,12 +372,12 @@ class VirtueMartModelCategory extends JModel {
 		if(!empty($this->_db))$this->_db = JFactory::getDBO();
 		$vendorId = 1;
 		if ($cat_id > 0) {
-			$q = 'SELECT count(#__vm_product.product_id) AS total
-			FROM `#__vm_product`, `#__vm_product_category_xref`
-			WHERE `#__vm_product`.`vendor_id` = "'.$vendorId.'"
-			AND `#__vm_product_category_xref`.`category_id` = '.$this->_db->Quote($cat_id).'
-			AND `#__vm_product`.`product_id` = `#__vm_product_category_xref`.`product_id`
-			AND `#__vm_product`.`published` = "1" ';
+			$q = 'SELECT count(#__virtuemart_products.virtuemart_product_id) AS total
+			FROM `#__virtuemart_products`, `#__virtuemart_product_categories`
+			WHERE `#__virtuemart_products`.`virtuemart_vendor_id` = "'.$vendorId.'"
+			AND `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$this->_db->Quote($cat_id).'
+			AND `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
+			AND `#__virtuemart_products`.`published` = "1" ';
 			$this->_db->setQuery($q);
 			$count = $this->_db->loadResult();
 		} else $count=0 ;
@@ -387,22 +387,22 @@ class VirtueMartModelCategory extends JModel {
 
 	/**
 	 * NOT USED,
-	 * Function to calculate and return the number of products in category $category_id
+	 * Function to calculate and return the number of products in category $virtuemart_category_id
 	 * @author RolandD
 	 *
 	 * @todo Add vendor
-	 * @param int $category_id the category ID to count products for
+	 * @param int $virtuemart_category_id the category ID to count products for
 	 * @return int the number of products found
 	 */
-//	public function getProductCount($category_id) {
+//	public function getProductCount($virtuemart_category_id) {
 //		$db = JFactory::getDBO();
-//		$q = "SELECT count(#__vm_product.product_id) AS num_rows
-//			FROM #__vm_product, #__vm_product_category_xref, #__vm_category
-//			WHERE #__vm_product.vendor_id = 1
-//			AND #__vm_product_category_xref.category_id = ".$category_id."
-//			AND #__vm_category.category_id = #__vm_product_category_xref.category_id
-//			AND #__vm_product.product_id = #__vm_product_category_xref.product_id
-//			AND #__vm_product.published = 1";
+//		$q = "SELECT count(#__virtuemart_products.virtuemart_product_id) AS num_rows
+//			FROM #__virtuemart_products, #__virtuemart_product_categories, #__virtuemart_categories
+//			WHERE #__virtuemart_products.virtuemart_vendor_id = 1
+//			AND #__virtuemart_product_categories.virtuemart_category_id = ".$virtuemart_category_id."
+//			AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_product_categories.virtuemart_category_id
+//			AND #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_categories.virtuemart_product_id
+//			AND #__virtuemart_products.published = 1";
 //			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
 //				$q .= " AND product_in_stock > 0 ";
 //			}
@@ -422,10 +422,10 @@ class VirtueMartModelCategory extends JModel {
 	public function orderCategory($id, $movement){
 		//retrieving the category table object
 		//and loading data
-		$row = $this->getTable();
+		$row = $this->getTable('categories');
 		$row->load($id);
 
-		$query = 'SELECT `category_parent_id` FROM `#__vm_category_xref` WHERE `category_child_id` = '. $this->_db->Quote( $row->category_id );
+		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. $this->_db->Quote( $row->virtuemart_category_id );
 		$this->_db->setQuery($query);
 		$parent = $this->_db->loadObject();
 
@@ -448,15 +448,15 @@ class VirtueMartModelCategory extends JModel {
 	public function setOrder($cats){
 		$total		= count( $cats );
 		$groupings	= array();
-		$row = $this->gettable();
+		$row = $this->getTable('categories');
 
 		$order		= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
 
-		$query = 'SELECT `category_parent_id` FROM `#__vm_category`
-				  LEFT JOIN `#__vm_category_xref` cx
-				  ON c.`category_id` = cx.`category_child_id`
-			      WHERE c.`category_id` = %s';
+		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories`
+				  LEFT JOIN `#__virtuemart_category_categories` cx
+				  ON c.`virtuemart_category_id` = cx.`category_child_id`
+			      WHERE c.`virtuemart_category_id` = %s';
 
 		// update ordering values
 		for( $i=0; $i < $total; $i++ ) {
@@ -495,7 +495,7 @@ class VirtueMartModelCategory extends JModel {
 	public function publish($publishId = false){
 
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','category',$publishId);
+		return modelfunctions::publish('cid','categories',$publishId);
 
 	}
 
@@ -515,7 +515,7 @@ class VirtueMartModelCategory extends JModel {
 
 			$quotedId = $this->_db->Quote($id);
 			$query = 'SELECT `category_shared`
-					  FROM `#__vm_category_xref`
+					  FROM `#__virtuemart_category_categories`
 					  WHERE `category_child_id` = '. $quotedId;
 
 			$this->_db->setQuery($query);
@@ -523,7 +523,7 @@ class VirtueMartModelCategory extends JModel {
 
 			$share = ($categoryXref->category_shared > 0) ? 0 : 1;
 
-			$query = 'UPDATE `#__vm_category_xref`
+			$query = 'UPDATE `#__virtuemart_category_categories`
 					  SET `category_shared` = '.$share.'
 					  WHERE `category_child_id` = '.$quotedId;
 
@@ -552,7 +552,7 @@ class VirtueMartModelCategory extends JModel {
 		$data = $this->getRelationInfo( $categoryId );
 		$parentId = isset($data->category_parent_id) ? $data->category_parent_id : 0;
 
-     	$parent = $this->getTable();
+     	$parent = $this->getTable('categories');
   		$parent->load((int) $parentId);
 
   		return $parent;
@@ -590,15 +590,15 @@ class VirtueMartModelCategory extends JModel {
      *
      * @author jseros
      *
-     * @param int $category_id
+     * @param int $virtuemart_category_id
      * @return object Record of parent relation
      */
-    public function getRelationInfo( $category_id = 0 ){
-    	$category_id = (int) $category_id;
+    public function getRelationInfo( $virtuemart_category_id = 0 ){
+    	$virtuemart_category_id = (int) $virtuemart_category_id;
 
     	$query = 'SELECT `category_parent_id`, `category_shared`, `category_list`
-    			  FROM `#__vm_category_xref`
-    			  WHERE `category_child_id` = '. $this->_db->Quote($category_id);
+    			  FROM `#__virtuemart_category_categories`
+    			  WHERE `category_child_id` = '. $this->_db->Quote($virtuemart_category_id);
     	$this->_db->setQuery($query);
 
     	return $this->_db->loadObject();
@@ -614,11 +614,11 @@ class VirtueMartModelCategory extends JModel {
     public function store() {
 		jimport('joomla.filesystem.file');
 
-		$table = $this->getTable();
+		$table = $this->getTable('categories');
 		$data = JRequest::get('post');
 
 		/* Vendor */
-		$data['vendor_id'] = 1;
+		$data['virtuemart_vendor_id'] = 1;
 
 		// Bind the form fields to the category table
 		if (!$table->bind($data)) {
@@ -639,22 +639,22 @@ class VirtueMartModelCategory extends JModel {
 		}
 
 		//store category relation
-		if( !$data['category_id'] ){ //is new
-			$data['category_id'] = $this->_db->insertid();
-			$query = 'INSERT INTO `#__vm_category_xref`(`category_parent_id`, `category_child_id`, `category_shared`)
+		if( !$data['virtuemart_category_id'] ){ //is new
+			$data['virtuemart_category_id'] = $this->_db->insertid();
+			$query = 'INSERT INTO `#__virtuemart_category_categories`(`category_parent_id`, `category_child_id`, `category_shared`)
 					  VALUES(
 					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-					  	'. $this->_db->Quote( (int)$data['category_id'] ) .',
+					  	'. $this->_db->Quote( (int)$data['virtuemart_category_id'] ) .',
 					  	'. $this->_db->Quote( (int)$data['shared'] ) .'
 					  )';
 		}
 		else{
-//			$id = $data['category_id'];
+//			$id = $data['virtuemart_category_id'];
 
-			$query = 'UPDATE `#__vm_category_xref`
+			$query = 'UPDATE `#__virtuemart_category_categories`
 					  SET `category_parent_id` = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
 					  `category_shared` = '. $this->_db->Quote( (int)$data['shared'] ) .'
-					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$data['category_id'] );
+					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$data['virtuemart_category_id'] );
 		}
 
 		$this->_db->setQuery($query);
@@ -667,11 +667,11 @@ class VirtueMartModelCategory extends JModel {
 
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		$xrefTable = $this->getTable('category_media_xref');
+		$xrefTable = $this->getTable('category_medias');
 		$mediaModel = new VirtueMartModelMedia();
 		$mediaModel->storeMedia($data,$xrefTable,'category');
 
-		return $data['category_id'];
+		return $data['virtuemart_category_id'];
 	}
 
 	/**
@@ -682,7 +682,7 @@ class VirtueMartModelCategory extends JModel {
      * @return boolean if the item delete was successful
      */
     public function delete($cids) {
-		$table = $this->getTable();
+		$table = $this->getTable('categories');
 
 		foreach($cids as $cid) {
 		    if( $this->clearProducts($cid) ) {
@@ -692,7 +692,7 @@ class VirtueMartModelCategory extends JModel {
 				}
 
 				//deleting relations
-				$query = "DELETE FROM `#__vm_product_category_xref` WHERE `category_child_id` = ". $this->_db->Quote($cid);
+				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". $this->_db->Quote($cid);
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -700,7 +700,7 @@ class VirtueMartModelCategory extends JModel {
 		    	}
 
 		    	//updating parent relations
-				$query = "UPDATE `#__vm_product_category_xref` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". $this->_db->Quote($cid);
+				$query = "UPDATE `#__virtuemart_product_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". $this->_db->Quote($cid);
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -726,7 +726,7 @@ class VirtueMartModelCategory extends JModel {
      */
     public function clearProducts($cid) {
 
-    	$query = "UPDATE `#__vm_product_category_xref` SET `category_id` = 0 WHERE `category_id` =" . $this->_db->Quote($cid);
+    	$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` =" . $this->_db->Quote($cid);
 		$this->_db->setQuery($query);
 
 		if( !$this->_db->query() ){
@@ -763,17 +763,17 @@ class VirtueMartModelCategory extends JModel {
 
 
 	/**
-	* Checks for children of the category $category_id
+	* Checks for children of the category $virtuemart_category_id
 	*
 	* @author RolandD
-	* @param int $category_id the category ID to check
+	* @param int $virtuemart_category_id the category ID to check
 	* @return boolean true when the category has childs, false when not
 	*/
-	public function hasChildren($category_id) {
+	public function hasChildren($virtuemart_category_id) {
 		$db = JFactory::getDBO();
 		$q = "SELECT `category_child_id`
-			FROM `#__vm_category_xref`
-			WHERE `category_parent_id` = ".$category_id;
+			FROM `#__virtuemart_category_categories`
+			WHERE `category_parent_id` = ".$virtuemart_category_id;
 		$db->setQuery($q);
 		$db->query();
 		if ($db->getAffectedRows() > 0) return true;
@@ -785,20 +785,20 @@ class VirtueMartModelCategory extends JModel {
 	 *
 	 * @author RolandD
 	 * @todo Add vendor ID
-	 * @param int $category_id the category ID to create the list of
+	 * @param int $virtuemart_category_id the category ID to create the list of
 	 * @return array containing the child categories
 	 */
-	public function getChildrenList($category_id,$limit=false) {
+	public function getChildrenList($virtuemart_category_id,$limit=false) {
 		$db = JFactory::getDBO();
 		$childs = array();
 
-		$q = "SELECT `category_id`, `category_child_id`, `category_name`
-			FROM `#__vm_category`, `#__vm_category_xref`
-			WHERE `#__vm_category_xref`.`category_parent_id` = ".$category_id."
-			AND `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
-			AND `#__vm_category`.`vendor_id` = 1
-			AND `#__vm_category`.`published` = 1
-			ORDER BY `#__vm_category`.`ordering`, `#__vm_category`.`category_name` ASC";
+		$q = "SELECT `virtuemart_category_id`, `category_child_id`, `category_name`
+			FROM `#__virtuemart_categories`, `#__virtuemart_category_categories`
+			WHERE `#__virtuemart_category_categories`.`category_parent_id` = ".$virtuemart_category_id."
+			AND `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
+			AND `#__virtuemart_categories`.`virtuemart_vendor_id` = 1
+			AND `#__virtuemart_categories`.`published` = 1
+			ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC";
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
@@ -818,10 +818,10 @@ class VirtueMartModelCategory extends JModel {
 	 *
 	 * @author RolandD
 	 * @todo Add vendor ID
-	 * @param int $category_id the category ID to create the list of
+	 * @param int $virtuemart_category_id the category ID to create the list of
 	 * @return array containing the child categories
 	 */
-	public function getparentsList($category_id) {
+	public function getparentsList($virtuemart_category_id) {
 
 		$db = & JFactory::getDBO();
 		$menu = &JSite::getMenu();
@@ -831,13 +831,13 @@ class VirtueMartModelCategory extends JModel {
 		} else {
 			$menuItem = &$menu->getItem($query['Itemid']);
 		}
-		$menuCatid = (empty($menuItem->query['category_id'])) ? 0 : $menuItem->query['category_id'];
-		if ($menuCatid == $category_id) return ;
-		$parents_id = array_reverse($this->getCategoryRecurse($category_id,$menuCatid));
+		$menuCatid = (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
+		if ($menuCatid == $virtuemart_category_id) return ;
+		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
-			$q = "SELECT `category_name`,`category_id`
-				FROM  `#__vm_category`
-				WHERE  `category_id`=".$id;
+			$q = "SELECT `category_name`,`virtuemart_category_id`
+				FROM  `#__virtuemart_categories`
+				WHERE  `virtuemart_category_id`=".$id;
 
 			$db->setQuery($q);
 
@@ -846,7 +846,7 @@ class VirtueMartModelCategory extends JModel {
 		return $parents;
 	}
 
-	function getCategoryRecurse($category_id,$catMenuId,$first=true ) {
+	function getCategoryRecurse($virtuemart_category_id,$catMenuId,$first=true ) {
 		static $idsArr = array();
 		if($first) {
 			$idsArr = array();
@@ -854,14 +854,14 @@ class VirtueMartModelCategory extends JModel {
 
 		$db = & JFactory::getDBO();
 		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-			FROM  `#__vm_category_xref` AS `xref`
-			WHERE `xref`.`category_child_id`= ".$category_id;
+			FROM  `#__virtuemart_category_categories` AS `xref`
+			WHERE `xref`.`category_child_id`= ".$virtuemart_category_id;
 		$db->setQuery($q);
 		if (!$ids = $db->loadObject()) {
 			return $idsArr;
 		}
 		if ($ids->child) $idsArr[] = $ids->child;
-		if($ids->child != 0 and $catMenuId != $category_id and $catMenuId != $ids->parent) {
+		if($ids->child != 0 and $catMenuId != $virtuemart_category_id and $catMenuId != $ids->parent) {
 			$this->getCategoryRecurse($ids->parent,$catMenuId,false);
 		}
 		return $idsArr;
@@ -878,8 +878,8 @@ class VirtueMartModelCategory extends JModel {
 		static $level = 0;
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
-		$q = 'SELECT `category_child_id`,`category_name` FROM `#__vm_category_xref`
-		LEFT JOIN `#__vm_category` on `#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id`
+		$q = 'SELECT `category_child_id`,`category_name` FROM `#__virtuemart_category_categories`
+		LEFT JOIN `#__virtuemart_categories` on `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
 		WHERE `category_parent_id`='.$id;
 		$db->setQuery($q);
 		$num ++;
@@ -913,7 +913,7 @@ class VirtueMartModelCategory extends JModel {
 	}
 
 	/* old fuction to do work virtuemart categorie tree */
-	function get_category_tree( $category_id=0,
+	function get_category_tree( $virtuemart_category_id=0,
 				$links_css_class="mainlevel",
 				$list_css_class="mm123",
 				$highlighted_style="font-style:italic;" ) {
@@ -927,17 +927,17 @@ class VirtueMartModelCategory extends JModel {
 
 		// Copy the Array into an Array with auto_incrementing Indexes
 		$key = array_keys($this->_category_tree); // Array of category table primary keys
-		
+
 		$nrows = $size = sizeOf($key); // Category count
 
 		$html = "";
 
 		// Find out if we have subcategories to display
 		$allowed_subcategories = Array();
-		if( !empty( $this->_category_tree[$category_id]["category_parent_id"] ) ) {
+		if( !empty( $this->_category_tree[$virtuemart_category_id]["category_parent_id"] ) ) {
 			// Find the Root Category of this category
-			$root = $this->_category_tree[$category_id];
-			$allowed_subcategories[] = $this->_category_tree[$category_id]["category_parent_id"];
+			$root = $this->_category_tree[$virtuemart_category_id];
+			$allowed_subcategories[] = $this->_category_tree[$virtuemart_category_id]["category_parent_id"];
 			// Loop through the Tree up to the root
 			while( !empty( $root["category_parent_id"] )) {
 				$allowed_subcategories[] = $this->_category_tree[$root["category_child_id"]]["category_child_id"];
@@ -954,17 +954,17 @@ class VirtueMartModelCategory extends JModel {
 
 			if( !isset( $row_list[$n] ) || !isset( $category_tmp[$row_list[$n]]["category_child_id"] ) )
 			continue;
-			if( $category_id == $category_tmp[$row_list[$n]]["category_child_id"] )
+			if( $virtuemart_category_id == $category_tmp[$row_list[$n]]["category_child_id"] )
 			$style = $highlighted_style;
 			else
 			$style = "";
 
 			$allowed = false;
-			if( $depth_list[$n] > 0 and $category_id>0 ) {
+			if( $depth_list[$n] > 0 and $virtuemart_category_id>0 ) {
 				// Subcategory!
 				if( isset( $root ) && in_array( $category_tmp[$row_list[$n]]["category_child_id"], $allowed_subcategories )
-				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $category_id
-				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $this->_category_tree[$category_id]["category_parent_id"]) {
+				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $virtuemart_category_id
+				|| $category_tmp[$row_list[$n]]["category_parent_id"] == $this->_category_tree[$virtuemart_category_id]["category_parent_id"]) {
 					$allowed = true;
 
 				}
@@ -985,7 +985,7 @@ class VirtueMartModelCategory extends JModel {
 				$catname =htmlentities($category_tmp[$row_list[$n]]["category_name"], ENT_NOQUOTES, 'UTF-8');
 
 				$html .= '
-          <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. JRoute::_ ( 'index.php?option=com_virtuemart&view=category&category_id='.$category_tmp[$row_list[$n]]["category_child_id"]) .'" '.$append.'>'
+          <a title="'.$catname.'" style="display:block;'.$style.'" class="'. $css_class .'" href="'. JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category_tmp[$row_list[$n]]["category_child_id"]) .'" '.$append.'>'
 				. str_repeat("&nbsp;&nbsp;&nbsp;",$depth_list[$n]) . $catname
 				. self::countProducts( $category_tmp[$row_list[$n]]["category_child_id"] )
 				.'</a>';
@@ -1005,18 +1005,18 @@ class VirtueMartModelCategory extends JModel {
 		if( empty( $this->_category_tree)) {
 
 			// Get only published categories
-			$query  = "SELECT `category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
-						FROM `#__vm_category`, `#__vm_category_xref` WHERE ";
+			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
+						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` WHERE ";
 			if( $only_published ) {
-				$query .= "`#__vm_category`.`published`=1 AND ";
+				$query .= "`#__virtuemart_categories`.`published`=1 AND ";
 			}
-			$query .= "`#__vm_category`.`category_id`=`#__vm_category_xref`.`category_child_id` ";
+			$query .= "`#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
 			if( !empty( $keyword )) {
 				$query .= "AND ( `category_name` LIKE '%$keyword%' ";
 				$query .= "OR `category_description` LIKE '%$keyword%' ";
 				$query .= ") ";
 			}
-			$query .= "ORDER BY `#__vm_category`.`ordering` ASC, `#__vm_category`.`category_name` ASC";
+			$query .= "ORDER BY `#__virtuemart_categories`.`ordering` ASC, `#__virtuemart_categories`.`category_name` ASC";
 
 			// initialise the query in the $database connector
 			$db->setQuery($query);
@@ -1024,7 +1024,7 @@ class VirtueMartModelCategory extends JModel {
 			// Transfer the Result into a searchable Array
 			$dbCategories = $db->loadAssocList();
 
-		//if (!$ids = $db->loadObject()) 
+		//if (!$ids = $db->loadObject())
 			foreach( $dbCategories as $Cat ) {
 				$this->_category_tree[$Cat['category_child_id']] = $Cat;
 			}
@@ -1039,7 +1039,7 @@ class VirtueMartModelCategory extends JModel {
 	function sortCategoryTreeArray() {
 		// Copy the Array into an Array with auto_incrementing Indexes
 		$key = array_keys($this->_category_tree); // Array of category table primary keys
-		
+
 		$nrows = $size = sizeOf($key); // Category count
 
 		/** FIRST STEP
@@ -1053,34 +1053,34 @@ class VirtueMartModelCategory extends JModel {
 		$children = array();
 		$parent_ids = array();
 		$parent_ids_hash = array();
-		
+
 		//Build an array of category references
 		$category_tmp = Array();
 		for ($i=0; $i<$size; $i++)
 		{
 			$category_tmp[$i] = $this->_category_tree[$key[$i]];
-			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];		
+			$parent_ids[$i] = $category_tmp[$i]['category_parent_id'];
 			if($category_tmp[$i]["category_parent_id"] == 0)
-			{ 
+			{
 				array_push($id_list,$category_tmp[$i]["category_child_id"]);
 				array_push($row_list,$i);
 				array_push($depth_list,0);
 			}
 
 			$parent_id = $parent_ids[$i];
-			
+
 			if (isset($parent_ids_hash[$parent_id]))
 			{
 				$parent_ids_hash[$parent_id][$i] = $parent_id;
-				
+
 			}
 			else
 			{
 				$parent_ids_hash[$parent_id] = array($i => $parent_id);
 			}
-			
+
 		}
-		
+
 		$loop_count = 0;
 		$watch = array(); // Hash to store children
 		while(count($id_list) < $nrows) {
@@ -1098,7 +1098,7 @@ class VirtueMartModelCategory extends JModel {
 				array_push($depth_temp,$depth);
 
 				$children = @$parent_ids_hash[$id];
-				
+
 				if (!empty($children))
 				{
 					foreach($children as $key => $value) {

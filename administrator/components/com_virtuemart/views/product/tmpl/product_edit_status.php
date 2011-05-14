@@ -95,18 +95,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<td width="21%">&nbsp;</td>
 					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$this->imagePath.$this->product->product_availability;?>"/></td>
 				</tr>
-				<tr class="row1">
-					<td width="21%" >
-						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?>:</div>
-					</td>
-					<td width="79%" >
-						<?php
-							$checked = '';
-							if (strtoupper($this->product->product_special) == "Y") $checked = 'checked="checked"' ?>
-							<input type="checkbox" name="product_special" value="Y" <?php echo $checked; ?> />
-					</td>
-				</tr>
+				
 				<tr class="row0">
 					<td colspan="2">&nbsp;</td>
 				</tr>

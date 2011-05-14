@@ -38,7 +38,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 AdminMenuHelper::startAdminArea(); 
-//if($vendor_id==1 || $perm->check( 'admin' )){
+//if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
       	
@@ -67,13 +67,13 @@ AdminMenuHelper::startAdminArea();
 		for ($i=0, $n=count( $this->usergroups ); $i < $n; $i++) {
 			
 			$row = $this->usergroups[$i];
-			$checked = JHTML::_('grid.id', $i, $row->group_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
 //			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=usergroups&task=edit&cid[]=' . $row->group_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=usergroups&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
-					<?php echo $row->group_id; ?>
+					<?php echo $row->virtuemart_shoppergroup_id; ?>
 				</td>            
 				<td width="10">
 					<?php echo $checked; ?>

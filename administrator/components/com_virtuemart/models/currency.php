@@ -100,7 +100,7 @@ class VirtueMartModelCurrency extends JModel {
      */
     function _getTotal() {
 	if (empty($this->_total)) {
-	    $query = 'SELECT `currency_id` FROM `#__vm_currency`';
+	    $query = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`';
 	    $this->_total = $this->_getListCount($query);
 	}
 	return $this->_total;
@@ -115,7 +115,7 @@ class VirtueMartModelCurrency extends JModel {
     function getCurrency() {
 
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable();
+	    $this->_data = $this->getTable('currencies');
 		$this->_data->load((int)$this->_id);
 	}
 
@@ -131,7 +131,7 @@ class VirtueMartModelCurrency extends JModel {
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
-	$table =& $this->getTable('currency');
+	$table =& $this->getTable('currencies');
 
 	$data = JRequest::get( 'post' );
 
@@ -162,7 +162,7 @@ class VirtueMartModelCurrency extends JModel {
 	    return false;
 	}
 
-	return $table->currency_id;
+	return $table->virtuemart_currency_id;
     }
 
 	/**
@@ -182,20 +182,20 @@ class VirtueMartModelCurrency extends JModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
+     * @param boolean $publishId True is the ids should be enabled, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
 	public function publish($publishId = false)
 	{
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','currency',$publishId);
+		return modelfunctions::publish('cid','currencies',$publishId);
 
 	}
 
 
     /**
      * Retireve a list of currencies from the database.
-     * This function is used in the backend for the currency listing, therefore no asking if published or not
+     * This function is used in the backend for the currency listing, therefore no asking if enabled or not
      * @author RickG, Max Milbers
      * @return object List of currency objects
      */
@@ -204,10 +204,10 @@ class VirtueMartModelCurrency extends JModel {
     $where = '';
     if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
     if( !Permissions::getInstance()->check('admin') ){
-    	$where = 'WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+    	$where = 'WHERE (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
     }
-	$query = 'SELECT * FROM `#__vm_currency` '.$where;
-	$query .= 'ORDER BY `#__vm_currency`.`currency_name`';
+	$query = 'SELECT * FROM `#__virtuemart_currencies` '.$where;
+	$query .= 'ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 	return $this->_data;
     }
@@ -215,15 +215,16 @@ class VirtueMartModelCurrency extends JModel {
     /**
      * Retireve a list of currencies from the database.
      *
-     * This is written to get a list for selecting currencies. Therefore it asks for published
+     * This is written to get a list for selecting currencies. Therefore it asks for enabled
      * @author RolandD, Max Milbers
      * @return object List of currency objects
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__vm_currency` WHERE (`vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__vm_currency`.`currency_name`';
+	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }
+
 }
 // pure php no closing tag

@@ -61,7 +61,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 					,'auto_inc' => true
 					,'null' => false
 			)
-			,'order_id' => array (
+			,'virtuemart_order_id' => array (
 					 'type' => 'int'
 					,'length' => 11
 					,'null' => false
@@ -108,7 +108,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		);
 		$_schemeIdx = array(
 			 'idx_order_payment' => array(
-					 'columns' => array ('order_id')
+					 'columns' => array ('virtuemart_order_id')
 					,'primary' => false
 					,'unique' => false
 					,'type' => null
@@ -130,10 +130,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	function plgVmOnSelectPayment($cart,$checkedPaymId=0){
 		if(!$this -> setVmParams($cart->vendorId)) return ;
 
-		if($checkedPaymId==$this->paymentMethod->paym_id) $checked = '"checked"'; else $checked = '';
+		if($checkedPaymId==$this->paymentMethod->virtuemart_paymentmethod_id) $checked = '"checked"'; else $checked = '';
 
 		$html = '<fieldset>';
-		$html .= '<input type="radio" name="paym_id" value="'.$this->paymentMethod->paym_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
 
 
 		if($this->paymentMethod->paym_creditcards){
@@ -197,8 +197,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	function plgVmOnCheckoutCheckPaymentData($cart){
 		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
-			if(empty($cart->creditcard_id) ||
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->virtuemart_paymentmethod_id)){
+			if(empty($cart->virtuemart_creditcard_id) ||
 				empty($cart->cc_name) ||
 				empty($cart->cc_number) ||
 				empty($cart->cc_code) ||
@@ -220,18 +220,18 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	{
 		if (!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
 
-		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->paym_id)){
+		if(VirtueMartModelPaymentmethod::hasCreditCard($cart->virtuemart_paymentmethod_id)){
 			require_once(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
-			$cart->creditcard_id= JRequest::getVar('creditcard', '0');
+			$cart->virtuemart_creditcard_id= JRequest::getVar('creditcard', '0');
 			$cart->cc_name= JRequest::getVar('cart_cc_name', '');
 			$cart->cc_number= JRequest::getVar('cart_cc_number', '');
 			$cart->cc_code= JRequest::getVar('cart_cc_code', '');
 			$cart->cc_expire_month= JRequest::getVar('cart_cc_expire_month', '');
 			$cart->cc_expire_year= JRequest::getVar('cart_cc_expire_year', '');
 
-			if(!empty($cart->creditcard_id)){
+			if(!empty($cart->virtuemart_creditcard_id)){
 				$cardModel = new VirtueMartModelCreditcard();
-				$cc_ = $cardModel->getCreditCard($cart->creditcard_id);
+				$cc_ = $cardModel->getCreditCard($cart->virtuemart_creditcard_id);
 				$cc_type = $cc_->creditcard_code;
 				if ($this->params->get('CHECK_CARD_CODE')) {
 					if (!$cardModel->validate_creditcard_data($cc_type,$cart->cc_number)) {
@@ -248,7 +248,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowOrderPaymentBE($_order_id, $_paymethod_id)
+	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
 
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
@@ -256,7 +256,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		}
 		$_db = JFactory::getDBO();
 		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
-			. 'WHERE `order_id` = ' . $_order_id;
+			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {
 			JError::raiseWarning(500, $_db->getErrorMsg());
@@ -305,10 +305,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData->paym_id)) {
+		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
-		$this->_paym_id = $_orderData->paym_id;
+		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;
 		$_transKey = $this->get_passkey();
 		if( $_transKey === false ) return false;
 
@@ -324,7 +324,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		$database = JFactory::getDBO();
 
-		$_vendorID = $_orderData->vendor_id;
+		$_vendorID = $_orderData->virtuemart_vendor_id;
 		$_vendorCurrency = VirtueMartModelVendor::getVendorCurrency($_vendorID);
 
 		// Option to send email to merchant from gateway
@@ -356,9 +356,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_company' => substr($_usrBT['company'], 0, 50),
 			'x_address' => substr($_usrBT['address_1'], 0, 60),
 			'x_city' => substr($_usrBT['city'], 0, 40),
-			'x_state' => substr(ShopFunctions::getStateByID($_usrBT['state_id']), 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrBT['virtuemart_state_id']), 0, 40),
 			'x_zip' => substr($_usrBT['zip'], 0, 20),
-			'x_country' => substr(ShopFunctions::getCountryByID($_usrBT['country_id']), 0, 60),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrBT['virtuemart_country_id']), 0, 60),
 			'x_phone' => substr($_usrBT['phone_1'], 0, 25),
 			'x_fax' => substr($_usrBT['fax'], 0, 25),
 
@@ -368,9 +368,9 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			'x_company' => substr($_usrST['company'], 0, 50),
 			'x_address' => substr($_usrST['address_1'], 0, 60),
 			'x_city' => substr($_usrST['city'], 0, 40),
-			'x_state' => substr(ShopFunctions::getStateByID($_usrST['state_id']), 0, 40),
+			'x_state' => substr(ShopFunctions::getStateByID($_usrST['virtuemart_state_id']), 0, 40),
 			'x_zip' => substr($_usrST['zip'], 0, 20),
-			'x_country' => substr(ShopFunctions::getCountryByID($_usrST['country_id']), 0, 60),
+			'x_country' => substr(ShopFunctions::getCountryByID($_usrST['virtuemart_country_id']), 0, 60),
 
 			// Additional Customer Data
 			'x_cust_id' => $_usr->get('id'),
@@ -412,8 +412,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		}
 
 		// Prepare data that should be stored in the database
-		$_dbValues['order_id'] = $_orderNr;
-		$_dbValues['payment_method_id'] = $this->_paym_id;
+		$_dbValues['virtuemart_order_id'] = $_orderNr;
+		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		if (VmConfig::get('store_creditcard_data')) {
 			$_dbValues['order_payment_number'] = $_orderData->cc_number;
 			$_dbValues['order_payment_code'] = $_orderData->cc_code;
@@ -506,7 +506,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$db = JFactory::getDBO();
 		$q = "SELECT * FROM #__{vm}_orders, #__{vm}_order_payment WHERE ";
 		$q .= "order_number='".$d['order_number']."' ";
-		$q .= "AND #__{vm}_orders.order_id=#__{vm}_order_payment.order_id";
+		$q .= "AND #__{vm}_orders.virtuemart_order_id=#__{vm}_order_payment.virtuemart_order_id";
 		$db->query( $q );
 		if( !$db->next_record() ) {
 			$vmLogger->err("Error: Order not found.");
@@ -518,7 +518,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		//$dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
 		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
-          AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
+          AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
 
@@ -528,12 +528,12 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$qt = "SELECT * FROM #__{vm}_user_info WHERE user_id='".$db->f("user_id")."'";
 		$dbbt->query($qt);
 		$dbbt->next_record();
-		$user_info_id = $dbbt->f("user_info_id");
-		if( $user_info_id != $db->f("user_info_id")) {
+		$virtuemart_userinfo_id = $dbbt->f("virtuemart_userinfo_id");
+		if( $virtuemart_userinfo_id != $db->f("virtuemart_userinfo_id")) {
 			// Get user's alternative shipping information
 			// $dbst =& new ps_DB;
 			$dbst = JFactory::getDBO();
-			$qt = "SELECT * FROM #__{vm}_user_info WHERE user_info_id='".$db->f("user_info_id")."' AND address_type='ST'";
+			$qt = "SELECT * FROM #__{vm}_user_info WHERE virtuemart_userinfo_id='".$db->f("virtuemart_userinfo_id")."' AND address_type='ST'";
 			$dbst->query($qt);
 			$dbst->next_record();
 		}
@@ -639,7 +639,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$q = "UPDATE #__{vm}_order_payment SET ";
 			$q .="order_payment_log='".$d["order_payment_log"]."',";
 			$q .="order_payment_trans_id='".$d["order_payment_trans_id"]."' ";
-			$q .="WHERE order_id='".$db->f("order_id")."' ";
+			$q .="WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."' ";
 			$db->query( $q );
 
 			return True;
