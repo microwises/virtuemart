@@ -107,6 +107,7 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load Images */
 				$product_model->addImagesToProducts($product);
+				dump($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
@@ -240,7 +241,7 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
-                                JToolBarHelper::apply();
+                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				break;

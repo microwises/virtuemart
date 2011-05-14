@@ -294,7 +294,7 @@ class VirtueMartModelProduct extends JModel {
 			}
 //		}
 //		$product = $this->fillVoidProduct($product,$front);
-		$this->product = $product;
+		$this->product = $product;dump($this->product,'produt');
 		return $product;
     }
 

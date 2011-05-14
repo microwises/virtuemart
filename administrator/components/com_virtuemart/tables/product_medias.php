@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+
 /**
  * Calculator table class
  * The class is is used to manage the media in the shop.
@@ -25,7 +27,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableProduct_medias extends JTable {
+class TableProduct_medias extends VmXrefTable {
 
 	var $_pkey 		= 'virtuemart_product_id';
 	var $_skey 		= 'virtuemart_media_id';

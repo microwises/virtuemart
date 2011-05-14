@@ -92,8 +92,8 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 		<td>
-		<input type="text" name="dangeroustools" class="inputbox" value="<?php echo $this->config->get('dangeroustools') ?>" />
-	</td>
+		<?php echo VmHTML::checkbox('dangeroustools', $this->config->get('dangeroustools')); ?>
+		</td>
 	</tr>
     </table>
 </fieldset>

@@ -134,10 +134,10 @@ class VirtueMartModelMedia extends JModel {
     	if(!empty($virtuemart_media_id)){
     		if(!is_array($virtuemart_media_id)) $virtuemart_media_id = explode(',',$virtuemart_media_id);
 
+    		$data = $this->getTable('medias');
     	    foreach($virtuemart_media_id as $virtuemart_media_id){
-	    		$data = $this->getTable('medias');
 	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
-	   			$data->load($id);
+	   			$data->load($id);dump($data,'loaded id '.$id);
 	   			$media = VmMediaHandler::createMedia($data,$type,$mime);
 	   			if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 	  			$medias[] = $media;
@@ -146,6 +146,7 @@ class VirtueMartModelMedia extends JModel {
 
     	if(empty($medias)){
     		$data = $this->getTable('medias');
+    		$data->load(0);
     		$medias[] = VmMediaHandler::createMedia($data,$type,$mime);
     	}
 
@@ -393,9 +394,12 @@ class VirtueMartModelMedia extends JModel {
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
 			foreach($objects as $object){
+
 				if(empty($object->$nameId)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->$nameId;
-				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
-//				}
+				dump($object,'my media attacht image id');
+//				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
+				$object->images = $this->createMediaByIds($object->virtuemart_media_id,$type,$mime);
+
 			}
 		}
 	}

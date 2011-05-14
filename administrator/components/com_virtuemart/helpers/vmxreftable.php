@@ -49,7 +49,7 @@ class VmXrefTable extends JTable {
 		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$this->_id.'"';
 		$this->_db->setQuery($q);
 
-		$result = $this->_db->loadResultArray();
+		$result = $this->_db->loadResultArray();dump($result,'load');
 		if($this->_db->getError()){
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
