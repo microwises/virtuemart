@@ -448,8 +448,8 @@ class VirtueMartModelUser extends JModel {
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
-				$this->setError('Was not able to save the virtuemart user data');
-				JError::raiseWarning('', JText::_('COM_VIRTUEMART_USED_RAISEWARNING_WAS_NOT_ABLE_TO_SAVE_VIRTUEMART_USER_DATA'));
+				$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+				JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 			}
 
 			// Send registration confirmation mail
@@ -529,7 +529,7 @@ class VirtueMartModelUser extends JModel {
 			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
-				$this->setError('Was not able to save the virtuemart userinfo address data');
+				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 				return false;
 			}
 

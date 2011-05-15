@@ -446,7 +446,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 		    }
 		    else {
 			echo '<tr>
-        <td colspan="2"><strong>Dynamic Image Resizing is not available. The GD library seems to be missing.</strong>';
+        <td colspan="2"><strong>'.JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') .'</strong>';
 			echo '<input type="hidden" name="img_resize_enable" value="0" />';
 			echo '<input type="hidden" name="img_width" value="'. $this->config->get('img_width',90) .'" />';
 			echo '<input type="hidden" name="img_height" value="'. $this->config->get('img_height',90) .'" /></td></tr>';
