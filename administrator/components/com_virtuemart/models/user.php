@@ -251,7 +251,7 @@ class VirtueMartModelUser extends JModel {
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);
 			}
-			dump($this->_data->JUser,'hmm');
+
 			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
 			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
 			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
@@ -498,15 +498,17 @@ class VirtueMartModelUser extends JModel {
 			}
 
 			//update user table
-			$usertable = $this->getTable('vmusers');
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
+			$usertable = $this->getTable('vmusers');
 
-			$user_id = $usertable -> bindChecknStore($this,$vmusersData);
+			$vmusersData = $usertable -> bindChecknStore($this,$vmusersData);
 
 
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmusers');
+			$user_shoppergroups_table = $this->getTable('user_shoppergroups');
+
+			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($this,$shoppergroupData);
 
 //			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 //			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);

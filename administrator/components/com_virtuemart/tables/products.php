@@ -113,8 +113,8 @@ class TableProducts extends VmTable {
 		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
 
 //		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-//		$this->setPrimaryKeys('product_name','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+//		$this->setObligatoryKeys('product_name','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
 
 		$this->setLoggable();
 

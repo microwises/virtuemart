@@ -16,10 +16,12 @@
  * @version $Id$
  */
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class TableOrder_userinfos extends JTable {
+class TableOrder_userinfos extends VmTable {
 
 	/**
 	 * Constructor
@@ -28,6 +30,7 @@ class TableOrder_userinfos extends JTable {
 	{
 		self::loadFields($_db);
 		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
+		$this->setLoggable();
 	}
 
 	/**

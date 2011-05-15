@@ -30,12 +30,6 @@ if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
 
 class TableCalc_countries extends VmXarrayTable {
 
-//	var $_pkey 		= 'virtuemart_calc_id';
-//	var $pkeyForm	= 'virtuemart_calc_id';
-
-//	var $_skey 		= 'virtuemart_country_id';
-//	var $skeyForm	= 'virtuemart_country_id';
-
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object

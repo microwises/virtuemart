@@ -25,19 +25,27 @@ jimport( 'joomla.user.user' );
 class VmTable extends JTable {
 
 	/** @var int Primary key */
-	private $_id		= 0;
+//	private $_id		= 0;
 
-	private $_pkeys		= array();
+//	private $_pkey 		= 0;
+	private $_obkeys	= array();
 	private $_unique	= false;
 	private $_unique_name = array();
 
-	public function setPrimaryKeys($key,$langkey=0){
-		$this->_pkeys[$key] = $langkey;
+    function setPrimaryKey($key,$keyForm=0,$langkey=0){
+    	$this->setObligatoryKeys('_pkey',$langkey);
+    	$this->_pkey = $key;
+    	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
+    }
+
+	public function setObligatoryKeys($key,$langkey=0){
+
+		$this->_obkeys[$key] = $langkey;
 	}
 
 	public function setUniqueName($name,$langkey){
 		$this->_unique = true;
-		$this->_pkeys[$name] = $langkey;
+		$this->_obkeys[$name] = $langkey;
 		$this->_unique_name[$name] = $langkey;
 	}
 
@@ -59,10 +67,10 @@ class VmTable extends JTable {
      */
     function check($obligatory=false) {
 
-    	foreach($this->_pkeys as $pkey => $error){
-    		if (empty($this->$pkey)) {
+    	foreach($this->_obkeys as $obkeys => $error){
+    		if (empty($this->$obkeys)) {
     			if(empty($error)){
-    				$this->setError('Serious error cant save '.$this->_tbl.' without '.$pkey);
+    				$this->setError('Serious error cant save '.$this->_tbl.' without '.$obkeys);
     			} else {
     				$this->setError(JText::_($error));
     			}
@@ -72,17 +80,20 @@ class VmTable extends JTable {
 
     	if ($this->_unique) {
 		    $db = JFactory::getDBO();
-		    foreach($this->_pkeys as $pkey => $error){
+		    foreach($this->_unique_name as $obkeys => $error){
 
-		   		$q = 'SELECT `'.$this->$pkey.'` FROM `'.$this->_tbl.'` ';
-				$q .= 'WHERE `'.$this->_unique_name.'`="' .  $this->$pkey . '"';
+		   		$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
+				$q .= 'WHERE `'.$obkeys.'`="' .  $this->$obkeys . '"';
 	            $db->setQuery($q);
-			    $unique_id = $db->loadResult();
-				if (!empty($unique_id) && $unique_id!=$this->$pkey) {
+			    $unique_id = $db->loadResultArray();
+
+			    $tblKey = $this->_tbl_key;
+
+				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
 					if(empty($error)){
 						$this->setError(JText::_($error));
 					} else {
-						$this->setError('Error cant save '.$this->_tbl.' without a non unique'.$pkey);
+						$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
 					}
 
 					return false;
@@ -132,7 +143,7 @@ class VmTable extends JTable {
 			return false;
 		}
 
-		// Make sure the calculation record is valid
+		// Make sure the table record is valid
 		if (!$this->check($obligatory)) {
 			$model->setError($this->getError());
 			return false;
@@ -143,7 +154,8 @@ class VmTable extends JTable {
 			$model->setError($this->getError());
 			return false;
 		}
-		$data[$this->_tbl_key] = $this->this->_tbl_key;
+		$tblKey = $this->_tbl_key;
+		$data[$this->_tbl_key] = $this->$tblKey;
 
 		return $data;
     }

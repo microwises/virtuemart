@@ -210,7 +210,7 @@ class VirtuemartControllerUpdatesMigration extends JController {
 
 	function refreshCompleteInstall(){
 
-		if(VmConfig::get('dangeroustools',false)){
+//		if(VmConfig::get('dangeroustools',false)){
 
 			$model = $this->getModel('updatesMigration');
 
@@ -224,9 +224,9 @@ class VirtuemartControllerUpdatesMigration extends JController {
 			$msg = $model->getErrors();
 			if(empty($msg)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
 			$this->setDangerousToolsOff();
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
-		}
+//		} else {
+//			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+//		}
 
 		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
 

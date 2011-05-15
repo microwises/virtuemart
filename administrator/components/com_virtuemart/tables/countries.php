@@ -53,50 +53,12 @@ class TableCountries extends VmTable {
 		parent::__construct('#__virtuemart_countries', 'virtuemart_country_id', $db);
 
 		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-		$this->setPrimaryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
 
 		$this->setLoggable();
 
 	}
-
-
-	/**
-	 * Validates the country record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-//	function check()
-//	{
-//        if (!$this->country_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_CONTRY_NAME'));
-//			return false;
-//		}
-//		if (!$this->country_2_code) {
-//			$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
-//			return false;
-//		}
-//		if (!$this->country_3_code) {
-//			$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
-//			return false;
-//		}
-//
-//		if (($this->country_name)) {
-//		    $db = JFactory::getDBO();
-//
-//			$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` ';
-//			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
-//            $db->setQuery($q);
-//		    $virtuemart_country_id = $db->loadResult();
-//		    if (!empty($virtuemart_country_id) && $virtuemart_country_id!=$this->virtuemart_country_id) {
-//				$this->setError(JText::_('COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
 
 }
 // pure php no closing tag

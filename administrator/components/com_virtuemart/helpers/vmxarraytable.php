@@ -20,24 +20,19 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
-class VmXarrayTable extends JTable {
+class VmXarrayTable extends VmTable {
 
 	/** @var int Primary key */
 
 	var $autoOrdering = false;
 	var $orderable = false;
 
-    function setOrderable($key='ordering',$auto=true){
+    function setOrderable($key='ordering', $auto=true){
     	$this->orderingKey = $key;
     	$this->orderable = 1;
     	$this->autoOrdering = $auto;
-
-    }
-
-    function setPrimaryKey($key,$keyForm=0){
-    	$this->_pkey = $key;
-    	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
     }
 
 	function setSecondaryKey($key,$keyForm=0){
@@ -59,8 +54,6 @@ class VmXarrayTable extends JTable {
     	}
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
-		if(!empty($id)) $this->_id = $id;
-
 
 		$toSelect = '`'.$this->_skey.'`';
 		if($this->orderable){
@@ -69,7 +62,7 @@ class VmXarrayTable extends JTable {
 			$orderby = '';
 		}
 
-		$q = 'SELECT '.$toSelect.' FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$this->_id.'" '.$orderby;
+		$q = 'SELECT '.$toSelect.' FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$id.'" '.$orderby;
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();
@@ -108,25 +101,6 @@ class VmXarrayTable extends JTable {
 	}
 
     /**
-     * @author Max Milbers
-     * @param
-     */
-    function check($obligatory=false) {
-
-        if (empty($this->_pvalue)) {
-            $this->setError('Serious error cant save '.$this->_tbl.' without primary key value '.$this->_pkey);
-            return false;
-        }
-
-		if (empty($this->_svalue) && $obligatory) {
-            $this->setError('Serious error cant save '.$this->_tbl.' without '.$this->_skey);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      *
      *
      * @author Max Milbers
@@ -140,6 +114,7 @@ class VmXarrayTable extends JTable {
 		$db->setQuery($q);
 		$db->Query();
 
+//		dump($this,'store');
 		foreach($this->_svalue as $value){
 
 			$obj = new stdClass;
@@ -157,7 +132,6 @@ class VmXarrayTable extends JTable {
 			}
 
 			$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
-
 		}
 
 //////		$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
@@ -176,40 +150,10 @@ class VmXarrayTable extends JTable {
 //////		$q .= 'ON DUPLICATE KEY UPDATE virtuemart_manufacturer_id = '.JRequest::getInt('virtuemart_manufacturer_id');
 //////		$this->_db->setQuery($q);
 //////		$this->_db->query();
-		$this->_id = $this->_db->insertid();
+//		$this->_id = $this->_db->insertid();
 
-		return true;;
+		return $returnCode;
 
     }
 
-    /**
-     * As shortcat
-     *
-     * @author Max Milbers
-     * @param unknown_type $model
-     * @param unknown_type $data
-     * @param unknown_type $obligatory
-     */
-    public function bindChecknStore($model, $data, $obligatory=false) {
-
-    	if (!$this->bind($data)) {
-			$model->setError($this->getError());
-			return false;
-		}
-
-		// Make sure the calculation record is valid
-		if (!$this->check($obligatory)) {
-			$model->setError($this->getError());
-			return false;
-		}
-
-		// Save the record to the database
-		if (!$this->store()) {
-			$model->setError($this->getError());
-			return false;
-		}
-		$data[$this->_tbl_key] = $this->_id;
-		return $data;
-//		return $this->_id;
-    }
 }

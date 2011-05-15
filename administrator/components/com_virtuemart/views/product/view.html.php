@@ -107,7 +107,6 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load Images */
 				$product_model->addImagesToProducts($product);
-				dump($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';

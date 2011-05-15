@@ -137,7 +137,7 @@ class VirtueMartModelCategory extends JModel {
 
 		$xrefTable = $this->getTable('category_medias');
 		$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
-		dump($xrefTable,'$xrefTable');
+
 		if($xrefTable->getError()) $this->setError($xrefTable->getError());
 
   		if($childs){
@@ -155,7 +155,6 @@ class VirtueMartModelCategory extends JModel {
 
   		}
 
-  		dump($this);
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
 			foreach($errs as $err){
@@ -758,7 +757,7 @@ class VirtueMartModelCategory extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($cats,'virtuemart_media_id','category','image');
+		$this->mediaModel->attachImages($cats,'category','image');
 
 	}
 

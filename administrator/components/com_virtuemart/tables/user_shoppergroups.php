@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxarraytable.php');
+
 /**
  * user_shoppergroup_xref table class
  * The class is used to link users to shoppergroups.
@@ -27,14 +29,14 @@ defined('_JEXEC') or die('Restricted access');
  * @author Max Milbers
  */
 
- class TableUser_shoppergroups extends JTable {
+ class TableUser_shoppergroups extends VmXarrayTable {
 
 //	/** @var int User ID */
 //	var $id			= 0;
-	/** @var int Vendor ID */
-	var $virtuemart_user_id			= 0;
-	/** @var int shoppergroup ID */
-	var $virtuemart_shoppergroup_id	= 0;
+//	/** @var int Vendor ID */
+//	var $virtuemart_user_id			= 0;
+//	/** @var int shoppergroup ID */
+//	var $virtuemart_shoppergroup_id	= 0;
 
 
 	/**
@@ -43,6 +45,8 @@ defined('_JEXEC') or die('Restricted access');
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_vmuser_shoppergroups', 'virtuemart_user_id', $db);
+		$this->setPrimaryKey('virtuemart_user_id');
+		$this->setSecondaryKey('virtuemart_shoppergroup_id');
 	}
 
  	/**
@@ -52,26 +56,26 @@ defined('_JEXEC') or die('Restricted access');
 	 * @author Oscar van Eijk
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
-	public function store()
-	{
-		$_qry = 'SELECT virtuemart_user_id '
-				. 'FROM #__virtuemart_vmuser_shoppergroups '
-				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
-		;
-		$this->_db->setQuery($_qry);
-		$_count = $this->_db->loadResultArray();
-
-		if (count($_count) > 0) {
-			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-		} else {
-			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-		}
-
-		if (!$returnCode){
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		else return true;
-	}
+//	public function store()
+//	{
+//		$_qry = 'SELECT virtuemart_user_id '
+//				. 'FROM #__virtuemart_vmuser_shoppergroups '
+//				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
+//		;
+//		$this->_db->setQuery($_qry);
+//		$_count = $this->_db->loadResultArray();
+//
+//		if (count($_count) > 0) {
+//			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+//		} else {
+//			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+//		}
+//
+//		if (!$returnCode){
+//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			return false;
+//		}
+//		else return true;
+//	}
 
  }

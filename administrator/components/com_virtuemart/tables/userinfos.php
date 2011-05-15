@@ -36,6 +36,8 @@ class TableUserinfos extends VmTable {
 
 	/** @var int hidden userkey */
 	var $virtuemart_userinfo_id = 0;
+	var $virtuemart_state_id = '';
+	var $virtuemart_country_id = '';
 
 //	var $user_is_vendor = 0;
 	var $address_type = '';
@@ -51,26 +53,14 @@ class TableUserinfos extends VmTable {
 	var $address_1 = '';
 	var $address_2 = '';
 	var $city = '';
-	var $virtuemart_state_id = '';
-	var $virtuemart_country_id = '';
+
 	var $zip = '';
 	var $extra_field_1 = '';
 	var $extra_field_2 = '';
 	var $extra_field_3 = '';
 	var $extra_field_4 = '';
 	var $extra_field_5 = '';
-           /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -80,9 +70,7 @@ class TableUserinfos extends VmTable {
 		self::addUserFields();
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
 
-		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-		$this->setPrimaryKeys('virtuemart_userinfo_id','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+		$this->setObligatoryKeys('virtuemart_user_id','COM_VIRTUEMART_USERINFO_RECORDS_MUST_CONTAIN_USER_ID');
 
 		$this->setLoggable();
 	}

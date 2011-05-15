@@ -294,7 +294,7 @@ class VirtueMartModelProduct extends JModel {
 			}
 //		}
 //		$product = $this->fillVoidProduct($product,$front);
-		$this->product = $product;dump($this->product,'produt');
+		$this->product = $product;
 		return $product;
     }
 
@@ -1027,7 +1027,7 @@ class VirtueMartModelProduct extends JModel {
 			}
 		}
 
-		dump($setPriceTable,'$setPriceTable error');
+
 		if($setPriceTable){
 			// Make sure the price record is valid
 			if (!$product_price_table->check()) {
@@ -1040,9 +1040,10 @@ class VirtueMartModelProduct extends JModel {
 			// Save the price record to the database
 			if (!$product_price_table->store()) {
 				$this->setError($product_price_table->getError());
-				dump($product_price_table,'pricecheck error');
+				dump($product_price_table,'store error');
 				return false;
 			}
+//			dump($product_price_table,'store done');
 		}
 
 
@@ -2049,7 +2050,7 @@ class VirtueMartModelProduct extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($products,'virtuemart_media_id','product','image');
+		$this->mediaModel->attachImages($products,'product','image');
 
 	}
 }

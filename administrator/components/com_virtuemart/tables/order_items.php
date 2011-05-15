@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Order item table class
  * The class is is used to manage the order items in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RolandD
  */
-class TableOrder_items extends JTable {
+class TableOrder_items extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_order_item_id = 0;
@@ -52,21 +54,16 @@ class TableOrder_items extends JTable {
 	var $order_item_currency = NULL;
 	/** @var char Order status */
 	var $order_status = NULL;
-	/** @var int Creation date */
-	var $created_on = NULL;
-	/** @var int Last modified date */
-	var $modified_on = NULL;
 	/** @var text Product attribute */
 	var $product_attribute = NULL;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
 	function __construct($db) {
 		parent::__construct('#__virtuemart_order_items', 'virtuemart_order_item_id', $db);
+
+		$this->setLoggable();
 	}
 
 	/**
@@ -75,13 +72,13 @@ class TableOrder_items extends JTable {
 	 * @author Max Milbers
 	 */
 
-	function check(){
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-	}
+//	function check(){
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+//	}
 }
 // pure php no closing tag

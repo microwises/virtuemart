@@ -485,7 +485,7 @@ class VirtueMartModelVendor extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($vendor,'virtuemart_media_id','vendor','image');
+		$this->mediaModel->attachImages($vendor,'vendor','image');
 
 	}
 

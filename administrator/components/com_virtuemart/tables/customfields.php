@@ -52,8 +52,8 @@ class TableCustomfields extends VmTable {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customfields', 'virtuemart_custom_id', $db);
 
-		$this->setPrimaryKeys('virtuemart_custom_id','COM_VIRTUEMART_CUSTOMFIELDS_NO_CUSTOM_ID');
-//		$this->setPrimaryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
+		$this->setObligatoryKeys('virtuemart_custom_id','COM_VIRTUEMART_CUSTOMFIELDS_NO_CUSTOM_ID');
+//		$this->setObligatoryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
 
 		$this->setLoggable();
 

@@ -254,7 +254,7 @@ if (empty ( $this->product )) {
 			<span class="product-field-display"><?php echo $field->display ?><span>
 			<span class="product-field-desc"><?php echo $field->custom_field_desc ?><span>
 			</div>
-			<?php  //dump( $field );
+			<?php
 		}
 		?>
 	</div>

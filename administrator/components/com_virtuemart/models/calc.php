@@ -132,7 +132,6 @@ class VirtueMartModelCalc extends JModel
 
 		$xrefTable = $this->getTable('calc_countries');
 		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
-			dump($xrefTable,'calc_countries');
 			$this->setError($xrefTable->getError());
 		}
 
@@ -141,7 +140,6 @@ class VirtueMartModelCalc extends JModel
 			$this->setError($xrefTable->getError());
 		}
 
-		dump($this,'get Calc');
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
 			foreach($errs as $err){

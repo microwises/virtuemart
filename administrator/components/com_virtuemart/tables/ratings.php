@@ -59,8 +59,8 @@ class TableRatings extends VmTable {
 		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
 
 //		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-//		$this->setPrimaryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+//		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
 
 		$this->setLoggable();
 

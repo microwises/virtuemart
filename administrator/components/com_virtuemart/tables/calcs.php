@@ -44,14 +44,6 @@ class TableCalcs extends VmTable
 	/** @var string Currency used in the calculation */
 	var $calc_currency				= '';
 
-	/** @var array affecting Categories of the rule */
-	//var $calc_categories			= array();
-	/** @var array affecting Shoppergroups of the rule */
-	//var $virtuemart_shoppergroup_ids		= array();
-	/** @var array affecting Countries of the rule */
-	//var $calc_countries				= array();
-	/** @var array affecting States of the rule */
-	//var $virtuemart_state_ids				= array();
 	/** @var string Visible for shoppers */
 	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
@@ -84,57 +76,11 @@ class TableCalcs extends VmTable
 		parent::__construct('#__virtuemart_calcs', 'virtuemart_calc_id', $db);
 
 		$this->setUniqueName('calc_name','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME');
-		$this->setPrimaryKeys('calc_kind','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND');
+		$this->setObligatoryKeys('calc_kind','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND');
 		$this->setLoggable();
 
 	}
 
-
-	/**
-	 * Validates the calculation rule record fields.
-	 *
-	 * @author Max Milbers
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-//	function check(){
-//
-//     	if (!$this->virtuemart_vendor_id) {
-//			$this->virtuemart_vendor_id = 1; //default to mainvendor
-//		}
-//
-////
-////        if (!$this->calc_name) {
-////			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME'));
-////			return false;
-////		}
-////
-////        if (!$this->calc_kind) {
-////			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND'));
-////			return false;
-////		}
-////
-////		if (($this->calc_name) ) {
-////		    $db = JFactory::getDBO();
-////
-////			$q = 'SELECT `virtuemart_calc_id` FROM `#__virtuemart_calcs` ';
-////			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
-////            $db->setQuery($q);
-////		    $virtuemart_calc_id = $db->loadResult();
-////			if (!empty($virtuemart_calc_id) && $virtuemart_calc_id!=$this->virtuemart_calc_id) {
-////				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
-////				return false;
-////			}
-////		}
-////
-////		$date = JFactory::getDate();
-////		$today = $date->toMySQL();
-////		if(empty($this->created_on)){
-////			$this->created_on = $today;
-////		}
-////     	$this->modified_on = $today;
-////
-//		return parent::check();
-//	}
 
 }
 // pure php no closing tag

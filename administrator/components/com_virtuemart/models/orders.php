@@ -727,24 +727,19 @@ class VirtueMartModelOrders extends JModel {
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 //			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
-			$_orderItems->created_on = time();
-			$_orderItems->modified_on = time();
 			$_orderItems->product_attribute = '';
 
-//			//TODO
-//			$_variants = array_merge($_prod->variant, $_prod->customvariants);
-//			foreach ($_variants as $_a => $_v) {
-//				$_orderItems->product_attribute .= (
-//					  (empty($_orderItems->product_attribute)?'':"<br/>\n")
-//					. $_a . ': ' . $_v
-//				);
-//			}
-
-			if (!$_orderItems->store()){
-				// Stop on first failure, most likely the result of a bug anyway (so in the testphase)
-				$this->setError($_orderItems->getError());
+			if (!$_orderItems->check()) {
+				$this->setError($this->getError());
 				return false;
 			}
+
+			// Save the record to the database
+			if (!$_orderItems->store()) {
+				$this->setError($this->getError());
+				return false;
+			}
+
 		}
 		return true;
 	}
@@ -799,9 +794,17 @@ class VirtueMartModelOrders extends JModel {
 	{
 		$_table = $this->getTable('order_items');
 		$_table->load($_item);
-		$_table->order_status = $_status;
-		$_table->modified_on = time();
-		$_table->store();
+
+		if (!$_table->check()) {
+			$this->setError($this->getError());
+			return false;
+		}
+
+		// Save the record to the database
+		if (!$_table->store()) {
+			$this->setError($this->getError());
+			return false;
+		}
 	}
 
 	/**
@@ -817,16 +820,25 @@ class VirtueMartModelOrders extends JModel {
 		$_table->product_quantity = JRequest::getVar('product_quantity_'.$_item, '');
 		$_table->product_item_price = JRequest::getVar('product_item_price_'.$_item, '');
 		$_table->product_final_price = JRequest::getVar('product_final_price_'.$_item, '');
-		$_attribs = JRequest::getVar('product_attribute_'.$_item,  0, '', 'array');
-		if ($_attribs != 0) {
-			$_attrib = array();
-			foreach ($_attribs as $_k => $_v) {
-				$_attrib[] = $_k . ': ' . $_v;
-			}
-			$_table->product_attribute = join("<br>\n", $_attrib);
+//		$_attribs = JRequest::getVar('product_attribute_'.$_item,  0, '', 'array');
+//		if ($_attribs != 0) {
+//			$_attrib = array();
+//			foreach ($_attribs as $_k => $_v) {
+//				$_attrib[] = $_k . ': ' . $_v;
+//			}
+//			$_table->product_attribute = join("<br>\n", $_attrib);
+//		}
+
+		if (!$_table->check()) {
+			$this->setError($this->getError());
+			return false;
 		}
-		$_table->modified_on = time();
-		$_table->store();
+
+		// Save the record to the database
+		if (!$_table->store()) {
+			$this->setError($this->getError());
+			return false;
+		}
 	}
 
 	/**
@@ -940,7 +952,6 @@ class VirtueMartModelOrders extends JModel {
 		}
 		else {
 			$table->reset();
-			$table->created_on = JFactory::getDate()->toMySql();
 			$table->virtuemart_order_id = $orderId;
 			return $table;
 		}
@@ -971,25 +982,9 @@ class VirtueMartModelOrders extends JModel {
 			}
 		}
 
-		// Bind the form fields to the order item table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
+		return $table->bindChecknStore($this,$data);
 
-		// Make sure the order item record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the order item record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		return true;
+//		return true;
 	}
 
 	/**

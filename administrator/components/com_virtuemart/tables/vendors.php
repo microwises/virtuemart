@@ -70,8 +70,8 @@ class TableVendors extends VmTable {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
 
 		$this->setUniqueName('vendor_name','COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS');
-//		$this->setPrimaryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setPrimaryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+//		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
+//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
 
 		$this->setLoggable();
     }
