@@ -50,7 +50,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	protected function _createTable()
 	{
 		$_scheme = DbScheme::get_instance();
-		$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
+		$_scheme->create_scheme('#__virtuemart_order_payment_'.$this->_pelement);
 		$_schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -189,7 +189,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		// TODO wait for PAYPAL return ???
-//		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
+//		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		// Send to PAYPAL TODO Sandbox choice ???
 		$_host = $this->params->get('SANDBOX') == 1 ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 		$_port = ''; // ':443';
@@ -246,7 +246,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$_db = JFactory::getDBO();
-		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
+		$_q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {

@@ -108,4 +108,5 @@ class TableShoppergroups extends VmTable
 //	}
 
 }
+}
 // pure php no closing tag

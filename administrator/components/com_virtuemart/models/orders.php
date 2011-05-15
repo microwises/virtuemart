@@ -578,7 +578,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
-		$_userInfoData =  $this->getTable('order_userinfo');
+		$_userInfoData =  $this->getTable('order_userinfos');
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 
 		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -683,7 +683,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	private function _createOrderLines($_id, $_cart)
 	{
-		$_orderItems = $this->getTable('order_item');
+		$_orderItems = $this->getTable('order_items');
 //		$_lineCount = 0;
 		foreach ($_cart->products as $priceKey=>$_prod) {
 			if (!is_int($priceKey)) {
@@ -760,7 +760,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	private function _updateOrderHist($_id, $_status = 'P', $_notified = 1, $_comment = '')
 	{
-		$_orderHist = $this->getTable('order_history');
+		$_orderHist = $this->getTable('order_histories');
 		$_orderHist->virtuemart_order_id = $_id;
 		$_orderHist->order_status_code = $_status;
 		$_orderHist->date_added = date('Y-m-d G:i:s', time());
@@ -797,7 +797,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	public function updateSingleItemStatus($_item, $_status)
 	{
-		$_table = $this->getTable('order_item');
+		$_table = $this->getTable('order_items');
 		$_table->load($_item);
 		$_table->order_status = $_status;
 		$_table->modified_on = time();
@@ -810,7 +810,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	public function updateSingleItem()
 	{
-		$_table = $this->getTable('order_item');
+		$_table = $this->getTable('order_items');
 		$_item = JRequest::getVar('virtuemart_order_item_id', '');
 		$_table->load($_item);
 		$_table->order_status = JRequest::getVar('order_status_'.$_item, '');
@@ -934,7 +934,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @return object Object containing the order item details.
 	 */
 	function getOrderLineDetails($orderId, $orderLineId) {
-		$table = $this->getTable('order_item');
+		$table = $this->getTable('order_items');
 		if ($table->load($orderLineId)) {
 			return $table;
 		}
@@ -954,7 +954,7 @@ class VirtueMartModelOrders extends JModel {
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function saveOrderLineItem() {
-		$table = $this->getTable('order_item');
+		$table = $this->getTable('order_items');
 
 		$data = JRequest::get('post');
 		$curDate = JFactory::getDate();
@@ -1038,7 +1038,7 @@ class VirtueMartModelOrders extends JModel {
 	 */
 	function removeOrderLineItem($orderLineId) {
 
-		$table = $this->getTable('order_item');
+		$table = $this->getTable('order_items');
 
 		if ($table->delete($orderLineId)) {
 			return true;

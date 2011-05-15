@@ -206,7 +206,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$field      =& $this->getTable('userfields');
 		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfo');
+		$orderinfo  =& $this->getTable('order_userinfos');
 
 		$data = JRequest::get('post');
 

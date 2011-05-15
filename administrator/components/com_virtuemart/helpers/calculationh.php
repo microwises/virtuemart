@@ -791,7 +791,7 @@ class calculationHelper {
 	 * @param	$value	$cartVendorId
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
-	function calculatePaymentPrice($virtuemart_paymentmethod_id=0,$cc_id=0,$value=0.0,$cartVendorId=1){
+	function calculatePaymentPrice($virtuemart_paymentmethod_id=0, $cc_id=0, $value=0.0, $cartVendorId=1){
 //		if (empty($code)) return 0.0;
 
 //		$code=4;
