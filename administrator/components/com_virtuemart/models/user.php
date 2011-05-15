@@ -500,33 +500,16 @@ class VirtueMartModelUser extends JModel {
 			//update user table
 			$usertable = $this->getTable('vmusers');
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
-			if (!$usertable->bind($vmusersData)) {
-				$this->setError($usertable->getError());
-				return false;
-			}
 
-			// Make sure the record is valid
-			if (!$usertable->check()) {
-				$this->setError($table->getError());
-				return false;
-			}
+			$user_id = $usertable -> bindChecknStore($this,$vmusersData);
 
-			// Save the record to the database
-			if (!$usertable->store()) {
-				$this->setError($usertable->getError());
-				return false;
-			}
-
-			if(empty($_data['virtuemart_shoppergroup_id'])){
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
-				$this->_db->setQuery($q);
-				$_data['virtuemart_shoppergroup_id']=$this->_db->loadResult();
-			}
 
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
+			$user_shoppergroups_table = $this->getTable('vmusers');
+
+//			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
 				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));

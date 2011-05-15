@@ -85,15 +85,6 @@ class TableCustoms extends VmTable {
 	 */
 	function check(){
 
-//		//TODO check for same title?
-//		if(empty($this->custom_title)) {
-//			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_TITLE'));
-//			return false ;
-//		}
-//		if(empty($this->field_type)) {
-//			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_A_FIELD_TYPE'));
-//			return false ;
-//		}
 		if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
 			return false ;

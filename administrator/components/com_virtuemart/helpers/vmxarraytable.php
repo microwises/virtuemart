@@ -21,21 +21,30 @@
 defined('_JEXEC') or die();
 
 
-class VmXrefTable extends JTable {
+class VmXarrayTable extends JTable {
 
 	/** @var int Primary key */
-//	var $au_idkey	= 'virtuemart_shoppergroup_id';
-	var $_id		= 0;
 
-	var $_pkey 		= '';
-	var $pkeyForm	= '';
-	var $_pvalue 	= '';
+	var $autoOrdering = false;
+	var $orderable = false;
 
-	var $_skey 		= '';
-	var $skeyForm	= '';
-	var $_svalue 	= array();
+    function setOrderable($key='ordering',$auto=true){
+    	$this->orderingKey = $key;
+    	$this->orderable = 1;
+    	$this->autoOrdering = $auto;
 
-	var $ordering = 0;
+    }
+
+    function setPrimaryKey($key,$keyForm=0){
+    	$this->_pkey = $key;
+    	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
+    }
+
+	function setSecondaryKey($key,$keyForm=0){
+		$this->_skey 		= $key;
+		$this->_skeyForm	= empty($keyForm)? $key:$keyForm;
+    }
+
     /**
      * Records in this table are arrays. Therefore we need to overload the load() function.
      *
@@ -43,20 +52,36 @@ class VmXrefTable extends JTable {
      * @param int $id
      */
     function load($id=0){
+
+    	if(empty($this->_skey) ) {
+    		$this->setError( 'No secondary keys defined in VmXarrayTable '.$this->_tbl );
+    		return false;
+    	}
+
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 		if(!empty($id)) $this->_id = $id;
 
-		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$this->_id.'"';
+
+		$toSelect = '`'.$this->_skey.'`';
+		if($this->orderable){
+			$orderby = 'ORDER BY `'.$this->orderingKey.'`';
+		} else {
+			$orderby = '';
+		}
+
+		$q = 'SELECT '.$toSelect.' FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$this->_id.'" '.$orderby;
 		$this->_db->setQuery($q);
 
-		$result = $this->_db->loadResultArray();dump($result,'load');
-		if($this->_db->getError()){
-			$this->setError( $this->_db->getErrorMsg() );
+		$result = $this->_db->loadResultArray();
+
+		$error = $this->_db->getErrorMsg();
+		if(!empty($error)){
+			$this->setError( $error );
 			return false;
 		} else {
 			if(empty($result)) return array();
-
 			if(!is_array($result)) $result = array($result);
+
 			return $result;
 		}
 
@@ -70,14 +95,12 @@ class VmXrefTable extends JTable {
      */
 	function bind($data){
 
-		$pkeyForm = empty($this->pkeyForm)? $this->_pkey:$this->pkeyForm;
-		if(!empty($data[$pkeyForm])){
-			$this->_pvalue = $data[$pkeyForm];
+		if(!empty($data[$this->_pkeyForm])){
+			$this->_pvalue = $data[$this->_pkeyForm];
 		}
 
-		$skeyForm = empty($this->skeyForm)? $this->_skey:$this->skeyForm;
-		if(!empty($data[$skeyForm])){
-			$this->_svalue = $data[$skeyForm];
+		if(!empty($data[$this->_pkeyForm])){
+			$this->_svalue = $data[$this->_skeyForm];
 		}
 
 		return true;
@@ -91,10 +114,9 @@ class VmXrefTable extends JTable {
     function check($obligatory=false) {
 
         if (empty($this->_pvalue)) {
-            $this->setError('Serious error cant save '.$this->_tbl.' without '.$this->_pkey);
+            $this->setError('Serious error cant save '.$this->_tbl.' without primary key value '.$this->_pkey);
             return false;
         }
-
 
 		if (empty($this->_svalue) && $obligatory) {
             $this->setError('Serious error cant save '.$this->_tbl.' without '.$this->_skey);
@@ -105,40 +127,58 @@ class VmXrefTable extends JTable {
     }
 
     /**
-     * Records in this table do not need to exist, so we might need to create a record even
-     * if the primary key is set. Therefore we need to overload the store() function.
+     *
      *
      * @author Max Milbers
      * @see libraries/joomla/database/JTable#store($updateNulls)
      */
     public function store() {
 
-
 		$db = JFactory::getDBO();
 
 		$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
 		$db->setQuery($q);
 		$db->Query();
-		if(!is_array($this->_svalue)) $this->_svalue=array($this->_svalue);
 
-		/* Store the new categories */
-		foreach( $this->_svalue as $dataid ) {
-			$q  = 'INSERT INTO `'.$this->_tbl.'` ';
-			$q .= '('.$this->_pkey.','.$this->_skey.', ordering ) ';
-			$q .= 'VALUES ("'.$this->_pvalue.'","'. $dataid . '", "'.$this->ordering++.'")';
-			$db->setQuery($q);
-			$db->query();
+		foreach($this->_svalue as $value){
+
+			$obj = new stdClass;
+
+			$pkey = $this->_pkey;
+			$obj->$pkey = $this->_pvalue;
+
+			$skey = $this->_skey;
+			$obj->$skey = $value;
+
+			//When $value is an array, then we could add more values here.
+			if($this->autoOrdering){
+				$oKey = $this->orderingKey;
+				$obj->$oKey = $this->ordering++;
+			}
+
+			$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 
 		}
 
-		//TODO enhance it maybe simular to this
-//		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (virtuemart_product_id, virtuemart_manufacturer_id) VALUES (';
-//		$q .= $product_data->virtuemart_product_id.', ';
-//		$q .= JRequest::getInt('virtuemart_manufacturer_id').') ';
-//		$q .= 'ON DUPLICATE KEY UPDATE virtuemart_manufacturer_id = '.JRequest::getInt('virtuemart_manufacturer_id');
-//		$this->_db->setQuery($q);
-//		$this->_db->query();
-		return true;
+//////		$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+//////		foreach( $this->_svalue as $dataid ) {
+//////			$q  = 'INSERT INTO `'.$this->_tbl.'` ';
+//////			$q .= '('.$this->_pkey.','.$this->_skey.', ordering ) ';
+//////			$q .= 'VALUES ("'.$this->_pvalue.'","'. $dataid . '", "'.$this->ordering++.'")';
+//////			$db->setQuery($q);
+//////			$db->query();
+//////		}
+////
+////		//TODO enhance it maybe simular to this
+//////		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (virtuemart_product_id, virtuemart_manufacturer_id) VALUES (';
+//////		$q .= $product_data->virtuemart_product_id.', ';
+//////		$q .= JRequest::getInt('virtuemart_manufacturer_id').') ';
+//////		$q .= 'ON DUPLICATE KEY UPDATE virtuemart_manufacturer_id = '.JRequest::getInt('virtuemart_manufacturer_id');
+//////		$this->_db->setQuery($q);
+//////		$this->_db->query();
+		$this->_id = $this->_db->insertid();
+
+		return true;;
 
     }
 
@@ -168,5 +208,8 @@ class VmXrefTable extends JTable {
 			$model->setError($this->getError());
 			return false;
 		}
+		$data[$this->_tbl_key] = $this->_id;
+		return $data;
+//		return $this->_id;
     }
 }

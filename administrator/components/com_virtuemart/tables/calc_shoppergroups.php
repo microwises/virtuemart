@@ -26,15 +26,15 @@ defined('_JEXEC') or die();
  * @package		VirtueMart
  */
 
-if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxarraytable.php');
 
-class TableCalc_shoppergroups extends VmXrefTable {
+class TableCalc_shoppergroups extends VmXarrayTable {
 
-	var $_pkey 		= 'virtuemart_calc_id';
-	var $pkeyForm	= 'virtuemart_calc_id';
-
-	var $_skey 		= 'virtuemart_shoppergroup_id';
-	var $skeyForm	= 'virtuemart_shoppergroup_id';
+//	var $_pkey 		= 'virtuemart_calc_id';
+//	var $pkeyForm	= 'virtuemart_calc_id';
+//
+//	var $_skey 		= 'virtuemart_shoppergroup_id';
+//	var $skeyForm	= 'virtuemart_shoppergroup_id';
 
 
 	/**
@@ -43,6 +43,10 @@ class TableCalc_shoppergroups extends VmXrefTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_shoppergroups', 'id', $db);
+
+		$this->setPrimaryKey('virtuemart_calc_id');
+		$this->setSecondaryKey('virtuemart_shoppergroup_id');
+
 	}
 
 

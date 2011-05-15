@@ -18,7 +18,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  *
  * This class is a template.
  *
- * @author Markus �hler
+ * @author Markus Öhler
  * @author Max Milbers
  * @package	VirtueMart
  */
@@ -59,17 +59,23 @@ class TableShoppergroups extends VmTable
 //	/**
 //	 * Validates the shopper group record fields.
 //	 *
-//	 * @author Markus �hler
+//	 * @author Markus Öhler
 //	 * @return boolean True if the table buffer contains valid data, false otherwise.
 //	 */
-	function check()
-	{
-    if (!$this->shopper_group_name) {
+	function check(){
+
+		if (empty($this->shopper_group_name) ){
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} else if (mb_strlen($this->shopper_group_name) > 32) {
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_NAMES_LESS_THAN_32_CHARACTERS'));
-      return false;
+			return false;
+		}
+
+		if(empty($this->virtuemart_shoppergroup_id)){
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
+			$this->_db->setQuery($q);
+			$this->virtuemart_shoppergroup_id=$this->_db->loadResult();
 		}
 //
 //		if (($this->country_name) && ($this->virtuemart_shoppergroup_id == 0)) {

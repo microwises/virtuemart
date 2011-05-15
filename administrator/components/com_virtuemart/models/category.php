@@ -137,6 +137,8 @@ class VirtueMartModelCategory extends JModel {
 
 		$xrefTable = $this->getTable('category_medias');
 		$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+		dump($xrefTable,'$xrefTable');
+		if($xrefTable->getError()) $this->setError($xrefTable->getError());
 
   		if($childs){
   			$this->_data->haschildren = $this->hasChildren($this->_id);
@@ -153,6 +155,13 @@ class VirtueMartModelCategory extends JModel {
 
   		}
 
+  		dump($this);
+		if($errs = $this->getErrors()){
+			$app = JFactory::getApplication();
+			foreach($errs as $err){
+				$app->enqueueMessage($err);
+			}
+		}
   		return $this->_data;
 
 	}

@@ -26,15 +26,15 @@ defined('_JEXEC') or die();
  * @package		VirtueMart
  */
 
-if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxarraytable.php');
 
-class TableCalc_categories extends VmXrefTable {
+class TableCalc_categories extends VmXarrayTable {
 
-	var $_pkey 		= 'virtuemart_calc_id';
-	var $pkeyForm	= 'virtuemart_calc_id';
-
-	var $_skey 		= 'virtuemart_category_id';
-	var $skeyForm	= 'calc_categories';
+//	var $_pkey 		= 'virtuemart_calc_id';
+//	var $pkeyForm	= 'virtuemart_calc_id';
+//
+//	var $_skey 		= 'virtuemart_category_id';
+//	var $skeyForm	= 'calc_categories';
 
 	/**
 	 * @author Max Milbers
@@ -42,6 +42,10 @@ class TableCalc_categories extends VmXrefTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_categories', 'id', $db);
+
+		$this->setPrimaryKey('virtuemart_calc_id');
+		$this->setSecondaryKey('virtuemart_category_id','calc_categories');
+
 	}
 
 

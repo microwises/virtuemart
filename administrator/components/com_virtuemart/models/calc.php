@@ -141,6 +141,7 @@ class VirtueMartModelCalc extends JModel
 			$this->setError($xrefTable->getError());
 		}
 
+		dump($this,'get Calc');
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
 			foreach($errs as $err){

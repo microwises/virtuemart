@@ -18,7 +18,7 @@
 
 defined('_JEXEC') or die();
 
-if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxreftable.php');
+if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxarraytable.php');
 
 /**
  * Vendor media table class
@@ -27,10 +27,7 @@ if(!class_exists('VmXrefTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableVendor_medias extends VmXrefTable {
-
-	var $_pkey 		= 'virtuemart_vendor_id';
-	var $_skey 		= 'virtuemart_media_id';
+class TableVendor_medias extends VmXarrayTable {
 
 	/**
 	 * @author Max Milbers
@@ -38,6 +35,10 @@ class TableVendor_medias extends VmXrefTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_vendor_medias', 'id', $db);
+
+		$this->setPrimaryKey('virtuemart_vendor_id');
+		$this->setSecondaryKey('virtuemart_media_id');
+		$this->setOrderable();
 	}
 
 }
