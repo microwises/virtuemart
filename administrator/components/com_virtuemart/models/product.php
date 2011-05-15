@@ -966,7 +966,7 @@ class VirtueMartModelProduct extends JModel {
 		if($product){
 			$data = (array)$product;
 		} else{
-			$data = JRequest::get('post', 4);	//TODO 4?
+			$data = JRequest::get('post', 0);	//TODO 4?
 		}
 
 		/* Setup some place holders */
@@ -1027,16 +1027,20 @@ class VirtueMartModelProduct extends JModel {
 			}
 		}
 
+		dump($setPriceTable,'$setPriceTable error');
 		if($setPriceTable){
 			// Make sure the price record is valid
 			if (!$product_price_table->check()) {
 				$this->setError($product_price_table->getError());
+				dump($product_price_table,'pricecheck error');
 				return false;
+
 			}
 
 			// Save the price record to the database
 			if (!$product_price_table->store()) {
 				$this->setError($product_price_table->getError());
+				dump($product_price_table,'pricecheck error');
 				return false;
 			}
 		}
