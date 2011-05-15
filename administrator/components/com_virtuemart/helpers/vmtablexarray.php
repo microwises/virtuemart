@@ -22,7 +22,7 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
-class VmXarrayTable extends VmTable {
+class VmTableXarray extends VmTable {
 
 	/** @var int Primary key */
 
@@ -49,7 +49,7 @@ class VmXarrayTable extends VmTable {
     function load($id=0){
 
     	if(empty($this->_skey) ) {
-    		$this->setError( 'No secondary keys defined in VmXarrayTable '.$this->_tbl );
+    		$this->setError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
     		return false;
     	}
 
@@ -114,43 +114,27 @@ class VmXarrayTable extends VmTable {
 		$db->setQuery($q);
 		$db->Query();
 
-//		dump($this,'store');
-		foreach($this->_svalue as $value){
+		$returnCode = true;
+		if(!empty($this->_svalue)){
+			foreach($this->_svalue as $value){
 
-			$obj = new stdClass;
+				$obj = new stdClass;
 
-			$pkey = $this->_pkey;
-			$obj->$pkey = $this->_pvalue;
+				$pkey = $this->_pkey;
+				$obj->$pkey = $this->_pvalue;
 
-			$skey = $this->_skey;
-			$obj->$skey = $value;
+				$skey = $this->_skey;
+				$obj->$skey = $value;
 
-			//When $value is an array, then we could add more values here.
-			if($this->autoOrdering){
-				$oKey = $this->orderingKey;
-				$obj->$oKey = $this->ordering++;
+				//When $value is an array, then we could add more values here.
+				if($this->autoOrdering){
+					$oKey = $this->orderingKey;
+					$obj->$oKey = $this->ordering++;
+				}
+
+				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 			}
-
-			$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 		}
-
-//////		$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-//////		foreach( $this->_svalue as $dataid ) {
-//////			$q  = 'INSERT INTO `'.$this->_tbl.'` ';
-//////			$q .= '('.$this->_pkey.','.$this->_skey.', ordering ) ';
-//////			$q .= 'VALUES ("'.$this->_pvalue.'","'. $dataid . '", "'.$this->ordering++.'")';
-//////			$db->setQuery($q);
-//////			$db->query();
-//////		}
-////
-////		//TODO enhance it maybe simular to this
-//////		$q = 'INSERT INTO #__virtuemart_product_manufacturers  (virtuemart_product_id, virtuemart_manufacturer_id) VALUES (';
-//////		$q .= $product_data->virtuemart_product_id.', ';
-//////		$q .= JRequest::getInt('virtuemart_manufacturer_id').') ';
-//////		$q .= 'ON DUPLICATE KEY UPDATE virtuemart_manufacturer_id = '.JRequest::getInt('virtuemart_manufacturer_id');
-//////		$this->_db->setQuery($q);
-//////		$this->_db->query();
-//		$this->_id = $this->_db->insertid();
 
 		return $returnCode;
 

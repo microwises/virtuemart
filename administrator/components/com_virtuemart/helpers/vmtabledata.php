@@ -23,7 +23,7 @@ defined('_JEXEC') or die();
 
 if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
-class VmDataTable extends VmTable {
+class VmTableData extends VmTable {
 
 
     /**

@@ -26,9 +26,9 @@ defined('_JEXEC') or die();
  * @package		VirtueMart
  */
 
-if(!class_exists('VmXarrayTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmxarraytable.php');
+if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
 
-class TableCalc_categories extends VmXarrayTable {
+class TableCalc_categories extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
