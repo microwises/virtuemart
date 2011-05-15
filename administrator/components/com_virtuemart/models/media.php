@@ -275,7 +275,7 @@ class VirtueMartModelMedia extends JModel {
 
 		/* add the virtuemart_media_id & delete 0 and '' from $data */
 		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
-		$virtuemart_media_ids = array_diff($data['virtuemart_media_id'],array('0',''));
+		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 
 //		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
