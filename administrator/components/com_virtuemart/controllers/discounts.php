@@ -42,7 +42,7 @@ class VirtuemartControllerDiscounts extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('DISCOUNTS');
+//		$this->setMainLangKey('DISCOUNTS');
 		/* Redirects */
 		$this->registerTask('add','edit');
 		$this->registerTask('cancel','discounts');

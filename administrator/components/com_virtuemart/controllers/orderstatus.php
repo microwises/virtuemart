@@ -44,7 +44,7 @@ class VirtuemartControllerOrderstatus extends VmController {
 	{
 		parent::__construct();
 
-		$this->setMainLangKey('ORDER_STATUS');
+//		$this->setMainLangKey('ORDER_STATUS');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 

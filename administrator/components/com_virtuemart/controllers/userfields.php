@@ -44,7 +44,7 @@ class VirtuemartControllerUserfields extends VmController {
 	{
 		parent::__construct();
 
-		$this->setMainLangKey('USERFIELD');
+//		$this->setMainLangKey('USERFIELD');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply','save');

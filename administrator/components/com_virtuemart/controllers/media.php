@@ -42,7 +42,7 @@ class VirtuemartControllerMedia extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('MEDIA');
+//		$this->setMainLangKey('MEDIA');
 
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );

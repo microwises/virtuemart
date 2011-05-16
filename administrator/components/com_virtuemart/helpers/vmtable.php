@@ -37,11 +37,11 @@ class VmTable extends JTable {
 //	private $_id		= 0;
 
 //	private $_pkey 		= 0;
-	private $_obkeys	= array();
-	private $_unique	= false;
-	private $_unique_name = array();
+	protected $_obkeys	= array();
+	protected $_unique	= false;
+	protected $_unique_name = array();
 
-	var $orderingKey = 'ordering';
+	protected $_orderingKey = 'ordering';
 
     function setPrimaryKey($key,$keyForm=0,$langkey=0){
     	$this->setObligatoryKeys('_pkey',$langkey);
@@ -73,7 +73,7 @@ class VmTable extends JTable {
 	}
 
     function setOrderable($key='ordering', $auto=true){
-    	$this->orderingKey = $key;
+    	$this->_orderingKey = $key;
     	$this->orderable = 1;
     }
 
@@ -187,9 +187,9 @@ class VmTable extends JTable {
 	 */
 	function move( $dirn, $where='', $orderingkey = 0 ){
 
-		if(!empty($orderingkey)) $this->orderingKey = $orderingkey;
+		if(!empty($orderingkey)) $this->_orderingKey = $orderingkey;
 
-		if (!in_array( $this->orderingKey,  array_keys($this->getProperties())))
+		if (!in_array( $this->_orderingKey,  array_keys($this->getProperties())))
 		{
 			$this->setError( get_class( $this ).' does not support ordering' );
 			return false;
@@ -197,27 +197,27 @@ class VmTable extends JTable {
 
 		$k = $this->_tbl_key;
 
-		$orderingKey = $this->orderingKey;
+		$orderingKey = $this->_orderingKey;
 
-		$sql = "SELECT $this->_tbl_key, `'.$this->orderingKey.'` FROM $this->_tbl";
+		$sql = "SELECT $this->_tbl_key, `'.$this->_orderingKey.'` FROM $this->_tbl";
 
 		if ($dirn < 0)
 		{
-			$sql .= ' WHERE `'.$this->orderingKey.'` < '.(int) $this->$orderingKey;
+			$sql .= ' WHERE `'.$this->_orderingKey.'` < '.(int) $this->$orderingKey;
 			$sql .= ($where ? ' AND '.$where : '');
-			$sql .= ' ORDER BY `'.$this->orderingKey.'` DESC';
+			$sql .= ' ORDER BY `'.$this->_orderingKey.'` DESC';
 		}
 		else if ($dirn > 0)
 		{
-			$sql .= ' WHERE `'.$this->orderingKey.'` > '.(int) $this->$orderingKey;
+			$sql .= ' WHERE `'.$this->_orderingKey.'` > '.(int) $this->$orderingKey;
 			$sql .= ($where ? ' AND '. $where : '');
-			$sql .= ' ORDER BY `'.$this->orderingKey.'`';
+			$sql .= ' ORDER BY `'.$this->_orderingKey.'`';
 		}
 		else
 		{
-			$sql .= ' WHERE `'.$this->orderingKey.'` = '.(int) $this->$orderingKey;
+			$sql .= ' WHERE `'.$this->_orderingKey.'` = '.(int) $this->$orderingKey;
 			$sql .= ($where ? ' AND '.$where : '');
-			$sql .= ' ORDER BY `'.$this->orderingKey.'`';
+			$sql .= ' ORDER BY `'.$this->_orderingKey.'`';
 		}
 
 		$this->_db->setQuery( $sql, 0, 1 );
@@ -228,7 +228,7 @@ class VmTable extends JTable {
 		if (isset($row))
 		{
 			$query = 'UPDATE '. $this->_tbl
-			. ' SET `'.$this->orderingKey.'` = '. (int) $row->$orderingKey
+			. ' SET `'.$this->_orderingKey.'` = '. (int) $row->$orderingKey
 			. ' WHERE '. $this->_tbl_key .' = '. $this->_db->Quote($this->$k)
 			;
 			$this->_db->setQuery( $query );
@@ -240,7 +240,7 @@ class VmTable extends JTable {
 			}
 
 			$query = 'UPDATE '.$this->_tbl
-			. ' SET `'.$this->orderingKey.'` = '.(int) $this->$orderingKey
+			. ' SET `'.$this->_orderingKey.'` = '.(int) $this->$orderingKey
 			. ' WHERE '.$this->_tbl_key.' = '.$this->_db->Quote($row->$k)
 			;
 			$this->_db->setQuery( $query );
@@ -256,7 +256,7 @@ class VmTable extends JTable {
 		else
 		{
 			$query = 'UPDATE '. $this->_tbl
-			. ' SET `'.$this->orderingKey.'` = '.(int) $this->$orderingKey
+			. ' SET `'.$this->_orderingKey.'` = '.(int) $this->$orderingKey
 			. ' WHERE '. $this->_tbl_key .' = '. $this->_db->Quote($this->$k)
 			;
 			$this->_db->setQuery( $query );
@@ -278,14 +278,14 @@ class VmTable extends JTable {
 	 */
 	function getNextOrder ( $where='', $orderingkey = 0 ){
 
-		if(!empty($orderingkey)) $this->orderingKey = $orderingkey;
-		if (!in_array( $this->orderingKey, array_keys($this->getProperties()) ))
+		if(!empty($orderingkey)) $this->_orderingKey = $orderingkey;
+		if (!in_array( $this->_orderingKey, array_keys($this->getProperties()) ))
 		{
 			$this->setError( get_class( $this ).' does not support ordering' );
 			return false;
 		}
 
-		$query = 'SELECT MAX(`'.$this->orderingKey.'`)' .
+		$query = 'SELECT MAX(`'.$this->_orderingKey.'`)' .
 				' FROM ' . $this->_tbl .
 				($where ? ' WHERE '.$where : '');
 
@@ -308,10 +308,10 @@ class VmTable extends JTable {
 	 */
 	function reorder( $where='', $orderingkey = 0 ){
 
-		if(!empty($orderingkey)) $this->orderingKey = $orderingkey;
+		if(!empty($orderingkey)) $this->_orderingKey = $orderingkey;
 		$k = $this->_tbl_key;
 
-		if (!in_array( $this->orderingKey, array_keys($this->getProperties() ) ))
+		if (!in_array( $this->_orderingKey, array_keys($this->getProperties() ) ))
 		{
 			$this->setError( get_class( $this ).' does not support ordering');
 			return false;
@@ -326,10 +326,10 @@ class VmTable extends JTable {
 			$order2 = "";
 		}
 
-		$query = 'SELECT '.$this->_tbl_key.', '.$this->orderingKey
+		$query = 'SELECT '.$this->_tbl_key.', '.$this->_orderingKey
 		. ' FROM '. $this->_tbl
-		. ' WHERE `'.$this->orderingKey.'` >= 0' . ( $where ? ' AND '. $where : '' )
-		. ' ORDER BY `'.$this->orderingKey.'` '.$order2
+		. ' WHERE `'.$this->_orderingKey.'` >= 0' . ( $where ? ' AND '. $where : '' )
+		. ' ORDER BY `'.$this->_orderingKey.'` '.$order2
 		;
 		$this->_db->setQuery( $query );
 		if (!($orders = $this->_db->loadObjectList()))
@@ -337,7 +337,7 @@ class VmTable extends JTable {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		$orderingKey = $this->orderingKey;
+		$orderingKey = $this->_orderingKey;
 		// compact the ordering numbers
 		for ($i=0, $n=count( $orders ); $i < $n; $i++)
 		{
@@ -347,7 +347,7 @@ class VmTable extends JTable {
 				{
 					$orders[$i]->$orderingKey = $i+1;
 					$query = 'UPDATE '.$this->_tbl
-					. ' SET `'.$this->orderingKey.'` = '. (int) $orders[$i]->$orderingKey
+					. ' SET `'.$this->_orderingKey.'` = '. (int) $orders[$i]->$orderingKey
 					. ' WHERE '. $k .' = '. $this->_db->Quote($orders[$i]->$k)
 					;
 					$this->_db->setQuery( $query);

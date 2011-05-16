@@ -43,7 +43,7 @@ class VirtuemartControllerCreditcard extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('CREDITCARD');
+//		$this->setMainLangKey('CREDITCARD');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

@@ -44,7 +44,7 @@ class VirtuemartControllerManufacturer extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('MANUFACTURER');
+//		$this->setMainLangKey('MANUFACTURER');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

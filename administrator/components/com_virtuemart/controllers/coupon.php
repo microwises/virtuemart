@@ -43,11 +43,11 @@ class VirtuemartControllerCoupon extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('COUPON');
+//		$this->setMainLangKey('COUPON');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
-		
+
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('coupon', $viewType);

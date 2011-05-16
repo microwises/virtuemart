@@ -85,36 +85,7 @@ class VirtueMartModelVendor extends VmModel {
 		    $xrefTable = $this->getTable('vendor_medias');
 			$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
-//          	if($this->_data->virtuemart_media_id){
-//  				$this->_data->virtuemart_media_id = explode(',',$this->_data->virtuemart_media_id);
-//  			}
-//			if($withUserData){
-//			    $query = "SELECT virtuemart_user_id FROM #__vm_auth_user_vendor ";
-//			    $query .= "WHERE virtuemart_vendor_id = '". $this->_id ."'";
-//			    $this->_db->setQuery($query);
-//			    $userVendor = $this->_db->loadObject();
-//
-//			    // Get user_info table data
-//			    $this->_data->userId = (isset($userVendor->virtuemart_user_id) ? $userVendor->virtuemart_user_id : 0);
-//
-//				$userInfoTable = $this->getTable('userinfos');
-//	    		$userInfoTable->load((int)$this->_id);
-//	    		$this->_data->userInfo = $userInfoTable;
-//
-//				$vendorJUser = JFactory::getUser($this->_id);
-//		//	   	$user_table = $this->getTable('user');
-//		//	    $user_table->load((int)$userId);
-//			    $this->_data->jUser = $vendorJUser;
-
-//
-//			}
-
 		}
-
-//       	if (!$this->_data) {
-//	    	$this->_data = new stdClass();
-//	    	$this->_id = 0;
-//		}
 
 		return $this->_data;
 	}

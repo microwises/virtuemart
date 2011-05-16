@@ -36,19 +36,6 @@ class VirtueMartModelCalc extends VmModel {
     public function __construct(){
         parent::__construct();
 
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//        // Get the calc id or array of ids.
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//    	$this->setId((int)$idArray[0]);
-
     }
 
 
@@ -63,11 +50,6 @@ class VirtueMartModelCalc extends VmModel {
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('calcs');
    			$this->_data->load((int)$this->_id);
-  		}
-
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
   		}
 
 		$xrefTable = $this->getTable('calc_categories');
@@ -219,11 +201,6 @@ class VirtueMartModelCalc extends VmModel {
 			$this->setError($xrefTable->getError());
 		}
 
-//		modelfunctions::storeArrayData('#__virtuemart_calc_categories','virtuemart_calc_id','virtuemart_category_id', $table->virtuemart_calc_id,$data["calc_categories"]);
-////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','virtuemart_calc_id','virtuemart_shoppergroup_id', $table->virtuemart_calc_id,$data["virtuemart_shoppergroup_id"]);
-//		modelfunctions::storeArrayData('#__virtuemart_calc_countries','virtuemart_calc_id','virtuemart_country_id', $table->virtuemart_calc_id,$data["virtuemart_country_id"]);
-//		modelfunctions::storeArrayData('#__virtuemart_calc_states','virtuemart_calc_id','virtuemart_state_id', $table->virtuemart_calc_id,$data["virtuemart_state_id"]);
-
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();
 
@@ -248,34 +225,6 @@ class VirtueMartModelCalc extends VmModel {
 
 		return $table->virtuemart_calc_id;
 	}
-
-
-//	/**
-//	 * Delete all record ids selected
-//     *
-//     * @author Max Milbers
-//     * @return boolean True is the delete was successful, false otherwise.
-//     */
-//	public function delete() {
-//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//		return modelfunctions::delete('cid','calc');
-//
-//	}
-//
-//
-//	/**
-//	 * Publish/Unpublish all the ids selected
-//     *
-//     * @author Max Milbers
-//     * @param boolean $publishId True is the ids should be published, false otherwise.
-//     * @return boolean True is the delete was successful, false otherwise.
-//     */
-//	public function publish($publishId = false)
-//	{
-//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//		return modelfunctions::publish('cid','calcs',$publishId);
-//
-//	}
 
 
 	/**

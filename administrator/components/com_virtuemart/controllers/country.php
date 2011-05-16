@@ -44,7 +44,7 @@ class VirtuemartControllerCountry extends VmController {
 		parent::__construct();
 		JRequest::setVar('view', 'country');
 
-		$this->setMainLangKey('COUNTRY');
+//		$this->setMainLangKey('COUNTRY');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

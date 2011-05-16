@@ -42,7 +42,7 @@ class VirtuemartControllerModule extends JController
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('MODULE');
+//		$this->setMainLangKey('MODULE');
 		// Register Extra tasks
 		$this->registerTask( 'add', 'edit' );
 

@@ -42,7 +42,7 @@ class VirtuemartControllerShippingRate extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('SHIPPING_RATE');
+//		$this->setMainLangKey('SHIPPING_RATE');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');

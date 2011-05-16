@@ -43,7 +43,7 @@ class VirtuemartControllerCurrency extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('CURRENCY');
+//		$this->setMainLangKey('CURRENCY');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

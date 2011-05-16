@@ -42,7 +42,7 @@ class VirtuemartControllerOrders extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('ORDER');
+//		$this->setMainLangKey('ORDER');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 
@@ -87,7 +87,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		
+
 		/* Set the layout */
 		$view->setLayout('order_print');
 
@@ -108,7 +108,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		
+
 		/* Set the layout */
 		$view->setLayout('order');
 
@@ -173,7 +173,7 @@ class VirtuemartControllerOrders extends VmController {
 		$cids = JRequest::getVar('cid');
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
-		
+
 		$model = $this->getModel('orders');
 		$msgtype = '';
 		if ($model->removeOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_REMOVED_SUCCESSFULLY');
@@ -205,33 +205,33 @@ class VirtuemartControllerOrders extends VmController {
 		$model = $this->getModel('orders');
 		$result = $model->updateStatus();
 
-		if ($result['updated'] > 0) 
+		if ($result['updated'] > 0)
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
-		if ($result['error'] > 0) 
+		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Save changes to the order item status
 	 *
 	 */
 	public function saveItemStatus() {
 		$mainframe = Jfactory::getApplication();
-		
+
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
 		/* Load the helper */
 		$view->loadHelper('shopFunctions');
-		$view->loadHelper('vendorHelper');		
-		
+		$view->loadHelper('vendorHelper');
+
 		$data = JRequest::get('post');
 		$model = $this->getModel('orders');
 		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
-		
+
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
 	}
 
@@ -245,8 +245,8 @@ class VirtuemartControllerOrders extends VmController {
 
 	    parent::display();
 	}
-	
-	
+
+
 	/**
 	* Get a list of related products
 	* @author RolandD
@@ -262,7 +262,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		/* Now display the view. */
 		$view->display();
-	}	
+	}
 
 
 	/**
@@ -296,7 +296,7 @@ class VirtuemartControllerOrders extends VmController {
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
-	    $orderId = JRequest::getVar('virtuemart_order_id', '');  
+	    $orderId = JRequest::getVar('virtuemart_order_id', '');
 	    $model = $this->getModel('orders');
 	    $msg = '';
 

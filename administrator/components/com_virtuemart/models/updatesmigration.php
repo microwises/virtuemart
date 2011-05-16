@@ -229,9 +229,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
+	$usermodel->setId($userId);
 	if (!$usermodel->store($fields)) {
 		$this->setError($usermodel->getError());
-	    JError::raiseNotice(1, 'Problems saving vendordata of the sample store '.$this->getError());
+	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
 	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';

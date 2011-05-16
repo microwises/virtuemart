@@ -44,7 +44,7 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__virtuemart_vmuser_shoppergroups', 'virtuemart_user_id', $db);
+		parent::__construct('#__virtuemart_vmuser_shoppergroups', 'id', $db);
 		$this->setPrimaryKey('virtuemart_user_id');
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
 	}

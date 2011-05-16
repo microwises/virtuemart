@@ -43,7 +43,7 @@ class VirtuemartControllerConfig extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('CONFIG');
+//		$this->setMainLangKey('CONFIG');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('config', $viewType);

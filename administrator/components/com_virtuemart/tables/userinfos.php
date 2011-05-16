@@ -138,18 +138,18 @@ class TableUserinfos extends VmTable {
 	* Stores/Updates a tax rate
 	*
 	*/
-	public function store() {
-		$k = $this->check();
-
-		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-
-		if (!$ret){
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		else return true;
-	}
+//	public function store() {
+//		$k = $this->check();
+//
+//		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+//		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+//
+//		if (!$ret){
+//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			return false;
+//		}
+//		else return true;
+//	}
 
 	/**
 	* Validates the user info record fields.

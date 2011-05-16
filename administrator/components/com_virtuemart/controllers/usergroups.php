@@ -78,7 +78,7 @@ class VirtuemartControllerUsergroups extends VmController {
 
 		parent::__construct();
 
-		$this->setMainLangKey('USERGROUP');
+//		$this->setMainLangKey('USERGROUP');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit', 'delete' );
 		$this->registerTask( 'apply',  'save' );

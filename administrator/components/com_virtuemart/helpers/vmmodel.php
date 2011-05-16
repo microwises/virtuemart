@@ -67,6 +67,10 @@ class VmModel extends JModel {
     	$this->_idName = $idName;
     }
 
+    public function getIdName(){
+    	return $this->_idName;
+    }
+
    	public function getId(){
     	return $this->_id;
    	}

@@ -42,7 +42,7 @@ class VirtuemartControllerInventory extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('INVENTORY');
+//		$this->setMainLangKey('INVENTORY');
 		/* Redirects */
 		$this->registerTask('unpublish','inventory');
 		$this->registerTask('publish','inventory');

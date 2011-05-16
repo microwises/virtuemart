@@ -43,7 +43,7 @@ class VirtuemartControllerState extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('STATE');
+//		$this->setMainLangKey('STATE');
 
 		JRequest::setVar('view', 'state');
 		// Register Extra tasks

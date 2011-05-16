@@ -45,14 +45,13 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * The user ID is read and detmimined if it is an array of ids or just one single id.
 	 */
-	function __construct()
-	{
+	function __construct(){
+
 		parent::__construct();
 
 		// Get the helpers we need here, This must be in the constructor, for the RC it would be good to place the
 		// "require" nearest at possible to the code, which actually using it
 		if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
 		$this->setMainTable('vmusers');
@@ -76,7 +75,7 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function setId($idArray){
+	public function setId($cid){
 
 		$user = JFactory::getUser();
 		//anonymous sets to 0 for a new entry
@@ -86,13 +85,14 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 //			$idArray = JRequest::getVar('cid',  null, '', 'array');
 			//not anonymous, but no cid means already registered user edit own data
-			if(!isset($idArray[0])){
+			if(!isset($cid)){
 				$this->setUserId($user->id);
 				//				echo($user->id,'cid was null, therefore user->id is used');
 			} else {
-				if($idArray[0] != $user->id){
+				if($cid != $user->id){
+					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 					if(Permissions::getInstance()->check("admin,storeadmin")) {
-						$this->setUserId($idArray[0]);
+						$this->setUserId($cid);
 					} else {
 //						JError::raiseWarning(1,'Hacking attempt');
 						$this->setUserId($user->id);
@@ -312,7 +312,7 @@ class VirtueMartModelUser extends VmModel {
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 			//The constructor sets automatically the right id.
 			$new = ($this->_id < 1);
-			$user = new JUser($this->_id);
+			$user = new JUser($this->_id);dump($user,'my user begin');
 			$gid = $user->get('gid'); // Save original gid
 
 			/*
@@ -403,7 +403,6 @@ class VirtueMartModelUser extends VmModel {
 
 				if ( VmConfig::isJ15()){
 					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-//					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
 				}
 
 				$date =& JFactory::getDate();
@@ -428,12 +427,13 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
+			dump($user,'$user');
 			// Save the JUser object
 			if (!$user->save()) {
 				//This?
 				$this->setError('_user save '.$user->getError());
 				//or this?
-				JError::raiseWarning('', JText::_( $user->getError()));
+//				JError::raiseWarning('', JText::_( $user->getError()));
 				return false;
 			}
 
@@ -511,10 +511,11 @@ class VirtueMartModelUser extends VmModel {
 			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($this,$shoppergroupData);
 
 //			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//			modelfunctions::storeArrayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
+//			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
 				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+				echo '<pre>'.print_r($this,1).'</pre>';die;
 				return false;
 			}
 
@@ -536,7 +537,7 @@ class VirtueMartModelUser extends VmModel {
 					$virtuemart_vendor_id = $vendorModel->getId();
 
 					//update user table
-					//					$usertable = $this->getTable('vmusers');
+					//$usertable = $this->getTable('vmusers');
 					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 					if (!$usertable->bind($vmusersData)) {
 						$this->setError($table->getError());

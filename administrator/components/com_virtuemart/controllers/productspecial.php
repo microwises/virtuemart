@@ -41,7 +41,7 @@ class VirtuemartControllerProductspecial extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('PRODUCT_SPECIAL');
+//		$this->setMainLangKey('PRODUCT_SPECIAL');
 	}
 
 	/**

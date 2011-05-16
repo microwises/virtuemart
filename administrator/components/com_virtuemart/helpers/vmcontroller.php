@@ -21,17 +21,19 @@
 
 class VmController extends JController{
 
-
 	/**
-	 * Set Jtext name depending controller
-	 * @ var $langkey string
+	 * Sets automatically the shortcut for the language and the redirect path
+	 *
 	 * @author Max Milbers
-	 * @ modified by patrick Kohl
 	 */
-	
-	public function setMainLangKey($langkey){
-		$this->mainLangKey = 'COM_VIRTUEMART_'.$langkey.'_';
+	public function __construct() {
+		parent::__construct();
+
+		$name = $this->getName();
+		$this->mainLangKey = $name;
+		$this->redirectPath = 'index.php?option=com_virtuemart&controller='.$name;
 	}
+
 
 	/**
 	 * Handle the remove task
@@ -47,8 +49,9 @@ class VmController extends JController{
 		else {
 			$msg = JText::_($this->mainLangKey.'DELETED');
 		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
+		$this->setRedirect($this->redirectPath, $msg);
+//		$pname = $model->getIdName();
+//		$this->setRedirect( $this->redirectPath.'&'.$pname.'='.$data[$pname], $msg);
 	}
 
 	/**
@@ -58,7 +61,7 @@ class VmController extends JController{
 	 */
 	public function cancel(){
 		$msg = JText::_($this->mainLangKey.'CANCELLED'); //'COM_VIRTUEMART_OPERATION_CANCELED'
-		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
+		$this->setRedirect($this->redirectPath, $msg);
 	}
 
 	/**
@@ -78,7 +81,7 @@ class VmController extends JController{
 			$msg = JText::_($this->mainLangKey.'PUBLISHED_SUCCESS');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
+		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
 
@@ -99,6 +102,6 @@ class VmController extends JController{
 			$msg = JText::_($this->mainLangKey.'UNPUBLISHED_SUCCESS');
 		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
+		$this->setRedirect( $this->redirectPath, $msg);
 	}
 }

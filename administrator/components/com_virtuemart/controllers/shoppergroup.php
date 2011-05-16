@@ -42,7 +42,7 @@ class VirtuemartControllerShopperGroup extends JController
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('SHOPPER_GROUP');
+//		$this->setMainLangKey('SHOPPER_GROUP');
 		// Register Extra tasks
 		$this->registerTask( 'add', 'edit' );
 		$this->registerTask( 'apply', 'save' );

@@ -42,7 +42,7 @@ class VirtuemartControllerCustom extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('CUSTOM');
+//		$this->setMainLangKey('CUSTOM');
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
 

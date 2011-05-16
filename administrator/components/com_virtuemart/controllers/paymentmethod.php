@@ -42,11 +42,11 @@ class VirtuemartControllerPaymentmethod extends JController
 	public function __construct() {
 		parent::__construct();
 
-		$this->setMainLangKey('PAYMENTMETHOD');
+//		$this->setMainLangKey('PAYMENTMETHOD');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
-		$document =& JFactory::getDocument();				
+		$document =& JFactory::getDocument();
 //		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('paymentmethod', $viewType);
@@ -60,17 +60,17 @@ class VirtuemartControllerPaymentmethod extends JController
 //		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
 	}
-	
+
 	/**
 	 * Display the view
 	 *
-	 * @author RickG	 
+	 * @author RickG
 	 */
 	public function display() {
 		parent::display();
 	}
-	
-	
+
+
 	/**
 	 * Handle the edit task
 	 *
@@ -81,16 +81,16 @@ class VirtuemartControllerPaymentmethod extends JController
 		JRequest::setVar('view', 'paymentmethod');
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
-		
+
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('paymentmethod', $viewType);
-			
+
 		$view->setModel($paymModel = $this->getModel('creditcard'));
 		parent::display();
-	}		
-	
-	
+	}
+
+
 	/**
 	 * Handle the cancel task
 	 *
@@ -100,14 +100,14 @@ class VirtuemartControllerPaymentmethod extends JController
 	{
 		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
 		$this->setRedirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
-	}	
-	
-	
+	}
+
+
 	/**
 	 * Handle the save task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */	
+	 * @author Max Milbers, Jseros
+	 */
 	public function save(){
 		$paymModel = $this->getModel('paymentmethod');
 		$cmd = JRequest::getCmd('task');
@@ -131,8 +131,8 @@ class VirtuemartControllerPaymentmethod extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */		
+	 * @author Max Milbers, Jseros
+	 */
 	public function remove()
 	{
 		// Check token
@@ -161,13 +161,13 @@ class VirtuemartControllerPaymentmethod extends JController
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Jseros, Max Milbers	 
-	 */		
+	 * @author Jseros, Max Milbers
+	 */
 	public function publish()
 	{
 		$paymModel = $this->getModel('paymentmethod');
@@ -180,13 +180,13 @@ class VirtuemartControllerPaymentmethod extends JController
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Max Milbers, Jseros	 
-	 */		
+	 * @author Max Milbers, Jseros
+	 */
 	function unpublish()
 	{
 		$paymModel = $this->getModel('paymentmethod');

@@ -45,7 +45,7 @@ class VirtuemartControllerUser extends VmController {
 	{
 		parent::__construct();
 
-		$this->setMainLangKey('USER');
+//		$this->setMainLangKey('USER');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 
