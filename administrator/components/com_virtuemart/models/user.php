@@ -514,8 +514,9 @@ class VirtueMartModelUser extends VmModel {
 //			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
+				dump($_data,'user_info::storeAddress error');
 				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-				echo '<pre>'.print_r($this,1).'</pre>';die;
+//				echo '<pre>'.print_r($this,1).'</pre>';die;
 				return false;
 			}
 
@@ -531,6 +532,7 @@ class VirtueMartModelUser extends VmModel {
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
+					dump($vendorModel,'vendormodel error');
 					return false;
 				}else{
 					//Update xref Table
@@ -539,25 +541,34 @@ class VirtueMartModelUser extends VmModel {
 					//update user table
 					//$usertable = $this->getTable('vmusers');
 					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
-					if (!$usertable->bind($vmusersData)) {
-						$this->setError($table->getError());
-						return false;
-					}
-					// Make sure the record is valid
-					if (!$usertable->check()) {
-						$this->setError($table->getError());
+
+					if (!$usertable -> bindChecknStore($this,$vmusersData)){
+						$this->setError($usertable->getError());
+						dump($usertable,'error user bindChecknStore');
 						return false;
 					}
 
-					// Save the record to the database
-					if (!$usertable->store()) {
-						$this->setError($table->getError());
-						return false;
-					}
+
+//					if (!$usertable->bind($vmusersData)) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
+//					// Make sure the record is valid
+//					if (!$usertable->check()) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
+//
+//					// Save the record to the database
+//					if (!$usertable->store()) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
 
 				}
 				//			}
 			}
+
 			return true;
 		}
 

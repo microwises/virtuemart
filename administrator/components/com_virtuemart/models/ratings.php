@@ -42,49 +42,6 @@ class VirtueMartModelRatings extends VmModel {
 		$this->setMainTable('ratings');
 	}
 
-//	var $_total;
-//	var $_pagination;
-//
-//	function __construct() {
-//		parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//	}
-
-//	/**
-//	 * Loads the pagination
-//	 */
-//    public function getPagination() {
-//		if ($this->_pagination == null) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-//		}
-//		return $this->_pagination;
-//	}
-//
-//	/**
-//	 * Gets the total number of products
-//	 */
-//	private function getTotal() {
-//    	if (empty($this->_total)) {
-//    		$db = JFactory::getDBO();
-//			$q = "SELECT COUNT(*) ".$this->getRatingsListQuery().$this->getRatingsFilter();
-//			$db->setQuery($q);
-//			$this->_total = $db->loadResult();
-//        }
-//
-//        return $this->_total;
-//    }
-
     /**
      * Select the products to list on the product list page
      */

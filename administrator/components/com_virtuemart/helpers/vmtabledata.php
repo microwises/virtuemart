@@ -34,14 +34,18 @@ class VmTableData extends VmTable {
      */
     public function store() {
 
+    	$id = 0;
     	$pKey = $this->_pkey;
-        $_qry = 'SELECT `'.$this->_tbl_key.'` '
-                . 'FROM `'.$this->_tbl.'` '
-                . 'WHERE `'.$this->_pkey.'` = ' . $this->$pKey;
-        $this->_db->setQuery($_qry);
-        $id = $this->_db->loadResult();
-
-        if ( $id > 0) {
+    	if(!empty($this->$pKey)){
+	        $_qry = 'SELECT `'.$this->_tbl_key.'` '
+	                . 'FROM `'.$this->_tbl.'` '
+	                . 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
+	        $this->_db->setQuery($_qry);
+	        $id = $this->_db->loadResult();
+    	}
+		dump($_qry,'store vmtabledata '.$id);
+		dump($this,'store vmtabledata');
+        if ( !empty($id) ) {
         	$tblKey = $this->_tbl_key;
         	$this->$tblKey = $id;
             $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);

@@ -42,9 +42,14 @@ class user_info
 				$this->setError($_userinfo->getError());
 				return false;
 			}
+			if (!$_userinfo->check($_data)) {
 
+				$this->setError($_userinfo->getError());
+				return false;
+			}
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
+				dump($this,'nerv');
 				return false;
 			}
 		} else {
@@ -69,6 +74,10 @@ class user_info
 
 			if ($_table !== null) {
 				if (!$_userinfo->bind($_shipto)) {
+					$this->setError($_userinfo->getError());
+					return false;
+				}
+				if (!$_userinfo->check($_data)) {
 					$this->setError($_userinfo->getError());
 					return false;
 				}

@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * User Info table class
@@ -28,7 +28,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @package	VirtueMart
  * @author 	RickG, RolandD, Max Milbers
  */
-class TableUserinfos extends VmTable {
+class TableUserinfos extends VmTableData {
 
 
 	/** @var int Primary key */
@@ -40,8 +40,8 @@ class TableUserinfos extends VmTable {
 	var $virtuemart_country_id = '';
 
 //	var $user_is_vendor = 0;
-	var $address_type = '';
-	var $address_type_name;
+	var $address_type = null;
+	var $address_type_name = null;
 	var $company = '';
 	var $title ='';
  	var $last_name = '';
@@ -69,8 +69,9 @@ class TableUserinfos extends VmTable {
 		/* Make sure the custom fields are added */
 		self::addUserFields();
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
-
-		$this->setObligatoryKeys('virtuemart_user_id','COM_VIRTUEMART_USERINFO_RECORDS_MUST_CONTAIN_USER_ID');
+		$this->setPrimaryKey('virtuemart_userinfo_id');
+		$this->setObligatoryKeys('address_type','COM_VIRTUEMART_USERINFO_RECORDS_MUST_CONTAIN_ADRESS_TYPE');
+//		$this->setObligatoryKeys('address_type_name','COM_VIRTUEMART_USERINFO_RECORDS_MUST_CONTAIN_ADRESS_TYPE_NAME');
 
 		$this->setLoggable();
 	}
@@ -159,14 +160,9 @@ class TableUserinfos extends VmTable {
 	*/
 	public function check(){
 
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
 
 		if (!empty($this->virtuemart_userinfo_id)) {
+			dump($this->virtuemart_userinfo_id,'not empty');
 			return parent::check();
 		}
 
@@ -178,14 +174,14 @@ class TableUserinfos extends VmTable {
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
-
+		dump($q, 'query');dump($total, '$total');
 		if (count($total) > 0) {
 			$this->virtuemart_userinfo_id = $total[0];
 			return parent::check();
 		} else {
 			$this->virtuemart_userinfo_id = md5(uniqid($this->virtuemart_user_id));
 //			$this->created_on = time();
-			return false;
+			return parent::check();
 		}
 
 

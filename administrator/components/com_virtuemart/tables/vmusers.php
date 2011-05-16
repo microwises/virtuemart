@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * user_shoppergroup_xref table class
@@ -79,7 +79,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
 //		;
 //		$this->_db->setQuery($_qry);
 //		$_count = $this->_db->loadResultArray();
-//
+//		dump($_qry,'store vmusers');
 //		if (count($_count) > 0) {
 //			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
 //		} else {

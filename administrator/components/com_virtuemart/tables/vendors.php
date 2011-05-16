@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Vendor table class
@@ -29,7 +29,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @author RickG
  * @author Max Milbers
  */
-class TableVendors extends VmTable {
+class TableVendors extends VmTableData {
 
     /** @var int Primary key */
     var $virtuemart_vendor_id			= 0;
@@ -68,7 +68,7 @@ class TableVendors extends VmTable {
      */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
-
+		$this->setPrimaryKey('virtuemart_vendor_id');
 		$this->setUniqueName('vendor_name','COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS');
 //		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
 //		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
@@ -115,27 +115,27 @@ class TableVendors extends VmTable {
 	 * @author Max Milbers
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
-	public function store()
-	{
-		$_qry = 'SELECT virtuemart_vendor_id '
-				. 'FROM #__virtuemart_vendors '
-				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
-		;
-		$this->_db->setQuery($_qry);
-		$_count = $this->_db->loadResultArray();
-
-		if (count($_count) > 0) {
-			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-		} else {
-			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-		}
-
-		if (!$returnCode){
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		else return true;
-	}
+//	public function store()
+//	{
+//		$_qry = 'SELECT virtuemart_vendor_id '
+//				. 'FROM #__virtuemart_vendors '
+//				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
+//		;
+//		$this->_db->setQuery($_qry);
+//		$_count = $this->_db->loadResultArray();
+//
+//		if (count($_count) > 0) {
+//			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+//		} else {
+//			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+//		}
+//
+//		if (!$returnCode){
+//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			return false;
+//		}
+//		else return true;
+//	}
 }
 
 //pure php no closing tag
