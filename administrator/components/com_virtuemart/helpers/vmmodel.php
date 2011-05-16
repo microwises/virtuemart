@@ -23,10 +23,10 @@ defined('_JEXEC') or die();
 class VmModel extends JModel {
 
 	protected $_id 			= 0;
-	protected $_data 			= null;
+	protected $_data 		= null;
 	protected $_pagination 	= 0;
 
-	protected $_maintable 	= '';
+	protected $_maintable 	= '';	// something like #__virtuemart_calcs
 	protected $_maintablename = '';
 	protected $_idName		= '';
 	protected $_cidName		= 'cid';
@@ -51,15 +51,32 @@ class VmModel extends JModel {
 
     }
 
+    public function setMainTable($maintablename,$maintable=0){
+
+    	$this->_maintablename = $maintablename;
+    	if(empty($maintable)){
+    		$this->_maintable = '#__virtuemart_'.$maintablename;
+    	} else {
+    		$this->_maintable = $maintable;
+    	}
+		$defaultTable = $this->getTable($this->_maintablename);
+		$this->_idName = $defaultTable->getKeyName();
+    }
+
+    public function setIdName($idName){
+    	$this->_idName = $idName;
+    }
+
    	public function getId(){
     	return $this->_id;
    	}
+
 	 /**
      * Resets the id and data
      *
      * @author Max Milbers
      */
-    public function setId($id){
+    function setId($id){
     	if($this->_id!=$id){
 			$this->_id = (int)$id;
 			$this->_data = null;
@@ -84,12 +101,12 @@ class VmModel extends JModel {
 	 * Gets the total number of countries
 	 *
      * @author Max Milbers
-	 * @return int Total number of countries in the database
+	 * @return int Total number of entries in the database
 	 */
 	public function getTotal() {
 
     	if (empty($this->_total)) {
-			$query = 'SELECT '.$db->nameQuote($this->_idName).' FROM '.$db->nameQuote($this->_maintable);
+			$query = 'SELECT '.$this->_db->nameQuote($this->_idName).' FROM '.$this->_db->nameQuote($this->_maintable);
 			$this->_total = $this->_getListCount($query);
         }
 

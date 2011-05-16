@@ -40,15 +40,6 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelUser extends VmModel {
 
-//	/** @var integer Primary key */
-//	var $_id=0;
-//	/** @var objectlist users */
-//	var $_data;
-//	/** @var integer Total number of users in the database */
-//	var $_total;
-//	/** @var pagination Pagination for userlist */
-//	var $_pagination;
-
 	/**
 	 * Constructor for the user model.
 	 *
@@ -64,40 +55,18 @@ class VirtueMartModelUser extends VmModel {
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-
-		$user = JFactory::getUser();
-		//anonymous sets to 0 for a new entry
-		if(empty($user->id)){
-			$this->setId(0);
-			//			echo($this->_id,'Recogniced anonymous case');
-		} else {
-			$idArray = JRequest::getVar('cid',  null, '', 'array');
-			//not anonymous, but no cid means already registered user edit own data
-			if(!isset($idArray[0])){
-				$this->setId((int)$user->id);
-				//				echo($user->id,'cid was null, therefore user->id is used');
-			} else {
-				if($idArray[0] != $user->id){
-					if(Permissions::getInstance()->check("admin,storeadmin")) {
-						$this->setId((int)$idArray[0]);
-					} else {
-//						JError::raiseWarning(1,'Hacking attempt');
-						$this->setId((int)$user->id);
-					}
-				}else {
-					$this->setId((int)$user->id);
-				}
-			}
-		}
+		$this->setMainTable('vmusers');
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//		$idArray = JRequest::getVar('cid',  null, '', 'array');
+//		$this->setId($idArray);
 
 	}
 
@@ -107,12 +76,41 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	private function setId($id)
-	{
-		$this->_id = $id;
-		$this->_data = null;
+	public function setId($idArray){
+
+		$user = JFactory::getUser();
+		//anonymous sets to 0 for a new entry
+		if(empty($user->id)){
+			$this->setUserId(0);
+			//			echo($this->_id,'Recogniced anonymous case');
+		} else {
+//			$idArray = JRequest::getVar('cid',  null, '', 'array');
+			//not anonymous, but no cid means already registered user edit own data
+			if(!isset($idArray[0])){
+				$this->setUserId($user->id);
+				//				echo($user->id,'cid was null, therefore user->id is used');
+			} else {
+				if($idArray[0] != $user->id){
+					if(Permissions::getInstance()->check("admin,storeadmin")) {
+						$this->setUserId($idArray[0]);
+					} else {
+//						JError::raiseWarning(1,'Hacking attempt');
+						$this->setUserId($user->id);
+					}
+				}else {
+					$this->setUserId($user->id);
+				}
+			}
+		}
 	}
 
+	private function setUserId($id){
+
+	    if($this->_id!=$id){
+			$this->_id = (int)$id;
+			$this->_data = null;
+    	}
+	}
 	/**
 	 * Set the ID to the current user
 	 */

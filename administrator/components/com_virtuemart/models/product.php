@@ -40,6 +40,16 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	var $products  = null ;
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('products');
+	}
+
 //	/**
 //	 * @var integer Primary key
 //	 * @access private
@@ -49,9 +59,9 @@ class VirtueMartModelProduct extends VmModel {
 //	var $_total;
 //	var $_pagination;
 
-	function __construct() {
-		parent::__construct();
-
+//	function __construct() {
+//		parent::__construct();
+//
 //		// Get the pagination request variables
 //		$mainframe = JFactory::getApplication() ;
 //		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
@@ -67,7 +77,7 @@ class VirtueMartModelProduct extends VmModel {
 //		$this->setState('limit', $limit);
 //		$this->setState('limitstart', $limitstart);
 //		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'medias.php');
-	}
+//	}
 
 //	 /**
 //     * Resets the category id and data

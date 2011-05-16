@@ -32,9 +32,14 @@ class VirtueMartModelCategory extends VmModel {
 
 	private $_category_tree;
 
-
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
 	function __construct() {
 		parent::__construct();
+		$this->setMainTable('categories');
 	}
 
 

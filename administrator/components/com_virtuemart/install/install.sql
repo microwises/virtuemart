@@ -4,6 +4,28 @@
 -- --------------------------------------------------------
 
 
+
+--
+-- Table structure for table `#__virtuemart_adminmenuentries`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `module_id` int(10) unsigned NOT NULL COMMENT 'The ID of the VM Module, this Item is assigned to',
+  `parent_id` int(11) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `link` text NOT NULL,
+  `depends` text NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
+  `icon_class` varchar(255) NOT NULL,
+  `ordering` int(2) NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `tooltip` text NOT NULL,
+  `view` varchar(255) DEFAULT NULL,
+  `task` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Administration Menu Items' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_calcs`
 --
@@ -399,27 +421,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `#__virtuemart_adminmenuentries`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `module_id` int(10) unsigned NOT NULL COMMENT 'The ID of the VM Module, this Item is assigned to',
-  `parent_id` int(11) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `link` text NOT NULL,
-  `depends` text NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
-  `icon_class` varchar(255) NOT NULL,
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `tooltip` text NOT NULL,
-  `view` varchar(255) DEFAULT NULL,
-  `task` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Administration Menu Items' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -641,7 +643,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `#__virtuemart_paymentmethod_creditcards`
 --
@@ -655,7 +656,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_creditcards` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `#__virtuemart_paymentmethod_shoppergroups`
 --
@@ -670,7 +670,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
 
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `#__virtuemart_products`
 --

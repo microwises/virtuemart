@@ -32,6 +32,16 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelRatings extends VmModel {
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('ratings');
+	}
+
 //	var $_total;
 //	var $_pagination;
 //

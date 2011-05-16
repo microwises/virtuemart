@@ -33,6 +33,16 @@ if(!class_exists('VmModel')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmm
  */
 class VirtueMartModelCountry extends VmModel {
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('countries');
+	}
+
 //    /** @var integer Primary key */
 //    var $_id;
 //    /** @var objectlist Country data */

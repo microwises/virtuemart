@@ -31,74 +31,41 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelCustom extends VmModel {
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct('virtuemart_custom_id');
+		$this->setMainTable('customs');
+	}
+
 	/** @var integer Primary key */
     private $virtuemart_custom_id = 0;
 
-//   /** @var integer Total number of files in the database */
-//    var $_total;
-//    /** @var pagination Pagination for file list */
-//    var $_pagination;
-    /** @var datas  internal use to stock 'custom' datas */
-    var $_datas;
-
-
-	/**
-	 * Constructor for product files
-	 */
-	function __construct(){
-		parent::__construct();
-
-//		$this->virtuemart_custom_id = $id;
-
-		/* Get the custom ID */
-		$this->setId(JRequest::getInt('virtuemart_custom_id', null));
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-	}
-
-	/**
-	 * Sets new Id and resets data ...
-	 * @author Max Milbers
-	 * @param int $id
-	 */
-    function setId($id) {
-		$this->virtuemart_custom_id = $id;
-		$this->_data = null;
-    }
 
 //	/**
-//	 * Loads the pagination
-//	 *
-//	 * @author RickG
+//	 * Constructor for product files
 //	 */
-//    public function getPagination() {
-//		if (empty($this->_pagination)) {
-//	    	jimport('joomla.html.pagination');
-//	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
+//	function __construct(){
+//		parent::__construct();
 //
-//    /**
-//     * Gets the total number of currencies
-//     *
-//     * @author Max Milbers
-//     * @return int Total number of currencies in the database
-//     */
-//    function _getTotal() {
-//		if (empty($this->_total)) {
-//		    $query = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs`';
-//		    $this->_total = $this->_getListCount($query);
-//		}
-//		return $this->_total;
-//    }
+////		$this->virtuemart_custom_id = $id;
+//
+//		/* Get the custom ID */
+//		$this->setId(JRequest::getInt('virtuemart_custom_id', null));
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//	}
+
 
     /**
      * Gets a single custom by virtuemart_custom_id
@@ -132,10 +99,10 @@ class VirtueMartModelCustom extends VmModel {
 		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
 		and `virtuemart_product_id`='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
-		$this->_datas->productCustoms = $this->_db->loadObjectList();
-		$this->_datas->customFields = self::getCustoms() ;
+		$this->_data->productCustoms = $this->_db->loadObjectList();
+		$this->_data->customFields = self::getCustoms() ;
 
-  		return $this->_datas;
+  		return $this->_data;
 
     }
 

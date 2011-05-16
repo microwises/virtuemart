@@ -88,7 +88,7 @@ class VirtuemartViewUser extends JView {
 		$userFields = $this->setUserFieldsForView($layoutName);
 
 		if($layoutName=='edit'){
-			if($this->_model->_id==0 && $this->_cuid==0){
+			if($this->_model->getId()==0 && $this->_cuid==0){
 				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
 			} else {
 				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
@@ -259,7 +259,7 @@ class VirtuemartViewUser extends JView {
 		// Check for existing orders for this user
 		$orders = $this->getModel('orders');
 
-		if ($this->_model->_id == 0) {
+		if ($this->_model->getId() == 0) {
 			// getOrdersList() returns all orders when no userID is set (admin function),
 			// so explicetly define an empty array when not logged in.
 			$this->_orderList = array();
@@ -287,7 +287,7 @@ class VirtuemartViewUser extends JView {
 	function generateStAddressList (){
 
 		// Shipping address(es)
-		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
+		$_addressList = $this->_model->getUserAddressList($this->_model->getId() , 'ST');
 		if (($_c = count($_addressList)) == 0) {
 			$this->_lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 		} else {
@@ -362,7 +362,7 @@ class VirtuemartViewUser extends JView {
 		// Shopper info
 		if (!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
 
-		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
+		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->getId());
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -438,10 +438,10 @@ class VirtuemartViewUser extends JView {
 
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
-		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->_id);
+		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->getId());
 
 		//TODO I do not understand for what we have that by Max.
-		if ($this->_model->_id < 1) {
+		if ($this->_model->getId() < 1) {
 			$this->_lists['register_new'] = 1;
 		} else {
 			$this->_lists['register_new'] = 0;

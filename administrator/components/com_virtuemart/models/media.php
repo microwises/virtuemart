@@ -34,6 +34,15 @@ class VirtueMartModelMedia extends VmModel {
 	/** @var integer Primary key */
     private $virtuemart_media_id = 0;
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct('virtuemart_media_id');
+		$this->setMainTable('manufacturers');
+	}
 //   /** @var integer Total number of files in the database */
 //    var $_total;
 //    /** @var pagination Pagination for file list */

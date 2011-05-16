@@ -32,6 +32,16 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelInventory extends VMModel {
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct('virtuemart_custom_id');
+		$this->setMainTable('customs');
+	}
+
 //	var $_total;
 //	var $_pagination;
 //
@@ -64,7 +74,7 @@ class VirtueMartModelInventory extends VMModel {
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal() {
+	function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
 			$q = "SELECT COUNT(*) ".$this->getInventoryListQuery().$this->getInventoryFilter();

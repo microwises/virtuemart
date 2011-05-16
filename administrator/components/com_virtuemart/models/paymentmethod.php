@@ -23,8 +23,8 @@ jimport( 'joomla.application.component.model');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
-class VirtueMartModelPaymentmethod extends VmModel
-{
+class VirtueMartModelPaymentmethod extends VmModel{
+
 	/** @var array Array of Primary keys */
 //    private $_cid;
 //	/** @var integer Primary key */
@@ -36,32 +36,41 @@ class VirtueMartModelPaymentmethod extends VmModel
 //	/** @var pagination Pagination for paymentmethod list */
 //	private $_pagination;
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('paymentmethods');
+	}
 
-    /**
-     * Constructor for the paymentmethod model.
-     *
-     * The paym id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author Max Milbers
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the calc id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-
-    }
+//    /**
+//     * Constructor for the paymentmethod model.
+//     *
+//     * The paym id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author Max Milbers
+//     */
+//    public function __construct()
+//    {
+//        parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//        // Get the calc id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//    	$this->setId((int)$idArray[0]);
+//
+//    }
 
 	/**
 	 * Gets the virtuemart_paymentmethod_id with a plugin and vendorId

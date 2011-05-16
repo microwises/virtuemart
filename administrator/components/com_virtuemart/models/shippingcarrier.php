@@ -39,6 +39,17 @@ class VirtueMartModelShippingCarrier extends VmModel {
     var $jplugin_id;
     /** @var integer Vendor ID */
     var $virtuemart_vendor_id;
+
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('shippingcarriers');
+	}
+
 //    /** @var objectlist shipping carrier data */
 //    var $_data;
 //    /** @var integer Total number of shipping carriers in the database */
