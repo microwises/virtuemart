@@ -1907,6 +1907,11 @@ class VirtueMartModelProduct extends JModel {
 						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
 					}
 					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->custom_value,'','value','text',false);
+				} else if ($group->field_type == 'U'){
+					foreach ($group->options as $productCustom) {
+						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
+					}
+						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
@@ -1948,13 +1953,14 @@ class VirtueMartModelProduct extends JModel {
 				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 				Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
 			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
+
 			$this->_db->setQuery($query);
 			$groups = $this->_db->loadAssocList();
 
 			//product custom_field  with price grouped by virtuemart_custom_id
 			foreach ($groups as & $group) {
 				$query='SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
-					FROM `#__vm_custom` AS C
+					FROM `#__virtuemart_customs` AS C
 					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
 					Where xref.`virtuemart_product_id` ='.$product->virtuemart_product_id;
