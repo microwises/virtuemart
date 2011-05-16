@@ -30,7 +30,7 @@ class VmController extends JController{
 		parent::__construct();
 
 		$name = $this->getName();
-		$this->mainLangKey = $name;
+		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$name);
 		$this->redirectPath = 'index.php?option=com_virtuemart&controller='.$name;
 	}
 
@@ -42,12 +42,12 @@ class VmController extends JController{
 	 */
 	function remove(){
 		$data = JRequest::get( 'post' );
-		$model = $this->getModel();
+		$model = $this->getModel($this->name);
 		if (!$model->delete()) {
-			$msg = JText::_($this->mainLangKey.'COULD_NOT_BE_DELETED');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 		}
 		else {
-			$msg = JText::_($this->mainLangKey.'DELETED');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
 		}
 		$this->setRedirect($this->redirectPath, $msg);
 //		$pname = $model->getIdName();
@@ -60,7 +60,7 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::_($this->mainLangKey.'CANCELLED'); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = JText::sprintf(COM_VIRTUEMART_STRING_CANCELLED,$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
@@ -72,13 +72,13 @@ class VmController extends JController{
 	public function publish(){
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$model = $this->getModel();
+		echo $this->name;
+		$model = $this->getModel($this->name);
 		if (!$model->publish(true)) {
-			$msg = JText::_($this->mainLangKey.'PUBLISHED_ERROR');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		}
 		else{
-			$msg = JText::_($this->mainLangKey.'PUBLISHED_SUCCESS');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -93,13 +93,13 @@ class VmController extends JController{
 	function unpublish(){
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$model = $this->getModel();
+		echo $this->name;
+		$model = $this->getModel($this->name);
 		if (!$model->publish(true)) {
-			$msg = JText::_($this->mainLangKey.'UNPUBLISHED_ERROR');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		}
 		else{
-			$msg = JText::_($this->mainLangKey.'UNPUBLISHED_SUCCESS');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
 		$this->setRedirect( $this->redirectPath, $msg);
