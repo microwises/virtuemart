@@ -32,70 +32,70 @@ class VirtueMartViewVirtueMart extends JView {
 
 	public function display($tpl = null) {
 
-	    /* MULTI-X
+		/* MULTI-X
 	    * $this->loadHelper('vendorHelper');
 	    * $vendorModel = new Vendor;
 	    * $vendor = $vendorModel->getVendor();
 	    * $this->assignRef('vendor',	$vendor);
 	    */
 		if(!VmConfig::get('shop_is_offline',0)){
-	    $vendorId = JRequest::getInt('vendorid', 1);
+		    $vendorId = JRequest::getInt('vendorid', 1);
 
-	    $vendorModel = $this->getModel('vendor');
+		    $vendorModel = $this->getModel('vendor');
 
-	    $vendorModel->setId(1);
-	    $vendor = $vendorModel->getVendor();
-	    $this->assignRef('vendor',$vendor);
+		    $vendorModel->setId(1);
+		    $vendor = $vendorModel->getVendor();
+		    $this->assignRef('vendor',$vendor);
 
 
-		$categoryModel = $this->getModel('category');
-		$productModel = $this->getModel('product');
+			$categoryModel = $this->getModel('category');
+			$productModel = $this->getModel('product');
 
-	    $categoryId = JRequest::getInt('catid', 0);
-        $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-        $categoryModel->addImagesToCategories($categoryChildren);
+		    $categoryId = JRequest::getInt('catid', 0);
+	        $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+	        $categoryModel->addImagesToCategories($categoryChildren);
 
-        $this->assignRef('categories',	$categoryChildren);
+	        $this->assignRef('categories',	$categoryChildren);
 
-        if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+	        if(!class_exists('calculationHelper'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
-        /* Load the recent viewed products */
-        if (VmConfig::get('show_recent', 1)) {
-        	$recentProductIds = shopFunctionsF::getRecentProductIds();
-			$recentProducts = $productModel->getProducts($recentProductIds);
-        	$productModel->addImagesToProducts($recentProducts);
-        	$this->assignRef('recentProducts', $recentProducts);
-        }
+	        /* Load the recent viewed products */
+	        if (VmConfig::get('show_recent', 1)) {
+	        	$recentProductIds = shopFunctionsF::getRecentProductIds();
+				$recentProducts = $productModel->getProducts($recentProductIds);
+	        	$productModel->addImagesToProducts($recentProducts);
+	        	$this->assignRef('recentProducts', $recentProducts);
+	        }
 
-        if (VmConfig::get('showFeatured', 1)) {
-			$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);
-			$productModel->addImagesToProducts($featuredProducts);
-			$this->assignRef('featuredProducts', $featuredProducts);
-		}
+	        if (VmConfig::get('showFeatured', 1)) {
+				$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);
+				$productModel->addImagesToProducts($featuredProducts);
+				$this->assignRef('featuredProducts', $featuredProducts);
+			}
 
-		if (VmConfig::get('showlatest', 1)) {
-			$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
-			$productModel->addImagesToProducts($latestProducts);
-			$this->assignRef('latestProducts', $latestProducts);
-		}
+			if (VmConfig::get('showlatest', 1)) {
+				$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
+				$productModel->addImagesToProducts($latestProducts);
+				$this->assignRef('latestProducts', $latestProducts);
+			}
 
-        if (VmConfig::get('showTopten', 1)) {
-			$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);
-			$productModel->addImagesToProducts($toptenProducts);
-			$this->assignRef('toptenProducts', $toptenProducts);
-		}
+	        if (VmConfig::get('showTopten', 1)) {
+				$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);
+				$productModel->addImagesToProducts($toptenProducts);
+				$this->assignRef('toptenProducts', $toptenProducts);
+			}
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
-		$this->assignRef('showBasePrice', $showBasePrice);
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+			$this->assignRef('showBasePrice', $showBasePrice);
 
-//		$layoutName = VmConfig::get('vmlayout','default');
+	//		$layoutName = VmConfig::get('vmlayout','default');
 
-		$layout = VmConfig::get('vmlayout','default');
-		$this->setLayout($layout);
+			$layout = VmConfig::get('vmlayout','default');
+			$this->setLayout($layout);
 
-		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-	    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
+			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
 
 		} else {
 			$this->setLayout('offline');

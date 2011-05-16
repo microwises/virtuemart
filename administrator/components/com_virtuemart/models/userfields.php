@@ -26,6 +26,7 @@ jimport( 'joomla.application.component.model');
 // Load the helpers
 if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model class for user fields
@@ -34,20 +35,13 @@ if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @subpackage Userfields
  * @author RolandD
  */
-class VirtueMartModelUserfields extends JModel {
+class VirtueMartModelUserfields extends VmModel {
 
-	/** @var integer Primary key */
-	var $_id;
-	/** @var objectlist userfield data */
-	var $_data;
 	/** @var object paramater parsers */
 	var $_params;
 	/** @var array type=>fieldname with formfields that are saved as parameters */
 	var $reqParam;
-	/** @var integer Total number of userfields in the database */
-	var $_total;
-	/** @var pagination Pagination for userfieldlist */
-	var $_pagination;
+
 
 	/**
 	 * Constructor for the userfields model.
@@ -59,21 +53,22 @@ class VirtueMartModelUserfields extends JModel {
 		parent::__construct();
 
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//		// Get the (array of) order status ID(s)
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//		$this->setId((int)$idArray[0]);
 
 		// Instantiate the Helper class
 		$this->_params = new ParamHelper();
 
-		// Get the (array of) order status ID(s)
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$idArray[0]);
 
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (
@@ -120,28 +115,28 @@ class VirtueMartModelUserfields extends JModel {
 		return $value;
 	}
 
-	/**
-	 * Resets the userfield id and data
-	 */
-	function setId($id)
-	{
-		$this->_id = $id;
-		$this->_data = null;
-	}
+//	/**
+//	 * Resets the userfield id and data
+//	 */
+//	function setId($id)
+//	{
+//		$this->_id = $id;
+//		$this->_data = null;
+//	}
 
-	/**
-	 * Loads the pagination for the userfields table
-	 *
-	 * @return JPagination Pagination for the current list of userfields
-	 */
-	function getPagination()
-	{
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
+//	/**
+//	 * Loads the pagination for the userfields table
+//	 *
+//	 * @return JPagination Pagination for the current list of userfields
+//	 */
+//	function getPagination()
+//	{
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
 
 	/**
 	 * Gets the total number of userfields

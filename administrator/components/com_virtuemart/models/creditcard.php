@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop credit cards
  *
@@ -29,86 +31,77 @@ jimport( 'joomla.application.component.model');
  * @subpackage CreditCard
  * @author RickG
  */
-class VirtueMartModelCreditcard extends JModel {
-
-	/** @var integer Primary key */
-    var $_id;
-	/** @var objectlist Credit card data */
-    var $_data;
-	/** @var integer Total number of credit cards in the database */
-	var $_total;
-	/** @var pagination Pagination for credit card list */
-	var $_pagination;
+class VirtueMartModelCreditcard extends VmModel {
 
 
-    /**
-     * Constructor for the credit card model.
-     *
-     * The credit card id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct()
-    {
-        parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the credit card id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-    }
-
-
-    /**
-     * Resets the credit card id and data
-     *
-     * @author RickG
-     */
-    function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-
-	/**
-	 * Loads the pagination for the credit card table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of credit cards
-	 */
-    function getPagination()
-    {
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of credit cards
-	 *
-     * @author RickG
-	 * @return int Total number of credit cards in the database
-	 */
-	function _getTotal()
-	{
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_creditcards`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
+//    /**
+//     * Constructor for the credit card model.
+//     *
+//     * The credit card id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author RickG
+//     */
+//    function __construct()
+//    {
+//        parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//        // Get the credit card id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//    	$this->setId((int)$idArray[0]);
+//    }
+//
+//
+//    /**
+//     * Resets the credit card id and data
+//     *
+//     * @author RickG
+//     */
+//    function setId($id)
+//    {
+//        $this->_id = $id;
+//        $this->_data = null;
+//    }
+//
+//
+//	/**
+//	 * Loads the pagination for the credit card table
+//	 *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of credit cards
+//	 */
+//    function getPagination()
+//    {
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//
+//	/**
+//	 * Gets the total number of credit cards
+//	 *
+//     * @author RickG
+//	 * @return int Total number of credit cards in the database
+//	 */
+//	function _getTotal()
+//	{
+//    	if (empty($this->_total)) {
+//			$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_creditcards`';
+//			$this->_total = $this->_getListCount($query);
+//        }
+//        return $this->_total;
+//    }
 
 
     /**
@@ -136,37 +129,37 @@ class VirtueMartModelCreditcard extends JModel {
 	}
 
 
-	/**
-	 * Bind the post data to the credit card table and save it
-     *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
-	 */
-    function store()
-	{
-		$table =& $this->getTable('creditcards');
-
-		$data = JRequest::get( 'post' );
-		// Bind the form fields to the credit card table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the credit card record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the credit card record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		return $table->virtuemart_creditcard_id;
-	}
+//	/**
+//	 * Bind the post data to the credit card table and save it
+//     *
+//     * @author RickG
+//     * @return boolean True is the save was successful, false otherwise.
+//	 */
+//    function store()
+//	{
+//		$table =& $this->getTable('creditcards');
+//
+//		$data = JRequest::get( 'post' );
+//		// Bind the form fields to the credit card table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Make sure the credit card record is valid
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Save the credit card record to the database
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		return $table->virtuemart_creditcard_id;
+//	}
 
 
 	/**

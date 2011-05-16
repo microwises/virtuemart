@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
 /**
  * Calculator Controller
  *
@@ -29,8 +31,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Calculation tool
  * @author Max Milbers
  */
-class VirtuemartControllerCalc extends JController
-{
+class VirtuemartControllerCalc extends VmController {
 	/**
 	 * Method to display the view
 	 *
@@ -54,6 +55,7 @@ class VirtuemartControllerCalc extends JController
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
+		$this->setMainLangKey('COM_VIRTUEMART_CALC');
 	}
 
 	/**
@@ -89,16 +91,7 @@ class VirtuemartControllerCalc extends JController
 	}
 
 
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author Max Milbers
-	 */
-	public function cancel()
-	{
-		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
-		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
-	}
+
 
 
 	/**
@@ -164,48 +157,48 @@ class VirtuemartControllerCalc extends JController
 	}
 
 
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Jseros, Max Milbers
-	 */
-	public function publish()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$calcModel = $this->getModel('calc');
-		if (!$calcModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_PUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	function unpublish()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$calcModel = $this->getModel('calc');
-		if (!$calcModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_UNPUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
-	}
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author Jseros, Max Milbers
+//	 */
+//	public function publish()
+//	{
+//		// Check token
+//		JRequest::checkToken() or jexit( 'Invalid Token' );
+//
+//		$calcModel = $this->getModel('calc');
+//		if (!$calcModel->publish(true)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
+//		}
+//		else{
+//			$msg = JText::_('COM_VIRTUEMART_CALC_PUBLISHED_SUCCESS');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
+//	}
+//
+//
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author Max Milbers, Jseros
+//	 */
+//	function unpublish()
+//	{
+//		// Check token
+//		JRequest::checkToken() or jexit( 'Invalid Token' );
+//
+//		$calcModel = $this->getModel('calc');
+//		if (!$calcModel->publish(false)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_UNPUBLISHED');
+//		}
+//		else{
+//			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
+//	}
 
 
 	/**

@@ -125,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `limit_list_step` int(11) DEFAULT NULL,
   `limit_list_max` int(11) DEFAULT NULL,
   `limit_list_initial` int(11) DEFAULT NULL,
+  `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `metadesc` text NOT NULL,
   `metakey` text NOT NULL,
   `metarobot` text NOT NULL,
@@ -340,26 +341,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
   KEY `idx_custom_value` (`custom_value`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
---
--- Table structure `#__virtuemart_product_customfields`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
-  `id` SERIAL,
-  `virtuemart_product_id` int(11) NOT NULL,
-  `virtuemart_customfield_id` int(11) NOT NULL COMMENT 'field ref to product',
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `idx_product_id` (`virtuemart_product_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 --
@@ -373,6 +354,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `mf_desc` text,
   `virtuemart_manufacturercategories_id` int(11) DEFAULT NULL,
   `mf_url` varchar(255) NOT NULL DEFAULT '',
+  `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -715,11 +697,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_special` char(1) DEFAULT NULL,
   `ship_code_id` int(11) DEFAULT NULL,
   `product_sales` int(11) NOT NULL DEFAULT '0',
-  `attribute` text,
-  `custom_attribute` text NOT NULL,
   `product_unit` varchar(32) DEFAULT NULL,
   `product_packaging` int(11) DEFAULT NULL,
   `product_order_levels` varchar(45) DEFAULT NULL,
+  `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `intnotes` text,
   `metadesc` text NOT NULL,
   `metakey` text NOT NULL,
@@ -749,17 +730,29 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
+  `id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_category_id` int(11) NOT NULL DEFAULT '0',
-  `product_list` int(11) DEFAULT NULL,
-  KEY `idx_product_category_xref_virtuemart_category_id` (`virtuemart_category_id`),
-  KEY `idx_product_category_xref_product_id` (`virtuemart_product_id`),
-  KEY `idx_product_category_xref_product_list` (`product_list`)
+  `ordering` int(11) DEFAULT NULL,
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps Products to Categories';
 
 -- --------------------------------------------------------
+--
+-- Table structure `#__virtuemart_product_customfields`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
+  `id` SERIAL,
+  `virtuemart_product_id` int(11) NOT NULL,
+  `virtuemart_customfield_id` int(11) NOT NULL COMMENT 'field ref to product',
+  `ordering` int(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_customfield_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
 
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_downloads`
 --

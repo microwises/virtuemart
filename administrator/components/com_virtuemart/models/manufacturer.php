@@ -22,44 +22,46 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for VirtueMart Manufacturers
  *
  * @package VirtueMart
  * @subpackage Manufacturer
  * @author RolandD, Max Milbers
- * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the product_list with the ordering column
+ * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the ordering with the ordering column
  */
-class VirtueMartModelManufacturer extends JModel {
+class VirtueMartModelManufacturer extends VmModel {
 
-	var $_total;
-	var $_pagination;
-
-	function __construct() {
-		parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-	}
-
-	/**
-	 * Loads the pagination
-	 */
-    public function getPagination() {
-		if ($this->_pagination == null) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
-	}
+//	var $_total;
+//	var $_pagination;
+//
+//	function __construct() {
+//		parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//
+//		// In case limit has been changed, adjust limitstart accordingly
+//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//	}
+//
+//	/**
+//	 * Loads the pagination
+//	 */
+//    public function getPagination() {
+//		if ($this->_pagination == null) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+//		}
+//		return $this->_pagination;
+//	}
 
 	/**
 	 * Gets the total number of products

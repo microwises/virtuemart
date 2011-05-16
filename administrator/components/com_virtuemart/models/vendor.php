@@ -22,59 +22,18 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
 * Model for VirtueMart Vendors
 *
 * @package		VirtueMart
 */
-class VirtueMartModelVendor extends JModel {
+class VirtueMartModelVendor extends VmModel {
 
-    /**
-    * Vendor Id
-    *
-    * @var $_id;
-    */
-    private $_id;
-
-    /**
-    * Vendor detail record
-    *
-    * @var object;
-    */
-    private $_data;
-
-
-    /**
-    * Constructor for the Vendor model.
-    */
-    function __construct()
-    {
-        parent::__construct();
-
-        $cid = JRequest::getVar('cid', false, 'DEFAULT', 'array');
-        if ($cid) {
-            $id = $cid[0];
-        }
-        else {
-            $id = JRequest::getInt('id', 1);
-        }
-
-        $this->setId($id);
-    }
-
-
-    /**
-    * Resets the Vendor ID and data
-    */
-    function setId($id=1){
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-    function getId(){
-    	return $this->_id;
-    }
+	function __construct() {
+		parent::__construct();
+	}
 
     /**
 	* name: getLoggedVendor
@@ -104,10 +63,10 @@ class VirtueMartModelVendor extends JModel {
 	*/
 	function getVendor() {
 
-        if (!$this->_data) {
+        if (empty($this->_data)) {
 
 	    	$this->_data = $this->getTable('vendors');
-   			$this->_data->load((int)$this->_id);
+   			$this->_data->load($this->_id);
 
 		    // Convert ; separated string into array
 		    if ($this->_data->vendor_accepted_currencies) {
@@ -118,7 +77,7 @@ class VirtueMartModelVendor extends JModel {
 		    }
 
 		    $xrefTable = $this->getTable('vendor_medias');
-			$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+			$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
 //          	if($this->_data->virtuemart_media_id){
 //  				$this->_data->virtuemart_media_id = explode(',',$this->_data->virtuemart_media_id);
@@ -146,10 +105,10 @@ class VirtueMartModelVendor extends JModel {
 
 		}
 
-       	if (!$this->_data) {
-	    	$this->_data = new stdClass();
-	    	$this->_id = 0;
-		}
+//       	if (!$this->_data) {
+//	    	$this->_data = new stdClass();
+//	    	$this->_id = 0;
+//		}
 
 		return $this->_data;
 	}

@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shopper group
  *
@@ -29,84 +31,84 @@ jimport( 'joomla.application.component.model');
  * @subpackage ShopperGroup
  * @author Markus Öhler
  */
-class VirtueMartModelShopperGroup extends JModel {
+class VirtueMartModelShopperGroup extends VmModel {
 
-    /** @var integer Primary key */
-    private $_cid;
-    /** @var integer Primary key */
-    private $_id;
-    /** @var objectlist Shopper group data */
-    private $_data;
-    /** @var integer Total number of shopper groups in the database */
-    private $_total;
-    /** @var pagination Pagination for shopper group list */
-    private $_pagination;
-
-
-    /**
-     * Constructor for the shopper group model.
-     *
-     * @author Markus Öhler
-     */
-    function __construct() {
-	    parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view') . '.limitstart', 'limitstart', 0, 'int');
-
-	    // Set the state pagination variables
-	    $this->setState('limit', $limit);
-	    $this->setState('limitstart', $limitstart);
-
-	    // Get the shopper group id or array of ids.
-	    $idArray = JRequest::getVar('cid', 0, '', 'array');
-	    $this->setId((int)$idArray[0]);
-    }
-
-    /**
-     * Resets the shopper group id and data
-     *
-     * @author Markus Öhler
-     */
-    function setId($id) {
-	    $this->_id = $id;
-	    $this->_data = null;
-    }
-
-    /**
-     * Loads the pagination for the shopper group table
-     *
-     * @author Markus Öhler
-     * @return JPagination Pagination for the current list of shopper groups
-     */
-    function getPagination() {
-	    if (empty($this->_pagination)) {
-	      jimport('joomla.html.pagination');
-	      $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-	    }
-	    return $this->_pagination;
-    }
+//    /** @var integer Primary key */
+//    private $_cid;
+//    /** @var integer Primary key */
+//    private $_id;
+//    /** @var objectlist Shopper group data */
+//    private $_data;
+//    /** @var integer Total number of shopper groups in the database */
+//    private $_total;
+//    /** @var pagination Pagination for shopper group list */
+//    private $_pagination;
 
 
-    /**
-     * Gets the total number of countries
-     *
-     * @author Markus Öhler
-     * @return int Total number of countries in the database
-     */
-    function _getTotal() {
+//    /**
+//     * Constructor for the shopper group model.
+//     *
+//     * @author Markus Öhler
+//     */
+//    function __construct() {
+//	    parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view') . '.limitstart', 'limitstart', 0, 'int');
+//
+//	    // Set the state pagination variables
+//	    $this->setState('limit', $limit);
+//	    $this->setState('limitstart', $limitstart);
+//
+//	    // Get the shopper group id or array of ids.
+//	    $idArray = JRequest::getVar('cid', 0, '', 'array');
+//	    $this->setId((int)$idArray[0]);
+//    }
 
-	    if (empty($this->_total)) {
-	    	$db = JFactory::getDBO();
-	      $query = 'SELECT ' . $db->nameQuote('virtuemart_shoppergroup_id')
-	        . ' FROM ' . $db->nameQuote('#__virtuemart_shoppergroups');
-	      $this->_total = $this->_getListCount($query);
-	    }
+//    /**
+//     * Resets the shopper group id and data
+//     *
+//     * @author Markus Öhler
+//     */
+//    function setId($id) {
+//	    $this->_id = $id;
+//	    $this->_data = null;
+//    }
+//
+//    /**
+//     * Loads the pagination for the shopper group table
+//     *
+//     * @author Markus Öhler
+//     * @return JPagination Pagination for the current list of shopper groups
+//     */
+//    function getPagination() {
+//	    if (empty($this->_pagination)) {
+//	      jimport('joomla.html.pagination');
+//	      $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//	    }
+//	    return $this->_pagination;
+//    }
 
-	    return $this->_total;
-    }
+
+//    /**
+//     * Gets the total number of countries
+//     *
+//     * @author Markus Öhler
+//     * @return int Total number of countries in the database
+//     */
+//    function _getTotal() {
+//
+//	    if (empty($this->_total)) {
+//	    	$db = JFactory::getDBO();
+//	      $query = 'SELECT ' . $db->nameQuote('virtuemart_shoppergroup_id')
+//	        . ' FROM ' . $db->nameQuote('#__virtuemart_shoppergroups');
+//	      $this->_total = $this->_getListCount($query);
+//	    }
+//
+//	    return $this->_total;
+//    }
 
 
     /**
@@ -165,52 +167,52 @@ class VirtueMartModelShopperGroup extends JModel {
      * @author Markus Öhler, Max Milbers
      * @return boolean True is the save was successful, false otherwise.
      */
-    function store() {
-	    $table = $this->getTable('shoppergroup');
+//    function store() {
+//	    $table = $this->getTable('shoppergroup');
+//
+//	    $data = JRequest::get('post');
+//
+//	    // Bind the form fields to the shoppergroup table
+//	    if (!$table->bind($data)) {
+//	      $this->setError($table->getError());
+//	      return false;
+//	    }
+//
+//	    // Make sure the shoppergroup record is valid
+//	    if (!$table->check()) {
+//	      $this->setError($table->getError());
+//	      return false;
+//	    }
+//
+//	    // Save the shoppergroup record to the database
+//	    if (!$table->store()) {
+//	      $this->setError($table->getError());
+//	      return false;
+//	    }
+//
+//	    return $table->virtuemart_shoppergroup_id;
+//    }
 
-	    $data = JRequest::get('post');
 
-	    // Bind the form fields to the shoppergroup table
-	    if (!$table->bind($data)) {
-	      $this->setError($table->getError());
-	      return false;
-	    }
-
-	    // Make sure the shoppergroup record is valid
-	    if (!$table->check()) {
-	      $this->setError($table->getError());
-	      return false;
-	    }
-
-	    // Save the shoppergroup record to the database
-	    if (!$table->store()) {
-	      $this->setError($table->getError());
-	      return false;
-	    }
-
-	    return $table->virtuemart_shoppergroup_id;
-    }
-
-
-    /**
-     * Delete all records specified by the cid request parameter.
-     *
-     * @author Markus Öhler
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-    function delete() {
-	    $ids = JRequest::getVar('cid',  0, '', 'array');
-	    $table = $this->getTable('shoppergroup');
-
-	    foreach($ids as $id) {
-		    if (!$table->delete($id)) {
-		       $this->setError($table->getError());
-		       return false;
-		    }
-	    }
-
-	    return true;
-    }
+//    /**
+//     * Delete all records specified by the cid request parameter.
+//     *
+//     * @author Markus Öhler
+//     * @return boolean True is the delete was successful, false otherwise.
+//     */
+//    function delete() {
+//	    $ids = JRequest::getVar('cid',  0, '', 'array');
+//	    $table = $this->getTable('shoppergroup');
+//
+//	    foreach($ids as $id) {
+//		    if (!$table->delete($id)) {
+//		       $this->setError($table->getError());
+//		       return false;
+//		    }
+//	    }
+//
+//	    return true;
+//    }
 
 
 }

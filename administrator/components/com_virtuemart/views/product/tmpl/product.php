@@ -129,8 +129,8 @@ $pagination = $this->pagination;
 					<td align="center" class="order">
 						<span><?php echo $pagination->orderUpIcon( $i, $i > 0);?></span>
 						<span><?php echo $pagination->orderDownIcon( $i, $pagination->total, $i-1 <= count($productlist));?></span>
-						<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->product_list; ?>" style="text-align: center" />
-						<?php // echo vmCommonHTML::getOrderingField( $product->product_list ); ?>
+						<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
+						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
@@ -163,7 +163,7 @@ $pagination = $this->pagination;
 <input type="hidden" name="view" value="product" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
 <input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" />
-<input type="hidden" name="page" value="product.product_list" />
+<input type="hidden" name="page" value="product.ordering" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />

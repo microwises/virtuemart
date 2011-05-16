@@ -22,15 +22,17 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
  JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 /**
  * Model for VirtueMart Products
  *
  * @package VirtueMart
  * @author RolandD
- * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the vm_product_category_xref table to replace the product_list with the ordering column
+ * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the vm_product_category_xref table to replace the ordering with the ordering column
  */
-class VirtueMartModelProduct extends JModel {
+class VirtueMartModelProduct extends VmModel {
 
 	/**
 	 * products object
@@ -38,63 +40,63 @@ class VirtueMartModelProduct extends JModel {
 	 */
 	var $products  = null ;
 
-	/**
-	 * @var integer Primary key
-	 * @access private
-	 */
-    private $_id;
-
-	var $_total;
-	var $_pagination;
+//	/**
+//	 * @var integer Primary key
+//	 * @access private
+//	 */
+//    private $_id;
+//
+//	var $_total;
+//	var $_pagination;
 
 	function __construct() {
 		parent::__construct();
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		if (JRequest::getVar('view') == 'category' ) {
-			$limitstart = JRequest::getVar('limitstart',0) ;
-		} else {
-			$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-		}
-
-		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		if (JRequest::getVar('view') == 'category' ) {
+//			$limitstart = JRequest::getVar('limitstart',0) ;
+//		} else {
+//			$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//		}
+//
+//		// In case limit has been changed, adjust limitstart accordingly
+//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
 //		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'medias.php');
 	}
 
-	 /**
-     * Resets the category id and data
-     *
-     * @author Max Milbers
-     */
-    public function setId($id){
-    	if($this->_id!=$id){
-			$this->_id = (int)$id;
-			$this->_data = null;
-    	}
-    	return $this->_id;
-    }
-
-	/**
-	 * Loads the pagination
-	 */
-    public function getPagination() {
-		if ($this->_pagination == null) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
-	}
+//	 /**
+//     * Resets the category id and data
+//     *
+//     * @author Max Milbers
+//     */
+//    public function setId($id){
+//    	if($this->_id!=$id){
+//			$this->_id = (int)$id;
+//			$this->_data = null;
+//    	}
+//    	return $this->_id;
+//    }
+//
+//	/**
+//	 * Loads the pagination
+//	 */
+//    public function getPagination() {
+//		if ($this->_pagination == null) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+//		}
+//		return $this->_pagination;
+//	}
 
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal() {
+	public function getTotal() {
     	if (empty($this->_total)) {
 //    		$this->_db = JFactory::getDBO();
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -542,12 +544,12 @@ class VirtueMartModelProduct extends JModel {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
 
-		$q = "SELECT x.`virtuemart_product_id`, product_list, `p`.product_name
+		$q = "SELECT x.`virtuemart_product_id`, ordering, `p`.product_name
 			FROM `#__virtuemart_product_categories` x
 			LEFT JOIN `#__virtuemart_products` `p`
 			ON `p`.`virtuemart_product_id` = `x`.`virtuemart_product_id`
 			WHERE `virtuemart_category_id` = ".$product->virtuemart_category_id."
-			ORDER BY `product_list`, `x`.`virtuemart_product_id`";
+			ORDER BY `ordering`, `x`.`virtuemart_product_id`";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('virtuemart_product_id');
 
@@ -765,19 +767,19 @@ class VirtueMartModelProduct extends JModel {
      	else if ($this->_db->loadResult() == 'N') return false;
     }
 
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the publishing was successful, false otherwise.
-     */
-	public function publish($publishId = false){
-
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','products',$publishId);
-
-	}
+//	/**
+//	 * Publish/Unpublish all the ids selected
+//     *
+//     * @author Max Milbers
+//     * @param boolean $publishId True is the ids should be published, false otherwise.
+//     * @return boolean True is the publishing was successful, false otherwise.
+//     */
+//	public function publish($publishId = false){
+//
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::publish('cid','products',$publishId);
+//
+//	}
 
     /**
 	 * Retrieve a list of featured products from the database.
@@ -816,7 +818,7 @@ class VirtueMartModelProduct extends JModel {
 
 		foreach( $order as $key => $list_id ) {
 			$q = "UPDATE #__virtuemart_product_categories ";
-			$q .= "SET product_list = ".$list_id;
+			$q .= "SET ordering = ".$list_id;
 			$q .= " WHERE virtuemart_category_id ='".$virtuemart_category_id."' ";
 			$q .= " AND virtuemart_product_id ='".$virtuemart_product_ids[$key]."' ";
 			$this->_db->setQuery($q);
@@ -834,10 +836,10 @@ class VirtueMartModelProduct extends JModel {
     	$cid = (int)$cids[0];
     	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 
-    	$q = "SELECT virtuemart_product_id, product_list
+    	$q = "SELECT virtuemart_product_id, ordering
     		FROM #__virtuemart_product_categories
     		WHERE virtuemart_category_id = ".$virtuemart_category_id."
-    		ORDER BY product_list";
+    		ORDER BY ordering";
     	$this->_db->setQuery($q);
     	$products = $this->_db->loadAssocList('virtuemart_product_id');
     	$keys = array_keys($products);
@@ -846,31 +848,31 @@ class VirtueMartModelProduct extends JModel {
     	/* Get the previous ID */
     	$prev_id = prev($keys);
 
-    	/* Check if a previous product_list exists */
-    	if (is_null($products[$prev_id]['product_list'])) {
-    		$products[$prev_id]['product_list'] = $prev_id;
+    	/* Check if a previous ordering exists */
+    	if (is_null($products[$prev_id]['ordering'])) {
+    		$products[$prev_id]['ordering'] = $prev_id;
     	}
 
-    	/* Check if the product_listings are the same */
-    	if ($products[$prev_id]['product_list'] == $products[$cid]['product_list']) {
-    		$products[$cid]['product_list']++;
+    	/* Check if the orderingings are the same */
+    	if ($products[$prev_id]['ordering'] == $products[$cid]['ordering']) {
+    		$products[$cid]['ordering']++;
     	}
 
     	/* Update the current product */
 		$q = "UPDATE #__virtuemart_product_categories
-			SET product_list = ".$products[$prev_id]['product_list']."
+			SET ordering = ".$products[$prev_id]['ordering']."
 			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND virtuemart_product_id = ".$products[$cid]['virtuemart_product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
 
-		/* Check if a next product_list exists */
-    	if (is_null($products[$cid]['product_list'])) {
-    		$products[$cid]['product_list'] = $prev_id+1;
+		/* Check if a next ordering exists */
+    	if (is_null($products[$cid]['ordering'])) {
+    		$products[$cid]['ordering'] = $prev_id+1;
     	}
 		/* Update the previous product */
 		$q = "UPDATE #__virtuemart_product_categories
-			SET product_list = ".$products[$cid]['product_list']."
+			SET ordering = ".$products[$cid]['ordering']."
 			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND virtuemart_product_id = ".$products[$prev_id]['virtuemart_product_id'];
 		$this->_db->setQuery($q);
@@ -887,10 +889,10 @@ class VirtueMartModelProduct extends JModel {
     	$cid = (int)$cids[0];
     	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 
-    	$q = "SELECT virtuemart_product_id, product_list
+    	$q = "SELECT virtuemart_product_id, ordering
     		FROM #__virtuemart_product_categories
     		WHERE virtuemart_category_id = ".$virtuemart_category_id."
-    		ORDER BY product_list";
+    		ORDER BY ordering";
     	$this->_db->setQuery($q);
     	$products = $this->_db->loadAssocList('virtuemart_product_id');
     	$keys = array_keys($products);
@@ -899,31 +901,31 @@ class VirtueMartModelProduct extends JModel {
     	/* Get the next ID */
     	$next_id = next($keys);
 
-    	/* Check if a previous product_list exists */
-    	if (is_null($products[$next_id]['product_list'])) {
-    		$products[$next_id]['product_list'] = $next_id;
+    	/* Check if a previous ordering exists */
+    	if (is_null($products[$next_id]['ordering'])) {
+    		$products[$next_id]['ordering'] = $next_id;
     	}
 
-    	/* Check if the product_listings are the same */
-    	if ($products[$next_id]['product_list'] == $products[$cid]['product_list']) {
-    		$products[$cid]['product_list']--;
+    	/* Check if the orderingings are the same */
+    	if ($products[$next_id]['ordering'] == $products[$cid]['ordering']) {
+    		$products[$cid]['ordering']--;
     	}
 
     	/* Update the current product */
 		$q = "UPDATE #__virtuemart_product_categories
-			SET product_list = ".$products[$next_id]['product_list']."
+			SET ordering = ".$products[$next_id]['ordering']."
 			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND virtuemart_product_id = ".$products[$cid]['virtuemart_product_id'];
 		$this->_db->setQuery($q);
 		$this->_db->query();
 
-		/* Check if a next product_list exists */
-    	if (is_null($products[$cid]['product_list'])) {
-    		$products[$cid]['product_list'] = $next_id-1;
+		/* Check if a next ordering exists */
+    	if (is_null($products[$cid]['ordering'])) {
+    		$products[$cid]['ordering'] = $next_id-1;
     	}
 		/* Update the next product */
 		$q = "UPDATE #__virtuemart_product_categories
-			SET product_list = ".$products[$cid]['product_list']."
+			SET ordering = ".$products[$cid]['ordering']."
 			WHERE virtuemart_category_id = ".$virtuemart_category_id."
 			AND virtuemart_product_id = ".$products[$next_id]['virtuemart_product_id'];
 		$this->_db->setQuery($q);
@@ -1068,11 +1070,11 @@ class VirtueMartModelProduct extends JModel {
 
 			/* Store the new categories */
 			foreach( $data["categories"] as $virtuemart_category_id ) {
-				$this->_db->setQuery('SELECT IF(ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
+				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
 				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__virtuemart_product_categories ";
-				$q .= "(virtuemart_category_id,virtuemart_product_id,product_list) ";
+				$q .= "(virtuemart_category_id,virtuemart_product_id,ordering) ";
 				$q .= "VALUES ('".$virtuemart_category_id."','". $product_data->virtuemart_product_id . "', ".$list_order. ")";
 				$this->_db->setQuery($q);
 				$this->_db->query();
@@ -1372,7 +1374,7 @@ class VirtueMartModelProduct extends JModel {
 		if (!$virtuemart_product_id) $virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
 
 		//This is one of the dead sins of OOP and MUST NOT be done
-//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`product_list`, `m`.`virtuemart_manufacturer_id`, `m`.`mf_name`
+//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`ordering`, `m`.`virtuemart_manufacturer_id`, `m`.`mf_name`
 //			FROM `#__virtuemart_products` `p`
 //			LEFT JOIN `#__virtuemart_product_categories` x
 //			ON `x`.`virtuemart_product_id` = `p`.`virtuemart_product_id`

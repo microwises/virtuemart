@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop Currencies
  *
@@ -29,82 +31,82 @@ jimport( 'joomla.application.component.model');
  * @subpackage Currency
  * @author RickG
  */
-class VirtueMartModelCurrency extends JModel {
+class VirtueMartModelCurrency extends VmModel {
 
-    /** @var integer Primary key */
-    var $_id;
-    /** @var objectlist currency data */
-    var $_data;
-    /** @var integer Total number of currencies in the database */
-    var $_total;
-    /** @var pagination Pagination for currency list */
-    var $_pagination;
-
-
-    /**
-     * Constructor for the currency model.
-     *
-     * The currency id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct() {
-	parent::__construct();
-
-	// Get the pagination request variables
-	$mainframe = JFactory::getApplication() ;
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-	// Set the state pagination variables
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
-
-	// Get the currency id or array of ids.
-	$idArray = JRequest::getVar('cid',  0, '', 'array');
-	$this->setId((int)$idArray[0]);
-    }
+//    /** @var integer Primary key */
+//    var $_id;
+//    /** @var objectlist currency data */
+//    var $_data;
+//    /** @var integer Total number of currencies in the database */
+//    var $_total;
+//    /** @var pagination Pagination for currency list */
+//    var $_pagination;
 
 
-    /**
-     * Resets the currency id and data
-     *
-     * @author RickG
-     */
-    function setId($id) {
-	$this->_id = $id;
-	$this->_data = null;
-    }
-
-
-    /**
-     * Loads the pagination for the currency table
-     *
-     * @author RickG
-     * @return JPagination Pagination for the current list of currencies
-     */
-    function getPagination() {
-	if (empty($this->_pagination)) {
-	    jimport('joomla.html.pagination');
-	    $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-	}
-	return $this->_pagination;
-    }
-
-
-    /**
-     * Gets the total number of currencies
-     *
-     * @author RickG
-     * @return int Total number of currencies in the database
-     */
-    function _getTotal() {
-	if (empty($this->_total)) {
-	    $query = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`';
-	    $this->_total = $this->_getListCount($query);
-	}
-	return $this->_total;
-    }
+//    /**
+//     * Constructor for the currency model.
+//     *
+//     * The currency id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author RickG
+//     */
+//    function __construct() {
+//	parent::__construct();
+//
+//	// Get the pagination request variables
+//	$mainframe = JFactory::getApplication() ;
+//	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//	// Set the state pagination variables
+//	$this->setState('limit', $limit);
+//	$this->setState('limitstart', $limitstart);
+//
+//	// Get the currency id or array of ids.
+//	$idArray = JRequest::getVar('cid',  0, '', 'array');
+//	$this->setId((int)$idArray[0]);
+//    }
+//
+//
+//    /**
+//     * Resets the currency id and data
+//     *
+//     * @author RickG
+//     */
+//    function setId($id) {
+//	$this->_id = $id;
+//	$this->_data = null;
+//    }
+//
+//
+//    /**
+//     * Loads the pagination for the currency table
+//     *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of currencies
+//     */
+//    function getPagination() {
+//	if (empty($this->_pagination)) {
+//	    jimport('joomla.html.pagination');
+//	    $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//	}
+//	return $this->_pagination;
+//    }
+//
+//
+//    /**
+//     * Gets the total number of currencies
+//     *
+//     * @author RickG
+//     * @return int Total number of currencies in the database
+//     */
+//    function _getTotal() {
+//	if (empty($this->_total)) {
+//	    $query = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`';
+//	    $this->_total = $this->_getListCount($query);
+//	}
+//	return $this->_total;
+//    }
 
 
     /**

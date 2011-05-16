@@ -21,18 +21,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
-class VirtueMartModelCalc extends JModel
-{
-	/** @var array Array of Primary keys */
-    private $_cid;
-	/** @var integer Primary key */
-    private $_id;
-	/** @var objectlist Calculation rule  data */
-    private $_data;
-	/** @var integer Total number of calculation rules in the database */
-	private $_total;
-	/** @var pagination Pagination for calculation rules list */
-	private $_pagination;
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
+class VirtueMartModelCalc extends VmModel {
 
 
     /**
@@ -45,60 +36,19 @@ class VirtueMartModelCalc extends JModel
     public function __construct(){
         parent::__construct();
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//        // Get the calc id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//    	$this->setId((int)$idArray[0]);
 
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the calc id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-
-    }
-
-
-    /**
-     * Resets the calc id and data
-     *
-     * @author RickG
-     */
-    public function setId($id){
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-
-	/**
-	 * Loads the pagination for the country table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
-	 */
-    public function getPagination(){
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of countries
-	 *
-     * @author RickG
-	 * @return int Total number of countries in the database
-	 */
-	public function _getTotal() {
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_calc_id` FROM `#__virtuemart_calcs`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
     }
 
 
@@ -300,32 +250,32 @@ class VirtueMartModelCalc extends JModel
 	}
 
 
-	/**
-	 * Delete all record ids selected
-     *
-     * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	public function delete() {
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::delete('cid','calc');
-
-	}
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	public function publish($publishId = false)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','calcs',$publishId);
-
-	}
+//	/**
+//	 * Delete all record ids selected
+//     *
+//     * @author Max Milbers
+//     * @return boolean True is the delete was successful, false otherwise.
+//     */
+//	public function delete() {
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::delete('cid','calc');
+//
+//	}
+//
+//
+//	/**
+//	 * Publish/Unpublish all the ids selected
+//     *
+//     * @author Max Milbers
+//     * @param boolean $publishId True is the ids should be published, false otherwise.
+//     * @return boolean True is the delete was successful, false otherwise.
+//     */
+//	public function publish($publishId = false)
+//	{
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::publish('cid','calcs',$publishId);
+//
+//	}
 
 
 	/**

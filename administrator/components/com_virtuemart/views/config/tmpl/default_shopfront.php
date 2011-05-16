@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 /*$orderByFieldsArray = $this->config->get('browse_orderby_fields');
 $orderByFields = array();
-$orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('COM_VIRTUEMART_DEFAULT'));
+$orderByFields[] = JHTML::_('select.option', 'ordering', JText::_('COM_VIRTUEMART_DEFAULT'));
 $orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('COM_VIRTUEMART_PRODUCT_PRICE_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('COM_VIRTUEMART_CART_SKU'));

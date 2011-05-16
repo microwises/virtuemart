@@ -177,7 +177,7 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`,
 -- Dumping data for table `#__virtuemart_product_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `virtuemart_product_id`, `product_list`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `virtuemart_product_id`, `ordering`) VALUES
 (1, 1, NULL),
 (3, 2, NULL),
 (3, 3, NULL),

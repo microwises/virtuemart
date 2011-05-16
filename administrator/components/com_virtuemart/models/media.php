@@ -22,79 +22,81 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model for VirtueMart Product Files
  *
  * @package		VirtueMart
  */
-class VirtueMartModelMedia extends JModel {
+class VirtueMartModelMedia extends VmModel {
 
 	/** @var integer Primary key */
     private $virtuemart_media_id = 0;
 
-   /** @var integer Total number of files in the database */
-    var $_total;
-    /** @var pagination Pagination for file list */
-    var $_pagination;
+//   /** @var integer Total number of files in the database */
+//    var $_total;
+//    /** @var pagination Pagination for file list */
+//    var $_pagination;
 
 
-	/**
-	 * Constructor for product files
-	 */
-	function __construct(){
-		parent::__construct();
+//	/**
+//	 * Constructor for product files
+//	 */
+//	function __construct(){
+//		parent::__construct();
+//
+////		$this->virtuemart_media_id = $id;
+//
+//		/* Get the file ID */
+//		$this->setId(JRequest::getInt('virtuemart_media_id', null));
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//	}
 
+//	/**
+//	 * Sets new Id and resets data ...
+//	 * @author Max Milbers
+//	 * @param int $id
+//	 */
+//    function setId($id) {
 //		$this->virtuemart_media_id = $id;
-
-		/* Get the file ID */
-		$this->setId(JRequest::getInt('virtuemart_media_id', null));
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-	}
-
-	/**
-	 * Sets new Id and resets data ...
-	 * @author Max Milbers
-	 * @param int $id
-	 */
-    function setId($id) {
-		$this->virtuemart_media_id = $id;
-		$this->_data = null;
-    }
-
-	/**
-	 * Loads the pagination
-	 *
-	 * @author RickG
-	 */
-    public function getPagination() {
-		if (empty($this->_pagination)) {
-	    	jimport('joomla.html.pagination');
-	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-    /**
-     * Gets the total number of currencies
-     *
-     * @author Max Milbers
-     * @return int Total number of currencies in the database
-     */
-    function _getTotal() {
-		if (empty($this->_total)) {
-		    $query = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`';
-		    $this->_total = $this->_getListCount($query);
-		}
-		return $this->_total;
-    }
+//		$this->_data = null;
+//    }
+//
+//	/**
+//	 * Loads the pagination
+//	 *
+//	 * @author RickG
+//	 */
+//    public function getPagination() {
+//		if (empty($this->_pagination)) {
+//	    	jimport('joomla.html.pagination');
+//	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//    /**
+//     * Gets the total number of currencies
+//     *
+//     * @author Max Milbers
+//     * @return int Total number of currencies in the database
+//     */
+//    function _getTotal() {
+//		if (empty($this->_total)) {
+//		    $query = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`';
+//		    $this->_total = $this->_getListCount($query);
+//		}
+//		return $this->_total;
+//    }
 
     /**
      * Gets a single media by virtuemart_media_id

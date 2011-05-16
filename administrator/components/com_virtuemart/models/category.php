@@ -22,104 +22,21 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for product categories
  * @author jseros
  */
-class VirtueMartModelCategory extends JModel {
-
-	/**
-	 * @var integer Primary key
-	 * @access private
-	 */
-    private $_id;
-
-	/**
-	 * @var objectlist Category data
-	 * @access private
-	 */
-    private $_data;
-
-	/**
-	 * @var integer Total number of categories in the database
-	 * @access private
-	 */
-	private $_total;
-
-	/**
-	 * @var pagination Pagination for country list
-	 * @access private
-	 */
-	private $_pagination;
+class VirtueMartModelCategory extends VmModel {
 
 	private $_category_tree;
 
-    /**
-     * Constructor for the country model.
-     *
-     * The category id is read and determined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
 
-    public function __construct() {
-        parent::__construct();
-
-        // Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the category id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId( (int)$idArray[0] );
-    }
-
-
-
-	 /**
-     * Resets the category id and data
-     *
-     * @author RickG
-     */
-    public function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-	/**
-	 * Gets the total number of categories
-	 *
-     * @author RickG, jseros
-	 * @return int Total number of categories in the database
-	 */
-	public function _getTotal(){
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_categories`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
-
-   	/**
-	 * Loads the pagination for the category table
-	 *
-     * @author RickG, jseros
-     * @return JPagination Pagination for the current list of categories
-	 */
-    public function getPagination(){
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
+	function __construct() {
+		parent::__construct();
 	}
+
 
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
@@ -164,33 +81,6 @@ class VirtueMartModelCategory extends JModel {
   		return $this->_data;
 
 	}
-
-//	/**
-//	* Load a category and it's details
-//	*
-//	* @author RolandD
-//	* @return object containing the category
-//	*/
-//	public function getCategory($virtuemart_category_id=0) {
-//		$db = JFactory::getDBO();
-//		$row =& $this->getTable('categories');
-//		$row->load($virtuemart_category_id);
-//		if (VmConfig::get('showCategory',1)) {
-//		/* Check for children */
-//		$row->haschildren = $this->hasChildren($virtuemart_category_id);
-//
-//		/* Get children if they exist */
-//		if ($row->haschildren) $row->children = $this->getChildrenList($virtuemart_category_id);
-//		else $row->children = null;
-//
-//		/* Get the product count */
-//		$row->productcount = $this->getProductCount($virtuemart_category_id);
-//		}
-//		/* Get parent for breatcrumb */
-//		$row->parents = $this->getparentsList($virtuemart_category_id);
-//
-//		return $row;
-//	}
 
     /**
 	 * Get the list of child categories for a given category
@@ -393,31 +283,6 @@ class VirtueMartModelCategory extends JModel {
 		return $count;
 	}
 
-	/**
-	 * NOT USED,
-	 * Function to calculate and return the number of products in category $virtuemart_category_id
-	 * @author RolandD
-	 *
-	 * @todo Add vendor
-	 * @param int $virtuemart_category_id the category ID to count products for
-	 * @return int the number of products found
-	 */
-//	public function getProductCount($virtuemart_category_id) {
-//		$db = JFactory::getDBO();
-//		$q = "SELECT count(#__virtuemart_products.virtuemart_product_id) AS num_rows
-//			FROM #__virtuemart_products, #__virtuemart_product_categories, #__virtuemart_categories
-//			WHERE #__virtuemart_products.virtuemart_vendor_id = 1
-//			AND #__virtuemart_product_categories.virtuemart_category_id = ".$virtuemart_category_id."
-//			AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_product_categories.virtuemart_category_id
-//			AND #__virtuemart_products.virtuemart_product_id = #__virtuemart_product_categories.virtuemart_product_id
-//			AND #__virtuemart_products.published = 1";
-//			if (VmConfig::get('check_stock') && VmConfig::get('pshop_show_out_of_stock_products') != "1") {
-//				$q .= " AND product_in_stock > 0 ";
-//			}
-//		$db->setQuery($q);
-//		return $db->loadResult();
-//	}
-
 
     /**
 	 * Order any category
@@ -494,22 +359,6 @@ class VirtueMartModelCategory extends JModel {
 
 
 	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author RickG, jseros, Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the publishing was successful, false otherwise.
-     */
-	public function publish($publishId = false){
-
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','categories',$publishId);
-
-	}
-
-
-
-	/**
 	 * Shared/Unsared all the ids selected
      *
      * @author jseros
@@ -565,32 +414,6 @@ class VirtueMartModelCategory extends JModel {
 
   		return $parent;
 	}
-
-
-//	/**
-//     * Retrieve a list of pages from the templates directory.
-//     *
-//     * @author RickG, jseros
-//     * @return object List of flypage objects
-//     */
-//    public function getTemplateList( $section = 'browse' ) {
-//		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
-//		$dir .= DS.VmConfig::get('theme').DS.'templates'.DS.$section;
-//		$result = '';
-//
-//		if ($handle = opendir($dir)) {
-//		    while (false !== ($file = readdir($handle))) {
-//				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-//				    if (filetype($dir.DS.$file) != 'dir') {
-//				    	$file = str_replace('.php', '', $file);
-//						$result[] = JHTML::_('select.option', $file, JText::_($file));
-//				    }
-//				}
-//		    }
-//		}
-//
-//		return $result;
-//    }
 
 
     /**

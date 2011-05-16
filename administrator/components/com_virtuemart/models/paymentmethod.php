@@ -21,18 +21,20 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
-class VirtueMartModelPaymentmethod extends JModel
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
+class VirtueMartModelPaymentmethod extends VmModel
 {
 	/** @var array Array of Primary keys */
-    private $_cid;
-	/** @var integer Primary key */
-    private $_id;
-	/** @var objectlist paymentmethod  data */
-    private $_data;
-	/** @var integer Total number of paymentmethods in the database */
-	private $_total;
-	/** @var pagination Pagination for paymentmethod list */
-	private $_pagination;
+//    private $_cid;
+//	/** @var integer Primary key */
+//    private $_id;
+//	/** @var objectlist paymentmethod  data */
+//    private $_data;
+//	/** @var integer Total number of paymentmethods in the database */
+//	private $_total;
+//	/** @var pagination Pagination for paymentmethod list */
+//	private $_pagination;
 
 
     /**
@@ -74,48 +76,48 @@ class VirtueMartModelPaymentmethod extends JModel
 	 }
 
 
-    /**
-     * Resets the paym id and data
-     *
-     * @author Max Milbers
-     */
-    public function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
+//    /**
+//     * Resets the paym id and data
+//     *
+//     * @author Max Milbers
+//     */
+//    public function setId($id)
+//    {
+//        $this->_id = $id;
+//        $this->_data = null;
+//    }
 
 
-	/**
-	 * Loads the pagination for the country table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
-	 */
-    public function getPagination()
-    {
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of countries
-	 *
-     * @author RickG
-	 * @return int Total number of countries in the database
-	 */
-	public function _getTotal()
-	{
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_paymentmethod_id` FROM `#__virtuemart_paymentmethods`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
+//	/**
+//	 * Loads the pagination for the country table
+//	 *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of countries
+//	 */
+//    public function getPagination()
+//    {
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//
+//	/**
+//	 * Gets the total number of countries
+//	 *
+//     * @author RickG
+//	 * @return int Total number of countries in the database
+//	 */
+//	public function _getTotal()
+//	{
+//    	if (empty($this->_total)) {
+//			$query = 'SELECT `virtuemart_paymentmethod_id` FROM `#__virtuemart_paymentmethods`';
+//			$this->_total = $this->_getListCount($query);
+//        }
+//        return $this->_total;
+//    }
 
 
     /**

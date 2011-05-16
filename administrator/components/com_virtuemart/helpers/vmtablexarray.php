@@ -2,12 +2,14 @@
 /**
  * Xref table abstract class to create tables specialised doing xref
  *
- * This class provides the functions for the calculatoins
+ * The pkey is the Where key in the load function,
+ * the skey is the select key in the load function
+ *
  *
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -55,14 +57,13 @@ class VmTableXarray extends VmTable {
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		$toSelect = '`'.$this->_skey.'`';
 		if($this->orderable){
 			$orderby = 'ORDER BY `'.$this->orderingKey.'`';
 		} else {
 			$orderby = '';
 		}
 
-		$q = 'SELECT '.$toSelect.' FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$id.'" '.$orderby;
+		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$id.'" '.$orderby;
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();
@@ -135,6 +136,39 @@ class VmTableXarray extends VmTable {
 				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 			}
 		}
+
+//    	$newIds = array();
+//
+//		foreach ($fields as $field) {
+//			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
+//			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
+//			$this->_db->setQuery($q);
+//			$this->_db->query();
+//			$virtuemart_customfield_id = mysql_insert_id();
+//			$newIds[]=$virtuemart_customfield_id;
+//			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
+//			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
+//			$this->_db->setQuery($q);
+//			$this->_db->query();
+//		}
+//
+//		// slect all virtuemart_customfield_id from product
+//		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
+//		$this->_db->setQuery($q);
+//		$Ids = $this->_db->loadResultArray();
+//		// delete from database old unused product custom fields
+//		$deleteIds = array_diff(  $Ids,$newIds);
+//		$id = '('.implode (',',$deleteIds).')';
+//				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
+//		if ($this->_db->query() === false) {
+//			$this->setError($this->_db->getError());
+//			return false;
+//		}
+//		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
+//		if ($this->_db->query() === false) {
+//			$this->setError($this->_db->getError());
+//			return false;
+//		}
 
 		return $returnCode;
 

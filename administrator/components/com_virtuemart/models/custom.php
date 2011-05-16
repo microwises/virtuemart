@@ -22,20 +22,22 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model for VirtueMart Customs Fields
  *
  * @package		VirtueMart
  */
-class VirtueMartModelCustom extends JModel {
+class VirtueMartModelCustom extends VmModel {
 
 	/** @var integer Primary key */
     private $virtuemart_custom_id = 0;
 
-   /** @var integer Total number of files in the database */
-    var $_total;
-    /** @var pagination Pagination for file list */
-    var $_pagination;
+//   /** @var integer Total number of files in the database */
+//    var $_total;
+//    /** @var pagination Pagination for file list */
+//    var $_pagination;
     /** @var datas  internal use to stock 'custom' datas */
     var $_datas;
 
@@ -71,32 +73,32 @@ class VirtueMartModelCustom extends JModel {
 		$this->_data = null;
     }
 
-	/**
-	 * Loads the pagination
-	 *
-	 * @author RickG
-	 */
-    public function getPagination() {
-		if (empty($this->_pagination)) {
-	    	jimport('joomla.html.pagination');
-	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-    /**
-     * Gets the total number of currencies
-     *
-     * @author Max Milbers
-     * @return int Total number of currencies in the database
-     */
-    function _getTotal() {
-		if (empty($this->_total)) {
-		    $query = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs`';
-		    $this->_total = $this->_getListCount($query);
-		}
-		return $this->_total;
-    }
+//	/**
+//	 * Loads the pagination
+//	 *
+//	 * @author RickG
+//	 */
+//    public function getPagination() {
+//		if (empty($this->_pagination)) {
+//	    	jimport('joomla.html.pagination');
+//	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//    /**
+//     * Gets the total number of currencies
+//     *
+//     * @author Max Milbers
+//     * @return int Total number of currencies in the database
+//     */
+//    function _getTotal() {
+//		if (empty($this->_total)) {
+//		    $query = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs`';
+//		    $this->_total = $this->_getListCount($query);
+//		}
+//		return $this->_total;
+//    }
 
     /**
      * Gets a single custom by virtuemart_custom_id
@@ -305,40 +307,45 @@ class VirtueMartModelCustom extends JModel {
 	/* Save and delete from database
 	* all product custom_fields and xref
 	*/
-	public function  saveProductfield($fields, $virtuemart_product_id) {
+	public function saveProductfield($fields, $virtuemart_product_id) {
 
-		$newIds = array();
-
-		foreach ($fields as $field) {
-			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
-			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
-			$this->_db->setQuery($q);
-			$this->_db->query();
-			$virtuemart_customfield_id = mysql_insert_id();
-			$newIds[]=$virtuemart_customfield_id;
-			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
-			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
-			$this->_db->setQuery($q);
-			$this->_db->query();
+	    $xrefTable = $this->getTable('product_customfields');
+    	if (!$xrefTable->bindChecknStore($this, $data)) {
+			$this->setError($xrefTable->getError());
 		}
 
-		// slect all virtuemart_customfield_id from product
-		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
-		$this->_db->setQuery($q);
-		$Ids = $this->_db->loadResultArray();
-		// delete from database old unused product custom fields
-		$deleteIds = array_diff(  $Ids,$newIds);
-		$id = '('.implode (',',$deleteIds).')';
-				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-		if ($this->_db->query() === false) {
-			$this->setError($this->_db->getError());
-			return false;
-		}
-		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-		if ($this->_db->query() === false) {
-			$this->setError($this->_db->getError());
-			return false;
-		}
+//		$newIds = array();
+//
+//		foreach ($fields as $field) {
+//			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
+//			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
+//			$this->_db->setQuery($q);
+//			$this->_db->query();
+//			$virtuemart_customfield_id = mysql_insert_id();
+//			$newIds[]=$virtuemart_customfield_id;
+//			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
+//			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
+//			$this->_db->setQuery($q);
+//			$this->_db->query();
+//		}
+//
+//		// slect all virtuemart_customfield_id from product
+//		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
+//		$this->_db->setQuery($q);
+//		$Ids = $this->_db->loadResultArray();
+//		// delete from database old unused product custom fields
+//		$deleteIds = array_diff(  $Ids,$newIds);
+//		$id = '('.implode (',',$deleteIds).')';
+//				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
+//		if ($this->_db->query() === false) {
+//			$this->setError($this->_db->getError());
+//			return false;
+//		}
+//		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
+//		if ($this->_db->query() === false) {
+//			$this->setError($this->_db->getError());
+//			return false;
+//		}
 	}
 
 }

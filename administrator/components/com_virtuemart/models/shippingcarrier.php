@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop shipping carriers
  *
@@ -29,86 +31,86 @@ jimport( 'joomla.application.component.model');
  * @subpackage ShippingCarrier
  * @author RickG
  */
-class VirtueMartModelShippingCarrier extends JModel {
+class VirtueMartModelShippingCarrier extends VmModel {
 
-    /** @var integer Primary key */
-    var $_id;
+//    /** @var integer Primary key */
+//    var $_id;
     /** @var integer Joomla plugin ID */
     var $jplugin_id;
     /** @var integer Vendor ID */
     var $virtuemart_vendor_id;
-    /** @var objectlist shipping carrier data */
-    var $_data;
-    /** @var integer Total number of shipping carriers in the database */
-    var $_total;
-    /** @var pagination Pagination for shipping carrier list */
-    var $_pagination;
+//    /** @var objectlist shipping carrier data */
+//    var $_data;
+//    /** @var integer Total number of shipping carriers in the database */
+//    var $_total;
+//    /** @var pagination Pagination for shipping carrier list */
+//    var $_pagination;
 
 
-    /**
-     * Constructor for the shipping carrier model.
-     *
-     * The shipping carrier id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct() {
-	parent::__construct();
-
-	// Get the pagination request variables
-	$mainframe = JFactory::getApplication() ;
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-	// Set the state pagination variables
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
-
-	// Get the shipping carrier id or array of ids.
-	$idArray = JRequest::getVar('cid',  0, '', 'array');
-	$this->setId((int)$idArray[0]);
-    }
-
-
-    /**
-     * Resets the shipping carrier id and data
-     *
-     * @author RickG
-     */
-    function setId($id) {
-	$this->_id = $id;
-	$this->_data = null;
-    }
+//    /**
+//     * Constructor for the shipping carrier model.
+//     *
+//     * The shipping carrier id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author RickG
+//     */
+//    function __construct() {
+//	parent::__construct();
+//
+//	// Get the pagination request variables
+//	$mainframe = JFactory::getApplication() ;
+//	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//	// Set the state pagination variables
+//	$this->setState('limit', $limit);
+//	$this->setState('limitstart', $limitstart);
+//
+//	// Get the shipping carrier id or array of ids.
+//	$idArray = JRequest::getVar('cid',  0, '', 'array');
+//	$this->setId((int)$idArray[0]);
+//    }
 
 
-    /**
-     * Loads the pagination for the shipping carrier table
-     *
-     * @author RickG
-     * @return JPagination Pagination for the current list of shipping carriers
-     */
-    function getPagination() {
-	if (empty($this->_pagination)) {
-	    jimport('joomla.html.pagination');
-	    $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-	}
-	return $this->_pagination;
-    }
+//    /**
+//     * Resets the shipping carrier id and data
+//     *
+//     * @author RickG
+//     */
+//    function setId($id) {
+//	$this->_id = $id;
+//	$this->_data = null;
+//    }
 
 
-    /**
-     * Gets the total number of shipping carriers
-     *
-     * @author RickG
-     * @return int Total number of shipping carriers in the database
-     */
-    function _getTotal() {
-	if (empty($this->_total)) {
-	    $query = 'SELECT `virtuemart_shippingcarrier_id` FROM `#__virtuemart_shippingcarriers`';
-	    $this->_total = $this->_getListCount($query);
-	}
-	return $this->_total;
-    }
+//    /**
+//     * Loads the pagination for the shipping carrier table
+//     *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of shipping carriers
+//     */
+//    function getPagination() {
+//	if (empty($this->_pagination)) {
+//	    jimport('joomla.html.pagination');
+//	    $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//	}
+//	return $this->_pagination;
+//    }
+//
+//
+//    /**
+//     * Gets the total number of shipping carriers
+//     *
+//     * @author RickG
+//     * @return int Total number of shipping carriers in the database
+//     */
+//    function _getTotal() {
+//	if (empty($this->_total)) {
+//	    $query = 'SELECT `virtuemart_shippingcarrier_id` FROM `#__virtuemart_shippingcarriers`';
+//	    $this->_total = $this->_getListCount($query);
+//	}
+//	return $this->_total;
+//    }
 
 
     /**
@@ -117,7 +119,7 @@ class VirtueMartModelShippingCarrier extends JModel {
      * @author RickG
      */
     function getShippingCarrier() {
-	$db = JFactory::getDBO();
+//	$db = JFactory::getDBO();
 
 	if (empty($this->_data)) {
 	    $this->_data = $this->getTable('shippingcarriers');
@@ -134,40 +136,40 @@ class VirtueMartModelShippingCarrier extends JModel {
     }
 
 
-    /**
-     * Bind the post data to the shipping carrier table and save it
-     *
-     * @author RickG, Oscar van Eijk
-     * @return Mixed False if the save was unsuccessful, the shipping carrier ID otherwise.
-     */
-    function store() {
-	$table = $this->getTable('shippingcarriers');
-
-	$data = JRequest::get( 'post' );
-	if($data['virtuemart_vendor_id']) {
-		$data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
-	}
-
-	// Bind the form fields to the shipping carrier table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Make sure the shipping carrier record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Save the shipping carrier record to the database
-	if (!$table->store()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	return $table->virtuemart_shippingcarrier_id;
-    }
+//    /**
+//     * Bind the post data to the shipping carrier table and save it
+//     *
+//     * @author RickG, Oscar van Eijk
+//     * @return Mixed False if the save was unsuccessful, the shipping carrier ID otherwise.
+//     */
+//    function store() {
+//	$table = $this->getTable('shippingcarriers');
+//
+//	$data = JRequest::get( 'post' );
+//	if($data['virtuemart_vendor_id']) {
+//		$data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
+//	}
+//
+//	// Bind the form fields to the shipping carrier table
+//	if (!$table->bind($data)) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Make sure the shipping carrier record is valid
+//	if (!$table->check()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Save the shipping carrier record to the database
+//	if (!$table->store()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	return $table->virtuemart_shippingcarrier_id;
+//    }
 
 
     /**

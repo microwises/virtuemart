@@ -22,56 +22,58 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model for VirtueMart Products
  *
  * @package VirtueMart
  * @author RolandD
  */
-class VirtueMartModelRatings extends JModel {
+class VirtueMartModelRatings extends VmModel {
 
-	var $_total;
-	var $_pagination;
+//	var $_total;
+//	var $_pagination;
+//
+//	function __construct() {
+//		parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//
+//		// In case limit has been changed, adjust limitstart accordingly
+//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//	}
 
-	function __construct() {
-		parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-	}
-
-	/**
-	 * Loads the pagination
-	 */
-    public function getPagination() {
-		if ($this->_pagination == null) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
-	}
-
-	/**
-	 * Gets the total number of products
-	 */
-	private function getTotal() {
-    	if (empty($this->_total)) {
-    		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) ".$this->getRatingsListQuery().$this->getRatingsFilter();
-			$db->setQuery($q);
-			$this->_total = $db->loadResult();
-        }
-
-        return $this->_total;
-    }
+//	/**
+//	 * Loads the pagination
+//	 */
+//    public function getPagination() {
+//		if ($this->_pagination == null) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+//		}
+//		return $this->_pagination;
+//	}
+//
+//	/**
+//	 * Gets the total number of products
+//	 */
+//	private function getTotal() {
+//    	if (empty($this->_total)) {
+//    		$db = JFactory::getDBO();
+//			$q = "SELECT COUNT(*) ".$this->getRatingsListQuery().$this->getRatingsFilter();
+//			$db->setQuery($q);
+//			$this->_total = $db->loadResult();
+//        }
+//
+//        return $this->_total;
+//    }
 
     /**
      * Select the products to list on the product list page
@@ -230,16 +232,16 @@ class VirtueMartModelRatings extends JModel {
 			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
 			return false;
 		}
-		//Check user_rating  
+		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		if ($data['user_rating'] < 0 ) $data['user_rating'] = 0 ;
 		if ($data['user_rating'] > $maxrating ) $data['user_rating'] = $maxrating ;
 		if ( !$data['virtuemart_product_review_id'] )  $data['userid'] = $user->id;
 		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
 		//set to defaut value not used (prevent hack)
-		$data['review_ok'] = 0 ; 
+		$data['review_ok'] = 0 ;
 		$data['review_votes'] = 0 ;
-		
+
 
 		/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
 		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;

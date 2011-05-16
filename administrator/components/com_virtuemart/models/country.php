@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop countries
  *
@@ -29,16 +31,16 @@ jimport( 'joomla.application.component.model');
  * @subpackage Country
  * @author RickG
  */
-class VirtueMartModelCountry extends JModel {
+class VirtueMartModelCountry extends VmModel {
 
-    /** @var integer Primary key */
-    var $_id;
-    /** @var objectlist Country data */
-    var $_data;
-    /** @var integer Total number of countries in the database */
-    var $_total;
-    /** @var pagination Pagination for country list */
-    var $_pagination;
+//    /** @var integer Primary key */
+//    var $_id;
+//    /** @var objectlist Country data */
+//    var $_data;
+//    /** @var integer Total number of countries in the database */
+//    var $_total;
+//    /** @var pagination Pagination for country list */
+//    var $_pagination;
 
 
     /**
@@ -48,22 +50,22 @@ class VirtueMartModelCountry extends JModel {
      *
      * @author RickG
      */
-    function __construct() {
-	parent::__construct();
-
-	// Get the pagination request variables
-	$mainframe = JFactory::getApplication() ;
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-	// Set the state pagination variables
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
-
-	// Get the country id or array of ids.
-	$idArray = JRequest::getVar('cid',  0, '', 'array');
-	$this->setId((int)$idArray[0]);
-    }
+//    function __construct() {
+//	parent::__construct();
+//
+//	// Get the pagination request variables
+//	$mainframe = JFactory::getApplication() ;
+//	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//	// Set the state pagination variables
+//	$this->setState('limit', $limit);
+//	$this->setState('limitstart', $limitstart);
+//
+//	// Get the country id or array of ids.
+//	$idArray = JRequest::getVar('cid',  0, '', 'array');
+//	$this->setId((int)$idArray[0]);
+//    }
 
 
     /**

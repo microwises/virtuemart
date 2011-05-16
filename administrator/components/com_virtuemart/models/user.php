@@ -28,6 +28,8 @@ define ('__SUPER_ADMIN_GID', 25);
 jimport('joomla.application.component.model');
 jimport('joomla.version');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop users
  *
@@ -36,16 +38,16 @@ jimport('joomla.version');
  * @author	RickG
  * @author Max Milbers
  */
-class VirtueMartModelUser extends JModel {
+class VirtueMartModelUser extends VmModel {
 
-	/** @var integer Primary key */
-	var $_id=0;
-	/** @var objectlist users */
-	var $_data;
-	/** @var integer Total number of users in the database */
-	var $_total;
-	/** @var pagination Pagination for userlist */
-	var $_pagination;
+//	/** @var integer Primary key */
+//	var $_id=0;
+//	/** @var objectlist users */
+//	var $_data;
+//	/** @var integer Total number of users in the database */
+//	var $_total;
+//	/** @var pagination Pagination for userlist */
+//	var $_pagination;
 
 	/**
 	 * Constructor for the user model.
