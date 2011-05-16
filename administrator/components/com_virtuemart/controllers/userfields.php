@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Controller class for the Order status
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Userfields
  * @author     Oscar van Eijk
  */
-class VirtuemartControllerUserfields extends JController {
+class VirtuemartControllerUserfields extends VmController {
 
 	/**
 	 * Method to display the view
@@ -41,6 +44,7 @@ class VirtuemartControllerUserfields extends JController {
 	{
 		parent::__construct();
 
+		$this->setMainLangKey('USERFIELD');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply','save');

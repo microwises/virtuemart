@@ -242,7 +242,7 @@ class VirtueMartModelCustom extends VmModel {
 			//$row->load($cids);
 			if ($row->delete($cid)) $deleted++;
 		}
-		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS')));
+		$mainframe->enqueueMessage( JText::sprintf('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS', $deleted ));
 
 	}
 

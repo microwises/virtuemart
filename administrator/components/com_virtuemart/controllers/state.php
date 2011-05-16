@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Product Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage State
  * @author RickG, Max Milbers
  */
-class VirtuemartControllerState extends JController {
+class VirtuemartControllerState extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,6 +42,8 @@ class VirtuemartControllerState extends JController {
 	 */
 	function __construct() {
 		parent::__construct();
+
+		$this->setMainLangKey('STATE');
 
 		JRequest::setVar('view', 'state');
 		// Register Extra tasks

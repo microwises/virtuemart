@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Controller class for the user
  *
@@ -30,7 +33,7 @@ jimport('joomla.application.component.controller');
  * @author     	Oscar van Eijk
  * @author 		Max Milbers
  */
-class VirtuemartControllerUser extends JController {
+class VirtuemartControllerUser extends VmController {
 
 	/**
 	 * Method to display the view
@@ -42,6 +45,7 @@ class VirtuemartControllerUser extends JController {
 	{
 		parent::__construct();
 
+		$this->setMainLangKey('USER');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 

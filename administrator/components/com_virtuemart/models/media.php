@@ -376,7 +376,7 @@ class VirtueMartModelMedia extends VmModel {
 			$row->load($cids);
 			if ($row->delete()) $deleted++;
 		}
-		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS')));
+		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS',$deleted));
 
 		//TODO update table belonging, category, product, venodor
 		//delete media from server

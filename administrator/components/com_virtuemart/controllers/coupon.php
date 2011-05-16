@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Coupon Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Coupon
  * @author RickG
  */
-class VirtuemartControllerCoupon extends JController {
+class VirtuemartControllerCoupon extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,6 +43,7 @@ class VirtuemartControllerCoupon extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('COUPON');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');

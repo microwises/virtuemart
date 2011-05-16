@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Product Controller
  *
  * @package    VirtueMart
  * @author Max Milbers
  */
-class VirtuemartControllerMedia extends JController {
+class VirtuemartControllerMedia extends VmController {
 
 	/**
 	 * Method to display the view
@@ -38,6 +41,8 @@ class VirtuemartControllerMedia extends JController {
 	 */
 	function __construct() {
 		parent::__construct();
+
+		$this->setMainLangKey('MEDIA');
 
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );

@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Product Special Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerProductspecial extends JController {
+class VirtuemartControllerProductspecial extends VmController {
 
 	/**
 	 * Method to display the view
@@ -37,6 +40,8 @@ class VirtuemartControllerProductspecial extends JController {
 	 */
 	function __construct() {
 		parent::__construct();
+
+		$this->setMainLangKey('PRODUCT_SPECIAL');
 	}
 
 	/**

@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Controller class for the Order status
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage OrderStatus
  * @author     Oscar van Eijk
  */
-class VirtuemartControllerOrderstatus extends JController {
+class VirtuemartControllerOrderstatus extends VmController {
 
 	/**
 	 * Method to display the view
@@ -41,6 +44,7 @@ class VirtuemartControllerOrderstatus extends JController {
 	{
 		parent::__construct();
 
+		$this->setMainLangKey('ORDER_STATUS');
 		// Register Extra tasks
 		$this->registerTask('add', 'edit');
 

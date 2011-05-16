@@ -22,9 +22,15 @@
 class VmController extends JController{
 
 
-
+	/**
+	 * Set Jtext name depending controller
+	 * @ var $langkey string
+	 * @author Max Milbers
+	 * @ modified by patrick Kohl
+	 */
+	
 	public function setMainLangKey($langkey){
-		$this->mainLangKey = $langkey;
+		$this->mainLangKey = 'COM_VIRTUEMART_'.$langkey.'_';
 	}
 
 	/**
@@ -36,10 +42,10 @@ class VmController extends JController{
 		$data = JRequest::get( 'post' );
 		$model = $this->getModel();
 		if (!$model->delete()) {
-			$msg = JText::_($this->mainLangKey.'_COULD_NOT_BE_DELETED');
+			$msg = JText::_($this->mainLangKey.'COULD_NOT_BE_DELETED');
 		}
 		else {
-			$msg = JText::_($this->mainLangKey.'_DELETED');
+			$msg = JText::_($this->mainLangKey.'DELETED');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
@@ -51,7 +57,7 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::_($this->mainLangKey.'_CANCELLED'); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = JText::_($this->mainLangKey.'CANCELLED'); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect('index.php?option=com_virtuemart&view=calc', $msg);
 	}
 
@@ -66,10 +72,10 @@ class VmController extends JController{
 
 		$model = $this->getModel();
 		if (!$model->publish(true)) {
-			$msg = JText::_($this->mainLangKey.'_PUBLISHED_ERROR');
+			$msg = JText::_($this->mainLangKey.'PUBLISHED_ERROR');
 		}
 		else{
-			$msg = JText::_($this->mainLangKey.'_PUBLISHED_SUCCESS');
+			$msg = JText::_($this->mainLangKey.'PUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
@@ -87,10 +93,10 @@ class VmController extends JController{
 
 		$model = $this->getModel();
 		if (!$model->publish(true)) {
-			$msg = JText::_($this->mainLangKey.'_UNPUBLISHED_ERROR');
+			$msg = JText::_($this->mainLangKey.'UNPUBLISHED_ERROR');
 		}
 		else{
-			$msg = JText::_($this->mainLangKey.'_UNPUBLISHED_SUCCESS');
+			$msg = JText::_($this->mainLangKey.'UNPUBLISHED_SUCCESS');
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);

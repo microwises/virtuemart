@@ -20,6 +20,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Report Controller
  * 
@@ -27,14 +30,16 @@ jimport('joomla.application.component.controller');
  * @subpackage Report
  * @author Wicksj
  */
-class VirtuemartControllerReport extends JController {
+class VirtuemartControllerReport extends VmController {
 	
 	/**
 	 * Report Controller Constructor
 	 */
 	function __constuct(){
 		parent::__construct();
-		
+
+		$this->setMainLangKey('REPORT');
+
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('report', $viewType);

@@ -44,6 +44,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 
 
 /**
@@ -60,26 +63,22 @@ jimport('joomla.application.component.controller');
 
  */
 
-class VirtuemartControllerUsergroups extends JController {
+class VirtuemartControllerUsergroups extends VmController {
 
 
 
 	/**
-
 	 * Method to display the view
-
 	 *
-
 	 * @access	public
-
 	 * @author
-
 	 */
 
 	function __construct() {
 
 		parent::__construct();
 
+		$this->setMainLangKey('USERGROUP');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit', 'delete' );
 		$this->registerTask( 'apply',  'save' );

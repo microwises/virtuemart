@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Credit Card Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage CreditCard
  * @author RickG
  */
-class VirtuemartControllerCreditcard extends JController {
+class VirtuemartControllerCreditcard extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,6 +43,7 @@ class VirtuemartControllerCreditcard extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('CREDITCARD');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

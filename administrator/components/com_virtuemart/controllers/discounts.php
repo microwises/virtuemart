@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Discounts Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerDiscounts extends JController {
+class VirtuemartControllerDiscounts extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,6 +42,7 @@ class VirtuemartControllerDiscounts extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('DISCOUNTS');
 		/* Redirects */
 		$this->registerTask('add','edit');
 		$this->registerTask('cancel','discounts');

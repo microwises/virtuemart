@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Review Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerRatings extends JController {
+class VirtuemartControllerRatings extends VmController {
 
 	/**
 	 * Method to display the view
@@ -38,6 +41,7 @@ class VirtuemartControllerRatings extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('RATING');
 		/* Redirects */
 		$this->registerTask('unpublish','publish');
 		$this->registerTask('add','edit');

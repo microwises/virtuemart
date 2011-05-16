@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
 * Orders Controller
 *
 * @package    VirtueMart
 * @author
 */
-class VirtuemartControllerOrders extends JController {
+class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,7 +42,7 @@ class VirtuemartControllerOrders extends JController {
 	function __construct() {
 		parent::__construct();
 
-
+		$this->setMainLangKey('ORDER');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 

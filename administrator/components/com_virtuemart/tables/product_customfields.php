@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* category_medias table for media
+* product_medias table ( for media)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -21,13 +21,14 @@ defined('_JEXEC') or die();
 if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
 
 /**
- * xref table class
+ * Calculator table class
  * The class is is used to manage the media in the shop.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
 class TableProduct_customfields extends VmTableXarray {
+
 
 	/**
 	 * @author Max Milbers
@@ -41,6 +42,5 @@ class TableProduct_customfields extends VmTableXarray {
 		$this->setOrderable();
 
 	}
-
 
 }

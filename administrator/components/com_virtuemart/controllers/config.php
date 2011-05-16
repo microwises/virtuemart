@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Configuration Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Config
  * @author RickG
  */
-class VirtuemartControllerConfig extends JController {
+class VirtuemartControllerConfig extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,6 +43,7 @@ class VirtuemartControllerConfig extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('CONFIG');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('config', $viewType);

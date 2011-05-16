@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * updatesMigration Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage updatesMigration
  * @author Max Milbers
  */
-class VirtuemartControllerUpdatesMigration extends JController {
+class VirtuemartControllerUpdatesMigration extends VmController {
 
     private $installer;
 
@@ -39,17 +42,18 @@ class VirtuemartControllerUpdatesMigration extends JController {
      * @access	public
      */
     function __construct() {
-	parent::__construct();
+		parent::__construct();
 
-	$document = JFactory::getDocument();
-	$viewType = $document->getType();
-	$view = $this->getView('updatesMigration', $viewType);
+		// $this->setMainLangKey('MIGRATION');
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$view = $this->getView('updatesMigration', $viewType);
 
-	// Push a model into the view
-	$model = $this->getModel('updatesMigration');
-	if (!JError::isError($model)) {
-	    $view->setModel($model, true);
-	}
+		// Push a model into the view
+		$model = $this->getModel('updatesMigration');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
     }
 
     /**

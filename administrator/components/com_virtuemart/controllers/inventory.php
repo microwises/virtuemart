@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Inventory Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerInventory extends JController {
+class VirtuemartControllerInventory extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,6 +42,7 @@ class VirtuemartControllerInventory extends JController {
 	function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('INVENTORY');
 		/* Redirects */
 		$this->registerTask('unpublish','inventory');
 		$this->registerTask('publish','inventory');

@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Country Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Country
  * @author RickG
  */
-class VirtuemartControllerCountry extends JController {
+class VirtuemartControllerCountry extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,9 +42,9 @@ class VirtuemartControllerCountry extends JController {
 	 */
 	function __construct() {
 		parent::__construct();
-
 		JRequest::setVar('view', 'country');
 
+		$this->setMainLangKey('COUNTRY');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask( 'apply',  'save' );

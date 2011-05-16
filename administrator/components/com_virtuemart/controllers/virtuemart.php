@@ -18,6 +18,9 @@
 
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * VirtueMart default administrator controller
  *
@@ -30,8 +33,7 @@ class VirtuemartControllerVirtuemart extends JController
 	 *
 	 * @access	public
 	 */
-	function display()
-	{
+	function display() {
 
 		$document = JFactory::getDocument();
 		$viewName = JRequest::getVar('view', '');

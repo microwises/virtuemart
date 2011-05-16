@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Category Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Category
  * @author jseros
  */
-class VirtuemartControllerCategory extends JController {
+class VirtuemartControllerCategory extends VmController {
 
 	/**
 	 * Contructor
@@ -40,6 +43,7 @@ class VirtuemartControllerCategory extends JController {
 	public function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('CATEGORY');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
@@ -47,7 +51,6 @@ class VirtuemartControllerCategory extends JController {
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('category', $viewType);
-
 		// Pushing default model
 		$categoryModel = $this->getModel('category');
 		if (!JError::isError($categoryModel)) {

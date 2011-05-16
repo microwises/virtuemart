@@ -40,6 +40,7 @@ class VirtuemartControllerCalc extends VmController {
 	public function __construct() {
 		parent::__construct();
 
+		$this->setMainLangKey('CALC');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
@@ -55,7 +56,7 @@ class VirtuemartControllerCalc extends VmController {
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 
-		$this->setMainLangKey('COM_VIRTUEMART_CALC');
+
 	}
 
 	/**
