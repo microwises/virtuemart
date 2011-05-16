@@ -39,8 +39,6 @@ class TableRatings extends VmTable {
 	var $virtuemart_user_id         		= null;
 	/** @var string The user comment */
 	var $comment         		= null;
-	/** @var date Timestamp of when the comment was made */
-	var $time         			= null;
 	/** @var int The number of stars awared */
 	var $user_rating       		= null;
 	/** @var int No idea what this is for */

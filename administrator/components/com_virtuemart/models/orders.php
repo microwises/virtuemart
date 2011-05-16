@@ -372,7 +372,7 @@ class VirtueMartModelOrders extends VmModel {
 			$updated = 0;
 			$error = 0;
 			foreach ($update as $virtuemart_order_id => $new_status) {
-				$timestamp = time();
+
 				/* Get customer notification */
 				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
 
@@ -386,7 +386,6 @@ class VirtueMartModelOrders extends VmModel {
 
 				// Order updates can be ignored if we're updating only lines
 				$order->order_status = $new_status;
-//				$order->modified_on = $timestamp;
 
 				/* When the order is set to "shipped", we can capture the payment */
 				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
@@ -557,9 +556,6 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
-		//Should be done in table
-//		$_orderData->created_on = time();
-//		$_orderData->modified_on = time();
 		$_orderData->ship_method_id = $_cart->virtuemart_shippingrate_id;
 
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);

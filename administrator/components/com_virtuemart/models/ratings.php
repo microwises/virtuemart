@@ -58,7 +58,7 @@ class VirtueMartModelRatings extends VmModel {
      			`username`,
      			`comment`,
      			user_rating,
-     			time,
+     			created_on,
      			#__virtuemart_product_reviews.userid,
 			#__virtuemart_product_reviews.published
      			".$this->getRatingsListQuery().$this->getRatingsFilter();
@@ -193,7 +193,7 @@ class VirtueMartModelRatings extends VmModel {
 		/* Check if we have a timestamp */
 		/* if ($data['time'] == 0) $data['time'] = time(); */
 		/* Timestamps are always kept up to the latest modification */
-		$data['time'] = time();
+//		$data['time'] = time();
 		$user =& JFactory::getUser();
 		if(empty($user->id)) {
 			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));

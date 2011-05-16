@@ -446,7 +446,7 @@ if (empty ( $this->product )) {
 	* $review->userid => The user ID of the comment author
 	* $review->username => The username of the comment author
 	* $review->name => The name of the comment author
-	* $review->time => The UNIX timestamp of the comment ("when" it was posted)
+	* $review->created_on => The UNIX timestamp of the comment ("when" it was posted)
 	* $review->user_rating => The rating; an integer from 1 - 5
 	*
 	*/
@@ -483,7 +483,7 @@ if (empty ( $this->product )) {
 				} ?>
 
 				<div class="<?php echo $color ?>">
-					<span class="date"><?php echo JHTML::date($review->time, JText::_('DATE_FORMAT_LC')); ?></span>
+					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
 					<?php echo $stars[ $review->user_rating ] ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->username ?></span>

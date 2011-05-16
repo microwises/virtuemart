@@ -327,6 +327,10 @@ class VirtueMartModelProduct extends VmModel {
 	 	 /* Add optional fields */
 	 	 $product->virtuemart_manufacturer_id = null;
 	 	 $product->virtuemart_product_price_id = null;
+
+	 	 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+	 	 $product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+
 	 	 $product->product_price = null;
 	 	 $product->product_currency = null;
 	 	 $product->product_price_quantity_start = null;
@@ -1436,13 +1440,13 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 
-		$q = 'SELECT `comment`, `time`, `userid`, `user_rating`, `username`, `name`
+		$q = 'SELECT `comment`, `created_on`, `userid`, `user_rating`, `username`, `name`
 			FROM `#__virtuemart_product_reviews` `r`
 			LEFT JOIN `#__users` `u`
 			ON `u`.`id` = `r`.`userid`
 			WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'"
 			AND published = "1"
-			ORDER BY `time` DESC ';
+			ORDER BY `created_on` DESC ';
 		if (!$showall) $q .= ' LIMIT 0, 5';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObjectList();
