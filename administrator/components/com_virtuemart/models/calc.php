@@ -35,6 +35,7 @@ class VirtueMartModelCalc extends VmModel {
      */
     public function __construct(){
         parent::__construct();
+		$this->setMainTable('calcs');
 
     }
 

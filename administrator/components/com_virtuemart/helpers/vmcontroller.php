@@ -29,9 +29,11 @@ class VmController extends JController{
 	public function __construct() {
 		parent::__construct();
 
-		$name = $this->getName();
-		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$name);
-		$this->redirectPath = 'index.php?option=com_virtuemart&controller='.$name;
+		//VirtuemartController
+		$this->name = strtolower(substr(get_class( $this ), 20));
+		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->name);
+		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->name;
+
 	}
 
 
@@ -45,8 +47,7 @@ class VmController extends JController{
 		$model = $this->getModel($this->name);
 		if (!$model->delete()) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
-		}
-		else {
+		} else {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
 		}
 		$this->setRedirect($this->redirectPath, $msg);
@@ -72,12 +73,11 @@ class VmController extends JController{
 	public function publish(){
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		echo $this->name;
+
 		$model = $this->getModel($this->name);
 		if (!$model->publish(true)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
-		}
-		else{
+		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
@@ -93,15 +93,15 @@ class VmController extends JController{
 	function unpublish(){
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		echo $this->name;
+
 		$model = $this->getModel($this->name);
-		if (!$model->publish(true)) {
+		if (!$model->publish(false)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
-		}
-		else{
+		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
+
 }
