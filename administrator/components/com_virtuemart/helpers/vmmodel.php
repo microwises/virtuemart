@@ -138,6 +138,12 @@ class VmModel extends JModel {
     	if (empty($this->_data)) {
 		    $this->_data = $this->getTable($this->_maintablename);
 			$this->_data->load($this->_id);
+
+			//just an idea
+//    		if(isset($this->_data->virtuemart_vendor_id && empty($this->_data->virtuemart_vendor_id)){
+//		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+//		    }
 		}
 
 		return $this->_data;
@@ -148,11 +154,11 @@ class VmModel extends JModel {
 
 		$table =& $this->getTable($this->_maintablename);
 
-		if($id = $table->bindChecknStore()){
-			$this->_id = $id;
-			return $id;
+		if($data = $table->bindChecknStore($data)){
+			return $data[$this->_idName];
 		} else {
 			$app = JFactory::getApplication();
+			$app->enqueueMessage($table->getError());
 			return false;
 		}
 

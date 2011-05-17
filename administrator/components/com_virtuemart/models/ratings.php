@@ -32,6 +32,8 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelRatings extends VmModel {
 
+	var $_productBought = 0;
+
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -190,11 +192,7 @@ class VirtueMartModelRatings extends VmModel {
 		/* Get the posted data */
 		$data = JRequest::get('post');
 
-		/* Check if we have a timestamp */
-		/* if ($data['time'] == 0) $data['time'] = time(); */
-		/* Timestamps are always kept up to the latest modification */
-//		$data['time'] = time();
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		if(empty($user->id)) {
 			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
 			return false;
@@ -250,6 +248,55 @@ class VirtueMartModelRatings extends VmModel {
 		$db->setQuery($q);
 		$reviews = $db->loadResult();
 		return $reviews;
+	}
+
+	public function showReview($product_id){
+
+		return $this->show($product_id, VmConfig::get('showReviewFor',0));
+	}
+
+	public function showRating($product_id){
+
+		return $this->show($product_id, VmConfig::get('showRatingFor',0));
+	}
+
+	private function show($product_id, $show){
+
+		//dont show
+		if($show == 0){
+			return false;
+		}
+		//show all
+		else if ($show == 1){
+			return true;
+		}
+		//show only registered
+		else if ($show == 2){
+			$user = JFactory::getUser();
+			return !empty($user->id);
+		}
+		//show only registered && who bought the product
+		else if ($show == 3){
+			if(!empty($this->_productBought)) return true;
+
+			$user = JFactory::getUser();
+//			$product_id = JRequest::getVar('product_id',0);
+			if(empty($product_id)) return false;
+
+			$db = JFactory::getDBO();
+			$q = 'SELECT COUNT(*) as total FROM `#__virtuemart_orders` AS o LEFT JOIN `#__virtuemart_order_items` AS oi ';
+			$q .= 'ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id` ';
+			$q .= 'WHERE o.virtuemart_user_id = "'.$user->id.'" AND oi.virtuemart_product_id = "'.$product_id.'" ';
+
+			$db->setQuery($q);
+			$count = $db->loadResult();dump($q,'show database');
+			if($count){
+				$this->_productBought = true;
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
 // pure php no closing tag

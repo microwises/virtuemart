@@ -29,6 +29,9 @@ class VmController extends JController{
 	public function __construct() {
 		parent::__construct();
 
+		$this->registerTask( 'add',  'edit' );
+		$this->registerTask('apply','save');
+
 		//VirtuemartController
 		$this->name = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->name);
@@ -36,6 +39,24 @@ class VmController extends JController{
 
 	}
 
+	function save()
+	{
+		$model =& $this->getModel($this->name);
+
+		$data = JRequest::get('post');
+		if (($_id = $model->store($data)) === false) {
+			$msg = JText::_($model->getError());
+		} else {
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED');
+		}
+
+		$redir = $this->redirectPath;
+		if(JRequest::getCmd('task') == 'apply'){
+			$redir .= '&task=edit&cid[]='.$_id;
+		}
+
+		$this->setRedirect($redir, $msg);
+	}
 
 	/**
 	 * Handle the remove task

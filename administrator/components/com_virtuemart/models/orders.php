@@ -990,7 +990,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
-		return $table->bindChecknStore($this,$data);
+		return $table->bindChecknStore($data);
 
 //		return true;
 	}

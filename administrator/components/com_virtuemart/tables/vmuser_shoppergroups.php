@@ -29,7 +29,7 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
  * @author Max Milbers
  */
 
- class TableUser_shoppergroups extends VmTableXarray {
+ class TableVmuser_shoppergroups extends VmTableXarray {
 
 //	/** @var int User ID */
 //	var $id			= 0;

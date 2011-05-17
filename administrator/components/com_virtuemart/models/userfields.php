@@ -572,8 +572,8 @@ class VirtueMartModelUserfields extends VmModel {
 	 *    </table>
 	 * </pre>
 	 */
-	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
-	{
+	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = ''){
+
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()

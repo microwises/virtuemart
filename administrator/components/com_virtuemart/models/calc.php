@@ -175,7 +175,7 @@ class VirtueMartModelCalc extends VmModel {
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
 
-		if (!$table->bindChecknStore($this, $data)) {
+		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
 			return false;
 		}
@@ -183,22 +183,22 @@ class VirtueMartModelCalc extends VmModel {
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 
     	$xrefTable = $this->getTable('calc_categories');
-    	if (!$xrefTable->bindChecknStore($this, $data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
-    	if (!$xrefTable->bindChecknStore($this, $data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
-    	if (!$xrefTable->bindChecknStore($this, $data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
-    	if (!$xrefTable->bindChecknStore($this, $data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 

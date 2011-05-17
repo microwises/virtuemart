@@ -64,13 +64,13 @@ class TableOrders extends VmTable {
 	var $order_currency = NULL;
 	/** @var char Order status */
 	var $order_status = NULL;
-        /** @var char User currency id */
+	/** @var char User currency id */
 	var $user_currency_id = NULL;
-         /** @var char User currency rate */
+	/** @var char User currency rate */
 	var $user_currency_rate = NULL;
-        /** @var int Payment method ID */
-        var $payment_method_id = NULL;
-        /** @var int Shipping method ID */
+	/** @var int Payment method ID */
+	var $payment_method_id = NULL;
+	/** @var int Shipping method ID */
 	var $ship_method_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;

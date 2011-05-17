@@ -279,7 +279,7 @@ class VirtueMartModelCustom extends VmModel {
 	public function saveProductfield($fields, $virtuemart_product_id) {
 
 	    $xrefTable = $this->getTable('product_customfields');
-    	if (!$xrefTable->bindChecknStore($this, $data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 

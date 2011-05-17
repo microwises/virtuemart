@@ -1449,7 +1449,9 @@ class VirtueMartModelProduct extends VmModel {
 			ORDER BY `created_on` DESC ';
 		if (!$showall) $q .= ' LIMIT 0, 5';
 		$this->_db->setQuery($q);
-		return $this->_db->loadObjectList();
+		$array = $this->_db->loadObjectList();
+		if(empty($array)) $array = array();
+		return $array;
 	}
 
 	/**

@@ -84,57 +84,57 @@ class VirtuemartControllerShippingCarrier extends VmController {
 	}
 
 
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier');
-	}
+//	/**
+//	 * Handle the cancel task
+//	 *
+//	 * @author RickG
+//	 */
+//	function cancel()
+//	{
+//		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier');
+//	}
 
 
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG
-	 */
-	function save()
-	{
-		$model =& $this->getModel('shippingcarrier');
+//	/**
+//	 * Handle the save task
+//	 *
+//	 * @author RickG
+//	 */
+//	function save()
+//	{
+//		$model =& $this->getModel('shippingcarrier');
+//
+//		if (($_id = $model->store()) === false) {
+//			$msg = JText::_($model->getError());
+//		} else {
+//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_SAVED');
+//		}
+//
+//		$_redir = 'index.php?option=com_virtuemart&view=shippingcarrier';
+//		if(JRequest::getCmd('task') == 'apply'){
+//			$_redir .= '&task=edit&cid[]='.$_id;
+//		}
+//
+//		$this->setRedirect($_redir, $msg);
+//	}
 
-		if (($_id = $model->store()) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_SAVED');
-		}
 
-		$_redir = 'index.php?option=com_virtuemart&view=shippingcarrier';
-		if(JRequest::getCmd('task') == 'apply'){
-			$_redir .= '&task=edit&cid[]='.$_id;
-		}
-
-		$this->setRedirect($_redir, $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('shippingcarrier');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED_ERROR');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);
-	}
+//	/**
+//	 * Handle the remove task
+//	 *
+//	 * @author RickG
+//	 */
+//	function remove()
+//	{
+//		$model = $this->getModel('shippingcarrier');
+//		if (!$model->delete()) {
+//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED_ERROR');
+//		}
+//		else {
+//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);
+//	}
 }
 // pure php no closing tag

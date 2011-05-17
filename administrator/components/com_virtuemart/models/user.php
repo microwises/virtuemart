@@ -85,7 +85,7 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 //			$idArray = JRequest::getVar('cid',  null, '', 'array');
 			//not anonymous, but no cid means already registered user edit own data
-			if(!isset($cid)){
+			if(empty($cid)){
 				$this->setUserId($user->id);
 				//				echo($user->id,'cid was null, therefore user->id is used');
 			} else {
@@ -177,9 +177,13 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->load((int)$this->_id);
 
 			/* Add the virtuemart_shoppergroup_ids */
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
-			$this->_db->setQuery($q);
-			$this->_data->shopper_groups = $this->_db->loadResultArray();
+//			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
+//			$this->_db->setQuery($q);
+//			$this->_data->shopper_groups = $this->_db->loadResultArray();
+
+   			$xrefTable = $this->getTable('vmuser_shoppergroups');
+			$this->_data->shopper_groups = $xrefTable->load($this->_id);
+
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 
@@ -212,11 +216,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 			//		}
 
-			if (!$this->_data) {
-				$this->_data = new stdClass();
-				$this->_id = 0;
-			}
 
+			dump($this->_data,'user data');
 			return $this->_data;
 		}
 
@@ -427,13 +428,13 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			dump($user,'$user');
+			dump($user,'juser before store');
 			// Save the JUser object
 			if (!$user->save()) {
 				//This?
 				$this->setError('_user save '.$user->getError());
 				//or this?
-//				JError::raiseWarning('', JText::_( $user->getError()));
+				JError::raiseWarning('', JText::_( $user->getError()));
 				return false;
 			}
 
@@ -501,14 +502,14 @@ class VirtueMartModelUser extends VmModel {
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			$usertable = $this->getTable('vmusers');
 
-			$vmusersData = $usertable -> bindChecknStore($this,$vmusersData);
+			$vmusersData = $usertable -> bindChecknStore($vmusersData);
 
 
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('user_shoppergroups');
+			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
 
-			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($this,$shoppergroupData);
+			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
 
 //			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 //			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
@@ -542,9 +543,9 @@ class VirtueMartModelUser extends VmModel {
 					//$usertable = $this->getTable('vmusers');
 					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 
-					if (!$usertable -> bindChecknStore($this,$vmusersData)){
+					if (!$usertable->bindChecknStore($vmusersData)){
 						$this->setError($usertable->getError());
-						dump($usertable,'error user bindChecknStore');
+						dump($usertable,'error after storing vendor while storing user bindChecknStore');
 						return false;
 					}
 

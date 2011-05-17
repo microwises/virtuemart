@@ -77,6 +77,35 @@ class VmTable extends JTable {
     	$this->orderable = 1;
     }
 
+    function checkDataContainsTableFields($from, $ignore=array()){
+
+    	$fromArray	= is_array( $from );
+		$fromObject	= is_object( $from );
+
+		if (!$fromArray && !$fromObject)
+		{
+			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument' );
+			return false;
+		}
+		if (!is_array( $ignore )) {
+			$ignore = explode( ' ', $ignore );
+		}
+
+		foreach ($this->getProperties() as $k => $v){
+			// internal attributes of an object are ignored
+			if (!in_array( $k, $ignore ))
+			{
+				if ($fromArray && isset( $from[$k] )) {
+					return true;
+
+				} else if ($fromObject && isset( $from->$k )) {
+					return true;
+				}
+			}
+		}
+		return false;
+    }
+
     /**
      * @author Max Milbers
      * @param
@@ -104,14 +133,14 @@ class VmTable extends JTable {
 			    $unique_id = $db->loadResultArray();
 
 			    $tblKey = $this->_tbl_key;
-
+//				dump($q,'check unique');
+//				echo $q; die;
 				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
 					if(empty($error)){
 						$this->setError(JText::_($error));
 					} else {
 						$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
 					}
-
 					return false;
 				}
 		    }
@@ -152,22 +181,31 @@ class VmTable extends JTable {
      * @param unknown_type $data
      * @param unknown_type $obligatory
      */
-    public function bindChecknStore($model, $data, $obligatory=false) {
+    public function bindChecknStore($data, $obligatory=false) {
+
+        if(!$this->checkDataContainsTableFields($data)){
+			$app = JFactory::getApplication();
+    		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
+			return true;
+		}
 
     	if (!$this->bind($data)) {
-			$model->setError($this->getError());
+    		$app = JFactory::getApplication();
+    		$app->enqueueMessage($this->getError());
 			return false;
 		}
 
 		// Make sure the table record is valid
 		if (!$this->check($obligatory)) {
-			$model->setError($this->getError());
+			$app = JFactory::getApplication();
+    		$app->enqueueMessage($this->getError());
 			return false;
 		}
 
 		// Save the record to the database
 		if (!$this->store()) {
-			$model->setError($this->getError());
+    		$app = JFactory::getApplication();
+    		$app->enqueueMessage($this->getError());
 			return false;
 		}
 		$tblKey = $this->_tbl_key;

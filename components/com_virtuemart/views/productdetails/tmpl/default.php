@@ -505,9 +505,9 @@ if (empty ( $this->product )) {
 			</div>
 
 			<?php
-			if (!empty($this->user->id)) { ?>
+//			if (!empty($this->user->id)) { ?>
 			<div class="write-reviews">
-				<?php if (!$alreadycommented) {
+				<?php if (!$alreadycommented && $this->showReview) {
 					echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
 					$reviewJavascript = "
 					function check_reviewform() {
@@ -543,10 +543,13 @@ if (empty ( $this->product )) {
 						?>
 
 
-
 						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
-						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
+						<br />
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
+
+						<?php if($this->showRating){
+
+							echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
 							<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 								<tr>
 								<?php
@@ -568,6 +571,8 @@ if (empty ( $this->product )) {
 								} ?>
 								</tr>
 							</table>
+							<?php
+							} ?>
 							<br /><br />
 							<?php
 							echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
@@ -594,7 +599,7 @@ if (empty ( $this->product )) {
 					?>
 					</div>
 					<?php
-				}
+//				}
 				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 

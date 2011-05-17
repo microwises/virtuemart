@@ -93,7 +93,7 @@ class VmTableXarray extends VmTable {
 			$this->_pvalue = $data[$this->_pkeyForm];
 		}
 
-		if(!empty($data[$this->_pkeyForm])){
+		if(!empty($data[$this->_skeyForm])){
 			$this->_svalue = $data[$this->_skeyForm];
 		}
 
@@ -117,6 +117,8 @@ class VmTableXarray extends VmTable {
 
 		$returnCode = true;
 		if(!empty($this->_svalue)){
+			if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
+
 			foreach($this->_svalue as $value){
 
 				$obj = new stdClass;
@@ -132,7 +134,7 @@ class VmTableXarray extends VmTable {
 					$oKey = $this->orderingKey;
 					$obj->$oKey = $this->ordering++;
 				}
-
+				dump($obj,'to insert');
 				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 			}
 		}

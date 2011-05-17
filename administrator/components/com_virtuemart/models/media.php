@@ -292,7 +292,7 @@ class VirtueMartModelMedia extends VmModel {
 //		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
 
 		// Bind the form fields to the country table
-		if (!$table->bindChecknStore($this,$data)) {
+		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
 			return false;
 		}

@@ -130,20 +130,19 @@ class VirtueMartModelShippingCarrier extends VmModel {
      * @author RickG
      */
     function getShippingCarrier() {
-//	$db = JFactory::getDBO();
 
-	if (empty($this->_data)) {
-	    $this->_data = $this->getTable('shippingcarriers');
-	    $this->_data->load((int)$this->_id);
-	}
+		if (empty($this->_data)) {
+		    $this->_data = $this->getTable('shippingcarriers');
+		    $this->_data->load((int)$this->_id);
 
-	if (!$this->_data) {
-	    $this->_data = new stdClass();
-	    $this->_id = 0;
-	    $this->_data = null;
-	}
+		    if(empty($this->_data->virtuemart_vendor_id)){
+		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+		    }
 
-	return $this->_data;
+		}
+
+		return $this->_data;
     }
 
 

@@ -138,36 +138,24 @@ class VirtueMartModelVendor extends VmModel {
 
 	$table = $this->getTable('vendors');
 
+	if(!$table->checkDataContainsTableFields($data)){
+		$app = JFactory::getApplication();
+    	$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
+		return $this->_id;
+	}
+
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
 
-	// Bind the form fields to the vendor table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
-
-	// Make sure the vendor record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
-
-	// Save the vendor to the database
-	if (!$table->store()) {
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
+	$data = $table->bindChecknStore($data);
 
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 
 	/* Process the images */
-
 	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 	$xrefTable = $this->getTable('vendor_medias');
 	$mediaModel = new VirtueMartModelMedia();
