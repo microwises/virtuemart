@@ -155,7 +155,7 @@ class VirtueMartModelCoupon extends VmModel {
 	 */
     function store()
 	{
-		$table =& $this->getTable('coupon');
+		$table =& $this->getTable('coupons');
 		$data = JRequest::get('post');
 
 		// Convert selected dates to MySQL format for storing.
