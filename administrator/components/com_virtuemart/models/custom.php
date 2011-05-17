@@ -275,10 +275,13 @@ class VirtueMartModelCustom extends VmModel {
 
 	/* Save and delete from database
 	* all product custom_fields and xref
+	@ var   $table	: the xref table(eg. product)
+	@array $data	: array of customfields
+	@int     $id		: The concerned id (eg. product_id)
 	*/
-	public function saveProductfield($fields, $virtuemart_product_id) {
+	public function saveModelCustomfields($table,$data, $id) {
 
-	    $xrefTable = $this->getTable('product_customfields');
+	    $xrefTable = $this->getTable($table.'_customfields');
     	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}

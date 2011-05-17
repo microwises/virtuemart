@@ -1123,7 +1123,7 @@ class VirtueMartModelProduct extends VmModel {
 		*/
 		if (array_key_exists('field', $data)) {
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveProductfield($data['field'],$product_data->virtuemart_product_id);
+			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
 		}
 
 
