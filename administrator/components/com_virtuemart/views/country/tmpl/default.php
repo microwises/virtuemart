@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -55,8 +55,8 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_country_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->virtuemart_country_id);
-		$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=country&task=edit&cid[]=' . $row->virtuemart_country_id);
+		$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -101,4 +101,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -49,7 +49,7 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_creditcard_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=creditcard&task=edit&cid[]=' . $row->virtuemart_creditcard_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=creditcard&task=edit&cid[]=' . $row->virtuemart_creditcard_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -89,4 +89,4 @@ AdminMenuHelper::startAdminArea();
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

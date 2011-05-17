@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -45,14 +45,14 @@ AdminMenuHelper::startAdminArea();
 		      </th>
 		    </tr>
 	    </thead><?php
-	    
+
 	    $k = 0;
 	    for ($i = 0, $n = count( $this->shoppergroups ); $i < $n; $i++) {
 		    $row = $this->shoppergroups[$i];
 
 		    $checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
-		    $editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shoppergroup&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id); ?>
-	      
+		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id); ?>
+
 	      <tr class="<?php echo "row$k"; ?>">
 			    <td width="10">
 				    <?php echo $checked; ?>
@@ -87,5 +87,5 @@ AdminMenuHelper::startAdminArea();
   <input type="hidden" name="view" value="shoppergroup" />
   <input type="hidden" name="task" value="" />
   <input type="hidden" name="boxchecked" value="0" />
-</form><?php 
-AdminMenuHelper::endAdminArea(); ?> 
+</form><?php
+AdminMenuHelper::endAdminArea(); ?>

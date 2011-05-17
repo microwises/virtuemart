@@ -38,7 +38,7 @@ echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']->order_pass,
 						$this->order['details']['BT']->created_on) . "\n" . "\n";
 
-echo 'Link to view your order' .  JURI::root() . JRoute::_( 'index.php?option=com_virtuemart&controller=orders&task=details&order_number=' . $this->order['details']['BT']->order_number . '&order_pass=' . $this->order['details']['BT']->order_pass ) . "\n";
+echo 'Link to view your order' .  JURI::root() . JRoute::_( 'index.php?option=com_virtuemart&view=orders&task=details&order_number=' . $this->order['details']['BT']->order_number . '&order_pass=' . $this->order['details']['BT']->order_pass ) . "\n";
 if(!empty($this->order['details']['BT']->customer_note)){
 	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note);
 }

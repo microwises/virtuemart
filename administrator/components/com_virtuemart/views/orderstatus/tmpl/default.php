@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 <form action="index.php" method="post" name="adminForm">
@@ -65,8 +65,8 @@ AdminMenuHelper::startAdminArea();
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row =& $this->orderStatusList[$i];
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
+			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
@@ -115,4 +115,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="boxchecked" value="0" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

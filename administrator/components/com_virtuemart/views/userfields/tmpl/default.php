@@ -103,7 +103,7 @@ $j15 = VmConfig::isJ15();
 			$checked = ($coreField) ?
 				'<span class="editlinktip hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
 				JHTML::_('grid.id', $i, $row->virtuemart_userfield_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->virtuemart_userfield_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&cid[]=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'required', $coreField);
 //			$published = JHTML::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'published', $coreField);

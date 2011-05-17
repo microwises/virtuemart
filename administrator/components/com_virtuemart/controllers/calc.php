@@ -73,7 +73,7 @@ class VirtuemartControllerCalc extends VmController {
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView($this->_cname, $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));

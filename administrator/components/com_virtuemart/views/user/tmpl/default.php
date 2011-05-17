@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm">
@@ -82,7 +82,7 @@ AdminMenuHelper::startAdminArea();
 		for ($i = 0, $n = count($this->userList); $i < $n; $i++) {
 			$row =& $this->userList[$i];
 			$checked = JHTML::_('grid.id', $i, $row->id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=user&task=edit&cid[]=' . $row->id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&cid[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'vendor');
 		?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -132,4 +132,4 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="boxchecked" value="0" />
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

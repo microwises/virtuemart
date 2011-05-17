@@ -57,7 +57,7 @@ class VmController extends JController{
 		JRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$viewType = $document->getType();
 			$view = $this->getView($this->_cname, $viewType);
 		}
