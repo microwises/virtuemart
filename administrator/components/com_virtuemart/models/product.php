@@ -1216,7 +1216,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->query();
 
 			/* Delete product reviews */
-			$q = "DELETE FROM #__virtuemart_product_votes WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q = "DELETE FROM #__virtuemart_product_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
@@ -1579,7 +1579,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db = JFactory::getDBO();
 
 			$q = "SELECT `votes`, `allvotes`, `rating`
-				FROM `#__virtuemart_product_votes`
+				FROM `#__virtuemart_product_ratings`
 				WHERE `virtuemart_product_id` = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadObject();

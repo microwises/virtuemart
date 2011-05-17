@@ -187,21 +187,20 @@ class VirtueMartModelRatings extends VmModel {
     */
     public function saveRating() {
 
-		$ratings_data = $this->getTable('ratings');
 
 		/* Get the posted data */
 		$data = JRequest::get('post');
 
 		$user = JFactory::getUser();
-		if(empty($user->id)) {
-			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
-			return false;
-		}
+//		if(empty($user->id)) {
+//			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
+//			return false;
+//		}
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		if ($data['user_rating'] < 0 ) $data['user_rating'] = 0 ;
-		if ($data['user_rating'] > $maxrating ) $data['user_rating'] = $maxrating ;
-		if ( !$data['virtuemart_product_review_id'] )  $data['userid'] = $user->id;
+		if ($data['rating'] < 0 ) $data['rating'] = 0 ;
+		if ($data['rating'] > $maxrating ) $data['rating'] = $maxrating ;
+		if ( !$data['virtuemart_product_review_id'] )  $data['virtuemart_user_id'] = $user->id;
 		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
 		//set to defaut value not used (prevent hack)
 		$data['review_ok'] = 0 ;
@@ -212,23 +211,56 @@ class VirtueMartModelRatings extends VmModel {
 		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
 		else $data['published'] = 0;
 
-    	// Bind the form fields to the table
-		if (!$ratings_data->bind($data)) {
-			$this->setError($ratings_data->getError());
-			return false;
+		$table = $this->getTable('ratings');
+
+        if($data = $table->bindChecknStore($data)){
+//			if(is_object($data)){
+//				$_idName = $this->_idName;
+////				return $data->$_idName;
+//	    	} else {
+//	    		return $data[$this->_idName];
+//	    	}
+
+		} else {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($table->getError());
+//			return false;
 		}
 
-		// Make sure the record is valid
-		if (!$ratings_data->check()) {
-			$this->setError($ratings_data->getError());
-			return false;
+		$table = $this->getTable('reviews');
+    	if($data = $table->bindChecknStore($data)){
+//			if(is_object($data)){
+//				$_idName = $this->_idName;
+//				return $data->$_idName;
+//	    	} else {
+	    		return $data['virtuemart_product_review_id'];
+//	    	}
+
+		} else {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($table->getError());
+//			return false;
 		}
 
-		// Save the record to the database
-		if (!$ratings_data->store()) {
-			$this->setError($ratings_data->getError());
-			return false;
-		}
+
+
+//    	// Bind the form fields to the table
+//		if (!$ratings_data->bind($data)) {
+//			$this->setError($ratings_data->getError());
+//			return false;
+//		}
+//
+//		// Make sure the record is valid
+//		if (!$ratings_data->check()) {
+//			$this->setError($ratings_data->getError());
+//			return false;
+//		}
+//
+//		// Save the record to the database
+//		if (!$ratings_data->store()) {
+//			$this->setError($ratings_data->getError());
+//			return false;
+//		}
 
 		return true;
     }
@@ -252,12 +284,12 @@ class VirtueMartModelRatings extends VmModel {
 
 	public function showReview($product_id){
 
-		return $this->show($product_id, VmConfig::get('showReviewFor',0));
+		return $this->show($product_id, VmConfig::get('showReviewFor',1));
 	}
 
 	public function showRating($product_id){
 
-		return $this->show($product_id, VmConfig::get('showRatingFor',0));
+		return $this->show($product_id, VmConfig::get('showRatingFor',1));
 	}
 
 	private function show($product_id, $show){
@@ -280,7 +312,6 @@ class VirtueMartModelRatings extends VmModel {
 			if(!empty($this->_productBought)) return true;
 
 			$user = JFactory::getUser();
-//			$product_id = JRequest::getVar('product_id',0);
 			if(empty($product_id)) return false;
 
 			$db = JFactory::getDBO();

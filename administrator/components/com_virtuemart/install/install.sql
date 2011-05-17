@@ -422,9 +422,37 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=1 ;
 
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_medias` (was  `#__virtuemart_product_files`)
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
+  `virtuemart_media_id` int(19) NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` int(11) NOT NULL,
+  `file_title` varchar(126) NOT NULL DEFAULT '',
+  `file_description` varchar(254) NOT NULL,
+  `file_meta` varchar(254) NOT NULL,
+  `file_mimetype` varchar(64) NOT NULL,
+  `file_url` varchar(254) NOT NULL,
+  `file_url_thumb` varchar(254) NOT NULL,
+  `file_is_product_image` tinyint(1) NOT NULL,
+  `file_is_downloadable` tinyint(1) NOT NULL,
+  `file_is_forSale` tinyint(1) NOT NULL,
+  `file_params` text,
+  `shared` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_media_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `#__virtuemart_modules`
 --
@@ -774,6 +802,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_downloads` (
   PRIMARY KEY (`download_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
 
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_medias`
 --
@@ -786,36 +816,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_virtuemart_category_id` (`virtuemart_product_id`,`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_medias` (was  `#__virtuemart_product_files`)
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
-  `virtuemart_media_id` int(19) NOT NULL AUTO_INCREMENT,
-  `virtuemart_vendor_id` int(11) NOT NULL,
-  `file_title` varchar(126) NOT NULL DEFAULT '',
-  `file_description` varchar(254) NOT NULL,
-  `file_meta` varchar(254) NOT NULL,
-  `file_mimetype` varchar(64) NOT NULL,
-  `file_url` varchar(254) NOT NULL,
-  `file_url_thumb` varchar(254) NOT NULL,
-  `file_is_product_image` tinyint(1) NOT NULL,
-  `file_is_downloadable` tinyint(1) NOT NULL,
-  `file_is_forSale` tinyint(1) NOT NULL,
-  `file_params` text,
-  `shared` tinyint(1) NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_media_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -869,8 +869,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_producttypes` (
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_producttype_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps products to a product type';
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_relations`
 -- is that needed that way?
@@ -883,8 +883,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_relations` (
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`related_products`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_reviews`
 --
@@ -895,9 +895,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
   `review_ok` int(11) NOT NULL DEFAULT '0',
-  `review_votes` int(11) NOT NULL DEFAULT '0',
+  `review_rate` int(11) NOT NULL DEFAULT '0',
+  `review_ratingcount` int(11) NOT NULL DEFAULT '0',
+  `review_rating` float(1) NOT NULL DEFAULT '0',
+  `rating` int(11) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
-  `ordering` int(2) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -909,18 +911,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
 -- --------------------------------------------------------
-
 --
--- Table structure for table `#__virtuemart_product_votes`
--- used?
+-- Table structure for table `#__virtuemart_product_ratings`
+--
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_votes` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
   `virtuemart_product_vote_id` SERIAL,
-  `virtuemart_product_id` int(255) NOT NULL DEFAULT '0',
-  `votes` text NOT NULL,
-  `allvotes` int(11) NOT NULL DEFAULT '0',
-  `rating` tinyint(1) NOT NULL DEFAULT '0',
+  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
+  `rate` int(11) NOT NULL ,
+  `ratingcount` int(11) NOT NULL DEFAULT '0',
+  `rating` float(1) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -928,63 +931,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_votes` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all votes for a product';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_producttypes`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_producttypes` (
-  `virtuemart_producttype_id` SERIAL,
-  `virtuemart_vendor_id` int(11) DEFAULT NULL,
-  `product_type_name` varchar(255) NOT NULL DEFAULT '',
-  `product_type_description` text,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `product_type_layout` varchar(255) DEFAULT NULL,
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `shared` tinyint(1) NOT NULL,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_producttype_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_producttype_customfields`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_producttype_customfields` (
-  `virtuemart_producttype_id` int(11) NOT NULL DEFAULT '0',
-  `parameter_name` varchar(255) NOT NULL DEFAULT '',
-  `parameter_label` varchar(255) NOT NULL DEFAULT '',
-  `parameter_description` text,
-  `parameter_type` char(1) NOT NULL DEFAULT 'T',
-  `parameter_values` varchar(255) DEFAULT NULL,
-  `parameter_multiselect` char(1) DEFAULT NULL,
-  `parameter_default` varchar(255) DEFAULT NULL,
-  `parameter_unit` varchar(32) DEFAULT NULL,
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_producttype_id`,`parameter_name`),
-  KEY `idx_product_type_parameter_virtuemart_producttype_id` (`virtuemart_producttype_id`),
-  KEY `idx_product_type_parameter_parameter_order` (`ordering`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Parameters which are part of a product type';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
 
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `#__virtuemart_shippingcarriers`
 --
@@ -1007,8 +957,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   PRIMARY KEY (`virtuemart_shippingcarrier_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_shippingrates`
 --

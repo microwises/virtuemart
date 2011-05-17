@@ -556,7 +556,7 @@ if (empty ( $this->product )) {
 								for ($num=$maxrating ; $num>=0; $num--  ) {
 									?>
 										<th id="<?php echo $num ?>_stars">
-											<label for="user_rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
+											<label for="rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 										</th>
 									<?php
 								} ?>
@@ -565,7 +565,7 @@ if (empty ( $this->product )) {
 								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) { ?>
 									<td headers="<?php echo $num ?>_stars" style="text-align:center;">
-										<input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
+										<input type="radio" id="rating<?php echo $num ?>" name="rating" value="<?php echo $num ?>" />
 									</td>
 								<?php
 								} ?>
@@ -600,7 +600,7 @@ if (empty ( $this->product )) {
 					</div>
 					<?php
 //				}
-				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
+//				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 
 	</div>

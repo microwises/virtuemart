@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: ratings.php 3267 2011-05-16 22:51:49Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -40,11 +40,15 @@ class TableRatings extends VmTable {
 	/** @var string The user comment */
 	var $comment         		= null;
 	/** @var int The number of stars awared */
-	var $user_rating       		= null;
+	var $review_ok       		= null;
 	/** @var int No idea what this is for */
-	var $review_ok         		= null;
+	var $review_rate         		= null;
 	/** @var int No idea what this is for */
-	var $review_votes      		= null;
+	var $review_ratingcount      		= null;
+	/** @var int No idea what this is for */
+	var $rating      		= null;
+	var $lastip      		= null;
+
 	/** @var int State of the review */
 	var $published         		= 0;
 

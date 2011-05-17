@@ -21,13 +21,17 @@
 
 class VmController extends JController{
 
+	protected $_cidName;
+
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
 	 *
 	 * @author Max Milbers
 	 */
-	public function __construct() {
+	public function __construct($cidName='cid') {
 		parent::__construct();
+
+		 $this->_cidName = $cidName;
 
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
@@ -47,12 +51,12 @@ class VmController extends JController{
 		if (($_id = $model->store($data)) === false) {
 			$msg = JText::_($model->getError());
 		} else {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED');
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
 		}
 
 		$redir = $this->redirectPath;
 		if(JRequest::getCmd('task') == 'apply'){
-			$redir .= '&task=edit&cid[]='.$_id;
+			$redir .= '&task=edit&'.$this->_cidName.'[]='.$_id;
 		}
 
 		$this->setRedirect($redir, $msg);

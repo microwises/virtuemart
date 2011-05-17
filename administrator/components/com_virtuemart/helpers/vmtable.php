@@ -208,8 +208,13 @@ class VmTable extends JTable {
     		$app->enqueueMessage($this->getError());
 			return false;
 		}
+
 		$tblKey = $this->_tbl_key;
-		$data[$this->_tbl_key] = $this->$tblKey;
+		if (is_object($data)){
+			$data->$tblKey = $this->$tblKey;
+    	} else {
+    		$data[$this->_tbl_key] = $this->$tblKey;
+    	}
 
 		return $data;
     }

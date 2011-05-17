@@ -152,10 +152,16 @@ class VmModel extends JModel {
 
     public function store($data){
 
-		$table =& $this->getTable($this->_maintablename);
+		$table = $this->getTable($this->_maintablename);
 
 		if($data = $table->bindChecknStore($data)){
-			return $data[$this->_idName];
+			if(is_object($data)){
+				$_idName = $this->_idName;
+				return $data->$_idName;
+	    	} else {
+	    		return $data[$this->_idName];
+	    	}
+
 		} else {
 			$app = JFactory::getApplication();
 			$app->enqueueMessage($table->getError());
