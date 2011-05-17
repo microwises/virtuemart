@@ -556,7 +556,7 @@ if (empty ( $this->product )) {
 								for ($num=$maxrating ; $num>=0; $num--  ) {
 									?>
 										<th id="<?php echo $num ?>_stars">
-											<label for="rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
+											<label for="rate<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 										</th>
 									<?php
 								} ?>
@@ -565,7 +565,7 @@ if (empty ( $this->product )) {
 								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) { ?>
 									<td headers="<?php echo $num ?>_stars" style="text-align:center;">
-										<input type="radio" id="rating<?php echo $num ?>" name="rating" value="<?php echo $num ?>" />
+										<input type="radio" id="rate<?php echo $num ?>" name="rate" value="<?php echo $num ?>" />
 									</td>
 								<?php
 								} ?>

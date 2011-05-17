@@ -44,12 +44,13 @@ class VirtuemartViewRatings extends JView {
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
 
+		$model = $this->getModel();
 		switch ($task) {
 			case 'add':
 				// @todo: adding is slightly different (not supported for now, from admin page).
 			case 'edit':
 				/* Get the data */
-				$rating = $this->get('Rating');
+				$rating = $model->getRating();
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE').' :: '.$rating->product_name, 'vm_product_48');
@@ -65,8 +66,8 @@ class VirtuemartViewRatings extends JView {
 				break;
 			default:
 				/* Get the data */
-				$ratingslist = $this->get('Ratings');
-
+				$ratingslist = $model->getRatings();
+				dump($ratingslist,'$ratingslist');
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
@@ -91,29 +92,28 @@ class VirtuemartViewRatings extends JView {
 		parent::display($tpl);
 	}
 	// Common preprocessing of retrieved values before passing to a template
-	private function preprocess(&$ratings) {	
-		// Figure out date format setting 
+	private function preprocess(&$ratings) {
+		// Figure out date format setting
 		$config = JFactory::getConfig();
 		$tzoffset = $config->getValue('config.offset');
-		$dateformat = VmConfig::get('dateformat');
-		if (empty($dateformat)) {$dateformat = '%Y-%m-%d %H:%M';} // temporary workaround
-	
+		$dateformat = VmConfig::get('dateformat','%Y-%m-%d %H:%M');
+
 		if (is_array($ratings)) {
 			foreach($ratings as $row) {
 				// Cap ratings to the shop scale
-				if ($row->user_rating > $this->max_rating) {
-					$row->user_rating = $this->max_rating;
-				}
-				// Date formatting 
-				$date= JFactory::getDate($row->time, $tzoffset);
+//				if ($row->rating > $this->max_rating) {
+//					$row->rating = $this->max_rating;
+//				}
+				// Date formatting
+				$date= JFactory::getDate($row->modified_on, $tzoffset);
 				$row->reviewDate =  $date->toFormat($dateformat);
 			}
 		} else {
-			if ($ratings->user_rating > $this->max_rating) {
-				$ratings->user_rating = $this->max_rating;
-			}
-			// Date formatting 
-			$date= JFactory::getDate($ratings->time, $tzoffset);
+//			if ($ratings->rating > $this->max_rating) {
+//				$ratings->rating = $this->max_rating;
+//			}
+			// Date formatting
+			$date= JFactory::getDate($ratings->modified_on, $tzoffset);
 			$ratings->reviewDate = $date->toFormat($dateformat);
 		}
 		return $ratings;

@@ -895,10 +895,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
   `review_ok` int(11) NOT NULL DEFAULT '0',
-  `review_rate` int(11) NOT NULL DEFAULT '0',
+  `review_rates` int(11) NOT NULL DEFAULT '0',
   `review_ratingcount` int(11) NOT NULL DEFAULT '0',
   `review_rating` float(1) NOT NULL DEFAULT '0',
-  `rating` int(11) NOT NULL DEFAULT '0',
+  `rate` int(11) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -918,10 +918,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
-  `virtuemart_product_vote_id` SERIAL,
-  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_product_id` SERIAL,
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
-  `rate` int(11) NOT NULL ,
+  `rates` int(11) NOT NULL ,
   `ratingcount` int(11) NOT NULL DEFAULT '0',
   `rating` float(1) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',

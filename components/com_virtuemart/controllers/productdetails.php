@@ -36,9 +36,9 @@ class VirtueMartControllerProductdetails extends JController {
 		$this->registerTask( 'askquestion','MailForm' );
 	}
 
-	public function productdetails() {
+	public function Productdetails() {
 
-		$cart = JRequest::getVar('cart',false,'post');
+//		$cart = JRequest::getVar('cart',false,'post');
 //		if($cart){
 //			require(JPATH_VM_SITE.DS.'controllers'.DS.'cart.php');
 //			$controller= new VirtueMartControllerCart();
@@ -190,17 +190,20 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Add the category model */
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
-		/* Set the layout */
-		$view->setLayout('productdetails');
+		$view->setModel($model = $this->getModel( 'ratings', 'VirtuemartModel' ));
 
-		$model = $this->getModel( 'ratings', 'VirtuemartModel' );
+		/* Get the posted data */
+		$data = JRequest::get('post');
 
 		$msgtype = '';
-		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
+		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
 		else {
 			$mainframe->enqueueMessage($model->getError());
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
+		/* Set the layout */
+		$view->setLayout('productdetails');
+
 		/* Display it all */
 		$view->display();
 	}

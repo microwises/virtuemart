@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Product review table class
@@ -29,25 +29,22 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @author RolandD
  * @author Max Milbers
  */
-class TableRatings extends VmTable {
+class TableProduct_ratings extends VmTableData {
 
 	/** @var int Primary key */
-	var $virtuemart_product_review_id				= 0;
+//	var $virtuemart_product_rating_id	= 0;
 	/** @var int Product ID */
-	var $virtuemart_product_id           	= null;
+	var $virtuemart_product_id           = 0;
 	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         		= null;
-	/** @var string The user comment */
-	var $comment         		= null;
-	/** @var int The number of stars awared */
-	var $review_ok       		= null;
+	var $virtuemart_user_id         	= 0;
+
 	/** @var int No idea what this is for */
-	var $review_rate         		= null;
+	var $rates         			= 0;
 	/** @var int No idea what this is for */
-	var $review_ratingcount      		= null;
+	var $ratingcount      		= 0;
 	/** @var int No idea what this is for */
-	var $rating      		= null;
-	var $lastip      		= null;
+	var $rating      					= 0;
+	var $lastip      					= 0;
 
 	/** @var int State of the review */
 	var $published         		= 0;
@@ -58,11 +55,9 @@ class TableRatings extends VmTable {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
-
-//		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-//		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+		parent::__construct('#__virtuemart_product_ratings', 'virtuemart_product_id', $db);
+		$this->setPrimaryKey('virtuemart_product_id');
+//		$this->setObligatoryKeys('virtuemart_product_id','COM_VIRTUEMART_PRODUCT_RATINGS_RECORDS_MUST_CONTAIN_PRODUCT_ID');
 
 		$this->setLoggable();
 

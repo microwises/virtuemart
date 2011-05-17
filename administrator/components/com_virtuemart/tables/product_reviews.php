@@ -19,34 +19,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Product review table class
  * The class is is used to manage the reviews in the shop.
  *
  * @package		VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
-class TableRatings extends VmTable {
+class TableProduct_reviews extends VmTableData {
 
 	/** @var int Primary key */
-	var $virtuemart_product_review_id				= 0;
+	var $virtuemart_product_review_id	= 0;
 	/** @var int Product ID */
-	var $virtuemart_product_id           	= null;
+	var $virtuemart_product_id			= null;
 	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         		= null;
+	var $virtuemart_user_id         	= null;
+
 	/** @var string The user comment */
-	var $comment         		= null;
+	var $comment         				= null;
 	/** @var int The number of stars awared */
-	var $review_ok       		= null;
-	/** @var int No idea what this is for */
-	var $review_rate         		= null;
-	/** @var int No idea what this is for */
+	var $review_ok       				= null;
+
+	/** The rating of shoppers for the review*/
+	var $review_rate         			= null;
 	var $review_ratingcount      		= null;
-	/** @var int No idea what this is for */
-	var $rating      		= null;
+	var $review_rating      			= null;
+
+	/** The rate of the user who wrote the review */
+	var $rate      		= null;
+
 	var $lastip      		= null;
 
 	/** @var int State of the review */
@@ -54,18 +57,19 @@ class TableRatings extends VmTable {
 
 
 	/**
-	* @author RolandD
+	* @author Max Milbers
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
-
+		$this->setPrimaryKey('virtuemart_product_id');
 //		$this->setUniqueName('country_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-//		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+//		$this->setObligatoryKeys('virtuemart_product_id','COM_VIRTUEMART_PRODUCT_REVIEWS_RECORDS_MUST_CONTAIN_PRODUCT_ID');
+		$this->setObligatoryKeys('comment','COM_VIRTUEMART_PRODUCT_REVIEWS_RECORDS_MUST_CONTAIN_COMMENT');
 
 		$this->setLoggable();
-
 	}
+
+
 }
 // pure php no closing tag
