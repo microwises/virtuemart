@@ -37,11 +37,17 @@ class VmController extends JController{
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
 
+
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->_cname);
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
-
+		$task = explode ('.',JRequest::getCmd( 'task'));
+		if ($task[0] == 'toggle') {
+			if (isset($task[2])) $val = $task[2] ;
+			else $val = NULL ;
+			$this->toggle($task[1],$val);
+		}
 	}
 
 	/**
@@ -136,6 +142,25 @@ class VmController extends JController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	/**
+	 * Handle the toggle task
+	 *
+	 * @author Max Milbers , Patrick Kohl
+	 */
+
+	public function toggle($field,$val=null){
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$model = $this->getModel($this->_cname);
+		if (!$model->toggle($field,$val)) {
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
+		} else{
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
+		}
+
+		$this->setRedirect( $this->redirectPath, $msg);
+	}
 	/**
 	 * Handle the publish task
 	 *

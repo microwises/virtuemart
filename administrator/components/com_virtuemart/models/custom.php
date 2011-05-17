@@ -245,7 +245,24 @@ class VirtueMartModelCustom extends VmModel {
 		$mainframe->enqueueMessage( JText::sprintf('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS', $deleted ));
 
 	}
+	/**
+	 * Creates a clone of a given custom id
+	 *
+	 * @author Max Milbers
+	 * @param int $virtuemart_product_id
+	 */
 
+	public function createClone($id){
+		$this->virtuemart_custom_id = $id;
+		$row = $this->getTable('customs');
+		$row->load( $id );
+		dump($row,'row clone');
+		$row->virtuemart_custom_id = 0;
+		if (!$row->store()) {
+			JError::raiseError(500, $row->getError() );
+		}
+		return $this->store($clone);
+	}
 //	/**
 //	 * Publish/Unpublish all the ids selected
 //     *
@@ -267,11 +284,11 @@ class VirtueMartModelCustom extends VmModel {
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.
      */
-	public function toggle($field)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::toggle('custom',$field,'cid');
-	}
+	// public function toggle($field)
+	// {
+		// if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		// return modelfunctions::toggle('custom',$field,'cid');
+	// }
 
 	/* Save and delete from database
 	* all product custom_fields and xref

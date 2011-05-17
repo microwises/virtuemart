@@ -251,8 +251,8 @@ class VirtueMartModelProduct extends VmModel {
 
 				$product->prices = $prices;
 
-				/* Add the product link  */
-				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
+				/* Add the product link  for canonical */
+				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id.'&virtuemart_category_id='.$product->categories[0]);
 
 				/* Load the neighbours */
 				$product->neighbours = $this->getNeighborProducts($product);

@@ -149,7 +149,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 	    <fieldset class="adminform">
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 		<table class="admintable">
-<?php /*			<tr>
+		<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
 				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
@@ -158,10 +158,9 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 	    	<td>
 				<?php 
 				 $showReviewFor = array(1 => 'anonymous', 2 => 'user', 3 => 'user_buy_it', 4 => 'vendor');
-				echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); 
-				?>
+				echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
 	    	</td>
-			</tr> */ ?>
+			</tr>  ?>
 			<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">

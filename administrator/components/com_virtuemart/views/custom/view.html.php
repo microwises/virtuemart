@@ -76,6 +76,12 @@ class VirtuemartViewCustom extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_LIST_LBL'), 'vm_countries_48' );
+			
+			JToolBarHelper::custom('createClone', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_CLONE'), true);
+			JToolBarHelper::custom('toggle.admin_only.0', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
+			JToolBarHelper::custom('toggle.admin_only.1', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
+			JToolBarHelper::custom('toggle.is_hidden.0', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
+			JToolBarHelper::custom('toggle.is_hidden.1', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

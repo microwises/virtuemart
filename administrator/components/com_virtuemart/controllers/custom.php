@@ -187,7 +187,7 @@ class VirtuemartControllerCustom extends VmController {
 	 * @author Max Milbers
 	 */
 	public function publish() {
-		// Check token
+
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$customModel = $this->getModel('custom');
@@ -199,6 +199,29 @@ class VirtuemartControllerCustom extends VmController {
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
+	}
+	/**
+	* Clone a product
+	*
+	* @author RolandD, Max Milbers
+	*/
+	public function createClone() {
+		$mainframe = Jfactory::getApplication();
+
+		/* Load the view object */
+		$view = $this->getView('custom', 'html');
+
+		$model = $this->getModel('custom');
+		$msgtype = '';
+		$cids = JRequest::getVar('cid');
+		foreach ($cids as $custom_id) {
+			if ($model->createClone($custom_id)) $msg = JText::_('COM_VIRTUEMART_CUSTOM_CLONED_SUCCESSFULLY');
+			else {
+				$msg = JText::_('COM_VIRTUEMART_CUSTOM_NOT_CLONED_SUCCESSFULLY').' : '.$custom_id;
+				$msgtype = 'error';
+			}
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=custom', $msg, $msgtype);
 	}
 	/**
 	 * Toggle is_hidden fied

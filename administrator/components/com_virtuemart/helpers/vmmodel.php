@@ -211,22 +211,27 @@ class VmModel extends JModel {
     }
 
 	/**
-	 * toggle (0/1) a unique row
+	 * toggle (0/1) a field
+	 * or invert by $val for multi IDS;
 	 * @author Patrick Kohl
 	 * @param string $field the field to toggle
 	 * @param string $postName the name of id Post  (same as in table Class constructor)
 	 */
 
-	function toggle($field, $postName ) {
-
+	function toggle($field,$val = NULL, $postName='cid' ) {
 		$ok = true;
-		$table =& $this->getTable($this->maintablename);
+		$table =& $this->getTable($this->_maintablename);
 
 		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
 		foreach($ids as $id){
 			$table->load( $id );
-			if ($table->$field ==0) $table->$field = 1 ;
-			else $table->$field = 0;
+			if ($val == NULL) {
+				if ($table->$field ==0) $table->$field = 1 ;
+				else $table->$field = 0;
+			} else {
+				$table->$field = $val;
+			}
+			
 			if (!$table->store()) {
 				JError::raiseError(500, $row->getError() );
 				$ok = false;

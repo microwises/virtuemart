@@ -127,20 +127,20 @@ class VirtueMartViewProductdetails extends JView {
 		$pathway->addItem($product->product_name);
 
 		/* Load the reviews */
-		if (VmConfig::get('allow_reviews', 1) == '1') {
+		// if (VmConfig::get('allow_reviews', 1) == '1') {
 
-			$model = $this->getModel();
-			/* Show all reviews available */
-			$product_reviews = $model->getProductReviews($product->virtuemart_product_id);
-			$this->assignRef('product_reviews', $product_reviews);
-		}
+			// $model = $this->getModel();
+			// /* Show all reviews available */
+			// $product_reviews = $model->getProductReviews($product->virtuemart_product_id);
+			// $this->assignRef('product_reviews', $product_reviews);
+		// }
 
-		$ratingModel = $this->getModel('ratings');
-		$showReview = $ratingModel->showReview($product->virtuemart_product_id);
-		$this->assignRef('showReview', $showReview);
+		// $ratingModel = $this->getModel('ratings');
+		// $showReview = $ratingModel->showReview($product->virtuemart_product_id);
+		// $this->assignRef('showReview', $showReview);
 
-		$showRating = $ratingModel->showRating($product->virtuemart_product_id);
-		$this->assignRef('showRating', $showRating);
+		// $showRating = $ratingModel->showRating($product->virtuemart_product_id);
+		// $this->assignRef('showRating', $showRating);
 
 		/* Check for editing access */
 		/** @todo build edit page */

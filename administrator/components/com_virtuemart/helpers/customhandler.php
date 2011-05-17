@@ -122,10 +122,9 @@ class VmCustomHandler {
 	}
 
 	/**
-	 * Displays a possibility to select already uploaded custom
-	 * the getImagesList must be adjusted to have more search functions
+	 * Displays a possibility to select created custom
 	 * @author Max Milbers
-	 * @param array $fileIds
+	 * @author Patrick Kohl
 	 */
 	public function displayCustomSelection(){
 		
@@ -148,7 +147,7 @@ class VmCustomHandler {
     	$vendorId=1;
 		// get custom parents
     	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0';
-		if ($publishedOnly) $q=' WHERE `published`=1 ';
+		if ($publishedOnly) $q.=' WHERE `published`=1';
 		if ($ID = JRequest::getVar( 'virtuemart_custom_id',false)) $q .=' and `virtuemart_custom_id`!='.$ID;
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
@@ -188,11 +187,6 @@ class VmCustomHandler {
 		self::addHiddenByType();
 
 		$html = '<div id="custom_title">'.$this->custom_title.'</div>';
-		//$html .= $this->displayCustomFull($imageArgs,false);
-
-		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
-//		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
-
 		$html .= ' <table class="adminform"> ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -213,7 +207,6 @@ class VmCustomHandler {
 		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ; 
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
-//		$html .= '</form>';
 
 		return $html;
 	}
