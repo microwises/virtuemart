@@ -63,17 +63,23 @@ class VirtuemartViewCurrency extends JView {
                         JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
-			$usermodel = $this->getModel('user', 'VirtuemartModel');
-			$usermodel->setCurrent();
-			$userDetails = $usermodel->getUser();
-			if(empty($userDetails->virtuemart_vendor_id)){
-				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
+//			$usermodel = $this->getModel('user', 'VirtuemartModel');
+//			$usermodel->setCurrent();
+//			$userDetails = $usermodel->getUser();
+//			if(empty($userDetails->virtuemart_vendor_id)){
+//				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
+//			}
+
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			if(empty($currency->virtuemart_vendor_id)){
+
+   				$currency->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
-			if(empty($currency->virtuemart_vendor_id))$currency->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
+
 //			$this->assignRef('virtuemart_vendor_id', $vendorCurrency);
 
 			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->virtuemart_vendor_id,$currency->virtuemart_currency_id,'');
+			$cd = CurrencyDisplay::getCurrencyDisplay(VirtueMartModelVendor::getLoggedVendor(),$currency->virtuemart_currency_id,'');
 			$this->assignRef('currencyDisplay',$cd);
 
        }

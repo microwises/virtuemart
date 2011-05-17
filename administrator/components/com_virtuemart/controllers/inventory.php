@@ -42,7 +42,6 @@ class VirtuemartControllerInventory extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('INVENTORY');
 		/* Redirects */
 		$this->registerTask('unpublish','inventory');
 		$this->registerTask('publish','inventory');
@@ -67,5 +66,6 @@ class VirtuemartControllerInventory extends VmController {
 		/* Now display the view. */
 		$view->display();
 	}
+
 }
 // pure php no closing tag

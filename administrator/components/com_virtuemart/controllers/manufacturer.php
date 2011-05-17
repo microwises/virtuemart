@@ -44,11 +44,6 @@ class VirtuemartControllerManufacturer extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('MANUFACTURER');
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask( 'apply',  'save' );
-
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView('manufacturer', $viewType);
@@ -64,111 +59,6 @@ class VirtuemartControllerManufacturer extends VmController {
 		}
 	}
 
-	/**
-	 * Display the manufacturer view
-	 *
-	 */
-	function display() {
-		parent::display();
-	}
 
-
-	/**
-	 * Handle the edit task
-	 *
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'manufacturer');
-		JRequest::setVar('view', 'manufacturer');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cnacel task
-	 *
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturer');
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 */
-	function save()
-	{
-
-		/* Load the view object */
-		$view = $this->getView('manufacturer', 'html');
-
-		$model = $this->getModel('manufacturer');
-
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_SAVED');
-		} else {
-			$msg = $model->getError();
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=manufacturer';
-
-		$this->setRedirect($redirection, $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 */
-	function remove()
-	{
-		$model = $this->getModel('manufacturer');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_ERROR');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 */
-	function publish()
-	{
-		$model = $this->getModel('manufacturer');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_PUBLISH_ERROR');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 */
-	function unpublish()
-	{
-		$model = $this->getModel('manufacturer');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_UNPUBLISH_ERROR');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturer', $msg);
-	}
 }
 // pure php no closing tag

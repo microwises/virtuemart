@@ -10,7 +10,7 @@
 
 * @package	VirtueMart
 
-* @subpackage 
+* @subpackage
 
 * @author StephanieS
 
@@ -32,14 +32,14 @@
 
 */
 
- 
+
 
 // Check to ensure this file is included in Joomla!
 
 defined('_JEXEC') or die('Restricted access');
 
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 
 	<legend><?php echo JText::_('COM_VIRTUEMART_USERGROUP_DETAILS'); ?></legend>
 
-	<table class="admintable">			
+	<table class="admintable">
 
 		<tr>
 
@@ -69,11 +69,11 @@ AdminMenuHelper::startAdminArea();
 
 			<td>
 
-				<input class="inputbox" type="text" name="group_name" id="group_name" size="50" value="<?php echo $this->usergroup->group_name; ?>" />				
+				<input class="inputbox" type="text" name="group_name" id="group_name" size="50" value="<?php echo $this->usergroup->group_name; ?>" />
 
 			</td>
 
-		</tr>					
+		</tr>
 
 		<tr>
 
@@ -89,11 +89,11 @@ AdminMenuHelper::startAdminArea();
 
 			<td>
 
-				<input class="inputbox" type="text" name="group_level" id="group_level" size="3" value="<?php echo $this->usergroup->group_level; ?>" />				
+				<input class="inputbox" type="text" name="group_level" id="group_level" size="3" value="<?php echo $this->usergroup->group_level; ?>" />
 
 			</td>
 
-		</tr>					
+		</tr>
 
 	</table>
 
@@ -113,10 +113,12 @@ AdminMenuHelper::startAdminArea();
 
 	<input type="hidden" name="controller" value="usergroups" />
 
+	<?php echo JHTML::_( 'form.token' ); ?>
+
 </form>
 
 
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

@@ -80,6 +80,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shoppergroup" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

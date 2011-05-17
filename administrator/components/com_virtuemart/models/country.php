@@ -133,12 +133,6 @@ class VirtueMartModelCountry extends VmModel {
 
 	}
 
-	if (!$this->_data) {
-	    $this->_data = new stdClass();
-	    $this->_id = 0;
-	    $this->_data = null;
-	}
-
 	return $this->_data;
     }
 
@@ -181,7 +175,7 @@ class VirtueMartModelCountry extends VmModel {
      * @return boolean True is the save was successful, false otherwise.
      */
     function store() {
-	$table = $this->getTable('country');
+	$table = $this->getTable('countries');
 
 	$data = JRequest::get('post');
 

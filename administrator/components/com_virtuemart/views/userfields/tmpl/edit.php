@@ -309,6 +309,7 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="valueCount" value="<?php echo $this->valueCount; ?>" />
 <input type="hidden" name="controller" value="userfields" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

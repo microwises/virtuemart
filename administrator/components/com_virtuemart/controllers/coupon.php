@@ -42,11 +42,9 @@ class VirtuemartControllerCoupon extends VmController {
 	 */
 	function __construct() {
 		parent::__construct();
+	}
 
-//		$this->setMainLangKey('COUPON');
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask('apply','save');
+	function Coupon () {
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
@@ -57,85 +55,8 @@ class VirtuemartControllerCoupon extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-	}
-
-	/**
-	 * Display the coupon view
-	 *
-	 * @author RickG
-	 */
-	function display() {
 		parent::display();
 	}
 
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'coupon');
-		JRequest::setVar('view', 'coupon');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=coupon');
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG
-	 */
-	function save()
-	{
-		$model = $this->getModel('coupon');
-
-		if (($_id = $model->store()) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_COUPON_SAVED');
-		}
-
-		$_redir = 'index.php?option=com_virtuemart&view=coupon';
-		if(JRequest::getCmd('task') == 'apply'){
-			$_redir .= '&task=edit&cid[]='.$_id;
-		}
-
-		$this->setRedirect($_redir, $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('coupon');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_COUPONS_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_COUPONS_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=coupon', $msg);
-	}
 }
 // pure php no closing tag

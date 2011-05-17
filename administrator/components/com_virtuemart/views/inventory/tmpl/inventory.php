@@ -108,6 +108,6 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="view" value="inventory" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

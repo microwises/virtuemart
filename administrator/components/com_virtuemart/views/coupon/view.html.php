@@ -47,8 +47,9 @@ class VirtuemartViewCoupon extends JView {
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_COUPON_HEADER').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_coupon_48');
 				// Set a default expiration date
-				$_expTime = explode(',', VmConfig::get('coupons_default_expire'));
-				if ($_expTime[1] == 'W') {
+				$_expTime = explode(',', VmConfig::get('coupons_default_expire','14,D'));
+
+				if (!empty( $_expTime[1]) && $_expTime[1] == 'W') {
 					$_expTime[0] = $_expTime[0] * 7;
 					$_expTime[1] = 'D';
 				}
@@ -61,7 +62,7 @@ class VirtuemartViewCoupon extends JView {
 					} elseif ($_expTime[1] == 'Y') {
 						$_dtArray['year'] += $_expTime[0];
 					}
-					$coupon->coupon_expiry_date = 
+					$coupon->coupon_expiry_date =
 						  mktime($_dtArray['hours'], $_dtArray['minutes'], $_dtArray['seconds']
 						, $_dtArray['mon'], $_dtArray['mday'], $_dtArray['year']);
 				} else {
@@ -93,7 +94,7 @@ class VirtuemartViewCoupon extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
-		
+
 		parent::display($tpl);
 	}
 

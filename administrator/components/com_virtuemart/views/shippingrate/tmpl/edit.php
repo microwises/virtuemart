@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_DETAILS'); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -38,9 +38,9 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<label for="shipping_rate_name">
 					<input class="inputbox" type="text" name="shipping_rate_name" id="shipping_rate_name" size="50" value="<?php echo $this->rate->shipping_rate_name; ?>" />
-				</label>				
+				</label>
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_list_order">
@@ -48,9 +48,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_list_order" id="shipping_rate_list_order" size="3" value="<?php echo $this->rate->shipping_rate_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_list_order" id="shipping_rate_list_order" size="3" value="<?php echo $this->rate->shipping_rate_list_order; ?>" />
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_carrier_id">
@@ -58,9 +58,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'virtuemart_shippingcarrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'virtuemart_shippingcarrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_country">
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'virtuemart_country_id', 'country_name', $this->rate->shipping_rate_country)
 					. '&nbsp;'.JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_COUNTRY_TOOLTIP') ); ?>
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_zip_start">
@@ -82,7 +82,7 @@ AdminMenuHelper::startAdminArea();
 				<input class="inputbox" type="text" name="shipping_rate_zip_start" id="shipping_rate_zip_start" size="10" value="<?php echo $this->rate->shipping_rate_zip_start; ?>" />
 				<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_zip_end">
@@ -90,10 +90,10 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_zip_end" id="shipping_rate_zip_end" size="10" value="<?php echo $this->rate->shipping_rate_zip_end; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_zip_end" id="shipping_rate_zip_end" size="10" value="<?php echo $this->rate->shipping_rate_zip_end; ?>" />
 				<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_RATE_FORM_ZIP_TOOLTIP') ); ?>
 			</td>
-		</tr>				
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_weight_start">
@@ -101,9 +101,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_weight_start" id="shipping_rate_weight_start" size="10" value="<?php echo $this->rate->shipping_rate_weight_start; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_weight_start" id="shipping_rate_weight_start" size="10" value="<?php echo $this->rate->shipping_rate_weight_start; ?>" />
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_weight_end">
@@ -111,7 +111,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_weight_end" id="shipping_rate_weight_end" size="10" value="<?php echo $this->rate->shipping_rate_weight_end; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_weight_end" id="shipping_rate_weight_end" size="10" value="<?php echo $this->rate->shipping_rate_weight_end; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -121,9 +121,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_value" id="shipping_rate_value" size="10" value="<?php echo $this->rate->shipping_rate_value; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_value" id="shipping_rate_value" size="10" value="<?php echo $this->rate->shipping_rate_value; ?>" />
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_package_fee">
@@ -131,9 +131,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_package_fee" id="shipping_rate_package_fee" size="10" value="<?php echo $this->rate->shipping_rate_package_fee; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_package_fee" id="shipping_rate_package_fee" size="10" value="<?php echo $this->rate->shipping_rate_package_fee; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_virtuemart_currency_id">
@@ -141,9 +141,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_virtuemart_currency_id', '', 'virtuemart_currency_id', 'currency_name', $this->rate->shipping_rate_virtuemart_currency_id); ?>							
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_virtuemart_currency_id', '', 'virtuemart_currency_id', 'currency_name', $this->rate->shipping_rate_virtuemart_currency_id); ?>
 			</td>
-		</tr>					
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping_rate_vat_id">
@@ -152,7 +152,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 			<td>
 				<?php echo $this->taxRates;
-				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'virtuemart_calc_id', 'calc_value', $this->rate->shipping_rate_vat_id); 
+				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'virtuemart_calc_id', 'calc_value', $this->rate->shipping_rate_vat_id);
 				?>
 			</td>
 		</tr>
@@ -165,7 +165,8 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shippingrate" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

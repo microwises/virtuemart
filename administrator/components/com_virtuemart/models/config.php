@@ -274,24 +274,25 @@ class VirtueMartModelConfig extends JModel {
      */
     function store($data) {
 
-	if ($data) {
-	    $curConfigParams = $this->getConfig();
-	    $curConfigParams->bind($data);
+		if ($data) {
+		    $curConfigParams = $this->getConfig();
+		    $curConfigParams->bind($data);
 
-	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
-	    $db->setQuery($query);
-	    if (!$db->query()) {
-		$this->setError($table->getError());
-		return false;
-	    }
-	}
-	else {
-	    $this->setError('No configuration parameters to save!');
-	    return false;
-	}
+		    $db = JFactory::getDBO();
+		    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
+		    $db->setQuery($query);
+		    if (!$db->query()) {
+				$this->setError($table->getError());
+				return false;
+		    }
+		} else {
+		    $this->setError('No configuration parameters to save!');
+		    return false;
+		}
+		// Load the newly saved values into the session.
+		VmConfig::getInstance();
 
-	return true;
+		return true;
     }
 
     function setDangerousToolsOff(){

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* mf_media_xref table ( for manufacturers)
+* manufacturer_medias table ( for manufacturers)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool

@@ -59,105 +59,80 @@ class VirtuemartControllerConfig extends VmController {
 		}
 	}
 
-	/**
-	 * Display the config view
-	 *
-	 * @author RickG
-	 */
-	function display() {
-		parent::display();
-	}
+
+//	/**
+//	 * Handle the edit task
+//	 *
+//     * @author RickG
+//	 */
+//	function edit(){
+//
+//		parent::edit();
+//	}
+
+
+//	/**
+//	 * Handle the save task
+//	 *
+//	 * @author RickG
+//	 */
+//	function save()
+//	{
+//		$model = $this->getModel('config');
+//		$data = JRequest::get('post');
+//
+//		if ($model->store($data)) {
+//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+//			// Load the newly saved values into the session.
+//			VmConfig::getInstance();
+//		}
+//		else {
+//			$msg = $model->getError();
+//		}
+//
+//		$this->setRedirect('index.php?option=com_virtuemart', $msg);
+//	}
+//
+//
+//	/**
+//	 * Handle the apply task
+//	 *
+//	 * @author RickG
+//	 */
+//	function apply()
+//	{
+//		$model = $this->getModel('config');
+//		$data = JRequest::get('post');
+//
+//		if ($model->store($data)) {
+//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+//			// Load the newly saved values into the session.
+//			VmConfig::getInstance();
+//		}
+//		else {
+//			$msg = JText::_($model->getError());
+//		}
+//
+//		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+//	}
 
 
 	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
+	 * Overwrite the remove task
+	 * Removing config is forbidden.
+	 * @author Max Milbers
 	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'config');
-		JRequest::setVar('view', 'config');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
+	function remove(){
 
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart', $msg);
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG
-	 */
-	function save()
-	{
-		$model = $this->getModel('config');
-		$data = JRequest::get('post');
-
-		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-			// Load the newly saved values into the session.
-			VmConfig::getInstance();
-		}
-		else {
-			$msg = $model->getError();
-		}
-
-		$this->setRedirect('index.php?option=com_virtuemart', $msg);
-	}
-
-
-	/**
-	 * Handle the apply task
-	 *
-	 * @author RickG
-	 */
-	function apply()
-	{
-		$model = $this->getModel('config');
-		$data = JRequest::get('post');
-
-		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-			// Load the newly saved values into the session.
-			VmConfig::getInstance();
-		}
-		else {
-			$msg = JText::_($model->getError());
-		}
-
-		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('config');
-		if (!$model->delete()) {
+//		$model = $this->getModel('config');
+//		if (!$model->delete()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CONFIGS_DELETED');
-		}
+//		}
+//		else {
+//			$msg = JText::_('COM_VIRTUEMART_CONFIGS_DELETED');
+//		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=config', $msg);
+		$this->setRedirect( $this->redirectPath , $msg);
 	}
 }
 

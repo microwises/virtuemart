@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER'); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -36,7 +36,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -78,7 +78,8 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="shippingcarrier" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

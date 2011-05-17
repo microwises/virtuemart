@@ -66,8 +66,8 @@ class VirtuemartControllerCountry extends VmController {
 		$view = $this->getView($this->_cname, $viewType);
 
 		$view->setModel( $this->getModel( 'WorldZones', 'VirtueMartModel' ));
-		dump($this->_cname,'hm');
-		parent::display();
+
+		parent::edit();
 	}
 }
 
