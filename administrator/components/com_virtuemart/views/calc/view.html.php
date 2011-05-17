@@ -130,6 +130,10 @@ class VirtuemartViewCalc extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_LIST_LBL'), 'vm_countries_48' );
+			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
+			JToolBarHelper::custom('toggle.calc_shopper_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_ON'), true);
+			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
+			JToolBarHelper::custom('toggle.calc_vendor_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList();

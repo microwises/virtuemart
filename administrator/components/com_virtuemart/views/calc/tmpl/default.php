@@ -148,12 +148,12 @@ $j15 = VmConfig::isJ15();
 					<?php echo $row->calcShoppersList; ?>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShopper')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_shopper_published')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleVendor')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
