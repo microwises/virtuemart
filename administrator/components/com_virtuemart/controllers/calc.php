@@ -40,164 +40,47 @@ class VirtuemartControllerCalc extends VmController {
 	public function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('CALC');
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView('calc', $viewType);
-
-		// Pushing default model
-		$calcModel = $this->getModel('calc');
-		if (!JError::isError($calcModel)) {
-			$view->setModel($calcModel, true);
-		}
-		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-
-
 	}
 
 	/**
-	 * Display the calculator view
+	 * Default view without task
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */
-	public function display() {
+	public function Calc() {
+
+		$document =& JFactory::getDocument();
+		$viewType	= $document->getType();
+		$view = $this->getView($this->_cname, $viewType);
+
+		// Pushing default model
+		$model = $this->getModel();
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+
+		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
+
 		parent::display();
 	}
-
 
 	/**
 	 * Handle the edit task
 	 *
      * @author Max Milbers
 	 */
-	public function edit()
-	{
-		JRequest::setVar('controller', 'calc');
-		JRequest::setVar('view', 'calc');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
+	public function edit(){
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('calc', $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
 
-		parent::display();
+		parent::edit();
+
 	}
-
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function save(){
-
-		// Check token, how does this really work?
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$calcModel = $this->getModel('calc');
-
-		if ($id = $calcModel->store()) {
-			$msg = JText::_('COM_VIRTUEMART_CALC_SAVED_SUCCESS');
-		}
-		else {
-			$msg = $calcModel->getError();
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=calc&task=edit&cid[]='.$id;
-		} else {
-			$redirection = 'index.php?option=com_virtuemart&view=calc';
-		}
-
-		$this->setRedirect($redirection, $msg);
-	}
-	/**
-	 * Handle the remove task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function remove()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$mainframe = JFactory::getApplication();
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=calc', $msg, 'error');
-			return;
-		}
-
-		$calcModel = $this->getModel('calc');
-
-		if (!$calcModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CALC_DELETED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
-	}
-
-
-//	/**
-//	 * Handle the publish task
-//	 *
-//	 * @author Jseros, Max Milbers
-//	 */
-//	public function publish()
-//	{
-//		// Check token
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//
-//		$calcModel = $this->getModel('calc');
-//		if (!$calcModel->publish(true)) {
-//			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_PUBLISHED');
-//		}
-//		else{
-//			$msg = JText::_('COM_VIRTUEMART_CALC_PUBLISHED_SUCCESS');
-//		}
-//
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
-//	}
-//
-//
-//	/**
-//	 * Handle the publish task
-//	 *
-//	 * @author Max Milbers, Jseros
-//	 */
-//	function unpublish()
-//	{
-//		// Check token
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//
-//		$calcModel = $this->getModel('calc');
-//		if (!$calcModel->publish(false)) {
-//			$msg = JText::_('COM_VIRTUEMART_ERROR_CALC_COULD_NOT_BE_UNPUBLISHED');
-//		}
-//		else{
-//			$msg = JText::_('COM_VIRTUEMART_CALC_UNPUBLISHED_SUCCESS');
-//		}
-//
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', $msg);
-//	}
 
 
 	/**

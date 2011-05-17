@@ -226,69 +226,45 @@ class VirtueMartModelRatings extends VmModel {
 			$app->enqueueMessage($table->getError());
 		}
 
-//    	if ( !$data['virtuemart_product_review_id'] ){
-//			$user = JFactory::getUser();
-//			$data['virtuemart_user_id'] = $user->id;
-//		}
-
 		if(!empty($data['comment'])){
-		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
-		//set to defaut value not used (prevent hack)
-		$data['review_ok'] = 0 ;
-		$data['review_votes'] = 0 ;
-		/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
-		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
-		else $data['published'] = 0;
+			$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+			//set to defaut value not used (prevent hack)
+			$data['review_ok'] = 0;
+			$data['review_votes'] = 0;
 
-    	$review = $this->getTable('product_reviews');
-		$review->load($data['virtuemart_product_id']);
+			/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
+			if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
+			else $data['published'] = 0;
 
-		if(!empty($review->review_rates)){
-			$data['review_rates'] = $review->review_rates + $data['review_rate'];
-		} else {
-			$data['review_rates'] = $data['review_rate'];
+	    	$review = $this->getTable('product_reviews');
+			$review->load($data['virtuemart_product_id']);
+
+			if(!empty($review->review_rates)){
+				$data['review_rates'] = $review->review_rates + $data['review_rate'];
+			} else {
+				$data['review_rates'] = $data['review_rate'];
+			}
+
+			if(!empty($review->review_ratingcount)){
+				$data['review_ratingcount'] = $review->review_ratingcount+1;	// ++ does NOT work !
+			} else {
+				$data['review_ratingcount'] = 1;
+			}
+
+			$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
+
+			if(empty($review->virtuemart_user_id)){
+				$user = JFactory::getUser();
+				$data['virtuemart_user_id'] = $user->id;
+			}
+
+	        if($data = $review->bindChecknStore($data)){
+
+			} else {
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($review->getError());
+			}
 		}
-
-		if(!empty($review->review_ratingcount)){
-			$data['review_ratingcount'] = $review->review_ratingcount+1;	// ++ does NOT work !
-		} else {
-			$data['review_ratingcount'] = 1;
-		}
-
-		$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
-
-		if(empty($review->virtuemart_user_id)){
-			$user = JFactory::getUser();
-			$data['virtuemart_user_id'] = $user->id;
-		}
-
-        if($data = $review->bindChecknStore($data)){
-
-		} else {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($review->getError());
-		}
-		}
-//		$table = $this->getTable('product_reviews');
-//		$rating = $table->load($data['virtuemart_product_id']);
-//		if(!empty($rating)){
-//			$data['review_rates'] = $rating->review_rates + $data['review_rate'];
-//			$data['review_ratingcount'] = $rating->review_ratingcount++;
-//			$data['review_rating'] = $data['rates']/$data['review_ratingcount'];
-//		} else {
-//			$data['review_rates'] = $data['rate'];
-//			$data['review_ratingcount'] = 1;
-//			$data['review_rating'] = $data['review_rates'];
-//
-//		}
-//
-//    	if($data = $table->bindChecknStore($data)){
-//	    		return $data['virtuemart_product_review_id'];
-//		} else {
-//			$app = JFactory::getApplication();
-//			$app->enqueueMessage($table->getError());
-//
-//		}
 
 		return true;
     }

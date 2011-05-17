@@ -28,18 +28,21 @@ class VmTableXarray extends VmTable {
 
 	/** @var int Primary key */
 
-	var $autoOrdering = false;
-	var $orderable = false;
+	protected $_autoOrdering = false;
+	protected $_orderable = false;
 
     function setOrderable($key='ordering', $auto=true){
-    	$this->orderingKey = $key;
-    	$this->orderable = 1;
-    	$this->autoOrdering = $auto;
+    	$this->_orderingKey = $key;
+    	$this->_orderable = 1;
+    	$this->_autoOrdering = $auto;
+    	$this->$key = 0;
     }
 
 	function setSecondaryKey($key,$keyForm=0){
 		$this->_skey 		= $key;
+		$this->$key			= array();
 		$this->_skeyForm	= empty($keyForm)? $key:$keyForm;
+
     }
 
     /**
@@ -57,8 +60,8 @@ class VmTableXarray extends VmTable {
 
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		if($this->orderable){
-			$orderby = 'ORDER BY `'.$this->orderingKey.'`';
+		if($this->_orderable){
+			$orderby = 'ORDER BY `'.$this->_orderingKey.'`';
 		} else {
 			$orderby = '';
 		}
@@ -130,9 +133,9 @@ class VmTableXarray extends VmTable {
 				$obj->$skey = $value;
 
 				//When $value is an array, then we could add more values here.
-				if($this->autoOrdering){
-					$oKey = $this->orderingKey;
-					$obj->$oKey = $this->ordering++;
+				if($this->_autoOrdering){
+					$oKey = $this->_orderingKey;
+					$obj->$oKey = $this->_ordering++;
 				}
 				dump($obj,'to insert');
 				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);

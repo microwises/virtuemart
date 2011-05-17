@@ -21,7 +21,8 @@
 
 class VmController extends JController{
 
-	protected $_cidName;
+	protected $_cidName = 0;
+	protected $_cname = 0;
 
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
@@ -37,17 +38,50 @@ class VmController extends JController{
 		$this->registerTask('apply','save');
 
 		//VirtuemartController
-		$this->name = strtolower(substr(get_class( $this ), 20));
-		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->name);
-		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->name;
+		$this->_cname = strtolower(substr(get_class( $this ), 20));
+		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->_cname);
+		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 
 	}
 
-	function save()
-	{
-		$model =& $this->getModel($this->name);
+	/**
+	 * Generic edit task
+	 *
+	 * @author Max Milbers
+	 */
+	function edit(){
+
+		JRequest::setVar('controller', $this->_cname);
+		JRequest::setVar('view', $this->_cname);
+		JRequest::setVar('layout', 'edit');
+		JRequest::setVar('hidemenu', 1);
+
+		if(empty($view)){
+			$document =& JFactory::getDocument();
+			$viewType = $document->getType();
+			$view = $this->getView($this->_cname, $viewType);
+		}
+
+		$model = $this->getModel($this->_cname, 'VirtueMartModel');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+
+		parent::display();
+	}
+
+	/**
+	 * Generic save task
+	 *
+	 * @author Max Milbers
+	 */
+	function save(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token save' );
 
 		$data = JRequest::get('post');
+
+		$model = $this->getModel($this->_cname);
 		if (($_id = $model->store($data)) === false) {
 			$msg = JText::_($model->getError());
 		} else {
@@ -63,25 +97,37 @@ class VmController extends JController{
 	}
 
 	/**
-	 * Handle the remove task
+	 * Generic remove task
 	 *
 	 * @author Max Milbers
 	 */
 	function remove(){
-		$data = JRequest::get( 'post' );
-		$model = $this->getModel($this->name);
-		if (!$model->delete()) {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+
+		JRequest::checkToken() or jexit( 'Invalid Token remove' );
+
+
+		$cid = JRequest::getVar( $this->_cidName, array(), 'post', 'array' );
+		$msg = '';
+
+		JArrayHelper::toInteger($cid);
+
+		if(count($cid) < 1) {
+			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 		} else {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
+			$model = $this->getModel($this->_cname);
+			if (!$model->delete()) {
+				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+			} else {
+				$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
+			}
 		}
+
 		$this->setRedirect($this->redirectPath, $msg);
-//		$pname = $model->getIdName();
-//		$this->setRedirect( $this->redirectPath.'&'.$pname.'='.$data[$pname], $msg);
+
 	}
 
 	/**
-	 * Handle the cancel task
+	 * Generic cancel task
 	 *
 	 * @author Max Milbers
 	 */
@@ -96,10 +142,10 @@ class VmController extends JController{
 	 * @author Jseros, Max Milbers
 	 */
 	public function publish(){
-		// Check token
+
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->name);
+		$model = $this->getModel($this->_cname);
 		if (!$model->publish(true)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
@@ -116,10 +162,10 @@ class VmController extends JController{
 	 * @author Max Milbers, Jseros
 	 */
 	function unpublish(){
-		// Check token
+
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->name);
+		$model = $this->getModel($this->_cname);
 		if (!$model->publish(false)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
@@ -128,5 +174,6 @@ class VmController extends JController{
 
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
+
 
 }

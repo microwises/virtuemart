@@ -32,11 +32,6 @@ jimport( 'joomla.user.user' );
  */
 class VmTable extends JTable {
 
-
-	/** @var int Primary key */
-//	private $_id		= 0;
-
-//	private $_pkey 		= 0;
 	protected $_obkeys	= array();
 	protected $_unique	= false;
 	protected $_unique_name = array();
@@ -47,6 +42,7 @@ class VmTable extends JTable {
     	$this->setObligatoryKeys('_pkey',$langkey);
     	$this->_pkey = $key;
     	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
+    	$this->$key		= 0;
     }
 
 	public function setObligatoryKeys($key,$langkey=0){
@@ -74,7 +70,7 @@ class VmTable extends JTable {
 
     function setOrderable($key='ordering', $auto=true){
     	$this->_orderingKey = $key;
-    	$this->orderable = 1;
+    	$this->_orderable = 1;
     }
 
     function checkDataContainsTableFields($from, $ignore=array()){
@@ -91,10 +87,12 @@ class VmTable extends JTable {
 			$ignore = explode( ' ', $ignore );
 		}
 
+//		dump($this,'checkDataContainsTableFields');
 		foreach ($this->getProperties() as $k => $v){
 			// internal attributes of an object are ignored
-			if (!in_array( $k, $ignore ))
-			{
+//			dump($k,' $v '.$v. ' hmfp');
+			if (!in_array( $k, $ignore )){
+
 				if ($fromArray && isset( $from[$k] )) {
 					return true;
 
@@ -183,16 +181,16 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-        if(!$this->checkDataContainsTableFields($data)){
-			$app = JFactory::getApplication();
-    		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
-			return true;
-		}
-
-    	if (!$this->bind($data)) {
+        if (!$this->bind($data)) {
     		$app = JFactory::getApplication();
     		$app->enqueueMessage($this->getError());
 			return false;
+		}
+
+    	if(!$this->checkDataContainsTableFields($data)){
+			$app = JFactory::getApplication();
+    		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
+			return true;
 		}
 
 		// Make sure the table record is valid

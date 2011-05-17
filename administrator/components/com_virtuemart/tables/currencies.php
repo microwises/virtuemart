@@ -41,7 +41,7 @@ class TableCurrencies extends VmTable {
 	var $currency_code         		= ''; //should be renamed to $currency_code_2
 	/** @var char Currency symbol */
 	var $currency_numeric_code = 0;
-        var $currency_symbol         	= '';
+    var $currency_symbol         	= '';
 	/** @var char Currency rate */
 	var $exchange_rate         		= '';
 	/** @var char display style */
@@ -60,7 +60,7 @@ class TableCurrencies extends VmTable {
 		parent::__construct('#__virtuemart_currencies', 'virtuemart_currency_id', $db);
 
 		$this->setUniqueName('currency_name','COM_VIRTUEMART_CURRENCY_NAME_ALREADY_EXISTS');
-		$this->setObligatoryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
+//		$this->setObligatoryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
 
 		$this->setLoggable();
 

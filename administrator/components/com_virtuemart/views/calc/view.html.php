@@ -30,7 +30,7 @@ jimport( 'joomla.application.component.view');
  */
 
 class VirtuemartViewCalc extends JView {
-	
+
 	function display($tpl = null) {
 
 		// Load the helper(s)
@@ -43,7 +43,7 @@ class VirtuemartViewCalc extends JView {
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
-		
+
 		$db = JFactory::getDBO();
 		$config =& JFactory::getConfig();
 		$tzoffset = $config->getValue('config.offset');
@@ -51,17 +51,17 @@ class VirtuemartViewCalc extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
-				
+
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			
+
 			$calc = $model->getCalc();
 			$this->assignRef('calc',	$calc);
-			
+
 			$isNew = ($calc->virtuemart_calc_id < 1);
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
-				
+
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
 				$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.$vendorId.'"';
@@ -75,7 +75,7 @@ class VirtuemartViewCalc extends JView {
 				} else {
 					$calc->calc_currency = $currency;
 				}
-				
+
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
@@ -92,11 +92,11 @@ class VirtuemartViewCalc extends JView {
 			JToolBarHelper::save();
                         JToolBarHelper::apply();
 			JToolBarHelper::cancel();
-				
+
 			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
 			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
-			
-			
+
+
 			$this->loadHelper('shopFunctions');
 
 			/* Get the category tree */
@@ -108,21 +108,21 @@ class VirtuemartViewCalc extends JView {
 				 $categoryTree = ShopFunctions::categoryListTree();
 			}
 			$this->assignRef('categoryTree', $categoryTree);
-			
-			
+
+
 			$currencyModel = $this->getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
-			
+
 			/* Get the shoppergroup tree */
 			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->virtuemart_shoppergroup_ids,True);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
 
 			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
-			
+
 			$statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids, $calc->calc_countries, 'virtuemart_country_id',True);
-			$this->assignRef('statesList', $statesList);			
+			$this->assignRef('statesList', $statesList);
 
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
 			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,True);
@@ -134,31 +134,31 @@ class VirtuemartViewCalc extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();	
-			
-			$pagination = $model->getPagination();			
-			$this->assignRef('pagination',	$pagination);	
-			
+			JToolBarHelper::addNewX();
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination',	$pagination);
+
 			$calcs = $model->getCalcs();
 			$this->assignRef('calcs',	$calcs);
-			
+
 		}
 
 		parent::display($tpl);
 	}
-	
-	
+
+
 	/**
 	 * Builds a list to choose the Entrypoints
 	 * When you want to add extra Entrypoints, look in helpers/calculationh.php for mor information
-	 * 
-	 * 
+	 *
+	 *
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @param 	$selected 	the selected values, may be single data or array
-	 * @return 	$list 		list of the Entrypoints  
+	 * @return 	$list 		list of the Entrypoints
 	 */
-	 
+
 	function renderEntryPointsList($selected){
 
 		//Entrypoints array
@@ -172,7 +172,7 @@ class VirtuemartViewCalc extends JView {
 		'3' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAXBILL')),
 		'4' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAXBILL')),
 		'5' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
-		
+
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
@@ -183,13 +183,13 @@ class VirtuemartViewCalc extends JView {
 	/**
 	 * Builds a list to choose the mathematical operations
 	 * When you want to add extra operations, look in helpers/calculationh.php for more information
-	 * 
+	 *
 	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author 		Max Milbers
 	 * @param 	$selected 	the selected values, may be single data or array
-	 * @return 	$list 		list of the Entrypoints  
+	 * @return 	$list 		list of the Entrypoints
 	 */
-	 
+
 	function renderMathOpList($selected){
 		$this->loadHelper('modelfunctions');
 		$selected = modelfunctions::prepareTreeSelection($selected);
@@ -206,6 +206,6 @@ class VirtuemartViewCalc extends JView {
 	}
 
 
-	
+
 }
 // pure php no closing tag

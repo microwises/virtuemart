@@ -102,27 +102,27 @@ class VirtuemartControllerCurrency extends VmController {
 	}
 
 
-	/**
-	 * Handle the save task
-	 *
-	 * @author Max Milbers
-	 */
-	function save()
-	{
-		$model = $this->getModel('currency');
-
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_CURRENCY_STORED');
-		} else {
-			$msg = $model->getError();
-		}
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=currency';
-
-		$this->setRedirect($redirection, $msg);
-
-	}
+//	/**
+//	 * Handle the save task
+//	 *
+//	 * @author Max Milbers
+//	 */
+//	function save()
+//	{
+//		$model = $this->getModel('currency');
+//
+//		if ($id = $model->store()) {
+//			$msg = JText::_('COM_VIRTUEMART_CURRENCY_STORED');
+//		} else {
+//			$msg = $model->getError();
+//		}
+//		$cmd = JRequest::getCmd('task');
+//		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$id;
+//		else $redirection = 'index.php?option=com_virtuemart&view=currency';
+//
+//		$this->setRedirect($redirection, $msg);
+//
+//	}
 
 
 	/**
@@ -144,35 +144,35 @@ class VirtuemartControllerCurrency extends VmController {
 	}
 
 
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function publish()
-	{
-		$model = $this->getModel('currency');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_PUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function unpublish()
-	{
-		$model = $this->getModel('currency');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_UNPUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
-	}
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author RickG
+//	 */
+//	function publish()
+//	{
+//		$model = $this->getModel('currency');
+//		if (!$model->publish(true)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_PUBLISHED');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+//	}
+//
+//
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author RickG
+//	 */
+//	function unpublish()
+//	{
+//		$model = $this->getModel('currency');
+//		if (!$model->publish(false)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_UNPUBLISHED');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+//	}
 }
 // pure php no closing tag

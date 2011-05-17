@@ -31,19 +31,15 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  */
 class TableProduct_ratings extends VmTableData {
 
-	/** @var int Primary key */
-//	var $virtuemart_product_rating_id	= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id           = 0;
-	/** @var int The ID of the user who made comment */
+	/** @var int The ID of the user who rated the product */
 	var $virtuemart_user_id         	= 0;
 
-	/** @var int No idea what this is for */
-	var $rates         			= 0;
-	/** @var int No idea what this is for */
-	var $ratingcount      		= 0;
-	/** @var int No idea what this is for */
+	var $rates         					= 0;
+	var $ratingcount      				= 0;
 	var $rating      					= 0;
+
 	var $lastip      					= 0;
 
 	/** @var int State of the review */

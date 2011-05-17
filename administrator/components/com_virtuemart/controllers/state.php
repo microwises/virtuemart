@@ -96,16 +96,16 @@ class VirtuemartControllerState extends VmController {
 	}
 
 
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG, Max Milbers
-	 */
-	function cancel()
-	{
-		$data = JRequest::get( 'post' );
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"]);
-	}
+//	/**
+//	 * Handle the cancel task
+//	 *
+//	 * @author RickG, Max Milbers
+//	 */
+//	function cancel()
+//	{
+//		$data = JRequest::get( 'post' );
+//		$this->setRedirect('index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"]);
+//	}
 
 
 	/**
@@ -153,38 +153,38 @@ class VirtuemartControllerState extends VmController {
 	}
 
 
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, Max Milbers
-	 */
-	function publish()
-	{
-		$data = JRequest::get( 'post' );
-		$model = $this->getModel('state');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, Max Milbers
-	 */
-	function unpublish()
-	{
-		$data = JRequest::get( 'post' );
-		$model = $this->getModel('state');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
-	}
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author RickG, Max Milbers
+//	 */
+//	function publish()
+//	{
+//		$data = JRequest::get( 'post' );
+//		$model = $this->getModel('state');
+//		if (!$model->publish(true)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_PUBLISHED');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
+//	}
+//
+//
+//	/**
+//	 * Handle the publish task
+//	 *
+//	 * @author RickG, Max Milbers
+//	 */
+//	function unpublish()
+//	{
+//		$data = JRequest::get( 'post' );
+//		$model = $this->getModel('state');
+//		if (!$model->publish(false)) {
+//			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_UNPUBLISHED');
+//		}
+//
+//		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$data["virtuemart_country_id"], $msg);
+//	}
 
 
 	/**
