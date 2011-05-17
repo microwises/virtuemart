@@ -176,7 +176,7 @@ class VmModel extends JModel {
      * @author Max Milbers
      * @return boolean True is the delete was successful, false otherwise.
      */
-	public function delete() {
+	public function remove() {
 
 		$table =& $this->getTable($this->_maintablename);
 		$ids = JRequest::getVar($this->_cidName,  0, '', 'array');
@@ -231,7 +231,7 @@ class VmModel extends JModel {
 			} else {
 				$table->$field = $val;
 			}
-			
+
 			if (!$table->store()) {
 				JError::raiseError(500, $row->getError() );
 				$ok = false;

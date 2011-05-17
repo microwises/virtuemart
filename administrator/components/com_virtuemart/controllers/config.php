@@ -125,7 +125,7 @@ class VirtuemartControllerConfig extends VmController {
 	function remove(){
 
 //		$model = $this->getModel('config');
-//		if (!$model->delete()) {
+//		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
 //		}
 //		else {

@@ -152,7 +152,7 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::custom('enable_account', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
 			JToolBarHelper::custom('disable_account', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 
 			$userfieldsList = $model->getUserfieldsList();
 			$this->assignRef('userfieldsList', $userfieldsList);

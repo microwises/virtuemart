@@ -851,7 +851,7 @@ class VirtueMartModelOrders extends VmModel {
 
 	/**
 	 * E-mails the Download-ID to the customer
-	 * or deletes the Download-ID from the product_downloads table
+	 * or removes the Download-ID from the product_downloads table
 	 *
 	 * @author ?, Christopher Roussel
 	 * @return boolean
@@ -1019,7 +1019,7 @@ class VirtueMartModelOrders extends VmModel {
 		return true;
 	}
 	/*
-	*delete product from order item table
+	*remove product from order item table
 	*@var $virtuemart_order_id Order to clear
 	*/
 	function removeOrderItems ($virtuemart_order_id){

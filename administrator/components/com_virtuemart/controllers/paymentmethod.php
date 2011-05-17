@@ -42,34 +42,21 @@ class VirtuemartControllerPaymentmethod extends JController
 	public function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('PAYMENTMETHOD');
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
-		$document =& JFactory::getDocument();
-//		$document = JFactory::getDocument();
+	}
+
+	public function Paymentmethod () {
+
+		$document = JFactory::getDocument();
+
 		$viewType	= $document->getType();
-		$view = $this->getView('paymentmethod', $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Pushing default model
-		$paymModel = $this->getModel('paymentmethod');
+		$paymModel = $this->getModel($this->_cname);
 		if (!JError::isError($paymModel)) {
 			$view->setModel($paymModel, true);
 		}
-		/* Product category functions */
-//		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-
 	}
-
-	/**
-	 * Display the view
-	 *
-	 * @author RickG
-	 */
-	public function display() {
-		parent::display();
-	}
-
 
 	/**
 	 * Handle the edit task
@@ -77,200 +64,14 @@ class VirtuemartControllerPaymentmethod extends JController
      * @author Max Milbers
 	 */
 	public function edit(){
-		JRequest::setVar('controller', 'paymentmethod');
-		JRequest::setVar('view', 'paymentmethod');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view = $this->getView('paymentmethod', $viewType);
 
 		$view->setModel($paymModel = $this->getModel('creditcard'));
-		parent::display();
+
+		parent::edit();
 	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author Max Milbers
-	 */
-	public function cancel()
-	{
-		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
-		$this->setRedirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function save(){
-		$paymModel = $this->getModel('paymentmethod');
-		$cmd = JRequest::getCmd('task');
-
-		if ($id = $paymModel->store()) {
-			$msg = JText::_('COM_VIRTUEMART_PAYMENT_SAVED_SUCCESS');
-		}
-		else {
-			$msg = JText::_($paymModel->getError());
-		}
-
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]='.$id;
-		}
-		else{
-			$redirection = 'index.php?option=com_virtuemart&view=paymentmethod';
-		}
-
-		$this->setRedirect($redirection, $msg);
-	}
-	/**
-	 * Handle the remove task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function remove()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$mainframe = JFactory::getApplication();
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
-			return;
-		}
-
-		$paymModel = $this->getModel('paymentmethod');
-
-		if (!$paymModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_PAYMENT_DELETED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Jseros, Max Milbers
-	 */
-	public function publish()
-	{
-		$paymModel = $this->getModel('paymentmethod');
-		if (!$paymModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_PAYMENT_PUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	function unpublish()
-	{
-		$paymModel = $this->getModel('paymentmethod');
-		if (!$paymModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PAYMENT_COULD_NOT_BE_UNPUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_PAYMENT_UNPUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg);
-	}
-
-
-//	/**
-//	 * Handle the shopper publish/unpublish action
-//	 *
-//	 * @author jseros
-//	 */
-//	public function toggleShopper()
-//	{
-//		$mainframe = JFactory::getApplication();
-//
-//		// Check token
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//
-//		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-//		$msg = '';
-//
-//		JArrayHelper::toInteger($cid);
-//
-//		if(count($cid) < 1) {
-//			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
-//			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
-//		}
-//
-//		$paymModel = $this->getModel('paymentmethod');
-//		$status = $paymModel->shopperPublish($cid);
-//
-//		if( $status == 1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_SUCCESS');
-//		}
-//		elseif( $status == -1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_SHOPPER_UNPUBLISH_SUCCESS');
-//		}
-//
-//		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
-//	}
-//
-//
-//	/**
-//	 * Handle the vendor publish/unpublish action
-//	 *
-//	 * @author jseros
-//	 */
-//	public function toggleVendor()
-//	{
-//		$mainframe = JFactory::getApplication();
-//
-//		// Check token
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//
-//		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-//		$msg = '';
-//
-//		JArrayHelper::toInteger($cid);
-//
-//		if(count($cid) < 1) {
-//			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
-//			$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, 'error');
-//		}
-//
-//		$paymModel = $this->getModel('paymentmethod');
-//		$status = $paymModel->vendorPublish($cid);
-//
-//		if( $status == 1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_SUCCESS');
-//		}
-//		elseif( $status == -1 ){
-//			$msg = JText::_('COM_VIRTUEMART_CALC_VENDOR_UNPUBLISH_SUCCESS');
-//		}
-//
-//		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg);
-//	}
 
 
 	/**

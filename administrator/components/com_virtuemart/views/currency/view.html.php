@@ -87,7 +87,7 @@ class VirtuemartViewCurrency extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_LIST_LBL'), 'vm_currency_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

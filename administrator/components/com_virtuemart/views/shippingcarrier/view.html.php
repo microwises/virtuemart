@@ -62,7 +62,7 @@ class VirtuemartViewShippingCarrier extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_LIST_LBL'), 'vm_ups_48' );
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 
 
 			$pagination = $model->getPagination();

@@ -140,7 +140,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function store()
 	{
-		$table =& $this->getTable('orderstates');
+		$table = $this->getTable('orderstates');
 
 		$data = JRequest::get('post');
 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
@@ -179,28 +179,28 @@ class VirtueMartModelOrderstatus extends VmModel {
 			$table->reorder();
 		}
 
-		return true;
+		return $table->virtuemart_orderstate_id;
 	}
 
 
-	/**
-	 * Delete all record ids selected
-	 *
-	 * @return boolean True is the delete was successful, false otherwise.
-	 */
-	function delete()
-	{
-		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
-		$table =& $this->getTable('orderstates');
-
-		foreach($orderStatIds as $orderStatId) {
-			if (!$table->delete($orderStatId)) {
-				$this->setError($table->getError());
-				return false;
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * Delete all record ids selected
+//	 *
+//	 * @return boolean True is the remove was successful, false otherwise.
+//	 */
+//	function remove()
+//	{
+//		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
+//		$table =& $this->getTable('orderstates');
+//
+//		foreach($orderStatIds as $orderStatId) {
+//			if (!$table->remove($orderStatId)) {
+//				$this->setError($table->getError());
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	/**
 	 * Retrieve a list of order statuses from the database.

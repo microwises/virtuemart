@@ -177,9 +177,9 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	/**
 	 * Delete all record ids selected
      *
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	function delete()
+	function remove()
 	{
 		$categoryIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('manufacturercategories');
@@ -202,9 +202,9 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	/**
 	 * Delete all state records for a given  id.
      *
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	function deleteManufacturerCategories($categoryId = '')
+	function removeManufacturerCategories($categoryId = '')
 	{
 		if ($categoryId) {
 			$db = JFactory::getDBO();
@@ -228,7 +228,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	 * Publish/Unpublish all the ids selected
      *
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	function publish($publishId = false){
 

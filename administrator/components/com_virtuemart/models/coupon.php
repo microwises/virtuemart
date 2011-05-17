@@ -190,15 +190,15 @@ class VirtueMartModelCoupon extends VmModel {
 //	 * Delete all record ids selected
 //     *
 //     * @author RickG
-//     * @return boolean True is the delete was successful, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
 //     */
-//	function delete()
+//	function remove()
 //	{
 //		$couponIds = JRequest::getVar('cid',  0, '', 'array');
 //    	$table =& $this->getTable('coupon');
 //
 //    	foreach($couponIds as $couponId) {
-//        	if (!$table->delete($couponId)) {
+//        	if (!$table->remove($couponId)) {
 //            	$this->setError($table->getError());
 //            	return false;
 //        	}

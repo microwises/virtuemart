@@ -89,7 +89,7 @@ class VirtuemartViewPaymentMethod extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 

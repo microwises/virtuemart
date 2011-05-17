@@ -84,7 +84,7 @@ class VirtuemartViewCustom extends JView {
 			JToolBarHelper::custom('toggle.is_hidden.1', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

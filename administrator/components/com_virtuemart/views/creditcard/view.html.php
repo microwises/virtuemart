@@ -59,7 +59,7 @@ class VirtuemartViewCreditcard extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_LBL'), 'vm_credit_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

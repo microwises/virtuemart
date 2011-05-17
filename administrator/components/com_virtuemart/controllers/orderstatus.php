@@ -44,86 +44,37 @@ class VirtuemartControllerOrderstatus extends VmController {
 	{
 		parent::__construct();
 
-//		$this->setMainLangKey('ORDER_STATUS');
-		// Register Extra tasks
-		$this->registerTask('add', 'edit');
+	}
+
+	function Orderstatus () {
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('orderstatus', $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('orderstatus');
+		$model = $this->getModel($this->_cname);
 
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-	}
 
-	/**
-	 * Display the order status view
-	 */
-	function display()
-	{
-//		JRequest::setVar( 'view', 'orderstatus');
 		parent::display();
 	}
 
 	/**
 	 * Handle the edit task
 	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'orderstatus');
-		JRequest::setVar('view', 'orderstatus');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemainmenu', 1);
+	function edit(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('orderstatus', $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
-		parent::display();
+		parent::edit();
 	}
 
-	/**
-	 * Handle the cancel task
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus');
-	}
-
-	/**
-	 * Handle the save task
-	 */
-	function save()
-	{
-		$model =& $this->getModel('orderstatus');
-
-		if ($model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_ORDER_STATUS_SAVED');
-		} else {
-			$msg = JText::_($model->getError());
-		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
-	}
-
-	/**
-	 * Handle the remove task
-	 */
-	function remove()
-	{
-		$model = $this->getModel('orderstatus');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_ORDER_STATUSES_COULD_NOT_BE_DELETED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_ORDER_STATUSES_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=orderstatus', $msg);
-	}
 
 	function orderup()
 	{

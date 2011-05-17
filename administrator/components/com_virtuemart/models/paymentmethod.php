@@ -329,9 +329,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * Delete all record ids selected
      *
      * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	public function delete()
+	public function remove()
 	{
 		$calcIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('paymentmethods');
@@ -360,7 +360,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author Max Milbers
      * @param boolean $publish True is the ids should be published, false otherwise.
      * @param the ids to alter
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	public function publish($publish=false) {
 

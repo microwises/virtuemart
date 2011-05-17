@@ -122,7 +122,7 @@ class VirtuemartControllerModule extends JController
 	function remove()
 	{
 		$model = $this->getModel('module');
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_MODULES_COULD_NOT_BE_DELETED');
 		}
 		else {

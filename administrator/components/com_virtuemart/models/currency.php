@@ -182,9 +182,9 @@ class VirtueMartModelCurrency extends VmModel {
 	 * Delete all record ids selected
      *
      * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	public function delete() {
+	public function remove() {
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		return modelfunctions::delete('cid','currency');
 
@@ -196,7 +196,7 @@ class VirtueMartModelCurrency extends VmModel {
      *
      * @author Max Milbers
      * @param boolean $publishId True is the ids should be enabled, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	public function publish($publishId = false)
 	{

@@ -42,37 +42,33 @@ class VirtuemartControllerMedia extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('MEDIA');
-
-		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
-
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$this->view = $this->getView('media', $viewType);
-
 	}
 
+	function Media(){
+		/* Create the view object */
+		$view = $this->getView('media', 'html');
+
+		/* Default model */
+		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+
+		parent::display();
+	}
 
 	/**
 	 * Shows the product files list screen
 	 */
 	function edit() {
 		/* Create the view object */
-//		$view = $this->getView('media', 'html');
+		$view = $this->getView('media', 'html');
 
-		/* Default model */
-		$this->view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+//		/* Default model */
+//		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
 
-		/* Set the layout */
-//		switch (JRequest::getCmd('task')) {
-
-		$this->view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), true );
-		$this->view->setLayout('media_edit');
+		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), false );
 
 
 		/* Now display the view. */
-		$this->view->display();
+		parent::edit();
 	}
 	/**
 	 * for ajax call media
@@ -134,73 +130,6 @@ class VirtuemartControllerMedia extends VmController {
 		}
 
 		$this->setRedirect($redirection, $msg);
-	}
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author Max Milbers
-	 */
-	public function cancel()
-	{
-		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
-		//Todo, in case redirect to product
-		$this->setRedirect('index.php?option=com_virtuemart&view=media', $msg);
-	}
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function remove()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token, trying deleting media' );
-
-		$mainframe = JFactory::getApplication();
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=media', $msg, 'error');
-			return;
-		}
-
-		$mediaModel = $this->getModel('media');
-
-		if (!$mediaModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_MEDIA_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_MEDIA_DELETED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=media', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers
-	 */
-	public function publish() {
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$mediaModel = $this->getModel('media');
-		if (!$mediaModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_MEDIA_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_MEDIA_PUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=media', $msg);
 	}
 
 }

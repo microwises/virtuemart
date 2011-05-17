@@ -274,7 +274,7 @@ class VirtuemartViewUser extends JView {
 			JToolBarHelper::custom('enable_vendor', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
 			JToolBarHelper::custom('disable_vendor', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
                         JToolBarHelper::editListX();
                         JToolBarHelper::addNewX();
 			$userList = $model->getUserList();

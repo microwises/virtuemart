@@ -62,7 +62,7 @@ class VirtuemartViewUsergroups extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_LIST'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	
 	

@@ -165,7 +165,7 @@ class VirtuemartControllerUser extends VmController {
 	function remove()
 	{
 		$model = $this->getModel('user');
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_($model->getError());
 		} else {
 			$msg = JText::_('COM_VIRTUEMART_USER_S_DELETED');

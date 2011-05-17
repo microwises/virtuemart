@@ -62,9 +62,9 @@ class VirtuemartViewCategory extends JView {
 				$this->assignRef('relationInfo', $relationInfo);
 			}
 
-			JToolBarHelper::divider();			
+			JToolBarHelper::divider();
 			JToolBarHelper::save();
-                        JToolBarHelper::apply();
+            JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
 			$parent = $model->getParentCategory( $category->virtuemart_category_id );
@@ -89,18 +89,18 @@ class VirtuemartViewCategory extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL'), 'vm_categories_48' );
-                        JToolBarHelper::publishList();
-                        JToolBarHelper::unpublishList();
-                        JToolBarHelper::deleteList('', 'remove', 'Delete');			
+            JToolBarHelper::publishList();
+            JToolBarHelper::unpublishList();
+            JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
-			
+
 			/**
 			* Commented out for future use
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
 			*/
-			
+
 
 			$categories = $model->getCategoryTree(false);
                         $categoriesSorted = $model->sortCategoryTree($categories);

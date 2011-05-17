@@ -170,14 +170,14 @@
 //     * Delete all records specified by the cid request parameter.
 //     *
 //     * @author Markus Öhler
-//     * @return boolean True is the delete was successful, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
 //     */
-//    function delete() {
+//    function remove() {
 //	    $ids = JRequest::getVar('cid',  0, '', 'array');
 //	    $table = $this->getTable('module');
 //
 //	    foreach($ids as $id) {
-//		    if (!$table->delete($id)) {
+//		    if (!$table->remove($id)) {
 //		       $this->setError($table->getError());
 //		       return false;
 //		    }

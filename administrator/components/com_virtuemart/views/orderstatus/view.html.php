@@ -35,7 +35,7 @@ class VirtuemartViewOrderstatus extends JView {
 
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
-		
+
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 
@@ -51,7 +51,7 @@ class VirtuemartViewOrderstatus extends JView {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
-                                JToolBarHelper::apply();
+                JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -66,8 +66,8 @@ class VirtuemartViewOrderstatus extends JView {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 
-                                JToolBarHelper::save();
-                                JToolBarHelper::apply();
+				JToolBarHelper::save();
+				JToolBarHelper::apply();
 				JToolBarHelper::cancel();
 			}
 			// Vendor selection
@@ -80,7 +80,7 @@ class VirtuemartViewOrderstatus extends JView {
 			$this->assignRef('editor', $editor);
 		} else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_LBL'), 'vm_orderstatus_48' );
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

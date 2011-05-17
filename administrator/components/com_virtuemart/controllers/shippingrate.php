@@ -145,7 +145,7 @@ class VirtuemartControllerShippingRate extends VmController {
 	function remove()
 	{
 		$model = $this->getModel('shippingrate');
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_SHIPPING_RATES_COULD_NOT_BE_DELETED');
 		}
 		else {

@@ -608,9 +608,9 @@ class VirtueMartModelUser extends VmModel {
 	 /**
 	  * Delete all record ids selected
 	  *
-	  * @return boolean True is the delete was successful, false otherwise.
+	  * @return boolean True is the remove was successful, false otherwise.
 	  */
-	 function delete()
+	 function remove()
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
 	 	$userInfo =& $this->getTable('userinfos');

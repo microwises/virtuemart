@@ -127,7 +127,7 @@ class VirtuemartControllerShippingCarrier extends VmController {
 //	function remove()
 //	{
 //		$model = $this->getModel('shippingcarrier');
-//		if (!$model->delete()) {
+//		if (!$model->remove()) {
 //			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED_ERROR');
 //		}
 //		else {

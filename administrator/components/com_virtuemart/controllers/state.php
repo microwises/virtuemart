@@ -142,7 +142,7 @@ class VirtuemartControllerState extends VmController {
 	{
 		$data = JRequest::get( 'post' );
 		$model = $this->getModel('state');
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_STATES_COULD_NOT_BE_DELETED');
 		}
 		else {

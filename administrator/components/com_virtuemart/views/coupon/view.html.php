@@ -81,7 +81,7 @@ class VirtuemartViewCoupon extends JView {
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUPON_LIST'), 'vm_coupon_48');
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

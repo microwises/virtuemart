@@ -76,7 +76,7 @@ class VirtuemartViewMedia extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

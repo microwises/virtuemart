@@ -80,7 +80,7 @@ class VirtuemartControllerUsergroups extends VmController {
 
 //		$this->setMainLangKey('USERGROUP');
 		// Register Extra tasks
-		$this->registerTask( 'add',  'edit', 'delete' );
+		$this->registerTask( 'add',  'edit', 'remove' );
 		$this->registerTask( 'apply',  'save' );
 
 		$document =& JFactory::getDocument();
@@ -197,7 +197,7 @@ class VirtuemartControllerUsergroups extends VmController {
 
 		$model = $this->getModel('usergroups');
 
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_USERGROUPS_COULD_NOT_BE_DELETED');
 		} else {
 			$msg = JText::_('COM_VIRTUEMART_USERGROUP_DELETED');

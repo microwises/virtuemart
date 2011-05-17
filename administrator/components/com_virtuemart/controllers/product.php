@@ -87,37 +87,7 @@ class VirtuemartControllerProduct extends VmController {
 		$view->display();
 	}
 
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers
-	 */
-	public function publish(){
-		$model = $this->getModel('product');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_PUBLISHED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_PUBLISHED_SUCCESS');
-		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
-	}
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, jseros
-	 */
-	public function unpublish(){
-		$model = $this->getModel('product');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_UNPUBLISHED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_UNPUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
-	}
 	/**
 	 * Shows the product add/edit screen
 	 */
@@ -149,15 +119,6 @@ class VirtuemartControllerProduct extends VmController {
 		$view->display();
 	}
 
-	/**
-	* Cancellation, redirect to main product list
-	*
-	* @author RolandD
-	*/
-	public function Cancel() {
-		$mainframe = Jfactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'));
-	}
 
 	/**
 	* Save a product
@@ -247,27 +208,27 @@ class VirtuemartControllerProduct extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
 	}
 
-	/**
-	* Delete a product
-	*
-	* @author RolandD
-	*/
-	public function remove() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Load the view object */
-		$view = $this->getView('product', 'html');
-
-		$model = $this->getModel('product');
-		$msgtype = '';
-		if ($model->removeProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
-	}
+//	/**
+//	* Delete a product
+//	*
+//	* @author RolandD
+//	*/
+//	public function remove() {
+//		$mainframe = Jfactory::getApplication();
+//
+//		/* Load the view object */
+//		$view = $this->getView('product', 'html');
+//
+//		$model = $this->getModel('product');
+//		$msgtype = '';
+//		if ($model->removeProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY');
+//		else {
+//			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY');
+//			$msgtype = 'error';
+//		}
+//
+//		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+//	}
 
 	/**
 	* Get a list of related products

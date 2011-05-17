@@ -284,7 +284,7 @@ class VirtueMartModelMedia extends VmModel {
 		$virtuemart_media_id = $this->store($type,$data);
 		$this -> setId($virtuemart_media_id);
 
-		/* add the virtuemart_media_id & delete 0 and '' from $data */
+		/* add the virtuemart_media_id & remove 0 and '' from $data */
 		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
@@ -329,7 +329,7 @@ class VirtueMartModelMedia extends VmModel {
 
 
 		if(empty($data['file_url'])){
-//			$this->delete($data['virtuemart_media_id']);
+//			$this->remove($data['virtuemart_media_id']);
 		} else {
 			// Bind the form fields to the table again
 			if (!$table->bind($data)) {
@@ -361,26 +361,26 @@ class VirtueMartModelMedia extends VmModel {
 	 * @author unknow, maybe Roland Dalmulder
 	 * @author Max Milbers
 	 */
-	public function delete($cids) {
+	public function remove($cids) {
 		$mainframe = Jfactory::getApplication('site');
-//		$deleted = 0;
+//		$removed = 0;
 	 	$row = $this->getTable('medias');
 //	 	$cids = JRequest::getVar('cid');
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
 				$row->load($cid);
-				if ($row->delete()) $deleted++;
+				if ($row->delete()) $removed++;
 			}
 		}
 		else {
 			$row->load($cids);
-			if ($row->delete()) $deleted++;
+			if ($row->delete()) $removed++;
 		}
-		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS',$deleted));
+		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS',$removed));
 
 		//TODO update table belonging, category, product, venodor
-		//delete media from server
-		/* Redirect so the user cannot reload the delete action */
+		//remove media from server
+		/* Redirect so the user cannot reload the remove action */
 //		$url = 'index.php?option=com_virtuemart&view=media';
 //		$productid = JRequest::getInt('virtuemart_product_id', false);
 //		if ($productid) $url .= '&virtuemart_product_id='.$productid;
@@ -392,7 +392,7 @@ class VirtueMartModelMedia extends VmModel {
      *
      * @author Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	public function publish($publishId = false)
 	{

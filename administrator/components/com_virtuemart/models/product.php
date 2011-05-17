@@ -1224,10 +1224,10 @@ class VirtueMartModelProduct extends VmModel {
 			$q  = "DELETE FROM #__virtuemart_product_relations WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
-			/* find and delete Product Types */
+			/* find and remove Product Types */
 			$q = "SELECT virtuemart_producttype_id FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
-			/* TODO the product is not deleted from this tables !!*/
+			/* TODO the product is not removed from this tables !!*/
 			$virtuemart_producttype_ids = $this->_db->loadResultArray();
 			foreach ($virtuemart_producttype_ids as $virtuemart_producttype_id)
 			$q  = "DELETE FROM #__virtuemart_producttypes_".$virtuemart_producttype_id." WHERE virtuemart_product_id = ".$virtuemart_product_id;
@@ -1237,7 +1237,7 @@ class VirtueMartModelProduct extends VmModel {
 			$q  = "DELETE FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
-			/* delete Product custom fields and Xref */
+			/* remove Product custom fields and Xref */
 			$q = "DELETE `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
 				FROM  `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
 				WHERE `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`

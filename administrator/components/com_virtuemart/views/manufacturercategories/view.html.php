@@ -61,7 +61,7 @@ class VirtuemartViewManufacturercategories extends JView {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_LIST_LBL'), 'vm_manufacturer_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();
 

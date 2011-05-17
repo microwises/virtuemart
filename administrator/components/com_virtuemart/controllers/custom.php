@@ -170,7 +170,7 @@ class VirtuemartControllerCustom extends VmController {
 
 		$customModel = $this->getModel('custom');
 
-		if (!$customModel->delete($cid)) {
+		if (!$customModel->remove($cid)) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_DELETED');
 		}
 		else {

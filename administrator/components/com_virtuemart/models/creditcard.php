@@ -176,9 +176,9 @@ class VirtueMartModelCreditcard extends VmModel {
 	 * Delete all record ids selected
      *
      * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	function delete()
+	function remove()
 	{
 		$creditcardIds = JRequest::getVar('cid',  0, '', 'array');
     	$table =& $this->getTable('creditcards');
@@ -198,7 +198,7 @@ class VirtueMartModelCreditcard extends VmModel {
      *
      * @author Max Milbers
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	public function publish($publishId = false)
 	{

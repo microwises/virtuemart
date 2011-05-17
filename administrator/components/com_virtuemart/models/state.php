@@ -215,15 +215,15 @@ class VirtueMartModelState extends VmModel {
 //	 * Delete all record ids selected
 //     *
 //     * @author RickG
-//     * @return boolean True is the delete was successful, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
 //     */
-//	function delete()
+//	function remove()
 //	{
 //		$stateIds = JRequest::getVar('cid',  0, '', 'array');
 //    	$table =& $this->getTable('states');
 //
 //    	foreach($stateIds as $stateId) {
-//        	if (!$table->delete($stateId)) {
+//        	if (!$table->remove($stateId)) {
 //            	$this->setError($table->getError());
 //            	return false;
 //        	}
@@ -237,7 +237,7 @@ class VirtueMartModelState extends VmModel {
 //     *
 //     * @author Max Milbers
 //     * @param boolean $publishId True is the ids should be published, false otherwise.
-//     * @return boolean True is the delete was successful, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
 //     */
 //	function publish($publishId = false)
 //	{

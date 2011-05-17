@@ -153,9 +153,9 @@ class VirtueMartModelManufacturer extends VmModel {
 	/**
 	 * Delete all record ids selected
      *
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	public function delete() {
+	public function remove() {
 		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('manufacturers');
 

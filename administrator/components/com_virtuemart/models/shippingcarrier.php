@@ -186,9 +186,9 @@ class VirtueMartModelShippingCarrier extends VmModel {
      * Delete all record ids selected
      *
      * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-    function delete() {
+    function remove() {
 	$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
 	$table =& $this->getTable('shippingcarriers');
 
@@ -213,7 +213,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
      * Delete all rate records for a given shipping carrier id.
      *
      * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
     function deleteShippingCarrierRates($carrierId = '') {
 	if ($carrierId) {

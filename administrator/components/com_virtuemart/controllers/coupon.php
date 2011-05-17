@@ -48,10 +48,10 @@ class VirtuemartControllerCoupon extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view = $this->getView('coupon', $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model = $this->getModel('coupon');
+		$model = $this->getModel($this->_cname);
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}

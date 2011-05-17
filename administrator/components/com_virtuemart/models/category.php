@@ -514,10 +514,10 @@ class VirtueMartModelCategory extends VmModel {
      * Delete all categories selected
      *
      * @author jseros
-     * @param  array $cids categories to delete
-     * @return boolean if the item delete was successful
+     * @param  array $cids categories to remove
+     * @return boolean if the item remove was successful
      */
-    public function delete($cids) {
+    public function remove($cids) {
 		$table = $this->getTable('categories');
 
 		foreach($cids as $cid) {
@@ -557,8 +557,8 @@ class VirtueMartModelCategory extends VmModel {
      *
      * @author jseros
      *
-     * @param  int $cid categories to delete
-     * @return boolean if the item delete was successful
+     * @param  int $cid categories to remove
+     * @return boolean if the item remove was successful
      */
     public function clearProducts($cid) {
 

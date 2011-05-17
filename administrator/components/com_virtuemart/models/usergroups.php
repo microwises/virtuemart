@@ -179,10 +179,10 @@ class VirtueMartModelUsergroups extends VmModel {
 
 
 
-//    function delete() {
+//    function remove() {
 //
 //		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//		return modelfunctions::delete('virtuemart_shoppergroup_id','usergroups');
+//		return modelfunctions::remove('virtuemart_shoppergroup_id','usergroups');
 //
 //    }
 //

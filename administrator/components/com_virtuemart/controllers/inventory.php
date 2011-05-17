@@ -52,16 +52,14 @@ class VirtuemartControllerInventory extends VmController {
 	 */
 	public function Inventory() {
 		/* Create the view object */
-		$view = $this->getView('inventory', 'html');
+		$view = $this->getView($this->_cname, 'html');
 
 		/* Default model */
-		$view->setModel( $this->getModel( 'inventory', 'VirtueMartModel' ), true );
+		$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
 
 		/* Product model */
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 
-		/* Set the layout */
-		$view->setLayout('inventory');
 
 		/* Now display the view. */
 		$view->display();

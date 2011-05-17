@@ -205,7 +205,7 @@ class VirtueMartModelCountry extends VmModel {
      *
      * @author RickG
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
     function publish($publishId = false) {
 

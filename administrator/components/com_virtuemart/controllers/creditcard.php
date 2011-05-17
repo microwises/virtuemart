@@ -49,10 +49,10 @@ class VirtuemartControllerCreditcard extends VmController {
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('creditcard', $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('creditcard');
+		$model =& $this->getModel($this->_cname);
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}

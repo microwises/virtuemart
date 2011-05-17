@@ -126,7 +126,7 @@ class VirtuemartControllerUserfields extends VmController {
 	function remove()
 	{
 		$model = $this->getModel('userfields');
-		if (!$model->delete()) {
+		if (!$model->remove()) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_USERFIELDS_COULD_NOT_BE_DELETED');
 		} else {
 			$msg = JText::_('COM_VIRTUEMART_USERFIELD_S_DELETED');
