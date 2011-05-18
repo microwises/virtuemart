@@ -69,9 +69,9 @@ class TableVendors extends VmTableData {
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
 		$this->setPrimaryKey('virtuemart_vendor_id');
-		$this->setUniqueName('vendor_name','COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS');
-//		$this->setObligatoryKeys('country_2_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-//		$this->setObligatoryKeys('country_3_code','COM_VIRTUEMART_COUNTRY_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+		$this->setUniqueName('vendor_name');
+//		$this->setObligatoryKeys('country_2_code');
+//		$this->setObligatoryKeys('country_3_code');
 
 		$this->setLoggable();
     }

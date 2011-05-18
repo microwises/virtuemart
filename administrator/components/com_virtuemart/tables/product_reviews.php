@@ -63,7 +63,7 @@ class TableProduct_reviews extends VmTableData {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setObligatoryKeys('comment','COM_VIRTUEMART_PRODUCT_REVIEWS_RECORDS_MUST_CONTAIN_COMMENT');
+		$this->setObligatoryKeys('comment');
 
 		$this->setLoggable();
 	}

@@ -49,7 +49,7 @@ class TableOrder_histories extends VmTable {
 	function __construct($db) {
 		parent::__construct('#__virtuemart_order_histories', 'virtuemart_order_history_id', $db);
 
-		$this->setObligatoryKeys('virtuemart_order_id','COM_VIRTUEMART_ORDER_HISTORIE_NO_ORDER_ID');
+		$this->setObligatoryKeys('virtuemart_order_id');
 
 		$this->setLoggable();
 	}

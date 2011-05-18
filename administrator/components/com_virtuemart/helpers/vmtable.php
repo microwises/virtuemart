@@ -38,22 +38,24 @@ class VmTable extends JTable {
 
 	protected $_orderingKey = 'ordering';
 
-    function setPrimaryKey($key,$keyForm=0,$langkey=0){
-    	$this->setObligatoryKeys('_pkey',$langkey);
+    function setPrimaryKey($key,$keyForm=0){
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+    	$this->setObligatoryKeys('_pkey',$error);
     	$this->_pkey = $key;
     	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
     	$this->$key		= 0;
     }
 
-	public function setObligatoryKeys($key,$langkey=0){
-
-		$this->_obkeys[$key] = $langkey;
+	public function setObligatoryKeys($key){
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+		$this->_obkeys[$key] = $error;
 	}
 
-	public function setUniqueName($name,$langkey){
+	public function setUniqueName($name){
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_'.$name) );
 		$this->_unique = true;
-		$this->_obkeys[$name] = $langkey;
-		$this->_unique_name[$name] = $langkey;
+		$this->_obkeys[$name] = $error;
+		$this->_unique_name[$name] = $error;
 	}
 
 	public function setLoggable(){

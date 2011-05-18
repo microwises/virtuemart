@@ -71,8 +71,8 @@ class TableCustoms extends VmTable {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customs', 'virtuemart_custom_id', $db);
 
-		$this->setUniqueName('custom_title','COM_VIRTUEMART_CUSTOM_TITLE_ALREADY_EXIST');
-		$this->setObligatoryKeys('field_type','COM_VIRTUEMART_CUSTOM_MUST_HAVE_A_FIELD_TYPE');
+		$this->setUniqueName('custom_title');
+		$this->setObligatoryKeys('field_type');
 
 		$this->setLoggable();
 	}

@@ -86,8 +86,8 @@ class TableUserfields extends VmTable {
 		self::loadFields($db);
 		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
 
-		$this->setUniqueName('name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
-		$this->setObligatoryKeys('title','COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE');
+		$this->setUniqueName('name');
+		$this->setObligatoryKeys('title');
 
 		$this->setLoggable();
 

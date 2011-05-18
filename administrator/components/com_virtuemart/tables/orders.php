@@ -87,8 +87,8 @@ class TableOrders extends VmTable {
 	function __construct($db) {
 		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);
 
-		$this->setUniqueName('order_number','COM_VIRTUEMART_ORDERS_NUMBER_ALREADY_EXIST');
-		$this->setObligatoryKeys('virtuemart_userinfo_id','COM_VIRTUEMART_ORDERS_NO_USERINFO_ID');
+		$this->setUniqueName('order_number');
+		$this->setObligatoryKeys('virtuemart_userinfo_id');
 
 		$this->setLoggable();
 

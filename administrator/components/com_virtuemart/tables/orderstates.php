@@ -55,9 +55,9 @@ class TableOrderstates extends VmTable {
 	{
 		parent::__construct('#__virtuemart_orderstates', 'virtuemart_orderstate_id', $db);
 
-//		$this->setUniqueName('calc_name','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME');
-		$this->setObligatoryKeys('order_status_code','COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE');
-		$this->setObligatoryKeys('order_status_name','COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME');
+//		$this->setUniqueName('calc_name');
+		$this->setObligatoryKeys('order_status_code');
+		$this->setObligatoryKeys('order_status_name');
 		$this->setLoggable();
 
 	}

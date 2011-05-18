@@ -75,8 +75,8 @@ class TableCalcs extends VmTable
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calcs', 'virtuemart_calc_id', $db);
 
-		$this->setUniqueName('calc_name','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME');
-		$this->setObligatoryKeys('calc_kind','COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND');
+		$this->setUniqueName('calc_name');
+		$this->setObligatoryKeys('calc_kind');
 		$this->setLoggable();
 
 	}

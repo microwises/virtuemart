@@ -53,7 +53,7 @@ class TableProduct_ratings extends VmTableData {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_product_ratings', 'virtuemart_product_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-//		$this->setObligatoryKeys('virtuemart_product_id','COM_VIRTUEMART_PRODUCT_RATINGS_RECORDS_MUST_CONTAIN_PRODUCT_ID');
+//		$this->setObligatoryKeys('virtuemart_product_id');
 
 		$this->setLoggable();
 

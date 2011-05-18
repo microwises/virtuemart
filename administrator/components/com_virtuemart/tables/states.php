@@ -55,9 +55,9 @@ class TableStates extends VmTable {
 	{
 		parent::__construct('#__virtuemart_states', 'virtuemart_state_id', $db);
 
-		$this->setUniqueName('state_name','COM_VIRTUEMART_STATE_NAME_ALREADY_EXISTS');
-		$this->setObligatoryKeys('state_2_code','COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE');
-		$this->setObligatoryKeys('state_3_code','COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE');
+		$this->setUniqueName('state_name');
+		$this->setObligatoryKeys('state_2_code');
+		$this->setObligatoryKeys('state_3_code');
 
 		$this->setLoggable();
 	}

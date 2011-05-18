@@ -62,8 +62,8 @@ class TableCreditcards extends VmTable {
 	{
 		parent::__construct('#__virtuemart_creditcards', 'virtuemart_creditcard_id', $db);
 
-		$this->setUniqueName('creditcard_name','COM_VIRTUEMART_CREDIT_CARD_NAME_ALREADY_EXISTS');
-		$this->setObligatoryKeys('creditcard_code','COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE');
+		$this->setUniqueName('creditcard_name');
+		$this->setObligatoryKeys('creditcard_code');
 
 		$this->setLoggable();
 
