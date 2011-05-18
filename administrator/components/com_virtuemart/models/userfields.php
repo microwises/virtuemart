@@ -948,34 +948,6 @@ class VirtueMartModelUserfields extends VmModel {
 
 		return true;
 	}
-
-	/**
-	 * Switch a toggleable field on or off
-	 *
-	 * @param $field string Database fieldname to toggle
-	 * @param $id array list of primary keys to toggle
-	 * @param $value boolean Value to set
-	 * @return boolean Result
-	 */
-	function toggle($field, $id = array(), $value = 1)
-	{
-		if (count( $id ))
-		{
-			JArrayHelper::toInteger($id);
-			$ids = implode( ',', $id );
-
-			$query = 'UPDATE `#__virtuemart_userfields`'
-				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE virtuemart_userfield_id IN ( '.$ids.' )'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-		}
-		return true;
-	}
 }
 
 // No closing tag

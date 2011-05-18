@@ -110,7 +110,7 @@ $option = JRequest::getWord('option');
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
 

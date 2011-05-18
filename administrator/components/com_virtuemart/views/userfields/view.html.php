@@ -140,17 +140,17 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_required', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
-			JToolBarHelper::custom('disable_required', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
+			JToolBarHelper::custom('toggle.required.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
+			JToolBarHelper::custom('toggle.required.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_registration', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
-			JToolBarHelper::custom('disable_registration', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('enable_shipping', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('disable_shipping', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
-			JToolBarHelper::custom('enable_account', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
-			JToolBarHelper::custom('disable_account', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
+			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
+			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
+			JToolBarHelper::custom('toggle.shipping.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			JToolBarHelper::custom('toggle.shipping.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			JToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
+			JToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 
@@ -188,8 +188,8 @@ class VirtuemartViewUserfields extends JView {
 			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
-			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_published') : JText::_('COM_VIRTUEMART_DISABLED');
+			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
@@ -203,6 +203,7 @@ class VirtuemartViewUserfields extends JView {
 		} else {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				.$retImgSrc. '</a>');
+
 		}
 	}
 

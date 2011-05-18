@@ -32,8 +32,8 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @subpackage Calculation tool
  * @author Max Milbers
  */
-class VirtuemartControllerPaymentmethod extends JController
-{
+class VirtuemartControllerPaymentmethod extends VmController {
+
 	/**
 	 * Method to display the view
 	 *

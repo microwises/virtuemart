@@ -130,28 +130,6 @@ class VirtueMartModelCalc extends VmModel {
 		return $this->_data;
 	}
 
-    /**
-     * Publish a field
-     *
-     * @author Max Milbers
-     *
-     */
-	public function published( $row, $i, $variable = 'published' ){
-		$imgY = 'tick.png';
-		$imgX = 'publish_x.png';
-		$img 	= $row->$variable ? $imgY : $imgX;
-		$task 	= $row->$variable ? 'unpublish' : 'publish';
-		$alt 	= $row->$variable ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
-		$action = $row->$variable ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-
-		$href = '
-		<a title="'. $action .'">
-		<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>'
-		;
-		return $href;
-	}
-
-
 	/**
 	 * Bind the post data to the calculation table and save it
      *
@@ -226,84 +204,6 @@ class VirtueMartModelCalc extends VmModel {
 
 		return $table->virtuemart_calc_id;
 	}
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     *
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
-     */
-	public function shopperPublish($categories){
-
-		foreach ($categories as $id){
-
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_shopper_published`
-					  FROM `#__virtuemart_calcs`
-					  WHERE virtuemart_calc_id = '. $quotedId;
-
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-
-			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
-
-			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_shopper_published` = '.$publish.'
-					  WHERE virtuemart_calc_id = '.$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-		}
-
-		return ($publish ? 1 : -1);
-	}
-
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     *
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
-     */
-	public function vendorPublish($categories){
-
-		foreach ($categories as $id){
-
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_vendor_published`
-					  FROM `#__virtuemart_calcs`
-					  WHERE `virtuemart_calc_id` = '. $quotedId;
-
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-
-			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
-
-			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_vendor_published` = '.$publish.'
-					  WHERE `virtuemart_calc_id` = '.$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-		}
-
-		return ($publish ? 1 : -1);
-	}
-
 
 	function getRule($kind){
 

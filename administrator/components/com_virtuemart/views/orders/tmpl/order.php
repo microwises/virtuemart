@@ -353,7 +353,7 @@ JPluginHelper::importPlugin('vmshipper');
 		<input type="hidden" name="view" value="orders" />
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 		<input type="hidden" name="virtuemart_order_item_id" value="0" />
-		<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+		<?php echo JHTML::_( 'form.token' ); ?>
 		</form> <!-- Update linestatus form -->
 		<table class="adminlist">
 			<tr>

@@ -138,6 +138,6 @@ $pagination = $this->pagination;
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
