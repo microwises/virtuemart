@@ -60,8 +60,10 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load the product */
 				$product_model = $this->getModel('product');
-//				$product = $this->get('Product');
-				$product = $product_model->getProductSingle('',false,false,false);
+
+				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
+
+				$product = $product_model->getProductSingle($virtuemart_product_id[0],false,false,false);
 
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -234,8 +236,6 @@ class VirtuemartViewProduct extends JView {
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
 				else $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT').' :: '.$product->product_sku.' :: '.$product->product_name;
-
-
 
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();

@@ -71,50 +71,52 @@ class VirtuemartControllerConfig extends VmController {
 //	}
 
 
-//	/**
-//	 * Handle the save task
-//	 *
-//	 * @author RickG
-//	 */
-//	function save()
-//	{
-//		$model = $this->getModel('config');
-//		$data = JRequest::get('post');
-//
-//		if ($model->store($data)) {
-//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-//			// Load the newly saved values into the session.
-//			VmConfig::getInstance();
-//		}
-//		else {
-//			$msg = $model->getError();
-//		}
-//
-//		$this->setRedirect('index.php?option=com_virtuemart', $msg);
-//	}
-//
-//
-//	/**
-//	 * Handle the apply task
-//	 *
-//	 * @author RickG
-//	 */
-//	function apply()
-//	{
-//		$model = $this->getModel('config');
-//		$data = JRequest::get('post');
-//
-//		if ($model->store($data)) {
-//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-//			// Load the newly saved values into the session.
-//			VmConfig::getInstance();
-//		}
-//		else {
-//			$msg = JText::_($model->getError());
-//		}
-//
-//		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
-//	}
+	/**
+	 * Handle the save task
+	 *
+	 * @author RickG
+	 */
+	function save(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$model = $this->getModel('config');
+		$data = JRequest::get('post');
+
+		if ($model->store($data)) {
+			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+			// Load the newly saved values into the session.
+			VmConfig::getInstance();
+		}
+		else {
+			$msg = $model->getError();
+		}
+
+		$this->setRedirect('index.php?option=com_virtuemart', $msg);
+	}
+
+
+	/**
+	 * Handle the apply task
+	 *
+	 * @author RickG
+	 */
+	function apply(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		$model = $this->getModel('config');
+		$data = JRequest::get('post');
+
+		if ($model->store($data)) {
+			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+			// Load the newly saved values into the session.
+			VmConfig::getInstance();
+		}
+		else {
+			$msg = JText::_($model->getError());
+		}
+
+		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+	}
 
 
 	/**

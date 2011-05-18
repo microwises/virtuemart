@@ -41,13 +41,12 @@ class VirtuemartControllerUser extends VmController {
 	 * @access public
 	 * @author
 	 */
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct();
 
-//		$this->setMainLangKey('USER');
-		// Register Extra tasks
-		$this->registerTask('add', 'edit');
+	}
+
+	function User(){
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
@@ -61,23 +60,14 @@ class VirtuemartControllerUser extends VmController {
 		}else{
 			echo 'Couldnt load backend model in VirtuemartControllerUser';
 		}
-	}
-
-	/**
-	 * Display the userlist view
-	 */
-	function display(){
 		parent::display();
 	}
+
 
 	/**
 	 * Handle the edit task
 	 */
 	function edit(){
-		JRequest::setVar('controller', 'user');
-		JRequest::setVar('view', 'user');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemainmenu', 1);
 
 		//We set here the cid, when no cid is set to 0, for adding a new user
 		//In every other case the cid is sent.
@@ -95,7 +85,7 @@ class VirtuemartControllerUser extends VmController {
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 
-		parent::display();
+		parent::edit();
 	}
 
 
@@ -110,16 +100,6 @@ class VirtuemartControllerUser extends VmController {
 
 	}
 
-	/**
-	 * Handle the cancel task
-	 */
-	function cancel(){
-		$this->setRedirect('index.php?option=com_virtuemart&view=user');
-	}
-
-	function apply(){
-		$this->save();
-	}
 
 	/**
 	 * Handle the save task
@@ -158,21 +138,6 @@ class VirtuemartControllerUser extends VmController {
 		$this->setRedirect($redirection, $msg);
 	}
 
-
-	/**
-	 * Handle the remove task
-	 */
-	function remove()
-	{
-		$model = $this->getModel('user');
-		if (!$model->remove()) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_USER_S_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=user', $msg);
-	}
 
 	/**
 	 * Interface to toggle(); switch the IsVendor toggle off.

@@ -40,14 +40,12 @@ class VirtuemartControllerUserfields extends VmController {
 	 * @access public
 	 * @author
 	 */
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct();
 
-//		$this->setMainLangKey('USERFIELD');
-		// Register Extra tasks
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply','save');
+	}
+
+	function Userfields(){
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
@@ -60,79 +58,24 @@ class VirtuemartControllerUserfields extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-	}
-
-	/**
-	 * Display the userfields view
-	 */
-	function display()
-	{
 		parent::display();
 	}
+
 
 	/**
 	 * Handle the edit task
 	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'userfields');
-		JRequest::setVar('view', 'userfields');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemainmenu', 1);
+	function edit(){
 
 		$document =& JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('userfields', $viewType);
+		$view = $this->getView('userfields', $viewType);
 
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
 
-		parent::display();
-	}
-
-	/**
-	 * Handle the cancel task
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=userfields');
-	}
-
-	/**
-	 * Handle the save task
-	 */
-	function save()
-	{
-		$model =& $this->getModel('userfields');
-
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_USERFIELD_SAVED');
-		} else {
-			$msg = $model->getError();
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=userfields&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=userfields';
-
-		$this->setRedirect($redirection, $msg);
-
-	}
-
-	/**
-	 * Handle the remove task
-	 */
-	function remove()
-	{
-		$model = $this->getModel('userfields');
-		if (!$model->remove()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_USERFIELDS_COULD_NOT_BE_DELETED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_USERFIELD_S_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=userfields', $msg);
+		parent::edit();
 	}
 
 	/**

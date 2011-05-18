@@ -134,28 +134,6 @@ class VirtueMartModelUserfields extends VmModel {
 		return $value;
 	}
 
-//	/**
-//	 * Resets the userfield id and data
-//	 */
-//	function setId($id)
-//	{
-//		$this->_id = $id;
-//		$this->_data = null;
-//	}
-
-//	/**
-//	 * Loads the pagination for the userfields table
-//	 *
-//	 * @return JPagination Pagination for the current list of userfields
-//	 */
-//	function getPagination()
-//	{
-//		if (empty($this->_pagination)) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
 
 	/**
 	 * Gets the total number of userfields

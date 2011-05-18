@@ -56,15 +56,6 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		}
     }
 
-    /**
-     * Display the upgrade view
-     *
-     * @author RickG
-     */
-    function display() {
-	parent::display();
-    }
-
 
     /**
      * Install sample data into the database
@@ -72,11 +63,11 @@ class VirtuemartControllerUpdatesMigration extends VmController {
      * @author RickG
      */
     function checkForLatestVersion() {
-	$model = $this->getModel('updatesMigration');
-	JRequest::setVar('latestverison', $model->getLatestVersion());
-	JRequest::setVar('view', 'updatesMigration');
+		$model = $this->getModel('updatesMigration');
+		JRequest::setVar('latestverison', $model->getLatestVersion());
+		JRequest::setVar('view', 'updatesMigration');
 
-	parent::display();
+		parent::display();
     }
 
 
@@ -86,12 +77,11 @@ class VirtuemartControllerUpdatesMigration extends VmController {
      * @author RickG
      */
     function installSampleData() {
-	$model = $this->getModel('updatesMigration');
+		$model = $this->getModel('updatesMigration');
 
-	$msg = $model->installSampleData();
+		$msg = $model->installSampleData();
 
-
-	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+		$this->setRedirect($this->redirectPath, $msg);
     }
 
 
@@ -104,7 +94,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$model = $this->getModel('updatesMigration');
 		$msg = $model->integrateJoomlaUsers();
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+		$this->setRedirect($this->redirectPath, $msg);
     }
 
 
@@ -117,7 +107,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$model = $this->getModel('updatesMigration');
 		$msg = $model->setStoreOwner();
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+		$this->setRedirect($this->redirectPath, $msg);
 
     }
 
@@ -139,7 +129,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
     		$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
     	}
 
-    	$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+    	$this->setRedirect($this->redirectPath, $msg);
    }
 
 
@@ -179,7 +169,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration', $msg);
+		$this->setRedirect($this->redirectPath, $msg);
     }
 
 
@@ -194,7 +184,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
+		$this->setRedirect($this->redirectPath,$msg);
     }
 
 
@@ -209,7 +199,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		}
 
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
+		$this->setRedirect($this->redirectPath,$msg);
     }
 
 	function refreshCompleteInstall(){
@@ -232,7 +222,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 //			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
 //		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration',$msg);
+		$this->setRedirect($this->redirectPath,$msg);
 
 	}
 

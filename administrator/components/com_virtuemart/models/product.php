@@ -142,10 +142,9 @@ class VirtueMartModelProduct extends VmModel {
      */
     public function getProduct($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished = true){
 
-    	if (empty($virtuemart_product_id)) {
-			$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
+    	if (!empty($virtuemart_product_id)) {
+			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
-		$this->setId($virtuemart_product_id);
 
     	$child = $this->getProductSingle($virtuemart_product_id,$front, $withCalc,$onlyPublished);
 
@@ -180,10 +179,10 @@ class VirtueMartModelProduct extends VmModel {
     }
 
     public function getProductSingle($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished=true){
-    	if (empty($virtuemart_product_id)) {
-			$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
+
+       	if (!empty($virtuemart_product_id)) {
+			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
-		$virtuemart_product_id = $this->setId($virtuemart_product_id);
 
 //		if(empty($this->_data)){
 			if (!empty($virtuemart_product_id)) {

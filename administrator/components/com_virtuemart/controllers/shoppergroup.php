@@ -42,10 +42,9 @@ class VirtuemartControllerShopperGroup extends JController
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('SHOPPER_GROUP');
-		// Register Extra tasks
-		$this->registerTask( 'add', 'edit' );
-		$this->registerTask( 'apply', 'save' );
+	}
+
+	function ShopperGroup(){
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -56,90 +55,8 @@ class VirtuemartControllerShopperGroup extends JController
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		//$model1 =& $this->getModel('vendor');
-		//if (!JError::isError($model1)) {
-		//	$view->setModel($model1, false);
-		//}
-	}
-
-	/**
-	 * Display the shopper group view
-	 *
-	 * @author Markus �hler
-	 */
-	function display() {
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author Markus �hler
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'shoppergroup');
-		JRequest::setVar('view', 'shoppergroup');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
 
 		parent::display();
-	}
-
-
-	/**
-	 * Handle the cnacel task
-	 *
-	 * @author Markus �hler
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=shoppergroup',JText::_('COM_VIRTUEMART_CANCELLED'));
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author Markus �hler
-	 */
-	function save()
-	{
-		$model =& $this->getModel('shoppergroup');
-
-		if ($id =$model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_SHOPPER_GROUP_SAVED');
-		}
-		else {
-			$msg = JText::_($model->getError());
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=shoppergroup&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=shoppergroup';
-
-		$this->setRedirect($redirection, $msg);
-
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author Markus �hler
-	 */
-	function remove()
-	{
-		$model = $this->getModel('shoppergroup');
-		if (!$model->remove()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_SHOPPER_GROUPS_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=shoppergroup', $msg);
 	}
 
 }

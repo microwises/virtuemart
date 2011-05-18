@@ -111,7 +111,6 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token remove' );
 
-
 		$cid = JRequest::getVar( $this->_cidName, array(), 'post', 'array' );
 		$msg = '';
 
@@ -161,6 +160,7 @@ class VmController extends JController{
 
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
+
 	/**
 	 * Handle the publish task
 	 *

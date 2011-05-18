@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Userfields table class
  * The class is used to manage the values for select-type userfields in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author Oscar van Eijk
  */
-class TableUserfield_values extends JTable {
+class TableUserfield_values extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_userfield_value_id	= 0;
@@ -50,6 +52,8 @@ class TableUserfield_values extends JTable {
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_userfield_values', 'virtuemart_userfield_value_id', $db);
+		$this->setPrimaryKey('virtuemart_userfield_id');
+
 	}
 
 	/**

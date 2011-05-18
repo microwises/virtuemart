@@ -42,11 +42,6 @@ class VirtuemartControllerShippingCarrier extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('SHIPPING_CARRIERS');
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask('apply','save');
-
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view =& $this->getView('shippingcarrier', $viewType);
@@ -58,83 +53,5 @@ class VirtuemartControllerShippingCarrier extends VmController {
 		}
 	}
 
-	/**
-	 * Display the shipping carrier view
-	 *
-	 * @author RickG
-	 */
-	function display() {
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'shippingcarrier');
-		JRequest::setVar('view', 'shippingcarrier');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-//	/**
-//	 * Handle the cancel task
-//	 *
-//	 * @author RickG
-//	 */
-//	function cancel()
-//	{
-//		$this->setRedirect('index.php?option=com_virtuemart&view=shippingcarrier');
-//	}
-
-
-//	/**
-//	 * Handle the save task
-//	 *
-//	 * @author RickG
-//	 */
-//	function save()
-//	{
-//		$model =& $this->getModel('shippingcarrier');
-//
-//		if (($_id = $model->store()) === false) {
-//			$msg = JText::_($model->getError());
-//		} else {
-//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_SAVED');
-//		}
-//
-//		$_redir = 'index.php?option=com_virtuemart&view=shippingcarrier';
-//		if(JRequest::getCmd('task') == 'apply'){
-//			$_redir .= '&task=edit&cid[]='.$_id;
-//		}
-//
-//		$this->setRedirect($_redir, $msg);
-//	}
-
-
-//	/**
-//	 * Handle the remove task
-//	 *
-//	 * @author RickG
-//	 */
-//	function remove()
-//	{
-//		$model = $this->getModel('shippingcarrier');
-//		if (!$model->remove()) {
-//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED_ERROR');
-//		}
-//		else {
-//			$msg = JText::_('COM_VIRTUEMART_SHIPPING_CARRIERS_DELETED');
-//		}
-//
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingcarrier', $msg);
-//	}
 }
 // pure php no closing tag

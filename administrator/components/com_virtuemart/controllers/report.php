@@ -3,7 +3,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /**
 *
-* @version 
+* @version
 * @package VirtueMart
 * @subpackage Report
 * @copyright Copyright (C) VirtueMart Team - All rights reserved.
@@ -25,37 +25,29 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
 
 /**
  * Report Controller
- * 
+ *
  * @package	VirtueMart
  * @subpackage Report
  * @author Wicksj
  */
 class VirtuemartControllerReport extends VmController {
-	
+
 	/**
 	 * Report Controller Constructor
 	 */
 	function __constuct(){
 		parent::__construct();
 
-		$this->setMainLangKey('REPORT');
-
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('report', $viewType);
-		
+
 		$model = $this->getModel('report');
 		if(!JError::isError($model)){
 			$view->setModel($model, true);
 		}
 	}
-	
-	/**
-	 * Display Report View
-	 */
-	function display(){
-		parent::display();
-	}
-	
+
+
 }
 // pure php no closing tag
