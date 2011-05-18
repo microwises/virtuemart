@@ -178,7 +178,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function getUserfieldValues()
 	{
-		$this->_data = $this->getTable('userfields_values');
+		$this->_data = $this->getTable('userfield_values');
 		if ($this->_id > 0) {
 			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $this->_id
 				. ' ORDER BY `ordering`';
@@ -286,7 +286,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if (count($_values) == 0) {
 			return true; //Nothing to do
 		}
-		$fieldvalue =& $this->getTable('userfields_values');
+		$fieldvalue =& $this->getTable('userfield_values');
 
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
@@ -814,9 +814,9 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
 		$field      =& $this->getTable('userfields');
-		$value      =& $this->getTable('userfields_values');
+		$value      =& $this->getTable('userfield_values');
 		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfo');
+		$orderinfo  =& $this->getTable('order_userinfos');
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);

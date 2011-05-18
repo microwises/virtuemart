@@ -19,10 +19,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+VmConfig::JvalideForm();
 AdminMenuHelper::startAdminArea();
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form id="adminform" action="index.php" method="post" name="adminForm">
 
 
 <div class="col50">
@@ -170,7 +171,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="name" id="name" size="50" onchange="prep4SQL(this);" value="<?php
+				<input class="validate[required,funcCall[checkName]] inputbox" type="text" name="name" id="name" size="50" value="<?php
 					echo $this->userField->name;
 				?>" <?php
 					echo ($this->userField->sys ? 'readonly="readonly"' : '');
@@ -314,7 +315,12 @@ AdminMenuHelper::startAdminArea();
 
 <?php AdminMenuHelper::endAdminArea(); ?>
 
-<?php $duration = 500; ?>
+<?php $duration = 500; 
+$db =& JFactory::getDBO();
+$db->setQuery("SHOW COLUMNS FROM `#__virtuemart_userfields`");
+$existingFields = '"'.implode('","',$db->loadResultArray()).'"';
+dump($existingFields,'existingFields');
+?>
 <script type="text/javascript">
 function getObject(obj) {
 	var strObj;
@@ -425,11 +431,26 @@ function selType(sType) {
 		default:
 	}
 }
-
+function checkName(field, rules, i, options){
+	name = field.val();
+	field.val(name.replace(/[^0-9a-zA-Z\_]+/g,''));;
+	var existingFields = new Array(<?php echo $existingFields ?>);
+	if(jQuery.inArray(name,existingFields) > -1) {
+		return options.allrules.onlyLetterNumber.alertText;
+	}
+	var pattern = new RegExp(/^[0-9a-zA-Z\_]+$/);
+	if ( !pattern.test(name) ) {
+		return options.allrules.onlyLetterNumber.alertText;
+	}
+}
+function submitbutton(pressbutton) {
+	if (pressbutton=='cancel') submitform(pressbutton);
+	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
+	else return false ;
+}
 function prep4SQL(o){
 	if(o.value!='') {
-		o.value=o.value.replace('vm_','');
-		o.value='vm_' + o.value.replace(/[^a-zA-Z]+/g,'');
+		o.value=o.value.replace(/[^0-9a-zA-Z\_]+/g,'');
 	}
 }
 <?php if($this->userField->virtuemart_userfield_id > 0) : ?>

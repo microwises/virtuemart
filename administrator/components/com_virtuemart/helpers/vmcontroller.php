@@ -120,7 +120,7 @@ class VmController extends JController{
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 		} else {
 			$model = $this->getModel($this->_cname);
-			if (!$model->delete()) {
+			if (!$model->remove()) {
 				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 			} else {
 				$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
