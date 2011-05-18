@@ -80,7 +80,7 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->currency_name; ?></a>
 		</td>
 		<td align="left">
-			<?php echo $row->exchange_rate; ?>
+			<?php echo $row->currency_exchange_rate; ?>
 		</td>
 		<td align="left">
 			<?php echo $row->currency_symbol; ?>

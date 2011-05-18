@@ -43,9 +43,9 @@ class TableCurrencies extends VmTable {
 	var $currency_numeric_code = 0;
     var $currency_symbol         	= '';
 	/** @var char Currency rate */
-	var $exchange_rate         		= '';
+	var $currency_exchange_rate         		= '';
 	/** @var char display style */
-	var $display_style         		= '';
+	var $currency_display_style         		= '';
 	  /** @var boolean */
 	var $published					= 0;
 	var $shared						= 1;

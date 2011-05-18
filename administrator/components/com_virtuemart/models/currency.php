@@ -136,74 +136,74 @@ class VirtueMartModelCurrency extends VmModel {
     }
 
 
-    /**
-     * Bind the post data to the currency table and save it
-     *
-     * @author RickG
-     * @author Max Milbers
-     * @return boolean True is the save was successful, false otherwise.
-     */
-    function store() {
-	$table =& $this->getTable('currencies');
+//    /**
+//     * Bind the post data to the currency table and save it
+//     *
+//     * @author RickG
+//     * @author Max Milbers
+//     * @return boolean True is the save was successful, false otherwise.
+//     */
+//    function store() {
+//	$table =& $this->getTable('currencies');
+//
+//	$data = JRequest::get( 'post' );
+//
+////	// Store multiple selectlist entries as a | separated string
+////	if (key_exists('currency_display_style', $data) && is_array($data['currency_display_style'])) {
+////	    $data['display_style'] = implode('|', $data['currency_display_style']);
+////	}
+////
+////	if(!empty($data['currency_display_style']) && !empty($data['currency_display_style'][1])){
+////		$data['currency_symbol'] = $data['currency_display_style'][1];
+////	}
+//
+//	// Bind the form fields to the currency table
+//	if (!$table->bind($data)) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Make sure the currency record is valid
+//	if (!$table->check()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Save the currency record to the database
+//	if (!$table->store()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	return $table->virtuemart_currency_id;
+//    }
 
-	$data = JRequest::get( 'post' );
-
-	// Store multiple selectlist entries as a | separated string
-	if (key_exists('currency_display_style', $data) && is_array($data['currency_display_style'])) {
-	    $data['display_style'] = implode('|', $data['currency_display_style']);
-	}
-
-	if(!empty($data['currency_display_style']) && !empty($data['currency_display_style'][1])){
-		$data['currency_symbol'] = $data['currency_display_style'][1];
-	}
-
-	// Bind the form fields to the currency table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Make sure the currency record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Save the currency record to the database
-	if (!$table->store()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	return $table->virtuemart_currency_id;
-    }
-
-	/**
-	 * Delete all record ids selected
-     *
-     * @author Max Milbers
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	public function remove() {
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::delete('cid','currency');
-
-	}
+//	/**
+//	 * Delete all record ids selected
+//     *
+//     * @author Max Milbers
+//     * @return boolean True is the remove was successful, false otherwise.
+//     */
+//	public function remove() {
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::delete('cid','currency');
+//
+//	}
 
 
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be enabled, false otherwise.
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	public function publish($publishId = false)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','currencies',$publishId);
-
-	}
+//	/**
+//	 * Publish/Unpublish all the ids selected
+//     *
+//     * @author Max Milbers
+//     * @param boolean $publishId True is the ids should be enabled, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
+//     */
+//	public function publish($publishId = false)
+//	{
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::publish('cid','currencies',$publishId);
+//
+//	}
 
 
     /**

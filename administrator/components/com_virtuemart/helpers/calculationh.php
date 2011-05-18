@@ -28,7 +28,7 @@ class calculationHelper {
 	private $_cats;
 	private $_now ;
 	private $_nullDate;
-	private $_currency;
+//	private $_currency;
 	private $_debug;
 	private $_amount;
 	private $_deliveryCountry;
@@ -63,14 +63,14 @@ class calculationHelper {
 		$this->_db = &JFactory::getDBO();
 		$jnow		=& JFactory::getDate();
 		$this->_app = JFactory::getApplication();
-		$this -> _now			  = $jnow->toMySQL();
-		$this -> _nullDate		  = $this->_db->getNullDate();
-		$this -> _currency 		  = $this->_getCurrencyObject();
+		$this->_now			  = $jnow->toMySQL();
+		$this->_nullDate		  = $this->_db->getNullDate();
+//		$this -> _currency 		  = $this->_getCurrencyObject();
 
 
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-	    $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
-		$this -> _debug           = false;
+	    $this->_currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
+		$this->_debug           = false;
 	}
 
 	public function getInstance(){
@@ -87,32 +87,32 @@ class calculationHelper {
 		$this->vendorCurrency = $id;
 	}
 
-	/**
-	 * This function is for the gui only!
-	 * Use this only in a view, plugin or modul, never in a model
-	 *
-	 * @param float $price
-	 * @param integer $currencyId
-	 * return string formatted price
-	 */
-	public function priceDisplay($price=0, $currencyId=0,$shop = false){
-		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
-
-		if(empty($currencyId)){
-			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->vendorCurrency );
-			if(empty($currencyId)){
-				$currencyId = $this->vendorCurrency;
-			}
-		}
-
-		$vendorId = 1 ;
-//		if($this->_currencyDisplay->id!=$currencyId){
-			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
+//	/**
+//	 * This function is for the gui only!
+//	 * Use this only in a view, plugin or modul, never in a model
+//	 *
+//	 * @param float $price
+//	 * @param integer $currencyId
+//	 * return string formatted price
+//	 */
+//	public function priceDisplay($price=0, $currencyId=0,$shop = false){
+//		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
+//
+//		if(empty($currencyId)){
+//			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->vendorCurrency );
+//			if(empty($currencyId)){
+//				$currencyId = $this->vendorCurrency;
+//			}
 //		}
-
-		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
-		return $this -> _currencyDisplay->getFullValue($price);
-	}
+//
+//		$vendorId = 1 ;
+////		if($this->_currencyDisplay->id!=$currencyId){
+//			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
+////		}
+//
+//		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
+//		return $this -> _currencyDisplay->getFullValue($price);
+//	}
 
 
 	public function getCartPrices(){
@@ -250,7 +250,7 @@ class calculationHelper {
 
 
 		$prices['costPrice']  = $costPrice;
-		$basePriceShopCurrency = $this->roundDisplay($this->convertCurrencyTo($this->productCurrency, $costPrice));
+		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
 
 //		if(isset($variant)){
@@ -896,7 +896,7 @@ class calculationHelper {
 				}
 			} else {
 
-				$value = $this->convertCurrencyTo($currency, $value);
+				$value = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				return $price + $value ;
 			}
 
@@ -908,92 +908,13 @@ class calculationHelper {
 					return $price * (1-$value/100.0);
 				}
 			} else {
-				$value = $this->convertCurrencyTo($currency, $value);
+				$value = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				return $price - $value ;
 			}
 		}else if(!strcmp($sign,'=')){
 			return $value;
 		}
 
-	}
-
-	/**
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $currency
-	 * @param unknown_type $price
-	 * @param unknown_type $shop
-	 */
-	function convertCurrencyTo($currency,$price,$shop=true){
-
-		if(empty($currency)){
-			return $price;
-		}
-
-		// If both currency codes match, do nothing
-		if( $currency == $this->vendorCurrency ) {
-			return $price;
-		}
-
-		if($shop){
-			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
-//			$exchangeRate = &$this->exchangeRateVendor;
-			$exchangeRate = 0;
-		} else {
-			//caches the exchangeRate between shopper and vendor
-			$exchangeRate = &$this->exchangeRateShopper;
-		}
-
-		if(empty($exchangeRate)){
-//			if(is_Int($currency)){
-				$q = 'SELECT `exchange_rate`
-				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.$currency.'" ';
-				$this->_db->setQuery($q);
-				if(	$exch = $this->_db->loadResult()){
-					$exchangeRate = $this->_db->loadResult();
-				} else {
-					$exchangeRate = FALSE;
-				}
-
-//			}
-		}
-
-		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
-			$price = $price * $exchangeRate;
-		} else {
-			if($shop){
-				$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
-			} else {
-				$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
-			}
-
-		}
-
-		return $price;
-	}
-
-
-
-	/**
-	 * Changes the virtuemart_currency_id into the right currency_code
-	 * For exampel 47 => EUR
-	 *
-	 * @author Max Milbers
-	 * @author Frederic Bidon
-	 */
-	function ensureUsingCurrencyCode($curr){
-
-		if(is_numeric($curr)){
-			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$curr.'"';
-			$this->_db->setQuery($q);
-			$currInt = $this->_db->loadResult();
-			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table for id = '.$curr);
-			}
-			return $currInt;
-		}
-		return $curr;
 	}
 
 
@@ -1138,31 +1059,6 @@ class calculationHelper {
 		return $return;
 	}
 
-
-		/**
-	 * Load the currency object
-	 * @access private
-	 * @author Oscar van Eijk, Max Milbers
-	 * @return object
-	 *
-	 */
-	private function _getCurrencyObject()
-	{
-
-		$converterFile  = VmConfig::get('currency_converter_module');
-
-		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
-			$module_filename = $converterFile;
-			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
-			if( class_exists( $module_filename )) {
-				$_currency = new $module_filename();
-			}
-		} else {
-			if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-			$_currency = new convertECB();
-		}
-		return $_currency;
-	}
 
 
 }

@@ -31,12 +31,12 @@ class VmTableXarray extends VmTable {
 	protected $_autoOrdering = false;
 	protected $_orderable = false;
 
-    function setOrderable($key='ordering', $auto=true){
-    	$this->_orderingKey = $key;
-    	$this->_orderable = 1;
-    	$this->_autoOrdering = $auto;
-    	$this->$key = 0;
-    }
+//    function setOrderable($key='ordering', $auto=true){
+//    	$this->_orderingKey = $key;
+//    	$this->_orderable = 1;
+//    	$this->_autoOrdering = $auto;
+//    	$this->$key = 0;
+//    }
 
 	function setSecondaryKey($key,$keyForm=0){
 		$this->_skey 		= $key;

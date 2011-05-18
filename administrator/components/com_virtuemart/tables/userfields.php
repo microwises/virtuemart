@@ -90,6 +90,8 @@ class TableUserfields extends VmTable {
 		$this->setObligatoryKeys('title','COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE');
 
 		$this->setLoggable();
+
+		$this->setOrderable('ordering',false);
 	}
 
 	/**

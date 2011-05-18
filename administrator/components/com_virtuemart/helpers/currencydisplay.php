@@ -24,6 +24,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 class CurrencyDisplay {
 
 	static $_instance;
+	var $_currency;
 
     var $id      		= "udef";		// string ID related with the currency (ex : language)
     var $symbol    		= "udef";	// Printable symbol
@@ -34,6 +35,18 @@ class CurrencyDisplay {
     var $negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
 
     private function __construct (){
+		$converterFile  = VmConfig::get('currency_converter_module');
+
+		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php' )) {
+			$module_filename = $converterFile;
+			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile.'.php');
+			if( class_exists( $module_filename )) {
+				$this->_currency = new $module_filename();
+			}
+		} else {
+			if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			$this->_currency = new convertECB();
+		}
 
 	}
 
@@ -65,9 +78,9 @@ class CurrencyDisplay {
 			if(empty($style)){
 				$db = JFactory::getDBO();
 				if(!empty($currencyId)){
-					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
+					$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
-					$style = $db->loadResult();
+					$style = $db->loadAssoc();
 				}
 				if(empty($style)){
 					if(empty($vendorId)){
@@ -76,15 +89,15 @@ class CurrencyDisplay {
 					if(empty($currencyId)){
 						$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'"';
 						$db->setQuery($q);
-						$currencyId = $db->loadResult();
+						$currencyId = $db->loadAssoc();
 					}
 
-					$q = 'SELECT `display_style` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
+					$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$currencyId.'"';
 					$db->setQuery($q);
-					$style = $db->loadResult();
+					$style = $db->loadAssoc();
 				}
 			}
-
+			dump($style);
 			self::$_instance = new CurrencyDisplay();
 
 			if(!empty($style)){
@@ -122,35 +135,154 @@ class CurrencyDisplay {
     public function setCurrencyDisplayToStyleStr($currencyId, $currencyStyle='') {
 
     	$this->id =	$currencyId;
-		if ($currencyStyle) {
-		    $array = explode("|", $currencyStyle);
-//		    if(!empty($array[0])) $this->id = $array[0];
-		    $this->symbol = $array[1];
-		    $this->nbDecimal = (int)$array[2];
-		    $this->decimal = $array[3];
-		    $this->thousands = $array[4];
-		    $this->positivePos = $array[5];
-		    $this->negativePos = $array[6];
-		}
+		$this->symbol = $currencyStyle['symbol'];
+		$this->nbDecimal = $currencyStyle['nbDecimal'];
+		$this->decimal = $currencyStyle['decimal'];
+		$this->thousands = $currencyStyle['thousands'];
+		$this->positivePos = $currencyStyle['positivePos'];
+		$this->negativePos = $currencyStyle['negativePos'];
+//    	if()
+//		if ($currencyStyle) {
+//		    $array = explode("|", $currencyStyle);
+////		    if(!empty($array[0])) $this->id = $array[0];
+//		    $this->symbol = $array[1];
+//		    $this->nbDecimal = (int)$array[2];
+//		    $this->decimal = $array[3];
+//		    $this->thousands = $array[4];
+//		    $this->positivePos = $array[5];
+//		    $this->negativePos = $array[6];
+//		}
     }
 
 	/**
+	 * This function is for the gui only!
+	 * Use this only in a view, plugin or modul, never in a model
+	 *
+	 * @param float $price
+	 * @param integer $currencyId
+	 * return string formatted price
+	 */
+	public function priceDisplay($price=0, $currencyId=0,$shop = false){
+		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
+
+		if(empty($currencyId)){
+			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->vendorCurrency );
+			if(empty($currencyId)){
+				$currencyId = $this->vendorCurrency;
+			}
+		}
+
+		$vendorId = 1 ;
+//		if($this->_currencyDisplay->id!=$currencyId){
+//			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
+//		}
+
+		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
+		return $this->getFormattedCurrency($price);
+	}
+
+	/**
+	 *
+	 * @author Max Milbers
+	 * @param unknown_type $currency
+	 * @param unknown_type $price
+	 * @param unknown_type $shop
+	 */
+	function convertCurrencyTo($currency,$price,$shop=true){
+
+		if(empty($currency)){
+			return $price;
+		}
+
+		// If both currency codes match, do nothing
+		if( $currency == $this->vendorCurrency ) {
+			return $price;
+		}
+
+		if($shop){
+			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
+//			$exchangeRate = &$this->exchangeRateVendor;
+			$exchangeRate = 0;
+		} else {
+			//caches the exchangeRate between shopper and vendor
+			$exchangeRate = &$this->exchangeRateShopper;
+		}
+
+		if(empty($exchangeRate)){
+//			if(is_Int($currency)){
+				$q = 'SELECT `currency_exchange_rate`
+				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.$currency.'" ';
+				$this->_db->setQuery($q);
+				if(	$exch = $this->_db->loadResult()){
+					$exchangeRate = $this->_db->loadResult();
+				} else {
+					$exchangeRate = FALSE;
+				}
+
+//			}
+		}
+
+		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
+			$price = $price * $exchangeRate;
+		} else {
+			if($shop){
+				$price = $this ->_currency->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->vendorCurrency));
+			} else {
+				$price = $this ->_currency->convert( $price , self::ensureUsingCurrencyCode($this->vendorCurrency),  self::ensureUsingCurrencyCode($currency));
+			}
+
+		}
+
+		return $price;
+	}
+
+
+	/**
+	 * Changes the virtuemart_currency_id into the right currency_code
+	 * For exampel 47 => EUR
+	 *
+	 * @author Max Milbers
+	 * @author Frederic Bidon
+	 */
+	function ensureUsingCurrencyCode($curr){
+
+		if(is_numeric($curr)){
+			$this->_db = JFactory::getDBO();
+			$q = 'SELECT `currency_code` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$curr.'"';
+			$this->_db->setQuery($q);
+			$currInt = $this->_db->loadResult();
+			if(empty($currInt)){
+				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table for id = '.$curr);
+			}
+			return $currInt;
+		}
+		return $curr;
+	}
+
+
+	/**
 	 * Get the formatted and rounded value for display
-	 * @deprecated Use CurrencyDisplay::getFullValue() instead
+	 * @deprecated Use CurrencyDisplay::getFormattedCurrency() instead
 	 * @param fload $nb Amount
 	 * @param integer $decimals r. of decimals
 	 */
 	public function getValue($nb, $decimals='')
 	{
-		return self::getFullValue($nb, $decimals);
+		return self::getFormattedCurrency($nb, $decimals);
 	}
 
     /**
      * Format, Round and Display Value
      * @author Max Milbers
+     * @deprecated Use CurrencyDisplay::getFormattedCurrency() instead
      * @param val number
      */
     public function getFullValue($nb,$nbDecimal=0 ){
+
+		self::getFormattedCurrency($nb, $decimals);
+    }
+
+    public function getFormattedCurrency( $nb, $nbDecimal=0){
 
     	if(empty($nbDecimal)) $nbDecimal = $this->nbDecimal;
     	if($nb>=0){

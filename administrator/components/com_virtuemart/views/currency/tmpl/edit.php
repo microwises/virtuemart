@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="exchange_rate" id="exchange_rate" size="6" value="<?php echo $this->currency->exchange_rate; ?>" />
+				<input class="inputbox" type="text" name="currency_exchange_rate" id="currency_exchange_rate" size="6" value="<?php echo $this->currency->exchange_rate; ?>" />
 			</td>
 		</tr>
 		<tr>

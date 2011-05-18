@@ -71,6 +71,8 @@ class VmTable extends JTable {
     function setOrderable($key='ordering', $auto=true){
     	$this->_orderingKey = $key;
     	$this->_orderable = 1;
+    	$this->_autoOrdering = $auto;
+    	$this->$key = 0;
     }
 
     function checkDataContainsTableFields($from, $ignore=array()){
@@ -226,7 +228,7 @@ class VmTable extends JTable {
 	 * @param $dirn
 	 * @param $where
 	 */
-	function move( $dirn, $where='', $orderingkey = 'ordering' ){
+	function move( $dirn, $where='', $orderingkey=0 ){
 
 		if(!empty($orderingkey)) $this->_orderingKey = $orderingkey;
 
