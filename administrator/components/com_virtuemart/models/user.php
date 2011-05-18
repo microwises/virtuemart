@@ -825,30 +825,30 @@ class VirtueMartModelUser extends VmModel {
 	  * @param $value boolean Value to set
 	  * @return boolean Result
 	  */
-	 function toggle($field, $id = array(), $value = 1)
-	 {
-	 	$_missingUsers = $this->validateUsers($id);
-	 	$id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
-	 	foreach ($_missingUsers as $_uid => $_username) {
-	 		JError::raiseWarning(500, JText::sprintf('COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
-	 	}
-	 	if (count($id) > 0)
-	 	{
-	 		JArrayHelper::toInteger($id);
-	 		$ids = implode( ',', $id );
+	 // function toggle($field, $id = array(), $value = 1)
+	 // {
+	 	// $_missingUsers = $this->validateUsers($id);
+	 	// $id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
+	 	// foreach ($_missingUsers as $_uid => $_username) {
+	 		// JError::raiseWarning(500, JText::sprintf('COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
+	 	// }
+	 	// if (count($id) > 0)
+	 	// {
+	 		// JArrayHelper::toInteger($id);
+	 		// $ids = implode( ',', $id );
 
-	 		$query = 'UPDATE `#__virtuemart_vmusers`'
-				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE virtuemart_user_id IN ( '.$ids.' )'
-				;
-				$this->_db->setQuery( $query );
-				if (!$this->_db->query()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-	 	}
-	 	return true;
-	 }
+	 		// $query = 'UPDATE `#__virtuemart_vmusers`'
+				// . ' SET `' . $field . '` = '.(int) $value
+				// . ' WHERE virtuemart_user_id IN ( '.$ids.' )'
+				// ;
+				// $this->_db->setQuery( $query );
+				// if (!$this->_db->query()) {
+					// $this->setError($this->_db->getErrorMsg());
+					// return false;
+				// }
+	 	// }
+	 	// return true;
+	 // }
 
 	 /**
 	  * Return a list of Joomla ACL groups.

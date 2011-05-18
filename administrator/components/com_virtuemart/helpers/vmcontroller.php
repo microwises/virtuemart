@@ -200,5 +200,42 @@ class VmController extends JController{
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
+	function orderup() {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$model = $this->getModel($this->_cname);
+		$model->move(-1);
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_UP_SUCCESS',$this->mainLangKey);
+		$this->setRedirect( $this->redirectPath, $msg);
+	}
+
+	function orderdown() {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$model = $this->getModel($this->_cname);
+		$model->move(1);
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_DOWN_SUCCESS',$this->mainLangKey);
+		$this->setRedirect( $this->redirectPath, $msg);
+	}
+
+	function saveorder() {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
+		JArrayHelper::toInteger($cid);
+		JArrayHelper::toInteger($order);
+
+		$model = $this->getModel($this->_cname);
+		$model->saveorder($cid, $order);
+
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
+		$this->setRedirect( $this->redirectPath, $msg);
+	}
+
+
 
 }

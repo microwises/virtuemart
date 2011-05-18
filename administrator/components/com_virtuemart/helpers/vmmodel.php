@@ -215,7 +215,7 @@ class VmModel extends JModel {
 	 * or invert by $val for multi IDS;
 	 * @author Patrick Kohl
 	 * @param string $field the field to toggle
-	 * @param string $postName the name of id Post  (same as in table Class constructor)
+	 * @param string $postName the name of id Post  (Primary Key in table Class constructor)
 	 */
 
 	function toggle($field,$val = NULL, $postName='cid' ) {
@@ -233,7 +233,7 @@ class VmModel extends JModel {
 			}
 
 			if (!$table->store()) {
-				JError::raiseError(500, $row->getError() );
+				JError::raiseError(500, $table->getError() );
 				$ok = false;
 			}
 		}
@@ -241,7 +241,69 @@ class VmModel extends JModel {
 		return $ok;
 
     }
+	/**
+	 * Original From Joomla Method to move a weblink
+	 * @ Author Kohl Patrick
+	 * @$filter the field to group by
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+	function move($direction, $filter=null)
+	{
+		$table =& $this->getTable($this->_maintablename);
+		if (!$table->load($this->_id)) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		if ($filter) ' '.$filter.' = '.(int) $table->$filter.' AND published >= 0 ';
+		if (!$table->move( $direction, $filter )) {
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 
+		return true;
+	}
+	/**
+	 * Original From Joomla Method to move a weblink
+	 * @ Author Kohl Patrick
+	 * @$filter the field to group by
+	 * @access	public
+	 * @return	boolean	True on success
+	 * @since	1.5
+	 */
+	function saveorder($cid = array(), $order, $filter = null)
+	{
+		$table =& $this->getTable($this->_maintablename);
+		$groupings = array();
+
+		// update ordering values
+		for( $i=0; $i < count($cid); $i++ )
+		{
+			$table->load( (int) $cid[$i] );
+			// track categories
+			if ($filter) $groupings[] = $table->$filter;
+
+			if ($table->ordering != $order[$i])
+			{
+				$table->ordering = $order[$i];
+				if (!$table->store()) {
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+			}
+		}
+
+		// execute updateOrder for each parent group
+		if ($filter) {
+			$groupings = array_unique( $groupings );
+			foreach ($groupings as $group){
+				$table->reorder(	$filter.' = '.(int) $group);
+			}
+		}
+
+		return true;
+	} 
     //General toggle could be nice, lets see
 //	/**
 //	 * Switch a toggleable field on or off

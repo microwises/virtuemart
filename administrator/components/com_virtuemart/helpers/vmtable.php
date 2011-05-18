@@ -226,7 +226,7 @@ class VmTable extends JTable {
 	 * @param $dirn
 	 * @param $where
 	 */
-	function move( $dirn, $where='', $orderingkey = 0 ){
+	function move( $dirn, $where='', $orderingkey = 'ordering' ){
 
 		if(!empty($orderingkey)) $this->_orderingKey = $orderingkey;
 

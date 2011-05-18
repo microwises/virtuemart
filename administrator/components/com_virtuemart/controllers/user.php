@@ -139,48 +139,48 @@ class VirtuemartControllerUser extends VmController {
 	}
 
 
-	/**
-	 * Interface to toggle(); switch the IsVendor toggle off.
-	 */
-	function disable_vendor()
-	{
-		//TODO is only for single store, take a look on that for multivendor
+	// /**
+	 // * Interface to toggle(); switch the IsVendor toggle off.
+	 // */
+	// function disable_vendor()
+	// {
+		// TODO is only for single store, take a look on that for multivendor
 		// Why was this ?? Re-published again (Oscar)
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
-		self::toggle('user_is_vendor', 0);
-	}
+		// $this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
+		// self::toggle('user_is_vendor', 0);
+	// }
 
-	/**
-	 * Interface to toggle(); switch the IsVendor toggle on.
-	 */
-	function enable_vendor()
-	{
-		//TODO is only for single store, take a look on that for multivendor
+	// /**
+	 // * Interface to toggle(); switch the IsVendor toggle on.
+	 // */
+	// function enable_vendor()
+	// {
+		// TODO is only for single store, take a look on that for multivendor
 		// Why was this ?? Re-published again (Oscar)
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
-		self::toggle('user_is_vendor', 1);
-	}
+		// $this->setRedirect( 'index.php?option=com_virtuemart&view=user','Disabled for beta' );
+		// self::toggle('user_is_vendor', 1);
+	// }
 
-	/**
-	 * Switch the given toggle on or off.
-	 *
-	 * @param $field string Toggle set switch
-	 * @param $value boolean on or off
-	 */
-	function toggle($field, $value)
-	{
-		$id = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($id);
-		if (count( $id ) < 1) {
-			JError::raiseWarning(500, JText::_('COM_VIRTUEMART_SELECT_USER_TO_MODIFY') );
-		}
+	// /**
+	 // * Switch the given toggle on or off.
+	 // *
+	 // * @param $field string Toggle set switch
+	 // * @param $value boolean on or off
+	 // */
+	// function toggle($field, $value)
+	// {
+		// $id = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		// JArrayHelper::toInteger($id);
+		// if (count( $id ) < 1) {
+			// JError::raiseWarning(500, JText::_('COM_VIRTUEMART_SELECT_USER_TO_MODIFY') );
+		// }
 
-		$model = $this->getModel('user');
-		if(!$model->toggle($field, $id, $value)) {
-			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
-		}
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=user' );
-	}
+		// $model = $this->getModel('user');
+		// if(!$model->toggle($field, $id, $value)) {
+			// echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
+		// }
+		// $this->setRedirect( 'index.php?option=com_virtuemart&view=user' );
+	// }
 }
 
 //No Closing tag
