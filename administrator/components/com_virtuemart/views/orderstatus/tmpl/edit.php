@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>

@@ -38,10 +38,10 @@ class VmCustomHandler {
 			'I'=>'COM_VIRTUEMART_CUSTOM_INT',
 			'P'=>'COM_VIRTUEMART_CUSTOM_PARENT',
 			'B'=>'COM_VIRTUEMART_CUSTOM_BOOL',
-			'D'=>'COM_VIRTUEMART_CUSTOM_DATE',
-			'T'=>'COM_VIRTUEMART_CUSTOM_TIME',
+			'D'=>'COM_VIRTUEMART_DATE',
+			'T'=>'COM_VIRTUEMART_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-			'i'=>'COM_VIRTUEMART_CUSTOM_IMAGE',
+			'i'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
 			);
@@ -191,13 +191,13 @@ class VmCustomHandler {
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$this->custom_field_desc);
 		// change input by type
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_DEFAULT','custom_value',$this->custom_value);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$this->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
 		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_FORM_FIELD_PUBLISHED','published',$this->published);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$this->published);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);

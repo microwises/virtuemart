@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CREDIT_CARD_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR_ID'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VIRTUEMART_VENDOR_ID'); ?>:
 				</label>
 			</td>
 			<td>
@@ -63,7 +63,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CREDIT_CARD_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_CODE'); ?>:
 				</label>
 			</td>
 			<td>

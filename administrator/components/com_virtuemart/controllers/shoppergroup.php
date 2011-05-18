@@ -32,7 +32,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @subpackage ShopperGroup
  * @author Markus �hler
  */
-class VirtuemartControllerShopperGroup extends JController
+class VirtuemartControllerShopperGroup extends VmController
 {
 	/**
 	 * Method to display the view
@@ -43,21 +43,5 @@ class VirtuemartControllerShopperGroup extends JController
 		parent::__construct();
 
 	}
-
-	function ShopperGroup(){
-
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view =& $this->getView('shoppergroup', $viewType);
-
-		// Push a model into the view
-		$model =& $this->getModel('shoppergroup');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
-		parent::display();
-	}
-
 }
 // pure php no closing tag
