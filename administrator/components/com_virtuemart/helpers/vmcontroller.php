@@ -138,7 +138,7 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 

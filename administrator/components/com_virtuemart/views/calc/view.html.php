@@ -52,6 +52,11 @@ class VirtuemartViewCalc extends JView {
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
 
+		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_CALC');
+		$this->assignRef('viewName',$viewName); 
+		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_countries_48');
+
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
@@ -60,7 +65,6 @@ class VirtuemartViewCalc extends JView {
 
 			$isNew = ($calc->virtuemart_calc_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
 
 				$db = JFactory::getDBO();
 				//get default currency of the vendor, if not set get default of the shop
@@ -83,9 +87,6 @@ class VirtuemartViewCalc extends JView {
 					JError::raiseError(403,'Forbidden for non vendors');
 				}
 				if(empty($calc->virtuemart_vendor_id))$calc->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
-			}
-			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 			}
 
 			JToolBarHelper::divider();
@@ -129,7 +130,6 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('vendorList', $vendorList);
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CALC_LIST_LBL'), 'vm_countries_48' );
 			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
 			JToolBarHelper::custom('toggle.calc_shopper_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_ON'), true);
 			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);

@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_NAME'); ?>:
+					<?php echo $this->viewName .' '. JText::_('COM_VIRTUEMART_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_ORDERING'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
 				</label>
 			</td>
 			<td>
@@ -63,7 +63,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_DESCR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
@@ -93,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -103,7 +103,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_CURRENCY'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>:
 				</label>
 			</td>
 			<td>
@@ -135,7 +135,7 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_COUNTRY'); ?>:
+				<?php echo JText::_('COM_VIRTUEMART_COUNTRY'); ?>:
 			</td>
 			<td>
 				<?php echo $this->countriesList?>
@@ -227,7 +227,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</label>
 			</td>
      		<td width="69%" ><?php

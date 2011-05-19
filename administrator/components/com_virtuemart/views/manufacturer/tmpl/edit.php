@@ -33,7 +33,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>:
+					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_NAME')); ?>:
 				</label>
 			</td>
 			<td>
@@ -43,7 +43,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>:
+					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_CATEGORY')); ?>:
 				</label>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>:
+					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_URL')); ?>:
 				</label>
 			</td>
 			<td>
@@ -76,7 +76,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>:
+					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_EMAIL')); ?>:
 				</label>
 			</td>
 			<td>
@@ -86,7 +86,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESC'); ?>:
+					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION')); ?>:
 				</label>
 			</td>
 			<td>

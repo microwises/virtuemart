@@ -29,14 +29,14 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'control_panel'
 ?>
 <br />
 <div id="cpanel">
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=product'), 'vm_shop_products_48.png', JText::_('COM_VIRTUEMART_PRODUCT_LIST_LBL')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=category'), 'vm_shop_categories_48.png', JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48.png', JText::_('COM_VIRTUEMART_ORDER_MOD')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod'), 'vm_shop_payment_48.png', JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_MNU')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48.png', JText::_('COM_VIRTUEMART_USERS')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=product'), 'vm_shop_products_48.png', JText::_('COM_VIRTUEMART_CONTROLLER_PRODUCT')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=category'), 'vm_shop_categories_48.png', JText::_('COM_VIRTUEMART_CATEGORY')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48.png', JText::_('COM_VIRTUEMART_CONTROLLER_ORDERS')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod'), 'vm_shop_payment_48.png', JText::_('COM_VIRTUEMART_CONTROLLER_PAYMENTMETHOD')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48.png', JText::_('COM_VIRTUEMART_CONTROLLER_USER')); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=config'), 'vm_shop_configuration_48.png', JText::_('COM_VIRTUEMART_CONFIG')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_mart_48.png', JText::_('COM_VIRTUEMART_STORE_FORM_MNU')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125'), 'vm_shop_help_48.png', JText::_('COM_VIRTUEMART_HELP_MOD')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48.png', JText::_('COM_VIRTUEMART_STORE_INFORMATION')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125'), 'vm_shop_help_48.png', JText::_('COM_VIRTUEMART')); ?></div>
 </div>
 <?php
 echo $pane->endPanel();

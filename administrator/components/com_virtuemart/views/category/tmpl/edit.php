@@ -67,7 +67,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_name">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -86,7 +86,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_description">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>

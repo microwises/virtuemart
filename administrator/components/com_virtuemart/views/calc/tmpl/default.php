@@ -36,17 +36,17 @@ $j15 = VmConfig::isJ15();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
 			<th width="60">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_LIST_NAME'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_NAME'); ?>
 			</th>
 			<?php /* if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
 			</th><?php } */ ?>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_DESCR'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_ORDERING'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_KIND'); ?>
@@ -55,10 +55,10 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 			</th>
 			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_CURRENCY'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_ID'); ?>
@@ -73,10 +73,10 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_START_DATE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_END_DATE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?>
@@ -85,7 +85,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_COUNTRIES'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_COUNTRIES'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?>

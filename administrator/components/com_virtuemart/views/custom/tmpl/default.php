@@ -58,8 +58,8 @@ $pagination = $this->pagination;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_TITLE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DESCRIPTION'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_TITLE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
@@ -125,6 +125,6 @@ $pagination = $this->pagination;
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php //echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php //echo $this->lists['order_Dir']; ?>" />
-<?php echo JUtility::getToken(); ?>
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

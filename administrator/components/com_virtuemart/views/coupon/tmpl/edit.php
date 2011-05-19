@@ -83,7 +83,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>:
 				</label>
                               </span>
 			</td>

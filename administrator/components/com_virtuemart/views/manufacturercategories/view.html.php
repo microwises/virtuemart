@@ -38,19 +38,15 @@ class VirtuemartViewManufacturercategories extends JView {
 
 		// get necessary model
 		$model = $this->getModel();
-
         $layoutName = JRequest::getVar('layout', 'default');
-
         $manufacturerCategory = $model->getManufacturerCategory();
 
-        $isNew = ($manufacturerCategory->virtuemart_manufacturercategories_id < 1);
+		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_MANUFACTURERCATEGORIES');
+		$this->assignRef('viewName',$viewName); 
+		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_manufacturer_48');
 
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_manufacturer_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_manufacturer_48');
-			}
 			JToolBarHelper::divider();
 			JToolBarHelper::apply();
 			JToolBarHelper::save();
@@ -58,7 +54,6 @@ class VirtuemartViewManufacturercategories extends JView {
 			$this->assignRef('manufacturerCategory',	$manufacturerCategory);
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_LIST_LBL'), 'vm_manufacturer_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList();

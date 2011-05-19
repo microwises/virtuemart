@@ -44,6 +44,10 @@ class VirtuemartViewCategory extends JView {
                 $mainframe = JFactory::getApplication();
                 $option = JRequest::getCmd('option');
                 $view = JRequest::getCmd('view');
+		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_CATEGORY');
+		$this->assignRef('viewName',$viewName); 
+		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_categories_48');
 
 		if ($layoutName == 'edit') {
 
@@ -51,13 +55,7 @@ class VirtuemartViewCategory extends JView {
 
 	       	$model->addImagesToCategories($category);
 
-        	$isNew = ($category->virtuemart_category_id < 1);
-
-			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_categories_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_categories_48');
-
+			if ( $category->virtuemart_category_id > 1 ) {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
@@ -88,7 +86,6 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('categorylist', $categorylist);
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL'), 'vm_categories_48' );
             JToolBarHelper::publishList();
             JToolBarHelper::unpublishList();
             JToolBarHelper::deleteList();

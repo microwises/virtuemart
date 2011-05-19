@@ -43,7 +43,7 @@ class VirtuemartViewConfig extends JView {
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');
 
-		JToolBarHelper::title(JText::_('COM_VIRTUEMART_CONFIG'), 'vm_config_48');
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' , JToolBarHelper::title(JText::_('COM_VIRTUEMART_CONFIG'),JToolBarHelper::title(JText::_('COM_VIRTUEMART_LIST') , 'vm_config_48');
 		JToolBarHelper::divider();
 		JToolBarHelper::apply();
 		JToolBarHelper::save();

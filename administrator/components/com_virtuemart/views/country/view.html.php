@@ -41,7 +41,6 @@ class VirtuemartViewCountry extends JView {
 
 		$layoutName = JRequest::getVar('layout', 'default');
 
-		dump($layoutName,'$layoutName');
 		if ($layoutName == 'edit') {
 			$country = $model->getCountry();
 			$isNew = ($country->virtuemart_country_id < 1);
