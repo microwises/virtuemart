@@ -112,6 +112,21 @@ class VirtuemartControllerProduct extends VmController {
 		$view->display();
 	}
 
+	/**
+	 * We want to allow html so we need to overwrite some request data
+	 *
+	 * @author Max Milbers
+	 */
+	function save(){
+
+		$data = JRequest::get('post');
+
+		$data['product_name'] = JRequest::getVar('product_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
+
+		parent::save($data);
+	}
 
 	/**
 	 * This task creates a child by a given product id

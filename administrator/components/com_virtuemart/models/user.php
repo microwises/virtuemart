@@ -498,6 +498,10 @@ class VirtueMartModelUser extends VmModel {
 				echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 			}
 
+			if(empty($_data['customer_number'])){
+				//TODO here add plugin hoook for creating customer numbers.
+				$_data['customer_number'] = md5($_data['username']);
+			}
 			//update user table
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			$usertable = $this->getTable('vmusers');

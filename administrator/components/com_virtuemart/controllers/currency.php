@@ -30,7 +30,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  *
  * @package    VirtueMart
  * @subpackage Currency
- * @author RickG
+ * @author RickG, Max Milbers, Patrick Kohl
  */
 class VirtuemartControllerCurrency extends VmController {
 
@@ -59,6 +59,19 @@ class VirtuemartControllerCurrency extends VmController {
 		parent::display();
 	}
 
+	/**
+	 * We want to allow html so we need to overwrite some request data
+	 *
+	 * @author Max Milbers
+	 */
+	function save(){
 
+		$data = JRequest::get('post');
+
+		$data['currency_positive_style'] = JRequest::getVar('currency_positive_style','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['currency_negative_style'] = JRequest::getVar('currency_negative_style','','post','STRING',JREQUEST_ALLOWHTML);
+
+		parent::save($data);
+	}
 }
 // pure php no closing tag

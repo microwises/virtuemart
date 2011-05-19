@@ -56,6 +56,8 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		if (!JError::isError($paymModel)) {
 			$view->setModel($paymModel, true);
 		}
+
+		parent::display();
 	}
 
 	/**

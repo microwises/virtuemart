@@ -242,7 +242,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 	function portCurrency(){
 
-//		$this->setRedirect($this->redirectPath);
+		$this->setRedirect($this->redirectPath);
 		$db = JFactory::getDBO();
 		$q = 'SELECT `virtuemart_currency_id`,
 		  `currency_name`,

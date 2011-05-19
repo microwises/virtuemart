@@ -32,37 +32,38 @@ defined('_JEXEC') or die('Restricted access');
 class TableProducts extends VmTable {
 
 	/** @var int Primary key */
-	var $virtuemart_product_id	 = null;
+	var $virtuemart_product_id	 = 0;
 	/** @var integer Product id */
-	var $virtuemart_vendor_id = null;
+	var $virtuemart_vendor_id = 0;
 	/** @var string File name */
-	var $product_parent_id		= null;
+	var $product_parent_id		= 0;
 	/** @var string File title */
-	var $product_sku= null;
-        /** @var string Name of the product */
-	var $product_name	= null;
+	var $product_sku= '';
+    /** @var string Name of the product */
+	var $product_name	= '';
+	var $slug			= '';
     /** @var string File description */
-	var $product_s_desc		= null;
+	var $product_s_desc		= '';
     /** @var string File extension */
-	var $product_desc			= null;
+	var $product_desc			= '';
 	/** @var int File is an image or other */
-	var $product_weight			= null;
+	var $product_weight			= 0;
 	/** @var int File image height */
-	var $product_weight_uom		= null;
+	var $product_weight_uom		= '';
 	/** @var int File image width */
-	var $product_length		= null;
+	var $product_length		= 0;
 	/** @var int File thumbnail image height */
-	var $product_width = null;
+	var $product_width = 0;
 	/** @var int File thumbnail image width */
-	var $product_height	= null;
+	var $product_height	= 0;
 	/** @var int File thumbnail image width */
-	var $product_lwh_uom	= null;
+	var $product_lwh_uom	= '';
 	/** @var int File thumbnail image width */
-	var $product_url	= null;
+	var $product_url	= '';
 	/** @var int File thumbnail image width */
-	var $product_in_stock	= null;
+	var $product_in_stock	= 0;
 	/** @var int File thumbnail image width */
-	var $low_stock_notification	= null;
+	var $low_stock_notification	= 0;
 	/** @var int File thumbnail image width */
 	var $product_available_date	= null;
 	/** @var int File thumbnail image width */
@@ -72,14 +73,14 @@ class TableProducts extends VmTable {
 //	/** @var int File thumbnail image width */
 //	var $product_discount_id	= null;
 	/** @var int File thumbnail image width */
-	var $ship_code_id	= null;
+	var $ship_code_id	= 0;
 
 	/** @var int File thumbnail image width */
-	var $product_sales	= null;
-	/** @var int File thumbnail image width */
-	var $attribute	= null;
-	/** @var int File thumbnail image width */
-	var $custom_attribute	= null;
+	var $product_sales	= 0;
+//	/** @var int File thumbnail image width */
+//	var $attribute	= null;
+//	/** @var int File thumbnail image width */
+//	var $custom_attribute	= 0;
 //	/** @var int File thumbnail image width */
 //	var $product_tax_id	= null;
 	/** @var int File thumbnail image width */
@@ -89,17 +90,17 @@ class TableProducts extends VmTable {
 	/** @var int File thumbnail image width */
 	var $product_order_levels	= '0,0';
 	/** @var string Internal note for product */
-	var $intnotes = null;
+	var $intnotes = '';
 	/** @var string Meta description */
-	var $metadesc	= null;
+	var $metadesc	= '';
 	/** @var string Meta keys */
-	var $metakey	= null;
+	var $metakey	= '';
 	/** @var string Meta robot */
-	var $metarobot	= null;
+	var $metarobot	= '';
 	/** @var string Meta author */
-	var $metaauthor	= null;
+	var $metaauthor	= '';
 	/** @var string Name of the details page to use for showing product details in the front end */
-	var $layout = null;
+	var $layout = '';
        /** @var int published or unpublished */
 	var $published 		        = 1;
 
@@ -117,7 +118,7 @@ class TableProducts extends VmTable {
 //		$this->setObligatoryKeys('country_3_code');
 
 		$this->setLoggable();
-
+		$this->setSlug('product_name');
 	}
 
 //    /**

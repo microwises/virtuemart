@@ -50,6 +50,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
+				<tr class="row0">
+					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS') ?></div>
+					</td>
+					<td width="79%" height="18" >
+						<input type="text" class="inputbox"  name="slug" value="<?php echo $this->product->slug; ?>" size="32" maxlength="255" />
+					</td>
+				</tr>
 				<tr class="row1">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?></div>

@@ -44,6 +44,10 @@ class VirtuemartViewCreditcard extends JView {
         $isNew = ($creditcard->virtuemart_creditcard_id < 1);
 
 		if ($layoutName == 'edit') {
+			$this->loadHelper('shopFunctions');
+			$vendorList= ShopFunctions::renderVendorList($creditcard->virtuemart_vendor_id);
+			$this->assignRef('vendorList', $vendorList);
+
 			if ($isNew) {
 				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_credit_48');
 			} else {
@@ -51,7 +55,7 @@ class VirtuemartViewCreditcard extends JView {
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::save();
-                        JToolBarHelper::apply();
+            JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			$this->assignRef('creditcard',	$creditcard);
         }

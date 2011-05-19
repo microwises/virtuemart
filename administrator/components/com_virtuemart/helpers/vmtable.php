@@ -77,6 +77,14 @@ class VmTable extends JTable {
     	$this->$key = 0;
     }
 
+    function setSlug($slugAutoName,$key = 'slug'){
+
+    	$this->_slugAutoName = $slugAutoName;
+    	$this->_slugName	= $key;
+    	$this->$key = '';
+		$this->setUniqueName($key);
+    }
+
     function checkDataContainsTableFields($from, $ignore=array()){
 
     	$fromArray	= is_array( $from );
@@ -91,10 +99,8 @@ class VmTable extends JTable {
 			$ignore = explode( ' ', $ignore );
 		}
 
-//		dump($this,'checkDataContainsTableFields');
 		foreach ($this->getProperties() as $k => $v){
 			// internal attributes of an object are ignored
-//			dump($k,' $v '.$v. ' hmfp');
 			if (!in_array( $k, $ignore )){
 
 				if ($fromArray && isset( $from[$k] )) {
@@ -124,6 +130,18 @@ class VmTable extends JTable {
             	return false;
         	}
     	}
+
+    	if(!empty($this->slugAutoName) ) {
+
+    		$slugAutoName = $this->slugAutoName;
+    		$slugName = $this->slugName;
+    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
+    			//TODO add replacment here
+    			$this->$slugName = preg_replace( '%', '-', $this->$slugAutoName );
+//    			$this->$slugName =
+    		}
+    	}
+
 
     	if ($this->_unique) {
 		    $db = JFactory::getDBO();
@@ -167,7 +185,7 @@ class VmTable extends JTable {
         	$this->locked_on = 0;
         }
 
-        //This is a hack for single, shouldnt be used, when we write multivendor there should be message
+        //This is a hack for single store, shouldnt be used, when we write multivendor there should be message
         if(isset($this->virtuemart_vendor_id)){
         	if(empty($this->virtuemart_vendor_id)) $this->virtuemart_vendor_id = 1;
         }

@@ -281,7 +281,7 @@ class VirtueMartModelMedia extends VmModel {
 
 //		$oldId = $data['active_media_id'];
 //		$this -> setId($oldId);
-		$virtuemart_media_id = $this->store($type,$data);
+		$virtuemart_media_id = $this->store($data,$type);
 		$this -> setId($virtuemart_media_id);
 
 		/* add the virtuemart_media_id & remove 0 and '' from $data */
@@ -307,10 +307,10 @@ class VirtueMartModelMedia extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store($type,$data=0) {
+	public function store($data=0,$type) {
 
 		$table = $this->getTable('medias');
-		if(empty($data))$data = JRequest::get('post');
+//		if(empty($data))$data = JRequest::get('post');
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 

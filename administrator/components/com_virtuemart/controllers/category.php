@@ -54,6 +54,20 @@ class VirtuemartControllerCategory extends VmController {
 		parent::display();
 	}
 
+	/**
+	 * We want to allow html so we need to overwrite some request data
+	 *
+	 * @author Max Milbers
+	 */
+	function save(){
+
+		$data = JRequest::get('post');
+
+		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['category_description'] = JRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
+
+		parent::save($data);
+	}
 
 	/**
 	 * Handle the shared/unshared action

@@ -57,7 +57,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="virtuemart_vendor_id" id="virtuemart_vendor_id" size="50" value="<?php echo $this->creditcard->virtuemart_vendor_id; ?>" />
+					<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
 		<tr>

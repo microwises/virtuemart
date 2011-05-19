@@ -36,6 +36,7 @@ class TableCategories extends VmTable {
 	var $virtuemart_vendor_id		= 0;
 	/** @var string Category name */
 	var $category_name		=  '';
+	var $slug		=  '';
 	/** @var string Category description */
 	var $category_description		= '';
 
@@ -80,6 +81,7 @@ class TableCategories extends VmTable {
 		$this->setPrimaryKey('virtuemart_category_id');
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
+		$this->setSlug('category_name');
 	}
 
 

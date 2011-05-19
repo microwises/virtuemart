@@ -92,8 +92,6 @@ class VirtuemartControllerUser extends VmController {
 	function editshop(){
 
 		$user = JFactory::getUser();
-//		$model = $this->getModel();
-//		$model->setCurrent();
 		//the cid var gets overriden in the edit function, when not set. So we must set it here
 		JRequest::setVar('cid', (int)$user->id);
 		$this->edit();
@@ -116,7 +114,8 @@ class VirtuemartControllerUser extends VmController {
 		if (!$_currentUser->authorize('com_users', 'manage')) {
 			$msg = JText::_(_NOT_AUTH);
 		} else {
-			$model =& $this->getModel('user');
+			$model = $this->getModel('user');
+
 			if ($ret=$model->store()) {
 				$msg = JText::_('COM_VIRTUEMART_USER_SAVED');
 			} else {
