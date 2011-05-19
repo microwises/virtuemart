@@ -21,45 +21,56 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
-class VirtueMartModelPaymentmethod extends JModel
-{
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
+class VirtueMartModelPaymentmethod extends VmModel{
+
 	/** @var array Array of Primary keys */
-    private $_cid;
-	/** @var integer Primary key */
-    private $_id;
-	/** @var objectlist paymentmethod  data */
-    private $_data;
-	/** @var integer Total number of paymentmethods in the database */
-	private $_total;
-	/** @var pagination Pagination for paymentmethod list */
-	private $_pagination;
+//    private $_cid;
+//	/** @var integer Primary key */
+//    private $_id;
+//	/** @var objectlist paymentmethod  data */
+//    private $_data;
+//	/** @var integer Total number of paymentmethods in the database */
+//	private $_total;
+//	/** @var pagination Pagination for paymentmethod list */
+//	private $_pagination;
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('paymentmethods');
+	}
 
-    /**
-     * Constructor for the paymentmethod model.
-     *
-     * The paym id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author Max Milbers
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the calc id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-
-    }
+//    /**
+//     * Constructor for the paymentmethod model.
+//     *
+//     * The paym id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author Max Milbers
+//     */
+//    public function __construct()
+//    {
+//        parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//        // Get the calc id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//    	$this->setId((int)$idArray[0]);
+//
+//    }
 
 	/**
 	 * Gets the virtuemart_paymentmethod_id with a plugin and vendorId
@@ -74,48 +85,48 @@ class VirtueMartModelPaymentmethod extends JModel
 	 }
 
 
-    /**
-     * Resets the paym id and data
-     *
-     * @author Max Milbers
-     */
-    public function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
+//    /**
+//     * Resets the paym id and data
+//     *
+//     * @author Max Milbers
+//     */
+//    public function setId($id)
+//    {
+//        $this->_id = $id;
+//        $this->_data = null;
+//    }
 
 
-	/**
-	 * Loads the pagination for the country table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
-	 */
-    public function getPagination()
-    {
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of countries
-	 *
-     * @author RickG
-	 * @return int Total number of countries in the database
-	 */
-	public function _getTotal()
-	{
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_paymentmethod_id` FROM `#__virtuemart_paymentmethods`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
+//	/**
+//	 * Loads the pagination for the country table
+//	 *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of countries
+//	 */
+//    public function getPagination()
+//    {
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//
+//	/**
+//	 * Gets the total number of countries
+//	 *
+//     * @author RickG
+//	 * @return int Total number of countries in the database
+//	 */
+//	public function _getTotal()
+//	{
+//    	if (empty($this->_total)) {
+//			$query = 'SELECT `virtuemart_paymentmethod_id` FROM `#__virtuemart_paymentmethods`';
+//			$this->_total = $this->_getListCount($query);
+//        }
+//        return $this->_total;
+//    }
 
 
     /**
@@ -123,27 +134,17 @@ class VirtueMartModelPaymentmethod extends JModel
      *
      * @author Max Milbers
      */
-	public function getPaym()
-	{
-
-//		$db = JFactory::getDBO();
+	public function getPaym(){
 
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('paymentmethods');
    			$this->_data->load((int)$this->_id);
   		}
 
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-//   			$this->_data = null;
+  		if(empty($this->_data->virtuemart_vendor_id)){
+  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+   			$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
   		}
-
-  		//what a nonsense
-//  		if(empty($this->_data->virtuemart_vendor_id)){
-//  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-//   			$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-//  		}
 
   		if(!empty($this->_id)){
 			/* Add the paymentmethod shoppergroups */
@@ -328,9 +329,9 @@ class VirtueMartModelPaymentmethod extends JModel
 	 * Delete all record ids selected
      *
      * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	public function delete()
+	public function remove()
 	{
 		$calcIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('paymentmethods');
@@ -359,7 +360,7 @@ class VirtueMartModelPaymentmethod extends JModel
      * @author Max Milbers
      * @param boolean $publish True is the ids should be published, false otherwise.
      * @param the ids to alter
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
 	public function publish($publish=false) {
 

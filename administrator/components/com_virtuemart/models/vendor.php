@@ -22,59 +22,24 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
 * Model for VirtueMart Vendors
 *
 * @package		VirtueMart
 */
-class VirtueMartModelVendor extends JModel {
+class VirtueMartModelVendor extends VmModel {
 
-    /**
-    * Vendor Id
-    *
-    * @var $_id;
-    */
-    private $_id;
-
-    /**
-    * Vendor detail record
-    *
-    * @var object;
-    */
-    private $_data;
-
-
-    /**
-    * Constructor for the Vendor model.
-    */
-    function __construct()
-    {
-        parent::__construct();
-
-        $cid = JRequest::getVar('cid', false, 'DEFAULT', 'array');
-        if ($cid) {
-            $id = $cid[0];
-        }
-        else {
-            $id = JRequest::getInt('id', 1);
-        }
-
-        $this->setId($id);
-    }
-
-
-    /**
-    * Resets the Vendor ID and data
-    */
-    function setId($id=1){
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-    function getId(){
-    	return $this->_id;
-    }
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('vendors');
+	}
 
     /**
 	* name: getLoggedVendor
@@ -104,10 +69,10 @@ class VirtueMartModelVendor extends JModel {
 	*/
 	function getVendor() {
 
-        if (!$this->_data) {
+        if (empty($this->_data)) {
 
 	    	$this->_data = $this->getTable('vendors');
-   			$this->_data->load((int)$this->_id);
+   			$this->_data->load($this->_id);
 
 		    // Convert ; separated string into array
 		    if ($this->_data->vendor_accepted_currencies) {
@@ -118,37 +83,8 @@ class VirtueMartModelVendor extends JModel {
 		    }
 
 		    $xrefTable = $this->getTable('vendor_medias');
-			$this->_data->file_ids = $xrefTable->load((int)$this->_id);
+			$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
-//          	if($this->_data->file_ids){
-//  				$this->_data->file_ids = explode(',',$this->_data->file_ids);
-//  			}
-//			if($withUserData){
-//			    $query = "SELECT virtuemart_user_id FROM #__vm_auth_user_vendor ";
-//			    $query .= "WHERE virtuemart_vendor_id = '". $this->_id ."'";
-//			    $this->_db->setQuery($query);
-//			    $userVendor = $this->_db->loadObject();
-//
-//			    // Get user_info table data
-//			    $this->_data->userId = (isset($userVendor->virtuemart_user_id) ? $userVendor->virtuemart_user_id : 0);
-//
-//				$userInfoTable = $this->getTable('userinfos');
-//	    		$userInfoTable->load((int)$this->_id);
-//	    		$this->_data->userInfo = $userInfoTable;
-//
-//				$vendorJUser = JFactory::getUser($this->_id);
-//		//	   	$user_table = $this->getTable('user');
-//		//	    $user_table->load((int)$userId);
-//			    $this->_data->jUser = $vendorJUser;
-
-//
-//			}
-
-		}
-
-       	if (!$this->_data) {
-	    	$this->_data = new stdClass();
-	    	$this->_id = 0;
 		}
 
 		return $this->_data;
@@ -202,36 +138,28 @@ class VirtueMartModelVendor extends JModel {
 
 	$table = $this->getTable('vendors');
 
+	if(!$table->checkDataContainsTableFields($data)){
+		$app = JFactory::getApplication();
+    	$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
+		return $this->_id;
+	}
+
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
 
-	// Bind the form fields to the vendor table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
+	$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
+	$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
+	$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
 
-	// Make sure the vendor record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
-
-	// Save the vendor to the database
-	if (!$table->store()) {
-	    $this->setError($table->getDBO()->getErrorMsg());
-	    return false;
-	}
+	$data = $table->bindChecknStore($data);
 
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 
 	/* Process the images */
-
 	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 	$xrefTable = $this->getTable('vendor_medias');
 	$mediaModel = new VirtueMartModelMedia();
@@ -440,7 +368,7 @@ class VirtueMartModelVendor extends JModel {
 				s.state_2_code AS state, s.state_name AS statename, city, zip,
 				c.country_name AS country, vendor_phone, vendor_url AS url, phone_1 as phone
 				FROM #__virtuemart_vendors v
-				LEFT JOIN #__virtuemart_user_shoppergroups x
+				LEFT JOIN #__virtuemart_vmuser_shoppergroups x
 				ON x.virtuemart_vendor_id = v.virtuemart_vendor_id
 				LEFT JOIN #__virtuemart_userinfos u
 				ON u.virtuemart_user_id = x.virtuemart_user_id
@@ -485,7 +413,7 @@ class VirtueMartModelVendor extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($vendor,'file_ids','vendor','image');
+		$this->mediaModel->attachImages($vendor,'vendor','image');
 
 	}
 

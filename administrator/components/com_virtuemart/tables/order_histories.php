@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Order history table class
  * The class is is used to manage the order history in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RolandD
  */
-class TableOrder_histories extends JTable {
+class TableOrder_histories extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_order_history_id = 0;
@@ -34,8 +36,8 @@ class TableOrder_histories extends JTable {
 	var $virtuemart_order_id = 0;
 	/** @var char Order status code */
 	var $order_status_code = 0;
-	/** @var datetime Date added */
-	var $date_added = '0000-00-00 00:00:00';
+//	/** @var datetime Date added */
+//	var $date_added = '0000-00-00 00:00:00';
 	/** @var int Customer notified */
 	var $customer_notified = 0;
 	/** @var text Comments */
@@ -46,6 +48,10 @@ class TableOrder_histories extends JTable {
 	 */
 	function __construct($db) {
 		parent::__construct('#__virtuemart_order_histories', 'virtuemart_order_history_id', $db);
+
+		$this->setObligatoryKeys('virtuemart_order_id');
+
+		$this->setLoggable();
 	}
 }
 // pure php no closing tag

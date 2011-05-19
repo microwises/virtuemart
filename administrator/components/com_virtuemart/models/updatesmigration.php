@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
 jimport( 'joomla.application.component.model');
-if(!class_exists('VmConnector')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+
 
 /**
  * Model class for updates and migrations
@@ -38,17 +38,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @return string Example: 1.1.2
      */
     function getLatestVersion() {
-	//if (!empty($_SESSION['vmLatestVersion'])) {
-	//		return $_SESSION['vmLatestVersion'];
-	//	}
-	//	$VMVERSION =& new vmVersion();
-	$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={".VmConfig::getInstalledVersion()."}&task=latestversionastext";
-	$result = VmConnector::handleCommunication($url);
-	//if ($result !== false) {
-	//	// Cache the result for later use
-	//		$_SESSION['vmLatestVersion'] = $result;
-	//	}
-	return $result;
+
+    	if(!class_exists('VmConnector')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'connection.php');
+
+		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={".VmConfig::getInstalledVersion()."}&task=latestversionastext";
+		$result = VmConnector::handleCommunication($url);
+
+		return $result;
     }
 
 
@@ -59,39 +55,39 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function integrateJoomlaUsers() {
 
-    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
-	$db = JFactory::getDBO();
-	$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
-	$db->setQuery($query);
-	$row = $db->loadObjectList();
-
-	foreach ($row as $user) {
-
-		$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+	    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
+		$db = JFactory::getDBO();
+		$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
 		$db->setQuery($query);
-	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
-	    }
+		$row = $db->loadObjectList();
 
-		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
-		$this->_db->setQuery($q);
-		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
+		foreach ($row as $user) {
 
-		$query = 'INSERT IGNORE INTO `#__virtuemart_user_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
-	    $db->setQuery($query);
-	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_user_shoppergroups FAILED' );
-	    }
+			$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+			$db->setQuery($query);
+		    if (!$db->query()) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
+		    }
 
-	    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
-	    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
-	    $db->setQuery($query);
-	    if (!$db->query()) {
-			JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
-	    }
-	}
-	$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
-	return $msg;
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
+			$this->_db->setQuery($q);
+			$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
+
+			$query = 'INSERT IGNORE INTO `#__virtuemart_vmuser_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
+		    $db->setQuery($query);
+		    if (!$db->query()) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmuser_shoppergroups FAILED' );
+		    }
+
+		    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
+		    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
+		    $db->setQuery($query);
+		    if (!$db->query()) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
+		    }
+		}
+		$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
+		return $msg;
     }
 
 
@@ -222,7 +218,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
-	$fields['file_ids'] =  1;
+	$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = $currencyFields;
 	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
@@ -233,9 +229,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
+	$usermodel->setId($userId);
 	if (!$usermodel->store($fields)) {
 		$this->setError($usermodel->getError());
-	    JError::raiseNotice(1, 'Problems saving vendordata of the sample store '.$this->getError());
+	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
 	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
@@ -401,26 +398,26 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
     function uploadAndInstallUpdate($packageName) {
-	if (!$packageName) {
-	    $this->_error = 'No package name provided!';
-	    return false;
-	}
+		if (!$packageName) {
+		    $this->_error = 'No package name provided!';
+		    return false;
+		}
 
-	jimport('joomla.filesystem.file');
-	jimport('joomla.filesystem.archive');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.archive');
 
-	$config = JFactory::getConfig();
-	$destn = $config->getValue('config.tmp_path').DS.basename($packageName);
+		$config = JFactory::getConfig();
+		$destn = $config->getValue('config.tmp_path').DS.basename($packageName);
 
-	if (!JFile::upload($packageName, $destn)) {
-	    $this->setError('Error uploading update package!');
-	    return false;
-	}
+		if (!JFile::upload($packageName, $destn)) {
+		    $this->setError('Error uploading update package!');
+		    return false;
+		}
 
-	jimport('joomla.installer.installer');
-	$jinstaller = JInstaller::getInstance();
-	die($destn);
-	$jinstaller->install($destn);
+		jimport('joomla.installer.installer');
+		$jinstaller = JInstaller::getInstance();
+		die($destn);
+		$jinstaller->install($destn);
     }
 
 
@@ -430,57 +427,60 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @return True if successful, false otherwise
      */
     function removeAllVMTables() {
-	$db = JFactory::getDBO();
-	$config = JFactory::getConfig();
+		$db = JFactory::getDBO();
+		$config = JFactory::getConfig();
 
-    $prefix = $config->getValue('config.dbprefix').'vm_%';
-	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
-	if (!$tables = $db->loadResultArray()) {
-	    $this->setError = $db->getErrorMsg();
-//	    return false;
-	}
+	    $prefix = $config->getValue('config.dbprefix').'vm_%';
+		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
+		if (!$tables = $db->loadResultArray()) {
+		    $this->setError = $db->getErrorMsg();
+	//	    return false;
+		}
 
-	foreach ($tables as $table) {
+		foreach ($tables as $table) {
 
-	    $db->setQuery('DROP TABLE ' . $table);
-	    if($db->query()){
-	    	$droppedTables[] = substr($table,strlen($prefix)-1);
-	    } else {
-	    	$errorTables[] = $table;
-	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
-	    }
-	}
+			//lets rename them instead drop
+//			$db->setQuery('RENAME TABLE '.$table.' TO old'.$table);
 
-	$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
-	$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
-	if (!$tables = $db->loadResultArray()) {
-	    $this->setError = $db->getErrorMsg();
-	    return false;
-	}
+		    $db->setQuery('DROP TABLE ' . $table);
+		    if($db->query()){
+		    	$droppedTables[] = substr($table,strlen($prefix)-1);
+		    } else {
+		    	$errorTables[] = $table;
+		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+		    }
+		}
 
-	$app = JFactory::getApplication();
-	foreach ($tables as $table) {
+		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
+		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
+		if (!$tables = $db->loadResultArray()) {
+		    $this->setError = $db->getErrorMsg();
+		    return false;
+		}
 
-	    $db->setQuery('DROP TABLE ' . $table);
-	    if($db->query()){
-	    	$droppedTables[] = substr($table,strlen($prefix)-1);
-	    } else {
-	    	$errorTables[] = $table;
-	    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
-	    }
-	}
+		$app = JFactory::getApplication();
+		foreach ($tables as $table) {
+
+		    $db->setQuery('DROP TABLE ' . $table);
+		    if($db->query()){
+		    	$droppedTables[] = substr($table,strlen($prefix)-1);
+		    } else {
+		    	$errorTables[] = $table;
+		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
+		    }
+		}
 
 
-	if(!empty($droppedTables)){
-		$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
-	}
+		if(!empty($droppedTables)){
+			$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
+		}
 
-    if(!empty($errorTables)){
-		$app->enqueueMessage('Error dropping virtuemart table ' . implode($errorTables,', '));
-		return false;
-	}
+	    if(!empty($errorTables)){
+			$app->enqueueMessage('Error dropping virtuemart table ' . implode($errorTables,', '));
+			return false;
+		}
 
-	return true;
+		return true;
     }
 
 
@@ -490,10 +490,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @return boolean True if successful, false otherwise.
      */
     function removeAllVMData() {
-	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
-	$this->execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
+		$this->execSQLFile($filename);
 
-	return true;
+		return true;
     }
 }
 

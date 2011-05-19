@@ -19,6 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 /**
  * Category table class
  * The class is is used to table-level abstraction for Categories.
@@ -27,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage Category
  * @author jseros
  */
-class TableCategories extends JTable {
+class TableCategories extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_category_id	= null;
@@ -35,6 +36,7 @@ class TableCategories extends JTable {
 	var $virtuemart_vendor_id		= 0;
 	/** @var string Category name */
 	var $category_name		=  '';
+	var $slug		=  '';
 	/** @var string Category description */
 	var $category_description		= '';
 
@@ -67,60 +69,21 @@ class TableCategories extends JTable {
 	var $metaauthor	= '';
         /** @var integer Category publish or not */
 	var $published			= 1;
-        /** @var date Category creation date */
-        var $created_on = null;
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-        var $modified_by = 0;
 
-   	/** @var boolean */
-	var $locked_on	= null;
-	/** @var time */
-	var $locked_by	= 0;
 	/**
 	 * Class contructor
 	 *
-	 * @author jseros
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	public function __construct($db) {
 		parent::__construct('#__virtuemart_categories', 'virtuemart_category_id', $db);
+		$this->setPrimaryKey('virtuemart_category_id');
+		$this->setObligatoryKeys('category_name');
+		$this->setLoggable();
+		$this->setSlug('category_name');
 	}
 
-	/**
-	 *
-	 * @author Max Milbers
-	 */
-	public function check(){
-
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-
-     	if(empty($this->category_name)){
-            $this->setError('Cant save category without name');
-            return false;
-     	}
-
-		if (!empty($this->category_name)) {
-		    $db = JFactory::getDBO();
-
-			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_categories` ';
-			$q .= 'WHERE `category_name`="' . $this->category_name . '"';
-            $db->setQuery($q);
-		    $virtuemart_category_id = $db->loadResult();
-		    if (!empty($virtuemart_category_id) && $virtuemart_category_id!=$this->virtuemart_category_id) {
-				$this->setError(JText::_('COM_VIRTUEMART_CATEGORY_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-     	return true;
-	}
 
 	/**
 	 * Overwrite method

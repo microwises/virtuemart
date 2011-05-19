@@ -103,13 +103,13 @@ $j15 = VmConfig::isJ15();
 			$checked = ($coreField) ?
 				'<span class="editlinktip hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
 				JHTML::_('grid.id', $i, $row->virtuemart_userfield_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=userfields&task=edit&cid[]=' . $row->virtuemart_userfield_id);
-			$required = $this->toggle($row->required, $i, 'required', $coreField);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&cid[]=' . $row->virtuemart_userfield_id);
+			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);
 //			$published = JHTML::_('grid.published', $row, $i);
-			$published = $this->toggle($row->published, $i, 'published', $coreField);
-			$registration = $this->toggle($row->registration, $i, 'registration', $coreField);
-			$shipping = $this->toggle($row->shipping, $i, 'shipping', $coreField);
-			$account = $this->toggle($row->account, $i, 'account', $coreField);
+			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
+			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
+			$shipping = $this->toggle($row->shipping, $i, 'toggle.shipping', $coreField);
+			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
@@ -171,6 +171,7 @@ $j15 = VmConfig::isJ15();
 	<input type="hidden" name="view" value="userfields" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

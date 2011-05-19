@@ -652,8 +652,8 @@ class VirtueMartCart  {
 			if ($_prices['salesPrice'] < $_store->vendor_min_pov) {
 				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 				$_currency = CurrencyDisplay::getCurrencyDisplay();
-				$_minValue = $_currency->getFullValue($_min);
-				return JText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $_currency->getFullValue($_store->vendor_min_pov));
+				$_minValue = $_currency->priceDisplay($_min);
+				return JText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $_currency->priceDisplay($_store->vendor_min_pov));
 			}
 		}
 		return null;
@@ -830,28 +830,28 @@ class VirtueMartCart  {
 		$prices = array();
 		$product_prices = $this->getCartPrices();
 
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
+		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
 
 		foreach($product_prices as $k=>$price){
 //			if(is_int($k)){
 				if(is_array($price)){
 					foreach($price as $sk=>$sprice){
-						$prices[$k][$sk] = $calculator->priceDisplay($sprice);
+						$prices[$k][$sk] = $currency->priceDisplay($sprice);
 					}
 //				}
 
 			} else {
-				$prices[$k] = $calculator->priceDisplay($price);
+				$prices[$k] = $currency->priceDisplay($price);
 			}
 		}
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+
 		$this->cartData->prices = $prices;
 		$this->cartData->cartData = $calculator->getCartData();
 		$this->cartData->calculator = $calculator;
-
-//		$this->cartData = $calculator->getCartData();
-//		$this->cartData['prices'] = $prices;
-////		$this->cartData->calculator = $calculator;
 
 		return $this->cartData ;
 	}

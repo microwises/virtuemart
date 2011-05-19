@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Coupon table class
  * The class is is used to manage the coupons in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG
  */
-class TableCoupons extends JTable {
+class TableCoupons extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_coupon_id			 	= 0;
@@ -44,39 +46,18 @@ class TableCoupons extends JTable {
 	var $coupon_expiry_date 	= '';
 	/** @var decimal Coupon valid value */
 	var $coupon_value_valid 	= 0;
-         /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
 
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
 	/**
-	 * @author RickG
+	 * @author RickG, Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_coupons', 'virtuemart_coupon_id', $db);
+
+		$this->setLoggable();
 	}
 
-
-	/**
-	 * Validates the coupon record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check()
-	{
-		return true;
-	}
 
 }
 // pure php no closing tag

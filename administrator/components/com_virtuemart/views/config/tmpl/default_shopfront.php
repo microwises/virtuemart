@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 /*$orderByFieldsArray = $this->config->get('browse_orderby_fields');
 $orderByFields = array();
-$orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('COM_VIRTUEMART_DEFAULT'));
+$orderByFields[] = JHTML::_('select.option', 'ordering', JText::_('COM_VIRTUEMART_DEFAULT'));
 $orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('COM_VIRTUEMART_PRODUCT_PRICE_TITLE'));
 $orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('COM_VIRTUEMART_CART_SKU'));
@@ -72,7 +72,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			<td>
 			    <?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 			</td>
-		    </tr>   
+		    </tr>
 			<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
@@ -145,10 +145,22 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 		    </tr>
 		</table>
 	    </fieldset>
-	    
+
 	    <fieldset class="adminform">
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 		<table class="admintable">
+		<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
+				</span>
+	    	</td>
+	    	<td>
+				<?php 
+				 $showReviewFor = array(1 => 'anonymous', 2 => 'user', 3 => 'user_buy_it', 4 => 'vendor');
+				echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
+	    	</td>
+			</tr>   
 			<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
@@ -156,7 +168,17 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				</span>
 	    	</td>
 	    	<td>
-				<?php echo VmHTML::checkbox('allow_reviews', $this->config->get('allow_reviews')); ?>
+				<?php echo VmHTML::checkbox('showReviewFor', $this->config->get('showReviewFor')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
+				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
+				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
+				</span>
+	    	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('showRatingFor', $this->config->get('showRatingFor')); ?>
 	    	</td>
 			</tr>
 			<tr>
@@ -233,7 +255,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    ?>
 			</td>
 		    </tr>
-			
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
@@ -348,7 +370,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <?php echo VmHTML::checkbox('show_recent', $this->config->get('show_recent')); ?>
 			</td>
 		    </tr>
-		   
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
@@ -446,7 +468,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 		    }
 		    else {
 			echo '<tr>
-        <td colspan="2"><strong>Dynamic Image Resizing is not available. The GD library seems to be missing.</strong>';
+        <td colspan="2"><strong>'.JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') .'</strong>';
 			echo '<input type="hidden" name="img_resize_enable" value="0" />';
 			echo '<input type="hidden" name="img_width" value="'. $this->config->get('img_width',90) .'" />';
 			echo '<input type="hidden" name="img_height" value="'. $this->config->get('img_height',90) .'" /></td></tr>';
@@ -476,7 +498,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    ?>
 			</td>
 		    </tr>
-	    
+
 	    </table>
 	    </fieldset>
 	</td></tr>

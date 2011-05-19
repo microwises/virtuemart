@@ -35,35 +35,28 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		$shippingCarrier = $model->getShippingCarrier();
 
 		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($shippingCarrier->virtuemart_shippingcarrier_id < 1);
+		$viewName=ShopFunctions::SetViewTitle('vm_ups_48');
+		$this->assignRef('viewName',$viewName);
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CARRIER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_ups_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_ups_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::apply();
-			JToolBarHelper::save();
-			JToolBarHelper::cancel();
 
-			$this->loadHelper('shopFunctions');
-			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->shipping_carrier_virtuemart_vendor_id);
+			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
-		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CARRIER_LIST_LBL'), 'vm_ups_48' );
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
 
+			ShopFunctions::addStandardEditViewCommands();
+
+		} else {
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

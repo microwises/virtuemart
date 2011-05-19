@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Shipping Carrier Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage ShippingRate
  * @author RickG
  */
-class VirtuemartControllerShippingRate extends JController {
+class VirtuemartControllerShippingRate extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,6 +42,7 @@ class VirtuemartControllerShippingRate extends JController {
 	function __construct() {
 		parent::__construct();
 
+//		$this->setMainLangKey('SHIPPING_RATE');
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
@@ -70,85 +74,5 @@ class VirtuemartControllerShippingRate extends JController {
 //		}
 	}
 
-	/**
-	 * Display the shipping rate view
-	 *
-	 * @author RickG
-	 */
-	function display() {
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'shippingrate');
-		JRequest::setVar('view', 'shippingrate');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=shippingrate');
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG
-	 */
-	function save()
-	{
-		$model =& $this->getModel('shippingrate');
-
-		if (($id = $model->store()) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_SHIPPING_RATE_SAVED');
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=shippingrate&task=edit&cid[]='.$id;
-		} else {
-			$redirection = 'index.php?option=com_virtuemart&view=shippingrate';
-		}
-
-		$this->setRedirect($redirection, $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('shippingrate');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_SHIPPING_RATES_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_SHIPPING_RATES_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=shippingrate', $msg);
-	}
 }
 // pure php no closing tag

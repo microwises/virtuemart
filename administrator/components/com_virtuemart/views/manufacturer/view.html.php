@@ -35,53 +35,43 @@ class VirtuemartViewManufacturer extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-		$this->loadHelper('image');
+		$this->loadHelper('shopFunctions');
 
 		$mainframe = JFactory::getApplication();
-		global $option;
+		$option = JRequest::getCmd('option');
 		// get necessary models
 		$model = $this->getModel();
 		$categoryModel = $this->getModel('manufacturercategories');
-
         $virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
+		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48');
+		$this->assignRef('viewName',$viewName);
 
-        $layoutName = JRequest::getVar('layout', 'default');
-
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();
        		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_manufacturer_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_manufacturer_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 			$model->addImagesToManufacturer($manufacturer);
 			$this->assignRef('manufacturer',	$manufacturer);
 //			 /* Process the images */
 //			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 //			$mediaModel = new VirtueMartModelMedia();
-//			$mediaModel -> setId($manufacturer->file_ids);
+//			$mediaModel -> setId($manufacturer->virtuemart_media_id);
 //			$image = $mediaModel->getFile('manufacturer','image');
 
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_MNU'), 'vm_manufacturer_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

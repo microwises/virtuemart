@@ -47,10 +47,10 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo implode(', ', explode("\n", $_item->product_attribute)); ?>
 			</td>
 			<td align="right" >
-				<?php echo $this->currency->getFullValue($_item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($_item->product_final_price); ?>
 			</td>
 			<td align="right" >
-				<?php echo $this->currency->getFullValue($_item->product_quantity * $_item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($_item->product_quantity * $_item->product_final_price); ?>
 			</td>
 			<td align="left" >
 				<?php echo $this->orderstatuses[$_item->order_status]; ?>

@@ -247,13 +247,13 @@ JPluginHelper::importPlugin('vmshipper');
 					<?php echo $this->orderstatuslist[$item->order_status]; ?>
 				</td>
 				<td>
-					<?php echo $this->currency->getFullValue($item->product_item_price); ?>
+					<?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
 				</td>
 				<td>
-					<?php echo $this->currency->getFullValue($item->product_final_price); ?>
+					<?php echo $this->currency->priceDisplay($item->product_final_price,'',false); ?>
 				</td>
 				<td>
-					<?php echo $this->currency->getFullValue($item->product_quantity * $item->product_final_price); ?>
+					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
 			</tr>
 
@@ -320,7 +320,7 @@ JPluginHelper::importPlugin('vmshipper');
 					<input type="text" size="8" name="product_final_price_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
-					<?php echo $this->currency->getFullValue($item->product_quantity * $item->product_final_price); ?>
+					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
 			</tr>
 
@@ -353,7 +353,7 @@ JPluginHelper::importPlugin('vmshipper');
 		<input type="hidden" name="view" value="orders" />
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 		<input type="hidden" name="virtuemart_order_item_id" value="0" />
-		<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+		<?php echo JHTML::_( 'form.token' ); ?>
 		</form> <!-- Update linestatus form -->
 		<table class="adminlist">
 			<tr>
@@ -364,7 +364,7 @@ JPluginHelper::importPlugin('vmshipper');
 				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
-				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_subtotal); ?></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal,'',false); ?></td>
 			</tr>
 			<?php
 			/* COUPON DISCOUNT */
@@ -377,8 +377,8 @@ JPluginHelper::importPlugin('vmshipper');
 				else echo JText::_('COM_VIRTUEMART_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
-				if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
-				elseif ($this->orderbt->order_discount < 0 )  echo "+" . $this->currency->getFullValue($ordert->order_discount); ?>
+				if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->priceDisplay($this->orderbt->order_discount,'',false);
+				elseif ($this->orderbt->order_discount < 0 )  echo "+" . $this->currency->priceDisplay($ordert->order_discount,'',false); ?>
 				</td>
 			</tr>
 			<?php
@@ -395,15 +395,15 @@ JPluginHelper::importPlugin('vmshipper');
 			}?>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_tax); ?></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax,'',false); ?></td>
 			</tr>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping); ?></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping,'',false); ?></td>
 			</tr>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->getFullValue($this->orderbt->order_shipping_tax); ?></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping_tax,'',false); ?></td>
 			</tr>
 			<?php
 			if (VmConfig::get('payment_discount_before') != '1') {
@@ -416,8 +416,8 @@ JPluginHelper::importPlugin('vmshipper');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				if ($this->orderbt->order_discount > 0 )
-				echo "-" . $this->currency->getFullValue($this->orderbt->order_discount);
-				elseif ($this->orderbt->order_discount < 0 ) echo "+".$this->currency->getFullValue($this->orderbt->order_discount); ?>
+				echo "-" . $this->currency->priceDisplay($this->orderbt->order_discount,'',false);
+				elseif ($this->orderbt->order_discount < 0 ) echo "+".$this->currency->priceDisplay($this->orderbt->order_discount,'',false); ?>
 				</td>
 			</tr>
 			<?php
@@ -426,7 +426,7 @@ JPluginHelper::importPlugin('vmshipper');
 					?>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->getFullValue($this->orderbt->coupon_discount); ?></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount,'',false); ?></td>
 			</tr>
 			<?php
 				}
@@ -434,7 +434,7 @@ JPluginHelper::importPlugin('vmshipper');
 			?>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->getFullValue($this->orderbt->order_total); ?></strong>
+				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
 				</td>
 			</tr>
 			<?php

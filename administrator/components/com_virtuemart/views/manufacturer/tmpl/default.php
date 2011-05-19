@@ -27,10 +27,10 @@ AdminMenuHelper::startAdminArea();
     <table>
 	<tr>
 	    <td width="100%">
-		<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FILTER'); ?>:
+		<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 		<input type="text" name="search" id="search" value="<?php echo $this->list['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_GO_BTN'); ?></button>
-		<button onclick="document.getElementById('search').value='';document.getElementById('virtuemart_manufacturercategories_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_RESET_BTN'); ?></button>
+		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+		<button onclick="document.getElementById('search').value='';document.getElementById('virtuemart_manufacturercategories_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 	    </td>
 	    <td nowrap="nowrap">
 		<?php
@@ -47,19 +47,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_EMAIL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESC'); ?>
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_URL'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
 		    </th>
 		</tr>
 	    </thead>

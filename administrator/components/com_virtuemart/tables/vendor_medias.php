@@ -18,6 +18,8 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
+
 /**
  * Vendor media table class
  * The class is is used to manage the media in the shop.
@@ -25,10 +27,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableVendor_medias extends JTable {
-
-	var $_pkey 		= 'virtuemart_vendor_id';
-	var $_skey 		= 'file_ids';
+class TableVendor_medias extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
@@ -36,6 +35,10 @@ class TableVendor_medias extends JTable {
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_vendor_medias', 'id', $db);
+
+		$this->setPrimaryKey('virtuemart_vendor_id');
+		$this->setSecondaryKey('virtuemart_media_id');
+		$this->setOrderable();
 	}
 
 }

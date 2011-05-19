@@ -109,3 +109,17 @@
 	padding-right: 4px;
 	margin : 2px;
 }
+
+div.threecols ul li {
+    background: none repeat scroll 0 0 transparent;
+    display: inline-block;
+    min-height: 10px;
+    padding: 0;
+    vertical-align: top;
+       width: 32%;
+}
+
+div.threecols ul   {
+   margin:0;
+   padding:0;
+}

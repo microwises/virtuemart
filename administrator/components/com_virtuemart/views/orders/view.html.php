@@ -45,6 +45,10 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmOrderPlugin')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_orders_48');
+		$this->assignRef('viewName',$viewName);
+
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 
@@ -58,7 +62,7 @@ class VirtuemartViewOrders extends JView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-			$currency = CurrencyDisplay::getCurrencyDisplay($order['details']['BT']->virtuemart_vendor_id);
+			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
@@ -143,7 +147,6 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::title(JText::_('COM_VIRTUEMART_ORDER_EDIT_LBL'), 'vm_orders_48');
 			JToolBarHelper::back();
 		}
 		else if ($curTask == 'editOrderItem') {
@@ -172,15 +175,17 @@ class VirtuemartViewOrders extends JView {
 			$orderstatuses = $this->get('OrderStatusList');
 			$this->assignRef('orderstatuses', $orderstatuses);
 
+			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
 			foreach ($orderslist as $virtuemart_order_id => $order) {
 
 				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getCurrencyDisplay($order->virtuemart_vendor_id);
+					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
 				}
-				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->getFullValue($order->order_total);
+				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
 			}
 
 			/* Get the pagination */
@@ -188,13 +193,15 @@ class VirtuemartViewOrders extends JView {
 			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-			/* Toolbar */
-			JToolBarHelper::title(JText::_('COM_VIRTUEMART_ORDER_LIST_LBL'), 'vm_orders_48');
+
+
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
 			 * the arguments.
 			 */
+
+			 /* Toolbar */
 			JToolBarHelper::save('editOrderStatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 

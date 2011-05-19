@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('COM_VIRTUEMART_COUNTRY_DETAILS'); ?></legend>
-	<table class="admintable">			
+	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -36,9 +36,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="country_name" id="country_name" size="50" value="<?php echo $this->country->country_name; ?>" />				
+				<input class="inputbox" type="text" name="country_name" id="country_name" size="50" value="<?php echo $this->country->country_name; ?>" />
 			</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->country->published); ?>
 			</td>
-		</tr>			
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -66,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="country_3_code" id="country_3_code" size="10" value="<?php echo $this->country->country_3_code; ?>" />				
+				<input class="inputbox" type="text" name="country_3_code" id="country_3_code" size="10" value="<?php echo $this->country->country_3_code; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -76,9 +76,9 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="country_2_code" id="country_2_code" size="10" value="<?php echo $this->country->country_2_code; ?>" />				
+				<input class="inputbox" type="text" name="country_2_code" id="country_2_code" size="10" value="<?php echo $this->country->country_2_code; ?>" />
 			</td>
-		</tr>					
+		</tr>
 	</table>
 	</fieldset>
 </div>
@@ -88,6 +88,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="country" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

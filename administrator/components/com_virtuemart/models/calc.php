@@ -21,18 +21,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
-class VirtueMartModelCalc extends JModel
-{
-	/** @var array Array of Primary keys */
-    private $_cid;
-	/** @var integer Primary key */
-    private $_id;
-	/** @var objectlist Calculation rule  data */
-    private $_data;
-	/** @var integer Total number of calculation rules in the database */
-	private $_total;
-	/** @var pagination Pagination for calculation rules list */
-	private $_pagination;
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
+class VirtueMartModelCalc extends VmModel {
 
 
     /**
@@ -44,61 +35,8 @@ class VirtueMartModelCalc extends JModel
      */
     public function __construct(){
         parent::__construct();
+		$this->setMainTable('calcs');
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the calc id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-
-    }
-
-
-    /**
-     * Resets the calc id and data
-     *
-     * @author RickG
-     */
-    public function setId($id){
-        $this->_id = $id;
-        $this->_data = null;
-    }
-
-
-	/**
-	 * Loads the pagination for the country table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
-	 */
-    public function getPagination(){
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-
-	/**
-	 * Gets the total number of countries
-	 *
-     * @author RickG
-	 * @return int Total number of countries in the database
-	 */
-	public function _getTotal() {
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_calc_id` FROM `#__virtuemart_calcs`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
     }
 
 
@@ -115,11 +53,6 @@ class VirtueMartModelCalc extends JModel
    			$this->_data->load((int)$this->_id);
   		}
 
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-  		}
-
 		$xrefTable = $this->getTable('calc_categories');
 		if (!$this->_data->calc_categories = $xrefTable->load($this->_id)) {
 			$this->setError($xrefTable->getError());
@@ -132,7 +65,6 @@ class VirtueMartModelCalc extends JModel
 
 		$xrefTable = $this->getTable('calc_countries');
 		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
-			dump($xrefTable,'calc_countries');
 			$this->setError($xrefTable->getError());
 		}
 
@@ -198,28 +130,6 @@ class VirtueMartModelCalc extends JModel
 		return $this->_data;
 	}
 
-    /**
-     * Publish a field
-     *
-     * @author Max Milbers
-     *
-     */
-	public function published( $row, $i, $variable = 'published' ){
-		$imgY = 'tick.png';
-		$imgX = 'publish_x.png';
-		$img 	= $row->$variable ? $imgY : $imgX;
-		$task 	= $row->$variable ? 'unpublish' : 'publish';
-		$alt 	= $row->$variable ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
-		$action = $row->$variable ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-
-		$href = '
-		<a title="'. $action .'">
-		<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>'
-		;
-		return $href;
-	}
-
-
 	/**
 	 * Bind the post data to the calculation table and save it
      *
@@ -243,20 +153,7 @@ class VirtueMartModelCalc extends JModel
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
 
-		// Bind the form fields to the calculation table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the calculation record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the record to the database
-		if (!$table->store()) {
+		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
 			return false;
 		}
@@ -264,29 +161,24 @@ class VirtueMartModelCalc extends JModel
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 
     	$xrefTable = $this->getTable('calc_categories');
-    	if (!$xrefTable->bindChecknStore($this,$data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
-    	if (!$xrefTable->bindChecknStore($this,$data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
-    	if (!$xrefTable->bindChecknStore($this,$data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
-    	if (!$xrefTable->bindChecknStore($this,$data)) {
+    	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
-
-//		modelfunctions::storeArrayData('#__virtuemart_calc_categories','virtuemart_calc_id','virtuemart_category_id', $table->virtuemart_calc_id,$data["calc_categories"]);
-////		modelfunctions::storeArrayData('#__virtuemart_calc_shoppergroups','virtuemart_calc_id','virtuemart_shoppergroup_id', $table->virtuemart_calc_id,$data["virtuemart_shoppergroup_id"]);
-//		modelfunctions::storeArrayData('#__virtuemart_calc_countries','virtuemart_calc_id','virtuemart_country_id', $table->virtuemart_calc_id,$data["virtuemart_country_id"]);
-//		modelfunctions::storeArrayData('#__virtuemart_calc_states','virtuemart_calc_id','virtuemart_state_id', $table->virtuemart_calc_id,$data["virtuemart_state_id"]);
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();
@@ -312,112 +204,6 @@ class VirtueMartModelCalc extends JModel
 
 		return $table->virtuemart_calc_id;
 	}
-
-
-	/**
-	 * Delete all record ids selected
-     *
-     * @author Max Milbers
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	public function delete() {
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::delete('cid','calc');
-
-	}
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	public function publish($publishId = false)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','calcs',$publishId);
-
-	}
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     *
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
-     */
-	public function shopperPublish($categories){
-
-		foreach ($categories as $id){
-
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_shopper_published`
-					  FROM `#__virtuemart_calcs`
-					  WHERE virtuemart_calc_id = '. $quotedId;
-
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-
-			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
-
-			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_shopper_published` = '.$publish.'
-					  WHERE virtuemart_calc_id = '.$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-		}
-
-		return ($publish ? 1 : -1);
-	}
-
-
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     *
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
-     */
-	public function vendorPublish($categories){
-
-		foreach ($categories as $id){
-
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `calc_vendor_published`
-					  FROM `#__virtuemart_calcs`
-					  WHERE `virtuemart_calc_id` = '. $quotedId;
-
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-
-			$publish = ($calc->calc_vendor_published > 0) ? 0 : 1;
-
-			$query = 'UPDATE `#__virtuemart_calcs`
-					  SET `calc_vendor_published` = '.$publish.'
-					  WHERE `virtuemart_calc_id` = '.$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-		}
-
-		return ($publish ? 1 : -1);
-	}
-
 
 	function getRule($kind){
 

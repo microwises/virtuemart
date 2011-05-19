@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>:
+									<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESC'); ?>:
+									<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
@@ -75,6 +75,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="manufacturercategories" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

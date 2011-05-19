@@ -17,7 +17,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 /* Load some variables */
 $search_date = JRequest::getVar('search_date', null); // Changed search by date
 $now = getdate();
@@ -39,7 +39,7 @@ if( $this->pagination->limit < $rows ){
     <div id="header">
         <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', JHTML::_('date', $this->from_period, $format) , JHTML::_('date', $this->until_period, $format)); ?></h2>
         <div id="filterbox" style="float: left">
-            
+
             <table>
                 <tr>
                     <td align="left" width="100%">
@@ -84,7 +84,7 @@ if( $this->pagination->limit < $rows ){
                 </tr>
             </tfoot>
             <tbody>
-                <?php 
+                <?php
 	    $i = 0;
 	    for ($j =0; $j < $rows; ++$j ){
 	    	$r = $this->report[$j];
@@ -107,8 +107,8 @@ if( $this->pagination->limit < $rows ){
                     </td>
                 </tr>
                 <?php
-	    	$i = 1-$i; 
-	    } 
+	    	$i = 1-$i;
+	    }
 	    ?>
             </tbody>
         </table>
@@ -120,7 +120,7 @@ if( $this->pagination->limit < $rows ){
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="filter_order" value=""<?php echo $this->lists['filter_order']; ?>" />
     <input type="hidden" name="filter_order_Dir" value=""<?php echo $this->lists['filter_order_Dir']; ?>" />
-    <input type="hidden" name=""<?php echo JUtility::getToken(); ?>" value="1" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

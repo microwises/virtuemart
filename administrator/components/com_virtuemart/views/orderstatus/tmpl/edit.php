@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
@@ -91,6 +91,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="orderstatus" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

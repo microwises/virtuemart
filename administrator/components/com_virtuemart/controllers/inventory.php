@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Inventory Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerInventory extends JController {
+class VirtuemartControllerInventory extends VmController {
 
 	/**
 	 * Method to display the view
@@ -49,19 +52,18 @@ class VirtuemartControllerInventory extends JController {
 	 */
 	public function Inventory() {
 		/* Create the view object */
-		$view = $this->getView('inventory', 'html');
+		$view = $this->getView($this->_cname, 'html');
 
 		/* Default model */
-		$view->setModel( $this->getModel( 'inventory', 'VirtueMartModel' ), true );
+		$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
 
 		/* Product model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ),true);
 
-		/* Set the layout */
-		$view->setLayout('inventory');
 
 		/* Now display the view. */
-		$view->display();
+		parent::display();
 	}
+
 }
 // pure php no closing tag

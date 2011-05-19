@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for the order status
  *
@@ -29,76 +31,86 @@ jimport( 'joomla.application.component.model');
  * @subpackage OrderStatus
  * @author Oscar van Eijk
  */
-class VirtueMartModelOrderstatus extends JModel {
-
-	/** @var integer Primary key */
-	var $_id;
-	/** @var objectlist order status data */
-	var $_data;
-	/** @var integer Total number of order statuses in the database */
-	var $_total;
-	/** @var pagination Pagination for order status list */
-	var $_pagination;
+class VirtueMartModelOrderstatus extends VmModel {
 
 	/**
-	 * Constructor for the order status model.
-	 *
-	 * The order status id id is read and detmimined if it is an array of ids or just one single id.
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
 	 */
-	function __construct()
-	{
+	function __construct() {
 		parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-		// Get the (array of) order status ID(s)
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$idArray[0]);
+		$this->setMainTable('orderstates');
 	}
 
-	/**
-	 * Resets the order status id and data
-	 */
-	function setId($id)
-	{
-		$this->_id = $id;
-		$this->_data = null;
-	}
+//	/** @var integer Primary key */
+//	var $_id;
+//	/** @var objectlist order status data */
+//	var $_data;
+//	/** @var integer Total number of order statuses in the database */
+//	var $_total;
+//	/** @var pagination Pagination for order status list */
+//	var $_pagination;
 
-	/**
-	 * Loads the pagination for the order status table
-	 *
-	 * @return JPagination Pagination for the current list of order statuses
-	 */
-	function getPagination()
-	{
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
+//	/**
+//	 * Constructor for the order status model.
+//	 *
+//	 * The order status id id is read and detmimined if it is an array of ids or just one single id.
+//	 */
+//	function __construct()
+//	{
+//		parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//		// Get the (array of) order status ID(s)
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//		$this->setId((int)$idArray[0]);
+//	}
 
-	/**
-	 * Gets the total number of order statusses
-	 *
-	 * @return int Total number of order statusses in the database
-	 */
-	function _getTotal()
-	{
-		if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_orderstate_id` FROM `#__virtuemart_orderstates`';
-			$this->_total = $this->_getListCount($query);
-		}
-		return $this->_total;
-	}
+//	/**
+//	 * Resets the order status id and data
+//	 */
+//	function setId($id)
+//	{
+//		$this->_id = $id;
+//		$this->_data = null;
+//	}
+//
+//	/**
+//	 * Loads the pagination for the order status table
+//	 *
+//	 * @return JPagination Pagination for the current list of order statuses
+//	 */
+//	function getPagination()
+//	{
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//	/**
+//	 * Gets the total number of order statusses
+//	 *
+//	 * @return int Total number of order statusses in the database
+//	 */
+//	function _getTotal()
+//	{
+//		if (empty($this->_total)) {
+//			$query = 'SELECT `virtuemart_orderstate_id` FROM `#__virtuemart_orderstates`';
+//			$this->_total = $this->_getListCount($query);
+//		}
+//		return $this->_total;
+//	}
 
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
@@ -128,7 +140,7 @@ class VirtueMartModelOrderstatus extends JModel {
 	 */
 	function store()
 	{
-		$table =& $this->getTable('orderstates');
+		$table = $this->getTable('orderstates');
 
 		$data = JRequest::get('post');
 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
@@ -167,28 +179,28 @@ class VirtueMartModelOrderstatus extends JModel {
 			$table->reorder();
 		}
 
-		return true;
+		return $table->virtuemart_orderstate_id;
 	}
 
 
-	/**
-	 * Delete all record ids selected
-	 *
-	 * @return boolean True is the delete was successful, false otherwise.
-	 */
-	function delete()
-	{
-		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
-		$table =& $this->getTable('orderstates');
-
-		foreach($orderStatIds as $orderStatId) {
-			if (!$table->delete($orderStatId)) {
-				$this->setError($table->getError());
-				return false;
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * Delete all record ids selected
+//	 *
+//	 * @return boolean True is the remove was successful, false otherwise.
+//	 */
+//	function remove()
+//	{
+//		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
+//		$table =& $this->getTable('orderstates');
+//
+//		foreach($orderStatIds as $orderStatId) {
+//			if (!$table->remove($orderStatId)) {
+//				$this->setError($table->getError());
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	/**
 	 * Retrieve a list of order statuses from the database.

@@ -83,7 +83,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>:
 				</label>
                               </span>
 			</td>
@@ -141,6 +141,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="coupon" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

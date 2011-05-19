@@ -18,20 +18,32 @@
 
 jimport('joomla.application.component.controller');
 
+//if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * VirtueMart default administrator controller
  *
  * @package		VirtueMart
  */
-class VirtuemartControllerVirtuemart extends JController
-{
+class VirtuemartControllerVirtuemart extends JController {
+
+//	public function __construct() {
+//		parent::__construct();
+//
+////		$this->setMainLangKey('VIRTUEMART');
+//		dump($this,'controller');
+//		dump($this->getView(),'controller');
+//		dump($this->getName(),'controller');
+//		//		$this->setMainLangKey('VIRTUEMART');
+//
+//	}
 	/**
 	 * Method to display the view
 	 *
 	 * @access	public
 	 */
-	function display()
-	{
+	function display() {
 
 		$document = JFactory::getDocument();
 		$viewName = JRequest::getVar('view', '');
@@ -43,6 +55,10 @@ class VirtuemartControllerVirtuemart extends JController
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
+//		dump($this,'controller');
+////		dump($this->getView(),'controller');
+//		dump($this->getName(),'controller');
+
 		parent::display();
 	}
 }

@@ -42,7 +42,7 @@
 
 			var datas = form.serialize();
 		//	$.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
-//			$.post('index.php?option=com_virtuemart&controller=cart&task=addJS', datas, 
+//			$.post('index.php?option=com_virtuemart&view=cart&task=addJS', datas, 
 			$.getJSON('index.php?option=com_virtuemart&view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
 					if(datas.stat !=0){

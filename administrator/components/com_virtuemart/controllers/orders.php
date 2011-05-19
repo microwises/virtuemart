@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
 * Orders Controller
 *
 * @package    VirtueMart
 * @author
 */
-class VirtuemartControllerOrders extends JController {
+class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,19 +42,15 @@ class VirtuemartControllerOrders extends JController {
 	function __construct() {
 		parent::__construct();
 
-
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-
-		$document = JFactory::getDocument();
-		$viewType   = $document->getType();
-		$view = $this->getView('orders', $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel('orders');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
+//		$document = JFactory::getDocument();
+//		$viewType   = $document->getType();
+//		$view = $this->getView('orders', $viewType);
+//
+//		// Push a model into the view
+//		$model = $this->getModel('orders');
+//		if (!JError::isError($model)) {
+//			$view->setModel($model, true);
+//		}
 	}
 
 	/**
@@ -84,7 +83,7 @@ class VirtuemartControllerOrders extends JController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		
+
 		/* Set the layout */
 		$view->setLayout('order_print');
 
@@ -105,7 +104,7 @@ class VirtuemartControllerOrders extends JController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		
+
 		/* Set the layout */
 		$view->setLayout('order');
 
@@ -128,59 +127,49 @@ class VirtuemartControllerOrders extends JController {
 	}
 
 
-	/**
-	* Cancellation, redirect to main order list
-	*
-	* @author RolandD
-	*/
-	public function Cancel() {
-		$mainframe = Jfactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders');
-	}
+//	/**
+//	* Save an order
+//	*
+//	* @author RolandD
+//	*/
+//	public function save() {
+//		$mainframe = Jfactory::getApplication();
+//
+//		/* Load the view object */
+//		$view = $this->getView('orders', 'html');
+//
+//		$model = $this->getModel('orders');
+//		$msgtype = '';
+//		if ($model->saveOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_SAVED_SUCCESSFULLY');
+//		else {
+////			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_SAVED_SUCCESSFULLY');
+//			$model->getError();
+//			$msgtype = 'error';
+//		}
+//		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
+//	}
 
-	/**
-	* Save an order
-	*
-	* @author RolandD
-	*/
-	public function save() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Load the view object */
-		$view = $this->getView('orders', 'html');
-
-		$model = $this->getModel('orders');
-		$msgtype = '';
-		if ($model->saveOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_SAVED_SUCCESSFULLY');
-		else {
-//			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_SAVED_SUCCESSFULLY');
-			$model->getError();
-			$msgtype = 'error';
-		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
-	}
-
-	/**
-	* Delete an order
-	*
-	* @author RolandD
-	*/
-	public function remove() {
-		$mainframe = Jfactory::getApplication();
-		$cids = JRequest::getVar('cid');
-		/* Load the view object */
-		$view = $this->getView('orders', 'html');
-		
-		$model = $this->getModel('orders');
-		$msgtype = '';
-		if ($model->removeOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_REMOVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_REMOVED_SUCCESSFULLY');
-			$model->getError();
-			$msgtype = 'error';
-		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
-	}
+//	/**
+//	* Delete an order
+//	*
+//	* @author RolandD
+//	*/
+//	public function remove() {
+//		$mainframe = Jfactory::getApplication();
+//		$cids = JRequest::getVar('cid');
+//		/* Load the view object */
+//		$view = $this->getView('orders', 'html');
+//
+//		$model = $this->getModel('orders');
+//		$msgtype = '';
+//		if ($model->removeOrder()) $msg = JText::_('COM_VIRTUEMART_ORDER_REMOVED_SUCCESSFULLY');
+//		else {
+//			$msg = JText::_('COM_VIRTUEMART_ORDER_NOT_REMOVED_SUCCESSFULLY');
+//			$model->getError();
+//			$msgtype = 'error';
+//		}
+//		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
+//	}
 
 
 	/**
@@ -202,33 +191,33 @@ class VirtuemartControllerOrders extends JController {
 		$model = $this->getModel('orders');
 		$result = $model->updateStatus();
 
-		if ($result['updated'] > 0) 
+		if ($result['updated'] > 0)
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
-		if ($result['error'] > 0) 
+		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
 	}
-	
-	
+
+
 	/**
 	 * Save changes to the order item status
 	 *
 	 */
 	public function saveItemStatus() {
 		$mainframe = Jfactory::getApplication();
-		
+
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
 		/* Load the helper */
 		$view->loadHelper('shopFunctions');
-		$view->loadHelper('vendorHelper');		
-		
+		$view->loadHelper('vendorHelper');
+
 		$data = JRequest::get('post');
 		$model = $this->getModel('orders');
 		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
-		
+
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
 	}
 
@@ -242,9 +231,10 @@ class VirtuemartControllerOrders extends JController {
 
 	    parent::display();
 	}
-	
-	
+
+
 	/**
+	 * correct position, working with json? actually?
 	* Get a list of related products
 	* @author RolandD
 	*/
@@ -259,7 +249,7 @@ class VirtuemartControllerOrders extends JController {
 
 		/* Now display the view. */
 		$view->display();
-	}	
+	}
 
 
 	/**
@@ -293,7 +283,7 @@ class VirtuemartControllerOrders extends JController {
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
-	    $orderId = JRequest::getVar('virtuemart_order_id', '');  
+	    $orderId = JRequest::getVar('virtuemart_order_id', '');
 	    $model = $this->getModel('orders');
 	    $msg = '';
 

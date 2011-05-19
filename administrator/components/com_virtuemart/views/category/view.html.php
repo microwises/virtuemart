@@ -37,13 +37,16 @@ class VirtuemartViewCategory extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
-		$this->loadHelper('image');
+//		$this->loadHelper('image');
 
 		$model = $this->getModel();
-                $layoutName = JRequest::getVar('layout', 'default');
-                $mainframe = JFactory::getApplication();
-                $option = JRequest::getCmd('option');
-                $view = JRequest::getCmd('view');
+        $layoutName = JRequest::getVar('layout', 'default');
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $view = JRequest::getCmd('view');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_categories_48');
+		$this->assignRef('viewName',$viewName); 
 
 		if ($layoutName == 'edit') {
 
@@ -51,21 +54,10 @@ class VirtuemartViewCategory extends JView {
 
 	       	$model->addImagesToCategories($category);
 
-        	$isNew = ($category->virtuemart_category_id < 1);
-
-			if ( $isNew ) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_categories_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_categories_48');
-
+			if ( $category->virtuemart_category_id > 1 ) {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
-
-			JToolBarHelper::divider();			
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 			$parent = $model->getParentCategory( $category->virtuemart_category_id );
 			$this->assignRef('parent', $parent);
@@ -86,21 +78,20 @@ class VirtuemartViewCategory extends JView {
 
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CATEGORY_LIST_LBL'), 'vm_categories_48' );
-                        JToolBarHelper::publishList();
-                        JToolBarHelper::unpublishList();
-                        JToolBarHelper::deleteList('', 'remove', 'Delete');			
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
-			
+
+			ShopFunctions::addStandardDefaultViewCommands();
+
+
 			/**
 			* Commented out for future use
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
 			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
 			*/
-			
+
 
 			$categories = $model->getCategoryTree(false);
                         $categoriesSorted = $model->sortCategoryTree($categories);

@@ -53,7 +53,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	protected function _createTable()
 	{
 		$_scheme = DbScheme::get_instance();
-		$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
+		$_scheme->create_scheme('#__virtuemart_order_payment_'.$this->_pelement);
 		$_schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -153,7 +153,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 				<table border="0" cellspacing="0" cellpadding="2" width="100%">
 			    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="order_payment_name">'.JText::_('VM_CHECKOUT_PAYINFO_NAMECARD') .':</label>
+		        	<label for="order_payment_name">'.JText::_('VMPAYMENT_AUTHORIZE_CHECKOUT_PAYINFO_NAMECARD') .':</label>
 		        </td>
 		        <td>
 		        <input type="text" class="inputbox" id="cart_cc_name" name="cart_cc_name" value="'. $this->_cc_name .'" autocomplete="off" />
@@ -161,7 +161,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		    </tr>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="order_payment_number">'. JText::_('VM_CHECKOUT_PAYINFO_CCNUM') .':</label>
+		        	<label for="order_payment_number">'. JText::_('VMPAYMENT_AUTHORIZE_CHECKOUT_PAYINFO_CCNUM') .':</label>
 		        </td>
 		        <td>
 		        <input type="text" class="inputbox" id="cart_cc_number" name="cart_cc_number" value="'.$this->_cc_number.'" autocomplete="off" />
@@ -169,14 +169,14 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		    </tr>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="credit_card_code">'. JText::_('VM_CHECKOUT_PAYINFO_CVV2')  .': </label>
+		        	<label for="credit_card_code">'. JText::_('VMPAYMENT_AUTHORIZE_CHECKOUT_PAYINFO_CVV2')  .': </label>
 		        </td>
 		        <td>
 		            <input type="text" class="inputbox" id="cart_cc_code" name="cart_cc_code" value="'. $this->_cc_code.'" autocomplete="off" />
 		        </td>
 		    </tr>
 		    <tr>
-		        <td nowrap width="10%" align="right">'. JText::_('VM_CHECKOUT_PAYINFO_EXDATE').':</td>
+		        <td nowrap width="10%" align="right">'. JText::_('VMPAYMENT_AUTHORIZE_CHECKOUT_PAYINFO_EXDATE').':</td>
 		        <td> '.$this->_cc_expire_month;
 		        $html .= shopfunctions::listMonths('cart_cc_expire_month', $this->_cc_expire_month );
 		        $html .= "/";
@@ -255,7 +255,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$_db = JFactory::getDBO();
-		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
+		$_q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {
@@ -265,10 +265,10 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_html = '<table class="adminlist">'."\n";
 		$_html .= '	<thead>'."\n";
 		$_html .= '		<tr>'."\n";
-		$_html .= '			<th width="13%">'.JText::_('VM_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
-		$_html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
-		$_html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
-		$_html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
+		$_html .= '			<th width="13%">'.JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
+		$_html .= '			<th width="40%">'.JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
+		$_html .= '			<th width="30%">'.JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
+		$_html .= '			<th width="17%">'.JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
 		$_html .= '		</tr>'."\n";
 		$_html .= '	</thead>'."\n";
 		$_html .= '	<tr>'."\n";
@@ -276,13 +276,13 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$_html .= '		<td>'.$payment->order_payment_name.'</td>'."\n";
 		$_html .= '		<td>'."\n";
 		if($payment->order_payment_code) {
-			$_html .= '<br/>(' . JText::_('VM_ORDER_PAYMENT_CCV_CODE') . ': '.$payment->order_payment_code.') ';
+			$_html .= '<br/>(' . JText::_('VMPAYMENT_AUTHORIZE_ORDER_PAYMENT_CCV_CODE') . ': '.$payment->order_payment_code.') ';
 		}
 		$_html .= '		</td>'."\n";
 		$_html .= '		<td>'.date('M-Y', $payment->order_payment_expire).'</td>'."\n";
 		$_html .= '	</tr>'."\n";
 		$_html .= '	<tr class="sectiontableheader">'."\n";
-		$_html .= '		<th colspan="4">'.JText::_('VM_ORDER_PRINT_PAYMENT_LOG_LBL').'</th>'."\n";
+		$_html .= '		<th colspan="4">'.JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_PAYMENT_LOG_LBL').'</th>'."\n";
 		$_html .= '	</tr>'."\n";
 		$_html .= '	<tr>'."\n";
 		$_html .= '		<td colspan="4">';
@@ -384,7 +384,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 			// Invoice Information
 			'x_invoice_num' => substr($_orderNr, 0, 20),
-			'x_description' => JText::_('VM_ORDER_PRINT_PO_LBL'),
+			'x_description' => JText::_('VMPAYMENT_AUTHORIZE_ORDER_PRINT_PO_LBL'),
 
 			// Transaction Data
 			'x_amount' => $_priceData['billTotal'],
@@ -437,7 +437,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$_dbValues['order_payment_status'] = $_response[0];
 
 			if ($_response[0] == '1') { // Succeeded
-				$_dbValues['order_payment_log'] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').': '
+				$_dbValues['order_payment_log'] = JText::_('VMPAYMENT_AUTHORIZE_PAYMENT_TRANSACTION_SUCCESS').': '
 					. $_response[3]; // Transaction log
 				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 			} else { // 2 (Declined) or 3 (Transaction error)
@@ -460,7 +460,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			$_dbValues['order_payment_log'] = $_response[3]; // Transaction log
 			$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 		}
-		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
+		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return $_returnValue;
 	}
 
@@ -517,7 +517,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		// DECODE Account Number
 		//$dbaccount = new ps_DB;
 		$dbaccount = JFactory::getDBO();
-		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
+		$q = "SELECT ".VMPAYMENT_AUTHORIZE_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
           AS account_number from #__{vm}_order_payment WHERE virtuemart_order_id='".$db->f("virtuemart_order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
@@ -631,7 +631,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 
 		// Approved - Success!
 		if ($response[0] == '1') {
-			$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+			$d["order_payment_log"] = JText::_('VMPAYMENT_AUTHORIZE_PAYMENT_TRANSACTION_SUCCESS').": ";
 			$d["order_payment_log"] .= $response[3];
 			// Catch Transaction ID
 			$d["order_payment_trans_id"] = $response[6];

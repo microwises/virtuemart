@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_HEADER'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 		    </th>
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>

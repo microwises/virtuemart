@@ -35,33 +35,28 @@ class VirtuemartViewCreditcard extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 
         $creditcard =& $model->getCreditCard();
 
-        $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($creditcard->virtuemart_creditcard_id < 1);
-
+		$viewName=ShopFunctions::SetViewTitle('vm_credit_48');
+		$this->assignRef('viewName',$viewName);
+ 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_credit_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_credit_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+			$this->loadHelper('shopFunctions');
+			$vendorList= ShopFunctions::renderVendorList($creditcard->virtuemart_vendor_id);
+			$this->assignRef('vendorList', $vendorList);
+
 			$this->assignRef('creditcard',	$creditcard);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_LBL'), 'vm_credit_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

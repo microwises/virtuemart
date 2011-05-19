@@ -36,9 +36,9 @@ class VirtueMartControllerProductdetails extends JController {
 		$this->registerTask( 'askquestion','MailForm' );
 	}
 
-	public function productdetails() {
+	public function Productdetails() {
 
-		$cart = JRequest::getVar('cart',false,'post');
+//		$cart = JRequest::getVar('cart',false,'post');
 //		if($cart){
 //			require(JPATH_VM_SITE.DS.'controllers'.DS.'cart.php');
 //			$controller= new VirtueMartControllerCart();
@@ -54,6 +54,7 @@ class VirtueMartControllerProductdetails extends JController {
 			/* Add the category model */
 			$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
+			$view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
 			/* Set the layout */
 //			$view->setLayout('productdetails');
 
@@ -103,10 +104,10 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->setLayout('mailconfirmed');
 		$view->display();
 	}
-	
+
 	/**
 	 * Send the Recommend to a friend email.
-	 * @author Kohl Patrick, 
+	 * @author Kohl Patrick,
 	 */
 	public function mailRecommend () {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -137,19 +138,19 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->setLayout('mailconfirmed');
 		$view->display();
 	}
-	
+
 	/**
 	 *  Ask Question form
 	 * Recommend form for Mail
 	 */
 	public function MailForm(){
-		
+
 		/* Create the view */
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
 			if (empty($user->id)) {
 				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id') ),JText::_('YOU MUST LOGIN FIRST'));
-				return ; 
+				return ;
 			}
 			$view = $this->getView('recommend', 'html');
 		} else {
@@ -179,7 +180,6 @@ class VirtueMartControllerProductdetails extends JController {
 		// add the ratings admin model
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$model = $this->getModel( 'ratings', 'VirtuemartModel' );
 
 		/* Create the view */
 		$view = $this->getView('productdetails', 'html');
@@ -190,14 +190,20 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Add the category model */
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
-		/* Set the layout */
-		$view->setLayout('productdetails');
+		$view->setModel($model = $this->getModel( 'ratings', 'VirtuemartModel' ));
+
+		/* Get the posted data */
+		$data = JRequest::get('post');
+
 		$msgtype = '';
-		if ($model->saveRating()) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
+		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
 		else {
 			$mainframe->enqueueMessage($model->getError());
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
+		/* Set the layout */
+		$view->setLayout('productdetails');
+
 		/* Display it all */
 		$view->display();
 	}

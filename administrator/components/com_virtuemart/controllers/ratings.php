@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Review Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerRatings extends JController {
+class VirtuemartControllerRatings extends VmController {
 
 	/**
 	 * Method to display the view
@@ -38,6 +41,7 @@ class VirtuemartControllerRatings extends JController {
 	function __construct() {
 		parent::__construct();
 
+//		$this->setMainLangKey('RATING');
 		/* Redirects */
 		$this->registerTask('unpublish','publish');
 		$this->registerTask('add','edit');
@@ -60,83 +64,6 @@ class VirtuemartControllerRatings extends JController {
 		$view->display();
 	}
 
-	/**
-	* Publish/Unpublish a rating
-	* @author RolandD
-	*/
-	public function publish() {
-		$mainframe = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('ratings', 'html');
-
-		$model = $this->getModel('ratings');
-		$msgtype = '';
-		if ($model->setPublish()) {
-			$msg = JText::sprintf('COM_VIRTUEMART_RATING_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
-		}
-		else {
-			$msg = JText::strintf('RATING_NOT_TASK_SUCCESSFULLY', strtoupper($this->getTask()));
-			$msgtype = 'error';
-		}
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=ratings', $msg, $msgtype);
-	}
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RolandD
-	 */
-	function edit() {
-		JRequest::setVar('controller', 'ratings');
-		JRequest::setVar('view', 'ratings');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-	/**
-	* Save a rating
-	*
-	* @author RolandD
-	*/
-	public function Save() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Load the view object */
-		$view = $this->getView('ratings', 'html');
-
-		$model = $this->getModel('ratings');
-		$msgtype = '';
-		if ($model->saveRating()) $msg = JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=ratings', $msg, $msgtype);
-	}
-
-	/**
-	* Delete a user rating
-	* @author RolandD
-	*/
-	public function remove() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Load the view object */
-		$view = $this->getView('ratings', 'html');
-
-		$model = $this->getModel('ratings');
-		$msgtype = '';
-		if ($model->removeRating()) $msg = JText::_('COM_VIRTUEMART_RATING_REMOVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_RATING_NOT_REMOVED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=ratings', $msg, $msgtype);
-	}
 }
 // pure php no closing tag

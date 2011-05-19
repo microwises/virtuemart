@@ -38,6 +38,8 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('permissions');
 		$this->loadHelper('vmpaymentplugin');
+		$this->loadHelper('shopFunctions');
+
 		$this->assignRef('perms', Permissions::getInstance());
 
 		$model = $this->getModel('paymentmethod');
@@ -45,51 +47,37 @@ class VirtuemartViewPaymentMethod extends JView {
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
+		// TODO logo
+		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
-			// Load the helper(s)
-//			$this->loadHelper('adminMenu');
+		// Load the helper(s)
 			$this->loadHelper('image');
 			$this->loadHelper('html');
 			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
 
-			$this->loadHelper('shopFunctions');
-
 			$paym = $model->getPaym();
 			$this->assignRef('paym',	$paym);
-
-			$isNew = ($paym->virtuemart_paymentmethod_id < 1);
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->paym_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->paym_type));
 
 //			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->paym_creditcards));
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->paym_creditcards,true));
-
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
 
 			$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
-        }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_PAYM_LIST_LBL'), 'vm_countries_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+
+			ShopFunctions::addStandardEditViewCommands();
+		} else {
+
+			ShopFunctions::addStandardDefaultViewCommands();
+
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
@@ -160,8 +148,8 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
-//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__vm_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
-//		$q = 'SELECT * FROM #__plugins as pl,#__vm_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
+//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`paym_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
+//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.paym_jplugin_id';
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);

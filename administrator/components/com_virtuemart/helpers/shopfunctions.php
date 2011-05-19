@@ -27,6 +27,36 @@ class ShopFunctions {
 	}
 
 
+	function addStandardDefaultViewCommands (){
+
+		JToolBarHelper::divider();
+		JToolBarHelper::publishList();
+		JToolBarHelper::unpublishList();
+		JToolBarHelper::editListX();
+		JToolBarHelper::addNewX();
+		JToolBarHelper::deleteList();
+	}
+
+	function addStandardEditViewCommands (){
+
+		JToolBarHelper::divider();
+		JToolBarHelper::save();
+        JToolBarHelper::apply();
+		JToolBarHelper::cancel();
+	}
+	/**
+	 *Set the title of view and return the translated name
+	 *@ var $cssIcon the css class for icon
+	 *@ return $viewName
+	 **/
+	function SetViewTitle($cssIcon,$view=null) {
+		if (!$view) $view = JRequest::getVar('view');
+		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_'.$view);
+		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName) , $cssIcon);
+		return $viewName;
+	}
+
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *
@@ -41,12 +71,12 @@ class ShopFunctions {
 		$name = 'creditcard_name';
 		$idA = $id = 'virtuemart_creditcard_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-		array_unshift($creditcards, $emptyOption);
-
 		if ($multiple){
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
+		} else {
+			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift($creditcards, $emptyOption);
 		}
 		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId );
 		return $listHTML;
@@ -87,12 +117,13 @@ class ShopFunctions {
 			$name = 'vendor_name';
 			$idA = $id = 'virtuemart_vendor_id';
 
-			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift($vendors, $emptyOption);
 
 			if ($multiple){
 				$attrs = 'multiple="multiple"';
 				$idA .= '[]';
+			} else {
+				$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+				array_unshift($vendors, $emptyOption);
 			}
 			$listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId );
 			return $listHTML;
@@ -115,12 +146,12 @@ class ShopFunctions {
 		$name = 'shopper_group_name';
 		$idA = $id = 'virtuemart_shoppergroup_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-		array_unshift($shoppergrps, $emptyOption);
-
 		if ($multiple){
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
+		} else {
+			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift($shoppergrps, $emptyOption);
 		}
 		$listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId );
 		return $listHTML;
@@ -145,12 +176,12 @@ class ShopFunctions {
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-		array_unshift($countries, $emptyOption);
-
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
+		} else {
+			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift($countries, $emptyOption);
 		}
 
 		if (is_array($_attrib)) {
@@ -159,6 +190,7 @@ class ShopFunctions {
 			$_a = explode ('=', $_attrib, 2);
 			$attrs[$_a[0]] = $_a[1];
 		}
+		dump($countryId,'renderCountryList');
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 
@@ -182,13 +214,14 @@ class ShopFunctions {
 		$name = 'state_name';
 		$idA = $id = $_prefix.'virtuemart_state_id';
 
-		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-		array_unshift($states, $emptyOption);
-
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
+		} else {
+			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift($states, $emptyOption);
 		}
+
 		VmConfig::JcountryStateList() ;
 		$attrs['class'] = 'dependent['. $dependentField .']';
 
@@ -249,9 +282,11 @@ class ShopFunctions {
 	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 
 		static $categoryTree = '';
-		if($level==0){
-			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
-		}
+
+		//We have every where multi selection? so we dont need this anylonger
+//		if($level==0){
+//			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
+//		}
 		$virtuemart_vendor_id = 1;
 
 		$categoryModel = self::getModel('category');

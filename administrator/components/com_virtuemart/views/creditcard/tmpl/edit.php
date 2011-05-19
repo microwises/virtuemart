@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CREDIT_CARD_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -53,17 +53,17 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR_ID'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VIRTUEMART_VENDOR_ID'); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="virtuemart_vendor_id" id="virtuemart_vendor_id" size="50" value="<?php echo $this->creditcard->virtuemart_vendor_id; ?>" />
+					<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CREDIT_CARD_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_CODE'); ?>:
 				</label>
 			</td>
 			<td>
@@ -79,6 +79,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="creditcard" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

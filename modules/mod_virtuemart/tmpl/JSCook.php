@@ -18,17 +18,16 @@ if( !class_exists('vmCategoryTree')) {
 		/***************************************************
 		* function traverse_tree_down
 		*/
-		function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
+		function traverse_tree_down(&$mymenu_content, $virtuemart_category_id='0', $level='0') {
 			static $ibg = -1;
 			$db = JFactory::getDBO();
 			$level++;
-			$q = "SELECT category_name, category_id, category_child_id "
+			$q = "SELECT category_name, virtuemart_category_id, category_child_id "
 			. "FROM #__virtuemart_categories as a, #__virtuemart_category_categories as b "
-			. "WHERE a.enabled='1' AND "
-			. " b.category_parent_id='{$category_id}' AND a.category_id=b.category_child_id "
+			. "WHERE a.published='1' AND "
+			. " b.category_parent_id='{$virtuemart_category_id}' AND a.virtuemart_category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
 			$db->setQuery($q);
-			
 			$categories = $db->loadObjectList();
 
 			foreach ($categories as $cat) {
@@ -36,8 +35,8 @@ if( !class_exists('vmCategoryTree')) {
 				$treeid = $ibg == 0 ? 1 : $ibg;
 				$itemid = '&Itemid='.JRequest::getInt('Itemid', '');
 				$mymenu_content.= ",\n[null,'".htmlspecialchars($cat->category_name,ENT_QUOTES);
-				//$mymenu_content.= $ps_product_category->products_in_category( $cat->category_id);
-				$mymenu_content.= "','".JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->category_id.$itemid.'&treeid='.$treeid)."','_self','".htmlspecialchars($cat->category_name,ENT_QUOTES)."'\n ";
+				//$mymenu_content.= $ps_product_category->products_in_category( $cat->virtuemart_category_id);
+				$mymenu_content.= "','".JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$cat->virtuemart_category_id.$itemid.'&treeid='.$treeid)."','_self','".htmlspecialchars($cat->category_name,ENT_QUOTES)."'\n ";
 
 				// recurse through the subcategories 
 				self::traverse_tree_down($mymenu_content, $cat->category_child_id, $level);
@@ -58,14 +57,14 @@ if( !class_exists('vmCategoryMenu')) {
 		/***************************************************
 		* function traverse_tree_down
 		*/
-		function traverse_tree_down(&$mymenu_content, $category_id='0', $level='0') {
+		function traverse_tree_down(&$mymenu_content, $virtuemart_category_id='0', $level='0') {
 			static $ibg = 0;
 			$level++;
 			$db = JFactory::getDBO();
-			$q = "SELECT category_name, category_id, category_child_id "
+			$q = "SELECT category_name, virtuemart_category_id, category_child_id "
 			. "FROM #__virtuemart_categories as a, #__virtuemart_category_categories as b "
 			. "WHERE a.enabled='1' AND "
-			. " b.category_parent_id='$category_id' AND a.category_id=b.category_child_id "
+			. " b.category_parent_id='$virtuemart_category_id' AND a.virtuemart_category_id=b.category_child_id "
 			. "ORDER BY category_parent_id, ordering, category_name ASC";
 			$db->setQuery($q);
 			
@@ -77,7 +76,7 @@ if( !class_exists('vmCategoryMenu')) {
 					if( $ibg != 0 )
 					$mymenu_content.= ",";
 
-					$mymenu_content.= "\n[ '<img src=\"' + ctThemeXPBase + 'darrow.png\" alt=\"arr\" />','".htmlspecialchars($cat->category_name,ENT_QUOTES)."','".JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->category_id.$itemid )."',null,'".htmlspecialchars($cat->category_name,ENT_QUOTES)."'\n ";
+					$mymenu_content.= "\n[ '<img src=\"' + ctThemeXPBase + 'darrow.png\" alt=\"arr\" />','".htmlspecialchars($cat->category_name,ENT_QUOTES)."','".JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$cat->virtuemart_category_id.$itemid )."',null,'".htmlspecialchars($cat->category_name,ENT_QUOTES)."'\n ";
 
 					$ibg=1;
 
@@ -182,7 +181,7 @@ if( $treeid ) {
 }
 
 $menu_htmlcode .= "<noscript>";
-//$menu_htmlcode .= $ps_product_category->get_category_tree( $category_id, $class_mainlevel );
+//$menu_htmlcode .= $ps_product_category->get_category_tree( $virtuemart_category_id, $class_mainlevel );
 $menu_htmlcode .= "\n</noscript>\n";
 echo $menu_htmlcode;
 

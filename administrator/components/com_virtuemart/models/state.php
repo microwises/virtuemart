@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop countries
  *
@@ -29,89 +31,100 @@ jimport( 'joomla.application.component.model');
  * @subpackage State
  * @author RickG, Max Milbers
  */
-class VirtueMartModelState extends JModel {
-
-	/** @var array Array of Primary keys */
-    var $_cid;
-	/** @var integer Primary key */
-    var $_id;
-	/** @var objectlist State data */
-    var $_data;
-//	/** @var integer Total number of state in the database */
-//	var $_total;
-	/** @var pagination Pagination for state list */
-	var $_pagination;
-
-
-    /**
-     * Constructor for the state model.
-     *
-     * The state id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct()
-    {
-        parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-        // Get the state id or array of ids.
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-    	$this->setId((int)$idArray[0]);
-
-    }
-
-
-    /**
-     * Resets the state id and data
-     *
-     * @author RickG
-     */
-    function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
+class VirtueMartModelState extends VmModel {
 
 
 	/**
-	 * Loads the pagination for the state table
-	 *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
 	 */
-    function getPagination()
-    {
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('states');
 	}
 
+//** @var array Array of Primary keys */
+//    var $_cid;
+//	/** @var integer Primary key */
+//    var $_id;
+//	/** @var objectlist State data */
+//    var $_data;
+////	/** @var integer Total number of state in the database */
+////	var $_total;
+//	/** @var pagination Pagination for state list */
+//	var $_pagination;
 
-	/**
-	 * Gets the total number of countries
-	 *
-     * @author RickG
-	 * @return int Total number of countries in the database
-	 */
-	function _getTotal()
-	{
-    	if (empty($this->_total)) {
-			$query = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states`';
-			$this->_total = $this->_getListCount($query);
-        }
-        return $this->_total;
-    }
+
+//    /**
+//     * Constructor for the state model.
+//     *
+//     * The state id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author RickG
+//     */
+//    function __construct()
+//    {
+//        parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//        // Get the state id or array of ids.
+//		$idArray = JRequest::getVar('cid',  0, '', 'array');
+//    	$this->setId((int)$idArray[0]);
+//
+//    }
+
+
+//    /**
+//     * Resets the state id and data
+//     *
+//     * @author RickG
+//     */
+//    function setId($id)
+//    {
+//        $this->_id = $id;
+//        $this->_data = null;
+//    }
+//
+//
+//	/**
+//	 * Loads the pagination for the state table
+//	 *
+//     * @author RickG
+//     * @return JPagination Pagination for the current list of countries
+//	 */
+//    function getPagination()
+//    {
+//		if (empty($this->_pagination)) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+//		}
+//		return $this->_pagination;
+//	}
+//
+//
+//	/**
+//	 * Gets the total number of countries
+//	 *
+//     * @author RickG
+//	 * @return int Total number of countries in the database
+//	 */
+//	function _getTotal()
+//	{
+//    	if (empty($this->_total)) {
+//			$query = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states`';
+//			$this->_total = $this->_getListCount($query);
+//        }
+//        return $this->_total;
+//    }
 
 
     /**
@@ -164,73 +177,73 @@ class VirtueMartModelState extends JModel {
 	}
 
 
-	/**
-	 * Bind the post data to the state table and save it
-     *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
-	 */
-    function store()
-	{
-		$table =& $this->getTable('states');
+//	/**
+//	 * Bind the post data to the state table and save it
+//     *
+//     * @author RickG
+//     * @return boolean True is the save was successful, false otherwise.
+//	 */
+//    function store()
+//	{
+//		$table =& $this->getTable('states');
+//
+//		$data = JRequest::get( 'post' );
+//		// Bind the form fields to the state table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Make sure the state record is valid
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Save the state record to the database
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		return $table->virtuemart_state_id;
+//	}
 
-		$data = JRequest::get( 'post' );
-		// Bind the form fields to the state table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the state record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the state record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		return $table->virtuemart_state_id;
-	}
 
 
+//	/**
+//	 * Delete all record ids selected
+//     *
+//     * @author RickG
+//     * @return boolean True is the remove was successful, false otherwise.
+//     */
+//	function remove()
+//	{
+//		$stateIds = JRequest::getVar('cid',  0, '', 'array');
+//    	$table =& $this->getTable('states');
+//
+//    	foreach($stateIds as $stateId) {
+//        	if (!$table->remove($stateId)) {
+//            	$this->setError($table->getError());
+//            	return false;
+//        	}
+//    	}
+//
+//    	return true;
+//	}
 
-	/**
-	 * Delete all record ids selected
-     *
-     * @author RickG
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	function delete()
-	{
-		$stateIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('states');
-
-    	foreach($stateIds as $stateId) {
-        	if (!$table->delete($stateId)) {
-            	$this->setError($table->getError());
-            	return false;
-        	}
-    	}
-
-    	return true;
-	}
-
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.
-     */
-	function publish($publishId = false)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','states',$publishId);
-	}
+//	/**
+//	 * Publish/Unpublish all the ids selected
+//     *
+//     * @author Max Milbers
+//     * @param boolean $publishId True is the ids should be published, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
+//     */
+//	function publish($publishId = false)
+//	{
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::publish('cid','states',$publishId);
+//	}
 
 
 	/**

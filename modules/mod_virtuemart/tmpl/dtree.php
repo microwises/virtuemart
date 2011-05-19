@@ -44,14 +44,14 @@ $db = JFactory::getDBO();
 	// in case *text* should be the base node, what text should be displayed?
 	$basetext =  "";
 	
-	// what category_id is selected?
-	$category_id = JRequest::getInt('category_id', '');
+	// what virtuemart_category_id is selected?
+	//$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', '');
 	
 	// select menu items from database
-	$query  = "SELECT category_id,category_parent_id,category_name FROM #__virtuemart_categories, #__virtuemart_category_categories ";
-	$query .= "WHERE #__virtuemart_categories.enabled='1' AND ";
-	$query .= "#__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id ";
-	$query .= "ORDER BY category_parent_id, ordering, category_name ASC";
+	$query  = "SELECT virtuemart_category_id,category_parent_id,category_name FROM #__virtuemart_categories, #__virtuemart_category_categories 
+		WHERE #__virtuemart_categories.published='1' AND 
+		#__virtuemart_categories.virtuemart_category_id=#__virtuemart_category_categories.category_child_id 
+		ORDER BY category_parent_id, ordering, category_name ASC";
 
 
 	//$db->next_record();
@@ -95,7 +95,7 @@ $db = JFactory::getDBO();
 	// remember which item is open, normally $Itemid
 	// except when we want the first item (e.g. Home) to be the base;
 	// in that case we have to pretend all remaining items belong to "Home"
-	$openid = $category_id;
+	$openid = $virtuemart_category_id;
    
 	// it could be that we are displaying e.g. mainmenu in this dtree, 
 	// but item in usermenu is selected, 
@@ -113,12 +113,12 @@ $db = JFactory::getDBO();
 	foreach ($categories as $cat ) {
 	
 		// get name and link (just to save space in the code later on)
-		$name = htmlentities( $cat->category_name, ENT_QUOTES,"UTF-8").'('. $ps_product_category->countProducts( $cat->category_id).')';
-		$url = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$cat->category_id);
-		$menu_htmlcode .= $tree.'.add("'.$cat->category_id.'","'.$cat->category_parent_id.'","'.$name.'","'.$url.'","","'.$target.'");'."\n";
+		$name = htmlentities( $cat->category_name, ENT_QUOTES,"UTF-8").'('. $ps_product_category->countProducts( $cat->virtuemart_category_id).')';
+		$url = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$cat->virtuemart_category_id);
+		$menu_htmlcode .= $tree.'.add("'.$cat->virtuemart_category_id.'","'.$cat->category_parent_id.'","'.$name.'","'.$url.'","","'.$target.'");'."\n";
 	  
 		// if this node is the selected node
-		if ($cat->category_id == $openid) { 
+		if ($cat->virtuemart_category_id == $openid) { 
 			$opento = $openid; $opento_selected = "true"; 
 		}  
 	}
@@ -128,7 +128,7 @@ $db = JFactory::getDBO();
 	$menu_htmlcode .= $tree.".openTo('{$opento}','{$opento_selected}');\n";
 	$menu_htmlcode .= "</script>\n";
 	$menu_htmlcode .= "<noscript>\n";
-	$menu_htmlcode .= $ps_product_category->get_category_tree( $category_id, $class_mainlevel );
+	$menu_htmlcode .= $ps_product_category->get_category_tree( $virtuemart_category_id, $class_mainlevel );
 	$menu_htmlcode .= "</noscript>\n";
 	$menu_htmlcode .= "</td></tr></table>\n";
 	

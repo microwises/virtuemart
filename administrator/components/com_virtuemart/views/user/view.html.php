@@ -228,7 +228,7 @@ class VirtuemartViewUser extends JView {
 
 					if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 						if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-						$currency = CurrencyDisplay::getCurrencyDisplay();
+						$currency = CurrencyDisplay::getInstance();
 						$this->assignRef('currency',$currency);
 					}
 
@@ -245,10 +245,6 @@ class VirtuemartViewUser extends JView {
 					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_virtuemart_category_id', '', 'vendor_virtuemart_category_id', 'vendor_category_name', $userDetails->vendor->vendor_virtuemart_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);
 
-					 	//				//Different currency styles for different vendors are nonsense imho
-					 	//				$currency =	VirtueMartModelVendor::getCurrencyDisplay();
-
-//					 	$this->assignRef('vendorCurrency', $currency);
 					 }
 
 					 // Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
@@ -271,10 +267,10 @@ class VirtuemartViewUser extends JView {
 
 
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('enable_vendor', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
-			JToolBarHelper::custom('disable_vendor', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
+			JToolBarHelper::custom('toggle.user_is_vendor.1', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
+			JToolBarHelper::custom('toggle.user_is_vendor.0', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
+			JToolBarHelper::deleteList();
                         JToolBarHelper::editListX();
                         JToolBarHelper::addNewX();
 			$userList = $model->getUserList();
@@ -325,7 +321,7 @@ class VirtuemartViewUser extends JView {
 			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
-			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
+			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
 			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}

@@ -19,14 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Orders table class
  * The class is is used to manage the orders in the shop.
  *
  * @package	VirtueMart
  * @author RolandD
+ * @author Max Milbers
  */
-class TableOrders extends JTable {
+class TableOrders extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_order_id = 0;
@@ -61,50 +64,48 @@ class TableOrders extends JTable {
 	var $order_currency = NULL;
 	/** @var char Order status */
 	var $order_status = NULL;
-        /** @var char User currency id */
+	/** @var char User currency id */
 	var $user_currency_id = NULL;
-         /** @var char User currency rate */
+	/** @var char User currency rate */
 	var $user_currency_rate = NULL;
-        /** @var int Payment method ID */
-        var $payment_method_id = NULL;
-        /** @var int Shipping method ID */
-	var $ship_method_id = NULL;      
+	/** @var int Payment method ID */
+	var $payment_method_id = NULL;
+	/** @var int Shipping method ID */
+	var $ship_method_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
-        /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 
 	/**
+	 *
+	 * @author Max Milbers
 	 * @param $db Class constructor; connect to the database
+	 *
 	 */
 	function __construct($db) {
 		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);
+
+		$this->setUniqueName('order_number');
+		$this->setObligatoryKeys('virtuemart_userinfo_id');
+
+		$this->setLoggable();
+
 	}
 
-	/**
-	 * To set created_on and modified_on
-	 * @author Max Milbers
-	 */
-	function check(){
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-	}
+//	/**
+//	 * To set created_on and modified_on
+//	 * @author Max Milbers
+//	 */
+//	function check(){
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+//	}
 	/**
 	 * Overloaded delete() to delete records from order_userinfo and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)

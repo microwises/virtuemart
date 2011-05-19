@@ -99,8 +99,8 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="virtuemart_product_review_id" value="<?php echo $this->rating->virtuemart_product_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
 <input type="hidden" name="userid" value="<?php echo $this->rating->userid; ?>" />
-<input type="hidden" name="time" value="<?php echo $this->rating->time; ?>" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<input type="hidden" name="created_on" value="<?php echo $this->rating->created_on; ?>" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
 <script type="text/javascript">

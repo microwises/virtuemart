@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Manufacturer category table class
  * The class is used to manage the manufacturer category in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author Patrick Kohl
  */
-class TableManufacturercategories extends JTable {
+class TableManufacturercategories extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_manufacturercategories_id = 0;
@@ -36,24 +38,19 @@ class TableManufacturercategories extends JTable {
 	var $mf_category_desc = '';
 	/** @var int published or unpublished */
 	var $published = 1;
-      /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_manufacturercategories', 'virtuemart_manufacturercategories_id', $db);
+
+		$this->setUniqueName('mf_category_name','COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS');
+
+		$this->setLoggable();
+
 	}
 
 
@@ -62,28 +59,28 @@ class TableManufacturercategories extends JTable {
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check()
-	{
-        if (!$this->mf_category_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_IS_EMPTY'));
-			return false;
-		}
-
-		if (($this->mf_category_name) && ($this->virtuemart_manufacturercategories_id == 0)) {
-		    $db =& JFactory::getDBO();
-
-			$q = 'SELECT count(*) FROM #__virtuemart_manufacturercategories ';
-			$q .= 'WHERE mf_category_name="' .  $this->mf_category_name . '"';
-            $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-		return true;
-	}
+//	function check()
+//	{
+//        if (!$this->mf_category_name) {
+//			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_IS_EMPTY'));
+//			return false;
+//		}
+//
+//		if (($this->mf_category_name) && ($this->virtuemart_manufacturercategories_id == 0)) {
+//		    $db =& JFactory::getDBO();
+//
+//			$q = 'SELECT count(*) FROM #__virtuemart_manufacturercategories ';
+//			$q .= 'WHERE mf_category_name="' .  $this->mf_category_name . '"';
+//            $db->setQuery($q);
+//		    $rowCount = $db->loadResult();
+//			if ($rowCount > 0) {
+//				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS'));
+//				return false;
+//			}
+//		}
+//
+//		return true;
+//	}
 	/*
 	 * Verify that user have to delete all manufacturers of a particular category before that category can be removed
 	 *

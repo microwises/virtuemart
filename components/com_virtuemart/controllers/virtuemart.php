@@ -38,8 +38,6 @@ class VirtueMartControllerVirtuemart extends JController
 	    else {
 		    JRequest::setVar( 'layout', 'default' );
 	    }
-
-
 	}
 
 	function Virtuemart() {
@@ -59,7 +57,7 @@ class VirtueMartControllerVirtuemart extends JController
 		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
 
 		/* Set the layout */
-//		$view->setLayout(JRequest::getVar('layout','default'));
+		$view->setLayout(JRequest::getVar('layout','default'));
 
 
 		/* Display it all */

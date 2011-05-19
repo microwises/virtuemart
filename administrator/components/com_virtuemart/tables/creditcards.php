@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Credit card table class
  * The class is is used to manage the credit cards in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG
  */
-class TableCreditcards extends JTable {
+class TableCreditcards extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_creditcard_id				= 0;
@@ -53,46 +55,18 @@ class TableCreditcards extends JTable {
 	var $locked_by	= 0;
 
 	/**
-	 * @author RickG
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_creditcards', 'virtuemart_creditcard_id', $db);
-	}
 
+		$this->setUniqueName('creditcard_name');
+		$this->setObligatoryKeys('creditcard_code');
 
-	/**
-	 * Validates the credit card record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check()
-	{
-        if (!$this->creditcard_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_NAME'));
-			return false;
-		}
-		if (!$this->creditcard_code) {
-			$this->setError(JText::_('COM_VIRTUEMART_CREDIT_CARD_RECORDS_MUST_CONTAIN_CODE'));
-			return false;
-		}
+		$this->setLoggable();
 
-		if (($this->creditcard_name) && ($this->virtuemart_creditcard_id == 0)) {
-		    $db =& JFactory::getDBO();
-
-			$q = 'SELECT count(*) FROM `#__virtuemart_creditcards` ';
-			$q .= 'WHERE `creditcard_name`="' .  $this->creditcard_name . '"';
-            $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_CREDIT_CARD_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 }

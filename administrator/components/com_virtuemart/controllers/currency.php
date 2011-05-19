@@ -22,14 +22,17 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Currency Controller
  *
  * @package    VirtueMart
  * @subpackage Currency
- * @author RickG
+ * @author RickG, Max Milbers, Patrick Kohl
  */
-class VirtuemartControllerCurrency extends JController {
+class VirtuemartControllerCurrency extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,135 +43,35 @@ class VirtuemartControllerCurrency extends JController {
 	function __construct() {
 		parent::__construct();
 
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask( 'apply',  'save' );
 
+	}
+
+	function Currency() {
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('currency', $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('currency');
+		$model = $this->getModel($this->_cname);
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-	}
-
-	/**
-	 * Display the currency view
-	 *
-	 * @author RickG
-	 */
-	function display() {
 		parent::display();
 	}
 
-
 	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'currency');
-		JRequest::setVar('view', 'currency');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		$document =& JFactory::getDocument();
-		$viewType = $document->getType();
-		$view =& $this->getView('currency', $viewType);
-
-		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=currency');
-	}
-
-
-	/**
-	 * Handle the save task
+	 * We want to allow html so we need to overwrite some request data
 	 *
 	 * @author Max Milbers
 	 */
-	function save()
-	{
-		$model = $this->getModel('currency');
+	function save(){
 
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_CURRENCY_STORED');
-		} else {
-			$msg = $model->getError();
-		}
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=currency';
+		$data = JRequest::get('post');
 
-		$this->setRedirect($redirection, $msg);
+		$data['currency_positive_style'] = JRequest::getVar('currency_positive_style','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['currency_negative_style'] = JRequest::getVar('currency_negative_style','','post','STRING',JREQUEST_ALLOWHTML);
 
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('currency');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CURRENCIES_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function publish()
-	{
-		$model = $this->getModel('currency');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_PUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function unpublish()
-	{
-		$model = $this->getModel('currency');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CURRENCIES_COULD_NOT_BE_UNPUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+		parent::save($data);
 	}
 }
 // pure php no closing tag

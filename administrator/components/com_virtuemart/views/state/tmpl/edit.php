@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 <div class="col50">
 	<fieldset class="adminform">
 <?php /*	<legend><?php echo JText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
-	<legend><?php echo JHTML::_('link','index.php?option=com_virtuemart&controller=state&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name)); ?></legend>
+	<legend><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name)); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
@@ -92,6 +92,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="state" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

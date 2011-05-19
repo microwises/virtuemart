@@ -15,14 +15,14 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
-      	
+
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
 		<table class="adminlist">
@@ -30,30 +30,29 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturerCategories); ?>);" />
-			</th>			
+			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>
-			</th>				
-				
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
+			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESC'); ?>
-			</th>								
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
+			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_LIST'); ?>
-			</th>	
+				<?php echo $this->viewName.' '.JText::_('COM_VIRTUEMART_LIST'); ?>
+			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
-			</th>													
+			</th>
 		</tr>
 		</thead>
 		<?php
 		$k = 0;
 		for ($i=0, $n=count( $this->manufacturerCategories ); $i < $n; $i++) {
 			$row =& $this->manufacturerCategories[$i];
-			
+
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_manufacturercategories_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturercategories&task=edit&cid[]=' . $row->virtuemart_manufacturercategories_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturercategories&task=edit&cid[]=' . $row->virtuemart_manufacturercategories_id);
 			$manufacturersList = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturercategories_id=' . $row->virtuemart_manufacturercategories_id);
 
 			?>
@@ -63,17 +62,17 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->mf_category_name; ?></a>
-					
-				</td>					
+
+				</td>
 				<td>
 					<?php echo JText::_($row->mf_category_desc); ?>
-				</td>	
+				</td>
 				<td>
 					<a href="<?php echo $manufacturersList; ?>">Manufacturers</a>
-				</td>	
+				</td>
 				<td align="center">
 					<?php echo $published; ?>
-				</td>				        																														
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -85,16 +84,16 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>		
-	</table>	
+		</tfoot>
+	</table>
 </div>
-	        
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="manufacturercategories" />
-	<input type="hidden" name="view" value="manufacturercategories" />	
+	<input type="hidden" name="view" value="manufacturercategories" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>
-            
-            
-<?php AdminMenuHelper::endAdminArea(); ?> 
+
+
+<?php AdminMenuHelper::endAdminArea(); ?>

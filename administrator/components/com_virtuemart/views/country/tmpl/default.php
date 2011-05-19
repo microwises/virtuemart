@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -32,19 +32,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_NAME'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
 		    </th>
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_2_CODE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_LIST_3_CODE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
 		</tr>
 	    </thead>
@@ -55,8 +55,8 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_country_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->virtuemart_country_id);
-		$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=country&task=edit&cid[]=' . $row->virtuemart_country_id);
+		$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -101,4 +101,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

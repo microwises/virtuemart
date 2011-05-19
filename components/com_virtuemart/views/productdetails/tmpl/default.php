@@ -254,7 +254,7 @@ if (empty ( $this->product )) {
 			<span class="product-field-display"><?php echo $field->display ?><span>
 			<span class="product-field-desc"><?php echo $field->custom_field_desc ?><span>
 			</div>
-			<?php  //dump( $field );
+			<?php
 		}
 		?>
 	</div>
@@ -446,7 +446,7 @@ if (empty ( $this->product )) {
 	* $review->userid => The user ID of the comment author
 	* $review->username => The username of the comment author
 	* $review->name => The name of the comment author
-	* $review->time => The UNIX timestamp of the comment ("when" it was posted)
+	* $review->created_on => The UNIX timestamp of the comment ("when" it was posted)
 	* $review->user_rating => The rating; an integer from 1 - 5
 	*
 	*/
@@ -483,7 +483,7 @@ if (empty ( $this->product )) {
 				} ?>
 
 				<div class="<?php echo $color ?>">
-					<span class="date"><?php echo JHTML::date($review->time, JText::_('DATE_FORMAT_LC')); ?></span>
+					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
 					<?php echo $stars[ $review->user_rating ] ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->username ?></span>
@@ -505,9 +505,9 @@ if (empty ( $this->product )) {
 			</div>
 
 			<?php
-			if (!empty($this->user->id)) { ?>
+//			if (!empty($this->user->id)) { ?>
 			<div class="write-reviews">
-				<?php if (!$alreadycommented) {
+				<?php if (!$alreadycommented && $this->showReview) {
 					echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
 					$reviewJavascript = "
 					function check_reviewform() {
@@ -543,17 +543,20 @@ if (empty ( $this->product )) {
 						?>
 
 
-
 						<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?></h4>
-						<br /><?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
+						<br />
 						<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
+
+						<?php if($this->showRating){
+
+							echo JText::_('COM_VIRTUEMART_REVIEW_RATE')  ?>
 							<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 								<tr>
 								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) {
 									?>
 										<th id="<?php echo $num ?>_stars">
-											<label for="user_rating<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
+											<label for="rate<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 										</th>
 									<?php
 								} ?>
@@ -562,12 +565,14 @@ if (empty ( $this->product )) {
 								<?php
 								for ($num=$maxrating ; $num>=0; $num--  ) { ?>
 									<td headers="<?php echo $num ?>_stars" style="text-align:center;">
-										<input type="radio" id="user_rating<?php echo $num ?>" name="user_rating" value="<?php echo $num ?>" />
+										<input type="radio" id="rate<?php echo $num ?>" name="rate" value="<?php echo $num ?>" />
 									</td>
 								<?php
 								} ?>
 								</tr>
 							</table>
+							<?php
+							} ?>
 							<br /><br />
 							<?php
 							echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
@@ -594,8 +599,8 @@ if (empty ( $this->product )) {
 					?>
 					</div>
 					<?php
-				}
-				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
+//				}
+//				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 
 	</div>

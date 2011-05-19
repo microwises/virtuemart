@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="exchange_rate" id="exchange_rate" size="6" value="<?php echo $this->currency->exchange_rate; ?>" />
+				<input class="inputbox" type="text" name="currency_exchange_rate" id="currency_exchange_rate" size="6" value="<?php echo $this->currency->currency_exchange_rate; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />
+				<input class="inputbox" type="text" name="currency_code_3" id="currency_code_3" size="3" value="<?php echo $this->currency->currency_code_3; ?>" />
 			</td>
 		</tr>
                 <tr>
@@ -126,8 +126,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
 		</td>
 		<td>
-			<input type="hidden" name="currency_display_style[0]" value="<?php echo $this->currency->virtuemart_vendor_id; ?>" />
-			<input class="inputbox" type="text" name="currency_display_style[1]" id="currency_symbol" size="20" value="<?php echo $this->currencyDisplay->getSymbol(); ?>" />
+			<input class="inputbox" type="text" name="currency_symbol" id="currency_symbol" size="20" value="<?php echo $this->currency->currency_symbol; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -135,7 +134,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_display_style[2]" id="currency_nbr_decimals" size="20" value="<?php echo $this->currencyDisplay->getNbrDecimals(); ?>" />
+			<input class="inputbox" type="text" name="currency_decimal_place" id="currency_decimal_place" size="20" value="<?php echo $this->currency->currency_decimal_place; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -143,7 +142,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL'); ?>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo $this->currencyDisplay->getDecimalSymbol(); ?>" />
+			<input class="inputbox" type="text" name="currency_decimal_symbol" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->currency_decimal_symbol; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -151,7 +150,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_THOUSANDS'); ?>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo $this->currencyDisplay->getThousandsSeperator(); ?>" />
+			<input class="inputbox" type="text" name="currency_thousands" id="currency_thousands" size="10" value="<?php echo $this->currency->currency_thousands; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -159,7 +158,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY'); ?>
 		</td>
 		<td >
-			<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="30" value="<?php echo $this->currencyDisplay->getPositiveFormat(); ?>" />
+			<input class="inputbox" type="text" name="currency_positive_style" id="currency_positive_style" size="50" value="<?php echo $this->currency->currency_positive_style; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -167,7 +166,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY'); ?>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="30" value="<?php echo $this->currencyDisplay->getNegativeFormat(); ?>" />
+			<input class="inputbox" type="text" name="currency_negative_style" id="currency_negative_style" size="50" value="<?php echo $this->currency->currency_negative_style; ?>" />
 		</td>
 	</tr>
 	</table>
@@ -181,6 +180,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="currency" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

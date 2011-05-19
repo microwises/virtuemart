@@ -116,7 +116,7 @@ abstract class vmPaymentPlugin extends JPlugin
 	 		$this->_jplugin_id = $jplugin_id;
 	 	}
 
-		$q = 'SELECT `virtuemart_paymentmethod_id`,`paym_name` FROM #__vm_payment_method WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
+		$q = 'SELECT `virtuemart_paymentmethod_id`,`paym_name` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$this->_jplugin_id.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" AND `published`="1" ';
 		$db->setQuery($q);
 		$result =  $db->loadAssoc();
 

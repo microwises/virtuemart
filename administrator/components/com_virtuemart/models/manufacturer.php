@@ -22,49 +22,61 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for VirtueMart Manufacturers
  *
  * @package VirtueMart
  * @subpackage Manufacturer
  * @author RolandD, Max Milbers
- * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the product_list with the ordering column
+ * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the ordering with the ordering column
  */
-class VirtueMartModelManufacturer extends JModel {
-
-	var $_total;
-	var $_pagination;
-
-	function __construct() {
-		parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-	}
+class VirtueMartModelManufacturer extends VmModel {
 
 	/**
-	 * Loads the pagination
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
 	 */
-    public function getPagination() {
-		if ($this->_pagination == null) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('manufacturers');
 	}
+
+//	var $_total;
+//	var $_pagination;
+//
+//	function __construct() {
+//		parent::__construct();
+//
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
+//
+//		// In case limit has been changed, adjust limitstart accordingly
+//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//	}
+//
+//	/**
+//	 * Loads the pagination
+//	 */
+//    public function getPagination() {
+//		if ($this->_pagination == null) {
+//			jimport('joomla.html.pagination');
+//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+//		}
+//		return $this->_pagination;
+//	}
 
 	/**
 	 * Gets the total number of products
 	 */
-	private function getTotal() {
+	function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
@@ -88,8 +100,8 @@ class VirtueMartModelManufacturer extends JModel {
      	$this->_data = $this->getTable('manufacturers');
      	$this->_data->load($this->_id);
 
-     	$xrefTable = $this->getTable('mf_media_xref');
-		$this->_data->file_ids = $xrefTable->load($this->_id);
+     	$xrefTable = $this->getTable('manufacturer_medias');
+		$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
      	return $this->_data;
      }
@@ -131,7 +143,7 @@ class VirtueMartModelManufacturer extends JModel {
 		// Process the images //		$fullImage = JRequest::getVar('virtuemart_media_id', null, 'files',array());
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
-		$xrefTable = $this->getTable('mf_media_xref');
+		$xrefTable = $this->getTable('manufacturer_medias');
 		$mediaModel->storeMedia($data,$table,'manufacturer');
 
 		return $table->virtuemart_manufacturer_id;
@@ -141,9 +153,9 @@ class VirtueMartModelManufacturer extends JModel {
 	/**
 	 * Delete all record ids selected
      *
-     * @return boolean True is the delete was successful, false otherwise.
+     * @return boolean True is the remove was successful, false otherwise.
      */
-	public function delete() {
+	public function remove() {
 		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
     	$table = $this->getTable('manufacturers');
 
@@ -254,12 +266,12 @@ class VirtueMartModelManufacturer extends JModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($manus,'file_ids','vendor','image');
+		$this->mediaModel->attachImages($manus,'vendor','image');
 
 //		if(!empty($manus)){
 //			if(!is_array($cats)) $cats = array($cats);
 //			foreach($cats as $cat){
-//				$this->mediaModel -> setId($manus->file_ids );
+//				$this->mediaModel -> setId($manus->virtuemart_media_id );
 //				$manus->images = $this->mediaModel->getFile('vendor','image');
 //			}
 //		}

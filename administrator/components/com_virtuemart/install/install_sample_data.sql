@@ -33,12 +33,12 @@ INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `virtuemart_calc_id
 -- Dumping data for table `#__virtuemart_categories`
 --
 
-INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`, `category_name`, `category_description`, `published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
-(1, 1, 'Hand Tools', 'Hand Tools', 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', '', '', ''),
-(2, 1, 'Power Tools', 'Power Tools', 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
-(3, 1, 'Garden Tools', 'Garden Tools', 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),
-(4, 1, 'Outdoor Tools', 'Outdoor Tools', 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, NULL, '', '', '', ''),
-(5, 1, 'Indoor Tools', 'Indoor Tools', 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '', '', '');
+INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`, `category_name`, `slug`, `category_description`, `published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metadesc`, `metakey`, `metarobot`, `metaauthor`) VALUES
+(1, 1, 'Hand Tools', 'Hand_Tools', 'Hand Tools', 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', '', '', ''),
+(2, 1, 'Power Tools', 'Power_Tools', 'Power Tools', 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', '', '', ''),
+(3, 1, 'Garden Tools', 'Garden_Tools', 'Garden Tools', 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', '', '', ''),
+(4, 1, 'Outdoor Tools', 'Outdoor_Tools', 'Outdoor Tools', 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, NULL, '', '', '', ''),
+(5, 1, 'Indoor Tools', 'Indoor_Tools', 'Indoor Tools', 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '', '', '');
 
 --
 -- Dumping data for table `#__virtuemart_category_categories`
@@ -56,7 +56,7 @@ INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `c
 -- Dumping data for table `#__virtuemart_category_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 1),
 (NULL, 2, 2),
 (NULL, 3, 3),
@@ -73,7 +73,7 @@ INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`,
 (3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
 (4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, 0, 0, 1),
 (5, 0, 0, 'I''m a Child link', 'Add a child to me', '', 'link to child', 'C', 0, 0, 0, 1),
-(7, 0, 0, 'PHOTO', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 0, 1),
+(7, 0, 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 0, 1),
 (9, 0, 0, 'Size', 'Change the size', '30', 'CM', 'V', 0, 0, 1, 1),
 (10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1);
 
@@ -91,11 +91,11 @@ INSERT INTO `#__virtuemart_customfields` (`virtuemart_customfield_id`, `virtuema
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
-INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `virtuemart_customfield_id`, `ordering`, `published`) VALUES
-(NULL, 6, 2, 0, 0),
-(NULL, 6, 4, 0, 0),
-(NULL, 6, 5, 0, 0),
-(NULL, 6, 6, 0, 0);
+INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `virtuemart_customfield_id`, `ordering`) VALUES
+(NULL, 6, 2, 0),
+(NULL, 6, 4, 0),
+(NULL, 6, 5, 0),
+(NULL, 6, 6, 0);
 --
 -- Dumping data for table `#__virtuemart_manufacturers`
 --
@@ -115,7 +115,7 @@ INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercate
 -- Dumping data for table `#__virtuemart_manufacturer_medias`
 --
 
-INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 1);
 
 --
@@ -141,26 +141,25 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 -- Dumping data for table `#__virtuemart_products`
 --
 
-INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_s_desc`, `product_desc`, `published`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `created_on`, `modified_on`, `product_name`, `product_sales`, `attribute`, `custom_attribute`, `product_unit`, `product_packaging`, `product_order_levels`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`) VALUES
-(1, 1, 0, 'G01', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 10, 5, 1072911600, '48h.gif', 'Y', NULL, NULL, NULL, 'Hand Shovel', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(2, 1, 0, 'G02', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 76, 5, 1072911600, '3-5d.gif', 'N', NULL, NULL, NULL, 'Ladder', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(3, 1, 0, 'G03', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '7d.gif', 'N', NULL, NULL, NULL, 'Shovel', 0, 'Size,XL[+1.99],M,S[-2.99];Colour,Red,Green,Yellow,ExpensiveColor[=24.00]', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(4, 1, 0, 'G04', 'This shovel is smaller but you''ll be able to dig real quick.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 98, 5, 1088632800, 'on-order.gif', 'N', NULL, NULL, NULL, 'Smaller Shovel', 0, 'Size,big[+2.99],medium;Color,red[+0.99],green[-0.99]', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(5, 1, 0, 'H01', 'This saw is great for getting cutting through downed limbs.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '1-4w.gif', 'Y', NULL, NULL, NULL, 'Nice Saw', 0, 'Size,big,small,medium;Power,100W,200W,500W', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(6, 1, 0, 'H02', 'A great hammer to hammer away with.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 500, 5, 1072911600, '24h.gif', 'N', NULL, NULL, NULL, 'Hammer', 0, 'Size,big,medium,small;Material,wood and metal,plastic and metal[-0.99]', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(7, 1, 0, 'P01', 'Don''t do it with an axe.  Get a chain saw.', '\r\n<ul>  <li>Tool-free tensioner for easy, convenient chain adjustment  </li><li>3-Way Auto Stop; stops chain a fraction of a second  </li><li>Automatic chain oiler regulates oil for proper chain lubrication  </li><li>Small radius guide bar reduces kick-back  </li></ul>  <br />  <b>Specifications</b><br />  12.5 AMPS   <br />   16" Bar Length   <br />   3.5 HP   <br />   8.05 LBS. Weight   <br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 45, 5, 1088632800, '48h.gif', 'N', NULL, NULL, NULL, 'Chain Saw', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(8, 1, 0, 'P02', 'Cut rings around wood.  This saw can handle the most delicate projects.', '\r\n<ul>  <li>Patented Sightline; Window provides maximum visibility for straight cuts  </li><li>Adjustable dust chute for cleaner work area  </li><li>Bail handle for controlled cutting in 90� to 45� applications  </li><li>1-1/2 to 2-1/2 lbs. lighter and 40% less noise than the average circular saw                     </li><li><b>Includes:</b>Carbide blade  </li></ul>  <br />  <b>Specifications</b><br />  10.0 AMPS   <br />   4,300 RPM   <br />   Capacity: 2-1/16" at 90�, 1-3/4" at 45�<br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 33, 5, 1072911600, '3-5d.gif', 'Y', NULL, NULL, NULL, 'Circular Saw', 0, 'Size,XL[+1],M,S[-2];Power,strong,middle,poor[=24]', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(9, 1, 0, 'P03', 'Drill through anything.  This drill has the power you need for those demanding hole boring duties.', '\r\n<font color="#000000" size="3"><ul><li>High power motor and double gear reduction for increased durability and improved performance  </li><li>Mid-handle design and two finger trigger for increased balance and comfort  </li><li>Variable speed switch with lock-on button for continuous use  </li><li><b>Includes:</b> Chuck key &amp; holder  </li></ul>  <br />  <b>Specifications</b><br />  4.0 AMPS   <br />   0-1,350 RPM   <br />   Capacity: 3/8" Steel, 1" Wood   <br /><br />  </font>\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 3, 5, 1072911600, '2-3d.gif', 'N', NULL, NULL, NULL, 'Drill', 0, '', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(10, 1, 0, 'P04', 'Blast away that paint job from the past.  Use this power sander to really show them you mean business.', '\r\n<ul>  <li>Lever activated paper clamps for simple sandpaper changes  </li><li>Dust sealed rocker switch extends product life and keeps dust out of motor  </li><li>Flush sands on three sides to get into corners  </li><li>Front handle for extra control  </li><li>Dust extraction port for cleaner work environment   </li></ul>  <br />  <b>Specifications</b><br />  1.2 AMPS    <br />   10,000 OPM    <br />\r\n', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 2, 5, 1072911600, '1-2m.gif', 'N', NULL, NULL, NULL, 'Power Sander', 0, 'Size,big,medium,small;Power,100W,200W,300W', '', '', 0, NULL, NULL, '', '', '', '', ''),
-(11, 1, 1, 'G01-01', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Hand Shovel', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
-(12, 1, 1, 'G01-02', '', '', 1, '10.0000', '', '0.0000', '0.0000', '0.0000', '', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Hand Shovel', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
-(13, 1, 1, 'G01-03', '', '', 1, '10.0000', '', '0.0000', '0.0000', '0.0000', '', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Hand Shovel', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
-(14, 1, 2, 'L01', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 22, 5, 1072911600, '', 'N', NULL, NULL, NULL, 'Metal Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
-(15, 1, 2, 'L02', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Wooden Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', ''),
-(16, 1, 2, 'L03', '', '', 1, '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, NULL, NULL, 'Plastic Ladder', 0, NULL, '', '', 0, NULL, NULL, '', '', '', '', '');
+INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_name`, `slug`, `product_s_desc`, `product_desc`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `ship_code_id`, `product_sales`, `product_unit`, `product_packaging`, `product_order_levels`, `hits`, `intnotes`, `metadesc`, `metakey`, `metarobot`, `metaauthor`, `layout`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(1, 1, 0, 'G01', 'Hand Shovel', '', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 10, 5, 1072911600, '48h.gif', 'Y', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(2, 1, 0, 'G02', 'Ladder', '', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 76, 5, 1072911600, '3-5d.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(3, 1, 0, 'G03', 'Shovel', '', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '7d.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(4, 1, 0, 'G04', 'Smaller Shovel', '', 'This shovel is smaller but you''ll be able to dig real quick.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 98, 5, 1088632800, 'on-order.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(5, 1, 0, 'H01', 'Nice Saw', '', 'This saw is great for getting cutting through downed limbs.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 32, 5, 1072911600, '1-4w.gif', 'Y', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(6, 1, 0, 'H02', 'Hammer', '', 'A great hammer to hammer away with.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 500, 5, 1072911600, '24h.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(7, 1, 0, 'P01', 'Chain Saw', '', 'Don''t do it with an axe.  Get a chain saw.', '\r\n<ul>  <li>Tool-free tensioner for easy, convenient chain adjustment  </li><li>3-Way Auto Stop; stops chain a fraction of a second  </li><li>Automatic chain oiler regulates oil for proper chain lubrication  </li><li>Small radius guide bar reduces kick-back  </li></ul>  <br />  <b>Specifications</b><br />  12.5 AMPS   <br />   16" Bar Length   <br />   3.5 HP   <br />   8.05 LBS. Weight   <br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 45, 5, 1088632800, '48h.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(8, 1, 0, 'P02', 'Circular Saw', '', 'Cut rings around wood.  This saw can handle the most delicate projects.', '\r\n<ul>  <li>Patented Sightline; Window provides maximum visibility for straight cuts  </li><li>Adjustable dust chute for cleaner work area  </li><li>Bail handle for controlled cutting in 90� to 45� applications  </li><li>1-1/2 to 2-1/2 lbs. lighter and 40% less noise than the average circular saw                     </li><li><b>Includes:</b>Carbide blade  </li></ul>  <br />  <b>Specifications</b><br />  10.0 AMPS   <br />   4,300 RPM   <br />   Capacity: 2-1/16" at 90�, 1-3/4" at 45�<br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 33, 5, 1072911600, '3-5d.gif', 'Y', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(9, 1, 0, 'P03', 'Drill', '', 'Drill through anything.  This drill has the power you need for those demanding hole boring duties.', '\r\n<font color="#000000" size="3"><ul><li>High power motor and double gear reduction for increased durability and improved performance  </li><li>Mid-handle design and two finger trigger for increased balance and comfort  </li><li>Variable speed switch with lock-on button for continuous use  </li><li><b>Includes:</b> Chuck key &amp; holder  </li></ul>  <br />  <b>Specifications</b><br />  4.0 AMPS   <br />   0-1,350 RPM   <br />   Capacity: 3/8" Steel, 1" Wood   <br /><br />  </font>\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 3, 5, 1072911600, '2-3d.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(10, 1, 0, 'P04', 'Power Sander', '', 'Blast away that paint job from the past.  Use this power sander to really show them you mean business.', '\r\n<ul>  <li>Lever activated paper clamps for simple sandpaper changes  </li><li>Dust sealed rocker switch extends product life and keeps dust out of motor  </li><li>Flush sands on three sides to get into corners  </li><li>Front handle for extra control  </li><li>Dust extraction port for cleaner work environment   </li></ul>  <br />  <b>Specifications</b><br />  1.2 AMPS    <br />   10,000 OPM    <br />\r\n', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 2, 5, 1072911600, '1-2m.gif', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(11, 1, 1, 'G01-01', 'Hand Shovel', '', '', '', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(12, 1, 1, 'G01-02', 'Hand Shovel', '', '', '', '10.0000', '', '0.0000', '0.0000', '0.0000', '', '', 0, 5, 0, '', '', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(13, 1, 1, 'G01-03', 'Hand Shovel', '', '', '', '10.0000', '', '0.0000', '0.0000', '0.0000', '', '', 0, 5, 0, '', '', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(14, 1, 2, 'L01', 'Metal Ladder', '', '', '', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 22, 5, 1072911600, '', 'N', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(15, 1, 2, 'L02', 'Wooden Ladder', '', '', '', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(16, 1, 2, 'L03', 'Plastic Ladder', '', '', '', '10.0000', 'pounds', '0.0000', '0.0000', '0.0000', 'inches', '', 0, 5, 0, '', '', NULL, 0, '', 0, NULL, 0, NULL, '', '', '', '', '', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
-
-INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `file_ids`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 13),
 (NULL, 2, 8),
 (NULL, 3, 5),
@@ -177,7 +176,7 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`,
 -- Dumping data for table `#__virtuemart_product_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `virtuemart_product_id`, `product_list`) VALUES
+INSERT IGNORE INTO `#__virtuemart_product_categories` (`virtuemart_category_id`, `virtuemart_product_id`, `ordering`) VALUES
 (1, 1, NULL),
 (3, 2, NULL),
 (3, 3, NULL),

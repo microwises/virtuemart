@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 			</legend>
 			<?php
-				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->file_ids);
+				echo $this->vendor->images[0]->displayFilesHandler($this->vendor->virtuemart_media_id);
 			?>
 
 

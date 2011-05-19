@@ -26,6 +26,7 @@ jimport( 'joomla.application.component.model');
 // Load the helpers
 if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model class for user fields
@@ -34,46 +35,24 @@ if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @subpackage Userfields
  * @author RolandD
  */
-class VirtueMartModelUserfields extends JModel {
+class VirtueMartModelUserfields extends VmModel {
 
-	/** @var integer Primary key */
-	var $_id;
-	/** @var objectlist userfield data */
-	var $_data;
 	/** @var object paramater parsers */
 	var $_params;
 	/** @var array type=>fieldname with formfields that are saved as parameters */
 	var $reqParam;
-	/** @var integer Total number of userfields in the database */
-	var $_total;
-	/** @var pagination Pagination for userfieldlist */
-	var $_pagination;
 
 	/**
-	 * Constructor for the userfields model.
-	 *
-	 * The userfield ID is read and detmimined if it is an array of ids or just one single id.
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
 	 */
-	function __construct()
-	{
+	function __construct() {
 		parent::__construct();
-
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
+		$this->setMainTable('userfields');
 		// Instantiate the Helper class
 		$this->_params = new ParamHelper();
 
-		// Get the (array of) order status ID(s)
-		$idArray = JRequest::getVar('cid',  0, '', 'array');
-		$this->setId((int)$idArray[0]);
 
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (
@@ -82,6 +61,41 @@ class VirtueMartModelUserfields extends JModel {
 			,'webaddress'       => 'webaddresstype'
 		);
 	}
+
+//	/**
+//	 * Constructor for the userfields model.
+//	 *
+//	 * The userfield ID is read and detmimined if it is an array of ids or just one single id.
+//	 */
+//	function __construct()
+//	{
+//		parent::__construct();
+//
+//
+////		// Get the pagination request variables
+////		$mainframe = JFactory::getApplication() ;
+////		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+////		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+////
+////		// Set the state pagination variables
+////		$this->setState('limit', $limit);
+////		$this->setState('limitstart', $limitstart);
+////
+////		// Get the (array of) order status ID(s)
+////		$idArray = JRequest::getVar('cid',  0, '', 'array');
+////		$this->setId((int)$idArray[0]);
+//
+//		// Instantiate the Helper class
+//		$this->_params = new ParamHelper();
+//
+//
+//		// Form fields that must be translated to parameters
+//		$this->reqParam = array (
+//			 'age_verification' => 'minimum_age'
+//			,'euvatid'          => 'virtuemart_shoppergroup_id'
+//			,'webaddress'       => 'webaddresstype'
+//		);
+//	}
 
 	/**
 	* Prepare a user field for database update
@@ -120,28 +134,6 @@ class VirtueMartModelUserfields extends JModel {
 		return $value;
 	}
 
-	/**
-	 * Resets the userfield id and data
-	 */
-	function setId($id)
-	{
-		$this->_id = $id;
-		$this->_data = null;
-	}
-
-	/**
-	 * Loads the pagination for the userfields table
-	 *
-	 * @return JPagination Pagination for the current list of userfields
-	 */
-	function getPagination()
-	{
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
 
 	/**
 	 * Gets the total number of userfields
@@ -186,7 +178,7 @@ class VirtueMartModelUserfields extends JModel {
 	 */
 	function getUserfieldValues()
 	{
-		$this->_data = $this->getTable('userfields_values');
+		$this->_data = $this->getTable('userfield_values');
 		if ($this->_id > 0) {
 			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $this->_id
 				. ' ORDER BY `ordering`';
@@ -206,7 +198,7 @@ class VirtueMartModelUserfields extends JModel {
 	{
 		$field      =& $this->getTable('userfields');
 		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfo');
+		$orderinfo  =& $this->getTable('order_userinfos');
 
 		$data = JRequest::get('post');
 
@@ -294,7 +286,7 @@ class VirtueMartModelUserfields extends JModel {
 		if (count($_values) == 0) {
 			return true; //Nothing to do
 		}
-		$fieldvalue =& $this->getTable('userfields_values');
+		$fieldvalue =& $this->getTable('userfield_values');
 
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
@@ -558,8 +550,8 @@ class VirtueMartModelUserfields extends JModel {
 	 *    </table>
 	 * </pre>
 	 */
-	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = '')
-	{
+	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = ''){
+
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
@@ -816,15 +808,15 @@ class VirtueMartModelUserfields extends JModel {
 	/**
 	 * Delete all record ids selected
 	 *
-	 * @return boolean True is the delete was successful, false otherwise.
+	 * @return boolean True is the remove was successful, false otherwise.
 	 */
-	function delete()
+	function remove()
 	{
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
 		$field      =& $this->getTable('userfields');
-		$value      =& $this->getTable('userfields_values');
+		$value      =& $this->getTable('userfield_values');
 		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfo');
+		$orderinfo  =& $this->getTable('order_userinfos');
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
@@ -911,79 +903,51 @@ class VirtueMartModelUserfields extends JModel {
 		return ($query);
 	}
 
-	/**
-	 * Change the ordering of an Userfield
-	 *
-	 * @return boolean True on success
-	 */
-	function move($direction)
-	{
-		$table =& $this->getTable('userfields');
-		if (!$table->load($this->_id)) {
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		if (!$table->move($direction)){
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+	// /**
+	 // * Change the ordering of an Userfield
+	 // *
+	 // * @return boolean True on success
+	 // */
+	// function move($direction)
+	// {
+		// $table =& $this->getTable('userfields');
+		// if (!$table->load($this->_id)) {
+			// $this->setError($this->_db->getErrorMsg());
+			// return false;
+		// }
+		// if (!$table->move($direction)){
+			// $this->setError($this->_db->getErrorMsg());
+			// return false;
+		// }
 
-		return true;
-	}
+		// return true;
+	// }
 
-	/**
-	 * Reorder the Userfields
-	 *
-	 * @return boolean True on success
-	 */
-	function saveorder($cid = array(), $order)
-	{
-		$table =& $this->getTable('userfields');
+	// /**
+	 // * Reorder the Userfields
+	 // *
+	 // * @return boolean True on success
+	 // */
+	// function saveorder($cid = array(), $order)
+	// {
+		// $table =& $this->getTable('userfields');
 
-		// update ordering values
-		for( $i=0; $i < count($cid); $i++ )
-		{
-			$table->load( (int) $cid[$i] );
-			if ($table->ordering != $order[$i])
-			{
-				$table->ordering = $order[$i];
-				if (!$table->store()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-			}
-		}
+		//update ordering values
+		// for( $i=0; $i < count($cid); $i++ )
+		// {
+			// $table->load( (int) $cid[$i] );
+			// if ($table->ordering != $order[$i])
+			// {
+				// $table->ordering = $order[$i];
+				// if (!$table->store()) {
+					// $this->setError($this->_db->getErrorMsg());
+					// return false;
+				// }
+			// }
+		// }
 
-		return true;
-	}
-
-	/**
-	 * Switch a toggleable field on or off
-	 *
-	 * @param $field string Database fieldname to toggle
-	 * @param $id array list of primary keys to toggle
-	 * @param $value boolean Value to set
-	 * @return boolean Result
-	 */
-	function toggle($field, $id = array(), $value = 1)
-	{
-		if (count( $id ))
-		{
-			JArrayHelper::toInteger($id);
-			$ids = implode( ',', $id );
-
-			$query = 'UPDATE `#__virtuemart_userfields`'
-				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE virtuemart_userfield_id IN ( '.$ids.' )'
-			;
-			$this->_db->setQuery( $query );
-			if (!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-		}
-		return true;
-	}
+		// return true;
+	// }
 }
 
 // No closing tag

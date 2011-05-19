@@ -37,16 +37,16 @@ AdminMenuHelper::startAdminArea();
 		    <th width="80">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_EXCHANGE_RATE'); ?>
 		    </th>
-		    <th width="10">
+		    <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_SYMBOL'); ?>
 		    </th>
-		    <th width="10">
+<?php /*		    <th width="10">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
-		    </th>
+		    </th> */?>
 		    <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_3'); ?>
 		    </th>
-                     <th width="20">
+             <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>
 		    </th>
 <?php /*		    <th >
@@ -70,28 +70,28 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_currency_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=edit&cid[]=' . $row->virtuemart_currency_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=currency&task=edit&cid[]=' . $row->virtuemart_currency_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
-		<td width="10">
+		<td align="center">
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->currency_name; ?></a>
 		</td>
 		<td align="left">
-			<?php echo $row->exchange_rate; ?>
+			<?php echo $row->currency_exchange_rate; ?>
 		</td>
 		<td align="left">
 			<?php echo $row->currency_symbol; ?>
 		</td>
-		<td align="left">
+<?php /*<td align="left">
 			<?php echo $row->currency_code_2; ?>
-		</td>
+		</td>  */ ?>
 		<td align="left">
-			<?php echo $row->currency_code; ?>
+			<?php echo $row->currency_code_3; ?>
 		</td>
-                <td align="left">
+        <td align="left">
 			<?php echo $row->currency_numeric_code; ?>
 		</td>
 <?php /*		<td>

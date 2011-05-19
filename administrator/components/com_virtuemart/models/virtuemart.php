@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+
 /**
  * Model for Macola
  *

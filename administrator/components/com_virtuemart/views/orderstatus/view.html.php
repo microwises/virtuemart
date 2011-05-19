@@ -35,24 +35,22 @@ class VirtuemartViewOrderstatus extends JView {
 
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
-		
+
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		$orderStatus = $model->getOrderStatus();
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$viewName=ShopFunctions::SetViewTitle('vm_orderstatus_48');
+		$this->assignRef('viewName',$viewName);
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
 			if ($orderStatus->virtuemart_orderstate_id < 1) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-                                JToolBarHelper::apply();
-				JToolBarHelper::cancel();
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 			} else {
@@ -63,12 +61,7 @@ class VirtuemartViewOrderstatus extends JView {
 				$ordering = JHTML::_('list.specificordering',  $orderStatus, $orderStatus->virtuemart_orderstate_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_MNU').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_orderstatus_48');
-				JToolBarHelper::divider();
 
-                                JToolBarHelper::save();
-                                JToolBarHelper::apply();
-				JToolBarHelper::cancel();
 			}
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
@@ -78,11 +71,11 @@ class VirtuemartViewOrderstatus extends JView {
 			$this->assignRef('lists', $lists);
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
+
+			ShopFunctions::addStandardEditViewCommands();
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_LBL'), 'vm_orderstatus_48' );
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

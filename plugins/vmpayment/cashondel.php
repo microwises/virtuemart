@@ -50,7 +50,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	protected function _createTable()
 	{
 		$_scheme = DbScheme::get_instance();
-		$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
+		$_scheme->create_scheme('#__virtuemart_order_payment_'.$this->_pelement);
 		$_schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -98,7 +98,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
 		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
-		$this->writePaymentData($_dbValues, '#__vm_order_payment_' . $this->_pelement);
+		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
 	
@@ -113,7 +113,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$_db = JFactory::getDBO();
-		$_q = 'SELECT * FROM `#__vm_order_payment_' . $this->_pelement . '` '
+		$_q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {

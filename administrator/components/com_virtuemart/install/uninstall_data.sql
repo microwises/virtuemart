@@ -27,7 +27,7 @@ DELETE FROM `#__virtuemart_producttypes`;
 DELETE FROM `#__virtuemart_producttype_customfields`;
 DELETE FROM `#__virtuemart_vmusers`;
 DELETE FROM `#__virtuemart_userinfos`;
-DELETE FROM `#__virtuemart_user_shoppergroups`;
+DELETE FROM `#__virtuemart_vmuser_shoppergroups`;
 DELETE FROM `#__virtuemart_shippingcarriers`;
 DELETE FROM `#__virtuemart_shippingrates`;
 DELETE FROM `#__virtuemart_shoppergroups`;

@@ -58,8 +58,8 @@ $pagination = $this->pagination;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_TITLE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DESCRIPTION'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_TITLE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
@@ -94,9 +94,9 @@ $pagination = $this->pagination;
 				<td><?php echo $custom->custom_field_desc; ?></td>
 				<td><?php echo $custom->field_type_display; ?></td>
 				<td>
-					<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle_admin_only')" title="<?php echo ($custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+					<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.admin_only')" title="<?php echo ($custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->admin_only  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
-				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle_is_hidden')" title="<?php echo ($custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.is_hidden')" title="<?php echo ($custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->is_hidden  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
 				<td><?php echo $published; ?></td>
 			</tr>
@@ -125,6 +125,6 @@ $pagination = $this->pagination;
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php //echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php //echo $this->lists['order_Dir']; ?>" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

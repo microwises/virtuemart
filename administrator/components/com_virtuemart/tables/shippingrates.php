@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Shipping Rate table class
  * The class is is used to manage the shipping rates in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @author RickG
  */
-class TableShippingrates extends JTable {
+class TableShippingrates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shippingrate_id			= 0;

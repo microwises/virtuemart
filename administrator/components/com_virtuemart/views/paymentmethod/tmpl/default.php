@@ -17,13 +17,13 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 //if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
-      	
+
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
 		<table class="adminlist">
@@ -31,10 +31,10 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>		            
+			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payms); ?>);" />
-			</th>			
+			</th>
 			<th width="60">
 				<?php echo JText::_('COM_VIRTUEMART_PAYM_LIST_NAME'); ?>
 			</th>
@@ -75,23 +75,23 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 
 		for ($i=0, $n=count( $this->payms ); $i < $n; $i++) {
-			
+
 			$row = $this->payms[$i];
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
 					<?php echo $row->virtuemart_paymentmethod_id; ?>
-				</td>			            
+				</td>
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->paym_name; ?></a>
 				</td>
-				<?php if($this->perms->check( 'admin' )){?>				
+				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
 					<?php echo JText::_($row->virtuemart_vendor_id); ?>
 				</td>
@@ -115,9 +115,9 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $row->discount_max_amount; ?>
 				</td>
 <?php /*				<td>
-					<?php 
-					switch($row->paym_type) { 
-						case "Y": 
+					<?php
+					switch($row->paym_type) {
+						case "Y":
 							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP');
 							break;
 						case "N":
@@ -140,7 +140,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td align="center">
 					<?php echo $row->shared; ?>
-				</td>				        																														
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -152,17 +152,17 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>		
-	</table>	
+		</tfoot>
+	</table>
 </div>
-	        
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="paymentmethod" />
-	<input type="hidden" name="view" value="paymentmethod" />	
+	<input type="hidden" name="view" value="paymentmethod" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-            
-            
-<?php AdminMenuHelper::endAdminArea(); ?> 
+
+
+<?php AdminMenuHelper::endAdminArea(); ?>

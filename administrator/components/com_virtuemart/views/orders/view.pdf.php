@@ -57,7 +57,7 @@ class VirtuemartViewOrders extends JView {
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-		$currency = VirtueMartModelVendor::getCurrencyDisplay($order['details']['BT']->virtuemart_vendor_id);
+		$currency = VirtueMartModelVendor::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 		$this->assignRef('currency', $currency);
 
 		$_userFields = $userFieldsModel->getUserFields(

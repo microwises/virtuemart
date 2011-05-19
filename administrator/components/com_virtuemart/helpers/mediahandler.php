@@ -167,6 +167,26 @@ class VmMediaHandler {
 
     }
 
+    public function getUrl(){
+    	return $this->file_url_folder.$this->file_name.$this->file_extension;
+    }
+
+    public function getThumbUrl(){
+    	return $this->file_url_folder_thumb.$this->file_name.$this->file_extension;
+    }
+
+    public function getFullPath(){
+
+    	$rel_path = str_replace('/',DS,$this->file_url_folder);
+    	return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+    }
+
+    public function getThumbPath(){
+
+    	$rel_path = str_replace('/',DS,$this->file_url_folder);
+    	return JPATH_ROOT.DS.$rel_path.$this->file_name_thumb.'.'.$this->file_extension;
+    }
+
     /**
      * Tests if a function is an image by mime or extension
      *
@@ -434,7 +454,7 @@ class VmMediaHandler {
 		else if( $data['media_action'] == 'delete' ){
 			//TODO this is complex, we must assure that the media entry gets also deleted.
 			//$this->deleteFile($this->file_url);
-			unset($data['virtuemart_media_id']);
+			unset($data['active_media_id']);
 
 		}
 //		else{
@@ -442,7 +462,7 @@ class VmMediaHandler {
 //		}
 
 		if(empty($this->file_title) && !empty($file_name)) $this->file_title = $file_name;
-		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
+//		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
 
 		return $data;
 	}
@@ -562,7 +582,7 @@ class VmMediaHandler {
 	 */
 	private function addHiddenByType(){
 
-		$this->addHidden('virtuemart_media_id',$this->virtuemart_media_id);
+		$this->addHidden('active_media_id',$this->virtuemart_media_id);
 		$this->addHidden('option','com_virtuemart');
 
 	}
@@ -601,7 +621,7 @@ class VmMediaHandler {
 		if(empty($fileIds)) return  JText::_('COM_VIRTUEMART_NO_MEDIA_FILES').'<br />'.$html;
 		$text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		foreach($fileIds as $k=>$id){
-			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'file_ids[]',null,'virtuemart_media_id','text',$id).'<br />';
+			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'virtuemart_media_id[]',null,'virtuemart_media_id','text',$id).'<br />';
 			if(empty($k)) $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE';
 
 		}
@@ -677,7 +697,7 @@ class VmMediaHandler {
 		<input type="checkbox" class="inputbox" id="published" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 	</td>';
 		$html .= '<td rowspan = 5>';
-		$html .= JHTML::image($this->file_url_thumb, $this->file_meta.' thumbnail', 'style="overflow: auto; float: right;"');
+		$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';
 
 $html .= '</tr>';

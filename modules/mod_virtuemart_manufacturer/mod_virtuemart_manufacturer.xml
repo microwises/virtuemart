@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
-	<name>VirtueMart Manufacturers Show</name>
+	<name>MOD_VIRTUEMART_MANUFACTURER</name>
 	<creationDate>February 2008</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>cyber__fr|at|hotmail.com</authorEmail>
@@ -39,11 +39,11 @@
 			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC " />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="headerText" type="text" default=""
-			label="Header Text"
-			description="Add a Text before list of Manufacturers." />
+			label="MOD_VIRTUEMART_MANUFACTURER_HEADER_TEXT"
+			description="MOD_VIRTUEMART_MANUFACTURER_HEADER_TEXT_DESC" />
 		<param name="footerText" type="text" default=""
-			label="Footer Text"
-			description="Add a Text after list of Manufacturers." />
+			label="MOD_VIRTUEMART_MANUFACTURER_FOOTER_TEXT"
+			description="MOD_VIRTUEMART_MANUFACTURER_FOOTER_TEXT_DESC" />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0"

@@ -129,7 +129,7 @@ class VirtueMartModelWaitingList extends JModel {
 //		return True;
 //	}
 
-//	function validate_delete($d) {
+//	function validate_remove($d) {
 //		global $vmLogger;
 //
 //		if (!$d["notify_email"]) {
@@ -174,17 +174,17 @@ class VirtueMartModelWaitingList extends JModel {
 //	}
 
 	/**
-	* Should delete a category and add categories under it.
+	* Should remove a category and add categories under it.
 	*
 	* @author pablo
 	* @param $virtuemart_product_id
 	* @return
 	*/
 
-//	function delete(&$d) {
+//	function remove(&$d) {
 //		$db = new ps_DB;
 //
-//		if (!$this->validate_delete($d)) {
+//		if (!$this->validate_remove($d)) {
 //			return False;
 //		}
 //		$q = "DELETE from #__{vm}_waiting_list where notify_email='" . $d["notify_email"] . "'";

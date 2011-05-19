@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Media table class
  * The class is is used to manage the countries in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableMedias extends JTable {
+class TableMedias extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_media_id				= 0;
@@ -55,24 +57,18 @@ class TableMedias extends JTable {
 
 	var $shared = 0;
 	var $file_params	= '';
-       /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_medias', 'virtuemart_media_id', $db);
+
+		$this->setUniqueName('file_title','COM_VIRTUEMART_MEDIA_NAME_ALREADY_EXISTS');
+
+		$this->setLoggable();
+
 	}
 
 	/**
@@ -84,9 +80,9 @@ class TableMedias extends JTable {
 
 		$ok = true;
 		$notice = true;
-	    if (!$this->virtuemart_vendor_id) {
-			$this->virtuemart_vendor_id = 1; //default to mainvendor
-		}
+//	    if (!$this->virtuemart_vendor_id) {
+//			$this->virtuemart_vendor_id = 1; //default to mainvendor
+//		}
 		if(empty($this->file_title)) $this->file_title = $this->file_name ;
 
 		if(!empty($this->file_title)){
@@ -125,14 +121,18 @@ class TableMedias extends JTable {
 			$ok = false;
 		}
 
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+		if($ok){
+			return parent::check();
+		} else {
+			return false;
 		}
-     	$this->modified_on = $today;
 
-		return $ok;
 	}
 
 }

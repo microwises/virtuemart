@@ -37,7 +37,7 @@ class VirtuemartViewMedia extends JView {
 
 		$virtuemart_media_id = JRequest::getVar('virtuemart_media_id');
 		$db = JFactory::getDBO();
-		$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
+		$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 		$db->setQuery( $query );
 		$json = $db->loadObject();
 		if (isset($json->file_url)) { 

@@ -81,8 +81,8 @@ class VirtuemartViewOrders extends JView {
 
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
-		$currency = CurrencyDisplay::getCurrencyDisplay();
-		$this->assignRef('currency', $currency);
+//		$currency = CurrencyDisplay::getCurrencyDisplay();
+//		$this->assignRef('currency', $currency);
 
 		// Create a simple indexed array woth ordertatuses
 		$_orderstatuses = $this->get('OrderStatusList');

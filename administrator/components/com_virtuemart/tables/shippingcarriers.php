@@ -19,14 +19,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Shipping Carrier table class
  * The class is is used to manage the shipping carriers in the shop.
  *
  * @package	VirtueMart
- * @author RickG
+ * @author RickG, Max Milbers
  */
-class TableShippingcarriers extends JTable {
+class TableShippingcarriers extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shippingcarrier_id			= 0;
@@ -37,49 +39,52 @@ class TableShippingcarriers extends JTable {
 	/** @var int Shipping Joomla plugin I */
 	var $shipping_carrier_jplugin_id	= 0;
 	/** @var int Vendor ID */
-	var $shipping_carrier_virtuemart_vendor_id		= 0;
+	var $virtuemart_vendor_id		= 0;
 	/** @var int published boolean */
 	var $published						= 1;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
     /**
-     * @author RickG
+     * @author Max Milbers
      * @param $db A database connector object
      */
     function __construct(&$db) {
-	parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shippingcarrier_id', $db);
+		parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shippingcarrier_id', $db);
+
+		$this->setUniqueName('shipping_carrier_name','COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS');
+		$this->setObligatoryKeys('shipping_carrier_jplugin_id');
+
+		$this->setLoggable();
+
     }
 
 
-    /**
-     * Validates the shipping carrier record fields.
-     *
-     * @author RickG
-     * @return boolean True if the table buffer is contains valid data, false otherwise.
-     */
-    function check() {
-	if (!$this->shipping_carrier_name) {
-	    $this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_RECORDS_MUST_CONTAIN_CARRIER_NAME'));
-	    return false;
-	}
-
-	if (($this->shipping_carrier_name) && ($this->virtuemart_shippingcarrier_id == 0)) {
-	    $db =& JFactory::getDBO();
-
-	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';
-	    $q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';
-	    $db->setQuery($q);
-	    $rowCount = $db->loadResult();
-	    if ($rowCount > 0) {
-		$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
-		return false;
-	    }
-	}
-
-	return true;
-    }
+//    /**
+//     * Validates the shipping carrier record fields.
+//     *
+//     * @author RickG
+//     * @return boolean True if the table buffer is contains valid data, false otherwise.
+//     */
+//    function check() {
+//	if (!$this->shipping_carrier_name) {
+//	    $this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_RECORDS_MUST_CONTAIN_CARRIER_NAME'));
+//	    return false;
+//	}
+//
+//	if (($this->shipping_carrier_name) && ($this->virtuemart_shippingcarrier_id == 0)) {
+//	    $db =& JFactory::getDBO();
+//
+//	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';
+//	    $q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';
+//	    $db->setQuery($q);
+//	    $rowCount = $db->loadResult();
+//	    if ($rowCount > 0) {
+//		$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
+//		return false;
+//	    }
+//	}
+//
+//	return true;
+//    }
 
 
 

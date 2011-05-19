@@ -67,17 +67,26 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_name">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_NAME'); ?>:
 				</label>
 			</td>
 			<td>
 				<input type="text" name="category_name" id="category_name" size="60" value="<?php echo $this->category->category_name; ?>" class="inputbox" />
 			</td>
 		</tr>
+		<td class="key">
+				<label for="category_name">
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_ALIAS'); ?>:
+				</label>
+			</td>
+			<td>
+				<input type="text" name="slug" id="slug" size="60" value="<?php echo $this->category->slug; ?>" class="inputbox" />
+			</td>
+		</tr>
 		<tr>
 			<td class="key">
 				<label for="category_description">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
@@ -260,10 +269,10 @@ $mainframe = JFactory::getApplication();
 <div class="col50">
 	<div class="selectimage">
 			<?php
-//				foreach($this->category->images as $image){
-					echo $this->category->images[0]->displayFilesHandler($this->category->file_ids);
-//				}
-//				echo $this->category->images[0]->displayFileHandler();
+				//echo $this->category->images[0]->displayFilesHandler($this->category->virtuemart_media_id);
+				if(empty($this->category->images[0]->virtuemart_media_id)) $this->category->images[0]->addHidden('file_is_category_image','1');
+				if ($this->category->virtuemart_media_id) echo $this->category->images[0]->displayFilesHandler($this->category->virtuemart_media_id);
+				else echo $this->category->images[0]->displayFilesHandler();
 			?>
 	</div>
 </div>
@@ -276,35 +285,7 @@ $mainframe = JFactory::getApplication();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="controller" value="category" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<script type="text/javascript">
-function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
-	try {
-		if( !disableOnChecked ) {
-			if(elementOnChecked.checked==true) {
-				elementDisable.disabled=false;
-			}
-			else {
-				elementDisable.disabled=true;
-			}
-		}
-		else {
-			if(elementOnChecked.checked==true) {
-				elementDisable.disabled=true;
-			}
-			else {
-				elementDisable.disabled=false;
-			}
-		}
-	}
-	catch( e ) {}
-}
 
-function toggleFullURL() {
-	if( jQuery('#manufacturer_full_image_url').val().length>0) document.adminForm.manufacturer_full_image_action[1].checked=false;
-	else document.adminForm.manufacturer_full_image_action[1].checked=true;
-	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image_url, true );
-	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image, true );
-}
-</script>
 <?php AdminMenuHelper::endAdminArea(); ?>

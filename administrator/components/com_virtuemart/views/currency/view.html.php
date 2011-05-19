@@ -35,9 +35,10 @@ class VirtuemartViewCurrency extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
-                $layoutName = JRequest::getVar('layout', 'default');
+
 
 		$db = JFactory::getDBO();
 		$config =& JFactory::getConfig();
@@ -46,44 +47,19 @@ class VirtuemartViewCurrency extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
+		$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
+		$this->assignRef('viewName',$viewName); 
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$currency = $model->getCurrency(true);
 			$this->assignRef('currency',	$currency);
-			$isNew = ($currency->virtuemart_currency_id < 1);
 
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CURRENCY_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_currency_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_currency_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+			ShopFunctions::addStandardEditViewCommands();
 
-			$usermodel = $this->getModel('user', 'VirtuemartModel');
-			$usermodel->setCurrent();
-			$userDetails = $usermodel->getUser();
-			if(empty($userDetails->virtuemart_vendor_id)){
-				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
-			}
-			if(empty($currency->virtuemart_vendor_id))$currency->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
-//			$this->assignRef('virtuemart_vendor_id', $vendorCurrency);
-
-			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay($userDetails->virtuemart_vendor_id,$currency->virtuemart_currency_id,'');
-			$this->assignRef('currencyDisplay',$cd);
-
-       }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_LIST_LBL'), 'vm_currency_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+       } else {
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

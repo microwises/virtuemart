@@ -22,169 +22,52 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Category Controller
  *
  * @package    VirtueMart
  * @subpackage Category
- * @author jseros
+ * @author jseros, Max Milbers
  */
-class VirtuemartControllerCategory extends JController {
+class VirtuemartControllerCategory extends VmController {
 
-	/**
-	 * Contructor
-	 *
-	 * @access	public
-	 * @author
-	 */
 	public function __construct() {
 		parent::__construct();
 
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
+	}
 
-		$document = JFactory::getDocument();
+	public function Category(){
+
+		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view = $this->getView('category', $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Pushing default model
-		$categoryModel = $this->getModel('category');
-		if (!JError::isError($categoryModel)) {
-			$view->setModel($categoryModel, true);
+		$model = $this->getModel();
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
 		}
-	}
-
-
-	/**
-	 * Display any category view
-	 *
-	 * @author RickG, jseros
-	 */
-	public function display() {
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	public function edit()
-	{
-		JRequest::setVar('controller', 'category');
-		JRequest::setVar('view', 'category');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
 
 		parent::display();
 	}
 
-
 	/**
-	 * Handle the cancel task
+	 * We want to allow html so we need to overwrite some request data
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */
-	public function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=category');
+	function save(){
+
+		$data = JRequest::get('post');
+
+		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['category_description'] = JRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
+
+		parent::save($data);
 	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG, jseros, RolandD
-	 */
-	public function save() {
-		$categoryModel = $this->getModel('category');
-
-		if ($id = $categoryModel->store()) $msg = JText::_('COM_VIRTUEMART_CATEGORY_SAVED_SUCCESS');
-		else $msg = $categoryModel->getError();
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=category';
-
-		$this->setRedirect($redirection, $msg);
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG, jseros
-	 */
-	public function remove()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$mainframe = JFactory::getApplication();
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
-			return;
-		}
-
-		$categoryModel = $this->getModel('category');
-
-		if (!$categoryModel->delete($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_DELETED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, jseros
-	 */
-	public function publish()
-	{
-		$categoryModel = $this->getModel('category');
-		if (!$categoryModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_PUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, jseros
-	 */
-	public function unpublish()
-	{
-		$categoryModel = $this->getModel('category');
-		if (!$categoryModel->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_UNPUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
-	}
-
-
 
 	/**
 	 * Handle the shared/unshared action

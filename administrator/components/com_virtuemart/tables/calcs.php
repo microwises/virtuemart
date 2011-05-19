@@ -17,6 +17,7 @@
 */
 defined('_JEXEC') or die();
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 /**
  * Calculator table class
  * The class is is used to manage the calculation in the shop.
@@ -24,7 +25,7 @@ defined('_JEXEC') or die();
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableCalcs extends JTable
+class TableCalcs extends VmTable
 {
 	/** @var int Primary key */
 	var $virtuemart_calc_id					= 0;
@@ -43,14 +44,6 @@ class TableCalcs extends JTable
 	/** @var string Currency used in the calculation */
 	var $calc_currency				= '';
 
-	/** @var array affecting Categories of the rule */
-	//var $calc_categories			= array();
-	/** @var array affecting Shoppergroups of the rule */
-	//var $virtuemart_shoppergroup_ids		= array();
-	/** @var array affecting Countries of the rule */
-	//var $calc_countries				= array();
-	/** @var array affecting States of the rule */
-	//var $virtuemart_state_ids				= array();
 	/** @var string Visible for shoppers */
 	var $calc_shopper_published		= 0;
 	/** @var string Visible for Vendors */
@@ -71,15 +64,9 @@ class TableCalcs extends JTable
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */
 	var $ordering	=0;
-        var $published 		        = 0;
-        var $created_on = null;
-        var $created_by = 0;
-        var $modified_on = null;
-        var $modified_by = 0;
-             /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
+    var $published 		        = 0;
+
 
 	/**
 	 * @author Max Milbers
@@ -87,53 +74,13 @@ class TableCalcs extends JTable
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calcs', 'virtuemart_calc_id', $db);
+
+		$this->setUniqueName('calc_name');
+		$this->setObligatoryKeys('calc_kind');
+		$this->setLoggable();
+
 	}
 
-
-	/**
-	 * Validates the calculation rule record fields.
-	 *
-	 * @author Max Milbers
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check()
-	{
-        if (!$this->virtuemart_vendor_id) {
-			$this->virtuemart_vendor_id = 1; //default to mainvendor
-		}
-
-        if (!$this->calc_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_RULES_NAME'));
-			return false;
-		}
-
-        if (!$this->calc_kind) {
-			$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULES_RECORDS_MUST_CONTAIN_CALCULATION_KIND'));
-			return false;
-		}
-
-		if (($this->calc_name) ) {
-		    $db = JFactory::getDBO();
-
-			$q = 'SELECT `virtuemart_calc_id` FROM `#__virtuemart_calcs` ';
-			$q .= 'WHERE `calc_name`="' .  $this->calc_name . '"';
-            $db->setQuery($q);
-		    $virtuemart_calc_id = $db->loadResult();
-			if (!empty($virtuemart_calc_id) && $virtuemart_calc_id!=$this->virtuemart_calc_id) {
-				$this->setError(JText::_('COM_VIRTUEMART_CALCULATION_RULE_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-
-		return true;
-	}
 
 }
 // pure php no closing tag

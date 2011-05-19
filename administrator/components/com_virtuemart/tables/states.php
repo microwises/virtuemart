@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * State table class
  * The class is is used to manage the states in a country
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		VirtueMart
  * @author RickG
  */
-class TableStates extends JTable {
+class TableStates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_state_id				= 0;
@@ -46,11 +48,18 @@ class TableStates extends JTable {
 
 	/**
 	 * @author RickG
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_states', 'virtuemart_state_id', $db);
+
+		$this->setUniqueName('state_name');
+		$this->setObligatoryKeys('state_2_code');
+		$this->setObligatoryKeys('state_3_code');
+
+		$this->setLoggable();
 	}
 
 
@@ -60,36 +69,36 @@ class TableStates extends JTable {
 	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check()
-	{
-        if (!$this->state_name) {
-			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_STATE_NAME'));
-			return false;
-		}
-		if (!$this->state_2_code) {
-			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
-			return false;
-		}
-		if (!$this->state_3_code) {
-			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
-			return false;
-		}
-
-		if (($this->state_name) && ($this->virtuemart_state_id == 0)) {
-		    $db =& JFactory::getDBO();
-
-			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';
-			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';
-            $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-			if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_STATE_NAME_ALREADY_EXISTS'));
-				return false;
-			}
-		}
-
-		return true;
-	}
+//	function check()
+//	{
+//        if (!$this->state_name) {
+//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_STATE_NAME'));
+//			return false;
+//		}
+//		if (!$this->state_2_code) {
+//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
+//			return false;
+//		}
+//		if (!$this->state_3_code) {
+//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
+//			return false;
+//		}
+//
+//		if (($this->state_name) && ($this->virtuemart_state_id == 0)) {
+//		    $db =& JFactory::getDBO();
+//
+//			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';
+//			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';
+//            $db->setQuery($q);
+//		    $rowCount = $db->loadResult();
+//			if ($rowCount > 0) {
+//				$this->setError(JText::_('COM_VIRTUEMART_STATE_NAME_ALREADY_EXISTS'));
+//				return false;
+//			}
+//		}
+//
+//		return true;
+//	}
 
 
 

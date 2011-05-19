@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Credit Card Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage CreditCard
  * @author RickG
  */
-class VirtuemartControllerCreditcard extends JController {
+class VirtuemartControllerCreditcard extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,130 +43,20 @@ class VirtuemartControllerCreditcard extends JController {
 	function __construct() {
 		parent::__construct();
 
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask( 'apply',  'save' );
+	}
+
+	function Creditcard() {
 
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('creditcard', $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('creditcard');
+		$model =& $this->getModel($this->_cname);
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-	}
-
-	/**
-	 * Display the credit card view
-	 *
-	 * @author RickG
-	 */
-	function display() {
 		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-//		JRequest::setVar('controller', 'creditcard');
-		JRequest::setVar('view', 'creditcard');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard');
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 * @author RickG
-	 */
-	function save()
-	{
-		$model =& $this->getModel( 'creditcard' );
-
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_CREDIT_CARD_SAVED');
-		} else {
-			$msg = $model->getError();
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=creditcard&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=creditcard';
-
-		$this->setRedirect($redirection, $msg);
-
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
-	 */
-	function remove()
-	{
-		$model = $this->getModel('creditcard');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CREDIT_CARDS_DELETED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function publish()
-	{
-		$model = $this->getModel('creditcard');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_PUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG
-	 */
-	function unpublish()
-	{
-		$model = $this->getModel('creditcard');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CREDIT_CARDS_COULD_NOT_BE_UNPUBLISHED');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
 	}
 }
 // pure php no closing tag

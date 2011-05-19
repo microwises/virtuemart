@@ -59,5 +59,6 @@ echo $pane->endPane();
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="config" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

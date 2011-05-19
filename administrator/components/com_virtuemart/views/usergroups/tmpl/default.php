@@ -32,16 +32,16 @@
 
 */
 
- 
+
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
 //if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
-      	
+
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
 		<table class="adminlist">
@@ -49,7 +49,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>		            
+			</th>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->usergroups); ?>);" />
 			</th>
@@ -65,16 +65,16 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 
 		for ($i=0, $n=count( $this->usergroups ); $i < $n; $i++) {
-			
+
 			$row = $this->usergroups[$i];
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
 //			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=usergroups&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=usergroups&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
 				<td width="10" align="right">
 					<?php echo $row->virtuemart_shoppergroup_id; ?>
-				</td>            
+				</td>
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
@@ -83,7 +83,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<td>
 					<?php echo JText::_($row->group_level); ?>
-				</td>       																														
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -95,17 +95,17 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>		
-	</table>	
+		</tfoot>
+	</table>
 </div>
-	        
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="usergroups" />
-	<input type="hidden" name="view" value="usergroups" />	
+	<input type="hidden" name="view" value="usergroups" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
-            
-            
-<?php AdminMenuHelper::endAdminArea(); ?> 
+
+
+<?php AdminMenuHelper::endAdminArea(); ?>

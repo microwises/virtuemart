@@ -22,56 +22,27 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model for VirtueMart Products
  *
  * @package VirtueMart
  * @author RolandD
  */
-class VirtueMartModelRatings extends JModel {
+class VirtueMartModelRatings extends VmModel {
 
-	var $_total;
-	var $_pagination;
+	var $_productBought = 0;
 
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
 	function __construct() {
 		parent::__construct();
-
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-
-		// In case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+		$this->setMainTable('product_ratings');
 	}
-
-	/**
-	 * Loads the pagination
-	 */
-    public function getPagination() {
-		if ($this->_pagination == null) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-		}
-		return $this->_pagination;
-	}
-
-	/**
-	 * Gets the total number of products
-	 */
-	private function getTotal() {
-    	if (empty($this->_total)) {
-    		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) ".$this->getRatingsListQuery().$this->getRatingsFilter();
-			$db->setQuery($q);
-			$this->_total = $db->loadResult();
-        }
-
-        return $this->_total;
-    }
 
     /**
      * Select the products to list on the product list page
@@ -81,19 +52,22 @@ class VirtueMartModelRatings extends JModel {
      	/* Pagination */
      	$this->getPagination();
 
-     	/* Build the query */
-     	$q = "SELECT 	`virtuemart_product_review_id`,
-     			#__virtuemart_products.`virtuemart_product_id`,
-     			#__virtuemart_products.`product_parent_id`,
-     			`product_name`,
-     			`username`,
-     			`comment`,
-     			user_rating,
-     			time,
-     			#__virtuemart_product_reviews.userid,
-			#__virtuemart_product_reviews.published
-     			".$this->getRatingsListQuery().$this->getRatingsFilter();
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     	$q = 'SELECT * FROM `#__virtuemart_product_ratings` AS `pr` LEFT JOIN `#__virtuemart_products` AS `p`
+     			ON `pr`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ORDER BY `pr`.`modified_on` ';
+
+//     	/* Build the query */
+//     	$q = "SELECT 	`virtuemart_product_review_id`,
+//     			#__virtuemart_products.`virtuemart_product_id`,
+//     			#__virtuemart_products.`product_parent_id`,
+//     			`product_name`,
+//     			`username`,
+//     			`comment`,
+//     			user_rating,
+//     			created_on,
+//     			#__virtuemart_product_reviews.userid,
+//			#__virtuemart_product_reviews.published
+//     			".$this->getRatingsListQuery().$this->getRatingsFilter();
+     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);dump($db,'my db');
      	return $db->loadObjectList();
     }
 
@@ -144,7 +118,7 @@ class VirtueMartModelRatings extends JModel {
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
 		/* First copy the product in the product table */
-		$ratings_data = $this->getTable('ratings');
+		$ratings_data = $this->getTable('product_ratings');
 
 		/* Load the rating */
 		if ($cids) $ratings_data->load($cids[0]);
@@ -214,53 +188,82 @@ class VirtueMartModelRatings extends JModel {
     * Save a rating
     * @author  Max Milbers
     */
-    public function saveRating() {
+    public function saveRating($data) {
 
-		$ratings_data = $this->getTable('ratings');
 
-		/* Get the posted data */
-		$data = JRequest::get('post');
-
-		/* Check if we have a timestamp */
-		/* if ($data['time'] == 0) $data['time'] = time(); */
-		/* Timestamps are always kept up to the latest modification */
-		$data['time'] = time();
-		$user =& JFactory::getUser();
-		if(empty($user->id)) {
-			$this->setError(JText::_('COM_VIRTUEMART_REVIEW_LOGIN'));
-			return false;
-		}
-		//Check user_rating  
+		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		if ($data['user_rating'] < 0 ) $data['user_rating'] = 0 ;
-		if ($data['user_rating'] > $maxrating ) $data['user_rating'] = $maxrating ;
-		if ( !$data['virtuemart_product_review_id'] )  $data['userid'] = $user->id;
-		$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
-		//set to defaut value not used (prevent hack)
-		$data['review_ok'] = 0 ; 
-		$data['review_votes'] = 0 ;
-		
+		if (empty($data['rate']) || $data['rate'] < 0 ) $data['rate'] = 0 ;
+		if ($data['rate'] > $maxrating ) $data['rate'] = $maxrating ;
 
-		/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
-		if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
-		else $data['published'] = 0;
 
-    	// Bind the form fields to the table
-		if (!$ratings_data->bind($data)) {
-			$this->setError($ratings_data->getError());
-			return false;
+		$rating = $this->getTable('product_ratings');
+		$rating->load($data['virtuemart_product_id']);
+
+		if(!empty($rating->rates)){
+			$data['rates'] = $rating->rates + $data['rate'];
+		} else {
+			$data['rates'] = $data['rate'];
 		}
 
-		// Make sure the record is valid
-		if (!$ratings_data->check()) {
-			$this->setError($ratings_data->getError());
-			return false;
+		if(!empty($rating->ratingcount)){
+			$data['ratingcount'] = $rating->ratingcount+1;	// ++ does NOT work !
+		} else {
+			$data['ratingcount'] = 1;
 		}
 
-		// Save the record to the database
-		if (!$ratings_data->store()) {
-			$this->setError($ratings_data->getError());
-			return false;
+		$data['rating'] = $data['rates']/$data['ratingcount'];
+
+		if(empty($rating->virtuemart_user_id)){
+			$user = JFactory::getUser();
+			$data['virtuemart_user_id'] = $user->id;
+		}
+
+        if($data = $rating->bindChecknStore($data)){
+
+		} else {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($table->getError());
+		}
+
+		if(!empty($data['comment'])){
+			$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
+			//set to defaut value not used (prevent hack)
+			$data['review_ok'] = 0;
+			$data['review_votes'] = 0;
+
+			/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
+			if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
+			else $data['published'] = 0;
+
+	    	$review = $this->getTable('product_reviews');
+			$review->load($data['virtuemart_product_id']);
+
+			if(!empty($review->review_rates)){
+				$data['review_rates'] = $review->review_rates + $data['review_rate'];
+			} else {
+				$data['review_rates'] = $data['review_rate'];
+			}
+
+			if(!empty($review->review_ratingcount)){
+				$data['review_ratingcount'] = $review->review_ratingcount+1;	// ++ does NOT work !
+			} else {
+				$data['review_ratingcount'] = 1;
+			}
+
+			$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
+
+			if(empty($review->virtuemart_user_id)){
+				$user = JFactory::getUser();
+				$data['virtuemart_user_id'] = $user->id;
+			}
+
+	        if($data = $review->bindChecknStore($data)){
+
+			} else {
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($review->getError());
+			}
 		}
 
 		return true;
@@ -281,6 +284,54 @@ class VirtueMartModelRatings extends JModel {
 		$db->setQuery($q);
 		$reviews = $db->loadResult();
 		return $reviews;
+	}
+
+	public function showReview($product_id){
+
+		return $this->show($product_id, VmConfig::get('showReviewFor',1));
+	}
+
+	public function showRating($product_id){
+
+		return $this->show($product_id, VmConfig::get('showRatingFor',1));
+	}
+
+	private function show($product_id, $show){
+
+		//dont show
+		if($show == 0){
+			return false;
+		}
+		//show all
+		else if ($show == 1){
+			return true;
+		}
+		//show only registered
+		else if ($show == 2){
+			$user = JFactory::getUser();
+			return !empty($user->id);
+		}
+		//show only registered && who bought the product
+		else if ($show == 3){
+			if(!empty($this->_productBought)) return true;
+
+			$user = JFactory::getUser();
+			if(empty($product_id)) return false;
+
+			$db = JFactory::getDBO();
+			$q = 'SELECT COUNT(*) as total FROM `#__virtuemart_orders` AS o LEFT JOIN `#__virtuemart_order_items` AS oi ';
+			$q .= 'ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id` ';
+			$q .= 'WHERE o.virtuemart_user_id = "'.$user->id.'" AND oi.virtuemart_product_id = "'.$product_id.'" ';
+
+			$db->setQuery($q);
+			$count = $db->loadResult();
+			if($count){
+				$this->_productBought = true;
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
 // pure php no closing tag

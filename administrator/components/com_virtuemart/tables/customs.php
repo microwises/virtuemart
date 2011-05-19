@@ -19,6 +19,8 @@
 // Check to ensure this custom is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Custom table class
  * The class is to manage description of custom fields in the shop.
@@ -26,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Patrick Kohl
  * @package		VirtueMart
  */
-class TableCustoms extends JTable {
+class TableCustoms extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_custom_id		= 0;
@@ -60,19 +62,7 @@ class TableCustoms extends JTable {
 
 	/** @var int custom published or not */
 	var $published		= 0;
-/** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
 
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
 
 	/**
 	 * @author  Patrick Kohl
@@ -80,7 +70,13 @@ class TableCustoms extends JTable {
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customs', 'virtuemart_custom_id', $db);
+
+		$this->setUniqueName('custom_title');
+		$this->setObligatoryKeys('field_type');
+
+		$this->setLoggable();
 	}
+
 
 	/**
 	 *
@@ -89,21 +85,14 @@ class TableCustoms extends JTable {
 	 */
 	function check(){
 
-		//TODO check for same title?
-		if(empty($this->custom_title)) {
-			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_TITLE'));
-			return false ;
-		}
-		if(empty($this->field_type)) {
-			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_MUST_HAVE_A_FIELD_TYPE'));
-			return false ;
-		}
 		if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
 			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
 			return false ;
 		}
-		return true;
+
+		return parent::check();
 	}
+
 	/*
 	* field from 3 table have to be checked at delete
 	* #__vm_custom_field,#__virtuemart_customs,#__virtuemart_product_customfields

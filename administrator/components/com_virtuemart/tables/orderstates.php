@@ -19,14 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Order status table class
  * The class is is used to manage the order statuses in the shop.
  *
  * @package	VirtueMart
  * @author Oscar van Eijk
+ * @author Max Milbers
  */
-class TableOrderstates extends JTable {
+class TableOrderstates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_orderstate_id			= 0;
@@ -43,18 +46,7 @@ class TableOrderstates extends JTable {
 	var $ordering					= 0;
 	 /** @var int published or unpublished */
 	var $published = 1;
-	 /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 
 	/**
 	 * @param $db Class constructor; connect to the database
@@ -62,6 +54,12 @@ class TableOrderstates extends JTable {
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_orderstates', 'virtuemart_orderstate_id', $db);
+
+//		$this->setUniqueName('calc_name');
+		$this->setObligatoryKeys('order_status_code');
+		$this->setObligatoryKeys('order_status_name');
+		$this->setLoggable();
+
 	}
 
 	/**
@@ -71,14 +69,14 @@ class TableOrderstates extends JTable {
 	 */
 	function check()
 	{
-        if (empty($this->order_status_code)) {
-			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
-			return false;
-		}
-		if (empty($this->order_status_name)) {
-			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
-			return false;
-		}
+//        if (empty($this->order_status_code)) {
+//			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
+//			return false;
+//		}
+//		if (empty($this->order_status_name)) {
+//			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
+//			return false;
+//		}
 
 		$db =& JFactory::getDBO();
 		$q = 'SELECT count(*),virtuemart_orderstate_id FROM `#__virtuemart_orderstates` ';
@@ -95,7 +93,7 @@ class TableOrderstates extends JTable {
 			}
 		}
 
-		return true;
+		return parent::check();
 	}
 }
 

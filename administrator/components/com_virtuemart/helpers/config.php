@@ -212,6 +212,14 @@ class VmConfig
 							jQuery('#vm_display_image').attr('src', datas.file_url);
 							jQuery('#vm_display_image').attr('alt', datas.file_title);
 							jQuery('#file_title').html(datas.file_title);
+							jQuery('.adminform [name=file_title]').val(datas.file_title);
+							jQuery('.adminform [name=file_description]').val(datas.file_description);
+							jQuery('.adminform [name=file_meta]').val(datas.file_meta);
+							jQuery('.adminform [name=file_url]').val(datas.file_url);
+							jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
+							jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
+						if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_url_thumb); }
+						else { jQuery('#vm_thumb_image').attr('src','');}
 						} else jQuery('#file_title').html(datas.msg);
 					});
 					//if (jQuery('.selectimage select:eq(1)').length) 

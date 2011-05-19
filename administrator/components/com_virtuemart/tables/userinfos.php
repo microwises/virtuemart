@@ -19,14 +19,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+
 /**
  * User Info table class
  * The class is is used to manage the user_info table.
  *
  * @package	VirtueMart
- * @author 	RickG, RolandD
+ * @author 	RickG, RolandD, Max Milbers
  */
-class TableUserinfos extends JTable {
+class TableUserinfos extends VmTableData {
 
 
 	/** @var int Primary key */
@@ -34,10 +36,12 @@ class TableUserinfos extends JTable {
 
 	/** @var int hidden userkey */
 	var $virtuemart_userinfo_id = 0;
+	var $virtuemart_state_id = '';
+	var $virtuemart_country_id = '';
 
 //	var $user_is_vendor = 0;
-	var $address_type = '';
-	var $address_type_name;
+	var $address_type = null;
+	var $address_type_name = null;
 	var $company = '';
 	var $title ='';
  	var $last_name = '';
@@ -49,26 +53,14 @@ class TableUserinfos extends JTable {
 	var $address_1 = '';
 	var $address_2 = '';
 	var $city = '';
-	var $virtuemart_state_id = '';
-	var $virtuemart_country_id = '';
+
 	var $zip = '';
 	var $extra_field_1 = '';
 	var $extra_field_2 = '';
 	var $extra_field_3 = '';
 	var $extra_field_4 = '';
 	var $extra_field_5 = '';
-           /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
+
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -77,6 +69,11 @@ class TableUserinfos extends JTable {
 		/* Make sure the custom fields are added */
 		self::addUserFields();
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
+		$this->setPrimaryKey('virtuemart_userinfo_id');
+		$this->setObligatoryKeys('address_type');
+//		$this->setObligatoryKeys('address_type_name');
+
+		$this->setLoggable();
 	}
 
 	/**
@@ -142,18 +139,18 @@ class TableUserinfos extends JTable {
 	* Stores/Updates a tax rate
 	*
 	*/
-	public function store() {
-		$k = $this->check();
-
-		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-
-		if (!$ret){
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		else return true;
-	}
+//	public function store() {
+//		$k = $this->check();
+//
+//		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+//		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+//
+//		if (!$ret){
+//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			return false;
+//		}
+//		else return true;
+//	}
 
 	/**
 	* Validates the user info record fields.
@@ -163,15 +160,10 @@ class TableUserinfos extends JTable {
 	*/
 	public function check(){
 
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
 
 		if (!empty($this->virtuemart_userinfo_id)) {
-			return true;
+			dump($this->virtuemart_userinfo_id,'not empty');
+			return parent::check();
 		}
 
 		/* Check if a record exists */
@@ -182,14 +174,14 @@ class TableUserinfos extends JTable {
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
-
+//		dump($q, 'query');dump($total, '$total');
 		if (count($total) > 0) {
 			$this->virtuemart_userinfo_id = $total[0];
-			return true;
+			return parent::check();
 		} else {
 			$this->virtuemart_userinfo_id = md5(uniqid($this->virtuemart_user_id));
-			$this->created_on = time();
-			return false;
+//			$this->created_on = time();
+			return parent::check();
 		}
 
 

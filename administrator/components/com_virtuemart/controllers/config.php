@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Configuration Controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Config
  * @author RickG
  */
-class VirtuemartControllerConfig extends JController {
+class VirtuemartControllerConfig extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,6 +43,7 @@ class VirtuemartControllerConfig extends JController {
 	function __construct() {
 		parent::__construct();
 
+//		$this->setMainLangKey('CONFIG');
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('config', $viewType);
@@ -55,52 +59,19 @@ class VirtuemartControllerConfig extends JController {
 		}
 	}
 
-	/**
-	 * Display the config view
-	 *
-	 * @author RickG
-	 */
-	function display() {
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author RickG
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'config');
-		JRequest::setVar('view', 'config');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author RickG
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart', $msg);
-	}
-
 
 	/**
 	 * Handle the save task
 	 *
 	 * @author RickG
 	 */
-	function save()
-	{
+	function save(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		$model = $this->getModel('config');
+
 		$data = JRequest::get('post');
+		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
 
 		if ($model->store($data)) {
 			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
@@ -111,7 +82,15 @@ class VirtuemartControllerConfig extends JController {
 			$msg = $model->getError();
 		}
 
-		$this->setRedirect('index.php?option=com_virtuemart', $msg);
+		$redir = 'index.php?option=com_virtuemart';
+		if(JRequest::getCmd('task') == 'apply'){
+			$redir = $this->redirectPath;
+//			$redir .= '&task=edit&'.$this->_cidName.'[]='.$_id;
+		}
+
+		$this->setRedirect($redir, $msg);
+
+
 	}
 
 
@@ -120,40 +99,37 @@ class VirtuemartControllerConfig extends JController {
 	 *
 	 * @author RickG
 	 */
-	function apply()
-	{
-		$model = $this->getModel('config');
-		$data = JRequest::get('post');
-
-		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-			// Load the newly saved values into the session.
-			VmConfig::getInstance();
-		}
-		else {
-			$msg = JText::_($model->getError());
-		}
-
-		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
-	}
+//	function apply(){
+//
+//		JRequest::checkToken() or jexit( 'Invalid Token' );
+//		$model = $this->getModel('config');
+//
+//		$data = JRequest::get('post');
+//		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
+//
+//		if ($model->store($data)) {
+//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+//			// Load the newly saved values into the session.
+//			VmConfig::getInstance();
+//		}
+//		else {
+//			$msg = JText::_($model->getError());
+//		}
+//
+//		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
+//	}
 
 
 	/**
-	 * Handle the remove task
-	 *
-	 * @author RickG
+	 * Overwrite the remove task
+	 * Removing config is forbidden.
+	 * @author Max Milbers
 	 */
-	function remove()
-	{
-		$model = $this->getModel('config');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CONFIGS_DELETED');
-		}
+	function remove(){
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=config', $msg);
+		$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
+
+		$this->setRedirect( $this->redirectPath , $msg);
 	}
 }
 

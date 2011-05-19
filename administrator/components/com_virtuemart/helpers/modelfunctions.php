@@ -155,28 +155,28 @@ class modelfunctions{
 		return true;
     }
 
-	/**
-	 * toggle (0/1) a unique row
-	 * @author Patrick Kohl
-	 * @param $tablename the selected table
-	 * @param $field  the field to toggle
-	 * @param $postName the name of id Post  (same as in table Class constructor)
-	 */
-
-	function toggle($tablename, $field, $postName  ) {
-
-		$table =& $this->getTable($tablename);
-		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
-		// load the row
-		$table->load( (int)$ids[0] );
-		if ($table->$field ==0) $table->$field = 1 ;
-		else $table->$field = 0;
-		if (!$table->store()) {
-				JError::raiseError(500, $row->getError() );
-			return false;
-		}
-		return true;
-    }
+//	/**
+//	 * toggle (0/1) a unique row
+//	 * @author Patrick Kohl
+//	 * @param string $tablename the selected table
+//	 * @param string $field the field to toggle
+//	 * @param string $postName the name of id Post  (same as in table Class constructor)
+//	 */
+//
+//	function toggle($tablename, $field, $postName  ) {
+//
+//		$table =& $this->getTable($tablename);
+//		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
+//		// load the row
+//		$table->load( (int)$ids[0] );
+//		if ($table->$field ==0) $table->$field = 1 ;
+//		else $table->$field = 0;
+//		if (!$table->store()) {
+//				JError::raiseError(500, $row->getError() );
+//			return false;
+//		}
+//		return true;
+//    }
 
     /**
 	 * Loads a row from the database and binds the fields to the object properties

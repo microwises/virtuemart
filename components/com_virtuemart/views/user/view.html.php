@@ -76,10 +76,6 @@ class VirtuemartViewUser extends JView {
 		$this->_currentUser =& JFactory::getUser();
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 
-		//the uid is the id of the user, we wanna edit.
-		//This is nonsene, because the virtuemart_user_id is handled in the model, $this->_uid is replaced now with $this->_model->_id
-//		$this->_uid = JRequest::getVar('cid', $this->_cuid);
-
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
 		$this->_userDetails = $this->_model->getUser();
@@ -88,7 +84,7 @@ class VirtuemartViewUser extends JView {
 		$userFields = $this->setUserFieldsForView($layoutName);
 
 		if($layoutName=='edit'){
-			if($this->_model->_id==0 && $this->_cuid==0){
+			if($this->_model->getId()==0 && $this->_cuid==0){
 				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
 			} else {
 				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
@@ -259,17 +255,17 @@ class VirtuemartViewUser extends JView {
 		// Check for existing orders for this user
 		$orders = $this->getModel('orders');
 
-		if ($this->_model->_id == 0) {
+		if ($this->_model->getId() == 0) {
 			// getOrdersList() returns all orders when no userID is set (admin function),
 			// so explicetly define an empty array when not logged in.
 			$this->_orderList = array();
 		} else {
-			$this->_orderList = $orders->getOrdersList($this->_model->_id, true);
+			$this->_orderList = $orders->getOrdersList($this->_model->getId(), true);
 
 			if(empty($this->currency)){
 				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
-				$currency = CurrencyDisplay::getCurrencyDisplay();
+				$currency = CurrencyDisplay::getInstance();
 				$this->assignRef('currency', $currency);
 			}
 		}
@@ -287,7 +283,7 @@ class VirtuemartViewUser extends JView {
 	function generateStAddressList (){
 
 		// Shipping address(es)
-		$_addressList = $this->_model->getUserAddressList($this->_model->_id , 'ST');
+		$_addressList = $this->_model->getUserAddressList($this->_model->getId() , 'ST');
 		if (($_c = count($_addressList)) == 0) {
 			$this->_lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 		} else {
@@ -326,7 +322,7 @@ class VirtuemartViewUser extends JView {
 
 		if(!empty($_shipto_id)){
 			// Contains 0 for new, otherwise a virtuemart_userinfo_id
-			$_shipto = $this->_model->getUserAddress($this->_model->_id, $_shipto_id, 'ST');
+			$_shipto = $this->_model->getUserAddress($this->_model->getId(), $_shipto_id, 'ST');
 			$this->_openTab = 3;
 
 //			if ($_shipto_id === 0) {
@@ -362,7 +358,7 @@ class VirtuemartViewUser extends JView {
 		// Shopper info
 		if (!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
 
-		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->_id);
+		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->getId());
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -431,17 +427,17 @@ class VirtuemartViewUser extends JView {
 		}
 
 		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
-		&& ($this->_model->_id != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
+		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
 		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'JYES', 'JNO');
 		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'JYES', 'JNO');
 
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
-		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->_id);
+		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->getId());
 
 		//TODO I do not understand for what we have that by Max.
-		if ($this->_model->_id < 1) {
+		if ($this->_model->getId() < 1) {
 			$this->_lists['register_new'] = 1;
 		} else {
 			$this->_lists['register_new'] = 0;
@@ -455,18 +451,18 @@ class VirtuemartViewUser extends JView {
 		// If the current user is a vendor, load the store data
 //		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 		if ($this->_userDetails->user_is_vendor) {
-			$this->loadHelper('currencydisplay');
+//			$this->loadHelper('currencydisplay');
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
 //			if (count($this->_orderList) > 0) {
 			//Why is this here? should be set for vendors AND shoppers with orders
-			if(empty($this->currency)){
-				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-
-				$this->currency = CurrencyDisplay::getCurrencyDisplay();;
-				$this->assignRef('currency', $this->currency);
-			}
+//			if(empty($this->currency)){
+//				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+//
+//				$this->currency = CurrencyDisplay::getCurrencyDisplay();;
+//				$this->assignRef('currency', $this->currency);
+//			}
 
 			$vendorModel = $this->getModel('vendor');
 			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
@@ -474,18 +470,18 @@ class VirtuemartViewUser extends JView {
 			$vendorModel->addImagesToVendor($vendor);
 			$this->assignRef('vendor', $vendor);
 
-			$currencyModel = $this->getModel('currency');
-			$_currencies = $currencyModel->getCurrencies();
-			$this->assignRef('currencies', $_currencies);
+//			$currencyModel = $this->getModel('currency');
+//			$_currencies = $currencyModel->getCurrencies();
+//			$this->assignRef('currencies', $_currencies);
 
 		}
 
-		if(empty($this->currency)){
-			if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-
-			$this->currency = CurrencyDisplay::getCurrencyDisplay();;
-			$this->assignRef('currency', $this->currency);
-		}
+//		if(empty($this->currency)){
+//			if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+//
+////			$this->currency = CurrencyDisplay::getCurrencyDisplay();;
+////			$this->assignRef('currency', $this->currency);
+//		}
 
 	}
 

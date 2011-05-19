@@ -19,14 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+
 /**
  * Vendor table class
  * The class is is used to manage the vendors in the shop.
  *
  * @package		VirtueMart
  * @author RickG
+ * @author Max Milbers
  */
-class TableVendors extends JTable {
+class TableVendors extends VmTableData {
 
     /** @var int Primary key */
     var $virtuemart_vendor_id			= 0;
@@ -41,10 +44,6 @@ class TableVendors extends JTable {
 
     /** @var varchar Currency */
     var $vendor_currency	  		= '';
-    /** @var int Vendor created date */
-    var $created_on	 	 				= '';
-    /** @var int Vendor modified date */
-    var $modified_on				  		= '';
     /** @var varchar Path to vendor images */
     var $vendor_image_path   		= '';
     /** @var text Vendor terms of service */
@@ -63,15 +62,18 @@ class TableVendors extends JTable {
     var $vendor_address_format		= '';
     /** @var varchar Vendor date format */
     var $vendor_date_format			= '';
-              /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0; /**
-     * @author RickG
+
+    /* @author RickG, Max Milbers
      * @param $db A database connector object
      */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
+		$this->setPrimaryKey('virtuemart_vendor_id');
+		$this->setUniqueName('vendor_name');
+//		$this->setObligatoryKeys('country_2_code');
+//		$this->setObligatoryKeys('country_3_code');
+
+		$this->setLoggable();
     }
 
 
@@ -81,29 +83,29 @@ class TableVendors extends JTable {
      * @author RickG
      * @return boolean True if the table buffer is contains valid data, false otherwise.
      */
-    function check() {
-		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
-		    $db = JFactory::getDBO();
-
-		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
-		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
-		    $db->setQuery($q);
-		    $rowCount = $db->loadResult();
-		    if ($rowCount > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS'));
-				return false;
-		    }
-		}
-
-		$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		if(empty($this->created_on)){
-			$this->created_on = $today;
-		}
-     	$this->modified_on = $today;
-
-		return true;
-    }
+//    function check() {
+//		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
+//		    $db = JFactory::getDBO();
+//
+//		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
+//		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
+//		    $db->setQuery($q);
+//		    $rowCount = $db->loadResult();
+//		    if ($rowCount > 0) {
+//				$this->setError(JText::_('COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS'));
+//				return false;
+//		    }
+//		}
+//
+//		$date = JFactory::getDate();
+//		$today = $date->toMySQL();
+//		if(empty($this->created_on)){
+//			$this->created_on = $today;
+//		}
+//     	$this->modified_on = $today;
+//
+//		return true;
+//    }
 
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even
@@ -113,27 +115,27 @@ class TableVendors extends JTable {
 	 * @author Max Milbers
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
-	public function store()
-	{
-		$_qry = 'SELECT virtuemart_vendor_id '
-				. 'FROM #__virtuemart_vendors '
-				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
-		;
-		$this->_db->setQuery($_qry);
-		$_count = $this->_db->loadResultArray();
-
-		if (count($_count) > 0) {
-			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-		} else {
-			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-		}
-
-		if (!$returnCode){
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		else return true;
-	}
+//	public function store()
+//	{
+//		$_qry = 'SELECT virtuemart_vendor_id '
+//				. 'FROM #__virtuemart_vendors '
+//				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
+//		;
+//		$this->_db->setQuery($_qry);
+//		$_count = $this->_db->loadResultArray();
+//
+//		if (count($_count) > 0) {
+//			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+//		} else {
+//			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+//		}
+//
+//		if (!$returnCode){
+//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			return false;
+//		}
+//		else return true;
+//	}
 }
 
 //pure php no closing tag

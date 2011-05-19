@@ -25,7 +25,7 @@ AdminMenuHelper::startAdminArea();
 
 <form action="index.php" method="post" name="adminForm">
     <div id="editcell">
-    <div><?php echo JHTML::_('link','index.php?option=com_virtuemart&controller=country&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
+    <div><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=country&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
 	<table class="adminlist">
 	    <thead>
 		<tr>
@@ -57,7 +57,7 @@ AdminMenuHelper::startAdminArea();
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_state_id);
 		$published = JHTML::_('grid.published', $row, $i);
-		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=state&task=edit&virtuemart_state_id=' . $row->virtuemart_state_id);
+		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id=' . $row->virtuemart_state_id);
 
 		?>
 	    <tr class="<?php echo "row$k"; ?>">

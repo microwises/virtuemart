@@ -22,63 +22,49 @@ defined('_JEXEC') or die('Restricted access');
 // Load the model framework
 jimport( 'joomla.application.component.model');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shipping zone
  *
  * @package	VirtueMart
  * @subpackage Shipping
- * @author RickG
+ * @author RickG, Max Milbers
  */
-class VirtueMartModelWorldzones extends JModel {
-
-   /**
-    * Shipping Zone Id
-    *
-    * @var $_id;
-    */
-    var $_id;
-
-    /**
-     * Zone data record
-     *
-     * @var object;
-     */
-    var $_data;
+class VirtueMartModelWorldzones extends VmModel {
 
 
-    /**
-     * Constructor for the shpping zone model.
-     *
-     * The zone id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct()
-    {
-        parent::__construct();
+	/**
+	 * constructs a VmModel
+	 * setMainTable defines the maintable of the model
+	 * @author Max Milbers
+	 */
+	function __construct() {
+		parent::__construct();
+		$this->setMainTable('worldzones');
+	}
 
-        $cid = JRequest::getVar('virtuemart_worldzone_id', false, 'DEFAULT', 'array');
-        if ($cid) {
-            $id = $cid[0];
-        }
-        else {
-            $id = JRequest::getInt('virtuemart_worldzone_id', 1);
-        }
-
-        $this->setId($id);
-    }
-
-
-    /**
-     * Resets the zone id and data
-     *
-     * @author RickG
-     */
-    function setId($id)
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }
+//    /**
+//     * Constructor for the shpping zone model.
+//     *
+//     * The zone id is read and detmimined if it is an array of ids or just one single id.
+//     *
+//     * @author RickG
+//     */
+//    function __construct()
+//    {
+//        parent::__construct();
+//
+//        $cid = JRequest::getVar('virtuemart_worldzone_id', false, 'DEFAULT', 'array');
+//        if ($cid) {
+//            $id = $cid[0];
+//        }
+//        else {
+//            $id = JRequest::getInt('virtuemart_worldzone_id', 1);
+//        }
+//
+//        $this->setId($id);
+//    }
 
 
     /**

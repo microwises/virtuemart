@@ -83,5 +83,5 @@
 <input type="hidden" name="view" value="orders" />
 <input type="hidden" name="current_order_status['<?php echo $this->orderID; ?>']" value="<?php echo $this->currentOrderStat; ?>" />
 <input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>

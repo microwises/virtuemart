@@ -33,8 +33,7 @@ class user_info
 	 * @param boolean $_cart Attention, this was deleted, the address to cart is now done in the controller (True to write to the session (cart))
 	 * @return boolean True if the save was successful, false otherwise.
 	 */
-	function storeAddress($_data, $_table = null, $new = false)
-	{
+	function storeAddress($_data, $_table = null, $new = false){
 
 		$_data = self::_prepareUserFields($_data, 'BT',$new);
 		if ($_table !== null) {
@@ -43,9 +42,14 @@ class user_info
 				$this->setError($_userinfo->getError());
 				return false;
 			}
+			if (!$_userinfo->check($_data)) {
 
+				$this->setError($_userinfo->getError());
+				return false;
+			}
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
+				dump($this,'nerv');
 				return false;
 			}
 		} else {
@@ -70,6 +74,10 @@ class user_info
 
 			if ($_table !== null) {
 				if (!$_userinfo->bind($_shipto)) {
+					$this->setError($_userinfo->getError());
+					return false;
+				}
+				if (!$_userinfo->check($_data)) {
 					$this->setError($_userinfo->getError());
 					return false;
 				}

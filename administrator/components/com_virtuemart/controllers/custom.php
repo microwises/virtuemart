@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Product Controller
  *
  * @package    VirtueMart
  * @author Max Milbers
  */
-class VirtuemartControllerCustom extends JController {
+class VirtuemartControllerCustom extends VmController {
 
 	/**
 	 * Method to display the view
@@ -39,6 +42,7 @@ class VirtuemartControllerCustom extends JController {
 	function __construct() {
 		parent::__construct();
 
+//		$this->setMainLangKey('CUSTOM');
 		$this->registerTask( 'add',  'edit' );
 	    $this->registerTask( 'apply',  'save' );
 
@@ -166,7 +170,7 @@ class VirtuemartControllerCustom extends JController {
 
 		$customModel = $this->getModel('custom');
 
-		if (!$customModel->delete($cid)) {
+		if (!$customModel->remove($cid)) {
 			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_DELETED');
 		}
 		else {
@@ -176,64 +180,28 @@ class VirtuemartControllerCustom extends JController {
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
 	}
 
-
 	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers
-	 */
-	public function publish() {
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+	* Clone a product
+	*
+	* @author RolandD, Max Milbers
+	*/
+	public function createClone() {
+		$mainframe = Jfactory::getApplication();
 
-		$customModel = $this->getModel('custom');
-		if (!$customModel->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_PUBLISHED_SUCCESS');
-		}
+		/* Load the view object */
+		$view = $this->getView('custom', 'html');
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
+		$model = $this->getModel('custom');
+		$msgtype = '';
+		$cids = JRequest::getVar('cid');
+		foreach ($cids as $custom_id) {
+			if ($model->createClone($custom_id)) $msg = JText::_('COM_VIRTUEMART_CUSTOM_CLONED_SUCCESSFULLY');
+			else {
+				$msg = JText::_('COM_VIRTUEMART_CUSTOM_NOT_CLONED_SUCCESSFULLY').' : '.$custom_id;
+				$msgtype = 'error';
+			}
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=custom', $msg, $msgtype);
 	}
-	/**
-	 * Toggle is_hidden fied
-	 *@Author Kohl patrick
-	 * @author Max Milbers
-	 */
-	public function toggle_is_hidden() {
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$customModel = $this->getModel('custom');
-		if (!$customModel->toggle('is_hidden')) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_TOGGLED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TOGGLED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
-	}
-	/**
-	 * Toggle admin_only
-	 *@Author Kohl patrick
-	 * @author Max Milbers
-	 */
-	public function toggle_admin_only() {
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$customModel = $this->getModel('custom');
-		if (!$customModel->toggle('admin_only')) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_PUBLISHED');
-		}
-		else{
-			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_PUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
-	}
-
 }
 // pure php no closing tag

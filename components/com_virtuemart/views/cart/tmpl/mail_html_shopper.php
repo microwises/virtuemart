@@ -41,7 +41,7 @@ echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']->created_on);
 
 echo '<img src="'.JURI::root().$this->vendor->images[0]->file_url.'" />';
-echo 'Link to view your order'; echo JURI::root().JRoute::_('index.php?option=com_virtuemart&controller=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass);
+echo 'Link to view your order'; echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass);
 if(!empty($this->order['details']['BT']->customer_note)){
 	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
 }

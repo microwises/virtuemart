@@ -15,12 +15,12 @@
 * other free or open source software licenses.
 * @version $Id: ratings.php 2233 2010-01-21 21:21:29Z SimonHodgkiss $
 */
- 
+
 // @todo a link or tooltip to show the details of shop user who posted comment
-// @todo more flexible templating, theming, etc.. 
+// @todo more flexible templating, theming, etc..
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
 /* Get the component name */
 $option = JRequest::getWord('option');
@@ -49,8 +49,8 @@ $option = JRequest::getWord('option');
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_NAME', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_NAME', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS_LIST'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'user_rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -85,11 +85,11 @@ $option = JRequest::getWord('option');
 				<!-- published -->
 				<td><?php echo $published; ?></td>
 			</tr>
-		<?php 
+		<?php
 			$k = 1 - $k;
 			$i++;
 		}
-	}	
+	}
 	?>
 	</tbody>
 	<tfoot>
@@ -110,7 +110,7 @@ $option = JRequest::getWord('option');
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
 

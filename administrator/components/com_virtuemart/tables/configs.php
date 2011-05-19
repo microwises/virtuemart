@@ -19,6 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Coupon table class
  * The class is is used to manage the coupons in the shop.
@@ -27,25 +29,13 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage Config
  * @author RickG
  */
-class TableConfigs extends JTable {
+class TableConfigs extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_config_id			= 0;
 	/** @var config */
 	var $config       		= 0;
-         /** @var date Category creation date */
-        var $created_on = null;
-          /** @var int User id */
-        var $created_by = 0;
-        /** @var date Category last modification date */
-        var $modified_on = null;
-          /** @var int User id */
-        var $modified_by = 0;
 
-               /** @var boolean */
-	var $locked_on	= 0;
-	/** @var time */
-	var $locked_by	= 0;
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
@@ -53,18 +43,9 @@ class TableConfigs extends JTable {
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_configs', 'virtuemart_config_id', $db);
-	}
 
+		$this->setLoggable();
 
-	/**
-	 * Validates the config record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check()
-	{
-		return true;
 	}
 
 }

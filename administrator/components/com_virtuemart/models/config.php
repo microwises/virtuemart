@@ -197,7 +197,7 @@ class VirtueMartModelConfig extends JModel {
 	if (empty ($orderByChecked)) $orderByChecked = array('product_sku','category_name','mf_name','product_name');
 	else if (!is_array($orderByChecked)) $orderByChecked = array($orderByChecked);
 	$orderByFields = new stdClass();
-	$orderByFields->checkbox ='';
+	$orderByFields->checkbox ='<div  class="threecols"><ul>';
 
 	$orderByFieldsArray = array('virtuemart_product_id', 'product_sku','product_price','category_name','category_description','mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on', 'product_name', 'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 	foreach ($orderByFieldsArray as $field ) {
@@ -208,9 +208,12 @@ class VirtueMartModelConfig extends JModel {
 			$checked = '';
 		}
 		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
-		$orderByFields->select[] = JHTML::_('select.option', $field, $text) ;
-		$orderByFields->checkbox.= '<input type="checkbox" id="' .$field. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
-	}
+		$orderByFields->select[] =  JHTML::_('select.option', $field, $text) ;
+		$orderByFields->checkbox.= '<li><input type="checkbox" id="' .$field. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label></li>';
+
+
+        }
+        $orderByFields->checkbox .='</ul></div>';
 	return $orderByFields;
     }
     /**
@@ -223,7 +226,7 @@ class VirtueMartModelConfig extends JModel {
 
 	if (empty ($searchChecked)) $searchChecked = array('product_sku','category_name','category_description','mf_name','product_name', 'product_s_desc');
 	else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
-	$searchFields = '';
+	$searchFields ='<div  class="threecols"><ul>';
 	$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 	foreach ($searchFieldsArray as $field ) {
 		if (in_array($field, $searchChecked) ) {
@@ -233,8 +236,9 @@ class VirtueMartModelConfig extends JModel {
 			$checked = '';
 		}
 		$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
-		$searchFields.= '<input type="checkbox" id="' .$field. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label>';
+		$searchFields.= '<li><input type="checkbox" id="' .$field. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label></li>';
 	}
+        $searchFields .='</ul></div>';
 	return $searchFields;
     }
 
@@ -270,24 +274,40 @@ class VirtueMartModelConfig extends JModel {
      */
     function store($data) {
 
-	if ($data) {
-	    $curConfigParams = $this->getConfig();
-	    $curConfigParams->bind($data);
+		if ($data) {
+		    $curConfigParams = $this->getConfig();
+		    $curConfigParams->bind($data);
+
+		    $db = JFactory::getDBO();
+		    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
+		    $db->setQuery($query);
+		    if (!$db->query()) {
+				$this->setError($table->getError());
+				return false;
+		    }
+		} else {
+		    $this->setError('No configuration parameters to save!');
+		    return false;
+		}
+		// Load the newly saved values into the session.
+		VmConfig::getInstance();
+
+		return true;
+    }
+
+    function setDangerousToolsOff(){
+
+    	$config = $this -> getConfig();
+    	$config -> set('dangeroustools',0);
 
 	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
+	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($config->toString()) .' WHERE virtuemart_config_id ="1"' ;
 	    $db->setQuery($query);
 	    if (!$db->query()) {
-		$this->setError($table->getError());
-		return false;
+			$this->setError($table->getError());
+			return false;
 	    }
-	}
-	else {
-	    $this->setError('No configuration parameters to save!');
-	    return false;
-	}
 
-	return true;
     }
 }
 

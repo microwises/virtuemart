@@ -28,6 +28,8 @@ define ('__SUPER_ADMIN_GID', 25);
 jimport('joomla.application.component.model');
 jimport('joomla.version');
 
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /**
  * Model class for shop users
  *
@@ -36,66 +38,34 @@ jimport('joomla.version');
  * @author	RickG
  * @author Max Milbers
  */
-class VirtueMartModelUser extends JModel {
-
-	/** @var integer Primary key */
-	var $_id=0;
-	/** @var objectlist users */
-	var $_data;
-	/** @var integer Total number of users in the database */
-	var $_total;
-	/** @var pagination Pagination for userlist */
-	var $_pagination;
+class VirtueMartModelUser extends VmModel {
 
 	/**
 	 * Constructor for the user model.
 	 *
 	 * The user ID is read and detmimined if it is an array of ids or just one single id.
 	 */
-	function __construct()
-	{
+	function __construct(){
+
 		parent::__construct();
 
 		// Get the helpers we need here, This must be in the constructor, for the RC it would be good to place the
 		// "require" nearest at possible to the code, which actually using it
 		if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
-		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-
-
-		$user = JFactory::getUser();
-		//anonymous sets to 0 for a new entry
-		if(empty($user->id)){
-			$this->setId(0);
-			//			echo($this->_id,'Recogniced anonymous case');
-		} else {
-			$idArray = JRequest::getVar('cid',  null, '', 'array');
-			//not anonymous, but no cid means already registered user edit own data
-			if(!isset($idArray[0])){
-				$this->setId((int)$user->id);
-				//				echo($user->id,'cid was null, therefore user->id is used');
-			} else {
-				if($idArray[0] != $user->id){
-					if(Permissions::getInstance()->check("admin,storeadmin")) {
-						$this->setId((int)$idArray[0]);
-					} else {
-//						JError::raiseWarning(1,'Hacking attempt');
-						$this->setId((int)$user->id);
-					}
-				}else {
-					$this->setId((int)$user->id);
-				}
-			}
-		}
+		$this->setMainTable('vmusers');
+//		// Get the pagination request variables
+//		$mainframe = JFactory::getApplication() ;
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+//
+//		// Set the state pagination variables
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//
+//		$idArray = JRequest::getVar('cid',  null, '', 'array');
+//		$this->setId($idArray);
 
 	}
 
@@ -105,12 +75,42 @@ class VirtueMartModelUser extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-	private function setId($id)
-	{
-		$this->_id = $id;
-		$this->_data = null;
+	public function setId($cid){
+
+		$user = JFactory::getUser();
+		//anonymous sets to 0 for a new entry
+		if(empty($user->id)){
+			$this->setUserId(0);
+			//			echo($this->_id,'Recogniced anonymous case');
+		} else {
+//			$idArray = JRequest::getVar('cid',  null, '', 'array');
+			//not anonymous, but no cid means already registered user edit own data
+			if(empty($cid)){
+				$this->setUserId($user->id);
+				//				echo($user->id,'cid was null, therefore user->id is used');
+			} else {
+				if($cid != $user->id){
+					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+					if(Permissions::getInstance()->check("admin,storeadmin")) {
+						$this->setUserId($cid);
+					} else {
+//						JError::raiseWarning(1,'Hacking attempt');
+						$this->setUserId($user->id);
+					}
+				}else {
+					$this->setUserId($user->id);
+				}
+			}
+		}
 	}
 
+	private function setUserId($id){
+
+	    if($this->_id!=$id){
+			$this->_id = (int)$id;
+			$this->_data = null;
+    	}
+	}
 	/**
 	 * Set the ID to the current user
 	 */
@@ -177,9 +177,13 @@ class VirtueMartModelUser extends JModel {
 			$this->_data->load((int)$this->_id);
 
 			/* Add the virtuemart_shoppergroup_ids */
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_user_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
-			$this->_db->setQuery($q);
-			$this->_data->shopper_groups = $this->_db->loadResultArray();
+//			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
+//			$this->_db->setQuery($q);
+//			$this->_data->shopper_groups = $this->_db->loadResultArray();
+
+   			$xrefTable = $this->getTable('vmuser_shoppergroups');
+			$this->_data->shopper_groups = $xrefTable->load($this->_id);
+
 
 			$this->_data->JUser =& JUser::getInstance($this->_id);
 
@@ -212,11 +216,8 @@ class VirtueMartModelUser extends JModel {
 			}
 			//		}
 
-			if (!$this->_data) {
-				$this->_data = new stdClass();
-				$this->_id = 0;
-			}
 
+			dump($this->_data,'user data');
 			return $this->_data;
 		}
 
@@ -251,7 +252,7 @@ class VirtueMartModelUser extends JModel {
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);
 			}
-			dump($this->_data->JUser,'hmm');
+
 			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
 			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
 			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
@@ -312,7 +313,7 @@ class VirtueMartModelUser extends JModel {
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 			//The constructor sets automatically the right id.
 			$new = ($this->_id < 1);
-			$user = new JUser($this->_id);
+			$user = new JUser($this->_id);dump($user,'my user begin');
 			$gid = $user->get('gid'); // Save original gid
 
 			/*
@@ -403,7 +404,6 @@ class VirtueMartModelUser extends JModel {
 
 				if ( VmConfig::isJ15()){
 					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-//					$user->set('gid', $authorize->get_virtuemart_shoppergroup_id( '', $newUsertype, 'ARO' ));
 				}
 
 				$date =& JFactory::getDate();
@@ -428,6 +428,7 @@ class VirtueMartModelUser extends JModel {
 				}
 			}
 
+			dump($user,'juser before store');
 			// Save the JUser object
 			if (!$user->save()) {
 				//This?
@@ -448,8 +449,8 @@ class VirtueMartModelUser extends JModel {
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
-				$this->setError('Was not able to save the virtuemart user data');
-				JError::raiseWarning('', JText::_('COM_VIRTUEMART_USED_RAISEWARNING_WAS_NOT_ABLE_TO_SAVE_VIRTUEMART_USER_DATA'));
+				$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+				JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 			}
 
 			// Send registration confirmation mail
@@ -497,39 +498,30 @@ class VirtueMartModelUser extends JModel {
 				echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 			}
 
+			if(empty($_data['customer_number'])){
+				//TODO here add plugin hoook for creating customer numbers.
+				$_data['customer_number'] = md5($_data['username']);
+			}
 			//update user table
-			$usertable = $this->getTable('vmusers');
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
-			if (!$usertable->bind($vmusersData)) {
-				$this->setError($usertable->getError());
-				return false;
-			}
+			$usertable = $this->getTable('vmusers');
 
-			// Make sure the record is valid
-			if (!$usertable->check()) {
-				$this->setError($table->getError());
-				return false;
-			}
+			$vmusersData = $usertable -> bindChecknStore($vmusersData);
 
-			// Save the record to the database
-			if (!$usertable->store()) {
-				$this->setError($usertable->getError());
-				return false;
-			}
-
-			if(empty($_data['virtuemart_shoppergroup_id'])){
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
-				$this->_db->setQuery($q);
-				$_data['virtuemart_shoppergroup_id']=$this->_db->loadResult();
-			}
 
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_user_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
+			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+
+			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+
+//			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
-				$this->setError('Was not able to save the virtuemart userinfo address data');
+				dump($_data,'user_info::storeAddress error');
+				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+//				echo '<pre>'.print_r($this,1).'</pre>';die;
 				return false;
 			}
 
@@ -545,33 +537,43 @@ class VirtueMartModelUser extends JModel {
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
+					dump($vendorModel,'vendormodel error');
 					return false;
 				}else{
 					//Update xref Table
 					$virtuemart_vendor_id = $vendorModel->getId();
 
 					//update user table
-					//					$usertable = $this->getTable('vmusers');
+					//$usertable = $this->getTable('vmusers');
 					$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
-					if (!$usertable->bind($vmusersData)) {
-						$this->setError($table->getError());
-						return false;
-					}
-					// Make sure the record is valid
-					if (!$usertable->check()) {
-						$this->setError($table->getError());
+
+					if (!$usertable->bindChecknStore($vmusersData)){
+						$this->setError($usertable->getError());
+						dump($usertable,'error after storing vendor while storing user bindChecknStore');
 						return false;
 					}
 
-					// Save the record to the database
-					if (!$usertable->store()) {
-						$this->setError($table->getError());
-						return false;
-					}
+
+//					if (!$usertable->bind($vmusersData)) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
+//					// Make sure the record is valid
+//					if (!$usertable->check()) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
+//
+//					// Save the record to the database
+//					if (!$usertable->store()) {
+//						$this->setError($usertable->getError());
+//						return false;
+//					}
 
 				}
 				//			}
 			}
+
 			return true;
 		}
 
@@ -610,9 +612,9 @@ class VirtueMartModelUser extends JModel {
 	 /**
 	  * Delete all record ids selected
 	  *
-	  * @return boolean True is the delete was successful, false otherwise.
+	  * @return boolean True is the remove was successful, false otherwise.
 	  */
-	 function delete()
+	 function remove()
 	 {
 	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
 	 	$userInfo =& $this->getTable('userinfos');
@@ -773,7 +775,7 @@ class VirtueMartModelUser extends JModel {
 	  */
 	 function _getListQuery (){
 
-	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_user_shoppergroups, #__virtuemart_vendors
+	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_vmuser_shoppergroups, #__virtuemart_vendors
 	 	$query = 'SELECT DISTINCT ju.id AS id '
 			. ', ju.name AS name'
 			. ', ju.username AS username '
@@ -783,7 +785,7 @@ class VirtueMartModelUser extends JModel {
 			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
 			. 'FROM #__users AS ju '
 			. 'LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id '
-			. 'LEFT JOIN #__virtuemart_user_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
+			. 'LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering();
@@ -827,30 +829,30 @@ class VirtueMartModelUser extends JModel {
 	  * @param $value boolean Value to set
 	  * @return boolean Result
 	  */
-	 function toggle($field, $id = array(), $value = 1)
-	 {
-	 	$_missingUsers = $this->validateUsers($id);
-	 	$id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
-	 	foreach ($_missingUsers as $_uid => $_username) {
-	 		JError::raiseWarning(500, JText::sprintf('COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
-	 	}
-	 	if (count($id) > 0)
-	 	{
-	 		JArrayHelper::toInteger($id);
-	 		$ids = implode( ',', $id );
+	 // function toggle($field, $id = array(), $value = 1)
+	 // {
+	 	// $_missingUsers = $this->validateUsers($id);
+	 	// $id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
+	 	// foreach ($_missingUsers as $_uid => $_username) {
+	 		// JError::raiseWarning(500, JText::sprintf('COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
+	 	// }
+	 	// if (count($id) > 0)
+	 	// {
+	 		// JArrayHelper::toInteger($id);
+	 		// $ids = implode( ',', $id );
 
-	 		$query = 'UPDATE `#__virtuemart_vmusers`'
-				. ' SET `' . $field . '` = '.(int) $value
-				. ' WHERE virtuemart_user_id IN ( '.$ids.' )'
-				;
-				$this->_db->setQuery( $query );
-				if (!$this->_db->query()) {
-					$this->setError($this->_db->getErrorMsg());
-					return false;
-				}
-	 	}
-	 	return true;
-	 }
+	 		// $query = 'UPDATE `#__virtuemart_vmusers`'
+				// . ' SET `' . $field . '` = '.(int) $value
+				// . ' WHERE virtuemart_user_id IN ( '.$ids.' )'
+				// ;
+				// $this->_db->setQuery( $query );
+				// if (!$this->_db->query()) {
+					// $this->setError($this->_db->getErrorMsg());
+					// return false;
+				// }
+	 	// }
+	 	// return true;
+	 // }
 
 	 /**
 	  * Return a list of Joomla ACL groups.

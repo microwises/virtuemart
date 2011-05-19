@@ -22,13 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Product Controller
  *
  * @package    VirtueMart
  * @author
  */
-class VirtuemartControllerProduct extends JController {
+class VirtuemartControllerProduct extends VmController {
 
 	/**
 	 * Method to display the view
@@ -37,23 +40,18 @@ class VirtuemartControllerProduct extends JController {
 	 * @author
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_product_id');
 
+
+//		$this->setMainLangKey('PRODUCT');
 		/* Redirect templates to templates as this is the standard call */
 		$this->registerTask('saveorder','product');
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
-//		$this->registerTask('unpublish','product');
-//		$this->registerTask('publish','product');
+
 		$this->registerTask('edit','add');
 		$this->registerTask('apply','save');
 
-		/* dont SET THE HTML View and layout in constructor or json view is broken
-		/* Create the view object */
-		/*$view = $this->getView('product', 'html');
-		/* Set the layout */
-		/*$view->setLayout('product');
-		  **/
 
 	}
 
@@ -82,37 +80,7 @@ class VirtuemartControllerProduct extends JController {
 		$view->display();
 	}
 
-	/**
-	 * Handle the publish task
-	 *
-	 * @author Max Milbers
-	 */
-	public function publish(){
-		$model = $this->getModel('product');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_PUBLISHED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_PUBLISHED_SUCCESS');
-		}
 
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
-	}
-
-	/**
-	 * Handle the publish task
-	 *
-	 * @author RickG, jseros
-	 */
-	public function unpublish(){
-		$model = $this->getModel('product');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_PRODUCTS_COULD_NOT_BE_UNPUBLISHED');
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCTS_UNPUBLISHED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=product', $msg);
-	}
 	/**
 	 * Shows the product add/edit screen
 	 */
@@ -145,53 +113,19 @@ class VirtuemartControllerProduct extends JController {
 	}
 
 	/**
-	* Cancellation, redirect to main product list
-	*
-	* @author RolandD
-	*/
-	public function Cancel() {
-		$mainframe = Jfactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'));
-	}
+	 * We want to allow html so we need to overwrite some request data
+	 *
+	 * @author Max Milbers
+	 */
+	function save(){
 
-	/**
-	* Save a product
-	*
-	* @author RolandD, Max Milbers
-	*/
-	public function save() {
+		$data = JRequest::get('post');
 
-		$mainframe = Jfactory::getApplication();
+		$data['product_name'] = JRequest::getVar('product_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
-		/* Load the view object */
-		$view = $this->getView('product', 'html');
-
-		/* Waitinglist functions */
-		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
-
-		/* Load some helpers */
-		$view->loadHelper('image');
-		$view->loadHelper('shopFunctions');
-
-		$model = $this->getModel('product');
-		$msgtype = '';
-		if ($virtuemart_product_id = $model->saveProduct()){
-			 $msg = JText::_('COM_VIRTUEMART_PRODUCT_SAVED_SUCCESSFULLY');
-		}
-		else {
-			$msg = $model->getError();
-			$msgtype = 'error';
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$virtuemart_product_id.'&product_parent_id='.JRequest::getInt('product_parent_id');
-		} else {
-			$redirection = 'index.php?option=com_virtuemart&view=product';
-		}
-
-		$mainframe->redirect($redirection, $msg, $msgtype);
-
+		parent::save($data);
 	}
 
 	/**
@@ -210,11 +144,11 @@ class VirtuemartControllerProduct extends JController {
 		$cids = JRequest::getVar('cid');
 		if ($id=$model->createChild($cids[0])){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
-			$redirect = 'index.php?option=com_virtuemart&controller=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
+			$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
 		} else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
 			$msgtype = 'error';
-			$redirect = 'index.php?option=com_virtuemart&controller=product';
+			$redirect = 'index.php?option=com_virtuemart&view=product';
 		}
 		$app->redirect($redirect, $msg, $msgtype);
 
@@ -242,27 +176,6 @@ class VirtuemartControllerProduct extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
 	}
 
-	/**
-	* Delete a product
-	*
-	* @author RolandD
-	*/
-	public function remove() {
-		$mainframe = Jfactory::getApplication();
-
-		/* Load the view object */
-		$view = $this->getView('product', 'html');
-
-		$model = $this->getModel('product');
-		$msgtype = '';
-		if ($model->removeProduct()) $msg = JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
-	}
 
 	/**
 	* Get a list of related products

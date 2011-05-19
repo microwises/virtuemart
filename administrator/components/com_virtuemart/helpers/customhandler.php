@@ -38,10 +38,10 @@ class VmCustomHandler {
 			'I'=>'COM_VIRTUEMART_CUSTOM_INT',
 			'P'=>'COM_VIRTUEMART_CUSTOM_PARENT',
 			'B'=>'COM_VIRTUEMART_CUSTOM_BOOL',
-			'D'=>'COM_VIRTUEMART_CUSTOM_DATE',
-			'T'=>'COM_VIRTUEMART_CUSTOM_TIME',
+			'D'=>'COM_VIRTUEMART_DATE',
+			'T'=>'COM_VIRTUEMART_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-			'i'=>'COM_VIRTUEMART_CUSTOM_IMAGE',
+			'i'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
 			);
@@ -122,10 +122,9 @@ class VmCustomHandler {
 	}
 
 	/**
-	 * Displays a possibility to select already uploaded custom
-	 * the getImagesList must be adjusted to have more search functions
+	 * Displays a possibility to select created custom
 	 * @author Max Milbers
-	 * @param array $fileIds
+	 * @author Patrick Kohl
 	 */
 	public function displayCustomSelection(){
 		
@@ -148,7 +147,7 @@ class VmCustomHandler {
     	$vendorId=1;
 		// get custom parents
     	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0';
-		if ($publishedOnly) $q=' WHERE `published`=1 ';
+		if ($publishedOnly) $q.=' WHERE `published`=1';
 		if ($ID = JRequest::getVar( 'virtuemart_custom_id',false)) $q .=' and `virtuemart_custom_id`!='.$ID;
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
@@ -188,22 +187,17 @@ class VmCustomHandler {
 		self::addHiddenByType();
 
 		$html = '<div id="custom_title">'.$this->custom_title.'</div>';
-		//$html .= $this->displayCustomFull($imageArgs,false);
-
-		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
-//		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
-
 		$html .= ' <table class="adminform"> ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$this->custom_field_desc);
 		// change input by type
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_DEFAULT','custom_value',$this->custom_value);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$this->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
 		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_FORM_FIELD_PUBLISHED','published',$this->published);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$this->published);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);
@@ -213,7 +207,6 @@ class VmCustomHandler {
 		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ; 
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
-//		$html .= '</form>';
 
 		return $html;
 	}

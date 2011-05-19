@@ -34,26 +34,27 @@ class VirtuemartViewMedia extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
+		$this->loadHelper('permissions');
 
 		$model = $this->getModel('media');
-		$this->loadHelper('permissions');
 		$this->assignRef('perms', Permissions::getInstance());
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
+		// TODO add icon for media view
+		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$this->assignRef('viewName',$viewName);
 
-//		$layoutName = JRequest::getVar('layout', 'default');
-		$task = JRequest::getCmd('task', '');
-		if ($task == 'edit' || $task== 'add' ) {
+		$layoutName = JRequest::getVar('layout', 'default');
+		if ($layoutName == 'edit') {
 
 			$media = $model->getFile();
 			$this->assignRef('media',	$media);
 
 			$isNew = ($media->virtuemart_media_id < 1);
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MEDIA_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
-
 				$usermodel = $this->getModel('user', 'VirtuemartModel');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
@@ -62,23 +63,13 @@ class VirtuemartViewMedia extends JView {
 				}
 				if(empty($media->virtuemart_vendor_id))$media->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
-			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
-			}
 
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+			ShopFunctions::addStandardEditViewCommands();
 
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MEDIA_LIST_LBL'), 'vm_countries_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList('', 'remove', 'Delete');
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

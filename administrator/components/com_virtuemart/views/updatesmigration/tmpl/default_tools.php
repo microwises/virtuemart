@@ -15,9 +15,9 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 ?>
@@ -71,7 +71,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <br />
 	    Remove<br />Virtuemart Tables
 	</td>
-  
+
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall'); ?>
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>', '<?php echo $link; ?>');">
@@ -80,8 +80,17 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <br />
 	    Reset all tables <br /> and install sampledata
 	</td>
+
+<?php /*	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portCurrency'); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start port?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
+	    </span>
+	    <br />
+	    Port old currency table to new
+	</td>  */ ?>
     </tr>
-</table>	    
+</table>
 
 <script type="text/javascript">
 <!--
@@ -92,4 +101,4 @@ function confirmation(message, destnUrl) {
 	}
 }
 //-->
-</script>  
+</script>

@@ -17,6 +17,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
 /**
  * Report table class
  *
@@ -24,7 +26,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @subpackage Report
  * @author Wicksj
  */
-class TableReports extends JTable {
+class TableReports extends VmTable {
 
 	/**
 	 * Constructor for report table class

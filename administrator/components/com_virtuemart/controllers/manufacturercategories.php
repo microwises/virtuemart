@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
+if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+
+
 /**
  * Manufacturer category controller
  *
@@ -29,7 +32,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Manufacturer
  * @author
  */
-class VirtuemartControllermanufacturercategories extends JController {
+class VirtuemartControllermanufacturercategories extends VmController {
 
 	/**
 	 * Method to display the view
@@ -40,31 +43,13 @@ class VirtuemartControllermanufacturercategories extends JController {
 	function __construct() {
 		parent::__construct();
 
-		// Register Extra tasks
-		$this->registerTask( 'add',  'edit' );
-		$this->registerTask( 'apply',  'save' );
-
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view =& $this->getView('manufacturercategories', $viewType);
-
-		// Push a model into the view
-		$model =& $this->getModel('manufacturercategories');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
 	}
 
-	/**
-	 * Display the country view
-	 *
-	 */
-	function display() {
+	function Manufacturercategories () {
+
 		$document = JFactory::getDocument();
-		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
-		$view =& $this->getView($viewName, $viewType);
+		$view =& $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
 		$model =& $this->getModel( 'manufacturercategories' );
@@ -75,99 +60,5 @@ class VirtuemartControllermanufacturercategories extends JController {
 	}
 
 
-	/**
-	 * Handle the edit task
-	 *
-	 */
-	function edit()
-	{
-		JRequest::setVar('controller', 'manufacturercategories');
-		JRequest::setVar('view', 'manufacturercategories');
-		JRequest::setVar('layout', 'edit');
-		JRequest::setVar('hidemenu', 1);
-
-		parent::display();
-	}
-
-
-	/**
-	 * Handle the cnacel task
-	 *
-	 */
-	function cancel()
-	{
-		$this->setRedirect('index.php?option=com_virtuemart&view=manufacturercategories',JText::_('COM_VIRTUEMART_CANCELLED'));
-	}
-
-
-	/**
-	 * Handle the save task
-	 *
-	 */
-	function save()
-	{
-		$model =& $this->getModel('manufacturercategories');
-
-		if ($id = $model->store()) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_SAVED');
-		} else {
-			$model->getError();
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply') $redirection = 'index.php?option=com_virtuemart&view=manufacturercategories&task=edit&cid[]='.$id;
-		else $redirection = 'index.php?option=com_virtuemart&view=manufacturercategories';
-
-		$this->setRedirect($redirection, $msg);
-
-	}
-
-
-	/**
-	 * Handle the remove task
-	 *
-	 */
-	function remove()
-	{
-		$model = $this->getModel('manufacturercategories');
-		if (!$model->delete()) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DELETE_WARNING');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_DELETE_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 */
-	function publish()
-	{
-		$model = $this->getModel('manufacturercategories');
-		if (!$model->publish(true)) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_PUBLISH_ERROR');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
-	}
-
-
-	/**
-	 * Handle the publish task
-	 *
-	 */
-	function unpublish()
-	{
-		$model = $this->getModel('manufacturercategories');
-		if (!$model->publish(false)) {
-			$msg = JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_UNPUBLISH_ERROR');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=manufacturercategories', $msg);
-	}
 }
 // pure php no closing tag
