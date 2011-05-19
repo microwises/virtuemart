@@ -158,7 +158,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY'); ?>
 		</td>
 		<td >
-			<input class="inputbox" type="text" name="currency_positive_style" id="currency_positive_style" size="30" value="<?php echo $this->currency->currency_positive_style; ?>" />
+			<input class="inputbox" type="text" name="currency_positive_style" id="currency_positive_style" size="50" value="<?php echo $this->currency->currency_positive_style; ?>" />
 		</td>
 	</tr>
 	<tr>
@@ -166,7 +166,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY'); ?>
 		</td>
 		<td>
-			<input class="inputbox" type="text" name="currency_negative_style" id="currency_negative_style" size="30" value="<?php echo $this->currency->currency_negative_style; ?>" />
+			<input class="inputbox" type="text" name="currency_negative_style" id="currency_negative_style" size="50" value="<?php echo $this->currency->currency_negative_style; ?>" />
 		</td>
 	</tr>
 	</table>

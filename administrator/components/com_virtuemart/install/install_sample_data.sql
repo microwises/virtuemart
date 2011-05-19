@@ -73,7 +73,7 @@ INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`,
 (3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
 (4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, 0, 0, 1),
 (5, 0, 0, 'I''m a Child link', 'Add a child to me', '', 'link to child', 'C', 0, 0, 0, 1),
-(7, 0, 0, 'PHOTO', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 0, 1),
+(7, 0, 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 0, 1),
 (9, 0, 0, 'Size', 'Change the size', '30', 'CM', 'V', 0, 0, 1, 1),
 (10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1);
 
