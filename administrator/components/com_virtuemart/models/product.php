@@ -1531,7 +1531,7 @@ class VirtueMartModelProduct extends VmModel {
 		$orderByLink ='<div class="orderlist">';
 		foreach ($fields as $field) {
 			if ($field != $orderby) {
-				$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
+				$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
 				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
 				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';

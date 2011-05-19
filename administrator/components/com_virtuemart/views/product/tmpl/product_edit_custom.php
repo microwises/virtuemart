@@ -25,9 +25,9 @@ defined('_JEXEC') or die('Restricted access');
 <table id="customfields" class="adminlist">
 	<thead>
 	<tr class="row1">
-		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TITLE');?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_VALUE');?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TYPE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
 	</tr>

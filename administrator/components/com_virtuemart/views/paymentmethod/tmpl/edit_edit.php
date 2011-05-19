@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>?:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
       <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->paym->published); ?></fieldset></td>
     </tr>
     <tr class="row1">

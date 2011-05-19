@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_URL'); ?>
 			</td>
 			<td>
 				<input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->vendor->vendor_url; ?>" />

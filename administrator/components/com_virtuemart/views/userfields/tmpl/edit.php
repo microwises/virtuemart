@@ -269,7 +269,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>:
 				</label>
 			</td>
 			<td>

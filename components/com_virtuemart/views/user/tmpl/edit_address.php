@@ -32,7 +32,7 @@ function myValidator(f, t)
 		return true;
 	} else {
 		var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
-		alert (msg);
+		alert (msg+' '+);
 	}
 	return false;
 }
