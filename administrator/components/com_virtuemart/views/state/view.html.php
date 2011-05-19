@@ -35,6 +35,7 @@ class VirtuemartViewState extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		$zoneModel = $this->getModel('Worldzones');
@@ -42,8 +43,6 @@ class VirtuemartViewState extends JView {
 		$stateId = JRequest::getInt('virtuemart_state_id', null);
 		$model->setId($stateId);
 		$state = $model->getSingleState();
-
-        $layoutName = JRequest::getVar('layout', 'default');
 
 		$published = JRequest::getBool('published', false);
 		$this->assignRef('published',	$published);
@@ -64,28 +63,20 @@ class VirtuemartViewState extends JView {
 		$country->setId($countryId);
 		$this->assignRef('country_name', $country->getCountry()->country_name);
 
+		$viewName=ShopFunctions::SetViewTitle('vm_states_48');
+		$this->assignRef('viewName',$viewName);
+
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_states_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_states_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 			$this->assignRef('state', $state);
-
 			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
-        }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_LBL'), 'vm_states_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardEditViewCommands();
+
+		} else {
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -266,7 +266,6 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$style = explode('|',$item->_display_style);
 
-
 			$item->currency_nbDecimal = $style[2];
 			$item->currency_decimal_symbol = $style[3];
 			$item->currency_thousands = $style[4];

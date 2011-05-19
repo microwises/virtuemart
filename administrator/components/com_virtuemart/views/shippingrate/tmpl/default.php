@@ -49,6 +49,10 @@ AdminMenuHelper::startAdminArea();
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_RATE_LIST_RATE_WEND'); ?>
 			</th>
+			<th width="40px" >
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+			</th>
+
 		</tr>
 		</thead>
 		<?php
@@ -58,7 +62,7 @@ AdminMenuHelper::startAdminArea();
 			/**
 			 * @todo Add to database layout published column
 			 */
-			$row->published = 1;
+			$published = JHTML::_('grid.published',$row, $i );
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shippingrate_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shippingrate&task=edit&cid[]=' . $row->virtuemart_shippingrate_id);
 			?>
@@ -84,6 +88,7 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<?php echo $row->shipping_rate_weight_end; ?>
 				</td>
+				<td><?php echo $published; ?></td>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -104,6 +109,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="view" value="shippingrate" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 
