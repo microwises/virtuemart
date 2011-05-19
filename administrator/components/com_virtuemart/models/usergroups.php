@@ -132,11 +132,11 @@ class VirtueMartModelUsergroups extends VmModel {
     function getUsergroups($onlyPublished=false, $noLimit=false) {
 
 		$db = JFactory::getDBO();
-		$query = 'SELECT * FROM `#__virtuemart_shoppergroups` ';
+		$query = 'SELECT * FROM `#__virtuemart_permgroups` ';
 //		if ($onlyPublished) {
 //			$query .= 'WHERE `#__virtuemart_shoppergroups`.`published` = 1';
 //		}
-		$query .= ' ORDER BY `#__virtuemart_shoppergroups`.`group_name`';
+		$query .= ' ORDER BY `#__virtuemart_permgroups`.`group_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}

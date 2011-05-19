@@ -439,6 +439,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		foreach ($tables as $table) {
 
+			//lets rename them instead drop
+//			$db->setQuery('RENAME TABLE '.$table.' TO old'.$table);
+
 		    $db->setQuery('DROP TABLE ' . $table);
 		    if($db->query()){
 		    	$droppedTables[] = substr($table,strlen($prefix)-1);

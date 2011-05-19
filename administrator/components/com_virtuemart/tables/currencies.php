@@ -35,21 +35,20 @@ class TableCurrencies extends VmTable {
 	/** @var int vendor id */
 	var $virtuemart_vendor_id					= 1;
 	/** @var string Currency name*/
-	var $currency_name           	= '';
-	/** @var char Currency code */
-	var $currency_code_2			= '';
-	var $currency_code         		= ''; //should be renamed to $currency_code_2
-	/** @var char Currency symbol */
-	var $currency_numeric_code = 0;
-    var $currency_symbol         	= '';
-	/** @var char Currency rate */
-	var $currency_exchange_rate         		= '';
-	/** @var char display style */
-	var $currency_display_style         		= '';
-	  /** @var boolean */
-	var $published					= 0;
-	var $shared						= 1;
 
+	var $currency_name 			= '';
+	var $currency_code_2		= '';
+	var $currency_code_3		= '';
+	var $currency_numeric_code	= 0;
+	var $currency_exchange_rate = 0.0;
+	var $currency_symbol		= '';
+	var $currency_decimal_place		= 0;
+	var $currency_decimal_symbol		= '';
+	var $currency_thousands		= '';
+	var $currency_positive_style	= '';
+	var $currency_negative_style	= '';
+	var $shared					= 0;
+	var $published				= 0;
 
 	/**
 	 * @author Max Milbers
@@ -64,6 +63,7 @@ class TableCurrencies extends VmTable {
 
 		$this->setLoggable();
 
+		$this->setOrderable();
 	}
 
 

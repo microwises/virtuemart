@@ -70,17 +70,17 @@ class VirtuemartViewCurrency extends JView {
 //				JError::raiseError(403,Jtext::_('COM_VIRTUEMART_CURRENCY_FOR_VENDORS'));
 //			}
 
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			if(empty($currency->virtuemart_vendor_id)){
-
-   				$currency->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-			}
+//			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//			if(empty($currency->virtuemart_vendor_id)){
+//
+//   				$currency->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+//			}
 
 //			$this->assignRef('virtuemart_vendor_id', $vendorCurrency);
 
-			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$cd = CurrencyDisplay::getCurrencyDisplay(VirtueMartModelVendor::getLoggedVendor(),$currency->virtuemart_currency_id,'');
-			$this->assignRef('currencyDisplay',$cd);
+//			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+//			$cd = CurrencyDisplay::getCurrencyDisplay($currency->virtuemart_currency_id,VirtueMartModelVendor::getLoggedVendor());
+//			$this->assignRef('currencyDisplay',$cd);
 
        }
         else {

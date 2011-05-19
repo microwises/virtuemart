@@ -57,7 +57,7 @@ class VirtuemartViewInventory extends JView {
 		$currencydisplay = CurrencyDisplay::getCurrencyDisplay();;
 
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
-			$product->product_price_display = $currencydisplay->getValue($product->product_price);
+			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',false);
 		}
 
 		/* Get the pagination */

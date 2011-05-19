@@ -69,7 +69,7 @@ class calculationHelper {
 
 
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-	    $this->_currencyDisplay = CurrencyDisplay::getCurrencyDisplay();
+	    $this->_currencyDisplay = CurrencyDisplay::getInstance();
 		$this->_debug           = false;
 	}
 
@@ -86,33 +86,6 @@ class calculationHelper {
 	public function setVendorCurrency($id){
 		$this->vendorCurrency = $id;
 	}
-
-//	/**
-//	 * This function is for the gui only!
-//	 * Use this only in a view, plugin or modul, never in a model
-//	 *
-//	 * @param float $price
-//	 * @param integer $currencyId
-//	 * return string formatted price
-//	 */
-//	public function priceDisplay($price=0, $currencyId=0,$shop = false){
-//		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
-//
-//		if(empty($currencyId)){
-//			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->vendorCurrency );
-//			if(empty($currencyId)){
-//				$currencyId = $this->vendorCurrency;
-//			}
-//		}
-//
-//		$vendorId = 1 ;
-////		if($this->_currencyDisplay->id!=$currencyId){
-//			 $this -> _currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendorId,$currencyId);
-////		}
-//
-//		$price = $this->convertCurrencyTo($currencyId,$price,$shop);
-//		return $this -> _currencyDisplay->getFullValue($price);
-//	}
 
 
 	public function getCartPrices(){

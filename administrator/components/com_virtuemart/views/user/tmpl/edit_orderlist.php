@@ -79,7 +79,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
-					<?php echo $this->currency->getFullValue($row->order_total); ?>
+					<?php echo $this->currency->priceDisplay($row->order_tota,'',falsel); ?>
 				</td>
 			</tr>
 	<?php

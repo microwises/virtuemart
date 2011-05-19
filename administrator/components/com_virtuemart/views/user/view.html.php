@@ -228,7 +228,7 @@ class VirtuemartViewUser extends JView {
 
 					if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 						if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-						$currency = CurrencyDisplay::getCurrencyDisplay();
+						$currency = CurrencyDisplay::getInstance();
 						$this->assignRef('currency',$currency);
 					}
 

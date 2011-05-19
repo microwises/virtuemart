@@ -288,18 +288,21 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
 --
 -- Table structure for table `#__virtuemart_currencies`
 -- 
-
-
+		
 CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `virtuemart_currency_id` SERIAL,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
   `currency_name` varchar(64) DEFAULT NULL,
   `currency_code_2` char(2) DEFAULT NULL,
-  `currency_code` char(3) DEFAULT NULL,
+  `currency_code_3` char(3) DEFAULT NULL,
   `currency_numeric_code` int(4) NOT NULL,
-  `currency_symbol` char(4) DEFAULT NULL,
   `currency_exchange_rate` float DEFAULT NULL,
-  `currency_display_style` varchar(128) DEFAULT NULL,
+  `currency_symbol` char(4) DEFAULT NULL,
+  `currency_decimal_place` char(4) DEFAULT NULL,
+  `currency_decimal_symbol` char(4) DEFAULT NULL,
+  `currency_thousands` char(4) DEFAULT NULL,
+  `currency_positive_style` char(64) DEFAULT NULL,
+  `currency_negative_style` char(64) DEFAULT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -310,8 +313,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_currency_id`),
-  KEY `idx_currency_code` (`currency_code`)
+  KEY `idx_currency_code_3` (`currency_code_3`),
+  KEY `idx_currency_numeric_code` (`currency_numeric_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
+
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_customs`

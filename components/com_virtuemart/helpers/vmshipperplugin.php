@@ -356,7 +356,7 @@ abstract class vmShipperPlugin extends JPlugin
 			.	'	</tr>'."\n"
 			.	'	<tr>'."\n"
 			.	'		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>'."\n"
-			.	'		<td align="left">' . $_currency->getFullValue($this->getShippingRate($this->getShippingRateIDForOrder($_orderId))) . '</td>'."\n"
+			.	'		<td align="left">' . $_currency->priceDisplay($this->getShippingRate($this->getShippingRateIDForOrder($_orderId))) . '</td>'."\n"
 			.	'	</tr>'."\n"
 			.	'</table>'."\n"
 		;

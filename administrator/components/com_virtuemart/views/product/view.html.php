@@ -246,8 +246,8 @@ class VirtuemartViewProduct extends JView {
 				break;
 			case 'addproducttype':
 				/* Get the product types that can be chosen */
-				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
-				$this->assignRef('producttypes', $producttypes);
+//				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
+//				$this->assignRef('producttypes', $producttypes);
 
 				/* Get the product */
 				$product = $this->get('ProductDetails');
@@ -257,8 +257,6 @@ class VirtuemartViewProduct extends JView {
 				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::divider();
-//				JToolBarHelper::apply('saveproducttype');
-//				JToolBarHelper::save('saveproducttype');
 				JToolBarHelper::cancel();
 				break;
 			default:
@@ -306,12 +304,12 @@ class VirtuemartViewProduct extends JView {
 
 				if(!class_exists('VirtueMartModelRatings')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'ratings.php');
 				$productreviews = new VirtueMartModelRatings();
-				$currencydisplay = CurrencyDisplay::getCurrencyDisplay();
+//				$currencydisplay = CurrencyDisplay::getInstance();
 
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
-				$calculator = calculationHelper::getInstance();
+//				$calculator = calculationHelper::getInstance();
 				$vendor_model = $this->getModel('vendor');
 
 				foreach ($productlist as $virtuemart_product_id => $product) {
@@ -320,16 +318,14 @@ class VirtuemartViewProduct extends JView {
 
 					$vendor_model->setId($product->virtuemart_vendor_id);
 					$vendor = $vendor_model->getVendor();
-					$calculator->setVendorCurrency($vendor->vendor_currency);
-					$currencyDisplay = CurrencyDisplay::getCurrencyDisplay($vendor->virtuemart_vendor_id,$vendor->vendor_currency);
-					$price = $calculator->convertCurrencyTo($product->product_currency,$product->product_price,true);
-					$product->product_price_display = $currencyDisplay->getFullValue($price);
+
+					$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,'',true);
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
 
-//					$product->product_price_display = $calculator->priceDisplay($product->product_price,$product->product_currency,true);//$currencydisplay->getValue($product->product_price);
 				}
 
 				/* Get the pagination */
@@ -356,8 +352,6 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
-//				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_ATTRIBUTE'), true);
-//				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_PRODUCT_TYPE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				JToolBarHelper::divider();
 				JToolBarHelper::publish();

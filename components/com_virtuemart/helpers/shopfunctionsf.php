@@ -87,13 +87,15 @@ class shopFunctionsF {
 	public function createPriceDiv($name,$description,$product_price){
 
 		if(empty($product_price)) return '';
+
 		//Console::logSpeed('hopFunctionsF::createPriceDiv called');
 		//This could be easily extended by product specific settings
 		if(VmConfig::get($name) =='1'){
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
-	 			$calculator = calculationHelper::getInstance();
-	 			$product_price[$name] = $calculator->priceDisplay($product_price[$name]);
+				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+				$currency = CurrencyDisplay::getInstance();
+		 		$product_price[$name] = $currency->priceDisplay($product_price[$name]);
 	 		} else {
 	 			$vis = "none";
 	 		}
@@ -161,7 +163,7 @@ class shopFunctionsF {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
-			//Todo this is old stuff and must be adjusted	
+			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));

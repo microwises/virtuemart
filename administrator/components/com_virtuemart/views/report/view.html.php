@@ -57,16 +57,16 @@ class VirtuemartViewReport extends JView {
 
 		switch($curTask){
 			default:{
-				
+
 				$pagination = $model->getPagination();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				$date_presets = ReportFunctions::getDatePresets();
 				$lists['select_date'] = ReportFunctions::renderDateSelectList($date_presets, $from_period, $until_period);
-				
+
 				// set period
-				$tzoffset     = $config->getValue('config.offset');		
+				$tzoffset     = $config->getValue('config.offset');
 				// check period - set to defaults if no value is set or dates cannot be parsed
 				if (empty($from_period) && empty($until_period)) {
 					$from_period  = $date_presets['today']['from'];
@@ -76,16 +76,16 @@ class VirtuemartViewReport extends JView {
 				} else {
 					$from         =& JFactory::getDate($from_period, $tzoffset);
 					$until        =& JFactory::getDate($until_period, $tzoffset);
-				}		
+				}
 
 				$this->assignRef('pagination', $pagination);
 
-				$myCurrencyDisplay = CurrencyDisplay::getCurrencyDisplay();
+				$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 				$revenueBasic = $model->getRevenue($from, $until);
 				if(is_array($revenueBasic)){
 					foreach($revenueBasic as $i => $j){
-						$j->revenue = $myCurrencyDisplay->getValue($j->revenue);
+						$j->revenue = $myCurrencyDisplay->priceDisplay($j->revenue,'',false);
 					}
 					unset($i);
 				}

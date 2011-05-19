@@ -251,7 +251,8 @@ class VirtueMartModelProduct extends VmModel {
 				$product->prices = $prices;
 
 				/* Add the product link  for canonical */
-				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id.'&virtuemart_category_id='.$product->categories[0]);
+				$producCategory = empty($product->categories[0])? '':$product->categories[0];
+				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id.'&virtuemart_category_id='.$producCategory);
 
 				/* Load the neighbours */
 				$product->neighbours = $this->getNeighborProducts($product);
@@ -1896,10 +1897,11 @@ class VirtueMartModelProduct extends VmModel {
 
 			if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 			$row= 0 ;
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
+			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+			$currency = CurrencyDisplay::getInstance();
+//			$calculator = calculationHelper::getInstance();
 
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
+//			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 //			$vendor_currency = VirtueMartModelVendor::getVendorCurrency($product->virtuemart_vendor_id)->currency_code;
 			// render select list
 			foreach ($groups as & $group) {
@@ -1916,9 +1918,9 @@ class VirtueMartModelProduct extends VmModel {
 				$group->options = array();
 				foreach ( $options as $option) $group->options[$option->value] = $option;
 
-				foreach ($group->options as $productCustom) {
-					$productCustom->custom_price = $calculator->priceDisplay($productCustom->custom_price,'',true);
-				}
+//				foreach ($group->options as $productCustom) {
+//					$productCustom->custom_price = $currency->priceDisplay($productCustom->custom_price,'',true);
+//				}
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
@@ -2008,9 +2010,9 @@ class VirtueMartModelProduct extends VmModel {
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
 				/* Loads the product price details */
-				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				$calculator = calculationHelper::getInstance();
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$calculator->priceDisplay($price,$calculator->vendor_currency,true).' ';
+				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+				$currency = CurrencyDisplay::getInstance();
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$currency->priceDisplay($price,$calculator->vendor_currency,true).' ';
 				break;
 				/*userfield variants*/
 				case 'U':

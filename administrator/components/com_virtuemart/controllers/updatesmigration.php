@@ -226,11 +226,57 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 	}
 
+	/**
+	 * This function resets the flag in the config that dangerous tools can't be executed anylonger
+	 * This is a security feature
+	 *
+	 * Enter description here ...
+	 */
 	function setDangerousToolsOff(){
 
 		$model = $this->getModel('config');
-
 		$model->setDangerousToolsOff();
 
 	}
+
+
+	function portCurrency(){
+
+//		$this->setRedirect($this->redirectPath);
+		$db = JFactory::getDBO();
+		$q = 'SELECT `virtuemart_currency_id`,
+		  `currency_name`,
+		  `currency_code_2`,
+		  `currency_code` AS currency_code_3,
+		  `currency_numeric_code`,
+		  `currency_exchange_rate`,
+		  `currency_symbol`,
+		`currency_display_style` AS `_display_style`
+			FROM `#__virtuemart_currencia` ORDER BY virtuemart_currency_id';
+		$db->setQuery($q);
+		$result = $db->loadObjectList();
+
+		foreach ($result as $item){
+
+//			$item->virtuemart_currency_id = 0;
+			$item->currency_exchange_rate = 0;
+			$item->published = 1;
+			$item->shared = 1;
+			$item->virtuemart_vendor_id = 1;
+
+			$style = explode('|',$item->_display_style);
+
+
+			$item->currency_nbDecimal = $style[2];
+			$item->currency_decimal_symbol = $style[3];
+			$item->currency_thousands = $style[4];
+			$item->currency_positive_style = $style[5];
+			$item->currency_negative_style = $style[6];
+
+			$db->insertObject('#__virtuemart_currencies', $item);
+		}
+		dump($db,'mein item');
+		$this->setRedirect($this->redirectPath);
+	}
+
 }

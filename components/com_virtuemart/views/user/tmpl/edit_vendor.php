@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo $this->currency->getNbrDecimals(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_decimal_place" size="10" value="<?php echo $this->currency->getNbrDecimals(); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_THOUSANDS'); ?>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo $this->currency->getThousandsSeperator(); ?>" />
+				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands" size="10" value="<?php echo $this->currency->getThousandsSeperator(); ?>" />
 			</td>
 		</tr>
 		<tr>
