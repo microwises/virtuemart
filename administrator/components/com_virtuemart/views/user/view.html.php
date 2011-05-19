@@ -39,8 +39,9 @@ class VirtuemartViewUser extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopfunctions');
+		
 
-		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
 
 		$_currentUser =& JFactory::getUser();
@@ -48,14 +49,21 @@ class VirtuemartViewUser extends JView {
 		$task = JRequest::getVar('task', 'edit');
 		if($task == 'editshop'){
 			$model->setCurrent();
+			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','Shop');
+		} else {
+			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','shop');
 		}
+		
+		$this->assignRef('viewName',$viewName);
+
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
 			// Get the required helpers
 			$this->loadHelper('permissions');
 			$this->loadHelper('shoppergroup');
-			$this->loadHelper('shopfunctions');
+
 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 
@@ -72,19 +80,19 @@ class VirtuemartViewUser extends JView {
 			. '<span title="' . JText::_('COM_VIRTUEMART_APPLY') . '" class="icon-32-apply"></span>' . JText::_('COM_VIRTUEMART_APPLY') . '</a>';
 			$_toolBar =& JToolBar::getInstance('toolbar');
 
-			if ($_new) { // Insert new user
-				if($task=='editshop'){
-					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
-				} else {
-					JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
-				}
-			} else { // Update existing user
-				if($task=='editshop'){
-					JToolBarHelper::title( JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
-				} else {
-					JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
-				}
-			}
+			// if ($_new) { // Insert new user
+				// if($task=='editshop'){
+					// JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
+				// } else {
+					// JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_user_48.png');
+				// }
+			// } else { // Update existing user
+				// if($task=='editshop'){
+					// JToolBarHelper::title( JText::_('COM_VIRTUEMART_STORE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
+				// } else {
+					// JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_user_48.png');
+				// }
+			// }
 
 			JToolBarHelper::divider();
 			$_toolBar->appendButton('Custom', $_applyButton);
@@ -263,16 +271,14 @@ class VirtuemartViewUser extends JView {
 					 $this->assignRef('editor', $editor);
 					 $this->assignRef('pane', $pane);
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USER_LIST_LBL'), 'vm_user_48.png');
-
 
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('toggle.user_is_vendor.1', 'publish','','COM_VIRTUEMART_USER_ISVENDOR');
 			JToolBarHelper::custom('toggle.user_is_vendor.0', 'unpublish','','COM_VIRTUEMART_USER_ISNOTVENDOR');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
-                        JToolBarHelper::editListX();
-                        JToolBarHelper::addNewX();
+			JToolBarHelper::editListX();
+			JToolBarHelper::addNewX();
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
 

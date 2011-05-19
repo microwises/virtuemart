@@ -53,7 +53,7 @@ $option = JRequest::getWord('option');
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS_LIST'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'user_rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>

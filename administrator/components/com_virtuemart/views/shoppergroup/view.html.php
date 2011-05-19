@@ -34,39 +34,31 @@ class VirtuemartViewShopperGroup extends JView {
   function display($tpl = null) {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 //		$this->assignRef('perms', Permissions::getInstance());
 
 		$model = $this->getModel();
 		//$vendorModel = $this->getModel('Vendor');
-		$layoutName = JRequest::getVar('layout', 'default');
+		$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
+		$this->assignRef('viewName',$viewName);
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			$shoppergroup = $model->getShopperGroup();
-			$isNew = ($shoppergroup->virtuemart_shoppergroup_id < 1);
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shop_users_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_shop_users_48');
-			}
 
 			$this->loadHelper('shopfunctions');
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 			$this->assignRef('shoppergroup',	$shoppergroup);
 
+			ShopFunctions::addStandardEditViewCommands();
+
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_LBL'), 'vm_shop_users_48' );
-			
-			
-			JToolBarHelper::deleteList();
-                        JToolBarHelper::editListX();
-                        JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
+
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
