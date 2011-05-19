@@ -1,14 +1,11 @@
 <?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* VirtueMart Search Module
-* NOTE: THIS MODULE REQUIRES THE PHPSHOP COMPONENT FOR MOS!
-*
 * @version $Id$
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2004-2007 soeren
+* @copyright (C) 2011 Patrick Kohl
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.

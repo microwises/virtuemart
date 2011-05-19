@@ -126,21 +126,27 @@ class VirtueMartViewProductdetails extends JView {
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem($product->product_name);
 
-		/* Load the reviews */
-		// if (VmConfig::get('allow_reviews', 1) == '1') {
+		$ratingModel = $this->getModel('ratings');
+		$showReview = $ratingModel->showReview($product->virtuemart_product_id);
+		$this->assignRef('showReview', $showReview);
 
-			// $model = $this->getModel();
-			// /* Show all reviews available */
-			// $product_reviews = $model->getProductReviews($product->virtuemart_product_id);
-			// $this->assignRef('product_reviews', $product_reviews);
-		// }
+		$showReview = $ratingModel->allowReview($product->virtuemart_product_id);
+		$this->assignRef('allowReview', $showReview);
 
-		// $ratingModel = $this->getModel('ratings');
-		// $showReview = $ratingModel->showReview($product->virtuemart_product_id);
-		// $this->assignRef('showReview', $showReview);
+		if($showReview){
+			$model = $this->getModel();
 
-		// $showRating = $ratingModel->showRating($product->virtuemart_product_id);
-		// $this->assignRef('showRating', $showRating);
+			/* Show all reviews available */
+			$product_reviews = $model->getProductReviews($product->virtuemart_product_id);
+			$this->assignRef('product_reviews', $product_reviews);
+
+		}
+
+		$showRating = $ratingModel->showRating($product->virtuemart_product_id);
+		$this->assignRef('showRating', $showRating);
+
+		$showRating = $ratingModel->allowRating($product->virtuemart_product_id);
+		$this->assignRef('allowRating', $showRating);
 
 		/* Check for editing access */
 		/** @todo build edit page */
@@ -192,6 +198,8 @@ class VirtueMartViewProductdetails extends JView {
 		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
 
 		shopFunctionsF::addProductToRecent($virtuemart_product_id);
+
+
 		//TODO add params, add event
 //		$params = new JParameter();
 //		/*

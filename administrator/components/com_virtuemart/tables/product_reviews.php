@@ -43,7 +43,7 @@ class TableProduct_reviews extends VmTableData {
 	var $review_ok       				= null;
 
 	/** The rating of shoppers for the review*/
-	var $review_rate         			= null;
+	var $review_rates         			= null;
 	var $review_ratingcount      		= null;
 	var $review_rating      			= null;
 

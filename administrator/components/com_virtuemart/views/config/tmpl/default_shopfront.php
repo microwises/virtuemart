@@ -149,36 +149,68 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 	    <fieldset class="adminform">
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 		<table class="admintable">
-		<tr>
-	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
-				</span>
-	    	</td>
-	    	<td>
-				<?php 
-				 $showReviewFor = array(1 => 'anonymous', 2 => 'user', 3 => 'user_buy_it', 4 => 'vendor');
-				echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
-	    	</td>
-			</tr>   
+			<tr>
+		    	<td class="key">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_EXPLAIN'); ?>">
+					<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW') ?></label>
+					</span>
+		    	</td>
+		    	<td>
+		    	<?php
+		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
+											1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
+											2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
+											); //showReviewFor
+					echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
+
+		    	</td>
+				</tr>
 			<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
+				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
 				</span>
 	    	</td>
 	    	<td>
-				<?php echo VmHTML::checkbox('showReviewFor', $this->config->get('showReviewFor')); ?>
+				<?php
+				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
+				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
+				 						2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
+				 						3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
+										); //showReviewFor
+				echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
 	    	</td>
 			</tr>
 			<tr>
+		    	<td class="key">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_EXPLAIN'); ?>">
+					<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW') ?></label>
+					</span>
+		    	</td>
+		    	<td>
+		    	<?php
+		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
+		    								1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
+											2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
+											); //showReviewFor
+					echo VmHTML::radioList('showRatingFor', $this->config->get('showRatingFor',2),$showReviewFor); ?>
+
+		    	</td>
+				</tr>
+			<tr>
 	    	<td class="key">
 				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
-				<label for="conf_PSHOP_ALLOW_REVIEWS"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
+				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
 				</span>
 	    	</td>
 	    	<td>
-				<?php echo VmHTML::checkbox('showRatingFor', $this->config->get('showRatingFor')); ?>
+				<?php
+				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
+				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
+										2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED'),
+										3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')
+										); //showReviewFor
+				echo VmHTML::radioList('ratingMode', $this->config->get('ratingMode',2),$showReviewFor); ?>
 	    	</td>
 			</tr>
 			<tr>
@@ -437,7 +469,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
-			    <label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+			    <label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
 			    </span>
 			</td>
 			<td>

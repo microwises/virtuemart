@@ -41,11 +41,6 @@ class VirtuemartControllerRatings extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('RATING');
-		/* Redirects */
-		$this->registerTask('unpublish','publish');
-		$this->registerTask('add','edit');
-		$this->registerTask('cancel','ratings');
 	}
 
 	/**

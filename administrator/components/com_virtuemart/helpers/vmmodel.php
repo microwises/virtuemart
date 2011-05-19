@@ -206,7 +206,7 @@ class VmModel extends JModel {
 			$this->setError($table->getError());
 			return false;
 		}
-
+		dump($table,'hm');
 		return true;
     }
 
@@ -303,7 +303,7 @@ class VmModel extends JModel {
 		}
 
 		return true;
-	} 
+	}
     //General toggle could be nice, lets see
 //	/**
 //	 * Switch a toggleable field on or off

@@ -42,6 +42,7 @@ class VirtueMartModelRatings extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('product_ratings');
+
 	}
 
     /**
@@ -52,7 +53,8 @@ class VirtueMartModelRatings extends VmModel {
      	/* Pagination */
      	$this->getPagination();
 
-     	$q = 'SELECT * FROM `#__virtuemart_product_ratings` AS `pr` LEFT JOIN `#__virtuemart_products` AS `p`
+//     	$q = 'SELECT * FROM `#__virtuemart_product_ratings`  ORDER BY `modified_on`';
+     	$q = 'SELECT p.*,pr.* FROM `#__virtuemart_product_ratings` AS `pr` JOIN `#__virtuemart_products` AS `p`
      			ON `pr`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ORDER BY `pr`.`modified_on` ';
 
 //     	/* Build the query */
@@ -67,7 +69,7 @@ class VirtueMartModelRatings extends VmModel {
 //     			#__virtuemart_product_reviews.userid,
 //			#__virtuemart_product_reviews.published
 //     			".$this->getRatingsListQuery().$this->getRatingsFilter();
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);dump($db,'my db');
+     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList();
     }
 
@@ -142,47 +144,6 @@ class VirtueMartModelRatings extends VmModel {
 		return $ratings_data;
     }
 
-    /**
-    * Set the publish/unpublish state
-    */
-    public function setPublish() {
-     $cid = JRequest::getVar('cid', false);
-     	if (is_array($cid)) {
-     		$db = JFactory::getDBO();
-     		$cids = implode( ',', $cid );
-	} else {
-		$cids = $cid;
-	}
-
-	if (JRequest::getVar('task') == 'publish') $state =  '1'; else $state = '0';
-	$q = "UPDATE #__virtuemart_product_reviews
-		SET published = ".$db->Quote($state)."
-		WHERE virtuemart_product_review_id IN (".$cids.")";
-	$db->setQuery($q);
-	if ($db->query()) return true;
-	else return false;
-    }
-
-    /**
-    * Delete a rating
-    * @author RolandD
-    */
-    public function removeRating() {
-		/* Get the product IDs to remove */
-		$cids = array();
-		$cids = JRequest::getVar('cid');
-		if (!is_array($cids)) $cids = array($cids);
-
-		/* Start removing */
-		foreach ($cids as $key => $ratings_id) {
-			/* First copy the product in the product table */
-			$ratings_data = $this->getTable('ratings');
-
-			/* Load the product details */
-			$ratings_data->delete($ratings_id);
-		}
-		return true;
-    }
 
     /**
     * Save a rating
@@ -234,7 +195,6 @@ class VirtueMartModelRatings extends VmModel {
 
 			/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
 			if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
-			else $data['published'] = 0;
 
 	    	$review = $this->getTable('product_reviews');
 			$review->load($data['virtuemart_product_id']);
@@ -242,7 +202,7 @@ class VirtueMartModelRatings extends VmModel {
 			if(!empty($review->review_rates)){
 				$data['review_rates'] = $review->review_rates + $data['review_rate'];
 			} else {
-				$data['review_rates'] = $data['review_rate'];
+				$data['review_rates'] = $data['rate'];
 			}
 
 			if(!empty($review->review_ratingcount)){
@@ -288,12 +248,20 @@ class VirtueMartModelRatings extends VmModel {
 
 	public function showReview($product_id){
 
-		return $this->show($product_id, VmConfig::get('showReviewFor',1));
+		return $this->show($product_id, VmConfig::get('showReviewFor',2));
 	}
 
 	public function showRating($product_id){
 
-		return $this->show($product_id, VmConfig::get('showRatingFor',1));
+		return $this->show($product_id, VmConfig::get('showRatingFor',2));
+	}
+
+	public function allowReview($product_id){
+		return $this->show($product_id, VmConfig::get('reviewMode',2));
+	}
+
+	public function allowRating($product_id){
+		return $this->show($product_id, VmConfig::get('reviewMode',2));
 	}
 
 	private function show($product_id, $show){
@@ -303,7 +271,7 @@ class VirtueMartModelRatings extends VmModel {
 			return false;
 		}
 		//show all
-		else if ($show == 1){
+		else if ($show == 3){
 			return true;
 		}
 		//show only registered
@@ -312,7 +280,7 @@ class VirtueMartModelRatings extends VmModel {
 			return !empty($user->id);
 		}
 		//show only registered && who bought the product
-		else if ($show == 3){
+		else if ($show == 1){
 			if(!empty($this->_productBought)) return true;
 
 			$user = JFactory::getUser();

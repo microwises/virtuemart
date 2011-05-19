@@ -1,13 +1,11 @@
 <?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct access to '.basename(__FILE__).' is not allowed.' );
 /**
-* mambo-phphop Main Module
-* NOTE: THIS MODULE REQUIRES AN INSTALLED MAMBO-PHPSHOP COMPONENT!
 *
 * @version $Id: mod_virtuemart.php 2225 2010-01-19 23:18:41Z rolandd $
 * @package VirtueMart
 * @subpackage modules
-* 
+*
 * @copyright (C) 2004-2008 soeren - All Rights reserved
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
@@ -60,7 +58,7 @@ $db = JFactory::getDBO();
 // This is "Categories:" by default. Change it in the Module Parameters Form
 echo $pretext;
 
-// update the cart because something could have 
+// update the cart because something could have
 // changed while running a function
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 
@@ -69,16 +67,16 @@ $cart = VirtueMartCart::getCart(false);
 
 if( $show_categories == "yes" ) {
   require(JModuleHelper::getLayoutPath('mod_virtuemart',$menutype));
-  
+
 }
 ?>
 <table cellpadding="1" cellspacing="1" border="0" width="100%">
 <?php
 // "List all Products" Link
 if ( $show_listall == 'yes' ) { ?>
-    <tr> 
+    <tr>
       <td colspan="2"><br />
-	   
+
 
           <a href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_category_id=0'); ?>">
           <?php echo  JText::_('MOD_VIRTUEMART_LIST_ALL_PRODUCTS') ?>
@@ -90,9 +88,9 @@ if ( $show_listall == 'yes' ) { ?>
 
 // Product Search Box
 if ( $show_productsearch == 'yes' ) { ?>
-  
-  <!--BEGIN Search Box --> 
-  <tr> 
+
+  <!--BEGIN Search Box -->
+  <tr>
     <td colspan="2">
 	  <hr />
       <label for="shop_search_field"><?php echo JText::_('MOD_VIRTUEMART_PRODUCT_SEARCH_LBL') ?></label>
@@ -118,39 +116,39 @@ if ( $show_productsearch == 'yes' ) { ?>
         <hr />
     </td>
   </tr>
-  <!-- End Search Box --> 
-<?php 
+  <!-- End Search Box -->
+<?php
 }
-  
+
 /*$perm = new ps_perm;
 // Show the Frontend ADMINISTRATION Link
-if ($perm->check("admin,storeadmin") 
-      && ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' ) 
+if ($perm->check("admin,storeadmin")
+      && ((!stristr($my->usertype, "admin") ^ PSHOP_ALLOW_FRONTENDADMIN_FOR_NOBACKENDERS == '' )
           || stristr($my->usertype, "admin")
       )
       && $show_adminlink == 'yes'
     ) { ?>
-    <tr> 
+    <tr>
       <td colspan="2">
       	<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin") ?>">
       	<?php echo JText::_('COM_VIRTUEMART_ADMIN_MOD'); ?>
       	</a>
       </td>
     </tr>
-  <?php 
+  <?php
 }
 
 // Show the Account Maintenance Link TODO
 if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes') {
-  ?> 
-    <tr> 
+  ?>
+    <tr>
       <td colspan="2"><a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=account.index");?>">
       <?php echo JText::_('COM_VIRTUEMART_ACCOUNT_TITLE') ?></a></td>
-    </tr><?php 
+    </tr><?php
 } */
 // Show DOWNLOAD Link
 if ($config->get('enable_downloads') == '1') { ?>
-  <tr> 
+  <tr>
     <td colspan="2">
         <a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=shop.downloads");?>">
         <?php echo JText::_('COM_VIRTUEMART_DOWNLOADS_TITLE') ?>
@@ -204,8 +202,8 @@ if ($config->get('use_as_catalog') != '1' && $show_minicart == 'yes'  && !$enabl
 			</div>
         </td>
     </tr>
-        <?php 
-} 
+        <?php
+}
 ?>
-   
+
 </table>
