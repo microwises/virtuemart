@@ -45,6 +45,10 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmOrderPlugin')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_orders_48');
+		$this->assignRef('viewName',$viewName);
+
 		$curTask = JRequest::getVar('task');
 		if ($curTask == 'edit') {
 
@@ -143,7 +147,6 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::title(JText::_('COM_VIRTUEMART_ORDER_EDIT_LBL'), 'vm_orders_48');
 			JToolBarHelper::back();
 		}
 		else if ($curTask == 'editOrderItem') {
@@ -190,13 +193,15 @@ class VirtuemartViewOrders extends JView {
 			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-			/* Toolbar */
-			JToolBarHelper::title(JText::_('COM_VIRTUEMART_ORDER_LIST_LBL'), 'vm_orders_48');
+
+
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
 			 * the arguments.
 			 */
+
+			 /* Toolbar */
 			JToolBarHelper::save('editOrderStatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 

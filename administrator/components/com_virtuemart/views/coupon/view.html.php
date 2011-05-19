@@ -40,11 +40,8 @@ class VirtuemartViewCoupon extends JView {
 		$model = $this->getModel();
 
         $coupon = $model->getCoupon();
-
-		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_COUPON');
+		$viewName=ShopFunctions::SetViewTitle('vm_coupon_48');
 		$this->assignRef('viewName',$viewName); 
-		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_coupon_48');
 
         $layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {

@@ -38,7 +38,7 @@ class VirtuemartViewCurrency extends JView {
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
-        $layoutName = JRequest::getVar('layout', 'default');
+
 
 		$db = JFactory::getDBO();
 		$config =& JFactory::getConfig();
@@ -47,25 +47,18 @@ class VirtuemartViewCurrency extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
+		$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
+		$this->assignRef('viewName',$viewName); 
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$currency = $model->getCurrency(true);
 			$this->assignRef('currency',	$currency);
-			$isNew = ($currency->virtuemart_currency_id < 1);
-
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CURRENCY_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_currency_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_currency_48');
-			}
 
 			ShopFunctions::addStandardEditViewCommands();
 
-       }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CURRENCY_LIST_LBL'), 'vm_currency_48' );
-
+       } else {
 			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();

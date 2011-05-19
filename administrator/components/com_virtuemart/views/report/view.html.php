@@ -43,7 +43,7 @@ class VirtuemartViewReport extends JView {
 		$from_period  = JRequest::getVar('from_period', '');
 		$until_period = JRequest::getVar('until_period', '');
 
-		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT_MOD'), 'vm_report_48');
+		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT'), 'vm_report_48');
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');

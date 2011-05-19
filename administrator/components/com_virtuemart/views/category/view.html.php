@@ -44,10 +44,9 @@ class VirtuemartViewCategory extends JView {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $view = JRequest::getCmd('view');
-		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_CATEGORY');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_categories_48');
 		$this->assignRef('viewName',$viewName); 
-		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_categories_48');
 
 		if ($layoutName == 'edit') {
 

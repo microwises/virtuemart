@@ -38,17 +38,15 @@ class VirtuemartViewManufacturer extends JView {
 		$this->loadHelper('shopFunctions');
 
 		$mainframe = JFactory::getApplication();
-		global $option;
+		$option = JRequest::getCmd('option');
 		// get necessary models
 		$model = $this->getModel();
 		$categoryModel = $this->getModel('manufacturercategories');
         $virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
-		
-		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_MANUFACTURER');
-		$this->assignRef('viewName',$viewName); 
-		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_manufacturer_48');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48');
+		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {

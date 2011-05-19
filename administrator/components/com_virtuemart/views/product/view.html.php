@@ -238,10 +238,7 @@ class VirtuemartViewProduct extends JView {
 				else $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT').' :: '.$product->product_sku.' :: '.$product->product_name;
 
 				JToolBarHelper::title($text, 'vm_product_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-                JToolBarHelper::apply();
-				JToolBarHelper::cancel();
+				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
 			case 'addproducttype':
@@ -353,12 +350,7 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
-				JToolBarHelper::divider();
-				JToolBarHelper::publish();
-				JToolBarHelper::unpublish();
-				JToolBarHelper::deleteListX();
-                                JToolBarHelper::editListX();
-				JToolBarHelper::addNewX();
+				ShopFunctions::addStandardDefaultViewCommands();
 
 				/* Assign the data */
 				$this->assignRef('productlist', $productlist);

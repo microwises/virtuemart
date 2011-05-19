@@ -33,18 +33,23 @@ class VirtuemartViewRatings extends JView {
 
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getVar('option');
-		$lists = array();
+
 		/* Load helpers */
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
-		/* Get the task */
-		$task = JRequest::getVar('task');
+
 		//
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
 
 		$model = $this->getModel();
+		$viewName=ShopFunctions::SetViewTitle('vm_reviews_48');
+		$this->assignRef('viewName',$viewName);
+
+		/* Get the task */
+		$task = JRequest::getVar('task');
 		switch ($task) {
 			case 'add':
 				// @todo: adding is slightly different (not supported for now, from admin page).
@@ -52,12 +57,7 @@ class VirtuemartViewRatings extends JView {
 				/* Get the data */
 				$rating = $model->getRating();
 
-				/* Toolbar */
-				JToolBarHelper::title(JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE').' :: '.$rating->product_name, 'vm_product_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::apply();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
+				ShopFunctions::addStandardEditViewCommands();
 
 				/* Assign the data */
 				$this->preprocess($rating);
@@ -70,16 +70,11 @@ class VirtuemartViewRatings extends JView {
 				dump($ratingslist,'$ratingslist');
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
+				$lists = array();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-				/* Toolbar */
-				JToolBarHelper::title(JText::_('COM_VIRTUEMART_REVIEWS'), 'vm_reviews_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::publishList();
-				JToolBarHelper::unpublishList();
-				JToolBarHelper::deleteListX();
-				JToolBarHelper::editListX();
+				ShopFunctions::addStandardDefaultViewCommands();
 
 				/* Assign the data */
 				$this->preprocess($ratingslist);

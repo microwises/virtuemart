@@ -36,23 +36,16 @@ class VirtuemartViewShippingRate extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
         $shippingRate = $model->getShippingRate();
 
-        $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($shippingRate->virtuemart_shippingrate_id < 1);
+		$viewName=ShopFunctions::SetViewTitle('vm_shipping_rates_48');
+		$this->assignRef('viewName',$viewName);
 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_RATE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shipping_rates_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_shipping_rates_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::apply();
-			JToolBarHelper::save();
-			JToolBarHelper::cancel();
 
 			$this->assignRef('rate', $shippingRate);
 
@@ -71,12 +64,13 @@ class VirtuemartViewShippingRate extends JView {
         	$taxrates = $this->renderTaxList($shippingRate->shipping_rate_vat_id);
 
         	$this->assignRef('taxRates', $taxrates);
-        }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_RATE_LIST_LBL'), 'vm_shipping_rates_48');
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList();
+			ShopFunctions::addStandardEditViewCommands();
+        } else {
+			// IS this nothing missing
+			// JToolBarHelper::addNewX();
+			// JToolBarHelper::editListX();
+			// JToolBarHelper::deleteList();
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

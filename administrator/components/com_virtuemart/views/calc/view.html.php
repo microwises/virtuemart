@@ -53,10 +53,8 @@ class VirtuemartViewCalc extends JView {
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
 
-		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_CALC');
+		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
 		$this->assignRef('viewName',$viewName); 
-		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_countries_48');
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {

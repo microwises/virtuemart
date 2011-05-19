@@ -41,26 +41,20 @@ class VirtuemartViewCreditcard extends JView {
 
         $creditcard =& $model->getCreditCard();
 
-        $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($creditcard->virtuemart_creditcard_id < 1);
-
+		$viewName=ShopFunctions::SetViewTitle('vm_credit_48');
+		$this->assignRef('viewName',$viewName);
+ 
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			$this->loadHelper('shopFunctions');
 			$vendorList= ShopFunctions::renderVendorList($creditcard->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
-
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_credit_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_credit_48');
-			}
 
 			$this->assignRef('creditcard',	$creditcard);
 
 			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_LBL'), 'vm_credit_48' );
 
 			ShopFunctions::addStandardDefaultViewCommands();
 

@@ -34,33 +34,28 @@ class VirtuemartViewModule extends JView {
   function display($tpl = null) {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		//$vendorModel = $this->getModel('Vendor');
 
 		$module = $model->getModule();
-		$layoutName = JRequest::getVar('layout', 'default');
-		$isNew = ($module->virtuemart_shoppergroup_id < 1);
 
+		$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
+		$this->assignRef('viewName',$viewName);
+
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-		  if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_MODULE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_shop_users_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel();
-		  } else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_MODULE_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_shop_users_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::save();
-				JToolBarHelper::cancel('cancel', 'Close');
-		  }
-		  $this->assignRef('shoppergroup',	$module);
+
+			$this->assignRef('shoppergroup',	$module);
+
 		  //$this->assignRef('vendors',	$zoneModel->getWorldZonesSelectList());
-		}	else {
-			JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_MODULE_LIST_LBL' ), 'vm_shop_users_48' );
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
-			JToolBarHelper::deleteList();
+
+			ShopFunctions::addStandardEditViewCommands();
+
+		} else {
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

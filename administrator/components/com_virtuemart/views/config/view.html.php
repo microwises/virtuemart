@@ -39,15 +39,13 @@ class VirtuemartViewConfig extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
 		$this->loadHelper('html');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');
 
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' , JToolBarHelper::title(JText::_('COM_VIRTUEMART_CONFIG'),JToolBarHelper::title(JText::_('COM_VIRTUEMART_LIST') , 'vm_config_48');
-		JToolBarHelper::divider();
-		JToolBarHelper::apply();
-		JToolBarHelper::save();
-		JToolBarHelper::cancel('cancel', 'Close');
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' , JText::_('COM_VIRTUEMART_CONFIG'),JText::_('COM_VIRTUEMART_LIST') ), 'vm_config_48');
+		shopFunctions::addStandardEditViewCommands();
 
 		$config = $model->getConfig();
 		$this->assignRef('config', $config);
@@ -58,7 +56,6 @@ class VirtuemartViewConfig extends JView {
 		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
 
 		$this->assignRef('jTemplateList', $templateList);

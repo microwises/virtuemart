@@ -44,6 +44,18 @@ class ShopFunctions {
         JToolBarHelper::apply();
 		JToolBarHelper::cancel();
 	}
+	/**
+	 *Set the title of view and return the translated name
+	 *@ var $cssIcon the css class for icon
+	 *@ return $viewName
+	 **/
+	function SetViewTitle($cssIcon,$view=null) {
+		if (!$view) $view = JRequest::getVar('view');
+		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_'.$view);
+		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName) , $cssIcon);
+		return $viewName;
+	}
 
 	/**
 	 * Creates a Drop Down list of available Creditcards

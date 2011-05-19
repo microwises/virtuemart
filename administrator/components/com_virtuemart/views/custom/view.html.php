@@ -38,15 +38,12 @@ class VirtuemartViewCustom extends JView {
 
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');
-		$this->assignRef('perms', Permissions::getInstance());
+		// TODO Make an Icon for custom
+		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$this->assignRef('viewName',$viewName);
 
-		//@todo should be depended by loggedVendor
-		$vendorId=1;
-		$this->assignRef('vendorId', $vendorId);
-
-//		$layoutName = JRequest::getVar('layout', 'default');
-		$task = JRequest::getCmd('task', '');
-		if ($task == 'edit' || $task== 'add' ) {
+		$layoutName = JRequest::getVar('layout', 'default');
+		if ($layoutName == 'edit') {
 
 			$this->loadHelper('customhandler');
 			$field_types= VmCustomHandler::getField_types() ;
@@ -54,26 +51,10 @@ class VirtuemartViewCustom extends JView {
 			$custom = $model->getCustom();
 			$this->assignRef('custom',	$custom);
 
-			$isNew = ($custom->virtuemart_custom_id < 1);
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_CUSTOM_FORM').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_countries_48');
-
-				$usermodel = $this->getModel('user', 'VirtuemartModel');
-				$usermodel->setCurrent();
-				$userDetails = $usermodel->getUser();
-				if(empty($userDetails->virtuemart_vendor_id)){
-					JError::raiseError(403,JText::_('COM_VIRTUEMART_CUSTOM_FOR_VENDOR'));
-				}
-			}
-			else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
-			}
-
 			ShopFunctions::addStandardEditViewCommands();
 
         }
         else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CUSTOM_LIST_LBL'), 'vm_countries_48' );
 
 			JToolBarHelper::custom('createClone', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_CLONE'), true);
 			JToolBarHelper::custom('toggle.admin_only.0', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
