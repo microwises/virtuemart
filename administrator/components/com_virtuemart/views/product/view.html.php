@@ -278,7 +278,7 @@ class VirtuemartViewProduct extends JView {
 				$model = $this->getModel();
 
 				/* Get the list of products */
-				$productlist = $this->get('ProductList');
+				$productlist = $model->getProductList();
 
 				/* Get the category tree */
 				$categoryId = JRequest::getInt('virtuemart_category_id');

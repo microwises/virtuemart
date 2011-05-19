@@ -38,20 +38,14 @@ class VirtuemartViewInventory extends JView {
 		/* Get the task */
 		$task = JRequest::getVar('task');
 
-		switch ($task) {
-			case 'publish':
-			case 'unpublish':
-				$product_model = $this->getModel('product');
-				$product_model->publish();
-				break;
-		}
 
 		/* Load helpers */
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('currencydisplay');
 
 		/* Get the data */
-		$inventorylist = $product_model->getInventory();
+		$model = $this->getModel('product');
+		$inventorylist = $model->getProductList();
 
 		/* Apply currency */
 		$currencydisplay = CurrencyDisplay::getInstance();;

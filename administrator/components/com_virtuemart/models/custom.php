@@ -124,16 +124,18 @@ class VirtueMartModelCustom extends VmModel {
 		$datas->items = $this->_db->loadObjectList();
 
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
+		$customHandler = new VmCustomHandler();
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		$datas->field_types = VmCustomHandler::getField_types() ;
+		$datas->field_types = $customHandler->getField_types() ;
+
 		foreach ($datas->items as $key => & $data) {
-  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = VmCustomHandler::getCustomParentTitle($data->custom_parent_id);
+  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $customHandler->getCustomParentTitle($data->custom_parent_id);
 		else {
 			$data->custom_parent_title =  '-' ;
 		}
   		$data->field_type_display = $datas->field_types[$data->field_type ];
 		}
-		$datas->customsSelect=VmCustomHandler::displayCustomSelection();
+		$datas->customsSelect=$customHandler->displayCustomSelection();
 
 		return $datas;
     }
@@ -258,7 +260,7 @@ class VirtueMartModelCustom extends VmModel {
 		$row->load( $id );
 		$row->virtuemart_custom_id = 0;
 		$row->custom_title = $row->custom_title.' Copy';
-		
+
 		if (!$row->store()) {
 			JError::raiseError(500, $row->getError() );
 		}
