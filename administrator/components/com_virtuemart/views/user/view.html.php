@@ -245,10 +245,6 @@ class VirtuemartViewUser extends JView {
 					 	//				$_vendorCats = JHTML::_('select.genericlist', $vendorModel->getVendorCategories(), 'vendor_virtuemart_category_id', '', 'vendor_virtuemart_category_id', 'vendor_category_name', $userDetails->vendor->vendor_virtuemart_category_id);
 					 	//				$this->assignRef('vendorCategories', $_vendorCats);
 
-					 	//				//Different currency styles for different vendors are nonsense imho
-					 	//				$currency =	VirtueMartModelVendor::getCurrencyDisplay();
-
-//					 	$this->assignRef('vendorCurrency', $currency);
 					 }
 
 					 // Implement the Joomla panels. If we need a ShipTo tab, make it the active one.

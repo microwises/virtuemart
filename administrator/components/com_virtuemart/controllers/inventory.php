@@ -58,11 +58,11 @@ class VirtuemartControllerInventory extends VmController {
 		$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
 
 		/* Product model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ),true);
 
 
 		/* Now display the view. */
-		$view->display();
+		parent::display();
 	}
 
 }

@@ -35,6 +35,7 @@ class VirtuemartViewCalc extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel('calc');
 		$this->loadHelper('permissions');
@@ -89,16 +90,9 @@ class VirtuemartViewCalc extends JView {
 				if(empty($calc->virtuemart_vendor_id))$calc->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
-
 			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
 			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
 
-
-			$this->loadHelper('shopFunctions');
 
 			/* Get the category tree */
 			$categoryTree= null;
@@ -128,17 +122,17 @@ class VirtuemartViewCalc extends JView {
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
 			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,True);
 			$this->assignRef('vendorList', $vendorList);
+
+			ShopFunctions::addStandardEditViewCommands();
+
         }
         else {
 			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
 			JToolBarHelper::custom('toggle.calc_shopper_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_ON'), true);
 			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
 			JToolBarHelper::custom('toggle.calc_vendor_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -35,6 +35,7 @@ class VirtuemartViewCoupon extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 
@@ -73,16 +74,14 @@ class VirtuemartViewCoupon extends JView {
 					$coupon->coupon_expiry_date = $_expDate->format("U");
 				}
 			} 
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+
 			$this->assignRef('coupon',	$coupon);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

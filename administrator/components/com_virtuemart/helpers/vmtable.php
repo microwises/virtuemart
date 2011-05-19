@@ -137,6 +137,7 @@ class VmTable extends JTable {
     		$slugName = $this->slugName;
     		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
     			//TODO add replacment here
+
     			$this->$slugName = preg_replace( '%', '-', $this->$slugAutoName );
 //    			$this->$slugName =
     		}

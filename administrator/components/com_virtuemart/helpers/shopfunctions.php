@@ -27,6 +27,24 @@ class ShopFunctions {
 	}
 
 
+	function addStandardDefaultViewCommands (){
+
+		JToolBarHelper::divider();
+		JToolBarHelper::publishList();
+		JToolBarHelper::unpublishList();
+		JToolBarHelper::editListX();
+		JToolBarHelper::addNewX();
+		JToolBarHelper::deleteList();
+	}
+
+	function addStandardEditViewCommands (){
+
+		JToolBarHelper::divider();
+		JToolBarHelper::save();
+        JToolBarHelper::apply();
+		JToolBarHelper::cancel();
+	}
+
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *

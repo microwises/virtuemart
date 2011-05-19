@@ -35,7 +35,7 @@ class VirtuemartViewManufacturer extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-		$this->loadHelper('image');
+		$this->loadHelper('shopFunctions');
 
 		$mainframe = JFactory::getApplication();
 		global $option;
@@ -56,10 +56,6 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturer = $model->getManufacturer();
        		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 			$model->addImagesToManufacturer($manufacturer);
 			$this->assignRef('manufacturer',	$manufacturer);
@@ -71,14 +67,13 @@ class VirtuemartViewManufacturer extends JView {
 
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
 
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

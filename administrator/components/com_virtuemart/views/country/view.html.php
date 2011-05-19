@@ -35,6 +35,7 @@ class VirtuemartViewCountry extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 		$zoneModel = $this->getModel('Worldzones');
@@ -51,20 +52,17 @@ class VirtuemartViewCountry extends JView {
 		    else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_FORM').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
 		    }
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 		    $this->assignRef('country',	$country);
 		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
+
+			ShopFunctions::addStandardEditViewCommands();
+
 		}
 		else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_COUNTRY_LIST_LBL'), 'vm_countries_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -35,6 +35,7 @@ class VirtuemartViewCreditcard extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
 
@@ -53,19 +54,15 @@ class VirtuemartViewCreditcard extends JView {
 			} else {
 				JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_credit_48');
 			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-            JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+
 			$this->assignRef('creditcard',	$creditcard);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
 			JToolBarHelper::title( JText::_('COM_VIRTUEMART_CREDITCARD_LIST_LBL'), 'vm_credit_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -37,13 +37,13 @@ class VirtuemartViewCategory extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
-		$this->loadHelper('image');
+//		$this->loadHelper('image');
 
 		$model = $this->getModel();
-                $layoutName = JRequest::getVar('layout', 'default');
-                $mainframe = JFactory::getApplication();
-                $option = JRequest::getCmd('option');
-                $view = JRequest::getCmd('view');
+        $layoutName = JRequest::getVar('layout', 'default');
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $view = JRequest::getCmd('view');
 		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_CATEGORY');
 		$this->assignRef('viewName',$viewName); 
 		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
@@ -59,11 +59,6 @@ class VirtuemartViewCategory extends JView {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
 				$this->assignRef('relationInfo', $relationInfo);
 			}
-
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-            JToolBarHelper::apply();
-			JToolBarHelper::cancel();
 
 			$parent = $model->getParentCategory( $category->virtuemart_category_id );
 			$this->assignRef('parent', $parent);
@@ -84,13 +79,13 @@ class VirtuemartViewCategory extends JView {
 
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
+
+			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-            JToolBarHelper::publishList();
-            JToolBarHelper::unpublishList();
-            JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
+
 
 			/**
 			* Commented out for future use

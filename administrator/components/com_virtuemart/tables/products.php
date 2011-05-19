@@ -114,7 +114,7 @@ class TableProducts extends VmTable {
 		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
 
 //		$this->setUniqueName('country_name');
-//		$this->setObligatoryKeys('product_name');
+		$this->setObligatoryKeys('product_name');
 //		$this->setObligatoryKeys('country_3_code');
 
 		$this->setLoggable();

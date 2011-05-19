@@ -47,18 +47,13 @@ class VirtuemartViewManufacturercategories extends JView {
 		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName , 'vm_manufacturer_48');
 
 		if ($layoutName == 'edit') {
-			JToolBarHelper::divider();
-			JToolBarHelper::apply();
-			JToolBarHelper::save();
-			JToolBarHelper::cancel();
+			ShopFunctions::addStandardEditViewCommands();
+
 			$this->assignRef('manufacturerCategory',	$manufacturerCategory);
         }
         else {
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
