@@ -98,6 +98,7 @@ class user_info
 		$data =$_data;
 		// Format the data
 		foreach ($_prepareUserFields as $_fld) {
+			if(empty($_data[$_fld->name])) $_data[$_fld->name] = '';
 			$_data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $_data[$_fld->name],$data);
 		}
 

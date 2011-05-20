@@ -193,34 +193,40 @@ class VmTable extends JTable {
      * As shortcat
      *
      * @author Max Milbers
-     * @param unknown_type $model
-     * @param unknown_type $data
+     * @param array/obj $data input data as assoc array or obj
      * @param unknown_type $obligatory
+     * @return array/obj $data the updated data
      */
     public function bindChecknStore($data, $obligatory=false) {
 
+    	dump($data,'data to bind');
     	$ok = true;
-        if (!$this->bind($data)) {
+        if ( !$this->bind($data) ) $ok = false;
 
-			$ok = false;
+
+    	if( $ok ) {
+    		if( !$this->checkDataContainsTableFields($data) ) $ok = false;
 		}
 
-    	if(!$this->checkDataContainsTableFields($data) && $ok){
-
-			$ok = false;
+    	if( $ok ) {
+    		if( !$this->check($obligatory) ) $ok = false;
 		}
 
-		// Make sure the table record is valid
-		if (!$this->check($obligatory) && $ok) {
-
-			$ok = false;
+		if( $ok ) {
+    		if( !$this->store($data) ) $ok = false;
 		}
 
-		// Save the record to the database
-		if (!$this->store() && $ok) {
-
-			$ok = false;
-		}
+//		// Make sure the table record is valid
+//		if (!$this->check($obligatory) && $ok) {
+//
+//			$ok = false;
+//		}
+//
+//		// Save the record to the database
+//		if (!$this->store() && $ok) {
+//
+//			$ok = false;
+//		}
 
 		$tblKey = $this->_tbl_key;
 		if (is_object($data)){

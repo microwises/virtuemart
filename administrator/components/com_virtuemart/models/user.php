@@ -505,15 +505,18 @@ class VirtueMartModelUser extends VmModel {
 				$this->setError($error);
 			}
 
-			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+			if(!empty($_data['virtuemart_shoppergroup_id'])){
+				// Bind the form fields to the auth_user_group table
+				$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
+				$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
 
-			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-			$errors = $user_shoppergroups_table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
+				$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+				$errors = $user_shoppergroups_table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+				}
 			}
+
 
 //			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 //			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);

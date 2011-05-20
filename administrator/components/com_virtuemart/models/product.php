@@ -967,8 +967,8 @@ class VirtueMartModelProduct extends VmModel {
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
-			$xrefTable = $this->getTable('product_medias');
-			$mediaModel->storeMedia($data,$xrefTable,'product');
+//			$xrefTable = $this->getTable('product_medias');
+			$mediaModel->storeMedia($data,'product');
 		}
 
 		$product_price_table = $this->getTable('product_prices');
