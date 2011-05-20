@@ -49,8 +49,8 @@ class VirtuemartControllerProduct extends VmController {
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
 
-		$this->registerTask('edit','add');
-		$this->registerTask('apply','save');
+//		$this->registerTask('edit','add');
+//		$this->registerTask('apply','save');
 
 
 	}
@@ -84,7 +84,7 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Shows the product add/edit screen
 	 */
-	public function add() {
+	public function edit() {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
 

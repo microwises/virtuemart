@@ -250,7 +250,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$this->setError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 //		$msg .= JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
 	}
-	dump($usermodel);dump($this);
+
 	return true;
 
     }

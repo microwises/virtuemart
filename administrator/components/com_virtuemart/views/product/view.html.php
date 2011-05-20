@@ -62,8 +62,8 @@ class VirtuemartViewProduct extends JView {
 				$product_model = $this->getModel('product');
 
 				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
-
-				$product = $product_model->getProductSingle($virtuemart_product_id[0],false,false,false);
+				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
+				$product = $product_model->getProductSingle($virtuemart_product_id,false,false,false);
 
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -241,21 +241,21 @@ class VirtuemartViewProduct extends JView {
 				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
-			case 'addproducttype':
-				/* Get the product types that can be chosen */
-//				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
-//				$this->assignRef('producttypes', $producttypes);
-
-				/* Get the product */
-				$product = $this->get('ProductDetails');
-				$this->assignRef('product', $product);
-
-				/* Toolbar */
-				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
-				JToolBarHelper::title($text, 'vm_product_48');
-				JToolBarHelper::divider();
-				JToolBarHelper::cancel();
-				break;
+//			case 'addproducttype':
+//				/* Get the product types that can be chosen */
+////				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
+////				$this->assignRef('producttypes', $producttypes);
+//
+//				/* Get the product */
+//				$product = $this->get('ProductDetails');
+//				$this->assignRef('product', $product);
+//
+//				/* Toolbar */
+//				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
+//				JToolBarHelper::title($text, 'vm_product_48');
+//				JToolBarHelper::divider();
+//				JToolBarHelper::cancel();
+//				break;
 			default:
 				switch ($task) {
 					case 'publish':
