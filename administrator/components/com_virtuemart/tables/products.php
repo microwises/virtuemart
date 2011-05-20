@@ -107,7 +107,7 @@ class TableProducts extends VmTable {
 
 
 	/**
-	 * @author RolandD
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct($db) {

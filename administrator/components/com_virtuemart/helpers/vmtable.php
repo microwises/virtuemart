@@ -37,6 +37,7 @@ class VmTable extends JTable {
 	protected $_unique_name = array();
 
 	protected $_orderingKey = 'ordering';
+	protected $_slugAutoName = '';
 
     function setPrimaryKey($key,$keyForm=0){
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
@@ -119,22 +120,15 @@ class VmTable extends JTable {
      * @param
      */
     function check($obligatory=false) {
-    	
-    	if(!empty($this->_slugAutoName) ) {
 
+       	if(!empty($this->_slugAutoName) ) {
     		$slugAutoName = $this->_slugAutoName;
     		$slugName = $this->_slugName;
-			dump($this->$slugName,'hu value');
     		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
-    			//TODO add replacment here
-    			$this->$slugName = $this->$slugAutoName ;
-			}
-			$this->$slugName = JFilterInput::clean($this->$slugName, 'CMD') ;
-		} else if (!empty($this->_slugName)) {
-				$slugName = $this->_slugName;
-				$this->$slugName = JFilterInput::clean($this->$slugName, 'CMD') ;
-		}
-		
+				$this->$slugName = JFilterInput::clean($this->$slugAutoName, 'CMD') ;
+    		}
+    	}
+
     	foreach($this->_obkeys as $obkeys => $error){
     		if (empty($this->$obkeys)) {
     			if(empty($error)){
@@ -146,22 +140,16 @@ class VmTable extends JTable {
         	}
     	}
 
-    	dump($this->_slugAutoName,'hu');
-
-		dump($this->$slugAutoName,'hu value');
-
     	if ($this->_unique) {
-		    $db = JFactory::getDBO();
+		    $this->_db = JFactory::getDBO();
 		    foreach($this->_unique_name as $obkeys => $error){
 
 		   		$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
 				$q .= 'WHERE `'.$obkeys.'`="' .  $this->$obkeys . '"';
-	            $db->setQuery($q);
-			    $unique_id = $db->loadResultArray();
+	            $this->_db->setQuery($q);
+			    $unique_id = $this->_db->loadResultArray();
 
 			    $tblKey = $this->_tbl_key;
-				dump($q,'check unique');
-//				echo $q; die;
 				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
 					if(empty($error)){
 						$this->setError(JText::_($error));
@@ -210,30 +198,33 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
+    	$ok = true;
         if (!$this->bind($data)) {
-    		$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
-			return false;
+//    		$app = JFactory::getApplication();
+//    		$app->enqueueMessage('bindChecknStore error for bind');
+//    		$this->setError($this->_db->getError());
+			$ok = false;
 		}
 
-    	if(!$this->checkDataContainsTableFields($data)){
+    	if(!$this->checkDataContainsTableFields($data) && $ok){
 			$app = JFactory::getApplication();
     		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
-			return true;
+			$ok = false;
 		}
 
 		// Make sure the table record is valid
-		if (!$this->check($obligatory)) {
-			$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
-			return false;
+		if (!$this->check($obligatory) && $ok) {
+//			$app = JFactory::getApplication();
+//    		$app->enqueueMessage($this->getError());
+//    		$this->setError('Check in bindChecknStore throws error in class '.get_class( $this ).' for table '.$this->_tbl);
+			$ok = false;
 		}
 
 		// Save the record to the database
-		if (!$this->store()) {
+		if (!$this->store() && $ok) {
     		$app = JFactory::getApplication();
     		$app->enqueueMessage($this->getError());
-			return false;
+			$ok = false;
 		}
 
 		$tblKey = $this->_tbl_key;

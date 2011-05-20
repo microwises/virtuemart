@@ -150,7 +150,7 @@ class VirtuemartViewProduct extends JView {
 //				$product->attribute_values = $this->get('ProductAttributeValues');
 
 				/* TODO remove this */
-				$product->child_products = null;
+//				$product->child_products = null;
 
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = time();
@@ -179,9 +179,9 @@ class VirtuemartViewProduct extends JView {
 				$this->loadHelper('customhandler');
 				$fieldTypes = VmCustomHandler::getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
-				/* Load product types lists */
-				$productTypes = $this->get('productTypes');
-				$this->assignRef('productTypes', $productTypes);
+//				/* Load product types lists */
+//				$productTypes = $this->get('productTypes');
+//				$this->assignRef('productTypes', $productTypes);
 
 				/* Load affected product  customs fields */
 				//$productCustoms = $this->get('productCustomsList');
@@ -218,7 +218,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
-				$this->assignRef('product', $product);dump($product);
+				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
 				$this->assignRef('min_order', $min_order);

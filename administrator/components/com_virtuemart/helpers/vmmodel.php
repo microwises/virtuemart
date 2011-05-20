@@ -163,8 +163,7 @@ class VmModel extends JModel {
 	    	}
 
 		} else {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($table->getError());
+			$this->setError($table->getError());
 			return false;
 		}
 

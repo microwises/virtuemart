@@ -976,7 +976,7 @@ class VirtueMartModelProduct extends VmModel {
 	* @author Max Milbers
 	* @access public
 	*/
-	public function saveProduct($product=false) {
+	public function store($product=false) {
 
 		/* Load the data */
 		if($product){
@@ -991,29 +991,33 @@ class VirtueMartModelProduct extends VmModel {
 		/* Load the old product details first */
 		$product_data->load($data['virtuemart_product_id']);
 
-		/* Get the product data */
-		if (!$product_data->bind($data)) {
-			$this->setError($product_data->getError());
-			return false;
-		}
+		dump($product_data,'hu');
 
         /* Set the product packaging */
-        $product_data->product_packaging = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
+        $data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
 
         /* Set the order levels */
-        $product_data->product_order_levels = $data['min_order_level'].','.$data['max_order_level'];
+        $data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
 
-        if (!$product_data->check()) {
-			$this->setError($product_data->getError());
-			return false;
-		}
-
-        /* Store the product */
-		if (!$product_data->store()) {
-			$this->setError($product_data->getError());
-			return false;
-		}
-
+        $product_data->bindChecknStore();
+//		/* Get the product data */
+//		if (!$product_data->bind($data)) {
+//			$this->setError($product_data->getError());
+//			return $data['virtuemart_product_id'];
+//		}
+//
+//
+//        if (!$product_data->check()) {
+//			$this->setError($product_data->getError());
+//			return $data['virtuemart_product_id'];
+//		}
+//
+//        /* Store the product */
+//		if (!$product_data->store()) {
+//			$this->setError($product_data->getError());
+//			return $data['virtuemart_product_id'];
+//		}
+		dump($product_data,'hu');
 		if(empty($data['virtuemart_product_id'])){
 			$dbv = $product_data->getDBO();
 			//I dont like the solution to use three variables
@@ -1030,37 +1034,38 @@ class VirtueMartModelProduct extends VmModel {
 
 		$product_price_table = $this->getTable('product_prices');
 
-		if (!$product_price_table->bind($data)) {
-			$this->setError($product_price_table->getError());
-			return false;
-		}
-
-		$setPriceTable=FALSE;
-		foreach($product_price_table->getPublicProperties() as $property=>$ppvalue){
-			if(!empty($ppvalue)){
-				$setPriceTable=TRUE;
-				break;
-			}
-		}
-
-
-		if($setPriceTable){
-			// Make sure the price record is valid
-			if (!$product_price_table->check()) {
-				$this->setError($product_price_table->getError());
-				dump($product_price_table,'pricecheck error');
-				return false;
-
-			}
-
-			// Save the price record to the database
-			if (!$product_price_table->store()) {
-				$this->setError($product_price_table->getError());
-				dump($product_price_table,'store error');
-				return false;
-			}
-//			dump($product_price_table,'store done');
-		}
+		$product_price_table->bindChecknStore($data);
+//		if (!$product_price_table->bind($data)) {
+//			$this->setError($product_price_table->getError());
+//			return $product_data->virtuemart_product_id;
+//		}
+//
+//		$setPriceTable=FALSE;
+//		foreach($product_price_table->getPublicProperties() as $property=>$ppvalue){
+//			if(!empty($ppvalue)){
+//				$setPriceTable=TRUE;
+//				break;
+//			}
+//		}
+//
+//
+//		if($setPriceTable){
+//			// Make sure the price record is valid
+//			if (!$product_price_table->check()) {
+//				$this->setError($product_price_table->getError());
+//				dump($product_price_table,'pricecheck error');
+////				return false;
+//
+//			}
+//
+//			// Save the price record to the database
+//			if (!$product_price_table->store()) {
+//				$this->setError($product_price_table->getError());
+//				dump($product_price_table,'store error');
+////				return false;
+//			}
+////			dump($product_price_table,'store done');
+//		}
 
 
 		/* Update manufacturer link */
@@ -1126,7 +1131,11 @@ class VirtueMartModelProduct extends VmModel {
 			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
 		}
 
-
+		$errors = $product_data->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+		$this->setError($product_data->getError()); dump($product_data, 'finally');
 		return $product_data->virtuemart_product_id;
 	}
 

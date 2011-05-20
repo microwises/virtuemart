@@ -89,10 +89,12 @@ class VmController extends JController{
 		if(empty($data))$data = JRequest::get('post');
 
 		$model = $this->getModel($this->_cname);
-		if (($_id = $model->store($data)) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		$_id = $model->store($data);
+
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
 		}
 
 		$redir = $this->redirectPath;
