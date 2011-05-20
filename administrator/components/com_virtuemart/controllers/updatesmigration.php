@@ -274,7 +274,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$db->insertObject('#__virtuemart_currencies', $item);
 		}
-		dump($db,'mein item');
+
 		$this->setRedirect($this->redirectPath);
 	}
 

@@ -119,12 +119,6 @@ class VirtueMartModelUsergroups extends VmModel {
 		    $this->_data->load((int)$this->_id);
 		}
 
-		if (!$this->_data) {
-		    $this->_data = new stdClass();
-		    $this->_id = 0;
-		    $this->_data = null;
-		}
-
 		return $this->_data;
     }
 

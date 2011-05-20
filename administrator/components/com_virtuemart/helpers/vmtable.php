@@ -92,9 +92,8 @@ class VmTable extends JTable {
     	$fromArray	= is_array( $from );
 		$fromObject	= is_object( $from );
 
-		if (!$fromArray && !$fromObject)
-		{
-			dump($from,'umpf');
+		if (!$fromArray && !$fromObject){
+
 			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument <pre>'.print_r($from,1 ).'</pre>');
 			return false;
 		}
@@ -200,7 +199,7 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-    	$ok = true;dump($data,'bindChecknStore data');
+    	$ok = true;
         if (!$this->bind($data)) {
 
 			$ok = false;

@@ -190,7 +190,7 @@ class ShopFunctions {
 			$_a = explode ('=', $_attrib, 2);
 			$attrs[$_a[0]] = $_a[1];
 		}
-		dump($countryId,'renderCountryList');
+
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 

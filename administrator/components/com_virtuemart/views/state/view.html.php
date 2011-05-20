@@ -37,16 +37,14 @@ class VirtuemartViewState extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
 
-		$model = $this->getModel();
-		$zoneModel = $this->getModel('Worldzones');
+		$viewName=ShopFunctions::SetViewTitle('vm_states_48');
+		$this->assignRef('viewName',$viewName);
 
-		$stateId = JRequest::getInt('virtuemart_state_id', null);
+		$model = $this->getModel();
+
+		$stateId = JRequest::getVar('virtuemart_state_id');
 		$model->setId($stateId);
 		$state = $model->getSingleState();
-
-		$published = JRequest::getBool('published', false);
-		$this->assignRef('published',	$published);
-
 
 		$countryId = JRequest::getInt('virtuemart_country_id', 0);
 		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
@@ -54,22 +52,23 @@ class VirtuemartViewState extends JView {
 
         $isNew = (count($state) < 1);
 
-		if(empty($countryId) && $layoutName == 'edit' && $isNew){
+		if(empty($countryId) && $isNew){
 			JError::raiseWarning(412,'Country id is 0');
 			return false;
 		}
 
 		$country = $this->getModel('country');
 		$country->setId($countryId);
-		$this->assignRef('country_name', $country->getCountry()->country_name);
+		$this->assignRef('country_name', $country->getData()->country_name);
 
-		$viewName=ShopFunctions::SetViewTitle('vm_states_48');
-		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
+
 			$this->assignRef('state', $state);
+
+			$zoneModel = $this->getModel('Worldzones');
 			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
 
 			ShopFunctions::addStandardEditViewCommands();
@@ -82,8 +81,8 @@ class VirtuemartViewState extends JView {
 			$this->assignRef('pagination',	$pagination);
 
 			$states = $model->getStates($countryId);
-
 			$this->assignRef('states',	$states);
+
 		}
 
 		parent::display($tpl);

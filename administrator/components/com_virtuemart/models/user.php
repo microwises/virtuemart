@@ -217,7 +217,6 @@ class VirtueMartModelUser extends VmModel {
 			//		}
 
 
-			dump($this->_data,'user data');
 			return $this->_data;
 		}
 
@@ -428,7 +427,6 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			dump($user,'juser before store');
 			// Save the JUser object
 			if (!$user->save()) {
 				//This?
@@ -519,9 +517,7 @@ class VirtueMartModelUser extends VmModel {
 //			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
-				dump($_data,'user_info::storeAddress error');
 				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-//				echo '<pre>'.print_r($this,1).'</pre>';die;
 				return false;
 			}
 
@@ -537,7 +533,7 @@ class VirtueMartModelUser extends VmModel {
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
-					dump($vendorModel,'vendormodel error');
+
 					return false;
 				}else{
 					//Update xref Table
@@ -549,7 +545,6 @@ class VirtueMartModelUser extends VmModel {
 
 					if (!$usertable->bindChecknStore($vmusersData)){
 						$this->setError($usertable->getError());
-						dump($usertable,'error after storing vendor while storing user bindChecknStore');
 						return false;
 					}
 

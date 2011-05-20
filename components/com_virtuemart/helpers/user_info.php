@@ -49,7 +49,6 @@ class user_info
 			}
 			if (!$_userinfo->store()) { // Write data to the DB
 				$this->setError($_userinfo->getError());
-				dump($this,'nerv');
 				return false;
 			}
 		} else {

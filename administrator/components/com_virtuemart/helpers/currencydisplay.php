@@ -91,13 +91,10 @@ class CurrencyDisplay {
 				$this->_currency_id = $currencyId;
 			}
 
-//			echo ' currency id '. $this->_currency_id;
-
 			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$this->_currency_id.'"';
 			self::$_instance->_db->setQuery($q);
 			$style = self::$_instance->_db->loadObject();
 
-//			dump($style);
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
 			} else {
@@ -132,8 +129,7 @@ class CurrencyDisplay {
      * @param String $currencyStyle String containing the currency display settings
      */
     private function setCurrencyDisplayToStyleStr($style) {
-//		dump($style,'style');
-//		echo print_r($style,1);
+
     	$this->_currency_id = $style->virtuemart_currency_id;
 		$this->_symbol = $style->currency_symbol;
 		$this->_nbDecimal = $style->currency_decimal_place;

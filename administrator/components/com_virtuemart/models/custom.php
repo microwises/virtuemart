@@ -123,8 +123,10 @@ class VirtueMartModelCustom extends VmModel {
 		$this->_db->setQuery($query);
 		$datas->items = $this->_db->loadObjectList();
 
+		$data = $this->getTable('customs');
+//   		$data->load($this->virtuemart_custom_id);
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-		$customHandler = new VmCustomHandler();
+		$customHandler = VmCustomHandler::createCustom($data);
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$datas->field_types = $customHandler->getField_types() ;
 

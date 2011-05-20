@@ -447,11 +447,10 @@ class VirtueMartModelCategory extends VmModel {
      * @author jseros, RolandD, Max Milbers
      * @return int category id stored
 	 */
-    public function store() {
+    public function store($data) {
 		jimport('joomla.filesystem.file');
 
 		$table = $this->getTable('categories');
-		$data = JRequest::get('post');
 
 		/* Vendor */
 		$data['virtuemart_vendor_id'] = 1;

@@ -160,9 +160,7 @@ class TableUserinfos extends VmTableData {
 	*/
 	public function check(){
 
-
 		if (!empty($this->virtuemart_userinfo_id)) {
-			dump($this->virtuemart_userinfo_id,'not empty');
 			return parent::check();
 		}
 
@@ -174,7 +172,7 @@ class TableUserinfos extends VmTableData {
 			AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 		$this->_db->setQuery($q);
 		$total = $this->_db->loadResultArray();
-//		dump($q, 'query');dump($total, '$total');
+
 		if (count($total) > 0) {
 			$this->virtuemart_userinfo_id = $total[0];
 			return parent::check();
