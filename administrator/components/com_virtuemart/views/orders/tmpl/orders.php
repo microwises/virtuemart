@@ -48,12 +48,12 @@ $option = JRequest::getWord('option');
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_CDATE', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRINT_VIEW', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_CDATE', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_STATUS', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_STATUS', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NOTIFY', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_TOTAL', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_TOTAL', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	    </tr>
 	</thead>
 	<tbody>

@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
     <?php if($this->perms->check('admin')){?>
 	<tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_VENDOR') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->vendorList ?>
       </td>

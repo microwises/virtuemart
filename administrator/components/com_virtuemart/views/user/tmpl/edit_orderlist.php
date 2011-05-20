@@ -33,7 +33,7 @@ $j15 = VmConfig::isJ15();
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_CHECK_OUT_THANK_YOU_PRINT_VIEW'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
@@ -42,10 +42,10 @@ $j15 = VmConfig::isJ15();
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_STATUS'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_TOTAL'); ?>
 		</th>
 	</thead>
 	<?php

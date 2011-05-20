@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
 		    </th> */?>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_3'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
 		    </th>
              <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>

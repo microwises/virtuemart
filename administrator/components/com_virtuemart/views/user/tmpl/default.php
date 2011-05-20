@@ -51,27 +51,27 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_USER_LIST_USERNAME')
+					, JText::_('COM_VIRTUEMART_USERNAME')
 					, 'username'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_USER_LIST_FULL_NAME')
+					, JText::_('COM_VIRTUEMART_USER_FULL_NAME')
 					, 'name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th width="80">
-			<?php echo JText::_('COM_VIRTUEMART_USER_LIST_VENDOR'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?>
 			</th>
 			<th>
-			<?php echo JText::_('COM_VIRTUEMART_USER_LIST_GROUP'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP')
+					, JText::_('COM_VIRTUEMART_SHOPPER_GROUP')
 					, 'shopper_group_name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>

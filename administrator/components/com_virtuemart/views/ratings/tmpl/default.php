@@ -48,8 +48,8 @@ $option = JRequest::getWord('option');
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>

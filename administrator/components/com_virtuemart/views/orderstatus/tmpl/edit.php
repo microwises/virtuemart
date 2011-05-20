@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>
@@ -75,7 +75,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_LIST_ORDER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_ORDER'); ?>:
 				</label>
 			</td>
 			<td>

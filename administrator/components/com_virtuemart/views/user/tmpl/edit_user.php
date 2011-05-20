@@ -39,7 +39,7 @@ function gotocontact(id) {
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_FULL_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -50,7 +50,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="username">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_USERNAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -61,7 +61,7 @@ function gotocontact(id) {
 		<tr>
 			<td class="key">
 				<label for="email">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_EMAIL'); ?>
 				</label>
 			</td>
 			<td>
