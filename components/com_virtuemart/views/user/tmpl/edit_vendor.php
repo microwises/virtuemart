@@ -71,6 +71,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 </fieldset>
 
+
 <fieldset class="adminform">
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY') ?>
@@ -83,64 +84,64 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td>
 				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>
 			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
-			</td>
-			<td>
-				<input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />
-				<input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo $this->currency->getSymbol(); ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_decimal_place" size="10" value="<?php echo $this->currency->getNbrDecimals(); ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL'); ?>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->getDecimalSymbol(); ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_THOUSANDS'); ?>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands" size="10" value="<?php echo $this->currency->getThousandsSeperator(); ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY'); ?>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_display_style[5]" id="currency_positive_style" size="20" value="<?php echo $this->currency->getPositiveFormat(); ?>" />
-
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY'); ?>
-			</td>
-			<td>
-
-				<input class="inputbox" type="text" name="currency_display_style[6]" id="currency_negative_style" size="20" value="<?php echo $this->currency->getNegativeFormat(); ?>" />
-			</td>
-		</tr>
+		</tr><?php /*
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
+		</td>
+		<td>
+			<input class="inputbox" type="text" name="currency_symbol" id="currency_symbol" size="20" value="<?php echo $this->currency->currency_symbol; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>
+		</td>
+		<td>
+			<input class="inputbox" type="text" name="currency_decimal_place" id="currency_decimal_place" size="20" value="<?php echo $this->currency->currency_decimal_place; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL'); ?>
+		</td>
+		<td>
+			<input class="inputbox" type="text" name="currency_decimal_symbol" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->currency_decimal_symbol; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_THOUSANDS'); ?>
+		</td>
+		<td>
+			<input class="inputbox" type="text" name="currency_thousands" id="currency_thousands" size="10" value="<?php echo $this->currency->currency_thousands; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY'); ?>
+		</td>
+		<td >
+			<input class="inputbox" type="text" name="currency_positive_style" id="currency_positive_style" size="50" value="<?php echo $this->currency->currency_positive_style; ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY'); ?>
+		</td>
+		<td>
+			<input class="inputbox" type="text" name="currency_negative_style" id="currency_negative_style" size="50" value="<?php echo $this->currency->currency_negative_style; ?>" />
+		</td>
+	</tr>
+<tr>
+	<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY_EXPL'); ?>
+</tr> */ ?>
 		<tr>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_ACCEPTED_CURRENCIES'); ?>
 			</td>
-			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=20 multiple', 'currency_code', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+			<td><br />
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=20 multiple', 'currency_code_3', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
 			</td>
 		</tr>
 	</table>
