@@ -51,7 +51,7 @@ class VirtuemartControllerCountry extends VmController {
 			$view->setModel($model, true);
 		}
 
-		$model1 = $this->getModel('WorldZones');
+		$model1 = $this->getModel('Worldzones');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}

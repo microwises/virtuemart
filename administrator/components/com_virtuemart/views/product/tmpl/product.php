@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
-
+JHTML::_('behavior.tooltip');
 /* Get the component name */
 $option = JRequest::getWord('option');
 
@@ -102,12 +102,22 @@ $pagination = $this->pagination;
 				<!-- Product name -->
 				<?php
 				$link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
-				$child_link = '';
-				if ($product->product_parent_id == 0 && $product->haschildren) {
-					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
-				}
+
+                                 $child_link = '';
+                                $pre='';
+                                /* Product list should be ordered */
+				if ($product->product_parent_id  ) {
+					 $child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+                                        //$pre 	= '&nbsp;&nbsp;<sup>|_</sup>&nbsp;';
+                                }
+
+
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link; ?></td>
+				<td><?php 
+                                 echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link;
+                                 //echo JHTML::_('link', JRoute::_($link),  $pre.$product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)) ;
+
+                                ?></td>
 				<!-- Vendor name -->
 				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
 				<!-- Media -->

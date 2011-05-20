@@ -36,7 +36,7 @@ INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `n
 (null, 5, 0, 'COM_VIRTUEMART_MANAGE_USER_FIELDS_MNU', '', '', 'vmicon vmicon-16-content', 5, 1, '', 'userfields', ''),
 (null, 5, 0, 'COM_VIRTUEMART_ORDER_STATUS_LIST_MNU', '', '', 'vmicon vmicon-16-orderstatus', 6, 1, '', 'orderstatus', ''),
 (null, 11, 0, 'COM_VIRTUEMART_CHECK_UPDATES_MNU', '', '', 'vmicon vmicon-16-content', 1, 1, '', 'updatesmigration', ''),
-(null, 11, 0, 'COM_VIRTUEMART_ABOUT', '', '', 'vmicon vmicon-16-info', 2, 1, '', '', ''),
+(null, 11, 0, 'COM_VIRTUEMART_ABOUT', '', '', 'vmicon vmicon-16-info', 2, 1, '', '', 'about'),
 (null, 11, 0, 'COM_VIRTUEMART_HELP_TOPICS', 'http://virtuemart.net/', '', 'vmicon vmicon-16-help', 4, 1, '', '', ''),
 (null, 11, 0, 'COM_VIRTUEMART_COMMUNITY_FORUM', 'http://forum.virtuemart.net/', '', 'vmicon vmicon-16-language', 6, 1, '', '', ''),
 (null, 14, 0, 'COM_VIRTUEMART_STATISTIC_SUMMARY', '', '', 'vmicon vmicon-16-info', 1, 1, '', 'virtuemart', ''),

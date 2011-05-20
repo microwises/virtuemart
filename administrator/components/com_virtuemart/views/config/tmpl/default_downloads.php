@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 	    <td valign="top">
-		<input size="40" type="text" name="download_root" class="inputbox" value="<?php echo $this->config->get('download_root'); ?>" />
+		<input size="60" type="text" name="download_root" class="inputbox" value="<?php echo $this->config->get('download_root'); ?>" />
 	    </td>
 	</tr>
 	<tr>

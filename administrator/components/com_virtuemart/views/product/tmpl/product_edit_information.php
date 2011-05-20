@@ -113,30 +113,45 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 			<tr class="row0">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>:</div>
+					<div style="text-align:right;font-weight:bold;">
+                
+                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>:
+				      </span>
+                                      </div>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" name="product_price" size="10" value="<?php echo $this->product->prices['costPrice']; ?>" />
 
-					<?php echo $this->product_currency; echo $this->currencies;  echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP') ) ; ?>
+					<?php    echo $this->currencies;    ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>:</div>
+                                    <div style="text-align:right;font-weight:bold;">
+
+                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>:
+				      </span>
+                                      </div>
+
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
-					<?php echo $this->vendor_currency; echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP') ) ; ?>
+					<?php echo $this->vendor_currency;   ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:</div>
+                                        <div style="text-align:right;font-weight:bold;">
+                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:
+				      </span>
+                                     </div>
 				</td>
 				<td width="71%">
 					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
-					<?php echo $this->vendor_currency;   echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP') ) ; ?>
+					<?php echo $this->vendor_currency;   ?>
 				</td>
 			</tr>
 		</table>
@@ -150,7 +165,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?>:</div>
 				</td>
 				<td width="71%" >
-					<?php echo $this->lists['taxrates']; echo $this->taxRules ?>
+					<?php echo $this->lists['taxrates']; ?><br />
+                                    <?php echo $this->taxRules ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -158,7 +174,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['discounts']; echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->dbTaxRules;  ?>
+					<?php echo $this->lists['discounts']; ?>
+                                    <br />
+                                        <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->dbTaxRules;  ?>
 				</td>
 			</tr>
 
@@ -182,12 +200,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
+                                            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:
+				      </span>
+                                        </div>
 				</td>
 				<td width="79%" >
 					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
 					<?php
-					 echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ;
+					 
 					$checked = '';
 					if ($this->override) $checked = 'checked="checked"' ?>
 					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
