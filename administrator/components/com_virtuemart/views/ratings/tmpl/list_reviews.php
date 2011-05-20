@@ -23,104 +23,90 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
+/* Get the component name */
+$option = JRequest::getWord('option');
 ?>
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<div id="header">
+	<div id="filterbox" style="float: left;">
+	<table>
+	  <tr>
+		 <td align="left" width="100%">
+			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
+			<input type="text" name="filter_ratings" value="<?php echo JRequest::getVar('filter_ratings', ''); ?>" />
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+			<button onclick="document.adminForm.filter_ratings.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
+		 </td>
+	  </tr>
+	</table>
+	</div>
+	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+</div>
+<br clear="all" />
 
-<div class="col50">
-<fieldset class="adminform">
-<legend><?php echo JText::_('COM_VIRTUEMART_REVIEW'); ?></legend>
-<table class="admintable" summary="<?php echo JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE');?>">
+<div style="text-align: left;">
+	<table class="adminlist">
+	<thead>
 	<tr>
-		<td width="24%" align="left" valign="top">
-			<?php echo JText::_('COM_VIRTUEMART_RATING_TITLE'); ?>
-		</td>
-		<td valign="top">
-		<!-- Rating stars -->
-		<?php
-		$rating_options = array();
-		for ($i=0;$i<=$this->max_rating;$i++) {
-			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
-			$rating_options[] = JHTML::_('select.option',$i,$text);
-		}
-		echo JHTML::_('select.radiolist', $rating_options, 'user_rating', 'id="user_rating" class="inputbox"', 'value', 'text', $this->rating->user_rating);
-		?>
-		</td>
+		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_REVIEW_LIST_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
-		<!-- Review comment -->
-	<tr>
-		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
-        	</td>
-		<td width="76%" align="left">
-			<textarea onblur="refresh_counter();" onfocus="refresh_counter();" onkeypress="refresh_counter();" rows="20" cols="60" name="comment"><?php echo $this->rating->comment; ?></textarea>
-		</td>
-	</tr>
-	<tr>
-		<!-- Show number of typed in characters -->
-		<td width="24%" align="left" valign="top"> &nbsp; </td>
-		<td width="76%" align="left">
-	        <div align="left"><i><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?></i>
-                	<input type="text" value="150" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
-            	</div>
-		</td>
-	</tr>
-        <?php if (false) { ?>
-<!-- todo?? To be used with HTML editor (with some more restrictions)
-	<tr>
-		<td width="24%" align="left" valign="top">
-			<?php echo JTEXT::_('COM_VIRTUEMART_REVIEW'); ?>
-        	</td>
-		<td width="76%" align="left">
+	</thead>
+	<tbody>
 	<?php
-	$editor = JFactory::getEditor();
-	echo $editor->display('comment', $this->rating->comment, '100%', '100', '60', '20',false);?>
-	</td>
-	</tr>
--->
-  <?php } ?>
-	<tr>
-		<!-- published status -->
-		<td>
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+	if (count($this->reviewslist) > 0) { dump($this->reviewslist,'list');
+		$i = 0;
+		$k = 0;
+		$keyword = JRequest::getVar('keyword');
+		foreach ($this->reviewslist as $key => $review) {
+			$checked = JHTML::_('grid.id', $i , $review->virtuemart_product_rating_id);
+			$published = JHTML::_('grid.published', $review, $i );
+			?>
+			<tr class="<?php echo "row$k"; ?>">
+				<!-- Checkbox -->
+				<td><?php echo $checked; ?></td>
+				<!-- Product name -->
+				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id.'&product_parent_id='.$review->product_parent_id; ?>
+				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
+				<!-- Username + time -->
+				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$review->virtuemart_product_id; ?>
+				<td><?php echo JHTML::_('link', $link, $review->created_on, array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<!-- Stars rating -->
+				<td>
+				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->rating).'.gif',$review->rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->rating . ' :: ' . $this->max_rating))); ?>
+				</td>
+				<!-- published -->
+				<td><?php echo $published; ?></td>
+			</tr>
+		<?php
+			$k = 1 - $k;
+			$i++;
+		}
+	}
+	?>
+	</tbody>
+	<tfoot>
+		<tr>
+		<td colspan="16">
+			<?php echo $this->pagination->getListFooter(); ?>
 		</td>
-		<td>
-			<?php echo JHTML::_('select.booleanlist', 'published', '', $this->rating->published); ?>
-		</td>
-	</tr>
-</table>
-</fieldset>
+		</tr>
+	</tfoot>
+	</table>
 </div>
 <!-- Hidden Fields -->
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <input type="hidden" name="task" value="ratings" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="ratings" />
-<input type="hidden" name="virtuemart_product_review_id" value="<?php echo $this->rating->virtuemart_product_review_id; ?>" />
-<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
-<input type="hidden" name="userid" value="<?php echo $this->rating->userid; ?>" />
-<input type="hidden" name="created_on" value="<?php echo $this->rating->created_on; ?>" />
+<input type="hidden" name="func" value="" />
+<input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>
-<script type="text/javascript">
-function refresh_counter() {
-    var form = document.adminForm;
-    form.counter.value = form.comment.value.length;
-}
-refresh_counter();
 
-function submitbutton(pressbutton) {
-
-	 if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	else {
-		if (document.adminForm.counter.value > <?php echo VmConfig::get('reviews_maximum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2',VmConfig::get('reviews_maximum_comment_length')); ?>');
-		else if (document.adminForm.counter.value < <?php echo VmConfig::get('reviews_minimum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1',VmConfig::get('reviews_minimum_comment_length')); ?>');
-		else submitform( pressbutton );
-		return;
-	}
-}
-</script>

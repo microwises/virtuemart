@@ -145,6 +145,20 @@ class VirtueMartModelRatings extends VmModel {
     }
 
 
+    function getReviews(){
+
+    	$db = JFactory::getDBO();
+     	/* Pagination */
+     	$this->getPagination();
+
+       	$q = 'SELECT vm.*,pr.* FROM `#__virtuemart_product_reviews` AS `pr` LEFT JOIN `#__virtuemart_userinfos` AS `vm`
+     	ON `pr`.`virtuemart_user_id` = `p`.`virtuemart_user_id` ORDER BY `pr`.`modified_on` ';
+
+     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     	return $db->loadObjectList();
+    }
+
+
     /**
     * Save a rating
     * @author  Max Milbers

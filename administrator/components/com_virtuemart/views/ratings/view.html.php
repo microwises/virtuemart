@@ -50,8 +50,18 @@ class VirtuemartViewRatings extends JView {
 		/* Get the task */
 		$task = JRequest::getVar('task');
 		switch ($task) {
-			case 'add':
-				// @todo: adding is slightly different (not supported for now, from admin page).
+			case 'listreviews':
+				/* Get the data */
+				$reviewslist = $model->getReviews();
+
+				/* Get the pagination */
+				$pagination = $this->get('Pagination');
+
+				/* Assign the data */
+				$this->assignRef('reviewslist', $reviewslist);
+				$this->assignRef('pagination',	$pagination);
+				break;
+
 			case 'edit':
 				/* Get the data */
 				$rating = $model->getRating();

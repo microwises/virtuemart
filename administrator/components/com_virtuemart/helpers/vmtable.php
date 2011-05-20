@@ -131,15 +131,16 @@ class VmTable extends JTable {
         	}
     	}
 
-    	if(!empty($this->slugAutoName) ) {
+    	dump($this->_slugAutoName,'hu');
+    	if(!empty($this->_slugAutoName) ) {
 
-    		$slugAutoName = $this->slugAutoName;
-    		$slugName = $this->slugName;
+    		$slugAutoName = $this->_slugAutoName;
+    		$slugName = $this->_slugName;
     		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
     			//TODO add replacment here
 
     			$this->$slugName = preg_replace( '%', '-', $this->$slugAutoName );
-//    			$this->$slugName =
+
     		}
     	}
 
@@ -154,7 +155,7 @@ class VmTable extends JTable {
 			    $unique_id = $db->loadResultArray();
 
 			    $tblKey = $this->_tbl_key;
-//				dump($q,'check unique');
+				dump($q,'check unique');
 //				echo $q; die;
 				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
 					if(empty($error)){
