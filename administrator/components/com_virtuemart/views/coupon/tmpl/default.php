@@ -15,11 +15,11 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 ?>
 
@@ -95,8 +95,9 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="view" value="coupon" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminMenuHelper::endAdminArea(); ?>

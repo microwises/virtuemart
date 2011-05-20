@@ -456,22 +456,10 @@ class VirtueMartModelCategory extends VmModel {
 		/* Vendor */
 		$data['virtuemart_vendor_id'] = 1;
 
-		// Bind the form fields to the category table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the category record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the category record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
+		$data = $table->bindChecknStore($data);
+    	$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
 		//store category relation
@@ -495,10 +483,9 @@ class VirtueMartModelCategory extends VmModel {
 
 		$this->_db->setQuery($query);
 
-
 		if(!$this->_db->query()){
 			$this->setError( $this->_db->getErrorMsg() );
-			return false;
+//			return false;
 		}
 
 		// Process the images

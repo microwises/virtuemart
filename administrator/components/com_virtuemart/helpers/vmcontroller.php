@@ -80,7 +80,7 @@ class VmController extends JController{
 	 * Generic save task
 	 *
 	 * @author Max Milbers
-	 * @param $data sometimes we just want to override the data to process
+	 * @param post $data sometimes we just want to override the data to process
 	 */
 	function save($data = 0){
 

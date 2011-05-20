@@ -85,6 +85,7 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="view" value="creditcard" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

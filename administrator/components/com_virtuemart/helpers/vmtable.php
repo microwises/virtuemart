@@ -88,12 +88,14 @@ class VmTable extends JTable {
 
     function checkDataContainsTableFields($from, $ignore=array()){
 
+    	if(empty($from)) return false;
     	$fromArray	= is_array( $from );
 		$fromObject	= is_object( $from );
 
 		if (!$fromArray && !$fromObject)
 		{
-			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument' );
+			dump($from,'umpf');
+			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument <pre>'.print_r($from,1 ).'</pre>');
 			return false;
 		}
 		if (!is_array( $ignore )) {
@@ -198,32 +200,26 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-    	$ok = true;
+    	$ok = true;dump($data,'bindChecknStore data');
         if (!$this->bind($data)) {
-//    		$app = JFactory::getApplication();
-//    		$app->enqueueMessage('bindChecknStore error for bind');
-//    		$this->setError($this->_db->getError());
+
 			$ok = false;
 		}
 
     	if(!$this->checkDataContainsTableFields($data) && $ok){
-			$app = JFactory::getApplication();
-    		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
+
 			$ok = false;
 		}
 
 		// Make sure the table record is valid
 		if (!$this->check($obligatory) && $ok) {
-//			$app = JFactory::getApplication();
-//    		$app->enqueueMessage($this->getError());
-//    		$this->setError('Check in bindChecknStore throws error in class '.get_class( $this ).' for table '.$this->_tbl);
+
 			$ok = false;
 		}
 
 		// Save the record to the database
 		if (!$this->store() && $ok) {
-    		$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
+
 			$ok = false;
 		}
 

@@ -991,33 +991,24 @@ class VirtueMartModelProduct extends VmModel {
 		/* Load the old product details first */
 		$product_data->load($data['virtuemart_product_id']);
 
-		dump($product_data,'hu');
 
         /* Set the product packaging */
         $data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
-
         /* Set the order levels */
         $data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
 
-        $product_data->bindChecknStore();
-//		/* Get the product data */
-//		if (!$product_data->bind($data)) {
-//			$this->setError($product_data->getError());
-//			return $data['virtuemart_product_id'];
-//		}
-//
-//
-//        if (!$product_data->check()) {
-//			$this->setError($product_data->getError());
-//			return $data['virtuemart_product_id'];
-//		}
-//
-//        /* Store the product */
-//		if (!$product_data->store()) {
-//			$this->setError($product_data->getError());
-//			return $data['virtuemart_product_id'];
-//		}
-		dump($product_data,'hu');
+        $product_data->bindChecknStore($data);
+
+		if (array_key_exists('field', $data)) {
+			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
+		}
+
+		$errors = $product_data->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+
 		if(empty($data['virtuemart_product_id'])){
 			$dbv = $product_data->getDBO();
 			//I dont like the solution to use three variables
@@ -1035,38 +1026,11 @@ class VirtueMartModelProduct extends VmModel {
 		$product_price_table = $this->getTable('product_prices');
 
 		$product_price_table->bindChecknStore($data);
-//		if (!$product_price_table->bind($data)) {
-//			$this->setError($product_price_table->getError());
-//			return $product_data->virtuemart_product_id;
-//		}
-//
-//		$setPriceTable=FALSE;
-//		foreach($product_price_table->getPublicProperties() as $property=>$ppvalue){
-//			if(!empty($ppvalue)){
-//				$setPriceTable=TRUE;
-//				break;
-//			}
-//		}
-//
-//
-//		if($setPriceTable){
-//			// Make sure the price record is valid
-//			if (!$product_price_table->check()) {
-//				$this->setError($product_price_table->getError());
-//				dump($product_price_table,'pricecheck error');
-////				return false;
-//
-//			}
-//
-//			// Save the price record to the database
-//			if (!$product_price_table->store()) {
-//				$this->setError($product_price_table->getError());
-//				dump($product_price_table,'store error');
-////				return false;
-//			}
-////			dump($product_price_table,'store done');
-//		}
 
+		$errors = $product_price_table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
 
 		/* Update manufacturer link */
 		if(!empty($data['virtuemart_manufacturer_id'])){
@@ -1122,20 +1086,12 @@ class VirtueMartModelProduct extends VmModel {
 			$ProducttypesModel = new VirtueMartModelProducttypes();
 			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
 		}
+
 		*/
 		/* Update product custom field
 		* 'product_type_tables' are all types tables in product edit view
 		*/
-		if (array_key_exists('field', $data)) {
-			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
-		}
 
-		$errors = $product_data->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}
-		$this->setError($product_data->getError()); dump($product_data, 'finally');
 		return $product_data->virtuemart_product_id;
 	}
 
