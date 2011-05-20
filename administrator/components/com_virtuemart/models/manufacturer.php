@@ -40,7 +40,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct('virtuemart_manufacturer_id');
+		parent::__construct();
 		$this->setMainTable('manufacturers');
 
 	}
@@ -90,8 +90,9 @@ class VirtueMartModelManufacturer extends VmModel {
 		$table = $this->getTable('manufacturers');
 
 		/* Load the data */
-		$data = JRequest::get('post', 4);
-		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
+		$data = JRequest::get('post');
+		/* add the mf desc as html code */
+		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
 
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
@@ -114,19 +115,19 @@ class VirtueMartModelManufacturer extends VmModel {
      *
      * @return boolean True is the remove was successful, false otherwise.
      */
-	public function remove() {
-		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('manufacturers');
+	// public function remove() {
+		// $manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
+    	// $table = $this->getTable('manufacturers');
 
-    	foreach($manufacturerIds as $manufacturerId) {
-       		if (!$table->delete($manufacturerId)) {
-           		$this->setError($table->getError());
-           		return false;
-       		}
-    	}
+    	// foreach($manufacturerIds as $manufacturerId) {
+       		// if (!$table->delete($manufacturerId)) {
+           		// $this->setError($table->getError());
+           		// return false;
+       		// }
+    	// }
 
-    	return true;
-	}
+    	// return true;
+	// }
 
     /**
      * Select the products to list on the product list page
