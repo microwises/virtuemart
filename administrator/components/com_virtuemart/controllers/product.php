@@ -45,9 +45,9 @@ class VirtuemartControllerProduct extends VmController {
 
 //		$this->setMainLangKey('PRODUCT');
 		/* Redirect templates to templates as this is the standard call */
-		$this->registerTask('saveorder','product');
-		$this->registerTask('orderup','product');
-		$this->registerTask('orderdown','product');
+		// $this->registerTask('saveorder','product');
+		// $this->registerTask('orderup','product');
+		// $this->registerTask('orderdown','product');
 
 //		$this->registerTask('edit','add');
 //		$this->registerTask('apply','save');
@@ -74,7 +74,7 @@ class VirtuemartControllerProduct extends VmController {
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
 		/* Set the layout */
-		$view->setLayout('product');
+		$view->setLayout('default');
 
 		/* Now display the view. */
 		$view->display();

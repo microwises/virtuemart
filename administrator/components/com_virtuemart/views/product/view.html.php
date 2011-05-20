@@ -257,23 +257,23 @@ class VirtuemartViewProduct extends JView {
 //				JToolBarHelper::cancel();
 //				break;
 			default:
-				switch ($task) {
-					case 'publish':
-						$this->get('Publish');
-						break;
-					case 'unpublish':
-						$this->get('Publish');
-						break;
-					case 'saveorder':
-						$this->get('SaveOrder');
-						break;
-					case 'orderup':
-						$this->get('OrderUp');
-						break;
-					case 'orderdown':
-						$this->get('OrderDown');
-						break;
-				}
+				// switch ($task) {
+					// case 'publish':
+						// $this->get('Publish');
+						// break;
+					// case 'unpublish':
+						// $this->get('Publish');
+						// break;
+					// case 'saveorder':
+						// $this->get('SaveOrder');
+						// break;
+					// case 'orderup':
+						// $this->get('OrderUp');
+						// break;
+					// case 'orderdown':
+						// $this->get('OrderDown');
+						// break;
+				// }
 				/* Start model */
 				$model = $this->getModel();
 

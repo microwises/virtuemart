@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: product.php 3304 2011-05-20 06:57:27Z alatak $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -115,7 +115,6 @@ $pagination = $this->pagination;
 				?>
 				<td><?php 
                                  echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link;
-                                 //echo JHTML::_('link', JRoute::_($link),  $pre.$product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)) ;
 
                                 ?></td>
 				<!-- Vendor name -->
@@ -169,11 +168,10 @@ $pagination = $this->pagination;
 </div>
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="task" value="product" />
 <input type="hidden" name="view" value="product" />
+<input type="hidden" name="task" value="" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
-<input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" />
-<input type="hidden" name="page" value="product.ordering" />
+<?php /*<input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" /> */ ?>
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
