@@ -119,7 +119,22 @@ class VmTable extends JTable {
      * @param
      */
     function check($obligatory=false) {
+    	
+    	if(!empty($this->_slugAutoName) ) {
 
+    		$slugAutoName = $this->_slugAutoName;
+    		$slugName = $this->_slugName;
+			dump($this->$slugName,'hu value');
+    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
+    			//TODO add replacment here
+    			$this->$slugName = $this->$slugAutoName ;
+			}
+			$this->$slugName = JFilterInput::clean($this->$slugName, 'CMD') ;
+		} else if (!empty($this->_slugName)) {
+				$slugName = $this->_slugName;
+				$this->$slugName = JFilterInput::clean($this->$slugName, 'CMD') ;
+		}
+		
     	foreach($this->_obkeys as $obkeys => $error){
     		if (empty($this->$obkeys)) {
     			if(empty($error)){
@@ -132,18 +147,8 @@ class VmTable extends JTable {
     	}
 
     	dump($this->_slugAutoName,'hu');
-    	if(!empty($this->_slugAutoName) ) {
 
-    		$slugAutoName = $this->_slugAutoName;
-    		$slugName = $this->_slugName;
-    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
-    			//TODO add replacment here
-
-    			$this->$slugName = preg_replace( '%', '-', $this->$slugAutoName );
-
-    		}
-    	}
-
+		dump($this->$slugAutoName,'hu value');
 
     	if ($this->_unique) {
 		    $db = JFactory::getDBO();
