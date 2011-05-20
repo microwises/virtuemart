@@ -45,36 +45,40 @@ class VirtuemartModelReport extends VmModel {
 	/**
 	 * Constructor for Report Model
 	 */
+//	function __construct(){
+//		parent::__construct();
+//
+//		$mainframe = JFactory::getApplication();
+//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'limitstart', 'limitstart', 0, 'int');
+//		$start_date = $mainframe->getUserStateFromRequest(JRequest::getVar('from_period').JRequest::getVar('view').'from_period','from_period');
+//		$end_date = $mainframe->getUserStateFromRequest(JRequest::getVar('until_period').JRequest::getVar('view').'until_period','until_period');
+//
+//		$this->setState('limit', $limit);
+//		$this->setState('limitstart', $limitstart);
+//		$this->setState('start_date',$start_date);
+//		$this->setState('end_date',$end_date);
+//	}
 	function __construct(){
 		parent::__construct();
-
-		$mainframe = JFactory::getApplication();
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'limitstart', 'limitstart', 0, 'int');
-		$start_date = $mainframe->getUserStateFromRequest(JRequest::getVar('from_period').JRequest::getVar('view').'from_period','from_period');
-		$end_date = $mainframe->getUserStateFromRequest(JRequest::getVar('until_period').JRequest::getVar('view').'until_period','until_period');
-
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
-		$this->setState('start_date',$start_date);
-		$this->setState('end_date',$end_date);
+		$this->setMainTable('orders');
 	}
-
+	
 	/**
 	 *
 	 */
-	function getReport(){
-		if(empty($this->_data)){
-
-		}
-		//Guard against returning null data list
-		if(!$this->_data){
-	    	$this->_data = new stdClass();
-	    	$this->_id = 0;
-	    	$this->_data = null;
-		}
-		return $this->_data;
-	}
+//	function getReport(){
+//		if(empty($this->_data)){
+//
+//		}
+//		//Guard against returning null data list
+//		if(!$this->_data){
+//	    	$this->_data = new stdClass();
+//	    	$this->_id = 0;
+//	    	$this->_data = null;
+//		}
+//		return $this->_data;
+//	}
 
 //    /**
 //     * Pagination for the report table
@@ -99,6 +103,8 @@ class VirtuemartModelReport extends VmModel {
     function _getTotal() {
 
 		if (empty($this->_total)) {
+			//if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			
 			if(empty($this->start_date) || empty($this->end_date)){
 				$curDate = JFactory::getDate();
 				$startDate = $curDate->toFormat('%Y-%m-%d');
@@ -112,6 +118,7 @@ class VirtuemartModelReport extends VmModel {
 	    	$query = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders`';
 			$query .= "WHERE `created_on` BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' ";
 	    	$this->_total = $this->_getListCount($query);
+	    	
 		}
 		return $this->_total;
     }
@@ -124,7 +131,7 @@ class VirtuemartModelReport extends VmModel {
      * @return object List of order objects
      */
     function getRevenue($start_date, $end_date, $noLimit = false){
-    	$db = JFactory::getDBO();
+    	//$db = JFactory::getDBO();
 
 		if(empty($this->start_date) || empty($this->end_date)){
 			$curDate = JFactory::getDate();
