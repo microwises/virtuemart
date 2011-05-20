@@ -230,19 +230,28 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-	if (!$usermodel->store($fields)) {
-		$this->setError($usermodel->getError());
-	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
+	$usermodel->store($fields);
+   	$errors = $usermodel->getErrors();
+   	$msg ='';
+	if(empty($errors)) $msg = 'user id of the mainvendor is '.$sid;
+	foreach($errors as $error){
+//		$msg .= ($error).'<br />';
+		$this->setError($error);
 	}
+//		$this->setError($usermodel->getError());
+//	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
+//	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
-		$msg = JText::_('Problems execution of SQL File '.$filename);
+//		$msg .= JText::_('Problems execution of SQL File '.$filename);
+		$this->setError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
-		$msg = JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
+		$this->setError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
+//		$msg .= JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
 	}
-
-	return $msg;
+	dump($usermodel);dump($this);
+	return true;
 
     }
 

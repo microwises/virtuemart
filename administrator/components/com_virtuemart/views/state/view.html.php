@@ -42,8 +42,8 @@ class VirtuemartViewState extends JView {
 
 		$model = $this->getModel();
 
-		$stateId = JRequest::getVar('virtuemart_state_id');
-		$model->setId($stateId);
+//		$stateId = JRequest::getVar('virtuemart_state_id');
+//		$model->setId($stateId);
 		$state = $model->getSingleState();
 
 		$countryId = JRequest::getInt('virtuemart_country_id', 0);
