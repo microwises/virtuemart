@@ -37,13 +37,23 @@ $editor = JFactory::getEditor();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="50" value="<?php echo $this->manufacturer->mf_name; ?>" />
+				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="60" value="<?php echo $this->manufacturer->mf_name; ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+				<label for="slug">
+					<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_SLUG'); ?>:
+				</label>
+			</td>
+			<td>
+				<input type="text" name="slug" id="slug" size="60" value="<?php echo $this->manufacturer->slug; ?>" class="inputbox" />
 			</td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_CATEGORY')); ?>:
+					<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_CATEGORY'); ?>:
 				</label>
 			</td>
 			<td>
@@ -54,11 +64,11 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_URL')); ?>:
+					<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_URL'); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="50" value="<?php echo $this->manufacturer->mf_url; ?>" />
+				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="60" value="<?php echo $this->manufacturer->mf_url; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -80,7 +90,7 @@ $editor = JFactory::getEditor();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="50" value="<?php echo $this->manufacturer->mf_email; ?>" />
+				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="60" value="<?php echo $this->manufacturer->mf_email; ?>" />
 			</td>
 		</tr>
 		<tr>

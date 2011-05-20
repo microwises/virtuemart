@@ -379,6 +379,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `virtuemart_manufacturer_id` SERIAL,
   `mf_name` varchar(64) DEFAULT NULL,
+  `slug` varchar(128) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
   `virtuemart_manufacturercategories_id` int(11) DEFAULT NULL,
