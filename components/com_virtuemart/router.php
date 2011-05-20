@@ -405,7 +405,7 @@ class vmrouterHelper {
 				}
 				/* control if parent categories are joomla menu */
 				foreach ($CatParentIds as $CatParentId) {
-					// No ? then find te parent menu categorie !
+					// No ? then find the parent menu categorie !
 					if ($menuId['virtuemart_category_id'] == $CatParentId ) {
 						$category->itemId = $menuId['itemId'] ;
 						$menuCatid = $CatParentId;
@@ -432,29 +432,29 @@ class vmrouterHelper {
 		$parents_id = array_reverse(self::getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
-			$q = "SELECT `category_name` as name
+			$q = "SELECT `slug` as name
 					FROM  `#__virtuemart_categories`
 					WHERE  `virtuemart_category_id`=".$id;
 
 			$db->setQuery($q);
-			$category = $db->loadResult();
-			$string  = trim($category);
-			if ( ctype_digit($string) ){
-				return $string ;
-			}
-			else {
-				// accented chars converted
-				$accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
-				$string_encoded = htmlentities($string,ENT_NOQUOTES,'UTF-8');
-				$string = preg_replace($accents,'$1',$string_encoded);
-				$string = str_replace('&micro', ' ', $string);
-				// clean out the rest
-				$replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
-				$with = array('-','-','-','-','-','-');
-				$string = preg_replace($replace,$with,$string);
+			// $category = $db->loadResult();
+			// $string  = trim($category);
+			// if ( ctype_digit($string) ){
+				// return $string ;
+			// }
+			// else {
+				// //accented chars converted
+				// $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
+				// $string_encoded = htmlentities($string,ENT_NOQUOTES,'UTF-8');
+				// $string = preg_replace($accents,'$1',$string_encoded);
+				// $string = str_replace('&micro', ' ', $string);
+				//// clean out the rest
+				// $replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
+				// $with = array('-','-','-','-','-','-');
+				// $string = preg_replace($replace,$with,$string);
 
-			}
-			$strings[] = $string;
+			// }
+			$strings[] = $db->loadResult();
 		}
 
 		return strtolower(implode ('/', $strings ) );
@@ -483,61 +483,61 @@ class vmrouterHelper {
 	 * $names are segments
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id
 	 */
-	public function getCategoryId($names,$virtuemart_category_ids ){
-		if ($virtuemart_category_ids == null) $virtuemart_category_ids = 0 ;
+	public function getCategoryId($slugs,$virtuemart_category_id ){
+		if ($virtuemart_category_id == null) $virtuemart_category_id = 0 ;
 		$db = & JFactory::getDBO();
-		foreach ($names as $name) {
-			$name = str_replace('-', '%', $name);
-			$name = str_replace(':', '%', $name);
+		foreach ($slugs as $slug) {
+			// $name = str_replace('-', '%', $name);
+			// $name = str_replace(':', '%', $name);
 			$q = "SELECT distinct `c`.`virtuemart_category_id`
 				FROM  `#__virtuemart_categories` AS `c` , `#__virtuemart_category_categories` as `xref`";
-			$q .=" WHERE `c`.`category_name` LIKE '".$name."' ";
+			$q .=" WHERE `c`.`slug` LIKE '".$slug."' ";
 			$q .=" AND `xref`.`category_child_id`=`c`.`virtuemart_category_id`";
-			$q .=" AND `xref`.`category_parent_id` in (".$virtuemart_category_ids.") ";
+			$q .=" AND `xref`.`category_parent_id` = ".$virtuemart_category_id;
 			$db->setQuery($q);
-			$result = $db->loadResultArray();
-			$virtuemart_category_ids = implode(',',$result);
+			$virtuemart_category_id = $db->loadResult();
 		}
 
 		/* WARNING name in same category must be unique or you have more then 1 ID */
-		return $virtuemart_category_ids ;
+		return $virtuemart_category_id ;
 	}
 
 	/* Get URL safe Product name */
 	public function getProductName($id){
 
 		$db			= & JFactory::getDBO();
-		$query = 'SELECT `product_name` FROM `#__virtuemart_products`  ' .
+		$query = 'SELECT `slug` FROM `#__virtuemart_products`  ' .
 		' WHERE `virtuemart_product_id` = ' . (int) $id;
 
 		$db->setQuery($query);
 		// gets product name of item
-		$product_name = $db->loadResult();
-			$string  = trim($product_name) ;
-			if ( ctype_digit($string)){
-				return $string ;
-			}
-			else {
+		// $product_name = $db->loadResult();
+			// $string  = trim($product_name) ;
+			// if ( ctype_digit($string)){
+				// return $string ;
+			// }
+			// else {
 				//$string = str_replace('�', ' ', $string);
-				// accented chars converted
-				$accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
-				$string_encoded = htmlentities($product_name,ENT_NOQUOTES,'UTF-8');
-				$string = preg_replace($accents,'$1',$string_encoded);
-				$string = str_replace('&micro', ' ', $string);
+				//accented chars converted
+				// $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
+				// $string_encoded = htmlentities($product_name,ENT_NOQUOTES,'UTF-8');
+				// $string = preg_replace($accents,'$1',$string_encoded);
+				// $string = str_replace('&micro', ' ', $string);
 
-				// clean out the rest
-				$replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
-				$with = array('-','-','-','-','-','-');
-				$string = preg_replace($replace,$with,$string);
+				//clean out the rest
+				// $replace = array('([\40])','/&nbsp/','/&amp/','/\//','([^a-zA-Z0-9-/])','/\-+/');
+				// $with = array('-','-','-','-','-','-');
+				// $string = preg_replace($replace,$with,$string);
 
-			}
-		return ucfirst($string);
+			// }
+		// return ucfirst($string);
+		return $db->loadResult();
 	}
 	/* get product and category ID */
-	public function getProductId($names,$virtuemart_category_ids = NULL ){
+	public function getProductId($names,$virtuemart_category_id = NULL ){
 		$productName = array_pop($names);
 		$product = array();
-		$product['virtuemart_category_id'] = self::getCategoryId($names,$virtuemart_category_ids ) ;
+		$product['virtuemart_category_id'] = self::getCategoryId($names,$virtuemart_category_id ) ;
 		$db = & JFactory::getDBO();
 		$parentIds = array();
 		//$virtuemart_category_ids = null;
@@ -556,11 +556,12 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($virtuemart_manufacturer_id ){
 	$db = JFactory::getDBO();
-	$query = 'SELECT `mf_name` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
+	$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
 	$db->setQuery($query);
-	$lang =& JFactory::getLanguage();
-	$mfName = $lang->transliterate($db->loadResult());
-	return preg_replace('([^a-zA-Z0-9-/])','-',$mfName);
+	// $lang =& JFactory::getLanguage();
+	// $mfName = $lang->transliterate($db->loadResult());
+	// return preg_replace('([^a-zA-Z0-9-/])','-',$mfName);
+	return $db->loadResult();
 
 	}
 	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/

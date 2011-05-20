@@ -216,10 +216,10 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$data->paym_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->paymShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id');
+				$data->paymShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 				/* Write the first 5 accepted creditcards in the list */
-				$data->paymCreditCardList = modelfunctions::buildGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id');
+				$data->paymCreditCardList = modelfunctions::buildGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
 
 				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';

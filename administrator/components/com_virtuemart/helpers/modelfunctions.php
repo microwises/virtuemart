@@ -94,7 +94,7 @@ class modelfunctions{
 	 * @return List as String
 	 */
 
-	function buildGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$quantity=4){
+	function buildGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$view,$quantity=4){
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT '.$fieldnameXref.' FROM '.$tableXref.' WHERE '.$fieldIdXref.' = "'.$idXref.'"';
@@ -107,7 +107,7 @@ class modelfunctions{
 				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
-				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id='.$value), $tmp). ', ';
+				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
 //				$list .= $tmp. ', ';
 				$i++;
 				if($i==$quantity) break;
