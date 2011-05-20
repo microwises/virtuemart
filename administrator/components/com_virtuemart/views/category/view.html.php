@@ -45,8 +45,7 @@ class VirtuemartViewCategory extends JView {
         $option = JRequest::getCmd('option');
         $view = JRequest::getCmd('view');
 
-		$viewName=ShopFunctions::SetViewTitle('vm_categories_48');
-		$this->assignRef('viewName',$viewName); 
+
 
 		if ($layoutName == 'edit') {
 
@@ -110,8 +109,9 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('idList', $categoriesSorted['id_list']);
 			$this->assignRef('lists', $lists);
 		}
-
-
+		if (isset($category->category_name)) $name = $category->category_name; else $name ='';
+		$viewName=ShopFunctions::SetViewTitle('vm_categories_48','',$name);
+		$this->assignRef('viewName',$viewName); 
 		parent::display($tpl);
 	}
 

@@ -228,10 +228,10 @@ class VirtueMartModelProduct extends VmModel {
 				/* Load the custom variants */
 				$product->hasproductCustoms = $this->hasproductCustoms($virtuemart_product_id);
 				/* Load the custom product fields */
-				$product->customfields = self::getProductCustomsField($product);
+				$product->customfields = $this->getProductCustomsField($product);
 
 				/*  custom product fields for add to cart */
-				$product->customfieldsCart = self::getProductCustomsFieldCart($product);
+				$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -247,7 +247,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				}
 				else
-				$product->customfields = self::getproductCustomslist($virtuemart_product_id);
+				$product->customfields = $this->getproductCustomslist($virtuemart_product_id);
 			} else {
 				$product = new stdClass();
 				return $this->fillVoidProduct($product,$front);

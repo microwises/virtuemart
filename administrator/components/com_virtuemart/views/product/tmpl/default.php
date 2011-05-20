@@ -143,7 +143,7 @@ $pagination = $this->pagination;
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id='.$product->virtuemart_manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&cid[]='.$product->virtuemart_manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>

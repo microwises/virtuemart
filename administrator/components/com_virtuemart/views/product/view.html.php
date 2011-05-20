@@ -42,6 +42,7 @@ class VirtuemartViewProduct extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		JView::loadHelper('image');
 
 		/* Load some common models */
@@ -51,12 +52,6 @@ class VirtuemartViewProduct extends JView {
 		switch ($task) {
 			case 'add':
 			case 'edit':
-				/* Load some behaviour */
-				jimport('joomla.html.pane');
-				$pane = JPane::getInstance();
-				JHTML::_('behavior.tooltip');
-				JHTML::_('behavior.calendar');
-				$editor = JFactory::getEditor();
 
 				/* Load the product */
 				$product_model = $this->getModel('product');
@@ -143,12 +138,6 @@ class VirtuemartViewProduct extends JView {
 
 				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 
-//				/* Load the attribute names */
-//				$product->attribute_names = $this->get('ProductAttributeNames');
-//
-//				/* Load the attribute values */
-//				$product->attribute_values = $this->get('ProductAttributeValues');
-
 				/* TODO remove this */
 //				$product->child_products = null;
 
@@ -182,13 +171,6 @@ class VirtuemartViewProduct extends JView {
 //				/* Load product types lists */
 //				$productTypes = $this->get('productTypes');
 //				$this->assignRef('productTypes', $productTypes);
-
-				/* Load affected product  customs fields */
-				//$productCustoms = $this->get('productCustomsList');
-				//if (!$productCustoms) $productCustoms = array();
-				//$lists['product_customs'] = JHTML::_('select.genericlist', $productCustoms, 'productCustoms[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'productCustoms\')"', 'id', 'text', $productCustoms);
-
-				//$this->assignRef('product_customs', $productCustoms);
 
 				/* Load product types lists */
 				$customsList = VmCustomHandler::getCustomsList();
@@ -235,45 +217,14 @@ class VirtuemartViewProduct extends JView {
 
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
-				else $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT').' :: '.$product->product_sku.' :: '.$product->product_name;
+				else $text = $product->product_name .' ('.$product->product_sku.')';
 
-				JToolBarHelper::title($text, 'vm_product_48');
+				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
 				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
-//			case 'addproducttype':
-//				/* Get the product types that can be chosen */
-////				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'virtuemart_producttype_id');
-////				$this->assignRef('producttypes', $producttypes);
-//
-//				/* Get the product */
-//				$product = $this->get('ProductDetails');
-//				$this->assignRef('product', $product);
-//
-//				/* Toolbar */
-//				$text = JText::_('COM_VIRTUEMART_PRODUCT_PRODUCT_TYPE_FORM_LBL').' :: '.$product->product_sku.' :: '.$product->product_name;
-//				JToolBarHelper::title($text, 'vm_product_48');
-//				JToolBarHelper::divider();
-//				JToolBarHelper::cancel();
-//				break;
+
 			default:
-				// switch ($task) {
-					// case 'publish':
-						// $this->get('Publish');
-						// break;
-					// case 'unpublish':
-						// $this->get('Publish');
-						// break;
-					// case 'saveorder':
-						// $this->get('SaveOrder');
-						// break;
-					// case 'orderup':
-						// $this->get('OrderUp');
-						// break;
-					// case 'orderdown':
-						// $this->get('OrderDown');
-						// break;
-				// }
 				/* Start model */
 				$model = $this->getModel();
 
@@ -286,7 +237,6 @@ class VirtuemartViewProduct extends JView {
 					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 					$this->assignRef('category_tree', $category_tree);
 //				}
-
 
 				/* Check for child products if it is a parent item */
 				if (JRequest::getInt('product_parent_id', 0) == 0) {
@@ -332,18 +282,18 @@ class VirtuemartViewProduct extends JView {
 
 				/* Create filter */
 				/* Search type */
-				$options = array();
-				$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
-				$options[] = JHTML::_('select.option', 'product', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'));
-				$options[] = JHTML::_('select.option', 'price', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'));
-				$options[] = JHTML::_('select.option', 'withoutprice', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE'));
-				$lists['search_type'] = JHTML::_('select.genericlist', $options, 'search_type', '', 'value', 'text', JRequest::getVar('search_type'));
+		    	$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
+		    				'product' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'),
+							'price' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
+							'withoutprice' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
+							); 
+				$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
 
 				/* Search order */
-				$options = array();
-				$options[] = JHTML::_('select.option', 'bf', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'));
-				$options[] = JHTML::_('select.option', 'af', JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER'));
-				$lists['search_order'] = JHTML::_('select.genericlist', $options, 'search_order', '', 'value', 'text', JRequest::getVar('search_order'));
+		    	$options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
+								  'af' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
+							); 
+				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 				/* Toolbar */
 				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
