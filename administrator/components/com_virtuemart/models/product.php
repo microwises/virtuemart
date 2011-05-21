@@ -242,8 +242,8 @@ class VirtueMartModelProduct extends VmModel {
 				/* Get stock indicator */
 				$product->stock = $this->getStockIndicator($product);
 
-				/* Get the votes */
-				$product->votes = $this->getVotes($virtuemart_product_id);
+				/* TODO Get the votes */
+				//$product->votes = $this->getVotes($virtuemart_product_id);
 
 				}
 				else
@@ -947,10 +947,7 @@ class VirtueMartModelProduct extends VmModel {
 
         $product_data->bindChecknStore($data);
 
-		if (array_key_exists('field', $data)) {
-			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
-		}
+
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
@@ -969,6 +966,11 @@ class VirtueMartModelProduct extends VmModel {
 			$mediaModel = new VirtueMartModelMedia();
 //			$xrefTable = $this->getTable('product_medias');
 			$mediaModel->storeMedia($data,'product');
+		}
+
+		if (array_key_exists('field', $data)) {
+			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
 		}
 
 		$product_price_table = $this->getTable('product_prices');
