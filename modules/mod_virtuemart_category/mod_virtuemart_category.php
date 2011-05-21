@@ -31,14 +31,14 @@ $category_id = $params->get('Parent_Category_id', 0);
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
-$active_category_id = JRequest::getInt('category_id', '0');
+$active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
 
 $categories = $categoryModel->getChildrenList($category_id) ;
-/*		$q = "SELECT category_id, category_name
+/*		$q = "SELECT virtuemart_category_id, category_name
 			FROM #__virtuemart_categories, #__virtuemart_category_categories
 			WHERE #__virtuemart_category_categories.category_parent_id = ".$category_id."
-			AND #__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id
+			AND #__virtuemart_categories.virtuemart_category_id=#__virtuemart_category_categories.category_child_id
 			AND #__virtuemart_categories.virtuemart_vendor_id = 1
 			AND #__virtuemart_categories.enabled = 1
 			ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";
@@ -48,7 +48,7 @@ if(empty($categories)) return false;
 
 
 foreach ($categories as $category) {
-$category->childs = $categoryModel->getChildrenList($category->category_id) ;
+$category->childs = $categoryModel->getChildrenList($category->virtuemart_category_id) ;
 }
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 

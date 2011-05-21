@@ -23,6 +23,6 @@ $maxlength		 = $width > 20 ? $width : 20;
 $text			 = $params->get('text', JText::_('search...'));
 $set_Itemid		 = intval($params->get('set_itemid', 0));
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');
-$category_id 	 = JRequest::getInt('category_id', 0);
+$category_id 	 = JRequest::getInt('virtuemart_category_id', 0);
 require(JModuleHelper::getLayoutPath('mod_virtuemart_search'));
 ?>

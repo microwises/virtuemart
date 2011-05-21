@@ -29,12 +29,12 @@ class Shop_Menu{
 	
 	function  loadMenu(){
 		$db = JFactory::getDBO();
-		$query  = "SELECT category_id as id, category_parent_id as parent, category_name as name, '' as type,
-							CONCAT('index.php?option=com_virtuemart&view=category&category_id=', category_id ) AS link,
+		$query  = "SELECT virtuemart_category_id as id, category_parent_id as parent, category_name as name, '' as type,
+							CONCAT('index.php?option=com_virtuemart&view=category&virtuemart_category_id=', id ) AS link,
 							'-1' as browserNav, ordering as list_order
 								FROM #__virtuemart_categories, #__virtuemart_category_categories 
 								WHERE #__virtuemart_categories.enabled='1' 
-									AND #__virtuemart_categories.category_id=#__virtuemart_category_categories.category_child_id 
+									AND #__virtuemart_categories.virtuemart_category_id=#__virtuemart_category_categories.category_child_id 
 								ORDER BY name ASC";
 		
 		$db->setQuery( $query );

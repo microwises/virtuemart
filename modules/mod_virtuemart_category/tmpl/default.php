@@ -24,10 +24,10 @@ $js="jQuery(document).ready(function() {
 <ul class="VMmenu<?php echo $class_sfx ?>" ID="<?php echo "VMmenu".$ID ?>" > 
 <?php foreach ($categories as $category) { 
 		 $active_menu = 'class="VmClose"';
-		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$category->category_id);
+		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id);
 		$cattext = $category->category_name;
-		//if ($active_category_id == $category->category_id) $active_menu = 'class="active"';
-		if (in_array( $category->category_id, $parentCategories)) $active_menu = 'class="VmOpen"';
+		//if ($active_category_id == $category->virtuemart_category_id) $active_menu = 'class="active"';
+		if (in_array( $category->virtuemart_category_id, $parentCategories)) $active_menu = 'class="VmOpen"';
 
 		?>
 			
@@ -46,7 +46,7 @@ $js="jQuery(document).ready(function() {
 <?php
 		foreach ($category->childs as $child) {
 	
-		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&category_id='.$child->category_id);
+		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$child->virtuemart_category_id);
 		$cattext = $child->category_name;
 		?>
 			
