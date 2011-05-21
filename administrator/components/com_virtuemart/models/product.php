@@ -50,58 +50,6 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable('products');
 	}
 
-//	/**
-//	 * @var integer Primary key
-//	 * @access private
-//	 */
-//    private $_id;
-//
-//	var $_total;
-//	var $_pagination;
-
-//	function __construct() {
-//		parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest(  JRequest::getVar('option').JRequest::getVar('view').'.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		if (JRequest::getVar('view') == 'category' ) {
-//			$limitstart = JRequest::getVar('limitstart',0) ;
-//		} else {
-//			$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//		}
-//
-//		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//		if (!class_exists( 'TableMedia' )) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'medias.php');
-//	}
-
-//	 /**
-//     * Resets the category id and data
-//     *
-//     * @author Max Milbers
-//     */
-//    public function setId($id){
-//    	if($this->_id!=$id){
-//			$this->_id = (int)$id;
-//			$this->_data = null;
-//    	}
-//    	return $this->_id;
-//    }
-//
-//	/**
-//	 * Loads the pagination
-//	 */
-//    public function getPagination() {
-//		if ($this->_pagination == null) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-//		}
-//		return $this->_pagination;
-//	}
 
 	/**
 	 * Gets the total number of products
@@ -280,10 +228,10 @@ class VirtueMartModelProduct extends VmModel {
 				/* Load the custom variants */
 				$product->hasproductCustoms = $this->hasproductCustoms($virtuemart_product_id);
 				/* Load the custom product fields */
-				$product->customfields = self::getProductCustomsField($product);
+				$product->customfields = $this->getProductCustomsField($product);
 
 				/*  custom product fields for add to cart */
-				$product->customfieldsCart = self::getProductCustomsFieldCart($product);
+				$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
 
 				/* Check the order levels */
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -294,12 +242,12 @@ class VirtueMartModelProduct extends VmModel {
 				/* Get stock indicator */
 				$product->stock = $this->getStockIndicator($product);
 
-				/* Get the votes */
-				$product->votes = $this->getVotes($virtuemart_product_id);
+				/* TODO Get the votes */
+				//$product->votes = $this->getVotes($virtuemart_product_id);
 
 				}
 				else
-				$product->customfields = self::getproductCustomslist($virtuemart_product_id);
+				$product->customfields = $this->getproductCustomslist($virtuemart_product_id);
 			} else {
 				$product = new stdClass();
 				return $this->fillVoidProduct($product,$front);
@@ -976,7 +924,7 @@ class VirtueMartModelProduct extends VmModel {
 	* @author Max Milbers
 	* @access public
 	*/
-	public function saveProduct($product=false) {
+	public function store($product=false) {
 
 		/* Load the data */
 		if($product){
@@ -991,27 +939,19 @@ class VirtueMartModelProduct extends VmModel {
 		/* Load the old product details first */
 		$product_data->load($data['virtuemart_product_id']);
 
-		/* Get the product data */
-		if (!$product_data->bind($data)) {
-			$this->setError($product_data->getError());
-			return false;
-		}
 
         /* Set the product packaging */
-        $product_data->product_packaging = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
-
+        $data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
         /* Set the order levels */
-        $product_data->product_order_levels = $data['min_order_level'].','.$data['max_order_level'];
+        $data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
 
-        if (!$product_data->check()) {
-			$this->setError($product_data->getError());
-			return false;
-		}
+        $product_data->bindChecknStore($data);
 
-        /* Store the product */
-		if (!$product_data->store()) {
-			$this->setError($product_data->getError());
-			return false;
+
+
+		$errors = $product_data->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
 		if(empty($data['virtuemart_product_id'])){
@@ -1024,44 +964,23 @@ class VirtueMartModelProduct extends VmModel {
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
-			$xrefTable = $this->getTable('product_medias');
-			$mediaModel->storeMedia($data,$xrefTable,'product');
+//			$xrefTable = $this->getTable('product_medias');
+			$mediaModel->storeMedia($data,'product');
+		}
+
+		if (array_key_exists('field', $data)) {
+			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
 		}
 
 		$product_price_table = $this->getTable('product_prices');
 
-		if (!$product_price_table->bind($data)) {
-			$this->setError($product_price_table->getError());
-			return false;
+		$product_price_table->bindChecknStore($data);
+
+		$errors = $product_price_table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
-
-		$setPriceTable=FALSE;
-		foreach($product_price_table->getPublicProperties() as $property=>$ppvalue){
-			if(!empty($ppvalue)){
-				$setPriceTable=TRUE;
-				break;
-			}
-		}
-
-
-		if($setPriceTable){
-			// Make sure the price record is valid
-			if (!$product_price_table->check()) {
-				$this->setError($product_price_table->getError());
-				dump($product_price_table,'pricecheck error');
-				return false;
-
-			}
-
-			// Save the price record to the database
-			if (!$product_price_table->store()) {
-				$this->setError($product_price_table->getError());
-				dump($product_price_table,'store error');
-				return false;
-			}
-//			dump($product_price_table,'store done');
-		}
-
 
 		/* Update manufacturer link */
 		if(!empty($data['virtuemart_manufacturer_id'])){
@@ -1117,15 +1036,11 @@ class VirtueMartModelProduct extends VmModel {
 			$ProducttypesModel = new VirtueMartModelProducttypes();
 			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
 		}
+
 		*/
 		/* Update product custom field
 		* 'product_type_tables' are all types tables in product edit view
 		*/
-		if (array_key_exists('field', $data)) {
-			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
-		}
-
 
 		return $product_data->virtuemart_product_id;
 	}
@@ -1531,7 +1446,7 @@ class VirtueMartModelProduct extends VmModel {
 		$orderByLink ='<div class="orderlist">';
 		foreach ($fields as $field) {
 			if ($field != $orderby) {
-				$text = JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.strtoupper($field)) ;
+				$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
 				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
 				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';

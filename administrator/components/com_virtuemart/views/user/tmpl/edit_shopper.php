@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>:
 				</label>
 			</td>
 			<td>

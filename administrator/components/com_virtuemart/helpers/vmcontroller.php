@@ -80,7 +80,7 @@ class VmController extends JController{
 	 * Generic save task
 	 *
 	 * @author Max Milbers
-	 * @param $data sometimes we just want to override the data to process
+	 * @param post $data sometimes we just want to override the data to process
 	 */
 	function save($data = 0){
 
@@ -89,10 +89,12 @@ class VmController extends JController{
 		if(empty($data))$data = JRequest::get('post');
 
 		$model = $this->getModel($this->_cname);
-		if (($_id = $model->store($data)) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		$_id = $model->store($data);
+
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
 		}
 
 		$redir = $this->redirectPath;
@@ -138,7 +140,7 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 

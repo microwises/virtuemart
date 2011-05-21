@@ -37,19 +37,21 @@ class VirtuemartViewMedia extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('permissions');
 
-		$model = $this->getModel('media');
-		$this->assignRef('perms', Permissions::getInstance());
-
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
+
 		// TODO add icon for media view
 		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
 		$this->assignRef('viewName',$viewName);
 
+		$model = $this->getModel('media');
+		$this->assignRef('perms', Permissions::getInstance());
+
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 
+			dump($model,'VirtuemartViewMedia');
 			$media = $model->getFile();
 			$this->assignRef('media',	$media);
 

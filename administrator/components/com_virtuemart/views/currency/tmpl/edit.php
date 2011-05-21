@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_2'); ?>
 				</label>
 			</td>
 			<td>
@@ -74,7 +74,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_3'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
 				</label>
 			</td>
 			<td>

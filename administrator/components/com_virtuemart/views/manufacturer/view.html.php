@@ -54,7 +54,6 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturer = $model->getManufacturer();
        		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
-
 			$model->addImagesToManufacturer($manufacturer);
 			$this->assignRef('manufacturer',	$manufacturer);
 //			 /* Process the images */

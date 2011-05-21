@@ -13,13 +13,13 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: product.php 3304 2011-05-20 06:57:27Z alatak $
 */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
-
+JHTML::_('behavior.tooltip');
 /* Get the component name */
 $option = JRequest::getWord('option');
 
@@ -102,12 +102,21 @@ $pagination = $this->pagination;
 				<!-- Product name -->
 				<?php
 				$link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
-				$child_link = '';
-				if ($product->product_parent_id == 0 && $product->haschildren) {
-					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
-				}
+
+                                 $child_link = '';
+                                $pre='';
+                                /* Product list should be ordered */
+				if ($product->product_parent_id  ) {
+					 $child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+                                        //$pre 	= '&nbsp;&nbsp;<sup>|_</sup>&nbsp;';
+                                }
+
+
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link; ?></td>
+				<td><?php 
+                                 echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link;
+
+                                ?></td>
 				<!-- Vendor name -->
 				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
 				<!-- Media -->
@@ -134,7 +143,7 @@ $pagination = $this->pagination;
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id='.$product->virtuemart_manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&cid[]='.$product->virtuemart_manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
@@ -159,11 +168,10 @@ $pagination = $this->pagination;
 </div>
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="task" value="product" />
 <input type="hidden" name="view" value="product" />
+<input type="hidden" name="task" value="" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
-<input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" />
-<input type="hidden" name="page" value="product.ordering" />
+<?php /*<input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" /> */ ?>
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />

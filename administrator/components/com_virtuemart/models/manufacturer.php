@@ -42,36 +42,8 @@ class VirtueMartModelManufacturer extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('manufacturers');
-	}
 
-//	var $_total;
-//	var $_pagination;
-//
-//	function __construct() {
-//		parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//	}
-//
-//	/**
-//	 * Loads the pagination
-//	 */
-//    public function getPagination() {
-//		if ($this->_pagination == null) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-//		}
-//		return $this->_pagination;
-//	}
+	}
 
 	/**
 	 * Gets the total number of products
@@ -96,7 +68,6 @@ class VirtueMartModelManufacturer extends VmModel {
      */
      public function getManufacturer() {
 
-     	$this->_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
      	$this->_data = $this->getTable('manufacturers');
      	$this->_data->load($this->_id);
 
@@ -119,32 +90,21 @@ class VirtueMartModelManufacturer extends VmModel {
 		$table = $this->getTable('manufacturers');
 
 		/* Load the data */
-		$data = JRequest::get('post', 4);
-		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWRAW);
+		$data = JRequest::get('post');
+		/* add the mf desc as html code */
+		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
 
-		// Bind the form fields to the country table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the country record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the country record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
+		$table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
 		// Process the images //		$fullImage = JRequest::getVar('virtuemart_media_id', null, 'files',array());
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
-		$xrefTable = $this->getTable('manufacturer_medias');
-		$mediaModel->storeMedia($data,$table,'manufacturer');
+//		$xrefTable = $this->getTable('manufacturer_medias');
+		$mediaModel->storeMedia($data,'manufacturer');
 
 		return $table->virtuemart_manufacturer_id;
 	}
@@ -155,19 +115,19 @@ class VirtueMartModelManufacturer extends VmModel {
      *
      * @return boolean True is the remove was successful, false otherwise.
      */
-	public function remove() {
-		$manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('manufacturers');
+	// public function remove() {
+		// $manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
+    	// $table = $this->getTable('manufacturers');
 
-    	foreach($manufacturerIds as $manufacturerId) {
-       		if (!$table->delete($manufacturerId)) {
-           		$this->setError($table->getError());
-           		return false;
-       		}
-    	}
+    	// foreach($manufacturerIds as $manufacturerId) {
+       		// if (!$table->delete($manufacturerId)) {
+           		// $this->setError($table->getError());
+           		// return false;
+       		// }
+    	// }
 
-    	return true;
-	}
+    	// return true;
+	// }
 
     /**
      * Select the products to list on the product list page
@@ -199,24 +159,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		return $options;
 	}
 
-    /**
-    * Set the publish/unpublish state
-    * @return bool true if manufacturers are published or false if manufacturers are not published
-    */
-    public function getPublish() {
-     	$cid = JRequest::getVar('cid', false);
-     	if (is_array($cid)) {
-     		$db = JFactory::getDBO();
-     		$cids = implode( ',', $cid );
-			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
-			$q = "UPDATE #__virtuemart_manufacturers
-				SET product_publish = ".$db->Quote($state)."
-				WHERE virtuemart_product_id IN (".$cids.")";
-			$db->setQuery($q);
-			if ($db->query()) return true;
-			else return false;
-		}
-    }
 
     /**
 	 * Retireve a list of countries from the database.
@@ -268,13 +210,6 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$this->mediaModel->attachImages($manus,'vendor','image');
 
-//		if(!empty($manus)){
-//			if(!is_array($cats)) $cats = array($cats);
-//			foreach($cats as $cat){
-//				$this->mediaModel -> setId($manus->virtuemart_media_id );
-//				$manus->images = $this->mediaModel->getFile('vendor','image');
-//			}
-//		}
 }
 
 }

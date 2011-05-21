@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: view.html.php 2682 2011-01-29 16:18:03Z impleri $
+* @version $Id: view.html.php   $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -34,6 +34,7 @@ class VirtuemartViewAbout extends JView {
 	function display($tpl = null) {
 
 		$this->loadHelper('adminMenu');
+                JToolBarHelper::title(JText::_('COM_VIRTUEMART_ABOUT')."::".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
 
 		parent::display($tpl);
 	}

@@ -37,6 +37,7 @@ class VmTable extends JTable {
 	protected $_unique_name = array();
 
 	protected $_orderingKey = 'ordering';
+	protected $_slugAutoName = '';
 
     function setPrimaryKey($key,$keyForm=0){
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
@@ -87,12 +88,13 @@ class VmTable extends JTable {
 
     function checkDataContainsTableFields($from, $ignore=array()){
 
+    	if(empty($from)) return false;
     	$fromArray	= is_array( $from );
 		$fromObject	= is_object( $from );
 
-		if (!$fromArray && !$fromObject)
-		{
-			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument' );
+		if (!$fromArray && !$fromObject){
+
+			$this->setError( get_class( $this ).'::check if data contains table fields failed. Invalid from argument <pre>'.print_r($from,1 ).'</pre>');
 			return false;
 		}
 		if (!is_array( $ignore )) {
@@ -120,6 +122,14 @@ class VmTable extends JTable {
      */
     function check($obligatory=false) {
 
+       	if(!empty($this->_slugAutoName) ) {
+    		$slugAutoName = $this->_slugAutoName;
+    		$slugName = $this->_slugName;
+    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
+				$this->$slugName = JFilterInput::clean($this->$slugAutoName, 'CMD') ;
+    		}
+    	}
+
     	foreach($this->_obkeys as $obkeys => $error){
     		if (empty($this->$obkeys)) {
     			if(empty($error)){
@@ -131,31 +141,16 @@ class VmTable extends JTable {
         	}
     	}
 
-    	if(!empty($this->slugAutoName) ) {
-
-    		$slugAutoName = $this->slugAutoName;
-    		$slugName = $this->slugName;
-    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
-    			//TODO add replacment here
-
-    			$this->$slugName = preg_replace( '%', '-', $this->$slugAutoName );
-//    			$this->$slugName =
-    		}
-    	}
-
-
     	if ($this->_unique) {
-		    $db = JFactory::getDBO();
+		    $this->_db = JFactory::getDBO();
 		    foreach($this->_unique_name as $obkeys => $error){
 
 		   		$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
 				$q .= 'WHERE `'.$obkeys.'`="' .  $this->$obkeys . '"';
-	            $db->setQuery($q);
-			    $unique_id = $db->loadResultArray();
+	            $this->_db->setQuery($q);
+			    $unique_id = $this->_db->loadResultArray();
 
 			    $tblKey = $this->_tbl_key;
-//				dump($q,'check unique');
-//				echo $q; die;
 				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
 					if(empty($error)){
 						$this->setError(JText::_($error));
@@ -198,37 +193,40 @@ class VmTable extends JTable {
      * As shortcat
      *
      * @author Max Milbers
-     * @param unknown_type $model
-     * @param unknown_type $data
+     * @param array/obj $data input data as assoc array or obj
      * @param unknown_type $obligatory
+     * @return array/obj $data the updated data
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-        if (!$this->bind($data)) {
-    		$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
-			return false;
+    	dump($data,'data to bind');
+    	$ok = true;
+        if ( !$this->bind($data) ) $ok = false;
+
+
+    	if( $ok ) {
+    		if( !$this->checkDataContainsTableFields($data) ) $ok = false;
 		}
 
-    	if(!$this->checkDataContainsTableFields($data)){
-			$app = JFactory::getApplication();
-    		$app->enqueueMessage('Data contains no Info for '.get_class( $this ).', storing not needed');
-			return true;
+    	if( $ok ) {
+    		if( !$this->check($obligatory) ) $ok = false;
 		}
 
-		// Make sure the table record is valid
-		if (!$this->check($obligatory)) {
-			$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
-			return false;
+		if( $ok ) {
+    		if( !$this->store($data) ) $ok = false;
 		}
 
-		// Save the record to the database
-		if (!$this->store()) {
-    		$app = JFactory::getApplication();
-    		$app->enqueueMessage($this->getError());
-			return false;
-		}
+//		// Make sure the table record is valid
+//		if (!$this->check($obligatory) && $ok) {
+//
+//			$ok = false;
+//		}
+//
+//		// Save the record to the database
+//		if (!$this->store() && $ok) {
+//
+//			$ok = false;
+//		}
 
 		$tblKey = $this->_tbl_key;
 		if (is_object($data)){

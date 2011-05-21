@@ -49,11 +49,12 @@ class ShopFunctions {
 	 *@ var $cssIcon the css class for icon
 	 *@ return $viewName
 	 **/
-	function SetViewTitle($cssIcon,$view=null) {
+	function SetViewTitle($cssIcon,$view=null,$msg ='') {
 		if (!$view) $view = JRequest::getVar('view');
+	if ($msg) { $msg = ' <span style="color: #666666;float: right;font-size: large;">'.$msg.'</span>';}
 		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_'.$view);
-		$taskName = JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list'));
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName) , $cssIcon);
+		$taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list')).' ]</small></small>';
+		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
 		return $viewName;
 	}
 
@@ -190,7 +191,7 @@ class ShopFunctions {
 			$_a = explode ('=', $_attrib, 2);
 			$attrs[$_a[0]] = $_a[1];
 		}
-		dump($countryId,'renderCountryList');
+
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 
@@ -519,10 +520,10 @@ class ShopFunctions {
 	 */
 	public function listUserTitle($t, $extra="", $_prefix = '') {
 		$options = array();
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MR'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_MRS'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_DR'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'), JText::_('COM_VIRTUEMART_REGISTRATION_FORM_PROF'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MR'), JText::_('COM_VIRTUEMART_MR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MRS'), JText::_('COM_VIRTUEMART_MRS'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_DR'), JText::_('COM_VIRTUEMART_DR'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_PROF'), JText::_('COM_VIRTUEMART_PROF'));
 
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}

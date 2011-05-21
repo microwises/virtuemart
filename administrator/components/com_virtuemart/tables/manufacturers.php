@@ -34,6 +34,7 @@ class TableManufacturers extends VmTable {
 	var $virtuemart_manufacturer_id = 0;
 	/** @var string manufacturer name */
 	var $mf_name = '';
+	var $slug		=  '';
 	/** @var string manufacturer email */
 	var $mf_email = '';
 	/** @var string manufacturer description */
@@ -55,9 +56,8 @@ class TableManufacturers extends VmTable {
 		parent::__construct('#__virtuemart_manufacturers', 'virtuemart_manufacturer_id', $db);
 
 		$this->setUniqueName('mf_name','COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS');
-
 		$this->setLoggable();
-
+		$this->setSlug('mf_name');
 	}
 
 

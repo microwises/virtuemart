@@ -1,14 +1,11 @@
 <?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* VirtueMart Search Module
-* NOTE: THIS MODULE REQUIRES THE PHPSHOP COMPONENT FOR MOS!
-*
 * @version $Id$
 * @package VirtueMart
 * @subpackage modules
 *
-* @copyright (C) 2004-2007 soeren
+* @copyright (C) 2011 Patrick Kohl
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
 * VirtueMart comes with absolute no warranty.
@@ -26,6 +23,6 @@ $maxlength		 = $width > 20 ? $width : 20;
 $text			 = $params->get('text', JText::_('search...'));
 $set_Itemid		 = intval($params->get('set_itemid', 0));
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');
-$category_id 	 = JRequest::getInt('category_id', 0);
+$category_id 	 = JRequest::getInt('virtuemart_category_id', 0);
 require(JModuleHelper::getLayoutPath('mod_virtuemart_search'));
 ?>

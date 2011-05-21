@@ -379,6 +379,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `virtuemart_manufacturer_id` SERIAL,
   `mf_name` varchar(64) DEFAULT NULL,
+  `slug` varchar(128) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
   `virtuemart_manufacturercategories_id` int(11) DEFAULT NULL,
@@ -926,7 +927,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
-  `virtuemart_product_id` SERIAL,
+  `virtuemart_product_rating_id` SERIAL,
+  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `rates` int(11) NOT NULL ,
   `ratingcount` int(11) NOT NULL DEFAULT '0',
@@ -937,7 +939,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_product_id`)
+  PRIMARY KEY (`virtuemart_product_rating_id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
 
 

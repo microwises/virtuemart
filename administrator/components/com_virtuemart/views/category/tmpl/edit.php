@@ -74,9 +74,10 @@ $mainframe = JFactory::getApplication();
 				<input type="text" name="category_name" id="category_name" size="60" value="<?php echo $this->category->category_name; ?>" class="inputbox" />
 			</td>
 		</tr>
-		<td class="key">
-				<label for="category_name">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_ALIAS'); ?>:
+		<tr>
+			<td class="key">
+				<label for="slug">
+					<?php echo JText::_('COM_VIRTUEMART_SLUG'); ?>:
 				</label>
 			</td>
 			<td>

@@ -152,8 +152,8 @@ AdminMenuHelper::startAdminArea();
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
-									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_TITLE') ?></th>
-									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_VALUE') ?></th>
+									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_TITLE') ?></th>
+									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_VALUE') ?></th>
 								</tr>
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
@@ -269,7 +269,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>:
 				</label>
 			</td>
 			<td>
@@ -293,7 +293,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>

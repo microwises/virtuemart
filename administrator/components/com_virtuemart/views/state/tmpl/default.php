@@ -100,6 +100,7 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="virtuemart_country_id" value="<?php echo $this->virtuemart_country_id; ?>" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

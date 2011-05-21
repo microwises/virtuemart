@@ -217,7 +217,6 @@ class VirtueMartModelUser extends VmModel {
 			//		}
 
 
-			dump($this->_data,'user data');
 			return $this->_data;
 		}
 
@@ -307,7 +306,7 @@ class VirtueMartModelUser extends VmModel {
 		{
 			$mainframe = JFactory::getApplication() ;
 
-			if(empty($data)) $data = JRequest::get('post');
+//			if(empty($data)) $data = JRequest::get('post');
 			//		$currentUser =& JFactory::getUser();
 
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
@@ -334,7 +333,6 @@ class VirtueMartModelUser extends VmModel {
 			//This is important, when a user changes his email address from the cart,
 			//that means using view user layout edit_address (which is called from the cart)
 			$user->set('email',$data['email']);
-
 
 			if(empty ($data['name'])){
 				$name = $user->get('name');
@@ -428,7 +426,6 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			dump($user,'juser before store');
 			// Save the JUser object
 			if (!$user->save()) {
 				//This?
@@ -439,13 +436,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			$newId = $user->get('id');
-			$data['virtuemart_user_id'] = $newId;		//We need this in that case, because data is bound to table later
+			$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
 			$this->setId($newId);
-
-			//I would like to do this function in the FE user/controller like the other emails, with layout
-//			if ($new) {
-//				$this->sendRegistrationEmail($user);
-//			}
 
 			//Save the VM user stuff
 			if(!$this->saveUserData($data,$new)){
@@ -502,27 +494,36 @@ class VirtueMartModelUser extends VmModel {
 				//TODO here add plugin hoook for creating customer numbers.
 				$_data['customer_number'] = md5($_data['username']);
 			}
+
 			//update user table
 			$vmusersData = array('virtuemart_user_id'=>$_data['virtuemart_user_id'],'user_is_vendor'=>$_data['user_is_vendor'],'virtuemart_vendor_id'=>$_data['virtuemart_vendor_id'],'customer_number'=>$_data['customer_number'],'perms'=>$_data['perms']);
 			$usertable = $this->getTable('vmusers');
 
 			$vmusersData = $usertable -> bindChecknStore($vmusersData);
+			$errors = $usertable->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
 
+			if(!empty($_data['virtuemart_shoppergroup_id'])){
+				// Bind the form fields to the auth_user_group table
+				$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
+				$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
 
-			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$_data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+				$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+				$errors = $user_shoppergroups_table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+				}
+			}
 
-			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
 
 //			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 //			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$_data['virtuemart_shoppergroup_id']);
 
 			if (!user_info::storeAddress($_data, 'userinfos', $new)) {
-				dump($_data,'user_info::storeAddress error');
 				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-//				echo '<pre>'.print_r($this,1).'</pre>';die;
-				return false;
+//				return false;
 			}
 
 			if($_data['user_is_vendor']){
@@ -537,7 +538,7 @@ class VirtueMartModelUser extends VmModel {
 				$vendorModel->setId(1);
 				if (!$vendorModel->store($_data)) {
 					$this->setError($vendorModel->getError());
-					dump($vendorModel,'vendormodel error');
+
 					return false;
 				}else{
 					//Update xref Table
@@ -549,7 +550,6 @@ class VirtueMartModelUser extends VmModel {
 
 					if (!$usertable->bindChecknStore($vmusersData)){
 						$this->setError($usertable->getError());
-						dump($usertable,'error after storing vendor while storing user bindChecknStore');
 						return false;
 					}
 

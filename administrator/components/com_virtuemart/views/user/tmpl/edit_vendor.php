@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<table class="admintable">
 						<tr>
 							<td class="key">
-								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_CURRENCY'); ?>:
+								<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>:
 							</td>
 							<td>
 								<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_currency', '', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_currency); ?>

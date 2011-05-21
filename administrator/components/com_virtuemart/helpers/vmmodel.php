@@ -22,14 +22,14 @@ defined('_JEXEC') or die();
 
 class VmModel extends JModel {
 
-	protected $_id 			= 0;
-	protected $_data 		= null;
-	protected $_pagination 	= 0;
+	var $_id 			= 0;
+	var $_data 		= null;
+	var $_pagination 	= 0;
 
-	protected $_maintable 	= '';	// something like #__virtuemart_calcs
-	protected $_maintablename = '';
-	protected $_idName		= '';
-	protected $_cidName		= 'cid';
+	var $_maintable 	= '';	// something like #__virtuemart_calcs
+	var $_maintablename = '';
+	var $_idName		= '';
+	var $_cidName		= 'cid';
 
     public function __construct($cidName='cid'){
         parent::__construct();
@@ -81,8 +81,12 @@ class VmModel extends JModel {
      * @author Max Milbers
      */
     function setId($id){
+
+    	if(is_array($id)) $id = $id[0];
     	if($this->_id!=$id){
 			$this->_id = (int)$id;
+			$idName = $this->_idName;
+//			$this->$idName = $this->_id;
 			$this->_data = null;
     	}
     	return $this->_id;
@@ -140,10 +144,10 @@ class VmModel extends JModel {
 			$this->_data->load($this->_id);
 
 			//just an idea
-//    		if(isset($this->_data->virtuemart_vendor_id && empty($this->_data->virtuemart_vendor_id)){
-//		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-//		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
-//		    }
+    		if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
+		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+		    }
 		}
 
 		return $this->_data;
@@ -163,8 +167,7 @@ class VmModel extends JModel {
 	    	}
 
 		} else {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($table->getError());
+			$this->setError($table->getError());
 			return false;
 		}
 
@@ -303,7 +306,7 @@ class VmModel extends JModel {
 		}
 
 		return true;
-	} 
+	}
     //General toggle could be nice, lets see
 //	/**
 //	 * Switch a toggleable field on or off

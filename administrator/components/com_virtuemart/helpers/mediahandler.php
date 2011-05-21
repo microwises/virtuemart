@@ -123,7 +123,6 @@ class VmMediaHandler {
 			$data[$k] = $v;
 		}
 
-
 		return $data;
 	}
     /**

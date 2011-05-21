@@ -25,7 +25,7 @@ $vendorId = JRequest::getInt('vendorid', 1);
 $productModel = new VirtueMartModelProduct();
 
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
-$category_id = 		$params->get( 'category_id', null ); // Display products from this category only
+$category_id = 		$params->get( 'virtuemart_category_id', null ); // Display products from this category only
 $filter_category = 	(bool)$params->get( 'filter_category', 0 ); // Filter the category
 $display_style = 	$params->get( 'display_style', "div" ); // Display Style
 $products_per_row = $params->get( 'products_per_row', 4 ); // Display X products per Row

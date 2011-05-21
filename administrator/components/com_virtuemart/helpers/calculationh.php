@@ -587,11 +587,8 @@ class calculationHelper {
 			$shoppergrps = $this->_db->loadResultArray();
 
 			$hitsCategory = true;
-//			dump($this->_cats,'$this->_cats');
-//			dump($cats,'$cats');
 			if(isset($this->_cats)){
 				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
-//				dump($hitsCategory,'$hitsCategory');
 			}
 			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){

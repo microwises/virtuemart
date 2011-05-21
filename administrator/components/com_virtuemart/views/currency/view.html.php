@@ -52,8 +52,9 @@ class VirtuemartViewCurrency extends JView {
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-
-			$currency = $model->getCurrency(true);
+                        $cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		        JArrayHelper::toInteger($cid);
+			$currency = $model->getCurrency($cid);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();

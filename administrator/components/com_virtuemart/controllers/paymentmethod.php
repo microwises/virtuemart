@@ -69,7 +69,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-
+		$view = $this->getView($this->_cname, $viewType);
 		$view->setModel($paymModel = $this->getModel('creditcard'));
 
 		parent::edit();

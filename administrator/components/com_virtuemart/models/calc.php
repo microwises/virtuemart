@@ -110,16 +110,16 @@ class VirtueMartModelCalc extends VmModel {
 		foreach ($this->_data as $data){
 
 			/* Write the first 5 categories in the list */
-			$data->calcCategoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id');
+			$data->calcCategoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			/* Write the first 5 shoppergroups in the list */
-			$data->calcShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id');
+			$data->calcShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 			/* Write the first 5 countries in the list */
-			$data->calcCountriesList = modelfunctions::buildGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id');
+			$data->calcCountriesList = modelfunctions::buildGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id','country');
 
 			/* Write the first 5 states in the list */
-			$data->calcStatesList = modelfunctions::buildGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id');
+			$data->calcStatesList = modelfunctions::buildGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id','state');
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.$data->calc_currency.'" ';
 			$this->_db->setQuery($query);

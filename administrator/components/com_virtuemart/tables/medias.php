@@ -64,7 +64,7 @@ class TableMedias extends VmTable {
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_medias', 'virtuemart_media_id', $db);
-
+//		$this->setPrimaryKey('virtuemart_media_id');
 		$this->setUniqueName('file_title','COM_VIRTUEMART_MEDIA_NAME_ALREADY_EXISTS');
 
 		$this->setLoggable();

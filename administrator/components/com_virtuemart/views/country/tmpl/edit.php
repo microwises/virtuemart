@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUNTRY').' '.JText::_('COM_VIRTUEMART_NAME'); ?>:
 				</label>
 			</td>
 			<td>

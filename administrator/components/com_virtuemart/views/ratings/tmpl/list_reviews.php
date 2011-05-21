@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage   ratings
+* @subpackage 	ratings
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -13,14 +13,15 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: ratings.php 2233 2010-01-21 21:21:29Z SimonHodgkiss $
+* @version $Id: ratings_edit.php 2233 2010-01-21 21:21:29Z SimonHodgkiss $
+*
+* @todo decide to allow or not a JEditor here instead of a textarea
+* @todo comment length check should also occur on the server side (model?)
 */
-
-// @todo a link or tooltip to show the details of shop user who posted comment
-// @todo more flexible templating, theming, etc..
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 AdminMenuHelper::startAdminArea();
 /* Get the component name */
 $option = JRequest::getWord('option');
@@ -56,11 +57,11 @@ $option = JRequest::getWord('option');
 	</thead>
 	<tbody>
 	<?php
-	if (count($this->ratingslist) > 0) {
+	if (count($this->reviewslist) > 0) { dump($this->reviewslist,'list');
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
-		foreach ($this->ratingslist as $key => $review) {
+		foreach ($this->reviewslist as $key => $review) {
 			$checked = JHTML::_('grid.id', $i , $review->virtuemart_product_rating_id);
 			$published = JHTML::_('grid.published', $review, $i );
 			?>

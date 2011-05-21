@@ -31,9 +31,6 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelMedia extends VmModel {
 
-	/** @var integer Primary key */
-    private $virtuemart_media_id = 0;
-
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -41,71 +38,9 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_media_id');
-		$this->setMainTable('manufacturers');
+		$this->setMainTable('medias');
+
 	}
-//   /** @var integer Total number of files in the database */
-//    var $_total;
-//    /** @var pagination Pagination for file list */
-//    var $_pagination;
-
-
-//	/**
-//	 * Constructor for product files
-//	 */
-//	function __construct(){
-//		parent::__construct();
-//
-////		$this->virtuemart_media_id = $id;
-//
-//		/* Get the file ID */
-//		$this->setId(JRequest::getInt('virtuemart_media_id', null));
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//	}
-
-//	/**
-//	 * Sets new Id and resets data ...
-//	 * @author Max Milbers
-//	 * @param int $id
-//	 */
-//    function setId($id) {
-//		$this->virtuemart_media_id = $id;
-//		$this->_data = null;
-//    }
-//
-//	/**
-//	 * Loads the pagination
-//	 *
-//	 * @author RickG
-//	 */
-//    public function getPagination() {
-//		if (empty($this->_pagination)) {
-//	    	jimport('joomla.html.pagination');
-//	    	$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
-//
-//    /**
-//     * Gets the total number of currencies
-//     *
-//     * @author Max Milbers
-//     * @return int Total number of currencies in the database
-//     */
-//    function _getTotal() {
-//		if (empty($this->_total)) {
-//		    $query = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`';
-//		    $this->_total = $this->_getListCount($query);
-//		}
-//		return $this->_total;
-//    }
 
     /**
      * Gets a single media by virtuemart_media_id
@@ -119,7 +54,7 @@ class VirtueMartModelMedia extends VmModel {
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$data = $this->getTable('medias');
-   		$data->load($this->virtuemart_media_id);
+   		$data->load($this->_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
@@ -274,7 +209,7 @@ class VirtueMartModelMedia extends VmModel {
      * @param unknown_type $table
      * @param unknown_type $type
      */
-	function storeMedia($data,$table,$type){
+	function storeMedia($data,$type){
 
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
@@ -291,13 +226,15 @@ class VirtueMartModelMedia extends VmModel {
 
 //		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
 
+		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
-		if (!$table->bindChecknStore($data)) {
-			$this->setError($table->getError());
-			return false;
+		$data = $table->bindChecknStore($data);
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
-		return $table->id;
+		return $data->virtuemart_media_id;
 
 	}
 
@@ -307,13 +244,12 @@ class VirtueMartModelMedia extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store($data=0,$type) {
+	public function store($data,$type) {
 
-		$table = $this->getTable('medias');
-//		if(empty($data))$data = JRequest::get('post');
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
+		$table = $this->getTable('medias');
 		// Bind the form fields to the table
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
@@ -328,29 +264,10 @@ class VirtueMartModelMedia extends VmModel {
 			$data['published'] = 0;
 
 
-		if(empty($data['file_url'])){
-//			$this->remove($data['virtuemart_media_id']);
-		} else {
-			// Bind the form fields to the table again
-			if (!$table->bind($data)) {
-				$this->setError($table->getError());
-				return false;
-			}
-
-			// Make sure the record is valid
-			if (!$table->check()) {
-				if($table->getError()){
-					foreach($table->getErrors() as $error){
-						$this->setError($error);
-					}
-				}
-				return false;
-			}
-			// Save the record to the database
-			if (!$table->store()) {
-				$this->setError($table->getError());
-				return false;
-			}
+		$table->bindChecknStore();
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
 		return $table->virtuemart_media_id;
@@ -408,7 +325,6 @@ class VirtueMartModelMedia extends VmModel {
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 
-//				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
 
 			}

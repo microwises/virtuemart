@@ -89,6 +89,10 @@ class VirtuemartViewUser extends JView {
 			} else {
 				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
 			}
+			$currencymodel = $this->getModel('currency', 'VirtuemartModel');
+			$currencies = $currencymodel->getCurrencies();
+			$this->assignRef('currencies', $currencies);
+
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
 			$this->shopper($userFields);
