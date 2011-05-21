@@ -312,7 +312,7 @@ class VirtueMartModelUser extends VmModel {
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 			//The constructor sets automatically the right id.
 			$new = ($this->_id < 1);
-			$user = new JUser($this->_id);dump($user,'my user begin');
+			$user = new JUser($this->_id);
 			$gid = $user->get('gid'); // Save original gid
 
 			/*

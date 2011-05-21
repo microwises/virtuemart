@@ -55,6 +55,7 @@ class TableShippingrates extends VmTable {
 		/** @var string Shipping Rate name*/
 	var $shipping_rate_vat_id      	= '';
 
+	var $ordering			= 0;
               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

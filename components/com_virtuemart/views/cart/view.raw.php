@@ -43,7 +43,7 @@ class VirtueMartViewCart extends JView {
 		$this->cartdata = $this->_cart->prepareCartData();
 		$this->data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('COM_VIRTUEMART_CART_SHOW').'</a>';
 		$this->data->billTotal = JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL').' : <strong>'. $this->cartdata->prices['billTotal'] .'</strong>';
-		
+
 		//self::prepareCartData($prepareCartData);
 		$this->getProductData();
 		echo json_encode($this->data);
@@ -171,7 +171,7 @@ class VirtueMartViewCart extends JView {
 		//TODO add registering userdata
 		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
 	}
-	
+
 	private function getProductData(){
 		// Added for the zone shipping module
 		//$vars["zone_qty"] = 0;
@@ -180,7 +180,7 @@ class VirtueMartViewCart extends JView {
 
 		//of course, some may argue that the $this->data->products should be generated in the view.html.php, but
 		//
-		 
+
 		$this->data->totalProduct = 0;
 		$i=0;
 		foreach ($this->_cart->products as $priceKey=>$product){
@@ -202,8 +202,6 @@ class VirtueMartViewCart extends JView {
 				foreach ($variantmods as $variantmod) {
 						$row=0 ;
 						foreach($variantmod as $variant=>$selected){
-//							dump($selected,$priceKey.' are vari ID : '.$variant);
-//							dump($product->customfieldsCart[$row],' are vari ID : '.$row);
 							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 							$row++;
 						}
@@ -216,7 +214,7 @@ class VirtueMartViewCart extends JView {
 			//$weight_subtotal = vmShippingMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
-			
+
 
 			$this->data->products[$i]['prices'] = $this->cartdata->prices[$priceKey]['subtotal_with_tax'];
 

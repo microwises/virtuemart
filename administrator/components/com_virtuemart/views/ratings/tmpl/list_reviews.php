@@ -57,7 +57,7 @@ $option = JRequest::getWord('option');
 	</thead>
 	<tbody>
 	<?php
-	if (count($this->reviewslist) > 0) { dump($this->reviewslist,'list');
+	if (count($this->reviewslist) > 0) {
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');

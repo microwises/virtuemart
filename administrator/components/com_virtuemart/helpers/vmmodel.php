@@ -190,7 +190,7 @@ class VmModel extends JModel {
 				return false;
 		    }
 		}
-		dump($table,'remove');
+
 		return true;
 	}
 

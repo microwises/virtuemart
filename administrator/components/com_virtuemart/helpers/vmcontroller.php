@@ -40,7 +40,7 @@ class VmController extends JController{
 
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
-		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.strtoupper($this->_cname));
+		$this->mainLangKey = JText::_('COM_VIRTUEMART_CONTROLLER_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 		$task = explode ('.',JRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
@@ -115,7 +115,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token remove' );
 
 		$ids = JRequest::getVar($this->_cidName,  array(), '', 'ARRAY');
-		dump($ids,'my cidname '.$this->_cidName.' ids ');
+//		dump($ids,'my cidname '.$this->_cidName.' ids ');
 		if(count($ids) < 1) {
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 		} else {
@@ -128,7 +128,7 @@ class VmController extends JController{
 				$msg .= '<br />'.($error);
 			}
 		}
-		dump($table,'remove');
+
 		$this->setRedirect($this->redirectPath, $msg);
 
 	}

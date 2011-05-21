@@ -282,7 +282,7 @@ class VirtueMartModelCustom extends VmModel {
     	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
-		dump($xrefTable,'data binded');
+
 
 //		$newIds = array();
 //

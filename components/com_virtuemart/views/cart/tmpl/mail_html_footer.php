@@ -16,7 +16,7 @@
 * other free or open source software licenses.
 *
 */
-//dump($this,'my mailvendor');
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 /* TODO Chnage the footer place in helper or assets ???*/

@@ -41,6 +41,8 @@ class TableShippingcarriers extends VmTable {
 	/** @var int published boolean */
 	var $published						= 1;
 
+	var $ordering						= 0;
+
     /**
      * @author Max Milbers
      * @param $db A database connector object

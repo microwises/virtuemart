@@ -199,7 +199,6 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-    	dump($data,'data to bind');
     	$ok = true;
         if ( !$this->bind($data) ) $ok = false;
 

@@ -229,12 +229,11 @@ class VirtueMartControllerProductdetails extends JController {
 		$customVariant = JRequest::getVar('customPrice',array());
 		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant);
 
-		//Why we do not have to include the calculatorh.php here?
-		//Because it is already require in the model!
-
-		$calculator = calculationHelper::getInstance();
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+//		$calculator = calculationHelper::getInstance();
 		foreach ($prices as &$value  ){
-			$value = $calculator->priceDisplay($value);
+			$value = $currency->priceDisplay($value);
 		}
 //		die;
 		// Get the document object.

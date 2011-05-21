@@ -267,7 +267,7 @@ class VirtuemartViewProduct extends JView {
 					$vendor = $vendor_model->getVendor();
 
 					$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
-					dump();
+
 					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,$product->product_currency,true);
 
 					/* Write the first 5 categories in the list */

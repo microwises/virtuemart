@@ -25,7 +25,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 JHTML::_ ( 'behavior.modal' );
 JHTML::_('behavior.tooltip');
 
-//dump($this->product);
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );

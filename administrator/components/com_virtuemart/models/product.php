@@ -1132,7 +1132,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = false;
 		    }
 		}
-		dump($ids,'ok ');
+
 		return $ok;
 	}
 
