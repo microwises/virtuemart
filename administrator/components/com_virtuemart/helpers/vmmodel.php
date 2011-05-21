@@ -85,7 +85,7 @@ class VmModel extends JModel {
     	if(is_array($id)) $id = $id[0];
     	if($this->_id!=$id){
 			$this->_id = (int)$id;
-			$idName = $this->_idName;
+//			$idName = $this->_idName;
 //			$this->$idName = $this->_id;
 			$this->_data = null;
     	}
@@ -158,18 +158,18 @@ class VmModel extends JModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		if($data = $table->bindChecknStore($data)){
-			if(is_object($data)){
-				$_idName = $this->_idName;
-				return $data->$_idName;
-	    	} else {
-	    		return $data[$this->_idName];
-	    	}
+		$data = $table->bindChecknStore($data);
 
-		} else {
-			$this->setError($table->getError());
-			return false;
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
+		if(is_object($data)){
+			$_idName = $this->_idName;
+			return $data->$_idName;
+    	} else {
+    		return $data[$this->_idName];
+    	}
 
 	}
 
@@ -179,10 +179,10 @@ class VmModel extends JModel {
      * @author Max Milbers
      * @return boolean True is the delete was successful, false otherwise.
      */
-	public function remove() {
+	public function remove($ids) {
 
-		$table =& $this->getTable($this->_maintablename);
-		$ids = JRequest::getVar($this->_cidName,  0, '', 'array');
+
+		$table = $this->getTable($this->_maintablename);
 
 		foreach($ids as $id) {
 		    if (!$table->delete($id)) {
@@ -190,6 +190,7 @@ class VmModel extends JModel {
 				return false;
 		    }
 		}
+		dump($table,'remove');
 		return true;
 	}
 
@@ -221,11 +222,13 @@ class VmModel extends JModel {
 	 * @param string $postName the name of id Post  (Primary Key in table Class constructor)
 	 */
 
-	function toggle($field,$val = NULL, $postName='cid' ) {
+	function toggle($field,$val = NULL, $cidName = 0 ) {
 		$ok = true;
 		$table =& $this->getTable($this->_maintablename);
 
-		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
+		if(empty($cidName)) $cidName = $this->_cidName;
+
+		$ids = JRequest::getVar( $cidName, array(0), 'post', 'array' );
 		foreach($ids as $id){
 			$table->load( $id );
 			if ($val == NULL) {
@@ -307,6 +310,25 @@ class VmModel extends JModel {
 
 		return true;
 	}
+
+    /**
+	 * Since an object like product, category dont need always an image, we can attach them to the object with this function
+	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $obj some object with a _medias xref table
+	 */
+
+	public function addImages($obj){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($obj,$this->_maintablename,'image');
+
+	}
+
     //General toggle could be nice, lets see
 //	/**
 //	 * Switch a toggleable field on or off

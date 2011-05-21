@@ -54,13 +54,14 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturer = $model->getManufacturer();
        		$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
-			$model->addImagesToManufacturer($manufacturer);
+			$model->addImages($manufacturer);
 			$this->assignRef('manufacturer',	$manufacturer);
-//			 /* Process the images */
-//			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-//			$mediaModel = new VirtueMartModelMedia();
-//			$mediaModel -> setId($manufacturer->virtuemart_media_id);
-//			$image = $mediaModel->getFile('manufacturer','image');
+
+			 /* Process the images */
+			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+			$mediaModel = new VirtueMartModelMedia();
+			$mediaModel -> setId($manufacturer->virtuemart_media_id);
+			$image = $mediaModel->getFile('manufacturer','image');
 
 			$manufacturerCategories = $categoryModel->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);

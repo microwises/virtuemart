@@ -44,12 +44,12 @@ INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_ve
 -- Dumping data for table `#__virtuemart_category_categories`
 --
 
-INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `category_child_id`, `category_list`, `category_shared`) VALUES
-(0, 1, NULL, 1),
-(0, 2, NULL, 1),
-(0, 3, NULL, 1),
-(2, 4, NULL, 1),
-(2, 5, NULL, 1);
+INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `category_child_id`) VALUES
+( 0, 1),
+( 0, 2),
+( 0, 3),
+( 2, 4),
+( 2, 5);
 
 
 --

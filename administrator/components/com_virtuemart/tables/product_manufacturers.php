@@ -1,13 +1,13 @@
 <?php
 /**
 *
-* calc_states table ( to map calc rules to shoppergroups)
+* product_medias table ( for media)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
 * @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,29 +18,28 @@
 
 defined('_JEXEC') or die();
 
+if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
+
 /**
- *
- * The class is an xref table
+ * Calculator table class
+ * The class is is used to manage the media in the shop.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
+class TableProduct_manufacturers extends VmTableXarray {
 
-if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
-
-class TableCalc_states extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_states', 'id', $db);
+		parent::__construct('#__virtuemart_product_manufacturers', 'id', $db);
 
-		$this->setPrimaryKey('virtuemart_calc_id');
-		$this->setSecondaryKey('virtuemart_state_id');
+		$this->setPrimaryKey('virtuemart_product_id');
+		$this->setSecondaryKey('virtuemart_manufacturer_id');
 
 	}
-
 
 }

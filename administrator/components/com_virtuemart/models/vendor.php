@@ -404,23 +404,6 @@ class VirtueMartModelVendor extends VmModel {
 		}
 	}
 
-	/**
-	 * Since a category dont need always an image, we can attach them to the category with this function.
-	 * The parameter takes a single category or arrays of categories, look at FE/views/virtuemart/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $categories
-	 */
-	public function addImagesToVendor($vendor=0){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($vendor,'vendor','image');
-
-	}
-
 }
 //pure php no closing tag
 //	/**

@@ -1074,6 +1074,69 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	/**
+	 * removes a product and related table entries
+	 *
+	 * @author Max Milberes
+	 */
+	public function remove($ids) {
+
+		$table = $this->getTable($this->_maintablename);
+
+		$cats = $this->getTable('product_categories');
+		$customs = $this->getTable('product_customfields');
+		$manufacturers = $this->getTable('product_manufacturers');
+		$medias = $this->getTable('product_medias');
+		$prices = $this->getTable('product_prices');
+		$rating = $this->getTable('product_ratings');
+		$review = $this->getTable('product_reviews');
+
+		$ok = true;
+		foreach($ids as $id) {
+		    if (!$table->delete($id)) {
+				$this->setError($table->getError());
+				$ok = false;
+		    }
+
+			if (!$cats->delete($id)) {
+				$this->setError($cats->getError());
+				$ok = false;
+		    }
+
+			if (!$customs->delete($id)) {
+				$this->setError($customs->getError());
+				$ok = false;
+		    }
+
+		    if (!$manufacturers->delete($id)) {
+				$this->setError($manufacturers->getError());
+				$ok = false;
+		    }
+
+			if (!$medias->delete($id)) {
+				$this->setError($medias->getError());
+				$ok = false;
+		    }
+
+		 	if (!$prices->delete($id)) {
+				$this->setError($prices->getError());
+				$ok = false;
+		    }
+
+			if (!$rating->delete($id)) {
+				$this->setError($rating->getError());
+				$ok = false;
+		    }
+
+			if (!$review->delete($id)) {
+				$this->setError($review->getError());
+				$ok = false;
+		    }
+		}
+		dump($ids,'ok ');
+		return $ok;
+	}
+
+	/**
 	* Remove a product
 	* @author RolandD
 	* @todo Add sanity checks
@@ -1977,21 +2040,5 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
-    /**
-	 * Since a product dont need always an image, we can attach them to the product with this function
-	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $products
-	 */
-	public function addImagesToProducts($products=0){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($products,'product','image');
-
-	}
 }
 // No closing tag

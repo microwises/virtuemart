@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* calc_states table ( to map calc rules to shoppergroups)
+* category_categories table ( to map calc rules to shoppergroups)
 *
 * @package	VirtueMart
-* @subpackage Calculation tool
+* @subpackage nested categories
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
@@ -18,29 +18,22 @@
 
 defined('_JEXEC') or die();
 
-/**
- *
- * The class is an xref table
- *
- * @author Max Milbers
- * @package		VirtueMart
- */
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
-if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
+class TableCategory_categories extends VmTableData {
 
-class TableCalc_states extends VmTableXarray {
+	var $category_parent_id = 0;
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_calc_states', 'id', $db);
+		parent::__construct('#__virtuemart_category_categories', 'id', $db);
 
-		$this->setPrimaryKey('virtuemart_calc_id');
-		$this->setSecondaryKey('virtuemart_state_id');
+		$this->setPrimaryKey('category_child_id');
 
+		$this->setOrderable();
 	}
-
 
 }

@@ -174,13 +174,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
+  `id` SERIAL,
   `category_parent_id` int(11) NOT NULL DEFAULT '0',
   `category_child_id` int(11) NOT NULL DEFAULT '0',
-  `category_list` int(11) DEFAULT NULL,
-  `category_shared` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`category_child_id`),
-  KEY `category_xref_category_parent_id` (`category_parent_id`),
-  KEY `idx_category_xref_category_list` (`category_list`)
+  `ordering` int(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `i_category_parent_id` (`category_parent_id`,`category_child_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
 
 --

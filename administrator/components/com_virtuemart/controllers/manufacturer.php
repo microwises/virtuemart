@@ -42,7 +42,7 @@ class VirtuemartControllerManufacturer extends VmController {
 	 * @author
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_manufacturer_id');
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();

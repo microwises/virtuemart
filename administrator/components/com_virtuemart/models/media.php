@@ -275,7 +275,7 @@ class VirtueMartModelMedia extends VmModel {
 
 	/**
 	 * Delete an image file
-	 * @author unknow, maybe Roland Dalmulder
+	 * @author unknown, maybe Roland Dalmulder
 	 * @author Max Milbers
 	 */
 	public function remove($cids) {
@@ -304,19 +304,6 @@ class VirtueMartModelMedia extends VmModel {
 //		$mainframe->redirect($url);
 	}
 
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author Max Milbers
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	public function publish($publishId = false)
-	{
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','medias',$publishId);
-
-	}
 
 	public function attachImages($objects,$type,$mime=''){
 		if(!empty($objects)){

@@ -35,24 +35,31 @@ class VmMediaHandler {
 	 */
 	public function getMediaUrlByView($type){
 
-		if($type == 'product'){
+		//the problem is here, that we use for autocreatoin the name of the model, here products
+		//But for storing we use the product to build automatically the table out of it (product_medias)
+		if($type == 'product' || $type == 'products'){
 			$path = VmConfig::get('media_product_path');
-		} else if($type == 'category'){
+		}
+		else if($type == 'category' || $type == 'categories'){
 			$path = VmConfig::get('media_category_path');
-		} else if($type == 'shop'){
+		}
+		else if($type == 'shop'){
 			$path = VmConfig::get('media_path');
-		} else if($type == 'vendor'){
+		}
+		else if($type == 'vendor' || $type == 'vendors'){
 			$path = 'components/com_virtuemart/assets/images/vendors/';
-		} else if($type == 'manufacturer'){
+		}
+		else if($type == 'manufacturer' || $type == 'manufacturers'){
 			$path = VmConfig::get('media_manufacturer_path');
-		} else if($type == 'forSale'){
+		}
+		else if($type == 'forSale'){
 			//todo add this path to config
 			$path = VmConfig::get('forSale_path');
 		}
 
 		if(empty($path)) {
 			$app =& JFactory::getApplication();
-			$app->enqueueMessage('cant creat media of unknown type, a programmers error, used type "'.$type.'" ' );
+			$app->enqueueMessage('cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
 			$path = VmConfig::get('media_path');
 		}
 		return $path;

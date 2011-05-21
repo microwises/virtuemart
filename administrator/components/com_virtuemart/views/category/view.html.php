@@ -51,7 +51,7 @@ class VirtuemartViewCategory extends JView {
 
 	        $category = $model->getCategory('',false);
 
-	       	$model->addImagesToCategories($category);
+	       	$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );

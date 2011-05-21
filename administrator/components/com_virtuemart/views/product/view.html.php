@@ -103,7 +103,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('productLayouts', $productLayouts);
 
 				/* Load Images */
-				$product_model->addImagesToProducts($product);
+				$product_model->addImages($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
@@ -267,7 +267,8 @@ class VirtuemartViewProduct extends JView {
 					$vendor = $vendor_model->getVendor();
 
 					$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,'',true);
+					dump();
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,$product->product_currency,true);
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
@@ -286,13 +287,13 @@ class VirtuemartViewProduct extends JView {
 		    				'product' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'),
 							'price' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
-							); 
+							);
 				$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
 
 				/* Search order */
 		    	$options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								  'af' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
-							); 
+							);
 				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 				/* Toolbar */

@@ -71,7 +71,7 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($productfileslist as $key => $productfile) {
 
-			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id);
+			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
 			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>

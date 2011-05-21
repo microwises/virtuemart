@@ -40,7 +40,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_manufacturer_id');
 		$this->setMainTable('manufacturers');
 
 	}
@@ -202,15 +202,6 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		return $this->_data;
 	}
-
-	public function addImagesToManufacturer($manus){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($manus,'vendor','image');
-
-}
 
 }
 // pure php no closing tag
