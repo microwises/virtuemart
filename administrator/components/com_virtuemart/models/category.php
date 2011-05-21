@@ -449,48 +449,50 @@ class VirtueMartModelCategory extends VmModel {
 	 */
     public function store($data) {
 //		jimport('joomla.filesystem.file');
-
+		$update = $data['virtuemart_category_id'] ;
 		$table = $this->getTable('categories');
-		dump($table,'I am here');
+		
 		$data = $table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-//		dump('I am here');
-//		//store category relation
-//		if( !$data['virtuemart_category_id'] ){ //is new
-//			$data['virtuemart_category_id'] = $this->_db->insertid();
-//			$query = 'INSERT INTO `#__virtuemart_category_categories`(`category_parent_id`, `category_child_id`, `category_shared`)
-//					  VALUES(
-//					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-//					  	'. $this->_db->Quote( (int)$data['virtuemart_category_id'] ) .',
-//					  	'. $this->_db->Quote( (int)$data['shared'] ) .'
-//					  )';
-//		}
-//		else{
-////			$id = $data['virtuemart_category_id'];
-//
-//			$query = 'UPDATE `#__virtuemart_category_categories`
-//					  SET `category_parent_id` = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-//					  `category_shared` = '. $this->_db->Quote( (int)$data['shared'] ) .'
-//					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$data['virtuemart_category_id'] );
-//		}
-//
-//		$this->_db->setQuery($query);
-//
-//		if(!$this->_db->query()){
-//			$this->setError( $this->_db->getErrorMsg() );
-////			return false;
-//		}
-//
-//		// Process the images
-//		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-////		$xrefTable = $this->getTable('category_medias');
-//		$mediaModel = new VirtueMartModelMedia();
-//		$file_id = $mediaModel->storeMedia($data,'category');
+		
+		dump($table,'I am the result');
 
-		return $data['virtuemart_category_id'];
+		//store category relation
+		if( !$update ){ //is new
+			$table->virtuemart_category_id = $this->_db->insertid();
+			$query = 'INSERT INTO `#__virtuemart_category_categories` (`category_parent_id`, `category_child_id`, `category_shared`)
+					  VALUES (
+					  	"'. $table->category_parent_id .'",
+					  	'. $table->virtuemart_category_id .',
+					  	"'. $table->shared  .'"
+					  )';
+		}
+		else{
+//			$id = $data['virtuemart_category_id'];
+
+			$query = 'UPDATE `#__virtuemart_category_categories`
+					  SET `category_parent_id` = '. $this->_db->Quote( (int)$table->category_parent_id ) .',
+					  `category_shared` = '. $this->_db->Quote( (int)$table->shared ) .'
+					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$table->virtuemart_category_id );
+		}
+		dump ($query,'query');
+		$this->_db->setQuery($query);
+
+		if(!$this->_db->query()){
+			$this->setError( $this->_db->getErrorMsg() );
+//			return false;
+		}
+
+		// Process the images
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+//		$xrefTable = $this->getTable('category_medias');
+		$mediaModel = new VirtueMartModelMedia();
+		$file_id = $mediaModel->storeMedia($data,'category');
+
+		return $data->virtuemart_category_id ;
 	}
 
 	/**

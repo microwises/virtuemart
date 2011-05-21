@@ -51,6 +51,8 @@ class TableCategories extends VmTable {
 	var $products_per_row		= null;
 	/** @var int Category order */
 	var $ordering		= 0;
+
+	var $shared 		= 0;
 	/** @var int category limit start*/
 	var $limit_list_start 	 = 0;
 	/** @var int category limit step*/
