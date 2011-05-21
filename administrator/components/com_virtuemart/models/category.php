@@ -795,7 +795,7 @@ class VirtueMartModelCategory extends VmModel {
 		if( empty( $this->_category_tree)) {
 
 			// Get only published categories
-			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
+			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`#__virtuemart_categories`.`ordering`, `published` as category_publish
 						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` WHERE ";
 			if( $only_published ) {
 				$query .= "`#__virtuemart_categories`.`published`=1 AND ";

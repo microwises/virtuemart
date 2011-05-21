@@ -256,7 +256,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
 	public function getShippingCarrierRates($weight=0, $country=0, $zip=0) {
 
 		$query = 'SELECT * FROM `#__virtuemart_shippingcarriers` ';
-		$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`shipping_carrier_list_order`';
+		$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`ordering`';
 		$carrierList = $this->_getList($query);
 
 		$db =& JFactory::getDBO();

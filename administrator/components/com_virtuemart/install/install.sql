@@ -471,10 +471,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_modules` (
   `module_perms` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `is_admin` enum('0','1') NOT NULL,
-  `list_order` int(11) DEFAULT NULL,
+  `ordering` int(11) DEFAULT NULL,
   PRIMARY KEY (`module_id`),
   KEY `idx_module_name` (`module_name`),
-  KEY `idx_module_list_order` (`list_order`)
+  KEY `idx_module_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -597,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_orderstate_id`),
-  KEY `idx_order_status_list_order` (`ordering`),
+  KEY `idx_order_status_ordering` (`ordering`),
   KEY `idx_order_status_virtuemart_vendor_id` (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All available order statuses' AUTO_INCREMENT=1 ;
 
@@ -674,7 +674,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   PRIMARY KEY (`virtuemart_paymentmethod_id`),
   KEY `idx_payment_method_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_payment_method_name` (`paym_name`),
-  KEY `idx_payment_method_list_order` (`ordering`)
+  KEY `idx_payment_method_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -953,7 +953,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipping_carrier_jplugin_id` int(11) NOT NULL,
   `shipping_carrier_name` char(80) NOT NULL DEFAULT '',
-  `shipping_carrier_list_order` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -986,7 +985,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
   `shipping_rate_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
   `shipping_rate_virtuemart_currency_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_vat_id` int(11) NOT NULL DEFAULT '0',
-  `shipping_rate_list_order` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',

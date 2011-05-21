@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />
+				<input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->carrier->ordering; ?>" />
 			</td>
 		</tr>
 		<tr>

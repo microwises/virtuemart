@@ -1003,7 +1003,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			/* Store the new categories */
 			foreach( $data["categories"] as $virtuemart_category_id ) {
-				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
+				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as ordering FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
 				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__virtuemart_product_categories ";

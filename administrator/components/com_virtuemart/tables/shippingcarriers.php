@@ -34,8 +34,6 @@ class TableShippingcarriers extends VmTable {
 	var $virtuemart_shippingcarrier_id			= 0;
 	/** @var string Shipping Carrier name*/
 	var $shipping_carrier_name			= '';
-	/** @var int Shipping List order */
-	var $shipping_carrier_list_order	= 0;
 	/** @var int Shipping Joomla plugin I */
 	var $shipping_carrier_jplugin_id	= 0;
 	/** @var int Vendor ID */
