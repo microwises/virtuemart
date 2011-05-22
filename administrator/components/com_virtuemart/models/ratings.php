@@ -168,7 +168,7 @@ class VirtueMartModelRatings extends VmModel {
 
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		if (!empty($data['rate']){
+		if (!empty($data['rate'])){
 			if ($data['rate'] < 0 ) $data['rate'] = 0 ;
 			if ($data['rate'] > $maxrating ) $data['rate'] = $maxrating ;
 
@@ -179,12 +179,13 @@ class VirtueMartModelRatings extends VmModel {
 			$data['vote'] = $data['rate'];
 
 			$vote->load($data['virtuemart_product_id']);
-			if(empty($vote->virtuemart_user_id){
+			if(empty($vote->virtuemart_user_id)){
 				$user = JFactory::getUser();
 				$data['virtuemart_user_id'] = $user->id;
 			}
-	        $data = $vote->bindChecknStore($data));
-	    	$errors = $table->getErrors();
+
+	        $data = $vote->bindChecknStore($data);
+	    	$errors = $vote->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
@@ -210,8 +211,8 @@ class VirtueMartModelRatings extends VmModel {
 
 			$data['rating'] = $data['rates']/$data['ratingcount'];
 
-			$data = $rating->bindChecknStore($data));
-	    	$errors = $table->getErrors();
+			$data = $rating->bindChecknStore($data);
+	    	$errors = $rating->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
