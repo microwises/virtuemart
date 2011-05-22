@@ -204,8 +204,8 @@ class VirtueMartModelCustom extends VmModel {
 		dump($datas,'Field Values');
 		foreach($datas as &$fields){
 			$tableCustomfields = $this->getTable('customfields');
-			$data = $table->bindChecknStore($data);
-    		$errors = $table->getErrors();
+			$data = $tableCustomfields->bindChecknStore($fields);
+    		$errors = $tableCustomfields->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
@@ -216,7 +216,7 @@ class VirtueMartModelCustom extends VmModel {
 		if (!$xrefTable->bindChecknStore($xrefData)) {
 			$this->setError($xrefTable->getError());
 		}
-		dump($xrefData,'Xref for '.$table);
+//		dump($xrefData,'Xref for '.$table);
 
 //		$newIds = array();
 //

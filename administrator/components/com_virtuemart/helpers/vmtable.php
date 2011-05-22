@@ -230,9 +230,9 @@ class VmTable extends JTable {
 
 		$tblKey = $this->_tbl_key;
 		if (is_object($data)){
-			$data->$tblKey = $this->$tblKey;
+			$data->$tblKey = !empty($this->$tblKey)? $this->$tblKey:0;
     	} else {
-    		$data[$this->_tbl_key] = $this->$tblKey;
+    		$data[$this->_tbl_key] = !empty($this->$tblKey)?  $this->$tblKey:0;
     	}
 
     	if(!$ok){

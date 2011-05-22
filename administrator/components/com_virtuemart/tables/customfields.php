@@ -50,9 +50,9 @@ class TableCustomfields extends VmTable {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_customfields', 'virtuemart_custom_id', $db);
-
-		$this->setObligatoryKeys('virtuemart_custom_id');
+		parent::__construct('#__virtuemart_customfields', 'virtuemart_customfield_id', $db);
+		$this->setPrimaryKey('virtuemart_custom_id');
+//		$this->setObligatoryKeys('virtuemart_custom_id');
 //		$this->setObligatoryKeys('creditcard_code');
 
 		$this->setLoggable();
