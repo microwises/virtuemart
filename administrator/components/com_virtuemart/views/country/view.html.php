@@ -55,7 +55,7 @@ class VirtuemartViewCountry extends JView {
 		}
 		else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
+			ShopFunctions::addStandardDefaultViewCommands(true,false);
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

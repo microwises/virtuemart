@@ -43,6 +43,8 @@ class TableMedias extends VmTable {
 
 	/** @var string File mime type */
 	var $file_mimetype			= '';
+	/** @var string File typ, this determines where a media is stored */
+	var $file_type			= '';
 	/** @var string File URL */
 	var $file_url				= '';
 	var $file_url_thumb			= '';

@@ -449,7 +449,6 @@ class VirtueMartModelCategory extends VmModel {
 	 */
     public function store($data) {
 
-		$update = $data['virtuemart_category_id'] ;
 		$table = $this->getTable('categories');
 
 		$data = $table->bindChecknStore($data);
@@ -474,11 +473,10 @@ class VirtueMartModelCategory extends VmModel {
 
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-//		$xrefTable = $this->getTable('category_medias');
 		$mediaModel = new VirtueMartModelMedia();
 		$file_id = $mediaModel->storeMedia($data,'category');
 
-		return $data->virtuemart_category_id ;
+		return $data['virtuemart_category_id'] ;
 	}
 
 	/**

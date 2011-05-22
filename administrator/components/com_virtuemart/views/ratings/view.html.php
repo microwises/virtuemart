@@ -82,7 +82,7 @@ class VirtuemartViewRatings extends JView {
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-				ShopFunctions::addStandardDefaultViewCommands();
+				ShopFunctions::addStandardDefaultViewCommands(false, true);
 
 				/* Assign the data */
 //				$this->preprocess($ratingslist);

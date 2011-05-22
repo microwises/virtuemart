@@ -40,7 +40,7 @@ class VmTable extends JTable {
 	protected $_slugAutoName = '';
 
     function setPrimaryKey($key,$keyForm=0){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
     	$this->setObligatoryKeys('_pkey',$error);
     	$this->_pkey = $key;
     	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
@@ -48,12 +48,12 @@ class VmTable extends JTable {
     }
 
 	public function setObligatoryKeys($key){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
 		$this->_obkeys[$key] = $error;
 	}
 
 	public function setUniqueName($name){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_'.$name) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_'.strtoupper($name)) );
 		$this->_unique = true;
 		$this->_obkeys[$name] = $error;
 		$this->_unique_name[$name] = $error;

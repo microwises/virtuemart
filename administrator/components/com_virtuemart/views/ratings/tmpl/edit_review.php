@@ -98,7 +98,7 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="virtuemart_product_review_id" value="<?php echo $this->rating->virtuemart_product_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
-<input type="hidden" name="userid" value="<?php echo $this->rating->userid; ?>" />
+<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->rating->virtuemart_user_id; ?>" />
 <input type="hidden" name="created_on" value="<?php echo $this->rating->created_on; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>

@@ -103,8 +103,12 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$media->$k = $v;
 		}
-
-		$media->setFileInfo($type);
+		if(empty($type)){
+			$type = $media->file_type;
+		} else {
+			$media->file_type = $type;
+		}
+		$media->setFileInfo($type);dump($media,'created media');
 
 		return $media;
 	}

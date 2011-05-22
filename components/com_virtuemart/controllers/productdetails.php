@@ -55,8 +55,6 @@ class VirtueMartControllerProductdetails extends JController {
 			$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 			$view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
-			/* Set the layout */
-//			$view->setLayout('productdetails');
 
 			/* Display it all */
 			$view->display();
@@ -201,8 +199,6 @@ class VirtueMartControllerProductdetails extends JController {
 			$mainframe->enqueueMessage($model->getError());
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
 		}
-		/* Set the layout */
-		$view->setLayout('productdetails');
 
 		/* Display it all */
 		$view->display();

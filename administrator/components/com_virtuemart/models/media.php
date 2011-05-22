@@ -59,6 +59,7 @@ class VirtueMartModelMedia extends VmModel {
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
   		$media = VmMediaHandler::createMedia($data,$type,$mime);
+//  		$media = VmMediaHandler::createMedia($data,$mime);
 
   		return $media;
 
@@ -84,7 +85,7 @@ class VirtueMartModelMedia extends VmModel {
     	    foreach($virtuemart_media_id as $virtuemart_media_id){
 	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
 	   			$data->load($id);
-	   			$media = VmMediaHandler::createMedia($data,$type,$mime);
+	   			$media = VmMediaHandler::createMedia($data,$data->file_type,$mime);
 	   			if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 	  			$medias[] = $media;
     		}
@@ -119,6 +120,7 @@ class VirtueMartModelMedia extends VmModel {
     		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
     		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
+    		$type = 'product';
     	}
 
     	$cat_id = JRequest::getVar('virtuemart_category_id',0);
@@ -126,6 +128,7 @@ class VirtueMartModelMedia extends VmModel {
     		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` ';
     		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
     		$oderby = '`#__virtuemart_medias`.`modified_on`';
+    		$type = 'category';
     	}
 
     	if(empty($query)){
@@ -234,7 +237,7 @@ class VirtueMartModelMedia extends VmModel {
 			$this->setError($error);
 		}
 
-		return $data->virtuemart_media_id;
+		return $this->_id;
 
 	}
 
@@ -249,12 +252,27 @@ class VirtueMartModelMedia extends VmModel {
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
+//		if(!empty($data['virtuemart_product_id'])){
+////			$table = $fileModel->getTable('product_medias');
+//			$type = 'product';
+//		} else if (!empty($data['virtuemart_category_id'])){
+////			$table = $fileModel->getTable('category_medias');
+//			$type = 'category';
+//		} else if (!empty($data['virtuemart_manufacturer_id'])){
+////			$table = $fileModel->getTable('manufacturer_medias');
+//			$type = 'manufacturer';
+////		} else if ($data['virtuemart_vendor_id']){
+////			$table = $this->getTable('vendors');
+////			$type = 'vendor';
+//		} else {
+//
+//		}
 		$table = $this->getTable('medias');
-		// Bind the form fields to the table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
+//		// Bind the form fields to the table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
 
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 		// workarround for media published and product published two fields in one form.
@@ -264,7 +282,7 @@ class VirtueMartModelMedia extends VmModel {
 			$data['published'] = 0;
 
 
-		$table->bindChecknStore();
+		$table->bindChecknStore($data);
 	    $errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);

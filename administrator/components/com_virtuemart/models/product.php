@@ -1418,10 +1418,10 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 
-		$q = 'SELECT `comment`, `created_on`, `userid`, `user_rating`, `username`, `name`
+		$q = 'SELECT `comment`, `created_on`, `virtuemart_user_id`, `user_rating`, `username`, `name`
 			FROM `#__virtuemart_product_reviews` `r`
 			LEFT JOIN `#__users` `u`
-			ON `u`.`id` = `r`.`userid`
+			ON `u`.`id` = `r`.`virtuemart_user_id`
 			WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'"
 			AND published = "1"
 			ORDER BY `created_on` DESC ';
@@ -2012,7 +2012,6 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* image */
 				case 'i':
-					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
 					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`virtuemart_vendor_id`= "'.$product->virtuemart_vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
@@ -2023,7 +2022,7 @@ class VirtueMartModelProduct extends VmModel {
 					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 					$this->virtuemart_media_id = (int)$value;
-					$imagehandler = VmMediaHandler::createMedia($image);
+					$imagehandler = VmMediaHandler::createMedia($image,'product');
 					//$imagehandler->createMedia($image);
 					return $imagehandler->displayMediaThumb();
 				break;

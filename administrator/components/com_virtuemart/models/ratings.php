@@ -82,7 +82,7 @@ class VirtueMartModelRatings extends VmModel {
 			LEFT JOIN #__virtuemart_products
 			ON #__virtuemart_product_reviews.virtuemart_product_id = #__virtuemart_products.virtuemart_product_id
 			LEFT JOIN #__users
-			ON #__virtuemart_product_reviews.userid = #__users.id';
+			ON #__virtuemart_product_reviews.virtuemart_user_id = #__users.id';
     }
 
     /**
@@ -132,7 +132,7 @@ class VirtueMartModelRatings extends VmModel {
 
 			/* User ID */
 			$user = JFactory::getUser();
-			$ratings_data->userid = $user->id;
+			$ratings_data->virtuemart_user_id = $user->id;
 		}
 
 		/* Get the product name */

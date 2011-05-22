@@ -208,7 +208,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$model = $this->getModel('updatesMigration');
 
-			$model -> restoreSystemCompletly();
+			$model -> restoreSystemTablesCompletly();
 
 			$model->integrateJoomlaUsers();
 			$id = $model->determineStoreOwner();

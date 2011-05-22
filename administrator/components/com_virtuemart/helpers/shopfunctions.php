@@ -27,14 +27,19 @@ class ShopFunctions {
 	}
 
 
-	function addStandardDefaultViewCommands (){
+	function addStandardDefaultViewCommands ($showNew=true,$showDelete=true){
 
 		JToolBarHelper::divider();
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::editListX();
-		JToolBarHelper::addNewX();
-		JToolBarHelper::deleteList();
+		if($showNew){
+			JToolBarHelper::addNewX();
+		}
+		if($showDelete){
+			JToolBarHelper::deleteList();
+		}
+
 	}
 
 	function addStandardEditViewCommands (){
