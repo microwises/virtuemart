@@ -31,13 +31,15 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
-
+                $this->loadHelper('shopFunctions');
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getVar('option');
 
 		/* Get the task */
 		$task = JRequest::getVar('task');
 
+                $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT');
+                $this->assignRef('viewName', $viewName);
 		/* Load helpers */
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
@@ -216,10 +218,13 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('delete_message', $delete_message);
 
 				/* Toolbar */
-				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
-				else $text = $product->product_name .' ('.$product->product_sku.')';
+                                $text="";
+				if ($task == 'edit')
+				  $text =  $product->product_name.' ('.$product->product_sku.')';
 
 				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
+                                  $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT',$text);
+                                $this->assignRef('viewName', $viewName);
 				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
@@ -297,7 +302,9 @@ class VirtuemartViewProduct extends JView {
 				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+				//JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+
+
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);

@@ -54,12 +54,13 @@ class ShopFunctions {
 	 *@ var $cssIcon the css class for icon
 	 *@ return $viewName
 	 **/
-	function SetViewTitle($cssIcon,$view=null,$msg ='') {
+	function SetViewTitle($cssIcon,$view=null, $text=null) {
 		if (!$view) $view = JRequest::getVar('view');
-	if ($msg) { $msg = ' <span style="color: #666666;float: right;font-size: large;">'.$msg.'</span>';}
-		$viewName = JText::_('COM_VIRTUEMART_CONTROLLER_'.$view);
-		$taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.JRequest::getVar('task', 'list')).' ]</small></small>';
-		JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
+		$viewName = JText::_('COM_VIRTUEMART_VIEW_'.$view);
+
+		$taskName = JRequest::getVar('task', '') ? ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.JRequest::getVar('task',  '')).' ]</small></small>' : JText::_('COM_VIRTUEMART_VIEW_LIST');
+		$taskName.= '  '.$text;
+                JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName) , $cssIcon);
 		return $viewName;
 	}
 

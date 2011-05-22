@@ -216,7 +216,7 @@ class VmHTML{
 				}
 			}
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
-			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label><br />\n";
 		}
 
 		return $html;

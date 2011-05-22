@@ -452,5 +452,5 @@ class VirtueMartControllerCart extends JController {
 //
 //	}
 
-}
+		}
  //pure php no Tag

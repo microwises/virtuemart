@@ -2003,7 +2003,7 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* bool */
 				case 'B':
-					if ($value == 0) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NO') ;
+					if ($value == 0) return JText::_('COM_VIRTUEMART_NO') ;
 					return JText::_('COM_VIRTUEMART_ADMIN_CFG_YES') ;
 				break;
 				/* parent */
