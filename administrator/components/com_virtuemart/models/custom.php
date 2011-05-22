@@ -41,32 +41,6 @@ class VirtueMartModelCustom extends VmModel {
 		$this->setMainTable('customs');
 	}
 
-	/** @var integer Primary key */
-    private $virtuemart_custom_id = 0;
-
-
-//	/**
-//	 * Constructor for product files
-//	 */
-//	function __construct(){
-//		parent::__construct();
-//
-////		$this->virtuemart_custom_id = $id;
-//
-//		/* Get the custom ID */
-//		$this->setId(JRequest::getInt('virtuemart_custom_id', null));
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//	}
-
-
     /**
      * Gets a single custom by virtuemart_custom_id
      * .
@@ -76,10 +50,10 @@ class VirtueMartModelCustom extends VmModel {
      */
     function getCustom(){
 
-    	if(empty($this->_db)) $this->_db = JFactory::getDBO();
+    	//if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$data = $this->getTable('customs');
-   		$data->load($this->virtuemart_custom_id);
+   		$data->load($this->_id);
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 
   		$custom = VmCustomHandler::createCustom($data);
