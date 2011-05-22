@@ -269,20 +269,34 @@ class VirtueMartModelCustom extends VmModel {
 		return $row->store($clone);
 	}
 
-
 	/* Save and delete from database
 	* all product custom_fields and xref
-	@ var   $table	: the xref table(eg. product)
+	@ var   $table	: the xref table(eg. product,category ...)
 	@array $data	: array of customfields
 	@int     $id		: The concerned id (eg. product_id)
 	*/
-	public function saveModelCustomfields($table,$data, $id) {
-
-	    $xrefTable = $this->getTable($table.'_customfields');
-    	if (!$xrefTable->bindChecknStore($data)) {
+	public function saveModelCustomfields($table,$datas, $id) {
+		// delete existings from modelXref and table customfields
+		$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as PC, `#__virtuemart_customfields` as C WHERE `virtuemart_customfield_id`.PC = `virtuemart_customfield_id`.C AND  virtuemart_'.$table.'_id =' . $id );
+		$this->_db->query();
+		$xrefData = array();
+		$xrefData['virtuemart_'.$table.'_id']= $id;
+		$tableCustomfields = $this->getTable('customfields');
+		dump($datas,'Field Values');
+		foreach($datas as &$fields){
+			// Save the fields value 
+			if (!$tableCustomfields->bindChecknStore($fields)) {
+			$this->setError($xrefTable->getError());
+			}
+			// set the Xref customfield_id
+			$xrefData['virtuemart_customfield_id'][]= $tableCustomfields->_db->insertid();
+		}
+		// save Xref calues in right table
+		$xrefTable = $this->getTable($table.'_customfields');
+		if (!$xrefTable->bindChecknStore($xrefData)) {
 			$this->setError($xrefTable->getError());
 		}
-
+		dump($xrefData,'Xref for '.$table);
 
 //		$newIds = array();
 //
@@ -306,7 +320,7 @@ class VirtueMartModelCustom extends VmModel {
 //		// delete from database old unused product custom fields
 //		$deleteIds = array_diff(  $Ids,$newIds);
 //		$id = '('.implode (',',$deleteIds).')';
-//				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
+//				
 //		if ($this->_db->query() === false) {
 //			$this->setError($this->_db->getError());
 //			return false;
