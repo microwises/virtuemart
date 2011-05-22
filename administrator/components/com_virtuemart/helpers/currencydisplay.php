@@ -88,7 +88,7 @@ class CurrencyDisplay {
 			if(empty($currencyid)){
 
 				if(self::$_instance->_app->isSite()){
-					$this->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 1));
+					$this->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));
 				}
 				if(empty($this->_currency_id)){
 					$this->_currency_id = self::$_instance->_vendorCurrency;

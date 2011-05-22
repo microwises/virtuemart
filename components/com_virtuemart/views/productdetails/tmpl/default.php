@@ -512,9 +512,9 @@ if (empty ( $this->product )) {
 				}
 
 				/* Check if user already commented */
-				if ($review->userid == $this->user->id) {
-					$alreadycommented = true;
-				} ?>
+//				if ($review->virtuemart_userid == $this->user->id) {
+//					$alreadycommented = true;
+//				} ?>
 
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>

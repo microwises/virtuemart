@@ -207,11 +207,10 @@ class VmTable extends JTable {
         	$msg = 'bind';
         }
 
-		dump($this,'before store');
     	if( $ok ) {
     		if( !$this->checkDataContainsTableFields($data) ){
     			$ok = false;
-    			$msg .= ' checkDataContainsTableFields';
+//    			$msg .= ' developer notice:: checkDataContainsTableFields';
     		}
 		}
 
@@ -228,18 +227,6 @@ class VmTable extends JTable {
     			$msg .= ' store';
     		}
 		}
-
-//		// Make sure the table record is valid
-//		if (!$this->check($obligatory) && $ok) {
-//
-//			$ok = false;
-//		}
-//
-//		// Save the record to the database
-//		if (!$this->store() && $ok) {
-//
-//			$ok = false;
-//		}
 
 		$tblKey = $this->_tbl_key;
 		if (is_object($data)){

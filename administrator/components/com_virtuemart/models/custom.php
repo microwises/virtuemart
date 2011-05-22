@@ -139,23 +139,28 @@ class VirtueMartModelCustom extends VmModel {
 		$data['virtuemart_custom_ids'] = array_merge( (array)$data['virtuemart_custom_id'],$data['virtuemart_custom_ids']);
 		$virtuemart_custom_ids = array_diff($data['virtuemart_custom_ids'],array('0',''));
 
-		// Bind the form fields to the table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
+		$data = $table->bindChecknStore($data);
+    	$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
-
-		// Make sure the record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
+//		// Bind the form fields to the table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Make sure the record is valid
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
+//
+//		// Save the record to the database
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
+//			return false;
+//		}
 		$dbv = $table->getDBO();
 		if(empty($this->_id)) $this->_id = $dbv->insertid();
 
@@ -195,16 +200,17 @@ class VirtueMartModelCustom extends VmModel {
 		$this->_db->query();
 		$xrefData = array();
 		$xrefData['virtuemart_'.$table.'_id']= $id;
-		$tableCustomfields = $this->getTable('customfields');
+
 		dump($datas,'Field Values');
 		foreach($datas as &$fields){
-			// Save the fields value 
-			if (!$tableCustomfields->bindChecknStore($fields)) {
-			$this->setError($xrefTable->getError());
+			$tableCustomfields = $this->getTable('customfields');
+			$data = $table->bindChecknStore($data);
+    		$errors = $table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
 			}
-			// set the Xref customfield_id
-			$xrefData['virtuemart_customfield_id'][]= $tableCustomfields->_db->insertid();
 		}
+
 		// save Xref calues in right table
 		$xrefTable = $this->getTable($table.'_customfields');
 		if (!$xrefTable->bindChecknStore($xrefData)) {
@@ -234,7 +240,7 @@ class VirtueMartModelCustom extends VmModel {
 //		// delete from database old unused product custom fields
 //		$deleteIds = array_diff(  $Ids,$newIds);
 //		$id = '('.implode (',',$deleteIds).')';
-//				
+//
 //		if ($this->_db->query() === false) {
 //			$this->setError($this->_db->getError());
 //			return false;
