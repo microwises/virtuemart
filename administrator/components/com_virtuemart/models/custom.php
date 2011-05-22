@@ -164,66 +164,6 @@ class VirtueMartModelCustom extends VmModel {
 	}
 
 	/**
-	 * Store an entry of a customItem,
-	 *
-	 * @author Kohl Patrick
-	 */
-	public function store($data=0) {
-
-		$table = $this->getTable('customs');
-		if(empty($data))$data = JRequest::get('post');
-
-		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-
-		// Bind the form fields to the table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-		// Make sure the record is valid
-		if (!$table->check()) {
-			if($table->getError()){
-				foreach($table->getErrors() as $error){
-					$this->setError($error);
-				}
-			}
-			return false;
-		}
-		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-		//}
-
-		return $table->virtuemart_custom_id;
-	}
-
-	/**
-	 * Delete an custom field
-	 * @author unknow, maybe Roland Dalmulder
-	 * @author Max Milbers
-	 */
-	public function delete($cids) {
-		$mainframe = Jfactory::getApplication('site');
-//		$deleted = 0;
-	 	$row = $this->getTable('customs');
-//	 	$cids = JRequest::getVar('cid');
-
-	 	if (is_array($cids)) {
-			foreach ($cids as $key => $cid) {
-				//$row->load($cid);
-				if ($row->delete($cid)) $deleted++;
-			}
-		}
-		else {
-			//$row->load($cids);
-			if ($row->delete($cid)) $deleted++;
-		}
-		$mainframe->enqueueMessage( JText::sprintf('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS', $deleted ));
-
-	}
-	/**
 	 * Creates a clone of a given custom id
 	 *
 	 * @author Max Milbers

@@ -99,7 +99,7 @@ class VmController extends JController{
 
 		$redir = $this->redirectPath;
 		if(JRequest::getCmd('task') == 'apply'){
-			$redir .= '&task=edit&'.$this->_cidName.'[]='.$_id;
+			$redir .= '&task=edit&'.$this->_cidName.'='.$_id;
 		}
 
 		$this->setRedirect($redir, $msg);
