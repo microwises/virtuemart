@@ -895,11 +895,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_relations` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_product_reviews`
+-- Table structure for table `#__virtuemart_rating_reviews`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
-  `virtuemart_product_review_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
+  `virtuemart_rating_review_id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
@@ -916,30 +916,49 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_product_review_id`),
+  PRIMARY KEY (`virtuemart_rating_review_id`),
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_product_ratings`
+-- Table structure for table `#__virtuemart_ratings`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
-  `virtuemart_product_rating_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_ratings` (
+  `virtuemart_rating_id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `rates` int(11) NOT NULL ,
   `ratingcount` int(11) NOT NULL DEFAULT '0',
   `rating` float(1) NOT NULL DEFAULT '0',
-  `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_product_rating_id`),
+  PRIMARY KEY (`virtuemart_rating_id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
+
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_rating_votes`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
+  `virtuemart_rating_vote_id` SERIAL,
+  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
+  `vote` int(11) NOT NULL,
+  `lastip` varchar(50) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_rating_vote_id`),
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
 

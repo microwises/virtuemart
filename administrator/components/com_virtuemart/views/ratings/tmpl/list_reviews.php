@@ -62,7 +62,7 @@ $option = JRequest::getWord('option');
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->reviewslist as $key => $review) {
-			$checked = JHTML::_('grid.id', $i , $review->virtuemart_product_rating_id);
+			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_id);
 			$published = JHTML::_('grid.published', $review, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">

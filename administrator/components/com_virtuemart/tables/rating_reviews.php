@@ -28,10 +28,10 @@ if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @package		VirtueMart
  * @author Max Milbers
  */
-class TableProduct_reviews extends VmTableData {
+class TableRating_reviews extends VmTableData {
 
 	/** @var int Primary key */
-	var $virtuemart_product_review_id	= 0;
+	var $virtuemart_rating_review_id	= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id			= null;
 	/** @var int The ID of the user who made comment */
@@ -61,7 +61,7 @@ class TableProduct_reviews extends VmTableData {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
+		parent::__construct('#__virtuemart_rating_reviews', 'virtuemart_rating_review_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setObligatoryKeys('comment');
 

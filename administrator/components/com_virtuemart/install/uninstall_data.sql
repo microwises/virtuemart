@@ -22,7 +22,7 @@ DELETE FROM `#__virtuemart_product_manufacturers`;
 DELETE FROM `#__virtuemart_product_prices`;
 DELETE FROM `#__virtuemart_product_producttypes`;
 DELETE FROM `#__virtuemart_product_relations`;
-DELETE FROM `#__virtuemart_product_reviews`;
+DELETE FROM `#__virtuemart_rating_reviews`;
 DELETE FROM `#__virtuemart_producttypes`;
 DELETE FROM `#__virtuemart_producttype_customfields`;
 DELETE FROM `#__virtuemart_vmusers`;

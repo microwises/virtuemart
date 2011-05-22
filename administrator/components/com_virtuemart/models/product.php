@@ -1087,8 +1087,8 @@ class VirtueMartModelProduct extends VmModel {
 		$manufacturers = $this->getTable('product_manufacturers');
 		$medias = $this->getTable('product_medias');
 		$prices = $this->getTable('product_prices');
-		$rating = $this->getTable('product_ratings');
-		$review = $this->getTable('product_reviews');
+		$rating = $this->getTable('ratings');
+		$review = $this->getTable('rating_reviews');
 
 		$ok = true;
 		foreach($ids as $id) {
@@ -1189,12 +1189,12 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->query();
 
 			/* Delete product votes */
-			$q  = "DELETE FROM #__virtuemart_product_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q  = "DELETE FROM #__virtuemart_rating_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
 			/* Delete product reviews */
-			$q = "DELETE FROM #__virtuemart_product_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q = "DELETE FROM #__virtuemart_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
@@ -1419,7 +1419,7 @@ class VirtueMartModelProduct extends VmModel {
 		$showall = JRequest::getBool('showall', 0);
 
 		$q = 'SELECT `comment`, `created_on`, `virtuemart_user_id`, `user_rating`, `username`, `name`
-			FROM `#__virtuemart_product_reviews` `r`
+			FROM `#__virtuemart_rating_reviews` `r`
 			LEFT JOIN `#__users` `u`
 			ON `u`.`id` = `r`.`virtuemart_user_id`
 			WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'"
@@ -1557,7 +1557,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db = JFactory::getDBO();
 
 			$q = "SELECT `votes`, `allvotes`, `rating`
-				FROM `#__virtuemart_product_ratings`
+				FROM `#__virtuemart_ratings`
 				WHERE `virtuemart_product_id` = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadObject();

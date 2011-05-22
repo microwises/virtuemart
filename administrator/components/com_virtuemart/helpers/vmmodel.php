@@ -124,7 +124,6 @@ class VmModel extends JModel {
 				$this->_total = $this->_db->getNumRows();
 			}
 
-
 //			$this->_total = $this->_getListCount($query);
         }
 
