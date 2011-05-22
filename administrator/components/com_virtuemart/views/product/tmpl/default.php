@@ -39,6 +39,7 @@ $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
 			<td align="left" width="100%">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
 				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="document.adminForm.submit(); return false;">
+					<option value=""><?php echo JText::_('COM_VIRTUEMART_CATEGORY').' :'; ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
