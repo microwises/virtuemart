@@ -864,20 +864,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   KEY `idx_product_price_virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_product_producttypes`
---  ???
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_producttypes` (
-  `id` SERIAL,
-  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_producttype_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_producttype_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps products to a product type';
-
 
 -- --------------------------------------------------------
 --

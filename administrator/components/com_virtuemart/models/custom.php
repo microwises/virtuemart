@@ -198,58 +198,30 @@ class VirtueMartModelCustom extends VmModel {
 		// delete existings from modelXref and table customfields
 		$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as PC, `#__virtuemart_customfields` as C WHERE `virtuemart_customfield_id`.PC = `virtuemart_customfield_id`.C AND  virtuemart_'.$table.'_id =' . $id );
 		$this->_db->query();
-		$xrefData = array();
-		$xrefData['virtuemart_'.$table.'_id']= $id;
 
-		dump($datas,'Field Values');
-		foreach($datas as &$fields){
+		$customfieldIds = array();
+		foreach($datas as $fields){
 			$tableCustomfields = $this->getTable('customfields');
 			$data = $tableCustomfields->bindChecknStore($fields);
     		$errors = $tableCustomfields->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
+			$customfieldIds[] = $data['virtuemart_customfield_id'];
 		}
+
+		$xrefData = array();
+		$xrefData['virtuemart_'.$table.'_id']= $id;
+		$xrefData['virtuemart_customfield_id']= $customfieldIds;
 
 		// save Xref calues in right table
 		$xrefTable = $this->getTable($table.'_customfields');
-		if (!$xrefTable->bindChecknStore($xrefData)) {
-			$this->setError($xrefTable->getError());
+		$xrefTable->bindChecknStore($xrefData);
+	    $errors = $xrefTable->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
-//		dump($xrefData,'Xref for '.$table);
 
-//		$newIds = array();
-//
-//		foreach ($fields as $field) {
-//			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
-//			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//			$virtuemart_customfield_id = mysql_insert_id();
-//			$newIds[]=$virtuemart_customfield_id;
-//			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
-//			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//		}
-//
-//		// slect all virtuemart_customfield_id from product
-//		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
-//		$this->_db->setQuery($q);
-//		$Ids = $this->_db->loadResultArray();
-//		// delete from database old unused product custom fields
-//		$deleteIds = array_diff(  $Ids,$newIds);
-//		$id = '('.implode (',',$deleteIds).')';
-//
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
-//		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
 	}
 
 }
