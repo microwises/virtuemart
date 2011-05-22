@@ -81,7 +81,7 @@ class CurrencyDisplay {
 	*/
 	public function getInstance($currencyId=0,$vendorId=0){
 
-		if(empty(self::$_instance) || $currencyId!=self::$_instance->_currency_id || empty(self::$_instance->_currency_id)){
+		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || $currencyId!=self::$_instance->_currency_id ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
 
