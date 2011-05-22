@@ -41,8 +41,6 @@ class TableRatings extends VmTableData {
 	var $ratingcount      				= 0;
 	var $rating      					= 0;
 
-	var $lastip      					= 0;
-
 	/** @var int State of the review */
 	var $published         		= 0;
 

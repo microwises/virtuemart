@@ -161,7 +161,7 @@ class VmModel extends JModel {
 
 	    $errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			$this->setError( get_class( $this ).'::store '.$error);
 		}
 		if(is_object($data)){
 			$_idName = $this->_idName;
@@ -185,7 +185,7 @@ class VmModel extends JModel {
 
 		foreach($ids as $id) {
 		    if (!$table->delete($id)) {
-				$this->setError($table->getError());
+				$this->setError(get_class( $this ).'::remove '.$table->getError());
 				return false;
 		    }
 		}
@@ -206,7 +206,7 @@ class VmModel extends JModel {
 
 		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
 		if (!$table->publish($ids, $publishId)) {
-			$this->setError($table->getError());
+			$this->setError(get_class( $this ).'::publish '.$table->getError());
 			return false;
 		}
 
@@ -238,7 +238,7 @@ class VmModel extends JModel {
 			}
 
 			if (!$table->store()) {
-				JError::raiseError(500, $table->getError() );
+				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
 				$ok = false;
 			}
 		}

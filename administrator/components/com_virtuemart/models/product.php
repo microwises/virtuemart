@@ -947,8 +947,6 @@ class VirtueMartModelProduct extends VmModel {
 
         $product_data->bindChecknStore($data);
 
-
-
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
@@ -994,6 +992,7 @@ class VirtueMartModelProduct extends VmModel {
 			$waitinglist->notifyList($data['virtuemart_product_id']);
 		}
 
+		//Should be replaced by xref table
 		if(!empty($data['categories']) && count($data['categories'])>0){
 			/* Delete old category links */
 			$q  = "DELETE FROM `#__virtuemart_product_categories` ";

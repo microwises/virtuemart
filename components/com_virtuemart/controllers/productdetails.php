@@ -193,15 +193,23 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Get the posted data */
 		$data = JRequest::get('post');
 
-		$msgtype = '';
-		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
-		else {
-			$mainframe->enqueueMessage($model->getError());
-			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
+		$model->saveRating($data);
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('REVIEW') );
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
 		}
 
+//		$msgtype = '';
+//		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
+//		else {
+//			$mainframe->enqueueMessage($model->getError());
+//			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
+//		}
+
+		$this->setRedirect('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id'], $msg);
 		/* Display it all */
-		$view->display();
+//		$view->display();
 	}
 
 	/**

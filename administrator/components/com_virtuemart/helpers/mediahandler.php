@@ -108,7 +108,7 @@ class VmMediaHandler {
 		} else {
 			$media->file_type = $type;
 		}
-		$media->setFileInfo($type);dump($media,'created media');
+		$media->setFileInfo($type);
 
 		return $media;
 	}

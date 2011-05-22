@@ -113,6 +113,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
+		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store');
 		return false;
     }
 
@@ -200,19 +201,32 @@ class VmTable extends JTable {
     public function bindChecknStore($data, $obligatory=false) {
 
     	$ok = true;
-        if ( !$this->bind($data) ) $ok = false;
+    	$msg = '';
+        if ( !$this->bind($data) ){
+        	$ok = false;
+        	$msg = 'bind';
+        }
 
-
+		dump($this,'before store');
     	if( $ok ) {
-    		if( !$this->checkDataContainsTableFields($data) ) $ok = false;
+    		if( !$this->checkDataContainsTableFields($data) ){
+    			$ok = false;
+    			$msg .= ' checkDataContainsTableFields';
+    		}
 		}
 
     	if( $ok ) {
-    		if( !$this->check($obligatory) ) $ok = false;
+    		if( !$this->check($obligatory) ){
+    			$ok = false;
+    			$msg .= ' check';
+    		}
 		}
 
 		if( $ok ) {
-    		if( !$this->store($data) ) $ok = false;
+    		if( !$this->store($data) ){
+    			$ok = false;
+    			$msg .= ' store';
+    		}
 		}
 
 //		// Make sure the table record is valid
@@ -234,6 +248,10 @@ class VmTable extends JTable {
     		$data[$this->_tbl_key] = $this->$tblKey;
     	}
 
+    	if(!$ok){
+    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
+    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
+    	}
 		return $data;
     }
 
@@ -562,7 +580,7 @@ class VmTable extends JTable {
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError(get_class( $this ).'::Error publish query '.$this->_db->getErrorMsg());
 			return false;
 		}
 
@@ -575,7 +593,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
-		$this->setError('');
+		$this->setError(get_class( $this ).'::Error publish ');
 		return true;
 	}
 
