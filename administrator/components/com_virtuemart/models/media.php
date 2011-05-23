@@ -252,27 +252,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
-//		if(!empty($data['virtuemart_product_id'])){
-////			$table = $fileModel->getTable('product_medias');
-//			$type = 'product';
-//		} else if (!empty($data['virtuemart_category_id'])){
-////			$table = $fileModel->getTable('category_medias');
-//			$type = 'category';
-//		} else if (!empty($data['virtuemart_manufacturer_id'])){
-////			$table = $fileModel->getTable('manufacturer_medias');
-//			$type = 'manufacturer';
-////		} else if ($data['virtuemart_vendor_id']){
-////			$table = $this->getTable('vendors');
-////			$type = 'vendor';
-//		} else {
-//
-//		}
 		$table = $this->getTable('medias');
-//		// Bind the form fields to the table
-//		if (!$table->bind($data)) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
 
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 		// workarround for media published and product published two fields in one form.

@@ -475,7 +475,10 @@ class VirtueMartModelCategory extends VmModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
 		$file_id = $mediaModel->storeMedia($data,'category');
-
+        $errors = $mediaModel->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
 		return $data['virtuemart_category_id'] ;
 	}
 

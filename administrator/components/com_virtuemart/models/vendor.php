@@ -168,7 +168,10 @@ class VirtueMartModelVendor extends VmModel {
 //	$xrefTable = $this->getTable('vendor_medias');
 	$mediaModel = new VirtueMartModelMedia();
 	$mediaModel->storeMedia($data,'vendor');
-
+    $errors = $mediaModel->getErrors();
+	foreach($errors as $error){
+		$this->setError($error);
+	}
 	return $this->_id;
 
 	}
