@@ -109,26 +109,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		return $table->virtuemart_manufacturer_id;
 	}
 
-
-	/**
-	 * Delete all record ids selected
-     *
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	// public function remove() {
-		// $manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
-    	// $table = $this->getTable('manufacturers');
-
-    	// foreach($manufacturerIds as $manufacturerId) {
-       		// if (!$table->delete($manufacturerId)) {
-           		// $this->setError($table->getError());
-           		// return false;
-       		// }
-    	// }
-
-    	// return true;
-	// }
-
     /**
      * Select the products to list on the product list page
      */

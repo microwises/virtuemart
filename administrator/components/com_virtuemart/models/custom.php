@@ -116,58 +116,6 @@ class VirtueMartModelCustom extends VmModel {
 		return $datas;
     }
 
-
-    /**
-     * This function stores a custom and updates then the refered table
-     *
-     * @author Max Milbers
-     * @author Patrick Kohl
-     * @param unknown_type $data
-     * @param unknown_type $table
-     * @param unknown_type $type
-     */
-	function storeCustom($data,$table,$type){
-
-		// Check token, how does this really work?
-//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save custom' );
-
-		$oldId = $data['virtuemart_custom_id'];
-		$this -> setId($oldId);
-		$virtuemart_custom_id = $this->store($type,$data);
-
-		/* add the virtuemart_custom_id & delete 0 and '' from $data */
-		$data['virtuemart_custom_ids'] = array_merge( (array)$data['virtuemart_custom_id'],$data['virtuemart_custom_ids']);
-		$virtuemart_custom_ids = array_diff($data['virtuemart_custom_ids'],array('0',''));
-
-		$data = $table->bindChecknStore($data);
-    	$errors = $table->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}
-//		// Bind the form fields to the table
-//		if (!$table->bind($data)) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Make sure the record is valid
-//		if (!$table->check()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Save the record to the database
-//		if (!$table->store()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-		$dbv = $table->getDBO();
-		if(empty($this->_id)) $this->_id = $dbv->insertid();
-
-		return $this->_id;
-
-	}
-
 	/**
 	 * Creates a clone of a given custom id
 	 *
@@ -223,6 +171,20 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 	}
+	function toggle($field,$val = NULL ) {
 
+		return parent::toggle($field,$val , 'cid'  ) ;
+
+    }
+	function publish() {
+		$this->_cidName = 'cid';
+		return parent::publish() ;
+
+    }
+	function unpublish() {
+		$this->_cidName = 'cid';
+		return parent::unpublish() ;
+
+    }
 }
 // pure php no closing tag

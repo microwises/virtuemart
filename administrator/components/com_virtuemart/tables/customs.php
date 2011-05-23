@@ -61,7 +61,7 @@ class TableCustoms extends VmTable {
 	var $is_cart_attribute		= 0;
 
 	/** @var int custom published or not */
-	var $published		= 0;
+	var $published		= 1;
 
 
 	/**
@@ -83,15 +83,15 @@ class TableCustoms extends VmTable {
 	 * @author  Patrick Kohl
 	 * @return boolean True .
 	 */
-	function check(){
+	// function check(){
 
-		if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
-			$this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
-			return false ;
-		}
+		// if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
+			// $this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
+			// return false ;
+		// }
 
-		return parent::check();
-	}
+		// return parent::check();
+	// }
 
 	/*
 	* field from 3 table have to be checked at delete
@@ -100,9 +100,9 @@ class TableCustoms extends VmTable {
 	function delete($id)
 	{
 		$this->_db->setQuery('DELETE X,F,C FROM `#__virtuemart_customs` AS C
-		LEFT JOIN `#__virtuemart_customfields` AS F ON F.`virtuemart_custom_id` = C.`virtuemart_custom_id`
-		LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_customfield_id` = F.`virtuemart_customfield_id`
-		WHERE C.`virtuemart_custom_id`=' . $id);
+			LEFT JOIN `#__virtuemart_customfields` AS F ON F.`virtuemart_custom_id` = C.`virtuemart_custom_id`
+			LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_customfield_id` = F.`virtuemart_customfield_id`
+			WHERE C.`virtuemart_custom_id`=' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
