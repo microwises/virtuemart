@@ -56,6 +56,31 @@ class VirtuemartControllerRatings extends VmController {
 //		/* Now display the view. */
 //		$view->display();
 //	}
+	/**
+	 * Generic edit task
+	 *
+	 * @author Max Milbers
+	 */
+	function edit_review(){
+
+		JRequest::setVar('controller', $this->_cname);
+		JRequest::setVar('view', $this->_cname);
+		JRequest::setVar('layout', 'edit_review');
+		JRequest::setVar('hidemenu', 1);
+
+		if(empty($view)){
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$view = $this->getView($this->_cname, $viewType);
+		}
+
+		$model = $this->getModel($this->_cname, 'VirtueMartModel');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+
+		parent::display();
+	}
 
 	public function listreviews(){
 

@@ -243,7 +243,7 @@ class VirtueMartModelProduct extends VmModel {
 				$product->stock = $this->getStockIndicator($product);
 
 				/* TODO Get the votes */
-				//$product->votes = $this->getVotes($virtuemart_product_id);
+				$product->votes = $this->getVotes($virtuemart_product_id);
 
 				}
 				else

@@ -62,21 +62,21 @@ $option = JRequest::getWord('option');
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->reviewslist as $key => $review) {
-			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_id);
+			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_review_id );
 			$published = JHTML::_('grid.published', $review, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
-				<!-- Product name -->
-				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id.'&product_parent_id='.$review->product_parent_id; ?>
+				<!-- Product name TODO Add paren_id in LINK ? not existing here -->
+				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id ?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Username + time -->
-				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$review->virtuemart_product_id; ?>
-				<td><?php echo JHTML::_('link', $link, $review->created_on, array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<?php $link = 'index.php?option='.$option.'&view=ratings&task=edit_review&virtuemart_rating_review_id='.$review->virtuemart_rating_review_id; ?>
+				<td><?php echo JHTML::_('link', $link, $review->customer.' ('.$review->created_on.')', array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Stars rating -->
 				<td>
-				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->rating).'.gif',$review->rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->rating . ' :: ' . $this->max_rating))); ?>
+				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating))); ?>
 				</td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>

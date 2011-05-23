@@ -147,15 +147,36 @@ class VirtueMartModelRatings extends VmModel {
 
     function getReviews(){
 
-    	$db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
+		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr` 
+		LEFT JOIN `#__virtuemart_userinfos` AS `u`
+     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
+		LEFT JOIN `#__virtuemart_products` AS `p`
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.' 
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`
+		ORDER BY `pr`.`modified_on` ';
+     	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+     	return $this->_db->loadObjectList();
+    }
+	function getReview(){
+		$cids = array();
+		$cids = JRequest::getVar('cid', false);
+		if (empty($cids)) {
+			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
+		}
+		if ($cids && !is_array($cids)) $cids = array($cids);
 
-       	$q = 'SELECT vm.*,pr.* FROM `#__virtuemart_rating_reviews` AS `pr` LEFT JOIN `#__virtuemart_userinfos` AS `vm`
-     	ON `pr`.`virtuemart_user_id` = `p`.`virtuemart_user_id` ORDER BY `pr`.`modified_on` ';
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr` 
+		LEFT JOIN `#__virtuemart_userinfos` AS `u`
+     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
+		LEFT JOIN `#__virtuemart_products` AS `p`
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.$cids[0].'
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`' ;
+		$this->_db->setQuery($q);
 
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList();
+		return $this->_db->loadObject();
     }
 
 
