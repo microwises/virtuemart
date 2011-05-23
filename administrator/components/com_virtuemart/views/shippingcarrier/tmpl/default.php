@@ -37,12 +37,14 @@ AdminMenuHelper::startAdminArea();
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_ORDER_LBL'); ?>
 			</th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 		</tr>
 		</thead>
 		<?php
 		$k = 0;
 		for ($i=0, $n=count( $this->shippingCarriers ); $i < $n; $i++) {
 			$row =& $this->shippingCarriers[$i];
+			$published = JHTML::_('grid.published', $row, $i );
 			/**
 			 * @todo Add to database layout published column
 			 */
@@ -60,6 +62,7 @@ AdminMenuHelper::startAdminArea();
 				<td align="left">
 					<?php echo JText::_($row->ordering); ?>
 				</td>
+				<td><?php echo $published; ?></td>
 			</tr>
 			<?php
 			$k = 1 - $k;

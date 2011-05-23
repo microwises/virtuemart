@@ -194,25 +194,6 @@ class VmModel extends JModel {
 		return true;
 	}
 
-	/**
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $idName
-	 * @param unknown_type $tablename
-	 * @param unknown_type $publishId
-	 */
-	// function publish($publishId = false) {
-
-		// $table = $this->getTable($this->_maintablename);
-
-		// $ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
-		// if (!$table->publish($ids, $publishId)) {
-			// $this->setError(get_class( $this ).'::publish '.$table->getError());
-			// return false;
-		// }
-
-		// return true;
-    // }
 	public function setToggleName($togglesName){
 		$this->_togglesName[] = $togglesName ;
 	}
