@@ -158,10 +158,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
-			$where[] .= '`#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
+			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 		if ( $search ) {
-			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		}
 		if ($onlyPublished) {
 			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
@@ -169,10 +169,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
 
-		$query = 'SELECT * FROM `#__virtuemart_manufacturers` '
+		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` as M LEFT JOIN `#__virtuemart_manufacturercategories` as MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
 				. $where;
+		$query .= ' ORDER BY M.`mf_name`';
 
-		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}

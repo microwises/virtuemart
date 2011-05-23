@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
-
+jimport('joomla.html.pane');
 /**
  * HTML View class for maintaining the list of manufacturers
  *
