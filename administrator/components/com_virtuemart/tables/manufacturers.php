@@ -55,7 +55,7 @@ class TableManufacturers extends VmTable {
 	{
 		parent::__construct('#__virtuemart_manufacturers', 'virtuemart_manufacturer_id', $db);
 
-		$this->setUniqueName('mf_name','COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('mf_name');
 		$this->setLoggable();
 		$this->setSlug('mf_name');
 	}

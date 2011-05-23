@@ -47,7 +47,7 @@ class TableManufacturercategories extends VmTable {
 	{
 		parent::__construct('#__virtuemart_manufacturercategories', 'virtuemart_manufacturercategories_id', $db);
 
-		$this->setUniqueName('mf_category_name','COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('mf_category_name');
 
 		$this->setLoggable();
 

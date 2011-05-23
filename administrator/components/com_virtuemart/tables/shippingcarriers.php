@@ -50,7 +50,7 @@ class TableShippingcarriers extends VmTable {
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shippingcarrier_id', $db);
 
-		$this->setUniqueName('shipping_carrier_name','COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('shipping_carrier_name');
 		$this->setObligatoryKeys('shipping_carrier_jplugin_id');
 
 		$this->setLoggable();
