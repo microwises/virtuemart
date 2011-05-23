@@ -150,11 +150,11 @@ class VirtueMartModelRatings extends VmModel {
      	/* Pagination */
      	$this->getPagination();
 		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
-       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr` 
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
      	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
-     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.' 
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.'
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`
 		ORDER BY `pr`.`modified_on` ';
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
@@ -168,7 +168,7 @@ class VirtueMartModelRatings extends VmModel {
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
-       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr` 
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
      	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
@@ -218,11 +218,12 @@ class VirtueMartModelRatings extends VmModel {
 				$data['rates'] = $rating->rates - $vote->vote;
 				$data['ratingcount'] = $rating->ratingcount-1;
 			}
-
+			dump($data,'data for vote');
 	        $data = $vote->bindChecknStore($data);
 	    	$errors = $vote->getErrors();
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store votes '.$error);
+				dump($vote,'my vote table');
 			}
 
 

@@ -34,8 +34,6 @@ class TableRating_votes extends VmTableData {
 	var $virtuemart_rating_vote_id	= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id			= 0;
-	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         	= 0;
 
 	var $vote				= '';
 	var $lastip      		= '';

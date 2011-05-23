@@ -34,8 +34,6 @@ class TableRatings extends VmTableData {
 
 	var $virtuemart_rating_id	= 0;
 	var $virtuemart_product_id           = 0;
-	/** @var int The ID of the user who rated the product */
-	var $virtuemart_user_id         	= 0;
 
 	var $rates         					= 0;
 	var $ratingcount      				= 0;
