@@ -30,6 +30,7 @@ class VmModel extends JModel {
 	var $_maintablename = '';
 	var $_idName		= '';
 	var $_cidName		= 'cid';
+	var $_togglesName		= null;
 
     public function __construct($cidName='cid'){
         parent::__construct();
@@ -200,19 +201,21 @@ class VmModel extends JModel {
 	 * @param unknown_type $tablename
 	 * @param unknown_type $publishId
 	 */
-	function publish($publishId = false) {
+	// function publish($publishId = false) {
 
-		$table = $this->getTable($this->_maintablename);
+		// $table = $this->getTable($this->_maintablename);
 
-		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
-		if (!$table->publish($ids, $publishId)) {
-			$this->setError(get_class( $this ).'::publish '.$table->getError());
-			return false;
-		}
+		// $ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
+		// if (!$table->publish($ids, $publishId)) {
+			// $this->setError(get_class( $this ).'::publish '.$table->getError());
+			// return false;
+		// }
 
-		return true;
-    }
-
+		// return true;
+    // }
+	public function setToggleName($togglesName){
+		$this->_togglesName[] = $togglesName ;
+	}
 	/**
 	 * toggle (0/1) a field
 	 * or invert by $val for multi IDS;
@@ -223,8 +226,11 @@ class VmModel extends JModel {
 
 	function toggle($field,$val = NULL, $cidName = 0 ) {
 		$ok = true;
+		$this->setToggleName('published');
+		if (!in_array($field, $this->_togglesName)) {
+			return false ;
+		}
 		$table =& $this->getTable($this->_maintablename);
-
 		if(empty($cidName)) $cidName = $this->_cidName;
 
 		$ids = JRequest::getVar( $cidName, array(0), 'post', 'array' );

@@ -152,9 +152,8 @@ class VmController extends JController{
 	public function toggle($field,$val=null){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
 		$model = $this->getModel($this->_cname);
-		if (!$model->toggle($field,$val)) {
+		if (!$model->toggle($field,$val,'cid')) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
@@ -173,7 +172,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->publish(true)) {
+		if (!$model->toggle('published',1,'cid')) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
@@ -193,7 +192,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->publish(false)) {
+		if (!$model->toggle('published',0,'cid')) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);

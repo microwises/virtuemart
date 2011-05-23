@@ -39,6 +39,8 @@ class VirtueMartModelCustom extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_custom_id');
 		$this->setMainTable('customs');
+		$this->setToggleName('admin_only');
+		$this->setToggleName('is_hidden');
 	}
 
     /**
@@ -171,20 +173,5 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 	}
-	function toggle($field,$val = NULL ) {
-
-		return parent::toggle($field,$val , 'cid'  ) ;
-
-    }
-	function publish() {
-		$this->_cidName = 'cid';
-		return parent::publish() ;
-
-    }
-	function unpublish() {
-		$this->_cidName = 'cid';
-		return parent::unpublish() ;
-
-    }
 }
 // pure php no closing tag

@@ -50,9 +50,13 @@ class VirtueMartModelUserfields extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('userfields');
+
+		$this->setToggleName('required');
+		$this->setToggleName('registration');
+		$this->setToggleName('shipping');
+		$this->setToggleName('account');
 		// Instantiate the Helper class
 		$this->_params = new ParamHelper();
-
 
 		// Form fields that must be translated to parameters
 		$this->reqParam = array (

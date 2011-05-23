@@ -36,7 +36,8 @@ class VirtueMartModelCalc extends VmModel {
     public function __construct(){
         parent::__construct();
 		$this->setMainTable('calcs');
-
+		$this->setToggleName('calc_shopper_published');
+		$this->setToggleName('calc_vendor_published');
     }
 
 
