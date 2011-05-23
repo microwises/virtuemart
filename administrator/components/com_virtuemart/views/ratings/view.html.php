@@ -52,7 +52,8 @@ class VirtuemartViewRatings extends JView {
 		switch ($task) {
 			case 'listreviews':
 				/* Get the data */
-				$reviewslist = $model->getReviews();
+				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+				$reviewslist = $model->getReviews($virtuemart_product_id);
 
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');

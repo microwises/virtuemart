@@ -237,9 +237,9 @@ class VmTable extends JTable {
 
     	if(!$ok){
 //    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
-    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getQuery());
+    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
     	}
-    	dump($this);
+    	dump($this,'bindChecknStore ');
 		return $data;
     }
 

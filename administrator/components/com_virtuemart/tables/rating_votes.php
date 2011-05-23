@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * Product review table class
@@ -28,7 +28,7 @@ if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @package		VirtueMart
  * @author Max Milbers
  */
-class TableRating_votes extends VmTableData {
+class TableRating_votes extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_rating_vote_id	= 0;
@@ -46,7 +46,7 @@ class TableRating_votes extends VmTableData {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_rating_votes', 'virtuemart_rating_vote_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setObligatoryKeys('vote');
+//		$this->setObligatoryKeys('vote');
 
 		$this->setLoggable();
 	}

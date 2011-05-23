@@ -891,7 +891,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
   `review_ok` int(11) NOT NULL DEFAULT '0',
   `review_rates` int(11) NOT NULL DEFAULT '0',
   `review_ratingcount` int(11) NOT NULL DEFAULT '0',
-  `review_vote` float(1) NOT NULL DEFAULT '0',
+  `review_rating` float(1) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -922,7 +922,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_ratings` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_rating_id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`created_by`)
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_rating_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
 
 
