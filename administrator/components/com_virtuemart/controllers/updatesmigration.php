@@ -204,7 +204,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 	function refreshCompleteInstall(){
 
-		if(VmConfig::get('dangeroustools',false)){
+		if(VmConfig::get('dangeroustools',true)){
 
 			$model = $this->getModel('updatesMigration');
 
@@ -241,7 +241,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	function setDangerousToolsOff(){
 
 		$model = $this->getModel('config');
-//		$model->setDangerousToolsOff();
+		$model->setDangerousToolsOff();
 
 	}
 
