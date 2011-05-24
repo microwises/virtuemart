@@ -46,7 +46,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_product_id');
 		$this->setMainTable('products');
 	}
 

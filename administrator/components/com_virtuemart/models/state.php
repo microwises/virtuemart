@@ -40,7 +40,7 @@ class VirtueMartModelState extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_state_id');
 		$this->setMainTable('states');
 	}
 

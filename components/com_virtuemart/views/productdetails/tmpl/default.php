@@ -109,7 +109,11 @@ if (empty ( $this->product )) {
 				echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 				*/ ?>
 
-				<?php // Product Price
+				<?php
+				$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
+				echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+
+				// Product Price
 				if ($this->show_prices) { ?>
 				<div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 				<?php
@@ -489,7 +493,11 @@ if (empty ( $this->product )) {
 			for ($num=0 ; $num<=$maxrating;  $num++ ) {
 				$showReviewFor[$num] = $num;
 			}
-			echo VmHTML::radioList('showReviewFor', $this->vote->vote,$showReviewFor);
+//			if($this->vote->vote!==null){
+//
+//			}
+			$vote = !empty($this->vote)? $this->vote->vote:$maxrating;
+			echo VmHTML::radioList('vote', $vote,$showReviewFor);
 //			for ($num=0 ; $num<=$maxrating;  $num++ ) {
 
 /*
@@ -528,7 +536,7 @@ if (empty ( $this->product )) {
 
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<?php echo $stars[ $review->review_rating ] ?>
+					<?php //echo $stars[ $review->review_rating ] ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
 				</div>
@@ -595,7 +603,7 @@ if (empty ( $this->product )) {
 							echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
 							?>
 							<br />
-							<textarea title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php echo $this->review->comment ?></textarea>
+							<textarea title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
 							<br />
 							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
 							<div align="right"><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT')  ?>

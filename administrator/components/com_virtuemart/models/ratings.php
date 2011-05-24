@@ -163,15 +163,16 @@ class VirtueMartModelRatings extends VmModel {
 		LEFT JOIN `#__users` AS `u`
      	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
-     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.'
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`
+		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"
 		ORDER BY `pr`.`modified_on` ';
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 
      	if(!$result = $this->_db->loadObjectList()){
      		$this->setError($this->_db->getErrorMsg());
      	}
-     	echo $q;
+
      	return $result;
     }
 
@@ -275,11 +276,11 @@ class VirtueMartModelRatings extends VmModel {
 		if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
 
 			//normalize the rating
-			if ($data['rate'] < 0 ) $data['rate'] = 0 ;
-			if ($data['rate'] > ($maxrating+1) ) $data['rate'] = $maxrating;
+			if ($data['vote'] < 0 ) $data['vote'] = 0 ;
+			if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
 
 //			//To allow voting of 0, we must add 1 to avoid an empty of the table, so we added +1 in the form and have to remove it now again
-//			$data['rate'] = $data['rate']-1;
+//			$data['vote'] = $data['vote']-1;
 
 			$data['lastip'] = $_SERVER['REMOTE_ADDR'];
 
@@ -291,10 +292,10 @@ class VirtueMartModelRatings extends VmModel {
 //			$this->_db->setQuery($q);
 //			$vote = $this->_db->loadObject();
 
-			$data['vote'] = $data['rate'];
 			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
 
-			if(isset($data['rate'])){
+			if(isset($data['vote'])){
+				dump('store the vote');
 				$votesTable = $this->getTable('rating_votes');
 		        $data = $votesTable->bindChecknStore($data);
 		    	$errors = $votesTable->getErrors();
@@ -306,13 +307,13 @@ class VirtueMartModelRatings extends VmModel {
 
 
 			if(!empty($rating->rates) && empty($vote) ){
-				$data['rates'] = $rating->rates + $data['rate'];
+				$data['rates'] = $rating->rates + $data['vote'];
 				$data['ratingcount'] = $rating->ratingcount+1;dump('new vote, but old review');
 			} else if(!empty($rating->rates) && !empty($vote->vote)){
-				$data['rates'] = $rating->rates - $vote->vote + $data['rate'];
+				$data['rates'] = $rating->rates - $vote->vote + $data['vote'];
 				$data['ratingcount'] = $rating->ratingcount;dump('update vote');
 			} else {
-				$data['rates'] = $data['rate'];
+				$data['rates'] = $data['vote'];
 				$data['ratingcount'] = 1;dump('complete new review entry');
 			}
 
@@ -359,7 +360,7 @@ class VirtueMartModelRatings extends VmModel {
 				if(!empty($review->review_rates)){
 					$data['review_rates'] = $review->review_rates + $data['review_rate'];
 				} else {
-					$data['review_rates'] = $data['rate'];
+					$data['review_rates'] = $data['vote'];
 				}
 
 				if(!empty($review->review_ratingcount)){

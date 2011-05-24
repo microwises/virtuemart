@@ -133,7 +133,12 @@ class VirtueMartViewProductdetails extends JView {
 		$showReview = $ratingModel->allowReview($product->virtuemart_product_id);
 		$this->assignRef('allowReview', $showReview);
 
+		$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
+		$this->assignRef('rating', $rating);
+
 		if($showReview){
+
+
 
 			$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
 			$this->assignRef('vote', $vote);
