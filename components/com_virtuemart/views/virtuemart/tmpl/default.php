@@ -34,11 +34,9 @@ if (!empty($this->vendor->vendor_store_desc)) { ?>
 // load categories from front_categories if exist
 if ($this->categories) echo $this->loadTemplate('categories');
 
-//Console::logSpeed('Load featured');
 /* Show Featured Products */
 if (VmConfig::get('show_featured', 1) && $this->featuredProducts) echo $this->loadTemplate('featuredproducts');
 
-//Console::logSpeed('Load recent');
 /* Recent products */
 if (VmConfig::get('show_recent', 1) && $this->recentProducts) echo $this->loadTemplate('recentproducts');
 /* Topten products */

@@ -146,7 +146,7 @@ class VirtueMartModelCustom extends VmModel {
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
 		// delete existings from modelXref and table customfields
-		$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as PC, `#__virtuemart_customfields` as C WHERE `virtuemart_customfield_id`.PC = `virtuemart_customfield_id`.C AND  virtuemart_'.$table.'_id =' . $id );
+		$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as PC, `#__virtuemart_customfields` as C WHERE `virtuemart_custom_id`.PC = `virtuemart_custom_id`.C AND  virtuemart_'.$table.'_id =' . $id );
 		$this->_db->query();
 
 		$customfieldIds = array();
