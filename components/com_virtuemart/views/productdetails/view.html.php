@@ -92,6 +92,10 @@ class VirtueMartViewProductdetails extends JView {
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 
+		/* Load the neighbours */
+		$product->neighbours = $product_model->getNeighborProducts($product);
+
+		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
 
 		/* Load the category */
 		$category_model = $this->getModel('category');

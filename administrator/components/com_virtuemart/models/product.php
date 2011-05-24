@@ -132,6 +132,7 @@ class VirtueMartModelProduct extends VmModel {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
 
+
 //		if(empty($this->_data)){
 			if (!empty($virtuemart_product_id)) {
 
@@ -202,8 +203,9 @@ class VirtueMartModelProduct extends VmModel {
 				$producCategory = empty($product->categories[0])? '':$product->categories[0];
 				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$virtuemart_product_id.'&virtuemart_category_id='.$producCategory);
 
-				/* Load the neighbours */
-				$product->neighbours = $this->getNeighborProducts($product);
+				//only needed in FE productdetails, is now loaded in the view.html.php
+//				/* Load the neighbours */
+//				$product->neighbours = $this->getNeighborProducts($product);
 
 				/* Fix the product packaging */
 				if ($product->product_packaging) {
@@ -215,15 +217,16 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-				/* Load the related products */
-				$product->related = $this->getRelatedProducts($virtuemart_product_id);
+//				/* Load the related products */
+//				$product->related = $this->getRelatedProducts($virtuemart_product_id);
 
 				/* Load the vendor details */
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
+//				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
-				/* Check for child products */
-				$product->haschildren = $this->checkChildProducts($virtuemart_product_id);
+
+//				/* Check for child products */ I think we dont need this, the product it self knows if it s a child
+//				$product->haschildren = $this->checkChildProducts($virtuemart_product_id);
 
 				/* Load the custom variants */
 				$product->hasproductCustoms = $this->hasproductCustoms($virtuemart_product_id);
@@ -243,11 +246,13 @@ class VirtueMartModelProduct extends VmModel {
 				$product->stock = $this->getStockIndicator($product);
 
 				/* TODO Get the votes */
-				$product->votes = $this->getVotes($virtuemart_product_id);
+//				$product->votes = $this->getVotes($virtuemart_product_id);
 
 				}
-				else
-				$product->customfields = $this->getproductCustomslist($virtuemart_product_id);
+				else {
+					$product->customfields = $this->getproductCustomslist($virtuemart_product_id);
+				}
+
 			} else {
 				$product = new stdClass();
 				return $this->fillVoidProduct($product,$front);
@@ -502,7 +507,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param object $product The product to find the neighours of
 	 * @return array
 	 */
-	private function getNeighborProducts($product) {
+	public function getNeighborProducts($product) {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
 
@@ -597,7 +602,7 @@ class VirtueMartModelProduct extends VmModel {
 				$featured->prices = $price;
 
 				/* Child products */
-				$featured->haschildren = $this->checkChildProducts($featured->virtuemart_product_id);
+//				$featured->haschildren = $this->checkChildProducts($featured->virtuemart_product_id);
 
 				$result[] = $featured;
 			}

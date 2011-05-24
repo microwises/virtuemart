@@ -234,7 +234,8 @@ class VirtuemartControllerOrders extends VmController {
 
 
 	/**
-	 * correct position, working with json? actually?
+	 * correct position, working with json? actually? WHat ist that?
+	 *
 	* Get a list of related products
 	* @author RolandD
 	*/

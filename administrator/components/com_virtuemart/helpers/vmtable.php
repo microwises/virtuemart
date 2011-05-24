@@ -235,10 +235,10 @@ class VmTable extends JTable {
     		$data[$this->_tbl_key] = !empty($this->$tblKey)?  $this->$tblKey:0;
     	}
 
-    	if(!$ok){
+//    	if(!$ok){
 //    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
-    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
-    	}
+////    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
+//    	}
     	dump($this,'bindChecknStore ');
 		return $data;
     }
