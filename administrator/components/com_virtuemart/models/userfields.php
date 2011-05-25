@@ -244,7 +244,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$_fieldType = $field->formatFieldType($data);
 
 		$coreFields= array( 'username', 'email', 'password', 'password2' );
-		if(!in_array($data['name'],$coreFields)){
+		if(!in_array($data['name'],$coreFields) && $_fieldType != 'delimiter'){
 
 			// Alter the user_info table
 			if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
