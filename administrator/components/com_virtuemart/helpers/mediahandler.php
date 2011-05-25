@@ -124,7 +124,6 @@ class VmMediaHandler {
 	 */
 	public function prepareStoreMedia($table,$data,$type){
 
-		dump($table,'ding da?');
 		$media = VmMediaHandler::createMedia($table,$type);
 
 		$data = $media->processAction($data);
@@ -134,7 +133,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
-		dump($data,'my data prepare store media');
+
 		return $data;
 	}
     /**
@@ -176,7 +175,6 @@ class VmMediaHandler {
 
     	$this->determineFoldersToTest();
 
-    	dump($this,'setFileInfo');
     }
 
     public function getUrl(){

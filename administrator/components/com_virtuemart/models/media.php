@@ -217,12 +217,10 @@ class VirtueMartModelMedia extends VmModel {
 		// Check token, how does this really work?
 //		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-//		$oldId = $data['active_media_id'];
-//		$this -> setId($oldId);
 		$oldIds = $data['virtuemart_media_id'];
-		dump($this,'my media');dump($data,'my data media');
+
 		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
-			$this -> setId($data['active_media_id']);dump('update old media');
+			$this -> setId($data['active_media_id']);
 			$data['virtuemart_media_id'] = $data['active_media_id'];
 		}
 		$virtuemart_media_id = $this->store($data,$type);
@@ -259,7 +257,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		$table = $this->getTable('medias');
 		$table->bind($data);
-//		dump($data,'data I get');
+
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 		// workarround for media published and product published two fields in one form.
 		if ($data['media_published'])

@@ -135,8 +135,6 @@ class VmTableXarray extends VmTable {
 			$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
 		}
 
-//		dump($q,'meine query');
-
 		$returnCode = true;
 		if(!empty($this->_svalue)){
 			if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);

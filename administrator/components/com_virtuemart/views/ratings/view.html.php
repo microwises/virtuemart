@@ -80,7 +80,6 @@ class VirtuemartViewRatings extends JView {
 			case 'edit_review':
 				/* Get the data */
 				$rating = $model->getReview();
-				dump($rating);
 
 				ShopFunctions::addStandardEditViewCommands();
 

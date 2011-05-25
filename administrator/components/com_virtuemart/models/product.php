@@ -2052,16 +2052,9 @@ class VirtueMartModelProduct extends VmModel {
   		$data = $this->getTable('medias');
    		$data->load($media_id);
 
-
-
-
-
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
   		$media = VmMediaHandler::createMedia($data,'product');
 		return $media->displayMediaThumb('',false);
-
-
-
 
 	}
 

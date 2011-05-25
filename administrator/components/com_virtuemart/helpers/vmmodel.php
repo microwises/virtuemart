@@ -217,7 +217,6 @@ class VmModel extends JModel {
 		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
 		foreach($ids as $id){
 			$table->load( $id );
-			dump($val, 'my val');
 			if ($val === NULL) {
 				if ($table->$field ==0) $table->$field = 1 ;
 				else $table->$field = 0;
