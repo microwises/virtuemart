@@ -1,4 +1,4 @@
--- VirtueMart table SQL script 
+-- VirtueMart table SQL script
 -- This will install all the tables need to run VirtueMart
 
 -- --------------------------------------------------------
@@ -288,8 +288,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
 
 --
 -- Table structure for table `#__virtuemart_currencies`
--- 
-		
+--
+
 CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `virtuemart_currency_id` SERIAL,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
@@ -1081,7 +1081,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
 
 --
 -- Table structure for table `#__virtuemart_vmuser_shoppergroups`
--- 
+--
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_vmuser_shoppergroups` (
   `id` SERIAL,
