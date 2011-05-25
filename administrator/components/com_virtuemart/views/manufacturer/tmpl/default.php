@@ -53,6 +53,9 @@ AdminMenuHelper::startAdminArea();
 				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_EMAIL'); ?>
 		    </th>
 		    <th>
+				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_CATEGORY'); ?>
+		    </th>
+		    <th>
 				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 		    </th>
 		    <th>
@@ -68,10 +71,9 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count( $this->manufacturers ); $i < $n; $i++) {
 		$row = $this->manufacturers[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->virtuemart_manufacturer_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_manufacturer_id,null,'virtuemart_manufacturer_id');
 		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&task=edit&virtuemart_manufacturer_id=' . $row->virtuemart_manufacturer_id);
-
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -82,13 +84,16 @@ AdminMenuHelper::startAdminArea();
 
 		</td>
 		<td align="left">
-			<?php echo $row->mf_email; ?>
+			<?php if (!empty($row->mf_email)) echo  '<a href="mailto:'.$row->mf_name.'<'.$row->mf_email.'>">'.$row->mf_email ; ?>
 		</td>
 		<td>
 			<?php echo $row->mf_desc; ?>
 		</td>
 		<td>
-			<?php echo $row->mf_url; ?>
+			<?php echo $row->mf_category_name; ?>
+		</td>
+		<td>
+			<?php if (!empty($row->mf_url)) echo '<a href="'. $row->mf_url.'">'. $row->mf_url ; ?>
 		</td>
 		<td align="center">
 			<?php echo $published; ?>

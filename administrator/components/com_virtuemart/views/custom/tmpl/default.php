@@ -88,7 +88,7 @@ $pagination = $this->pagination;
 				
 				<!-- Product name -->
 				<?php 
-				$link = "index.php?view=custom&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&virtuemart_custom_id=".$custom->virtuemart_custom_id."&option=".$option;
+				$link = "index.php?option=com_virtuemart&view=custom&task=edit&virtuemart_custom_id=".$custom->virtuemart_custom_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
 				<td><?php echo $custom->custom_field_desc; ?></td>
@@ -125,6 +125,7 @@ $pagination = $this->pagination;
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php //echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php //echo $this->lists['order_Dir']; ?>" />
+
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

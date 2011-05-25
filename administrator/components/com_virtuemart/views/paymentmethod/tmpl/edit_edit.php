@@ -100,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
     <tr class="row0">
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
       <td width="69%" >
-        <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
+        <input type="text" class="inputbox" name="ordering" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
     </tr>
     <?php if($this->perms->check('admin')){?>

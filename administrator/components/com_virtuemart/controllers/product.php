@@ -42,17 +42,6 @@ class VirtuemartControllerProduct extends VmController {
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
 
-
-//		$this->setMainLangKey('PRODUCT');
-		/* Redirect templates to templates as this is the standard call */
-		// $this->registerTask('saveorder','product');
-		// $this->registerTask('orderup','product');
-		// $this->registerTask('orderdown','product');
-
-//		$this->registerTask('edit','add');
-//		$this->registerTask('apply','save');
-
-
 	}
 
 	/**

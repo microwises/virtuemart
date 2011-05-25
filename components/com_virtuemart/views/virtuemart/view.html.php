@@ -53,7 +53,7 @@ class VirtueMartViewVirtueMart extends JView {
 
 		    $categoryId = JRequest::getInt('catid', 0);
 	        $categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-	        $categoryModel->addImagesToCategories($categoryChildren);
+	        $categoryModel->addImages($categoryChildren);
 
 	        $this->assignRef('categories',	$categoryChildren);
 
@@ -63,25 +63,25 @@ class VirtueMartViewVirtueMart extends JView {
 	        if (VmConfig::get('show_recent', 1)) {
 	        	$recentProductIds = shopFunctionsF::getRecentProductIds();
 				$recentProducts = $productModel->getProducts($recentProductIds);
-	        	$productModel->addImagesToProducts($recentProducts);
+	        	$productModel->addImages($recentProducts);
 	        	$this->assignRef('recentProducts', $recentProducts);
 	        }
 
 	        if (VmConfig::get('showFeatured', 1)) {
 				$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);
-				$productModel->addImagesToProducts($featuredProducts);
+				$productModel->addImages($featuredProducts);
 				$this->assignRef('featuredProducts', $featuredProducts);
 			}
 
 			if (VmConfig::get('showlatest', 1)) {
 				$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
-				$productModel->addImagesToProducts($latestProducts);
+				$productModel->addImages($latestProducts);
 				$this->assignRef('latestProducts', $latestProducts);
 			}
 
 	        if (VmConfig::get('showTopten', 1)) {
 				$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);
-				$productModel->addImagesToProducts($toptenProducts);
+				$productModel->addImages($toptenProducts);
 				$this->assignRef('toptenProducts', $toptenProducts);
 			}
 

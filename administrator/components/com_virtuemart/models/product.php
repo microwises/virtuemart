@@ -947,8 +947,6 @@ class VirtueMartModelProduct extends VmModel {
 
         $product_data->bindChecknStore($data);
 
-
-
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
@@ -964,8 +962,11 @@ class VirtueMartModelProduct extends VmModel {
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
-//			$xrefTable = $this->getTable('product_medias');
 			$mediaModel->storeMedia($data,'product');
+		    $errors = $mediaModel->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
 		}
 
 		if (array_key_exists('field', $data)) {
@@ -994,6 +995,7 @@ class VirtueMartModelProduct extends VmModel {
 			$waitinglist->notifyList($data['virtuemart_product_id']);
 		}
 
+		//Should be replaced by xref table
 		if(!empty($data['categories']) && count($data['categories'])>0){
 			/* Delete old category links */
 			$q  = "DELETE FROM `#__virtuemart_product_categories` ";
@@ -1003,7 +1005,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			/* Store the new categories */
 			foreach( $data["categories"] as $virtuemart_category_id ) {
-				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as list_order FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
+				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as ordering FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
 				$list_order = $this->_db->loadResult();
 
 				$q  = "INSERT INTO #__virtuemart_product_categories ";
@@ -1074,6 +1076,69 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	/**
+	 * removes a product and related table entries
+	 *
+	 * @author Max Milberes
+	 */
+	public function remove($ids) {
+
+		$table = $this->getTable($this->_maintablename);
+
+		$cats = $this->getTable('product_categories');
+		$customs = $this->getTable('product_customfields');
+		$manufacturers = $this->getTable('product_manufacturers');
+		$medias = $this->getTable('product_medias');
+		$prices = $this->getTable('product_prices');
+		$rating = $this->getTable('ratings');
+		$review = $this->getTable('rating_reviews');
+
+		$ok = true;
+		foreach($ids as $id) {
+		    if (!$table->delete($id)) {
+				$this->setError($table->getError());
+				$ok = false;
+		    }
+
+			if (!$cats->delete($id)) {
+				$this->setError($cats->getError());
+				$ok = false;
+		    }
+
+			if (!$customs->delete($id)) {
+				$this->setError($customs->getError());
+				$ok = false;
+		    }
+
+		    if (!$manufacturers->delete($id)) {
+				$this->setError($manufacturers->getError());
+				$ok = false;
+		    }
+
+			if (!$medias->delete($id)) {
+				$this->setError($medias->getError());
+				$ok = false;
+		    }
+
+		 	if (!$prices->delete($id)) {
+				$this->setError($prices->getError());
+				$ok = false;
+		    }
+
+			if (!$rating->delete($id)) {
+				$this->setError($rating->getError());
+				$ok = false;
+		    }
+
+			if (!$review->delete($id)) {
+				$this->setError($review->getError());
+				$ok = false;
+		    }
+		}
+
+		return $ok;
+	}
+
+	/**
 	* Remove a product
 	* @author RolandD
 	* @todo Add sanity checks
@@ -1126,12 +1191,12 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->query();
 
 			/* Delete product votes */
-			$q  = "DELETE FROM #__virtuemart_product_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q  = "DELETE FROM #__virtuemart_rating_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
 			/* Delete product reviews */
-			$q = "DELETE FROM #__virtuemart_product_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$q = "DELETE FROM #__virtuemart_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
@@ -1355,10 +1420,10 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 		$showall = JRequest::getBool('showall', 0);
 
-		$q = 'SELECT `comment`, `created_on`, `userid`, `user_rating`, `username`, `name`
-			FROM `#__virtuemart_product_reviews` `r`
+		$q = 'SELECT `comment`, `created_on`, `virtuemart_user_id`, `user_rating`, `username`, `name`
+			FROM `#__virtuemart_rating_reviews` `r`
 			LEFT JOIN `#__users` `u`
-			ON `u`.`id` = `r`.`userid`
+			ON `u`.`id` = `r`.`virtuemart_user_id`
 			WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'"
 			AND published = "1"
 			ORDER BY `created_on` DESC ';
@@ -1494,7 +1559,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db = JFactory::getDBO();
 
 			$q = "SELECT `votes`, `allvotes`, `rating`
-				FROM `#__virtuemart_product_ratings`
+				FROM `#__virtuemart_ratings`
 				WHERE `virtuemart_product_id` = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadObject();
@@ -1940,7 +2005,7 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* bool */
 				case 'B':
-					if ($value == 0) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NO') ;
+					if ($value == 0) return JText::_('COM_VIRTUEMART_NO') ;
 					return JText::_('COM_VIRTUEMART_ADMIN_CFG_YES') ;
 				break;
 				/* parent */
@@ -1949,7 +2014,6 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* image */
 				case 'i':
-					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
 
 					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`virtuemart_vendor_id`= "'.$product->virtuemart_vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
@@ -1960,7 +2024,7 @@ class VirtueMartModelProduct extends VmModel {
 					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 					$this->virtuemart_media_id = (int)$value;
-					$imagehandler = VmMediaHandler::createMedia($image);
+					$imagehandler = VmMediaHandler::createMedia($image,'product');
 					//$imagehandler->createMedia($image);
 					return $imagehandler->displayMediaThumb();
 				break;
@@ -1977,21 +2041,5 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
-    /**
-	 * Since a product dont need always an image, we can attach them to the product with this function
-	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $products
-	 */
-	public function addImagesToProducts($products=0){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($products,'product','image');
-
-	}
 }
 // No closing tag

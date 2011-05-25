@@ -40,7 +40,7 @@ class VmTable extends JTable {
 	protected $_slugAutoName = '';
 
     function setPrimaryKey($key,$keyForm=0){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
     	$this->setObligatoryKeys('_pkey',$error);
     	$this->_pkey = $key;
     	$this->_pkeyForm = empty($keyForm)? $key:$keyForm;
@@ -48,12 +48,12 @@ class VmTable extends JTable {
     }
 
 	public function setObligatoryKeys($key){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_'.$key) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
 		$this->_obkeys[$key] = $error;
 	}
 
 	public function setUniqueName($name){
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_'.$name) );
+		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_'.strtoupper($name)) );
 		$this->_unique = true;
 		$this->_obkeys[$name] = $error;
 		$this->_unique_name[$name] = $error;
@@ -113,6 +113,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
+		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store');
 		return false;
     }
 
@@ -199,42 +200,46 @@ class VmTable extends JTable {
      */
     public function bindChecknStore($data, $obligatory=false) {
 
-    	dump($data,'data to bind');
     	$ok = true;
-        if ( !$this->bind($data) ) $ok = false;
-
+    	$msg = '';
+        if ( !$this->bind($data) ){
+        	$ok = false;
+        	$msg = 'bind';
+        }
 
     	if( $ok ) {
-    		if( !$this->checkDataContainsTableFields($data) ) $ok = false;
+    		if( !$this->checkDataContainsTableFields($data) ){
+    			$ok = false;
+//    			$msg .= ' developer notice:: checkDataContainsTableFields';
+    		}
 		}
 
     	if( $ok ) {
-    		if( !$this->check($obligatory) ) $ok = false;
+    		if( !$this->check($obligatory) ){
+    			$ok = false;
+    			$msg .= ' check';
+    		}
 		}
 
 		if( $ok ) {
-    		if( !$this->store($data) ) $ok = false;
+    		if( !$this->store($data) ){
+    			$ok = false;
+    			$msg .= ' store';
+    		}
 		}
-
-//		// Make sure the table record is valid
-//		if (!$this->check($obligatory) && $ok) {
-//
-//			$ok = false;
-//		}
-//
-//		// Save the record to the database
-//		if (!$this->store() && $ok) {
-//
-//			$ok = false;
-//		}
 
 		$tblKey = $this->_tbl_key;
 		if (is_object($data)){
-			$data->$tblKey = $this->$tblKey;
+			$data->$tblKey = !empty($this->$tblKey)? $this->$tblKey:0;
     	} else {
-    		$data[$this->_tbl_key] = $this->$tblKey;
+    		$data[$this->_tbl_key] = !empty($this->$tblKey)?  $this->$tblKey:0;
     	}
 
+    	if(!$ok){
+//    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
+    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getQuery());
+    	}
+    	dump($this);
 		return $data;
     }
 
@@ -563,7 +568,7 @@ class VmTable extends JTable {
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError(get_class( $this ).'::Error publish query '.$this->_db->getErrorMsg());
 			return false;
 		}
 
@@ -576,7 +581,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
-		$this->setError('');
+		$this->setError(get_class( $this ).'::Error publish ');
 		return true;
 	}
 

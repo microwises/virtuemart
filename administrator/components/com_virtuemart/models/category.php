@@ -129,7 +129,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$query = "SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, cx.`category_shared`
+		$query = "SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
 				  FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__virtuemart_category_categories` cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id`
@@ -150,7 +150,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= " AND (c.`virtuemart_vendor_id` = ". $this->_db->Quote($vendorId) . " OR cx.`category_shared` = '1') ";
+			$query .= " AND (c.`virtuemart_vendor_id` = ". $this->_db->Quote($vendorId) . " OR c.`shared` = '1') ";
 		}
 
 		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
@@ -365,41 +365,41 @@ class VirtueMartModelCategory extends VmModel {
 
 	/**
 	 * Shared/Unsared all the ids selected
-     *
+     * TODO replace by toggle
      * @author jseros
      *
      * @param boolean $share True is the ids should be shared, false otherwise
      * @return int 1 is the sharing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
      */
-	public function share($categories){
+//	public function share($categories){
+//
+//		foreach ($categories as $id){
+//
+//			$quotedId = $this->_db->Quote($id);
+//			$query = 'SELECT `category_shared`
+//					  FROM `#__virtuemart_category_categories`
+//					  WHERE `category_child_id` = '. $quotedId;
+//
+//			$this->_db->setQuery($query);
+//			$categoryXref = $this->_db->loadObject();
+//
+//			$share = ($categoryXref->category_shared > 0) ? 0 : 1;
+//
+//			$query = 'UPDATE `#__virtuemart_category_categories`
+//					  SET `category_shared` = '.$share.'
+//					  WHERE `category_child_id` = '.$quotedId;
+//
+//			$this->_db->setQuery($query);
+//
+//			if( !$this->_db->query() ){
+//				$this->setError( $this->_db->getErrorMsg() );
+//				return false;
+//			}
+//
+//		}
 
-		foreach ($categories as $id){
-
-			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT `category_shared`
-					  FROM `#__virtuemart_category_categories`
-					  WHERE `category_child_id` = '. $quotedId;
-
-			$this->_db->setQuery($query);
-			$categoryXref = $this->_db->loadObject();
-
-			$share = ($categoryXref->category_shared > 0) ? 0 : 1;
-
-			$query = 'UPDATE `#__virtuemart_category_categories`
-					  SET `category_shared` = '.$share.'
-					  WHERE `category_child_id` = '.$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-		}
-
-		return ($share ? 1 : -1);
-	}
+//		return ($share ? 1 : -1);
+//	}
 
 
     /**
@@ -432,7 +432,7 @@ class VirtueMartModelCategory extends VmModel {
     public function getRelationInfo( $virtuemart_category_id = 0 ){
     	$virtuemart_category_id = (int) $virtuemart_category_id;
 
-    	$query = 'SELECT `category_parent_id`, `category_shared`, `category_list`
+    	$query = 'SELECT `category_parent_id`, `ordering`
     			  FROM `#__virtuemart_category_categories`
     			  WHERE `category_child_id` = '. $this->_db->Quote($virtuemart_category_id);
     	$this->_db->setQuery($query);
@@ -448,51 +448,38 @@ class VirtueMartModelCategory extends VmModel {
      * @return int category id stored
 	 */
     public function store($data) {
-//		jimport('joomla.filesystem.file');
-		$update = $data['virtuemart_category_id'] ;
+
 		$table = $this->getTable('categories');
-		
+
 		$data = $table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		
-		dump($table,'I am the result');
 
-		//store category relation
-		if( !$update ){ //is new
-			$table->virtuemart_category_id = $this->_db->insertid();
-			$query = 'INSERT INTO `#__virtuemart_category_categories` (`category_parent_id`, `category_child_id`, `category_shared`)
-					  VALUES (
-					  	"'. $table->category_parent_id .'",
-					  	'. $table->virtuemart_category_id .',
-					  	"'. $table->shared  .'"
-					  )';
-		}
-		else{
-//			$id = $data['virtuemart_category_id'];
+		if(!empty($data['virtuemart_category_id'])){
+			$xdata['category_child_id'] = $data['virtuemart_category_id'];
+			$xdata['category_parent_id'] = empty($data['category_parent_id'])? 0:$data['category_parent_id'];
+			$xdata['ordering'] = empty($data['ordering'])? 0: $data['ordering'];
 
-			$query = 'UPDATE `#__virtuemart_category_categories`
-					  SET `category_parent_id` = '. $this->_db->Quote( (int)$table->category_parent_id ) .',
-					  `category_shared` = '. $this->_db->Quote( (int)$table->shared ) .'
-					  WHERE `category_child_id` = '. $this->_db->Quote( (int)$table->virtuemart_category_id );
-		}
-		dump ($query,'query');
-		$this->_db->setQuery($query);
+    		$table = $this->getTable('category_categories');
 
-		if(!$this->_db->query()){
-			$this->setError( $this->_db->getErrorMsg() );
-//			return false;
+			$xdata = $table->bindChecknStore($xdata);
+	    	$errors = $table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
 		}
 
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-//		$xrefTable = $this->getTable('category_medias');
 		$mediaModel = new VirtueMartModelMedia();
 		$file_id = $mediaModel->storeMedia($data,'category');
-
-		return $data->virtuemart_category_id ;
+        $errors = $mediaModel->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+		return $data['virtuemart_category_id'] ;
 	}
 
 	/**
@@ -556,23 +543,6 @@ class VirtueMartModelCategory extends VmModel {
 
 		return true;
     }
-
-	/**
-	 * Since a category dont need always an image, we can attach them to the category with this function.
-	 * The parameter takes a single category or arrays of categories, look at FE/views/virtuemart/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $categories
-	 */
-	public function addImagesToCategories($cats){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($cats,'category','image');
-
-	}
 
 
 	/**
@@ -826,7 +796,7 @@ class VirtueMartModelCategory extends VmModel {
 		if( empty( $this->_category_tree)) {
 
 			// Get only published categories
-			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`ordering` as list_order, `published` as category_publish
+			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`#__virtuemart_categories`.`ordering`, `published` as category_publish
 						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` WHERE ";
 			if( $only_published ) {
 				$query .= "`#__virtuemart_categories`.`published`=1 AND ";

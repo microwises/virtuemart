@@ -55,39 +55,10 @@ class TableManufacturers extends VmTable {
 	{
 		parent::__construct('#__virtuemart_manufacturers', 'virtuemart_manufacturer_id', $db);
 
-		$this->setUniqueName('mf_name','COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('mf_name');
 		$this->setLoggable();
 		$this->setSlug('mf_name');
 	}
-
-
-//	/**
-//	 * Validates the manufacturer record before saving to db.
-//	 *
-//	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-//	 */
-//	function check()
-//	{
-//        if (!$this->mf_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_RECORDS_MUST_CONTAIN_NAME'));
-//			return false;
-//		}
-//
-//		if (($this->mf_name) && ($this->virtuemart_manufacturer_id == 0)) {
-//		    $db =& JFactory::getDBO();
-//
-//			$q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers` ';
-//			$q .= 'WHERE `mf_name`="' .  $this->mf_name . '"';
-//            $db->setQuery($q);
-//		    $virtuemart_manufacturer_id = $db->loadResult();
-//		    if (!empty($virtuemart_manufacturer_id) && $virtuemart_manufacturer_id!=$this->virtuemart_manufacturer_id) {
-//				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
 
 }
 // pure php no closing tag

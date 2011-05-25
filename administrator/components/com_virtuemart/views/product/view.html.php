@@ -31,13 +31,15 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
-
+                $this->loadHelper('shopFunctions');
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getVar('option');
 
 		/* Get the task */
 		$task = JRequest::getVar('task');
 
+                $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT');
+                $this->assignRef('viewName', $viewName);
 		/* Load helpers */
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
@@ -103,7 +105,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('productLayouts', $productLayouts);
 
 				/* Load Images */
-				$product_model->addImagesToProducts($product);
+				$product_model->addImages($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
 					$imagePath = VmConfig::get('vmtemplate').DS.'images'.DS.'availability/';
@@ -216,10 +218,13 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('delete_message', $delete_message);
 
 				/* Toolbar */
-				if ($task == 'add') $text = JText::_('COM_VIRTUEMART_PRODUCT_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW');
-				else $text = $product->product_name .' ('.$product->product_sku.')';
+                                $text="";
+				if ($task == 'edit')
+				  $text =  $product->product_name.' ('.$product->product_sku.')';
 
 				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
+                                  $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT',$text);
+                                $this->assignRef('viewName', $viewName);
 				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
@@ -267,7 +272,8 @@ class VirtuemartViewProduct extends JView {
 					$vendor = $vendor_model->getVendor();
 
 					$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,'',true);
+
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,$product->product_currency,true);
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
@@ -286,17 +292,19 @@ class VirtuemartViewProduct extends JView {
 		    				'product' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'),
 							'price' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
-							); 
+							);
 				$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
 
 				/* Search order */
 		    	$options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								  'af' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
-							); 
+							);
 				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+				//JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
+
+
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);

@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_carrier_name)); ?>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->shipping_carrier_list_order); ?>
+					<?php echo JText::_($row->ordering); ?>
 				</td>
 			</tr>
 			<?php

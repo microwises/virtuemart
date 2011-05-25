@@ -159,6 +159,7 @@ if ($config->get('enable_downloads') == '1') { ?>
 
 // Show a link to the cart and show the mini cart
 // Check to see if minicart module is enabled, if it is prevent the minicart displaying in the VM module
+// TODO query for J1.6
 $q="SELECT published FROM #__modules WHERE module='mod_virtuemart_cart'";
 $db->setQuery($q);
 $enabled = $db->loadResult();

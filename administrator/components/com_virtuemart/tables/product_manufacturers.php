@@ -27,7 +27,7 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableProduct_customfields extends VmTableXarray {
+class TableProduct_manufacturers extends VmTableXarray {
 
 
 	/**
@@ -35,11 +35,11 @@ class TableProduct_customfields extends VmTableXarray {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_product_customfields', 'id', $db);
+		parent::__construct('#__virtuemart_product_manufacturers', 'id', $db);
 
 		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setSecondaryKey('virtuemart_customfield_id');
-		$this->setOrderable();
+		$this->setSecondaryKey('virtuemart_manufacturer_id');
 
 	}
+
 }

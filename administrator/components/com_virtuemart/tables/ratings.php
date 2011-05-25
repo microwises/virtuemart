@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Product reviews table
+* Ratings table
 *
 * @package	VirtueMart
 * @subpackage
@@ -26,14 +26,13 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  * The class is is used to manage the reviews in the shop.
  *
  * @package		VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
-class TableProduct_ratings extends VmTableData {
+class TableRatings extends VmTableData {
 
 	/** @var int Product ID */
 
-	var $virtuemart_product_rating_id	= 0;
+	var $virtuemart_rating_id	= 0;
 	var $virtuemart_product_id           = 0;
 	/** @var int The ID of the user who rated the product */
 	var $virtuemart_user_id         	= 0;
@@ -42,18 +41,16 @@ class TableProduct_ratings extends VmTableData {
 	var $ratingcount      				= 0;
 	var $rating      					= 0;
 
-	var $lastip      					= 0;
-
 	/** @var int State of the review */
 	var $published         		= 0;
 
 
 	/**
-	* @author RolandD
+	* @author Max Milbers
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_ratings', 'virtuemart_product_rating_id', $db);
+		parent::__construct('#__virtuemart_ratings', 'virtuemart_rating_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
 //		$this->setObligatoryKeys('virtuemart_product_id');
 

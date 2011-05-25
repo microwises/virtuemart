@@ -39,33 +39,9 @@ class VirtueMartModelCustom extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_custom_id');
 		$this->setMainTable('customs');
+		$this->setToggleName('admin_only');
+		$this->setToggleName('is_hidden');
 	}
-
-	/** @var integer Primary key */
-    private $virtuemart_custom_id = 0;
-
-
-//	/**
-//	 * Constructor for product files
-//	 */
-//	function __construct(){
-//		parent::__construct();
-//
-////		$this->virtuemart_custom_id = $id;
-//
-//		/* Get the custom ID */
-//		$this->setId(JRequest::getInt('virtuemart_custom_id', null));
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//	}
-
 
     /**
      * Gets a single custom by virtuemart_custom_id
@@ -76,10 +52,10 @@ class VirtueMartModelCustom extends VmModel {
      */
     function getCustom(){
 
-    	if(empty($this->_db)) $this->_db = JFactory::getDBO();
+    	//if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$data = $this->getTable('customs');
-   		$data->load($this->virtuemart_custom_id);
+   		$data->load($this->_id);
 		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 
   		$custom = VmCustomHandler::createCustom($data);
@@ -142,113 +118,6 @@ class VirtueMartModelCustom extends VmModel {
 		return $datas;
     }
 
-
-    /**
-     * This function stores a custom and updates then the refered table
-     *
-     * @author Max Milbers
-     * @author Patrick Kohl
-     * @param unknown_type $data
-     * @param unknown_type $table
-     * @param unknown_type $type
-     */
-	function storeCustom($data,$table,$type){
-
-		// Check token, how does this really work?
-//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save custom' );
-
-		$oldId = $data['virtuemart_custom_id'];
-		$this -> setId($oldId);
-		$virtuemart_custom_id = $this->store($type,$data);
-
-		/* add the virtuemart_custom_id & delete 0 and '' from $data */
-		$data['virtuemart_custom_ids'] = array_merge( (array)$data['virtuemart_custom_id'],$data['virtuemart_custom_ids']);
-		$virtuemart_custom_ids = array_diff($data['virtuemart_custom_ids'],array('0',''));
-
-		// Bind the form fields to the table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Make sure the record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;
-		}
-
-		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-		$dbv = $table->getDBO();
-		if(empty($this->_id)) $this->_id = $dbv->insertid();
-
-		return $this->_id;
-
-	}
-
-	/**
-	 * Store an entry of a customItem,
-	 *
-	 * @author Kohl Patrick
-	 */
-	public function store($data=0) {
-
-		$table = $this->getTable('customs');
-		if(empty($data))$data = JRequest::get('post');
-
-		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-
-		// Bind the form fields to the table
-		if (!$table->bind($data)) {
-			$this->setError($table->getError());
-			return false;
-		}
-		// Make sure the record is valid
-		if (!$table->check()) {
-			if($table->getError()){
-				foreach($table->getErrors() as $error){
-					$this->setError($error);
-				}
-			}
-			return false;
-		}
-		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;
-		}
-		//}
-
-		return $table->virtuemart_custom_id;
-	}
-
-	/**
-	 * Delete an custom field
-	 * @author unknow, maybe Roland Dalmulder
-	 * @author Max Milbers
-	 */
-	public function delete($cids) {
-		$mainframe = Jfactory::getApplication('site');
-//		$deleted = 0;
-	 	$row = $this->getTable('customs');
-//	 	$cids = JRequest::getVar('cid');
-
-	 	if (is_array($cids)) {
-			foreach ($cids as $key => $cid) {
-				//$row->load($cid);
-				if ($row->delete($cid)) $deleted++;
-			}
-		}
-		else {
-			//$row->load($cids);
-			if ($row->delete($cid)) $deleted++;
-		}
-		$mainframe->enqueueMessage( JText::sprintf('COM_VIRTUEMART_DELETED_X_CUSTOM_FIELD_ITEMS', $deleted ));
-
-	}
 	/**
 	 * Creates a clone of a given custom id
 	 *
@@ -269,54 +138,40 @@ class VirtueMartModelCustom extends VmModel {
 		return $row->store($clone);
 	}
 
-
 	/* Save and delete from database
 	* all product custom_fields and xref
-	@ var   $table	: the xref table(eg. product)
+	@ var   $table	: the xref table(eg. product,category ...)
 	@array $data	: array of customfields
 	@int     $id		: The concerned id (eg. product_id)
 	*/
-	public function saveModelCustomfields($table,$data, $id) {
+	public function saveModelCustomfields($table,$datas, $id) {
+		// delete existings from modelXref and table customfields
+		$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as PC, `#__virtuemart_customfields` as C WHERE `virtuemart_customfield_id`.PC = `virtuemart_customfield_id`.C AND  virtuemart_'.$table.'_id =' . $id );
+		$this->_db->query();
 
-	    $xrefTable = $this->getTable($table.'_customfields');
-    	if (!$xrefTable->bindChecknStore($data)) {
-			$this->setError($xrefTable->getError());
+		$customfieldIds = array();
+		foreach($datas as $fields){
+			$tableCustomfields = $this->getTable('customfields');
+			$data = $tableCustomfields->bindChecknStore($fields);
+    		$errors = $tableCustomfields->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			$customfieldIds[] = $data['virtuemart_customfield_id'];
 		}
-		dump($xrefTable,'data binded');
 
-//		$newIds = array();
-//
-//		foreach ($fields as $field) {
-//			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
-//			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//			$virtuemart_customfield_id = mysql_insert_id();
-//			$newIds[]=$virtuemart_customfield_id;
-//			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
-//			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//		}
-//
-//		// slect all virtuemart_customfield_id from product
-//		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
-//		$this->_db->setQuery($q);
-//		$Ids = $this->_db->loadResultArray();
-//		// delete from database old unused product custom fields
-//		$deleteIds = array_diff(  $Ids,$newIds);
-//		$id = '('.implode (',',$deleteIds).')';
-//				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
-//		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
+		$xrefData = array();
+		$xrefData['virtuemart_'.$table.'_id']= $id;
+		$xrefData['virtuemart_customfield_id']= $customfieldIds;
+
+		// save Xref calues in right table
+		$xrefTable = $this->getTable($table.'_customfields');
+		$xrefTable->bindChecknStore($xrefData);
+	    $errors = $xrefTable->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+
 	}
-
 }
 // pure php no closing tag

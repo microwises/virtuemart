@@ -315,11 +315,11 @@ AdminMenuHelper::startAdminArea();
 
 <?php AdminMenuHelper::endAdminArea(); ?>
 
-<?php $duration = 500; 
+<?php $duration = 500;
 $db =& JFactory::getDBO();
 $db->setQuery("SHOW COLUMNS FROM `#__virtuemart_userfields`");
 $existingFields = '"'.implode('","',$db->loadResultArray()).'"';
-dump($existingFields,'existingFields');
+
 ?>
 <script type="text/javascript">
 function getObject(obj) {

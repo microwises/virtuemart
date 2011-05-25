@@ -113,10 +113,29 @@ class VmTableXarray extends VmTable {
     public function store() {
 
 		$db = JFactory::getDBO();
+//INSERT INTO FOO
+//(ID, BAR)
+//VALUES(1,2),(3,4)
+//ON DUPLICATE KEY UPDATE BAR=VALUES(BAR)
+
+//		$q = 'INSERT INTO `'.$this->_tbl.'` (`'.$this->_pkey.'`,`'.$this->_skey.'`) ';
+//		$q .= 'VALUES (';
+//		for($i = 0; $i<count($this->_svalue); $i++){
+//			$q .= $this->_pvalue.',';
+//		}
+//		$q = substr($q,0,-1).'),(';
+//		foreach($this->_svalue as $value){
+//			$q .= $value.',';
+//		}
+//		$q = substr($q,0,-1).') ON DUPLICATE KEY UPDATE '.$this->_skey.'=VALUES('.$this->_skey.')';
 
 		$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
 		$db->setQuery($q);
-		$db->Query();
+		if(!$db->Query()){
+			$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+		}
+
+//		dump($q,'meine query');
 
 		$returnCode = true;
 		if(!empty($this->_svalue)){

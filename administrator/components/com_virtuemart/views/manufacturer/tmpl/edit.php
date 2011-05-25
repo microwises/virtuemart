@@ -20,12 +20,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea();
+$pane = JPane::getInstance('tabs', array('startOffset' => 0));
 $editor = JFactory::getEditor();
 ?>
 
 <form enctype="multipart/form-data" action="index.php" method="post" name="adminForm">
-
-
+<?php
+	echo $pane->startPane( 'pane' );
+	echo $pane->startPanel(JText::_('COM_VIRTUEMART_DESCRIPTION'), 'desc_tab');
+?>
 <div class="col50">
 	<fieldset class="adminform">
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>
@@ -107,13 +110,19 @@ $editor = JFactory::getEditor();
 	</table>
 	</fieldset>
 </div>
-
+<?php
+	echo $pane->endPanel();
+	echo $pane->startPanel(JText::_('COM_VIRTUEMART_IMAGES'), 'images_tab');
+?>
 <div class="col50">
 	<div class="selectimage">
 		<?php echo $this->manufacturer->images[0]->displayFilesHandler($this->manufacturer->virtuemart_media_id); ?>
 	</div>
 </div>
-
+<?php
+	echo $pane->endPanel();
+	echo $pane->endPane();
+?>
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->manufacturer->virtuemart_manufacturer_id; ?>" />
 	<input type="hidden" name="task" value="" />

@@ -24,12 +24,14 @@ defined('_JEXEC') or die('Restricted access');
 <div class="col50">
 	<div class="selectimage">
 	<?php
-//	foreach($this->product->images as $image){
+//	if(empty($this->product->images)){
+//
+//	}
 		if(empty($this->product->images[0]->virtuemart_media_id)) $this->product->images[0]->addHidden('file_is_product_image','1');
-		if ($this->product->virtuemart_media_id) echo $this->product->images[0]->displayFilesHandler($this->product->virtuemart_media_id);
+		if (!empty($this->product->virtuemart_media_id)) echo $this->product->images[0]->displayFilesHandler($this->product->virtuemart_media_id);
 		else echo $this->product->images[0]->displayFilesHandler();
 
-//	}
+
 	?>
 	</div>
 </div>

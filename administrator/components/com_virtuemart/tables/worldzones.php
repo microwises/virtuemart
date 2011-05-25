@@ -59,7 +59,7 @@ class TableWorldzones extends VmTable {
 	{
 		parent::__construct('#__virtuemart_worldzones', 'virtuemart_worldzone_id', $db);
 
-		$this->setUniqueName('zone_name','COM_VIRTUEMART_CURRENCY_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('zone_name');
 
 		$this->setLoggable();
 

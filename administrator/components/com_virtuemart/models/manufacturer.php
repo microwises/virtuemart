@@ -40,7 +40,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_manufacturer_id');
 		$this->setMainTable('manufacturers');
 
 	}
@@ -103,31 +103,13 @@ class VirtueMartModelManufacturer extends VmModel {
 		// Process the images //		$fullImage = JRequest::getVar('virtuemart_media_id', null, 'files',array());
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
-//		$xrefTable = $this->getTable('manufacturer_medias');
 		$mediaModel->storeMedia($data,'manufacturer');
-
+	    $errors = $mediaModel->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
 		return $table->virtuemart_manufacturer_id;
 	}
-
-
-	/**
-	 * Delete all record ids selected
-     *
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	// public function remove() {
-		// $manufacturerIds = JRequest::getVar('cid',  0, '', 'array');
-    	// $table = $this->getTable('manufacturers');
-
-    	// foreach($manufacturerIds as $manufacturerId) {
-       		// if (!$table->delete($manufacturerId)) {
-           		// $this->setError($table->getError());
-           		// return false;
-       		// }
-    	// }
-
-    	// return true;
-	// }
 
     /**
      * Select the products to list on the product list page
@@ -178,10 +160,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
-			$where[] .= '`#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
+			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 		if ( $search ) {
-			$where[] .= 'LOWER( `#__virtuemart_manufacturers`.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
 		}
 		if ($onlyPublished) {
 			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
@@ -189,10 +171,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
 
-		$query = 'SELECT * FROM `#__virtuemart_manufacturers` '
+		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` as M LEFT JOIN `#__virtuemart_manufacturercategories` as MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
 				. $where;
+		$query .= ' ORDER BY M.`mf_name`';
 
-		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
@@ -202,15 +184,6 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		return $this->_data;
 	}
-
-	public function addImagesToManufacturer($manus){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($manus,'vendor','image');
-
-}
 
 }
 // pure php no closing tag

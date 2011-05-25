@@ -94,7 +94,7 @@ class shopFunctionsF {
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
 				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				$currency = CurrencyDisplay::getInstance();
+				$currency = CurrencyDisplay::getInstance( );
 		 		$product_price[$name] = $currency->priceDisplay($product_price[$name]);
 	 		} else {
 	 			$vis = "none";

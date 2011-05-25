@@ -55,6 +55,7 @@ class VirtueMartModelUser extends VmModel {
 		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 
 		$this->setMainTable('vmusers');
+		$this->setToggleName('user_is_vendor');
 //		// Get the pagination request variables
 //		$mainframe = JFactory::getApplication() ;
 //		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
@@ -312,7 +313,7 @@ class VirtueMartModelUser extends VmModel {
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 			//The constructor sets automatically the right id.
 			$new = ($this->_id < 1);
-			$user = new JUser($this->_id);dump($user,'my user begin');
+			$user = new JUser($this->_id);
 			$gid = $user->get('gid'); // Save original gid
 
 			/*
@@ -820,39 +821,6 @@ class VirtueMartModelUser extends VmModel {
 			}
 			return $_missingUsers;
 	 }
-
-	 /**
-	  * Switch a toggleable field on or off
-	  *
-	  * @param $field string Database fieldname to toggle
-	  * @param $id array list of primary keys to toggle
-	  * @param $value boolean Value to set
-	  * @return boolean Result
-	  */
-	 // function toggle($field, $id = array(), $value = 1)
-	 // {
-	 	// $_missingUsers = $this->validateUsers($id);
-	 	// $id = array_diff($id, array_keys($_missingUsers)); // Remove missing users
-	 	// foreach ($_missingUsers as $_uid => $_username) {
-	 		// JError::raiseWarning(500, JText::sprintf('COM_VIRTUEMART_USER_USERNAME_INCOMPLETE_PROFILE', $_username) );
-	 	// }
-	 	// if (count($id) > 0)
-	 	// {
-	 		// JArrayHelper::toInteger($id);
-	 		// $ids = implode( ',', $id );
-
-	 		// $query = 'UPDATE `#__virtuemart_vmusers`'
-				// . ' SET `' . $field . '` = '.(int) $value
-				// . ' WHERE virtuemart_user_id IN ( '.$ids.' )'
-				// ;
-				// $this->_db->setQuery( $query );
-				// if (!$this->_db->query()) {
-					// $this->setError($this->_db->getErrorMsg());
-					// return false;
-				// }
-	 	// }
-	 	// return true;
-	 // }
 
 	 /**
 	  * Return a list of Joomla ACL groups.

@@ -89,7 +89,7 @@ class VirtueMartViewProductdetails extends JView {
 
 			return;
 		}
-		$product_model->addImagesToProducts($product);
+		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 
 
@@ -105,7 +105,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		if($category_model){
 			$category = $category_model->getCategory($virtuemart_category_id);
-			$category_model->addImagesToCategories($category);
+			$category_model->addImages($category);
 			$this->assignRef('category', $category);
 
 			if ($category->parents) {
@@ -113,7 +113,7 @@ class VirtueMartViewProductdetails extends JView {
 					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
-			if($category->children)	$category_model->addImagesToCategories($category->children);
+			if($category->children)	$category_model->addImages($category->children);
 		}
 
 		/* Set Canonic link */
@@ -137,8 +137,8 @@ class VirtueMartViewProductdetails extends JView {
 			$model = $this->getModel();
 
 			/* Show all reviews available */
-			$product_reviews = $model->getProductReviews($product->virtuemart_product_id);
-			$this->assignRef('product_reviews', $product_reviews);
+			$rating_reviews = $model->getProductReviews($product->virtuemart_product_id);
+			$this->assignRef('rating_reviews', $rating_reviews);
 
 		}
 

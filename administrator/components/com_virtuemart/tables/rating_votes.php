@@ -28,32 +28,17 @@ if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @package		VirtueMart
  * @author Max Milbers
  */
-class TableProduct_reviews extends VmTableData {
+class TableRating_votes extends VmTableData {
 
 	/** @var int Primary key */
-	var $virtuemart_product_review_id	= 0;
+	var $virtuemart_rating_vote_id	= 0;
 	/** @var int Product ID */
-	var $virtuemart_product_id			= null;
+	var $virtuemart_product_id			= 0;
 	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         	= null;
+	var $virtuemart_user_id         	= 0;
 
-	/** @var string The user comment */
-	var $comment         				= null;
-	/** @var int The number of stars awared */
-	var $review_ok       				= null;
-
-	/** The rating of shoppers for the review*/
-	var $review_rates         			= null;
-	var $review_ratingcount      		= null;
-	var $review_rating      			= null;
-
-	/** The rate of the user who wrote the review */
-	var $rate      		= null;
-
-	var $lastip      		= null;
-
-	/** @var int State of the review */
-	var $published         		= 0;
+	var $vote				= '';
+	var $lastip      		= '';
 
 
 	/**
@@ -61,9 +46,9 @@ class TableProduct_reviews extends VmTableData {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
+		parent::__construct('#__virtuemart_rating_votes', 'virtuemart_rating_vote_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setObligatoryKeys('comment');
+		$this->setObligatoryKeys('vote');
 
 		$this->setLoggable();
 	}

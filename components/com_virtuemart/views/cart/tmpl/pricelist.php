@@ -61,7 +61,6 @@ defined('_JEXEC') or die('Restricted access');
 				foreach ($variantmods as $variantmod) {
 
 						foreach($variantmod as $variant=>$selected){
-							//dump($product->customfieldsCart[$row]->options[$selected];
 							$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 								'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 

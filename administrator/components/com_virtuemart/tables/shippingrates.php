@@ -54,8 +54,8 @@ class TableShippingrates extends VmTable {
 	var $shipping_rate_virtuemart_currency_id      	= '';
 		/** @var string Shipping Rate name*/
 	var $shipping_rate_vat_id      	= '';
-		/** @var string Shipping Rate name*/
-	var $shipping_rate_list_order      	= '';
+
+	var $ordering			= 0;
               /** @var boolean */
 	var $locked_on	= 0;
 	/** @var time */

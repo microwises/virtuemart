@@ -277,7 +277,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     }
 
-    function restoreSystemCompletly() {
+    function restoreSystemTablesCompletly() {
 
 		$this->removeAllVMTables();
 

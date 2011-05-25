@@ -50,7 +50,7 @@ class TableShoppergroups extends VmTable
 	{
 		parent::__construct('#__virtuemart_shoppergroups', 'virtuemart_shoppergroup_id', $db);
 
-		$this->setUniqueName('shopper_group_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('shopper_group_name');
 
 		$this->setLoggable();
 	}

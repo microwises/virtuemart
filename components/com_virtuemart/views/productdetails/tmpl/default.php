@@ -25,7 +25,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 JHTML::_ ( 'behavior.modal' );
 JHTML::_('behavior.tooltip');
 
-//dump($this->product);
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -505,7 +504,7 @@ if (empty ( $this->product )) {
 		<div class="list-reviews">
 		<?php // Loop through all reviews
 			$i=0;
-			foreach($this->product_reviews as $review ) {
+			foreach($this->rating_reviews as $review ) {
 				if ($i % 2 == 0) {
    					$color = 'normal';
 				} else {
@@ -513,9 +512,9 @@ if (empty ( $this->product )) {
 				}
 
 				/* Check if user already commented */
-				if ($review->userid == $this->user->id) {
-					$alreadycommented = true;
-				} ?>
+//				if ($review->virtuemart_userid == $this->user->id) {
+//					$alreadycommented = true;
+//				} ?>
 
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
@@ -528,10 +527,10 @@ if (empty ( $this->product )) {
 				if ( $i == $ratingsShow && !$showall) break;
 			}
 
-			if (count($this->product_reviews) < 1) echo JText::_('COM_VIRTUEMART_NO_REVIEWS'); // "There are no reviews for this product"
+			if (count($this->rating_reviews) < 1) echo JText::_('COM_VIRTUEMART_NO_REVIEWS'); // "There are no reviews for this product"
 			else {
 				/* Show all reviews */
-				if (!$showall && count($this->product_reviews) >=$ratingsShow ) {
+				if (!$showall && count($this->rating_reviews) >=$ratingsShow ) {
 					$attribute = array('class'=>'product-details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
 					echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
 				}
@@ -606,7 +605,7 @@ if (empty ( $this->product )) {
 			<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 			<input type="hidden" name="option" value="com_virtuemart" />
 			<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-			<input type="hidden" name="virtuemart_product_review_id" value="0" />
+			<input type="hidden" name="virtuemart_rating_review_id" value="0" />
 			<input type="hidden" name="task" value="review" />
 		</form>
 <?php }

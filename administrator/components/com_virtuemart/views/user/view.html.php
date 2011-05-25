@@ -242,7 +242,7 @@ class VirtuemartViewUser extends JView {
 
 					 if (!empty($userDetails->user_is_vendor)) {
 
-					 	$vendorModel->addImagesToVendor($userDetails->vendor);
+					 	$vendorModel->addImages($userDetails->vendor);
 					 	$this->assignRef('vendor', $userDetails->vendor);
 
 					 	$currencyModel = $this->getModel('currency');
@@ -307,7 +307,7 @@ class VirtuemartViewUser extends JView {
 		$vendorId = 1;
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
-		$vendorModel->addImagesToVendor($vendor);
+		$vendorModel->addImages($vendor);
 
 		$this->assignRef('subject', ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT', $this->user->get('email')) : JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name));
 		parent::display();

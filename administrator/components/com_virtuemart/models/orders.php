@@ -43,39 +43,6 @@ class VirtueMartModelOrders extends VmModel {
 		$this->setMainTable('orders');
 	}
 
-//	var $_total;
-//	var $_pagination;
-//
-//	/**
-//	 * Constructor
-//	 */
-//	function __construct()
-//	{
-//		parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//	}
-//
-//	/**
-//	 * Loads the pagination
-//	 */
-//	public function getPagination()
-//	{
-//		if ($this->_pagination == null) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-//		}
-//		return $this->_pagination;
-//	}
 
 	/**
 	 * Gets the total number of products
@@ -481,7 +448,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart The cart data
 	 * @return mixed The new ordernumber, false on errors
 	 */
-	public function createOrderFromCart($_cart = null)
+	public function createOrderFromCart($_cart)
 	{
 		if ($_cart === null) {
 			$this->setError('createOrderFromCart() called without a cart - that\'s a programming bug');
@@ -528,7 +495,8 @@ class VirtueMartModelOrders extends VmModel {
 //		$_prices['paymentDiscount']		Discount
 //		$_prices['salesPricePayment']	Total
 
-		$_orderData =  $this->getTable('orders');
+		$_orderData = new stdClass();
+
 		$_orderData->virtuemart_order_id = null;
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
@@ -561,11 +529,14 @@ class VirtueMartModelOrders extends VmModel {
 		$_filter = &JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
-		if (!$_orderData->store()){
-			$this->setError($_orderData->getError());
-			return 0;
+
+		$orderTable =  $this->getTable('orders');
+		$orderTable -> bindChecknStore($_orderData);
+		$errors = $orderTable->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
-		$_orderID = $_orderData->_db->insertid();
+		$_orderID = $orderTable->_db->insertid();
 
 		if (!empty($_cart->couponCode)) {
 			// If a gift coupon was used, remove it now
@@ -868,9 +839,9 @@ class VirtueMartModelOrders extends VmModel {
 		$order_status = $db->loadResult();
 
 		if ($order_status == VmConfig::get('enable_download_status')) {
-			$q = "SELECT virtuemart_order_id,virtuemart_user_id,download_id,file_name
-				FROM #__virtuemart_product_downloads
-				WHERE virtuemart_order_id = '".$virtuemart_order_id."'";
+			$q = 'SELECT * '; //virtuemart_order_id,virtuemart_user_id,download_id,file_name
+			$q .= 'FROM #__virtuemart_product_downloads
+				WHERE virtuemart_order_id = "'.$virtuemart_order_id.'"';
 			$db->setQuery($q);
 			$downloads = $db->loadObjectList();
 			if ($downloads) {
@@ -878,7 +849,7 @@ class VirtueMartModelOrders extends VmModel {
 					FROM #__virtuemart_userinfos
 					LEFT JOIN #__users ju
 					ON (ju.id = u.virtuemart_user_id)
-					WHERE virtuemart_user_id = '".$downloads[0]->userid."'
+					WHERE virtuemart_user_id = '".$downloads[0]->virtuemart_user_id."'
 					AND address_type='BT'
 					LIMIT 1";
 				$db->setQuery($q);
