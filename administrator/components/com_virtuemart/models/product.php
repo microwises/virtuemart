@@ -110,7 +110,8 @@ class VirtueMartModelProduct extends VmModel {
 	    	foreach($attribs as $k=>$v){
 				if(!empty($child->$k) && is_array($child->$k)){
 					if(!is_array($v)) $v =array($v);
-					$child->$k = array_merge($child->$k,$v);
+//					$child->$k = array_merge($child->$k,$v);
+					$child->$k = $v;
 				} else{
 					if(empty($child->$k)){
 						$child->$k = $v;

@@ -219,11 +219,16 @@ class VirtueMartModelMedia extends VmModel {
 
 //		$oldId = $data['active_media_id'];
 //		$this -> setId($oldId);
+		$oldIds = $data['virtuemart_media_id'];
+		dump($this,'my media');dump($data,'my data media');
+		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
+			$this -> setId($data['active_media_id']);dump('update old media');
+			$data['virtuemart_media_id'] = $data['active_media_id'];
+		}
 		$virtuemart_media_id = $this->store($data,$type);
-		$this -> setId($virtuemart_media_id);
 
 		/* add the virtuemart_media_id & remove 0 and '' from $data */
-		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$data['virtuemart_media_id']);
+		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 
@@ -253,7 +258,8 @@ class VirtueMartModelMedia extends VmModel {
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
-
+		$table->bind($data);
+//		dump($data,'data I get');
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 		// workarround for media published and product published two fields in one form.
 		if ($data['media_published'])

@@ -77,19 +77,19 @@ class VmMediaHandler {
 	 */
 	public function createMedia($table,$type='',$file_mimetype=''){
 
-		if(!empty($file_mimetypee)){
-			$isImage = self::isImage($file_mimetypee);
-		}
-		else if(!empty($table)){
+//		if(!empty($file_mimetypee)){
+//			$isImage = self::isImage($file_mimetypee);
+//		}
+//		else if(!empty($table)){
 			if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 //			$extension = $this->file_extension = strtolower(JFile::getExt($table->file_url));
 			$extension = strtolower(JFile::getExt($table->file_url));
-			$isImage = self::isImage($table->file_mimetype,$extension);
-		} else {
-			$isImage = true;
-			$app =& JFactory::getApplication();
-			$app->enqueueMessage('create media of unknown mimetype, a programmers error');
-		}
+			$isImage = self::isImage($extension);
+//		} else {
+//			$isImage = true;
+//			$app =& JFactory::getApplication();
+//			$app->enqueueMessage('create media of unknown mimetype, a programmers error');
+//		}
 
 		if($isImage){
 			if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
@@ -124,6 +124,7 @@ class VmMediaHandler {
 	 */
 	public function prepareStoreMedia($table,$data,$type){
 
+		dump($table,'ding da?');
 		$media = VmMediaHandler::createMedia($table,$type);
 
 		$data = $media->processAction($data);
@@ -133,7 +134,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
-
+		dump($data,'my data prepare store media');
 		return $data;
 	}
     /**
@@ -204,21 +205,22 @@ class VmMediaHandler {
      * @param string $file_mimetype
      * @param string $file_extension
      */
-	private function isImage($file_mimetype,$file_extension=0){
+	private function isImage($file_extension=0){
 
-	if(!empty($file_mimetype)){
-			if(strpos($file_mimetype,'image')===FALSE){
-				$isImage = FALSE;
-			}else{
-				$isImage = TRUE;
-			}
-		} else {
+//		if(!empty($file_mimetype)){
+//			if(strpos($file_mimetype,'image')===FALSE){
+//				$isImage = FALSE;
+//			}else{
+//				$isImage = TRUE;
+//			}
+//		} else {
 			if($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif'){
 				$isImage = TRUE;
+
 			} else {
 				$isImage = FALSE;
 			}
-		}
+//		}
 
 		return $isImage;
 	}
@@ -594,6 +596,7 @@ class VmMediaHandler {
 
 		$this->addHidden('active_media_id',$this->virtuemart_media_id);
 		$this->addHidden('option','com_virtuemart');
+//		$this->addHidden('file_mimetype',$this->file_mimetype);
 
 	}
 

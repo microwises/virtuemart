@@ -152,13 +152,17 @@ class VmTable extends JTable {
 			    $unique_id = $this->_db->loadResultArray();
 
 			    $tblKey = $this->_tbl_key;
-				if (!empty($unique_id) && $unique_id[0]!=$this->$tblKey) {
-					if(empty($error)){
-						$this->setError(JText::_($error));
-					} else {
-						$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
+				if (!empty($unique_id)){
+					foreach($unique_id as $id){
+						if($id!=$this->$tblKey) {
+							if(empty($error)){
+								$this->setError(JText::_($error));
+							} else {
+								$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
+							}
+							return false;
+						}
 					}
-					return false;
 				}
 		    }
 
