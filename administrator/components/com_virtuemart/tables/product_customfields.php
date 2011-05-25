@@ -42,5 +42,4 @@ class TableProduct_customfields extends VmTableXarray {
 		$this->setOrderable();
 
 	}
-
 }

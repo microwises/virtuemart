@@ -35,35 +35,40 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_NAME')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME')
 					, 'order_status_name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_CODE')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE')
 					, 'order_status_code'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_FORM_DESCRIPTION'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_FORM_LIST_ORDER')
+					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_ORDER')
 					, 'ordering'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			<?php echo JHTML::_('grid.order',  $this->orderStatusList ); ?>
 			</th>
+			<th width="20">
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+			</th>
+
 		</tr>
 		</thead>
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row =& $this->orderStatusList[$i];
+			$published = JHTML::_('grid.published', $row, $i );
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
@@ -90,7 +95,8 @@ AdminMenuHelper::startAdminArea();
 					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $ordering ); ?></span>
 					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $ordering ); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
-			</td>
+				</td>
+				<td align="center"><?php echo $published; ?></td>
 			</tr>
 			<?php
 			$k = 1 - $k;
@@ -113,6 +119,7 @@ AdminMenuHelper::startAdminArea();
 	<input type="hidden" name="view" value="orderstatus" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 <?php AdminMenuHelper::endAdminArea(); ?>

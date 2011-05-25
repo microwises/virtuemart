@@ -28,16 +28,7 @@ jimport('joomla.application.component.controller');
  */
 class VirtuemartControllerVirtuemart extends JController {
 
-//	public function __construct() {
-//		parent::__construct();
-//
-////		$this->setMainLangKey('VIRTUEMART');
-//		dump($this,'controller');
-//		dump($this->getView(),'controller');
-//		dump($this->getName(),'controller');
-//		//		$this->setMainLangKey('VIRTUEMART');
-//
-//	}
+
 	/**
 	 * Method to display the view
 	 *
@@ -55,9 +46,6 @@ class VirtuemartControllerVirtuemart extends JController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-//		dump($this,'controller');
-////		dump($this->getView(),'controller');
-//		dump($this->getName(),'controller');
 
 		parent::display();
 	}

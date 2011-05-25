@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_PUBLISHED') ?>?:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
       <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->paym->published); ?></fieldset></td>
     </tr>
     <tr class="row1">
@@ -100,12 +100,12 @@ defined('_JEXEC') or die('Restricted access');
     <tr class="row0">
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
       <td width="69%" >
-        <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
+        <input type="text" class="inputbox" name="ordering" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
     </tr>
     <?php if($this->perms->check('admin')){?>
 	<tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_VENDOR') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->vendorList ?>
       </td>

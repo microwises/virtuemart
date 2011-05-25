@@ -49,9 +49,9 @@ class VirtueMartModelCurrency extends VmModel {
      *
      * @author Max Milbers
      */
-    function getCurrency() {
-
-	if (empty($this->_data)) {
+    function getCurrency($currency_id=0) {
+       if(!empty($currency_id)) $this->setId((int)$currency_id);
+	if (empty($this->_data)   ) {
 	    $this->_data = $this->getTable('currencies');
 		$this->_data->load((int)$this->_id);
 	}

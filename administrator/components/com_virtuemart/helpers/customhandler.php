@@ -58,7 +58,7 @@ class VmCustomHandler {
 	 */
 	public function createCustom($table){
 
-			$custom = new VmCustomHandler();
+		$custom = new VmCustomHandler();
 
 		$attribs = get_object_vars($table);
 
@@ -103,8 +103,8 @@ class VmCustomHandler {
 	 */
 	private function addHiddenByType(){
 
-		self::addHidden('virtuemart_custom_id',$this->virtuemart_custom_id);
-		self::addHidden('option','com_virtuemart');
+		VmCustomHandler::addHidden('virtuemart_custom_id',$this->virtuemart_custom_id);
+		VmCustomHandler::addHidden('option','com_virtuemart');
 
 	}
 
@@ -116,8 +116,8 @@ class VmCustomHandler {
 	 */
 	public function displayCustom($field_types){
 
-		$html = self::displayCustomSelection();
-		$html .= self::displayCustomFields('id="vm_display_image"',$field_types);
+		$html = VmCustomHandler::displayCustomSelection();
+		$html .= VmCustomHandler::displayCustomFields('id="vm_display_image"',$field_types);
 		return $html;
 	}
 
@@ -127,8 +127,8 @@ class VmCustomHandler {
 	 * @author Patrick Kohl
 	 */
 	public function displayCustomSelection(){
-		
-		$customslist = self::getCustomsList();
+
+		$customslist = VmCustomHandler::getCustomsList();
 		if (isset($this->virtuemart_custom_id)) $value = $this->virtuemart_custom_id ;
 		else $value = JRequest::getVar( 'custom_parent_id',0);
 		return  VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$customslist, 'custom_parent_id', $value);
@@ -183,8 +183,8 @@ class VmCustomHandler {
 
 		$identify = ''; // ':'.$this->virtuemart_custom_id;
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		if ($this->field_type) self::addHidden('field_type',$this->field_type);
-		self::addHiddenByType();
+		if ($this->field_type) VmCustomHandler::addHidden('field_type',$this->field_type);
+		VmCustomHandler::addHiddenByType();
 
 		$html = '<div id="custom_title">'.$this->custom_title.'</div>';
 		$html .= ' <table class="adminform"> ';
@@ -196,15 +196,15 @@ class VmCustomHandler {
 		// change input by type
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$this->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
-		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',self::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
+		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',VmCustomHandler::getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$this->published);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$this->is_cart_attribute);
 		// only input when not set else display
-		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ; 
-		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',self::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ; 
+		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ;
+		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',VmCustomHandler::getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ;
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
 

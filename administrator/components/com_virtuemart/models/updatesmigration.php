@@ -159,23 +159,23 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function setUserToPermissionGroup($userId=0) {
-	# insert the user <=> group relationship
-//	$db = JFactory::getDBO();
-//	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
-//				SELECT virtuemart_user_id,
-//					CASE `perms`
-//					    WHEN 'admin' THEN 0
-//					    WHEN 'storeadmin' THEN 1
-//					    WHEN 'shopper' THEN 2
-//					    WHEN 'demo' THEN 3
-//					    ELSE 2
-//					END
-//				FROM #__virtuemart_userinfos
-//				WHERE address_type='BT' ");
-//	$db->query();
-//
-//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
-//	$db->query();
+	//# insert the user <=> group relationship
+	$db = JFactory::getDBO();
+	$db->setQuery("INSERT INTO `#__virtuemart_vmusers`
+				SELECT virtuemart_user_id,
+					CASE `perms`
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2
+					END
+				FROM #__virtuemart_userinfos
+				WHERE address_type='BT' ");
+	$db->query();
+
+	$db->setQuery( "UPDATE `#__virtuemart_vmusers` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
+	$db->query();
     }
 
 
@@ -230,19 +230,28 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-	if (!$usermodel->store($fields)) {
-		$this->setError($usermodel->getError());
-	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
+	$usermodel->store($fields);
+   	$errors = $usermodel->getErrors();
+   	$msg ='';
+	if(empty($errors)) $msg = 'user id of the mainvendor is '.$sid;
+	foreach($errors as $error){
+//		$msg .= ($error).'<br />';
+		$this->setError($error);
 	}
+//		$this->setError($usermodel->getError());
+//	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
+//	}
 
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
-		$msg = JText::_('Problems execution of SQL File '.$filename);
+//		$msg .= JText::_('Problems execution of SQL File '.$filename);
+		$this->setError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
-		$msg = JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
+		$this->setError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
+//		$msg .= JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
 	}
 
-	return $msg;
+	return true;
 
     }
 
@@ -268,7 +277,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     }
 
-    function restoreSystemCompletly() {
+    function restoreSystemTablesCompletly() {
 
 		$this->removeAllVMTables();
 

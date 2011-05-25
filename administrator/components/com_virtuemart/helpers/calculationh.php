@@ -65,11 +65,12 @@ class calculationHelper {
 		$this->_app = JFactory::getApplication();
 		$this->_now			  = $jnow->toMySQL();
 		$this->_nullDate		  = $this->_db->getNullDate();
-//		$this -> _currency 		  = $this->_getCurrencyObject();
 
-
+		//Attention, this is set to the mainvendor atm.
+		//This means also that atm for multivendor, every vendor must use the shopcurrency as default
+		$this->vendorCurrency = 1;
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-	    $this->_currencyDisplay = CurrencyDisplay::getInstance();
+	    $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
 		$this->_debug           = false;
 	}
 
@@ -587,11 +588,8 @@ class calculationHelper {
 			$shoppergrps = $this->_db->loadResultArray();
 
 			$hitsCategory = true;
-//			dump($this->_cats,'$this->_cats');
-//			dump($cats,'$cats');
 			if(isset($this->_cats)){
 				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
-//				dump($hitsCategory,'$hitsCategory');
 			}
 			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){
@@ -726,14 +724,10 @@ class calculationHelper {
 		$_sRate = new VirtueMartModelShippingRate();
 		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
 
-		// Outcommented (Oscar); use th model instead
-//		$q= 'SELECT * FROM `#__virtuemart_shippingrates` AS `r`, `#__virtuemart_shippingcarriers` AS `c`  WHERE `virtuemart_shippingrate_id` = "'.$ship_id.'" ';
-//		$this->_db->setQuery($q);
-//		$shipping = $this->_db->loadAssoc();
-
-		$this->_cartPrices['shipping_rate_value'] = $shipping['shipping_rate_value']; //could be automatically set to a default set in the globalconfig
-		$this->_cartPrices['shipping_rate_package_fee'] = $shipping['shipping_rate_package_fee'];
-		$this->_cartPrices['shippingValue'] =  $shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee'];
+		dump($shipping,'hmm');
+		$this->_cartPrices['shipping_rate_value'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value']); //could be automatically set to a default set in the globalconfig
+		$this->_cartPrices['shipping_rate_package_fee'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_package_fee']);
+		$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee']);
 		$this->_cartData['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
 
 		$taxrules = array();

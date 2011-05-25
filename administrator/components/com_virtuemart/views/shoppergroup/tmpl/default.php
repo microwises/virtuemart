@@ -28,30 +28,33 @@ AdminMenuHelper::startAdminArea();
 	  <table class="adminlist">
 	    <thead>
 		    <tr>
-		      <th width="10">
-			      <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
-		      </th>
-		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_NAME'); ?>
-		      </th>
-		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>
-		      </th>
-		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_DESCRIPTION'); ?>
-		      </th>
-		      <th width="20">
-			      <?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>
-		      </th>
+				<th width="10">
+					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
+				</th>
+				<th>
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_NAME'); ?>
+				</th>
+				<th>
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
+				</th>
+				<th>
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_DESCRIPTION'); ?>
+				</th>
+				<th width="20">
+					<?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>
+				</th>
+				<th width="40px" >
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				</th>
 		    </tr>
 	    </thead><?php
 
 	    $k = 0;
 	    for ($i = 0, $n = count( $this->shoppergroups ); $i < $n; $i++) {
 		    $row = $this->shoppergroups[$i];
-
-		    $checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id);
-		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&cid[]=' . $row->virtuemart_shoppergroup_id); ?>
+			$published = JHTML::_('grid.published', $row, $i );
+		    $checked = JHTML::_('grid.id', $i, $row->virtuemart_shoppergroup_id,null,'virtuemart_shoppergroup_id');
+		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&virtuemart_shoppergroup_id[]=' . $row->virtuemart_shoppergroup_id); ?>
 
 	      <tr class="<?php echo "row$k"; ?>">
 			    <td width="10">
@@ -69,6 +72,7 @@ AdminMenuHelper::startAdminArea();
 			    <td>
 				    <?php echo $row->default; ?>
 			    </td>
+				<td><?php echo $published; ?></td>
 	      </tr><?php
 		    $k = 1 - $k;
 	    } ?>
@@ -87,5 +91,6 @@ AdminMenuHelper::startAdminArea();
   <input type="hidden" name="view" value="shoppergroup" />
   <input type="hidden" name="task" value="" />
   <input type="hidden" name="boxchecked" value="0" />
+  <?php echo JHTML::_( 'form.token' ); ?>
 </form><?php
 AdminMenuHelper::endAdminArea(); ?>

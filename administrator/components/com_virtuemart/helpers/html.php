@@ -216,7 +216,7 @@ class VmHTML{
 				}
 			}
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
-			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label><br />\n";
 		}
 
 		return $html;
@@ -320,7 +320,7 @@ class VmHTML{
 	 */
 	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
-		$option  = array($key =>null, $text => "-select-");
+		$option  = array($key =>null, $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default);

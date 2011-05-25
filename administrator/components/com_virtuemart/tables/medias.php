@@ -43,6 +43,8 @@ class TableMedias extends VmTable {
 
 	/** @var string File mime type */
 	var $file_mimetype			= '';
+	/** @var string File typ, this determines where a media is stored */
+	var $file_type			= '';
 	/** @var string File URL */
 	var $file_url				= '';
 	var $file_url_thumb			= '';
@@ -64,8 +66,8 @@ class TableMedias extends VmTable {
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_medias', 'virtuemart_media_id', $db);
-
-		$this->setUniqueName('file_title','COM_VIRTUEMART_MEDIA_NAME_ALREADY_EXISTS');
+		$this->setPrimaryKey('virtuemart_media_id');
+		$this->setUniqueName('file_title');
 
 		$this->setLoggable();
 
@@ -83,7 +85,7 @@ class TableMedias extends VmTable {
 //	    if (!$this->virtuemart_vendor_id) {
 //			$this->virtuemart_vendor_id = 1; //default to mainvendor
 //		}
-		if(empty($this->file_title)) $this->file_title = $this->file_name ;
+		if(empty($this->file_title) && !empty($this->file_name)) $this->file_title = $this->file_name ;
 
 		if(!empty($this->file_title)){
 			if(strlen($this->file_title)>126){

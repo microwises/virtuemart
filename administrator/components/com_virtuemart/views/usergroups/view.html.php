@@ -34,41 +34,24 @@ class VirtuemartViewUsergroups extends JView {
 	function display( $tpl = null ){
 
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 		$model = $this->getModel();
+		// TODO icon for this view
+		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
-		
 		if ($layoutName == 'edit') {
-//			
-//			$this->loadHelper('image');
-//			$this->loadHelper('html');
-
-//			jimport('joomla.html.pane');
-//			
-//			$this->loadHelper('shopFunctions');
 
 			$usergroup = $model->getUsergroup();
 			$this->assignRef('usergroup',	$usergroup);
 
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_countries_48');
-			JToolBarHelper::divider();
-			JToolBarHelper::apply();
-			JToolBarHelper::save();
-			JToolBarHelper::cancel('cancel', 'Close');
+			ShopFunctions::addStandardEditViewCommands();
 
 		} else {
-//			$db = JFactory::getDBO();
-			
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERGROUPS_LIST'), 'vm_countries_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();	
-	
-			$this->loadHelper('shopFunctions');
-			
-			
+
+			ShopFunctions::addStandardDefaultViewCommands();
+
 			$pagination = $model->getPagination();			
 			$this->assignRef('pagination',	$pagination);	
 			
@@ -80,48 +63,5 @@ class VirtuemartViewUsergroups extends JView {
 		parent::display($tpl);
 	}
 
-//	/**
-//	 * Prepares the selection for the TreeLists
-//	 * 
-//	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-//	 * @author Max Milbers
-//	 * @param $value the selected values, may be single data or array
-//	 * @return $values prepared array to work with JHTML::_('Select.genericlist')
-//	 */
-//	function prepareTreeSelection($values){
-//		if (!isset($values)){
-//			return;
-//		}
-//		if (!is_array($values)) $values = array($values);
-//		foreach ($values as $value) {
-//			$values[$value]  = 1;
-//		}
-//		return $values;
-//	}
-//	
-//	
-//	/**
-//	 * Builds a list to choose the mathematical operations
-//	 * When you want to add extra operations, look in helpers/calculationh.php for more information
-//	 * 
-//	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
-//	 * @author 		Max Milbers
-//	 * @param 	$selected 	the selected values, may be single data or array
-//	 * @return 	$list 		list of the Entrypoints  
-//	 */
-//	 
-//	function renderPaymentTypesList($selected){
-//		$selected = self::prepareTreeSelection($selected);
-//		$list = array(
-//		'0' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
-//		'1' => array('paym_type' => 'B', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
-//		'2' => array('paym_type' => 'N', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
-//		'3' => array('paym_type' => 'P', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
-//		);
-//
-//		$listHTML = JHTML::_('Select.genericlist', $list, 'paym_type', '', 'paym_type', 'paym_type_name', $selected );
-//		return $listHTML;
-//	}
-	
 }
 // pure php no closing tag

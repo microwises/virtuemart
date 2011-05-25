@@ -55,7 +55,7 @@ AdminMenuHelper::startAdminArea();
 	    for ($i=0, $n=count( $this->states ); $i < $n; $i++) {
 		$row =& $this->states[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->virtuemart_state_id);
+		$checked = JHTML::_('grid.id', $i, $row->virtuemart_state_id,null,'virtuemart_state_id');
 		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id=' . $row->virtuemart_state_id);
 
@@ -100,6 +100,7 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="virtuemart_country_id" value="<?php echo $this->virtuemart_country_id; ?>" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

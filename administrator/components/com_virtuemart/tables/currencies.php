@@ -66,46 +66,5 @@ class TableCurrencies extends VmTable {
 		$this->setOrderable();
 	}
 
-
-//	/**
-//	 * Validates the currency record fields.
-//	 *
-//	 * @author RickG, Max Milbers
-//	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-//	 */
-//	function check() {
-//
-//        if (!$this->currency_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_CURRENCY_RECORDS_MUST_CONTAIN_CURRENCY_NAME'));
-//			return false;
-//		}
-//		if (!$this->currency_code) {
-//			$this->setError(JText::_('COM_VIRTUEMART_CURRENCY_RECORDS_MUST_CONTAIN_CURRENCY_CODE'));
-//			return false;
-//		}
-//
-//		if (($this->currency_name) && ($this->virtuemart_currency_id == 0)) {
-//		    $db =& JFactory::getDBO();
-//
-//			$q = 'SELECT count(*) FROM `#__virtuemart_currencies` ';
-//			$q .= 'WHERE `currency_name`="' .  $this->currency_name . '"';
-//            $db->setQuery($q);
-//		    $rowCount = $db->loadResult();
-//			if ($rowCount > 0) {
-//				$this->setError(JText::_('COM_VIRTUEMART_CURRENCY_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//
-//		return true;
-//	}
-
 }
 // pure php no closing tag

@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_NAME'); ?>
 		      </th>
 		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR'); ?>
+			      <?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 		      </th>
 		      <th>
 			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_DESCRIPTION'); ?>

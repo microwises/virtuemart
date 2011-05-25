@@ -34,14 +34,14 @@ class TableShippingcarriers extends VmTable {
 	var $virtuemart_shippingcarrier_id			= 0;
 	/** @var string Shipping Carrier name*/
 	var $shipping_carrier_name			= '';
-	/** @var int Shipping List order */
-	var $shipping_carrier_list_order	= 0;
 	/** @var int Shipping Joomla plugin I */
 	var $shipping_carrier_jplugin_id	= 0;
 	/** @var int Vendor ID */
 	var $virtuemart_vendor_id		= 0;
 	/** @var int published boolean */
 	var $published						= 1;
+
+	var $ordering						= 0;
 
     /**
      * @author Max Milbers
@@ -50,7 +50,7 @@ class TableShippingcarriers extends VmTable {
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shippingcarrier_id', $db);
 
-		$this->setUniqueName('shipping_carrier_name','COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('shipping_carrier_name');
 		$this->setObligatoryKeys('shipping_carrier_jplugin_id');
 
 		$this->setLoggable();

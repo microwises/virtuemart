@@ -44,6 +44,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$this->_pelement = basename(__FILE__, '.php');
 		$this->_createTable();
 		parent::__construct($subject, $config);
+                 JPlugin::loadLanguage( 'plg_vmpayment_authorize' );
 	}
 
 	/**

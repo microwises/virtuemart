@@ -337,7 +337,7 @@ abstract class vmShipperPlugin extends JPlugin
 		}
 
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$_currency = CurrencyDisplay::getCurrencyDisplay();  //Todo, set currency of shopper or user?
+		$_currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
 
 //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
 		$_html = '<table class="admintable">'."\n"
@@ -489,10 +489,12 @@ abstract class vmShipperPlugin extends JPlugin
 			$_rates = $_sRate->getShippingRatePrices($_id, true);
 			$_total = $_rates['shipping_rate_value'] + $_rates['shipping_rate_package_fee'];
 //		}
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$_calc = calculationHelper::getInstance();
+//		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+//		$_calc = calculationHelper::getInstance();
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
 
-		return $_calc->priceDisplay($_total);
+		return $currency->priceDisplay($_total);
 	}
 
 	/**

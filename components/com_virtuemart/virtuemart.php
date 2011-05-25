@@ -52,6 +52,7 @@ $controller = new $_class();
 /* Perform the Request task */
 $controller->execute(JRequest::getVar('task', JRequest::getVar('view', $_controller)));
 
+
 //shopFunctionsF::displayDumps();
 
 /* Redirect if set by the controller */

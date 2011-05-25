@@ -178,7 +178,7 @@ class AdminMenuHelper {
 	$query .= 'FROM `#__virtuemart_modules` jmmod ';
 	$query .= 'LEFT JOIN `#__virtuemart_adminmenuentries` item ON `jmmod`.`module_id`=`item`.`module_id` ';
 	$query .= 'WHERE  ' . implode(' AND ', $filter ) . ' ';
-	$query .= 'ORDER BY `jmmod`.`list_order`, `item`.`ordering`';
+	$query .= 'ORDER BY `jmmod`.`ordering`, `item`.`ordering`';
 	$db->setQuery($query);
 	$result = $db->loadObjectList();
 //		echo '<pre>'.print_r($query,1).'</pre>';

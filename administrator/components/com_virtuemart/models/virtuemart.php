@@ -47,7 +47,7 @@ class VirtueMartModelVirtueMart extends JModel {
 		//$query .= "AND #__virtuemart_categories.virtuemart_vendor_id = '$hVendor_id' ";
 		$query .= "AND #__virtuemart_categories.virtuemart_vendor_id = '1' ";
 		$query .= "AND #__virtuemart_categories.published = '1' ";
-		$query .= "ORDER BY #__virtuemart_categories.list_order, #__virtuemart_categories.category_name ASC";
+		$query .= "ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";
 
 		$childList = $this->_getList( $query );
 		return $childList;

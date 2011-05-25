@@ -47,50 +47,9 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
 		parent::__construct('#__virtuemart_vmusers', 'virtuemart_user_id', $db);
 
 		$this->setPrimaryKey('virtuemart_user_id');
-//		$this->setUniqueName('customer_number','COM_VIRTUEMART_USER_NO_CUSTOMER_ID');
 
 		$this->setLoggable();
 
 	}
 
- 	/**
- 	 * Every entry must contain a virtuemart_user_id
- 	 * @author Max Milbers
- 	 */
-// 	public function check(){
-//		if (!$this->virtuemart_user_id) {
-//			$this->setError(JText::_('COM_VIRTUEMART_USERS_MUST_HAVE_USER_ID'));
-//			return false;
-//		}
-//		return parent::check();
-// 	}
-// 	/**
-//	 * Records in this table do not need to exist, so we might need to create a record even
-//	 * if the primary key is set. Therefore we need to overload the store() function.
-//	 *
-//	 * @author Oscar van Eijk
-//	 * @see libraries/joomla/database/JTable#store($updateNulls)
-//	 */
-//	public function store()
-//	{
-//		$_qry = 'SELECT virtuemart_user_id '
-//				. 'FROM #__virtuemart_vmusers '
-//				. 'WHERE virtuemart_user_id = ' . $this->virtuemart_user_id
-//		;
-//		$this->_db->setQuery($_qry);
-//		$_count = $this->_db->loadResultArray();
-//		dump($_qry,'store vmusers');
-//		if (count($_count) > 0) {
-//			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-//		} else {
-//			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-//		}
-//
-//		if (!$returnCode){
-//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-//			return false;
-//		}
-//		else return true;
-//	}
-
- }
+}

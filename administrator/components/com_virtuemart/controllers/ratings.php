@@ -41,29 +41,58 @@ class VirtuemartControllerRatings extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('RATING');
-		/* Redirects */
-		$this->registerTask('unpublish','publish');
-		$this->registerTask('add','edit');
-		$this->registerTask('cancel','ratings');
 	}
 
 	/**
 	 * Shows the product list screen
 	 */
-	public function Ratings() {
+//	public function Ratings() {
+//		/* Create the view object */
+//		$view = $this->getView('ratings', 'html');
+//
+//		/* Default model */
+//		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
+//
+//		/* Now display the view. */
+//		$view->display();
+//	}
+	/**
+	 * Generic edit task
+	 *
+	 * @author Max Milbers
+	 */
+	function edit_review(){
+
+		JRequest::setVar('controller', $this->_cname);
+		JRequest::setVar('view', $this->_cname);
+		JRequest::setVar('layout', 'edit_review');
+		JRequest::setVar('hidemenu', 1);
+
+		if(empty($view)){
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$view = $this->getView($this->_cname, $viewType);
+		}
+
+		$model = $this->getModel($this->_cname, 'VirtueMartModel');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+
+		parent::display();
+	}
+
+	public function listreviews(){
+
 		/* Create the view object */
 		$view = $this->getView('ratings', 'html');
 
-		/* Default model */
 		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
-
 		/* Set the layout */
+		$view->setLayout('list_reviews');
 
-		/* Now display the view. */
 		$view->display();
 	}
-
 
 }
 // pure php no closing tag

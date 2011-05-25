@@ -54,7 +54,7 @@ class VirtuemartViewCalc extends JView {
 		$this->assignRef('dateformat',	$dateformat);
 
 		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
-		$this->assignRef('viewName',$viewName); 
+		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -127,7 +127,7 @@ class VirtuemartViewCalc extends JView {
         else {
 			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
 			JToolBarHelper::custom('toggle.calc_shopper_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_ON'), true);
-			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
+			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_OFF'), true);
 			JToolBarHelper::custom('toggle.calc_vendor_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
 
 			ShopFunctions::addStandardDefaultViewCommands();
@@ -193,8 +193,8 @@ class VirtuemartViewCalc extends JView {
 		$mathOps = array(
 		'0' => array('calc_value_mathop' => '+', 'calc_value_mathop_name' => '+'),
 		'1' => array('calc_value_mathop' => '-', 'calc_value_mathop_name' => '-'),
-		'2' => array('calc_value_mathop' => '+%', 'calc_value_mathop_name' => '%+'),
-		'3' => array('calc_value_mathop' => '-%', 'calc_value_mathop_name' => '%-')
+		'2' => array('calc_value_mathop' => '+%', 'calc_value_mathop_name' => '+%'),
+		'3' => array('calc_value_mathop' => '-%', 'calc_value_mathop_name' => '-%')
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );

@@ -16,7 +16,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * www.virtuemart.net
 */
-/* Load  VM fonction */ 
+/* Load  VM fonction */
 require('helper.php');
 
 /* Setting */
@@ -29,7 +29,7 @@ $headerText = 		$params->get( 'headerText', '' ); // Display a Header Text
 $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $show = 			$params->get( 'show', 'all'); // Display a footerText
 $manufacturers = $model->getManufacturers(true, true);
-$model->addImagesToManufacturer($manufacturers);
+$model->addImages($manufacturers);
 if(empty($manufacturers)) return false;
 /* load the template */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_manufacturer'));

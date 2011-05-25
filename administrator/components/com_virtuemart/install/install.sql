@@ -174,13 +174,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
+  `id` SERIAL,
   `category_parent_id` int(11) NOT NULL DEFAULT '0',
   `category_child_id` int(11) NOT NULL DEFAULT '0',
-  `category_list` int(11) DEFAULT NULL,
-  `category_shared` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`category_child_id`),
-  KEY `category_xref_category_parent_id` (`category_parent_id`),
-  KEY `idx_category_xref_category_list` (`category_list`)
+  `ordering` int(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `i_category_parent_id` (`category_parent_id`,`category_child_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
 
 --
@@ -379,6 +378,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `virtuemart_manufacturer_id` SERIAL,
   `mf_name` varchar(64) DEFAULT NULL,
+  `slug` varchar(128) DEFAULT NULL,
   `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
   `virtuemart_manufacturercategories_id` int(11) DEFAULT NULL,
@@ -441,6 +441,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_description` varchar(254) NOT NULL,
   `file_meta` varchar(254) NOT NULL,
   `file_mimetype` varchar(64) NOT NULL,
+  `file_type` varchar(32) NOT NULL,  
   `file_url` varchar(254) NOT NULL,
   `file_url_thumb` varchar(254) NOT NULL,
   `file_is_product_image` tinyint(1) NOT NULL,
@@ -471,10 +472,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_modules` (
   `module_perms` varchar(255) DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `is_admin` enum('0','1') NOT NULL,
-  `list_order` int(11) DEFAULT NULL,
+  `ordering` int(11) DEFAULT NULL,
   PRIMARY KEY (`module_id`),
   KEY `idx_module_name` (`module_name`),
-  KEY `idx_module_list_order` (`list_order`)
+  KEY `idx_module_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -597,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orderstates` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_orderstate_id`),
-  KEY `idx_order_status_list_order` (`ordering`),
+  KEY `idx_order_status_ordering` (`ordering`),
   KEY `idx_order_status_virtuemart_vendor_id` (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All available order statuses' AUTO_INCREMENT=1 ;
 
@@ -674,7 +675,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   PRIMARY KEY (`virtuemart_paymentmethod_id`),
   KEY `idx_payment_method_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_payment_method_name` (`paym_name`),
-  KEY `idx_payment_method_list_order` (`ordering`)
+  KEY `idx_payment_method_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -716,7 +717,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_sku` varchar(64) NOT NULL DEFAULT '',
   `product_name` varchar(255) DEFAULT NULL,
   `slug` varchar(255) NOT NULL DEFAULT '',
-  `product_s_desc` varchar(255) DEFAULT NULL,
+  `product_s_desc` text,
   `product_desc` text,
   `product_weight` decimal(10,4) DEFAULT NULL,
   `product_weight_uom` varchar(32) DEFAULT 'pounds.',
@@ -863,20 +864,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   KEY `idx_product_price_virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `#__virtuemart_product_producttypes`
---  ???
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_producttypes` (
-  `id` SERIAL,
-  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_producttype_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_producttype_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maps products to a product type';
-
 
 -- --------------------------------------------------------
 --
@@ -894,19 +881,17 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_relations` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_product_reviews`
+-- Table structure for table `#__virtuemart_rating_reviews`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
-  `virtuemart_product_review_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_reviews` (
+  `virtuemart_rating_review_id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
   `review_ok` int(11) NOT NULL DEFAULT '0',
   `review_rates` int(11) NOT NULL DEFAULT '0',
   `review_ratingcount` int(11) NOT NULL DEFAULT '0',
   `review_rating` float(1) NOT NULL DEFAULT '0',
-  `rate` int(11) NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -915,29 +900,48 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_reviews` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_product_review_id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_user_id`)
+  PRIMARY KEY (`virtuemart_rating_review_id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_product_ratings`
+-- Table structure for table `#__virtuemart_ratings`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_ratings` (
-  `virtuemart_product_id` SERIAL,
-  `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
+CREATE TABLE IF NOT EXISTS `#__virtuemart_ratings` (
+  `virtuemart_rating_id` SERIAL,
+  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `rates` int(11) NOT NULL ,
   `ratingcount` int(11) NOT NULL DEFAULT '0',
   `rating` float(1) NOT NULL DEFAULT '0',
-  `lastip` varchar(50) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_product_id`)
+  PRIMARY KEY (`virtuemart_rating_id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_rating_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
+
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_rating_votes`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
+  `virtuemart_rating_vote_id` SERIAL,
+  `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
+  `vote` int(11) NOT NULL,
+  `lastip` varchar(50) NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_rating_vote_id`),
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all ratings for a product';
 
 
@@ -951,7 +955,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipping_carrier_jplugin_id` int(11) NOT NULL,
   `shipping_carrier_name` char(80) NOT NULL DEFAULT '',
-  `shipping_carrier_list_order` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -984,7 +987,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
   `shipping_rate_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
   `shipping_rate_virtuemart_currency_id` int(11) NOT NULL DEFAULT '0',
   `shipping_rate_vat_id` int(11) NOT NULL DEFAULT '0',
-  `shipping_rate_list_order` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',

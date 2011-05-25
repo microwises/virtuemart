@@ -40,42 +40,21 @@ class VirtuemartControllerCustom extends VmController {
 	 * @author
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_custom_id');
 
 //		$this->setMainLangKey('CUSTOM');
-		$this->registerTask( 'add',  'edit' );
-	    $this->registerTask( 'apply',  'save' );
-
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$this->view = $this->getView('custom', $viewType);
+		$view = $this->getView('custom', $viewType);
+
+		// Push a model into the view
+		$model = $this->getModel('custom');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
 
 	}
 
-
-	/**
-	 * Shows the product files list screen
-	 */
-	function edit() {
-		/* Create the view object */
-//		$view = $this->getView('custom', 'html');
-
-		/* Default model */
-		$this->view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
-
-		/* Set the layout */
-//		switch (JRequest::getCmd('task')) {
-
-		$this->view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), true );
-		$this->view->setLayout('edit');
-
-
-		/* Now display the view. */
-		$this->view->display();
-	}
-	/**
-	 * for ajax call custom
-	 */
 	function viewJson() {
 
 		/* Create the view object. */
@@ -86,98 +65,6 @@ class VirtuemartControllerCustom extends VmController {
 
 		/* Now display the view. */
 		$view->display(null);
-	}
-
-	function save(){
-
-		$fileModel = $this->getModel('custom');
-
-		//Now we try to determine to which this custom should be long to
-		$data = JRequest::get('post');
-		if(!empty($data['virtuemart_product_id'])){
-			$table = $fileModel->getTable('products');
-			$type = 'product';
-		} else if (!empty($data['virtuemart_category_id'])){
-			$table = $fileModel->getTable('categories');
-			$type = 'category';
-		} else if (!empty($data['virtuemart_manufacturer_id'])){
-			$table = $fileModel->getTable('manufacturers');
-			$type = 'manufacturer';
-//		} else if ($data['virtuemart_vendor_id']){
-//			$table = $this->getTable('vendors');
-//			$type = 'vendor';
-		} else {
-
-		}
-
-		if(empty($table)){
-			if ($id = $fileModel->store()) {
-				$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_SAVED_SUCCESS');
-			} else {
-				$msg = $fileModel->getError();
-			}
-		} else {
-			if ($id = $fileModel->storeCustom($data,$table,$type)) {
-			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_SAVED_SUCCESS');
-			} else {
-				$msg = $fileModel->getError();
-			}
-		}
-
-		$cmd = JRequest::getCmd('task');
-		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=custom&task=edit&virtuemart_custom_id='.$id;
-		} else {
-			$redirection = 'index.php?option=com_virtuemart&view=custom';
-		}
-
-		$this->setRedirect($redirection, $msg);
-	}
-
-	/**
-	 * Handle the cancel task
-	 *
-	 * @author Max Milbers
-	 */
-	public function cancel()
-	{
-		$msg = JText::_('COM_VIRTUEMART_OPERATION_CANCELED');
-		//Todo, in case redirect to product
-		$this->setRedirect('index.php?option=com_virtuemart&view=custom', $msg);
-	}
-
-	/**
-	 * Handle the remove task
-	 *
-	 * @author Max Milbers, Jseros
-	 */
-	public function remove()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token, trying deleting custom' );
-
-		$mainframe = JFactory::getApplication();
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=custom', $msg, 'error');
-			return;
-		}
-
-		$customModel = $this->getModel('custom');
-
-		if (!$customModel->remove($cid)) {
-			$msg = JText::_('COM_VIRTUEMART_ERROR_CUSTOM_FIELD_COULD_NOT_BE_DELETED');
-		}
-		else {
-			$msg = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_DELETED_SUCCESS');
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=custom', $msg);
 	}
 
 	/**

@@ -35,19 +35,16 @@ class VirtuemartViewState extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
+
+		$viewName=ShopFunctions::SetViewTitle('vm_states_48');
+		$this->assignRef('viewName',$viewName);
 
 		$model = $this->getModel();
-		$zoneModel = $this->getModel('Worldzones');
 
-		$stateId = JRequest::getInt('virtuemart_state_id', null);
-		$model->setId($stateId);
+//		$stateId = JRequest::getVar('virtuemart_state_id');
+//		$model->setId($stateId);
 		$state = $model->getSingleState();
-
-        $layoutName = JRequest::getVar('layout', 'default');
-
-		$published = JRequest::getBool('published', false);
-		$this->assignRef('published',	$published);
-
 
 		$countryId = JRequest::getInt('virtuemart_country_id', 0);
 		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
@@ -55,44 +52,37 @@ class VirtuemartViewState extends JView {
 
         $isNew = (count($state) < 1);
 
-		if(empty($countryId) && $layoutName == 'edit' && $isNew){
+		if(empty($countryId) && $isNew){
 			JError::raiseWarning(412,'Country id is 0');
 			return false;
 		}
 
 		$country = $this->getModel('country');
 		$country->setId($countryId);
-		$this->assignRef('country_name', $country->getCountry()->country_name);
+		$this->assignRef('country_name', $country->getData()->country_name);
 
+
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			if ($isNew) {
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_states_48');
-			} else {
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_ADD').JText::_('COM_VIRTUEMART_FORM_EDIT'), 'vm_states_48');
-			}
-			JToolBarHelper::divider();
-			JToolBarHelper::save();
-                        JToolBarHelper::apply();
-			JToolBarHelper::cancel();
+
 
 			$this->assignRef('state', $state);
 
+			$zoneModel = $this->getModel('Worldzones');
 			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
-        }
-        else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_STATE_LIST_LBL'), 'vm_states_48' );
-			JToolBarHelper::publishList();
-			JToolBarHelper::unpublishList();
-			JToolBarHelper::deleteList();
-			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			ShopFunctions::addStandardEditViewCommands();
+
+		} else {
+
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);
 
 			$states = $model->getStates($countryId);
-
 			$this->assignRef('states',	$states);
+
 		}
 
 		parent::display($tpl);

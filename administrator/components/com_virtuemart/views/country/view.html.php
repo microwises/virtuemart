@@ -41,11 +41,11 @@ class VirtuemartViewCountry extends JView {
 		$zoneModel = $this->getModel('Worldzones');
 
 		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
-		$this->assignRef('viewName',$viewName); 
+		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-			$country = $model->getCountry();
+			$country = $model->getData();
 
 		    $this->assignRef('country',	$country);
 		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
@@ -55,7 +55,7 @@ class VirtuemartViewCountry extends JView {
 		}
 		else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
+			ShopFunctions::addStandardDefaultViewCommands(true,false);
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

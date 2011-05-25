@@ -76,7 +76,7 @@ class TablePaymentmethods extends VmTable
 	{
 		parent::__construct('#__virtuemart_paymentmethods', 'virtuemart_paymentmethod_id', $db);
 
-		$this->setUniqueName('paym_name','COM_VIRTUEMART_COUNTRY_NAME_ALREADY_EXISTS');
+		$this->setUniqueName('paym_name');
 
 		$this->setLoggable();
 

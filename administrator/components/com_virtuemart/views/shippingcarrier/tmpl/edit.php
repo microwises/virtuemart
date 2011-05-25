@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />
+				<input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->carrier->ordering; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -62,7 +62,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CARRIER_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
 				</label>
 			</td>
 			<td>

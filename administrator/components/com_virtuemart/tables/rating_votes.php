@@ -13,50 +13,44 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: ratings.php 3267 2011-05-16 22:51:49Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * Product review table class
  * The class is is used to manage the reviews in the shop.
  *
  * @package		VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
-class TableProduct_ratings extends VmTableData {
+class TableRating_votes extends VmTable {
 
+	/** @var int Primary key */
+	var $virtuemart_rating_vote_id	= 0;
 	/** @var int Product ID */
-	var $virtuemart_product_id           = 0;
-	/** @var int The ID of the user who rated the product */
-	var $virtuemart_user_id         	= 0;
+	var $virtuemart_product_id			= 0;
 
-	var $rates         					= 0;
-	var $ratingcount      				= 0;
-	var $rating      					= 0;
-
-	var $lastip      					= 0;
-
-	/** @var int State of the review */
-	var $published         		= 0;
+	var $vote				= '';
+	var $lastip      		= '';
 
 
 	/**
-	* @author RolandD
+	* @author Max Milbers
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_ratings', 'virtuemart_product_id', $db);
+		parent::__construct('#__virtuemart_rating_votes', 'virtuemart_rating_vote_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-//		$this->setObligatoryKeys('virtuemart_product_id');
+//		$this->setObligatoryKeys('vote');
 
 		$this->setLoggable();
-
 	}
+
+
 }
 // pure php no closing tag

@@ -41,16 +41,7 @@ class VirtuemartControllerState extends VmController {
 	 * @author RickG, Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
-
-	}
-
-	/**
-	 * Display the state view
-	 *
-	 * @author Max Milbers
-	 */
-	function State() {
+		parent::__construct('virtuemart_state_id');
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -70,8 +61,8 @@ class VirtuemartControllerState extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		parent::display();
 	}
+
 
 	/**
 	 * Retrieve full statelist

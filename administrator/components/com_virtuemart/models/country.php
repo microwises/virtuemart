@@ -43,100 +43,6 @@ class VirtueMartModelCountry extends VmModel {
 		$this->setMainTable('countries');
 	}
 
-//    /** @var integer Primary key */
-//    var $_id;
-//    /** @var objectlist Country data */
-//    var $_data;
-//    /** @var integer Total number of countries in the database */
-//    var $_total;
-//    /** @var pagination Pagination for country list */
-//    var $_pagination;
-
-
-    /**
-     * Constructor for the country model.
-     *
-     * The country id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-//    function __construct() {
-//	parent::__construct();
-//
-//	// Get the pagination request variables
-//	$mainframe = JFactory::getApplication() ;
-//	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//	$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//	// Set the state pagination variables
-//	$this->setState('limit', $limit);
-//	$this->setState('limitstart', $limitstart);
-//
-//	// Get the country id or array of ids.
-//	$idArray = JRequest::getVar('cid',  0, '', 'array');
-//	$this->setId((int)$idArray[0]);
-//    }
-
-
-    /**
-     * Resets the country id and data
-     *
-     * @author RickG
-     */
-    function setId($id) {
-	$this->_id = $id;
-	$this->_data = null;
-    }
-
-
-    /**
-     * Loads the pagination for the country table
-     *
-     * @author RickG
-     * @return JPagination Pagination for the current list of countries
-     */
-    function getPagination() {
-	if (empty($this->_pagination)) {
-	    jimport('joomla.html.pagination');
-	    $this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-	}
-	return $this->_pagination;
-    }
-
-
-    /**
-     * Gets the total number of countries
-     *
-     * @author RickG
-     * @return int Total number of countries in the database
-     */
-    function _getTotal() {
-	if (empty($this->_total)) {
-	    $query = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries`';
-	    $this->_total = $this->_getListCount($query);
-	}
-	return $this->_total;
-    }
-
-
-    /**
-     * Retrieve the detail record for the current $id if the data has not already been loaded.
-     *
-     * @author RickG
-     */
-    function getCountry() {
-	$db = JFactory::getDBO();
-
-	if (empty($this->_data)) {
-	    $this->_data = $this->getTable('countries');
-	    $this->_data->load((int)$this->_id);
-
-	}
-
-	return $this->_data;
-    }
-
-
     /**
      * Retreive a country record given a country code.
      *
@@ -168,51 +74,51 @@ class VirtueMartModelCountry extends VmModel {
     }
 
 
-    /**
-     * Bind the post data to the country table and save it
-     *
-     * @author RickG
-     * @return boolean True is the save was successful, false otherwise.
-     */
-    function store() {
-	$table = $this->getTable('countries');
+//    /**
+//     * Bind the post data to the country table and save it
+//     *
+//     * @author RickG
+//     * @return boolean True is the save was successful, false otherwise.
+//     */
+//    function store() {
+//	$table = $this->getTable('countries');
+//
+//	$data = JRequest::get('post');
+//
+//	// Bind the form fields to the country table
+//	if (!$table->bind($data)) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Make sure the country record is valid
+//	if (!$table->check()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	// Save the country record to the database
+//	if (!$table->store()) {
+//	    $this->setError($table->getError());
+//	    return false;
+//	}
+//
+//	return $table->virtuemart_country_id;
+//    }
 
-	$data = JRequest::get('post');
-
-	// Bind the form fields to the country table
-	if (!$table->bind($data)) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Make sure the country record is valid
-	if (!$table->check()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	// Save the country record to the database
-	if (!$table->store()) {
-	    $this->setError($table->getError());
-	    return false;
-	}
-
-	return $table->virtuemart_country_id;
-    }
-
-    /**
-     * Publish/Unpublish all the ids selected
-     *
-     * @author RickG
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-    function publish($publishId = false) {
-
-    	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','countries',$publishId);
-
-    }
+//    /**
+//     * Publish/Unpublish all the ids selected
+//     *
+//     * @author RickG
+//     * @param boolean $publishId True is the ids should be published, false otherwise.
+//     * @return boolean True is the remove was successful, false otherwise.
+//     */
+//    function publish($publishId = false) {
+//
+//    	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		return modelfunctions::publish('cid','countries',$publishId);
+//
+//    }
 
 
     /**

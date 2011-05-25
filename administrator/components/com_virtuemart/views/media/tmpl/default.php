@@ -43,7 +43,6 @@ $keyword = JRequest::getVar('keyword', null);
 		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
 			<input type="text" value="" name="keyword" size="25" class="inputbox" />
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
-			<input type="hidden" name="page" value="product.file_list" />
 			<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
 	</div>
 </div>
@@ -72,7 +71,7 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($productfileslist as $key => $productfile) {
 
-			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id);
+			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
 			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
@@ -86,7 +85,7 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', JRoute::_($link), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
 				<?php
-				$link = "index.php?view=media&task=edit&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&virtuemart_media_id=".$productfile->virtuemart_media_id."&option=".$option;
+				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->

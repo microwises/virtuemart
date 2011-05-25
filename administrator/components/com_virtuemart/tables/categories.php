@@ -51,6 +51,8 @@ class TableCategories extends VmTable {
 	var $products_per_row		= null;
 	/** @var int Category order */
 	var $ordering		= 0;
+
+	var $shared 		= 0;
 	/** @var int category limit start*/
 	var $limit_list_start 	 = 0;
 	/** @var int category limit step*/
@@ -78,7 +80,8 @@ class TableCategories extends VmTable {
 	 */
 	public function __construct($db) {
 		parent::__construct('#__virtuemart_categories', 'virtuemart_category_id', $db);
-		$this->setPrimaryKey('virtuemart_category_id');
+
+//		$this->setPrimaryKey('virtuemart_category_id');
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
 		$this->setSlug('category_name');

@@ -44,7 +44,7 @@ class TableUsergroups extends VmTable {
 	{
 		parent::__construct('#__virtuemart_permgroups', 'virtuemart_permgroup_id', $db);
 
-		$this->setUniqueName('group_name','COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME');
+		$this->setUniqueName('group_name');
 
 		$this->setLoggable();
 	}

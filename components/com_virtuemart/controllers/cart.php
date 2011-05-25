@@ -133,10 +133,10 @@ class VirtueMartControllerCart extends JController {
 			// Get a continue link */
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
-			if($virtuemart_category_id){
-				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
-			}
-			$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
+			if($virtuemart_category_id>0){
+				$categoryLink='&view=category&virtuemart_category_id='.$virtuemart_category_id;
+			} else $categoryLink='';
+			$continue_link = JRoute::_('index.php?option=com_virtuemart'.$categoryLink);
 
 			if($cart->add()){
 				$text = '<a href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
@@ -452,5 +452,5 @@ class VirtueMartControllerCart extends JController {
 //
 //	}
 
-}
+		}
  //pure php no Tag

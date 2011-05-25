@@ -127,10 +127,10 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	    <td><?php
 		if ($this->userparams->get('allowUserRegistration') == '1' ) {
-		    echo '<span style="color:green;">'.JText::_('COM_VIRTUEMART_ADMIN_CFG_YES').'</span>';
+		    echo '<span style="color:green;">'.JText::_('COM_VIRTUEMART_YES').'</span>';
 		}
 		else {
-		    echo '<span style="color:red;font-weight:bold;">'.JText::_('COM_VIRTUEMART_ADMIN_CFG_NO').'</span>';
+		    echo '<span style="color:red;font-weight:bold;">'.JText::_('COM_VIRTUEMART_NO').'</span>';
 		}
 		$link = JROUTE::_('index.php?option=com_config');
 		echo '&nbsp;' . JHTML::_('link', $link, '['.JText::_('COM_VIRTUEMART_UPDATE').']');

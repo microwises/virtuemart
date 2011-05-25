@@ -55,8 +55,6 @@ class VirtueMartControllerProductdetails extends JController {
 			$view->setModel($this->getModel('category', 'VirtuemartModel'));
 
 			$view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
-			/* Set the layout */
-//			$view->setLayout('productdetails');
 
 			/* Display it all */
 			$view->display();
@@ -195,17 +193,23 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Get the posted data */
 		$data = JRequest::get('post');
 
-		$msgtype = '';
-		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
-		else {
-			$mainframe->enqueueMessage($model->getError());
-			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
+		$model->saveRating($data);
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('REVIEW') );
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
 		}
-		/* Set the layout */
-		$view->setLayout('productdetails');
 
+//		$msgtype = '';
+//		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
+//		else {
+//			$mainframe->enqueueMessage($model->getError());
+//			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
+//		}
+
+		$this->setRedirect('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id'], $msg);
 		/* Display it all */
-		$view->display();
+//		$view->display();
 	}
 
 	/**
@@ -229,12 +233,11 @@ class VirtueMartControllerProductdetails extends JController {
 		$customVariant = JRequest::getVar('customPrice',array());
 		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant);
 
-		//Why we do not have to include the calculatorh.php here?
-		//Because it is already require in the model!
-
-		$calculator = calculationHelper::getInstance();
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+//		$calculator = calculationHelper::getInstance();
 		foreach ($prices as &$value  ){
-			$value = $calculator->priceDisplay($value);
+			$value = $currency->priceDisplay($value);
 		}
 //		die;
 		// Get the document object.

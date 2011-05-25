@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
 		    </th> */?>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_3'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
 		    </th>
              <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>
@@ -140,6 +140,7 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="view" value="currency" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
 

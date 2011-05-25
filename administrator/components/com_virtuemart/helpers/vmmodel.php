@@ -22,14 +22,15 @@ defined('_JEXEC') or die();
 
 class VmModel extends JModel {
 
-	protected $_id 			= 0;
-	protected $_data 		= null;
-	protected $_pagination 	= 0;
+	var $_id 			= 0;
+	var $_data 		= null;
+	var $_pagination 	= 0;
 
-	protected $_maintable 	= '';	// something like #__virtuemart_calcs
-	protected $_maintablename = '';
-	protected $_idName		= '';
-	protected $_cidName		= 'cid';
+	var $_maintable 	= '';	// something like #__virtuemart_calcs
+	var $_maintablename = '';
+	var $_idName		= '';
+	var $_cidName		= 'cid';
+	var $_togglesName		= null;
 
     public function __construct($cidName='cid'){
         parent::__construct();
@@ -81,8 +82,12 @@ class VmModel extends JModel {
      * @author Max Milbers
      */
     function setId($id){
+
+    	if(is_array($id)) $id = $id[0];
     	if($this->_id!=$id){
 			$this->_id = (int)$id;
+//			$idName = $this->_idName;
+//			$this->$idName = $this->_id;
 			$this->_data = null;
     	}
     	return $this->_id;
@@ -120,7 +125,6 @@ class VmModel extends JModel {
 				$this->_total = $this->_db->getNumRows();
 			}
 
-
 //			$this->_total = $this->_getListCount($query);
         }
 
@@ -140,10 +144,10 @@ class VmModel extends JModel {
 			$this->_data->load($this->_id);
 
 			//just an idea
-//    		if(isset($this->_data->virtuemart_vendor_id && empty($this->_data->virtuemart_vendor_id)){
-//		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-//		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
-//		    }
+    		if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
+		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+		    }
 		}
 
 		return $this->_data;
@@ -154,19 +158,18 @@ class VmModel extends JModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		if($data = $table->bindChecknStore($data)){
-			if(is_object($data)){
-				$_idName = $this->_idName;
-				return $data->$_idName;
-	    	} else {
-	    		return $data[$this->_idName];
-	    	}
+		$data = $table->bindChecknStore($data);
 
-		} else {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($table->getError());
-			return false;
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError( get_class( $this ).'::store '.$error);
 		}
+		if(is_object($data)){
+			$_idName = $this->_idName;
+			return $data->$_idName;
+    	} else {
+    		return $data[$this->_idName];
+    	}
 
 	}
 
@@ -176,40 +179,24 @@ class VmModel extends JModel {
      * @author Max Milbers
      * @return boolean True is the delete was successful, false otherwise.
      */
-	public function remove() {
+	public function remove($ids) {
 
-		$table =& $this->getTable($this->_maintablename);
-		$ids = JRequest::getVar($this->_cidName,  0, '', 'array');
-
-		foreach($ids as $id) {
-		    if (!$table->delete($id)) {
-				$this->setError($table->getError());
-				return false;
-		    }
-		}
-		return true;
-	}
-
-	/**
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $idName
-	 * @param unknown_type $tablename
-	 * @param unknown_type $publishId
-	 */
-	function publish($publishId = false) {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
-		if (!$table->publish($ids, $publishId)) {
-			$this->setError($table->getError());
-			return false;
+		foreach($ids as $id) {
+		    if (!$table->delete($id)) {
+				$this->setError(get_class( $this ).'::remove '.$table->getError());
+				return false;
+		    }
 		}
 
 		return true;
-    }
+	}
 
+	public function setToggleName($togglesName){
+		$this->_togglesName[] = $togglesName ;
+	}
 	/**
 	 * toggle (0/1) a field
 	 * or invert by $val for multi IDS;
@@ -218,22 +205,29 @@ class VmModel extends JModel {
 	 * @param string $postName the name of id Post  (Primary Key in table Class constructor)
 	 */
 
-	function toggle($field,$val = NULL, $postName='cid' ) {
+	function toggle($field,$val = NULL, $cidName = 0 ) {
 		$ok = true;
+		$this->setToggleName('published');
+		if (!in_array($field, $this->_togglesName)) {
+			return false ;
+		}
 		$table =& $this->getTable($this->_maintablename);
+//		if(empty($cidName)) $cidName = $this->_cidName;
 
-		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
+		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
 		foreach($ids as $id){
 			$table->load( $id );
-			if ($val == NULL) {
+			dump($val, 'my val');
+			if ($val === NULL) {
 				if ($table->$field ==0) $table->$field = 1 ;
 				else $table->$field = 0;
 			} else {
 				$table->$field = $val;
 			}
 
-			if (!$table->store()) {
-				JError::raiseError(500, $table->getError() );
+			if (!$table->_db->updateObject($table->_tbl, $table, $table->_tbl_key, false)){
+//			if (!$table->store()) {
+				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
 				$ok = false;
 			}
 		}
@@ -303,34 +297,24 @@ class VmModel extends JModel {
 		}
 
 		return true;
-	} 
-    //General toggle could be nice, lets see
-//	/**
-//	 * Switch a toggleable field on or off
-//	 *
-//	 * @param $field string Database fieldname to toggle
-//	 * @param $id array list of primary keys to toggle
-//	 * @param $value boolean Value to set
-//	 * @return boolean Result
-//	 */
-//	function toggle($field, $id = array(), $value = 1)
-//	{
-//		if (count( $id ))
-//		{
-//			JArrayHelper::toInteger($id);
-//			$ids = implode( ',', $id );
-//
-//			$query = 'UPDATE `#__virtuemart_userfields`'
-//				. ' SET `' . $field . '` = '.(int) $value
-//				. ' WHERE virtuemart_userfield_id IN ( '.$ids.' )'
-//			;
-//			$this->_db->setQuery( $query );
-//			if (!$this->_db->query()) {
-//				$this->setError($this->_db->getErrorMsg());
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
+	}
+
+    /**
+	 * Since an object like product, category dont need always an image, we can attach them to the object with this function
+	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
+	 * for an exampel using it
+	 *
+	 * @author Max Milbers
+	 * @param object $obj some object with a _medias xref table
+	 */
+
+	public function addImages($obj){
+
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+
+		$this->mediaModel->attachImages($obj,$this->_maintablename,'image');
+
+	}
 
 }

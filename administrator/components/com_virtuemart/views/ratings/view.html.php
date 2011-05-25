@@ -39,7 +39,6 @@ class VirtuemartViewRatings extends JView {
 		$this->loadHelper('shopFunctions');
 
 
-		//
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
@@ -51,8 +50,23 @@ class VirtuemartViewRatings extends JView {
 		/* Get the task */
 		$task = JRequest::getVar('task');
 		switch ($task) {
-			case 'add':
-				// @todo: adding is slightly different (not supported for now, from admin page).
+			case 'listreviews':
+				/* Get the data */
+				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+				$reviewslist = $model->getReviews($virtuemart_product_id);
+
+				/* Get the pagination */
+				$pagination = $this->get('Pagination');
+				$lists = array();
+				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
+				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
+
+				/* Assign the data */
+				$this->assignRef('reviewslist', $reviewslist);
+				$this->assignRef('pagination',	$pagination);
+				$this->assignRef('lists',	$lists);
+				break;
+
 			case 'edit':
 				/* Get the data */
 				$rating = $model->getRating();
@@ -60,24 +74,34 @@ class VirtuemartViewRatings extends JView {
 				ShopFunctions::addStandardEditViewCommands();
 
 				/* Assign the data */
-				$this->preprocess($rating);
+				$this->assignRef('rating', $rating);
+
+				break;
+			case 'edit_review':
+				/* Get the data */
+				$rating = $model->getReview();
+				dump($rating);
+
+				ShopFunctions::addStandardEditViewCommands();
+
+				/* Assign the data */
 				$this->assignRef('rating', $rating);
 
 				break;
 			default:
 				/* Get the data */
 				$ratingslist = $model->getRatings();
-				dump($ratingslist,'$ratingslist');
+
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
 				$lists = array();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-				ShopFunctions::addStandardDefaultViewCommands();
+				ShopFunctions::addStandardDefaultViewCommands(false, true);
 
 				/* Assign the data */
-				$this->preprocess($ratingslist);
+//				$this->preprocess($ratingslist);
 				$this->assignRef('ratingslist', $ratingslist);
 				$this->assignRef('pagination',	$pagination);
 				$this->assignRef('lists',	$lists);
@@ -86,32 +110,6 @@ class VirtuemartViewRatings extends JView {
 		}
 		parent::display($tpl);
 	}
-	// Common preprocessing of retrieved values before passing to a template
-	private function preprocess(&$ratings) {
-		// Figure out date format setting
-		$config = JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
-		$dateformat = VmConfig::get('dateformat','%Y-%m-%d %H:%M');
 
-		if (is_array($ratings)) {
-			foreach($ratings as $row) {
-				// Cap ratings to the shop scale
-//				if ($row->rating > $this->max_rating) {
-//					$row->rating = $this->max_rating;
-//				}
-				// Date formatting
-				$date= JFactory::getDate($row->modified_on, $tzoffset);
-				$row->reviewDate =  $date->toFormat($dateformat);
-			}
-		} else {
-//			if ($ratings->rating > $this->max_rating) {
-//				$ratings->rating = $this->max_rating;
-//			}
-			// Date formatting
-			$date= JFactory::getDate($ratings->modified_on, $tzoffset);
-			$ratings->reviewDate = $date->toFormat($dateformat);
-		}
-		return $ratings;
-	}
 }
 // pure php no closing tag

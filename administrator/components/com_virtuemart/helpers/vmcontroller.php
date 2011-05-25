@@ -40,7 +40,7 @@ class VmController extends JController{
 
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
-		$this->mainLangKey = jText::_('COM_VIRTUEMART_CONTROLLER_'.$this->_cname);
+		$this->mainLangKey = JText::_('COM_VIRTUEMART_CONTROLLER_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 		$task = explode ('.',JRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
@@ -80,7 +80,7 @@ class VmController extends JController{
 	 * Generic save task
 	 *
 	 * @author Max Milbers
-	 * @param $data sometimes we just want to override the data to process
+	 * @param post $data sometimes we just want to override the data to process
 	 */
 	function save($data = 0){
 
@@ -89,15 +89,17 @@ class VmController extends JController{
 		if(empty($data))$data = JRequest::get('post');
 
 		$model = $this->getModel($this->_cname);
-		if (($_id = $model->store($data)) === false) {
-			$msg = JText::_($model->getError());
-		} else {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		$_id = $model->store($data);
+
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
 		}
 
 		$redir = $this->redirectPath;
 		if(JRequest::getCmd('task') == 'apply'){
-			$redir .= '&task=edit&'.$this->_cidName.'[]='.$_id;
+			$redir .= '&task=edit&'.$this->_cidName.'='.$_id;
 		}
 
 		$this->setRedirect($redir, $msg);
@@ -112,19 +114,18 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token remove' );
 
-		$cid = JRequest::getVar( $this->_cidName, array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
+		$ids = JRequest::getVar($this->_cidName,  array(), '', 'ARRAY');
+//		dump($ids,'my cidname '.$this->_cidName.' ids ');
+		if(count($ids) < 1) {
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 		} else {
 			$model = $this->getModel($this->_cname);
-			if (!$model->remove()) {
-				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
-			} else {
-				$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
+			$model->remove($ids);
+			$errors = $model->getErrors();
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
+			if(!empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+			foreach($errors as $error){
+				$msg .= '<br />'.($error);
 			}
 		}
 
@@ -138,7 +139,7 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
@@ -151,9 +152,8 @@ class VmController extends JController{
 	public function toggle($field,$val=null){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
 		$model = $this->getModel($this->_cname);
-		if (!$model->toggle($field,$val)) {
+		if (!$model->toggle($field,$val,$this->cidName)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
@@ -172,7 +172,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->publish(true)) {
+		if (!$model->toggle('published',1,'cid')) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
@@ -192,7 +192,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->publish(false)) {
+		if (!$model->toggle('published',0,'cid')) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);

@@ -88,13 +88,12 @@ class shopFunctionsF {
 
 		if(empty($product_price)) return '';
 
-		//Console::logSpeed('hopFunctionsF::createPriceDiv called');
 		//This could be easily extended by product specific settings
 		if(VmConfig::get($name) =='1'){
 	 		if(!empty($product_price[$name])){
 	 			$vis = "block";
 				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				$currency = CurrencyDisplay::getInstance();
+				$currency = CurrencyDisplay::getInstance( );
 		 		$product_price[$name] = $currency->priceDisplay($product_price[$name]);
 	 		} else {
 	 			$vis = "none";

@@ -43,12 +43,12 @@ AdminMenuHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="shipping_rate_list_order">
+				<label for="ordering">
 					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_LIST_ORDER'); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_list_order" id="shipping_rate_list_order" size="3" value="<?php echo $this->rate->shipping_rate_list_order; ?>" />
+				<input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->rate->ordering; ?>" />
 			</td>
 		</tr>
 		<tr>

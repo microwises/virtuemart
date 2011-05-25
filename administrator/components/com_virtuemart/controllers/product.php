@@ -42,17 +42,6 @@ class VirtuemartControllerProduct extends VmController {
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
 
-
-//		$this->setMainLangKey('PRODUCT');
-		/* Redirect templates to templates as this is the standard call */
-		$this->registerTask('saveorder','product');
-		$this->registerTask('orderup','product');
-		$this->registerTask('orderdown','product');
-
-		$this->registerTask('edit','add');
-		$this->registerTask('apply','save');
-
-
 	}
 
 	/**
@@ -74,7 +63,7 @@ class VirtuemartControllerProduct extends VmController {
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
 		/* Set the layout */
-		$view->setLayout('product');
+		$view->setLayout('default');
 
 		/* Now display the view. */
 		$view->display();
@@ -84,7 +73,7 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Shows the product add/edit screen
 	 */
-	public function add() {
+	public function edit() {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
 
@@ -121,8 +110,6 @@ class VirtuemartControllerProduct extends VmController {
 
 		$data = JRequest::get('post');
 
-		$data['product_name'] = JRequest::getVar('product_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);

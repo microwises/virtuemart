@@ -40,7 +40,7 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_VENDOR');  ?>
+				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PAYM_ELEMENT'); ?>

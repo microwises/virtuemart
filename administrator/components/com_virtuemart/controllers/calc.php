@@ -47,22 +47,22 @@ class VirtuemartControllerCalc extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function Calc() {
-
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		// Pushing default model
-		$model = $this->getModel();
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-
-		parent::display();
-	}
+//	public function Calc() {
+//
+//		$document =& JFactory::getDocument();
+//		$viewType	= $document->getType();
+//		$view = $this->getView($this->_cname, $viewType);
+//
+//		// Pushing default model
+//		$model = $this->getModel();
+//		if (!JError::isError($model)) {
+//			$view->setModel($model, true);
+//		}
+//
+////		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
+//
+//		parent::display();
+//	}
 
 	/**
 	 * Handle the edit task

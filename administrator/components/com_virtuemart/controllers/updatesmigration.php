@@ -204,23 +204,29 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 	function refreshCompleteInstall(){
 
-//		if(VmConfig::get('dangeroustools',false)){
+		if(VmConfig::get('dangeroustools',true)){
 
 			$model = $this->getModel('updatesMigration');
 
-			$model -> restoreSystemCompletly();
+			$model -> restoreSystemTablesCompletly();
 
 			$model->integrateJoomlaUsers();
 			$id = $model->determineStoreOwner();
 			$sid = $model->setStoreOwner($id);
-	//		$model->setUserToPermissionGroup($id);
+			$model->setUserToPermissionGroup($id);
 			$model->installSampleData($id);
-			$msg = $model->getErrors();
-			if(empty($msg)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
+			$errors = $model->getErrors();
+
+			$msg = '';
+			if(empty($errors)) $msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is '.$sid;
+			foreach($errors as $error){
+				$msg .= ($error).'<br />';
+			}
+
 			$this->setDangerousToolsOff();
-//		} else {
-//			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
-//		}
+		} else {
+			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+		}
 
 		$this->setRedirect($this->redirectPath,$msg);
 
@@ -266,7 +272,6 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$style = explode('|',$item->_display_style);
 
-
 			$item->currency_nbDecimal = $style[2];
 			$item->currency_decimal_symbol = $style[3];
 			$item->currency_thousands = $style[4];
@@ -275,7 +280,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$db->insertObject('#__virtuemart_currencies', $item);
 		}
-		dump($db,'mein item');
+
 		$this->setRedirect($this->redirectPath);
 	}
 

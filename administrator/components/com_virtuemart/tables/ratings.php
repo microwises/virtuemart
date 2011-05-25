@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Product reviews table
+* Ratings table
 *
 * @package	VirtueMart
 * @subpackage
@@ -13,13 +13,13 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: ratings.php 3267 2011-05-16 22:51:49Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * Product review table class
@@ -28,29 +28,16 @@ if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @package		VirtueMart
  * @author Max Milbers
  */
-class TableProduct_reviews extends VmTableData {
+class TableRatings extends VmTable {
 
-	/** @var int Primary key */
-	var $virtuemart_product_review_id	= 0;
 	/** @var int Product ID */
-	var $virtuemart_product_id			= null;
-	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         	= null;
 
-	/** @var string The user comment */
-	var $comment         				= null;
-	/** @var int The number of stars awared */
-	var $review_ok       				= null;
+	var $virtuemart_rating_id	= 0;
+	var $virtuemart_product_id           = 0;
 
-	/** The rating of shoppers for the review*/
-	var $review_rate         			= null;
-	var $review_ratingcount      		= null;
-	var $review_rating      			= null;
-
-	/** The rate of the user who wrote the review */
-	var $rate      		= null;
-
-	var $lastip      		= null;
+	var $rates         					= 0;
+	var $ratingcount      				= 0;
+	var $rating      					= 0;
 
 	/** @var int State of the review */
 	var $published         		= 0;
@@ -61,13 +48,12 @@ class TableProduct_reviews extends VmTableData {
 	* @param $db A database connector object
 	*/
 	function __construct(&$db) {
-		parent::__construct('#__virtuemart_product_reviews', 'virtuemart_product_review_id', $db);
+		parent::__construct('#__virtuemart_ratings', 'virtuemart_rating_id', $db);
 		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setObligatoryKeys('comment');
+//		$this->setObligatoryKeys('virtuemart_product_id');
 
 		$this->setLoggable();
+
 	}
-
-
 }
 // pure php no closing tag

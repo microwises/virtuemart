@@ -144,16 +144,20 @@ class VirtueMartModelVendor extends VmModel {
 		return $this->_id;
 	}
 
-	// Store multiple selectlist entries as a ; separated string
-	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
-	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
-	}
-
-	$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
-	$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
-	$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
+//	// Store multiple selectlist entries as a ; separated string
+//	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+//	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
+//	}
+//
+//	$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
+//	$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
+//	$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
 
 	$data = $table->bindChecknStore($data);
+    $errors = $table->getErrors();
+	foreach($errors as $error){
+		$this->setError($error);
+	}
 
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
@@ -161,10 +165,13 @@ class VirtueMartModelVendor extends VmModel {
 
 	/* Process the images */
 	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-	$xrefTable = $this->getTable('vendor_medias');
+//	$xrefTable = $this->getTable('vendor_medias');
 	$mediaModel = new VirtueMartModelMedia();
-	$mediaModel->storeMedia($data,$xrefTable,'vendor');
-
+	$mediaModel->storeMedia($data,'vendor');
+    $errors = $mediaModel->getErrors();
+	foreach($errors as $error){
+		$this->setError($error);
+	}
 	return $this->_id;
 
 	}
@@ -398,23 +405,6 @@ class VirtueMartModelVendor extends VmModel {
 
 			return nl2br($store_address);
 		}
-	}
-
-	/**
-	 * Since a category dont need always an image, we can attach them to the category with this function.
-	 * The parameter takes a single category or arrays of categories, look at FE/views/virtuemart/view.html.php
-	 * for an exampel using it
-	 *
-	 * @author Max Milbers
-	 * @param object $categories
-	 */
-	public function addImagesToVendor($vendor=0){
-
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
-
-		$this->mediaModel->attachImages($vendor,'vendor','image');
-
 	}
 
 }

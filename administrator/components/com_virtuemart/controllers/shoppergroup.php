@@ -40,7 +40,7 @@ class VirtuemartControllerShopperGroup extends VmController
 	 * @access	public
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_shoppergroup_id');
 
 	}
 }

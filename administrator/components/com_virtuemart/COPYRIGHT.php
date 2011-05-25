@@ -27,7 +27,7 @@ GNU General Public License as of September 15, 2005, and as distributed,
 it includes or is derivative of works licensed under the GNU General
 Public License or other free or open source software licenses, including
 works copyrighted by any or all of the following, from 2009 - 2011,
-Max Milbers, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Patrick Kohl, Valèrie Isaksen, Urs Brülhart, Devendra Kumar Shukla,
+Max Milbers, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Patrick Kohl, Valérie Isaksen, Urs Brülhart, Devendra Kumar Shukla,
 Christopher Roussel, Eugen Stranz, John Acosta, Zbigniew Mazur, John Wicks, Markus Öhler, Stephanie Schmidt, Vu Hoang Viet, Simon Hodgkiss,
 Fred Bidon, Alexander Kludt
 

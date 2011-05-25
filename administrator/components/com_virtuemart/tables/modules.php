@@ -37,10 +37,7 @@ class TableModules extends JTable
     /** @var int Site module or Admin module */
 	var $is_admin  = 0;
 
-    /** @var int order in which the module is loaded */
-	var $list_order = 0;
-
-
+	var $ordering = 0;
 	/**
 	 * @author Markus �hler
 	 * @param $db A database connector object
@@ -48,6 +45,7 @@ class TableModules extends JTable
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_modules', 'module_id', $db);
+
 	}
 
 
