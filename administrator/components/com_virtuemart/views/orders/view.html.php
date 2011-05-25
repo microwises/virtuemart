@@ -207,7 +207,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
-			$this->assignRef('pagination',	$pagination);
+			$this->assignRef('pagination', $pagination);
 			$this->assignRef('lists',	$lists);
 		}
 

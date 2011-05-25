@@ -728,9 +728,9 @@ $html .= '</tr>';
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 		$this->addMediaAttributesByType();
-		$html .= '<tr>
+		$html .= '<tr><fieldset class="radio">
 		<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
-		<td>'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</td></tr>';
+		<td>'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
 
 		$html .= '</table>';
 
