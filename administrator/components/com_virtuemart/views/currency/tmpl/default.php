@@ -32,13 +32,13 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
 		    </th>
 		    <th >
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NAME'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME'); ?>
 		    </th>
 		    <th width="80">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_EXCHANGE_RATE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_SYMBOL'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
 		    </th>
 <?php /*		    <th width="10">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
@@ -47,7 +47,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
 		    </th>
              <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
 		    </th>
 <?php /*		    <th >
 				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_START_DATE'); ?>

@@ -51,7 +51,7 @@ AdminMenuHelper::startAdminArea();
 
 	<fieldset class="adminform">
 
-	<legend><?php echo JText::_('COM_VIRTUEMART_USERGROUP_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_USERGROUP').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 
 	<table class="admintable">
 

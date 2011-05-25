@@ -19,8 +19,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
+ 
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 echo '<fieldset class="adminform">';
+
+
+
 $this->media->addHidden('view','media');
 $this->media->addHidden('task','');
 $this->media->addHidden(JUtility::getToken(),1);

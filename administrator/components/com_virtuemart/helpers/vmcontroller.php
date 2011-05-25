@@ -40,7 +40,7 @@ class VmController extends JController{
 
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
-		$this->mainLangKey = JText::_('COM_VIRTUEMART_CONTROLLER_'.strtoupper($this->_cname));
+		$this->mainLangKey = JText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 		$task = explode ('.',JRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {

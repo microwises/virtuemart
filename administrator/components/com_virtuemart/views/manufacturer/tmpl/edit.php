@@ -31,7 +31,7 @@ $editor = JFactory::getEditor();
 ?>
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">

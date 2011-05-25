@@ -42,13 +42,13 @@ if( $this->pagination->limit < $nrows ){
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_CATEGORY_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'c.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<th width="11%">
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCTS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
 			</th>
 			<th width="5%">
 				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>

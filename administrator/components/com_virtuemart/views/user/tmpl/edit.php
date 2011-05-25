@@ -57,14 +57,20 @@ function myValidator(f, t)
 <?php
 	echo $this->pane->startPane("user-pane");
 
-	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
-	echo $this->loadTemplate('user');
-	echo $this->pane->endPanel();
+        if (!empty($this->userDetails->user_is_vendor)) {
+		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR'), 'edit_vendor' );
+		echo $this->loadTemplate('vendor');
+		echo $this->pane->endPanel();
+	}
+	
 
 	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL'), 'edit_shopper' );
 	echo $this->loadTemplate('shopper');
 	echo $this->pane->endPanel();
-
+        
+        echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
+	echo $this->loadTemplate('user');
+	echo $this->pane->endPanel();
 	if ($this->shipto != 0) {
 		// Note:
 		// Of the order of the tabs change here, change the startOffset value for
@@ -80,11 +86,7 @@ function myValidator(f, t)
 		echo $this->pane->endPanel();
 	}
 
-	if (!empty($this->userDetails->user_is_vendor)) {
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
-		echo $this->loadTemplate('vendor');
-		echo $this->pane->endPanel();
-	}
+	
 
 	echo $this->pane->endPane();
 ?>

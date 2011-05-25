@@ -54,7 +54,7 @@ JPluginHelper::importPlugin('vmshipper');
 			<?php
 			if (VmConfig::get('enable_coupons') == '1') { ?>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_COUPON_HEADER') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?>:</strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>
 			</tr>
 			<?php } ?>

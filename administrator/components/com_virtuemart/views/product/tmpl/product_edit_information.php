@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MANUFACTURER') ?></div>
+					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['manufacturers'];?>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORIES') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?>:</div>
 				</td>
 				<td width="71%" >
 					<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">

@@ -38,7 +38,7 @@ class VirtuemartViewProduct extends JView {
 		/* Get the task */
 		$task = JRequest::getVar('task');
 
-                $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT');
+                $viewName = ShopFunctions::SetViewTitle('vm_product_48' );
                 $this->assignRef('viewName', $viewName);
 		/* Load helpers */
 		$this->loadHelper('currencydisplay');
@@ -288,7 +288,7 @@ class VirtuemartViewProduct extends JView {
 
 				/* Create filter */
 				/* Search type */
-		    	$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
+		    	       $options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
 		    				'product' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'),
 							'price' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
@@ -296,7 +296,7 @@ class VirtuemartViewProduct extends JView {
 				$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
 
 				/* Search order */
-		    	$options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
+		    	        $options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								  'af' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
 							);
 				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);

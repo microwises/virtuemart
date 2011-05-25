@@ -67,7 +67,7 @@ $mainframe = JFactory::getApplication();
 		<tr>
 			<td class="key">
 				<label for="category_name">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY').' '.JText::_('COM_VIRTUEMART_NAME'); ?>:
 				</label>
 			</td>
 			<td>

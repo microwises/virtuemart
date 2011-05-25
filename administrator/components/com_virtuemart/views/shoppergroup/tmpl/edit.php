@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+JHTML::_('behavior.tooltip');
 AdminMenuHelper::startAdminArea();
 ?>
 
@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -51,7 +51,9 @@ AdminMenuHelper::startAdminArea();
 		<tr>
       <td width="110" class="key">
         <label for="default">
-          <?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>:
+            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
+          <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>:
+            </span>
         </label>
       </td>
       <td>
@@ -64,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_DESC'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>
