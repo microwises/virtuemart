@@ -45,9 +45,9 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
 				</label>
 			</td>
-			<td>
+			<td><fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->country->published); ?>
-			</td>
+			</fieldset></td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
