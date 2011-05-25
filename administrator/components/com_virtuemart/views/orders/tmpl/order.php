@@ -18,7 +18,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $document = JFactory::getDocument();
-$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
+$mainframe = JFactory::getApplication('site');
+$document->addScript(JURI::root().'components/com_virtuemart/assets/js/jquery.js');
 //$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
 
 AdminMenuHelper::startAdminArea();
