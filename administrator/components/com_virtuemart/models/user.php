@@ -117,7 +117,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function setCurrent()
 	{
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 		$this->setId($_currentUser->get('id'));
 	}
 
@@ -186,7 +186,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->shopper_groups = $xrefTable->load($this->_id);
 
 
-			$this->_data->JUser =& JUser::getInstance($this->_id);
+			$this->_data->JUser = JUser::getInstance($this->_id);
 
 			$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
 
@@ -245,7 +245,7 @@ class VirtueMartModelUser extends VmModel {
 		 */
 		function getGroupList()
 		{
-			$_aclObject =& JFactory::getACL();
+			$_aclObject = JFactory::getACL();
 
 			if (VmConfig::isAtLeastVersion('1.6.0')){
 				//TODO fix this latter. It's just an workarround to make it working on 1.6
@@ -313,7 +313,7 @@ class VirtueMartModelUser extends VmModel {
 			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 			//The constructor sets automatically the right id.
 			$new = ($this->_id < 1);
-			$user = new JUser($this->_id);
+			$user = JFactory::getUser($this->_id);
 			$gid = $user->get('gid'); // Save original gid
 
 			/*
