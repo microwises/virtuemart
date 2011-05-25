@@ -41,6 +41,7 @@ class VmCustomHandler {
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
+			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
 			'i'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
@@ -77,6 +78,7 @@ class VmCustomHandler {
 	 * @param object $table
 	 * @param array $data
 	 * @param string $type
+	 * OBSELETE
 	 */
 	public function prepareStoreCustom($data,$table){
 
@@ -100,6 +102,7 @@ class VmCustomHandler {
 	/**
 	 * Adds the hidden fields which are needed for the form in every case
 	 * @author Max Milbers
+	 * OBSELTE ?
 	 */
 	private function addHiddenByType(){
 

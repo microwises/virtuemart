@@ -41,7 +41,7 @@ class VirtuemartViewMedia extends JView {
 		$db->setQuery( $query );
 		$json = $db->loadObject();
 		if (isset($json->file_url)) {
-			$json->file_url = $json->file_url;// JURI::root().$json->file_url;
+			$json->file_root = JURI::root();
 			$json->msg =  'OK';
 			echo json_encode($json);
 		} else {
