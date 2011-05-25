@@ -22,7 +22,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  */
 
 class plgVMPaymentPaypal extends vmPaymentPlugin {
-	
+
 	var $_pelement;
 	var $_pcode = 'PP_API' ;
 
@@ -118,9 +118,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		// Load the required helpers
 		if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
-		
+
 		if (!class_exists('VirtueMartModelOrders'))	require( JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orders.php' );
-		
+
 		$_usr =& JFactory::getUser();
 
 		$_usrBT = $_orderData->BT;
@@ -141,43 +141,43 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			$email_customer = 'FALSE';
  		}
  		$_testReq = $this->params->get('DEBUG') == 1 ? 'YES' : 'NO';
-		dump($_orderData,'info commande');
-		dump($_priceData,'info prix');
-		
-		$post_variables = Array( 
-			'cmd' => '_ext-enter' , 
-			'redirect_cmd' => '_xclick' , 
-			'upload' => '1' , 
-			'business' => $this->params->get('PAYPAL_EMAIL') , 
-			'receiver_email' => $this->params->get('PAYPAL_EMAIL') , 
-			'item_name' => JText::_( 'VM_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr , 
+//		dump($_orderData,'info commande');
+//		dump($_priceData,'info prix');
+
+		$post_variables = Array(
+			'cmd' => '_ext-enter' ,
+			'redirect_cmd' => '_xclick' ,
+			'upload' => '1' ,
+			'business' => $this->params->get('PAYPAL_EMAIL') ,
+			'receiver_email' => $this->params->get('PAYPAL_EMAIL') ,
+			'item_name' => JText::_( 'VM_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr ,
 			'order_number' => VirtueMartModelOrders::getOrderNumber($_orderNr),
 			"virtuemart_order_id" => $_orderNr,
-			"invoice" => $_orderNr , 
-			"amount" => $_priceData['billTotal'] , 
-			"shipping" => $_priceData['order_shipping'], 
-			"currency_code" => $_vendorCurrency , 
-			"address_override" => "1" , 
-			"first_name" => $_usrBT[ 'first_name' ] , 
-			"last_name" => $_usrBT[ 'last_name' ] , 
-			"address1" => $_usrBT[ 'address_1' ] , 
-			"address2" => $_usrBT[ 'address_2' ] , 
-			"zip" => $_usrBT[ 'zip' ] , 
-			"city" => $_usrBT[ 'city' ] , 
-			"state" => $_usrBT[ 'state' ] , 
-			"country" => ShopFunctions::getCountryByID($_usrST['virtuemart_country_id'],'country_3_code') , 
-			"email" => $_usrBT[ 'email' ] , 
+			"invoice" => $_orderNr ,
+			"amount" => $_priceData['billTotal'] ,
+			"shipping" => $_priceData['order_shipping'],
+			"currency_code" => $_vendorCurrency ,
+			"address_override" => "1" ,
+			"first_name" => $_usrBT[ 'first_name' ] ,
+			"last_name" => $_usrBT[ 'last_name' ] ,
+			"address1" => $_usrBT[ 'address_1' ] ,
+			"address2" => $_usrBT[ 'address_2' ] ,
+			"zip" => $_usrBT[ 'zip' ] ,
+			"city" => $_usrBT[ 'city' ] ,
+			"state" => $_usrBT[ 'state' ] ,
+			"country" => ShopFunctions::getCountryByID($_usrST['virtuemart_country_id'],'country_3_code') ,
+			"email" => $_usrBT[ 'email' ] ,
 			"night_phone_b" => $_usrBT[ 'phone_1' ] ,
 			"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY
 			"notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
 			"cancel_return" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart') , // TO VERIFY
-			"undefined_quantity" => "0" , 
+			"undefined_quantity" => "0" ,
 
-			"test_ipn" => $this->params->get('DEBUG') , 
-			"pal" => "NRUBJXESJTY24" , 
-			"no_shipping" => "1" , 
+			"test_ipn" => $this->params->get('DEBUG') ,
+			"pal" => "NRUBJXESJTY24" ,
+			"no_shipping" => "1" ,
 			"no_note" => "1" ) ;
-	//warning HTPPS 		"cpp_header_image" => $vendor_image_url , 
+	//warning HTPPS 		"cpp_header_image" => $vendor_image_url ,
 
 		$_qstring = '';
 		foreach($post_variables AS $_k => $_v){
@@ -234,14 +234,14 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
-	
+
 	/**
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
 	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
-		
+
 		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
@@ -253,7 +253,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 			return '';
 		}
-		
+
 		$_html = '<table class="adminlist">'."\n";
 		$_html .= '	<thead>'."\n";
 		$_html .= '		<tr>'."\n";
@@ -274,7 +274,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	}
 
 /*	function get_payment_rate( $sum ) {
-		
+
 		if( $sum < 5000 )
 			return - ($this->params->get( 'CASH_ON_DEL_5000' )) ;
 		elseif( $sum < 10000 )
@@ -291,7 +291,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
 		else
 			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
-		
+
 	//	return -($sum * 0.10);
 	}
 */
