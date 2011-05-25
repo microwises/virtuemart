@@ -538,7 +538,7 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 
-    public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts) {
+    public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts=10) {
 //		Console::logSpeed('getGroupProducts '.$group);
 	    switch ($group) {
 			case 'featured':

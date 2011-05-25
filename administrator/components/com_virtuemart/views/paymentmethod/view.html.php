@@ -143,7 +143,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		} else {
 			$table = '#__extensions';
 			$ext_id = 'extension_id';
-			$enable = 'published';
+			$enable = 'enabled';
 		}
 
 		$db = JFactory::getDBO();

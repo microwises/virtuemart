@@ -107,9 +107,9 @@ function gotocontact(id) {
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BLOCKUSER'); ?>
 			</td>
-			<td>
+			<td><fieldset class="radio">
 				<?php echo $this->lists['block']; ?>
-			</td>
+			</fieldset></td>
 		</tr>
 		<?php endif; ?>
 

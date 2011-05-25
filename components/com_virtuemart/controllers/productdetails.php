@@ -99,7 +99,7 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Display it all */
 		$view = $this->getView('askquestion', 'html');
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
-		$view->setLayout('mailconfirmed');
+		$view->setLayout('mail_confirmed');
 		$view->display();
 	}
 
@@ -133,7 +133,7 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Display it all */
 		$view = $this->getView('recommend', 'html');
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
-		$view->setLayout('mailconfirmed');
+		$view->setLayout('mail_confirmed');
 		$view->display();
 	}
 

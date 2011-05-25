@@ -98,7 +98,7 @@ class VmModel extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-    public function getPagination() {
+    public function &getPagination() {
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
@@ -137,7 +137,7 @@ class VmModel extends JModel {
      *
      */
 
-    public function getData(){
+    public function &getData(){
 
     	if (empty($this->_data)) {
 		    $this->_data = $this->getTable($this->_maintablename);
