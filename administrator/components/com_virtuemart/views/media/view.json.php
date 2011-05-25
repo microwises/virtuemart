@@ -32,7 +32,7 @@ class VirtuemartViewMedia extends JView {
 
 	/* json object */
 	private $json = null;
-	
+
 	function display($tpl = null) {
 
 		$virtuemart_media_id = JRequest::getVar('virtuemart_media_id');
@@ -40,8 +40,8 @@ class VirtuemartViewMedia extends JView {
 		$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 		$db->setQuery( $query );
 		$json = $db->loadObject();
-		if (isset($json->file_url)) { 
-			$json->file_url = JURI::root().$json->file_url;
+		if (isset($json->file_url)) {
+			$json->file_root = JURI::root(true).'/';
 			$json->msg =  'OK';
 			echo json_encode($json);
 		} else {

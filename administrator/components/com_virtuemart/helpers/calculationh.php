@@ -600,7 +600,7 @@ class calculationHelper {
 			if(!empty($this->_amount)){
 				//Test
 			}
-//			dump($hitsShopper,'$hitsShopper');
+
 //if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if( $hitsCategory && $hitsShopper ){
 				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["virtuemart_calc_id"];
@@ -724,7 +724,6 @@ class calculationHelper {
 		$_sRate = new VirtueMartModelShippingRate();
 		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
 
-		dump($shipping,'hmm');
 		$this->_cartPrices['shipping_rate_value'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value']); //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shipping_rate_package_fee'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_package_fee']);
 		$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee']);

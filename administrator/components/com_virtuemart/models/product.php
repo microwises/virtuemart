@@ -110,7 +110,8 @@ class VirtueMartModelProduct extends VmModel {
 	    	foreach($attribs as $k=>$v){
 				if(!empty($child->$k) && is_array($child->$k)){
 					if(!is_array($v)) $v =array($v);
-					$child->$k = array_merge($child->$k,$v);
+//					$child->$k = array_merge($child->$k,$v);
+					$child->$k = $v;
 				} else{
 					if(empty($child->$k)){
 						$child->$k = $v;
@@ -2015,36 +2016,48 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* parent */
 				case 'P':
-					return '<b>'.$value.'<b/>';
+					return '<span class="product_custom_parent">'.$value.'<span/>';
 				break;
 				/* image */
 				case 'i':
-
-					$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-					AND (`virtuemart_vendor_id`= "'.$product->virtuemart_vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$value;
-					$db =& JFactory::getDBO();
-					$db->setQuery($q);
-					$image = $db->loadObject();
-
-					//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-					if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-					$this->virtuemart_media_id = (int)$value;
-					$imagehandler = VmMediaHandler::createMedia($image,'product');
-					//$imagehandler->createMedia($image);
-					return $imagehandler->displayMediaThumb();
+					return $this->displayCustomMedia($product,$value);
 				break;
 				/* Child product */
 				case 'C':
-					$q='SELECT p.`virtuemart_product_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
+					$q='SELECT p.`virtuemart_product_id` ,p.`product_parent_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`
 					WHERE `published`=1 AND p.`virtuemart_product_id`= "'.$value.'" ';
 					$this->_db->setQuery($q);
-					if ($result = $this->_db->loadObject() ) return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $result->virtuemart_product_id . '&virtuemart_category_id=' . $result->virtuemart_category_id ), $result->product_name, array ('title' => $result->product_name ) );
-					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
+					//echo $this->_db->_sql;
+					if ($child = $this->_db->loadObject() ) {
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.$child->virtuemart_product_id.'" ';
+						$this->_db->setQuery($q);
+						$thumb ='';
+						if ($media_id = $this->_db->loadResult()) {
+							$thumb = $this->displayCustomMedia($product,$media_id);
+						} else {
+							$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.$child->product_parent_id.'" ';
+							$this->_db->setQuery($q);
+							if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($product,$media_id);
+						}
+						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_parent_id=' . $child->product_parent_id . '&virtuemart_product_id=' . $child->virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id ), $thumb.' '.$child->product_name, array ('title' => $child->product_name ) );
+					}
+					else return '';
 				break;
 			}
 		}
 	}
+	function displayCustomMedia($product,$media_id){
+
+  		$data = $this->getTable('medias');
+   		$data->load($media_id);
+
+  		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+  		$media = VmMediaHandler::createMedia($data,'product');
+		return $media->displayMediaThumb('',false);
+
+	}
+
 
 }
 // No closing tag

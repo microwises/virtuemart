@@ -279,50 +279,35 @@ class VirtueMartModelRatings extends VmModel {
 			if ($data['vote'] < 0 ) $data['vote'] = 0 ;
 			if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
 
-//			//To allow voting of 0, we must add 1 to avoid an empty of the table, so we added +1 in the form and have to remove it now again
-//			$data['vote'] = $data['vote']-1;
-
 			$data['lastip'] = $_SERVER['REMOTE_ADDR'];
 
 			$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
 
 			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
 
-//			$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$data['virtuemart_product_id'].'" AND `created_by` = "'.$userId.'" ';
-//			$this->_db->setQuery($q);
-//			$vote = $this->_db->loadObject();
-
 			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
 
 			if(isset($data['vote'])){
-				dump('store the vote');
 				$votesTable = $this->getTable('rating_votes');
 		        $data = $votesTable->bindChecknStore($data);
 		    	$errors = $votesTable->getErrors();
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store votes '.$error);
-					dump($vote,'ERROR my vote table');
 				}
 			}
 
 
 			if(!empty($rating->rates) && empty($vote) ){
 				$data['rates'] = $rating->rates + $data['vote'];
-				$data['ratingcount'] = $rating->ratingcount+1;dump('new vote, but old review');
+				$data['ratingcount'] = $rating->ratingcount+1;
 			} else if(!empty($rating->rates) && !empty($vote->vote)){
 				$data['rates'] = $rating->rates - $vote->vote + $data['vote'];
-				$data['ratingcount'] = $rating->ratingcount;dump('update vote');
+				$data['ratingcount'] = $rating->ratingcount;
 			} else {
 				$data['rates'] = $data['vote'];
-				$data['ratingcount'] = 1;dump('complete new review entry');
+				$data['ratingcount'] = 1;
 			}
 
-//			if(!empty($rating->ratingcount)){
-//				$data['ratingcount'] = $rating->ratingcount+1;
-//			} else {
-//				$data['ratingcount'] = 1;
-//			}
-			dump($rating,'$rating for ratings');
 			if(empty($data['rates']) || empty($data['ratingcount']) ){
 				$data['rating'] = 0;
 			} else {
@@ -330,13 +315,12 @@ class VirtueMartModelRatings extends VmModel {
 			}
 
 			$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
-			dump($data,'data for ratings');
+
 			$rating = $this->getTable('ratings');
 			$data = $rating->bindChecknStore($data);
 	    	$errors = $rating->getErrors();
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
-				dump($vote,'ERROR my ratings table');
 			}
 
 
@@ -349,13 +333,7 @@ class VirtueMartModelRatings extends VmModel {
 				/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
 				if (VmConfig::get('reviews_autopublish',1)) $data['published'] = 1;
 
-//				$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$data['virtuemart_product_id'].'" AND `created_by` = "'.$userId.'" ';
-//				$this->_db->setQuery($q);
-//				$review = $this->_db->loadObject();
-
 				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
-
-//				$review->load($data['virtuemart_product_id']);
 
 				if(!empty($review->review_rates)){
 					$data['review_rates'] = $review->review_rates + $data['review_rate'];
@@ -372,13 +350,12 @@ class VirtueMartModelRatings extends VmModel {
 				$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
 
 				$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
-				dump($data,'data for reviews');
+
 				$reviewTable = $this->getTable('rating_reviews');
 		        $data = $reviewTable->bindChecknStore($data);
 				$errors = $reviewTable->getErrors();
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store review '.$error);
-					dump($reviewTable,'ERROR my reviews table');
 				}
 			}
 			return true;

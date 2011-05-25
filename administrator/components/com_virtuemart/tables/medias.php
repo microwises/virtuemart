@@ -106,12 +106,19 @@ class TableMedias extends VmTable {
 		}
 
 		if(!empty($this->file_mimetype)){
+
 //			if(strlen($this->file_title)>254){
 //				$this->setError('Url to long '.strlen($this->file_title).' for database field, allowed 254');
 //			}
 		} else{
-			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_SHOULD_HAVE_MIMETYPE'));
-			$notice = true;
+			$rel_path = str_replace('/',DS,$this->file_url);
+//    		return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+			if(function_exists('mime_content_type') ){
+				$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
+			} else {
+				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_SHOULD_HAVE_MIMETYPE'));
+				$notice = true;
+			}
 		}
 
 		if(!empty($this->file_url)){
