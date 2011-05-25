@@ -68,16 +68,16 @@ class VmImage extends VmMediaHandler {
 		if( substr( $this->file_url, 0, 4) == "http" ) {
 			$file_url = $this->file_url;
 			$file_alt = $this->file_title;
-		}
-
-		$rel_path = str_replace('/',DS,$this->file_url_folder);
-		$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
-		if (!file_exists($fullSizeFilenamePath)) {
-			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-			$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
 		} else {
-			$file_url = $this->file_url;
-			$file_alt = $this->file_description;
+			$rel_path = str_replace('/',DS,$this->file_url_folder);
+			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+			if (!file_exists($fullSizeFilenamePath)) {
+				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
+			} else {
+				$file_url = $this->file_url;
+				$file_alt = $this->file_description;
+			}
 		}
 
 		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);

@@ -176,6 +176,7 @@ class VmMediaHandler {
 
     	$this->determineFoldersToTest();
 
+    	dump($this,'setFileInfo');
     }
 
     public function getUrl(){
