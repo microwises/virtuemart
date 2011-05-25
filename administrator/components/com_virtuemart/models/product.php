@@ -1074,12 +1074,16 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param int $virtuemart_product_id
 	 */
 
-	public function createClone($id){
-		$product = $this->getProduct($id);
+	public function createClone($cids){
+		if (is_array($cids)) $cids = array($cids);
+		$product = $this->getProduct($cids[0]);
 		$product->virtuemart_product_id = 0;
-		$this->saveProduct($product,true,true,false);
+		$product->slug = $product->slug.'-'.$cids[0];
+		dump ($product,$cids[0] );
+		$this->store($product);
 		return $this->_id;
 	}
+
 
 	/**
 	 * removes a product and related table entries
@@ -1814,6 +1818,20 @@ class VirtueMartModelProduct extends VmModel {
 				case 'P':
 					return $value.'<input type="hidden" value="'.$value.'" name="field['.$row.'][custom_value]" />'.$priceInput;
 				break;
+				case 'R':
+					$q='SELECT `product_name`,`product_sku` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$value ;
+					$this->_db->setQuery($q);
+					$related = $this->_db->loadObject();
+					$display = $related->product_name.'('.$related->product_sku.')';
+					
+					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
+					$this->_db->setQuery($q);
+					$thumb ='';
+					if ($media_id = $this->_db->loadResult()) {
+						$thumb = $this->displayCustomMedia($media_id);
+					}
+					return $thumb.' '.$display;
+				break;
 				/* image */
 				case 'i':
 					if (empty($product)){
@@ -2018,9 +2036,16 @@ class VirtueMartModelProduct extends VmModel {
 				case 'P':
 					return '<span class="product_custom_parent">'.$value.'<span/>';
 				break;
+				/* related */
+				case 'R':
+					$q='(SELECT CONCAT_WS("::",`product_name`,`product_sku`) as name FROM `#__virtuemart_products` 
+					WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
+					$this->_db->setQuery($q);
+					return $this->displayCustomMedia($value).' '.$this->_db->loadResult();
+				break;
 				/* image */
 				case 'i':
-					return $this->displayCustomMedia($product,$value);
+					return $this->displayCustomMedia($value);
 				break;
 				/* Child product */
 				case 'C':
@@ -2034,11 +2059,11 @@ class VirtueMartModelProduct extends VmModel {
 						$this->_db->setQuery($q);
 						$thumb ='';
 						if ($media_id = $this->_db->loadResult()) {
-							$thumb = $this->displayCustomMedia($product,$media_id);
+							$thumb = $this->displayCustomMedia($media_id);
 						} else {
 							$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.$child->product_parent_id.'" ';
 							$this->_db->setQuery($q);
-							if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($product,$media_id);
+							if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($media_id);
 						}
 						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_parent_id=' . $child->product_parent_id . '&virtuemart_product_id=' . $child->virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id ), $thumb.' '.$child->product_name, array ('title' => $child->product_name ) );
 					}
@@ -2047,7 +2072,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 	}
-	function displayCustomMedia($product,$media_id){
+	function displayCustomMedia($media_id){
 
   		$data = $this->getTable('medias');
    		$data->load($media_id);

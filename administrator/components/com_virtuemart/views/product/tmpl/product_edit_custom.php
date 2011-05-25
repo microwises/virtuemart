@@ -67,15 +67,32 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>';
 	}
 	?>
+		<tr class="row0">
+			<td style="vertical-align:top;"><br />
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
+				<div class="jsonSuggestResults" style="width: 322px;">
+				<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
+				</div>
+			</td>
+			<td>
+				<input type="button" name="remove_related" onclick="removeSelectedOptions('related_products');" value="&nbsp; &lt; &nbsp;" />
+			</td>
+			<td>
+				<?php echo $this->lists['related_products']; ?>
+			</td>
+		</tr>
 	</tbody>
 </table>
 </fieldset>
 <div style="clear:both;"></div>
 <div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
 <div><?php echo JText::_('COM_VIRTUEMART_SELECT').' '.$this->customsList; ?></div>
-<?php /*<div class="jsonSuggestResults" style="width: 322px;">
+<div class="jsonSuggestResults" style="width: 322px;">
 	<input type="text" size="40" name="search" id="ProductCustomSearch" value="" />
-</div> */ ?>
+	<input type="button" value="Get Value" />
+	<div id="customfieldslist"></div>
+	<ol id="result"></ol>
+</div> 
 <script type="text/javascript">
 nextCustom = <?php echo $i ?>;
 jQuery('div.remove').click( function() {
@@ -105,14 +122,13 @@ jQuery('input#ProductCustomSearch').autocomplete('index.php?option=com_virtuemar
 		jQuery('customfields input').children().each(function() {
 			items[items.length++] = jQuery(this).val();
 		})
-	
 		if (jQuery.inArray(item.id, items) >= 0) {
 			return;
 		}
 		var custom = item.value.split('::');
 		var Attributes = item.id.split('|');
-
-		jQuery("div#customfields").append('<div>'+custom[0]+'<input type="text" value="'+Attributes[1]+'" name="custom['+Attributes[0]+']"  size="120">'+custom[1]+'</div><div>Type : '+Attributes[2]+'</div>');
+		
+		jQuery("#customfieldslist").append('<div>'+custom[0]+'<input type="text" value="'+Attributes[1]+'" name="custom['+Attributes[0]+']"  size="120">'+custom[1]+'</div><div>Type : '+Attributes[2]+'</div>');
 	});
 jQuery('select#customlist').click(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
@@ -133,4 +149,52 @@ jQuery('select#customlist').click(function() {
 function removeSelectedOptions(from) {
 	jQuery('select#'+from+' :selected').remove()
 }
+</script>
+<script type="text/javascript">
+jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts', {
+		mustMatch: false,
+		max : 50,
+		dataType: "json",
+		minChars:2,
+		parse: function(data) {
+			return jQuery.map(data, function(row) {
+				return {
+					data: row,
+					value: row.value,
+					result: row.value
+				}
+			});
+		},
+		formatItem: function(item) {
+			return item.value;
+		}
+	}).result(function(e, item) {
+		/* Check if the item is already there */
+		var items = [];
+		jQuery('select#related_products').children().each(function() {
+			items[items.length++] = jQuery(this).val();
+		})
+	
+		if (jQuery.inArray(item.id, items) >= 0) {
+			return;
+		}
+		
+		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=product&id='+item.id+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
+	function(data) {
+		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
+		jQuery.each(data.value, function(index, value){
+			jQuery("table#customfields").append(value);
+//			jQuery("table#customfields td:last").append(trash);
+		});
+		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
+			jQuery(this).parents('tr').remove();
+		});
+	});
+	nextCustom++;
+
+	});
+/*
+function removeSelectedOptions(from) {
+	jQuery('select#'+from+' :selected').remove()
+}*/
 </script>

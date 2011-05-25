@@ -37,6 +37,7 @@ class VirtuemartViewProduct extends JView {
 		$type = JRequest::getVar('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
+		
 		$db = JFactory::getDBO();
 		/* Get the task */
 		if ($type=='relatedproducts') {
@@ -44,8 +45,34 @@ class VirtuemartViewProduct extends JView {
 				FROM #__virtuemart_products";
 			if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
 				$db->setQuery($query);
+				echo json_encode($db->loadObjectList());
+				return;
 				$json['value'] = $db->loadObjectList();
 				$json['ok'] = 1 ;
+		} else if ($type=='product') {
+			
+			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value 
+				FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
+				$db->setQuery($query);
+
+			$field = $db->loadObject();
+			$html = array ();
+			$display = $product_model->inputType($field->id,'R',0,0,$row,0);
+			$cartIcone= 'icon-16-default-off.png'; 
+			$html[] = '<tr>
+				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
+				 <td>'.$display.'
+				 </td>
+				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'
+					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
+					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][virtuemart_custom_id]" />
+					<input type="hidden" value="0" checked="checked" name="admin_only" />
+				 </td>
+				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
+				 <td></td>
+				</tr>';
+			$json['value'] = $html;
+			$json['ok'] = $field->id ;
 		} else if ($type=='custom') {
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";

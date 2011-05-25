@@ -101,61 +101,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 			</table>
 		</td>
-		<td width="50%" valign="top">
-			<table class="adminform">
-				<tr class="row1">
-					<td colspan="3"><h2><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h2></td>
-				</tr>
-				<tr class="row0">
-					<td style="vertical-align:top;"><br />
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: 322px;">
-						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
-						</div>
-					</td>
-					<td>
-						<input type="button" name="remove_related" onclick="removeSelectedOptions('related_products');" value="&nbsp; &lt; &nbsp;" />
-					</td>
-					<td>
-						<?php echo $this->lists['related_products']; ?>
-					</td>
-				</tr>
-			</table>
-		</td>
 	</tr>
 </table>
-<script type="text/javascript">
-jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts', {
-		mustMatch: false,
-		max : 50,
-		dataType: "json",
-		minChars:2,
-		parse: function(data) {
-			return jQuery.map(data, function(row) {
-				return {
-					data: row,
-					value: row.value,
-					result: row.value
-				}
-			});
-		},
-		formatItem: function(item) {
-			return item.value;
-		}
-	}).result(function(e, item) {
-		/* Check if the item is already there */
-		var items = [];
-		jQuery('select#related_products').children().each(function() {
-			items[items.length++] = jQuery(this).val();
-		})
-	
-		if (jQuery.inArray(item.id, items) >= 0) {
-			return;
-		}
-		jQuery("select#related_products").append('<option value="'+item.id+'" selected="selected">'+item.value+'</option>');
-	});
 
-function removeSelectedOptions(from) {
-	jQuery('select#'+from+' :selected').remove()
-}
-</script>

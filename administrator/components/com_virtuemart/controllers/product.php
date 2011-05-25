@@ -154,7 +154,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		$cids = JRequest::getVar('cid');
+		$cids = JRequest::getVar('virtuemart_product_id');
 		if ($model->createClone($cids[0])) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
@@ -179,7 +179,7 @@ class VirtuemartControllerProduct extends VmController {
 		if ($type = 'customfield') {
 			$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 			$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
-		}
+		} else $view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		/* Now display the view. */
 		$view->display(null);
 	}
