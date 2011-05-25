@@ -130,12 +130,11 @@ class modelfunctions{
 
 		foreach($ids as $id) {
 		    if (!$table->delete($id)) {
-				$this->setError($table->getError());
+				$this->setError('modelfunctions: delete, uses deprecated '.$table->getError());
 				return false;
 		    }
 		}
 		return true;
-
     }
 
 	/**
@@ -148,7 +147,7 @@ class modelfunctions{
 
 		$ids = JRequest::getVar( $idName, array(0), 'post', 'array' );
 		if (!$table->publish($ids, $publishId)) {
-			$this->setError($table->getError());
+			$this->setError('modelfunctions: publish, uses deprecated '.$table->getError());
 			return false;
 		}
 
@@ -221,7 +220,7 @@ class modelfunctions{
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError( 'modelfunctions: loadConsiderDate '.$this->_db->getErrorMsg() );
 			return false;
 		}
 	}

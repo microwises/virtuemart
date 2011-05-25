@@ -365,7 +365,7 @@ class VmTable extends JTable {
 
 		if ($this->_db->getErrorNum())
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError(get_class( $this ).' getNextOrder '.$this->_db->getErrorMsg());
 			return false;
 		}
 		return $maxord + 1;
@@ -405,7 +405,7 @@ class VmTable extends JTable {
 		$this->_db->setQuery( $query );
 		if (!($orders = $this->_db->loadObjectList()))
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError(get_class( $this ).' reorder '.$this->_db->getErrorMsg());
 			return false;
 		}
 		$orderingKey = $this->_orderingKey;

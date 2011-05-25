@@ -55,24 +55,44 @@ class VirtueMartModelCalc extends VmModel {
   		}
 
 		$xrefTable = $this->getTable('calc_categories');
-		if (!$this->_data->calc_categories = $xrefTable->load($this->_id)) {
-			$this->setError($xrefTable->getError());
+		$this->_data->calc_categories = $xrefTable->load($this->_id);
+		if ( $xrefTable->getError() ) {
+			$this->setError(get_class( $this ).' calc_categories '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
-		if (!$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id)) {
-			$this->setError($xrefTable->getError());
+		$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
+		if ( $xrefTable->getError() ) {
+			$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
-		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
-			$this->setError($xrefTable->getError());
+		$this->_data->calc_countries = $xrefTable->load($this->_id);
+		if ( $xrefTable->getError() ) {
+			$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
-		if (!$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id)) {
-			$this->setError($xrefTable->getError());
+		$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id);
+		if ( $xrefTable->getError() ) {
+			$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 		}
+
+
+//		$xrefTable = $this->getTable('calc_shoppergroups');
+//		if (!$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id)) {
+//			$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
+//		}
+
+//		$xrefTable = $this->getTable('calc_countries');
+//		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
+//			$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
+//		}
+
+//		$xrefTable = $this->getTable('calc_states');
+//		if (!$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id)) {
+//			$this->setError(get_class( $this ).' calc_states '.$xrefTable->getError());
+//		}
 
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
