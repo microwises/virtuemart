@@ -159,23 +159,23 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function setUserToPermissionGroup($userId=0) {
-	# insert the user <=> group relationship
-//	$db = JFactory::getDBO();
-//	$db->setQuery("INSERT INTO `#__vm_user_perm_groups`
-//				SELECT virtuemart_user_id,
-//					CASE `perms`
-//					    WHEN 'admin' THEN 0
-//					    WHEN 'storeadmin' THEN 1
-//					    WHEN 'shopper' THEN 2
-//					    WHEN 'demo' THEN 3
-//					    ELSE 2
-//					END
-//				FROM #__virtuemart_userinfos
-//				WHERE address_type='BT' ");
-//	$db->query();
-//
-//	$db->setQuery( "UPDATE `#__vm_user_perm_groups` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
-//	$db->query();
+	//# insert the user <=> group relationship
+	$db = JFactory::getDBO();
+	$db->setQuery("INSERT INTO `#__virtuemart_vmusers`
+				SELECT virtuemart_user_id,
+					CASE `perms`
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2
+					END
+				FROM #__virtuemart_userinfos
+				WHERE address_type='BT' ");
+	$db->query();
+
+	$db->setQuery( "UPDATE `#__virtuemart_vmusers` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
+	$db->query();
     }
 
 

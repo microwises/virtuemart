@@ -43,6 +43,7 @@ class VmTableData extends VmTable {
 	        $this->_db->setQuery($_qry);
 	        $id = $this->_db->loadResult();
     	}
+//		$this->setError($_qry,'$_qry');
 
         if ( !empty($id) ) {
         	$tblKey = $this->_tbl_key;

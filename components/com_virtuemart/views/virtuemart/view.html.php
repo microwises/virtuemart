@@ -38,15 +38,15 @@ class VirtueMartViewVirtueMart extends JView {
 	    * $vendor = $vendorModel->getVendor();
 	    * $this->assignRef('vendor',	$vendor);
 	    */
+		$vendorId = JRequest::getInt('vendorid', 1);
+
+	    $vendorModel = $this->getModel('vendor');
+
+	    $vendorModel->setId(1);
+	    $vendor = $vendorModel->getVendor();
+	    $this->assignRef('vendor',$vendor);
+
 		if(!VmConfig::get('shop_is_offline',0)){
-		    $vendorId = JRequest::getInt('vendorid', 1);
-
-		    $vendorModel = $this->getModel('vendor');
-
-		    $vendorModel->setId(1);
-		    $vendor = $vendorModel->getVendor();
-		    $this->assignRef('vendor',$vendor);
-
 
 			$categoryModel = $this->getModel('category');
 			$productModel = $this->getModel('product');
@@ -67,20 +67,20 @@ class VirtueMartViewVirtueMart extends JView {
 	        	$this->assignRef('recentProducts', $recentProducts);
 	        }
 
-	        if (VmConfig::get('showFeatured', 1)) {
-				$featuredProducts = & $productModel->getGroupProducts('featured', $vendorId, '', 5);
+	        if (VmConfig::get('show_featured', 1)) {
+				$featuredProducts = $productModel->getGroupProducts('featured', $vendorId, '', 5);
 				$productModel->addImages($featuredProducts);
 				$this->assignRef('featuredProducts', $featuredProducts);
 			}
 
-			if (VmConfig::get('showlatest', 1)) {
-				$latestProducts = & $productModel->getGroupProducts('latest', $vendorId, '', 5);
+			if (VmConfig::get('show_latest', 1)) {
+				$latestProducts = $productModel->getGroupProducts('latest', $vendorId, '', 5);
 				$productModel->addImages($latestProducts);
 				$this->assignRef('latestProducts', $latestProducts);
 			}
 
-	        if (VmConfig::get('showTopten', 1)) {
-				$toptenProducts = & $productModel->getGroupProducts('topten', $vendorId, '', 5);
+	        if (VmConfig::get('show_topTen', 1)) {
+				$toptenProducts = $productModel->getGroupProducts('topten', $vendorId, '', 5);
 				$productModel->addImages($toptenProducts);
 				$this->assignRef('toptenProducts', $toptenProducts);
 			}

@@ -244,11 +244,11 @@ class VirtuemartViewProduct extends JView {
 //				}
 
 				/* Check for child products if it is a parent item */
-				if (JRequest::getInt('product_parent_id', 0) == 0) {
-					foreach ($productlist as $virtuemart_product_id => $product) {
-						$product->haschildren = $model->checkChildProducts($virtuemart_product_id);
-					}
-				}
+//				if (JRequest::getInt('product_parent_id', 0) == 0) {
+//					foreach ($productlist as $virtuemart_product_id => $product) {
+//						$product->haschildren = $model->checkChildProducts($virtuemart_product_id);
+//					}
+//				}
 
 				/* Check for Media Items and Reviews, set the price*/
 				if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');

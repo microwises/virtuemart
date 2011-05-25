@@ -40,6 +40,8 @@ class TableShoppergroups extends VmTable
      * default group per vendor. */
 	var $default = 0;
 
+	var $published = 0;
+
 
 	/**
 	 * @author Markus �hler

@@ -145,19 +145,123 @@ class VirtueMartModelRatings extends VmModel {
     }
 
 
-    function getReviews(){
+    function getReviews($virtuemart_product_id){
 
-    	$db = JFactory::getDBO();
+    	if(empty($virtuemart_product_id)) return null;
      	/* Pagination */
      	$this->getPagination();
 
-       	$q = 'SELECT vm.*,pr.* FROM `#__virtuemart_rating_reviews` AS `pr` LEFT JOIN `#__virtuemart_userinfos` AS `vm`
-     	ON `pr`.`virtuemart_user_id` = `p`.`virtuemart_user_id` ORDER BY `pr`.`modified_on` ';
+//       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
+//		LEFT JOIN `#__virtuemart_userinfos` AS `u`
+//     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
+//		LEFT JOIN `#__virtuemart_products` AS `p`
+//     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.'
+//		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`
+//		ORDER BY `pr`.`modified_on` ';
 
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList();
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` as customer FROM `#__virtuemart_rating_reviews` AS `pr`
+		LEFT JOIN `#__users` AS `u`
+     	ON `pr`.`created_by` = `u`.`id`
+		LEFT JOIN `#__virtuemart_products` AS `p`
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`
+		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"
+		ORDER BY `pr`.`modified_on` ';
+     	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+
+     	if(!$result = $this->_db->loadObjectList()){
+     		$this->setError($this->_db->getErrorMsg());
+     	}
+
+     	return $result;
     }
 
+	function getReview(){
+		$cids = array();
+		$cids = JRequest::getVar('cid', false);
+		if (empty($cids)) {
+			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
+		}
+		if ($cids && !is_array($cids)) $cids = array($cids);
+
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
+		LEFT JOIN `#__virtuemart_userinfos` AS `u`
+     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
+		LEFT JOIN `#__virtuemart_products` AS `p`
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.$cids[0].'
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`' ;
+		$this->_db->setQuery($q);
+
+		return $this->_db->loadObject();
+    }
+
+
+    /**
+     * gets a rating by a product id
+     *
+     * @author Max Milbers
+     * @param int $product_id
+     */
+
+    function getRatingByProduct($product_id){
+    	$q = 'SELECT * FROM `#__virtuemart_ratings` WHERE `virtuemart_product_id` = "'.$product_id.'" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadObject();
+
+    }
+
+    /**
+     * gets a review by a product id
+     *
+     * @author Max Milbers
+     * @param int $product_id
+     */
+
+    function getReviewByProduct($product_id,$userId=0){
+   		if(empty($userId)){
+			$user = JFactory::getUser();
+			$userId = $user->id;
+    	}
+		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.$product_id.'" AND `created_by` = "'.$userId.'" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadObject();
+    }
+
+    /**
+     * gets a reviews by a product id
+     *
+     * @author Max Milbers
+     * @param int $product_id
+     */
+
+	function getReviewsByProduct($product_id){
+   		if(empty($userId)){
+			$user = JFactory::getUser();
+			$userId = $user->id;
+    	}
+		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.$product_id.'" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadObjectList();
+    }
+
+    /**
+     * gets a vote by a product id and userId
+     *
+     * @author Max Milbers
+     * @param int $product_id
+     */
+
+    function getVoteByProduct($product_id,$userId=0){
+
+    	if(empty($userId)){
+			$user = JFactory::getUser();
+			$userId = $user->id;
+    	}
+		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$product_id.'" AND `created_by` = "'.$userId.'" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadObject();
+
+    }
 
     /**
     * Save a rating
@@ -167,63 +271,72 @@ class VirtueMartModelRatings extends VmModel {
 
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		if (!empty($data['rate']) && !empty($data['virtuemart_product_id'])){
-
-	    	if(empty($rating->virtuemart_user_id)){
-				$user = JFactory::getUser();
-				$data['virtuemart_user_id'] = $user->id;
-			}
+		$user = JFactory::getUser();
+		$userId = $user->id;
+		if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
 
 			//normalize the rating
-			if ($data['rate'] < 0 ) $data['rate'] = 0 ;
-			if ($data['rate'] > $maxrating ) $data['rate'] = $maxrating ;
+			if ($data['vote'] < 0 ) $data['vote'] = 0 ;
+			if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
+
+//			//To allow voting of 0, we must add 1 to avoid an empty of the table, so we added +1 in the form and have to remove it now again
+//			$data['vote'] = $data['vote']-1;
 
 			$data['lastip'] = $_SERVER['REMOTE_ADDR'];
 
-			$rating = $this->getTable('ratings');
-			$newRating = !$rating->load($data['virtuemart_product_id']);
+			$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
 
-			$vote = $this->getTable('rating_votes');
-			$newVote = !$vote->load($data['virtuemart_user_id']);
+			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
 
-			$data['vote'] = $data['rate'];
+//			$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$data['virtuemart_product_id'].'" AND `created_by` = "'.$userId.'" ';
+//			$this->_db->setQuery($q);
+//			$vote = $this->_db->loadObject();
 
-			//Insert
-			if($newVote){
-				$user = JFactory::getUser();
-				$data['virtuemart_user_id'] = $user->id;
-			} //update, we must remove the old values from the rates and ratingcount
-			else {
-				$data['rates'] = $rating->rates - $vote->vote;
-				$data['ratingcount'] = $rating->ratingcount-1;
-			}
+			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
 
-	        $data = $vote->bindChecknStore($data);
-	    	$errors = $vote->getErrors();
-			foreach($errors as $error){
-				$this->setError(get_class( $this ).'::Error store votes '.$error);
+			if(isset($data['vote'])){
+				dump('store the vote');
+				$votesTable = $this->getTable('rating_votes');
+		        $data = $votesTable->bindChecknStore($data);
+		    	$errors = $votesTable->getErrors();
+				foreach($errors as $error){
+					$this->setError(get_class( $this ).'::Error store votes '.$error);
+					dump($vote,'ERROR my vote table');
+				}
 			}
 
 
-			if(!empty($rating->rates)){
-				$data['rates'] = $rating->rates + $data['rate'];
+			if(!empty($rating->rates) && empty($vote) ){
+				$data['rates'] = $rating->rates + $data['vote'];
+				$data['ratingcount'] = $rating->ratingcount+1;dump('new vote, but old review');
+			} else if(!empty($rating->rates) && !empty($vote->vote)){
+				$data['rates'] = $rating->rates - $vote->vote + $data['vote'];
+				$data['ratingcount'] = $rating->ratingcount;dump('update vote');
 			} else {
-				$data['rates'] = $data['rate'];
+				$data['rates'] = $data['vote'];
+				$data['ratingcount'] = 1;dump('complete new review entry');
 			}
 
-			if(!empty($rating->ratingcount)){
-				$data['ratingcount'] = $rating->ratingcount+1;
+//			if(!empty($rating->ratingcount)){
+//				$data['ratingcount'] = $rating->ratingcount+1;
+//			} else {
+//				$data['ratingcount'] = 1;
+//			}
+			dump($rating,'$rating for ratings');
+			if(empty($data['rates']) || empty($data['ratingcount']) ){
+				$data['rating'] = 0;
 			} else {
-				$data['ratingcount'] = 1;
+				$data['rating'] = $data['rates']/$data['ratingcount'];
 			}
 
-			$data['rating'] = $data['rates']/$data['ratingcount'];
-
+			$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
+			dump($data,'data for ratings');
 			$rating = $this->getTable('ratings');
 			$data = $rating->bindChecknStore($data);
 	    	$errors = $rating->getErrors();
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
+				dump($vote,'ERROR my ratings table');
 			}
 
 
@@ -231,37 +344,41 @@ class VirtueMartModelRatings extends VmModel {
 				$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
 				//set to defaut value not used (prevent hack)
 				$data['review_ok'] = 0;
-				$data['review_votes'] = 0;
+				$data['review_rating'] = 0;
 
 				/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
-				if (VmConfig::get('reviews_autopublish',0)) $data['published'] = 1;
+				if (VmConfig::get('reviews_autopublish',1)) $data['published'] = 1;
 
-		    	$review = $this->getTable('rating_reviews');
-				$review->load($data['virtuemart_product_id']);
+//				$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$data['virtuemart_product_id'].'" AND `created_by` = "'.$userId.'" ';
+//				$this->_db->setQuery($q);
+//				$review = $this->_db->loadObject();
+
+				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
+
+//				$review->load($data['virtuemart_product_id']);
 
 				if(!empty($review->review_rates)){
 					$data['review_rates'] = $review->review_rates + $data['review_rate'];
 				} else {
-					$data['review_rates'] = $data['rate'];
+					$data['review_rates'] = $data['vote'];
 				}
 
 				if(!empty($review->review_ratingcount)){
-					$data['review_ratingcount'] = $review->review_ratingcount+1;	// ++ does NOT work !
+					$data['review_ratingcount'] = $review->review_ratingcount+1;
 				} else {
 					$data['review_ratingcount'] = 1;
 				}
 
 				$data['review_rating'] = $data['review_rates']/$data['review_ratingcount'];
 
-				if(empty($review->virtuemart_user_id)){
-					$user = JFactory::getUser();
-					$data['virtuemart_user_id'] = $user->id;
-				}
-
-		        $data = $review->bindChecknStore($data);
-				$errors = $rating->getErrors();
+				$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
+				dump($data,'data for reviews');
+				$reviewTable = $this->getTable('rating_reviews');
+		        $data = $reviewTable->bindChecknStore($data);
+				$errors = $reviewTable->getErrors();
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store review '.$error);
+					dump($reviewTable,'ERROR my reviews table');
 				}
 			}
 			return true;

@@ -194,25 +194,6 @@ class VmModel extends JModel {
 		return true;
 	}
 
-	/**
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $idName
-	 * @param unknown_type $tablename
-	 * @param unknown_type $publishId
-	 */
-	// function publish($publishId = false) {
-
-		// $table = $this->getTable($this->_maintablename);
-
-		// $ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
-		// if (!$table->publish($ids, $publishId)) {
-			// $this->setError(get_class( $this ).'::publish '.$table->getError());
-			// return false;
-		// }
-
-		// return true;
-    // }
 	public function setToggleName($togglesName){
 		$this->_togglesName[] = $togglesName ;
 	}
@@ -231,19 +212,21 @@ class VmModel extends JModel {
 			return false ;
 		}
 		$table =& $this->getTable($this->_maintablename);
-		if(empty($cidName)) $cidName = $this->_cidName;
+//		if(empty($cidName)) $cidName = $this->_cidName;
 
-		$ids = JRequest::getVar( $cidName, array(0), 'post', 'array' );
+		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
 		foreach($ids as $id){
 			$table->load( $id );
-			if ($val == NULL) {
+			dump($val, 'my val');
+			if ($val === NULL) {
 				if ($table->$field ==0) $table->$field = 1 ;
 				else $table->$field = 0;
 			} else {
 				$table->$field = $val;
 			}
 
-			if (!$table->store()) {
+			if (!$table->_db->updateObject($table->_tbl, $table, $table->_tbl_key, false)){
+//			if (!$table->store()) {
 				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
 				$ok = false;
 			}

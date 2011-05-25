@@ -109,7 +109,11 @@ if (empty ( $this->product )) {
 				echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 				*/ ?>
 
-				<?php // Product Price
+				<?php
+				$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
+				echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+
+				// Product Price
 				if ($this->show_prices) { ?>
 				<div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 				<?php
@@ -475,7 +479,7 @@ if (empty ( $this->product )) {
 			<table cellpadding="5" summary="<?php echo JText::_('COM_VIRTUEMART_REVIEW_RATE') ?>">
 				<tr>
 			<?php
-				for ($num=$maxrating ; $num>=0; $num--  ) {?>
+				for ($num=0 ; $num<=$maxrating;  $num++ ) {?>
 						<th id="<?php echo $num ?>_stars">
 							<label for="rate<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 						</th>
@@ -484,12 +488,26 @@ if (empty ( $this->product )) {
 			</tr>
 			<tr>
 			<?php
-			for ($num=$maxrating ; $num>=0; $num--  ) { ?>
-				<td headers="<?php echo $num ?>_stars" style="text-align:center;">
-					<input type="radio" id="rate<?php echo $num ?>" name="rate" value="<?php echo $num ?>" />
-				</td>
-			<?php
-			} ?>
+			if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+			$showReviewFor = array();
+			for ($num=0 ; $num<=$maxrating;  $num++ ) {
+				$showReviewFor[$num] = $num;
+			}
+//			if($this->vote->vote!==null){
+//
+//			}
+			$vote = !empty($this->vote)? $this->vote->vote:$maxrating;
+			echo VmHTML::radioList('vote', $vote,$showReviewFor);
+//			for ($num=0 ; $num<=$maxrating;  $num++ ) {
+
+/*
+				?>
+				<td headers="<?php echo $num ?>_stars" style="text-align:center;"> <?php
+
+			<?php /*	<input type="radio" id="rate<?php echo ((int)$num+1) ?>" name="rate" value="<?php echo ((int)$num+1) ?>" />
+				</td> */
+
+//			} ?>
 			</tr>
 		</table> <?php
 		}
@@ -518,9 +536,9 @@ if (empty ( $this->product )) {
 
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<?php echo $stars[ $review->user_rating ] ?>
+					<?php //echo $stars[ $review->review_rating ] ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
-					<span class="bold"><?php echo $review->username ?></span>
+					<span class="bold"><?php echo $review->customer ?></span>
 				</div>
 				<?php
 				$i++ ;
@@ -585,7 +603,7 @@ if (empty ( $this->product )) {
 							echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000));
 							?>
 							<br />
-							<textarea title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"></textarea>
+							<textarea title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
 							<br />
 							<input class="button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
 							<div align="right"><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT')  ?>

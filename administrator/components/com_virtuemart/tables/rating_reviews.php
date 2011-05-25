@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * Product review table class
@@ -28,14 +28,12 @@ if(!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @package		VirtueMart
  * @author Max Milbers
  */
-class TableRating_reviews extends VmTableData {
+class TableRating_reviews extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_rating_review_id	= 0;
 	/** @var int Product ID */
 	var $virtuemart_product_id			= null;
-	/** @var int The ID of the user who made comment */
-	var $virtuemart_user_id         	= null;
 
 	/** @var string The user comment */
 	var $comment         				= null;
@@ -46,9 +44,6 @@ class TableRating_reviews extends VmTableData {
 	var $review_rates         			= null;
 	var $review_ratingcount      		= null;
 	var $review_rating      			= null;
-
-	/** The rate of the user who wrote the review */
-	var $rate      		= null;
 
 	var $lastip      		= null;
 
