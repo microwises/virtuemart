@@ -46,7 +46,7 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 
-		$viewName=ShopFunctions::SetViewTitle('vm_orders_48');
+		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
 		$this->assignRef('viewName',$viewName);
 
 		$curTask = JRequest::getVar('task');

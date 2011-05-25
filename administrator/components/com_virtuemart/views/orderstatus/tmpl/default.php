@@ -52,7 +52,7 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_ORDER')
+					, JText::_('COM_VIRTUEMART_ORDERING')
 					, 'ordering'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>

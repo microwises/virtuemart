@@ -26,13 +26,13 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_COUPON_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_COUPON').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_HEADER_TOOLTIP'); ?>">
+                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_HEADER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>:
 				</label>
                               </span>
 			</td>

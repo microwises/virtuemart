@@ -54,8 +54,8 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_NAME'); ?></th>
+		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETITLE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_ROLE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>

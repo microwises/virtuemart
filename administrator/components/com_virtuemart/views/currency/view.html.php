@@ -47,19 +47,22 @@ class VirtuemartViewCurrency extends JView {
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
-		$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
-		$this->assignRef('viewName',$viewName); 
+
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
                         $cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		        JArrayHelper::toInteger($cid);
 			$currency = $model->getCurrency($cid);
+                        $this->assignRef('dateformat',	$dateformat);
+                    $viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();
 
        } else {
+                         $this->assignRef('dateformat',	$dateformat);
+                        $viewName=ShopFunctions::SetViewTitle('vm_currency_48');
 			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();

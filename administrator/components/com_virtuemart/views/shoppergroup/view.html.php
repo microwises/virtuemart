@@ -39,14 +39,12 @@ class VirtuemartViewShopperGroup extends JView {
 //		$this->assignRef('perms', Permissions::getInstance());
 
 		$model = $this->getModel();
-		//$vendorModel = $this->getModel('Vendor');
-		$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
-		$this->assignRef('viewName',$viewName);
-
+		
 		$layoutName = JRequest::getVar('layout', 'default');
-		if ($layoutName == 'edit') {
+		if ($layoutName == 'edit') {                      
 			$shoppergroup = $model->getShopperGroup();
-
+                        $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','SHOPPERGROUP',$shoppergroup->shopper_group_name);
+                         $this->assignRef('viewName',$viewName);
 			$this->loadHelper('shopfunctions');
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
@@ -56,6 +54,8 @@ class VirtuemartViewShopperGroup extends JView {
 			ShopFunctions::addStandardEditViewCommands();
 
 		} else {
+                        $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
+                           $this->assignRef('viewName',$viewName);
 
 			ShopFunctions::addStandardDefaultViewCommands();
 

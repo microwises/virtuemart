@@ -44,7 +44,7 @@ class VirtuemartViewRatings extends JView {
 		$this->assignRef('max_rating', $this->max_rating);
 
 		$model = $this->getModel();
-		$viewName=ShopFunctions::SetViewTitle('vm_reviews_48');
+		$viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE' );
 		$this->assignRef('viewName',$viewName);
 
 		/* Get the task */

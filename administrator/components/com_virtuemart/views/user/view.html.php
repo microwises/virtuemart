@@ -49,9 +49,9 @@ class VirtuemartViewUser extends JView {
 		$task = JRequest::getVar('task', 'edit');
 		if($task == 'editshop'){
 			$model->setCurrent();
-			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','Shop');
+			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE'  );
 		} else {
-			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','shop');
+			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER');
 		}
 		
 		$this->assignRef('viewName',$viewName);
@@ -71,6 +71,14 @@ class VirtuemartViewUser extends JView {
 			//			$orderModel = $this->getModel('orders');
 
 			$userDetails = $model->getUser();
+
+                        if($task == 'editshop'){
+			$model->setCurrent();
+                            $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',$userDetails->vendor->vendor_store_name );
+                        } else {
+                            $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER',$userDetails->JUser->get('name'));
+                        }
+
 
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.

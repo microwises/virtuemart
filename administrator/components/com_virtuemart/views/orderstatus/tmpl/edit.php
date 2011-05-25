@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+JHTML::_('behavior.tooltip');
 AdminMenuHelper::startAdminArea();
 ?>
 
@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
@@ -42,7 +42,9 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
+                                     <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_TIP'); ?>">
 					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
+                                     </span>
 				</label>
 			</td>
 			<td>
@@ -75,7 +77,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_LIST_ORDER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>:
 				</label>
 			</td>
 			<td>
