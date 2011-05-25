@@ -2049,21 +2049,22 @@ class VirtueMartModelProduct extends VmModel {
 	}
 	function displayCustomMedia($product,$media_id){
 
-		$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-		AND (`virtuemart_vendor_id`= "'.$product->virtuemart_vendor_id.'" OR `shared` = "1") AND virtuemart_media_id='.(int)$media_id;
-		$db =& JFactory::getDBO();
-		$db->setQuery($q);
-		$image = $db->loadObject();
+  		$data = $this->getTable('medias');
+   		$data->load($media_id);
 
-		//if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-		$media = new VmMediaHandler((int)$media_id);
-		//$this->virtuemart_media_id = (int)$media_id;
-		$imagehandler = $media->createMedia($image,'product');
-		//$imagehandler->createMedia($image);
-		dump ($imagehandler);
-		return $imagehandler->displayMediaThumb('',false);
+
+
+
+
+  		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+  		$media = VmMediaHandler::createMedia($data,'product');
+		return $media->displayMediaThumb('',false);
+
+
+
+
 	}
+
 
 }
 // No closing tag
