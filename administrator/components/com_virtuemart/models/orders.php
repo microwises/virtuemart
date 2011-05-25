@@ -536,7 +536,9 @@ class VirtueMartModelOrders extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		$_orderID = $orderTable->_db->insertid();
+
+		$db = JFactory::getDBO();
+		$_orderID = $db->insertid();
 
 		if (!empty($_cart->couponCode)) {
 			// If a gift coupon was used, remove it now
