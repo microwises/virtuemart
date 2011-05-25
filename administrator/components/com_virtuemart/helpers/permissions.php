@@ -49,7 +49,7 @@ class Permissions extends JObject{
 
 	}
 
-	function getInstance(){
+	function getInstance() {
 		if(!is_object(self::$_instance)){
 			self::$_instance = new Permissions();
 		}else {
@@ -69,6 +69,26 @@ class Permissions extends JObject{
 		}
 //		echo 'Die Usergroups: <pre>'.print_r($this->_user_groups).'</pre>';
 		return $this->_user_groups;
+	}
+
+	/**
+	 * Get permissions for a user ID
+	 *
+	 * @param int $virtuemart_user_id the user ID to check. If no user ID is given the currently logged in user will be used.
+	 * @return string permissions
+	 */
+	public function getPermissions ($userId=null) {
+		// default to current user
+		if ($userId == null) {
+			$user = JFactory::getUser();
+			$userId = $user->id;
+		}
+
+		// only re-run authentication if we have a different user
+		if ($userId != $this->_virtuemart_user_id) {
+			$this->doAuthentication($userId);
+		}
+		return $this->_perms;
 	}
 
 	/**
@@ -119,10 +139,10 @@ class Permissions extends JObject{
 	* the shopper group id with the user and the session.
 	* @return array Authentication information
 	*/
-	function doAuthentication() {
+	function doAuthentication ($user_id=null) {
 		$this->_db = JFactory::getDBO();
 		$session = JFactory::getSession();
-		$vmUser = JFactory::getUser();
+		$vmUser = JFactory::getUser($user_id);
 
 		// Check token
 //		JRequest::checkToken() or jexit( 'Invalid Token' );

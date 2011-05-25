@@ -156,26 +156,50 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 
     /**
-     * @author Max Milbers
+     * Syncs user permission
+     *
+     * @param int virtuemart_user_id
+     * @return bool true on success
+     * @author Christopher Roussel
      */
-    function setUserToPermissionGroup($userId=0) {
-	//# insert the user <=> group relationship
-	$db = JFactory::getDBO();
-	$db->setQuery("INSERT INTO `#__virtuemart_vmusers`
-				SELECT virtuemart_user_id,
-					CASE `perms`
-					    WHEN 'admin' THEN 0
-					    WHEN 'storeadmin' THEN 1
-					    WHEN 'shopper' THEN 2
-					    WHEN 'demo' THEN 3
-					    ELSE 2
-					END
-				FROM #__virtuemart_userinfos
-				WHERE address_type='BT' ");
-	$db->query();
+    function setUserToPermissionGroup ($userId=0) {
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-	$db->setQuery( "UPDATE `#__virtuemart_vmusers` SET `virtuemart_shoppergroup_id` = '0' WHERE `virtuemart_user_id` ='" . $userId . "' ") ;
-	$db->query();
+		$usersTable = $this->getTable('vmusers');
+		$usersTable->load((int)$userId);
+
+		$perm = Permissions::getInstance();
+		$usersTable->perms = $perm->getPermissions($userId);
+
+		$result = $usersTable->check();
+		if ($result) {
+			$result = $usersTable->store();
+		}
+
+		if (!$result) {
+			$errors = $usersTable->getErrors();
+			foreach($errors as $error) {
+				$this->setError(get_class( $this ).'::setUserToPermissionGroup user '.$error);
+			}
+			return false;
+		}
+
+		$xrefTable = $this->getTable('vmuser_shoppergroups');
+		$data = $xrefTable->load((int)$userId);
+
+		if (empty($data)) {
+			$data = array('virtuemart_user_id'=>$userId, 'virtuemart_shoppergroup_id'=>'0');
+
+			if (!$xrefTable->save($data)) {
+				$errors = $xrefTable->getErrors();
+				foreach($errors as $error){
+					$this->setError(get_class( $this ).'::setUserToPermissionGroup xref '.$error);
+				}
+				return false;
+			}
+		}
+
+		return true;
     }
 
 
