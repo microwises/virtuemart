@@ -39,7 +39,7 @@ $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
 			<td align="left" width="100%">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
 				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="document.adminForm.submit(); return false;">
-					<option value=""><?php echo JText::_('COM_VIRTUEMART_CATEGORY').' :'; ?></option>
+					<option value=""><?php echo JText::sprintf( 'COM_VIRTUEMART_SELECT' ,  JText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
@@ -62,15 +62,16 @@ $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
 <?php
 $productlist = $this->productlist;
 $pagination = $this->pagination;
+
 ?>
 	<table class="adminlist">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LIST_MEDIA'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->

@@ -27,7 +27,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_SHIPPINGCARRIER'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">

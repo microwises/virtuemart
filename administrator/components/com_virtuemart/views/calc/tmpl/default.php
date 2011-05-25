@@ -61,7 +61,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_ID'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
@@ -85,7 +85,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_COUNTRIES'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?>

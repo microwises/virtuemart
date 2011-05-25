@@ -200,9 +200,9 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function store()
 	{
-		$field      =& $this->getTable('userfields');
-		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfos');
+		$field      = $this->getTable('userfields');
+		$userinfo   = $this->getTable('userinfos');
+		$orderinfo  = $this->getTable('order_userinfos');
 
 		$data = JRequest::get('post');
 
@@ -243,16 +243,20 @@ class VirtueMartModelUserfields extends VmModel {
 		// Get the fieldtype for the database
 		$_fieldType = $field->formatFieldType($data);
 
-		// Alter the user_info table
-		if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-			$this->setError($userinfo->getError());
-			return false;
-		}
+		$coreFields= array( 'username', 'email', 'password', 'password2' );
+		if(!in_array($data['name'],$coreFields)){
 
-		// Alter the order_userinfo table
-		if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-			$this->setError($orderinfo->getError());
-			return false;
+			// Alter the user_info table
+			if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
+				$this->setError($userinfo->getError());
+				return false;
+			}
+
+			// Alter the order_userinfo table
+			if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
+				$this->setError($orderinfo->getError());
+				return false;
+			}
 		}
 
 		// if new item, order last in appropriate group
@@ -775,8 +779,8 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @param int $virtuemart_userfield_id ID of the userfield to relate
 	 * @return array Data to bind to the userfield_values table
 	 */
-	private function postData2FieldValues($titles, $values, $virtuemart_userfield_id)
-	{
+	private function postData2FieldValues($titles, $values, $virtuemart_userfield_id){
+
 		$_values = array();
 		if (is_array($titles) && is_array($values)) {
 			for ($i=0; $i < count($titles) ;$i++) {

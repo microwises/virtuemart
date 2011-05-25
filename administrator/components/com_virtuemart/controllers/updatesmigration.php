@@ -126,7 +126,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$msg .= ' User id of the main vendor is '.$model->setStoreOwner();
 			$this->setDangerousToolsOff();
     	} else {
-    		$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+            $msg = $this->_getMsgDangerousTools();
     	}
 
     	$this->setRedirect($this->redirectPath, $msg);
@@ -148,7 +148,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			    $this->setRedirect('index.php?option=com_virtuemart', $model->getError());
 			}
     	} else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+		 $msg = $this->_getMsgDangerousTools();
 		}
     	$this->setRedirect('index.php?option=com_installer',$msg);
     }
@@ -166,7 +166,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			}
 
     	}else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+		 $msg = $this->_getMsgDangerousTools();
 		}
 
 		$this->setRedirect($this->redirectPath, $msg);
@@ -181,7 +181,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$this -> installer -> populateVmDatabase("delete_data.sql");
 			$this->setDangerousToolsOff();
     	} else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+			 $msg = $this->_getMsgDangerousTools();       
 		}
 
 		$this->setRedirect($this->redirectPath,$msg);
@@ -195,7 +195,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$this -> installer -> populateVmDatabase("delete_restoreable.sql");
 			$this->setDangerousToolsOff();
     	} else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+			 $msg = $this->_getMsgDangerousTools();
 		}
 
 
@@ -225,7 +225,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$this->setDangerousToolsOff();
 		} else {
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED');
+			 $msg = $this->_getMsgDangerousTools();       
 		}
 
 		$this->setRedirect($this->redirectPath,$msg);
@@ -283,5 +283,10 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		$this->setRedirect($this->redirectPath);
 	}
-
+    function _getMsgDangerousTools() {
+            $uri =& JFactory::getURI();
+            $link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';
+            $msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED','<a href="'.$link.'">'.$link.'</a>');
+            return $msg;
+}
 }

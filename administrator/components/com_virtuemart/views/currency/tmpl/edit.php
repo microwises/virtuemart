@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY').' '. JText::_('COM_VIRTUEMART_NAME');; ?>
 				</label>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_EXCHANGE_RATE'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
 				</label>
 			</td>
 			<td>
@@ -84,7 +84,7 @@ AdminMenuHelper::startAdminArea();
                 <tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_NUMERIC_CODE'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
 				</label>
 			</td>
 			<td>
