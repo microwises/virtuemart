@@ -181,7 +181,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$this -> installer -> populateVmDatabase("delete_data.sql");
 			$this->setDangerousToolsOff();
     	} else {
-			 $msg = $this->_getMsgDangerousTools();       
+			 $msg = $this->_getMsgDangerousTools();
 		}
 
 		$this->setRedirect($this->redirectPath,$msg);
@@ -206,6 +206,11 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		if(VmConfig::get('dangeroustools',true)){
 
+			$data = JRequest::get('get');
+			JRequest::setVar($data['token'],'1','post');
+
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+
 			$model = $this->getModel('updatesMigration');
 
 			$model -> restoreSystemTablesCompletly();
@@ -225,7 +230,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$this->setDangerousToolsOff();
 		} else {
-			 $msg = $this->_getMsgDangerousTools();       
+			 $msg = $this->_getMsgDangerousTools();
 		}
 
 		$this->setRedirect($this->redirectPath,$msg);

@@ -274,6 +274,7 @@ class VirtueMartModelConfig extends JModel {
      */
     function store($data) {
 
+    	JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 		if ($data) {
 		    $curConfigParams = $this->getConfig();
 		    $curConfigParams->bind($data);

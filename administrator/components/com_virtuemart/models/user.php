@@ -305,6 +305,7 @@ class VirtueMartModelUser extends VmModel {
 		 */
 		function store($data=0)
 		{
+			JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 			$mainframe = JFactory::getApplication() ;
 
 //			if(empty($data)) $data = JRequest::get('post');

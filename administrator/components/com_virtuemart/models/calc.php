@@ -159,6 +159,8 @@ class VirtueMartModelCalc extends VmModel {
 	 */
     public function store() {
 
+		JRequest::checkToken() or jexit( 'Invalid Token, in store calc');
+
 		$table = $this->getTable('calcs');
 		$data = JRequest::get('post');
 

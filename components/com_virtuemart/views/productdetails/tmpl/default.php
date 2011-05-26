@@ -632,6 +632,6 @@ if (empty ( $this->product )) {
 //				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 
-	</div>
+	</div></div>
 
 </div>

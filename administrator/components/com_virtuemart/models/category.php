@@ -449,6 +449,8 @@ class VirtueMartModelCategory extends VmModel {
 	 */
     public function store($data) {
 
+    	JRequest::checkToken() or jexit( 'Invalid Token, in store category');
+
 		$table = $this->getTable('categories');
 
 		$data = $table->bindChecknStore($data);
@@ -490,6 +492,9 @@ class VirtueMartModelCategory extends VmModel {
      * @return boolean if the item remove was successful
      */
     public function remove($cids) {
+
+    	JRequest::checkToken() or jexit( 'Invalid Token, in remove category');
+
 		$table = $this->getTable('categories');
 
 		foreach($cids as $cid) {
