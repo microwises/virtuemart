@@ -67,35 +67,70 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 -- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
-(1, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1),
-(2, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1),
-(3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1),
-(4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, 0, 0, 1),
-(5, 0, 0, 'I''m a Child link', 'Add a child to me', '', 'link to child', 'C', 0, 0, 0, 1),
-(7, 0, 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'i', 0, 0, 0, 1),
-(9, 0, 0, 'Size', 'Change the size', '30', 'CM', 'V', 0, 0, 1, 1),
-(10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1);
+INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(1, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(2, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(5, 0, 0, 'I''m a Child link', 'Add a child to me', '', 'link to child', 'C', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(7, 0, 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(9, 0, 0, 'Size', 'Change the size', '30', 'CM', 'V', 0, 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(11, 0, 0, 'COM_VIRTUEMART_RELATED_PRODUCTS', 'COM_VIRTUEMART_RELATED_PRODUCTS_TIP', '', 'COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'R', 0, 0, 0, 1, '2011-05-25 21:52:43', 62, '2011-05-25 21:52:43', 62, '0000-00-00 00:00:00', 0),
+(12, 0, 0, 'COM_VIRTUEMART_RELATED_CATEGORIES', 'COM_VIRTUEMART_RELATED_CATEGORIES_TIP', NULL, 'COM_VIRTUEMART_RELATED_CATEGORIES_DESC', 'Z', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(13, 0, 0, 'Color', '', 'Choice a color', 'Colors', 'S', 0, 0, 1, 1, '2011-05-26 04:06:08', 62, '2011-05-26 04:06:08', 62, '0000-00-00 00:00:00', 0),
+(14, 0, 0, 'add a showel', 'The best choice', '', 'Showels', 'M', 0, 0, 1, 1, '2011-05-26 04:11:35', 62, '2011-05-26 04:11:35', 62, '0000-00-00 00:00:00', 0);
 
 --
 -- Dumping data for table  `#__virtuemart_customfields`
 --
 
-INSERT INTO `#__virtuemart_customfields` (`virtuemart_customfield_id`, `virtuemart_custom_id`, `custom_value`, `custom_price`, `published`) VALUES
-(2, 7, '1', NULL, 0),
-(4, 2, 'Plz enter a text', NULL, 0),
-(5, 3, '100', NULL, 0),
-(6, 4, '0', NULL, 0);
+INSERT INTO `#__virtuemart_customfields` (`virtuemart_customfield_id`, `virtuemart_custom_id`, `custom_value`, `custom_price`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(2, 7, '1', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(4, 2, 'Plz enter a text', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(5, 3, '100', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(6, 4, '0', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(81, 13, 'yellow', '0.75', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(80, 13, 'red', '0.5', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(79, 13, 'Blue', '0', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(78, 12, '', '', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(77, 12, '', '', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(76, 11, '', '', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(75, 11, '', '', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(74, 9, '150', '60', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(73, 9, '100', '50', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(72, 9, '60', '40', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(71, 9, '50', '20', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(82, 14, '1', '15', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(83, 14, '3', '12', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(84, 14, '4', '20', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0),
+(85, 14, '13', '8', 0, '2011-05-26 04:13:30', 62, '2011-05-26 04:13:30', 62, '0000-00-00 00:00:00', 0);
 
 --
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
 INSERT INTO `#__virtuemart_product_customfields` (`id`, `virtuemart_product_id`, `virtuemart_customfield_id`, `ordering`) VALUES
-(NULL, 6, 2, 0),
-(NULL, 6, 4, 0),
-(NULL, 6, 5, 0),
-(NULL, 6, 6, 0);
+(1, 6, 2, 0),
+(2, 6, 4, 0),
+(3, 6, 5, 0),
+(4, 6, 6, 0),
+(78, 8, 74, 3),
+(79, 8, 75, 4),
+(80, 8, 76, 5),
+(83, 8, 79, 8),
+(84, 8, 80, 9),
+(85, 8, 81, 10),
+(77, 8, 73, 2),
+(82, 8, 78, 7),
+(81, 8, 77, 6),
+(76, 8, 72, 1),
+(75, 8, 71, 0),
+(86, 8, 82, 11),
+(87, 8, 83, 12),
+(88, 8, 84, 13),
+(89, 8, 85, 14);
+
 --
 -- Dumping data for table `#__virtuemart_manufacturers`
 --

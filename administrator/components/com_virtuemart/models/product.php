@@ -1392,7 +1392,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$product = $this->getProduct($virtuemart_product_id);
 
-		/* NEW Load the Customs Field Cart Price */
+		/* Load the Customs Field Cart Price */
 		$product->CustomsFieldCartPrice = $this->getProductCustomsFieldWithPrice($product);
 		/* Loads the product price details */
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -1818,7 +1818,22 @@ class VirtueMartModelProduct extends VmModel {
 				case 'P':
 					return $value.'<input type="hidden" value="'.$value.'" name="field['.$row.'][custom_value]" />'.$priceInput;
 				break;
+				case 'Z':
+					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$value.'" ';
+					$this->_db->setQuery($q);
+					//echo $this->_db->_sql;
+					if ($category = $this->_db->loadObject() ) {
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.$category->virtuemart_category_id.'" ';
+						$this->_db->setQuery($q);
+						$thumb ='';
+						if ($media_id = $this->_db->loadResult()) {
+							$thumb = $this->displayCustomMedia($media_id);
+						}
+						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) );
+					}
+					else return 'no result';
 				case 'R':
+					if (!$value) return '';
 					$q='SELECT `product_name`,`product_sku` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$value ;
 					$this->_db->setQuery($q);
 					$related = $this->_db->loadObject();
@@ -1833,7 +1848,7 @@ class VirtueMartModelProduct extends VmModel {
 					return $thumb.' '.$display;
 				break;
 				/* image */
-				case 'i':
+				case 'M':
 					if (empty($product)){
 						$vendorId=1;
 					} else {
@@ -1925,20 +1940,21 @@ class VirtueMartModelProduct extends VmModel {
 //				foreach ($group->options as $productCustom) {
 //					$productCustom->custom_price = $currency->priceDisplay($productCustom->custom_price,'',true);
 //				}
+				
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
-						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
+						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($productCustom->custom_price);
 					}
 					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->custom_value,'','value','text',false);
 				} else if ($group->field_type == 'U'){
 					foreach ($group->options as $productCustom) {
-						$productCustom->text =  $productCustom->custom_value.' : '.$productCustom->custom_price;
+						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($productCustom->custom_price);
 					}
-						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
+						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($productCustom->custom_price).'</label>' ;
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
-						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$productCustom->custom_price.'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($productCustom->custom_price).'</label>' ;
 					}
 				}
 				$row++ ;
@@ -2009,18 +2025,22 @@ class VirtueMartModelProduct extends VmModel {
 				$options[] = array( 'value' => $val ,'text' =>$val);
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
+			if ($price > 0) $priceDisplay = $currency->priceDisplay((float)$price);
 			switch ($type) {
+				
 				/* variants*/
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
 				/* Loads the product price details */
 				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$currency->priceDisplay($price,$calculator->vendor_currency,true).' ';
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
-				/*userfield variants*/
+				/*userfield variants*/	
 				case 'U':
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price.' ';
+				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+				$currency = CurrencyDisplay::getInstance();
+				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/* string or integer */
 				case 'S':
@@ -2044,14 +2064,31 @@ class VirtueMartModelProduct extends VmModel {
 					return $this->displayCustomMedia($value).' '.$this->_db->loadResult();
 				break;
 				/* image */
-				case 'i':
+				case 'M':
 					return $this->displayCustomMedia($value);
 				break;
+				/* categorie */
+				case 'Z':
+					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$value.'" ';
+					$this->_db->setQuery($q);
+					//echo $this->_db->_sql;
+					if ($category = $this->_db->loadObject() ) {
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.$category->virtuemart_category_id.'" ';
+						$this->_db->setQuery($q);
+						$thumb ='';
+						if ($media_id = $this->_db->loadResult()) {
+							$thumb = $this->displayCustomMedia($media_id);
+						}
+						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) );
+					}
+					else return '';
+				/* related */
+				case 'R':
 				/* Child product */
 				case 'C':
 					$q='SELECT p.`virtuemart_product_id` ,p.`product_parent_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`
-					WHERE `published`=1 AND p.`virtuemart_product_id`= "'.$value.'" ';
+					WHERE `published`=1 AND p.`virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
 					//echo $this->_db->_sql;
 					if ($child = $this->_db->loadObject() ) {
@@ -2065,20 +2102,20 @@ class VirtueMartModelProduct extends VmModel {
 							$this->_db->setQuery($q);
 							if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($media_id);
 						}
-						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&product_parent_id=' . $child->product_parent_id . '&virtuemart_product_id=' . $child->virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id ), $thumb.' '.$child->product_name, array ('title' => $child->product_name ) );
+						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $child->virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id ), $thumb.' '.$child->product_name, array ('title' => $child->product_name ) );
 					}
 					else return '';
 				break;
 			}
 		}
 	}
-	function displayCustomMedia($media_id){
+	function displayCustomMedia($media_id,$table='product'){
 
   		$data = $this->getTable('medias');
    		$data->load($media_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-  		$media = VmMediaHandler::createMedia($data,'product');
+  		$media = VmMediaHandler::createMedia($data,$table);
 		return $media->displayMediaThumb('',false);
 
 	}

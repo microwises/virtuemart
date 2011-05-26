@@ -41,11 +41,12 @@ class VmCustomHandler {
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
-			'i'=>'COM_VIRTUEMART_IMAGE',
+			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
 			);
+//			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
+//			'Z'=>'COM_VIRTUEMART_RELATED_CATEGORY',
     }
 	/**
 	 * This function determines the type of a custom and creates it.
@@ -146,11 +147,11 @@ class VmCustomHandler {
      * @return object List of flypage objects
      */
     function getCustomsList( $publishedOnly = FALSE ) {
-
     	$vendorId=1;
 		// get custom parents
-    	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0';
-		if ($publishedOnly) $q.=' WHERE `published`=1';
+    	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0 
+			AND field_type <> "R" AND field_type <> "Z" ';
+		if ($publishedOnly) $q.='AND `published`=1';
 		if ($ID = JRequest::getVar( 'virtuemart_custom_id',false)) $q .=' and `virtuemart_custom_id`!='.$ID;
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();

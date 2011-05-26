@@ -47,13 +47,15 @@ class VirtuemartViewProduct extends JView {
 				$db->setQuery($query);
 				echo json_encode($db->loadObjectList());
 				return;
-				$json['value'] = $db->loadObjectList();
-				$json['ok'] = 1 ;
 		} else if ($type=='product') {
-			
+
+			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
+			$db->setQuery($query);
+			$customs = $db->loadObject();
+
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value 
 				FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
-				$db->setQuery($query);
+			$db->setQuery($query);
 
 			$field = $db->loadObject();
 			$html = array ();
@@ -65,8 +67,49 @@ class VirtuemartViewProduct extends JView {
 				 </td>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'
 					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="0" checked="checked" name="admin_only" />
+					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
+					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
+				 </td>
+				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
+				 <td></td>
+				</tr>';
+			$json['value'] = $html;
+			$json['ok'] = $field->id ;
+		}else if ($type=='relatedcategories') {
+			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
+				FROM #__virtuemart_categories ";
+			if ($filter) $query .= " WHERE category_name LIKE '%".$filter."%' limit 0,50";
+			$db->setQuery($query);
+			if ($result = $db->loadObjectList() ) echo json_encode($result);
+			else echo $db->_sql;
+			return;
+
+		} else if ($type=='category') {
+
+			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
+			$db->setQuery($query);
+			$customs = $db->loadObject();
+
+
+			$query = "SELECT virtuemart_category_id AS id, category_name AS value 
+				FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
+			$db->setQuery($query);
+
+
+			$field = $db->loadObject();
+			$html = array ();
+			$display = $product_model->inputType($field->id,'Z',0,0,$row,0);
+			$cartIcone= 'icon-16-default-off.png'; 
+			$html[] = '<tr>
+				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
+				 <td>'.$display.'
+				 </td>
+				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'
+					<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
+					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
+					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				 </td>
 				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
 				 <td></td>
@@ -101,7 +144,7 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.$fieldTypes[$field->field_type].'
 					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$field->admin_only.'" checked="checked" name="admin_only" />
+					<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 				 </td>
 				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
 				 <td></td>

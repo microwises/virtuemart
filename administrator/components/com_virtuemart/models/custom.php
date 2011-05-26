@@ -93,9 +93,9 @@ class VirtueMartModelCustom extends VmModel {
     function getCustoms(){
 
 		$this->_db = JFactory::getDBO();
-		$query='SELECT * FROM `#__virtuemart_customs` ';
-		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'WHERE `custom_parent_id` ='.$custom_parent_id;
-		if ($keyword = JRequest::getVar('keyword') ) $query .= 'WHERE `custom_title` LIKE "%'.$keyword.'%"';
+		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" ';
+		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'AND `custom_parent_id` ='.$custom_parent_id;
+		if ($keyword = JRequest::getVar('keyword') ) $query .= 'AND `custom_title` LIKE "%'.$keyword.'%"';
 		$this->_db->setQuery($query);
 		$datas->items = $this->_db->loadObjectList();
 
