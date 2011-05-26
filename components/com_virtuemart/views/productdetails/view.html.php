@@ -94,8 +94,10 @@ class VirtueMartViewProductdetails extends JView {
 
 		/* Load the neighbours */
 		$product->neighbours = $product_model->getNeighborProducts($product);
+//		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);
 
-		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
+		$product->related = $product_model->getRelatedProducts($virtuemart_product_id); dump($product->related);
+//		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
 
 		/* Load the category */
 		$category_model = $this->getModel('category');
@@ -141,8 +143,6 @@ class VirtueMartViewProductdetails extends JView {
 		$this->assignRef('rating', $rating);
 
 		if($showReview){
-
-
 
 			$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
 			$this->assignRef('vote', $vote);

@@ -28,8 +28,8 @@ defined('_JEXEC') or die('Restricted access');
 //
 //	}
 		if(empty($this->product->images[0]->virtuemart_media_id)) $this->product->images[0]->addHidden('file_is_product_image','1');
-		if (!empty($this->product->virtuemart_media_id)) echo $this->product->images[0]->displayFilesHandler($this->product->virtuemart_media_id);
-		else echo $this->product->images[0]->displayFilesHandler();
+		if (!empty($this->product->virtuemart_media_id)) echo $this->product->images[0]->displayFilesHandler($this->product->virtuemart_media_id,'product');
+		else echo $this->product->images[0]->displayFilesHandler(null,'product');
 
 
 	?>

@@ -272,8 +272,8 @@ $mainframe = JFactory::getApplication();
 			<?php
 				//echo $this->category->images[0]->displayFilesHandler($this->category->virtuemart_media_id);
 				if(empty($this->category->images[0]->virtuemart_media_id)) $this->category->images[0]->addHidden('file_is_category_image','1');
-				if ($this->category->virtuemart_media_id) echo $this->category->images[0]->displayFilesHandler($this->category->virtuemart_media_id);
-				else echo $this->category->images[0]->displayFilesHandler();
+				if ($this->category->virtuemart_media_id) echo $this->category->images[0]->displayFilesHandler($this->category->virtuemart_media_id,'category');
+				else echo $this->category->images[0]->displayFilesHandler(null,'category');
 			?>
 	</div>
 </div>

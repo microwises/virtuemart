@@ -67,7 +67,7 @@ class TableMedias extends VmTable {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_medias', 'virtuemart_media_id', $db);
 		$this->setPrimaryKey('virtuemart_media_id');
-		$this->setUniqueName('file_title');
+//		$this->setUniqueName('file_title');
 
 		$this->setLoggable();
 
@@ -91,6 +91,25 @@ class TableMedias extends VmTable {
 			if(strlen($this->file_title)>126){
 				$this->setError('Title too long '.strlen($this->file_title).' for database field, allowed 126');
 			}
+			$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
+			$q .= 'WHERE `file_title`="' .  $this->file_title . '" AND `file_type`="' .  $this->file_type . '"';
+            $this->_db->setQuery($q);
+		    $unique_id = $this->_db->loadResultArray();
+
+		    $tblKey = $this->_tbl_key;
+			if (!empty($unique_id)){
+				foreach($unique_id as $id){
+					if($id!=$this->$tblKey) {
+						if(empty($error)){
+							$this->setError(JText::_($error));
+						} else {
+							$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
+						}
+						return false;
+					}
+				}
+			}
+
 		} else{
 			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_TITLE'));
 			$ok = false;

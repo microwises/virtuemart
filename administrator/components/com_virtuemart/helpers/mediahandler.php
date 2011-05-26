@@ -605,9 +605,9 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFilesHandler($fileIds=array(0)){
+	public function displayFilesHandler($fileIds=array(0),$type=0){
 
-		$html = $this->displayFileSelection($fileIds);
+		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
 		return $html;
 	}
@@ -618,10 +618,10 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFileSelection($fileIds=array(0)){
+	public function displayFileSelection($fileIds=array(0),$type = 0){
 
 		$html='';
-		$result = $this->getImagesList();
+		$result = $this->getImagesList($type);
 		$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
 		$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div><br/ > ';
 		VmConfig::JimageSelectlist();
@@ -649,11 +649,15 @@ class VmMediaHandler {
      * @param name of the view
      * @return object List of flypage objects
      */
-    function getImagesList() {
+    function getImagesList($type = '') {
 
     	$vendorId=1;
     	$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
     	AND (`virtuemart_vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
+    	if(!empty($type)){
+    		$q .= ' AND `file_type` = "'.$type.'" ';
+    	}
+
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$this->_db->setQuery($q);

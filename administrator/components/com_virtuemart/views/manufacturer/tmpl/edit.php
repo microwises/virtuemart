@@ -116,7 +116,7 @@ $editor = JFactory::getEditor();
 ?>
 <div class="col50">
 	<div class="selectimage">
-		<?php echo $this->manufacturer->images[0]->displayFilesHandler($this->manufacturer->virtuemart_media_id); ?>
+		<?php echo $this->manufacturer->images[0]->displayFilesHandler($this->manufacturer->virtuemart_media_id,'manufacturer'); ?>
 	</div>
 </div>
 <?php
