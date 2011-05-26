@@ -214,11 +214,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    $userId = $this->determineStoreOwner();
 	}
 
-	$currencyFields = array();
-	$currencyFields[0] = 47; //EUR
-	$currencyFields[1] = 144; //USD
-
-	$fields = array();
+//	$currencyFields = array();
+//	$currencyFields[0] = 47; //EUR
+//	$currencyFields[1] = 144; //USD
+////
+//	$fields = array();
 
 //	$fields['virtuemart_userinfo_id'] = $db->loadResult();
 	$fields['virtuemart_user_id'] =  $userId;
@@ -244,8 +244,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
 	$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] =  47;
-	$fields['vendor_accepted_currencies'] = $currencyFields;
-	$fields['vendor_currency_display_style'] =  '1|&euro;|2|,|.|0|0';
+	$fields['vendor_accepted_currencies'] = '52,26,47,144';
 	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Washupito';

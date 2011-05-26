@@ -54,8 +54,6 @@ class TableVendors extends VmTableData {
     var $vendor_min_pov 	   		= 0;
     /** @var decimal Freeshipping */
     var $vendor_freeshipping  		= 0;
-    /** @var varchar Currency display style */
-    var $vendor_currency_display_style = '';
     /** @var text Currencies accepted by this vendor */
     var $vendor_accepted_currencies = array();
     /** @var text Vendor address format */

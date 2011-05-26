@@ -1229,7 +1229,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_url` varchar(255) NOT NULL DEFAULT '',
   `vendor_min_pov` decimal(10,2) DEFAULT NULL,
   `vendor_freeshipping` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vendor_currency_display_style` varchar(64) NOT NULL DEFAULT '',
   `vendor_accepted_currencies` text NOT NULL,
   `vendor_address_format` text NOT NULL,
   `vendor_date_format` varchar(255) NOT NULL,
