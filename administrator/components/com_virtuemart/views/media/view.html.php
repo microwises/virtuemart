@@ -70,7 +70,7 @@ class VirtuemartViewMedia extends JView {
         }
         else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
+			ShopFunctions::addStandardDefaultViewCommands(false);
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination',	$pagination);

@@ -119,6 +119,11 @@ class TableProducts extends VmTable {
 		$this->setSlug('product_name');
 	}
 
+//	function check(){
+//
+//		if(empty($this->product_name) &&)
+//	}
+
 //    /**
 //     * @author Max Milbers
 //     * @param

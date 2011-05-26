@@ -964,17 +964,6 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_id = $product_data->virtuemart_product_id = $data['virtuemart_product_id'] = $dbv->insertid();
 		}
 
-		if(!empty($data['virtuemart_media_id'])){
-			// Process the images
-			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-			$mediaModel = new VirtueMartModelMedia();
-			$mediaModel->storeMedia($data,'product');
-		    $errors = $mediaModel->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-		}
-
 		if (array_key_exists('field', $data)) {
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
@@ -1035,6 +1024,17 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->setQuery($q);
 			$this->_db->query();
 		}
+
+		if(!empty($data['virtuemart_media_id']) && !empty($data['virtuemart_media_id'][0]) && !empty($data['active_media_id'] ) ){
+			// Process the images
+			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+			$mediaModel = new VirtueMartModelMedia();
+			$mediaModel->storeMedia($data,'product');
+		    $errors = $mediaModel->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+		}
 		/* Update product types
 		* 'product_type_tables' are all types tables in product edit view
 		TODO CAN BE CUSTOM FIELDS
@@ -1079,7 +1079,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product = $this->getProduct($cids[0]);
 		$product->virtuemart_product_id = 0;
 		$product->slug = $product->slug.'-'.$cids[0];
-		dump ($product,$cids[0] );
+
 		$this->store($product);
 		return $this->_id;
 	}
@@ -1823,7 +1823,7 @@ class VirtueMartModelProduct extends VmModel {
 					$this->_db->setQuery($q);
 					$related = $this->_db->loadObject();
 					$display = $related->product_name.'('.$related->product_sku.')';
-					
+
 					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
 					$thumb ='';
@@ -2038,7 +2038,7 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 				/* related */
 				case 'R':
-					$q='(SELECT CONCAT_WS("::",`product_name`,`product_sku`) as name FROM `#__virtuemart_products` 
+					$q='(SELECT CONCAT_WS("::",`product_name`,`product_sku`) as name FROM `#__virtuemart_products`
 					WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
 					return $this->displayCustomMedia($value).' '.$this->_db->loadResult();

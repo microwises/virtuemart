@@ -105,15 +105,15 @@ class VmTable extends JTable {
 			// internal attributes of an object are ignored
 			if (!in_array( $k, $ignore )){
 
-				if ($fromArray && isset( $from[$k] )) {
+				if ($fromArray && !empty( $from[$k] )) {
 					return true;
 
-				} else if ($fromObject && isset( $from->$k )) {
+				} else if ($fromObject && !empty( $from->$k )) {
 					return true;
 				}
 			}
 		}
-		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store');
+//		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store');
 		return false;
     }
 

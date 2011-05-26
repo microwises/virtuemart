@@ -214,8 +214,7 @@ class VirtueMartModelMedia extends VmModel {
      */
 	function storeMedia($data,$type){
 
-		// Check token, how does this really work?
-//		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
+		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
 		$oldIds = $data['virtuemart_media_id'];
 
@@ -229,8 +228,6 @@ class VirtueMartModelMedia extends VmModel {
 		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
-
-//		$data['virtuemart_media_id'] = array_reverse ($virtuemart_media_id,true);
 
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
@@ -252,25 +249,27 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	public function store($data,$type) {
 
-
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
-		$table->bind($data);
+//		if($table->checkDataContainsTableFields($data,array('file_url','media_action','media_attributes','file_is_product_image','virtuemart_media_id','virtuemart_vendor_id'))){
+			$table->bind($data);
+			$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
+				// workarround for media published and product published two fields in one form.
+			if ($data['media_published'])
+				$data['published'] = $data['media_published'];
+			else
+				$data['published'] = 0;
 
-		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
-		// workarround for media published and product published two fields in one form.
-		if ($data['media_published'])
-			$data['published'] = $data['media_published'];
-		else
-			$data['published'] = 0;
+
+			$table->bindChecknStore($data);
+		    $errors = $table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+//		}
 
 
-		$table->bindChecknStore($data);
-	    $errors = $table->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}
 
 		return $table->virtuemart_media_id;
 	}
