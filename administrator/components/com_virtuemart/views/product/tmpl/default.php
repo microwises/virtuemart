@@ -108,10 +108,15 @@ $pagination = $this->pagination;
                                  $child_link = '';
                                 $pre='';
                                 /* Product list should be ordered */
-				if ($product->product_parent_id  ) {
-					 $child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->virtuemart_product_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+				$parent_id = JRequest::getVar('product_parent_id');
+				if ($parent_id > 0 ) {
+					 $child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT_INFO_LBL').' ]');
+				 } else {
+					if ($product->product_parent_id  ) {
+						$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
                                         //$pre 	= '&nbsp;&nbsp;<sup>|_</sup>&nbsp;';
-                                }
+					}
+				}
 
 
 				?>
