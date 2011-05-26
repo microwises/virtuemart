@@ -1061,8 +1061,13 @@ class VirtueMartModelProduct extends VmModel {
 	public function createChild($id){
 		// created_on , modified_on
 		$vendorId = 1 ;
-		$q = 'INSERT INTO `#__virtuemart_products` ( `virtuemart_vendor_id`, `product_parent_id` ) VALUES ( '.$vendorId.', '.$id.' )';
+		$this->_db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
+		$slug_id = 1+$this->_db->loadResult();
+		$this->_db->setQuery('SELECT `product_name` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.$id );
+		$parent = $this->_db->loadObject();
+		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P-'.$slug_id.'", '.$vendorId.', '.$id.' )';
 		$this->_db->setQuery($q);
+		dump ($this->_db->_sql,'sql');
 		$this->_db->query();
 		return $this->_db->insertid();
 	}
@@ -1849,7 +1854,7 @@ class VirtueMartModelProduct extends VmModel {
 					if ($media_id = $this->_db->loadResult()) {
 						$thumb = $this->displayCustomMedia($media_id);
 					}
-					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$value ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) ).$display;
+					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$value ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) ).$display;
 				break;
 				/* image */
 				case 'M':

@@ -127,8 +127,9 @@ class VirtuemartControllerProduct extends VmController {
 		$view = $this->getView('product', 'html');
 
 		$model = $this->getModel('product');
-
+		
 		$cids = JRequest::getVar('cid');
+		if (!$cids) $cids = JRequest::getVar('virtuemart_product_id');
 		if ($id=$model->createChild($cids[0])){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
 			$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
