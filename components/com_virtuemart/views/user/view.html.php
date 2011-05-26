@@ -433,8 +433,8 @@ class VirtuemartViewUser extends JView {
 		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
-		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'JYES', 'JNO');
-		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'JYES', 'JNO');
+		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',     0, $this->_userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
 		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 

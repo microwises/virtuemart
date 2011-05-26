@@ -186,10 +186,10 @@ class VirtueMartModelRatings extends VmModel {
 
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
-     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
+     	ON `pr`.`created_by` = `u`.`virtuemart_user_id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
      	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.$cids[0].'
-		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`' ;
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`virtuemart_user_id`' ;
 		$this->_db->setQuery($q);
 
 		return $this->_db->loadObject();

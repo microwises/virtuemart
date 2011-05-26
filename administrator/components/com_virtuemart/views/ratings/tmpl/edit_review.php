@@ -29,7 +29,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 <fieldset class="adminform">
-<legend><?php echo JText::_('COM_VIRTUEMART_REVIEW'); ?></legend>
+<legend><?php echo JText::_('COM_VIRTUEMART_REVIEW')." ".JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 <table class="admintable" summary="<?php echo JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE');?>">
 	<tr>
 		<td width="24%" align="left" valign="top">

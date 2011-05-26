@@ -78,9 +78,11 @@ class VirtuemartViewRatings extends JView {
 
 				break;
 			case 'edit_review':
+                            
 				/* Get the data */
 				$rating = $model->getReview();
-
+                                $viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
+                                $this->assignRef('viewName',$viewName);
 				ShopFunctions::addStandardEditViewCommands();
 
 				/* Assign the data */

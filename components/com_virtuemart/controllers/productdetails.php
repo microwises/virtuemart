@@ -195,7 +195,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$model->saveRating($data);
 		$errors = $model->getErrors();
-		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('REVIEW') );
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('COM_VIRTUEMART_REVIEW') );
 		foreach($errors as $error){
 			$msg = ($error).'<br />';
 		}
