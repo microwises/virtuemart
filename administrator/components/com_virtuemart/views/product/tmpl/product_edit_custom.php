@@ -210,7 +210,7 @@ jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuema
 //			jQuery("table#customfields td:last").append(trash);
 		});
 		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
-			jQuery(this).parents('tr').remove();
+			jQuery(this).closest('tr').remove();
 		});
 	});
 	nextCustom++;
@@ -252,7 +252,7 @@ jQuery('input#relatedCategorySearch').autocomplete('index.php?option=com_virtuem
 //			jQuery("table#customfields td:last").append(trash);
 		});
 		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
-			jQuery(this).parents('tr').remove();
+			jQuery(this).closest('tr').remove();
 		});
 	});
 	nextCustom++;

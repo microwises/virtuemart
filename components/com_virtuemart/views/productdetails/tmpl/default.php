@@ -252,10 +252,10 @@ if (empty ( $this->product )) {
 	<div class="product-fields">
 		<?php foreach ($this->product->customfields as $field)
 		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-			<span class="product-fields-title" ><b><?php echo $field->custom_title ?></b><span>
+			<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b><span>
 			<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
 			<span class="product-field-display"><?php echo $field->display ?><span>
-			<span class="product-field-desc"><?php echo $field->custom_field_desc ?><span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?><span>
 			</div>
 			<?php
 		}
@@ -454,7 +454,7 @@ if (empty ( $this->product )) {
 	*
 	*/
 
-	?> <div class="customer-reviews"> <?php
+	?><div class="customer-reviews"> <?php
 
 	if($this->allowRating || $this->showReview){
 ?> <form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
