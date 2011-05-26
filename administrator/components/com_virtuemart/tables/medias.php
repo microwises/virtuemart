@@ -91,7 +91,7 @@ class TableMedias extends VmTable {
 			if(strlen($this->file_title)>126){
 				$this->setError('Title too long '.strlen($this->file_title).' for database field, allowed 126');
 			}
-			$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
+			$q = 'SELECT * FROM `'.$this->_tbl.'` ';
 			$q .= 'WHERE `file_title`="' .  $this->file_title . '" AND `file_type`="' .  $this->file_type . '"';
             $this->_db->setQuery($q);
 		    $unique_id = $this->_db->loadResultArray();
