@@ -28,15 +28,13 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_INSTALLSAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
 	    </span>
-	    <br />
-	    Install<br />Sample Data
+	    <br /><?php echo JText::_('COM_VIRTUEMART_SAMPLE_DATA'); ?>
 	</td>
 	<td align="center">
 	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=userSync'); ?>">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_shoppers_48.png">
 	    </a>
-	    <br />
-	    Sync Joomla<br />Users
+	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_JOMMLA_USERS'); ?>
 	</td>
 	<td align="center">
 	    &nbsp;
@@ -52,16 +50,14 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_RESTOREDEFAULTS_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_cpanel_48.png">
 	    </span>
-	    <br />
-	    Restore<br />System Defaults
+	    <br /><?php echo JText::_('COM_VIRTUEMART_UPDATE_RESTOREDEFAULTS'); ?>
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmData'); ?>
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_REMOVEDATA_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
-	    <br />
-	    Remove<br />Virtuemart Data
+	    <br /> <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVETABLES'); ?>
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmTables'); ?>
@@ -69,18 +65,18 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />
-	    Remove<br />Virtuemart Tables
+            <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVETABLES'); ?>
 	</td>
 
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall'); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>', '<?php echo $link; ?>');">
+	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />
-	    Reset all tables <br /> and install sampledata
+            <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 	</td>
-
+         
 <?php /*	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portCurrency'); ?>
 	    <span onclick="javascript:confirmation('<?php echo 'Start port?'; ?>', '<?php echo $link; ?>');">

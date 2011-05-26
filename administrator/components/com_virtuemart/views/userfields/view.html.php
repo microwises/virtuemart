@@ -39,7 +39,8 @@ class VirtuemartViewUserfields extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-
+                $this->loadHelper('shopFunctions');
+                
 		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
 
@@ -50,10 +51,11 @@ class VirtuemartViewUserfields extends JView {
 			$editor = JFactory::getEditor();
 
 			$userField = $model->getUserfield();
-
+                        $viewName=ShopFunctions::SetViewTitle('vm_orderstatus_48','USERFIELD',$userField->name );
+                                $this->assignRef('viewName',$viewName);
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
-				JToolBarHelper::title(  JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_NEW'), 'vm_orderstatus_48');
 
+                                 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
@@ -66,9 +68,8 @@ class VirtuemartViewUserfields extends JView {
 				$ordering = JHTML::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
-				JToolBarHelper::title( JText::_('COM_VIRTUEMART_USERFIELD_FORM_LBL').JText::_('COM_VIRTUEMART_FORM_EDIT'));
-
 				$userFieldValues = $model->getUserfieldValues();
+
 				$lists['type'] = $this->_getTypes($userField->type)
 					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
 			}

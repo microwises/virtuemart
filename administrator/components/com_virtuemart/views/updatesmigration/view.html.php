@@ -36,7 +36,7 @@ class VirtuemartViewUpdatesMigration extends JView {
 	$this->loadHelper('adminMenu');
 	$latestVersion = JRequest::getVar('latestverison', '');
 
-	JToolBarHelper::title('Updating and data migration', 'vm_config_48');
+	JToolBarHelper::title(JTEXT::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'vm_config_48');
 
 	$this->loadHelper('connection');
 	$this->loadHelper('image');

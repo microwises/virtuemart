@@ -44,12 +44,12 @@ class AdminMenuHelper {
 	// used $config->jQuery(); $config->jVm(); to load it
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	?>
-<div class="vm-block vm-main-container">
-    <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('COM_VIRTUEMART_CLOSE')?>"><?php echo JText::_('COM_VIRTUEMART_CLOSE')?></a>
-    <div class="vm-block vm-layout-left">
+        <div class="vm-block vm-main-container">
+         <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('COM_VIRTUEMART_CLOSE')?>"><?php echo JText::_('COM_VIRTUEMART_CLOSE')?></a>
+         <div class="vm-block vm-layout-left">
 		<?php  AdminMenuHelper::showAdminMenu(); ?>
-    </div>
-    <div id="vmPage" class="vm-block vm-layout-right">
+        </div>
+        <div id="vmPage" class="vm-block vm-layout-right">
 		<?php
 	    }
 
