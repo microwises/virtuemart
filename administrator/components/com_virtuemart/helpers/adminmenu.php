@@ -90,9 +90,11 @@ class AdminMenuHelper {
 		    <center>
 				<?php
 				//TODO The link should be done better
-				echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
+				echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'));
 				?>
-			<h2><?php echo JText::_('COM_VIRTUEMART_ADMIN')	?></h2>
+                                <h2>
+                                <?php echo JHTML::_('link', 'index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_ADMIN') ); ?>
+                              </h2>
 		    </center>
 		    <div class="status-divider">
 		    </div>
