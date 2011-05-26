@@ -98,7 +98,7 @@ class VirtueMartViewVirtueMart extends JView {
 //		    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
 
 		} else {
-			$this->setLayout('offline');
+			$this->setLayout('off_line');
 		}
 
 		/* Set the titles */

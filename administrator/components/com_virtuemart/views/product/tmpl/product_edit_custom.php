@@ -81,11 +81,11 @@ defined('_JEXEC') or die('Restricted access');
 					else  $cartIcone= 'icon-16-default-off.png'; 
 					 echo '<tr>
 							
-							<td>'.jText::_($customRow->custom_title).'</td>
+							<td>'.JText::_($customRow->custom_title).'</td>
 							<td>
 							 '.$customRow->display.$customRow->custom_tip.'
 							</td>
-							<td>'.$this->fieldTypes[$customRow->field_type].'
+							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).'
 							 <input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							 <input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
