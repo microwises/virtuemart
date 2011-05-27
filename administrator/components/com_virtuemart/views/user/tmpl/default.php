@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_SHOPPER_GROUP')
+					, JText::_('COM_VIRTUEMART_SHOPPERGROUP')
 					, 'shopper_group_name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>

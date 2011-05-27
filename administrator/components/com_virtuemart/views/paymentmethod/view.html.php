@@ -48,7 +48,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
 		// TODO logo
-		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$viewName=ShopFunctions::SetViewTitle('vm_payment_48');
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getVar('layout', 'default');

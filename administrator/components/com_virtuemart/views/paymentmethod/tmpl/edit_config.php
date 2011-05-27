@@ -26,8 +26,9 @@ defined('_JEXEC') or die('Restricted access');
 	        echo $rendered = $parameters->render();
         }
         echo '<br />
-<strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':';
-		echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP') ) 
+                <span class="hasTip" title="'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP').'">
+                <strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':</strong></span>';
+
 	?>
 <br />
 <textarea class="inputbox" name="paym_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>

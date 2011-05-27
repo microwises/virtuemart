@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -66,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>

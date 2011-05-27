@@ -54,12 +54,12 @@ class VirtueMartViewCart extends JView {
 
 		if ($format == 'raw') {
 			$this->prepareCartData();
-			JRequest::setVar( 'layout', 'minicart'  );
-			$this->setLayout('minicart');
+			JRequest::setVar( 'layout', 'mini_cart'  );
+			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
 
-		if($layoutName=='editcoupon'){
+		if($layoutName=='edit_coupon'){
 
 			$this->prepareCartData();
 			$this->lSelectCoupon();
@@ -67,7 +67,7 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTCOUPON'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTCOUPON'));
 
-		} else if($layoutName=='selectshipper'){
+		} else if($layoutName=='select_shipper'){
 			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$this->lSelectShipper();
@@ -75,7 +75,7 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
 
-		} else if($layoutName=='selectpayment'){
+		} else if($layoutName=='select_payment'){
 
 			/* Load the cart helper */
 //			$cartModel = $this->getModel('cart');
@@ -87,7 +87,7 @@ class VirtueMartViewCart extends JView {
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 
-		} else if($layoutName=='orderdone'){
+		} else if($layoutName=='order_done'){
 
 			$this->lOrderDone();
 
@@ -273,7 +273,7 @@ class VirtueMartViewCart extends JView {
 	private function prepareVendor(){
 
 		$vendor = $this->getModel('vendor','VirtuemartModel');
-		$vendor->setId($this->_cart->vendorId);
+		//$vendor->setId($this->_cart->vendorId);
 		$_vendor = $vendor->getVendor();
 		$vendor->addImages($_vendor);
 		$this->assignRef('vendor',$_vendor);

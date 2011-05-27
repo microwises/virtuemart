@@ -32,19 +32,19 @@ AdminMenuHelper::startAdminArea();
 			      <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
 		      </th>
 		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME'); ?>
+			      <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
 		      </th>
 		      <th>
 			      <?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 		      </th>
 		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DESCRIPTION'); ?>
+			      <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
 		      </th>
 		      <th>
-			      <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_INCLUDE_TAX'); ?>
+			      <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_INCLUDE_TAX'); ?>
 		      </th>
 		      <th>
-            <?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_LIST_DISCOUNT'); ?>
+            <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_LIST_DISCOUNT'); ?>
           </th>
 		      <th width="20">
 			      <?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>

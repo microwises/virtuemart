@@ -111,7 +111,7 @@ class TableMedias extends VmTable {
 			}
 
 		} else{
-			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_TITLE'));
+			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
 			$ok = false;
 		}
 
@@ -120,7 +120,7 @@ class TableMedias extends VmTable {
 				$this->setError('Description too long '.strlen($this->file_title).' for database field, allowed 254');
 			}
 		} else{
-//			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_DESCRIPTION'));
+//			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_DESCRIPTION'));
 //			$ok = false;
 		}
 
@@ -135,7 +135,7 @@ class TableMedias extends VmTable {
 			if(function_exists('mime_content_type') ){
 				$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 			} else {
-				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_SHOULD_HAVE_MIMETYPE'));
+				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
 				$notice = true;
 			}
 		}
@@ -145,7 +145,7 @@ class TableMedias extends VmTable {
 				$this->setError('Url too long '.strlen($this->file_title).' for database field, allowed 254');
 			}
 		} else{
-			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_FILES_MUST_HAVE_URL'));
+			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
 			$ok = false;
 		}
 

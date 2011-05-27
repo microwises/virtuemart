@@ -83,8 +83,8 @@ $pagination = $this->pagination;
 				<?php echo JHTML::_('grid.order', $productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_REVIEWS'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_S', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>

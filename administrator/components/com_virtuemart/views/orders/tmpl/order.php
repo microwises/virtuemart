@@ -374,7 +374,7 @@ JPluginHelper::importPlugin('vmshipper');
 					?>
 			<tr>
 				<td align="right" colspan="7"><strong> <?php
-				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
+				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
 				else echo JText::_('COM_VIRTUEMART_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
@@ -412,7 +412,7 @@ JPluginHelper::importPlugin('vmshipper');
 					?>
 			<tr>
 				<td align="right" colspan="7"><strong><?php
-				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
+				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
 				else echo JText::_('COM_VIRTUEMART_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php

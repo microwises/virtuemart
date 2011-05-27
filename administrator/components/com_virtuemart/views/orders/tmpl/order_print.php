@@ -137,7 +137,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 					?>
 			<tr>
 				<td align="right" colspan="5"><strong> <?php
-				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
+				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
 				else echo JText::_('COM_VIRTUEMART_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
@@ -175,7 +175,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 					?>
 			<tr>
 				<td align="right" colspan="5"><strong><?php
-				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_LIST_DISCOUNT');
+				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
 				else echo JText::_('COM_VIRTUEMART_FEE');
 				?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php

@@ -3,7 +3,7 @@
 *
 * Layout for the shopper mail, when he confirmed an ordner
 *
-* The addresses are reachable with $this->BTaddress, take a look for an exampel at shopperadresses.php
+* The addresses are reachable with $this->BTaddress, take a look for an exampel at shopper_adresses.php
 *
 * With $this->cartData->paymentName or shippingName, you get the name of the used paymentmethod/shippmentmethod
 *
@@ -45,9 +45,9 @@ if(!empty($this->order['details']['BT']->customer_note)){
 }
 
 //PriceList
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'pricelist.php');
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
 
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopperadresses.php');
+include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shoppera_dresses.php');
 
 //TODO if silent registration logindata
 //TODO if Paymentmethod needs Bank account data of vendor

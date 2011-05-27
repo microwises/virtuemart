@@ -1949,7 +1949,7 @@ class VirtueMartModelProduct extends VmModel {
 //				foreach ($group->options as $productCustom) {
 //					$productCustom->custom_price = $currency->priceDisplay($productCustom->custom_price,'',true);
 //				}
-				
+
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($productCustom->custom_price);
@@ -2036,7 +2036,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			if ($price > 0) $priceDisplay = $currency->priceDisplay((float)$price);
 			switch ($type) {
-				
+
 				/* variants*/
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
@@ -2045,7 +2045,7 @@ class VirtueMartModelProduct extends VmModel {
 				$currency = CurrencyDisplay::getInstance();
 				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
-				/*userfield variants*/	
+				/*userfield variants*/
 				case 'U':
 				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();

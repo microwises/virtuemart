@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>:
 				</label>
 			</td>
 			<td>
@@ -61,7 +61,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_discount">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_FORM_DISCOUNT'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_FORM_DISCOUNT'); ?>:
 				</label>
 			</td>
 			<td>
@@ -81,7 +81,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_GROUP_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>

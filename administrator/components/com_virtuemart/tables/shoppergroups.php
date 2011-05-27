@@ -67,10 +67,10 @@ class TableShoppergroups extends VmTable
 	function check(){
 
 		if (empty($this->shopper_group_name) ){
-			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_RECORDS_MUST_HAVE_NAME'));
+			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_RECORDS_MUST_HAVE_NAME'));
 			return false;
 		} else if (mb_strlen($this->shopper_group_name) > 32) {
-			$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUPS_NAMES_LESS_THAN_32_CHARACTERS'));
+			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
 			return false;
 		}
 

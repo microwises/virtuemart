@@ -65,7 +65,7 @@ function myValidator(f, t)
 	$_dispatcher = JDispatcher::getInstance();
 	$_tmp = array('cart'=>$this->cart,'checked'=>$this->selectedShipper);
 	$_html = $_dispatcher->trigger('plgVmOnSelectShipper', $_tmp);
-
+        // if only one Shipper , should be checked by default
 	foreach($_html as $_item){
 		echo $_item;
 	}

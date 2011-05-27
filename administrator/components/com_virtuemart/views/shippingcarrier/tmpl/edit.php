@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CARRIER_FORM_LIST_ORDER'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>:
 				</label>
 			</td>
 			<td>

@@ -144,8 +144,8 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($helper->menu->cart_id) ) $query['Itemid'] = $helper->menu->cart_id;
 			else $segments[] = $lang['cart'] ;
 			if (isset($query['task'])) {
-				if ($query['task'] == 'editshipping') $segments[] = $lang['editshipping'] ;
-				elseif ($query['task'] == 'editpayment') $segments[] = $lang['editpayment'];
+				if ($query['task'] == 'edit_shipping') $segments[] = $lang['editshipping'] ;
+				elseif ($query['task'] == 'edit_payment') $segments[] = $lang['editpayment'];
 				unset($query['task']);
 			}
 		break;
@@ -276,8 +276,8 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
-		if ($segments[0] == $lang['editshipping'] ) $vars['task'] = 'editshipping' ;
-		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
+		if ($segments[0] == $lang['edit_shipping'] ) $vars['task'] = 'edit_shipping' ;
+		elseif ($segments[0] == $lang['edit_payment'] ) $vars['task'] = 'edit_payment' ;
 		return $vars;
 	}
 
@@ -573,11 +573,11 @@ class vmrouterHelper {
 			$extension = 'com_virtuemart';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
-			$this->lang['editshipping'] 	= $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING');
+			$this->lang['edit_shipping'] 	= $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING');
 			$this->lang['manufacturer'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURER');
 			$this->lang['manufacturers'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURERS');
 			$this->lang['askquestion']  	= $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION');
-			$this->lang['editpayment']  	= $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT');
+			$this->lang['edit_payment']  	= $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT');
 			$this->lang['user'] 			= $lang->_('COM_VIRTUEMART_SEF_USER');
 			$this->lang['cart'] 			= $lang->_('COM_VIRTUEMART_SEF_CART');
 			$this->lang['editaddresscartBT']= $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL');
@@ -622,11 +622,11 @@ class vmrouterHelper {
 
 		} else {
 			/* use default */
-			$this->lang['editshipping'] = 'editshipping';
+			$this->lang['edit_shipping'] = 'edit_shipping';
 			$this->lang['manufacturers'] = 'manufacturers';
 			$this->lang['manufacturer'] = 'manufacturer';
 			$this->lang['askquestion']  = 'askquestion';
-			$this->lang['editpayment']  = 'editpayment';
+			$this->lang['edit_payment']  = 'edit_payment';
 			$this->lang['user']			= 'user';
 			$this->lang['cart']			= 'cart';
 			$this->lang['editaddresscartBT'] = 'edit_cart_bill_to';

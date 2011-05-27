@@ -20,92 +20,92 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<table class="adminform">
-    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
+<table class="admintable">
+    <tr  >
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
       <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->paym->published); ?></fieldset></td>
     </tr>
-    <tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_NAME') ?>:</td>
+    <tr  class="key">
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME') ?>:</td>
       <td width="69%" >
         <input type="text" class="inputbox" name="paym_name" value="<?php echo $this->paym->paym_name; ?>" size="32" />
       </td>
     </tr>
 <?php /*    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_ELEMENT'); ?>:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT'); ?>:</td>
       <td width="69%">
       	<input type="text" class="inputbox" name="paym_element" value="<?php	echo $this->paym->paym_element;?>" size="4" />
-		<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_METHOD_ELEMENT_TIP') ); ?>
+		<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT_TIP') ); ?>
       </td>
     </tr> */ ?>
-    <tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME'); ?>:</td>
+    <tr  >
+      <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME'); ?></span>:</td>
       <td width="69%"><?php
       	echo $this->vmPPaymentList;
       	//echo FileUtilities::list_available_classes( 'paym_element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
-      	echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME_TIP') ); ?>
+       ?>
       </td>
     </tr>
 <?php /*    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->PaymentTypeList ?>
       </td>
     </tr>
     */ ?>
-    <tr class="row0" id=creditcardlist style="display : none;" >
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_CREDITCARD_LIST') ?>:</td>
+    <tr   id=creditcardlist style="display : none;" >
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_CREDITCARD_LIST') ?>:</td>
       <td width="69%" ><?php
 		echo $this->creditCardList ?>
       </td>
     </tr>
 
-    <tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
+    <tr >
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_SHOPPER_GROUP') ?>:</td>
       <td width="69%" ><?php
 		echo $this->shopperGroupList ?>
       </td>
     </tr>
-    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_DISCOUNT') ?>:</td>
+    <tr >
+      <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_DISCOUNT') ?></span>:</td>
       <td width="69%" >
       <input type="text" class="inputbox" name="discount" value="<?php	echo $this->paym->discount;?>" size="4" />
-		<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_METHOD_DISCOUNT_TIP') ); ?>
+
       </td>
     </tr>
-	<tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
+	<tr  >
+      <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISCOUNT_ISPERCENT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_DISCOUNT_AMOUNTTYPE') ?></span>:</td>
       <td width="69%" >
 		<fieldset class="radio">
 		<?php
-		echo JHTML::_('select.booleanlist',  'is_discount', 'class="inputbox"', $this->paym->discount_is_percentage, 'COM_VIRTUEMART_PRODUCT_DISCOUNT_ISTOTAL', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_ISPERCENT');
-		echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?>
+		echo JHTML::_('select.booleanlist',  'is_discount', 'class="inputbox"', $this->paym->discount_is_percentage, 'COM_VIRTUEMART_DISCOUNT_ISTOTAL', 'COM_VIRTUEMART_DISCOUNT_ISPERCENT');
+		  ?>
 		</fieldset>
       </td>
     </tr>
-	<tr class="row0">
-      	<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT') ?>:</td>
+	<tr  >
+      	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT') ?></span>:</td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_max_amount" value="<?php	echo $this->paym->discount_max_amount;?>" size="4" />
-      	<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT_TIP') ); ?>
+
       </td>
     </tr>
-        <tr class="row1">
-      	<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
+        <tr  >
+      	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
-      	<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT_TIP') ); ?>
+       
       </td>
     </tr>
-    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
+    <tr  >
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_LIST_ORDER') ?>:</td>
       <td width="69%" >
         <input type="text" class="inputbox" name="ordering" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
     </tr>
     <?php if($this->perms->check('admin')){?>
-	<tr class="row1">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>:</td>
+	<tr >
+      <td class="key"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>:</td>
       <td width="69%" ><?php
 		echo $this->vendorList ?>
       </td>

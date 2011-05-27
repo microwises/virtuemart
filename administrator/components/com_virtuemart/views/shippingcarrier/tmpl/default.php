@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_NAME_LBL'); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_ORDER_LBL'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 		</tr>

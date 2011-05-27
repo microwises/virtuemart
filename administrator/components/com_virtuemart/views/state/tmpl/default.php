@@ -39,10 +39,10 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_STATE_LIST_3_CODE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_STATE_3_CODE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_STATE_LIST_2_CODE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_STATE_2_CODE'); ?>
 		    </th>
 		    <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>

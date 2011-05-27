@@ -97,7 +97,7 @@ if( $valid ) {
 		<label for="confirm_update">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
 	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
-	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.JText::_('COM_VIRTUEMART_CMN_CANCEL').'" />
+	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.JText::_('COM_VIRTUEMART_CANCEL').'" />
 	</div>';
 } else {
 	echo '<div class="shop_error">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';

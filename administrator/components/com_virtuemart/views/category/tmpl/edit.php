@@ -264,7 +264,7 @@ $mainframe = JFactory::getApplication();
 </div>
 <?php
 	echo $pane->endPanel();
-	echo $pane->startPanel(JText::_('COM_VIRTUEMART_IMAGES'), 'images_tab');
+	echo $pane->startPanel(JText::_('COM_VIRTUEMART_IMAGE_S'), 'images_tab');
 
 ?>
 <div class="col50">

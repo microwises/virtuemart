@@ -231,11 +231,11 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function editshipping(){
+	public function edit_shipping(){
 
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
-		$view->setLayout('selectshipper');
+		$view->setLayout('select_shipper');
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);

@@ -116,10 +116,10 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 					$_defaultExpTime = array(
 						 '1,D' => '1 '.JText::_('COM_VIRTUEMART_DAY')
 						,'1,W' => '1 '.JText::_('COM_VIRTUEMART_WEEK')
-						,'2,W' => '2 '.JText::_('COM_VIRTUEMART_WEEKS')
+						,'2,W' => '2 '.JText::_('COM_VIRTUEMART_WEEK_S')
 						,'1,M' => '1 '.JText::_('COM_VIRTUEMART_MONTH')
-						,'3,M' => '3 '.JText::_('COM_VIRTUEMART_MONTHS')
-						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTHS')
+						,'3,M' => '3 '.JText::_('COM_VIRTUEMART_MONTH_S')
+						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTH_S')
 						,'1,Y' => '1 '.JText::_('COM_VIRTUEMART_YEAR')
 					);
 					foreach ($_defaultExpTime as $_v => $_t) {
