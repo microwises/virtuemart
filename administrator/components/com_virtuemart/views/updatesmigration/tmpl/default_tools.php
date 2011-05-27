@@ -57,7 +57,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_REMOVEDATA_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
-	    <br /> <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVETABLES'); ?>
+	    <br /> <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVEDATA'); ?>
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmTables&token='.JUtility::getToken()); ?>
