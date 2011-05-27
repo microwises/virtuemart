@@ -279,7 +279,7 @@ class VirtueMartControllerCart extends JController {
 	public function editpayment(){
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
-		$view->setLayout('selectpayment');
+		$view->setLayout('select_payment');
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);

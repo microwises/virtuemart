@@ -490,7 +490,7 @@ class VirtueMartCart  {
 				$this->setCartIntoSession();
 				break; // Plugin completed succesful; nothing else to do
 			} elseif ($_retVal === false) { // Missing data, ask for it (again)
-				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping');
+				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping');
 //	Remove comments if newchecks need to be implemented.
 //	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 //				} elseif ($_retVal === null) {
@@ -575,7 +575,7 @@ class VirtueMartCart  {
 		//Test Shipment
 		if($this->shipper_id == 0){
 //			$this->setCartIntoSession();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
 		}
 		// Ok, a shipper was selected, now make sure we can find a matching shipping rate for
 		// the current order shipto and weight
@@ -593,7 +593,7 @@ class VirtueMartCart  {
 		if ($this->virtuemart_shippingrate_id < 0) {
 			$this->shipper_id = 0;
 			$this->setCartIntoSession();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editshipping',$redirectMsg);
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
 		}
 
 		//Test Payment and show payment plugin
@@ -737,8 +737,14 @@ class VirtueMartCart  {
 
 			$this->setCartIntoSession();
 
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
+                        /* valerie */
+                          $cart= $this->getCart();
+			$_dispatcher = JDispatcher::getInstance();
+			$_retValues = $_dispatcher->trigger('plgVmAfterCheckoutDoPayment', array('cart'=>$cart));
+
+
+			//$mainframe = JFactory::getApplication();
+			//$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 
 		} else {
 			$mainframe = JFactory::getApplication();
