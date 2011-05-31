@@ -252,6 +252,17 @@ class VirtueMartControllerProductdetails extends JController {
 		die;
 
 	}
+	public function getData() {
+	
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		/* Create the view object. */
+		$view = $this->getView('productdetails', 'json');
+		/* Standard model */
+		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+		$type = JRequest::getVar('type', false);
+		/* Now display the view. */
+		$view->display(null);
+	}
 
 }
 // pure php no closing tag

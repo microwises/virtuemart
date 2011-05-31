@@ -155,12 +155,12 @@ class VmConfig
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
-		$closeimage = JURI::root() .'components/com_virtuemart/assets/images/facebox/closelabel.png';
+		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
 		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
-		$jsVars .= "loadingImage = '".JURI::root() ."components/com_virtuemart/assets/images/facebox/loading.gif' ; ;\n" ;
-		$jsVars .= "closeImage = '{$closeimage}' ; \n";
-		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='{$closeimage}' title='close' class='close_image' /></a></div></div>\" ;\n";
+		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
+		$jsVars .= "closeImage = '".$closeimage."' ; \n";
+		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
 		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
@@ -271,14 +271,14 @@ class VmConfig
 
 	function cssSite() {
 		static $cssSite;
+		if ($cssSite) return;
 		// Get the Page direction for right to left support
 		$document = & JFactory::getDocument ();
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction . '.css';
 		
 		// If exist exit
-		if ($cssSite)
-			return;
+
 		JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
 		$cssSite = true;
 		return;
