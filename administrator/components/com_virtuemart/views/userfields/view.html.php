@@ -45,7 +45,7 @@ class VirtuemartViewUserfields extends JView {
 		$model = $this->getModel();
 
 		// The list of fields which can't be toggled
-		$lists['coreFields']= array( 'username', 'email', 'password', 'password2' );
+		$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
 
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();

@@ -32,10 +32,37 @@ function myValidator(f, t)
 		return true;
 	} else {
 		var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
-		alert (msg+' '+);
+		alert (msg+' ');
 	}
 	return false;
 }
+
+function callValidatorForRegister(f){
+
+	
+	var elem = jQuery('#username_field');
+	//if(elem.val().length<3){
+		//return false;
+	//} else {
+		elem.attr('class', "required");
+	//}
+	//alert('my elem '+elem);
+	
+	var elem = jQuery('#password_field');
+	elem.attr('class', "required");
+
+	var elem = jQuery('#password2_field');
+	elem.attr('class', "required");
+
+	var elem = jQuery('#userForm');
+
+	<?php if($this->fTask === 'savecartuser') $rtask = 'registercartuser'; else $rtask = 'registercheckoutuser'; ?>
+
+	return myValidator(f, '<?php echo $rtask ?>');
+
+}
+
+
 </script>
 <?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0 ){
 	echo VmConfig::get('oncheckout_show_register_text','Please use register to get the advantages of a registered user, else use save for anonymous checkout');
@@ -45,8 +72,9 @@ function myValidator(f, t)
 <div class="floatright">
 	<?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0  ){
 
-		if($this->fTask === 'savecartuser') $rtask = 'registercartuser'; else $rtask = 'registercheckoutuser';
-		?><button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, 'registercartuser');" ><?php echo JText::_('COM_VIRTUEMART_REGISTER'); ?></button>
+		if($this->fTask === 'savecartuser'){ $rtask = 'registercartuser'; }else{ $rtask = 'registercheckoutuser'; }
+		?>
+		<button class="save-button" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER'); ?></button>
 		
 	<?php } ?>
 	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>

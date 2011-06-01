@@ -66,40 +66,6 @@ class VirtueMartModelUserfields extends VmModel {
 		);
 	}
 
-//	/**
-//	 * Constructor for the userfields model.
-//	 *
-//	 * The userfield ID is read and detmimined if it is an array of ids or just one single id.
-//	 */
-//	function __construct()
-//	{
-//		parent::__construct();
-//
-//
-////		// Get the pagination request variables
-////		$mainframe = JFactory::getApplication() ;
-////		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-////		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-////
-////		// Set the state pagination variables
-////		$this->setState('limit', $limit);
-////		$this->setState('limitstart', $limitstart);
-////
-////		// Get the (array of) order status ID(s)
-////		$idArray = JRequest::getVar('cid',  0, '', 'array');
-////		$this->setId((int)$idArray[0]);
-//
-//		// Instantiate the Helper class
-//		$this->_params = new ParamHelper();
-//
-//
-//		// Form fields that must be translated to parameters
-//		$this->reqParam = array (
-//			 'age_verification' => 'minimum_age'
-//			,'euvatid'          => 'virtuemart_shoppergroup_id'
-//			,'webaddress'       => 'webaddresstype'
-//		);
-//	}
 
 	/**
 	* Prepare a user field for database update

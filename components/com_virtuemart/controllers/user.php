@@ -182,6 +182,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Max Milbers
 	 */
 	function saveCheckoutUser(){
+		
 		$msg = $this->saveData(true);
 		$this->saveToCart();
 

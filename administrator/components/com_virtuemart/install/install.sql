@@ -4,7 +4,6 @@
 -- --------------------------------------------------------
 
 
-
 --
 -- Table structure for table `#__virtuemart_adminmenuentries`
 --
@@ -164,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_category_id`),
   KEY `idx_category_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  UNIQUE_KEY `idx_category_name` (`category_name`)
+  UNIQUE KEY `idx_slug` (`slug`,`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Product Categories are stored here' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

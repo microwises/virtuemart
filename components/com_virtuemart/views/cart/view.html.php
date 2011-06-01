@@ -318,13 +318,6 @@ class VirtueMartViewCart extends JView {
 			$app = JFactory::getApplication();
 			$app -> enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED',$text));
 		}
-//		$withCC=false;
-//		foreach($payments as $item){
-//			if(isset($item->accepted_creditcards)){
-//				$withCC=true;
-//			}
-//		}
-//		$this->assignRef('withCC',$withCC);
 
 		$this->assignRef('paymentModel',$paymentModel);
 		$this->assignRef('payments',$payments);

@@ -737,8 +737,8 @@ class VirtueMartCart  {
 
 			$this->setCartIntoSession();
 
-                        /* valerie */
-                          $cart= $this->getCart();
+            /* valerie */
+            $cart= $this->getCart();
 			$_dispatcher = JDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmAfterCheckoutDoPayment', array('cart'=>$cart));
 

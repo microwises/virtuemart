@@ -298,16 +298,16 @@ class VirtueMartModelConfig extends JModel {
 
     function setDangerousToolsOff(){
 
-    	$config = $this -> getConfig();
-    	$config -> set('dangeroustools',0);
+//    	$config = $this -> getConfig();
+//    	$config -> set('dangeroustools',0);
 
-	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($config->toString()) .' WHERE virtuemart_config_id ="1"' ;
-	    $db->setQuery($query);
-	    if (!$db->query()) {
-			$this->setError($table->getError());
-			return false;
-	    }
+//	    $db = JFactory::getDBO();
+//	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($config->toString()) .' WHERE virtuemart_config_id ="1"' ;
+//	    $db->setQuery($query);
+//	    if (!$db->query()) {
+//			$this->setError($table->getError());
+//			return false;
+//	    }
 
     }
 }
