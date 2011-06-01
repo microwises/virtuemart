@@ -244,7 +244,7 @@ class VirtueMartModelProduct extends VmModel {
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 
 				/* Get stock indicator */
-				$product->stock = $this->getStockIndicator($product);
+//				$product->stock = $this->getStockIndicator($product);
 
 				/* TODO Get the votes */
 //				$product->votes = $this->getVotes($virtuemart_product_id);

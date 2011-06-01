@@ -135,8 +135,28 @@ class TableMedias extends VmTable {
 			if(function_exists('mime_content_type') ){
 				$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 			} else {
-				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
-				$notice = true;
+				if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				
+				$lastIndexOfSlash= strrpos($this->file_url,'/');
+				$name = substr($this->file_url,$lastIndexOfSlash+1);
+				$this->file_extension = strtolower(JFile::getExt($name));
+				if($this->file_extension === 'jpg' || $this->file_extension === 'jpeg'){
+					$this->file_mimetype = 'image/jpeg';
+				} 
+				elseif($this->file_extension === 'gif'){
+					$this->file_mimetype = 'image/gif';
+				} 
+				elseif($this->file_extension === 'png'){
+					$this->file_mimetype = 'image/png';
+				} 
+				elseif($this->file_extension === 'bmp'){
+					$this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP'));
+					$notice = true;					
+				}
+				else{
+					$this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
+					$notice = true;					
+				}
 			}
 		}
 

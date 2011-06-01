@@ -122,6 +122,10 @@ class VirtuemartViewCategory extends JView {
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $productModel->addImages($products);
 	    $this->assignRef('products', $products);
+		
+		foreach($products as $product){
+			$product->stock = $productModel->getStockIndicator($product);
+		}
 
 //	    $total = $productModel->getTotalProductsInCategory($categoryId);
 	    $total = $categoryModel->countProducts($categoryId);
