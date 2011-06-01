@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* virtuemart_calc_countries table ( to map calc rules to shoppergroups)
+* virtuemart_calc_countries table ( to map calc rules to countries)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool

@@ -27,12 +27,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY').' '. JText::_('COM_VIRTUEMART_NAME');; ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NAME');; ?>
 				</label>
 			</td>
 			<td>

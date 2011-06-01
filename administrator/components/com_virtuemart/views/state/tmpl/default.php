@@ -33,7 +33,7 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->states ); ?>);" />
 		    </th>
 		    <th>
-			<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
+			<?php echo   JText::_('COM_VIRTUEMART_STATE_NAME'); ?>
 		    </th>
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>

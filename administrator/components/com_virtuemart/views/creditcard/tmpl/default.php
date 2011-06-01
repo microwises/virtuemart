@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->creditcards); ?>);" />
 		    </th>
 		    <th>
-			<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
+			<?php echo   JText::_('COM_VIRTUEMART_CREDITCARD_NAME'); ?>
 		    </th>
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_CODE'); ?>

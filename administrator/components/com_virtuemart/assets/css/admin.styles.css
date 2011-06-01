@@ -99,16 +99,16 @@
 .vm-absolute{
 	position: absolute;
 }
-.detachselectimage , #addnewselectimage {   border-style: solid;
-	background-repeat : no-repeat;
-    border-width: 1px;
+.detachselectimage , #addnewselectimage {    
+    background-repeat: no-repeat;
+    border: 1px solid #CCCCCC;
     cursor: pointer;
     display: inline;
     line-height: 16px;
-    padding-left: 16px;
-	padding-right: 4px;
-	margin : 2px;
+    margin: 5px;
+    padding: 5px 5px 5px 16px;
 }
+
 
 div.threecols ul li {
     background: none repeat scroll 0 0 transparent;

@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
 	<table class="admintable">
 
 		<tr>

@@ -294,9 +294,21 @@ class VirtueMartModelOrders extends VmModel {
 		return $db->loadObjectList();
 	}
 
-	public function updateOrderStatus()
+	
+        /**
+	 * Update an order status and send e-mail if needed
+	 * @author Valérie Isaksen
+	 *  
+	 */
+        public function updateOrderStatus($order_id, $order_status)
 	{
-		// TODO This must be a rewrite of the updateStatus below
+                /* Update the order */
+                $order = $this->getTable('orders');
+                $order->load($order_id);
+                $order->order_status = $order_status;
+                $order->store();
+
+                /* here should update stock level */
 	}
 
 	/**
@@ -467,7 +479,7 @@ class VirtueMartModelOrders extends VmModel {
 		if (!$this->_writeUserInfo($_orderID, $_usr, $_cart)) {
 			return false;
 		}
-		$this->_handlePayment($_orderID, $_cart, $_prices);
+		 $this->_handlePayment($_orderID, $_cart, $_prices);
 
 		return $_orderID;
 	}
@@ -636,6 +648,7 @@ class VirtueMartModelOrders extends VmModel {
 					,$_cart
 					,$_prices
 		));
+
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {
 				// We got a new order status; check if the stock should be updated
@@ -652,7 +665,6 @@ class VirtueMartModelOrders extends VmModel {
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 		}
 	}
-
 	/**
 	 * Create the ordered item records
 	 *

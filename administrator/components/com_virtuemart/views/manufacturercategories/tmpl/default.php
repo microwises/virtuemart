@@ -32,13 +32,13 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturerCategories); ?>);" />
 			</th>
 			<th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
+				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>
 			</th>
 			<th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
+				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESCRIPTION'); ?>
 			</th>
 			<th>
-				<?php echo $this->viewName.' '.JText::_('COM_VIRTUEMART_LIST'); ?>
+				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_LIST'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->mf_category_desc); ?>
 				</td>
 				<td>
-					<a href="<?php echo $manufacturersList; ?>">Manufacturers</a>
+					<a title="<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_SHOW'); ?>" href="<?php echo $manufacturersList; ?>"><?php echo JText::_('COM_VIRTUEMART_SHOW'); ?></a>
 				</td>
 				<td align="center">
 					<?php echo $published; ?>

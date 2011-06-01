@@ -166,19 +166,19 @@ class vmParameters extends JParameter{
 	* @author Sören, Max Milbers
 	* @return string HTML
 	*/
-	function render( $name='params' ) {
-
+	function xxrender( $name='params' ) {
+ 
 		if (is_object( $this->_xml[$this->_group] )) {
 
 			$params = $this->getParams($name);
 			$html = array();
-			$html[] = '<table width="100%" class="adminform">';
+			$html[] = '<table width="100%" class="paramlist admintable">';
 
 			$element = $this->_xml[$this->_group];
 
 			if ($description = @$element->attributes( 'description')) {
 				// add the params description to the display
-				$html[] = '<tr><td colspan="2">' . $description . '</td></tr>';
+				$html[] = '<tr><td class="paramlist_description" colspan="2">' . $description . '</td></tr>';
 			}
 
 			$this->_methods = get_class_methods( get_class( $this ) );
@@ -189,8 +189,17 @@ class vmParameters extends JParameter{
 				$result = $this->renderParam( $param, $name );
 				$html[] = '<tr>';
 
-				$html[] = '<td width="40%" class="labelcell"><span class="editlinktip">' .Jtext::_( $result[0])  . '</span></td>';
-				$html[] = '<td>' . $result[1] . $result[2].'</td>';
+				$html[] = '<td class="paramlist_key">';
+                                if ($result[2]) {
+                                 $html[] .= '<span class="hasTip" title="'.Jtext::_( $result[2]).'">' ;
+                                }
+                                $html[] .= Jtext::_( $result[0])  ;
+
+                                 if ($result[2]) {
+                                 $html[] .= '</span>' ;
+                                }
+                                 $html[] .='</td>';
+				$html[] = '<td paramlist_value>' . $result[1]  .'</td>';
 
 				$html[] = '</tr>';
 			}
@@ -238,7 +247,7 @@ class vmParameters extends JParameter{
 //			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
 			//$result[0] = $description;
 		}
-
+                 
 		if (in_array( '_form_' . $type, $this->_methods )) {
 			
 			$value = $this->get($name);
@@ -252,7 +261,7 @@ class vmParameters extends JParameter{
 
 		if ( $description ) {
 //			$result[2] = JHTML::tooltip( $description, $result[0] );
-			$result[2] = JHTML::tooltip( $description);
+			$result[2] =   $description;
 //			$result[2] =  $description;
 		} else {
 			$result[2] = '';

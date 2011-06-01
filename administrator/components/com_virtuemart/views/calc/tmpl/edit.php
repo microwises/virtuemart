@@ -26,12 +26,12 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_CALC').' '. JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo $this->viewName .' '. JText::_('COM_VIRTUEMART_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS_NAME'); ?>:
 				</label>
 			</td>
 			<td>

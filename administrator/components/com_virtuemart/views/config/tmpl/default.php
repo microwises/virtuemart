@@ -33,7 +33,7 @@ echo $pane->startPane('pane');
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'), 'shop_panel');
 echo $this->loadTemplate('shop');
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONTTAB'), 'shopfrotnl_panel');
+echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONTTAB'), 'shopfront_panel');
 echo $this->loadTemplate('shopfront');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICINGTAB'), 'pricing_panel');

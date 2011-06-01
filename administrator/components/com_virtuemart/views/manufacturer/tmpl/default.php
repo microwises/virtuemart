@@ -47,19 +47,19 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_NAME'); ?>
+				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
 		    </th>
 		    <th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_EMAIL'); ?>
+				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
 		    </th>
 		    <th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_CATEGORY'); ?>
+				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
 		    </th>
 		    <th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
+				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
 		    </th>
 		    <th>
-				<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_URL'); ?>
+				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
 		    </th>
 		    <th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
