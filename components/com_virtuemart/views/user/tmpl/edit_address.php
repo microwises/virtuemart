@@ -37,9 +37,18 @@ function myValidator(f, t)
 	return false;
 }
 </script>
+<?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0 ){
+	echo VmConfig::get('oncheckout_show_register_text','Please use register to get the advantages of a registered user, else use save for anonymous checkout');
+} ?>
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->
 <div class="floatright">
+	<?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0  ){
+
+		if($this->fTask === 'savecartuser') $rtask = 'registercartuser'; else $rtask = 'registercheckoutuser';
+		?><button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, 'registercartuser');" ><?php echo JText::_('COM_VIRTUEMART_REGISTER'); ?></button>
+		
+	<?php } ?>
 	<button class="save-button" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
 	<button class="cancel-button" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 </div>

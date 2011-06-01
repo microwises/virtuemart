@@ -166,18 +166,6 @@ class VirtueMartControllerUser extends JController
 	}
 
 	/**
-	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
-	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
-	 *
-	 * @author Max Milbers
-	 */
-	function saveCartUser(){
-		$msg = $this->saveData(true);
-		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
-	}
-
-	/**
 	 * Editing a user address was cancelled when called from the cart; return to the cart
 	 *
 	 * @author Oscar van Eijk
@@ -200,6 +188,31 @@ class VirtueMartControllerUser extends JController
 		//We may add here the option for silent registration.
 		$this->setRedirect( JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
 	}
+
+	function registerCheckoutUser(){
+		$msg = $this->saveData(true,true);
+		$this->saveToCart();
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);		
+	}
+	
+	/**
+	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
+	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
+	 *
+	 * @author Max Milbers
+	 */
+	function saveCartUser(){
+		$msg = $this->saveData(true);
+		$this->saveToCart();
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
+	}
+
+	function registerCartuser(){
+		$msg = $this->saveData(true,true);
+		$this->saveToCart();
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);		
+	}
+	
 
 	/**
 	 * Editing a user address was cancelled during chaeckout; return to the cart
@@ -236,10 +249,10 @@ class VirtueMartControllerUser extends JController
 	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determin how to handle the data.
 	 * @return String it gives back the messages.
 	 */
-	private function saveData($cart=false) {
+	private function saveData($cart=false,$register=false) {
 
 		$currentUser =& JFactory::getUser();
-		if($currentUser->id!=0){
+		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
 

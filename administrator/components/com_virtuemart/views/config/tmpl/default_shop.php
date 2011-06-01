@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG') ?></td>
 	    <td>
-		<textarea rows="6" cols="35" name="offline_message"><?php echo $this->config->get('offline_message'); ?></textarea>
+		<textarea rows="6" cols="50" name="offline_message"><?php echo $this->config->get('offline_message'); ?></textarea>
 	    </td>
 	</tr>
 	<tr>

@@ -743,8 +743,8 @@ class VirtueMartCart  {
 			$_retValues = $_dispatcher->trigger('plgVmAfterCheckoutDoPayment', array('cart'=>$cart));
 
 
-			//$mainframe = JFactory::getApplication();
-			//$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=orderdone',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=order_done',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 
 		} else {
 			$mainframe = JFactory::getApplication();
