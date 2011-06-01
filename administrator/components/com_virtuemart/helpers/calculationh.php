@@ -811,6 +811,12 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
+	function calculateCustomPriceWithTax($price){
+		
+		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
+		return $this->roundDisplay($this -> executeCalculation($taxRules, $price,true));
+	}
+	
 	/**
 	 * This function just writes the query for gatherEffectingRulesForProductPrice
 	 * When a condition is not set, it is handled like a set condition that affects it. So the users have only to add a value

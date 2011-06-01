@@ -1899,7 +1899,11 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
+		
+		//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		//$calculator = calculationHelper::getInstance();
 		foreach ($productCustoms as & $field ) {
+			//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);dump($field,'$custom_price '.$custom_price);
 			$field->display = $this->displayType($product,$field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}
@@ -1927,10 +1931,10 @@ class VirtueMartModelProduct extends VmModel {
 			$row= 0 ;
 			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance();
-//			$calculator = calculationHelper::getInstance();
 
-//			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor');
-//			$vendor_currency = VirtueMartModelVendor::getVendorCurrency($product->virtuemart_vendor_id)->currency_code;
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+				
 			// render select list
 			foreach ($groups as & $group) {
 
@@ -1946,24 +1950,21 @@ class VirtueMartModelProduct extends VmModel {
 				$group->options = array();
 				foreach ( $options as $option) $group->options[$option->value] = $option;
 
-//				foreach ($group->options as $productCustom) {
-//					$productCustom->custom_price = $currency->priceDisplay($productCustom->custom_price,'',true);
-//				}
 
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
-						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($productCustom->custom_price);
+						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 					}
 					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->custom_value,'','value','text',false);
 				} else if ($group->field_type == 'U'){
 					foreach ($group->options as $productCustom) {
-						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($productCustom->custom_price);
+						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 					}
-						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($productCustom->custom_price).'</label>' ;
+						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
-						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($productCustom->custom_price).'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
 					}
 				}
 				$row++ ;
@@ -2026,29 +2027,30 @@ class VirtueMartModelProduct extends VmModel {
   *  for product only !
   */
 	function displayType($product,$value,$type,$is_list=0,$price = 0,$row){
-
+		
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
-			foreach ($values as $key => $val)
+
+			foreach ($values as $key => $val){		
 				$options[] = array( 'value' => $val ,'text' =>$val);
+			}
+				
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
-			if ($price > 0) $priceDisplay = $currency->priceDisplay((float)$price);
+			if ($price > 0){
+				$price = $currency->priceDisplay((float)$price);
+			} 
 			switch ($type) {
 
 				/* variants*/
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
-				/* Loads the product price details */
-				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				$currency = CurrencyDisplay::getInstance();
+				/* Loads the product price details */				
 				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/*userfield variants*/
 				case 'U':
-				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				$currency = CurrencyDisplay::getInstance();
 				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/* string or integer */
@@ -2075,8 +2077,10 @@ class VirtueMartModelProduct extends VmModel {
 					$thumb = '';
 					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
-					if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($media_id);
-					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) );
+					if ($media_id = $this->_db->loadResult()) {
+						$thumb = $this->displayCustomMedia($media_id);
+						return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) );		
+					}
 				break;
 				/* image */
 				case 'M':

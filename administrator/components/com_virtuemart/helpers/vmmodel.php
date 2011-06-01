@@ -83,7 +83,7 @@ class VmModel extends JModel {
      */
     function setId($id){
 
-    	if(is_array($id)) $id = $id[0];
+    	if(is_array($id) && count($id)!==0) $id = $id[0];
     	if($this->_id!=$id){
 			$this->_id = (int)$id;
 //			$idName = $this->_idName;
