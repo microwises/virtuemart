@@ -153,6 +153,13 @@ class AdminMenuHelper {
 				    ?>
 				</a>
 		    </div>
+		    
+		    <div class="updates">
+				<?php //TODO The link should be done better
+				echo JHTML::_('link', 'index.php?option=com_virtuemart', 'Update available');
+				?>
+		    </div>
+		    
                 </div>
             </div>
         </div>

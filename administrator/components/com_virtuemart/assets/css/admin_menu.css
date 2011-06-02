@@ -48,7 +48,7 @@
 
 .title-smenu, .title-smenu-down {
 	margin: 0px;
-	padding: 9px 10px 6px 28px;
+	padding: 9px 10px 7px 28px;
 	color: #fff;
 	cursor: pointer;
 	font-size: 12px;
@@ -72,13 +72,11 @@ div.status-divider {
 	overflow: hidden;
 }
 .sidemenu-box {
-	background: #F7F7F7;
 	float: left;
 	width: 200px;
 	
 }
 .sidemenu-box2 {
-	background: #F7F7F7;
 	float: left;
 	width: 100%;
 }
@@ -98,6 +96,20 @@ div.status-divider {
 .sidemenu-bottom {text-align: center;background: url(../images/admin_interface.png) top left no-repeat;padding: 16px 0px 17px 0px;background-position: 0px -268px;}
 .sidemenu-bottom a, .sidemenu-bottom a:visited {font-size: 12px;color: #fff;text-shadow: 1px 1px 1px #000;}
 .sidemenu-bottom a:hover {text-decoration: none;}
+
+.updates {text-align: center;}
+.updates a, .updates a:visited {display:inline-block;background: url(../images/admin_interface.png) top left no-repeat;color: #fff;background-position: 0px -315px;padding: 5px 12px 5px 12px;font-size: 12px;text-shadow: 0px -1px 0px #0d8604;font-weight: bold;
+
+-webkit-border-bottom-left-radius: 6px;
+-webkit-border-bottom-right-radius: 6px;
+-moz-border-radius-bottomleft: 6px;
+-moz-border-radius-bottomright: 6px;
+}
+
+
+
+.updates a:hover {text-decoration: none;}
+
 
 .element-box {
 	background: #fff;
