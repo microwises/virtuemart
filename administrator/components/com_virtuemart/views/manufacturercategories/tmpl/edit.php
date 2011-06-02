@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-									<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
+									<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESCRIPTION'); ?>:
 				</label>
 			</td>
 			<td>

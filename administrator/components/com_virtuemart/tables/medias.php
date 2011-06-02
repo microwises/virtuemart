@@ -89,11 +89,11 @@ class TableMedias extends VmTable {
 
 		if(!empty($this->file_title)){
 			if(strlen($this->file_title)>126){
-				$this->setError('Title too long '.strlen($this->file_title).' for database field, allowed 126');
+                                $this->setError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
 			}
 			$q = 'SELECT * FROM `'.$this->_tbl.'` ';
 			$q .= 'WHERE `file_title`="' .  $this->file_title . '" AND `file_type`="' .  $this->file_type . '"';
-            $this->_db->setQuery($q);
+                $this->_db->setQuery($q);
 		    $unique_id = $this->_db->loadResultArray();
 
 		    $tblKey = $this->_tbl_key;
@@ -103,7 +103,7 @@ class TableMedias extends VmTable {
 						if(empty($error)){
 							$this->setError(JText::_($error));
 						} else {
-							$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
+                                                         $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
 						}
 						return false;
 					}
@@ -117,7 +117,7 @@ class TableMedias extends VmTable {
 
 		if(!empty($this->file_description)){
 			if(strlen($this->file_description)>254){
-				$this->setError('Description too long '.strlen($this->file_title).' for database field, allowed 254');
+				$this->setError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
 			}
 		} else{
 //			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_DESCRIPTION'));
@@ -162,7 +162,7 @@ class TableMedias extends VmTable {
 
 		if(!empty($this->file_url)){
 			if(strlen($this->file_title)>254){
-				$this->setError('Url too long '.strlen($this->file_title).' for database field, allowed 254');
+				$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_title) ) );
 			}
 		} else{
 			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));

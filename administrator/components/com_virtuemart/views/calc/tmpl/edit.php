@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_CALC_NAME'); ?>:
 				</label>
 			</td>
 			<td>

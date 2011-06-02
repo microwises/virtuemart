@@ -55,12 +55,12 @@ class VirtuemartViewCurrency extends JView {
 		        JArrayHelper::toInteger($cid);
 			$currency = $model->getCurrency($cid);
                         $this->assignRef('dateformat',	$dateformat);
-                    $viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
+                        $viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();
 
-       } else {
+                } else {
                          $this->assignRef('dateformat',	$dateformat);
                         $viewName=ShopFunctions::SetViewTitle('vm_currency_48');
 			ShopFunctions::addStandardDefaultViewCommands();

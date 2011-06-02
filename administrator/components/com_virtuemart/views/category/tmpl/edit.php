@@ -246,7 +246,7 @@ $mainframe = JFactory::getApplication();
 									<tr>
 										<td class="key">
 											<label for="metaauthor">
-												<?php echo JText::_('COM_VIRTUEMART_META_AUTHOR'); ?>:
+												<?php echo JText::_('COM_VIRTUEMART_METAAUTHOR'); ?>:
 											</label>
 										</td>
 										<td>

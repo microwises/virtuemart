@@ -157,8 +157,8 @@ class VmTable extends JTable {
 						if($id!=$this->$tblKey) {
 							if(empty($error)){
 								$this->setError(JText::_($error));
-							} else {
-								$this->setError('Error cant save '.$this->_tbl.' without a non unique '.$obkeys);
+							} else {								
+                                                                $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
 							}
 							return false;
 						}
