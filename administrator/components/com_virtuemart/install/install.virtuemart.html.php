@@ -9,18 +9,18 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td valign="top" align="center">
 			<a href="http://virtuemart.net" target="_blank">
-				<img border="0" align="center" src="components/com_virtuemart/assets/images/cart.gif" alt="Cart" />
+				<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
 			</a>
 			<br /><br />
-			<h1>Welcome to<br />Virtuemart!</h1>
+			<h1><?php echo JText::_('COM_VIRTUEMART_WELCOME'); ?></h1>
 		</td>
 		<td>	
-			<h1>The first step of the Installation was <font color="green">SUCCESSFUL</font></h1>
+			<h1><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_STEP_ONE'); ?></h1>
 			<br /><br />
 			
 			<table width="50%">				
 			<tr>
-				<td align="center" colspan="2" >Basic Installation has been finished.</td>
+				<td align="center" colspan="2" ><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_FINISH'); ?></td>
 			</tr>
 			<tr>
 				<td width="50%" align="center">
@@ -28,14 +28,14 @@ defined('_JEXEC') or die('Restricted access');
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
 					</a>
 					<br />
-					Install Sample Data
+					<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 				</td>				
 				<td width="50%" align="center">
 					<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
 					</a>
 					<br />
-					Go to the Shop
+					<?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -43,10 +43,10 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td align="center">
-					Go to <a href="http://virtuemart.net" target="_blank">VirtueMart</a> for further Help
+					<?php echo JText::_('COM_VIRTUEMART_INSTALL_FURTHER_HELP'); ?>
 				</td>
 				<td align="center">
-					Please consider a small donation to help us keep up the work on this component.<br /><br />
+					<?php echo JText::_('COM_VIRTUEMART_INSTALL_DONATION'); ?><br /><br />
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 						<input type="hidden" name="cmd" value="_xclick" />
 						<input type="hidden" name="business" value="" />

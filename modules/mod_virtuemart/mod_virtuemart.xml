@@ -12,9 +12,7 @@
 	</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
-	<description>
-		MOD_VIRTUEMART_DESC
-	</description>
+	<description>MOD_VIRTUEMART_DESC</description>
 	<files>
 		<filename module="mod_virtuemart">mod_virtuemart.php</filename>
 		<filename>JSCookTree.js</filename>
@@ -122,14 +120,14 @@
 			<option value="no">No</option>
 		</param>
 		<param name="show_listall" type="radio" default="yes"
-			label="MOD_VIRTUEAMRT_LIST_ALL"
-			description="MOD_VIRTUEAMRT_LIST_ALL=_DESC">
+			label="MOD_VIRTUEMART_LIST_ALL"
+			description="MOD_VIRTUEMART_LIST_ALL=_DESC">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
 		<param name="show_adminlink" type="radio" default="yes"
-			label="Show Administrator Link?"
-			description="Defines wether the administrator link is displayed under the product browser.">
+			label="MOD_VIRTUEMART_ADMIN_LINK"
+			description="MOD_VIRTUEMART_ADMIN_LINK_DESC">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
@@ -140,26 +138,26 @@
 			<option value="no">No</option>
 		</param>
 		<param name="useGreyBox_accountlink" type="radio" default="0"
-			label="Open the Account Maintenance in a GreyBox?"
-			description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			label="MOD_VIRTUEMART_ACCOUNT_GREYBOX"
+			description="MOD_VIRTUEMART_ACCOUNT_GREYBOX_DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="show_minicart" type="radio" default="yes"
-			label="Show Mini Cart?"
-			description="Defines wether the mini cart with a link to the cart and the actual total $ is displayed or not.">
+			label="MOD_VIRTUEMART_MINICART"
+			description="MOD_VIRTUEMART_MINICART_DESC">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
 		<param name="useGreyBox_cartlink" type="radio" default="0"
-			label="Open the Cart in a GreyBox?"
-			description="GreyBox is a webpage UI dialog widget. It opens the page in a new inline-window and hides the other part of the website under a gray overlay.">
+			label="MOD_VIRTUEMART_MINICART_GREYBOX"
+			description="MOD_VIRTUEMART_MINICART_GREYBOX_DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="show_productsearch" type="radio" default="yes"
-			label="Show Product Search Field?"
-			description="Defines wether a product search field is displayed or not.">
+			label="MOD_VIRTUEMART_SEARCH"
+			description="MOD_VIRTUEMART_SEARCH_DESC">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
@@ -170,8 +168,8 @@
 			<option value="no">No</option>
 		</param>
 		<param name="menutype" type="list" default="links"
-			label="Category display type"
-			description="You can set the display type to *links* to have the default display type: a link list. If you set it to *dTree*, the categories will be displayed in a dTree structure.">
+			label="MOD_VIRTUEMART_CATEGORY_DISPLAY"
+			description="MOD_VIRTUEMART_CATEGORY_DISPLAY_DESC">
 			<option value="default">Link List</option>
 			<option value="tigratree">TigraTree</option>
 			<option value="JSCook">JSCook</option>
@@ -179,25 +177,25 @@
 			<option value="dtree">dTree</option>
 		</param>
 		<param name="jscookTree_style" type="list" default="ThemeXP"
-			label="JSCookTree Style"
-			description="The Style for Displaying the categories: Menu or Tree">
+			label="MOD_VIRTUEMART_JSCOOKTREE"
+			description="MOD_VIRTUEMART_JSCOOKTREE_DESC">
 			<option value="ThemeXP">XP Theme</option>
 			<option value="ThemeNavy">Navy Theme</option>
 		</param>
 		<param name="jscookMenu_style" type="text" default="ThemeOffice"
-			label="JSCookMenu Style"
-			description="The Style for the JSCookMenu. Only fill in when you have selected JSCookMenu as Display Style" />
+			label="MOD_VIRTUEMART_JSCOOKMENU"
+			description="MOD_VIRTUEMART_JSCOOKMENU_DESC" />
 		<param name="menu_orientation" type="list" default="hbr"
-			label="JSCookMenu Orientation"
-			description="If you choose JSCookMenu: Either let it display horizontal or vertical!">
+			label="MOD_VIRTUEMART_JSCOOKMENU_ORIENTATION"
+			description="MOD_VIRTUEMART_JSCOOKMENU_ORIENTATION_DESC">
 			<option value="hbr">Horizontal</option>
 			<option value="vbr">Vertical</option>
 		</param>
 		<param name="jscookTree_style" type="text" default="ThemeXP"
-			label="JSCookTree Style"
-			description="The Style for the JSCookTree. Only fill in when you have selected JSCookTree as Display Style" />
+			label="MOD_VIRTUEMART_JSCOOKTREE_STYLE"
+			description="MOD_VIRTUEMART_JSCOOKTREE_STYLE_DESC" />
 		<param name="root_label" type="text" default="Shop"
-			label="Label of the dTree Root"
-			description="Whatever you fill in here: it will be displayed in the root of the dTree." />
+			label="MOD_VIRTUEMART_DTREE_LABEL"
+			description="MOD_VIRTUEMART_DTREE_LABEL_DESC" />
 	</params>
 </install>

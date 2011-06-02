@@ -515,7 +515,7 @@ dump($this,'user?');
 			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_published') : JText::_('COM_VIRTUEMART_DISABLED');
+			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_DISABLED');
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
