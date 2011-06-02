@@ -262,7 +262,8 @@ class VirtuemartViewProduct extends JView {
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 //				$calculator = calculationHelper::getInstance();
-				$vendor_model = $this->getModel('vendor');
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$vendor_model = new VirtueMartModelVendor();
 
 				foreach ($productlist as $virtuemart_product_id => $product) {
 					$product->mediaitems = count($product->virtuemart_media_id);

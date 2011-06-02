@@ -171,12 +171,20 @@ class VirtueMartModelProduct extends VmModel {
 			/* Load the categories the product is in */
 			$product->categories = $this->getProductCategories($virtuemart_product_id);
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
+			if  ($product->virtuemart_category_id >0) {
+				$q = 'SELECT `ordering` FROM `#__virtuemart_product_categories` 
+					WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
+				$this->_db->setQuery($q);
+    			$product->ordering = $this->_db->loadResult();
+			}
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
    			if(!$front && !empty($product->categories[0])){
 				$catTable = $this->getTable('categories');
    				$catTable->load($product->categories[0]);
 				$product->category_name = $catTable->category_name;
+
+				
    			} else {
    				$product->category_name ='';
    			}
