@@ -558,7 +558,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_FIELDS_LBL') ?>
 			    </span>
 			</td>
-			<td><fieldset class="radio">
+			<td><fieldset class="checkbox">
 			    <?php echo $this->orderByFields->checkbox ; ?>
 			</fieldset></td>
 		    </tr>
@@ -568,7 +568,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_SEARCH_FIELDS_LBL') ?>
 			    </span>
 			</td>
-			<td><fieldset class="radio">
+			<td><fieldset class="checkbox">
 			    <?php echo $this->searchFields ; ?>
 			</fieldset></td>
 		    </tr>

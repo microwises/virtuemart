@@ -46,7 +46,7 @@ endforeach; ?>
 	echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0"');
 		//displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'") ;//echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id),VmImage::getImageByProduct($product)->displayImage('class="featuredProductImage" border="0"',$product->product_name));
 	?>
-		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id), $product->product_name, array('title' => $product->product_name)); ?>
+		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id), $product->product_name, array('title' => $product->product_name,'rel'=>'facebox')); ?>
 	<?php if ($show_price) { echo shopFunctionsF::createPriceDiv('salesPrice','',$product->prices);
 		echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','VM_PRODUCT_SALESPRICE_WITH_DISCOUNT',$product->prices);
 	}

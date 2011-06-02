@@ -121,9 +121,12 @@ class VirtueMartViewProductdetails extends JView {
 			}
 			if($category->children)	$category_model->addImages($category->children);
 		}
+		$format = JRequest::getCmd('format','html');
+		if ($format=='html') {
+			/* Set Canonic link */
+			$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
+		}
 
-		/* Set Canonic link */
-		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
 		/* Set the titles */
 		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE',$product->product_name));

@@ -20,6 +20,13 @@
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
+$document = JFactory::getDocument();
+$document->addScriptDeclaration("jQuery(document).ready(function(){
+
+ //jQuery('#vmPage .radio').each( function () {jQuery(this).iToggle({type:'radio'})})
+	jQuery('#vmPage input:checkbox').iToggle({type:'checkbox',speed:500})
+	
+ });" );
 ?>
 <form action="index.php" method="post" name="adminForm">
 <?php

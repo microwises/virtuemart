@@ -28,12 +28,8 @@ JHTML::_( 'behavior.modal' );
 $js = "
 jQuery(document).ready(function () {
 	jQuery('.orderlistcontainer').hover(
-		function() {
-		orderlist = jQuery(this).find('.orderlist') ;
-		orderlist.stop().show()},
-		function() {
-		orderlist = jQuery(this).find('.orderlist') ;
-		orderlist.stop().hide()}
+		function() { jQuery(this).find('.orderlist').stop().show()},
+		function() { jQuery(this).find('.orderlist').stop().hide()}
 	)
 });
 ";

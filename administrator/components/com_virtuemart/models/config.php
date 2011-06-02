@@ -228,7 +228,7 @@ class VirtueMartModelConfig extends JModel {
 	else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
 	$searchFields ='<div  class="threecols"><ul>';
 	$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
-	foreach ($searchFieldsArray as $field ) {
+	foreach ($searchFieldsArray as $key => $field ) {
 		if (in_array($field, $searchChecked) ) {
 			$checked = 'checked="checked"';
 		}
@@ -236,7 +236,7 @@ class VirtueMartModelConfig extends JModel {
 			$checked = '';
 		}
 		$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
-		$searchFields.= '<li><input type="checkbox" id="' .$field. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label></li>';
+		$searchFields.= '<li><input type="checkbox" id="' .$field.$key. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field.$key. '">' .$text. '</label></li>';
 	}
         $searchFields .='</ul></div>';
 	return $searchFields;
