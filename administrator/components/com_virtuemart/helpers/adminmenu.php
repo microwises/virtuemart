@@ -89,17 +89,17 @@ class AdminMenuHelper {
         <div id="content-pad">
             <div class="sidemenu-box">
                 <div class="sidemenu-pad">
-		    <center>
-				<?php
-				//TODO The link should be done better
-				echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'));
-				?>
-                                <h2>
-                                <?php echo JHTML::_('link', 'index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_ADMIN') ); ?>
-                              </h2>
-		    </center>
-		    <div class="status-divider">
-		    </div>
+		    
+		    		<div class="sidemenu-top">
+		    		
+					<?php //TODO The link should be done better
+					echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'));
+					?>
+					
+                   	<h2><?php echo JHTML::_('link', 'index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_ADMIN') ); ?></h2>
+					
+					</div>
+			
 		    <div class="sidemenu" id="masterdiv2">
 				<?php
 				$modCount = 1;
@@ -114,7 +114,7 @@ class AdminMenuHelper {
 					    foreach( $item['items'] as $link ) {
 						if( $link['name'] == '-' ) {
 						    ?>
-				<li><hr></li>
+				
 						    <?php
 						}
 						else {
@@ -133,7 +133,7 @@ class AdminMenuHelper {
 							}
 						    }
 						    ?>
-				<li class="item-smenu vmicon <?php echo $link['icon_class']; ?>">
+				<li class="item-smenu vmicon">
 				    <a href="<?php echo $url; ?>"><?php echo JText::_($link['name']) ?></a>
 				</li><?php
 						}
@@ -143,14 +143,15 @@ class AdminMenuHelper {
 				    <?php $modCount++;
 				} ?>
 		    </div>
-		    <div class="align-center">
-			<h5><?php echo JText::_('COM_VIRTUEMART_YOUR_VERSION') ?></h5>
+		    
+		    
+		    <div class="sidemenu-bottom">
 				<?php $release = VmConfig::getInstalledVersion(false); ?>
-			<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('COM_VIRTUEMART_VERSIONCHECK_TITLE') ?>" target="_blank">
+				<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('COM_VIRTUEMART_VERSIONCHECK_TITLE') ?>" target="_blank">
 				    <?php
 				    echo 'Virtuemart&nbsp;'. VmConfig::getInstalledVersion(true);
 				    ?>
-			</a>
+				</a>
 		    </div>
                 </div>
             </div>
