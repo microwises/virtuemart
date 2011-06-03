@@ -1181,6 +1181,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
   `virtuemart_user_id` int(11) NOT NULL DEFAULT '0',
   `address_type` char(2) DEFAULT NULL,
   `address_type_name` varchar(32) DEFAULT '',
+  `name` varchar(64) DEFAULT NULL,
   `company` varchar(64) DEFAULT NULL,
   `title` varchar(32) DEFAULT NULL,
   `last_name` varchar(32) DEFAULT NULL,

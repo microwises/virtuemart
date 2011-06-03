@@ -136,3 +136,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </div>
 <input type="hidden" name="user_is_vendor" value="1" />
 <input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />
+<input type="hidden" name="last_task" value="<?php echo JRequest::getCmd('task'); ?>" />

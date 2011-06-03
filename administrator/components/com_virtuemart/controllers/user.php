@@ -97,9 +97,13 @@ class VirtuemartControllerUser extends VmController {
 		$this->edit();
 
 	}
+	function cancel(){
 
+		if ($lastTask == 'edit_shop') $this->setRedirect('index.php?option=com_virtuemart');
+		else $this->setRedirect('index.php?option=com_virtuemart&view=user');
+	}
 
-	/**
+		/**
 	 * Handle the save task
 	 */
 	function save(){
@@ -135,16 +139,13 @@ class VirtuemartControllerUser extends VmController {
 			}
 		}
 		$cmd = JRequest::getCmd('task');
+		$lastTask = JRequest::getCmd('last_task');
 		if($cmd == 'apply'){
-			$redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
-		}
-		else{
-			if (!$_currentUser->authorize('com_users', 'manage')) {
-				$redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
-			} else {
-				$redirection = 'index.php?option=com_virtuemart&view=user';
-			}
-
+			if ($lastTask == 'edit_shop') $redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
+			else $redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
+		} else { 
+			if ($lastTask == 'edit_shop') $redirection = 'index.php?option=com_virtuemart';
+			else $redirection = 'index.php?option=com_virtuemart&view=user';
 		}
 		$this->setRedirect($redirection, $msg);
 	}

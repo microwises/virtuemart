@@ -528,6 +528,7 @@ class ShopFunctions {
 		$options = array();
 		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MR'), JText::_('COM_VIRTUEMART_MR'));
 		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MRS'), JText::_('COM_VIRTUEMART_MRS'));
+		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MISS'), JText::_('COM_VIRTUEMART_MISS'));
 		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_DR'), JText::_('COM_VIRTUEMART_DR'));
 		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_PROF'), JText::_('COM_VIRTUEMART_PROF'));
 
