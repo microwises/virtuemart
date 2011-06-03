@@ -90,6 +90,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="71%" >
 					<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">
+						<option value=""><?php echo JText::_('COM_VIRTUEMART_UNCATEGORIZED')  ?></option>
 						<?php echo $this->category_tree; ?>
 					</select>
 				</td>

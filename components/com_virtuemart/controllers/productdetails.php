@@ -256,13 +256,19 @@ class VirtueMartControllerProductdetails extends JController {
 	
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		/* Create the view object. */
-		$view = $this->getView('productdetails', 'json');
+
 		/* Standard model */
 		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		$type = JRequest::getVar('type', false);
 		/* Now display the view. */
+		
+	}
+	public function getJsonChild() {
+
+	$view = $this->getView('productdetails', 'json');
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$view->setModel( $this->getModel('product'));
 		$view->display(null);
 	}
-
 }
 // pure php no closing tag

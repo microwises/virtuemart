@@ -31,6 +31,7 @@ $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
 if (JRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_SIBLINGS_NAME'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -122,10 +123,11 @@ $pagination = $this->pagination;
 				}
 
 
+
 				?>
 				<td><?php
                                  echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)).$child_link;
-
+						VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id);
                                 ?></td>
 				<!-- Vendor name -->
 				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
@@ -134,7 +136,8 @@ $pagination = $this->pagination;
 					/* Create URL */
 					$link = JRoute::_('index.php?view=media&virtuemart_product_id='.$product->virtuemart_product_id.'&option='.$option);
 				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('COM_VIRTUEMART_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');?></td>
+				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('COM_VIRTUEMART_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');
+				 ?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->

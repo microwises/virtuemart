@@ -240,7 +240,7 @@ class VirtuemartViewProduct extends JView {
                                 $msg= JText::_('COM_VIRTUEMART_PRODUCT_SIBLINGS_OF_PARENT'). " ".$link_to_parent;
                                
                             } else {
-                                    $title=$title='PRODUCT';
+                                    $title='PRODUCT';
                                     $msg="";
                                 }
                             
@@ -390,6 +390,15 @@ class VirtuemartViewProduct extends JView {
 		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', 'multiple', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 
+	}
+	function displayLinkToChildList($product_id) {
+		
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
+		if ($result = $db->loadResult()){
+		$result = JText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
+		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::_('COM_VIRTUEMART_EDIT')));
+		}
 	}
 }
 
