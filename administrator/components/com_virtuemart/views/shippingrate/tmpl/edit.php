@@ -155,6 +155,10 @@ AdminMenuHelper::startAdminArea();
 				//echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'virtuemart_calc_id', 'calc_value', $this->rate->shipping_rate_vat_id);
 				?>
 			</td>
+			<tr>
+				<td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
+				<td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->rate->published); ?></fieldset></td>
+			</tr>
 		</tr>
 	</table>
 	</fieldset>

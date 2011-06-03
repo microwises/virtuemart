@@ -323,7 +323,7 @@ class VirtuemartViewProduct extends JView {
 
 				JToolBarHelper::custom('createchild', 'virtuemart_child_32', 'virtuemart_child_32', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
-				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
+				JToolBarHelper::custom('addrating', 'new', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				ShopFunctions::addStandardDefaultViewCommands();
 
 				/* Assign the data */

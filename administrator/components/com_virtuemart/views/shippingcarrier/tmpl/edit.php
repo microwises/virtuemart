@@ -69,6 +69,10 @@ AdminMenuHelper::startAdminArea();
 				<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
+			<td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
+		</tr>
 	</table>
 	</fieldset>
 </div>

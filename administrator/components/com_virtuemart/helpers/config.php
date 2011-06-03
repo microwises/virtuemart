@@ -149,7 +149,7 @@ class VmConfig
 		$jquery = true;
 		return;
 	}
-	// Virtuemart price script
+	// Virtuemart product and price script 
 	function jPrice()
 	{
 		static $jPrice;
@@ -163,9 +163,12 @@ class VmConfig
 		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
+		$colorbox='colorbox5.css';
 		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('jquery.colorbox.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
+		JHTML::stylesheet($colorbox, 'components/com_virtuemart/assets/css/', false);
 		$jPrice = true;
 		return;
 	}
