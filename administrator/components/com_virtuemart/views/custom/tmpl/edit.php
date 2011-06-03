@@ -20,8 +20,11 @@
 defined('_JEXEC') or die('Restricted access');
 VmConfig::JvalideForm();
 AdminMenuHelper::startAdminArea();
-echo'<form name="adminForm" id="adminform" method="post" action="">';
-echo '<fieldset class="adminform">';
+?>
+<form name="adminForm" id="adminform" method="post" action="">
+<fieldset class="adminform">
+<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
+<?php 
 $this->custom->addHidden('view','custom');
 $this->custom->addHidden('task','');
 $this->custom->addHidden(JUtility::getToken(),1);

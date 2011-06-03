@@ -34,9 +34,9 @@ AdminMenuHelper::startAdminArea();
 		    <th>
 				<?php echo   JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
 		    </th>
-		    <th>
+<?php /* TODO not implemented				    <th>
 			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
-		    </th>
+		    </th> */ ?>
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
 		    </th>
@@ -66,10 +66,10 @@ AdminMenuHelper::startAdminArea();
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name; ?></a>
 		    <a href="<?php echo $statelink; ?>">&nbsp;[States]</a>
 		</td>
-		<td align="left">
+<?php /* TODO not implemented				<td align="left">
 			<?php echo $row->virtuemart_worldzone_id; ?>
-		</td>
-		<td>
+		</td> */ ?>
+		<td> 
 			<?php echo $row->country_2_code; ?>
 		</td>
 		<td>

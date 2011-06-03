@@ -49,7 +49,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->country->published); ?>
 			</fieldset></td>
 		</tr>
-		<tr>
+<?php /* TODO not implemented		<tr>
 			<td width="110" class="key">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_WORLDZONE'); ?>:
@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 			<td>
 				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>
 			</td>
-		</tr>
+		</tr>*/ ?>
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
