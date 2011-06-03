@@ -38,7 +38,7 @@ class VirtuemartViewProduct extends JView {
 		/* Get the task */
 		$task = JRequest::getVar('task');
 
-                $viewName = ShopFunctions::SetViewTitle('vm_product_48' );
+               
                 $this->assignRef('viewName', $viewName);
 		/* Load helpers */
 		$this->loadHelper('currencydisplay');
@@ -54,7 +54,7 @@ class VirtuemartViewProduct extends JView {
 		switch ($task) {
 			case 'add':
 			case 'edit':
-
+                                $viewName = ShopFunctions::SetViewTitle('vm_product_48' );
 				/* Load the product */
 				$product_model = $this->getModel('product');
 
@@ -219,8 +219,10 @@ class VirtuemartViewProduct extends JView {
 
 				/* Toolbar */
                                 $text="";
-				if ($task == 'edit')
-				  $text =  $product->product_name.' ('.$product->product_sku.')';
+				if ($task == 'edit') {
+                                    if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
+				  $text =  $product->product_name.$sku;
+                                }
 
 				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
                                   $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT',$text);
@@ -230,6 +232,19 @@ class VirtuemartViewProduct extends JView {
 				break;
 
 			default:
+                            $model = $this->getModel();
+                            if ($product_parent_id=JRequest::getVar('product_parent_id',false) ) {
+                                $product_parent= $model->getProduct($product_parent_id);
+                                $title='PRODUCT_SIBLING_LIST_OF_PARENT' ;
+                                $link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option='.$option), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
+                                $msg= JText::_('COM_VIRTUEMART_PRODUCT_SIBLINGS_OF_PARENT'). " ".$link_to_parent;
+                               
+                            } else {
+                                    $title=$title='PRODUCT';
+                                    $msg="";
+                                }
+                            
+                             $viewName = ShopFunctions::SetViewTitle('vm_product_48',$title, $msg );
 				/* Start model */
 				$model = $this->getModel();
 

@@ -30,6 +30,7 @@ $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
+if (JRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_SIBLINGS_NAME'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -68,7 +69,7 @@ $pagination = $this->pagination;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -110,10 +111,12 @@ $pagination = $this->pagination;
                                 /* Product list should be ordered */
 				$parent_id = JRequest::getVar('product_parent_id');
 				if ($parent_id > 0 ) {
-					 $child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT_INFO_LBL').' ]');
-				 } else {
+					 //$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT_INFO_LBL').' ]');
+				        $child_link ='';
+
+                                 } else {
 					if ($product->product_parent_id  ) {
-						$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+						$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_parent_id.'&option='.$option), '[ '.JText::_('COM_VIRTUEMART_PRODUCT_LIST_SIBLINGS').' ]', array('title' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SIBLINGS_OF').' '.$product->product_name));
                                         //$pre 	= '&nbsp;&nbsp;<sup>|_</sup>&nbsp;';
 					}
 				}

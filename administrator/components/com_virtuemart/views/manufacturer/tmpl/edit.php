@@ -89,7 +89,7 @@ $editor = JFactory::getEditor();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_($this->viewName.' '. JText::_('COM_VIRTUEMART_EMAIL')); ?>:
+					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>:
 				</label>
 			</td>
 			<td>

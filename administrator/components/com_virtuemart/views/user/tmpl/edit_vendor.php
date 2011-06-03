@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td valign="top">
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY') ?>
+						<?php echo JText::_('COM_VIRTUEMART_STORE_CURRENCY_DISPLAY') ?>
 					</legend>
 					<table class="admintable">
 						<tr>
