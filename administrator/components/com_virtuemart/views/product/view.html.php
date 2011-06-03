@@ -400,6 +400,15 @@ class VirtuemartViewProduct extends JView {
 		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::_('COM_VIRTUEMART_EDIT')));
 		}
 	}
+	function displayLinkToParent($product_parent_id) {
+		
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
+		if ($parent = $db->loadObject()){
+		$result = JText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
+		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $result, array('title' => $result));
+		}
+	}
 }
 
 //pure php no closing tag
