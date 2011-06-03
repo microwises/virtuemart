@@ -235,9 +235,9 @@ class VirtuemartViewProduct extends JView {
                             $model = $this->getModel();
                             if ($product_parent_id=JRequest::getVar('product_parent_id',false) ) {
                                 $product_parent= $model->getProduct($product_parent_id);
-                                $title='PRODUCT_SIBLING_LIST_OF_PARENT' ;
+                                $title='PRODUCT_CHILDREN_LIST' ;
                                 $link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option='.$option), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
-                                $msg= JText::_('COM_VIRTUEMART_PRODUCT_SIBLINGS_OF_PARENT'). " ".$link_to_parent;
+                                $msg= JText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
                                
                             } else {
                                     $title='PRODUCT';
@@ -391,13 +391,13 @@ class VirtuemartViewProduct extends JView {
 		return $listHTML;
 
 	}
-	function displayLinkToChildList($product_id) {
+	function displayLinkToChildList($product_id, $product_name) {
 		
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $db->loadResult()){
 		$result = JText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
-		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::_('COM_VIRTUEMART_EDIT')));
+		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
 	function displayLinkToParent($product_parent_id) {
@@ -406,7 +406,7 @@ class VirtuemartViewProduct extends JView {
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
 		if ($parent = $db->loadObject()){
 		$result = JText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
-		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $result, array('title' => $result));
+		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}
 	}
 }

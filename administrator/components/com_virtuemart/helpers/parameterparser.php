@@ -22,7 +22,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * @package VirtueMart
 */
 class FileUtilities{
-	
+
 	/** TODO obsolete?
 	 * Lists all available payment classes in the payment directory
 	 *
@@ -31,7 +31,7 @@ class FileUtilities{
 	 * @return string
 	 */
 	function list_available_classes( $name, $preselected='payment' ) {
-		
+
 		$files = self::vmReadDirectory( JPATH_PLUGINS.DS.'vmpayment', ".php$", true, true);
 		$list = array();
         foreach ($files as $file) {
@@ -50,9 +50,9 @@ class FileUtilities{
 	*/
 	function vmPathName($p_path,$p_addtrailingslash = true) {
 		$retval = "";
-	
+
 		$isWin = (substr(PHP_OS, 0, 3) == 'WIN');
-	
+
 		if ($isWin)	{
 			$retval = str_replace( '/', '\\', $p_path );
 			if ($p_addtrailingslash) {
@@ -60,13 +60,13 @@ class FileUtilities{
 					$retval .= '\\';
 				}
 			}
-	
+
 			// Check if UNC path
 			$unc = substr($retval,0,2) == '\\\\' ? 1 : 0;
-	
+
 			// Remove double \\
 			$retval = str_replace( '\\\\', '\\', $retval );
-	
+
 			// If UNC path, we have to add one \ in front or everything breaks!
 			if ( $unc == 1 ) {
 				$retval = '\\'.$retval;
@@ -78,19 +78,19 @@ class FileUtilities{
 					$retval .= '/';
 				}
 			}
-	
+
 			// Check if UNC path
 			$unc = substr($retval,0,2) == '//' ? 1 : 0;
-	
+
 			// Remove double //
 			$retval = str_replace('//','/',$retval);
-	
+
 			// If UNC path, we have to add one / in front or everything breaks!
 			if ( $unc == 1 ) {
 				$retval = '/'.$retval;
 			}
 		}
-	
+
 		return $retval;
 	}
 
@@ -108,7 +108,7 @@ class FileUtilities{
 			return $arr;
 		}
 		$handle = opendir( $path );
-	
+
 		while ($file = readdir($handle)) {
 			$dir = self::vmPathName( $path.'/'.$file, false );
 			$isDir = is_dir( $dir );
@@ -130,7 +130,7 @@ class FileUtilities{
 		asort($arr);
 		return $arr;
 	}
-	
+
 }
 
 class vmParameters extends JParameter{
@@ -153,12 +153,12 @@ class vmParameters extends JParameter{
 	{
                 JPlugin::loadLanguage('plg_vmpayment_'.$paym_element );
                 $path=JPATH_PLUGINS.DS.'vmpayment'.DS.basename($paym_element).'.xml';
-		parent::__construct($data,$path);               
+		parent::__construct($data,$path);
 		$this->_type = $type;
 		$this->_raw = $data;
 
 	}
-	
+
 
 
 	/**
@@ -166,40 +166,31 @@ class vmParameters extends JParameter{
 	* @author Sören, Max Milbers
 	* @return string HTML
 	*/
-	function xxrender( $name='params' ) {
- 
+	function render( $name='params' ) {
+
 		if (is_object( $this->_xml[$this->_group] )) {
 
 			$params = $this->getParams($name);
 			$html = array();
-			$html[] = '<table width="100%" class="paramlist admintable">';
+			$html[] = '<table width="100%" class="adminform">';
 
 			$element = $this->_xml[$this->_group];
 
 			if ($description = @$element->attributes( 'description')) {
 				// add the params description to the display
-				$html[] = '<tr><td class="paramlist_description" colspan="2">' . $description . '</td></tr>';
+				$html[] = '<tr><td colspan="2">' . $description . '</td></tr>';
 			}
 
 			$this->_methods = get_class_methods( get_class( $this ) );
-			
-		
+
+
 			$i=0;
 			foreach ($element->_children as $param) {
 				$result = $this->renderParam( $param, $name );
 				$html[] = '<tr>';
 
-				$html[] = '<td class="paramlist_key">';
-                                if ($result[2]) {
-                                 $html[] .= '<span class="hasTip" title="'.Jtext::_( $result[2]).'">' ;
-                                }
-                                $html[] .= Jtext::_( $result[0])  ;
-
-                                 if ($result[2]) {
-                                 $html[] .= '</span>' ;
-                                }
-                                 $html[] .='</td>';
-				$html[] = '<td paramlist_value>' . $result[1]  .'</td>';
+				$html[] = '<td width="40%" class="labelcell"><span class="editlinktip">' .Jtext::_( $result[0])  . '</span></td>';
+				$html[] = '<td>' . $result[1] . $result[2].'</td>';
 
 				$html[] = '</tr>';
 			}
@@ -213,16 +204,16 @@ class vmParameters extends JParameter{
 			return '<textarea name="$name" cols="40" rows="10" class="text_area">'.$this->_raw.'</textarea>';
 		}
 	}
-	
+
 /**
- * 
+ *
  * @author Sören, Max Milbers
 * @param object A param tag node
 * @param string The control name
 * @return array Any array of the label, the form element and the tooltip
 */
 	function renderParam( &$param, $control_name='params' ) {
-		
+
 		$result = array();
 
 		$name = $param->attributes( 'name');
@@ -232,7 +223,7 @@ class vmParameters extends JParameter{
 		} else {
 			$label = '';
 		}
-		
+
 		if( $param->attributes( 'description') ) {
 			$description = JText::_($param->attributes( 'description'));
 		} else {
@@ -247,13 +238,13 @@ class vmParameters extends JParameter{
 //			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
 			//$result[0] = $description;
 		}
-                 
+
 		if (in_array( '_form_' . $type, $this->_methods )) {
-			
+
 			$value = $this->get($name);
 //			$value = $this->get($param->attributes('name'), $param->attributes('default'));
 			$result[1] =  call_user_func( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
-			
+
 
 		} else {
 			$result[1] = _HANDLER . ' = ' . $type;
@@ -261,7 +252,7 @@ class vmParameters extends JParameter{
 
 		if ( $description ) {
 //			$result[2] = JHTML::tooltip( $description, $result[0] );
-			$result[2] =   $description;
+			$result[2] = JHTML::tooltip( $description);
 //			$result[2] =  $description;
 		} else {
 			$result[2] = '';
@@ -269,7 +260,7 @@ class vmParameters extends JParameter{
 
 		return $result;
 	}
-	
+
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
@@ -323,7 +314,7 @@ class vmParameters extends JParameter{
 	* @return string The html for the element
 	*/
 	function _form_list( $name, $value, &$node, $control_name ) {
-		
+
 		$size = $node->attributes('size');
 		$multiselect = $node->attributes('multiselect');
 		if( $multiselect ) {
@@ -353,7 +344,7 @@ class vmParameters extends JParameter{
 	* @return string The html for the element
 	*/
 	function _form_radio( $name, $value, &$node, $control_name ) {
-		
+
 		$options = array();
 		foreach ($node->_children as $option) {
 			$val 	= $option->attributes( 'value');
@@ -363,7 +354,7 @@ class vmParameters extends JParameter{
 
 		return VmHTML::radioList( $control_name .'['. $name .']', $value, $options );
 	}
-	
+
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
@@ -373,7 +364,7 @@ class vmParameters extends JParameter{
 	*/
 	function _form_table_data_list( $name, $value, &$node, $control_name ) {
 
-		$db = JFactory::getDBO();	
+		$db = JFactory::getDBO();
 
 		$table = $node->attributes('table');
 		$condition = $node->attributes('sql_condition');
@@ -382,10 +373,10 @@ class vmParameters extends JParameter{
 		$orderfield = $node->attributes('orderfield');
 		$sorting = strtoupper($node->attributes('sorting')) == 'DESC' ? 'DESC' : 'ASC';
 		$multiselect = $node->attributes('multiselect');
-		
+
 		$query = "SELECT `".$db->getEscaped($valuefield).'`, `'.$db->getEscaped($textfield)."`"
 		. "\n FROM `".$db->getEscaped($table)."`";
-		if( $condition != '' ) {		
+		if( $condition != '' ) {
 			$query .= "\n WHERE ".$condition;
 		}
 		if( $orderfield ) {
@@ -396,7 +387,7 @@ class vmParameters extends JParameter{
 
 		if( $multiselect == '1' ) {
 			$multiple = 'multiple="multiple"';
-			$size = 5; 
+			$size = 5;
 		} else {
 			$multiple = '';
 			$size = 1;
@@ -405,7 +396,7 @@ class vmParameters extends JParameter{
 		return  VmHTML::selectList( $name, $value, $array, $size, $multiple, 'class="inputbox"'  );
 	}
 
-	
+
 	/**
 	* @param string The name of the form element
 	* @param string The value of the element
@@ -419,14 +410,14 @@ class vmParameters extends JParameter{
 //		$multiselect = $node->_attributes( 'multiselect' );
 //		if( $multiselect == '1' ) {
 //			$multiple = true;
-//			$size = 5; 
+//			$size = 5;
 //		} else {
 //			$multiple = false;
 //			$size = 1;
 //		}
 //		require( CLASSPATH.'ps_product_category.php');
 //		$ps_product_category = new ps_product_category();
-//		
+//
 //		ob_start();
 //		$ps_product_category->list_all(''. $control_name .'['. $name .']', 0, array(), $size, true, $multiple );
 //		$category_dropdown = ob_get_clean();
@@ -505,7 +496,7 @@ class vmParameters extends JParameter{
 	* @return string The html for the element
 	*/
 	function _form_spacer( $name, $value, &$node, $control_name ) {
-		
+
 		if ( $value ) {
 			return '<h3>'.JText::_($value).'</h3>';
 		} else {
@@ -513,12 +504,12 @@ class vmParameters extends JParameter{
 		}
 	}
 	function _form_secret_key( $name, $value, &$node, $control_name ) {
-				
+
 			return '<a class="button" id="changekey" href="'
 			. JRoute::_($_SERVER['SCRIPT_NAME']."?page=store.payment_method_keychange&pshop_mode=admin&element=$name") .'" >'
-			. JText::_('COM_VIRTUEMART_CHANGE_TRANSACTION_KEY') 
+			. JText::_('COM_VIRTUEMART_CHANGE_TRANSACTION_KEY')
 			.'<a/>';
-			
+
 	}
 	/**
 	* special handling for textarea param
@@ -537,7 +528,7 @@ class vmParameters extends JParameter{
 }
 
 
-	
+
 /**
 * @param string
 * @return string

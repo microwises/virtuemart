@@ -30,7 +30,7 @@ $nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false);
-if (JRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_SIBLINGS_NAME'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
+if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_product_name='COM_VIRTUEMART_PRODUCT_CHILDREN_LIST'; else $col_product_name='COM_VIRTUEMART_PRODUCT_NAME';
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -71,8 +71,11 @@ $pagination = $this->pagination;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
+		<?php if (!$product_parent_id ) { ?>
+                <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
+                <?php } ?>
+                <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PARENT_LIST_CHILDREN'); ?></th>
+                <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -88,7 +91,9 @@ $pagination = $this->pagination;
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_S', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-	</tr>
+	                <th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+
+        </tr>
 	</thead>
 	<tbody>
 	<?php
@@ -112,13 +117,21 @@ $pagination = $this->pagination;
 				?>
 				<td><?php
                         echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name));
-						VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id);
-						if ($product->product_parent_id  ) {
-							VirtuemartViewProduct::displayLinkToParent($product->product_parent_id); 
-						}
+						 
                                 ?></td>
 				<!-- Vendor name -->
-				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
+                                <?php if (!$product_parent_id ) { ?>
+				<td><?php
+                                if ($product->product_parent_id  ) {
+							VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
+						}                               
+                                   ?></td>
+				<!-- Vendor name -->
+                                <?php } ?>
+				<td><?php
+						 VirtuemartViewProduct::displayLinkToChildList($product->virtuemart_product_id , $product->product_name);
+                                                 ?>
+                                </td>
 				<!-- Media -->
 				<?php
 					/* Create URL */
@@ -150,6 +163,8 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
+                                <!-- Vendor name -->
+				<td><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;
