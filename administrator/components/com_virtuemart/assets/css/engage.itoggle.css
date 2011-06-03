@@ -25,12 +25,13 @@
 #vmPage label.itoggle,
 #vmPage label.itoggle span{
 	display: block;
-	width: 52px;
-	height: 15px;
+	width: 69px;
+	height: 24px;
 	margin-bottom: 0px;
 	background: url(../images/itoggle.png) left bottom no-repeat;
 	cursor:pointer;
 	text-indent:-5000px;
+
 	}
 #vmPage label.ilabel_radio{
 	

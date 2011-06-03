@@ -24,7 +24,7 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration("jQuery(document).ready(function(){
 
  //jQuery('#vmPage .radio').each( function () {jQuery(this).iToggle({type:'radio'})})
-	jQuery('#vmPage input:checkbox').iToggle({type:'checkbox',speed:500})
+	jQuery('#vmPage input:checkbox').iToggle({type:'checkbox',speed:200})
 	
  });" );
 ?>

@@ -94,7 +94,7 @@ div.status-divider {
 
 
 .sidemenu-bottom {text-align: center;background: url(../images/admin_interface.png) top left no-repeat;padding: 16px 0px 17px 0px;background-position: 0px -268px;}
-.sidemenu-bottom a, .sidemenu-bottom a:visited {font-size: 12px;color: #fff;text-shadow: 1px 1px 1px #000;}
+.sidemenu-bottom a:link, .sidemenu-bottom a:visited {font-size: 12px;color: #fff;text-shadow: 1px 1px 1px #000;}
 .sidemenu-bottom a:hover {text-decoration: none;}
 
 .updates {text-align: center;}
