@@ -73,12 +73,14 @@ class TableShoppergroups extends VmTable
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
 			return false;
 		}
-
+/* commented by PATRICK This set always shoppergroup to 1 if you do a new shoppergroup 
 		if(empty($this->virtuemart_shoppergroup_id)){
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 			$this->_db->setQuery($q);
 			$this->virtuemart_shoppergroup_id=$this->_db->loadResult();
 		}
+*/
+
 //
 //		if (($this->country_name) && ($this->virtuemart_shoppergroup_id == 0)) {
 //
