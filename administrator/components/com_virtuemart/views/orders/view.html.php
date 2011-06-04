@@ -202,7 +202,7 @@ class VirtuemartViewOrders extends JView {
 			 */
 
 			 /* Toolbar */
-			JToolBarHelper::save('editOrderStatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
+			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 
 			/* Assign the data */

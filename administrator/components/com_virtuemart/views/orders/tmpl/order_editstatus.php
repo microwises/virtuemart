@@ -79,6 +79,7 @@
 
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="updatestatus" />
+<input type="hidden" name="last_task" value="updatestatus" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="orders" />
 <input type="hidden" name="current_order_status['<?php echo $this->orderID; ?>']" value="<?php echo $this->currentOrderStat; ?>" />

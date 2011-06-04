@@ -195,8 +195,14 @@ class VirtuemartControllerOrders extends VmController {
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
 		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
+		
+		if ('updatestatus'== JRequest::getVar('last_task')) {
+			$virtuemart_order_id = JRequest::getVar('virtuemart_order_id');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
+		}
+		else {
+			$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg);
+		}
 	}
 
 
