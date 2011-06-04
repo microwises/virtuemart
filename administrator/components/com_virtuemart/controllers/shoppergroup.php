@@ -41,7 +41,24 @@ class VirtuemartControllerShopperGroup extends VmController
 	 */
 	function __construct() {
 		parent::__construct('virtuemart_shoppergroup_id');
+		$this->registerTask( 'default','makeDefaut' );
+	}
 
+	function makeDefaut() {
+		$mainframe = Jfactory::getApplication();
+
+		/* Load the view object */
+		$view = $this->getView('shoppergroup', 'html');
+
+		$model = $this->getModel('shoppergroup');
+		$msgtype = '';
+		$cids = JRequest::getVar('virtuemart_shoppergroup_id',array());
+		if ($model->makeDefaut($cids[0])) $msg = JText::_('COM_VIRTUEMART_SET_TO_DEFAUT_SUCCESSFULLY');
+		else {
+			$msg = JText::_('COM_VIRTUEMART_SET_TO_DEFAUT_ERROR');
+			$msgtype = 'error';
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=shoppergroup', $msg, $msgtype);		
 	}
 }
 // pure php no closing tag

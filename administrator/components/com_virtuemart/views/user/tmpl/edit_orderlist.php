@@ -36,7 +36,7 @@ $j15 = VmConfig::isJ15();
 			<?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_ORDER_CDATE'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
@@ -79,7 +79,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
-					<?php echo $this->currency->priceDisplay($row->order_tota,'',falsel); ?>
+					<?php echo $this->currency->priceDisplay($row->order_total,'',false); ?>
 				</td>
 			</tr>
 	<?php

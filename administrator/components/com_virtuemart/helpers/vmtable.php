@@ -140,13 +140,18 @@ class VmTable extends JTable {
      */
     function check($obligatory=false) {
 
-       	if(!empty($this->_slugAutoName) ) {
-    		$slugAutoName = $this->_slugAutoName;
-    		$slugName = $this->_slugName;
-    		if(empty($this->$slugName) && !empty($this->$slugAutoName) ){
-				$this->$slugName = JFilterInput::clean($this->$slugAutoName, 'CMD') ;
-    		}
-    	}
+		if(!empty($this->_slugAutoName) ) {
+			$slugAutoName = $this->_slugAutoName;
+			$slugName = $this->_slugName;
+			if(empty($this->$slugName)) {
+				$this->$slugName = $this->$slugAutoName;
+			}
+			$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			if(trim(str_replace('-','',$this->$slugName)) == '') {
+				$datenow =& JFactory::getDate();
+				$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+			}
+		}
 
     	foreach($this->_obkeys as $obkeys => $error){
     		if (empty($this->$obkeys)) {

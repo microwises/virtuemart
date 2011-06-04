@@ -70,7 +70,16 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo $row->shopper_group_desc; ?>
 			    </td>
 			    <td>
-				    <?php echo $row->default; ?>
+					<?php
+					if ($row->default == 1) { 
+						?>
+						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'Default' ); ?>" />
+						<?php
+					} else {
+						?>
+						&nbsp;
+						<?php
+					} ?>
 			    </td>
 				<td><?php echo $published; ?></td>
 	      </tr><?php

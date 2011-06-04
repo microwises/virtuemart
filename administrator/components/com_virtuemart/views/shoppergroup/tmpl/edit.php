@@ -48,21 +48,23 @@ AdminMenuHelper::startAdminArea();
 				<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
-		<tr>
-      <td width="110" class="key">
-        <label for="default">
-            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
-          <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>:
-            </span>
-        </label>
-      </td>
-      <td>
-		<fieldset class="radio">
-        <?php echo JHTML::_('select.booleanlist',  'default', 'class="inputbox"', $this->shoppergroup->default); ?>
-        </fieldset>
-      </td>
-    </tr>
-
+		<?php
+		if ($this->shoppergroup->default == 1) { 
+			?>
+			<tr>
+				<td width="110" class="key">
+					<label for="default">
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
+					  <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>:
+						</span>
+					</label>
+				</td>
+				<td>
+					<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'Default' ); ?>" />
+				</td>
+			</tr>
+			<?php
+		} ?>
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
@@ -77,6 +79,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 
+	<input type="hidden" name="default" value="<?php echo $this->shoppergroup->default ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->shoppergroup->virtuemart_shoppergroup_id; ?>" />
 	<input type="hidden" name="task" value="" />

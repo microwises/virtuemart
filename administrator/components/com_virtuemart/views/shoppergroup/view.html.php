@@ -56,7 +56,7 @@ class VirtuemartViewShopperGroup extends JView {
 		} else {
                         $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
                            $this->assignRef('viewName',$viewName);
-
+			JToolBarHelper::makeDefault();
 			ShopFunctions::addStandardDefaultViewCommands();
 
 			$pagination = $model->getPagination();
