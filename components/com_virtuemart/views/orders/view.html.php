@@ -53,7 +53,8 @@ class VirtuemartViewOrders extends JView {
 						}
 					}
 				}
-			} else {
+			} 
+			if (JRequest::getVar('order_pass',0)){
 				$oderId = $orderModel->getOrderIdByOrderPass();
 				if(empty($oderId)){
 					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');

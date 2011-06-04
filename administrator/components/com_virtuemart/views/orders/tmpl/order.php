@@ -29,6 +29,14 @@ JPluginHelper::importPlugin('vmpayment');
 JPluginHelper::importPlugin('vmorderplugin');
 JPluginHelper::importPlugin('vmshipper');
 ?>
+<form name='adminForm' >
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="hidden" name="view" value="orders" />
+		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
+		<input type="hidden" name="virtuemart_order_item_id" value="0" />
+		<?php echo JHTML::_( 'form.token' ); ?>
+		</form> 
 <table class="adminlist" style="table-layout: fixed;">
 	<tr>
 		<td valign="top">

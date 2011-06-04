@@ -147,7 +147,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::back();
+			JToolBarHelper::custom( 'cancel', 'back','back','back',false);
 		}
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');

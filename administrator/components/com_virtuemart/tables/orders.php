@@ -89,23 +89,10 @@ class TableOrders extends VmTable {
 
 		$this->setUniqueName('order_number');
 //		$this->setObligatoryKeys('virtuemart_userinfo_id');
-
 		$this->setLoggable();
 
 	}
 
-//	/**
-//	 * To set created_on and modified_on
-//	 * @author Max Milbers
-//	 */
-//	function check(){
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//	}
 	/**
 	 * Overloaded delete() to delete records from order_userinfo and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)

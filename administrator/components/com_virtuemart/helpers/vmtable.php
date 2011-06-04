@@ -61,10 +61,6 @@ class VmTable extends JTable {
 
 	public function setLoggable(){
 		$this->_loggable=true ;
-	    // $this->created_on = '';
-        // $this->created_by = 0;
-        // $this->modified_on = '';
-        // $this->modified_by = 0;
 	}
 
 	public function setLockable(){
@@ -118,6 +114,26 @@ class VmTable extends JTable {
 		return false;
     }
 
+	function store($data) {
+		if ($this->_loggable == true) {
+
+			$date = JFactory::getDate();
+			$today = $date->toMySQL();
+			$user = JFactory::getUser();
+
+			if(!$this->created_on){
+				$this->created_on = $today;
+				$this->created_by = $user->id;
+			}
+			$this->modified_on = $today;
+			$this->modified_by = $user->id;
+		}
+
+        if(isset($data->locked_on) ){
+        	$data->locked_on = 0;
+        }
+	return parent::store($data);
+	}
     /**
      * @author Max Milbers
      * @param
@@ -169,23 +185,7 @@ class VmTable extends JTable {
 
 		}
 
-		if ($this->_loggable == true) {
 
-			$date = JFactory::getDate();
-			$today = $date->toMySQL();
-			$user = JFactory::getUser();
-
-			if(!isset($this->created_on) ){
-				$this->created_on = $today;
-				$this->created_by = $user->id;
-			}
-			$this->modified_on = $today;
-			$this->modified_by = $user->id;
-		}
-
-        if(isset($this->locked_on) ){
-        	$this->locked_on = 0;
-        }
 
         //This is a hack for single store, shouldnt be used, when we write multivendor there should be message
         if(isset($this->virtuemart_vendor_id)){

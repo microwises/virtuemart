@@ -27,7 +27,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
 
 /**
  * Model for VirtueMart Orders
- *
+ * WHY $this->db is never used in the model ?
  * @package VirtueMart
  * @author RolandD
  */
@@ -109,7 +109,7 @@ class VirtueMartModelOrders extends VmModel {
 		if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 
 		/* Get the order details */
-		$q = "SELECT o.*, u.*,
+		$q = "SELECT  u.*,o.*,
 				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
 			FROM #__virtuemart_orders o

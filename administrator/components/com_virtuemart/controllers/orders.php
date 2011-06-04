@@ -102,7 +102,15 @@ class VirtuemartControllerOrders extends VmController {
 		/* Now display the view. */
 		$view->display();
 	}
-
+	/**
+	 * Generic cancel task
+	 *
+	 * @author Max Milbers
+	 */
+	public function cancel(){
+		// back from order
+		$this->setRedirect('index.php?option=com_virtuemart&view=orders' );
+	}
 	/**
 	* Shows the order details
 	*/
