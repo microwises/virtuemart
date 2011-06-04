@@ -42,7 +42,7 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo $this->orderbt->created_on; ?></td>
+				<td><?php echo $this->orderbt->created_on ; ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
@@ -50,7 +50,7 @@ JPluginHelper::importPlugin('vmshipper');
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
-				<td><?php $this->orderbt->ip_address; ?></td>
+				<td><?php echo $this->orderbt->ip_address; ?></td>
 			</tr>
 			<?php
 			if (VmConfig::get('enable_coupons') == '1') { ?>

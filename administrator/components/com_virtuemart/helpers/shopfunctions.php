@@ -531,7 +531,6 @@ class ShopFunctions {
 		foreach ($titles as $title) { 
 			$option = JText::_($title);
 			$options[] = JHTML::_('select.option',$option ,$option);
-			echo $option;
 		}
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}

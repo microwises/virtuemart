@@ -859,7 +859,7 @@ class VirtueMartModelOrders extends VmModel {
 			$db->setQuery($q);
 			$downloads = $db->loadObjectList();
 			if ($downloads) {
-				$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email
+				$q = "SELECT CONCAT_WS(' ',first_name, middle_name , last_name) AS full_name, email
 					FROM #__virtuemart_userinfos
 					LEFT JOIN #__users ju
 					ON (ju.id = u.virtuemart_user_id)
@@ -906,7 +906,7 @@ class VirtueMartModelOrders extends VmModel {
 		$vars['url'] = 'url';
 
 		$db = JFactory::getDBO();
-		$q = "SELECT CONCAT(first_name, ' ', IF(middle_name IS NULL, '', CONCAT(middle_name, ' ')), last_name) AS full_name, email, order_status_name
+		$q = "SELECT CONCAT_WS(' ',first_name, middle_name , last_name) AS full_name, email, order_status_name
 			FROM #__virtuemart_order_userinfos
 			LEFT JOIN #__virtuemart_orders
 			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id

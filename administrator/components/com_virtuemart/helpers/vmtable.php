@@ -60,10 +60,11 @@ class VmTable extends JTable {
 	}
 
 	public function setLoggable(){
-	    $this->created_on = '';
-        $this->created_by = 0;
-        $this->modified_on = '';
-        $this->modified_by = 0;
+		$this->_loggable=true ;
+	    // $this->created_on = '';
+        // $this->created_by = 0;
+        // $this->modified_on = '';
+        // $this->modified_by = 0;
 	}
 
 	public function setLockable(){
@@ -168,19 +169,19 @@ class VmTable extends JTable {
 
 		}
 
-       	$date = JFactory::getDate();
-		$today = $date->toMySQL();
-		$user = JFactory::getUser();
+		if ($this->_loggable == true) {
 
-        if(isset($this->created_on) && empty($this->created_on) ){
-        	$this->created_on = $today;
-        	$this->created_by = $user->id;
-        }
+			$date = JFactory::getDate();
+			$today = $date->toMySQL();
+			$user = JFactory::getUser();
 
-        if(isset($this->modified_on) ){
-        	$this->modified_on = $today;
-        	$this->modified_by = $user->id;
-        }
+			if(!isset($this->created_on) ){
+				$this->created_on = $today;
+				$this->created_by = $user->id;
+			}
+			$this->modified_on = $today;
+			$this->modified_by = $user->id;
+		}
 
         if(isset($this->locked_on) ){
         	$this->locked_on = 0;
