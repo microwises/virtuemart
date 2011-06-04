@@ -431,9 +431,10 @@ function selType(sType) {
 		default:
 	}
 }
+<?php if (! $this->userField->virtuemart_userfield_id ) { ?>
 function checkName(field, rules, i, options){
 	name = field.val();
-	field.val(name.replace(/[^0-9a-zA-Z\_]+/g,''));;
+	field.val(name.replace(/[^0-9a-zA-Z\_]+/g,''));
 	var existingFields = new Array(<?php echo $existingFields ?>);
 	if(jQuery.inArray(name,existingFields) > -1) {
 		return options.allrules.onlyLetterNumber.alertText;
@@ -443,6 +444,7 @@ function checkName(field, rules, i, options){
 		return options.allrules.onlyLetterNumber.alertText;
 	}
 }
+<?php } ?>
 function submitbutton(pressbutton) {
 	if (pressbutton=='cancel') submitform(pressbutton);
 	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);

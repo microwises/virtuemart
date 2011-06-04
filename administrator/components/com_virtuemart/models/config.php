@@ -240,6 +240,30 @@ class VirtueMartModelConfig extends JModel {
 	}
         $searchFields .='</ul></div>';
 	return $searchFields;
+    }    /**
+     * Retrieve a list of search Fields
+     *
+     * @author Kohl Patrick
+     * @return array of order list
+     */
+    function getTitlesFields( $titlesChecked ) {
+
+	if (empty ($titlesChecked)) $titlesChecked = array('COM_VIRTUEMART_MR','COM_VIRTUEMART_MRS','COM_VIRTUEMART_MISS');
+	else if (!is_array($titlesChecked)) $titlesChecked = array($titlesChecked);
+	$titles ='<div  class="threecols"><ul>';
+	$titlesArray = array('COM_VIRTUEMART_MR','COM_VIRTUEMART_MRS','COM_VIRTUEMART_MISS','COM_VIRTUEMART_DR','COM_VIRTUEMART_PROF');
+	foreach ($titlesArray as $key => $field ) {
+		if (in_array($field, $titlesChecked) ) {
+			$checked = 'checked="checked"';
+		}
+		else {
+			$checked = '';
+		}
+		$text = JText::_($field) ;
+		$titles.= '<li><input type="checkbox" id="' .$field.$key. '" name="titles[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field.$key. '">' .$text. '</label></li>';
+	}
+        $titles .='</ul></div>';
+	return $titles;
     }
 
 	/**

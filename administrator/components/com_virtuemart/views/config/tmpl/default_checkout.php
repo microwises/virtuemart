@@ -16,61 +16,83 @@
  */
 defined('_JEXEC') or die('Restricted access'); 
 ?> 
-<br />
-<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
-	<table class="admintable">
-		<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
-					<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('check_stock', $this->config->get('check_stock')); ?>
-			</td>
-		</tr>
+<table width="100%">
+	<tr>
+		<td valign="top" width="50%">
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
+				<table class="admintable">
+					<tr>
+						<td class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
+								<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('check_stock', $this->config->get('check_stock')); ?>
+						</td>
+					</tr>
 
-		<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('agree_to_tos_onorder', $this->config->get('agree_to_tos_onorder')); ?>
-			</td>
-		</tr>
+					<tr>
+						<td class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
+								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('agree_to_tos_onorder', $this->config->get('agree_to_tos_onorder')); ?>
+						</td>
+					</tr>
 
-		<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
-					<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
-					<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER') ?></label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_register', $this->config->get('oncheckout_show_register')); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TEXT_TIP'); ?>">
-					<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
-				</span>
-			</td>
-			<td>
-				<textarea rows="6" cols="50" name="oncheckout_show_register_text"><?php echo $this->config->get('oncheckout_show_register_text'); ?></textarea>
-			</td>
-		</tr>
-	</table>
-</fieldset>
+					<tr>
+						<td class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
+								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('oncheckout_show_legal_info', $this->config->get('oncheckout_show_legal_info')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
+								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER') ?></label>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('oncheckout_show_register', $this->config->get('oncheckout_show_register')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key">
+							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TEXT_TIP'); ?>">
+								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
+							</span>
+						</td>
+						<td>
+							<textarea rows="6" cols="50" name="oncheckout_show_register_text"><?php echo $this->config->get('oncheckout_show_register_text'); ?></textarea>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+		</td>
+		<td valign="top">
+
+			<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>
+				<table class="admintable">
+					<tr>
+					<td class="key">
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL') ?>
+						</span>
+					</td>
+					<td><fieldset class="checkbox">
+						<?php echo $this->titlesFields ; ?>
+					</fieldset></td>
+					</tr>
+				</table>
+		</td>
+	</tr>
+</table>

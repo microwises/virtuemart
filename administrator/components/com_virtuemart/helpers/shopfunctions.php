@@ -525,13 +525,14 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 */
 	public function listUserTitle($t, $extra="", $_prefix = '') {
+		$vmConfig = VmConfig::getInstance();
+		$titles = $vmConfig->get('titles');
 		$options = array();
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MR'), JText::_('COM_VIRTUEMART_MR'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MRS'), JText::_('COM_VIRTUEMART_MRS'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_MISS'), JText::_('COM_VIRTUEMART_MISS'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_DR'), JText::_('COM_VIRTUEMART_DR'));
-		$options[] = JHTML::_('select.option', JText::_('COM_VIRTUEMART_PROF'), JText::_('COM_VIRTUEMART_PROF'));
-
+		foreach ($titles as $title) { 
+			$option = JText::_($title);
+			$options[] = JHTML::_('select.option',$option ,$option);
+			echo $option;
+		}
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
 	}
 
