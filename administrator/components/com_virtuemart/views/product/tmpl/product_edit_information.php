@@ -23,6 +23,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <table class="adminform">
 	<tr>
 		<td valign="top">
+                    <fieldset>
+		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); ?></legend>
 			<table width="100%" border="0">
 				<tr class="row0">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
@@ -105,6 +107,42 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<?php // } ?>
 		</table>
+                    </fieldset>
+
+		<fieldset>
+		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
+		<table class="adminform">
+			<tr class="row0">
+				<td width="29%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>:</div>
+				</td>
+				<td width="71%" > <?php
+                                if ($this->product->product_parent_id) {
+                                    $result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
+                                    echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result));
+                                }
+                ?>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="21%" valign="top"><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?>:</div>
+				</td>
+				<td width="79%"><?php
+                                if ($this->product_child) {
+				foreach ($this->product_child as $child  ) {
+                                       echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name))."<br />";
+                                }
+                                }
+                                 ?>
+				</td>
+			</tr>
+
+
+		</table>
+		</fieldset>
+
+
 	</td>
 	<td>
 		<!-- Product pricing -->

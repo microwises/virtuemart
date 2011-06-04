@@ -2146,7 +2146,23 @@ class VirtueMartModelProduct extends VmModel {
 		return $media->displayMediaThumb('',false);
 
 	}
+        function getProductChild($product_id ) {
 
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
+		return $db->loadObjectList();
+
+	}
+        function getProductParent($product_parent_id) {
+
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
+                return $db->loadObject();
+		if ($parent = $db->loadObject()){
+		$result = JText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
+		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
+		}
+	}
 
 }
 // No closing tag

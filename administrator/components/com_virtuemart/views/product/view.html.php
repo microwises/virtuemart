@@ -61,7 +61,8 @@ class VirtuemartViewProduct extends JView {
 				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
 				$product = $product_model->getProductSingle($virtuemart_product_id,false,false,false);
-
+                                $product_child = $product_model->getProductChild($virtuemart_product_id);
+                                $product_parent= $product_model->getProductParent($product->product_parent_id);
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
@@ -208,7 +209,8 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
 				$this->assignRef('related_products', $related_products);
-
+                                $this->assignRef('product_child', $product_child);
+                                $this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
 				$this->assignRef('action', $action);
 				$this->assignRef('info_label', $info_label);
@@ -409,6 +411,7 @@ class VirtuemartViewProduct extends JView {
 		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}
 	}
+
 }
 
 //pure php no closing tag
