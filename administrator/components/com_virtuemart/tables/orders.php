@@ -125,7 +125,7 @@ class TableOrders extends VmTable {
 		/*vm_order_payment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `paym_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
 			WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`payment_method_id` AND `virtuemart_order_id` = ' . $id );
-		$paymentTable = '#__vm_order_payment_'. $this->_db->loadResult();
+		$paymentTable = '#__virtuemart_order_payment_'. $this->_db->loadResult();
 		/*$paymentTable is the paiement used in order*/
 		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
