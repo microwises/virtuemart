@@ -93,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divShopperGroups">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID') . ' ' . JText::_('COM_VIRTUEMART_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">
@@ -111,7 +111,7 @@ AdminMenuHelper::startAdminArea();
 
 				<div id="divAgeVerification">
 					<fieldset class="adminform">
-					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION') . ' ' . JText::_('COM_VIRTUEMART_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
 								<td width="110" class="key">

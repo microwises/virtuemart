@@ -93,7 +93,7 @@ class VirtuemartViewUserfields extends JView {
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
-				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('COM_VIRTUEMART_YEARS'));
+				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('COM_VIRTUEMART_YEAR_S'));
 			}
 			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $model->_params->get('minimum_age', 18));
 
