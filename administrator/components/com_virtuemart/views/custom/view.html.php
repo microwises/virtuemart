@@ -57,11 +57,12 @@ class VirtuemartViewCustom extends JView {
         }
         else {
 
-			JToolBarHelper::custom('createClone', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_CLONE'), true);
-			JToolBarHelper::custom('toggle.admin_only.0', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
-			JToolBarHelper::custom('toggle.admin_only.1', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
-			JToolBarHelper::custom('toggle.is_hidden.0', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
-			JToolBarHelper::custom('toggle.is_hidden.1', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
+			JToolBarHelper::custom('createClone', 'copy', 'copy',  JText::_('COM_VIRTUEMART_CLONE'), true);
+			JToolBarHelper::custom('toggle.admin_only.1', 'publish','', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
+			JToolBarHelper::custom('toggle.admin_only.0', 'unpublish','', JText::_('COM_VIRTUEMART_TOGGLE_ADMIN'), true);
+			JToolBarHelper::custom('toggle.is_hidden.1', 'publish','', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
+			JToolBarHelper::custom('toggle.is_hidden.0', 'unpublish','', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
+
 
 			ShopFunctions::addStandardDefaultViewCommands();
 
