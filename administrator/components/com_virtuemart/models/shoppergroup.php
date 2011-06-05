@@ -92,7 +92,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	    return $this->_data;
     }
-	function makeDefaut($id) {
+	function makeDefault($id) {
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
 		if (!$this->_db->query()) return ;
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 1 WHERE virtuemart_shoppergroup_id='.$id);

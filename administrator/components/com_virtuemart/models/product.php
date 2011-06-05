@@ -2136,6 +2136,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 	}
+
 	function displayCustomMedia($media_id,$table='product'){
 
   		$data = $this->getTable('medias');
@@ -2146,14 +2147,16 @@ class VirtueMartModelProduct extends VmModel {
 		return $media->displayMediaThumb('',false);
 
 	}
-        function getProductChild($product_id ) {
+	
+	function getProductChilds($product_id ) {
 
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		return $db->loadObjectList();
 
 	}
-        function getProductParent($product_parent_id) {
+	
+	function getProductParent($product_parent_id) {
 
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);

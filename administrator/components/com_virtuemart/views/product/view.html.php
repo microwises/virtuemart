@@ -61,8 +61,9 @@ class VirtuemartViewProduct extends JView {
 				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
 				$product = $product_model->getProductSingle($virtuemart_product_id,false,false,false);
-                                $product_child = $product_model->getProductChild($virtuemart_product_id);
-                                $product_parent= $product_model->getProductParent($product->product_parent_id);
+				$product_child = $product_model->getProductChilds($virtuemart_product_id);
+				$product_parent= $product_model->getProductParent($product->product_parent_id);
+				
 				/* Get the category tree */
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
@@ -81,7 +82,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('dbTaxRules', $dbTax);
 
 				$tax = JText::_('COM_VIRTUEMART_TAX_EFFECTING');
-				foreach($calculator->rules['tax'] as $rule){
+				foreach($calculator->rules['Tax'] as $rule){
 					$tax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('taxRules', $tax);

@@ -34,6 +34,8 @@ class calculationHelper {
 	private $_deliveryCountry;
 	private $_deliveryState;
 	private $_currencyDisplay;
+	
+	private $_cart = null;
 	private $_cartPrices;
 	private $_cartData;
 
@@ -60,11 +62,11 @@ class calculationHelper {
 	 */
 	private function __construct()
 	{
-		$this->_db = &JFactory::getDBO();
-		$jnow		=& JFactory::getDate();
-		$this->_app = JFactory::getApplication();
-		$this->_now			  = $jnow->toMySQL();
-		$this->_nullDate		  = $this->_db->getNullDate();
+		$this->_db 		= JFactory::getDBO();
+		$jnow			= JFactory::getDate();
+		$this->_app 	= JFactory::getApplication();
+		$this->_now		= $jnow->toMySQL();
+		$this->_nullDate = $this->_db->getNullDate();
 
 		//Attention, this is set to the mainvendor atm.
 		//This means also that atm for multivendor, every vendor must use the shopcurrency as default
@@ -72,6 +74,7 @@ class calculationHelper {
 		if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	    $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
 		$this->_debug           = false;
+		
 	}
 
 	public function getInstance(){
@@ -97,6 +100,28 @@ class calculationHelper {
 		return $this->_cartData;
 	}
 
+	private function setCountryState($cart=0){
+		
+		if(empty($cart)){
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart();		
+		}
+		$this->_cart = $cart;
+		
+		if(!empty($this->_cart->ST['virtuemart_country_id'])){
+			$this ->_deliveryCountry = $this->_cart->ST['virtuemart_country_id'];
+		}else if(!empty($this->_cart->BT['virtuemart_country_id'])){
+			$this ->_deliveryCountry = $this->_cart->BT['virtuemart_country_id'];
+		}
+
+		if(!empty($this->_cart->ST['virtuemart_state_id'])){
+			$this ->_deliveryState = $this->_cart->ST['virtuemart_state_id'];
+		}else if(!empty($cart->BT['virtuemart_state_id'])){
+			$this ->_deliveryState = $this->_cart->BT['virtuemart_state_id'];
+		}
+		
+	}
+	
 	/** function to start the calculation, here it is for the product
 	 *
 	 * The function first gathers the information of the product (maybe better done with using the model)
@@ -125,7 +150,7 @@ class calculationHelper {
 			//Todo check for ACL groups
 			return array();
 		}
-
+		
 		$costPrice = 0;
 		//Use it as productId
 //		if(is_Int($productId)){
@@ -203,8 +228,8 @@ class calculationHelper {
 		}
 
 //		$calcRules = $this->gatherEffectingRulesForProductPrice('Calc');
-		if(empty($this->product_tax_id)){
-			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
+/**		if(empty($this->product_tax_id)){
+			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax',$this->product_tax_id);
 		} else {
 			if (!is_array($this->product_tax_id)) $this->product_tax_id = array($this->product_tax_id);
 			$taxRules = $this->product_tax_id;
@@ -212,17 +237,22 @@ class calculationHelper {
 		$this->rules['tax'] = $taxRules;
 		//This is a bit nasty, atm we assume for the discount override that it is meant for discounts after Tax
 		if(empty($this->product_discount_id)){
-			$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax');
-			$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax');
+			$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax',$this->product_tax_id);
+			$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax',$this->product_tax_id);
 		} else {
 			if (!is_array($this->product_discount_id)) $this->product_discount_id = array($this->product_discount_id);
 			$dBTaxRules = array();
 			$dATaxRules = $this->product_discount_id;
 		}
 		$this->rules['dBTax'] = $dBTaxRules;
-		$this->rules['dATax'] = $dATaxRules;
+		$this->rules['dATax'] = $dATaxRules; /*/
 
-
+		$this->setCountryState($this->_cart);
+		
+		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax',$this->product_tax_id);
+		$this->rules['dBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax',$this->product_discount_id);
+		$this->rules['dATax'] = $this->gatherEffectingRulesForProductPrice('DATax',$this->product_discount_id);
+		
 		$prices['costPrice']  = $costPrice;
 		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
@@ -253,18 +283,18 @@ class calculationHelper {
 //		}
 
 //		$basePrice = !empty($prices['basePriceVariant'])?$prices['basePriceVariant']:$prices['basePrice'];
-		$prices['basePriceWithTax'] = $this->roundDisplay($this -> executeCalculation($taxRules, $prices['basePrice'],true));
-		$prices['discountedPriceWithoutTax']=$this->roundDisplay($this -> executeCalculation($dBTaxRules, $prices['basePrice']));
+		$prices['basePriceWithTax'] = $this->roundDisplay($this -> executeCalculation($this->rules['Tax'], $prices['basePrice'],true));
+		$prices['discountedPriceWithoutTax']=$this->roundDisplay($this -> executeCalculation($this->rules['dBTax'], $prices['basePrice']));
 
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax'])?$prices['discountedPriceWithoutTax']:$prices['basePrice'];
 		$prices['priceBeforeTax'] = $priceBeforeTax;
-		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($taxRules, $priceBeforeTax,true));
+		$prices['salesPrice'] = $this->roundDisplay($this -> executeCalculation($this->rules['Tax'], $priceBeforeTax,true));
 
 		$salesPrice = !empty($prices['salesPrice'])?$prices['salesPrice']:$priceBeforeTax;
 		$prices['salesPriceTemp']=$salesPrice;
 		$prices['taxAmount'] = $this->roundDisplay($salesPrice-$priceBeforeTax);
 
-		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this -> executeCalculation($dATaxRules, $salesPrice));
+		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this -> executeCalculation($this->rules['dATax'], $salesPrice));
 
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount'])?$prices['salesPriceWithDiscount']:$salesPrice;
 
@@ -332,6 +362,7 @@ class calculationHelper {
 //	function getCheckoutPrices($productIds,$variantMods=array(), $cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
 	public function getCheckoutPrices($cart){
 
+		$this->_cart = $cart;
 //		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
 //		echo '<br />virtuemart_shippingrate_id '.$cart->virtuemart_shippingrate_id.'<br />';
 		$pricesPerId = array();
@@ -355,6 +386,8 @@ class calculationHelper {
 		$this->_cartData['paymentName'] = '';
 		$cartpaymentTax = 0;
 
+		$this->setCountryState($cart);
+		
 		foreach ($cart->products as $name=>$product){
 			$productId = $product->virtuemart_product_id;
 			if (empty($product->quantity) || empty( $product->virtuemart_product_id )){
@@ -400,20 +433,6 @@ class calculationHelper {
 				$this->_shopperGroupId=$this->_db->loadResultArray();
 			}
 		}
-
-		//todo fill with data
-		if(!empty($cart->ST['virtuemart_country_id'])){
-			$this ->_deliveryCountry = $cart->ST['virtuemart_country_id'];
-		}else if(!empty($cart->BT['virtuemart_country_id'])){
-			$this ->_deliveryCountry = $cart->BT['virtuemart_country_id'];
-		}
-
-		if(!empty($cart->ST['virtuemart_state_id'])){
-			$this ->_deliveryState = $cart->ST['virtuemart_state_id'];
-		}else if(!empty($cart->BT['virtuemart_state_id'])){
-			$this ->_deliveryState = $cart->BT['virtuemart_state_id'];
-		}
-
 
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
@@ -552,7 +571,7 @@ class calculationHelper {
 	 * 						Duty
 	 * @return	$rules The rules that effects the product as Ids
 	 */
-	function gatherEffectingRulesForProductPrice($entrypoint){
+	function gatherEffectingRulesForProductPrice($entrypoint,$id){
 
 		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
@@ -560,14 +579,19 @@ class calculationHelper {
 		$shopperGroup = '';
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
-		$q= 'SELECT * FROM #__virtuemart_calcs WHERE ' .
-		'`calc_kind`="'.$entrypoint.'" ' .
-		' AND `published`="1" ' .
-		' AND (`virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
-		' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
-		' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
-		if(!empty($this->_amount)){
-			$q .=' AND (`calc_amount_cond` <= "'.$this->_amount.'" OR calc_amount_cond="0" )';
+		if(!empty($id)){
+			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "'.$id.'" AND `calc_kind`="'.$entrypoint.'" ';
+		} else {
+			$q = 'SELECT * FROM #__virtuemart_calcs WHERE ' .
+			'`calc_kind`="'.$entrypoint.'" ' .
+			' AND `published`="1" ' .
+			' AND (`virtuemart_vendor_id`="'.$this->productVendorId.'" OR `shared`="1" )'.
+			' AND ( publish_up = '.$this->_db->Quote($this ->_nullDate).' OR publish_up <= '.$this->_db->Quote($this ->_now).' )' .
+			' AND ( publish_down = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
+			
+			if(!empty($this->_amount)){
+				$q .=' AND (`calc_amount_cond` <= "'.$this->_amount.'" OR calc_amount_cond="0" )';
+			}
 		}
 //		' AND ( calc_amount_cond = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
 
@@ -582,30 +606,50 @@ class calculationHelper {
 			$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
 			$this->_db->setQuery($q);
 			$cats = $this->_db->loadResultArray();
-
-			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
-			$this->_db->setQuery($q);
-			$shoppergrps = $this->_db->loadResultArray();
-
+			
 			$hitsCategory = true;
 			if(isset($this->_cats)){
 				$hitsCategory = $this->testRulePartEffecting($cats,$this->_cats);
 			}
+			
+			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule['virtuemart_calc_id'].'"';
+			$this->_db->setQuery($q);
+			$shoppergrps = $this->_db->loadResultArray();
+
 			$hitsShopper = true;
 			if(isset($this->_shopperGroupId)){
 				$hitsShopper = $this->testRulePartEffecting($shoppergrps,$this->_shopperGroupId);
 			}
 
+			$q= 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
+			$this->_db->setQuery($q);
+			$countries = $this->_db->loadResultArray();
+			
+			$q= 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
+			$this->_db->setQuery($q);
+			$states = $this->_db->loadResultArray();
+
+			$hitsDeliveryArea = true;
+			if(!empty($countries) && empty($states)){
+				$hitsDeliveryArea = $this->testRulePartEffecting($countries,$this->_deliveryCountry);
+				dump($hitsDeliveryArea,'empty($countries) && empty($states)');
+			}
+			else if(!empty($states)){
+				$hitsDeliveryArea = $this->testRulePartEffecting($states,$this->_deliveryState);
+				dump($hitsDeliveryArea,'!empty($states)');
+			}
+			
 			$hitsAmount = true;
 			if(!empty($this->_amount)){
 				//Test
 			}
 
 //if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
-			if( $hitsCategory && $hitsShopper ){
+			if( $hitsCategory && $hitsShopper && $hitsDeliveryArea){
 				if ($this -> _debug	) echo '<br/ >Add rule ForProductPrice '.$rule["virtuemart_calc_id"];
 				$testedRules[]=$rule;
 			}
+			
 		}
 		return $testedRules;
 
@@ -643,17 +687,25 @@ class calculationHelper {
 			$q= 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$countries = $this->_db->loadResultArray();
-
+			
 			$q= 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$states = $this->_db->loadResultArray();
 
+			$hitsDeliveryArea = true;
+			if(!empty($countries) && empty($states)){
+				$hitsDeliveryArea = $this->testRulePartEffecting($countries,$this->_deliveryCountry);
+			}
+			else if(!empty($states)){
+				$hitsDeliveryArea = $this->testRulePartEffecting($states,$this->_deliveryState);
+			}
+			
+			//$hitsCountry = $this->testRulePartEffecting($countries,$this->_deliveryCountry);
+			//$hitsStates = $this->testRulePartEffecting($states,$this->_deliveryState);
+		
 			$q= 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="'.$rule["virtuemart_calc_id"].'"';
 			$this->_db->setQuery($q);
 			$shoppergrps = $this->_db->loadResultArray();
-
-			$hitsCountry = $this->testRulePartEffecting($countries,$this->_deliveryCountry);
-			$hitsStates = $this->testRulePartEffecting($states,$this->_deliveryState);
 
 			$hitsShopper=true;
 			if(isset($this->_shopperGroupId)){
@@ -665,7 +717,7 @@ class calculationHelper {
 //				//Test
 //			}
 
-			if($hitsCountry && $hitsStates && $hitsShopper ){
+			if($hitsDeliveryArea && $hitsShopper ){
 				if ($this -> _debug	) echo '<br/ >Add Checkout rule '.$rule["virtuemart_calc_id"].'<br/ >';
 				$testedRules[]=$rule;
 			}
@@ -811,9 +863,9 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
-	function calculateCustomPriceWithTax($price){
+	function calculateCustomPriceWithTax($price,$override_id){
 		
-		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax');
+		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax',$override_id);
 		return $this->roundDisplay($this -> executeCalculation($taxRules, $price,true));
 	}
 	
