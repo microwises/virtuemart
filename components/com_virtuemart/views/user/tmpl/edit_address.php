@@ -65,7 +65,7 @@ function callValidatorForRegister(f){
 
 </script>
 <?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0 ){
-	echo VmConfig::get('oncheckout_show_register_text','Please use register to get the advantages of a registered user, else use save for anonymous checkout');
+	echo VmConfig::get('oncheckout_show_register_text',JText::_('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER')) ;
 } ?>
 <form method="post" id="userForm" name="userForm" class="form-validate">
 <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">-->

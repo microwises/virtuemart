@@ -67,7 +67,7 @@
 			<option value="0">No</option>
 		</param>
 		<param name="category_id" type="sql" query="SELECT virtuemart_category_id, category_name FROM #__virtuemart_categories"
-			key_field="category_id" value_field="category_name" label="Category" description="Choose a category..." />
+			key_field="virtuemart_category_id," value_field="category_name" label="Category" description="Choose a category..." />
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0"

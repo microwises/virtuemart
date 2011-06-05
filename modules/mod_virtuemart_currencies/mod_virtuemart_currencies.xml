@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
-	<name>VirtueMart Currency Selector</name>
+	<name>MOD_VIRTUEMART_CURRENCIES</name>
 	<creationDate>February 2010</creationDate>
 	<author>Kohl Patrick</author>
 	<authorEmail>soeren|at|virtuemart.net</authorEmail>

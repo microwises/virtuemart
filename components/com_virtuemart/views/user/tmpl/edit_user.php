@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS'); echo JURI::root() ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS')." "; echo JURI::root() ?>
 	</legend>
 	<table class="admintable" cellspacing="1">
 
