@@ -17,9 +17,9 @@
 		<filename module="mod_virtuemart_category">mod_virtuemart_category.php</filename>
 		<folder>tmpl/</folder>
 	</files>
-	<params>
-		<param name="Parent_Category_id" type="sql" query="SELECT virtuemart_category_id as category_id, category_name FROM #__virtuemart_categories"
-			key_field="category_id" value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_CATEGORY_CHOOSE" />
+	 <params addpath="/administrator/components/com_virtuemart/elements">
+               <param name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_CATEGORY_CHOOSE." />
+
                 <param name="layout" type="radio" default="default" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE" description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC">
 			<option value="current">MOD_VIRTUEMART_CATEGORY_CURRENT</option>
 			<option value="default">MOD_VIRTUEMART_CATEGORY_ACCORDEON</option>

@@ -20,7 +20,7 @@
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
 	</files>
-	<params>
+	  <params addpath="/administrator/components/com_virtuemart/elements">
 		<param name="product_group" type="list" default="featured"
 			label="Display"
 			description="Here you can decide, What you want to see in the module">
@@ -66,8 +66,9 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="category_id" type="sql" query="SELECT virtuemart_category_id, category_name FROM #__virtuemart_categories"
-			key_field="virtuemart_category_id," value_field="category_name" label="Category" description="Choose a category..." />
+                <param name="payment_confirmed_order_state" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SIPS_ORDER_STATE_CONFIRMED" description="VMPAYMENT_SIPS_ORDER_STATE_CONFIRMED_DESC" />
+                <param name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CHOOSE." />
+
 	</params>
 	<params group="advanced">
 		<param name="cache" type="radio" default="0"
