@@ -92,21 +92,14 @@ class VirtuemartViewRatings extends JView {
 			default:
 				/* Get the data */
 				$ratingslist = $model->getRatings();
-
-				/* Get the pagination */
-				$pagination = $this->get('Pagination');
-				$lists = array();
-				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
-				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
-
-				ShopFunctions::addStandardDefaultViewCommands(false, true);
-
 				/* Assign the data */
 //				$this->preprocess($ratingslist);
 				$this->assignRef('ratingslist', $ratingslist);
-				$this->assignRef('pagination',	$pagination);
-				$this->assignRef('lists',	$lists);
 
+				ShopFunctions::addStandardDefaultViewCommands(false, true);
+				$lists = ShopFunctions::addStandardDefaultViewLists($model);
+				$this->assignRef('lists', $lists);
+				
 				break;
 		}
 		parent::display($tpl);

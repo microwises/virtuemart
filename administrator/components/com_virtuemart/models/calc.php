@@ -115,18 +115,18 @@ class VirtueMartModelCalc extends VmModel {
 	public function getCalcs($onlyPublished=false, $noLimit=false){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
+		$this->_query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
+			$this->_query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__virtuemart_calcs`.`calc_name`';
+		$query .= $this->_getOrdering('`#__virtuemart_calcs`.`calc_name`');
 		if ($noLimit) {
-			$this->_data = $this->_getList($query);
+			$this->_data = $this->_getList($this->_query);
 		}
 	 	else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-
+		$this->_total = $this->_getListCount($this->_query) ;
 		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 		foreach ($this->_data as $data){
 

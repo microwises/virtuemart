@@ -37,15 +37,15 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME')
 					, 'order_status_name'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE')
 					, 'order_status_code'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			</th>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
@@ -54,8 +54,8 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_ORDERING')
 					, 'ordering'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			<?php echo JHTML::_('grid.order',  $this->orderStatusList ); ?>
 			</th>
 			<th width="20">
@@ -72,8 +72,7 @@ AdminMenuHelper::startAdminArea();
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
-			$ordering = ($this->lists['order'] == 'ordering');
-			$disabled = ($ordering ?  '' : 'disabled="disabled"');
+			$ordering = $row->ordering ;
 		?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
@@ -94,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 				<td class="order">
 					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $ordering ); ?></span>
 					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $ordering ); ?></span>
-					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
+					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" class="text_area" style="text-align: center" />
 				</td>
 				<td align="center"><?php echo $published; ?></td>
 			</tr>
@@ -112,8 +111,8 @@ AdminMenuHelper::startAdminArea();
 	</table>
 </div>
 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="orderstatus" />
 	<input type="hidden" name="view" value="orderstatus" />

@@ -24,6 +24,13 @@ AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
+    <table>
+	<tr>
+	    <td width="100%">
+			<?php echo ShopFunctions::displayDefaultViewSearch (JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME')) ; ?>
+	    </td>
+	</tr>
+    </table>
     <div id="editcell">
 	<table class="adminlist">
 	    <thead>
@@ -32,7 +39,7 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
 		    </th>
 		    <th >
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME'), 'currency_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th width="80">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
@@ -139,7 +146,9 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="controller" value="currency" />
     <input type="hidden" name="view" value="currency" />
     <input type="hidden" name="task" value="" />
-    <input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 

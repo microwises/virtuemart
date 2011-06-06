@@ -51,25 +51,28 @@ class VirtuemartViewCurrency extends JView {
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-                        $cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		        JArrayHelper::toInteger($cid);
+			$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+			JArrayHelper::toInteger($cid);
 			$currency = $model->getCurrency($cid);
-                        $this->assignRef('dateformat',	$dateformat);
-                        $viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
+			$this->assignRef('dateformat',	$dateformat);
+			$viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();
 
-                } else {
-                         $this->assignRef('dateformat',	$dateformat);
-                        $viewName=ShopFunctions::SetViewTitle('vm_currency_48');
-			ShopFunctions::addStandardDefaultViewCommands();
+		} else {
+			$this->assignRef('dateformat',	$dateformat);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
+			$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
+			ShopFunctions::addStandardDefaultViewCommands();
 
 			$currencies = $model->getCurrenciesList();
 			$this->assignRef('currencies',	$currencies);
+
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
+
+
 		}
 
 		parent::display($tpl);

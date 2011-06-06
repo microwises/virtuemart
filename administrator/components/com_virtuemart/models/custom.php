@@ -97,6 +97,9 @@ class VirtueMartModelCustom extends VmModel {
 		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'AND `custom_parent_id` ='.$custom_parent_id;
 		if ($keyword = JRequest::getVar('keyword') ) $query .= 'AND `custom_title` LIKE "%'.$keyword.'%"';
 		$this->_db->setQuery($query);
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
+
 		$datas->items = $this->_db->loadObjectList();
 
 		$data = $this->getTable('customs');

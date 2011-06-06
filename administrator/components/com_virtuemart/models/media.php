@@ -172,6 +172,8 @@ class VirtueMartModelMedia extends VmModel {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 //			$this->_data = $this->_getList($query);
 		}
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
 
 		$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();

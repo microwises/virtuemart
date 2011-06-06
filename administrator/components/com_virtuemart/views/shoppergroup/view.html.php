@@ -57,17 +57,16 @@ class VirtuemartViewShopperGroup extends JView {
                         $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
                            $this->assignRef('viewName',$viewName);
 			JToolBarHelper::makeDefault();
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$shoppergroups = $model->getShopperGroups(false, true);
 
 			$this->assignRef('shoppergroups',	$shoppergroups);
 
 			$this->loadHelper('permissions');
 			$this->assignRef('showVendors',Permissions::getInstance()->check('admin,storeadmin'));
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 
 		}
 		parent::display($tpl);

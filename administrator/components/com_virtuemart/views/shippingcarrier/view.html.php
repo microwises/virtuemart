@@ -56,13 +56,14 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
 
 			$shippingCarriers = $model->getShippingCarriers();
 			$this->assignRef('shippingCarriers', $shippingCarriers);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
+
 		}
 
 		parent::display($tpl);

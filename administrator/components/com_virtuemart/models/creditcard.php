@@ -44,74 +44,6 @@ class VirtueMartModelCreditcard extends VmModel {
 		$this->setMainTable('creditcards');
 	}
 
-//    /**
-//     * Constructor for the credit card model.
-//     *
-//     * The credit card id is read and detmimined if it is an array of ids or just one single id.
-//     *
-//     * @author RickG
-//     */
-//    function __construct()
-//    {
-//        parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//        // Get the credit card id or array of ids.
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//    	$this->setId((int)$idArray[0]);
-//    }
-//
-//
-//    /**
-//     * Resets the credit card id and data
-//     *
-//     * @author RickG
-//     */
-//    function setId($id)
-//    {
-//        $this->_id = $id;
-//        $this->_data = null;
-//    }
-//
-//
-//	/**
-//	 * Loads the pagination for the credit card table
-//	 *
-//     * @author RickG
-//     * @return JPagination Pagination for the current list of credit cards
-//	 */
-//    function getPagination()
-//    {
-//		if (empty($this->_pagination)) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
-//
-//
-//	/**
-//	 * Gets the total number of credit cards
-//	 *
-//     * @author RickG
-//	 * @return int Total number of credit cards in the database
-//	 */
-//	function _getTotal()
-//	{
-//    	if (empty($this->_total)) {
-//			$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_creditcards`';
-//			$this->_total = $this->_getListCount($query);
-//        }
-//        return $this->_total;
-//    }
 
 
     /**
@@ -219,6 +151,8 @@ class VirtueMartModelCreditcard extends VmModel {
 		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
 		$query .= 'ORDER BY `#__virtuemart_creditcards`.`virtuemart_creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
 		return $this->_data;
 	}
 

@@ -64,14 +64,14 @@ class VirtuemartViewCustom extends JView {
 			JToolBarHelper::custom('toggle.is_hidden.0', 'unpublish','', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
 
 
-			ShopFunctions::addStandardDefaultViewCommands();
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
 
 			$customs = $model->getCustoms();
-
 			$this->assignRef('customs',	$customs);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 
 
 		}

@@ -50,14 +50,13 @@ class VirtuemartViewUsergroups extends JView {
 
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();			
-			$this->assignRef('pagination',	$pagination);	
-			
 			$ugroups = $model->getUsergroups(false,true);
 			$this->assignRef('usergroups',	$ugroups);
-			
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
+
 		}
 
 		parent::display($tpl);

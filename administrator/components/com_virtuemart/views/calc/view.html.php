@@ -130,13 +130,17 @@ class VirtuemartViewCalc extends JView {
 			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_OFF'), true);
 			JToolBarHelper::custom('toggle.calc_vendor_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$calcs = $model->getCalcs();
 			$this->assignRef('calcs',	$calcs);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			ShopFunctions::addStandardDefaultViewLists($model);
+			
+
+			// $pagination = $model->getPagination();
+			// $this->assignRef('pagination',	$pagination);
+
+
 
 		}
 

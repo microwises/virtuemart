@@ -27,14 +27,14 @@ AdminMenuHelper::startAdminArea();
     <table>
 	<tr>
 	    <td width="100%">
-		<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
-		<input type="text" name="search" id="search" value="<?php echo $this->list['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+		<?php echo JText::_('COM_VIRTUEMART_FILTER').' '. JText::_('COM_VIRTUEMART_MANUFACTURER_NAME').' '; ?>:
+		<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 		<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 		<button onclick="document.getElementById('search').value='';document.getElementById('virtuemart_manufacturercategories_id').value='0';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 	    </td>
 	    <td nowrap="nowrap">
 		<?php
-		echo $this->list['virtuemart_manufacturercategories_id'];
+		echo $this->lists['virtuemart_manufacturercategories_id'];
 		?>
 	    </td>
 	</tr>
@@ -47,7 +47,8 @@ AdminMenuHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_NAME') , 'manufacturer_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+
 		    </th>
 		    <th>
 				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
@@ -117,7 +118,9 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="controller" value="manufacturer" />
     <input type="hidden" name="view" value="manufacturer" />
     <input type="hidden" name="task" value="" />
-    <input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 

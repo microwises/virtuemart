@@ -70,13 +70,14 @@ class VirtuemartViewShippingRate extends JView {
 			// JToolBarHelper::addNewX();
 			// JToolBarHelper::editListX();
 			// JToolBarHelper::deleteList();
-			ShopFunctions::addStandardDefaultViewCommands();
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
 
 			$shippingRates = $model->getShippingRates();
 			$this->assignRef('shippingRates', $shippingRates);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);			
 		}
 
 		parent::display($tpl);

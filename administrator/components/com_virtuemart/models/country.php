@@ -73,54 +73,6 @@ class VirtueMartModelCountry extends VmModel {
 	return $db->loadObject();
     }
 
-
-//    /**
-//     * Bind the post data to the country table and save it
-//     *
-//     * @author RickG
-//     * @return boolean True is the save was successful, false otherwise.
-//     */
-//    function store() {
-//	$table = $this->getTable('countries');
-//
-//	$data = JRequest::get('post');
-//
-//	// Bind the form fields to the country table
-//	if (!$table->bind($data)) {
-//	    $this->setError($table->getError());
-//	    return false;
-//	}
-//
-//	// Make sure the country record is valid
-//	if (!$table->check()) {
-//	    $this->setError($table->getError());
-//	    return false;
-//	}
-//
-//	// Save the country record to the database
-//	if (!$table->store()) {
-//	    $this->setError($table->getError());
-//	    return false;
-//	}
-//
-//	return $table->virtuemart_country_id;
-//    }
-
-//    /**
-//     * Publish/Unpublish all the ids selected
-//     *
-//     * @author RickG
-//     * @param boolean $publishId True is the ids should be published, false otherwise.
-//     * @return boolean True is the remove was successful, false otherwise.
-//     */
-//    function publish($publishId = false) {
-//
-//    	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//		return modelfunctions::publish('cid','countries',$publishId);
-//
-//    }
-
-
     /**
      * Retrieve a list of countries from the database.
      *
@@ -134,7 +86,7 @@ class VirtueMartModelCountry extends VmModel {
 		$where = array();
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		/* add filters */
-		if ($onlyPublished) $where[] = '`#__virtuemart_countries`.`published` = 1';
+		if ($onlyPublished) $where[] = '`published` = 1';
 		if (JRequest::getVar('filter_country', false)) $where[] = '`country_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('filter_country').'%');
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
@@ -146,25 +98,13 @@ class VirtueMartModelCountry extends VmModel {
 		else {
 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
+		// set total for pagination
+		$this->_total = $this->_getListCount($query) ;
 
 		return $this->_data;
     }
 
-	/**
-	 * Get the SQL Ordering statement
-	 *
-	 * @return string text to add to the SQL statement
-	 */
-	function _getOrdering()
-	{
-		$option = JRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
 
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'country_name', 'cmd' );
-
-		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
-	}
 }
 
 //no closing tag pure php

@@ -75,14 +75,12 @@ class VirtuemartViewState extends JView {
 
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$states = $model->getStates($countryId);
 			$this->assignRef('states',	$states);
 
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 		}
 
 		parent::display($tpl);

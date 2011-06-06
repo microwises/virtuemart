@@ -53,13 +53,11 @@ class VirtuemartViewManufacturercategories extends JView {
         }
         else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$manufacturerCategories = $model->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 
 		}
 		parent::display($tpl);

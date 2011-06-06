@@ -40,7 +40,7 @@ $keyword = JRequest::getVar('keyword', null);
 	</div>
 	<div style="float: left;">
 		<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo $this->customs->customsSelect ?>
-		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
+		<?php echo JText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.JText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
 			<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="view" value="custom" />

@@ -42,10 +42,6 @@ class VirtuemartViewCategory extends JView {
 
         $model = $this->getModel();
         $layoutName = JRequest::getVar('layout', 'default');
-        $mainframe = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $view = JRequest::getCmd('view');
-
 
         if ($layoutName == 'edit') {
                 $viewName = ShopFunctions::SetViewTitle('vm_categories_48','COM_VIRTUEMART_CATEGORY');
@@ -83,8 +79,8 @@ class VirtuemartViewCategory extends JView {
         }
         else {
             $viewName = ShopFunctions::SetViewTitle('vm_categories_48','COM_VIRTUEMART_CATEGORY_S');
-                 $this->assignRef('viewName', $viewName);
-            ShopFunctions::addStandardDefaultViewCommands();
+            $this->assignRef('viewName', $viewName);
+
 
 
             /**
@@ -97,18 +93,14 @@ class VirtuemartViewCategory extends JView {
             $categories = $model->getCategoryTree(false);
             $categoriesSorted = $model->sortCategoryTree($categories);
 
-            $pagination = $model->getPagination();
-
-            $lists = array();
-			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.$view.'filter_order', 'filter_order', '', 'cmd');
-			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.$view.'filter_order_Dir', 'filter_order_Dir', '', 'word');
-
 			$this->assignRef('model',	$model);
-			$this->assignRef('pagination',	$pagination);
             $this->assignRef('categories', $categoriesSorted['categories']);
             $this->assignRef('depthList', $categoriesSorted['depth_list']);
 			$this->assignRef('rowList',	$categoriesSorted['row_list']);
             $this->assignRef('idList', $categoriesSorted['id_list']);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
             $this->assignRef('lists', $lists);
         }
 		if (isset($category->category_name)) $name = $category->category_name; else $name ='';

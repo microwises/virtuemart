@@ -152,23 +152,16 @@ class VirtueMartModelCategory extends VmModel {
 		if( !Permissions::getInstance()->check('admin') ){
 			$query .= " AND (c.`virtuemart_vendor_id` = ". $this->_db->Quote($vendorId) . " OR c.`shared` = '1') ";
 		}
-
-		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
-		$filterOrderDir = JRequest::getCmd('filter_order_Dir', 'ASC');
-		// $filterOrder can still be empty at this point!
-		if( empty( $filterOrder )) {
-			$filterOrder = 'c.`ordering`';
+		// this are used in multiple views then we must test if the view are the category view
+		if ( JRequest::getCmd('view') == 'category') {
+		$query .= $this->_getOrdering($defaut='c.ordering',$order_dir = 'asc');
 		}
-		if( empty( $filterOrderDir )) {
-			$filterOrderDir = 'ASC';
-		}
-		$query .= " ORDER BY ". $filterOrder ." ". $filterOrderDir;
 
-		// Set the query in the database connector
 		$this->_db->setQuery($query);
-
-		// Transfer the Result into a searchable Array
 		$this->_category_tree = $this->_db->loadObjectList();
+		
+		// set total for pagination
+		if ($this->_total ==null) $this->_total = $this->_getListCount($query) ;
 
 		return $this->_category_tree;
 

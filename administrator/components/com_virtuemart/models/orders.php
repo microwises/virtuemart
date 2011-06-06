@@ -43,24 +43,6 @@ class VirtueMartModelOrders extends VmModel {
 		$this->setMainTable('orders');
 	}
 
-
-	/**
-	 * Gets the total number of products
-	 */
-	public function getTotal()
-	{
-		if (empty($this->_total)) {
-			$db = JFactory::getDBO();
-
-			$q = "SELECT o.`virtuemart_order_id` ".$this->getOrdersListQuery().$this->getOrdersListFilter();
-			$db->setQuery($q);
-			$fields = $db->loadObjectList('virtuemart_order_id');
-			$this->_total = count($fields);
-		}
-
-		return $this->_total;
-	}
-
 	/**
 	 * This function gets the orderId, for anonymous users
 	 *
@@ -151,26 +133,24 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function getOrdersList($_uid = 0, $_ignorePagination = false)
 	{
-		$db = JFactory::getDBO();
-		/* Pagination */
-		$this->getPagination();
 
-		/* Build the query */
-		$q = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
+		$query = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
 			.',m.paym_name AS payment_method '
 			.$this->getOrdersListQuery();
 		$_filter = array();
 		if ($_uid > 0) {
 			$_filter[] = ('u.virtuemart_user_id = ' . $_uid);
 		}
-		$q .= $this->getOrdersListFilter($_filter)."
-	";
+		$query .= $this->_getOrdering('virtuemart_order_id');
 		if ($_ignorePagination) {
-			$db->setQuery($q);
+			$this->_data = $this->_getList($query);
 		} else {
-			$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
+			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		return $db->loadObjectList('virtuemart_order_id');
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
+
+		return $this->_data ;
 	}
 
 	/**
@@ -186,32 +166,6 @@ class VirtueMartModelOrders extends VmModel {
 			ON o.payment_method_id = m.virtuemart_paymentmethod_id';
 	}
 
-	/**
-	 * Collect the filters for the query
-	 * @author RolandD
-	 */
-	private function getOrdersListFilter($filters = array())
-	{
-		$db = JFactory::getDBO();
-		/* Check some filters */
-		$filter_order = JRequest::getCmd('filter_order', 'virtuemart_order_id');
-		if ($filter_order == '') $filter_order = 'virtuemart_order_id';
-		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
-		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
-
-		// FIXME Joomla expects an ID field in every query. If might be a default ordering from a previous
-		// page here, so this dirty hack makes sure we don't get errors here.
-		// Consider it a Joomla bug... but we have to deal with it....
-		if ($filter_order == 'id') {
-			$filter_order = 'virtuemart_order_id';
-		}
-		/* Attributes name */
-		if (JRequest::getVar('filter_orders', false)) $filters[] = '#__virtuemart_orders.`virtuemart_order_id` LIKE '.$db->Quote('%'.JRequest::getVar('filter_orders').'%');
-
-		if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
-		else $filter = ' ORDER BY '.$filter_order." ".$filter_order_Dir;
-		return $filter;
-	}
 
 	/**
 	 * Store an attribute

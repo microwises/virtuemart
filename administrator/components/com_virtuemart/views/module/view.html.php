@@ -55,15 +55,13 @@ class VirtuemartViewModule extends JView {
 
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$modules = $model->getModules();
 			//$vendors = $vendorModel->getVendors());
 			$this->assignRef('modules',	$modules);
 			//$this->assignRef('vendors', $vendors);
+			ShopFunctions::addStandardDefaultViewCommands(false);
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+
 		}
 		parent::display($tpl);
   }

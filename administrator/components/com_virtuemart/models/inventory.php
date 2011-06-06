@@ -42,34 +42,6 @@ class VirtueMartModelInventory extends VMModel {
 		$this->setMainTable('customs');
 	}
 
-//	var $_total;
-//	var $_pagination;
-//
-//	function __construct() {
-//		parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
-//		$limitstart = $mainframe->getUserStateFromRequest( JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int' );
-//
-//		// In case limit has been changed, adjust limitstart accordingly
-//		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-//
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//	}
-
-//	/**
-//	 * Loads the pagination
-//	 */
-//    public function getPagination() {
-//		if ($this->_pagination == null) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
-//		}
-//		return $this->_pagination;
-//	}
 
 	/**
 	 * Gets the total number of products

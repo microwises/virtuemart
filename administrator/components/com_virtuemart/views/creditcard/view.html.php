@@ -55,14 +55,13 @@ class VirtuemartViewCreditcard extends JView {
 			ShopFunctions::addStandardEditViewCommands();
         }
         else {
-
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$creditcards = $model->getCreditCards(false);
 			$this->assignRef('creditcards',	$creditcards);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+
+
 		}
 
 		parent::display($tpl);

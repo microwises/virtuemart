@@ -188,13 +188,6 @@ class VirtuemartViewOrders extends JView {
 				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
 			}
 
-			/* Get the pagination */
-			$pagination = $this->get('Pagination');
-			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
-			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
-
-
-
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
@@ -207,13 +200,12 @@ class VirtuemartViewOrders extends JView {
 
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
-			$this->assignRef('pagination', $pagination);
-			$this->assignRef('lists',	$lists);
-		}
 
 		/* Assign general statuses */
-
-
+			$model = $this->getModel();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+            $this->assignRef('lists', $lists);
+		}
 		parent::display($tpl);
 	}
 

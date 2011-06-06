@@ -43,81 +43,6 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		parent::__construct();
 		$this->setMainTable('manufacturercategories');
 	}
-//	/** @var integer Primary key */
-//    var $_id;
-//	/** @var objectlist manufacturer category data */
-//    var $_data;
-//	/** @var integer Total number of manufacturer categories in the database */
-//	var $_total;
-//	/** @var pagination Pagination for manufacturer category list */
-//	var $_pagination;
-
-
-    /**
-     * Constructor for the manufacturer category model.
-     *
-     * The man id is read and detmimined if it is an array of ids or just one single id.
-     *
-     */
-//    function __construct()
-//    {
-//        parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//        // Get the country id or array of ids.
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//    	$this->setId((int)$idArray[0]);
-//    }
-
-
-//    /**
-//     * Resets the manufacturer category id and data
-//     *
-//     */
-//    function setId($id)
-//    {
-//        $this->_id = $id;
-//        $this->_data = null;
-//    }
-//
-//
-//	/**
-//	 * Loads the pagination for the manufacturer category table
-//	 *
-//     * @return JPagination Pagination for the current list of manufacturers
-//	 */
-//    function getPagination()
-//    {
-//		if (empty($this->_pagination)) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
-//
-//
-//	/**
-//	 * Gets the total number of manufacturers categories
-//	 *
-//	 * @return int Total number of manufacturer categories in the database
-//	 */
-//	function _getTotal()
-//	{
-//    	if (empty($this->_total)) {
-//			$query = 'SELECT `virtuemart_manufacturercategories_id` FROM `#__virtuemart_manufacturercategories`';
-//			$this->_total = $this->_getListCount($query);
-//        }
-//        return $this->_total;
-//    }
-
 
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
@@ -140,40 +65,6 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
   		return $this->_data;
 	}
-
-//	/**
-//	 * Bind the post data to the manufacturer category table and save it
-//     *
-//     * @return boolean True is the save was successful, false otherwise.
-//	 */
-//    function store()
-//	{
-//		$table = $this->getTable('manufacturercategories');
-//
-//		$data = JRequest::get('post');
-//
-//		// Bind the form fields to the country table
-//		if (!$table->bind($data)) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Make sure the country record is valid
-//		if (!$table->check()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Save the country record to the database
-//		if (!$table->store()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		return $table->virtuemart_manufacturercategories_id;
-//	}
-
-
 	/**
 	 * Delete all record ids selected
      *
@@ -259,6 +150,8 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
 
 		return $this->_data;
 	}

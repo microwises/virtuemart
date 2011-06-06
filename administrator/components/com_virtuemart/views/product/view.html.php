@@ -235,19 +235,18 @@ class VirtuemartViewProduct extends JView {
 				break;
 
 			default:
-                            $model = $this->getModel();
-                            if ($product_parent_id=JRequest::getVar('product_parent_id',false) ) {
-                                $product_parent= $model->getProduct($product_parent_id);
-                                $title='PRODUCT_CHILDREN_LIST' ;
-                                $link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option='.$option), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
-                                $msg= JText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
-                               
-                            } else {
-                                    $title='PRODUCT';
-                                    $msg="";
-                                }
-                            
-                             $viewName = ShopFunctions::SetViewTitle('vm_product_48',$title, $msg );
+				$model = $this->getModel();
+				if ($product_parent_id=JRequest::getVar('product_parent_id',false) ) {
+					$product_parent= $model->getProduct($product_parent_id);
+					$title='PRODUCT_CHILDREN_LIST' ;
+					$link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option='.$option), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
+					$msg= JText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
+				} else {
+					$title='PRODUCT';
+					$msg="";
+				}
+
+				$viewName = ShopFunctions::SetViewTitle('vm_product_48',$title, $msg );
 				/* Start model */
 				$model = $this->getModel();
 
@@ -300,11 +299,6 @@ class VirtuemartViewProduct extends JView {
 
 				}
 
-				/* Get the pagination */
-				$pagination = $this->get('Pagination');
-				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
-				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
-
 				/* Create filter */
 				/* Search type */
 		    	       $options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
@@ -327,11 +321,12 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
-				ShopFunctions::addStandardDefaultViewCommands();
+				ShopFunctions::addStandardDefaultViewCommands(false);
+				$lists = array_merge($lists , ShopFunctions::addStandardDefaultViewLists($model));
+
 
 				/* Assign the data */
 				$this->assignRef('productlist', $productlist);
-				$this->assignRef('pagination',	$pagination);
 				$this->assignRef('lists', $lists);
 				break;
 		}

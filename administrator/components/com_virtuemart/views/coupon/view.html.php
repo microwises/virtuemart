@@ -78,10 +78,7 @@ class VirtuemartViewCoupon extends JView {
         }
         else {
                 
-			ShopFunctions::addStandardDefaultViewCommands();
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
 
 			$coupons = $model->getCoupons();
 			$this->assignRef('coupons',	$coupons);
@@ -90,6 +87,9 @@ class VirtuemartViewCoupon extends JView {
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
 
+		ShopFunctions::addStandardDefaultViewCommands();
+		$lists = ShopFunctions::addStandardDefaultViewLists($model);
+		
 		parent::display($tpl);
 	}
 

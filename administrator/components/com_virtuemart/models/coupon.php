@@ -85,25 +85,6 @@ class VirtueMartModelCoupon extends VmModel {
 		$data['coupon_expiry_date'] = $expireDate->toMySQL();
 
 		parent::store();
-//		// Bind the form fields to the coupon table
-//		if (!$table->bind($data)) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Make sure the coupon record is valid
-//		if (!$table->check()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Save the coupon record to the database
-//		if (!$table->store()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		return $table->virtuemart_coupon_id;
 	}
 
 
@@ -135,11 +116,12 @@ class VirtueMartModelCoupon extends VmModel {
      * @author RickG
 	 * @return object List of coupon objects
 	 */
-	function getCoupons()
-	{
+	function getCoupons() {
 		$query = 'SELECT * FROM `#__virtuemart_coupons` ';
 		$query .= 'ORDER BY `#__virtuemart_coupons`.`virtuemart_coupon_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		// set total for pagination
+		$this->_total = $this->_getListCount($query) ;
 		return $this->_data;
 	}
 }

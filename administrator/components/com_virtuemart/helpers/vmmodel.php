@@ -23,14 +23,16 @@ defined('_JEXEC') or die();
 class VmModel extends JModel {
 
 	var $_id 			= 0;
-	var $_data 		= null;
+	var $_data			= null;
+	var $_total			= null;
+	var $_query 		= null;
 	var $_pagination 	= 0;
 
 	var $_maintable 	= '';	// something like #__virtuemart_calcs
 	var $_maintablename = '';
 	var $_idName		= '';
 	var $_cidName		= 'cid';
-	var $_togglesName		= null;
+	var $_togglesName	= null;
 
     public function __construct($cidName='cid'){
         parent::__construct();
@@ -108,14 +110,13 @@ class VmModel extends JModel {
 
 	/**
 	 * Gets the total number of countries
-	 *
+	 *TODO filters and search ar not set 
      * @author Max Milbers
 	 * @return int Total number of entries in the database
 	 */
 	public function getTotal() {
-
+		
     	if (empty($this->_total)) {
-
 			$query = 'SELECT '.$this->_db->nameQuote($this->_idName).' FROM '.$this->_db->nameQuote($this->_maintable);
 			$this->_db->setQuery( $query );
 			if(!$this->_db->query()){
@@ -299,6 +300,22 @@ class VmModel extends JModel {
 		return true;
 	}
 
+	/**
+	 * Get the SQL Ordering statement
+	 *
+	 * @return string text to add to the SQL statement
+	 */
+	function _getOrdering($defaut='ordering',$order_dir = 'asc') {
+
+		$option = JRequest::getCmd( 'option');
+		$view = JRequest::getVar('view');
+		$mainframe = JFactory::getApplication() ;
+
+		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
+		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $defaut, 'cmd' );
+
+		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
+	}
     /**
 	 * Since an object like product, category dont need always an image, we can attach them to the object with this function
 	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php

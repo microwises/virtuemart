@@ -33,9 +33,6 @@ class VirtuemartViewCountry extends JView {
 
     function display($tpl = null) {
 
-		$option = JRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
-
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
@@ -58,17 +55,15 @@ class VirtuemartViewCountry extends JView {
 
 		}
 		else {
-
-			ShopFunctions::addStandardDefaultViewCommands(true,false);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$countries = $model->getCountries(false);
 			$this->assignRef('countries',	$countries);
-			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
-			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
+
+			ShopFunctions::addStandardDefaultViewCommands(true,false);
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 			$this->assignRef('lists', $lists);
+
+
+
 		}
 
 		parent::display($tpl);

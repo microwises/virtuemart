@@ -76,13 +76,11 @@ class VirtuemartViewPaymentMethod extends JView {
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination',	$pagination);
-
 			$payms = $model->getPayms();
 			$this->assignRef('payms',	$payms);
+
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 
 		}
 

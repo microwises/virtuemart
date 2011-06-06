@@ -45,23 +45,6 @@ class VirtueMartModelManufacturer extends VmModel {
 
 	}
 
-	/**
-	 * Gets the total number of products
-	 */
-	function getTotal() {
-    	if (empty($this->_total)) {
-    		$db = JFactory::getDBO();
-    		$filter = '';
-            if (JRequest::getInt('virtuemart_manufacturer_id', 0) > 0) $filter .= ' WHERE #__virtuemart_manufacturers.`virtuemart_manufacturer_id` = '.JRequest::getInt('virtuemart_manufacturer_id');
-			$q = "SELECT COUNT(*)
-				FROM `#__virtuemart_manufacturers` ".
-				$filter;
-			$db->setQuery($q);
-			$this->_total = $db->loadResult();
-        }
-
-        return $this->_total;
-    }
 
     /**
      * Load a single manufacturer
@@ -181,6 +164,8 @@ class VirtueMartModelManufacturer extends VmModel {
 		else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
+		// set total for pagination
+		$this->_total = $this->_getListCount($query);
 
 		return $this->_data;
 	}

@@ -67,25 +67,19 @@ class VirtuemartViewOrderstatus extends JView {
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
-
 			$this->assignRef('lists', $lists);
+
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
 
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
-			ShopFunctions::addStandardDefaultViewCommands();
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
-
 			$orderStatusList = $model->getOrderStatusList();
 			$this->assignRef('orderStatusList', $orderStatusList);
 
-			// Get the ordering
-			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
-			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 			$this->assignRef('lists', $lists);
 		}
 

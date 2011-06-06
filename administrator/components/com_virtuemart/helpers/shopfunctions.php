@@ -26,7 +26,10 @@ class ShopFunctions {
 		$this->_db = JFactory::getDBO();
 	}
 
-
+	/*
+	* set all commands and options for BE default.php views
+	* return $list filter_order and 
+	*/
 	function addStandardDefaultViewCommands ($showNew=true,$showDelete=true){
 
 		JToolBarHelper::divider();
@@ -39,7 +42,32 @@ class ShopFunctions {
 		if($showDelete){
 			JToolBarHelper::deleteList();
 		}
+	}
+	/*
+	* set pagination and filters 
+	* return Array() $list( filter_order and dir )
+	*/
+	function addStandardDefaultViewLists ($model,$default_order = 'ordering',$default_dir = 'ASC'){
 
+		$pagination = $model->getPagination();
+		$this->assignRef('pagination',	$pagination);
+		/* set list filters*/
+		$option = JRequest::getCmd( 'option');
+		$view = JRequest::getCmd( 'view',JRequest::getCmd( 'controller'));
+		$mainframe = JFactory::getApplication() ;
+		$lists['search'] = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.search', 'search', '', 'string' );
+		$lists['filter_order']     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
+		$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'word' );
+		return $lists ;
+	}
+	/*
+	* Add simple search to form
+	*/
+	function displayDefaultViewSearch ($searchLabel = 'search') {
+		return JText::_('COM_VIRTUEMART_FILTER').' '.JText::_($searchLabel).':
+		<input type="text" name="search" id="search" value="'.$this->lists['search'].'" class="text_area" onchange="document.adminForm.submit();" />
+		<button onclick="this.form.submit();">'.JText::_('COM_VIRTUEMART_GO').'</button>
+		<button onclick="document.getElementById(\'search\').value=\'\';this.form.submit();">'.JText::_('COM_VIRTUEMART_RESET').'</button>' ;
 	}
 
 	function addStandardEditViewCommands (){
