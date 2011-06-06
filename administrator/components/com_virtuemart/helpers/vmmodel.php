@@ -214,7 +214,8 @@ class VmModel extends JModel {
 		$table =& $this->getTable($this->_maintablename);
 //		if(empty($cidName)) $cidName = $this->_cidName;
 
-		$ids = JRequest::getVar( $this->_cidName, array(0), 'post', 'array' );
+		$ids = JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
+
 		foreach($ids as $id){
 			$table->load( $id );
 			if ($val === NULL) {

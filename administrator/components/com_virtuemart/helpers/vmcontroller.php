@@ -172,7 +172,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->toggle('published',1,'cid')) {
+		if (!$model->toggle('published',1)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
@@ -192,7 +192,7 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = $this->getModel($this->_cname);
-		if (!$model->toggle('published',0,'cid')) {
+		if (!$model->toggle('published',0)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
@@ -225,7 +225,7 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid 	= JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
 		$order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 		JArrayHelper::toInteger($order);
