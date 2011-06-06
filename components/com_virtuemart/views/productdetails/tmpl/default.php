@@ -61,7 +61,8 @@ if (empty ( $this->product )) {
 	<?php // PDF - Print - Email Icon
 	if (VmConfig::get('pdf_button_enable', 1) == '1' || VmConfig::get('show_emailfriend', 1) == '1' || VmConfig::get('show_printicon', 1) == '1') { ?>
 	<div class="icons">
-		<?php $link = 'index2.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
+		<?php $link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
+		$link .= '?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		echo shopFunctionsF::PdfIcon($link.'&output=pdf' );
 		echo shopFunctionsF::PrintIcon($link.'&print=1');
 		echo shopFunctionsF::EmailIcon($this->product->virtuemart_product_id); ?>

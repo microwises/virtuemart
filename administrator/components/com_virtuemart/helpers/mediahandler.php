@@ -732,15 +732,15 @@ $html .= '</tr>';
 		$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 		$this->addMediaAttributesByType();
-		$html .= '<tr><fieldset class="radio">
+		$html .= '<tr>
 		<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
-		<td>'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
+		<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
 
 		$html .= '</table>';
 
 		$this->addMediaActionByType();
 
-		$html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br />';
+		$html .= '<fieldset class="checkboxes">' . JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'</fieldset><br style="clear:both" />';
 
 
 		$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';

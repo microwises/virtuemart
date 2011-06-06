@@ -31,7 +31,8 @@
 	background: url(../images/itoggle.png) left bottom no-repeat;
 	cursor:pointer;
 	text-indent:-5000px;
-
+	min-width:0;
+	padding:0;
 	}
 #vmPage label.ilabel_radio{
 	

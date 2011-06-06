@@ -155,7 +155,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 					<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW') ?></label>
 					</span>
 		    	</td>
-		    	<td><fieldset class="radio">
+		    	<td><fieldset class="checkboxes">
 		    	<?php
 		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
 											1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
@@ -171,7 +171,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
 				</span>
 	    	</td>
-	    	<td><fieldset class="radio">
+	    	<td><fieldset class="checkboxes">
 				<?php
 				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
 				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
@@ -187,7 +187,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 					<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW') ?></label>
 					</span>
 		    	</td>
-		    	<td><fieldset class="radio">
+		    	<td><fieldset class="checkboxes">
 		    	<?php
 		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
 		    								1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
@@ -203,7 +203,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
 				</span>
 	    	</td>
-	    	<td><fieldset class="radio">
+	    	<td><fieldset class="checkboxes">
 				<?php
 				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
 				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),

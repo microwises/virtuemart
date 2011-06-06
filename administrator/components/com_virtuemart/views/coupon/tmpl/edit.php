@@ -55,7 +55,7 @@ AdminMenuHelper::startAdminArea();
 				$radioOptions = '';
 				$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('COM_VIRTUEMART_COUPON_PERCENT'));
 				$radioOptions[] = JHTML::_('select.option', 'total', JText::_('COM_VIRTUEMART_COUPON_TOTAL'));
-				echo JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total);
+				echo '<fieldset class="radio">' . JHTML::_('select.radiolist',  $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total) . '</fieldset>';
 
 				?>
 			</td>

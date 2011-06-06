@@ -337,7 +337,7 @@ class VirtueMartModelOrders extends VmModel {
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
@@ -347,9 +347,9 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		/* Process the orders to update */
+		$updated = 0;
+		$error = 0;
 		if ($update) {
-			$updated = 0;
-			$error = 0;
 			foreach ($update as $virtuemart_order_id => $new_status) {
 
 				/* Get customer notification */

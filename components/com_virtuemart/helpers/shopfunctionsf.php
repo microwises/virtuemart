@@ -163,7 +163,7 @@ class shopFunctionsF {
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&pop=1');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {
@@ -184,7 +184,8 @@ class shopFunctionsF {
 			if( !$link ) {
 				//Todo this is old stuff and must be adjusted
 				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
-				$link = 'index2.php?'.$query_string.'&amp;pop=1&amp;tmpl=component';
+				$link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
+				$link .= '?tmpl=component&amp;'.$query_string.'&amp;pop=1';
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {

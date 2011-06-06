@@ -59,9 +59,8 @@ class VirtueMartModelProduct extends VmModel {
 //    		$this->_db = JFactory::getDBO();
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$showall = Permissions::getInstance()->check('storeadmin');
-			$where='';
-			if (!$showall) $where = ' WHERE  #__virtuemart_products.`published`=1 ';
-			$q = "SELECT #__virtuemart_products.`virtuemart_product_id` ".$this->getProductListQuery().$where.$this->getProductListFilter();
+			$filters = ($showall) ? array() : array('#__virtuemart_products.`published`=1');
+			$q = "SELECT #__virtuemart_products.`virtuemart_product_id` ".$this->getProductListQuery().$this->getProductListFilter($filters);
 			$this->_db->setQuery($q);
 			$fields = $this->_db->loadObjectList('virtuemart_product_id');
 			$this->_total = count($fields);
@@ -686,9 +685,8 @@ class VirtueMartModelProduct extends VmModel {
     * Collect the filters for the query
     * @author RolandD
     */
-    private function getProductListFilter() {
+    private function getProductListFilter ($filters=array()) {
 //    	$this->_db = JFactory::getDBO();
-    	$filters = array();
     	/* Check some filters */
     	$filter_order = JRequest::getCmd('filter_order', 'product_name');
 		if ($filter_order == '') $filter_order = 'product_name';
@@ -1068,16 +1066,16 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function createChild($id){
 		// created_on , modified_on
-		$vendorId = 1 ;
-		$this->_db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
-		$slug_id = 1+$this->_db->loadResult();
-		$this->_db->setQuery('SELECT `product_name` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.$id );
-		$parent = $this->_db->loadObject();
+		$db = JFactory::getDBO();
+		$vendorId = 1;
+		$db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
+		$slug_id = 1+$db->loadResult();
+		$db->setQuery('SELECT `product_name` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.$id );
+		$parent = $db->loadObject();
 		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P-'.$slug_id.'", '.$vendorId.', '.$id.' )';
-		$this->_db->setQuery($q);
-		dump ($this->_db->_sql,'sql');
-		$this->_db->query();
-		return $this->_db->insertid();
+		$db->setQuery($q);
+		$db->query();
+		return $db->insertid();
 	}
 
 	/**
