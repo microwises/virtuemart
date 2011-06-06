@@ -48,7 +48,7 @@ class VirtueMartModelConfig extends JModel {
 		//This does not work, joomla takes only overrides of their standard template
 //		$tplpath = VmConfig::get('vmtemplate',0);
 		//So we lookf for template overrides in the joomla standard template
-		$app =& JFactory::getApplication('site');
+		$app = JFactory::getApplication('site');
 		$tplpath = $app->getTemplate();
 		if($tplpath){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view)){

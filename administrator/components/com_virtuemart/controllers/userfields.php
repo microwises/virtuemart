@@ -47,13 +47,13 @@ class VirtuemartControllerUserfields extends VmController {
 
 	function Userfields(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('userfields', $viewType);
+		$view = $this->getView('userfields', $viewType);
 		$view->loadHelper('paramhelper');
 
 		// Push a model into the view
-		$model =& $this->getModel('userfields');
+		$model = $this->getModel('userfields');
 
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
@@ -67,7 +67,7 @@ class VirtuemartControllerUserfields extends VmController {
 	 */
 	function edit(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('userfields', $viewType);
 
@@ -75,6 +75,7 @@ class VirtuemartControllerUserfields extends VmController {
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
 
+		
 		parent::edit();
 	}
 

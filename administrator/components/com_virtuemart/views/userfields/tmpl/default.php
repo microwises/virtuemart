@@ -96,7 +96,7 @@ $j15 = VmConfig::isJ15();
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->userfieldsList); $i < $n; $i++) {
-			$row =& $this->userfieldsList[$i];
+			$row = $this->userfieldsList[$i];
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));

@@ -861,13 +861,15 @@ class VirtueMartCart  {
 
 		return $this->cartData ;
 	}
+	
+	
 	/**
 	* Save the cart in the database
 	*
 	* @author RolandD
 	* @access public
 	*/
-	public function saveCart() {
+/**	public function saveCart() {
 		$db = JFactory::getDBO();
 		$user = JFactory::getUser();
 		$cart = $this->getCart();
@@ -879,121 +881,50 @@ class VirtueMartCart  {
 			$db->query();
 		}
 	}
+*/
 
-	/**
-	* This checks if attributes values were chosen by the user
-	*
-	* @author RolandD
-	* @access public
-	* @param array $d
-	* @return array $result
-	*/
-	/* TODO OBSELETE HAS TO BE REWRITEN
-	public function cartGetAttributes( &$d ) {
-		$db = JFactory::getDBO();
-
-		// added for the advanced attributes modification
-		//get listing of titles for attributes (Sean Tobin)
-		$attributes = array( ) ;
-		if( ! isset( $d["prod_id"] ) ) {
-			$d["prod_id"] = $d["virtuemart_product_id"] ;
-		}
-		$q = "SELECT virtuemart_product_id, attribute, custom_attribute FROM #__{vm}_product WHERE virtuemart_product_id='" . (int)$d["prod_id"] . "'" ;
-		$db->query( $q ) ;
-
-		$db->next_record() ;
-
-		if( ! $db->f( "attribute" ) && ! $db->f( "custom_attribute" ) ) {
-			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE virtuemart_product_id='" . (int)$d["prod_id"] . "'" ;
-
-			$db->query( $q ) ;
-			$db->next_record() ;
-			$q = "SELECT virtuemart_product_id, attribute, custom_attribute FROM #__{vm}_product WHERE virtuemart_product_id='" . $db->f( "product_parent_id" ) . "'" ;
-			$db->query( $q ) ;
-			$db->next_record() ;
-		}
-
-		$advanced_attribute_list = $db->f( "attribute" ) ;
-		if( $advanced_attribute_list ) {
-			$fields = explode( ";", $advanced_attribute_list ) ;
-			foreach( $fields as $field ) {
-				$field = trim( $field ) ;
-				$base = explode( ",", $field ) ;
-				$title = array_shift( $base ) ;
-				array_push( $attributes, $title ) ;
+	function getAddress ($_model, $_fields, $_type){
+	
+		$_address = new stdClass();
+		if(!empty($_cart->$_type)){
+			$_data = $_cart->$_type;
+			foreach ($_data as $_k => $_v) {
+				$_address->{$_k} = $_v;
 			}
 		}
-		// We need this for being able to work with attribute names and values which are using non-ASCII characters
-		if( strtolower( vmGetCharset() ) != 'utf-8' ) {
-			$encodefunc = 'utf8_encode' ;
-			$decodefunc = 'utf8_decode' ;
+
+		$_data = $_model->getUserFieldsByUser($_fields, $_address);
+		return $_data;
+	}
+
+	function saveAddressInCart($_data, $_fields, $_type) {
+	
+		$_address = array();
+
+		if(is_array($_data)){
+			foreach ($_fields as $_fld) {
+				$name = $_fld->name;
+				$_address[$name] = $_data[$name];
+			}
+
 		} else {
-			$encodefunc = 'strval' ;
-			$decodefunc = 'strval' ;
-		}
-
-		$description = "" ;
-		$attribute_given = false ;
-		// Loop through the simple attributes and check if one of the valid values has been provided
-		foreach( $attributes as $a ) {
-
-			$pagevar = str_replace( " ", "_", $a ) ;
-			$pagevar .= $d['prod_id'] ;
-
-			$pagevar = $encodefunc( $pagevar ) ;
-
-			if( ! empty( $d[$pagevar] ) ) {
-				$attribute_given = true ;
+			foreach ($_fields as $_fld) {
+				$name = $_fld->name;
+				$_address[$name] = $_data->{$name};
 			}
-			if( $description != '' ) {
-				$description .= "; " ;
-			}
-
-			$description .= $a . ":" ;
-			$description .= empty( $d[$pagevar] ) ? '' : $decodefunc( $d[$pagevar] ) ;
-
 		}
-		rtrim( $description ) ;
-		$d["description"] = $description ;
-		// end advanced attributes modification addition
+		
+		$this->$_type = $_address;
+		$this->setCartIntoSession();
+	}
 
-
-		$custom_attribute_list = $db->f( "custom_attribute" ) ;
-		$custom_attribute_given = false ;
-		// Loop through the custom attribute list and check if a value has been provided
-		if( $custom_attribute_list ) {
-			$fields = explode( ";", $custom_attribute_list ) ;
-
-			$description = $d["description"] ;
-
-			foreach( $fields as $field ) {
-				$pagevar = str_replace( " ", "_", $field ) ;
-				$pagevar .= $d['prod_id'] ;
-				$pagevar = $encodefunc( $pagevar ) ;
-
-				if( ! empty( $d[$pagevar] ) ) {
-					$custom_attribute_given = true ;
-				}
-				if( $description != '' ) {
-					$description .= "; " ;
-				}
-				$description .= $field . ":" ;
-				$description .= empty( $d[$pagevar] ) ? '' : $decodefunc( $d[$pagevar] ) ;
-
-			}
-			rtrim( $description ) ;
-			$d["description"] = $description ;
-			// END add for custom fields by denie van kleef
-
-
-		}
-
-		$result['attribute_given'] = $attribute_given ;
-		$result['advanced_attribute_list'] = $advanced_attribute_list ;
-		$result['custom_attribute_given'] = $custom_attribute_given ;
-		$result['custom_attribute_list'] = $custom_attribute_list ;
-
-		return $result ;
-	}*/
-
+	function address2cartanonym ($data, $_type){
+		
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php' );
+		$userFieldsModel = new VirtueMartModelUser();
+		
+		$_userFields = $userFieldsModel::getUserFields($_type);
+		self::saveAddressInCart($data, $_userFields, $_type);
+	}
+	
 }

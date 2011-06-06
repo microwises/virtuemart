@@ -83,7 +83,7 @@ class calculationHelper {
 		if(!is_object(self::$_instance)){
 			self::$_instance = new calculationHelper();
 		}else {
-			$jnow			=& JFactory::getDate();
+			$jnow			= JFactory::getDate();
 			$this -> _now 	= $jnow->toMySQL();
 		}
 		return self::$_instance;

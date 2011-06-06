@@ -48,7 +48,7 @@ class VirtuemartControllerOrderstatus extends VmController {
 
 	function Orderstatus () {
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 
@@ -69,7 +69,7 @@ class VirtuemartControllerOrderstatus extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView($this->_cname, $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 
 		parent::edit();

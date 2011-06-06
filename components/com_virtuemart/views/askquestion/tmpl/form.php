@@ -58,7 +58,7 @@ if (empty ( $this->product )) {
 		
 		<?php // Get User
 		if (!empty($this->user->id)) {
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 		} ?>
 		
 		<div class="form-field">

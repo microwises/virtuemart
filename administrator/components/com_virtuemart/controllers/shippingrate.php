@@ -47,28 +47,28 @@ class VirtuemartControllerShippingRate extends VmController {
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('shippingrate', $viewType);
+		$view = $this->getView('shippingrate', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('shippingrate');
+		$model = $this->getModel('shippingrate');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-		$model1 =& $this->getModel('country');
+		$model1 = $this->getModel('country');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}
-		$model2 =& $this->getModel('shippingcarrier');
+		$model2 = $this->getModel('shippingcarrier');
 		if (!JError::isError($model2)) {
 			$view->setModel($model2, false);
 		}
-		$model3 =& $this->getModel('currency');
+		$model3 = $this->getModel('currency');
 		if (!JError::isError($model3)) {
 			$view->setModel($model3, false);
 		}
-//		$model =& $this->getModel('taxrate');
+//		$model = $this->getModel('taxrate');
 //		if (!JError::isError($model)) {
 //			$view->setModel($model, false);
 //		}

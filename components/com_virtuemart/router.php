@@ -558,7 +558,7 @@ class vmrouterHelper {
 	$db = JFactory::getDBO();
 	$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
 	$db->setQuery($query);
-	// $lang =& JFactory::getLanguage();
+	// $lang = JFactory::getLanguage();
 	// $mfName = $lang->transliterate($db->loadResult());
 	// return preg_replace('([^a-zA-Z0-9-/])','-',$mfName);
 	return $db->loadResult();
@@ -569,7 +569,7 @@ class vmrouterHelper {
 
 		if ( VmConfig::get('seo_translate', false) ) {
 			/* use translator */
-			$lang =& JFactory::getLanguage();
+			$lang = JFactory::getLanguage();
 			$extension = 'com_virtuemart';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);

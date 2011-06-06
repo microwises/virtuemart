@@ -400,10 +400,10 @@ class shopFunctionsF {
 	 */
 	function sendVmMailold($body,$recipient,$subject='TODO set subject', $virtuemart_vendor_id=1, $mediaToSend = false ){
 
-		$mailer =& JFactory::getMailer();
+		$mailer = JFactory::getMailer();
 
 		//This is now just without multivendor
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$sender = array(
     	$config->getValue( 'config.mailfrom' ),
     	$config->getValue( 'config.fromname' ) );

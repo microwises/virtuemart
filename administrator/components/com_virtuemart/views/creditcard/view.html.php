@@ -39,7 +39,7 @@ class VirtuemartViewCreditcard extends JView {
 
 		$model = $this->getModel();
 
-        $creditcard =& $model->getCreditCard();
+        $creditcard = $model->getCreditCard();
 
 		$viewName=ShopFunctions::SetViewTitle('vm_credit_48');
 		$this->assignRef('viewName',$viewName);

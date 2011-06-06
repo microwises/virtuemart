@@ -85,7 +85,7 @@ class TableStates extends VmTable {
 //		}
 //
 //		if (($this->state_name) && ($this->virtuemart_state_id == 0)) {
-//		    $db =& JFactory::getDBO();
+//		    $db = JFactory::getDBO();
 //
 //			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';
 //			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';

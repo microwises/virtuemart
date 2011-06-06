@@ -84,7 +84,7 @@ class TableShoppergroups extends VmTable
 //
 //		if (($this->country_name) && ($this->virtuemart_shoppergroup_id == 0)) {
 //
-//			$db =& JFactory::getDBO();
+//			$db = JFactory::getDBO();
 //			$query = 'SELECT count(*) FROM '
 //			  . $db->nameQuote('#__virtuemart_shoppergroups')
 //			  . ' WHERE '

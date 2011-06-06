@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 	    $k = 0;
 
 	    for ($i=0, $n=count( $this->states ); $i < $n; $i++) {
-		$row =& $this->states[$i];
+		$row = $this->states[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_state_id,null,'virtuemart_state_id');
 		$published = JHTML::_('grid.published', $row, $i);

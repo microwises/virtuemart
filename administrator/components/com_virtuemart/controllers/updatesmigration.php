@@ -317,7 +317,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->setRedirect($this->redirectPath);
 	}
     function _getMsgDangerousTools() {
-            $uri =& JFactory::getURI();
+            $uri = JFactory::getURI();
             $link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';
             $msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED','<a href="'.$link.'">'.$link.'</a>');
             return $msg;

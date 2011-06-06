@@ -159,6 +159,10 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 	}
 
+	function getCoreFields(){
+		 return array( 'name','username', 'email', 'password', 'password2' );
+	}
+	
 	/**
 	 * Bind the post data to the userfields table and save it
 	 *
@@ -170,8 +174,16 @@ class VirtueMartModelUserfields extends VmModel {
 		$userinfo   = $this->getTable('userinfos');
 		$orderinfo  = $this->getTable('order_userinfos');
 
+		//TODO move this to controller
 		$data = JRequest::get('post');
 
+		$coreFields = $this->getCoreFields();
+		if(in_array($data['name'],$coreFields)){
+			$this->setError('Cant store/update core field. They belong to joomla');
+			return false;
+		}
+			
+		
 		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
 		if ($isNew) {
 			$reorderRequired = false;
@@ -260,7 +272,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if (count($_values) == 0) {
 			return true; //Nothing to do
 		}
-		$fieldvalue =& $this->getTable('userfield_values');
+		$fieldvalue = $this->getTable('userfield_values');
 
 		for ($i = 0; $i < count($_values); $i++) {
 			if (!($_id === true)) { // If $_id is true, it was not a new record
@@ -302,7 +314,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return array
 	 */
-	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2', 'agreed'))
+	public function getUserFields ($_sec = 'registration', $_switches=array(), $_skip = array('username', 'password', 'password2'))
 	{
 		$_q = 'SELECT * FROM `#__virtuemart_userfields` WHERE 1 = 1 ';
 
@@ -395,7 +407,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$_user_is_vendor->cols = 0;
 			$_user_is_vendor->rows = 0;
 			$_user_is_vendor->value = 0;
-			$_user_is_vendor->default = 0;
+			$_user_is_vendor->default = '0';
 			$_user_is_vendor->published = 1;
 			$_user_is_vendor->registration = 1;
 			$_user_is_vendor->shipping = 0;
@@ -422,7 +434,7 @@ class VirtueMartModelUserfields extends VmModel {
 	private function _userFieldFormat($_f, $_v)
 	{
 		switch ($_f) {
-			//case 'agreed':
+			case 'agreed':
 			case 'title':
 				if (substr($_v, 0, 1) == '_') {
 					$_v = substr($_v, 1);
@@ -432,7 +444,7 @@ class VirtueMartModelUserfields extends VmModel {
 					break;
 				}
 				// TODO Handling Agreed field
-				$_r->title = '<script type="text/javascript">//<![CDATA[
+/*				$_r->title = '<script type="text/javascript">//<![CDATA[
 						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
 						document.write(\' ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS') .')</a>\');
 					//]]></script>
@@ -440,7 +452,7 @@ class VirtueMartModelUserfields extends VmModel {
 					<label for="agreed_field">'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'</label>
 					<a target="_blank" href="/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'">
 					 ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS').')
-					</a></noscript>';
+					</a></noscript>';*/
 				break;
 		}
 		return $_r;
@@ -551,10 +563,10 @@ class VirtueMartModelUserfields extends VmModel {
 
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
-				case 'title':
-					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::listUserTitle(
-						$_return['fields'][$_fld->name]['value'], '', $_prefix);
-					break;
+				//case 'title':
+				//	$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::listUserTitle(
+				//		$_return['fields'][$_fld->name]['value'], '', $_prefix);
+				//	break;
 
 				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
@@ -642,7 +654,7 @@ class VirtueMartModelUserfields extends VmModel {
 							break;
 						case 'editorta':
 							jimport( 'joomla.html.editor' );
-							$editor =& JFactory::getEditor();
+							$editor = JFactory::getEditor();
 							$_return['fields'][$_fld->name]['formcode'] = $editor->display($_prefix.$_fld->name, $_return['fields'][$_fld->name]['value'], 300, 150, $_fld->cols, $_fld->rows);
 							break;
 						case 'checkbox':
@@ -766,9 +778,9 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function getNameByID($_id)
 	{
-		$_sql = 'SELECT name '
-				. 'FROM `#__virtuemart_userfields`'
-				. "WHERE virtuemart_userfield_id = $_id";
+		$_sql = 'SELECT `name` 
+				FROM `#__virtuemart_userfields` 
+				WHERE virtuemart_userfield_id = "'.$_id.'" ';
 
 		$_v = $this->_getList($_sql);
 		return ($_v[0]->name);
@@ -782,10 +794,10 @@ class VirtueMartModelUserfields extends VmModel {
 	function remove()
 	{
 		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
-		$field      =& $this->getTable('userfields');
-		$value      =& $this->getTable('userfield_values');
-		$userinfo   =& $this->getTable('userinfos');
-		$orderinfo  =& $this->getTable('order_userinfos');
+		$field      = $this->getTable('userfields');
+		$value      = $this->getTable('userfield_values');
+		$userinfo   = $this->getTable('userinfos');
+		$orderinfo  = $this->getTable('order_userinfos');
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
@@ -879,7 +891,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 // */
 	// function move($direction)
 	// {
-		// $table =& $this->getTable('userfields');
+		// $table = $this->getTable('userfields');
 		// if (!$table->load($this->_id)) {
 			// $this->setError($this->_db->getErrorMsg());
 			// return false;
@@ -899,7 +911,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 // */
 	// function saveorder($cid = array(), $order)
 	// {
-		// $table =& $this->getTable('userfields');
+		// $table = $this->getTable('userfields');
 
 		//update ordering values
 		// for( $i=0; $i < count($cid); $i++ )

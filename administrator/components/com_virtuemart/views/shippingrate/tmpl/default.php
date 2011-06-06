@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 		<?php
 		$k = 0;
 		for ($i=0, $n=count( $this->shippingRates ); $i < $n; $i++) {
-			$row =& $this->shippingRates[$i];
+			$row = $this->shippingRates[$i];
 			/**
 			 * @todo Add to database layout published column
 			 */

@@ -56,12 +56,6 @@ class VirtueMartModelShopperGroup extends VmModel {
 	      $this->_data->load((int) $this->_id);
 	    }
 
-	    if (!$this->_data) {
-	      $this->_data = new stdClass();
-	      $this->_id = 0;
-	      $this->_data = null;
-	    }
-
 	    return $this->_data;
     }
 
@@ -92,6 +86,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	    return $this->_data;
     }
+	
 	function makeDefault($id) {
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
 		if (!$this->_db->query()) return ;
@@ -99,5 +94,19 @@ class VirtueMartModelShopperGroup extends VmModel {
 		if (!$this->_db->query()) return ;
 		return true;
 	}
+	
+	function getDefault(){
+		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups`  WHERE `default` = "1"');
+		
+		if(!$res = $this->_db->loadObject()){
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('Attention no standard shopper group set '.$this->_db->getErrorMsg());
+		} else {
+			return $res;
+		}
+			
+	}
+	
+	
 }
 // pure php no closing tag

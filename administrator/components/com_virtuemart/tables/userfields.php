@@ -135,7 +135,7 @@ class TableUserfields extends VmTable {
 			$this->setError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
-		if ($this->virtuemart_userfield_id == 0) {
+/**		if ($this->virtuemart_userfield_id == 0) {
 			$_sql = 'SELECT COUNT(*) AS c '
 					. 'FROM `#__virtuemart_userfields`'
 					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
@@ -147,7 +147,7 @@ class TableUserfields extends VmTable {
 				$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
 				return false;
 			}
-		}
+		}*/
 		return parent::check();
 	}
 

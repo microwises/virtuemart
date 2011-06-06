@@ -46,12 +46,12 @@ class VirtuemartControllerModule extends JController
 		// Register Extra tasks
 		$this->registerTask( 'add', 'edit' );
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('module', $viewType);
+		$view = $this->getView('module', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('module');
+		$model = $this->getModel('module');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -101,7 +101,7 @@ class VirtuemartControllerModule extends JController
 	 */
 	function save()
 	{
-		$model =& $this->getModel('module');
+		$model = $this->getModel('module');
 
 		if ($model->store()) {
 			$msg = JText::_('COM_VIRTUEMART_MODULE_SAVED');

@@ -105,7 +105,7 @@ class CurrencyDisplay {
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
 			} else {
-				$uri =& JFactory::getURI();
+				$uri = JFactory::getURI();
 
 				if(empty($currencyId)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';

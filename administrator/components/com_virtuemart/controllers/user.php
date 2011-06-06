@@ -48,7 +48,7 @@ class VirtuemartControllerUser extends VmController {
 
 	function User(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
 
@@ -74,9 +74,9 @@ class VirtuemartControllerUser extends VmController {
 		$cid = JRequest::getVar('cid');
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('user', $viewType);
+		$view = $this->getView('user', $viewType);
 
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
@@ -107,12 +107,12 @@ class VirtuemartControllerUser extends VmController {
 	 * Handle the save task
 	 */
 	function save(){
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView('user', $viewType);
+		$view = $this->getView('user', $viewType);
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 // TODO sortout which check is correctt.....
 //		if (!$_currentUser->authorize('administration', 'manage', 'components', 'com_users')) {
 		if (!$_currentUser->authorize('com_users', 'manage')) {

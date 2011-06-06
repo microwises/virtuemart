@@ -316,7 +316,7 @@ AdminMenuHelper::startAdminArea();
 <?php AdminMenuHelper::endAdminArea(); ?>
 
 <?php $duration = 500;
-$db =& JFactory::getDBO();
+$db = JFactory::getDBO();
 $db->setQuery("SHOW COLUMNS FROM `#__virtuemart_userfields`");
 $existingFields = '"'.implode('","',$db->loadResultArray()).'"';
 

@@ -49,10 +49,10 @@ class VirtuemartControllermanufacturercategories extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$view =& $this->getView($this->_cname, $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel( 'manufacturercategories' );
+		$model = $this->getModel( 'manufacturercategories' );
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}

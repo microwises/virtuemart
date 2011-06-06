@@ -67,7 +67,7 @@ AdminMenuHelper::startAdminArea();
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
-			$row =& $this->orderStatusList[$i];
+			$row = $this->orderStatusList[$i];
 			$published = JHTML::_('grid.published', $row, $i );
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);

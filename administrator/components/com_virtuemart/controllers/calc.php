@@ -49,7 +49,7 @@ class VirtuemartControllerCalc extends VmController {
 	 */
 //	public function Calc() {
 //
-//		$document =& JFactory::getDocument();
+//		$document = JFactory::getDocument();
 //		$viewType	= $document->getType();
 //		$view = $this->getView($this->_cname, $viewType);
 //
@@ -71,7 +71,7 @@ class VirtuemartControllerCalc extends VmController {
 	 */
 	public function edit(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 

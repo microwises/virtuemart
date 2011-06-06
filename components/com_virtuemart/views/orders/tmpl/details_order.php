@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td align="left"><?php
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
 			 $this->orderdetails['details']['BT']->virtuemart_order_id
 		));

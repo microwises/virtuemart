@@ -37,7 +37,7 @@ class VirtuemartViewOrders extends JView {
 //		$pathway = $mainframe->getPathway();
 		$layoutName = JRequest::getVar('layout', $this->getLayout());
 
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 		$orderModel = $this->getModel('orders');
 
 		if ($layoutName == 'details') {

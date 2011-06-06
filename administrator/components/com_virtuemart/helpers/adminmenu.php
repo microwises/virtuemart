@@ -195,7 +195,7 @@ class AdminMenuHelper {
 	$result = $db->loadObjectList();
 //		echo '<pre>'.print_r($query,1).'</pre>';
 	for ($i=0, $n=count( $result ); $i < $n; $i++) {
-	    $row =& $result[$i];
+	    $row = $result[$i];
 	    $menuArr[$row->module_name]['title'] = 'COM_VIRTUEMART_'.strtoupper($row->module_name).'_MOD';
 	    $menuArr[$row->module_name]['items'][] = array('name' => $row->name,
 		    'link' => $row->link,

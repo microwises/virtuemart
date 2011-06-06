@@ -47,9 +47,9 @@ class VirtuemartControllerCurrency extends VmController {
 	}
 
 	function Currency() {
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView($this->_cname, $viewType);
+		$view = $this->getView($this->_cname, $viewType);
 
 		// Push a model into the view
 		$model = $this->getModel($this->_cname);

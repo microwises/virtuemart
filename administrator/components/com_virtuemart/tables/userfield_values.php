@@ -69,7 +69,7 @@ class TableUserfield_values extends VmTable {
 			return false;
 		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT `virtuemart_userfield_value_id` FROM `#__virtuemart_userfield_values` '
 			. 'WHERE `fieldtitle`="' . $this->fieldtitle . '" '
 			. 'AND   `virtuemart_userfield_id`=' . $this->virtuemart_userfield_id;
@@ -90,7 +90,7 @@ class TableUserfield_values extends VmTable {
 	 */
 	function delete($virtuemart_userfield_id)
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery('DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $virtuemart_userfield_id);
 		if ($db->query() === false) {
 			$this->setError($db->getError());

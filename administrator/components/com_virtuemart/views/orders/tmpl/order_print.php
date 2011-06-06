@@ -241,7 +241,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 	</td>
 	<td valign="top"><?php
 	JPluginHelper::importPlugin('vmpayment');
-	$_dispatcher =& JDispatcher::getInstance();
+	$_dispatcher = JDispatcher::getInstance();
 	$_returnValues = $_dispatcher->trigger('plgVmOnShowStoredOrder',array(
 	$this->orderID
 	,$this->orderbt->payment_method_id

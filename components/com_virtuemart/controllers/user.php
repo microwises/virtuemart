@@ -43,7 +43,7 @@ class VirtueMartControllerUser extends JController
 	public function User(){
 
 		//We just setup a new task for non registered users
-		$user =& JFactory::getUser();
+		$user = JFactory::getUser();
 		$view = $this->getView('user', 'html');
 
 		/* Add the default model */
@@ -233,10 +233,12 @@ class VirtueMartControllerUser extends JController
 
 		$data = JRequest::get('post');
 
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$cart = VirtueMartCart::getCart();
 		// Load the user_info helper
-		if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php' );
+		//if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php' );
 
-		user_info::address2cartanonym($data, $data['address_type']);
+		$cart->address2cartanonym($data, $data['address_type']);
 //		user_info::address2cartanonym($data, 'ST');
 
 	}
@@ -252,7 +254,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	private function saveData($cart=false,$register=false) {
 
-		$currentUser =& JFactory::getUser();
+		$currentUser = JFactory::getUser();
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');

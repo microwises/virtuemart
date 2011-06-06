@@ -161,7 +161,7 @@ class VirtueMartModelMedia extends VmModel {
 		//Todo sorting for modified_on does not work
 //		$query .= ' ORDER BY '.$oderby;
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ( $count) {
 			$this->_data = $this->_getListCount($query);

@@ -325,7 +325,7 @@ class nusoap_parser extends nusoap_base {
 				// add placeholder to href array
 				$this->multirefs[$id][$pos] = 'placeholder';
 				// add set a reference to it as the result value
-				$this->message[$pos]['result'] =& $this->multirefs[$id][$pos];
+				$this->message[$pos]['result'] = $this->multirefs[$id][$pos];
             // build complexType values
 			} elseif($this->message[$pos]['children'] != ''){
 				// if result has already been generated (struct/array)

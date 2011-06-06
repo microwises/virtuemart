@@ -126,7 +126,7 @@ class convertECB {
 				// Loop through the Currency List
 				$length = $currency_list->length;
 				for ($i = 0; $i < $length; $i++) {
-					$currNode =& $currency_list->item($i);
+					$currNode = $currency_list->item($i);
 					if(!empty($currNode) && !empty($currNode->attributes->getNamedItem("currency")->nodeValue)){
 						$currency[$currNode->attributes->getNamedItem("currency")->nodeValue] = $currNode->attributes->getNamedItem("rate")->nodeValue;
 						unset( $currNode );

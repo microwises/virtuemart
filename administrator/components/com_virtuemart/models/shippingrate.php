@@ -267,7 +267,7 @@ class VirtueMartModelShippingRate extends VmModel {
 //	function remove()
 //	{
 //		$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-//    	$table =& $this->getTable('shippingrates');
+//    	$table = $this->getTable('shippingrates');
 //
 //    	foreach($shippingCarrierIds as $shippingCarrierId) {
 //    		if (!$table->remove($shippingCarrierId)) {

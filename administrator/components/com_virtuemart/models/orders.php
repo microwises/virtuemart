@@ -369,7 +369,7 @@ class VirtueMartModelOrders extends VmModel {
 				/* When the order is set to "shipped", we can capture the payment */
 				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
 					JPluginHelper::importPlugin('vmpayment');
-					$_dispatcher =& JDispatcher::getInstance();
+					$_dispatcher = JDispatcher::getInstance();
 					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
 									 $virtuemart_order_id
 								)
@@ -390,7 +390,7 @@ class VirtueMartModelOrders extends VmModel {
 				 */
 				if ($new_status == "X") {
 					JPluginHelper::importPlugin('vmpayment');
-					$_dispatcher =& JDispatcher::getInstance();
+					$_dispatcher = JDispatcher::getInstance();
 					$_dispatcher->trigger('plgVmOnCancelPayment',array(
 									 $virtuemart_order_id
 									,$order_status_code
@@ -467,7 +467,7 @@ class VirtueMartModelOrders extends VmModel {
 			return false;
 		}
 
-		$_usr =& JFactory::getUser();
+		$_usr = JFactory::getUser();
 		$_prices = $_cart->getCartPrices();
 		if (($_orderID = $this->_createOrder($_cart, $_usr, $_prices)) == 0) {
 			return false;
@@ -642,7 +642,7 @@ class VirtueMartModelOrders extends VmModel {
 	private function _handlePayment($_orderID, $_cart, $_prices)
 	{
 		JPluginHelper::importPlugin('vmpayment');
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
 					 $_orderID
 					,$_cart
@@ -966,7 +966,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {

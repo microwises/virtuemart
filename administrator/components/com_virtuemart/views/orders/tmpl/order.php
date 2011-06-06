@@ -106,7 +106,7 @@ JPluginHelper::importPlugin('vmshipper');
 
 			<?php
 				// Load additional plugins
-				$_dispatcher =& JDispatcher::getInstance();
+				$_dispatcher = JDispatcher::getInstance();
 				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBE',array(
 					 $this->orderID
 				));
@@ -228,7 +228,7 @@ JPluginHelper::importPlugin('vmshipper');
 								. '</tr>'
 								. '</table>';
 						}
-						$_dispatcher =& JDispatcher::getInstance();
+						$_dispatcher = JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(
 							 $this->orderID
 							,$item->virtuemart_order_item_id
@@ -463,7 +463,7 @@ JPluginHelper::importPlugin('vmshipper');
 <table width="100%">
 	<tr>
 		<td valign="top"><?php
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
@@ -477,7 +477,7 @@ JPluginHelper::importPlugin('vmshipper');
 		?>
 		</td>
 		<td valign="top"><?php
-		$_dispatcher =& JDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderPaymentBE',array(
 			 $this->orderID
 			,$this->orderbt->payment_method_id

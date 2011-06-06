@@ -125,7 +125,7 @@ class modelfunctions{
 	 */
     function delete($idName,$tablename, $default=0) {
 
-		$table =& $this->getTable($tablename);
+		$table = $this->getTable($tablename);
 		$ids = JRequest::getVar($idName,  0, '', 'array');
 
 		foreach($ids as $id) {
@@ -164,7 +164,7 @@ class modelfunctions{
 //
 //	function toggle($tablename, $field, $postName  ) {
 //
-//		$table =& $this->getTable($tablename);
+//		$table = $this->getTable($tablename);
 //		$ids = JRequest::getVar( $postName, array(0), 'post', 'array' );
 //		// load the row
 //		$table->load( (int)$ids[0] );
@@ -202,10 +202,10 @@ class modelfunctions{
 		}
 		$table->reset();
 
-		$db =& $table->getDBO();
+		$db = $table->getDBO();
 
 		$nullDate		= $db->getNullDate();
-		$now			=& JFactory::getDate()->toMySQL();
+		$now			= JFactory::getDate()->toMySQL();
 
 		$query = 'SELECT *'
 		. ' FROM '.$table->_tbl

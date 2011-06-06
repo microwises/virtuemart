@@ -36,7 +36,7 @@ class VirtuemartViewReport extends JView {
 		$lists = array();
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getVar('option');
-		$config   =& JFactory::getConfig();
+		$config   = JFactory::getConfig();
 		$curTask = JRequest::getVar('task');
 		$layoutName = JRequest::getVar('layout','default');
 
@@ -71,11 +71,11 @@ class VirtuemartViewReport extends JView {
 				if (empty($from_period) && empty($until_period)) {
 					$from_period  = $date_presets['today']['from'];
 					$until_period = $date_presets['today']['until'];
-					$from         =& JFactory::getDate($from_period, $tzoffset);
-					$until        =& JFactory::getDate($until_period, $tzoffset);
+					$from         = JFactory::getDate($from_period, $tzoffset);
+					$until        = JFactory::getDate($until_period, $tzoffset);
 				} else {
-					$from         =& JFactory::getDate($from_period, $tzoffset);
-					$until        =& JFactory::getDate($until_period, $tzoffset);
+					$from         = JFactory::getDate($from_period, $tzoffset);
+					$until        = JFactory::getDate($until_period, $tzoffset);
 				}
 
 				$this->assignRef('pagination', $pagination);

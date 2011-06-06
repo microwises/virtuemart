@@ -41,7 +41,7 @@ class VirtuemartControllerCountry extends VmController {
 
 	public function Country() {
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 

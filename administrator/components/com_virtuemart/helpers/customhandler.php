@@ -164,13 +164,13 @@ class VmCustomHandler {
 		$errs = $this->_db->getErrors();
 
 		if(!empty($errMsg)){
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$errNum = $this->_db->getErrorNum();
 			$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
 		}
 
 		if($errs){
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			foreach($errs as $err){
 				$app->enqueueMessage($err);
 			}

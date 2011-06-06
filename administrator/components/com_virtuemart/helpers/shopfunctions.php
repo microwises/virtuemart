@@ -518,13 +518,14 @@ class ShopFunctions {
 	}
 
 	/**
+	 * TODO this should work with userfields
 	 * Lists titles for people
 	 *
 	 * @param string $t The selected title value
 	 * @param string $extra More attributes when needed
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 */
-	public function listUserTitle($t, $extra="", $_prefix = '') {
+/*	public function listUserTitle($t, $extra="", $_prefix = '') {
 		$vmConfig = VmConfig::getInstance();
 		$titles = $vmConfig->get('titles');
 		$options = array();
@@ -533,7 +534,7 @@ class ShopFunctions {
 			$options[] = JHTML::_('select.option',$option ,$option);
 		}
 		return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
-	}
+	}*/
 
 	/**
 	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range,

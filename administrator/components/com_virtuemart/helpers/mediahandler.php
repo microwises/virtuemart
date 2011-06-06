@@ -58,7 +58,7 @@ class VmMediaHandler {
 		}
 
 		if(empty($path)) {
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage('cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
 			$path = VmConfig::get('media_path');
 		}
@@ -87,7 +87,7 @@ class VmMediaHandler {
 			$isImage = self::isImage($extension);
 //		} else {
 //			$isImage = true;
-//			$app =& JFactory::getApplication();
+//			$app = JFactory::getApplication();
 //			$app->enqueueMessage('create media of unknown mimetype, a programmers error');
 //		}
 
@@ -380,7 +380,7 @@ class VmMediaHandler {
 
 		$media = JRequest::getVar('upload', array(), 'files');
 
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		switch ($media['error']) {
 			case 0:
 				$path_folder = str_replace('/',DS,$urlfolder);
@@ -417,7 +417,7 @@ class VmMediaHandler {
 
 		jimport('joomla.filesystem.file');
 		$file_path = str_replace('/',DS,$url);
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if($res = JFile::delete( JPATH_ROOT.DS.$file_path )){
 			$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$file_path));
 		} else {
@@ -668,13 +668,13 @@ class VmMediaHandler {
 		$errs = $this->_db->getErrors();
 
 		if(!empty($errMsg)){
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$errNum = $this->_db->getErrorNum();
 			$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
 		}
 
 		if($errs){
-			$app =& JFactory::getApplication();
+			$app = JFactory::getApplication();
 			foreach($errs as $err){
 				$app->enqueueMessage($err);
 			}

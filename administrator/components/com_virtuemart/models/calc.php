@@ -234,7 +234,7 @@ class VirtueMartModelCalc extends VmModel {
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$nullDate		= $this->_db->getNullDate();
-		$now			=& JFactory::getDate()->toMySQL();
+		$now			= JFactory::getDate()->toMySQL();
 
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';

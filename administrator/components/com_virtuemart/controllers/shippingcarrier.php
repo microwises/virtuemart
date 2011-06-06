@@ -42,12 +42,12 @@ class VirtuemartControllerShippingCarrier extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view =& $this->getView('shippingcarrier', $viewType);
+		$view = $this->getView('shippingcarrier', $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel('shippingcarrier');
+		$model = $this->getModel('shippingcarrier');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}

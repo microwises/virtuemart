@@ -211,7 +211,7 @@ class VmModel extends JModel {
 		if (!in_array($field, $this->_togglesName)) {
 			return false ;
 		}
-		$table =& $this->getTable($this->_maintablename);
+		$table = $this->getTable($this->_maintablename);
 //		if(empty($cidName)) $cidName = $this->_cidName;
 
 		$ids = JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
@@ -245,7 +245,7 @@ class VmModel extends JModel {
 	 */
 	function move($direction, $filter=null)
 	{
-		$table =& $this->getTable($this->_maintablename);
+		$table = $this->getTable($this->_maintablename);
 		if (!$table->load($this->_id)) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -268,7 +268,7 @@ class VmModel extends JModel {
 	 */
 	function saveorder($cid = array(), $order, $filter = null)
 	{
-		$table =& $this->getTable($this->_maintablename);
+		$table = $this->getTable($this->_maintablename);
 		$groupings = array();
 
 		// update ordering values

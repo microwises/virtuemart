@@ -39,14 +39,15 @@ class VirtuemartViewUserfields extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-                $this->loadHelper('shopFunctions');
+        $this->loadHelper('shopFunctions');
                 
 		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
 
 		// The list of fields which can't be toggled
-		$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
-
+		//$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
+		$lists['coreFields'] = $model->getCoreFields();
+		
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
@@ -75,7 +76,7 @@ class VirtuemartViewUserfields extends JView {
 			}
 			JToolBarHelper::divider();
 			JToolBarHelper::save();
-                        JToolBarHelper::apply();
+			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 			
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');

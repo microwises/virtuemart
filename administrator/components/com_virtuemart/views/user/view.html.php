@@ -44,7 +44,7 @@ class VirtuemartViewUser extends JView {
 
 		$model = $this->getModel();
 
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 
 		$task = JRequest::getVar('task', 'edit');
 		if($task == 'editshop'){
@@ -86,7 +86,7 @@ class VirtuemartViewUser extends JView {
 			. '<span title="' . JText::_('COM_VIRTUEMART_SAVE') . '" class="icon-32-save"></span>' . JText::_('COM_VIRTUEMART_SAVE') . '</a>';
 			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
 			. '<span title="' . JText::_('COM_VIRTUEMART_APPLY') . '" class="icon-32-apply"></span>' . JText::_('COM_VIRTUEMART_APPLY') . '</a>';
-			$_toolBar =& JToolBar::getInstance('toolbar');
+			$_toolBar = JToolBar::getInstance('toolbar');
 
 			// if ($_new) { // Insert new user
 				// if($task=='editshop'){

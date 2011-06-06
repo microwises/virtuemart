@@ -102,7 +102,7 @@ class TablePaymentmethods extends VmTable
 //		}
 //
 //		if (($this->paym_name)) {
-//		    $db =& JFactory::getDBO();
+//		    $db = JFactory::getDBO();
 //
 //			$q = 'SELECT virtuemart_paymentmethod_id FROM `#__virtuemart_paymentmethods` ';
 //			$q .= 'WHERE `paym_name`="' .  $this->paym_name . '"';

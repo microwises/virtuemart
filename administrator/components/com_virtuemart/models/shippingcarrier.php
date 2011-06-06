@@ -190,7 +190,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
      */
     function remove() {
 	$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-	$table =& $this->getTable('shippingcarriers');
+	$table = $this->getTable('shippingcarriers');
 
 	foreach($shippingCarrierIds as $shippingCarrierId) {
 	    if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
@@ -217,7 +217,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
      */
     function deleteShippingCarrierRates($carrierId = '') {
 	if ($carrierId) {
-	    $db =& JFactory::getDBO();
+	    $db = JFactory::getDBO();
 
 	    $query = 'DELETE FROM `#__virtuemart_shippingrates`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
 	    $db->setQuery($query);
@@ -259,7 +259,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`ordering`';
 		$carrierList = $this->_getList($query);
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$list;
 		$i=(int)0;
 

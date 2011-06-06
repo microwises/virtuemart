@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_USER_FULL_NAME')
+					, JText::_('COM_VIRTUEMART_USER_DISPLAYED_NAME')
 					, 'name'
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
@@ -80,7 +80,7 @@ AdminMenuHelper::startAdminArea();
 		<?php
 		$k = 0;
 		for ($i = 0, $n = count($this->userList); $i < $n; $i++) {
-			$row =& $this->userList[$i];
+			$row = $this->userList[$i];
 			$checked = JHTML::_('grid.id', $i, $row->id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&cid[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');

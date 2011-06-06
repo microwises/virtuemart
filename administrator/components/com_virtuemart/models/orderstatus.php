@@ -191,7 +191,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 //	function remove()
 //	{
 //		$orderStatIds = JRequest::getVar('cid',  0, '', 'array');
-//		$table =& $this->getTable('orderstates');
+//		$table = $this->getTable('orderstates');
 //
 //		foreach($orderStatIds as $orderStatId) {
 //			if (!$table->remove($orderStatId)) {
@@ -238,7 +238,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function move($direction)
 	{
-		$table =& $this->getTable('orderstates');
+		$table = $this->getTable('orderstates');
 		if (!$table->load($this->_id)) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -286,7 +286,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function saveorder($cid = array(), $order)
 	{
-		$table =& $this->getTable('orderstates');
+		$table = $this->getTable('orderstates');
 
 		// update ordering values
 		for( $i=0; $i < count($cid); $i++ )

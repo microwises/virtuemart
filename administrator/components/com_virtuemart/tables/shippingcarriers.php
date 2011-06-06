@@ -71,7 +71,7 @@ class TableShippingcarriers extends VmTable {
 //	}
 //
 //	if (($this->shipping_carrier_name) && ($this->virtuemart_shippingcarrier_id == 0)) {
-//	    $db =& JFactory::getDBO();
+//	    $db = JFactory::getDBO();
 //
 //	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';
 //	    $q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';

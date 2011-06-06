@@ -45,7 +45,7 @@ AdminMenuHelper::startAdminArea();
 	    <?php
 	    $k = 0;
 	    for ($i=0, $n=count( $this->creditcards ); $i < $n; $i++) {
-		$row =& $this->creditcards[$i];
+		$row = $this->creditcards[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_creditcard_id);
 		$published = JHTML::_('grid.published', $row, $i);

@@ -43,7 +43,7 @@ AdminMenuHelper::startAdminArea();
 		<?php
 		$k = 0;
 		for ($i=0, $n=count( $this->shippingCarriers ); $i < $n; $i++) {
-			$row =& $this->shippingCarriers[$i];
+			$row = $this->shippingCarriers[$i];
 			$published = JHTML::_('grid.published', $row, $i );
 			/**
 			 * @todo Add to database layout published column

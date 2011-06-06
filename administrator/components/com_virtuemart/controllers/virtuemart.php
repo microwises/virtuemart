@@ -39,10 +39,10 @@ class VirtuemartControllerVirtuemart extends JController {
 		$document = JFactory::getDocument();
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
-		$view =& $this->getView($viewName, $viewType);
+		$view = $this->getView($viewName, $viewType);
 
 		// Push a model into the view
-		$model =& $this->getModel( 'virtuemart' );
+		$model = $this->getModel( 'virtuemart' );
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}

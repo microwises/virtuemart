@@ -78,7 +78,7 @@ class TableOrderstates extends VmTable {
 //			return false;
 //		}
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT count(*),virtuemart_orderstate_id FROM `#__virtuemart_orderstates` ';
 		$q .= 'WHERE `order_status_code`="' .  $this->order_status_code . '"';
 		$db->setQuery($q);

@@ -154,7 +154,7 @@ class VirtueMartModelState extends VmModel {
      */
     function &getStateByCode($code)
     {
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$stateCodeLength = strlen($code);
 		switch ($stateCodeLength) {
@@ -185,7 +185,7 @@ class VirtueMartModelState extends VmModel {
 //	 */
 //    function store()
 //	{
-//		$table =& $this->getTable('states');
+//		$table = $this->getTable('states');
 //
 //		$data = JRequest::get( 'post' );
 //		// Bind the form fields to the state table
@@ -220,7 +220,7 @@ class VirtueMartModelState extends VmModel {
 //	function remove()
 //	{
 //		$stateIds = JRequest::getVar('cid',  0, '', 'array');
-//    	$table =& $this->getTable('states');
+//    	$table = $this->getTable('states');
 //
 //    	foreach($stateIds as $stateId) {
 //        	if (!$table->remove($stateId)) {
@@ -270,7 +270,7 @@ class VirtueMartModelState extends VmModel {
 	{
 		//Test if id is published
 
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
 		if($db->loadResult()){

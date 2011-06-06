@@ -67,7 +67,7 @@ class TableManufacturercategories extends VmTable {
 //		}
 //
 //		if (($this->mf_category_name) && ($this->virtuemart_manufacturercategories_id == 0)) {
-//		    $db =& JFactory::getDBO();
+//		    $db = JFactory::getDBO();
 //
 //			$q = 'SELECT count(*) FROM #__virtuemart_manufacturercategories ';
 //			$q .= 'WHERE mf_category_name="' .  $this->mf_category_name . '"';

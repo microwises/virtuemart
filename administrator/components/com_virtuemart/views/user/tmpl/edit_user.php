@@ -39,7 +39,7 @@ function gotocontact(id) {
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FULL_NAME'); ?>
+					<?php echo JText::_('COM_VIRTUEMART_USER_DISPLAYED_NAME'); ?>
 				</label>
 			</td>
 			<td>

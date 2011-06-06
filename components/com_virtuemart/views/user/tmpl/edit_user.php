@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</legend>
 	<table class="admintable" cellspacing="1">
 
-		<tr>
+<?php /*<tr>
 			<td width="150" class="key">
 				<label for="name">
 					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME'); ?>
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<input type="text" name="name" id="name" class="inputbox" size="40" value="<?php echo $this->userDetails->JUser->get('name'); ?>" />
 			</td>
 		</tr>
-
+*/ ?>
 		<tr>
 			<td class="key">
 				<label for="username">

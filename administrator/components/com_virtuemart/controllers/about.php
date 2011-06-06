@@ -36,7 +36,7 @@ class VirtuemartControllerAbout extends JController
 		$document = JFactory::getDocument();
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
-		$view =& $this->getView($viewName, $viewType);
+		$view = $this->getView($viewName, $viewType);
 
 		parent::display();
 	}

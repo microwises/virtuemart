@@ -23,7 +23,7 @@ AdminMenuHelper::startAdminArea();
 
 JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
 
-$pane =& JPane::getInstance('tabs', array('startOffset'=>0)); 
+$pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
 echo $pane->startPane( 'pane' );
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'control_panel');
 ?>

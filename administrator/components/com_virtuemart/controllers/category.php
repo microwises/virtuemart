@@ -41,7 +41,7 @@ class VirtuemartControllerCategory extends VmController {
 
 	public function Category(){
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
 

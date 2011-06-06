@@ -147,7 +147,7 @@ class VirtueMartModelCreditcard extends VmModel {
 //	 */
 //    function store()
 //	{
-//		$table =& $this->getTable('creditcards');
+//		$table = $this->getTable('creditcards');
 //
 //		$data = JRequest::get( 'post' );
 //		// Bind the form fields to the credit card table
@@ -181,7 +181,7 @@ class VirtueMartModelCreditcard extends VmModel {
 	function remove()
 	{
 		$creditcardIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('creditcards');
+    	$table = $this->getTable('creditcards');
 
     	foreach($creditcardIds as $creditcardId) {
         	if (!$table->delete($creditcardId)) {

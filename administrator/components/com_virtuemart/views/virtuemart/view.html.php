@@ -37,7 +37,7 @@ class VirtuemartViewVirtuemart extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('image');
 
-		$model =& $this->getModel();
+		$model = $this->getModel();
 
 		$nbrCustomers = $model->getTotalCustomers();
 		$this->assignRef('nbrCustomers', $nbrCustomers);

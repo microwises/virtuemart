@@ -73,7 +73,7 @@ class VirtuemartViewUser extends JView {
 		$editor = JFactory::getEditor();
 
 		//the cuid is the id of the current user
-		$this->_currentUser =& JFactory::getUser();
+		$this->_currentUser = JFactory::getUser();
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
@@ -176,13 +176,17 @@ class VirtuemartViewUser extends JView {
 				, $skips
 			);
 		}
+		//foreach($_userFields as $field){
+		//	dump($field->name,'$_userFields?');
+		//}
 
-dump($this,'user?');
 		//Small ugly hack to make registering optional
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
 			foreach($_userFields as $field){
-				if($field->name == 'name'|| $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
+				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
 					$field->required = 0;
+					$field->value = '';
+					$field->default = '';
 				} 
 			}
 		}
@@ -221,8 +225,9 @@ dump($this,'user?');
 
 			//We may move this to the helper of course, but for developing I just wanna get it working
 			//require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
-
-			$userFields = user_info::getAddress(
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$userFields = $cart->getAddress(
 				 $this->_userFieldsModel
 				,$_userFields
 				,$type

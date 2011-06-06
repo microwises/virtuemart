@@ -237,7 +237,7 @@ class VirtueMartViewCart extends JView {
 	private function prepareUserData(){
 
 		//For User address
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
 //		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
@@ -311,7 +311,7 @@ class VirtueMartViewCart extends JView {
 			$text ='';
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
-				$uri =& JFactory::getURI();
+				$uri = JFactory::getURI();
 				$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=paymentmethod';
 				$text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK','<a href="'.$link.'">'.$link.'</a>');
 			}
@@ -340,15 +340,16 @@ class VirtueMartViewCart extends JView {
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){
-			if(!class_exists('user_info'))require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
+			//if(!class_exists('user_info'))require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 			//Here we get the fields
 			$_userFieldsBT = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles
 				,  $skips// Skips
 			);
-
-			$BTaddress = user_info::getAddress(
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$BTaddress = $cart->getAddress(
 				 $userFieldsModel
 				,$_userFieldsBT
 				,'BT'
@@ -365,8 +366,9 @@ class VirtueMartViewCart extends JView {
 				, array() // Default toggles
 				, $skips
 			);
-
-			$STaddress = user_info::getAddress(
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$STaddress = $cart->getAddress(
 				 $userFieldsModel
 				,$_userFieldsST
 				,'ST'

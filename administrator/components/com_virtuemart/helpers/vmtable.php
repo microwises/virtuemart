@@ -148,7 +148,7 @@ class VmTable extends JTable {
 			}
 			$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 			if(trim(str_replace('-','',$this->$slugName)) == '') {
-				$datenow =& JFactory::getDate();
+				$datenow = JFactory::getDate();
 				$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 			}
 		}
@@ -455,7 +455,7 @@ class VmTable extends JTable {
 			$this->$k = $oid;
 		}
 
-		$date =& JFactory::getDate();
+		$date = JFactory::getDate();
 		$time = $date->toMysql();
 
 		$query = 'UPDATE '.$this->_db->nameQuote( $this->_tbl ) .
@@ -531,7 +531,7 @@ class VmTable extends JTable {
 			return  false;
 		}
 
-		$session =& JTable::getInstance('session');
+		$session = JTable::getInstance('session');
 		return $session->exists($against);
 	}
 

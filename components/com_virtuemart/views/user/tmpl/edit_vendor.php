@@ -151,11 +151,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 	</legend>
-	<table class="admintable">
+	
 	<?php
 		echo $this->vendor->images[0]->displayFileHandler();
 	?>
-	</table>
 </fieldset>
 
 <fieldset>

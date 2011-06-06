@@ -241,7 +241,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 //		die;
 		// Get the document object.
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );

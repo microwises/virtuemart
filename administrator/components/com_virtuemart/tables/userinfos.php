@@ -42,7 +42,7 @@ class TableUserinfos extends VmTableData {
 //	var $user_is_vendor = 0;
 	var $address_type = null;
 	var $address_type_name = null;
- 	var $name = '';
+ 	//var $name = '';
 	var $company = '';
 	var $title ='';
  	var $last_name = '';

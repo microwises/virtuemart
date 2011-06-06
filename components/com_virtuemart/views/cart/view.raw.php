@@ -75,7 +75,7 @@ class VirtueMartViewCart extends JView {
 	private function prepareUserData(){
 
 		//For User address
-		$_currentUser =& JFactory::getUser();
+		$_currentUser = JFactory::getUser();
 		$this->lists['current_id'] = $_currentUser->get('id');
 //		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']){
@@ -125,8 +125,9 @@ class VirtueMartViewCart extends JView {
 				, array() // Default toggles
 				,  $skips// Skips
 			);
-
-			$BTaddress = user_info::getAddress(
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$BTaddress = $cart->getAddress(
 				 $userFieldsModel
 				,$_userFieldsBT
 				,'BT'
@@ -143,8 +144,9 @@ class VirtueMartViewCart extends JView {
 				, array() // Default toggles
 				, $skips
 			);
-
-			$STaddress = user_info::getAddress(
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$STaddress = $cart->getAddress(
 				 $userFieldsModel
 				,$_userFieldsST
 				,'ST'

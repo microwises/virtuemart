@@ -66,7 +66,7 @@ AdminMenuHelper::startAdminArea();
 	    <?php
 	    $k = 0;
 	    for ($i=0, $n=count( $this->currencies ); $i < $n; $i++) {
-		$row =& $this->currencies[$i];
+		$row = $this->currencies[$i];
 
 		$checked = JHTML::_('grid.id', $i, $row->virtuemart_currency_id);
 		$published = JHTML::_('grid.published', $row, $i);

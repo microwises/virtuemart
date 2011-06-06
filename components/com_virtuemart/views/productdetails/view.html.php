@@ -39,7 +39,7 @@ class VirtueMartViewProductdetails extends JView {
 	function display($tpl = null) {
 
 		//TODO get plugins running
-//		$dispatcher	=& JDispatcher::getInstance();
+//		$dispatcher	= JDispatcher::getInstance();
 //		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
 
 		$show_prices  = VmConfig::get('show_prices',1);

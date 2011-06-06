@@ -85,7 +85,7 @@ class TableShippingrates extends VmTable {
 		}
 
 		if (($this->shipping_rate_name) && ($this->virtuemart_shippingrate_id == 0)) {
-		    $db =& JFactory::getDBO();
+		    $db = JFactory::getDBO();
 
 			$q = 'SELECT count(*) FROM `#__virtuemart_shippingrates` ';
 			$q .= 'WHERE `shipping_rate_name`="' .  $this->shipping_rate_name . '"';
