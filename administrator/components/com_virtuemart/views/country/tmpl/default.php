@@ -24,27 +24,46 @@ AdminMenuHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
+	<div id="header">
+	<div id="filterbox" style="float: left">
+		<table>
+			<tr>
+				<td align="left" width="100%">
+					<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
+					&nbsp;<input type="text" value="<?php echo JRequest::getVar('filter_country'); ?>" name="filter_country" size="25" />
+					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+	</div>
+	<br clear="all" />
     <div id="editcell">
 	<table class="adminlist">
 	    <thead>
 		<tr>
-		    <th width="10">
-			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
+			<th width="10">
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
+			</th>
+			<th>
+				<?php echo JHTML::_('grid.sort'
+					, JText::_('COM_VIRTUEMART_COUNTRY_NAME')
+					, 'country_name'
+					, $this->lists['order_Dir']
+					, $this->lists['order']); ?>
+		    </th>
+				<?php /* TODO not implemented				    <th>
+				<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
+				</th> */ ?>
+		    <th>
+				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
 		    </th>
 		    <th>
-				<?php echo   JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
-		    </th>
-<?php /* TODO not implemented				    <th>
-			<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
-		    </th> */ ?>
-		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
-		    </th>
-		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
 		</tr>
 	    </thead>
@@ -92,7 +111,8 @@ AdminMenuHelper::startAdminArea();
 	    </tfoot>
 	</table>
     </div>
-
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="controller" value="country" />
     <input type="hidden" name="view" value="country" />

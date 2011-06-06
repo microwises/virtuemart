@@ -130,11 +130,16 @@ class VirtueMartModelCountry extends VmModel {
      * @return object List of country objects
      */
     function getCountries($onlyPublished=true, $noLimit=false) {
+		
+		$where = array();
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
-		if ($onlyPublished) {
-		    $query .= 'WHERE `#__virtuemart_countries`.`published` = 1';
-		}
-		$query .= ' ORDER BY `#__virtuemart_countries`.`country_name`';
+		/* add filters */
+		if ($onlyPublished) $where[] = '`#__virtuemart_countries`.`published` = 1';
+		if (JRequest::getVar('filter_country', false)) $where[] = '`country_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('filter_country').'%');
+
+		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
+
+		$query .= $this->_getOrdering();
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);
 		}
@@ -144,6 +149,22 @@ class VirtueMartModelCountry extends VmModel {
 
 		return $this->_data;
     }
+
+	/**
+	 * Get the SQL Ordering statement
+	 *
+	 * @return string text to add to the SQL statement
+	 */
+	function _getOrdering()
+	{
+		$option = JRequest::getCmd( 'option');
+		$mainframe = JFactory::getApplication() ;
+
+		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
+		$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'country_name', 'cmd' );
+
+		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
+	}
 }
 
 //no closing tag pure php
