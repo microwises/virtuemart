@@ -41,7 +41,7 @@ class VirtuemartControllerUserfields extends VmController {
 	 * @author
 	 */
 	function __construct(){
-		parent::__construct();
+		parent::__construct('virtuemart_userfield_id');
 
 	}
 

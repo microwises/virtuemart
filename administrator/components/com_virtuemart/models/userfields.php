@@ -48,7 +48,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct();
+		parent::__construct('virtuemart_userfield_id');
 		$this->setMainTable('userfields');
 
 		$this->setToggleName('required');
@@ -603,21 +603,7 @@ class VirtueMartModelUserfields extends VmModel {
 							break;
 						case 'date':
 						case 'age_verification':
-							$_calendar_path = 'includes'.DS.'js'.DS.'calendar';
-							if (!in_array('calendar.js', $_return['scripts'])) {
-								$_return['scripts']['calendar.js'] = $_calendar_path.DS;
-							}
-//							FIXME The language is all lowercase while the filename is mixed case. Is this a Joomla issue?
-//							$document = JFactory::getDocument();
-//							if (!in_array('calendar-' . $document->language . '.js', $_return['scripts'])) {
-//								$_return['scripts']['calendar-' . $document->language . '.js'] = $_calendar_path.DS.'lang'.DS;
-//							}
-							if (!in_array('calendar-en-GB.js', $_return['scripts'])) {
-								$_return['scripts']['calendar-en-GB.js'] = $_calendar_path.DS.'lang'.DS;
-							}
-							if (!in_array('calendar-mos.css', $_return['links'])) {
-								$_return['links']['calendar-mos.css'] = $_calendar_path.DS;
-							}
+							//echo JHTML::_('behavior.calendar');
 							/*
 							 * TODO We must add the joomla.javascript here that contains the calendar,
 							 * since Joomla does not load it when there's no user logged in.
@@ -628,12 +614,13 @@ class VirtueMartModelUserfields extends VmModel {
 								$_doc = JFactory::getDocument();
 								$_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
 							}
+							$calendar = JHTML::calendar($_return['fields'][$_fld->name]['value'], $_prefix.$_fld->name , $_prefix.$_fld->name . '_field', '%Y-%m-%d', null);
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
 								. $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
 								. ($_fld->required ? ' class="required"' : '')
 								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
 								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
-								. '<input name="reset" type="reset" class="button" onclick="return showCalendar(\''.$_fld->name.'_field\', \'y-mm-dd\');" value="..." />';
+								. '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
 							break;
 						case 'text':
 						case 'emailaddress':
@@ -708,11 +695,19 @@ class VirtueMartModelUserfields extends VmModel {
 								case 'multicheckbox':
 									$_return['fields'][$_fld->name]['formcode'] = '';
 									$_idx = 0;
+									$rows = $_fld->rows;
+									$row = 1;
 									foreach ($_values as $_val) {
-
+										if 	($row > $rows) { $row = 1;
+											$br = '<br />';
+										} else {
+											$row ++ ;
+											$br = '';
+										}
 										$_return['fields'][$_fld->name]['formcode'] .= '<input type="checkbox" name="'
 											. $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
-											. (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . '<br />';
+											. (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . $br;
+										
 										$_idx++;
 									}
 									break;
