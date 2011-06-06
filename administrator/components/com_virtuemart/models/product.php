@@ -1958,7 +1958,7 @@ class VirtueMartModelProduct extends VmModel {
 				$group->options = array();
 				foreach ( $options as $option) $group->options[$option->value] = $option;
 
-
+				
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));

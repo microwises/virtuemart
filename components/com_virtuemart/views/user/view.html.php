@@ -154,12 +154,12 @@ class VirtuemartViewUser extends JView {
 		//Here we define the fields to skip
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank', 'email');
+						, 'address_type', 'bank', 'email');
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'agreed', 'address_type', 'bank');		
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank');		
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank');
+						, 'address_type', 'bank');
 		}
 
 		//Here we get the fields
@@ -228,7 +228,7 @@ dump($this,'user?');
 				,$type
 			);
 		}
-
+		dump($_userFields,'heyhooo');
 		$this->assignRef('userFields', $userFields);
 		return $userFields;
 	}

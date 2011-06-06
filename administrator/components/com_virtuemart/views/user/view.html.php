@@ -150,7 +150,7 @@ class VirtuemartViewUser extends JView {
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					 , array() // Default toggles
-					 , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+					 , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type') // Skips
 					 );
 
 					 if (($_addressCount = count($userDetails->userInfo)) == 0) {

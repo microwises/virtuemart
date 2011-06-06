@@ -114,7 +114,7 @@ class VirtueMartViewCart extends JView {
 
 		//Here we define the fields to skip
 		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank');
+						, 'address_type', 'bank');
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){

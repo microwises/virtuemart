@@ -422,7 +422,7 @@ class VirtueMartModelUserfields extends VmModel {
 	private function _userFieldFormat($_f, $_v)
 	{
 		switch ($_f) {
-			case 'agreed':
+			//case 'agreed':
 			case 'title':
 				if (substr($_v, 0, 1) == '_') {
 					$_v = substr($_v, 1);

@@ -336,8 +336,7 @@ class VirtueMartViewCart extends JView {
 		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
 		//Here we define the fields to skip
-		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'agreed', 'address_type', 'bank');
+		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank');
 
 		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){

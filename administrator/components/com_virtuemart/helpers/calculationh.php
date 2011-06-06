@@ -43,6 +43,8 @@ class calculationHelper {
 	public $productVendorId;
 	public $productCurrency;
 
+	public $product_tax_id = 0;
+	public $product_discount_id = 0;
 	private $vendorCurrency = 0;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper= 0;
@@ -863,7 +865,7 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
-	function calculateCustomPriceWithTax($price,$override_id){
+	function calculateCustomPriceWithTax($price,$override_id=0){
 		
 		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax',$override_id);
 		return $this->roundDisplay($this -> executeCalculation($taxRules, $price,true));

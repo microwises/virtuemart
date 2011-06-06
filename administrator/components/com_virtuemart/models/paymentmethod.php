@@ -244,14 +244,14 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
     public function store()
 	{
-		$table = $this->getTable('paymentmethods');
+		//$table = $this->getTable('paymentmethods');
 
 		$data = JRequest::get('post');
-
+		//dump();
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);
-			$data['params'] = $params->toString();
+			$data['paym_params'] = $params->toString();
 		}
 		if($data['virtuemart_vendor_id']) $data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 
@@ -271,30 +271,35 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$this->_db->setQuery($q);
 		$data['paym_element'] = $this->_db->loadResult();
 
-		// Bind the form fields to the calculation table
-		if (!$table->bind($data)) {
+		$table = $this->getTable('paymentmethods');
+    	if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
-//			$this->setError('Table bind didnt worked');
-			return false;
 		}
+		dump($table,'my table payment store');
+		// Bind the form fields to the calculation table
+//		if (!$table->bind($data)) {
+//			$this->setError($table->getError());
+//			$this->setError('Table bind didnt worked');
+//			return false;
+//		}
 
 		// Make sure the calculation record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
+//		if (!$table->check()) {
+//			$this->setError($table->getError());
 //			$this->setError('Table check didnt worked');
-			return false;
-		}
+//			return false;
+//		}
 
 		// Save the record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
+//		if (!$table->store()) {
+//			$this->setError($table->getError());
 //			$this->setError('Table store didnt worked');
-			return false;
-		}
+//			return false;
+//		}
 
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id','virtuemart_shoppergroup_id',$data['virtuemart_paymentmethod_id'],$data['virtuemart_shoppergroup_id']);
-		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id','virtuemart_creditcard_id',$data['virtuemart_paymentmethod_id'],$data['virtuemart_creditcard_id']);
+//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+//		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id','virtuemart_shoppergroup_id',$data['virtuemart_paymentmethod_id'],$data['virtuemart_shoppergroup_id']);
+//		modelfunctions::storeArrayData('#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id','virtuemart_creditcard_id',$data['virtuemart_paymentmethod_id'],$data['virtuemart_creditcard_id']);
 
 //		$dbv = $table->getDBO();
 //		if(empty($this->_id)) $this->_id = $dbv->insertid();

@@ -123,16 +123,16 @@ class user_info
 				$_prepareUserFields = $_userFieldsModel->getUserFields(
 										 'account'
 										, array() // Default toggles
-										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'agreed','user_is_vendor') // Skips
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 				);
 //			} else {
 //				$_prepareUserFields = $_userFieldsModel->getUserFields(
 //										 'account'
 //										, array() // Default toggles
-//										, array('delimiter_userinfo', 'name', 'username', 'email', 'password', 'password2', 'agreed') // Skips
+//										, array('delimiter_userinfo', 'name', 'username', 'email', 'password', 'password2') // Skips
 //				);
 //			}
-		}
+		} dump($_prepareUserFields);
 		return $_prepareUserFields;
 	}
 

@@ -239,6 +239,7 @@ class vmParameters extends JParameter{
 			//$result[0] = $description;
 		}
 
+		dump($this->_methods,'_form_' . $type);
 		if (in_array( '_form_' . $type, $this->_methods )) {
 
 			$value = $this->get($name);
@@ -246,9 +247,10 @@ class vmParameters extends JParameter{
 			$result[1] =  call_user_func( array( $this, '_form_' . $type ), $name, $value, $param, $control_name, $label );
 
 
-		} else {
-			$result[1] = _HANDLER . ' = ' . $type;
-		}
+		} 
+		//else {
+		//	$result[1] = _HANDLER . ' = ' . $type;
+		//}
 
 		if ( $description ) {
 //			$result[2] = JHTML::tooltip( $description, $result[0] );
@@ -524,6 +526,28 @@ class vmParameters extends JParameter{
 		$txt = implode( "\n", $txt );
 
 		return $txt;
+	}
+	
+	/**
+	* Element name
+	*
+	* @access	protected
+	* @var		string
+	*/
+	var	$_name = 'SQL';
+
+	function _form_sql($name, $value, &$node, $control_name)
+	{
+		$db			= & JFactory::getDBO();
+		$db->setQuery($node->attributes('query'));
+		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
+		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);
+		return JHTML::_('select.genericlist',  $db->loadObjectList(), ''.$control_name.'['.$name.']', 'class="inputbox"', $key, $val, $value, $control_name.$name);
+	}
+
+	function fetchElement($name, $value, &$xmlElement, $control_name) {
+		
+		return;
 	}
 }
 

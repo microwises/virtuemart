@@ -181,7 +181,7 @@ class VirtueMartModelCalc extends VmModel {
 			return false;
 		}
 
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		//if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 
     	$xrefTable = $this->getTable('calc_categories');
     	if (!$xrefTable->bindChecknStore($data)) {

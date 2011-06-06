@@ -579,7 +579,7 @@ class VirtueMartModelOrders extends VmModel {
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
 			, array('delimiters'=>true, 'captcha'=>true)
-			, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')
+			, array('username', 'password', 'password2', 'user_is_vendor')
 		);
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
@@ -605,7 +605,7 @@ class VirtueMartModelOrders extends VmModel {
 			$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 				, array('delimiters'=>true, 'captcha'=>true)
-				, array('username', 'password', 'password2', 'agreed', 'user_is_vendor')
+				, array('username', 'password', 'password2', 'user_is_vendor')
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
