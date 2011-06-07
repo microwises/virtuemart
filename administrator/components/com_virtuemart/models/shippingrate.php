@@ -43,86 +43,6 @@ class VirtueMartModelShippingRate extends VmModel {
 		$this->setMainTable('shippingrates');
 	}
 
-//	/** @var integer Primary key */
-//    var $_id;
-//	/** @var objectlist shipping rate data */
-//    var $_data;
-//	/** @var integer Total number of shipping rates in the database */
-//	var $_total;
-//	/** @var pagination Pagination for shipping rate list */
-//	var $_pagination;
-
-
-//    /**
-//     * Constructor for the shipping rate model.
-//     *
-//     * The shipping rate id is read and detmimined if it is an array of ids or just one single id.
-//     *
-//     * @author RickG
-//     */
-//    function __construct()
-//    {
-//        parent::__construct();
-//
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//        // Get the shipping rate id or array of ids.
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//    	$this->setId((int)$idArray[0]);
-//    }
-
-
-//    /**
-//     * Resets the shipping rate id and data
-//     *
-//     * @author RickG
-//     */
-//    function setId($id)
-//    {
-//        $this->_id = $id;
-//        $this->_data = null;
-//    }
-//
-//
-//	/**
-//	 * Loads the pagination for the shipping rate table
-//	 *
-//     * @author RickG
-//     * @return JPagination Pagination for the current list of shipping rates
-//	 */
-//    function getPagination()
-//    {
-//		if (empty($this->_pagination)) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
-
-
-//	/**
-//	 * Gets the total number of shipping rates
-//	 *
-//     * @author RickG
-//	 * @return int Total number of shipping rates in the database
-//	 */
-//	function _getTotal()
-//	{
-//    	if (empty($this->_total)) {
-//			$query = 'SELECT `virtuemart_shippingrate_id` FROM `#__virtuemart_shippingrates`';
-//			$this->_total = $this->_getListCount($query);
-//        }
-//        return $this->_total;
-//    }
-
-
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
@@ -130,8 +50,6 @@ class VirtueMartModelShippingRate extends VmModel {
      */
 	function getShippingRate()
 	{
-		$db = JFactory::getDBO();
-
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('shippingrates');
    			$this->_data->load((int)$this->_id);
@@ -258,28 +176,6 @@ class VirtueMartModelShippingRate extends VmModel {
 	}
 
 
-//	/**
-//	 * Delete all record ids selected
-//     *
-//     * @author RickG
-//     * @return boolean True is the remove was successful, false otherwise.
-//     */
-//	function remove()
-//	{
-//		$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-//    	$table = $this->getTable('shippingrates');
-//
-//    	foreach($shippingCarrierIds as $shippingCarrierId) {
-//    		if (!$table->remove($shippingCarrierId)) {
-//            	$this->setError($table->getError());
-//            	return false;
-//        	}
-//    	}
-//
-//    	return true;
-//	}
-
-
 	/**
 	 * Retireve a list of shipping rates from the database.
 	 *
@@ -292,6 +188,8 @@ class VirtueMartModelShippingRate extends VmModel {
 		$query .= 'JOIN `#__virtuemart_shippingcarriers` AS sc ON `sc`.`virtuemart_shippingcarrier_id` = `sr`.`shipping_rate_carrier_id`';
 		$query .= 'ORDER BY `sr`.`virtuemart_shippingrate_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		/* Total for pagination */
+		$this->_total = $this->_getListCount($query);
 		return $this->_data;
 	}
 }

@@ -26,7 +26,7 @@ AdminMenuHelper::startAdminArea();
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_PRODUCT_NAME','filter_product') ?>
 			 </td>
 		  </tr>
 		</table>

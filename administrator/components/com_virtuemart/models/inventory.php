@@ -30,7 +30,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  * @package VirtueMart
  * @author RolandD
  */
-class VirtueMartModelInventory extends VMModel {
+class VirtueMartModelInventory extends VmModel {
 
 	/**
 	 * constructs a VmModel
@@ -38,32 +38,29 @@ class VirtueMartModelInventory extends VMModel {
 	 * @author Max Milbers
 	 */
 	function __construct() {
-		parent::__construct('virtuemart_custom_id');
-		$this->setMainTable('customs');
+		parent::__construct('virtuemart_product_id');
+		$this->setMainTable('products');
 	}
 
 
 	/**
 	 * Gets the total number of products
 	 */
-	function getTotal() {
-    	if (empty($this->_total)) {
-    		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) ".$this->getInventoryListQuery().$this->getInventoryFilter();
-			$db->setQuery($q);
-			$this->_total = $db->loadResult();
-        }
+	// function getTotal() {
+    	// if (empty($this->_total)) {
+    		// $db = JFactory::getDBO();
+			// $q = "SELECT COUNT(*) ".$this->getInventoryListQuery().$this->getInventoryFilter();
+			// $db->setQuery($q);
+			// $this->_total = $db->loadResult();
+        // }
 
-        return $this->_total;
-    }
+        // return $this->_total;
+    // }
 
     /**
      * Select the products to list on the product list page
      */
     public function getInventory() {
-     	$db = JFactory::getDBO();
-     	/* Pagination */
-     	$this->getPagination();
 
      	/* Build the query */
      	$q = "SELECT `#__virtuemart_products`.`virtuemart_product_id`,
@@ -75,8 +72,9 @@ class VirtueMartModelInventory extends VMModel {
      				`published`,
      				`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('virtuemart_product_id');
+     	$this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
+		$this->_total = $this->_getListCount($this->_query) ;
+		return $this->data ;
     }
 
     /**
@@ -96,20 +94,14 @@ class VirtueMartModelInventory extends VMModel {
     * @author RolandD
     */
     private function getInventoryFilter() {
-    	$db = JFactory::getDBO();
-    	$filter_order = JRequest::getCmd('filter_order', 'product_name');
-		if ($filter_order == '') $filter_order = 'product_name';
-		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
-		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
-
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_inventory').'%');
+     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_inventory').'%');
      	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
      	if (JRequest::getInt('virtuemart_category_id', 0) > 0) $filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.JRequest::getInt('virtuemart_category_id');
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
-     	return ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	return ' WHERE '.implode(' AND ', $filters).$this->_getOrdering('product_name');
     }
 }
 // pure php no closing tag

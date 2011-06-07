@@ -49,28 +49,14 @@ class VirtueMartModelRatings extends VmModel {
      * Select the products to list on the product list page
      */
     public function getRatings() {
-     	$db = JFactory::getDBO();
-     	/* Pagination */
-     	$this->getPagination();
 
 //     	$q = 'SELECT * FROM `#__virtuemart_ratings`  ORDER BY `modified_on`';
      	$q = 'SELECT p.*,pr.* FROM `#__virtuemart_ratings` AS `pr` JOIN `#__virtuemart_products` AS `p`
      			ON `pr`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ORDER BY `pr`.`modified_on` ';
-
-//     	/* Build the query */
-//     	$q = "SELECT 	`virtuemart_rating_review_id`,
-//     			#__virtuemart_products.`virtuemart_product_id`,
-//     			#__virtuemart_products.`product_parent_id`,
-//     			`product_name`,
-//     			`username`,
-//     			`comment`,
-//     			user_rating,
-//     			created_on,
-//     			#__virtuemart_rating_reviews.userid,
-//			#__virtuemart_rating_reviews.published
-//     			".$this->getRatingsListQuery().$this->getRatingsFilter();
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList();
+	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
+		// set total for pagination
+		$this->_total = $this->_getListCount($q) ;
+     	return $this->_data;
     }
 
     /**
@@ -90,20 +76,16 @@ class VirtueMartModelRatings extends VmModel {
     * @author RolandD
     */
     private function getRatingsFilter() {
-    	$db = JFactory::getDBO();
-    	$filter_order = JRequest::getCmd('filter_order', 'product_name');
-		if ($filter_order == '') $filter_order = 'product_name';
-		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
-		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
+
 
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_ratings', false)) $filters[] = '(#__virtuemart_products.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_ratings').'%').' OR #__virtuemart_rating_reviews.comment LIKE '.$db->Quote('%'.JRequest::getVar('filter_ratings').'%').')';
+     	if (JRequest::getVar('filter_ratings', false)) $filters[] = '(#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_ratings').'%').' OR #__virtuemart_rating_reviews.comment LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_ratings').'%').')';
 
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
      	else $filter = '';
 
-     	return $filter.' ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	return $filter.$query .= $this->_getOrdering('product_name');
     }
 
     /**

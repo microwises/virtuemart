@@ -56,17 +56,6 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');
-//		// Get the pagination request variables
-//		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
-//
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);
-//
-//		$idArray = JRequest::getVar('cid',  null, '', 'array');
-//		$this->setId($idArray);
 
 	}
 
@@ -119,34 +108,6 @@ class VirtueMartModelUser extends VmModel {
 	{
 		$_currentUser = JFactory::getUser();
 		$this->setId($_currentUser->get('id'));
-	}
-
-	/**
-	 * Loads the pagination for the usertable
-	 *
-	 * @return JPagination Pagination for the current list of users
-	 */
-	function getPagination()
-	{
-		if (empty($this->_pagination)) {
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-		}
-		return $this->_pagination;
-	}
-
-	/**
-	 * Gets the total number of users
-	 *
-	 * @return int Total number of users in the database
-	 */
-	function _getTotal()
-	{
-		if (empty($this->_total)) {
-			$query = $this->_getListQuery();
-			$this->_total = $this->_getListCount($query);
-		}
-		return $this->_total;
 	}
 
 	/**
@@ -756,7 +717,7 @@ class VirtueMartModelUser extends VmModel {
 	 {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-
+			$this->_total = $this->_getListCount($query);
 			return $this->_data;
 	 }
 
@@ -842,23 +803,6 @@ class VirtueMartModelUser extends VmModel {
 	 	return ('');
 	 }
 
-	 /**
-	  * Get the SQL Ordering statement
-	  *
-	  * @return string text to add to the SQL statement
-	  */
-	 function _getOrdering()
-	 {
-	 	$option = JRequest::getCmd( 'option');
-	 	$mainframe = JFactory::getApplication() ;
-
-	 	$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-	 	$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'id', 'cmd' );
-		if (!$filter_order) return '';
-	 	// FIXME this is a dirty hack since we don't have an ordering field yet...
-	 	if ($filter_order == 'ordering') $filter_order = 'id';
-	 	return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
-	 }
 
 	 /**
 	  * Build the query to list all Users
@@ -880,7 +824,7 @@ class VirtueMartModelUser extends VmModel {
 			. 'LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
 			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
-		$query .= $this->_getOrdering();
+		$query .= $this->_getOrdering('id') ;
 
 		return ($query);
 	 }

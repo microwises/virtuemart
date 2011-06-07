@@ -842,22 +842,6 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
-	 * Get the SQL Ordering statement
-	 *
-	 * @return string text to add to the SQL statement
-	 */
-	function _getOrdering()
-	{
-		$option = JRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
-
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		$filter_order     = $mainframe->getUserStateFromRequest( $option.JRequest::getVar('view').'filter_order', 'filter_order', 'ordering', 'cmd' );
-
-		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
-	}
-
-	/**
 	 * If a filter was set, get the SQL WHERE clase
 	 *
 	 * @return string text to add to the SQL statement

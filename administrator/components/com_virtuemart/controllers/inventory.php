@@ -42,20 +42,17 @@ class VirtuemartControllerInventory extends VmController {
 	function __construct() {
 		parent::__construct();
 
-		/* Redirects */
-		$this->registerTask('unpublish','inventory');
-		$this->registerTask('publish','inventory');
 	}
 
 	/**
 	 * Shows the product list screen
 	 */
-	public function Inventory() {
+	public function display() {
 		/* Create the view object */
 		$view = $this->getView($this->_cname, 'html');
 
 		/* Default model */
-		$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
+		//$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
 
 		/* Product model */
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ),true);

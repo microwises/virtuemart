@@ -79,27 +79,12 @@ class VirtueMartModelCurrency extends VmModel {
 		if (JRequest::getVar('search', false)) $where[] = '`currency_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 
 		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
-		$this->_query .= $this->_getOrdering();
+		$this->_query .= $this->_getOrdering('currency_name');
 		$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 		$this->_total = $this->_getListCount($this->_query) ;
 		return $this->_data;
     }
-	/**
-	 * Get the SQL Ordering statement
-	 *
-	 * @return string text to add to the SQL statement
-	 */
-	function _getOrdering() {
 
-		$option = JRequest::getCmd( 'option');
-		$view = JRequest::getVar('view');
-		$mainframe = JFactory::getApplication() ;
-
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'currency_name', 'cmd' );
-
-		return (' ORDER BY `'.$filter_order.'` '.$filter_order_Dir);
-	}
     /**
      * Retireve a list of currencies from the database.
      *
