@@ -1,16 +1,20 @@
 
 
 #vmPage input {background: #e8e8e8 url(../images/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #000;}
-
 #vmPage input:hover {background: #e8e8e8 url(../images/backgrounds.png) repeat-x;background-position: 0px -40px;color: #0270bc;}
-
 #vmPage textarea, #vmPage select {padding: 3px 5px 2px 5px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #000;}
 #vmPage textarea:hover, #vmPage textarea:focus, #vmPage textarea:active, #vmPage select:focus {background: #F7F8FA;}
-
 #vmPage table.admintable td.key, #vmPage table.admintable td.paramlist_key {background: #F7F8FA;color: #4A4A4A;text-shadow: 0 -1px 0 #fff;}
 #vmPage table.admintable td.key span, #vmPage table.admintable td.paramlist_key span {display: inline-block;padding: 4px 6px;}
+#vmPage dl.tabs {margin: 0px 0px -1px 0px;}
+#vmPage dl.tabs dt {margin: 0px 5px 0px 0px;padding: 6px 15px 5px 15px;font-size: 12px;border-top-color: #CAC9C9;border-left-color: #CAC9C9;border-right-color: #CAC9C9;-webkit-border-top-left-radius: 6px;-webkit-border-top-right-radius: 6px;-moz-border-radius-topleft: 6px;-moz-border-radius-topright: 6px;}
+#vmPage dl.tabs dt.open {background: #e8e8e8 url(../images/backgrounds.png) repeat-x;background-position: 0px -40px;color: #0270bc;border-bottom-color: #fff;}
+#vmPage dl.tabs dt.closed {background: #e8e8e8 url(../images/backgrounds.png) repeat-x;color: #777;border-bottom-color: #CAC9C9;}
+#vmPage dl.tabs dt.closed span {color: #777;}
 
-
+#vmPage fieldset.adminform {border: solid #CAC9C9 1px;-webkit-border-radius: 6px;
+-moz-border-radius: 6px;}
+#vmPage fieldset.adminform legend {display: inline-block;padding: 0px 12px;}
 
 
 #cpanel { 
@@ -84,7 +88,7 @@
 
 .vm-layout-left{
 	float: left;
-	width: 200px;
+	width: 220px;
 }
 
 .vm-layout-right{

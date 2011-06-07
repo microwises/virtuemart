@@ -165,10 +165,10 @@
 			}
 			else{
 				if(animation){
-					leftPanel.animate({ width: '200px', opacity: 1}, VMConfig.get('menuToggleSpeed') );
+					leftPanel.animate({ width: '220px', opacity: 1}, VMConfig.get('menuToggleSpeed') );
 				}
 				else{
-					leftPanel.css('width', '200px');
+					leftPanel.css('width', '220px');
 				}
 
 				$(closerSel).removeClass( VMConfig.get('menuHandlerClass') );
