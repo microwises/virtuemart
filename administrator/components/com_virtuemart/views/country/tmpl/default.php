@@ -50,8 +50,8 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_COUNTRY_NAME')
 					, 'country_name'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 		    </th>
 				<?php /* TODO not implemented				    <th>
 				<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
@@ -111,8 +111,8 @@ AdminMenuHelper::startAdminArea();
 	    </tfoot>
 	</table>
     </div>
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="controller" value="country" />
     <input type="hidden" name="view" value="country" />

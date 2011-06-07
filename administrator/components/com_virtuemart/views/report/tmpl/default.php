@@ -46,7 +46,7 @@ if( $this->pagination->limit < $rows ){
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date']; ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') . JHTML::_('calendar', $this->from_period, 'from_period', 'from-period', $format); ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . JHTML::_('calendar', $this->until_period, 'until_period', 'until-period', $format); ?>
-                        <button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
+                        <button onclick="this.form.period.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>
                 </tr>

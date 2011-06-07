@@ -33,13 +33,10 @@ class VirtuemartViewReport extends JView {
 	 */
 	function display($tpl = null){
 
-		$lists = array();
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getVar('option');
 		$config   = JFactory::getConfig();
-		$curTask = JRequest::getVar('task');
-		$layoutName = JRequest::getVar('layout','default');
+		$task = JRequest::getVar('task');
 
+		$period = JRequest::getVar('period', '');
 		$from_period  = JRequest::getVar('from_period', '');
 		$until_period = JRequest::getVar('until_period', '');
 
@@ -47,6 +44,7 @@ class VirtuemartViewReport extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
 
@@ -55,41 +53,49 @@ class VirtuemartViewReport extends JView {
 
 		$model = $this->getModel();
 
-		switch($curTask){
+		switch($task){
 			default:{
 
-				$pagination = $model->getPagination();
-				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
-				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-				$date_presets = ReportFunctions::getDatePresets();
-				$lists['select_date'] = ReportFunctions::renderDateSelectList($date_presets, $from_period, $until_period);
+
+
+
+
 
 				// set period
+				$date_presets = $model->getDatePresets();
 				$tzoffset     = $config->getValue('config.offset');
 				// check period - set to defaults if no value is set or dates cannot be parsed
-				if (empty($from_period) && empty($until_period)) {
-					$from_period  = $date_presets['today']['from'];
-					$until_period = $date_presets['today']['until'];
-					$from         = JFactory::getDate($from_period, $tzoffset);
-					$until        = JFactory::getDate($until_period, $tzoffset);
+				if (empty($period)) {
+					if (empty($from_period) && empty($until_period)) {
+						$from_period  = $date_presets['today']['from'];
+						$until_period = $date_presets['today']['until'];
+						$from         = JFactory::getDate($from_period, $tzoffset);
+						$until        = JFactory::getDate($until_period, $tzoffset);
+					} else {
+						$from         = JFactory::getDate($from_period, $tzoffset);
+						$until        = JFactory::getDate($until_period, $tzoffset);
+					}
+					$model->setPeriod($from->_date, $until->_date);
 				} else {
-					$from         = JFactory::getDate($from_period, $tzoffset);
-					$until        = JFactory::getDate($until_period, $tzoffset);
+					$model->setPeriodByPreset($period);
+					$from_period  = $model->start_date ;
+					$until_period = $model->end_date ;
 				}
 
-				$this->assignRef('pagination', $pagination);
+				
+				$lists['select_date'] = $model->renderDateSelectList($date_presets, $from_period, $until_period);
+				
 
 				$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
-				$revenueBasic = $model->getRevenue($from, $until);
+				$revenueBasic = $model->getRevenue();
 				if(is_array($revenueBasic)){
 					foreach($revenueBasic as $i => $j){
 						$j->revenue = $myCurrencyDisplay->priceDisplay($j->revenue,'',false);
 					}
 					unset($i);
 				}
-
 				$this->assignRef('report', $revenueBasic);
 
 				$itemsSold = $model->getItemsSold();
@@ -98,7 +104,9 @@ class VirtuemartViewReport extends JView {
 				$productList = $model->getProductList();
 				$this->assignRef('productList', $productList);
 
+				$lists = array_merge ($lists ,ShopFunctions::addStandardDefaultViewLists($model));
 				$this->assignRef('lists', $lists);
+
 				$this->assignRef('from_period', $from_period);
 				$this->assignRef('until_period', $until_period);
 			}
