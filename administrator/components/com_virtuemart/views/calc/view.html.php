@@ -134,13 +134,8 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('calcs',	$calcs);
 
 			ShopFunctions::addStandardDefaultViewCommands();
-			ShopFunctions::addStandardDefaultViewLists($model);
-			
-
-			// $pagination = $model->getPagination();
-			// $this->assignRef('pagination',	$pagination);
-
-
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 
 		}
 

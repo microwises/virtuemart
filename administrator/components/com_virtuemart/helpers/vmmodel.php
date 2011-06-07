@@ -306,7 +306,7 @@ class VmModel extends JModel {
 	 * @return string text to add to the SQL statement
 	 */
 	function _getOrdering($defaut='ordering',$order_dir = 'asc') {
-
+		if ($defaut == '') return '';
 		$option = JRequest::getCmd( 'option');
 		$view = JRequest::getVar('view');
 		$mainframe = JFactory::getApplication() ;
@@ -314,7 +314,7 @@ class VmModel extends JModel {
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $defaut, 'cmd' );
 
-		return (' ORDER BY '.$filter_order.' '.$filter_order_Dir);
+		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
 	}
     /**
 	 * Since an object like product, category dont need always an image, we can attach them to the object with this function

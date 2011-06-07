@@ -62,12 +62,14 @@ class ShopFunctions {
 	}
 	/*
 	* Add simple search to form
+	* @param $searchLabel text to display before searchbox
+	* @param $name 		 lists and id name
 	*/
-	function displayDefaultViewSearch ($searchLabel = 'search') {
+	function displayDefaultViewSearch ($searchLabel = 'COM_VIRTUEMART_NAME',$name ='search') {
 		return JText::_('COM_VIRTUEMART_FILTER').' '.JText::_($searchLabel).':
-		<input type="text" name="search" id="search" value="'.$this->lists['search'].'" class="text_area" onchange="document.adminForm.submit();" />
+		<input type="text" name="'.$name.'" id="'.$name.'" value="'.$this->lists[$name].'" class="text_area" onchange="document.adminForm.submit();" />
 		<button onclick="this.form.submit();">'.JText::_('COM_VIRTUEMART_GO').'</button>
-		<button onclick="document.getElementById(\'search\').value=\'\';this.form.submit();">'.JText::_('COM_VIRTUEMART_RESET').'</button>' ;
+		<button onclick="document.getElementById(\''.$name.'\').value=\'\';this.form.submit();">'.JText::_('COM_VIRTUEMART_RESET').'</button>' ;
 	}
 
 	function addStandardEditViewCommands (){

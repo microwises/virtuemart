@@ -115,11 +115,14 @@ class VirtueMartModelCalc extends VmModel {
 	public function getCalcs($onlyPublished=false, $noLimit=false){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
+		$where = array();
 		$this->_query = 'SELECT * FROM `#__virtuemart_calcs` ';
-		if ($onlyPublished) {
-			$this->_query .= 'WHERE `#__virtuemart_calcs`.`published` = 1';
-		}
-		$query .= $this->_getOrdering('`#__virtuemart_calcs`.`calc_name`');
+		/* add filters */
+		if ($onlyPublished) $where[] = '`published` = 1';
+		if (JRequest::getVar('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+
+		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
+		$this->_query .= $this->_getOrdering('calc_name');
 		if ($noLimit) {
 			$this->_data = $this->_getList($this->_query);
 		}

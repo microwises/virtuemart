@@ -25,6 +25,19 @@ $j15 = VmConfig::isJ15();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
+	<div id="header">
+		<div id="filterbox" style="float: left;">
+		<table>
+		  <tr>
+			 <td align="left" width="100%">
+				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+			 </td>
+		  </tr>
+		</table>
+		</div>
+		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+	</div>
+	<br clear="all" />
 	<div id="editcell">
 		<table class="adminlist">
 		<thead>
@@ -35,64 +48,28 @@ $j15 = VmConfig::isJ15();
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
-			<th width="60">
-				<?php echo JText::_('COM_VIRTUEMART_NAME'); ?>
-			</th>
+			<th width="60"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_NAME', 'calc_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 			<?php /* if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
 			</th><?php } */ ?>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_KIND'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
-			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
-			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?>
-			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?>
-			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?>
-			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-			</th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'calc_descr', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDERING', 'ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CALC_KIND', 'calc_kind', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_VALUE', 'calc_value', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CURRENCY', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
+			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_SHOPPERGROUP_IDS', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
+			<th width="20"><?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 		<?php /*	<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th> */ ?>
@@ -209,7 +186,8 @@ $j15 = VmConfig::isJ15();
 		</tfoot>
 	</table>
 </div>
-
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="calc" />
 	<input type="hidden" name="view" value="calc" />

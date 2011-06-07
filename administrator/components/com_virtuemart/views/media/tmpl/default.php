@@ -29,35 +29,32 @@ jimport('joomla.filesystem.file');
 /* Get the component name */
 $option = JRequest::getWord('option');
 
-/* Load some variables */
-$keyword = JRequest::getVar('keyword', null);
 ?>
-<div id="header">
-	<div style="float: left;">
-	<?php
-	if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product'), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
-	?>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<div id="header">
+		<div id="filterbox" style="float: left;">
+		<table>
+		  <tr>
+			 <td align="left" width="100%">
+				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+			 </td>
+		  </tr>
+		</table>
+		</div>
+		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
-	<div style="float: right;">
-		<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
-			<input type="text" value="" name="keyword" size="25" class="inputbox" />
-			<input type="hidden" name="option" value="<?php echo $option; ?>" />
-			<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
-	</div>
-</div>
+	<br clear="all" />
 <?php
 $productfileslist = $this->files;
 //$roles = $this->productfilesroles;
-$pagination = $this->pagination;
 ?>
 	<table class="adminlist">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETITLE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_ROLE'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FILES_LIST_FILETITLE', 'file_title', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FILES_LIST_ROLE', 'file_type', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
@@ -80,7 +77,7 @@ $pagination = $this->pagination;
 				<td><?php echo $checked; echo $productfile->virtuemart_media_id; ?></td>
 				<!-- Product name -->
 				<?php
-				$link = "index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
+				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
@@ -135,8 +132,8 @@ $pagination = $this->pagination;
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="media" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

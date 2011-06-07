@@ -73,8 +73,9 @@ class VirtuemartViewMedia extends JView {
 			$files = $model->getFiles();
 			$this->assignRef('files',	$files);
 
-			ShopFunctions::addStandardDefaultViewCommands(false);
+			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 
 		}
 

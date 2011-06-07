@@ -39,11 +39,11 @@ class VirtuemartViewCoupon extends JView {
 
 		$model = $this->getModel();
 
-                $coupon = $model->getCoupon();
-                $viewName=ShopFunctions::SetViewTitle('vm_coupon_48','', $coupon->coupon_code);
+		$coupon = $model->getCoupon();
+		$viewName=ShopFunctions::SetViewTitle('vm_coupon_48','', $coupon->coupon_code);
 		$this->assignRef('viewName',$viewName);
 
-                 $layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
 			if ($coupon->virtuemart_coupon_id < 1) {
 				// Set a default expiration date
@@ -75,20 +75,19 @@ class VirtuemartViewCoupon extends JView {
 			$this->assignRef('coupon',	$coupon);
 
 			ShopFunctions::addStandardEditViewCommands();
-        }
-        else {
-                
-
+        } else {
 
 			$coupons = $model->getCoupons();
 			$this->assignRef('coupons',	$coupons);
+			ShopFunctions::addStandardDefaultViewCommands();
+			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->assignRef('lists', $lists);
 		}
 
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
 
-		ShopFunctions::addStandardDefaultViewCommands();
-		$lists = ShopFunctions::addStandardDefaultViewLists($model);
+
 		
 		parent::display($tpl);
 	}

@@ -142,8 +142,10 @@ class VirtueMartModelMedia extends VmModel {
 				$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
 			}
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
-			$oderby = '`#__virtuemart_medias`.`modified_on`';
+			//$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
+		
+		if (JRequest::getVar('search', false)) $where[] = '`file_title` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
@@ -162,6 +164,8 @@ class VirtueMartModelMedia extends VmModel {
 //		$query .= ' ORDER BY '.$oderby;
 
 		$app = JFactory::getApplication();
+		$query .= $this->_getOrdering('modified_on');
+
 
 		if ( $count) {
 			$this->_data = $this->_getListCount($query);

@@ -21,26 +21,21 @@ defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-<div id="header">
-	<div id="filterbox" style="float: left;">
-	<table>
-	  <tr>
-		 <td align="left" width="100%">
-			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
-			<input type="text" name="filter_inventory" value="<?php echo JRequest::getVar('filter_inventory', ''); ?>" />
-			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
-			<button onclick="document.adminForm.filter_inventory.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
-		 </td>
-		 <td>
-		 	<?php echo $this->lists['stockfilter']; ?>
-		 </td>
-	  </tr>
-	</table>
+	<div id="header">
+		<div id="filterbox" style="float: left;">
+		<table>
+		  <tr>
+			 <td align="left" width="100%">
+				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+			 </td>
+		  </tr>
+		</table>
+		</div>
+		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
-	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
-</div>
-<br clear="all" />
-<div style="text-align: left;">
+	<br clear="all" />
+
+	<div style="text-align: left;">
 	<table class="adminlist">
 	<thead>
 	<tr>
@@ -101,12 +96,9 @@ AdminMenuHelper::startAdminArea();
 <!-- Hidden Fields -->
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<input type="hidden" name="task" value="inventory" />
+<input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
-<input type="hidden" name="page" value="product.ordering" />
 <input type="hidden" name="view" value="inventory" />
-<input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
