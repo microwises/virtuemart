@@ -25,8 +25,8 @@
 #vmPage label.itoggle,
 #vmPage label.itoggle span{
 	display: block;
-	width: 69px;
-	height: 24px;
+	width: 58px;
+	height: 20px;
 	margin-bottom: 0px;
 	background: url(../images/itoggle.png) left bottom no-repeat;
 	cursor:pointer;

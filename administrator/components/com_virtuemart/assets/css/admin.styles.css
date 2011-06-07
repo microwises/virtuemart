@@ -94,7 +94,7 @@ input:hover {background: #e8e8e8 url(../images/backgrounds.png) repeat-x;backgro
 	background: url(../images/show.gif) no-repeat;
 	width: 7px;
 	height: 25px;
-	top: 0;
+	top: 40px;
 	left: 0;
 	outline: 0;
 }
