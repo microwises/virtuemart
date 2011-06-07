@@ -200,7 +200,7 @@ class VirtueMartModelConfig extends JModel {
 	$orderByFields->checkbox ='<div  class="threecols"><ul>';
 
 	$orderByFieldsArray = array('virtuemart_product_id', 'product_sku','product_price','category_name','category_description','mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on', 'product_name', 'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
-	foreach ($orderByFieldsArray as $field ) {
+	foreach ($orderByFieldsArray as $key => $field ) {
 		if (in_array($field, $orderByChecked) ) {
 			$checked = 'checked="checked"';
 		}
@@ -209,7 +209,7 @@ class VirtueMartModelConfig extends JModel {
 		}
 		$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
 		$orderByFields->select[] =  JHTML::_('select.option', $field, $text) ;
-		$orderByFields->checkbox.= '<li><input type="checkbox" id="' .$field. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field. '">' .$text. '</label></li>';
+		$orderByFields->checkbox.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
 
 
         }
@@ -236,7 +236,7 @@ class VirtueMartModelConfig extends JModel {
 			$checked = '';
 		}
 		$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
-		$searchFields.= '<li><input type="checkbox" id="' .$field.$key. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /><label for="' .$field.$key. '">' .$text. '</label></li>';
+		$searchFields.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
 	}
         $searchFields .='</ul></div>';
 	return $searchFields;
