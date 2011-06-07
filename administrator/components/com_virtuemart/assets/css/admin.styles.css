@@ -12,9 +12,9 @@
 #vmPage dl.tabs dt.closed {background: #e8e8e8 url(../images/backgrounds.png) repeat-x;color: #777;border-bottom-color: #CAC9C9;}
 #vmPage dl.tabs dt.closed span {color: #777;}
 
-#vmPage fieldset.adminform {border: solid #CAC9C9 1px;-webkit-border-radius: 6px;
+#vmPage fieldset.adminform, #vmPage fieldset {border: solid #CAC9C9 1px;-webkit-border-radius: 6px;
 -moz-border-radius: 6px;}
-#vmPage fieldset.adminform legend {display: inline-block;padding: 0px 12px;}
+#vmPage fieldset.adminform legend, #vmPage fieldset legend {display: inline-block;padding: 0px 12px;}
 
 
 #cpanel { 
