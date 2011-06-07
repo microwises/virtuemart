@@ -27,35 +27,46 @@
 #cpanel div.icon   { 
 	margin: 3px; 
 }
-#cpanel div.icon a { 
+#vmPage #cpanel div.icon a { 
 	display: block; 
 	height: 93px !important;
 	height: 95px; 
-	width: 108px !important;
-	width: 110px; 
+	width: 118px !important;
+	width: 120px; 
 	vertical-align: middle; 
 	text-decoration : none;
-	border: 1px solid #DDD;
-	padding: 2px 5px 1px 5px;
+	border: none;
+	padding: 8px 12px 6px 12px;
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset, 0 1px 2px #FFFFFF;
+	-webkit-box-shadow:rgba(0, 0, 0, 0.148438) 0 1px 2px inset, #FFFFFF 0 1px 2px;
+	background-image: -moz-linear-gradient(100% 100% 90deg, #F1F1F1, #FFFFFF);
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#FFFFFF), to(#F1F1F1));
+	
+	-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+font-size: 12px;
 }
 
-#cpanel div.icon a:link    { 
-	color : #808080; 
+#vmPage #cpanel div.icon a:link    { 
+	color : #000; 
+	font-weight: bold;
 }
-#cpanel div.icon a:hover   { 
+#vmPage #cpanel div.icon a:hover   { 
 	color : #333; 
 	background-color: #f1e8e6;  
-	border: 1px solid #c24733;
-	padding: 3px 4px 0px 6px; 
+	background-image: -moz-linear-gradient(100% 100% 90deg, #FFFFFF, #F1F1F1);
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#F1F1F1), to(#FFFFFF));
 }
-#cpanel div.icon a:active  { 
+#vmPage #cpanel div.icon a:active  { 
 	color : #808080; 
+	font-weight: bold;
 }
-#cpanel div.icon a:visited { 
-	color : #808080; 
+#vmPage #cpanel div.icon a:visited { 
+	color : #000; 
+	font-weight: bold;
 }
 
-#cpanel div.iconimage { 
+#vmPage #cpanel div.iconimage { 
 	padding-top: 13px; 
 } 
 .adminListHeader {
