@@ -129,12 +129,6 @@ class VirtueMartModelUserfields extends VmModel {
 			$this->_data->load((int)$this->_id);
 		}
 
-		if (!$this->_data) {
-			$this->_data = new stdClass();
-			$this->_id = 0;
-			$this->_data = null;
-		}
-
 		// Parse the parameters, if any
 		$this->_params->parseParam($this->_data->params);
 
@@ -177,28 +171,28 @@ class VirtueMartModelUserfields extends VmModel {
 		//TODO move this to controller
 		$data = JRequest::get('post');
 
+		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
+		
 		$coreFields = $this->getCoreFields();
 		if(in_array($data['name'],$coreFields)){
-			$this->setError('Cant store/update core field. They belong to joomla');
-			return false;
-		}
-			
-		
-		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
-		if ($isNew) {
-			$reorderRequired = false;
-			$_action = 'ADD';
+			//$this->setError('Cant store/update core field. They belong to joomla');
+			//return false;
 		} else {
-			$field->load($data['virtuemart_userfield_id']);
-			$_action = 'CHANGE';
-
-			if ($field->ordering == $data['ordering']) {
+			if ($isNew) {
 				$reorderRequired = false;
+				$_action = 'ADD';
 			} else {
-				$reorderRequired = true;
-			}
+				$field->load($data['virtuemart_userfield_id']);
+				$_action = 'CHANGE';
+	
+				if ($field->ordering == $data['ordering']) {
+					$reorderRequired = false;
+				} else {
+					$reorderRequired = true;
+				}
+			}			
 		}
-
+		
 		// Put the parameters, if any, in the correct format
 		if (array_key_exists($data['type'], $this->reqParam)) {
 			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
@@ -567,7 +561,11 @@ class VirtueMartModelUserfields extends VmModel {
 				//	$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::listUserTitle(
 				//		$_return['fields'][$_fld->name]['value'], '', $_prefix);
 				//	break;
-
+				case 'name':
+					//$jUser = JFactory::getUser();
+					//dump($_userData);
+					//$_return['fields'][$_fld->name]['value'] = $_userData->name;
+					//break;
 				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);

@@ -112,6 +112,7 @@ class VmTableXarray extends VmTable {
      */
     public function store() {
 
+		$this->setLoggableFieldsForStore();
 		$db = JFactory::getDBO();
 //INSERT INTO FOO
 //(ID, BAR)

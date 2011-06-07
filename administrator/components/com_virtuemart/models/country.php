@@ -81,16 +81,17 @@ class VirtueMartModelCountry extends VmModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of country objects
      */
-    function getCountries($onlyPublished=true, $noLimit=false) {
+    function getCountries($onlyPublished=true, $noLimit=false, $filterCountry = false) {
 		
 		$where = array();
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
-		if (JRequest::getVar('filter_country', false)) $where[] = '`country_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('filter_country').'%');
+		
+		if($filterCountry) $where[] = '`country_name` LIKE '.$this->_db->Quote('%'.$filterCountry.'%');
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
-
+		
 		$query .= $this->_getOrdering();
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);

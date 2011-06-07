@@ -40,6 +40,7 @@ class TableCountries extends VmTable {
 	var $country_3_code         = '';
     /** @var char 2 character country code */
 	var $country_2_code         = '';
+	var $ordering				= '';
     /** @var int published or unpublished */
 	var $published 		        = 1;
 
@@ -57,7 +58,7 @@ class TableCountries extends VmTable {
 		$this->setObligatoryKeys('country_3_code');
 
 		$this->setLoggable();
-
+		$this->setOrderable('ordering',false);
 	}
 
 }

@@ -60,6 +60,9 @@ function com_install(){
 
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.virtuemart.html.php');
 
+	$model = $this->getModel('config');
+	$model->setDangerousToolsOff();
+	
 	return $installOk;
 }
 

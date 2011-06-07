@@ -55,14 +55,13 @@ class VirtuemartViewCountry extends JView {
 
 		}
 		else {
-			$countries = $model->getCountries(false);
+			$filter_country = JRequest::getWord('filter_country', false);
+			$countries = $model->getCountries(false, false, $filter_country);
 			$this->assignRef('countries',	$countries);
 
 			ShopFunctions::addStandardDefaultViewCommands(true,false);
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 			$this->assignRef('lists', $lists);
-
-
 
 		}
 

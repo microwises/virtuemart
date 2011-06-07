@@ -39,6 +39,8 @@ class VmTable extends JTable {
 	protected $_orderingKey = 'ordering';
 	protected $_slugAutoName = '';
 
+	protected $_loggable = false;
+	
     function setPrimaryKey($key,$keyForm=0){
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
     	$this->setObligatoryKeys('_pkey',$error);
@@ -61,6 +63,10 @@ class VmTable extends JTable {
 
 	public function setLoggable(){
 		$this->_loggable=true ;
+		$this->created_on = '';
+		$this->created_by = 0;
+		$this->modified_on = '';
+		$this->modified_by = 0;
 	}
 
 	public function setLockable(){
@@ -114,13 +120,14 @@ class VmTable extends JTable {
 		return false;
     }
 
-	function store($data) {
-		if ($this->_loggable == true) {
+	function setLoggableFieldsForStore(){
 
+		if ($this->_loggable) {
+			
 			$date = JFactory::getDate();
 			$today = $date->toMySQL();
 			$user = JFactory::getUser();
-
+			
 			if(!$this->created_on){
 				$this->created_on = $today;
 				$this->created_by = $user->id;
@@ -130,10 +137,18 @@ class VmTable extends JTable {
 		}
 
         if(isset($data->locked_on) ){
+        	//Check if user is allowed to store, then disable or prevent storing
         	$data->locked_on = 0;
         }
-	return parent::store($data);
 	}
+
+	public function store($data) {
+		
+		$this->setLoggableFieldsForStore();
+		
+		return parent::store($data);
+	}
+	
     /**
      * @author Max Milbers
      * @param
@@ -190,12 +205,10 @@ class VmTable extends JTable {
 
 		}
 
-
-
         //This is a hack for single store, shouldnt be used, when we write multivendor there should be message
-        if(isset($this->virtuemart_vendor_id)){
-        	if(empty($this->virtuemart_vendor_id)) $this->virtuemart_vendor_id = 1;
-        }
+        //if(isset($this->virtuemart_vendor_id)){
+        	//if(empty($this->virtuemart_vendor_id)) $this->virtuemart_vendor_id = 1;
+       //}
 
         return true;
     }

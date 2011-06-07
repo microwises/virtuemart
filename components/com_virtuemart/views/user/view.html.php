@@ -224,7 +224,6 @@ class VirtuemartViewUser extends JView {
 		} else { //the anonymous case
 
 			//We may move this to the helper of course, but for developing I just wanna get it working
-			//require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart(false);
 			$userFields = $cart->getAddress(

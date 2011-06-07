@@ -57,21 +57,53 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
 		$db = JFactory::getDBO();
-		$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
+		$query = "SELECT * FROM `#__users`";
 		$db->setQuery($query);
 		$row = $db->loadObjectList();
-
+		
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		$usermodel = new VirtueMartModelUser();
+		
+/**		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
+		$this->_db->setQuery($q);
+		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
+		
+		$vmusertable = $this->getTable('vmusers');
+		$vmuser_shoppergroups_table = $this->getTable('vmuser_shoppergroups');*/
+		
+		
 		foreach ($row as $user) {
-
-			$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
+			
+			$usermodel->setId($user->id);
+			$userdata = array(	'virtuemart_user_id' => $user->id,
+								'virtuemart_vendor_id' => 0,
+								'username' => $user->username,
+								'user_is_vendor' => 0,
+								'perms' => 'shopper'
+								);
+								
+			$usermodel->saveUserData($userdata);
+/**			
+			$vmusertable -> bindChecknStore($userdata);
+			$errors = $vmusertable->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			dump($vmusertable,'$vmusertable to store');
+			
+			$shoppergroupdata = array('virtuemart_user_id'=>$user->id,'virtuemart_shoppergroup_id'=>$default_virtuemart_shoppergroup_id);
+			$vmuser_shoppergroups_table -> bindChecknStore($shoppergroupdata);
+			$errors = $vmuser_shoppergroups_table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			dump($vmuser_shoppergroups_table,'$vmuser_shoppergroups_table to store');
+/**			$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
 			$db->setQuery($query);
 		    if (!$db->query()) {
 				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
 		    }
 
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
-			$this->_db->setQuery($q);
-			$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
 
 			$query = 'INSERT IGNORE INTO `#__virtuemart_vmuser_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
 		    $db->setQuery($query);
@@ -84,7 +116,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    $db->setQuery($query);
 		    if (!$db->query()) {
 				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
-		    }
+		    }*/
 		}
 		$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
 		return $msg;
@@ -98,12 +130,12 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$virtuemart_user_id = VirtueMartModelVendor::getUserIdByVendorId(1);
 		if (isset($virtuemart_user_id) && $virtuemart_user_id > 0) {
-		    $user = JFactory::getUser($virtuemart_user_id);
+		    $this->_user = JFactory::getUser($virtuemart_user_id);
 		}
 		else {
-		    $user = JFactory::getUser();
+		    $this->_user = JFactory::getUser();
 		}
-		return $user->id;
+		return $this->_user->id;
     }
 
 
@@ -214,13 +246,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	    $userId = $this->determineStoreOwner();
 	}
 
-//	$currencyFields = array();
-//	$currencyFields[0] = 47; //EUR
-//	$currencyFields[1] = 144; //USD
-////
-//	$fields = array();
 
-//	$fields['virtuemart_userinfo_id'] = $db->loadResult();
+	$fields['username'] =  $this->_user->username;
 	$fields['virtuemart_user_id'] =  $userId;
 	$fields['address_type'] =  'BT';
 	// Don't change this company name; it's used in install_sample_data.sql
@@ -253,7 +280,20 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-	$usermodel->store($fields);
+	
+	//$usermodel->store($fields);
+	//Save the VM user stuff
+	if(!$usermodel->saveUserData($fields)){
+		$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
+	}
+
+	if (!$usermodel->storeAddress($fields)) {
+		$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+	}
+
+	$usermodel ->storeVendorData($fields);
+	
    	$errors = $usermodel->getErrors();
    	$msg ='';
 	if(empty($errors)) $msg = 'user id of the mainvendor is '.$sid;

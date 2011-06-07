@@ -49,11 +49,6 @@ class VirtueMartModelUser extends VmModel {
 
 		parent::__construct();
 
-		// Get the helpers we need here, This must be in the constructor, for the RC it would be good to place the
-		// "require" nearest at possible to the code, which actually using it
-		if(!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-		//if(!class_exists('user_info')) require(JPATH_VM_SITE.DS.'helpers'.DS.'user_info.php');
-
 		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');
 
@@ -401,13 +396,19 @@ class VirtueMartModelUser extends VmModel {
 			$newId = $user->get('id');
 			$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
 			$this->setUserId($newId);
-			dump($user,'new user id '.$newId);dump($this);
+
 			//Save the VM user stuff
-			if(!$this->saveUserData($data,$new)){
+			if(!$this->saveUserData($data)){
 				$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
 				JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 			}
 
+			if (!self::storeAddress($data)) {
+				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+			}
+
+			$this ->storeVendorData($data);
+			
 			// Send registration confirmation mail
 			//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 			//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
@@ -447,7 +448,7 @@ class VirtueMartModelUser extends VmModel {
 		 * @author Oscar van Eijk
 		 * return boolean
 		 */
-		private function saveUserData($data,$new){
+		public function saveUserData($data){
 
 			if(empty($this->_id)){
 				echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
@@ -463,22 +464,24 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
+
 			//update user table
 			//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>$data['user_is_vendor'],'virtuemart_vendor_id'=>$data['virtuemart_vendor_id'],'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
 			$usertable = $this->getTable('vmusers');
-
+			
 			$vmusersData = $usertable -> bindChecknStore($data);
 			$errors = $usertable->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-
+			
 			if(empty($data['virtuemart_shoppergroup_id'])){
 				if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 				$shoppergroupmodel = new VirtueMartModelShopperGroup();
 				$defaultShopperGroup = $shoppergroupmodel->getDefault();dump($defaultShopperGroup);
 				$data['virtuemart_shoppergroup_id'] = $defaultShopperGroup->virtuemart_shoppergroup_id;
 			}
+
 			// Bind the form fields to the auth_user_group table
 			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
 			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
@@ -488,52 +491,44 @@ class VirtueMartModelUser extends VmModel {
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-
-
-//			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//			modelfunctions::storeArdie;rayData('#__virtuemart_vmuser_shoppergroups','virtuemart_user_id','virtuemart_shoppergroup_id',$this->_id,$data['virtuemart_shoppergroup_id']);
-
-			//if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			
-			if (!self::storeAddress($data)) {
-				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-//				return false;
-			}
-
-			if($data['user_is_vendor']){
-
-				//	$data['virtuemart_vendor_id'] = $data['my_virtuemart_vendor_id'];
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$vendorModel = new VirtueMartModelVendor();
-
-				//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
-				//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
-				//$vendorModel->setId($data['virtuemart_vendor_id']);
-				$vendorModel->setId(1);
-				if (!$vendorModel->store($data)) {
-					$this->setError($vendorModel->getError());
-
-					return false;
-				}else{
-					//Update xref Table
-					$virtuemart_vendor_id = $vendorModel->getId();
-
-					//update user table
-					//$usertable = $this->getTable('vmusers');
-					$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-
-					if (!$usertable->bindChecknStore($vmusersData)){
-						$this->setError($usertable->getError());
-						return false;
-					}
-
-				}
-
-			}
-
-			return true;
+			return $data;
 		}
 
+	public function storeVendorData($data){
+		
+		if($data['user_is_vendor']){
+
+			//	$data['virtuemart_vendor_id'] = $data['my_virtuemart_vendor_id'];
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			$vendorModel = new VirtueMartModelVendor();
+
+			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
+			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
+			//$vendorModel->setId($data['virtuemart_vendor_id']);
+			$vendorModel->setId(1);
+			if (!$vendorModel->store($data)) {
+				$this->setError($vendorModel->getError());
+
+				return false;
+			}
+			else{
+				//Update xref Table
+				$virtuemart_vendor_id = $vendorModel->getId();
+
+				//update user table
+				$usertable = $this->getTable('vmusers');
+				$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
+
+				if (!$usertable->bindChecknStore($vmusersData)){
+					$this->setError($usertable->getError());
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Take a data array and save any address info found in the array.
 	 *
@@ -550,8 +545,7 @@ class VirtueMartModelUser extends VmModel {
     	if (!$userinfo->bindChecknStore($userfielddata)) {
 			$this->setError($userinfo->getError());
 		}
-		dump($userinfo,'my $userinfo table');
-		dump($userfielddata,'my $userfielddata');
+
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		$_shipto = array();
 		$_pattern = '/^shipto_/';
