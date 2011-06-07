@@ -455,10 +455,12 @@ if (empty ( $this->product )) {
 	*
 	*/
 
-	?><div class="customer-reviews"> <?php
+	?> <?php
 
 	if($this->allowRating || $this->showReview){
-?> <form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
+?> 
+	<div class="customer-reviews">
+<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
 	<?php
 	}
 
@@ -627,12 +629,13 @@ if (empty ( $this->product )) {
 			<input type="hidden" name="virtuemart_rating_review_id" value="0" />
 			<input type="hidden" name="task" value="review" />
 		</form>
+		</div></div>
 <?php }
 
 
 //				else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 				?>
 
-	</div></div>
+	
 
 </div>
