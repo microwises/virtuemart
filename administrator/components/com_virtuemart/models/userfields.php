@@ -547,7 +547,7 @@ class VirtueMartModelUserfields extends VmModel {
 						? $_fld->default
 						: @$_userData->{$_fld->name})
 					,'title' => self::_userFieldFormat(
-							 ($_fld->name == 'agreed')?'agreed':'title'
+							 ($_fld->name == 'agreed')?'agreed':'title' //what has the title todo with agreed?
 							,$_fld->title
 						)
 					,'type' => $_fld->type
@@ -557,15 +557,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
-				//case 'title':
-				//	$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::listUserTitle(
-				//		$_return['fields'][$_fld->name]['value'], '', $_prefix);
-				//	break;
-				case 'name':
-					//$jUser = JFactory::getUser();
-					//dump($_userData);
-					//$_return['fields'][$_fld->name]['value'] = $_userData->name;
-					//break;
+
 				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
@@ -590,10 +582,10 @@ class VirtueMartModelUserfields extends VmModel {
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
-				case 'agreed':
-					$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
-						. ($_fld->required ? ' class="required"' : '') . ' />';
-					break;
+				//case 'agreed':
+				//	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
+				//		. ($_fld->required ? ' class="required"' : '') . ' />';
+				//	break;
 				case 'password':
 				case 'password2':
 					$_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" size="30" class="inputbox" />'."\n";
@@ -658,7 +650,7 @@ class VirtueMartModelUserfields extends VmModel {
 						case 'checkbox':
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
 								. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
-								. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
+								. ($_return['fields'][$_fld->name]['value'] ? '' : 'checked="checked"') .'/>';
 							break;
 						case 'captcha':
 							// FIXME Implement the new securityimages component

@@ -118,382 +118,422 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
+	function getLoggedOnUser(){
+		
+		$user = JFactory::getUser();
+		
+		$userId = 0;
+		if(!empty($user)){
+			$userId = $user->id;
+		}
+		$this->setUserId($userId);
+		return $this->getUser();
+	}
+	
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
 	function getUser(){
 
-		//This can cause trouble, when you save a new vendor in the form with apply. The new virtuemart_vendor_id is not set then
-		//		if (empty($this->_data)) {
+		$this->_data = new stdClass();
 
-			$this->_data = new stdClass();
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		$this->_data = $this->getTable('vmusers');
+		$this->_data->load((int)$this->_id);
 
-			$this->_data = $this->getTable('vmusers');
-			$this->_data->load((int)$this->_id);
-
-			/* Add the virtuemart_shoppergroup_ids */
-//			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups WHERE `virtuemart_user_id` = "'.$this->_id.'"';
-//			$this->_db->setQuery($q);
-//			$this->_data->shopper_groups = $this->_db->loadResultArray();
-
-   			$xrefTable = $this->getTable('vmuser_shoppergroups');
-			$this->_data->shopper_groups = $xrefTable->load($this->_id);
+		/* Add the virtuemart_shoppergroup_ids */
+		$xrefTable = $this->getTable('vmuser_shoppergroups');
+		$this->_data->shopper_groups = $xrefTable->load($this->_id);
 
 
-			$this->_data->JUser = JUser::getInstance($this->_id);
+		$this->_data->JUser = JUser::getInstance($this->_id);
 
-			$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
+		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
 
-			$this->_data->userInfo = array ();
+		$this->_data->userInfo = array ();
 
-			for ($i = 0, $n = count($_ui); $i < $n; $i++) {
-				$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
-				$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
-				/*
-				 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
-				 * from the cart. I don't know is this is the only location, but it can be fixed by
-				 * making sure the user_is_vendor field is in the BT dataset.
-				 * I make this hack here, since I'm not sure if it causes problems on more locations.
-				 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
-				 */
-				if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
-					$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
-				}
-				// End hack
-				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+			$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
+			$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
+			/*
+			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
+			 * from the cart. I don't know is this is the only location, but it can be fixed by
+			 * making sure the user_is_vendor field is in the BT dataset.
+			 * I make this hack here, since I'm not sure if it causes problems on more locations.
+			 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
+			 */
+			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
+				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
+				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			}
-			if($this->_data->user_is_vendor){
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
-				$vendorModel = new VirtueMartModelVendor();
+			// End hack
+			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+		}
+		if($this->_data->user_is_vendor){
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
+			$vendorModel = new VirtueMartModelVendor();
 
-				$vendorModel->setId($this->_data->virtuemart_vendor_id);
-				$this->_data->vendor = $vendorModel->getVendor();
-			}
-			//		}
-
-
-			return $this->_data;
+			$vendorModel->setId($this->_data->virtuemart_vendor_id);
+			$this->_data->vendor = $vendorModel->getVendor();
 		}
 
-		/**
-		 * Retrieve contact info for a user if any
-		 *
-		 * @return array of null
-		 */
-		function getContactDetails()
-		{
-			if ($this->_id) {
-				$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
-				$_contacts = $this->_db->loadObjectList();
-				if (count($_contacts) > 0) {
-					return $_contacts[0];
-				}
+		return $this->_data;
+	}
+	
+/**	function getUserDataInFields($view, $type){
+		
+		//Okey, first lets get Userdata
+		$user = $this->getUser();
+		
+		//then lets get the userfields
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
+		$userFieldsModel = new VirtueMartModelUserfields();
+		
+		
+		if ($type == 'ST') {
+			$prepareUserFields = $userFieldsModel->getUserFields(
+									 'shipping'
+									, array() // Default toggles
+			);
+		} else { // BT
+				// The user is not logged in (anonymous), so we need tome extra fields
+				$prepareUserFields = $userFieldsModel->getUserFields(
+										 'account'
+										, array() // Default toggles
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
+				);
+
+		}		
+		
+		//fill userfields
+		// Format the data
+		foreach ($prepareUserFields as $_fld) {
+			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
+			$data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
+		}
+		
+		return $data;
+	}*/
+	
+	
+	/**
+	 * Retrieve contact info for a user if any
+	 *
+	 * @return array of null
+	 */
+	function getContactDetails()
+	{
+		if ($this->_id) {
+			$this->_db->setQuery('SELECT * FROM #__contact_details WHERE user_id = ' . $this->_id);
+			$_contacts = $this->_db->loadObjectList();
+			if (count($_contacts) > 0) {
+				return $_contacts[0];
 			}
-			return null;
+		}
+		return null;
+	}
+
+	/**
+	 * Return a list with groups that can be set by the current user
+	 *
+	 * @return mixed Array with groups that can be set, or the groupname (string) if it cannot be changed.
+	 */
+	function getGroupList()
+	{
+		$_aclObject = JFactory::getACL();
+
+		if (VmConfig::isAtLeastVersion('1.6.0')){
+			//TODO fix this latter. It's just an workarround to make it working on 1.6
+			$gids = $this->_data->JUser->get('groups');
+			return array_flip($gids);
 		}
 
-		/**
-		 * Return a list with groups that can be set by the current user
-		 *
-		 * @return mixed Array with groups that can be set, or the groupname (string) if it cannot be changed.
-		 */
-		function getGroupList()
-		{
-			$_aclObject = JFactory::getACL();
+		$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
+		$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
+		$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
 
-			if (VmConfig::isAtLeastVersion('1.6.0')){
-				//TODO fix this latter. It's just an workarround to make it working on 1.6
-				$gids = $this->_data->JUser->get('groups');
-				return array_flip($gids);
+		$_currentUser = JFactory::getUser();
+		$_my_usr = $_aclObject->get_object_id ('users', $_currentUser->get('id'), 'ARO');
+		$_my_grp = $_aclObject->get_object_groups ($_my_usr, 'ARO');
+		$_my_grpName = strtolower ($_aclObject->get_group_name($_my_grp[0], 'ARO'));
+
+		// administrators can't change each other and frontend-only users can only see groupnames
+		if (( $_grpName == $_my_grpName && $_my_grpName == 'administrator' ) ||
+		!$_aclObject->is_group_child_of($_my_grpName, 'Public Backend')) {
+			return $_grpName;
+		} else {
+			$_grpList = $_aclObject->get_group_children_tree(null, 'USERS', false);
+
+			$_remGroups = $_aclObject->get_group_children( $_my_grp[0], 'ARO', 'RECURSE' );
+			if (!$_remGroups) {
+				$_remGroups = array();
 			}
 
-			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
-			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
-			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
-
-			$_currentUser = JFactory::getUser();
-			$_my_usr = $_aclObject->get_object_id ('users', $_currentUser->get('id'), 'ARO');
-			$_my_grp = $_aclObject->get_object_groups ($_my_usr, 'ARO');
-			$_my_grpName = strtolower ($_aclObject->get_group_name($_my_grp[0], 'ARO'));
-
-			// administrators can't change each other and frontend-only users can only see groupnames
-			if (( $_grpName == $_my_grpName && $_my_grpName == 'administrator' ) ||
-			!$_aclObject->is_group_child_of($_my_grpName, 'Public Backend')) {
+			// Make sure privs higher than my own can't be granted
+			if (in_array($_grp[0], $_remGroups)) {
+				// nor can privs of users with higher privs be decreased.
 				return $_grpName;
-			} else {
-				$_grpList = $_aclObject->get_group_children_tree(null, 'USERS', false);
-
-				$_remGroups = $_aclObject->get_group_children( $_my_grp[0], 'ARO', 'RECURSE' );
-				if (!$_remGroups) {
-					$_remGroups = array();
-				}
-
-				// Make sure privs higher than my own can't be granted
-				if (in_array($_grp[0], $_remGroups)) {
-					// nor can privs of users with higher privs be decreased.
-					return $_grpName;
-				}
-				$_i = 0;
-				$_j = count($_grpList);
-				while ($_i <  $_j) {
-					if (in_array($_grpList[$_i]->value, $_remGroups)) {
-						array_splice( $_grpList, $_i, 1 );
-						$_j = count($_grpList);
-					} else {
-						$_i++;
-					}
-				}
-
-				return $_grpList;
 			}
-		}
+			$_i = 0;
+			$_j = count($_grpList);
+			while ($_i <  $_j) {
+				if (in_array($_grpList[$_i]->value, $_remGroups)) {
+					array_splice( $_grpList, $_i, 1 );
+					$_j = count($_grpList);
+				} else {
+					$_i++;
+				}
+			}
 
-		/**
-		 * Bind the post data to the JUser object and the VM tables, then saves it
-		 * It is used to register new users
-		 * This function can also change already registered users, this is important when a registered user changes his email within the checkout.
-		 *
-		 * @author Max Milbers
-		 * @author Oscar van Eijk
-		 * @return boolean True is the save was successful, false otherwise.
-		 */
-		function store($data=0)
-		{
-			JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
-			$mainframe = JFactory::getApplication() ;
+			return $_grpList;
+		}
+	}
+
+	/**
+	 * Bind the post data to the JUser object and the VM tables, then saves it
+	 * It is used to register new users
+	 * This function can also change already registered users, this is important when a registered user changes his email within the checkout.
+	 *
+	 * @author Max Milbers
+	 * @author Oscar van Eijk
+	 * @return boolean True is the save was successful, false otherwise.
+	 */
+	function store($data=0)
+	{
+		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
+		$mainframe = JFactory::getApplication() ;
 
 //			if(empty($data)) $data = JRequest::get('post');
-			//		$currentUser = JFactory::getUser();
+		//		$currentUser = JFactory::getUser();
 
-			//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
-			//The constructor sets automatically the right id.
-			$new = ($this->_id < 1);
-			$user = JFactory::getUser($this->_id);
-			$gid = $user->get('gid'); // Save original gid
+		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
+		//The constructor sets automatically the right id.
+		$new = ($this->_id < 1);
+		$user = JFactory::getUser($this->_id);
+		$gid = $user->get('gid'); // Save original gid
 
-			/*
-			 * Before I used this "if($cart && !$new)"
-			 * This construction is necessary, because this function is used to register a new JUser, so we need all the JUser data in $data.
-			 * On the other hand this function is also used just for updating JUser data, like the email for the BT address. In this case the
-			 * name, username, password and so on is already stored in the JUser and dont need to be entered again.
-			 */
-			if(empty ($data['email'])){
-				$email = $user->get('email');
-				if(!empty($email)){
-					$data['email'] = $email;
-				} else {
-					$data['email'] = JRequest::getVar('email', '', 'post', 'email');
-				}
-			}
-
-			//This is important, when a user changes his email address from the cart,
-			//that means using view user layout edit_address (which is called from the cart)
-			$user->set('email',$data['email']);
-
-			if(empty ($data['name'])){
-				$name = $user->get('name');
-				if(!empty($name)){
-					$data['name'] = $name;
-				} else {
-					$data['name'] = JRequest::getVar('name', '', 'post', 'name');
-				}
-			}
-
-			if(empty ($data['username'])){
-				$username = $user->get('username');
-				if(!empty($username)){
-					$data['username'] = $username;
-				} else {
-					$data['username'] = JRequest::getVar('username', '', 'post', 'username');
-				}
-			}
-
-			if(empty ($data['password'])){
-				//This is interesting, the passwords dont need this construction
-				//			$password = $user->get('password');
-				//			if(!empty($password)){
-				//				$data['password'] = $password;
-				//			} else {
-				$data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-				//			}
-			}
-
-			if(empty ($data['password2'])){
-				//This is interesting, the passwords dont need this construction
-				//			$password2 = $user->get('password2');
-				//			if(!empty($password2)){
-				//				$data['password2'] = $password2;
-				//			} else {
-				$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-				//			}
-			}
-
-			// Bind Joomla userdata
-			if (!$user->bind($data)) {
-				//develop
-				$this->setError('user bind '.$user->getError());
-				return false;
-			}
-
-			if($new){
-				// If user registration is not allowed, show 403 not authorized.
-				// But it is possible for admins and storeadmins to save
-				$usersConfig = JComponentHelper::getParams( 'com_users' );
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-
-				if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
-					JError::raiseError( 403, JText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
-					return;
-				}
-				$authorize	= JFactory::getACL();
-
-				// Initialize new usertype setting
-				$newUsertype = $usersConfig->get( 'new_usertype' );
-				if (!$newUsertype) {
-					$newUsertype = 'Registered';
-				}
-
-				// Set some initial user values
-				$user->set('usertype', $newUsertype);
-
-				if ( VmConfig::isJ15()){
-					$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-				}
-
-				$date = JFactory::getDate();
-				$user->set('registerDate', $date->toMySQL());
-
-				// If user activation is turned on, we need to set the activation information
-				$useractivation = $usersConfig->get( 'useractivation' );
-				if ($useractivation == '1')
-				{
-					jimport('joomla.user.helper');
-					$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
-					$user->set('block', '1');
-				}
-			}
-
-			$option = JRequest::getCmd( 'option');
-			// If an exising superadmin gets a new group, make sure enough admins are left...
-			if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
-				if ($this->getSuperAdminCount() <= 1) {
-					$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
-					return false;
-				}
-			}
-
-			// Save the JUser object
-			if (!$user->save()) {
-				//This?
-				$this->setError('_user save '.$user->getError());
-				//or this?
-				JError::raiseWarning('', JText::_( $user->getError()));
-				return false;
-			}
-
-			$newId = $user->get('id');
-			$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
-			$this->setUserId($newId);
-
-			//Save the VM user stuff
-			if(!$this->saveUserData($data)){
-				$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
-				JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
-			}
-
-			if (!self::storeAddress($data)) {
-				$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-			}
-
-			$this ->storeVendorData($data);
-			
-			// Send registration confirmation mail
-			//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
-			//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-
-			//		self::doRegisterEmail($user, $password);
-
-			// Everything went fine, set relevant message depending upon user activation state and display message
-			if ($new) {
-				if ( $useractivation == 1 ) {
-					$message  = JText::_('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
-				} else {
-					$message = JText::_('COM_VIRTUEMART_REG_COMPLETE');
-				}
-			} else {
-				$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED');	//TODO write right keystring
-			}
-
-			return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
-
-		}
-
-		/**
-		 * This function is NOT for anonymous. Anonymous just get the information directly sent by email.
-		 * This function saves the vm Userdata for registered JUsers.
-		 * TODO, setting of shoppergroup isnt done
-		 *
-		 * TODO No reason not to use this function for new users, but it requires a Joomla <user> plugin
-		 * that gets fired by the onAfterStoreUser. I'll built that (OvE)
-		 *
-		 * Notice:
-		 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the virtuemart_order_id
-		 * with the email. The order is saved with all information in an extra table, so there is
-		 * no need for a silent registration. We may think about if we actually need/want the feature silent registration
-		 * The information of anonymous is stored in the order table and has nothing todo with the usermodel!
-		 *
-		 * @author Max Milbers
-		 * @author Oscar van Eijk
-		 * return boolean
+		/*
+		 * Before I used this "if($cart && !$new)"
+		 * This construction is necessary, because this function is used to register a new JUser, so we need all the JUser data in $data.
+		 * On the other hand this function is also used just for updating JUser data, like the email for the BT address. In this case the
+		 * name, username, password and so on is already stored in the JUser and dont need to be entered again.
 		 */
-		public function saveUserData($data){
-
-			if(empty($this->_id)){
-				echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
-			}
-
-			if(empty($data['customer_number'])){
-				//TODO here add plugin hoook for creating customer numbers.
-				$data['customer_number'] = md5($data['username']);
+		if(empty ($data['email'])){
+			$email = $user->get('email');
+			if(!empty($email)){
+				$data['email'] = $email;
 			} else {
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin,storeadmin")) {
-					unset($data['customer_number']);
-				}
+				$data['email'] = JRequest::getVar('email', '', 'post', 'email');
 			}
-
-
-			//update user table
-			//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>$data['user_is_vendor'],'virtuemart_vendor_id'=>$data['virtuemart_vendor_id'],'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-			$usertable = $this->getTable('vmusers');
-			
-			$vmusersData = $usertable -> bindChecknStore($data);
-			$errors = $usertable->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-			
-			if(empty($data['virtuemart_shoppergroup_id'])){
-				if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
-				$shoppergroupmodel = new VirtueMartModelShopperGroup();
-				$defaultShopperGroup = $shoppergroupmodel->getDefault();dump($defaultShopperGroup);
-				$data['virtuemart_shoppergroup_id'] = $defaultShopperGroup->virtuemart_shoppergroup_id;
-			}
-
-			// Bind the form fields to the auth_user_group table
-			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
-
-			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-			$errors = $user_shoppergroups_table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-			
-			return $data;
 		}
+
+		//This is important, when a user changes his email address from the cart,
+		//that means using view user layout edit_address (which is called from the cart)
+		$user->set('email',$data['email']);
+
+		if(empty ($data['name'])){
+			$name = $user->get('name');
+			if(!empty($name)){
+				$data['name'] = $name;
+			} else {
+				$data['name'] = JRequest::getVar('name', '', 'post', 'name');
+			}
+		}
+
+		if(empty ($data['username'])){
+			$username = $user->get('username');
+			if(!empty($username)){
+				$data['username'] = $username;
+			} else {
+				$data['username'] = JRequest::getVar('username', '', 'post', 'username');
+			}
+		}
+
+		if(empty ($data['password'])){
+			//This is interesting, the passwords dont need this construction
+			//			$password = $user->get('password');
+			//			if(!empty($password)){
+			//				$data['password'] = $password;
+			//			} else {
+			$data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+			//			}
+		}
+
+		if(empty ($data['password2'])){
+			//This is interesting, the passwords dont need this construction
+			//			$password2 = $user->get('password2');
+			//			if(!empty($password2)){
+			//				$data['password2'] = $password2;
+			//			} else {
+			$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+			//			}
+		}
+
+		// Bind Joomla userdata
+		if (!$user->bind($data)) {
+			//develop
+			$this->setError('user bind '.$user->getError());
+			return false;
+		}
+
+		if($new){
+			// If user registration is not allowed, show 403 not authorized.
+			// But it is possible for admins and storeadmins to save
+			$usersConfig = JComponentHelper::getParams( 'com_users' );
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+
+			if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
+				JError::raiseError( 403, JText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
+				return;
+			}
+			$authorize	= JFactory::getACL();
+
+			// Initialize new usertype setting
+			$newUsertype = $usersConfig->get( 'new_usertype' );
+			if (!$newUsertype) {
+				$newUsertype = 'Registered';
+			}
+
+			// Set some initial user values
+			$user->set('usertype', $newUsertype);
+
+			if ( VmConfig::isJ15()){
+				$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+			}
+
+			$date = JFactory::getDate();
+			$user->set('registerDate', $date->toMySQL());
+
+			// If user activation is turned on, we need to set the activation information
+			$useractivation = $usersConfig->get( 'useractivation' );
+			if ($useractivation == '1')
+			{
+				jimport('joomla.user.helper');
+				$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
+				$user->set('block', '1');
+			}
+		}
+
+		$option = JRequest::getCmd( 'option');
+		// If an exising superadmin gets a new group, make sure enough admins are left...
+		if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
+			if ($this->getSuperAdminCount() <= 1) {
+				$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
+				return false;
+			}
+		}
+
+		// Save the JUser object
+		if (!$user->save()) {
+			//This?
+			$this->setError('_user save '.$user->getError());
+			//or this?
+			JError::raiseWarning('', JText::_( $user->getError()));
+			return false;
+		}
+
+		$newId = $user->get('id');
+		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
+		$this->setUserId($newId);
+
+		//Save the VM user stuff
+		if(!$this->saveUserData($data)){
+			$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+			JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
+		}
+
+		if (!self::storeAddress($data)) {
+			$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+		}
+
+		$this ->storeVendorData($data);
+		
+		// Send registration confirmation mail
+		//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+		//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
+
+		//		self::doRegisterEmail($user, $password);
+
+		// Everything went fine, set relevant message depending upon user activation state and display message
+		if ($new) {
+			if ( $useractivation == 1 ) {
+				$message  = JText::_('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
+			} else {
+				$message = JText::_('COM_VIRTUEMART_REG_COMPLETE');
+			}
+		} else {
+			$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED');	//TODO write right keystring
+		}
+
+		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
+
+	}
+
+	/**
+	 * This function is NOT for anonymous. Anonymous just get the information directly sent by email.
+	 * This function saves the vm Userdata for registered JUsers.
+	 * TODO, setting of shoppergroup isnt done
+	 *
+	 * TODO No reason not to use this function for new users, but it requires a Joomla <user> plugin
+	 * that gets fired by the onAfterStoreUser. I'll built that (OvE)
+	 *
+	 * Notice:
+	 * As long we do not have the silent registration, an anonymous does not get registered. It is enough to send the virtuemart_order_id
+	 * with the email. The order is saved with all information in an extra table, so there is
+	 * no need for a silent registration. We may think about if we actually need/want the feature silent registration
+	 * The information of anonymous is stored in the order table and has nothing todo with the usermodel!
+	 *
+	 * @author Max Milbers
+	 * @author Oscar van Eijk
+	 * return boolean
+	 */
+	public function saveUserData($data){
+
+		if(empty($this->_id)){
+			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
+		}
+
+		if(empty($data['customer_number'])){
+			//TODO here add plugin hoook for creating customer numbers.
+			$data['customer_number'] = md5($data['username']);
+		} else {
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			if(!Permissions::getInstance()->check("admin,storeadmin")) {
+				unset($data['customer_number']);
+			}
+		}
+
+
+		//update user table
+		//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>$data['user_is_vendor'],'virtuemart_vendor_id'=>$data['virtuemart_vendor_id'],'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
+		$usertable = $this->getTable('vmusers');
+		
+		$vmusersData = $usertable -> bindChecknStore($data);
+		$errors = $usertable->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+		
+		if(empty($data['virtuemart_shoppergroup_id'])){
+			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
+			$shoppergroupmodel = new VirtueMartModelShopperGroup();
+			$defaultShopperGroup = $shoppergroupmodel->getDefault();
+			$data['virtuemart_shoppergroup_id'] = $defaultShopperGroup->virtuemart_shoppergroup_id;
+		}
+
+		// Bind the form fields to the auth_user_group table
+		$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
+		$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+
+		$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+		$errors = $user_shoppergroups_table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+		
+		return $data;
+	}
 
 	public function storeVendorData($data){
 		
@@ -518,9 +558,11 @@ class VirtueMartModelUser extends VmModel {
 
 				//update user table
 				$usertable = $this->getTable('vmusers');
-				$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
+				$vendorsUserData =$usertable->load($this->_id);
+				$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
+				//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
 
-				if (!$usertable->bindChecknStore($vmusersData)){
+				if (!$usertable->bindChecknStore($vendorsUserData)){
 					$this->setError($usertable->getError());
 					return false;
 				}
@@ -567,20 +609,6 @@ class VirtueMartModelUser extends VmModel {
 	    	if (!$userinfo->bindChecknStore($_shipto)) {
 				$this->setError($userinfo->getError());
 			}
-/**			if ($_table !== null) {
-				if (!$_userinfo->bind($_shipto)) {
-					$this->setError($_userinfo->getError());
-					return false;
-				}
-				if (!$_userinfo->check($data)) {
-					$this->setError($_userinfo->getError());
-					return false;
-				}
-				if (!$_userinfo->store()) { // Write data to the DB
-					$this->setError($_userinfo->getError());
-					return false;
-				}
-			}*/
 
 		}
 		return true;
@@ -589,20 +617,33 @@ class VirtueMartModelUser extends VmModel {
 	function _prepareUserFields($data, $_type)
 	{
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-		$_userFieldsModel = new VirtueMartModelUserfields();
-		$_prepareUserFields = self::getUserFields($_type);
-		$data =$data;
+		$userFieldsModel = new VirtueMartModelUserfields();
+		
+		if ($_type == 'ST') {
+			$prepareUserFields = $userFieldsModel->getUserFields(
+									 'shipping'
+									, array() // Default toggles
+			);
+		} else { // BT
+				// The user is not logged in (anonymous), so we need tome extra fields
+				$prepareUserFields = $userFieldsModel->getUserFields(
+										 'account'
+										, array() // Default toggles
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
+				);
+
+		}		
 		// Format the data
-		foreach ($_prepareUserFields as $_fld) {
+		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
+			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
 		}
 
 		return $data;
 	}
 	
 	
-	function getUserFields($_type){
+/**	function getUserFields($_type){
 		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
 		// VirtueMartModelUserfields::getUserFields() won't work
 
@@ -621,9 +662,9 @@ class VirtueMartModelUser extends VmModel {
 										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 				);
 
-		} dump($_prepareUserFields);
+		}
 		return $_prepareUserFields;
-	}
+	}*/
 
 	 /**
 	  * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content

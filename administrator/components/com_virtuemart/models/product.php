@@ -1889,7 +1889,7 @@ class VirtueMartModelProduct extends VmModel {
 		//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		//$calculator = calculationHelper::getInstance();
 		foreach ($productCustoms as & $field ) {
-			//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);dump($field,'$custom_price '.$custom_price);
+			//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);
 			$field->display = $this->displayType($product,$field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}

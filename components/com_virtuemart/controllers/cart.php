@@ -413,44 +413,7 @@ class VirtueMartControllerCart extends JController {
 	}
 
 
-//	function renderConfirmedMailToShopper(){
-//
-//		/* Create the view */
-//		$view = $this->getView('cart', 'html');
-//
-////		$view->setModel(VirtueMartCart::getCart(),true);
-//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );
-//
-//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ) );
-//
-//		$view->setLayout('mailshopper');
-//
-//		$view->display();
-//	}
-//
-//	function renderConfirmedMailToVendor(){
-//
-//		/* Create the view */
-//		$view = $this->getView('cart', 'html');
-//
-////		$view->setModel(VirtueMartCart::getCart(),true);
-//		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-//		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ) );
-//
-//		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ) );
-//		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ) );
-//
-//		$view->setLayout('mailvendor');
-//
-//		$view->display();
-//
-//	}
 
-		}
+
+}
  //pure php no Tag

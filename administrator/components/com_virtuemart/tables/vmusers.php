@@ -32,14 +32,14 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  class TableVmusers extends VmTableData {
 
 	/** @var int Vendor ID */
-	var $virtuemart_user_id			= 0;
-	var $user_is_vendor 	= 0;
-	var $virtuemart_vendor_id 			= 0;
-	var $customer_number 	= 0;
-	var $perms				= 0;
+	var $virtuemart_user_id		= 0;
+	var $user_is_vendor 		= 0;
+	var $virtuemart_vendor_id 	= 0;
+	var $customer_number 		= 0;
+	var $perms					= 0;
 	var $virtuemart_paymentmethod_id = 0;
-	var $virtuemart_shippingcarrier_id = 0;
-	var $agreed				= 0;
+	var $virtuemart_shippingrate_id = 0;
+	var $agreed					= 0;
 
 
 	/**

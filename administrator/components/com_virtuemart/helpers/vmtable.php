@@ -116,7 +116,7 @@ class VmTable extends JTable {
 				}
 			}
 		}
-//		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store');
+		$this->setError('VmTable developer notice, table '.get_class( $this ).' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net');
 		return false;
     }
 
@@ -258,10 +258,10 @@ class VmTable extends JTable {
     		$data[$this->_tbl_key] = !empty($this->$tblKey)?  $this->$tblKey:0;
     	}
 
-//    	if(!$ok){
-//    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
+    	if(!$ok){
+    		$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
 ////    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
-//    	}
+    	}
 
 		return $data;
     }

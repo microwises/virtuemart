@@ -38,6 +38,9 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct();
+		
+		//Todo multivendor nasty hack, to get vendor with id 1
+		$this->setId(1);
 		$this->setMainTable('vendors');
 	}
 

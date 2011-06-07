@@ -62,15 +62,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$row = $db->loadObjectList();
 		
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$usermodel = new VirtueMartModelUser();
-		
-/**		$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
-		$this->_db->setQuery($q);
-		$default_virtuemart_shoppergroup_id=$this->_db->loadResult();
-		
-		$vmusertable = $this->getTable('vmusers');
-		$vmuser_shoppergroups_table = $this->getTable('vmuser_shoppergroups');*/
-		
+		$usermodel = new VirtueMartModelUser();		
 		
 		foreach ($row as $user) {
 			
@@ -83,40 +75,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 								);
 								
 			$usermodel->saveUserData($userdata);
-/**			
-			$vmusertable -> bindChecknStore($userdata);
-			$errors = $vmusertable->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-			dump($vmusertable,'$vmusertable to store');
-			
-			$shoppergroupdata = array('virtuemart_user_id'=>$user->id,'virtuemart_shoppergroup_id'=>$default_virtuemart_shoppergroup_id);
-			$vmuser_shoppergroups_table -> bindChecknStore($shoppergroupdata);
-			$errors = $vmuser_shoppergroups_table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-			dump($vmuser_shoppergroups_table,'$vmuser_shoppergroups_table to store');
-/**			$query = 'INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`,`user_is_vendor`,`virtuemart_vendor_id`,`customer_number`,`perms` ) VALUES ("'. $user->id .'",0,0,null,"shopper")';
-			$db->setQuery($query);
-		    if (!$db->query()) {
-				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmusers FAILED' );
-		    }
 
-
-			$query = 'INSERT IGNORE INTO `#__virtuemart_vmuser_shoppergroups` VALUES (null,"' . $user->id . '", "'.$default_virtuemart_shoppergroup_id.'")';
-		    $db->setQuery($query);
-		    if (!$db->query()) {
-				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_vmuser_shoppergroups FAILED' );
-		    }
-
-		    $query = "INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `created_on`, `modified_on`) ";
-		    $query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
-		    $db->setQuery($query);
-		    if (!$db->query()) {
-				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__virtuemart_userinfos FAILED' );
-		    }*/
 		}
 		$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
 		return $msg;

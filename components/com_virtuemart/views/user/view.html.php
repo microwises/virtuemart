@@ -156,7 +156,10 @@ class VirtuemartViewUser extends JView {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'address_type', 'bank', 'email');
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank');		
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
+
+		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'address_type', 'bank');
@@ -176,9 +179,6 @@ class VirtuemartViewUser extends JView {
 				, $skips
 			);
 		}
-		//foreach($_userFields as $field){
-		//	dump($field->name,'$_userFields?');
-		//}
 
 		//Small ugly hack to make registering optional
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
@@ -232,7 +232,7 @@ class VirtuemartViewUser extends JView {
 				,$type
 			);
 		}
-		dump($_userFields,'heyhooo');
+
 		$this->assignRef('userFields', $userFields);
 		return $userFields;
 	}

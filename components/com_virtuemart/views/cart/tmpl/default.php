@@ -70,11 +70,11 @@ include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
 	<div class="marginbottom15">
 	<span class="bold"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span><br />
 	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
-		if (VmConfig::get('agree_to_tos_onorder')) {
+//		if (VmConfig::get('agree_to_tos_onorder')) {
 			$checked = '';
 			if ($this->cart->tosAccepted) $checked = 'checked="checked"';
 			echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED');
-		}
+//		}
 	?>
 	</div>
 </fieldset>
