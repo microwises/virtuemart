@@ -102,6 +102,30 @@ class VirtuemartControllerOrders extends VmController {
 		/* Now display the view. */
 		$view->display();
 	}
+
+	/**
+	 * NextOrder
+	 *
+	 * @author Kohl Patrick
+	 */
+	public function next($dir = 'ASC'){
+		$model = $this->getModel('orders');
+		if (!$order_id = $model->GetOrderId($dir)) {
+			$order_id  = JRequest::getVar('virtuemart_order_id');
+			$msg = JText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
+		} else {
+			$msg ='';
+		}
+		$this->setRedirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$order_id ,$msg );
+	}	/**
+	 * NextOrder
+	 *
+	 * @author Kohl Patrick
+	 */
+	public function prev(){
+
+		$this->next('DESC');
+	}
 	/**
 	 * Generic cancel task
 	 *

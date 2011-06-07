@@ -80,7 +80,23 @@ class VirtueMartModelOrders extends VmModel {
 		return $OrderNumber;
 
 	}
+	/*
+	* get next/previous order id
+	*/
+	public function GetOrderId($direction ='ASC', $order_id) {
+		if ($direction = 'ASC') $arrow ='>';
+		else $arrow ='<';
+		$db = JFactory::getDBO();
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`'.$arrow.$order_id;
+		$q.= 'ORDER BY `virtuemart_order_id` '.$dir ;
+		$db->setQuery($q);
+		if ($oderId = $db->loadResult()) { 
+			return $oderId ;
+		} 
+		return 0 ;
+	}
 
+	
 	/**
 	 * Load a single order
 	 */

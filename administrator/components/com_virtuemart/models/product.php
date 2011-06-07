@@ -686,19 +686,13 @@ class VirtueMartModelProduct extends VmModel {
     * @author RolandD
     */
     private function getProductListFilter ($filters=array()) {
-//    	$this->_db = JFactory::getDBO();
-    	/* Check some filters */
-    	$filter_order = JRequest::getCmd('filter_order', 'product_name');
-		if ($filter_order == '') $filter_order = 'product_name';
-		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
-		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 
 		/* Product Parent ID */
      	if (JRequest::getInt('product_parent_id', 0) > 0) $filters[] = '#__virtuemart_products.`product_parent_id` = '.JRequest::getInt('product_parent_id');
      	else // $filters[] = '#__virtuemart_products.`product_parent_id` = 0';
      	/* Category ID */
-     	if (JRequest::getInt('virtuemart_category_id', 0) > 0){
-     		$filters[] = '`#__virtuemart_product_categories`.`virtuemart_category_id` = '.JRequest::getInt('virtuemart_category_id');
+     	if ( $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0)) {
+     		$filters[] = '`#__virtuemart_product_categories`.`virtuemart_category_id` = '.$virtuemart_category_id;
      		$filters[] = '`#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`';
      	}
      	/* Product name */
@@ -720,8 +714,8 @@ class VirtueMartModelProduct extends VmModel {
      				break;
      		}
      	}
-     	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' GROUP BY #__virtuemart_products.`virtuemart_product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
-     	else $filter = ' GROUP BY #__virtuemart_products.`virtuemart_product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' GROUP BY #__virtuemart_products.`virtuemart_product_id` '.$this->_getOrdering('product_name');
+     	else $filter = ' GROUP BY #__virtuemart_products.`virtuemart_product_id` '.$this->_getOrdering('product_name');
      	return $filter;
     }
 
@@ -740,20 +734,6 @@ class VirtueMartModelProduct extends VmModel {
      	if ($this->_db->loadResult() == 'Y') return true;
      	else if ($this->_db->loadResult() == 'N') return false;
     }
-
-//	/**
-//	 * Publish/Unpublish all the ids selected
-//     *
-//     * @author Max Milbers
-//     * @param boolean $publishId True is the ids should be published, false otherwise.
-//     * @return boolean True is the publishing was successful, false otherwise.
-//     */
-//	public function publish($publishId = false){
-//
-//		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-//		return modelfunctions::publish('cid','products',$publishId);
-//
-//	}
 
     /**
 	 * Retrieve a list of featured products from the database.
