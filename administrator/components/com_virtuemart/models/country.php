@@ -92,7 +92,11 @@ class VirtueMartModelCountry extends VmModel {
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
 		
-		$query .= $this->_getOrdering();
+		//The ordering of countries does not make really sense, people assume an ordering by name,
+		//this function here is also used to create the country list, we must change it there then.
+		//I overwrite it.
+		$query .= $this->_getOrdering('country_name');
+
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);
 		}

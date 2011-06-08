@@ -69,7 +69,7 @@ class VirtueMartModelState extends VmModel {
      * @param string $code State code to lookup
      * @return object State object from database
      */
-    function &getStateByCode($code)
+    function getStateByCode($code)
     {
 		$db = JFactory::getDBO();
 
@@ -99,11 +99,19 @@ class VirtueMartModelState extends VmModel {
      * @author RickG, Max Milbers
 	 * @return object List of state objects
 	 */
-	public function getStates($countryId)
+	public function getStates($countryId, $noLimit=false)
 	{
 		$query = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
 		$query .= 'ORDER BY `#__virtuemart_states`.`state_name`';
-		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		
+		if ($noLimit) {
+		    $this->_data = $this->_getList($query);
+		}
+		else {
+		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		}
+		
+		//$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		$this->_total = $this->_getListCount($query);
 		return $this->_data;
 	}

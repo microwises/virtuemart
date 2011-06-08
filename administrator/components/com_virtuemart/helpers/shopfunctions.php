@@ -80,20 +80,21 @@ class ShopFunctions {
 		JToolBarHelper::cancel();
 	}
 	 
-        function SetViewTitle($cssIcon,$view=null,$msg ='') {
+    function SetViewTitle($cssIcon,$view=null,$msg ='') {
 
-                if (!$view) $view = JRequest::getVar('view',JRequest::getVar('controller'));
-                //if ($msg) { $msg = ' <span style="color: #666666;float: right;font-size: large;">'.$msg.'</span>';}
-                 if ($msg) { $msg = ' <span style="color: #666666; font-size: large;">'.$msg.'</span>';}
-                 $text = strtoupper('COM_VIRTUEMART_'.$view );
-                $viewName = JText::_($text);
-				if (!$task = JRequest::getVar('task')) $task='list';
-				
-                $taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.$task).' ]</small></small>';
-                JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
-                return $viewName;
+            if (!$view) $view = JRequest::getVar('view',JRequest::getVar('controller'));
+            //if ($msg) { $msg = ' <span style="color: #666666;float: right;font-size: large;">'.$msg.'</span>';}
+             if ($msg) { $msg = ' <span style="color: #666666; font-size: large;">'.$msg.'</span>';}
+             $text = strtoupper('COM_VIRTUEMART_'.$view );
+            $viewName = JText::_($text);
+			if (!$task = JRequest::getVar('task')) $task='list';
+			
+            $taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.$task).' ]</small></small>';
+            JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
+            return $viewName;
 
-        }
+    }
+	
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *
@@ -227,7 +228,7 @@ class ShopFunctions {
 			$_a = explode ('=', $_attrib, 2);
 			$attrs[$_a[0]] = $_a[1];
 		}
-
+		
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 
@@ -246,11 +247,11 @@ class ShopFunctions {
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		// Must be done here also (despite the AJAX selector) to make the current dbselection visible
-		$states = $stateModel->getStates($countryId);
+		$states = $stateModel->getStates($countryId,true);
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'virtuemart_state_id';
-
+		
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
@@ -263,6 +264,7 @@ class ShopFunctions {
 		$attrs['class'] = 'dependent['. $dependentField .']';
 
 		$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
+		
 		return $listHTML;
 	}
 

@@ -570,15 +570,20 @@ class VirtueMartModelUserfields extends VmModel {
 					break;
 
 				case 'virtuemart_state_id':
-					$_return['fields'][$_fld->name]['formcode'] = shopFunctions::renderStateList(
-						  $_return['fields'][$_fld->name]['value']
-						// FIXME The value of virtuemart_country_id here is actually a name, so we must translate it
-						, ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value'])
-						, $_prefix.'virtuemart_country_id', false, $_prefix);
+					dump($_fld,'my fld');
+					
 					// The table data can contain the virtuemart_state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
 					}
+					$_return['fields'][$_fld->name]['formcode'] = 
+					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
+													ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
+													$_prefix.'virtuemart_country_id', 
+													false, 
+													$_prefix
+													);
+					dump($_return['fields'][$_fld->name]['formcode'],'my formcode');
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
