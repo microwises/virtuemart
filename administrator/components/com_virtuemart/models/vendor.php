@@ -89,7 +89,7 @@ class VirtueMartModelVendor extends VmModel {
 			$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
 		}
-
+		dump($this->_data,'getVendor');
 		return $this->_data;
 	}
 

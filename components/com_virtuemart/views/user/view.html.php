@@ -148,6 +148,10 @@ class VirtuemartViewUser extends JView {
 	 */
 	function setUserFieldsForView($layoutName){
 
+//		$type = JRequest::getVar('addrtype', 'BT');		
+//		$userFields = $this->_model->getUserDataInFields($this->_userDetails,$type);		
+//		dump($userFields,'Userfields');
+
 		$type = JRequest::getVar('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 

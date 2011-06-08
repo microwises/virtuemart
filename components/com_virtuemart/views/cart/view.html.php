@@ -342,7 +342,7 @@ class VirtueMartViewCart extends JView {
 		if(!empty($this->_cart->BT)){
 
 			//Here we get the fields
-			$_userFieldsBT = $userFieldsModel->getUserFields(
+			$userFieldsBT = $userFieldsModel->getUserFields(
 				 'account'
 				, array() // Default toggles
 				,  $skips// Skips
@@ -351,7 +351,7 @@ class VirtueMartViewCart extends JView {
 			$cart = VirtueMartCart::getCart(false);
 			$BTaddress = $cart->getAddress(
 				 $userFieldsModel
-				,$_userFieldsBT
+				,$userFieldsBT
 				,'BT'
 			);
 		}
@@ -361,7 +361,7 @@ class VirtueMartViewCart extends JView {
 		$STaddress['fields']= array();
 		if(!empty($this->_cart->ST)){
 
-			$_userFieldsST = $userFieldsModel->getUserFields(
+			$userFieldsST = $userFieldsModel->getUserFields(
 				'shipping'
 				, array() // Default toggles
 				, $skips
@@ -370,7 +370,7 @@ class VirtueMartViewCart extends JView {
 			$cart = VirtueMartCart::getCart(false);
 			$STaddress = $cart->getAddress(
 				 $userFieldsModel
-				,$_userFieldsST
+				,$userFieldsST
 				,'ST'
 			);
 

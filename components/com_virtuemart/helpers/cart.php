@@ -889,36 +889,16 @@ class VirtueMartCart  {
 	}
 	
 	
-	/**
-	* Save the cart in the database
-	*
-	* @author RolandD
-	* @access public
-	*/
-/**	public function saveCart() {
-		$db = JFactory::getDBO();
-		$user = JFactory::getUser();
-		$cart = $this->getCart();
-		if ($user->id > 0) {
-			$cart_contents = serialize($cart);
-			$q = "INSERT INTO `#__virtuemart_carts` (`virtuemart_user_id`, `cart_content` ) VALUES ( ".$user->id.", '".$cart_contents."' )
-				ON DUPLICATE KEY UPDATE `cart_content` = ".$db->Quote($cart_contents);
-			$db->setQuery($q);
-			$db->query();
-		}
-	}
-*/
-
 	function getAddress ($model, $fields, $type){
 	
 		$address = new stdClass();
-		if(!empty($cart->$type)){
-			$data = $cart->$type;
+		if(!empty($this->$type)){
+			$data = $this->$type;
 			foreach ($data as $k => $v) {
 				$address->{$k} = $v;
 			}
 		}
-
+		
 		$data = $model->getUserFieldsByUser($fields, $address);
 		return $data;
 	}

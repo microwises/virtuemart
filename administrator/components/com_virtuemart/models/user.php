@@ -101,8 +101,8 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function setCurrent()
 	{
-		$_currentUser = JFactory::getUser();
-		$this->setId($_currentUser->get('id'));
+		$user = JFactory::getUser();
+		$this->setId($user->get('id'));
 	}
 
 	/**
@@ -129,6 +129,47 @@ class VirtueMartModelUser extends VmModel {
 		$this->setUserId($userId);
 		return $this->getUser();
 	}
+	
+/*	function getUserDataInFields($data, $type){
+	
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
+		$userFieldsModel = new VirtuemartModelUserfields();
+		
+		if ($type == 'ST') {
+			$prepareUserFields = $userFieldsModel->getUserFields(
+									 'shipping'
+									, array() // Default toggles
+			);
+		} else { // BT
+				// The user is not logged in (anonymous), so we need tome extra fields
+				$prepareUserFields = $userFieldsModel->getUserFields(
+										 'account'
+										, array() // Default toggles
+										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
+				);
+
+		}
+		
+		// Format the data
+		if(is_object($data)){
+			
+
+			$data = (array) $data;
+		} 
+		/**else {
+			foreach ($prepareUserFields as $_fld) {
+				if(empty($data->{$_fld->name})) $data->{$_fld->name} = '';
+				$data[$_fld->name] = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $data);
+			}			
+		}
+		foreach ($prepareUserFields as $_fld) {
+			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
+			$datas[$_fld->name] = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $data);
+		}		
+
+
+		return $datas;
+	}*/
 	
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
@@ -170,14 +211,16 @@ class VirtueMartModelUser extends VmModel {
 			// End hack
 			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 		}
+		dump($this->_data,'my data');
 		if($this->_data->user_is_vendor){
+
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 			$vendorModel = new VirtueMartModelVendor();
 
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
-
+		
 		return $this->_data;
 	}
 	

@@ -858,51 +858,6 @@ class VirtueMartModelUserfields extends VmModel {
 		return ($query);
 	}
 
-	// /**
-	 // * Change the ordering of an Userfield
-	 // *
-	 // * @return boolean True on success
-	 // */
-	// function move($direction)
-	// {
-		// $table = $this->getTable('userfields');
-		// if (!$table->load($this->_id)) {
-			// $this->setError($this->_db->getErrorMsg());
-			// return false;
-		// }
-		// if (!$table->move($direction)){
-			// $this->setError($this->_db->getErrorMsg());
-			// return false;
-		// }
-
-		// return true;
-	// }
-
-	// /**
-	 // * Reorder the Userfields
-	 // *
-	 // * @return boolean True on success
-	 // */
-	// function saveorder($cid = array(), $order)
-	// {
-		// $table = $this->getTable('userfields');
-
-		//update ordering values
-		// for( $i=0; $i < count($cid); $i++ )
-		// {
-			// $table->load( (int) $cid[$i] );
-			// if ($table->ordering != $order[$i])
-			// {
-				// $table->ordering = $order[$i];
-				// if (!$table->store()) {
-					// $this->setError($this->_db->getErrorMsg());
-					// return false;
-				// }
-			// }
-		// }
-
-		// return true;
-	// }
 }
 
 // No closing tag
