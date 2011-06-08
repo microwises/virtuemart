@@ -211,7 +211,7 @@ class VirtueMartModelUser extends VmModel {
 			// End hack
 			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 		}
-		dump($this->_data,'my data');
+		
 		if($this->_data->user_is_vendor){
 
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
@@ -220,7 +220,7 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
-		
+
 		return $this->_data;
 	}
 	

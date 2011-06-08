@@ -129,11 +129,11 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$query = "SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
+		$query = 'SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
 				  FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__virtuemart_category_categories` cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id`
-				  WHERE 1 ";
+				  WHERE 1 ';
 
 		// Get only published categories
 		if( $onlyPublished ) {
@@ -159,7 +159,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$this->_db->setQuery($query);
 		$this->_category_tree = $this->_db->loadObjectList();
-		
+
 		// set total for pagination
 		if ($this->_total ==null) $this->_total = $this->_getListCount($query) ;
 

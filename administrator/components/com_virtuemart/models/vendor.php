@@ -72,6 +72,7 @@ class VirtueMartModelVendor extends VmModel {
 	*/
 	function getVendor() {
 
+dump($this->_data,'getVendor start');
         if (empty($this->_data)) {
 
 	    	$this->_data = $this->getTable('vendors');
@@ -102,7 +103,7 @@ class VirtueMartModelVendor extends VmModel {
 	* @return object List of vendors
 	*/
 	public function getVendors() {
-
+		$this->setId(0);	//This is important ! notice by Max Milbers
 		$query = 'SELECT * FROM `#__virtuemart_vendors` ';
 		$query .= 'ORDER BY `#__virtuemart_vendors`.`virtuemart_vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));

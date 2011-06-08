@@ -138,7 +138,7 @@ class VmModel extends JModel {
      *
      */
 
-    public function &getData(){
+    public function getData(){
 
     	if (empty($this->_data)) {
 		    $this->_data = $this->getTable($this->_maintablename);

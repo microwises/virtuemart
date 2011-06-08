@@ -54,7 +54,8 @@ class VirtuemartViewProduct extends JView {
 		switch ($task) {
 			case 'add':
 			case 'edit':
-                                $viewName = ShopFunctions::SetViewTitle('vm_product_48' );
+
+				$viewName = ShopFunctions::SetViewTitle('vm_product_48' );
 				/* Load the product */
 				$product_model = $this->getModel('product');
 
@@ -99,9 +100,6 @@ class VirtuemartViewProduct extends JView {
 				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
 				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
 
-//				$lists['dbdiscounts'] = $this -> renderDiscountList($product->product_discount_id,1);
-//				$lists['dadiscounts'] = $this -> renderDiscountList($product->product_discount_id,0);
-
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
@@ -125,7 +123,8 @@ class VirtuemartViewProduct extends JView {
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
 
-				$vendor_model->setId($product->virtuemart_vendor_id);
+				$vendor_model->setId(1);
+				dump($vendor_model,'vendormodel with id = 1');
 				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
@@ -135,15 +134,12 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
-//				$product_currency_symbol = $currency->currency_symbol;
+
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
 				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
-
-				/* TODO remove this */
-//				$product->child_products = null;
 
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = time();
@@ -172,9 +168,6 @@ class VirtuemartViewProduct extends JView {
 				$this->loadHelper('customhandler');
 				$fieldTypes = VmCustomHandler::getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
-//				/* Load product types lists */
-//				$productTypes = $this->get('productTypes');
-//				$this->assignRef('productTypes', $productTypes);
 
 				/* Load product types lists */
 				$customsList = VmCustomHandler::getCustomsList();
@@ -210,8 +203,8 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
 				$this->assignRef('related_products', $related_products);
-                                $this->assignRef('product_child', $product_child);
-                                $this->assignRef('product_parent', $product_parent);
+				$this->assignRef('product_child', $product_child);
+				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
 				$this->assignRef('action', $action);
 				$this->assignRef('info_label', $info_label);

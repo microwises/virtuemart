@@ -52,12 +52,13 @@ echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUTTAB'), 'checkout_panel');
 echo $this->loadTemplate('checkout');
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOADABLETAB'), 'downloads_panel');
+
+/* echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOADABLETAB'), 'downloads_panel');
 echo $this->loadTemplate('downloads');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_FEEDTAB'), 'feed_panel');
 echo $this->loadTemplate('feeds');
-echo $pane->endPanel();
+echo $pane->endPanel(); */
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEF'), 'sef_panel');
 echo $this->loadTemplate('sef');
 echo $pane->endPanel();

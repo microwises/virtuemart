@@ -104,6 +104,8 @@ class calculationHelper {
 
 	private function setCountryState($cart=0){
 		
+		if ($this->_app->isAdmin()) return;
+			
 		if(empty($cart)){
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();		
@@ -229,26 +231,7 @@ class calculationHelper {
 //			$this->_amount = $amount;
 		}
 
-//		$calcRules = $this->gatherEffectingRulesForProductPrice('Calc');
-/**		if(empty($this->product_tax_id)){
-			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax',$this->product_tax_id);
-		} else {
-			if (!is_array($this->product_tax_id)) $this->product_tax_id = array($this->product_tax_id);
-			$taxRules = $this->product_tax_id;
-		}
-		$this->rules['tax'] = $taxRules;
-		//This is a bit nasty, atm we assume for the discount override that it is meant for discounts after Tax
-		if(empty($this->product_discount_id)){
-			$dBTaxRules= $this->gatherEffectingRulesForProductPrice('DBTax',$this->product_tax_id);
-			$dATaxRules = $this->gatherEffectingRulesForProductPrice('DATax',$this->product_tax_id);
-		} else {
-			if (!is_array($this->product_discount_id)) $this->product_discount_id = array($this->product_discount_id);
-			$dBTaxRules = array();
-			$dATaxRules = $this->product_discount_id;
-		}
-		$this->rules['dBTax'] = $dBTaxRules;
-		$this->rules['dATax'] = $dATaxRules; /*/
-
+		
 		$this->setCountryState($this->_cart);
 		
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax',$this->product_tax_id);
@@ -258,16 +241,6 @@ class calculationHelper {
 		$prices['costPrice']  = $costPrice;
 		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo($this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
-
-//		if(isset($variant)){
-//			if (strpos($variant, '=') !== false) {
-//	//		   $variant=substr($variant,1);
-//			   $basePriceShopCurrency = doubleval(substr($variant,1));
-//			} else {
-//				$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
-//			}
-//			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
-//		}
 
 		if(!empty($variant)){
 			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);

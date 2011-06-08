@@ -178,6 +178,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
   `category_child_id` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY (`category_child_id`),
   UNIQUE KEY `i_category_parent_id` (`category_parent_id`,`category_child_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
 
@@ -391,7 +392,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_manufacturer_id`)
+  PRIMARY KEY (`virtuemart_manufacturer_id`),
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who deliver products' AUTO_INCREMENT=1 ;
 
 --
@@ -755,7 +757,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   KEY `idx_product_product_parent_id` (`product_parent_id`),
   KEY `idx_product_sku` (`product_sku`),
   KEY `idx_product_ship_code_id` (`ship_code_id`),
-  KEY `idx_product_name` (`product_name`)
+  KEY `idx_product_name` (`product_name`),
+   UNIQUE KEY `slug` (`slug`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All products are stored here.' AUTO_INCREMENT=1 ;
 
 
