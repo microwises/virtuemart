@@ -34,7 +34,10 @@ class VirtuemartViewShippingCarrier extends JView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
+                $this->addHelperPath(JPATH_VM_SITE.DS.'helpers');
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('permissions');
+		$this->loadHelper('vmshipperplugin');
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
@@ -46,7 +49,10 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-
+                     $this->loadHelper('image');
+			$this->loadHelper('html');
+			$this->loadHelper('parameterparser');
+			jimport('joomla.html.pane');
 			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));

@@ -32,17 +32,22 @@ class TableShippingcarriers extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shippingcarrier_id			= 0;
-	/** @var string Shipping Carrier name*/
-	var $shipping_carrier_name			= '';
-	/** @var int Shipping Joomla plugin I */
-	var $shipping_carrier_jplugin_id	= 0;
-	/** @var int Vendor ID */
+        /** @var int Vendor ID */
 	var $virtuemart_vendor_id		= 0;
+        /** @var int Shipping Joomla plugin I */
+	var $shipping_carrier_jplugin_id	= 0;	
+	/** @var string Shipping Carrier name*/
+	var $shipping_carrier_name	= '';
+        /** @var string Element of shippermethod */
+        var $shipping_carrier_element = '';
+        /** @var string parameter of the shippingmethod*/
+	var $shipping_carrier_params				= 0;
+        var $ordering						= 0;
+        var $shared						= 0;
 	/** @var int published boolean */
 	var $published						= 1;
 
-	var $ordering						= 0;
-
+	
     /**
      * @author Max Milbers
      * @param $db A database connector object

@@ -14,5 +14,7 @@
 	<files>
 		<filename plugin="standard">standard.php</filename>
 	</files>
-	<params />
+	  <params>
+        <param   type="spacer" default="COM_VIRTUEMART_STANDARD_PARAMS" level="level1" />
+          </params>
 </install>

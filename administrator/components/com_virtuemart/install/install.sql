@@ -958,6 +958,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipping_carrier_jplugin_id` int(11) NOT NULL,
   `shipping_carrier_name` char(80) NOT NULL DEFAULT '',
+  `shipping_carrier_element` varchar(50) NOT NULL DEFAULT '',
+  `shipping_carrier_params` text NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',

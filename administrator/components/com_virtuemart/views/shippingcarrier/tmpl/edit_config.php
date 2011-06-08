@@ -13,25 +13,21 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: edit_config.php 3386 2011-05-27 12:34:11Z alatak $
 */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
+ 
+		if($this->carrier->shipping_carrier_name){
+                  $parameters = new vmParameters($this->carrier->shipping_carrier_params,  $this->carrier->shipping_carrier_element , 'plugin','vmshipper' );
 
-		if($this->paym->paym_element){
-	        //$parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
-                $parameters = new vmParameters($this->paym->paym_params,  $this->paym->paym_element , 'plugin' ,'vmpayment');
-               
 	        echo $rendered = $parameters->render();
         }
-        echo '<br />
-                <span class="hasTip" title="'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP').'">
-                <strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':</strong></span>';
+
 
 	?>
-<br />
-<textarea class="inputbox" name="paym_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>
+
 <?php /*
 <script type="text/javascript">
 function check() {
